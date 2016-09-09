@@ -1,0 +1,1217 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Helpers\Helper;
+
+use Log;
+
+use Hash;
+
+use Validator;
+
+use File;
+
+use DB;
+
+use App\User;
+
+use App\Admin;
+
+use App\AdminVideo;
+
+use App\AdminVideoImage;
+
+use App\Settings;
+
+use App\UserRating;
+
+use App\Wishlist;
+
+use App\UserHistory;
+
+use App\Jobs\NormalPushNotification;
+
+use Elasticsearch\ClientBuilder;
+
+define('ADMIN',1);
+
+define('MODERATOR',2);
+
+define('USER', 3);
+
+define('NONE', 0);
+
+define('DEFAULT_FALSE', 0);
+define('DEFAULT_TRUE', 1);
+
+// Payment Constants
+define('COD',   'cod');
+define('PAYPAL', 'paypal');
+define('CARD',  'card');
+
+
+define('RATINGS', '0,1,2,3,4,5');
+
+define('DEVICE_ANDROID', 'android');
+define('DEVICE_IOS', 'ios');
+
+define('WISHLIST_EMPTY' , 0);
+define('WISHLIST_ADDED' , 1);
+define('WISHLIST_REMOVED' , 2);
+
+define('RECENTLY_ADDED' , 'recent');
+define('TRENDING' , 'trending');
+define('SUGGESTIONS' , 'suggestion');
+define('WISHLIST' , 'wishlist');
+define('WATCHLIST' , 'watchlist');
+
+class UserApiController extends Controller
+{   
+
+    public function __construct(Request $request)
+    {
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'test_search_video']));
+        
+    }
+    public function register(Request $request)
+    {
+        $response_array = array();
+        $operation = false;
+        $new_user = DEFAULT_TRUE;
+
+        // validate basic field
+
+        $basicValidator = Validator::make(
+            $request->all(),
+            array(
+                'device_type' => 'required|in:'.DEVICE_ANDROID.','.DEVICE_IOS,
+                'device_token' => 'required',
+                'login_by' => 'required|in:manual,facebook,google',
+            )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+            Log::info('Registration basic validation failed');
+
+        } else {
+
+            $login_by = $request->login_by;
+            $allowedSocialLogin = array('facebook','google');
+
+            // check login-by
+
+            if(in_array($login_by,$allowedSocialLogin)){
+
+                // validate social registration fields
+
+                $socialValidator = Validator::make(
+                            $request->all(),
+                            array(
+                                'social_unique_id' => 'required',
+                                'name' => 'required|max:255',
+                                'email' => 'required|email|max:255',
+                                'mobile' => 'digits_between:6,13',
+                                'picture' => '',
+                                'gender' => 'in:male,female,others',
+                            )
+                        );
+
+                if($socialValidator->fails()) {
+
+                    $error_messages = implode(',', $socialValidator->messages()->all());
+                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+
+                    Log::info('Registration social validation failed');
+
+                }else {
+                    
+                    $check_social_user = User::where('email' , $request->email)->first();
+                    
+                    if($check_social_user) {
+                        $new_user = DEFAULT_FALSE;
+                    }
+
+                    Log::info('Registration passed social validation');
+                    $operation = true;
+                }
+
+            } else {
+
+                // Validate manual registration fields
+
+                $manualValidator = Validator::make(
+                    $request->all(),
+                    array(
+                        'name' => 'required|max:255',
+                        'email' => 'required|email|max:255',
+                        'mobile' => 'required|digits_between:6,13',
+                        'password' => 'required|min:6',
+                        'picture' => 'mimes:jpeg,jpg,bmp,png',
+                    )
+                );
+
+                // validate email existence 
+
+                $emailValidator = Validator::make(
+                    $request->all(),
+                    array(
+                        'email' => 'unique:users,email',
+                    )
+                );
+
+                if($manualValidator->fails()) {
+
+                    $error_messages = implode(',', $manualValidator->messages()->all());
+                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+                    Log::info('Registration manual validation failed');
+
+                } elseif($emailValidator->fails()) {
+
+                    $error_messages = implode(',', $emailValidator->messages()->all());
+                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+                    Log::info('Registration manual email validation failed');
+
+                } else {
+                    Log::info('Registration passed manual validation');
+                    $operation = true;
+                }
+            
+            }
+
+            if($operation) {
+
+                // Creating the user
+                if($new_user) {
+                    $user = new User;
+                    register_mobile($request->device_type);
+                } else {
+                    $user = $check_social_user;
+                }
+
+                if($request->has('name')) {
+                    $user->name = $request->name;    
+                }
+
+                if($request->has('email')) {
+                    $user->email = $request->email;    
+                }
+                
+                if($request->has('mobile')) {
+                    $user->mobile = $request->mobile;    
+                }
+
+                if($request->has('password'))
+                    $user->password = Hash::make($request->password);
+
+                $user->gender = $request->has('gender') ? $request->gender : "male";
+                
+                $user->token = Helper::generate_token();
+                $user->token_expiry = Helper::generate_token_expiry();
+
+                $check_device_exist = User::where('device_token', $request->device_token)->first();
+
+                if($check_device_exist){
+                    $check_device_exist->device_token = "";
+                    $check_device_exist->save();
+                }
+
+                $user->device_token = $request->has('device_token') ? $request->device_token : "";
+                $user->device_type = $request->has('device_type') ? $request->device_type : "";
+                $user->login_by = $request->has('login_by') ? $request->login_by : "";
+                $user->social_unique_id = $request->has('social_unique_id') ? $request->social_unique_id : '';
+
+                $user->picture = asset('placeholder.png');
+                
+                // Upload picture
+                if($request->login_by == "manual") {
+
+                    if($request->hasFile('picture')) {
+                        $user->picture = Helper::normal_upload_picture($request->file('picture'));    
+                    }
+                } else {
+                    if($request->has('picture')) {
+                        $user->picture = $request->picture;
+                    }
+                }
+                
+
+                $user->is_activated = 1;
+               
+                $user->save();
+
+
+                // Send welcome email to the new user:
+                if($new_user) {
+                    $subject = Helper::tr('user_welcome_title');
+                    $email_data = $user;
+                    $page = "emails.user.welcome";
+                    $email = $user->email;
+                    Helper::send_email($page,$subject,$email,$email_data);
+                }
+
+                // Response with registered user details:
+
+                $response_array = array(
+                    'success' => true,
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'mobile' => $user->mobile,
+                    'gender' => $user->gender,
+                    'email' => $user->email,
+                    'picture' => $user->picture,
+                    'token' => $user->token,
+                    'token_expiry' => $user->token_expiry,
+                    'login_by' => $user->login_by,
+                    'social_unique_id' => $user->social_unique_id,
+                );
+
+                $response_array = Helper::null_safe($response_array);
+
+                Log::info('Registration completed');
+            
+            }
+
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    }
+
+    public function login(Request $request)
+    {
+        $response_array = array();
+        $operation = false;
+
+        $basicValidator = Validator::make(
+            $request->all(),
+            array(
+                'device_token' => 'required',
+                'device_type' => 'required|in:'.DEVICE_ANDROID.','.DEVICE_IOS,
+                'login_by' => 'required|in:manual,facebook,google',
+            )
+        );
+
+        if($basicValidator->fails()){
+            $error_messages = implode(',',$basicValidator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+        }else{
+
+            $login_by = $request->login_by;
+            if($login_by == 'manual'){
+
+                /*validate manual login fields*/
+                $manualValidator = Validator::make(
+                    $request->all(),
+                    array(
+                        'email' => 'required|email',
+                        'password' => 'required',
+                    )
+                );
+
+                if ($manualValidator->fails()) {
+                    $error_messages = implode(',',$manualValidator->messages()->all());
+                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+                } else {
+
+                    $email = $request->email;
+                    $password = $request->password;
+
+                    // Validate the user credentials
+                    if($user = User::where('email', '=', $email)->first()){
+                        if($user->is_activated) {
+                            if(Hash::check($password, $user->password)){
+
+                                /*manual login success*/
+                                $operation = true;
+
+                            }else{
+                                $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
+                            }
+                        } else {
+                            $response_array = array('success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144);
+                        }
+
+                    } else {
+                        $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
+                    }
+                }
+
+            } else {
+                /*validate social login fields*/
+                $socialValidator = Validator::make(
+                    $request->all(),
+                    array(
+                        'social_unique_id' => 'required',
+                    )
+                );
+
+                if ($socialValidator->fails()) {
+                    $error_messages = implode(',',$socialValidator->messages()->all());
+                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+                } else {
+                    $social_unique_id = $request->social_unique_id;
+                    if ($user = User::where('social_unique_id', '=', $social_unique_id)->first()) {
+                        if($user->is_activated) {
+                            /*social login success*/
+                            $operation = true;
+                        } else {
+                            $response_array = array('success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144);
+                        }
+
+                    }else{
+                        $response_array = array('success' => false, 'error' => Helper::get_error_message(125), 'error_code' => 125);
+                    }
+
+                }
+            }
+
+            if($operation){
+
+                $device_token = $request->device_token;
+                $device_type = $request->device_type;
+
+                // Generate new tokens
+                $user->token = Helper::generate_token();
+                $user->token_expiry = Helper::generate_token_expiry();
+                
+                // Save device details
+                $user->device_token = $device_token;
+                $user->device_type = $device_type;
+                $user->login_by = $login_by;
+
+                $user->save();
+
+                $payment_mode_status = $user->payment_mode ? $user->payment_mode : 0;
+
+                // Respond with user details
+
+                $response_array = array(
+                    'success' => true,
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'mobile' => $user->mobile,
+                    'email' => $user->email,
+                    'gender' => $user->gender,
+                    'picture' => $user->picture,
+                    'token' => $user->token,
+                    'token_expiry' => $user->token_expiry,
+                    'login_by' => $user->login_by,
+                    'social_unique_id' => $user->social_unique_id,
+                );
+
+                $response_array = Helper::null_safe($response_array);
+            }
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    }
+
+    public function forgot_password(Request $request)
+    {
+        $email =$request->email;
+        // Validate the email field
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'email' => 'required|email|exists:users,email',
+            )
+        );
+        if ($validator->fails()) {
+            $error_messages = implode(',',$validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+        } 
+        else 
+        {
+            $user = User::where('email' , $email)->first();
+            $new_password = Helper::generate_password();
+            $user->password = Hash::make($new_password);
+            
+            $email_data = array();
+            $subject = Helper::tr('user_forgot_email_title');
+            $email_data['password']  = $new_password;
+            $email_data['user']  = $user;
+            $page = "emails.user.forgot_password";
+            $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
+
+            $response_array['success'] = true;
+            $response_array['message'] = Helper::get_message(106);
+            $user->save();
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    }
+
+    public function change_password(Request $request) {
+
+        $old_password = $request->old_password;
+        $new_password = $request->password;
+        $confirm_password = $request->confirm_password;
+        
+        $validator = Validator::make($request->all(), [              
+                'password' => 'required|confirmed',
+                'old_password' => 'required',
+            ]);
+
+        if($validator->fails()) {
+            $error_messages = implode(',',$validator->messages()->all());
+            $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 401, 'error_messages' => $error_messages );
+        } else {
+            $user = User::find($request->id);
+
+            if(Hash::check($old_password,$user->password))
+            {
+                $user->password = Hash::make($new_password);
+                $user->save();
+
+                $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_message(102)));
+                
+            } else {
+                $response_array = array('success' => false , 'error' => Helper::get_error_message(131),'error_messages' => Helper::get_error_message(131) ,'error_code' => 131);
+            }
+
+        }
+
+        $response = response()->json($response_array,200);
+        return $response;
+    
+    }
+
+    public function user_details(Request $request)
+    {
+        $user = User::find($request->id);
+
+        $response_array = array(
+            'success' => true,
+            'id' => $user->id,
+            'name' => $user->name,
+            'mobile' => $user->mobile,
+            'gender' => $user->gender,
+            'email' => $user->email,
+            'picture' => $user->picture,
+            'token' => $user->token,
+            'token_expiry' => $user->token_expiry,
+            'login_by' => $user->login_by,
+            'social_unique_id' => $user->social_unique_id
+        );
+        $response = response()->json(Helper::null_safe($response_array), 200);
+        return $response;
+    }
+
+    public function update_profile(Request $request)
+    {
+        $user_id = $request->id;
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'id' => 'required',
+                'name' => 'required|max:255',
+                'email' => 'email|unique:users,email,'.$user_id.'|max:255',
+                'mobile' => 'required|digits_between:6,13',
+                'picture' => 'mimes:jpeg,bmp,png',
+                'gender' => 'in:male,female,others',
+                'device_token' => '',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all()); 
+            $response_array = array(
+                    'success' => false,
+                    'error' => Helper::get_error_message(101),
+                    'error_code' => 101,
+                    'error_messages' => $error_messages
+            );
+        } else {
+
+            $name = $request->name;
+            $email = $request->email;
+            $mobile = $request->mobile;
+            $picture = $request->file('picture');
+
+            $user = User::find($user_id);
+            
+            if($request->has('name')) {
+                $user->name = $request->name;
+            }
+            if($request->has('email')) {
+                $user->email = $email;
+            }
+            if ($mobile != "")
+                $user->mobile = $mobile;
+            // Upload picture
+            if ($picture != "") {
+                Helper::delete_picture($user->picture); // Delete the old pic
+                $user->picture = Helper::normal_upload_picture($picture);
+            }
+            if($request->has('gender')) {
+                $user->gender = $request->gender;
+            }
+
+            if($request->has('address')) {
+                $user->address = $request->address;
+            }
+
+            if($request->has('description')) {
+                $user->description = $request->description;
+            }
+
+            // Generate new tokens
+            // $user->token = Helper::generate_token();
+            // $user->token_expiry = Helper::generate_token_expiry();
+            
+            $user->save();
+
+            $payment_mode_status = $user->payment_mode ? $user->payment_mode : "";
+
+            $response_array = array(
+                'success' => true,
+                'id' => $user->id,
+                'name' => $user->name,
+                'mobile' => $user->mobile,
+                'gender' => $user->gender,
+                'email' => $user->email,
+                'picture' => $user->picture,
+                'token' => $user->token,
+                'token_expiry' => $user->token_expiry,
+                'login_by' => $user->login_by,
+                'social_unique_id' => $user->social_unique_id,
+            );
+            $response_array = Helper::null_safe($response_array);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    }
+
+    public function token_renew(Request $request)
+    {
+       
+        $user_id = $request->id;
+
+        $token_refresh = $request->token;
+
+        // Check if refresher token is valid
+
+        if ($user = User::where('id', '=', $user_id)->where('token', '=', $token_refresh)->first()) {
+
+            // Generate new tokens
+            $user->token = Helper::generate_token();
+            $user->token_expiry = Helper::generate_token_expiry();
+
+            $user->save();
+            $response_array = Helper::null_safe(array('success' => true,'token' => $user->token));
+        } else {
+            $response_array = array('success' => false,'error' => Helper::get_error_message(115),'error_code' => 115);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    }
+
+    public function delete_account(Request $request) {
+
+		$user_id = $request->id;
+    	
+		// Should delete user ratings and review. and user image also.
+
+    	$user = User::find($user_id)->delete();
+
+    	if($user) {
+    		$response_array = array('success' => true , 'message' => 'Account deleted successfully');
+    		$response_code = 200;
+    	}
+
+			
+		$response = Response::json($response_array,$response_code);
+
+		return $response;
+	
+	}
+
+	public function user_rating(Request $request) 
+	{
+        $user = User::find($request->id);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'admin_video_id' => 'required|integer|exists:admin_videos,id',
+                'rating' => 'integer|in:'.RATINGS,
+                'comments' => 'max:255',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists please provide correct video id',
+                'unique' => 'The :attribute already rated.'
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            //Save Rating
+            $rating = new UserRating();
+            $rating->user_id = $request->id;
+            $rating->admin_video_id = $request->admin_video_id;
+            $rating->rating = $request->has('rating') ? $request->rating : 0;
+            $rating->comment = $request->comments ? $request->comments: '';
+            $rating->save();
+            
+			$response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans());
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    } 
+
+    public function add_wishlist(Request $request) 
+	{
+        $user = User::find($request->id);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'admin_video_id' => 'required|integer|exists:admin_videos,id',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists please provide correct video id',
+                'unique' => 'The :attribute already added in wishlist.'
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            if(Wishlist::where('user_id' , $request->id)->where('admin_video_id' , $request->admin_video_id)->where('status' , 1)->count()) {
+
+                $response_array = array('success' => false ,'error' => 'The video is already added in wishlist.' , 'error_code' => 145);
+                return response()->json($response_array, 200);
+            }
+
+            //Save Wishlist
+            $wishlist = new Wishlist();
+            $wishlist->user_id = $request->id;
+            $wishlist->admin_video_id = $request->admin_video_id;
+            $wishlist->status = 1;
+            $wishlist->save();
+            
+			$response_array = array('success' => true ,'wishlist_id' => $wishlist->id);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    } 
+
+    public function get_wishlist(Request $request)  {
+
+        $wishlist = Helper::wishlist($request->id);
+
+		$response_array = array('success' => true, 'wishlist' => $wishlist);
+    
+        return response()->json($response_array, 200);
+    } 
+
+    public function delete_wishlist(Request $request) 
+	{
+        $user = User::find($request->id);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists please add to wishlists',
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+            if($request->status == 1) {
+                //delete wishlist
+                $wishlist = Wishlist::where('user_id',$request->id)->delete(); 
+            } else {
+                //delete wishlist
+                $wishlist = Wishlist::where('id',$request->wishlist_id)->delete(); 
+            }
+
+			$response_array = array('success' => true);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    } 
+
+    public function add_history(Request $request)  {
+
+        $user = User::find($request->id);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'admin_video_id' => 'required|integer|exists:admin_videos,id',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists please provide correct video id',
+                'unique' => 'The :attribute already added in history.'
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            if($history = UserHistory::where('user_id' , $request->id)->where('admin_video_id' ,$request->admin_video_id)->first()) {
+
+                $response_array = array('success' => true , 'error' => Helper::get_error_message(145) , 'error_code' => 145);
+
+            } else {
+
+                //Save Wishlist
+                $rev_user = new UserHistory();
+                $rev_user->user_id = $request->id;
+                $rev_user->admin_video_id = $request->admin_video_id;
+                $rev_user->save();
+
+                if($video = AdminVideo::find($request->admin_video_id)) {
+                    $video->watch_count = $video->watch_count + 1;
+                    $video->save();
+                }
+
+                $response_array = array('success' => true);
+            }			
+        }
+        return response()->json($response_array, 200);
+    } 
+
+    public function get_history(Request $request) {
+        
+		//get wishlist
+
+        $history = Helper::watch_list($request->id)->toArray();
+
+		$response_array = array('success' => true, 'history' => $history);
+
+        return response()->json($response_array, 200);
+    } 
+
+    public function delete_history(Request $request) {
+
+        $user = User::find($request->id);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists please add to history',
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        } else {
+
+            if($request->has('status')) {
+                $history = UserHistory::where('user_id',$request->id)->delete();            
+            } else {
+                //delete history
+                $history = UserHistory::where('user_id',$request->id)->where('id' ,  $request->history_id )->delete();
+            }
+
+            $response_array = array('success' => true);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    } 
+
+    public function get_categories(Request $request) {
+
+        $categories = get_categories();
+
+        if($categories) {
+
+            $response_array = array('success' => true , 'categories' => $categories->toArray());
+
+        } else {
+            $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
+        }
+        
+        $response = response()->json($response_array, 200);
+        return $response;   
+    }
+
+    public function get_sub_categories(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'category_id' => 'required|integer|exists:categories,id',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists',
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            $sub_categories = get_sub_categories($request->category_id);
+
+            if($sub_categories) {
+
+                $response_array = array('success' => true , 'sub_categories' => $sub_categories->toArray());
+
+            } else {
+                $response_array = array('success' => false,'error' => Helper::get_error_message(130),'error_code' => 130);
+            }
+
+        }
+        
+        $response = response()->json($response_array, 200);
+        return $response;   
+    }
+
+    public function home(Request $request) {
+
+        $videos = $wishlist = $recent = $trending = $history = $suggestion =array();
+
+        $wishlist['name'] = 'Wishlist';
+        $wishlist['key'] = WISHLIST;
+        $wishlist['list'] = Helper::wishlist($request->id);
+
+        array_push($videos , $wishlist);
+
+        $recent['name'] = 'Recently Uploaded';
+        $recent['key'] = RECENTLY_ADDED;
+        $recent['list'] = Helper::recently_added();
+
+        array_push($videos , $recent);
+
+        $trending['name'] = "Trending";
+        $trending['key'] = TRENDING;
+        $trending['list'] = Helper::trending();
+
+        array_push($videos, $trending);
+
+        $history['name'] = "Watch It Again";
+        $history['key'] = WATCHLIST;
+        $history['list'] = Helper::watch_list($request->id);
+
+        array_push($videos , $history);
+
+        $suggestion['name'] = "Recommended";
+        $suggestion['key'] = SUGGESTIONS;
+        $suggestion['list'] = Helper::suggestion_videos();
+
+        array_push($videos , $suggestion);
+
+        $response_array = array('success' => true , 'data' => $videos);
+
+        return response()->json($response_array , 200);
+
+    }
+
+    public function common(Request $request) {
+
+        $key = $request->key;
+
+        switch($key) {
+            case TRENDING:
+                $videos = Helper::trending();
+                break;
+            case WISHLIST:
+                $videos = Helper::wishlist($request->id);
+                break;
+            case SUGGESTIONS:
+                $videos = Helper::suggestion_videos();
+                break;
+            case RECENTLY_ADDED:
+                $videos = Helper::recently_added();
+                break;
+            case WATCHLIST:
+                $videos = Helper::watch_list($request->id);
+                break;
+            default:
+                $videos = Helper::recently_added();
+        }
+
+
+        $response_array = array('success' => true , 'data' => $videos);
+
+        return response()->json($response_array , 200);
+
+    }
+
+    public function get_category_videos(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'category_id' => 'required|integer|exists:categories,id',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists',
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            $data = array();
+
+            $sub_categories = get_sub_categories($request->category_id);
+
+            if($sub_categories) {
+
+                foreach ($sub_categories as $key => $sub_category) {
+
+                    $videos = Helper::sub_category_videos($sub_category->id);
+
+                    if(count($videos) > 0) {
+
+                        $results['sub_category_name'] = $sub_category->name;
+                        $results['key'] = $sub_category->id;
+                        $results['videos_count'] = count($videos);
+                        $results['videos'] = $videos->toArray();
+
+                        array_push($data, $results);
+                    }
+                }
+            }
+
+            $response_array = array('success' => true, 'data' => $data);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    
+    }
+
+    public function get_sub_category_videos(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'sub_category_id' => 'required|integer|exists:sub_categories,id',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists',
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+            $data = array();
+
+            if($videos = Helper::sub_category_videos($request->sub_category_id)) {
+                $data = $videos->toArray();
+            }
+
+            $response_array = array('success' => true, 'data' => $data);
+        
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+    
+    }
+
+    public function single_video(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'admin_video_id' => 'required|integer|exists:admin_videos,id',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists',
+            )
+        );
+    
+        if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            $data = array();
+
+            $data = Helper::get_video_details($request->admin_video_id);
+
+            $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->admin_video_id)
+                                ->orderBy('is_default' , 'desc')
+                                ->get();
+
+            if($ratings = Helper::video_ratings($request->admin_video_id,0)) {
+                $ratings = $ratings->toArray();
+            }
+
+            $wishlist_status = Helper::wishlist_status($request->admin_video_id,$request->id);
+
+            $response_array = array(
+                        'success' => true, 
+                        'wishlist_status' => $wishlist_status,
+                        'video' => $data , 
+                        'video_images' => $admin_video_images,
+                        'comments' => $ratings
+                        );
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;   
+    
+    }
+
+    public function search_video(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'key' => '',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists',
+            )
+        );
+    
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            $results = AdminVideo::where('is_approved' , 1)->where('status' , 1)->select('id as admin_video_id' , 'title')->orderBy('created_at' , 'desc')->get()->toArray();
+
+            $response_array = array('success' => true, 'data' => $results);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+   
+    }
+
+    public function test_search_video(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'key' => 'required',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists',
+            )
+        );
+    
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+
+            $q = $request->key;
+
+            $results = Helper::search_video($request->key);
+
+            $response_array = array('success' => true, 'data' => $results);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
+   
+    }
+
+    public function privacy(Request $request) {
+
+        $page_data['type'] = $page_data['heading'] = $page_data['content'] = "";
+
+        $page = Page::where('type', 'privacy')->first();
+
+        if($page) {
+
+            $page_data['type'] = "privacy";
+            $page_data['heading'] = $page->heading;
+            $page_data ['content'] = $page->description;
+        }
+
+        $response_array = array('success' => true , 'page' => $page_data);
+
+        return response()->json($response_array,200);
+    
+    }
+
+    public function about(Request $request) {
+
+        $page_data['type'] = $page_data['heading'] = $page_data['content'] = "";
+
+        $page = Page::where('type', 'about')->first();
+
+        if($page) {
+
+            $page_data['type'] = 'about';
+
+            $page_data['heading'] = $page->heading;
+
+            $page_data ['content'] = $page->description;
+        }
+
+        $response_array = array('success' => true , 'page' => $page_data);
+        return response()->json($response_array,200);
+    
+    }
+
+    public function terms(Request $request) {
+
+        $page_data['type'] = $page_data['heading'] = $page_data['content'] = "";
+
+        $page = Page::where('type', 'terms')->first();
+
+        if($page) {
+
+            $page_data['type'] = "Terms";
+
+            $page_data['heading'] = $page->heading;
+
+            $page_data ['content'] = $page->description;
+        }
+
+        $response_array = array('success' => true , 'page' => $page_data);
+        return response()->json($response_array,200);
+    
+    }
+
+
+}

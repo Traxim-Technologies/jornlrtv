@@ -1,0 +1,616 @@
+@extends('layouts.user')
+
+@section('styles')
+<style type="text/css">
+.common-youtube {
+    min-height: 0px !important;
+}
+textarea[name=comments] {
+    resize: none;
+}
+</style>
+@endsection
+
+@section('content')
+
+    <?php $url = $trailer_url = ""; ?>
+
+    <div class="y-content">
+        <div class="row y-content-row">
+
+            @include('layouts.user.nav')
+
+            <div class="page-inner col-sm-9 col-md-10 profile-edit">
+            
+                <div class="profile-content">
+                    <div class="row no-margin">
+                        <div class="col-sm-12 col-md-8 play-video">
+                            <!-- <div class="iframe" > -->   
+                                <!-- 16:9 aspect ratio -->
+
+                                @if($video->video_type != 1)
+
+                                    <div class="embed-responsive embed-responsive-16by9" id="trailer_video_play">
+                                        <iframe id="iframe_trailer_video" width="580" height="315" src="{{$video->trailer_video}}?autoplay=0" allowfullscreen></iframe>
+                                    </div>   
+
+                                    <div class="embed-responsive embed-responsive-16by9" id="main_video_play" style="display:none">
+                                        <iframe id="iframe_main_video" width="580" height="315" src="{{$video->video}}?autoplay=0" allowfullscreen></iframe>
+                                    </div>
+
+                                @else
+                                    @if($video->video_upload_type == 1)
+                                        
+                                        <?php $url = $video->video; ?>
+                                        
+                                        <div id="main-video-player" style="display:none"></div>
+
+                                    @else
+                                        @if(check_valid_url($video->video))
+
+                                            <?php $url = Setting::get('streaming_url').get_video_end($video->video); ?>
+
+                                            <div id="main-video-player" style="display:none"></div>
+
+                                        @else
+
+                                            <div class="embed-responsive embed-responsive-16by9" style="display:none" id="main_video_error">
+                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Main Video">
+                                            </div>
+
+                                        @endif
+
+                                    @endif
+
+                                    @if($video->video_upload_type == 1)
+
+                                        <?php $trailer_url = $video->trailer_video; ?>
+
+                                        <div id="trailer-video-player"></div>
+                                    @else
+
+                                        @if(check_valid_url($video->tralier_video))
+
+                                            <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
+
+                                            <div id="trailer-video-player"></div>
+
+                                        @else
+
+                                            <div class="embed-responsive embed-responsive-16by9" id="trailer_video_error">
+                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Trailer Video">
+                                            </div>
+
+                                        @endif
+                                    @endif
+
+                                @endif
+
+                            <!-- </div> -->  <!--end of iframe-->
+
+                            <div class="main-content">
+                                <div class="video-content">
+                                    <div class="details">
+                                        <div class="video-title">
+                                            <div class="title row">
+                                                <h3>{{$video->title}}</h3>
+
+                                                <div class="watch-duration">
+
+                                                    <form method="post" name="watch_main_video">     
+                                                        @if(Auth::check())
+
+                                                            @if(Auth::user()->user_type ==  1)                             
+                                                            
+                                                                <button type="submit" id="watch_main_video_button" class="watch-button">{{tr('watch_main_video')}}</button>
+
+                                                                <!-- <p>{{tr('duration')}} {{$video->duration}}</p> -->
+                                                            @else
+
+                                                                <button  type="button" class="watch-button" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
+
+                                                                <div class="modal fade cus-mod" id="paypal" role="dialog">
+                                                                    <div class="modal-dialog">
+                                                                    
+                                                                      <!-- Modal content-->
+                                                                      <div class="modal-content">
+
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                <h4 class="modal-title text-center">Please Pay to see the full video</h4>
+                                                                            </div>
+
+                                                                            <div class="modal-body">
+                                                                                <!-- <p>Please Pay to see the full video</p>  -->
+                                                                                <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
+                                                                            </div>
+
+                                                                            
+                                                                      </div>
+                                                                      
+                                                                    </div>
+                                                                
+                                                                </div>
+
+                                                            @endif
+                                                    
+                                                        @else
+
+                                                            <button type="button" class="watch-button" data-toggle="modal" data-target="#watchMainVideo">{{tr('watch_main_video')}}</button>
+
+                                                            <div class="modal fade cus-mod" id="watchMainVideo" role="dialog">
+                                                                <div class="modal-dialog">
+                                                                
+                                                                  <!-- Modal content-->
+                                                                  <div class="modal-content">
+
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                            <h4 class="modal-title text-center">Please Login to watch Full Video</h4>
+                                                                        </div>
+
+                                                                        <div class="modal-body text-center">
+                                                                            <!-- <p>Click here to login</p>  -->
+                                                                            <a href="{{route('user.login.form')}}" class="btn btn-danger">{{tr('login')}}</a>
+                                                                        </div>
+
+                                                                  </div>
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        @endif
+
+                                                    </form>
+
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="video-description">
+                                                <h4>{{tr('description')}}</h4>
+                                                <p>{{$video->description}}</p>
+                                            </div><!--end of video-description-->                                       
+                                        </div><!--end of video-title-->                                                             
+                                    </div><!--end of details-->
+
+                                    <div class="more-content">
+                                        
+                                        <div class="share-details row">
+
+                                            <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
+                                                @if(Auth::check())
+
+                                                    <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
+
+                                                    @if(count($wishlist_status) == 1)
+
+                                                        <input type="hidden" id="status" value="0" name="status">
+
+                                                        <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
+
+                                                        <div class="mylist">
+                                                            <button style="background-color:rgb(229, 45, 39);" type="submit" id="added_wishlist" data-toggle="tooltip" title="Add to My List">
+                                                                <i class="fa fa-heart"></i>
+                                                                <span>{{tr('added_wishlist')}}</span>
+                                                            </button> 
+                                                        </div>
+
+                                                    @else
+
+                                                        <input type="hidden" id="status" value="1" name="status">
+
+                                                        <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
+
+                                                        <div class="mylist">
+                                                            <button type="submit" id="added_wishlist" data-toggle="tooltip" title="Add to My List">
+                                                                <i class="fa fa-heart"></i>
+                                                                <span>{{tr('add_to_wishlist')}}</span>
+                                                            </button> 
+                                                        </div>
+                                                        
+                                                    @endif
+                                                
+                                                @else
+                                                    <!-- Login Popup -->
+                                                @endif
+
+                                            </form>
+
+                                            <div class="share">
+                                                <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->admin_video_id)}}">
+                                                    
+                                                    <i class="fa fa-facebook"></i>{{tr('share_on_fb')}}
+                                                    
+                                                </a>
+
+                                                <a class="share-google" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->admin_video_id)}}">
+                                                   
+                                                    <i class="fa fa-google"></i>{{tr('share_on_twitter')}}
+                                                    
+                                                </a> 
+                                            </div><!--end of share-->
+
+                                            <div class="stars ratings">
+                                                <a href="#"><i @if($video->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                            </div><!--end of stars-->
+
+                                        </div><!--end of share-details-->                               
+                                    </div>
+                                    <!--end of more-content-->
+
+                                </div><!--end of video-content-->
+                                
+                                <div class="v-comments">
+
+                                    @if(count($comments) > 0) 
+                                        <h3>{{tr('comments')}}
+                                            <span class="c-380" id="comment_count">{{count($comments)}}</span>
+                                        </h3> 
+                                    @endif
+                                    
+                                    <div class="com-content">
+                                        @if(Auth::check())
+
+                                            <div class="image-form">
+                                                <div class="comment-box1">
+                                                    <div class="com-image">
+                                                        <img style="width:48px;height:48px" src="{{Auth::user()->picture}}">                                    
+                                                    </div><!--end od com-image-->
+                                                    
+                                                    <div id="comment_form">
+                                                        <div>
+                                                            <form method="post" id="comment_sent" name="comment_sent" action="{{route('user.add.comment')}}">
+
+                                                                <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
+
+                                                                <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
+
+                                                                <input style="float:right;margin-bottom:10px;display:none" type="submit" name="submit" value="send">
+                                                            </form>
+                                                        </div>                                      
+                                                    </div>  <!--end of comment-form-->
+                                                </div>                                                              
+                                            
+                                            </div>
+
+                                        @endif
+                                        <div class="feed-comment">
+                                        <span id="new-comment"></span>
+                                        @if(count($comments) > 0)
+
+                                            
+
+                                                
+
+                                                @foreach($comments as $c =>  $comment)
+
+                                                    <div class="display-com">
+                                                        <div class="com-image">
+                                                            <img style="width:48px;height:48px" src="{{$comment->picture}}">                                    
+                                                        </div><!--end od com-image-->
+
+                                                        <div class="display-comhead">
+                                                            <span class="sub-comhead">
+                                                                <a href="#"><h5 style="float:left">{{$comment->username}}</h5></a>
+                                                                <a href="#"><p>{{$comment->created_at->diffForHumans()}}</p></a>
+                                                                <p class="com-para">{{$comment->comment}}</p>
+                                                            </span>             
+                                                            
+                                                        </div><!--display-comhead-->                                        
+                                                    </div><!--display-com-->
+
+                                                @endforeach
+                                                
+                                            
+
+                                        @endif
+
+                                        </div>
+                                            
+                                    </div>
+
+                                </div><!--end of v-comments-->
+                                                                
+                            </div>
+                            <!--end of main-content-->
+                        </div><!--end of col-sm-8 and play-video-->
+
+                        <div class="col-sm-12 col-md-4 side-video custom-side">
+                            <div class="up-next">
+                                <h4 class="sugg-head1">{{tr('suggestions')}}</h4>
+
+                                <ul class="video-sugg"> 
+
+                                    @foreach($suggestions as $suggestion)
+                                        <li class="sugg-list row">
+                                            <div class="main-video">
+                                                 <div class="video-image">
+                                                    <div class="video-image-outer">
+                                                        <a href="{{route('user.single' , $suggestion->admin_video_id)}}"><img src="{{$suggestion->default_image}}"></a>
+                                                    </div>                       
+                                                </div><!--video-image-->
+
+                                                <div class="sugg-head">
+                                                    <div class="suggn-title">                                          
+                                                        <h5><a href="{{route('user.single' , $suggestion->admin_video_id)}}">{{$suggestion->title}}</a></h5>
+                                                    </div><!--end of sugg-title-->
+
+                                                    <div class="sugg-description">
+                                                        <p>{{tr('duration')}}: {{$suggestion->duration}}</p>
+                                                    </div><!--end of sugg-description--> 
+
+                                                    <span class="stars">
+                                                        <a href="#"><i @if($suggestion->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    </span>                                                       
+                                                </div><!--end of sugg-head-->
+                                    
+                                            </div><!--end of main-video-->
+                                        </li><!--end of sugg-list-->
+                                    @endforeach
+                                   
+                                    
+                                </ul>
+                            </div><!--end of up-next-->
+                                                
+                        </div><!--end of col-sm-4-->
+                    </div>
+                </div>
+            
+            </div>
+
+        </div><!--y-content-row-->
+    </div>
+
+    <!--end of y-content-->
+    
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.video-y-menu').addClass('hidden');
+        }); 
+    </script>
+
+    <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
+
+    <script>jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";</script>
+
+    <script type="text/javascript">
+        
+        jQuery(document).ready(function(){    
+
+            @if($video->video_type == 1)
+
+                console.log('Inside Video');
+                    
+                console.log('Inside Video Player');
+                
+                    console.log('Inside Trailer Video');
+
+                    console.log("{{$trailer_url}}");
+
+                @if($trailer_url)
+
+                    var playerInstance = jwplayer("trailer-video-player");
+
+                    playerInstance.setup({
+                        file: "{{$trailer_url}}",
+                        image: "{{$video->default_image}}",
+                        width: "100%",
+                        aspectratio: "16:9",
+                        primary: "flash",
+                    });
+
+                @endif
+
+
+                @if(!$history_status && Auth::check())
+
+                    jwplayer().on('displayClick', function(e) {
+                        jQuery.ajax({
+                            url: "{{route('user.add.history')}}",
+                            type: 'post',
+                            data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                            success: function(data) {
+
+                               if(data.success == true) {
+
+                                console.log('Added to history');
+
+                               } else {
+                                    console.log('Wrong...!');
+                               }
+                            }
+                        });
+                        
+                    });
+
+                @endif
+
+            @endif       
+
+            //hang on event of form with id=myform
+            jQuery("form[name='add_to_wishlist']").submit(function(e) {
+
+                //prevent Default functionality
+                e.preventDefault();
+
+                //get the action-url of the form
+                var actionurl = e.currentTarget.action;
+
+                //do your own request an handle the results
+                jQuery.ajax({
+                        url: actionurl,
+                        type: 'post',
+                        dataType: 'json',
+                        data: jQuery("#add_to_wishlist").serialize(),
+                        success: function(data) {
+                           if(data.success == true) {
+
+                                jQuery("#added_wishlist").html("");
+
+                                if(data.status == 1) {
+                                    jQuery('#status').val("0");
+
+                                    jQuery('#wishlist_id').val(data.wishlist_id); 
+                                    jQuery("#added_wishlist").css({'background':'rgb(229, 45, 39)','color' : '#FFFFFF'});
+                                    jQuery("#added_wishlist").append('<i class="fa fa-heart"> {{tr('added_wishlist')}}');
+                                } else {
+                                    jQuery('#status').val("1");
+                                    jQuery('#wishlist_id').val("");
+                                    jQuery("#added_wishlist").css({'background':'','color' : ''});
+                                    jQuery("#added_wishlist").append('<i class="fa fa-heart"> {{tr('add_to_wishlist')}}');
+                                }
+                           } else {
+                                console.log('Wrong...!');
+                           }
+                        }
+                });
+
+            });
+
+            $('#comment').keydown(function(event) {
+                if (event.keyCode == 13) {
+                    $(this.form).submit()
+                    return false;
+                 }
+            }).focus(function(){
+                if(this.value == "Write your comment here..."){
+                     this.value = "";
+                }
+
+            }).blur(function(){
+                if(this.value==""){
+                     this.value = "Write your comment here...";
+                }
+            });
+
+            jQuery("form[name='comment_sent']").submit(function(e) {
+
+                //prevent Default functionality
+                e.preventDefault();
+
+                //get the action-url of the form
+                var actionurl = e.currentTarget.action;
+
+                //do your own request an handle the results
+                jQuery.ajax({
+                        url: actionurl,
+                        type: 'post',
+                        dataType: 'json',
+                        data: jQuery("#comment_sent").serialize(),
+                        success: function(data) {
+
+                           if(data.success == true) {
+
+                            @if(Auth::check())
+                                jQuery('#comment').val("");
+                                jQuery('#no_comment').hide();
+                                var comment_count = 0;
+                                var count = 0;
+                                comment_count = jQuery('#comment_count').text();
+                                var count = parseInt(comment_count) + 1;
+                                jQuery('#comment_count').text(count);
+                                jQuery('#video_comment_count').text(count);
+
+                                jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
+                            @endif
+                           } else {
+                                console.log('Wrong...!');
+                           }
+                        }
+                });
+
+            });
+
+            jQuery("form[name='watch_main_video']").submit(function(e) {
+
+                //prevent Default functionality
+                e.preventDefault();
+
+                jQuery('#watch_main_video_button').fadeOut();
+
+                @if($video->video_type == 1)
+
+                    @if($url)
+
+                        var playerInstance = jwplayer("main-video-player");
+
+                        playerInstance.setup({
+                           
+                            file: "{{$url}}",
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
+                            controls : true,
+                            "controlbar.idlehide" : false,
+                            controlBarMode:'floating',
+                            "controls": {
+                              "enableFullscreen": false,
+                              "enablePlay": false,
+                              "enablePause": false,
+                              "enableMute": true,
+                              "enableVolume": true
+                            },
+                            // autostart : true,
+                            "sharing": {
+                                "sites": ["reddit","facebook","twitter"]
+                              }
+                        });
+                    
+                    @else
+                        jQuery('#main_video_error').show();
+                        jQuery('#trailer_video_error').hide();
+                    @endif
+
+                    jQuery("#trailer-video-player").hide();
+                    jQuery("#main-video-player").show();
+                
+                @else
+                    jQuery("#trailer_video_play").hide();
+                    jQuery("#main_video_play").show();
+
+                    @if(!$history_status)
+
+                        jQuery.ajax({
+                            url: "{{route('user.add.history')}}",
+                            type: 'post',
+                            data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                            success: function(data) {
+
+                               if(data.success == true) {
+
+                                var watch_count = 0;
+                                var count = 0;
+                                watch_count = jQuery('#watch_count').text();
+                                var count = parseInt(watch_count) + 1;
+                                jQuery('#watch_count').text(count);
+
+                                console.log('Added to history');
+
+                               } else {
+                                    console.log('Wrong...!');
+                               }
+                            }
+                        });
+
+                    @endif
+                
+                @endif
+
+            });
+
+        });
+    </script>
+@endsection

@@ -1,0 +1,872 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Requests;
+
+use App\Helpers\Helper;
+
+use App\Moderator;
+
+use App\AdminVideo;
+
+use App\AdminVideoImage;
+
+use App\Category;
+
+use App\SubCategory;
+
+use App\SubCategoryImage;
+
+use App\Genre;
+
+use App\Settings;
+
+use Auth;
+
+use Validator;
+
+use Hash;
+
+use Mail;
+
+use DB;
+
+use Redirect;
+
+use Setting;
+
+use Log;
+
+
+define('DEFAULT_TRUE', 1);
+define('DEFAULT_FALSE', 0);
+
+define('ADMIN', 'admin');
+define('MODERATOR', 'moderator');
+
+define('VIDEO_TYPE_UPLOAD', 1);
+define('VIDEO_TYPE_YOUTUBE', 2);
+define('VIDEO_TYPE_OTHER', 3);
+
+
+define('VIDEO_UPLOAD_TYPE_s3', 1);
+define('VIDEO_UPLOAD_TYPE_DIRECT', 2);
+
+class ModeratorController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('moderator');
+    }
+
+    public function dashboard() {
+
+        $moderator = Moderator::find(\Auth::guard('moderator')->user()->id);
+
+        $moderator->token = Helper::generate_token();
+        $moderator->token_expiry = Helper::generate_token_expiry();
+
+        $moderator->save();
+        
+        $today_videos = AdminVideo::where('created_at' , '>=' , date('Y-m-d H:i:s'))->count();
+        $category_count = Category::count();
+        $sub_category_count = SubCategory::count();
+
+        return view('moderator.dashboard')
+                    ->withPage('dashboard')
+                    ->with('sub_page','')
+                    ->with('today_videos' , $today_videos)
+                    ->with('category_count' , $category_count)
+                    ->with('sub_category_count' , $sub_category_count);
+    }
+
+
+    public function profile() {
+        return view('moderator.profile')->withPage('profile')->with('sub_page','');
+    }
+
+    /**
+     * Save any changes to the provider profile.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function profile_process(Request $request) {
+
+        $validator = Validator::make( $request->all(),array(
+                'name' => 'max:255',
+                'email' => 'email|max:255',
+                'mobile' => 'digits_between:6,13',
+                'address' => 'max:300',
+            )
+        );
+        
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+        } else {
+            
+            $moderator = Moderator::find($request->id);
+            
+            $moderator->name = $request->has('name') ? $request->name : $moderator->name;
+
+            $moderator->email = $request->has('email') ? $request->email : $moderator->email;
+
+            $moderator->mobile = $request->has('mobile') ? $request->mobile : $moderator->mobile;
+
+            $moderator->gender = $request->has('gender') ? $request->gender : $moderator->gender;
+
+            $moderator->address = $request->has('address') ? $request->address : $moderator->address;
+
+            if($request->hasFile('picture')) {
+                $moderator->picture = Helper::normal_upload_picture($request->file('picture'));
+            }
+                
+            $moderator->remember_token = Helper::generate_token();
+            $moderator->is_activated = 1;
+            $moderator->save();
+
+            return back()->with('flash_success', Helper::tr('moderator_not_profile'));
+            
+        }
+    
+    }
+    /**
+     * Save changed password.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function password(Request $request)
+    {
+        $request->request->add([ 
+            'id' => \Auth::guard('provider')->user()->id,
+            'token' => \Auth::guard('provider')->user()->token,
+            'device_token' => \Auth::guard('provider')->user()->device_token,
+        ]);
+
+        $ApiResponse = $this->ProviderApiController->changePassword($request)->getData();
+
+        if($ApiResponse->success == true){
+            return back()->with('success', tr('profile_save'));
+        }elseif($ApiResponse->success == false){
+            return back()->with('error', $ApiResponse->error);
+        }
+    }
+
+    public function categories() {
+
+        $categories = Category::select('categories.id',
+                            'categories.name' , 
+                            'categories.picture',
+                            'categories.is_series',
+                            'categories.status',
+                            'categories.status',
+                            'categories.is_approved',
+                            'categories.created_by'
+                        )
+                        ->orderBy('categories.created_at', 'desc')
+                        ->distinct('categories.id')
+                        ->get();
+
+        return view('moderator.categories')->with('categories' , $categories)->withPage('categories')->with('sub_page','');
+    }
+
+    public function add_category() {
+        return view('moderator.add-category')->with('page' ,'categories')->with('sub_page' ,'add-category');
+    }
+
+    public function edit_category($id) {
+
+        $category = Category::find($id);
+
+        return view('moderator.edit-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'edit-category');
+    }
+
+    public function add_category_process(Request $request) {
+
+        if($request->id != '') {
+            $validator = Validator::make( $request->all(), array(
+                        'name' => 'required|max:255',
+                        'picture' => 'mimes:jpeg,jpg,bmp,png',
+                    )
+                );
+        } else {
+            $validator = Validator::make( $request->all(), array(
+                    'name' => 'required|max:255',
+                    'picture' => 'required|mimes:jpeg,jpg,bmp,png',
+                )
+            );
+        
+        }
+       
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+                $category = Category::find($request->id);
+
+                $message = tr('admin_not_category');
+
+                if($request->hasFile('picture')) {
+                    delete_picture($category->picture);
+                }
+
+            } else {
+                $message = tr('admin_add_category');
+                //Add New User
+                $category = new Category;
+
+                $category->status = DEFAULT_FALSE;
+                $category->is_approved = DEFAULT_FALSE;
+                $category->created_by = MODERATOR;
+
+            }
+
+            $category->name = $request->has('name') ? $request->name : '';
+            $category->is_series = $request->has('is_series') ? $request->is_series : 0;
+        
+            if($request->hasFile('picture') && $request->file('picture')->isValid()) {
+                $category->picture = Helper::normal_upload_picture($request->file('picture'));
+            }
+
+            $category->save();
+
+            if($category) {
+                return back()->with('flash_success', $message);
+            } else {
+                return back()->with('flash_error', Helper::tr('admin_not_error'));
+            }
+
+        }
+    
+    }
+
+    public function delete_category(Request $request) {
+
+        if($user = Moderator::find($request->id)) {
+            $user = Moderator::find($request->id)->delete();
+        }
+        if($user) {
+            return back()->with('flash_success',Helper::tr('admin_not_moderator_del'));
+        } else {
+            return back()->with('flash_error',Helper::tr('admin_not_error'));
+        }
+    }
+
+
+    public function sub_categories($category_id) {
+
+        $category = Category::find($category_id);
+
+        $sub_categories = SubCategory::where('category_id' , $category_id)
+                        ->select(
+                                'sub_categories.id as id',
+                                'sub_categories.name as sub_category_name',
+                                'sub_categories.description',
+                                'sub_categories.is_approved',
+                                'sub_categories.created_by'
+                                )
+                        ->orderBy('sub_categories.created_at', 'desc')
+                        ->get();
+
+        return view('moderator.sub-categories')->with('category' , $category)->with('data' , $sub_categories)->withPage('categories')->with('sub_page','view-categories');
+    }
+
+    public function add_sub_category($category_id) {
+
+        $category = Category::find($category_id);
+    
+        return view('moderator.add-sub-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'add-category');
+    }
+
+    public function edit_sub_category(Request $request) {
+
+        $category = Category::find($request->category_id);
+
+        $sub_category = SubCategory::find($request->sub_category_id);
+
+        $sub_category_images = SubCategoryImage::where('sub_category_id' , $request->sub_category_id)
+                                    ->orderBy('position' , 'ASC')->get();
+
+        $genres = Genre::where('sub_category_id' , $request->sub_category_id)
+                        ->orderBy('position' , 'asc')
+                        ->get();
+
+        return view('moderator.edit-sub-category')
+                ->with('category' , $category)
+                ->with('sub_category' , $sub_category)
+                ->with('sub_category_images' , $sub_category_images)
+                ->with('genres' , $genres)
+                ->with('page' ,'categories')
+                ->with('sub_page' ,'');
+    }
+
+    public function add_sub_category_process(Request $request) {
+
+        if($request->id != '') {
+            $validator = Validator::make( $request->all(), array(
+                        'category_id' => 'required|integer|exists:categories,id',
+                        'id' => 'required|integer|exists:sub_categories,id',
+                        'name' => 'required|max:255',
+                        'picture1' => 'mimes:jpeg,jpg,bmp,png',
+                        'picture2' => 'mimes:jpeg,jpg,bmp,png',
+                        'picture3' => 'mimes:jpeg,jpg,bmp,png',
+                    )
+                );
+        } else {
+            $validator = Validator::make( $request->all(), array(
+                    'name' => 'required|max:255',
+                    'description' => 'required|max:255',
+                    'picture1' => 'required|mimes:jpeg,jpg,bmp,png',
+                    'picture2' => 'required|mimes:jpeg,jpg,bmp,png',
+                    'picture3' => 'required|mimes:jpeg,jpg,bmp,png',
+                )
+            );
+        
+        }
+       
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+
+                $sub_category = SubCategory::find($request->id);
+
+                $message = tr('admin_not_sub_category');
+
+                if($request->hasFile('picture1')) {
+                    delete_picture($request->file('picture1'));
+                }
+
+                if($request->hasFile('picture2')) {
+                    delete_picture($request->file('picture2'));
+                }
+
+                if($request->hasFile('picture3')) {
+                    delete_picture($request->file('picture3'));
+                }
+            } else {
+                $message = tr('admin_add_sub_category');
+                //Add New User
+                $sub_category = new SubCategory;
+                $sub_category->status = DEFAULT_FALSE;
+                $sub_category->is_approved = DEFAULT_FALSE;
+                $sub_category->created_by = MODERATOR;
+            }
+
+            $sub_category->category_id = $request->has('category_id') ? $request->category_id : '';
+            
+            if($request->has('name')) {
+                $sub_category->name = $request->name;
+            }
+
+            if($request->has('description')) {
+                $sub_category->description =  $request->description;   
+            }
+
+            $sub_category->save(); // Otherwise it will save empty values
+
+            if($request->has('genre')) {
+
+                foreach ($request->genre as $key => $genres) {
+                    $genre = new Genre;
+                    $genre->category_id = $request->category_id;
+                    $genre->sub_category_id = $sub_category->id;
+                    $genre->name = $genres;
+                    $genre->status = DEFAULT_FALSE;
+                    $genre->is_approved = DEFAULT_FALSE;
+                    $genre->created_by = MODERATOR;
+                    $genre->position = $key+1;
+                    $genre->save();
+                }
+            }
+            
+            if($request->hasFile('picture1')) {
+                sub_category_image($request->file('picture1') , $sub_category->id,1);
+            }
+
+            if($request->hasFile('picture2')) {
+                sub_category_image($request->file('picture2'), $sub_category->id , 2);
+            }
+
+            if($request->hasFile('picture3')) {
+                sub_category_image($request->file('picture3'), $sub_category->id , 3);
+            }
+
+            if($sub_category) {
+                return back()->with('flash_success', $message);
+            } else {
+                return back()->with('flash_error', Helper::tr('admin_not_error'));
+            }
+
+        }
+    
+    }
+
+    public function delete_sub_category(Request $request) {
+
+        if($user = Moderator::find($request->id)) {
+            $user = Moderator::find($request->id)->delete();
+        }
+        if($user) {
+            return back()->with('flash_success',Helper::tr('admin_not_moderator_del'));
+        } else {
+            return back()->with('flash_error',Helper::tr('admin_not_error'));
+        }
+    }
+
+    public function save_genre(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                    'category_id' => 'required|integer|exists:categories,id',
+                    'id' => 'required|integer|exists:sub_categories,id',
+                    'genre' => 'required|max:255',
+                )
+            );
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+            // To order the position of the genres
+            $position = 1;
+
+            if($check_position = Genre::where('sub_category_id' , $request->id)->orderBy('position' , 'desc')->first()) {
+                $position = $check_position->position +1;
+            } 
+
+            $genre = new Genre;
+            $genre->category_id = $request->category_id;
+            $genre->sub_category_id = $request->id;
+            $genre->name = $request->genre;
+            $genre->position = $position;
+            $genre->status = DEFAULT_FALSE;
+            $genre->is_approved = DEFAULT_FALSE;
+            $genre->created_by = MODERATOR;
+            $genre->save();
+
+            $message = tr('admin_add_genre');
+
+            if($genre) {
+                return back()->with('flash_success', $message);
+            } else {
+                return back()->with('flash_error', Helper::tr('admin_not_error'));
+            }
+        }
+    
+    }
+
+    public function delete_genre(Request $request) {
+        
+    }
+
+    public function videos(Request $request) {
+
+        $videos = AdminVideo::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
+                   ->select('admin_videos.id as video_id' ,'admin_videos.title' , 
+                             'admin_videos.description' , 'admin_videos.ratings' , 
+                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
+                             'admin_videos.default_image',
+
+                             'admin_videos.category_id as category_id',
+                             'admin_videos.sub_category_id',
+                             'admin_videos.genre_id',
+
+                             'admin_videos.status','admin_videos.uploaded_by',
+                             'admin_videos.edited_by','admin_videos.is_approved',
+
+                             'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
+                             'genres.name as genre_name')
+                    ->orderBy('admin_videos.created_at' , 'desc')
+                    ->get();
+
+        return view('moderator.videos')->with('videos' , $videos)
+                    ->withPage('videos')
+                    ->with('sub_page','view-videos');
+   
+    }
+
+
+
+    public function add_video(Request $request) {
+
+    $categories = Category::orderBy('name' , 'asc')->get();
+
+     return view('moderator.video_upload')
+            ->with('categories' , $categories)
+            ->with('page' ,'videos')
+            ->with('sub_page' ,'add-video');
+
+    }
+
+    public function edit_video(Request $request) {
+
+        $categories = Category::orderBy('name' , 'asc')->get();
+
+        $video = AdminVideo::where('admin_videos.id' , $request->id)
+                    ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
+                    ->select('admin_videos.id as admin_video_id' ,'admin_videos.title' , 
+                             'admin_videos.description' , 'admin_videos.ratings' , 
+                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
+                             'admin_videos.video','admin_videos.trailer_video',
+                             'admin_videos.video_type','admin_videos.video_upload_type',
+                             'admin_videos.publish_time','admin_videos.duration',
+
+                             'admin_videos.category_id as category_id',
+                             'admin_videos.sub_category_id',
+                             'admin_videos.genre_id',
+
+                             'categories.name as category_name' , 'categories.is_series',
+                             'sub_categories.name as sub_category_name' ,
+                             'genres.name as genre_name')
+                    ->orderBy('admin_videos.created_at' , 'desc')
+                    ->first();
+
+         return view('moderator.edit-video')
+                ->with('categories' , $categories)
+                ->with('video' ,$video)
+                ->with('page' ,'videos')
+                ->with('sub_page' ,'add-video');
+    }
+
+    public function add_video_process(Request $request) {
+
+        if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
+
+            $video_validator = Validator::make( $request->all(), array(
+                        'video'     => 'required|mimes:mkv,mp4,qt',
+                        'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                        )
+                    );
+
+            $video_link = $request->file('video');
+            $trailer_video = $request->file('trailer_video');
+
+        } else {
+
+            $video_validator = Validator::make( $request->all(), array(
+                        'other_video'     => 'required',
+                        'other_trailer_video'  => 'required',
+                        )
+                    );
+
+            $video_link = $request->other_video;
+            $trailer_video = $request->other_trailer_video;
+
+        }
+
+        if($video_validator) {
+
+             if($video_validator->fails()) {
+                $error_messages = implode(',', $video_validator->messages()->all());
+                return back()->with('flash_errors', $error_messages);
+
+            }
+        }
+
+        $validator = Validator::make( $request->all(), array(
+                    'title'         => 'required|max:255',
+                    'description'   => 'required',
+                    'category_id'   => 'required|integer|exists:categories,id',
+                    'sub_category_id' => 'required|integer|exists:sub_categories,id,category_id,'.$request->category_id,
+                    'genre'     => 'exists:genres,id,sub_category_id,'.$request->sub_category_id,
+                    'default_image' => 'required|mimes:jpeg,jpg,bmp,png',
+                    'other_image1' => 'required|mimes:jpeg,jpg,bmp,png',
+                    'other_image2' => 'required|mimes:jpeg,jpg,bmp,png',
+                    'ratings' => 'required',
+                    'reviews' => 'required',
+                    'duration' => 'required',
+                    )
+                );
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $video = new AdminVideo;
+            $video->title = $request->title;
+            $video->description = $request->description;
+            $video->category_id = $request->category_id;
+            $video->sub_category_id = $request->sub_category_id;
+            $video->genre_id = $request->has('genre_id') ? $request->genre_id : 0;
+            if($request->has('duration')) {
+                $video->duration = $request->duration;
+            }
+
+            if($request->video_type == VIDEO_TYPE_UPLOAD) {
+
+                if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
+
+                    $video->video = Helper::upload_picture($video_link);
+                    $video->trailer_video = Helper::upload_picture($trailer_video); 
+
+                } else {
+                    $video->video = Helper::normal_upload_picture($video_link);
+                    $video->trailer_video = Helper::normal_upload_picture($trailer_video);  
+                }                
+
+            } elseif($request->video_type == VIDEO_TYPE_YOUTUBE) {
+
+                $video->video = get_youtube_embed_link($video_link);
+                $video->trailer_video = get_youtube_embed_link($trailer_video);
+            } else {
+
+                $video->video = $video;
+                $video->trailer_video = $trailer_video;
+            }
+
+            $video->video_type = $request->video_type;
+
+            $video->video_upload_type = $request->video_upload_type;
+
+            // $video->publish_time = date('Y-m-d H:i:s', strtotime($request->publish_time));
+            
+            $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
+
+            $video->ratings = $request->ratings;
+            $video->reviews = $request->reviews;
+
+            if(strtotime($request->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
+                $video->status = DEFAULT_TRUE;
+            } else {
+                $video->status = DEFAULT_FALSE;
+            }
+            
+            $video->is_approved = DEFAULT_FALSE;
+            
+            $video->uploaded_by = MODERATOR;
+
+            $video->save();
+
+            $params = array();
+
+            // $client = ClientBuilder::create()->build();
+
+            // $params['body']  = array(
+            //   'id' => $video->id,
+            //   'title' => $video->title,
+            //   'description' => $video->description,
+            // );
+
+            // $params['index'] = 'live-streaming';
+            // $params['type']  = 'live-streaming';
+            // $params['id'] = $video->id;
+
+            // $result = $client->index($params);
+
+            // Log::info("Result Elasticsearch ".print_r($result ,true));
+
+            if($video) {
+
+                Helper::upload_video_image($request->file('other_image1'),$video->id,2);
+
+                Helper::upload_video_image($request->file('other_image2'),$video->id,3);
+
+                return redirect(route('admin.videos'));
+
+            } else {
+                return back()->with('flash_error', tr('admin_not_error'));
+            }
+        }
+    
+    }
+
+    public function edit_video_process(Request $request) {
+
+        $video = AdminVideo::find($request->id);
+
+        $video_validator = array();
+
+        if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
+
+            $video_validator = Validator::make( $request->all(), array(
+                        'video'     => 'required|mimes:mkv,mp4,qt',
+                        'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                        )
+                    );
+
+            $video_link = $request->hasFile('video') ? $request->file('video') : array();
+
+            $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+
+        } elseif($request->has('video_type') && in_array($request->video_type , array(VIDEO_TYPE_YOUTUBE,VIDEO_TYPE_OTHER))) {
+
+            $video_validator = Validator::make( $request->all(), array(
+                        'other_video'     => 'required',
+                        'other_trailer_video'  => 'required',
+                        )
+                    );
+
+            $video_link = $request->has('other_video') ? $request->other_video : array();
+
+            $trailer_video = $request->has('other_trailer_video') ? $request->other_trailer_video : array();
+        }
+
+        if($video_validator) {
+
+             if($video_validator->fails()) {
+                $error_messages = implode(',', $video_validator->messages()->all());
+                return back()->with('flash_errors', $error_messages);
+
+            }
+        }
+
+        $validator = Validator::make( $request->all(), array(
+                    'id' => 'required|integer|exists:admin_videos,id',
+                    'title'         => 'max:255',
+                    'description'   => '',
+                    'category_id'   => 'required|integer|exists:categories,id',
+                    'sub_category_id' => 'required|integer|exists:sub_categories,id,category_id,'.$request->category_id,
+                    'genre'     => 'exists:genres,id,sub_category_id,'.$request->sub_category_id,
+                    'default_image' => 'mimes:jpeg,jpg,bmp,png',
+                    'other_image1' => 'mimes:jpeg,jpg,bmp,png',
+                    'other_image2' => 'mimes:jpeg,jpg,bmp,png',
+                    'ratings' => 'required',
+                    'reviews' => 'required',
+                    )
+                );
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $video->title = $request->has('title') ? $request->title : $video->title;
+
+            $video->description = $request->has('description') ? $request->description : $video->description;
+
+            $video->category_id = $request->has('category_id') ? $request->category_id : $video->category_id;
+
+            $video->sub_category_id = $request->has('sub_category_id') ? $request->sub_category_id : $video->sub_category_id;
+
+            $video->genre_id = $request->has('genre_id') ? $request->genre_id : $video->genre_id;
+
+            if($request->has('duration')) {
+                $video->duration = $request->duration;
+            }
+
+            if($request->video_type == VIDEO_TYPE_UPLOAD && $video_link && $trailer_video) {
+
+                // Check Previous Video Upload Type, to delete the videos
+
+                if($video->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
+                    Helper::s3_delete_picture($video->video);   
+                    Helper::s3_delete_picture($video->trailer_video);  
+                } else {
+                    Helper::delete_picture($video->video);
+                    Helper::delete_picture($video->trailer_video);
+                }
+
+                if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
+                    $video->video = Helper::s3_upload_picture($video_link);
+                    $video->trailer_video = Helper::s3_upload_picture($trailer_video); 
+
+                } else {
+                    $video->video = Helper::normal_upload_picture($video_link);
+                    $video->trailer_video = Helper::normal_upload_picture($trailer_video);  
+                }                
+
+            } elseif($request->video_type == VIDEO_TYPE_YOUTUBE && $video_link && $trailer_video) {
+
+                $video->video = get_youtube_embed_link($video_link);
+                $video->trailer_video = get_youtube_embed_link($trailer_video);
+            } else {
+                $video->video = $video_link ? $video_link : $video->video;
+                $video->trailer_video = $trailer_video ? $trailer_video : $video->trailer_video;
+            }
+
+            if($request->hasFile('default_image')) {
+                Helper::delete_picture($video->default_image);
+                $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
+            }
+            
+            $video->ratings = $request->has('ratings') ? $request->ratings : $video->ratings;
+
+            $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;
+
+            $video->edited_by = MODERATOR;
+
+            $video->save();
+
+            if($video) {
+
+                if($request->hasFile('other_image1')) {
+                    Helper::upload_video_image($request->file('other_image1'),$video->id,2);  
+                }
+
+                if($request->hasFile('other_image2')) {
+                   Helper::upload_video_image($request->file('other_image2'),$video->id,3); 
+                }
+
+                return redirect(route('moderator.videos'));
+
+            } else {
+                return back()->with('flash_error', tr('admin_not_error'));
+            }
+        }
+    
+    }
+
+    public function view_video(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+                'id' => 'required|exists:admin_videos,id'
+            ]);
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+        } else {
+            $videos = AdminVideo::where('admin_videos.id' , $request->id)
+                    ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
+                    ->select('admin_videos.id as video_id' ,'admin_videos.title' , 
+                             'admin_videos.description' , 'admin_videos.ratings' , 
+                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
+                             'admin_videos.video','admin_videos.trailer_video',
+                             'admin_videos.default_image',
+
+                             'admin_videos.category_id as category_id',
+                             'admin_videos.sub_category_id',
+                             'admin_videos.genre_id',
+
+                             'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
+                             'genres.name as genre_name')
+                    ->orderBy('admin_videos.created_at' , 'desc')
+                    ->first();
+
+            $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)
+                                ->orderBy('is_default' , 'desc')
+                                ->get();
+
+        return view('moderator.view-video')->with('video' , $videos)
+                    ->with('video_images' , $admin_video_images)
+                    ->withPage('videos')
+                    ->with('sub_page','view-videos');
+        }
+    }
+
+
+}
