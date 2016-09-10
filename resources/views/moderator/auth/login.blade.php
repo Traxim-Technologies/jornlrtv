@@ -11,7 +11,7 @@
             {{ csrf_field() }}
 
             <div class="text-center mb15">
-                <img class="adm-log-logo" src="{{Setting::get('site_icon', asset('logo.png') )}}" />
+                <!-- <img class="adm-log-logo" src="{{Setting::get('site_icon', asset('logo.png') )}}" /> -->
             </div>
 
             <p class="text-center mb30"></p>
