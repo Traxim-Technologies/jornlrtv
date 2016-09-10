@@ -34,6 +34,9 @@ return array(
 	'paypal_client_id' => 'Paypal Client ID',
 	'paypal_secret' => 'Paypal Secret Key',
 	'expiry_days' => 'Expiry Days',
+	'upload_image' => 'Upload Image',
+	'edit_profile' => 'Update Profile',
+	'signup_via_fb' => 'Login via Facebook',
 
 	// Theme
 	'select_theme' => 'Activate',
