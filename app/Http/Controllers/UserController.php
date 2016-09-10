@@ -119,9 +119,11 @@ class UserController extends Controller
      */
     public function profile()
     {
+        $categories = get_categories();
         return view('user.profile')
                     ->with('page' , 'profile')
-                    ->with('subPage' , 'user-profile');
+                    ->with('subPage' , 'user-profile')
+                    ->with('categories' , $categories);
     }
 
     /**
@@ -131,8 +133,11 @@ class UserController extends Controller
      */
     public function update_profile()
     {
-        return view('user.edit-profile')->with('page' , 'profile')
-                    ->with('subPage' , 'user-update-profile');
+        $categories = get_categories();
+        return view('user.edit-profile')
+                    ->with('page' , 'profile')
+                    ->with('subPage' , 'user-update-profile')
+                    ->with('categories' , $categories);
     }
 
     /**
@@ -238,9 +243,11 @@ class UserController extends Controller
     public function history(Request $request) {
 
         $histories = Helper::watch_list(\Auth::user()->id,WEB);
+        $categories = get_categories();
 
         return view('user.history')
                         ->with('page' , 'profile')
+                        ->with('categories' , $categories)
                         ->with('subPage' , 'user-history')
                         ->with('histories' , $histories);
     }
@@ -294,10 +301,12 @@ class UserController extends Controller
     public function wishlist(Request $request) {
         
         $videos = Helper::wishlist(\Auth::user()->id,WEB);
+        $categories = get_categories();
 
         return view('user.wishlist')
                     ->with('page' , 'profile')
                     ->with('subPage' , 'user-wishlist')
+                    ->with('categories' , $categories)
                     ->with('videos' , $videos);
     }
 
@@ -441,8 +450,10 @@ class UserController extends Controller
     public function trending()
     {
         $trending = Helper::trending();
+        $categories = get_categories();
 
         return view('user.trending')->with('page', 'trending')
-                                    ->with('videos',$trending);
+                                    ->with('videos',$trending)
+                                    ->with('categories',$categories);
     }
 }
