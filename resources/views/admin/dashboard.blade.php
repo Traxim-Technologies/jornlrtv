@@ -284,7 +284,7 @@
                         @foreach($recent_users as $user)
 
                             <li>
-                                <img style="width:60px;height:60px" src="{{$user->picture}}" alt="User Image">
+                                <img style="width:60px;height:60px" src="@if($user->picture) {{$user->picture}} @else {{asset('placeholder.png')}} @endif" alt="User Image">
                                 <a class="users-list-name" href="#">{{$user->name}}</a>
                                 <span class="users-list-date">{{$user->created_at->diffForHumans()}}</span>
                             </li>

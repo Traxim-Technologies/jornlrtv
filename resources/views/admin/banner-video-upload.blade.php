@@ -1,21 +1,19 @@
-@extends('layouts.moderator')
+@extends('layouts.admin')
 
-@section('title', tr('edit_video'))
+@section('title', tr('add_banner_videos'))
 
-@section('content-header', tr('edit_video'))
+@section('content-header', tr('add_banner_videos'))
 
 @section('styles')
 
     <link rel="stylesheet" href="{{asset('admin-css/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">
 
     <link rel="stylesheet" href="{{asset('admin-css/plugins/iCheck/all.css')}}">
-
 @endsection
 
 @section('breadcrumb')
-    <li><a href="{{route('moderator.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('moderator.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
-    <li class="active"> {{tr('edit_video')}}</li>
+    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+    <li class="active"><i class="fa fa-university"></i> {{tr('add_video')}}</li>
 @endsection 
 
 @section('content')
@@ -31,22 +29,20 @@
                 <div class="box-header">
                 </div>
 
-                <form class="form-horizontal" action="{{route('moderator.save.edit.video')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form class="form-horizontal" id="video-upload" action="{{route('admin.save.video')}}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
                         <div class="col-md-6">
 
-                            <input type="hidden" value="{{$video->admin_video_id}}" name="id">
-
                             <div class="form-group">
                                 <label for="title" class="">{{tr('title')}}</label>
-                                <input type="text" required value="{{$video->title}}" class="form-control" id="title" name="title" placeholder="{{tr('title')}}">
+                                <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('title')}}">
                             </div>
 
                             <div class="form-group">
                                 <label for="description" class="">{{tr('description')}}</label>
-                                <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description">{{$video->description}}</textarea>
+                                <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description"></textarea>
                             </div>
                             
                             <div class="form-group">
@@ -58,7 +54,7 @@
 
                                     @if(count($categories) > 0)
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}" @if($video->category_id == $category->id) selected @endif>{{$category->name}}</option>
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
                                         @endforeach
                                     @endif
 
@@ -70,88 +66,83 @@
 
                                 <label for="sub_category" class="">{{tr('select_sub_category')}}</label>
 
-                                <select id="sub_category" required name="sub_category_id" class="form-control" @if(!$video->sub_category_id) disabled @endif>
-                                    <option value="{{$video->sub_category_id}}">{{$video->sub_category_name}}</option>
+                                <select id="sub_category" required name="sub_category_id" class="form-control" disabled>
+                                    <option value="">{{tr('select_sub_category')}}</option>
                                 </select>
+                            
                             </div>
 
                             <div class="form-group">
 
                                 <label for="genre" class="">{{tr('select_genre')}}</label>
 
-                                <select id="genre" name="genre_id" class="form-control" @if(!$video->is_series) disabled @endif>
-                                    @if($video->genre_id)
-                                        <option value="{{$video->genre_id}}">{{$video->genre_name}}</option>
-                                    @else
-                                        <option value="">{{tr('select_genre')}}</option>
-                                    @endif
+                                <select id="genre" name="genre_id" class="form-control" disabled>
+                                    <option value="">{{tr('select_genre')}}</option>
                                 </select>
                             </div>
+
+                            
 
                             <div class="form-group">
                                 <label for="ratings" class="">{{tr('ratings')}}</label>
                                 <span class="starRating">
-                                    <input id="rating5" type="radio" name="ratings" value="5" @if($video->ratings == 5) checked @endif>
+                                    <input id="rating5" type="radio" name="ratings" value="5">
                                     <label for="rating5">5</label>
 
-                                    <input id="rating4" type="radio" name="ratings" value="4" @if($video->ratings == 4) checked @endif>
+                                    <input id="rating4" type="radio" name="ratings" value="4">
                                     <label for="rating4">4</label>
 
-                                    <input id="rating3" type="radio" name="ratings" value="3" @if($video->ratings == 3) checked @endif>
+                                    <input id="rating3" type="radio" name="ratings" value="3">
                                     <label for="rating3">3</label>
 
-                                    <input id="rating2" type="radio" name="ratings" value="2" @if($video->ratings == 2) checked @endif>
+                                    <input id="rating2" type="radio" name="ratings" value="2">
                                     <label for="rating2">2</label>
 
-                                    <input id="rating1" type="radio" name="ratings" value="1" @if($video->ratings == 1) checked @endif>
+                                    <input id="rating1" type="radio" name="ratings" value="1">
                                     <label for="rating1">1</label>
                                 </span>
                             </div>
 
                             <div class="form-group">
                                 <label for="reviews" class="">{{tr('reviews')}}</label>
-                                <textarea  style="overflow:auto;resize:none" class="form-control" rows="4" cols="50" id="reviews" name="reviews">{{$video->reviews}}</textarea>
+                                <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews" name="reviews"></textarea>
                             </div>
-
-                        </div> 
+                        </div>
 
                         <div class="col-md-1">
                         </div>
 
                         <div class="col-md-5">
 
+                            <input type="hidden"  name="is_banner" value="1">
+
                             <div class="form-group">
-                                <small style="color:brown">Note : Check the view video for video images.</small> <br>
-                                <label for="default_image" class="">{{tr('default_image')}}</label> 
-                                <input type="file" class="form-control" id="default_image" name="default_image" placeholder="{{tr('default_image')}}">
+                                <label for="banner_image" class="">{{tr('banner_image')}}</label> <strong style="color:brown"> Note : Upload rectangle images 4:3 Ex: 400 * 300</strong>
+                                <input type="file" required class="form-control" id="banner_image" name="banner_image" placeholder="{{tr('banner_image')}}">
                             </div>
 
-                            @if($video->is_banner)
-
-                                <div class="form-group">
-                                    <label for="banner_image" class="">{{tr('banner_image')}}</label> 
-                                    <input type="file" class="form-control" id="banner_image" name="banner_image" placeholder="{{tr('banner_image')}}">
-                                </div>
-
-                            @endif
+                            <div class="form-group">
+                                <label for="default_image" class="">{{tr('default_image')}}</label>
+                                <input type="file" required class="form-control" id="default_image" name="default_image" placeholder="{{tr('default_image')}}">
+                            </div>
 
                             <div class="form-group">
                                 <label for="other_image1" class="">{{tr('other_image1')}}</label>
-                                <input type="file" class="form-control" id="other_image1" name="other_image1" placeholder="{{tr('other_image1')}}">
+                                <input type="file" required class="form-control" id="other_image1" name="other_image1" placeholder="{{tr('other_image1')}}">
                             </div>
 
                             <div class="form-group">
                                 <label for="other_image2" class="">{{tr('other_image2')}}</label>
-                                <input type="file" class="form-control" id="other_image2" name="other_image2" placeholder="{{tr('other_image2')}}">
+                                <input type="file" required class="form-control" id="other_image2" name="other_image2" placeholder="{{tr('other_image2')}}">
                             </div>
 
-                            <!-- <div class="form-group">
+                            <div class="form-group">
 
                                 <label for="datepicker" class="">{{tr('publish_time')}}</label>
 
-                                <input type="text" value="{{$video->publish_time}}" name="publish_time" placeholder="Select the Publish Time i.e YYYY-MM-DD" class="form-control pull-right" id="datepicker">
+                                <input type="text" name="publish_time" placeholder="Select the Publish Time i.e YYYY-MM-DD" class="form-control pull-right" id="datepicker">
                                 
-                            </div> -->
+                            </div>
 
                             <div class="form-group">
                                 <label>{{tr('duration')}} : </label><small> Note: Format must be HH:MM:SS</small>
@@ -160,7 +151,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input value="{{$video->duration}}" required type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask>
+                                    <input required type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask>
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -170,17 +161,17 @@
                                 <label for="video_type" class="">{{tr('video_type')}}</label></br>
 
                                 <label style="margin-top:10px" id="video_upload">
-                                    <input required type="radio" name="video_type" value="1" class="flat-red" @if($video->video_type == 1) checked @endif>
+                                    <input required type="radio" name="video_type" value="1" class="flat-red" checked>
                                     {{tr('video_upload_link')}}
                                 </label>
 
                                 <label style="margin-top:10px" id="youtube">
-                                    <input required type="radio" name="video_type" class="flat-red"  value="2" @if($video->video_type == 2) checked @endif>
+                                    <input required type="radio" name="video_type" class="flat-red"  value="2">
                                     {{tr('youtube')}}
                                 </label>
 
                                 <label style="margin-top:10px" id="other_link">
-                                    <input required type="radio" name="video_type" value="3" class="flat-red" @if($video->video_type == 3) checked @endif>
+                                    <input required type="radio" name="video_type" value="3" class="flat-red">
                                     {{tr('other_link')}}
                                 </label>
 
@@ -202,13 +193,15 @@
 
                                     <label for="video_upload_type" class="">{{tr('video_upload_type')}}</label></br>
 
-                                    <label style="margin-top:10px" >
-                                        <input type="radio"  @if(!check_s3_configure()) disabled @endif name="video_upload_type" value="1" class="flat-red" @if($video->video_upload_type == 1) checked @endif>
-                                        {{tr('s3')}}
-                                    </label>
+                                    @if(check_s3_configure())
+                                        <label style="margin-top:10px" >
+                                            <input type="radio" required name="video_upload_type" value="1" class="flat-red" checked>
+                                            {{tr('s3')}}
+                                        </label>
+                                    @endif
 
                                     <label style="margin-top:10px">
-                                        <input type="radio" name="video_upload_type" class="flat-red"  value="2" @if($video->video_upload_type == 2) checked @endif>
+                                        <input type="radio" required name="video_upload_type" class="flat-red"  value="2">
                                         {{tr('direct')}}
                                     </label>
 
@@ -220,12 +213,12 @@
 
                                 <div class="form-group">
                                     <label for="other_video" class="">{{tr('video')}}</label>
-                                    <input type="text" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}" value="{{$video->video}}">
+                                    <input type="text" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="other_trailer_video" class="">{{tr('trailer_video')}}</label>
-                                    <input type="text" class="form-control" id="other_trailer_video" name="other_trailer_video" placeholder="{{tr('trailer_video')}}" value="{{$video->trailer_video}}">
+                                    <input type="text" class="form-control" id="other_trailer_video" name="other_trailer_video" placeholder="{{tr('trailer_video')}}">
                                 </div>
 
                             </div>
@@ -236,13 +229,8 @@
 
                     <div class="box-footer">
                         <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
-
                         <button type="submit" class="btn btn-success pull-right">{{tr('add_video')}}</button>
-
-                        <a target="_blank" style="margin-right:50px" href="{{route('moderator.view.video' , array('id' => $video->admin_video_id))}}" class="btn btn-primary pull-right">{{tr('view_video')}}</a>
-
                     </div>
-
                 </form>
             
             </div>
@@ -258,6 +246,10 @@
     <script type="text/javascript">
 
         $(function () {
+
+            $('form').submit(function () {
+                window.onbeforeunload = null;
+            });
 
             window.onbeforeunload = function() {
                   return "Data will be lost if you leave the page, are you sure?";
@@ -318,6 +310,7 @@
         });
     </script>
 
+
     <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/moment.min.js')}}"></script> 
 
     <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script> 
@@ -334,8 +327,7 @@
 
             $('#datepicker').datetimepicker({
                 minTime: "00:00:00",
-                maxDate: moment(),
-                defaultDate: "{{$video->publish_time}}",
+                minDate: moment(),
             });
 
             $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
@@ -343,14 +335,8 @@
               radioClass: 'iradio_flat-green'
             });
 
-            $('#upload').hide();
+            $('#upload').show();
             $('#others').hide();
-
-            @if($video->video_type == 1)
-                $('#upload').show();
-            @else
-                $('#others').show();
-            @endif
 
             $("#video_upload").click(function(){
                 console.log("video upload");
@@ -368,7 +354,7 @@
                 $("#upload").hide();
             });
         });
-    </script>  
+    </script>   
 @endsection
 
 

@@ -94,6 +94,31 @@
 
             </div>
 
+            @if($video->banner_image)
+
+                <div class="box box-widget">
+
+                    <div class="box-header with-border">
+                        <div class="user-block">
+                            <span style="margin-left:0px" class="username"><a href="#">{{tr('banner_image')}}</a></span>
+                        </div>
+
+                        <div class="box-tools">
+
+                            <button data-widget="collapse" class="btn btn-box-tool" type="button">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="box-body">
+                        <img alt="Photo" src="{{$video->banner_image}}" style="width:100%;height:150px;">
+                    </div>
+                </div>
+
+            @endif
+
         </div>
 
         <div class="col-lg-5">

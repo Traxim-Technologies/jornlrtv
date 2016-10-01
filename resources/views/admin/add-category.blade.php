@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.categories')}}"><i class="fa fa-users"></i> {{tr('categories')}}</a></li>
+    <li><a href="{{route('admin.categories')}}"><i class="fa fa-suitcase"></i> {{tr('categories')}}</a></li>
     <li class="active">{{tr('add_category')}}</li>
 @endsection
 

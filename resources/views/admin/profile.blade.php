@@ -22,7 +22,7 @@
 
                 <div class="box-body box-profile">
 
-                    <img class="profile-user-img img-responsive img-circle" src="@if(Auth::guard('admin')->user()->picture) {{Auth::guard('admin')->user()->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" alt="User profile picture">
+                    <img class="profile-user-img img-responsive img-circle" src="@if(Auth::guard('admin')->user()->picture) {{Auth::guard('admin')->user()->picture}} @else {{asset('placeholder.png')}} @endif" alt="User profile picture">
 
                     <h3 class="profile-username text-center">{{Auth::guard('admin')->user()->name}}</h3>
 
@@ -116,10 +116,10 @@
 
                             <input type="hidden" name="id" value="{{Auth::guard('admin')->user()->id}}">
 
-                            @if(count(Auth::guard('admin')->user()->picture) > 0)
+                            @if(Auth::guard('admin')->user()->picture)
                                 <img style="height: 90px; margin-bottom: 15px; border-radius:2em;" src="{{Auth::guard('admin')->user()->picture}}">
                             @else
-                                <img style="height: 90px; margin-bottom: 15px; border-radius:2em;"  src="{{asset('logo.png')}}">
+                                <img style="margin-left: 15px;margin-bottom: 10px" class="profile-user-img img-responsive img-circle"  src="{{asset('placeholder.png')}}">
                             @endif
 
                             <div class="form-group">

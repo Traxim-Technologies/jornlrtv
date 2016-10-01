@@ -54,11 +54,6 @@
                             <p class="help-block">Please enter .png images only.</p>
                         </div>
 
-                        <div class="form-group">
-                            <label for="google_analytics">{{tr('google_analytics')}}</label>
-                            <textarea class="form-control" id="google_analytics" name="google_analytics">{{Setting::get('google_analytics')}}</textarea>
-                        </div> 
-
                   </div>
                   <!-- /.box-body -->
 
@@ -85,29 +80,24 @@
                         </div> 
 
                         <div class="form-group">
-                            <label for="browser_key">{{tr('browser_key')}}</label>
-                            <input type="text" value="{{ Setting::get('browser_key')}}" class="form-control" name="browser_key" id="browser_key" placeholder="Enter Browser Key">
-                        </div>                         
-
-                        <div class="form-group">
-                            <label for="s3_key">{{tr('s3_key')}}</label>
-                            <input type="text" value="{{ Setting::get('s3_key')}}" class="form-control" name="s3_key" id="s3_key" placeholder="Enter S3 Key">
+                            <label for="google_analytics">{{tr('google_analytics')}}</label>
+                            <textarea class="form-control" id="google_analytics" name="google_analytics">{{Setting::get('google_analytics')}}</textarea>
                         </div>  
 
                         <div class="form-group">
-                            <label for="s3_secret">{{tr('s3_secret')}}</label>
-                            <input type="text" value="{{ Setting::get('s3_secret')}}" class="form-control" name="s3_secret" id="s3_secret" placeholder="Enter S3 Secret">
-                        </div> 
+                            <label for="browser_key">{{tr('browser_key')}}</label>
+                            <input type="text" class="form-control" value="{{Setting::get('browser_key')  }}" name="browser_key" id="browser_key" placeholder="Browser Key">
+                        </div>
 
                         <div class="form-group">
-                            <label for="s3_region">{{tr('s3_region')}}</label>
-                            <input type="text" value="{{ Setting::get('s3_region')}}" class="form-control" name="s3_region" id="s3_region" placeholder="Enter S3 Region">
-                        </div> 
+                            <label for="amount">{{tr('amount')}}</label>
+                            <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{tr('amount')}}">
+                        </div>
 
                         <div class="form-group">
-                            <label for="s3_bucket">{{tr('s3_bucket')}}</label>
-                            <input type="text" value="{{ Setting::get('s3_bucket')}}" class="form-control" name="s3_bucket" id="s3_bucket" placeholder="Enter S3 Region">
-                        </div>                     
+                            <label for="expiry_days">{{tr('expiry_days')}}</label>
+                            <input type="text" class="form-control" value="{{Setting::get('expiry_days')  }}" name="expiry_days" id="expiry_days" placeholder="{{tr('expiry_days')}}">
+                        </div>                    
 
                   </div>
                   <!-- /.box-body -->

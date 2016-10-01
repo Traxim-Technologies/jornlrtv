@@ -188,13 +188,13 @@
 
                                     @if(check_s3_configure())
                                         <label style="margin-top:10px" >
-                                            <input type="radio" required name="video_upload_type" value="1" class="flat-red" checked>
+                                            <input type="radio" name="video_upload_type" value="1" class="flat-red" checked>
                                             {{tr('s3')}}
                                         </label>
                                     @endif
 
                                     <label style="margin-top:10px">
-                                        <input type="radio" required name="video_upload_type" class="flat-red"  value="2">
+                                        <input type="radio" name="video_upload_type" class="flat-red"  value="2">
                                         {{tr('direct')}}
                                     </label>
 
@@ -239,6 +239,10 @@
     <script type="text/javascript">
 
         $(function () {
+
+            $('form').submit(function () {
+                window.onbeforeunload = null;
+            });
 
             window.onbeforeunload = function() {
                   return "Data will be lost if you leave the page, are you sure?";

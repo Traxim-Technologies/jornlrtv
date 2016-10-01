@@ -120,11 +120,20 @@
 
                         <div class="col-md-5">
 
-                            <div class="form-group">
+                             <div class="form-group">
                                 <small style="color:brown">Note : Check the view video for video images.</small> <br>
                                 <label for="default_image" class="">{{tr('default_image')}}</label> 
                                 <input type="file" class="form-control" id="default_image" name="default_image" placeholder="{{tr('default_image')}}">
                             </div>
+
+                            @if($video->is_banner)
+
+                                <div class="form-group">
+                                    <label for="banner_image" class="">{{tr('banner_image')}}</label> 
+                                    <input type="file" class="form-control" id="banner_image" name="banner_image" placeholder="{{tr('banner_image')}}">
+                                </div>
+
+                            @endif
 
                             <div class="form-group">
                                 <label for="other_image1" class="">{{tr('other_image1')}}</label>
@@ -250,6 +259,10 @@
 
         $(function () {
 
+            $('form').submit(function () {
+                window.onbeforeunload = null;
+            });
+
             window.onbeforeunload = function() {
                   return "Data will be lost if you leave the page, are you sure?";
             };
@@ -305,6 +318,8 @@
                 });
 
             });
+
+
 
         });
     </script>

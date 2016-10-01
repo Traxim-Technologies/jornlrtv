@@ -4,14 +4,14 @@
 
 @section('content')
 
-    <div class="login-box-body" style="height:350px">
+    <div class="login-box-body" style="height:275px">
 
 
         <form class="form-layout" role="form" method="POST" action="{{ url('/admin/login') }}">
             {{ csrf_field() }}
 
             <div class="login-logo">
-               <a href="{{route('admin.login')}}"><b>{{Setting::get('site_name')}}</b></a>
+               <!-- <a href="{{route('admin.login')}}"><b>{{Setting::get('site_name')}}</b></a> -->
             </div>
 
             <p class="text-center mb30"></p>
@@ -49,9 +49,9 @@
                 </button>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                     <a style="margin-left:100px" class="btn btn-link" href="{{ url('/admin/password/reset') }}">Reset Password</a>
-            </div>
+            </div> -->
 
         </form>
 

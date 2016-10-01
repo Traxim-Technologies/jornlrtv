@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', tr('videos'))
+@section('title', tr('banner_videos'))
 
-@section('content-header', tr('videos'))
+@section('content-header', tr('banner_videos'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active"><i class="fa fa-video-camera"></i> {{tr('videos')}}</li>
+    <li class="active"><i class="fa fa-university"></i> {{tr('banner_videos')}}</li>
 @endsection
 
 @section('content')
@@ -16,6 +16,8 @@
 
 	<div class="row">
         <div class="col-xs-12">
+
+        <p class="text-justify" style="color:brown;"><b>Please Note : </b> You can able to add banner videos upto 6 only. If want to add new video, other than this 6 videos means change anyone of the video as "Normal video" and upload a banner video.</p>
           <div class="box">
             <div class="box-body">
 
@@ -35,6 +37,7 @@
 						      	<th>{{tr('slider_video')}}</th>
 						      @endif
 						      <th>{{tr('status')}}</th>
+						      <th>{{tr('change')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -67,6 +70,9 @@
 							       		@else 
 							       			<span class="label label-warning">{{tr('pending')}}</span>
 							       		@endif
+							      	</td>
+							      	<td>
+							      		<a class="btn btn-primary btn-xs" href="{{route('admin.change.video' ,$video->video_id )}}">Remove Banner</a>
 							      	</td>
 								    <td>
             							<ul class="admin-action btn btn-default">

@@ -33,7 +33,9 @@
 						      <th>{{tr('sub_category')}}</th>
 						      <th>{{tr('description')}}</th>
 						      <th>{{tr('status')}}</th>
-						      <th>{{tr('genres')}}</th>
+						      @if($category->is_series)
+						      	<th>{{tr('genres')}}</th>
+						      @endif
 						      <th>{{tr('image')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
@@ -58,11 +60,15 @@
 							       		@endif
 							       </td>
 
-							       <td>
-							      		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#genres{{$i}}">
-											{{tr('view_genres')}}
-										</button>
-							      	</td>
+							       	@if($category->is_series)
+
+								       <td>
+								      		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#genres{{$i}}">
+												{{tr('view_genres')}}
+											</button>
+								      	</td>
+
+							      	@endif
 							      	
 							      	<td>
 							      		<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#image{{$i}}">
@@ -79,7 +85,7 @@
 								                <ul class="dropdown-menu">
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.edit.sub_category' , array('category_id' => $category->id,'sub_category_id' => $sub_category->id))}}">{{tr('edit_sub_category')}}</a></li>
 								                  	
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('view_sub_category')}}</a></li>
+								                  	<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('view_sub_category')}}</a></li> -->
 							                  	
 
 								                  	<li class="divider" role="presentation"></li>
@@ -141,66 +147,71 @@
 								</div>
 
 								<!-- Modalfor sub category images -->
-
-								<div class="modal fade" id="genres{{$i}}" role="dialog">
-
-								    <div class="modal-dialog">
-								    	<!-- Modal content-->
-								    	<div class="modal-content">
-
-								        	<div class="modal-header">
-								          		<button type="button" class="close" data-dismiss="modal">&times;</button>
-								          		<h4 class="modal-title">{{$sub_category->sub_category_name}}</h4>
-								        	</div>
-
-								        	<div class="modal-body">
-
-								        		@if(count($sub_category->genres) > 0)
-
-									                <div class="row">
-
-									                	@foreach($sub_category->genres as $genre)
-									                		<div class="col-lg-12">
-										                		<div class="box">
-										                			<div class="box-header ui-sortable-handle" style="cursor: move;">
-
-														             	<h3 class="box-title">{{$genre->name}}</h3>
-														              	<!-- tools box -->
-														              	<div class="pull-right box-tools">
-														              		<!--@if($genre->is_approved)
-															              		<a title="Decline" href="{{route('admin.genre.approve' , array('id' => $genre->id , 'status' => 0))}}" class="btn btn-warning btn-sm">
-															                  		<i class="fa fa-times"></i>
-															                  	</a>
-																       		@else 
-																       			<a title="Approve" href="{{route('admin.genre.approve' , array('id' => $genre->id , 'status' => 1))}}" class="btn btn-success btn-sm">
-															                  		<i class="fa fa-check"></i>
-															                  	</a>
-																       		@endif -->
-
-														                	<a title="Delete" href="{{route('admin.delete.genre' , $genre->id)}}" class="btn btn-danger btn-sm">
-														                  		<i class="fa fa-trash"></i>
-														                  	</a>
-														              	</div>
-														              	<!-- /. tools -->
-															        </div>
-										                		</div>
-										                  	</div>
-									                    @endforeach
-									                
-									                </div>
-
-								                @endif
-
-								        	</div>
-
-								        	<div class="modal-footer">
-								          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								        	</div>
-								    	</div>
-								      
-									</div>
+								@if($category->is_series)
 								
-								</div>
+									<div class="modal fade" id="genres{{$i}}" role="dialog">
+
+									    <div class="modal-dialog">
+									    	<!-- Modal content-->
+									    	<div class="modal-content">
+
+									        	<div class="modal-header">
+									          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+									          		<h4 class="modal-title">{{$sub_category->sub_category_name}}</h4>
+									        	</div>
+
+									        	<div class="modal-body">
+
+									        		@if(count($sub_category->genres) > 0)
+
+										                <div class="row">
+
+										                	@foreach($sub_category->genres as $genre)
+										                		<div class="col-lg-12">
+											                		<div class="box">
+											                			<div class="box-header ui-sortable-handle" style="cursor: move;">
+
+															             	<h3 class="box-title">{{$genre->name}}</h3>
+															              	<!-- tools box -->
+															              	<div class="pull-right box-tools">
+															              		<!--@if($genre->is_approved)
+																              		<a title="Decline" href="{{route('admin.genre.approve' , array('id' => $genre->id , 'status' => 0))}}" class="btn btn-warning btn-sm">
+																                  		<i class="fa fa-times"></i>
+																                  	</a>
+																	       		@else 
+																	       			<a title="Approve" href="{{route('admin.genre.approve' , array('id' => $genre->id , 'status' => 1))}}" class="btn btn-success btn-sm">
+																                  		<i class="fa fa-check"></i>
+																                  	</a>
+																	       		@endif -->
+
+															                	<a title="Delete" href="{{route('admin.delete.genre' , $genre->id)}}" class="btn btn-danger btn-sm">
+															                  		<i class="fa fa-trash"></i>
+															                  	</a>
+															              	</div>
+															              	<!-- /. tools -->
+																        </div>
+											                		</div>
+											                  	</div>
+										                    @endforeach
+										                
+										                </div>
+
+										            @else
+										            	<p style="padding: 5px">No genres Availble right Now!!!</p>
+									                @endif
+
+									        	</div>
+
+									        	<div class="modal-footer">
+									          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									        	</div>
+									    	</div>
+									      
+										</div>
+									
+									</div>
+
+								@endif
 
 							    <script type="text/javascript">
 								    $(function () {
@@ -219,6 +230,7 @@
             </div>
           </div>
         </div>
+    
     </div>
 
 @endsection

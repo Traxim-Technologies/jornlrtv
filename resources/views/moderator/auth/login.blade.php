@@ -11,7 +11,7 @@
             {{ csrf_field() }}
 
             <div class="text-center mb15">
-                <!-- <img class="adm-log-logo" src="{{Setting::get('site_icon', asset('logo.png') )}}" /> -->
+               <img class="adm-log-logo" style="width:50%;height:auto" src="{{Setting::get('site_logo', asset('logo.png') )}}" />
             </div>
 
             <p class="text-center mb30"></p>
@@ -49,9 +49,9 @@
                 </button>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                     <a style="margin-left:100px" class="btn btn-link" href="{{ url('/moderator/password/reset') }}">Reset Password</a>
-            </div>
+            </div> -->
 
         </form>
 
