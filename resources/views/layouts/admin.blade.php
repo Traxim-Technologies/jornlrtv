@@ -9,7 +9,7 @@
 
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="{{ Setting::get('site_icon') }}">
+    <link rel="shortcut icon" href=" @if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif">
 
     <link rel="stylesheet" href="{{ asset('admin-css/bootstrap/css/bootstrap.min.css')}}">
 
@@ -124,7 +124,7 @@
 
     <script type="text/javascript">
         $("#{{$page}}").addClass("active");
-        @if($sub_page) $("#{{$sub_page}}").addClass("active"); @endif
+        @if(isset($sub_page)) $("#{{$sub_page}}").addClass("active"); @endif
     </script>
 
     <script type="text/javascript">

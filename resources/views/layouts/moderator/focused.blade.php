@@ -27,7 +27,7 @@
     <div class="login-box">
 
         <div class="login-logo">
-            <a href="{{route('moderator.login')}}"><b>{{Setting::get('site_name')}}</b></a>
+            <!-- <a href="{{route('moderator.login')}}"><b>{{Setting::get('site_name')}}</b></a> -->
         </div>
 
         @yield('content')

@@ -74,6 +74,20 @@
 
             </li>
 
+            <li class="treeview" id="banner-videos">
+                <a href="{{route('admin.banner.videos')}}">
+                    <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span>
+                </a>
+
+                <ul class="treeview-menu">
+                    @if(get_banner_count() < 6)
+                        <li id="add-banner-video"><a href="{{route('admin.add.banner.video')}}"><i class="fa fa-circle-o"></i>{{tr('add_video')}}</a></li>
+                    @endif
+                    <li id="view-banner-videos"><a href="{{route('admin.banner.videos')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
+                </ul>
+
+            </li>
+
             <li id="user-payments">
                 <a href="{{route('admin.user.payments')}}">
                     <i class="fa fa-credit-card"></i> <span>{{tr('user_payments')}}</span>
@@ -86,16 +100,20 @@
                 </a>
             </li>
 
-            <li id="payment-settings">
-                <a href="{{route('admin.payment.settings')}}">
-                    <i class="fa fa-money"></i> <span>{{tr('payment_settings')}}</span>
+            <li id="custom-push">
+                <a href="{{route('admin.push')}}">
+                    <i class="fa fa-send"></i> <span>{{tr('custom_push')}}</span>
                 </a>
             </li>
 
-            <li id="theme-settings">
-                <a href="{{route('admin.theme.settings')}}">
-                    <i class="fa fa-refresh"></i> <span>{{tr('theme_settings')}}</span>
+            <li class="treeview" id="pages">
+                <a href="{{route('viewPages')}}">
+                    <i class="fa fa-book"></i> <span>Pages</span>
                 </a>
+                <ul class="treeview-menu">
+                    <li id="add_page"><a href="{{route('addPage')}}"><i class="fa fa-circle-o"></i>Add Page</a></li>
+                    <li id="view_pages"><a href="{{route('viewPages')}}"><i class="fa fa-circle-o"></i>View Page</a></li>
+                </ul>
             </li>
 
             <li id="profile">

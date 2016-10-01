@@ -23,12 +23,20 @@
 </head>
 
 <body class="hold-transition login-page">
+    
+    <div class="col-md-6 col-md-offset-3">
+
+        @include('notification.notify')
+
+    </div>
 
     <div class="login-box">
 
         <div class="login-logo">
-             <a href="{{route('admin.login')}}"><b> <img class="adm-log-logo" style="width:50%;height:50px" src="{{Setting::get('site_icon', asset('logo.png') )}}" /></b></a>
+             <a href="{{route('admin.login')}}"><b> <img class="adm-log-logo" style="width:50%;height:auto" src="{{Setting::get('site_logo', asset('logo.png') )}}" /></b></a>
         </div>
+
+
 
         @yield('content')
 
