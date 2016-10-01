@@ -2,105 +2,119 @@
 
 @section('content')
 
- <!--breadcrumbs-->
+<div class="y-content">
+    <div class="row y-content-row">
+        @include('layouts.user.nav')
 
-<section id="breadcrumb">
-    <div class="row">
-        <div class="large-12 columns">
-            <nav aria-label="You are here:" role="navigation">
-                <ul class="breadcrumbs">
-                    <li><i class="fa fa-home"></i><a href="{{route('user.dashboard')}}">{{tr('home')}}</a></li>
-                    <li><span class="show-for-sr">Current: </span>{{tr('profile')}}</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</section>
+        <div class="page-inner col-sm-9 col-md-10 profile-edit">
+            
+            <div class="profile-content">
+                <div class="row no-margin">
+                    <div class="col-sm-7 profile-view">
+                        <div class="edit-profile profile-view">
+                            <div class="profile-details">
+                                <div class="sub-profile">
+                                    <h4 class="edit-head">{{tr('profile')}}</h4>
 
-<!--end breadcrumbs-->
+                                    <div class="image-profile">
+                                        <img src="{{Auth::user()->picture}}">                                
+                                    </div><!--end of image-profile-->
 
-<div class="row">
-    <!-- left sidebar -->
+                                    <div class="profile-title">
+                                        <h3>{{Auth::user()->name}}</h3>
+                                        
+                                        @if(Auth::user()->login_by == 'manual')
+                                            <h4>{{Auth::user()->email}}</h4>
+                                        @endif
+                                        
+                                        @if(Auth::user()->user_type)
+                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days(Auth::user()->id)}} days</b></p>
+                                        @endif
+                                        <p>{{Auth::user()->mobile   }}</p>  
+                                        <p>{{Auth::user()->description}}</p>
+                                    </div><!--end of profile-title-->
+                                    <form>
+                                    <br>
+                                        <div class="change-pwd edit-pwd edit-pro-btn">
 
-    @include('layouts.user.user-sidebar')
+                                            <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning">{{tr('payment')}}</a>
 
-    <!-- end sidebar -->
+                                            <a href="{{route('user.update.profile')}}" class="btn btn-primary">{{tr('edit_profile')}}</a>
+                                            
+                                            @if(Auth::user()->login_by == 'manual')
+                                                <a href="{{route('user.change.password')}}"
+                                            class="btn btn-danger">{{tr('change_password')}}</a>
 
-    <!-- right side content area -->
-    <div class="large-8 columns mar-top-space">
-        <!-- single post description -->
+                                            @endif
+                                        </div> 
+                                    </form>                                
+                                </div><!--end of sub-profile-->                            
+                            </div><!--end of profile-details-->                           
+                        </div><!--end of edit-profile-->
 
-        @include('notification.notify')
+                       
+                    </div><!--profile-view end--> 
 
-        <section class="singlePostDescription">
-            <div class="row secBg">
-                <div class="large-12 columns">
-                    <div class="heading">
-                        <i class="fa fa-user" style="font-size:20px;"></i>
-                        <h4>{{tr('description')}}</h4>
 
-                        <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning" style="float:right"><i class="fa fa-envelope" style="color:white"></i>Pay now</a>  
-                    </div>
-                    <div class="description">
-
-                        <p>{{Auth::user()->description}}</p>
-
-                        @if(Auth::user()->login_by == 'maunal')
-                            <div class="email profile-margin">
-                                <button><i class="fa fa-envelope"></i>{{tr('email')}}</button>
-                                <span class="inner-btn">{{Auth::user()->email}}</span>
-                            </div>
-                        @endif
+                    <?php $wishlist = wishlist(Auth::user()->id); ?>
+                    
+                    @if(count($wishlist))
                         
-                        <div class="email profile-margin">
-                            <button><i class="fa fa-location-arrow"></i>{{tr('address')}}</button>
-                            @if(Auth::user()->address) <span class="inner-btn">{{Auth::user()->address}}</span> @endif
-                        </div>
+                        <div class="mylist-profile col-sm-5">
+                            <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
-                        <div class="phone profile-margin">
-                            <button><i class="fa fa-phone"></i>{{tr('mobile')}}</button>
-                            
-                            @if(Auth::user()->mobile) 
-                                <span class="inner-btn">
-                                    {{Auth::user()->mobile}}
-                                </span>
-                            @endif
-                            
-                        </div>
+                            <ul class="history-list profile-history">
 
+                                @foreach($wishlist as $i => $video)
 
-                        <div class="email profile-margin">
-                            <button><i class="fa fa-user"></i>{{tr('user')}}</button>
-                            @if(Auth::user()->user_type) 
-                                <span class="inner-btn" style="background-color:#2f922f;color:white">
-                                    <strong>Premium</strong>
-                                </span> 
-                            @else 
-                                <span class="inner-btn" style="background-color:#e40d0d;color:white">
-                                    <strong>Normal</strong>
-                                </span> 
-                            @endif
-                        </div>
+                                    <li class="sub-list row no-margin">
+                                        <div class="main-history">
+                                            <div class="history-image">
+                                                <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>                        
+                                            </div><!--history-image-->
 
-                        @if(Auth::user()->user_type) 
-                            <div class="email profile-margin">
-                                <!-- <button><i class="fa fa-user"></i>{{tr('remaning_days')}}</button> -->
-                                <span class="btn btn-info">
-                                    <strong>{{tr('no_of_days_expiry')}} {{get_expiry_days(Auth::user()->id)}} days</strong>
-                                </span> 
-                            </div>
-                        @endif
+                                            <div class="history-title">
+                                                <div class="history-head row">
+                                                    <div class="cross-title">
+                                                        <h5><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+                                                        <p class="duration">{{tr('duration')}}: {{$video->duration}}</p>
+                                                    </div> 
+                                                    <div class="cross-mark">
+                                                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->wishlist_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </div><!--end of cross-mark-->                       
+                                                </div> <!--end of history-head--> 
 
-                    </div>
-                </div>
+                                                <!-- <div class="description">
+                                                    <p>{{$video->description}}</p>
+                                                </div> --><!--end of description--> 
+
+                                                <span class="stars">
+                                                    <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                </span>                                                       
+                                            </div><!--end of history-title--> 
+                                        </div><!--end of main-history-->
+                                    </li>
+
+                                @endforeach
+
+               
+                            </ul>                                
+                        
+                        </div><!--end of mylist-profile-->
+
+                    @endif
+
+                </div><!--end of profile-content row-->
+            
             </div>
-        </section>
 
-        <!-- End single post description -->
-    </div><!-- end left side content area -->
+        </div>
 
+    </div>
 </div>
-
-<!--end left-sidebar row-->
 
 @endsection

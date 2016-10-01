@@ -2,131 +2,131 @@
 
 @section('content')
 
- <!--breadcrumbs-->
- 
-<section id="breadcrumb">
-    <div class="row">
-        <div class="large-12 columns">
-            <nav aria-label="You are here:" role="navigation">
-                <ul class="breadcrumbs">
-                    <li><i class="fa fa-home"></i><a href="{{route('user.dashboard')}}">{{tr('home')}}</a></li>
-                    <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
-                    <li>
-                        <span class="show-for-sr">Current: </span> {{tr('update_profile')}}
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</section>
+<div class="y-content">
+    <div class="row y-content-row">
+        @include('layouts.user.nav')
 
-<!--end breadcrumbs-->
+        <div class="page-inner col-sm-9 col-md-10 profile-edit">
+            
+            <div class="profile-content">
+                <div class="row no-margin">
+                    <div class="col-sm-7 profile-view">
+                        <div class="edit-profile profile-view">
+                            <div class="edit-form">
 
-<div class="row">
-   
-   <!-- left sidebar -->
+                                <h4 class="edit-head">{{tr('edit_profile')}}</h4>
+                                
+                                <div class="image-profile edit-image">
+                                    <img src="{{Auth::user()->picture}}">                               
+                                </div><!--end of image-profile-->
 
-    @include('layouts.user.user-sidebar')
+                                <div class="editform-content"> 
+                                    <form  action="{{ route('user.profile.save') }}" method="POST" enctype="multipart/form-data">
 
-    <!-- end sidebar -->
-
-    <!-- right side content area -->
-
-    <div class="large-8 columns profile-inner mar-top-space">
-        <!-- profile settings -->
-        <section class="profile-settings">
-            <div class="row secBg">
-                <div class="large-12 columns">
-
-                    <div class="heading">
-                        <i class="fa fa-pencil-square-o"></i>
-                        <h4>{{tr('update_profile')}}</h4>
-                    </div>
-
-                    <!--heading end-->
-
-                    <div class="row">
-
-                        <div class="large-12 columns">
-
-                            <div class="setting-form">
-
-                                @include('layouts.user.notification')
-
-                                <form action="{{ route('user.profile.save') }}" method="POST" enctype="multipart/form-data">
-
-                                    <div class="setting-form-inner">
-
-                                        <div class="row">
-
-                                            <div class="medium-6 columns">
-                                                <label>{{tr('username')}}:
-                                                    <input type="text"  name="name" required  value="{{Auth::user()->name}}" placeholder="enter your {{tr('username')}}..">
-                                                </label>
-                                            </div>
-
-                                            @if(Auth::user()->login_by == 'maunal')
-                                                <div class="medium-6 columns">
-                                                    <label>{{tr('email')}}:
-                                                        <input type="email" name="email" required value="{{Auth::user()->email}}" placeholder="enter your email address..">
-                                                    </label>
-                                                </div>
-
-                                            @endif
-
-                                            <div class="medium-6 columns">
-                                                <label>{{tr('address')}}:
-                                                    <input type="text" name="address" required value="{{Auth::user()->address}}" placeholder="enter your Address..">
-                                                </label>
-                                            </div>
-
-                                            <div class="medium-6 columns end">
-                                                <label>{{tr('mobile')}}:
-                                                    <input type="tel" name="mobile" required value="{{Auth::user()->mobile}}" placeholder="enter your Mobile No..">
-                                                </label>
-                                            </div>
-
-                                            <div class="medium-12 columns">
-                                                <label>{{tr('description')}}:
-                                                    <textarea name="description">{{Auth::user()->description}}</textarea>
-                                                </label>
-                                            </div>
-
-                                            <div class="medium-12 columns">
-                                            @if(Auth::user()->picture)
-                                                <img class="up-img" src="{{Auth::user()->picture}}">
-                                            @else
-                                                <img class="up-img" src="{{asset('placeholder.png')}}">
-                                            @endif
-                                            </div>
-
-                                            <div class="medium-12 columns">
-                                                <label>{{tr('picture')}}:
-                                                    <input type="file" name="picture" id="picture">
-                                                </label>
-                                            </div>
-                                            <div class="medium-12 columns">
-                                                <button class="button expanded" type="submit" name="setting">{{tr('update_now')}}</button>
-                                            </div>
+                                         <div class="form-group">
+                                            <label for="exampleInputFile">{{tr('upload_image')}}</label>
+                                            <input type="file" name="picture" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
                                         </div>
 
-                                        <!--setting-form-inner row end-->
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="username">{{tr('username')}}</label>
+                                            <input required value="{{Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username">
+                                        </div>
 
-                                    <!--setting-form-inner end-->
+                                        @if(Auth::user()->login_by == 'manual')
+
+                                            <div class="form-group">
+                                                <label for="email">{{tr('email')}}</label>
+                                                <input type="email" value="{{Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                            
+                                            </div>
+
+                                        @endif
+
+                                        <div class="form-group">
+                                            <label for="mobile">{{tr('mobile')}}</label>
+                                            <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="Enter mobile">
+                                        
+                                        </div>
+                                              
+                                        <div class="form-group">
+                                            <label for="about">{{tr('about')}}</label>
+                                            <textarea name="description" class="form-control" id="about" rows="3">{{Auth::user()->description}}</textarea>
+                                        </div>
+                                              
+                                        <div class="change-pwd save-pro-btn">
+                                            <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+
+                                            <a href="{{route('user.change.password')}}" class="btn btn-danger">{{tr('change_password')}}</a>
+
+                                        </div>                                              
+
+                                    </form>
+                                </div><!--end of editform-content-->
+                                    
+                            </div><!--end of edit-form-->                           
+                        </div><!--end of edit-profile-->
+                    </div><!--profile-view end-->  
 
 
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    <?php $wishlist = wishlist(Auth::user()->id); ?>
+                    
+                    @if(count($wishlist))
+                        
+                        <div class="mylist-profile col-sm-5">
+                            <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
-                </div><!-- large-12 columns end-->
-            </div><!--secBg end-->
-        </section><!-- End profile settings -->
+                            <ul class="history-list profile-history">
+
+                                @foreach($wishlist as $i => $video)
+
+                                    <li class="sub-list row no-margin">
+                                        <div class="main-history">
+                                            <div class="history-image">
+                                                <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>                        
+                                            </div><!--history-image-->
+
+                                            <div class="history-title">
+                                                <div class="history-head row">
+                                                    <div class="cross-title">
+                                                        <h5><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+                                                        <p class="duration">{{tr('duration')}}: {{$video->duration}}</p>
+                                                    </div> 
+                                                    <div class="cross-mark">
+                                                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->wishlist_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </div><!--end of cross-mark-->                       
+                                                </div> <!--end of history-head--> 
+
+                                                <!-- <div class="description">
+                                                    <p>{{$video->description}}</p>
+                                                </div> --><!--end of description--> 
+
+                                                <span class="stars">
+                                                    <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                </span>                                                       
+                                            </div><!--end of history-title--> 
+                                        </div><!--end of main-history-->
+                                    </li>
+
+                                @endforeach
+
+               
+                            </ul>                                
+                        
+                        </div><!--end of mylist-profile-->
+
+                    @endif
+
+                </div><!--end of profile-content row-->
+            
+            </div>
+
+        </div>
     </div>
-
-    <!-- end left side content area -->
-</div><!-- row end-->
+</div>
 
 @endsection
