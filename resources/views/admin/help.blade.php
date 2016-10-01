@@ -26,11 +26,11 @@
 
             		<div class="card-body help">
 		                <p>
-		                  We would like to thank you for choosing Start Streaming. Kudos from our team!!
+		                  We'd like to thank you for deciding to use the Start Streaming. We enjoyed creating it and hope you enjoy using it to achieve your goals :)
 		                </p>
 
 		                <p>
-		                  If you want to make any changes to your site, drop a mail to info@startstreaming.co or Skype us @ info@startstreaming.co and we will help you out! 
+		                  If you want something changed to suit your venture's needs better, drop us a line:
 		                </p>
 
 		                <a href="https://www.facebook.com/StartVideoStreaming/" target="_blank"><img class="aligncenter size-full wp-image-159 help-image" src="http://default.startstreaming.info/helpsocial/Facebook.png" alt="Facebook-100" width="100" height="100" /></a>
@@ -47,7 +47,7 @@
 			             &nbsp;
 
 
-			             <p>We have this team of innate developers and dedicated team of support to sort out the things for your benefits. Tell us what you like about Start Streaming and we may suggest you the best solution for you :)</p>
+			             <p>As you know, we at Start Streaming believe in the honorware system. We share our products with anyone who asks for it without any commitments what-so-ever. But, if you think our product has added value to your venture, please consider <a href="#" target="_blank">paying</a> us the price of the product.  It will help us buy more Redbulls, create more features and launch the next version of Start Streaming for you to upgrade :) </p>
 
               			<a href="#" target="_blank"><img class="aligncenter help-image size-full wp-image-160" src="http://default.startstreaming.info/helpsocial/Money-Box-100.png" alt="Money Box-100" width="100" height="100" /></a>
 

@@ -100,6 +100,12 @@
                 </a>
             </li>
 
+            <li id="theme-settings">
+                <a href="{{route('admin.theme.settings')}}">
+                    <i class="fa fa-refresh"></i> <span>{{tr('theme_settings')}}</span>
+                </a>
+            </li>
+
             <li id="custom-push">
                 <a href="{{route('admin.push')}}">
                     <i class="fa fa-send"></i> <span>{{tr('custom_push')}}</span>
