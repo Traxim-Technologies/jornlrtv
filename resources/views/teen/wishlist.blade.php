@@ -41,6 +41,10 @@
 
         @endforeach
 
+        @if(count($videos))
+            <div align="right" id="paglink"><?php echo $videos->links(); ?></div>
+        @endif
+
     </div>
 
 @endsection

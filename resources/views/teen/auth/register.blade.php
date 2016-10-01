@@ -17,12 +17,19 @@
 
     @endif
 
-    <!-- <form role="form" method="POST" action="{{ route('SocialLogin') }}">
-        <input type="hidden" value="twitter" name="provider" id="provider">
-        <button type="submit" class="twt-btn">
-            {{tr('login_via_twitter')}}
-        </button>
-    </form> -->
+    @if(config('services.twitter.client_id') && config('services.twitter.client_secret'))
+
+        <form role="form" method="POST" action="{{ route('SocialLogin') }}">
+            <input type="hidden" value="twitter" name="provider" id="provider">
+            <!-- <a href="#" class="gp-btn"> -->
+                <button type="submit" class="twt-btn">
+                    {{tr('login_via_twitter')}}
+                </button>
+            <!-- </a> -->
+        </form>
+
+    @endif
+
     @if(config('services.google.client_id') && config('services.google.client_secret'))
 
     <div class="social-login-btn g-plus">

@@ -11,6 +11,13 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
                 <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>                
+                <li>
+                	<a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>
+                        <i class="fa fa-trash"></i>{{tr('delete_account')}}
+                    </a>
+
+                </li>  
+
                 <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>                
               </ul>
             </div>  
@@ -57,7 +64,7 @@
 		              
 		            </ul>
 
-		            <form class="navbar-form navbar-right" role="search" action="{{route('search-all')}}">
+		            <form class="navbar-form navbar-right" role="search" id="userSearch" action="{{route('search-all')}}">
 		              	<div class="form-group">
 		                	<input type="search" required id="auto_complete_search" class="form-control" name="key" placeholder="Search">
 		              	</div>

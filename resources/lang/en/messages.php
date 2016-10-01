@@ -34,9 +34,6 @@ return array(
 	'paypal_client_id' => 'Paypal Client ID',
 	'paypal_secret' => 'Paypal Secret Key',
 	'expiry_days' => 'Expiry Days',
-	'upload_image' => 'Upload Image',
-	'edit_profile' => 'Update Profile',
-	'signup_via_fb' => 'Login via Facebook',
 
 	// Theme
 	'select_theme' => 'Activate',
@@ -80,6 +77,7 @@ return array(
 
 	'search_result' => 'SHOWING RESULTS FOR',
 	'no_search_result' => 'No results found',
+	'no_result_found' => 'No results found',
 	'search' => 'Search',
 
 	// Profile 
@@ -270,6 +268,8 @@ return array(
 	'welcome'	=>	'Welcome to Xuber. Please sign in to your account',
 	'email_add'	=>	'E-mail Address',
 	'password'	=>	'Password',
+	'password_confirmation' => 'Confirm Password',
+	'confirm_password' => 'Confirm Password',
 	'login'	=>	'Login',
 	'forgot'	=>	'Forgot Your Password?',
 	'remember'	=>	'Remember Me',
@@ -398,6 +398,9 @@ return array(
 	'ratings' => 'Ratings',
 	'reviews' => 'Reviews',
 	'default_image' => 'Default image',
+	'banner_image' => 'Banner image',
+	'banner_videos' => 'Banner Videos',
+	'add_banner_videos' => 'Upload Banner Videos',
 	'other_image1' => 'Other Image 1',
 	'other_image2' => 'Other Image 2',
 	'no_video_found' => 'No videos found....!',
@@ -411,7 +414,7 @@ return array(
 	'youtube' => 'YouTube Link',
 	'other_link' => 'Others',
 	'video_upload_link' => 'Upload Video',
-	'watch_main_video' => 'Watch Main Video',
+	'watch_main_video' => 'Watch Full Video',
 	'view_all' => 'View All',
 
 	//Admin Documents
@@ -456,6 +459,8 @@ return array(
 	'paypal'	=>	'Paypal',
 	'manual_request'	=>	'Manual Request',
 
+	'no_of_days_expiry' => 'The Pack will Expiry within ',
+
 	// Moderator dashboard
 
 	'category_count' => 'Total Category',
@@ -465,5 +470,29 @@ return array(
 	'slider' => 'Current',
 	'set_slider' => 'Set Slider',
 	'slider_success' => 'The video is added as slider video',
+
+	'change_banner_video_success' => 'Banner Video Changed as normal video',
+	'user_type' => 'User Type',
+	'remaining_days' => 'Remaining Days',
+	'payment_notification' => 'Payment Notification',
+
+	'push_notification_enable' => 'Push Notification Enabled',
+	'push_notification_disable' => 'Push Notification Disabled',
+
+	'heading' => 'Heading',
+	'page_type' => 'Page Type',
+
+
+	'user_account_delete_success' => 'Account deleted successfully!!!',
+	'delete_account' => 'Delete Account',
+
+	'comment_success' => 'Comment added successfully',
+
+	'custom_push' => 'Custom Push',
+	'message' => 'Message',
+
+	'reset_password' => 'Reset Password',
+
+	'back_profile' => 'Back Profile',
 	
 );

@@ -8,7 +8,12 @@
     <div class="video-full-box">
 
         <div class="box-title">
-          <h3 class="main-title">{{$sub_category->name}}</h3>
+          <!-- <h3 class="main-title">{{$sub_category->name}}</h3> -->
+          <div class="box-head row no-margin">
+                <h3 style="float:left" class="main-title">{{$sub_category->name}}</h3>
+                <a style="float:right" class="see-all" href="{{route('user.sub-category' ,$sub_category->id)}}">See All </a>
+
+            </div>
         </div>
 
         @foreach(sub_category_videos($sub_category->id) as $video)

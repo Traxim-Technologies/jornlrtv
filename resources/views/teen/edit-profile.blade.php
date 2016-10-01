@@ -19,10 +19,12 @@
                   <label for="name">{{tr('name')}}</label>
                   <input type="text" name="name" required value="{{Auth::user()->name}}" class="form-control" id="name">
                 </div>
-                <div class="form-group">
-                  <label for="email">{{tr('email')}}</label>
-                  <input type="email" name="email" required value="{{Auth::user()->email}}" class="form-control" id="email">
-                </div>
+                @if(Auth::user()->login_by == 'manual')
+                  <div class="form-group">
+                    <label for="email">{{tr('email')}}</label>
+                    <input type="email" name="email" required value="{{Auth::user()->email}}" class="form-control" id="email">
+                  </div>
+                @endif
                 <div class="form-group">
                   <label for="phone">{{tr('mobile')}}</label>
                   <input type="text" name="mobile" required value="{{Auth::user()->mobile}}" class="form-control" id="phone">

@@ -5,7 +5,7 @@
     <div class="video-full-box">
 
         <div class="box-title">
-          <h3 class="main-title">{{tr('search_result')}}</h3>
+          <h3 class="main-title">{{tr('search_result')}} " {{$key}} "</h3>
         </div>
 
        @foreach($videos as $video)
@@ -37,6 +37,10 @@
             </div>
 
         @endforeach
+
+        @if(count($videos))
+            <div align="right" id="paglink"><?php echo $videos->links(); ?></div>
+        @endif
 
     </div>
 
