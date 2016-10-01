@@ -69,10 +69,10 @@
 
                                 </div>
 
-                                <div class="checkbox">
+                                <!-- <div class="checkbox">
                                     <input id="remember" type="checkbox" name="check" value="remember">
                                     <label class="customLabel" for="remember">{{tr('remember')}}</label>
-                                </div>
+                                </div> -->
 
                                 <button class="button expanded" type="submit" name="submit">{{tr('login')}}</button>
                                 

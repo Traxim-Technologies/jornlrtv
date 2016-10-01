@@ -111,15 +111,53 @@
                     <div class="large-4  medium-6 columns end">
                         <div class="social-login" data-equalizer-watch="" style="height: 314px;">
                             <h5 class="text-center">{{tr('login_via_social')}}</h5>
-                            <div class="social-login-btn facebook">
-                                <a href="#"><i class="fa fa-facebook"></i>{{tr('login_via_fb')}}</a>
-                            </div>
-                            <div class="social-login-btn twitter">
-                                <a href="#"><i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}</a>
-                            </div>
-                            <div class="social-login-btn g-plus">
-                                <a href="#"><i class="fa fa-google-plus"></i>{{tr('login_via_google')}}</a>
-                            </div>
+
+                            @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
+                            
+                                <div class="social-login-btn facebook">
+                                    <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                        <input type="hidden" value="facebook" name="provider" id="provider">
+                                        <a href="#">
+                                            <button type="submit">
+                                                <i class="fa fa-facebook"></i>{{tr('login_via_fb')}}
+                                            </button>
+                                        </a>
+                                    </form>
+                                </div>
+
+                            @endif
+
+                            @if(config('services.twitter.client_id') && config('services.twitter.client_secret'))
+                                
+                                <div class="social-login-btn twitter">
+                                    <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                        <input type="hidden" value="twitter" name="provider" id="provider">
+                                        <a href="#">
+                                            <button type="submit">
+                                                <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
+                                            </button>
+                                        </a>
+                                    </form>
+                                </div>
+
+                            @endif
+
+                            @if(config('services.google.client_id') && config('services.google.client_secret'))
+
+                                <div class="social-login-btn g-plus">
+
+                                    <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                        <input type="hidden" value="google" name="provider" id="provider">
+                                        <a href="#">
+                                            <button type="submit">
+                                                <i class="fa fa-google-plus"></i>{{tr('login_via_google')}}
+                                            </button>
+                                        </a>
+                                    </form>
+                                </div>
+
+                            @endif
+
                             <!-- <div class="social-login-btn linkedin">
                                 <a href="#"><i class="fa fa-linkedin"></i>login via linkedin</a>
                             </div> -->

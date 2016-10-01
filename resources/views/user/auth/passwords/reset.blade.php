@@ -3,36 +3,81 @@
 @section('content')
 
 <section class="registration">
+
     <div class="row secBg">
-        <div class="large-12 columns">
+
+        <div class="large-12 columns forgot-password-min">
+
             <div class="login-register-content">
 
-                <div class="row collapse borderBottom">
-                    <div class="medium-6 large-centered medium-centered">
-                        <div class="page-heading text-center" style="margin-top:20px;padding:0px !important">
-                            <h3>{{tr('forgot_password')}}</h3>
+                <div class="row" data-equalizer="1hfmzc-equalizer" data-equalize-on="medium" id="test-eq" data-resize="xrev0j-eq" data-events="resize" style="margin-top: 50px;">
+                    
+                    <div class="large-4 large-offset-4 medium-6 columns ">
+                        
+                        <div class="register-form">
+
+                            <h5 class="text-center">{{tr('reset_password')}}</h5>
+
+                            <form data-abide="xdc2hs-abide" novalidate="" role="form" method="POST" action="{{ url('/password/reset') }}">
+                                {{ csrf_field() }}
+
+                                <input type="hidden" name="token" value="{{ $token }}">
+
+
+                                <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+
+                                    <span class="input-group-label"><i class="fa fa-user"></i></span>
+
+                                    <input class="input-group-field" id="email" type="email" placeholder="Enter your email" required="" name="email" value="{{ $email or old('email') }}">
+
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="input-group{{ $errors->has('password') ? ' has-error' : '' }}">
+
+                                    <span class="input-group-label"><i class="fa fa-user"></i></span>
+
+                                    <input class="input-group-field" id="password" type="password" name="password" placeholder="Enter Password">
+
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="input-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+
+                                    <span class="input-group-label"><i class="fa fa-user"></i></span>
+
+                                    <input class="input-group-field" id="password_confirmation" type="password" name="password_confirmation" placeholder="Enter Password">
+
+                                    @if ($errors->has('password_confirmation'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <button class="button expanded" type="submit" name="submit">Reset Password</button>
+
+                            </form>
+
                         </div>
+
                     </div>
                 </div>
 
-                <div class="row" data-equalizer="fldb3f-equalizer" data-equalize-on="medium" id="test-eq" data-resize="mmu5g8-eq" data-events="resize">
-                    <div class="large-4 medium-6 large-centered medium-centered columns">
-                        <div class="register-form">
-                            <h5 class="text-center">Enter Email</h5>
-                            <form method="post" data-abide="bhwxrp-abide" novalidate="">
-                                <div class="input-group">
-                                    <span class="input-group-label"><i class="fa fa-user"></i></span>
-                                    <input type="email" placeholder="Enter your email" required="">
-                                    <span class="form-error">email is required</span>
-                                </div>
-                                <button class="button expanded" type="submit" name="submit">reset Now</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
+
         </div>
+
     </div>
+
 </section>
 
 @endsection

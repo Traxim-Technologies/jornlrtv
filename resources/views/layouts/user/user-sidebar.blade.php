@@ -20,7 +20,7 @@
 
                         @endif
 
-                        <a href="{{$image}}" data-rel="lightcase"><img src="{{$image}}"></a>
+                        <a data-rel="lightcase"><img src="{{$image}}"></a>
                     </div><!--end round-->
 
                     <div class="user-name"><p>@if(Auth::check()) {{Auth::user()->name}} @else User @endif</p></div>
@@ -67,9 +67,19 @@
                                 </a>
                             </li>
 
+                            @if(Auth::user()->login_by == 'manual')
+
+                                <li class="clearfix">
+                                    <a href="{{route('user.change.password')}}" id="user-change-password">
+                                        <i class="fa fa-magic"></i>{{tr('change_password')}}
+                                    </a>
+                                </li>
+
+                            @endif
+
                             <li class="clearfix">
-                                <a href="{{route('user.change.password')}}" id="user-change-password">
-                                    <i class="fa fa-magic"></i>{{tr('change_password')}}
+                                <a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>
+                                    <i class="fa fa-trash"></i>{{tr('delete_account')}}
                                 </a>
                             </li>
 

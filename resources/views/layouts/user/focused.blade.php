@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{Setting::get('site_name' , "Live Stream")}}</title>
+    <title>{{Setting::get('site_name' , "Start Streaming")}}</title>
 
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
 
@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 
-    <link rel="shortcut icon" type="image/png" href="{{Setting::get('site_icon' , asset('img/favicon.png'))}}"/>
+    <link rel="shortcut icon" type="image/png" href="{{Setting::get('site_icon' , asset('favicon.png'))}}"/>
 
 
     @yield('styles')

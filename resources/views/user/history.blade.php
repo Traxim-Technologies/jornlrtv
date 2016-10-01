@@ -58,7 +58,7 @@
                                     <a class="" onclick="return confirm('Are you sure?');" href="{{route('user.delete.history' , array('status' => 1))}}"><i class="fa fa-trash"></i></a>
                                 </h4>
 
-                                <a class="secondary-button current list" href="#"><i class="fa fa-th-list"></i></a>
+                                <!-- <a class="secondary-button current list" href="#"><i class="fa fa-th-list"></i></a> -->
                             </div>
                             <!--grid-system end-->
                         
@@ -152,6 +152,10 @@
                         </div>
 
                         <!--tab-content end-->
+
+                        <div class="text-center row-btn">
+                            <div align="right" id="paglink"><?php echo $histories->links(); ?></div>
+                        </div>
 
                         <!-- <div class="text-center row-btn">
                             <a class="button radius" href="#">{{tr('view_all_video')}}</a>

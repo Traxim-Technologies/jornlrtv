@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{Setting::get('site_name' , "Live Stream")}}</title>
+    <title>{{Setting::get('site_name' , "Start Streaming")}}</title>
 
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
 
@@ -32,10 +32,24 @@
 
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 
-    <link rel="shortcut icon" type="image/png" href="{{Setting::get('site_icon' , asset('img/favicon.png'))}}"/>
-
+    <link rel="shortcut icon" href=" @if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif">
+    
     @if(Setting::get('google_analytics'))
+        <?php echo Setting::get('google_analytics'); ?>
     @endif
+
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+    <meta property="og:description" content="The best solution to start up a video streaming venture!" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+    <meta property="og:image" content="{{Setting::get('site_icon')}}" />
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:description" content="The best solution to start up a video streaming venture!"/>
+    <meta name="twitter:title" content="{{Setting::get('site_name' , 'Start Streaming')}}"/>
+    <meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
 
     <style type="text/css">
         .ui-autocomplete{
@@ -136,7 +150,7 @@
 
                             // console.log('View AALLLLLLLLL');
 
-                            window.location.href = "{{route('search', array('q' => 'all'))}}";
+                            window.location.href = "{{route('search-all', array('key' => 'all'))}}";
 
                         } else {
                             // console.log("User Submit");

@@ -1,47 +1,52 @@
-<!doctype html>
-<html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <title>jQuery UI ProgressBar functionality</title>
-      <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
-      <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-      <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-      <style>
-         .ui-widget-header {
-            background: #cedc98;
-            border: 1px solid #DDDDDD;
-            color: #333333;
-            font-weight: bold;
-         }
-      </style>
-      <script>
-         $(function() {
-            $( "#progressbar-3" ).progressbar({
-               value: 30
-            });
-            $( "#progressbar-3" ).progressbar('disable');
-            $( "#progressbar-4" ).progressbar({
-               value: 30
-            });
-            var progressbar = $( "#progressbar-4" );
-            $( "#progressbar-4" ).progressbar( "option", "max", 1024 );
-            function progress() {
-               var val = progressbar.progressbar( "value" ) || 0;
-               progressbar.progressbar( "value", val + 1 );
-               if ( val < 99 ) {
-                  setTimeout( progress, 100 );
-               }
-            }
-            setTimeout( progress, 3000 );
-         });
-      </script>
-   </head>
-   <body>
-      <h3>Disabled Progressbar</h3>
-      <div id="progressbar-3"></div><br>
-      <h3>Progressbar with max value set</h3>
-      <div id="progressbar-4"></div>
-   </body>
+<html>
+<title>Google Maps API v3 - Two maps side-by-side</title>
+<head>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
+<script type="text/javascript">
+</script>
+</head>
+<body onload="initialize()">
+<H1 align="center">Two Google maps side-by-side</h1>
+<div id="map_canvas" style="top: 10px; left: 25px; width:210px; height:220px; float: left"></div>
+<div id="map_canvas_2" style="top: 10px; left: 75px; width:210px; height:220px"></div>
+</body>
 </html>
+<script type="text/javascript">
+   
+   function initialize()
+{
+    var latlng = new google.maps.LatLng(18.520266,73.856406);
+    var latlng2 = new google.maps.LatLng(28.579943,77.330006);
+    var myOptions =
+    {
+        zoom: 15,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
 
+    var myOptions2 =
+    {
+        zoom: 15,
+        center: latlng2,
+        mapTypeId: google.maps.MapTypeId.SATELLITE
+    };
 
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
+    var map2 = new google.maps.Map(document.getElementById("map_canvas_2"), myOptions2);
+
+    var myMarker = new google.maps.Marker(
+    {
+        position: latlng,
+        map: map,
+        title:"Pune"
+   });
+
+    var myMarker2 = new google.maps.Marker(
+    {
+        position: latlng2,
+        map: map2,
+        title:"Noida"
+    });
+}
+</script>

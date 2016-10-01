@@ -50,6 +50,17 @@
 
 			                <div class="large-12 columns">
 
+				                <div class="row column margin-bottom-10 clearfix">
+
+				                    <!-- <p class="pull-left">All Videos : <span>{{total_video_count()}} Videos posted</span></p> -->
+				                    <!-- <div class="grid-system pull-right show-for-large">
+				                        <a class="secondary-button current grid-default" href="#"><i class="fa fa-th"></i></a>
+				                        <a class="secondary-button grid-medium" href="#"><i class="fa fa-th-large"></i></a>
+				                        <a class="secondary-button list" href="#"><i class="fa fa-th-list"></i></a>
+				                    </div> -->
+
+				                </div> <!--row end -->
+
 			                    <!-- end of head-text-->
 
 			                    <div class="tabs-content" data-tabs-content="newVideos">
@@ -144,7 +155,7 @@
 
 			                    </div><!--end of tabs-content-->
 
-			                    <div align="right" id="paglink"><?php //echo $videos->links(); ?></div>
+			                    <div align="right" id="paglink"><?php echo $videos->links(); ?></div>
 
 			                    <div class="pagination">
 			                        <!-- <a href="#" class="prev page-numbers">« Previous</a>

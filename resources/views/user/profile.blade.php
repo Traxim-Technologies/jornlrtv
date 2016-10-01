@@ -2,10 +2,9 @@
 
 @section('content')
 
-
  <!--breadcrumbs-->
 
- <section id="breadcrumb">
+<section id="breadcrumb">
     <div class="row">
         <div class="large-12 columns">
             <nav aria-label="You are here:" role="navigation">
@@ -31,26 +30,33 @@
     <div class="large-8 columns mar-top-space">
         <!-- single post description -->
 
+        @include('notification.notify')
+
         <section class="singlePostDescription">
             <div class="row secBg">
                 <div class="large-12 columns">
                     <div class="heading">
-                        <i class="fa fa-user"></i>
+                        <i class="fa fa-user" style="font-size:20px;"></i>
                         <h4>{{tr('description')}}</h4>
+
+                        <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning" style="float:right"><i class="fa fa-envelope" style="color:white"></i>Pay now</a>  
                     </div>
                     <div class="description">
 
                         <p>{{Auth::user()->description}}</p>
 
-                        <div class="email profile-margin">
-                            <button><i class="fa fa-envelope"></i>{{tr('email')}}</button>
-                            <span class="inner-btn">{{Auth::user()->email}}</span>
-                        </div>
+                        @if(Auth::user()->login_by == 'maunal')
+                            <div class="email profile-margin">
+                                <button><i class="fa fa-envelope"></i>{{tr('email')}}</button>
+                                <span class="inner-btn">{{Auth::user()->email}}</span>
+                            </div>
+                        @endif
                         
                         <div class="email profile-margin">
-                            <button><i class="fa fa-envelope"></i>{{tr('address')}}</button>
+                            <button><i class="fa fa-location-arrow"></i>{{tr('address')}}</button>
                             @if(Auth::user()->address) <span class="inner-btn">{{Auth::user()->address}}</span> @endif
                         </div>
+
                         <div class="phone profile-margin">
                             <button><i class="fa fa-phone"></i>{{tr('mobile')}}</button>
                             
@@ -61,6 +67,30 @@
                             @endif
                             
                         </div>
+
+
+                        <div class="email profile-margin">
+                            <button><i class="fa fa-user"></i>{{tr('user')}}</button>
+                            @if(Auth::user()->user_type) 
+                                <span class="inner-btn" style="background-color:#2f922f;color:white">
+                                    <strong>Premium</strong>
+                                </span> 
+                            @else 
+                                <span class="inner-btn" style="background-color:#e40d0d;color:white">
+                                    <strong>Normal</strong>
+                                </span> 
+                            @endif
+                        </div>
+
+                        @if(Auth::user()->user_type) 
+                            <div class="email profile-margin">
+                                <!-- <button><i class="fa fa-user"></i>{{tr('remaning_days')}}</button> -->
+                                <span class="btn btn-info">
+                                    <strong>{{tr('no_of_days_expiry')}} {{get_expiry_days(Auth::user()->id)}} days</strong>
+                                </span> 
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             </div>

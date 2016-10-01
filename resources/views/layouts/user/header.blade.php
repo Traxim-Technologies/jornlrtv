@@ -15,9 +15,9 @@
 
                             <button class="menu-icon" type="button" data-toggle="offCanvas-responsive"></button>
 
-                            <div class="title-bar-title">
+                            <!-- <div class="title-bar-title">
                                 <img src="{{Setting::get('site_logo',asset('assets/images/logo-small.png')) }}" alt="logo">
-                            </div>
+                            </div> -->
                         </div><!--title-bar end -->
 
                         <div class="top-bar show-for-large" id="beNav" style="width: 100%;">
@@ -146,12 +146,12 @@
                 <!--sticy-container row end-->
 
                 <div id="search-bar" class="clearfix search-bar-light">
-                    <form method="post" action="{{route('search-all')}}" id="">
+                    <form method="post" action="{{route('search-all')}}" id="userSearch">
                         <div class="search-input float-left">
                             <input type="search" id="auto_complete_search" name="key" placeholder="Search Here your video">
                         </div>
                         <div class="search-btn float-right text-right">
-                            <button class="button" id="userSearch" name="search" type="submit">search</button>
+                            <button class="button" id="" name="search" type="submit">search</button>
                         </div>
                     </form>
                 </div>

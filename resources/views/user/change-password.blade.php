@@ -69,7 +69,9 @@
                                                     <input type="password" name="password_confirmation" placeholder="enter your {{tr('confirm_password')}}..">
                                                 </label>
                                             </div>
-                                            <button class="button expanded" type="submit" name="setting">{{tr('submit')}}</button>
+                                            <div class="medium-12 columns">
+                                                <button class="button expanded" type="submit" name="setting">{{tr('submit')}}</button>
+                                            </div>
                                         </div>
 
                                     </div>

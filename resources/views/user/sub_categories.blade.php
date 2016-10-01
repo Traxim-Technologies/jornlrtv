@@ -38,7 +38,7 @@
 	        
 	        <section class="content content-with-sidebar">
 
-	        	@if(count($videos) > 0)
+	        	
 
 	            	<!-- newest video -->
 
@@ -55,128 +55,142 @@
 
 	            	<!--end of main-heading-->
 
+	            	
+
 		            <div class="row secBg">
+
+		           
 
 		                <div class="large-12 columns">
 
-		                    <div class="row column head-text clearfix">
-		                        <p class="pull-left">{{tr('videos')}} : <span>{{get_sub_category_video_count($sub_category->id)}} Videos posted</span></p>
-		                        <div class="grid-system pull-right show-for-large">
-		                            <a class="secondary-button grid-default" href="#"><i class="fa fa-th"></i></a>
-		                            <a class="secondary-button current grid-medium" href="#"><i class="fa fa-th-large"></i></a>
-		                            <a class="secondary-button list" href="#"><i class="fa fa-th-list"></i></a>
-		                        </div>
-		                    </div>
+		                	@if(count($videos) > 0)
 
-		                    <!-- end of head-text-->
+			                    <div class="row column head-text clearfix">
+			                        <p class="pull-left">{{tr('videos')}} : <span>{{get_sub_category_video_count($sub_category->id)}} Videos posted</span></p>
+			                        <div class="grid-system pull-right show-for-large">
+			                            <a class="secondary-button grid-default" href="#"><i class="fa fa-th"></i></a>
+			                            <a class="secondary-button current grid-medium" href="#"><i class="fa fa-th-large"></i></a>
+			                            <a class="secondary-button list" href="#"><i class="fa fa-th-list"></i></a>
+			                        </div>
+			                    </div>
 
-		                    <div class="tabs-content" data-tabs-content="newVideos">
+			                    <!-- end of head-text-->
 
-		                        <div class="tabs-panel is-active" id="new-all">
+			                    <div class="tabs-content" data-tabs-content="newVideos">
 
-		                            <div class="row list-group">
+			                        <div class="tabs-panel is-active" id="new-all">
 
-		                            	@foreach($videos as $rv => $video)
+			                            <div class="row list-group">
 
-			                                <div class="item large-4 medium-6 columns grid-medium">
+			                            	@foreach($videos as $rv => $video)
 
-			                                    <div class="post thumb-border">
-			                                        <div class="post-thumb">
+				                                <div class="item large-4 medium-6 columns grid-medium">
 
-			                                            <img src="{{$video->default_image}}" alt="{{Setting::get('site_name')}}">
+				                                    <div class="post thumb-border">
+				                                        <div class="post-thumb">
 
-			                                            <a href="{{route('user.single' , $video->admin_video_id)}}" class="hover-posts">
-			                                                <span><i class="fa fa-play"></i>{{tr('watch_video')}}</span>
-			                                            </a>
+				                                            <img src="{{$video->default_image}}" alt="{{Setting::get('site_name')}}">
 
-			                                            <div class="video-stats clearfix">
+				                                            <a href="{{route('user.single' , $video->admin_video_id)}}" class="hover-posts">
+				                                                <span><i class="fa fa-play"></i>{{tr('watch_video')}}</span>
+				                                            </a>
 
-	                                                        <div class="thumb-stats pull-left">
-	                                                            <h6>HD</h6>
-	                                                        </div>
+				                                            <div class="video-stats clearfix">
 
-	                                                        <div class="thumb-stats pull-right">
-	                                                            <i class="fa fa-heart"></i>
-	                                                            <span>{{get_video_fav_count($video->admin_video_id)}}</span>
-	                                                        </div>
+		                                                        <div class="thumb-stats pull-left">
+		                                                            <h6>HD</h6>
+		                                                        </div>
 
-	                                                        <!-- <div class="thumb-stats pull-right">
-	                                                            <span>05:56</span>
-	                                                        </div> -->
+		                                                        <div class="thumb-stats pull-right">
+		                                                            <i class="fa fa-heart"></i>
+		                                                            <span>{{get_video_fav_count($video->admin_video_id)}}</span>
+		                                                        </div>
 
-	                                                    </div>
+		                                                        <!-- <div class="thumb-stats pull-right">
+		                                                            <span>05:56</span>
+		                                                        </div> -->
 
-			                                            <!--end of video-stats-->
+		                                                    </div>
 
-			                                        </div><!--end of post-thumb-->
+				                                            <!--end of video-stats-->
 
-			                                        <div class="post-des">
-			                                            <h6>
-			                                            	<a href="recent_video">{{$video->title}}</a>
-			                                            </h6>
-			                                            <div class="post-stats clearfix">
-			                                                <p class="pull-left">
-			                                                    <i class="fa fa-clock-o"></i>
-			                                                    <span>{{date('d M Y',strtotime($video->publish_time))}}</span>
-			                                                </p>
-			                                                <p class="pull-left">
-			                                                    <i class="fa fa-eye"></i>
-			                                                    <span>{{$video->watch_count}}</span>
-			                                                </p>
-			                                            </div>
+				                                        </div><!--end of post-thumb-->
 
-			                                            <!--end of post-stats-->
+				                                        <div class="post-des">
+				                                            <h6>
+				                                            	<a href="recent_video">{{$video->title}}</a>
+				                                            </h6>
+				                                            <div class="post-stats clearfix">
+				                                                <p class="pull-left">
+				                                                    <i class="fa fa-clock-o"></i>
+				                                                    <span>{{date('d M Y',strtotime($video->publish_time))}}</span>
+				                                                </p>
+				                                                <p class="pull-left">
+				                                                    <i class="fa fa-eye"></i>
+				                                                    <span>{{$video->watch_count}}</span>
+				                                                </p>
+				                                            </div>
 
-			                                            <div class="post-summary">
-			                                                <p>{{$video->description}}</p>
-			                                            </div>
+				                                            <!--end of post-stats-->
 
-			                                            <!--end of post-summary-->
-			                                           
-			                                            <div class="post-button">
-			                                                <a href="#" class="secondary-button">
-			                                                	<i class="fa fa-play-circle"></i>
-			                                                	{{tr('watch_video')}}
-			                                                </a>
-			                                            </div>
+				                                            <div class="post-summary">
+				                                                <p>{{$video->description}}</p>
+				                                            </div>
 
-			                                            <!--end of button-->
-			                                        </div><!--end of post des-->
-			                                    
-			                                    </div>
+				                                            <!--end of post-summary-->
+				                                           
+				                                            <div class="post-button">
+				                                                <a href="#" class="secondary-button">
+				                                                	<i class="fa fa-play-circle"></i>
+				                                                	{{tr('watch_video')}}
+				                                                </a>
+				                                            </div>
 
-			                                    <!--end of post-->
-			                                
-			                                </div>
+				                                            <!--end of button-->
+				                                        </div><!--end of post des-->
+				                                    
+				                                    </div>
 
-			                                <!--end of item-->
+				                                    <!--end of post-->
+				                                
+				                                </div>
 
-		                                @endforeach
-		                            
-		                            </div>
-		                            
-		                            <!--end of tabs-panel row-->
-		                        </div>
+				                                <!--end of item-->
 
-		                        <!--end of tabs-panel-->
+			                                @endforeach
+			                            
+			                            </div>
+			                            
+			                            <!--end of tabs-panel row-->
+			                        </div>
 
-		                    </div><!--end of tabs-content-->
+			                        <!--end of tabs-panel-->
 
-		                    <div align="right" id="paglink"><?php echo $videos->links(); ?></div>
+			                    </div><!--end of tabs-content-->
 
-		                    <div class="pagination">
-		                        <!-- <a href="#" class="prev page-numbers">« Previous</a>
-		                        <a href="#" class="page-numbers">1</a>
-		                        <span class="page-numbers current">2</span>
-		                        <a href="#" class="page-numbers">3</a>
-		                        <a href="#" class="next page-numbers">Next »</a> -->
-		                    </div><!--end of pagination-->
+			                    <div align="right" id="paglink"><?php echo $videos->links(); ?></div>
+
+			                    <div class="pagination">
+			                        <!-- <a href="#" class="prev page-numbers">« Previous</a>
+			                        <a href="#" class="page-numbers">1</a>
+			                        <span class="page-numbers current">2</span>
+			                        <a href="#" class="page-numbers">3</a>
+			                        <a href="#" class="next page-numbers">Next »</a> -->
+			                    </div><!--end of pagination-->
+		                
+			                @else
+
+		            			<p>{{tr('no_result_found')}}</p>
+
+		            		@endif
 		                </div><!--end of large-12-->
+
+		                
 		            </div>
 
 	            	<!--end of row secbg-->
 
-	            @endif
+	            	
 	        
 	        </section>
 

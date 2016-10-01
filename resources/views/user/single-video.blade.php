@@ -68,8 +68,14 @@
 
                         @else
 
+                            <div class="image" id="main_video_setup_error" style="display:none">
+                                <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
+                            </div>
+
                             @if($video->video_upload_type == 1)
+
                                 <?php $url = $video->video; ?>
+
                                 <div id="main-video-player" style="display:none"></div>
                             @else
 
@@ -88,6 +94,9 @@
 
                             @endif
 
+                            <div class="image" id="trailer_video_setup_error" style="display: none;">
+                                <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
+                            </div>
                             @if($video->video_upload_type == 1)
 
                                 <?php $trailer_url = $video->trailer_video; ?>
@@ -95,7 +104,7 @@
                                 <div id="trailer-video-player"></div>
                             @else
 
-                                @if(check_valid_url($video->tralier_video))
+                                @if(check_valid_url($video->trailer_video))
 
                                     <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
 
@@ -144,7 +153,7 @@
                                         </span>
 
                                         <span>
-                                            <i id="watch_count" class="fa fa-eye">{{$video->watch_count}}</i>
+                                            <i id="watch_count" class="fa fa-eye"> <span id="watch_count">{{$video->watch_count}}</span></i>
                                             
                                         </span>
 
@@ -152,7 +161,7 @@
                                         <span><i class="fa fa-thumbs-o-down"></i>180</span> -->
 
                                         <span>
-                                            <i id="video_comment_count" class="fa fa-commenting">{{get_video_comment_count($video->admin_video_id)}}</i>
+                                            <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i>
                                             
                                         </span>
                                     </p>
@@ -367,7 +376,7 @@
 
                         <h5>{{tr('reviews')}} </h5>
 
-                        <p>{{$video->description}}</p>
+                        <p>{{$video->reviews}}</p>
 
                     </div><!--end description-->
 
@@ -472,7 +481,7 @@
 
                             @foreach($comments as $comment)
 
-                                <div class="media-object stack-for-small">
+                                <div class="media-object stack-for-small borderBottom">
 
                                     <div class="media-object-section comment-img text-center">
                                         <div class="comment-box-img">
@@ -638,7 +647,7 @@
 
                 <!-- Recent post videos -->
 
-                @if(count($recent_videos) > 0)
+                <?php /** @if(count($recent_videos) > 0)
 
                     <div class="large-12 medium-7 medium-centered columns">
 
@@ -687,7 +696,7 @@
                         </div>
                     </div>
 
-                @endif
+                @endif */ ?>
 
             </div>
 
@@ -726,46 +735,89 @@
         
         jQuery(document).ready(function(){
 
-            @if($video->video_type == 1)             
+            @if($video->video_type == 1)    
 
-                console.log('Inside Trailer Video');
+                // Opera 8.0+
+                var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+                // Firefox 1.0+
+                var isFirefox = typeof InstallTrigger !== 'undefined';
+                // At least Safari 3+: "[object HTMLElementConstructor]"
+                var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/false || !!document.documentMode;
+                // Edge 20+
+                var isEdge = !isIE && !!window.StyleMedia;
+                // Chrome 1+
+                var isChrome = !!window.chrome && !!window.chrome.webstore;
+                // Blink engine detection
+                var isBlink = (isChrome || isOpera) && !!window.CSS;
 
-                console.log("{{$trailer_url}}");
+                // console.log('Inside Trailer Video');
 
                 @if($trailer_url)
 
-                    var playerInstance = jwplayer("trailer-video-player");
+                    jQuery('#trailer_video_setup_error').hide();
+                    jQuery('#main_video_setup_error').hide();
 
-                    playerInstance.setup({
-                        file: "{{$trailer_url}}",
-                        image: "{{$video->default_image}}",
-                        width: "100%",
-                        aspectratio: "16:9",
-                        primary: "flash",
-                    });
+                    if(isOpera || isSafari) {
 
-                    @if(!$history_status && Auth::check())
+                        // console.log('Opera OR Safari');
 
-                        jwplayer().on('displayClick', function(e) {
-                            jQuery.ajax({
-                                url: "{{route('user.add.history')}}",
-                                type: 'post',
-                                data: {'admin_video_id' : "{{$video->admin_video_id}}"},
-                                success: function(data) {
+                        jQuery('#trailer_video_setup_error').show();
 
-                                   if(data.success == true) {
+                        confirm('The video format is not supported in this browser. Please option some other browser.');
 
-                                    console.log('Added to history');
+                    } else {
 
-                                   } else {
-                                        console.log('Wrong...!');
-                                   }
-                                }
-                            });
-                            
+                        // console.log('Inside Trailer video Player');
+
+                        var playerInstance = jwplayer("trailer-video-player");
+
+                        playerInstance.setup({
+                            file: "{{$trailer_url}}",
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
+                        
                         });
 
-                    @endif
+                        playerInstance.on('setupError', function() {
+
+                            // console.log('Trailer_video_setup_error');
+
+                            jQuery("#trailer-video-player").css("display", "none");
+                            jQuery('#main_video_setup_error').hide();
+                            jQuery('#trailer_video_setup_error').css("display", "block");
+                            
+                            confirm('The video format is not supported in this browser. Please option some other browser.');
+                        
+                        });
+
+                        @if(!$history_status && Auth::check())
+
+                            jwplayer().on('displayClick', function(e) {
+                                jQuery.ajax({
+                                    url: "{{route('user.add.history')}}",
+                                    type: 'post',
+                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                    success: function(data) {
+
+                                       if(data.success == true) {
+
+                                        console.log('Added to history');
+
+                                       } else {
+                                            console.log('Wrong...!');
+                                       }
+                                    }
+                                });
+                                
+                            });
+
+                        @endif                    
+                    
+                    }
 
                 @endif
 
@@ -823,7 +875,7 @@
 
             }).blur(function(){
                 if(this.value==""){
-                     this.value = "Write your comment here...";
+                     this.value = "";
                 }
             });
 
@@ -832,11 +884,15 @@
                 //prevent Default functionality
                 e.preventDefault();
 
-                //get the action-url of the form
-                var actionurl = e.currentTarget.action;
+                var form_data = jQuery("#comment").val();
 
-                //do your own request an handle the results
-                jQuery.ajax({
+                if(form_data) {
+
+                    //get the action-url of the form
+                    var actionurl = e.currentTarget.action;
+
+                    // Do your own request an handle the results
+                    jQuery.ajax({
                         url: actionurl,
                         type: 'post',
                         dataType: 'json',
@@ -855,14 +911,19 @@
                                 jQuery('#comment_count').text(count);
                                 jQuery('#video_comment_count').text(count);
 
-                                jQuery('#new-comment').append('<div class="media-object stack-for-small"><div class="media-object-section comment-img text-center"><div class="comment-box-img"><img src= "{{Auth::user()->picture}}" alt="comment"></div></div><div class="media-object-section comment-desc"><div class="comment-title"><span class="name"><a href="#">{{Auth::user()->name}}</a> Said:</span><span class="time float-right"><i class="fa fa-clock-o"></i>'+data.date+'</span></div><div class="comment-text"><p>'+data.comment.comment+'</p></div></div></div>')
+                                jQuery('#new-comment').append('<div class="media-object stack-for-small borderBottom"><div class="media-object-section comment-img text-center"><div class="comment-box-img"><img src= "{{Auth::user()->picture}}" alt="comment"></div></div><div class="media-object-section comment-desc"><div class="comment-title"><span class="name"><a href="#">{{Auth::user()->name}}</a> Said:</span><span class="time float-right"><i class="fa fa-clock-o"></i>'+data.date+'</span></div><div class="comment-text"><p>'+data.comment.comment+'</p></div></div></div>')
 
                             @endif
                            } else {
                                 console.log('Wrong...!');
                            }
                         }
-                });
+                    
+                    });
+
+                } else {
+                    return false;
+                }
 
             });
 
@@ -877,30 +938,62 @@
                     
                     @if($url)
 
-                        var playerInstance = jwplayer("main-video-player");
+                        // console.log('Valid main Video URl');
 
-                        playerInstance.setup({
-                           
-                            file: "{{$url}}",
-                            image: "{{$video->default_image}}",
-                            width: "100%",
-                            aspectratio: "16:9",
-                            primary: "flash",
-                            controls : true,
-                            "controlbar.idlehide" : false,
-                            controlBarMode:'floating',
-                            "controls": {
-                              "enableFullscreen": false,
-                              "enablePlay": false,
-                              "enablePause": false,
-                              "enableMute": true,
-                              "enableVolume": true
-                            },
-                            // autostart : true,
-                            "sharing": {
-                                "sites": ["reddit","facebook","twitter"]
-                              }
-                        });
+                        if(isOpera || isSafari) {
+
+                            // console.log('Opera or Safari');
+
+                            jQuery('#trailer_video_setup_error').hide();
+                            jQuery('#main-video-player').hide();
+                            jQuery('#main_video_setup_error').show();
+
+                            confirm('The video format is not supported in this browser. Please option some other browser.');
+
+                        } else {
+
+                            // console.log('main Video Player');
+                            
+                            var playerInstance = jwplayer("main-video-player");
+
+                            playerInstance.setup({
+                               
+                                file: "{{$url}}",
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                                controls : true,
+                                "controlbar.idlehide" : false,
+                                controlBarMode:'floating',
+                                "controls": {
+                                  "enableFullscreen": false,
+                                  "enablePlay": false,
+                                  "enablePause": false,
+                                  "enableMute": true,
+                                  "enableVolume": true
+                                },
+                                // autostart : true,
+                                "sharing": {
+                                    "sites": ["reddit","facebook","twitter"]
+                                  }
+                            
+                            });
+
+                            playerInstance.on('setupError', function() {
+
+                                // console.log('main_video_setup_error');
+
+                                jQuery('#trailer_video_setup_error').hide();
+
+                                jQuery("#main-video-player").css("display", "none");
+
+                                jQuery('#main_video_setup_error').css("display", "block");
+
+                                confirm('The video format is not supported in this browser. Please option some other browser.');
+                            
+                            });
+                        }
                     
                     @else
                         jQuery('#main_video_error').show();
@@ -909,6 +1002,7 @@
 
                     jQuery("#trailer-video-player").hide();
                     jQuery("#main-video-player").show();
+                
                 @else
                     jQuery("#trailer_video_play").hide();
                     jQuery("#main_video_play").show();
@@ -938,6 +1032,7 @@
                         });
 
                     @endif
+                    
                 @endif
 
             });

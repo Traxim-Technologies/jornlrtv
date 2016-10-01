@@ -6,7 +6,7 @@
 
  <!-- Premium Videos -->
 
- @if(count($wishlists) > 3)
+@if(count($wishlists) > 3)
 
     <section id="premium">
 
@@ -15,7 +15,7 @@
             <div class="heading clearfix">
                 
                 <div class="large-11 columns">
-                    <h4><i class="fa fa-heart-o"></i>{{tr('wishlist')}}</h4>
+                    <h4><i class="fa fa-heart"></i>{{tr('wishlist')}}</h4>
                 </div>
                 
                 <div class="large-1 columns">
@@ -138,7 +138,7 @@
 
 @if(count($recent_videos) > 0 )
 
-    <section class="content">
+    <section class="content" id="recent_video_content">
         <!-- newest video -->
         <div class="main-heading">
             <div class="row secBg padding-14">
@@ -185,7 +185,7 @@
 
                         @foreach($recent_videos as $recent_key => $recent_video)
 
-                            @if($recent_key < 4)
+                            @if($recent_key < 8)
 
                                 <div class="item large-3 medium-6 columns group-item-grid-default">
 
@@ -285,7 +285,7 @@
 
 @if(count($suggestions) > 0 )
 
-    <section class="content" style="margin-top:10px">
+    <section class="content margin-bottom-10" >
         <!-- newest video -->
         <div class="main-heading">
             <div class="row secBg padding-14">
@@ -303,120 +303,132 @@
         <!--main-heading end-->
 
         <div class="row secBg">
-        <div class="large-12 columns">
 
-            <!-- <div class="row column head-text clearfix">
+            <div class="large-12 columns">
 
-                <p class="pull-left">All Videos : <span>{{total_video_count()}} Videos posted</span></p>
-                <div class="grid-system pull-right show-for-large">
-                    <a class="secondary-button current grid-default" href="#"><i class="fa fa-th"></i></a>
-                    <a class="secondary-button grid-medium" href="#"><i class="fa fa-th-large"></i></a>
-                    <a class="secondary-button list" href="#"><i class="fa fa-th-list"></i></a>
-                </div>
+                <div class="row column head-text clearfix">
 
-            </div> --><!--row end-->
+                    <!-- <p class="pull-left">All Videos : <span>{{total_video_count()}} Videos posted</span></p> -->
+                    <div class="grid-system pull-right show-for-large">
+                        <a class="secondary-button current grid-default" href="#"><i class="fa fa-th"></i></a>
+                        <a class="secondary-button grid-medium" href="#"><i class="fa fa-th-large"></i></a>
+                        <a class="secondary-button list" href="#"><i class="fa fa-th-list"></i></a>
+                    </div>
 
-            <div class="tabs-content">
+                </div> <!--row end -->
 
-                <div class="tab-container tab-content active" data-content="1">
+                <div class="tabs-content">
 
-                    <div class="row list-group">
+                    <div class="tab-container tab-content active" data-content="1">
 
-                        @foreach($suggestions as $suggestion_key => $suggestion)
+                        <div class="row list-group">
 
-                            @if($suggestion_key < 4)
+                            @foreach($suggestions as $suggestion_key => $suggestion)
 
-                                <div class="item large-3 medium-6 columns group-item-grid-default">
+                                @if($suggestion_key < 4)
 
-                                    <div class="post thumb-border">
+                                    <div class="item large-3 medium-6 columns group-item-grid-default">
 
-                                        <div class="post-thumb">
+                                        <div class="post thumb-border">
 
-                                            <img src="{{$suggestion->default_image}}" alt="new video">
+                                            <div class="post-thumb">
 
-                                            <a href="{{route('user.single',$suggestion->admin_video_id)}}" class="hover-posts">
-                                                <span><i class="fa fa-play"></i>{{tr('watch_video')}}</span>
-                                            </a>
+                                                <img src="{{$suggestion->default_image}}" alt="new video">
 
-                                            <div class="video-stats clearfix">
+                                                <a href="{{route('user.single',$suggestion->admin_video_id)}}" class="hover-posts">
+                                                    <span><i class="fa fa-play"></i>{{tr('watch_video')}}</span>
+                                                </a>
 
-                                                <div class="thumb-stats pull-left">
-                                                    <h6>HD</h6>
+                                                <div class="video-stats clearfix">
+
+                                                    <div class="thumb-stats pull-left">
+                                                        <h6>HD</h6>
+                                                    </div>
+
+                                                    <div class="thumb-stats pull-right">
+                                                        <i class="fa fa-heart"></i>
+                                                        <span>{{get_video_fav_count($suggestion->admin_video_id)}}</span>
+                                                    </div>
+
+                                                    <!-- <div class="thumb-stats pull-right">
+                                                        <span>05:56</span>
+                                                    </div> -->
+
                                                 </div>
 
-                                                <div class="thumb-stats pull-right">
-                                                    <i class="fa fa-heart"></i>
-                                                    <span>{{get_video_fav_count($suggestion->admin_video_id)}}</span>
+                                            </div><!--post-thumb end-->
+
+                                            <div class="post-des">
+
+                                                <h6>
+                                                    <a href="{{route('user.single',$suggestion->admin_video_id)}}">
+                                                        {{$suggestion->title}}
+                                                    </a>
+                                                </h6>
+
+                                                <div class="post-stats clearfix">
+                                                    <p class="pull-left">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        <span>{{date('d M Y',strtotime($suggestion->publish_time))}}</span>
+                                                    </p>
+                                                    <p class="pull-left">
+                                                        <i class="fa fa-eye"></i>
+                                                        <span>{{$suggestion->watch_count}}</span>
+                                                    </p>
+                                                </div><!--post-stats end-->
+
+                                                <div class="post-summary">
+                                                    <p>{{$suggestion->description}}</p>
                                                 </div>
 
-                                                <!-- <div class="thumb-stats pull-right">
-                                                    <span>05:56</span>
-                                                </div> -->
+                                                <!--post-summary end-->
 
-                                            </div>
+                                                <div class="post-button">
+                                                    <a href="{{route('user.single',$suggestion->admin_video_id)}}" class="secondary-button">
+                                                        <i class="fa fa-play-circle"></i>{{tr('watch_video')}}
+                                                    </a>
+                                                </div>
 
-                                        </div><!--post-thumb end-->
+                                                <!--post-button end-->
 
-                                        <div class="post-des">
+                                            </div><!--post-des end-->
+                                        </div><!--post end-->
+                                    
+                                    </div>
 
-                                            <h6>
-                                                <a href="{{route('user.single',$suggestion->admin_video_id)}}">
-                                                    {{$suggestion->title}}
-                                                </a>
-                                            </h6>
+                                @endif
 
-                                            <div class="post-stats clearfix">
-                                                <p class="pull-left">
-                                                    <i class="fa fa-clock-o"></i>
-                                                    <span>{{date('d M Y',strtotime($suggestion->publish_time))}}</span>
-                                                </p>
-                                                <p class="pull-left">
-                                                    <i class="fa fa-eye"></i>
-                                                    <span>{{$suggestion->watch_count}}</span>
-                                                </p>
-                                            </div><!--post-stats end-->
+                            @endforeach
 
-                                            <div class="post-summary">
-                                                <p>{{$suggestion->description}}</p>
-                                            </div>
+                        </div><!--tab-container row end-->
+                    </div>
 
-                                            <!--post-summary end-->
+                    <!--tab-container end-->
 
-                                            <div class="post-button">
-                                                <a href="{{route('user.single',$suggestion->admin_video_id)}}" class="secondary-button">
-                                                    <i class="fa fa-play-circle"></i>{{tr('watch_video')}}
-                                                </a>
-                                            </div>
-
-                                            <!--post-button end-->
-
-                                        </div><!--post-des end-->
-                                    </div><!--post end-->
-                                
-                                </div>
-
-                            @endif
-
-                        @endforeach
-
-                    </div><!--tab-container row end-->
                 </div>
 
-                <!--tab-container end-->
+                <!-- <div class="text-center row-btn">
+                    <a class="button radius" href="#">View All Video</a>
+                </div> -->
+
+                <!--text-center end-->
 
             </div>
 
-            <div class="text-center row-btn">
-                <!-- <a class="button radius" href="#">View All Video</a> -->
-            </div>
+            <!-- large12-->
 
-            <!--text-center end-->
-
-            </div><!-- large12-->
         </div><!-- End row -->
 
     </section> 
 
 @endif
 
+@endsection
+
+@section('styles') 
+    <style type="text/css">
+        .jwplayer.jw-flag-aspect-mode {
+            min-height: 466px;
+        }
+    </style>
 @endsection

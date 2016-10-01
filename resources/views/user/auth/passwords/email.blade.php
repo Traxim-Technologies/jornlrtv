@@ -4,7 +4,7 @@
 
 <section class="registration">
     <div class="row secBg">
-        <div class="large-12 columns">
+        <div class="large-12 columns forgot-password-min">
             <div class="login-register-content">
 
                 <div class="row collapse borderBottom">
@@ -26,6 +26,7 @@
                         <h5 class="text-center">Enter your email to reset password.</h5>
 
                             <form method="post" data-abide="bhwxrp-abide" novalidate="" action="{{ url('/password/email') }}">
+                            
                                 {!! csrf_field() !!}
 
                                 @if($errors->has('email'))
@@ -39,6 +40,7 @@
                                             </strong>
                                         </p>
                                     </div>
+                                
                                 @endif
 
                                 <div class="input-group">

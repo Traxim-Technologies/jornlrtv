@@ -151,11 +151,11 @@
 
 <div id="footer-bottom">
     <div class="logo text-center">
-        <a href="{{route('user.dashboard')}}"><img src="{{Setting::get('site_logo',asset('assets/images/logo-small.png')) }}" alt="logo"></a>
+        <a href="{{route('user.dashboard')}}"><img src="{{Setting::get('site_logo',asset('logo.png')) }}" alt="logo"></a>
     </div>
 
     <div class="btm-footer-text text-center">
-        <p>2016 © {{Setting::get('site_name' , 'Live-stream')}}</p>
+        <p>2016 © {{Setting::get('site_name' , 'Start Streaming')}}</p>
     </div>
 </div>
 

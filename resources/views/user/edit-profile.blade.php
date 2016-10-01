@@ -65,11 +65,14 @@
                                                 </label>
                                             </div>
 
-                                            <div class="medium-6 columns">
-                                                <label>{{tr('email')}}:
-                                                    <input type="email" name="email" required value="{{Auth::user()->email}}" placeholder="enter your email address..">
-                                                </label>
-                                            </div>
+                                            @if(Auth::user()->login_by == 'maunal')
+                                                <div class="medium-6 columns">
+                                                    <label>{{tr('email')}}:
+                                                        <input type="email" name="email" required value="{{Auth::user()->email}}" placeholder="enter your email address..">
+                                                    </label>
+                                                </div>
+
+                                            @endif
 
                                             <div class="medium-6 columns">
                                                 <label>{{tr('address')}}:
@@ -89,21 +92,22 @@
                                                 </label>
                                             </div>
 
-
+                                            <div class="medium-12 columns">
                                             @if(Auth::user()->picture)
-                                                <img style="height: 90px; margin-bottom: 15px; border-radius:2em;" src="{{Auth::user()->picture}}">
+                                                <img class="up-img" src="{{Auth::user()->picture}}">
                                             @else
-                                                <img style="height: 90px; margin-bottom: 15px; border-radius:2em;"  src="{{asset('placeholder.png')}}">
+                                                <img class="up-img" src="{{asset('placeholder.png')}}">
                                             @endif
+                                            </div>
 
                                             <div class="medium-12 columns">
                                                 <label>{{tr('picture')}}:
                                                     <input type="file" name="picture" id="picture">
                                                 </label>
                                             </div>
-
-                                            <button class="button expanded" type="submit" name="setting">{{tr('update_now')}}</button>
-
+                                            <div class="medium-12 columns">
+                                                <button class="button expanded" type="submit" name="setting">{{tr('update_now')}}</button>
+                                            </div>
                                         </div>
 
                                         <!--setting-form-inner row end-->
