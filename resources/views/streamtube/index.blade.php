@@ -9,6 +9,46 @@
 
             <div class="page-inner col-sm-9 col-md-10">
 
+                @if(count($wishlists) > 0)
+
+                    <div class="slide-area">
+                        <div class="box-head">
+                            <h3>{{tr('wishlist')}}</h3>
+                        </div>
+
+                        <div class="box">
+
+                            @foreach($wishlists as $wishlist)
+                            <div class="slide-box">
+                                <div class="slide-image">
+                                    <a href="{{route('user.single' , $wishlist->admin_video_id)}}"><img src="{{$wishlist->default_image}}" /></a>
+                                </div><!--end of slide-image-->
+
+                                <div class="video-details">
+                                    <div class="video-head">
+                                        <a href="{{route('user.single' , $wishlist->admin_video_id)}}">{{$wishlist->title}}</a>
+                                    </div>
+                                    <div class="sugg-description">
+                                        <p>{{tr('duration')}}: {{$wishlist->duration}}</p>
+                                    </div><!--end of sugg-description--> 
+
+                                    <span class="stars">
+                                        <a href="#"><i @if($wishlist->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($wishlist->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($wishlist->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($wishlist->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($wishlist->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                    </span> 
+                                </div><!--end of video-details-->
+                            </div><!--end of slide-box-->
+                            @endforeach
+                   
+                              
+                        </div><!--end of box--> 
+                    </div><!--end of slide-area-->
+
+                @endif
+
 
                 @if(count($recent_videos) > 0)
 
@@ -34,11 +74,11 @@
                                     </div><!--end of sugg-description--> 
 
                                     <span class="stars">
-                                        <a href="#"><i @if($recent_video->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($recent_video->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($recent_video->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($recent_video->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($recent_video->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($recent_video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($recent_video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($recent_video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($recent_video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($recent_video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -74,11 +114,11 @@
                                     </div><!--end of sugg-description--> 
 
                                     <span class="stars">
-                                        <a href="#"><i @if($trending->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($trending->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($trending->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($trending->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($trending->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($trending->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($trending->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($trending->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($trending->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($trending->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -114,11 +154,11 @@
                                     </div><!--end of sugg-description--> 
 
                                     <span class="stars">
-                                        <a href="#"><i @if($suggestion->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($suggestion->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($suggestion->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($suggestion->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($suggestion->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($suggestion->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($suggestion->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($suggestion->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($suggestion->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($suggestion->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -154,11 +194,11 @@
                                     </div><!--end of sugg-description--> 
 
                                     <span class="stars">
-                                        <a href="#"><i @if($watch_list->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($watch_list->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($watch_list->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($watch_list->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                       <a href="#"><i @if($watch_list->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($watch_list->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($watch_list->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($watch_list->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($watch_list->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($watch_list->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->

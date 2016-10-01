@@ -14,7 +14,7 @@
                 <li><a href="#">Creators</a></li>
                 <li><a href="#">Advertise</a></li>
                 <li><a href="#">Developers</a></li>
-                <li><a href="#">+{{Setting::get('site_name')}}</a></li>
+                <li><a href="#">{{Setting::get('site_name')}}</a></li>
             </ul>
         
             <ul class="term">
@@ -23,7 +23,7 @@
                 <li><a href="#">Policy&amp;Safety</a></li>
                 <li><a href="#">Send Feedback</a></li>
                 <li><a href="#">Try Something New!</a></li>
-                <li><a href="#">&#169; 2016 {{Setting::get('site_name')}}, LLC</a></li>
+                <li><a href="#">&#169; 2016 {{Setting::get('site_name')}}</a></li>
             </ul>
         </div>   
     </div><!--end of footer1-->

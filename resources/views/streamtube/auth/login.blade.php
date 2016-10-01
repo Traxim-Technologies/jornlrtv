@@ -21,6 +21,18 @@
                         </a>
                     </form>
                 </div>
+
+                <div class="social-twitter">
+                    <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                    <input type="hidden" value="twitter" name="provider" id="provider">
+                    <a href="#">
+                        <button type="submit">
+                            <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
+                        </button>
+                    </a>
+                    </form>
+                </div>
+                    
                 <div class="social-google">
                     <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
                         <input type="hidden" value="google" name="provider" id="provider">

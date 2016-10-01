@@ -25,7 +25,7 @@
 
                                          <div class="form-group">
                                             <label for="exampleInputFile">{{tr('upload_image')}}</label>
-                                            <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                                            <input type="file" name="picture" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
                                         </div>
 
                                         <div class="form-group">
@@ -33,14 +33,20 @@
                                             <input required value="{{Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username">
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="email">{{tr('email')}}</label>
-                                            <input type="email" value="{{Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                                        </div>
+                                        @if(Auth::user()->login_by == 'manual')
+
+                                            <div class="form-group">
+                                                <label for="email">{{tr('email')}}</label>
+                                                <input type="email" value="{{Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                            
+                                            </div>
+
+                                        @endif
 
                                         <div class="form-group">
                                             <label for="mobile">{{tr('mobile')}}</label>
                                             <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="Enter mobile">
+                                        
                                         </div>
                                               
                                         <div class="form-group">
@@ -91,16 +97,16 @@
                                                     </div><!--end of cross-mark-->                       
                                                 </div> <!--end of history-head--> 
 
-                                                <div class="description">
+                                                <!-- <div class="description">
                                                     <p>{{$video->description}}</p>
-                                                </div><!--end of description--> 
+                                                </div> --><!--end of description--> 
 
                                                 <span class="stars">
-                                                    <a href="#"><i @if($video->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 </span>                                                       
                                             </div><!--end of history-title--> 
                                         </div><!--end of main-history-->

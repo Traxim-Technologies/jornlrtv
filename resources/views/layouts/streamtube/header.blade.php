@@ -8,7 +8,7 @@
         </div><!--test end-->
 
         <div id="custom-search-input" class="">
-            <form method="post" action="{{route('search-all')}}">
+            <form method="post" action="{{route('search-all')}}" id="userSearch">
             <div class="input-group">
                 
                     <input type="text" id="auto_complete_search" name="key" class="search-query form-control" required placeholder="Search" />
@@ -37,6 +37,8 @@
                         <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
                         <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
                         <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
                       </ul>

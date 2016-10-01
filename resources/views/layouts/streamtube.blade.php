@@ -22,6 +22,23 @@
         }
     </style>
 
+    @if(Setting::get('google_analytics'))
+        <?php echo Setting::get('google_analytics'); ?>
+    @endif
+
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+    <meta property="og:description" content="The best solution to start up a video streaming venture!" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+    <meta property="og:image" content="{{Setting::get('site_icon')}}" />
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:description" content="The best solution to start up a video streaming venture!"/>
+    <meta name="twitter:title" content="{{Setting::get('site_name' , 'Start Streaming')}}"/>
+    <meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
+
     @yield('styles')
 
 </head>
@@ -109,7 +126,7 @@
 
                             // console.log('View AALLLLLLLLL');
 
-                            window.location.href = "{{route('search', array('q' => 'all'))}}";
+                            window.location.href = "{{route('search-all', array('q' => 'all'))}}";
 
                         } else {
                             // console.log("User Submit");
@@ -129,6 +146,12 @@
     </script>
 
     @yield('scripts')
+
+    <script type="text/javascript">
+        @if(isset($page))
+            $("#{{$page}}").addClass("active");
+        @endif
+    </script>
 </body>
 
 </html>

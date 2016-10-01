@@ -39,6 +39,11 @@ textarea[name=comments] {
                                     </div>
 
                                 @else
+
+                                    <div class="embed-responsive embed-responsive-16by9" id="main_video_setup_error" style="display: none;">
+                                        <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Trailer Video">
+                                    </div>
+
                                     @if($video->video_upload_type == 1)
                                         
                                         <?php $url = $video->video; ?>
@@ -69,7 +74,11 @@ textarea[name=comments] {
                                         <div id="trailer-video-player"></div>
                                     @else
 
-                                        @if(check_valid_url($video->tralier_video))
+                                        <div class="embed-responsive embed-responsive-16by9" id="trailer_video_setup_error" style="display: none;">
+                                            <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Trailer Video">
+                                        </div>
+
+                                        @if(check_valid_url($video->trailer_video))
 
                                             <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
 
@@ -224,19 +233,19 @@ textarea[name=comments] {
                                                     
                                                 </a>
 
-                                                <a class="share-google" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->admin_video_id)}}">
+                                                <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->admin_video_id)}}">
                                                    
-                                                    <i class="fa fa-google"></i>{{tr('share_on_twitter')}}
+                                                    <i class="fa fa-twitter"></i>{{tr('share_on_twitter')}}
                                                     
                                                 </a> 
                                             </div><!--end of share-->
 
                                             <div class="stars ratings">
-                                                <a href="#"><i @if($video->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                             </div><!--end of stars-->
 
                                         </div><!--end of share-details-->                               
@@ -245,7 +254,7 @@ textarea[name=comments] {
 
                                 </div><!--end of video-content-->
                                 
-                                <div class="v-comments">
+                                @if(count($comments) > 0) <div class="v-comments"> @endif
 
                                     @if(count($comments) > 0) 
                                         <h3>{{tr('comments')}}
@@ -279,13 +288,12 @@ textarea[name=comments] {
                                             </div>
 
                                         @endif
-                                        <div class="feed-comment">
-                                        <span id="new-comment"></span>
+
                                         @if(count($comments) > 0)
+                                        
+                                            <div class="feed-comment">
 
-                                            
-
-                                                
+                                                <span id="new-comment"></span>
 
                                                 @foreach($comments as $c =>  $comment)
 
@@ -297,7 +305,7 @@ textarea[name=comments] {
                                                         <div class="display-comhead">
                                                             <span class="sub-comhead">
                                                                 <a href="#"><h5 style="float:left">{{$comment->username}}</h5></a>
-                                                                <a href="#"><p>{{$comment->created_at->diffForHumans()}}</p></a>
+                                                                <a href="#" class="text-none"><p>{{$comment->created_at->diffForHumans()}}</p></a>
                                                                 <p class="com-para">{{$comment->comment}}</p>
                                                             </span>             
                                                             
@@ -305,16 +313,21 @@ textarea[name=comments] {
                                                     </div><!--display-com-->
 
                                                 @endforeach
-                                                
-                                            
 
+                                            </div>
+
+                                        @else
+                                            <div class="feed-comment">
+
+                                                <span id="new-comment"></span>
+                                            </div>
+                                            <!-- <p>{{tr('no_comments')}}</p> -->
+                                        
                                         @endif
-
-                                        </div>
                                             
                                     </div>
 
-                                </div><!--end of v-comments-->
+                                @if(count($comments) > 0) </div> @endif<!--end of v-comments-->
                                                                 
                             </div>
                             <!--end of main-content-->
@@ -345,11 +358,11 @@ textarea[name=comments] {
                                                     </div><!--end of sugg-description--> 
 
                                                     <span class="stars">
-                                                        <a href="#"><i @if($suggestion->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     </span>                                                       
                                                 </div><!--end of sugg-head-->
                                     
@@ -387,55 +400,83 @@ textarea[name=comments] {
 
     <script type="text/javascript">
         
-        jQuery(document).ready(function(){    
+        jQuery(document).ready(function(){   
 
             @if($video->video_type == 1)
 
-                console.log('Inside Video');
-                    
-                console.log('Inside Video Player');
-                
-                    console.log('Inside Trailer Video');
-
-                    console.log("{{$trailer_url}}");
+                // Opera 8.0+
+                var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+                // Firefox 1.0+
+                var isFirefox = typeof InstallTrigger !== 'undefined';
+                // At least Safari 3+: "[object HTMLElementConstructor]"
+                var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+                // Internet Explorer 6-11
+                var isIE = /*@cc_on!@*/false || !!document.documentMode;
+                // Edge 20+
+                var isEdge = !isIE && !!window.StyleMedia;
+                // Chrome 1+
+                var isChrome = !!window.chrome && !!window.chrome.webstore;
+                // Blink engine detection
+                var isBlink = (isChrome || isOpera) && !!window.CSS;
 
                 @if($trailer_url)
 
-                    var playerInstance = jwplayer("trailer-video-player");
+                    if(isOpera || isSafari) {
 
-                    playerInstance.setup({
-                        file: "{{$trailer_url}}",
-                        image: "{{$video->default_image}}",
-                        width: "100%",
-                        aspectratio: "16:9",
-                        primary: "flash",
-                    });
+                        jQuery('#trailer_video_setup_error').show();
+                        jQuery('#main_video_setup_error').hide();
+                        confirm('The video format is not supported in this browser. Please option some other browser.');
 
-                @endif
+                    } else {
 
+                        var playerInstance = jwplayer("trailer-video-player");
 
-                @if(!$history_status && Auth::check())
-
-                    jwplayer().on('displayClick', function(e) {
-                        jQuery.ajax({
-                            url: "{{route('user.add.history')}}",
-                            type: 'post',
-                            data: {'admin_video_id' : "{{$video->admin_video_id}}"},
-                            success: function(data) {
-
-                               if(data.success == true) {
-
-                                console.log('Added to history');
-
-                               } else {
-                                    console.log('Wrong...!');
-                               }
-                            }
+                        playerInstance.setup({
+                            file: "{{$trailer_url}}",
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
                         });
-                        
-                    });
 
-                @endif
+                        playerInstance.on('setupError', function() {
+
+                            jQuery("#trailer-video-player").css("display", "none");
+
+                            jQuery('#main_video_setup_error').hide();
+
+                            jQuery('#trailer_video_setup_error').css("display", "block");
+
+                            confirm('The video format is not supported in this browser. Please option some other browser.');
+                        
+                        });
+
+                        @if(!$history_status && Auth::check())
+
+                            jwplayer().on('displayClick', function(e) {
+                                jQuery.ajax({
+                                    url: "{{route('user.add.history')}}",
+                                    type: 'post',
+                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                    success: function(data) {
+
+                                       if(data.success == true) {
+
+                                        console.log('Added to history');
+
+                                       } else {
+                                            console.log('Wrong...!');
+                                       }
+                                    }
+                                });
+                                
+                            });
+
+                        @endif
+                    
+                    }
+
+                @endif               
 
             @endif       
 
@@ -491,7 +532,7 @@ textarea[name=comments] {
 
             }).blur(function(){
                 if(this.value==""){
-                     this.value = "Write your comment here...";
+                     this.value = "";
                 }
             });
 
@@ -503,33 +544,40 @@ textarea[name=comments] {
                 //get the action-url of the form
                 var actionurl = e.currentTarget.action;
 
-                //do your own request an handle the results
-                jQuery.ajax({
-                        url: actionurl,
-                        type: 'post',
-                        dataType: 'json',
-                        data: jQuery("#comment_sent").serialize(),
-                        success: function(data) {
+                var form_data = jQuery("#comment").val();
 
-                           if(data.success == true) {
+                if(form_data) {
 
-                            @if(Auth::check())
-                                jQuery('#comment').val("");
-                                jQuery('#no_comment').hide();
-                                var comment_count = 0;
-                                var count = 0;
-                                comment_count = jQuery('#comment_count').text();
-                                var count = parseInt(comment_count) + 1;
-                                jQuery('#comment_count').text(count);
-                                jQuery('#video_comment_count').text(count);
+                    //do your own request an handle the results
+                    jQuery.ajax({
+                            url: actionurl,
+                            type: 'post',
+                            dataType: 'json',
+                            data: jQuery("#comment_sent").serialize(),
+                            success: function(data) {
 
-                                jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
-                            @endif
-                           } else {
-                                console.log('Wrong...!');
-                           }
-                        }
-                });
+                               if(data.success == true) {
+
+                                @if(Auth::check())
+                                    jQuery('#comment').val("");
+                                    jQuery('#no_comment').hide();
+                                    var comment_count = 0;
+                                    var count = 0;
+                                    comment_count = jQuery('#comment_count').text();
+                                    var count = parseInt(comment_count) + 1;
+                                    jQuery('#comment_count').text(count);
+                                    jQuery('#video_comment_count').text(count);
+
+                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
+                                @endif
+                               } else {
+                                    console.log('Wrong...!');
+                               }
+                            }
+                    });
+                } else {
+                    return false;
+                }
 
             });
 
@@ -544,30 +592,52 @@ textarea[name=comments] {
 
                     @if($url)
 
-                        var playerInstance = jwplayer("main-video-player");
+                        if(isOpera || isSafari) {
 
-                        playerInstance.setup({
-                           
-                            file: "{{$url}}",
-                            image: "{{$video->default_image}}",
-                            width: "100%",
-                            aspectratio: "16:9",
-                            primary: "flash",
-                            controls : true,
-                            "controlbar.idlehide" : false,
-                            controlBarMode:'floating',
-                            "controls": {
-                              "enableFullscreen": false,
-                              "enablePlay": false,
-                              "enablePause": false,
-                              "enableMute": true,
-                              "enableVolume": true
-                            },
-                            // autostart : true,
-                            "sharing": {
-                                "sites": ["reddit","facebook","twitter"]
-                              }
-                        });
+                            jQuery('#main_video_setup_error').show();
+                            jQuery('#trailer_video_setup_error').hide();
+                            jQuery('#main-video-player').hide();
+
+                            confirm('The video format is not supported in this browser. Please option some other browser.');
+
+                        } else {
+
+                            var playerInstance = jwplayer("main-video-player");
+
+                            playerInstance.setup({
+                               
+                                file: "{{$url}}",
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                                controls : true,
+                                "controlbar.idlehide" : false,
+                                controlBarMode:'floating',
+                                "controls": {
+                                  "enableFullscreen": false,
+                                  "enablePlay": false,
+                                  "enablePause": false,
+                                  "enableMute": true,
+                                  "enableVolume": true
+                                },
+                                // autostart : true,
+                                "sharing": {
+                                    "sites": ["reddit","facebook","twitter"]
+                                  }
+                            
+                            });
+
+                            playerInstance.on('setupError', function() {
+
+                                jQuery("#main-video-player").css("display", "none");
+                                jQuery('#trailer_video_setup_error').hide();
+                                jQuery('#main_video_setup_error').css("display", "block");
+
+                                confirm('The video format is not supported in this browser. Please option some other browser.');
+                            
+                            });
+                        }
                     
                     @else
                         jQuery('#main_video_error').show();

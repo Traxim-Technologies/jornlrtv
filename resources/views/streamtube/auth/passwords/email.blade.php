@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="form-background">
+    <div class="form-background forgot-password-reset">
         <div class="common-form login-common forgot">
 
             <div class="social-form">

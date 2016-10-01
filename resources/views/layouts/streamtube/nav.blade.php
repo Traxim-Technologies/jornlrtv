@@ -1,18 +1,18 @@
 <div class="y-menu col-sm-3 col-md-2">
     <ul class="y-home menu1">
-        <li><a href="{{route('user.dashboard')}}"><img src="{{asset('streamtube/images/y1.jpg')}}">{{tr('home')}}</a></li>
-        <li><a href="{{route('user.trending')}}"><img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}</a></li>
+        <li id="home"><a href="{{route('user.dashboard')}}"><img src="{{asset('streamtube/images/y1.jpg')}}">{{tr('home')}}</a></li>
+        <li id="trending"><a href="{{route('user.trending')}}"><img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}</a></li>
     </ul>
 
-    @if(count($categories) > 0)
+    @if(count($categories = get_categories()) > 0)
         
         <ul class="y-home ">
-            <h3>Best of Youtube</h3>
-                @foreach($categories as $category)
-                    <li>
-                        <a href="{{route('user.category',$category->id)}}"><img src="{{$category->picture}}">{{$category->name}}</a>
-                    </li>
-                @endforeach              
+            <h3>{{tr('categories')}}</h3>
+            @foreach($categories as $category)
+                <li>
+                    <a href="{{route('user.category',$category->id)}}"><img src="{{$category->picture}}">{{$category->name}}</a>
+                </li>
+            @endforeach              
         </ul>
 
     @endif

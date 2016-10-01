@@ -42,11 +42,11 @@
                                             </div><!--end of description--> 
 
                                             <span class="stars">
-                                               <a href="#"><i @if($video->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                               <a href="#"><i @if($video->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                               <a href="#"><i @if($video->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                               <a href="#"><i @if($video->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                               <a href="#"><i @if($video->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                               <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                               <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                               <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                               <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                               <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                             </span>                                                       
                                         </div><!--end of history-title--> 
                                         
@@ -57,9 +57,19 @@
 
                         @else
 
+                            <p class="no-result">{{tr('no_search_found')}}</p>
+
                         @endif
                        
                     </ul>
+
+                    @if(count($videos) > 0)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+                            </div>
+                        </div>
+                    @endif
                     
                 </div>
             </div>

@@ -5,7 +5,12 @@
         </div><!--test end-->
 
         <div class="y-button">
-        <a href="{{route('user.register.form')}}" class="y-signin">{{tr('signup')}}</a>
+
+        	@if(Auth::check())
+        		<a href="{{route('user.profile')}}" class="y-signin">{{tr('back_profile')}}</a>
+        	@else
+        		<a href="{{route('user.register.form')}}" class="y-signin">{{tr('signup')}}</a>
+        	@endif
         
         </div><!--y-button end-->
 

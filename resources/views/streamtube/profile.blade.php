@@ -22,17 +22,30 @@
 
                                     <div class="profile-title">
                                         <h3>{{Auth::user()->name}}</h3>
-                                        <h4>{{Auth::user()->email}}</h4>
-                                        <p>{{Auth::user()->mobilr}}</p>  
-                                        <p>{{Auth::user()->description}}</p>                                
+                                        
+                                        @if(Auth::user()->login_by == 'manual')
+                                            <h4>{{Auth::user()->email}}</h4>
+                                        @endif
+                                        
+                                        @if(Auth::user()->user_type)
+                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days(Auth::user()->id)}} days</b></p>
+                                        @endif
+                                        <p>{{Auth::user()->mobile   }}</p>  
+                                        <p>{{Auth::user()->description}}</p>
                                     </div><!--end of profile-title-->
                                     <form>
                                     <br>
                                         <div class="change-pwd edit-pwd edit-pro-btn">
+
+                                            <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning">{{tr('payment')}}</a>
+
                                             <a href="{{route('user.update.profile')}}" class="btn btn-primary">{{tr('edit_profile')}}</a>
                                             
-                                            <a href="{{route('user.change.password')}}"
+                                            @if(Auth::user()->login_by == 'manual')
+                                                <a href="{{route('user.change.password')}}"
                                             class="btn btn-danger">{{tr('change_password')}}</a>
+
+                                            @endif
                                         </div> 
                                     </form>                                
                                 </div><!--end of sub-profile-->                            
@@ -76,11 +89,11 @@
                                                 </div> --><!--end of description--> 
 
                                                 <span class="stars">
-                                                    <a href="#"><i @if($video->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    <a href="#"><i @if($video->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 </span>                                                       
                                             </div><!--end of history-title--> 
                                         </div><!--end of main-history-->

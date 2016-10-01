@@ -17,32 +17,40 @@
                     <div class="recommend-list row">
 
                         @foreach($videos as $video)
-                        <div class="slide-box recom-box">
-                            <div class="slide-image recom-image">
-                                <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}" /></a>
-                            </div><!--end of slide-image-->
+                            <div class="slide-box recom-box">
+                                <div class="slide-image recom-image">
+                                    <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}" /></a>
+                                </div><!--end of slide-image-->
 
-                            <div class="video-details recom-details">
-                                <div class="video-head">
-                                    <a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a>
-                                </div>
-                                <div class="sugg-description">
-                                    <p>{{tr('duration')}}: {{$video->duration}}</p>
-                                </div><!--end of sugg-description--> 
+                                <div class="video-details recom-details">
+                                    <div class="video-head">
+                                        <a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a>
+                                    </div>
+                                    <div class="sugg-description">
+                                        <p>{{tr('duration')}}: {{$video->duration}}</p>
+                                    </div><!--end of sugg-description--> 
 
-                                <span class="stars">
-                                    <a href="#"><i @if($video->rating > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                   <a href="#"><i @if($video->rating > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                   <a href="#"><i @if($video->rating > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                   <a href="#"><i @if($video->rating > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                   <a href="#"><i @if($video->rating > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                </span>  
-                            </div><!--end of video-details-->
-                        </div><!--end of slide-box-->
+                                    <span class="stars">
+                                        <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                       <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                    </span>  
+                                </div><!--end of video-details-->
+                            </div><!--end of slide-box-->
                         @endforeach
                         
 
                     </div><!--end of recommend-list-->
+
+                     @if(count($videos) > 0)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div align="center" id="paglink"><?php //echo $videos->links(); ?></div>
+                            </div>
+                        </div>
+                    @endif
                 </div><!--end of slide-area-->
 
                 
