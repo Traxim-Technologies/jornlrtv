@@ -18,6 +18,10 @@ use App\Genre;
 
 use App\AdminVideo;
 
+use App\User;
+
+use App\UserPayment;
+
 use Validator;
 
 use Hash;
@@ -32,10 +36,22 @@ use Setting;
 
 use Log;
 
+use DB;
+
 use Elasticsearch\ClientBuilder;
+
+define('NO_INSTALL' , 0);
+
+define('SYSTEM_CHECK' , 1);
+
+define('THEME_CHECK' , 2);
+
+define('INSTALL_COMPLETE' , 3);
 
 
 class ApplicationController extends Controller {
+
+    public $expiry_date = "";
 
 
     public function select_genre(Request $request) {
@@ -67,8 +83,103 @@ class ApplicationController extends Controller {
         Log::info('cron_publish_video');
 
         $videos = AdminVideo::where('publish_time' ,'<=' ,date('Y-m-d H:i:s'))
-                        ->where('status' , 0)
-                        ->update(['status' , 1]);
+                        ->where('status' , 0)->get();
+        foreach ($videos as $key => $video) {
+            Log::info('Change the status');
+            $video->status = 1;
+            $video->save();
+        }
+    }
+
+    public function send_notification_user_payment()
+    {
+        Log::info("Notification to User for Payment");
+
+        $time = date("Y-m-d");
+        // Get provious provider availability data
+        $query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
+                  FROM user_payments";
+
+        $payments = DB::select(DB::raw($query));
+
+        Log::info(print_r($payments,true));
+
+        if($payments) {
+            foreach($payments as $payment){
+                if($payment->date_difference <= 864000)
+                {
+                    // Delete provider availablity
+                    Log::info('Send mail to user');
+
+                    if($user = User::find($payment->user_id)) {
+
+                        Log::info($user->email);
+
+
+                        $email_data = array();
+                        // Send welcome email to the new user:
+                        $subject = tr('payment_notification');
+                        $email_data['id'] = $user->id;
+                        $email_data['name'] = $user->name;
+                        $email_data['expiry_date'] = $payment->expiry_date;
+                        $email_data['status'] = 0;
+                        $page = "emails.payment-expiry";
+                        $email = $user->email;
+                        $result = Helper::send_email($page,$subject,$email,$email_data);
+
+                        \Log::info("Email".$result);
+                    }
+                }
+            }
+            Log::info("Notification to the User successfully....:-)");
+        } else {
+            Log::info(" records not found ....:-(");
+        }
+    }
+
+    public function user_payment_expiry()
+    {
+        Log::info("user_payment_expiry");
+
+        $time = date("Y-m-d");
+        // Get provious provider availability data
+        $query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
+                  FROM user_payments";
+
+        $payments = DB::select(DB::raw($query));
+
+        Log::info(print_r($payments));
+
+        if($payments) {
+            foreach($payments as $payment){
+                if($payment->date_difference < 0)
+                {
+                    // Delete provider availablity
+                    Log::info('Send mail to user');
+
+                    $email_data = array();
+                    
+                    if($user = User::find($payment->user_id)) {
+                        $user->user_type = 0;
+                        $user->save();
+                        // Send welcome email to the new user:
+                        $subject = tr('payment_notification');
+                        $email_data['id'] = $user->id;
+                        $email_data['username'] = $user->name;
+                        $email_data['expiry_date'] = $payment->expiry_date;
+                        $email_data['status'] = 1;
+                        $page = "emails.payment-expiry";
+                        $email = $user->email;
+                        $result = Helper::send_email($page,$subject,$email,$email_data);
+
+                        \Log::info("Email".$result);
+                    }
+                }
+            }
+            Log::info("Notification to the User successfully....:-)");
+        } else {
+            Log::info(" records not found ....:-(");
+        }
     }
 
     public function addIndex() {
@@ -141,7 +252,32 @@ class ApplicationController extends Controller {
     }
 
     public function test() {
-        return view('errors.404');
+
+        return view('emails.test');
+
+        $settings = Setting::get('installation_process');
+
+        if( $settings == NO_INSTALL) {
+            $title = "System Check";
+            return view('install.system-check')->with('title' , $title);
+        } 
+        if ($settings == SYSTEM_CHECK) {
+            $title = "Choose Theme";
+            return view('install.install-theme')->with('title' , $title);
+        } 
+
+        if($settings == THEME_CHECK ) {
+            $title = "Configure Site Settings";
+
+            return view('install.install-others')->with('title' , $title);
+        }
+
+        if($settings == INSTALL_COMPLETE) {
+            return \Redirect::route('user.dashboard');
+        }
+        
+        return \Redirect::route('user.dashboard');    
+
     }
 
     public function search_video(Request $request) {
@@ -166,6 +302,8 @@ class ApplicationController extends Controller {
         } else {
 
             $q = $request->term;
+
+            \Session::set('user_search_key' , $q);
 
             $items = array();
             
@@ -193,7 +331,7 @@ class ApplicationController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'key' => 'required',
+                'key' => '',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists',
@@ -207,7 +345,15 @@ class ApplicationController extends Controller {
         
         } else {
 
-            $q = $request->key;
+            if($request->has('key')) {
+                $q = $request->key;    
+            } else {
+                $q = \Session::get('user_search_key');
+            }
+
+            if($q == "all") {
+                $q = \Session::get('user_search_key');
+            }
 
             $videos = Helper::search_video($q,1);
 

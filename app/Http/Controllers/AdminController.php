@@ -34,6 +34,8 @@ use App\UserRating;
 
 use App\Settings;
 
+use App\Page;
+
 use App\Helpers\Helper;
 
 use Validator;
@@ -51,6 +53,14 @@ use Redirect;
 use Setting;
 
 use Log;
+
+use App\Jobs\NormalPushNotification;
+
+define('USER', 0);
+
+define('Moderator',1);
+
+define('NONE', 0);
 
 
 define('DEFAULT_TRUE', 1);
@@ -335,7 +345,8 @@ class AdminController extends Controller
                 $moderator_user->name = $user->name;
                 $moderator_user->email = $user->email;
                 if($user->login_by == "manual") {
-                    $moderator_user->password = $user->password;    
+                    $moderator_user->password = $user->password;  
+                    $new_password = "Please use you user login Pasword.";
                 } else {
                     $new_password = time();
                     $new_password .= rand();
@@ -349,10 +360,15 @@ class AdminController extends Controller
                 $moderator_user->address = $user->address;
                 $moderator_user->save();
 
+                $email_data = array();
+
                 $subject = Helper::tr('user_welcome_title');
-                $page = "emails.admin.welcome";
+                $page = "emails.moderator_welcome";
                 $email = $user->email;
-                $email_data = $moderator;
+                $email_data['name'] = $moderator_user->name;
+                $email_data['email'] = $moderator_user->email;
+                $email_data['password'] = $new_password;
+
                 Helper::send_email($page,$subject,$email,$email_data);
 
                 $moderator = $moderator_user;
@@ -1043,6 +1059,7 @@ class AdminController extends Controller
                              'admin_videos.description' , 'admin_videos.ratings' , 
                              'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
                              'admin_videos.default_image',
+                             'admin_videos.banner_image',
 
                              'admin_videos.category_id as category_id',
                              'admin_videos.sub_category_id',
@@ -1091,7 +1108,7 @@ class AdminController extends Controller
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                     ->select('admin_videos.id as video_id' ,'admin_videos.title' , 
                              'admin_videos.description' , 'admin_videos.ratings' , 
-                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
+                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,'admin_videos.is_banner','admin_videos.banner_image',
                              'admin_videos.video','admin_videos.trailer_video',
                              'admin_videos.video_type','admin_videos.video_upload_type',
                              'admin_videos.publish_time','admin_videos.duration',
@@ -1106,11 +1123,19 @@ class AdminController extends Controller
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->first();
 
+        $page = 'videos';
+        $sub_page = 'add-video';
+
+        if($video->is_banner == 1) {
+            $page = 'banner-videos';
+            $sub_page = 'banner-videos';
+        }
+
          return view('admin.edit-video')
                 ->with('categories' , $categories)
                 ->with('video' ,$video)
-                ->with('page' ,'videos')
-                ->with('sub_page' ,'add-video');
+                ->with('page' ,$page)
+                ->with('sub_page' ,$sub_page);
     }
 
     public function add_video_process(Request $request) {
@@ -1155,6 +1180,7 @@ class AdminController extends Controller
                     'sub_category_id' => 'required|integer|exists:sub_categories,id,category_id,'.$request->category_id,
                     'genre'     => 'exists:genres,id,sub_category_id,'.$request->sub_category_id,
                     'default_image' => 'required|mimes:jpeg,jpg,bmp,png',
+                    'banner_image' => 'mimes:jpeg,jpg,bmp,png',
                     'other_image1' => 'required|mimes:jpeg,jpg,bmp,png',
                     'other_image2' => 'required|mimes:jpeg,jpg,bmp,png',
                     'ratings' => 'required',
@@ -1181,6 +1207,8 @@ class AdminController extends Controller
 
             if($request->video_type == VIDEO_TYPE_UPLOAD) {
 
+                $video->video_upload_type = $request->video_upload_type;
+
                 if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
 
                     $video->video = Helper::upload_picture($video_link);
@@ -1203,11 +1231,15 @@ class AdminController extends Controller
 
             $video->video_type = $request->video_type;
 
-            $video->video_upload_type = $request->video_upload_type;
 
             $video->publish_time = date('Y-m-d H:i:s', strtotime($request->publish_time));
             
             $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
+
+            if($request->is_banner) {
+                $video->is_banner = 1;
+                $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
+            }
 
             $video->ratings = $request->ratings;
             $video->reviews = $request->reviews;
@@ -1229,9 +1261,10 @@ class AdminController extends Controller
                 Helper::upload_video_image($request->file('other_image1'),$video->id,2);
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
-
-                return redirect(route('admin.videos'));
-
+                if($video->is_banner)
+                    return redirect(route('admin.banner-videos'));
+                else
+                    return redirect(route('admin.videos'));
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
             }
@@ -1356,7 +1389,18 @@ class AdminController extends Controller
                 Helper::delete_picture($video->default_image);
                 $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
             }
-            
+
+            if($video->is_banner == 1) {
+                if($request->hasFile('banner_image')) {
+                    Helper::delete_picture($video->banner_image);
+                    $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
+                }
+            }
+
+            $video->video_type = $request->video_type ? $request->video_type : $video->video_type;
+
+            $video->video_upload_type = $request->video_upload_type ? $request->video_upload_type : $video->video_upload_type;
+
             $video->ratings = $request->has('ratings') ? $request->ratings : $video->ratings;
 
             $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;
@@ -1404,7 +1448,7 @@ class AdminController extends Controller
                              'admin_videos.description' , 'admin_videos.ratings' , 
                              'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
                              'admin_videos.video','admin_videos.trailer_video',
-                             'admin_videos.default_image','admin_videos.video_type',
+                             'admin_videos.default_image','admin_videos.banner_image','admin_videos.is_banner','admin_videos.video_type',
                              'admin_videos.video_upload_type',
 
                              'admin_videos.category_id as category_id',
@@ -1420,10 +1464,18 @@ class AdminController extends Controller
                                 ->orderBy('is_default' , 'desc')
                                 ->get();
 
+        $page = 'videos';
+        $sub_page = 'add-video';
+
+        if($videos->is_banner == 1) {
+            $page = 'banner-videos';
+            $sub_page = 'banner-videos';
+        }
+
         return view('admin.view-video')->with('video' , $videos)
                     ->with('video_images' , $admin_video_images)
-                    ->withPage('videos')
-                    ->with('sub_page','view-videos');
+                    ->withPage($page)
+                    ->with('sub_page',$sub_page);
         }
     }
 
@@ -1477,6 +1529,69 @@ class AdminController extends Controller
         $video = AdminVideo::where('id' , $id)->update(['is_home_slider' => 1] );
 
         return back()->with('flash_success', tr('slider_success'));
+    
+    }
+
+    public function banner_videos(Request $request) {
+
+        $videos = AdminVideo::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
+                    ->where('admin_videos.is_banner' , 1 )
+                    ->select('admin_videos.id as video_id' ,'admin_videos.title' , 
+                             'admin_videos.description' , 'admin_videos.ratings' , 
+                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
+                             'admin_videos.default_image',
+                             'admin_videos.banner_image',
+
+                             'admin_videos.category_id as category_id',
+                             'admin_videos.sub_category_id',
+                             'admin_videos.genre_id',
+                             'admin_videos.is_home_slider',
+
+                             'admin_videos.status','admin_videos.uploaded_by',
+                             'admin_videos.edited_by','admin_videos.is_approved',
+
+                             'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
+                             'genres.name as genre_name')
+                    ->orderBy('admin_videos.created_at' , 'desc')
+                    ->get();
+
+        return view('admin.banner-videos')->with('videos' , $videos)
+                    ->withPage('banner-videos')
+                    ->with('sub_page','view-banner-videos');
+   
+    }
+
+    public function add_banner_video(Request $request) {
+
+        $categories = Category::where('categories.is_approved' , 1)
+                        ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
+                            'categories.is_series' ,'categories.status' , 'categories.is_approved')
+                        ->leftJoin('sub_categories' , 'categories.id' , '=' , 'sub_categories.category_id')
+                        ->groupBy('sub_categories.category_id')
+                        ->havingRaw("COUNT(sub_categories.id) > 0")
+                        ->orderBy('categories.name' , 'asc')
+                        ->get();
+
+        return view('admin.banner-video-upload')
+                ->with('categories' , $categories)
+                ->with('page' ,'banner-videos')
+                ->with('sub_page' ,'add-banner-video');
+
+    }
+
+    public function change_banner_video($id) {
+
+        $video = AdminVideo::find($id);
+
+        $video->is_banner = 0 ;
+
+        $video->save();
+
+        $message = tr('change_banner_video_success');
+       
+        return back()->with('flash_success', $message);
     }
 
     public function user_ratings() {
@@ -1578,75 +1693,8 @@ class AdminController extends Controller
 
                     if($key == "theme") {
                         if($request->has($key)) {
-                            change_theme($setting->value , $request->$key);
+                            // change_theme($setting->value , $request->$key);
                         }
-                    }
-
-                    if($key == 's3_key') {
-
-                        \Artisan::call('config:clear');
-                        \Artisan::call('cache:clear');
-                        \Artisan::call('config:cache');
-
-                        $array = config('filesystems');
-                        $array['disks']['s3']['key'] = $request->$key;
-                        $data = var_export($array, 1);
-                        \File::put(config_path().'/filesystems.php' , "<?php return $data; ?>");
-                    }
-
-                    if($key == 's3_secret') {
-
-                        \Artisan::call('config:clear');
-                        \Artisan::call('cache:clear');
-                        \Artisan::call('config:cache');
-
-                        $array = config('filesystems');
-                        $array['disks']['s3']['secret'] = $request->$key;
-                        $data = var_export($array, 1);
-                        \File::put(config_path().'/filesystems.php' , "<?php return $data; ?>");
-                    }
-
-                    if($key == 's3_region') {
-
-                        \Artisan::call('config:clear');
-                        \Artisan::call('cache:clear');
-                        \Artisan::call('config:cache');
-
-                        $array = config('filesystems');
-                        $array['disks']['s3']['region'] = $request->$key;
-                        $data = var_export($array, 1);
-                        \File::put(config_path().'/filesystems.php' , "<?php return $data; ?>");
-                    }
-
-                    if($key == 's3_bucket') {
-
-                        \Artisan::call('config:clear');
-                        \Artisan::call('cache:clear');
-                        \Artisan::call('config:cache');
-
-                        $array = config('filesystems');
-                        $array['disks']['s3']['bucket'] = $request->$key;
-                        $data = var_export($array, 1);
-                        \File::put(config_path().'/filesystems.php' , "<?php return $data; ?>");
-                    }
-
-                    if($key == 'paypal_client_id') {
-                        $array = config('paypal');
-                        $array['client_id'] = $request->$key;
-                        $data = var_export($array, 1);
-                        \File::put(config_path().'/paypal.php' , "<?php return $data; ?>");
-                    }
-
-                    if($key == 'paypal_secret') {
-
-                        \Artisan::call('config:clear');
-                        \Artisan::call('cache:clear');
-                        \Artisan::call('config:cache');
-
-                        $array = config('paypal');
-                        $array['secret'] = $request->$key;
-                        $data = var_export($array, 1);
-                        \File::put(config_path().'/paypal.php' , "<?php return $data; ?>");
                     }
 
                     $temp_setting->value = $request->$key;
@@ -1660,5 +1708,139 @@ class AdminController extends Controller
 
     public function help() {
         return view('admin.help')->withPage('help')->with('sub_page' , "");
+    }
+
+    public function viewPages()
+    {
+        $all_pages = Page::all();
+
+        return view('admin.viewpages')->with('page',"view_pages")->with('sub_page',"view_pages")->with('view_pages',$all_pages);
+    }
+
+    public function add_page()
+    {
+        $pages = Page::all();
+        return view('admin.add-page')->with('page' , 'pages')->with('sub_page',"add_page")->with('view_pages',$pages);
+    }
+
+    public function editPage($id)
+    {
+        $page = Page::find($id);
+        if($page)
+        {
+            return view('admin.editPage')->withPage('viewpage')->with('sub_page',"view_pages")->with('pages',$page);
+        }
+        else
+        {
+            return back()->with('flash_error',"Something went wrong");
+        }
+    }
+
+    public function pagesProcess(Request $request)
+    {
+        $type = $request->type;
+        $id = $request->id;
+        $heading = $request->heading;
+        $description = $request->description;
+
+        $validator = Validator::make(array(
+            'heading' => $request->heading,
+            'description' => $request->description),
+            array('heading' => 'required',
+                'description' => 'required'));
+        if($validator->fails())
+        {
+            $error = $validator->messages()->all();
+            return back()->with('flash_errors',$error);
+        }
+        else
+        {
+            if($request->has('id'))
+            {
+                $pages = Page::find($id);
+                $pages->heading = $heading;
+                $pages->description = $description;
+                $pages->save();
+            }
+            else
+            {
+                $check_page = Page::where('type',$type)->first();
+                if(!$check_page)
+                {
+                    $pages = new Page;
+                    $pages->type = $type;
+                    $pages->heading = $heading;
+                    $pages->description = $description;
+                    $pages->save();
+                }
+                else
+                {
+                    return back()->with('flash_error',"Page already added");
+                }
+            }
+            if($pages)
+            {
+                return back()->with('flash_success',"Page added successfully");
+            }
+            else
+            {
+                return back()->with('flash_error',"Something went wrong");
+            }
+        }
+    }
+
+    public function deletePage($id)
+    {
+        $page = Page::where('id',$id)->delete();
+
+        if($page)
+        {
+            return back()->with('flash_success',"Page deleted successfully");
+        }
+        else
+        {
+            return back()->with('flash_error',"Something went wrong");
+        }
+    }
+
+    public function custom_push() {
+
+        return view('admin.push')->with('title' , "Custom Push")->with('page' , "custom-push");
+
+    }
+
+    public function custom_push_process(Request $request) {
+
+        $validator = Validator::make(
+            array(
+                'message' => $request->message
+                ),
+            array(
+                'message' => 'required'
+                )
+        );
+
+        if($validator->fails()) {
+
+            $error = $validator->messages()->all();
+
+            return back()->with('flash_errors',$error);
+
+        } else {
+
+            $message = $request->message;
+            $title = Setting::get('site_name');
+            $message = $message;
+            
+            \Log::info($message);
+
+            $id = 'all';
+
+            Helper::send_notification($id,$title,$message);
+
+            // $this->dispatch( new NormalPushNotification($id,$title, $message));
+
+            return back()->with('flash_success' , "Push Notifications sent successfully");
+        }
     }
 }

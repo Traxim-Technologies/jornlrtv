@@ -30,6 +30,8 @@ use App\PageCounter;
 
 use App\UserPayment;
 
+use App\Settings;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -241,6 +243,7 @@ function wishlist($user_id) {
                             'default_image','admin_videos.watch_count',
                             'admin_videos.default_image',
                             'admin_videos.ratings',
+                            'admin_videos.duration',
                             DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time') , 'categories.name as category_name')
                     ->orderby('wishlists.created_at' , 'desc')
                     ->skip(0)->take(10)
@@ -295,7 +298,9 @@ function sub_category_videos($sub_category_id)
                     'admin_videos.sub_category_id' , 
                     'admin_videos.category_id',
                     'categories.name as category_name',
-                    'sub_categories.name as sub_category_name'
+                    'sub_categories.name as sub_category_name',
+                    'admin_videos.duration',
+                    DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                     )
                 ->orderby('admin_videos.sub_category_id' , 'asc')
                 ->get();
@@ -497,10 +502,6 @@ function check_s3_configure() {
     }
 }
 
-function check_nginx_configure() {
-    
-}
-
 function get_slider_video() {
     return AdminVideo::where('is_home_slider' , 1)
             ->select('admin_videos.id as admin_video_id' , 'admin_videos.default_image',
@@ -511,6 +512,189 @@ function get_slider_video() {
 function check_valid_url($file) {
 
     $video = get_video_end($file);
-    return file_exists(public_path('uploads/'.$video));
+
+    // if(file_exists(public_path('uploads/'.$video))) {
+        return 1;
+    // } else {
+    //     return 0;
+    // }
+
+}
+
+function check_nginx_configure() {
+    $nginx = shell_exec('nginx -V');
+    if($nginx) {
+        return true;
+    } else {
+        return false;
+    }
+    // return file_exists('/usr/local/nginx-streaming/conf/nginx.conf');
+}
+
+function check_php_configure() {
+    return phpversion();
+}
+
+function check_mysql_configure() {
+
+    $output = shell_exec('mysql -V');
+    
+    preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version); 
+
+    return $version[0]; 
+}
+
+function check_database_configure() {
+
+    $status = 0;
+
+    $database = config('database.connections.mysql.database');
+    $username = config('database.connections.mysql.username');
+
+    if($database && $username) {
+        $status = 1;
+    }
+    return $status;
+
+}
+
+function check_settings_seeder() {
+    return Settings::count();
+}
+
+function delete_install() {
+    $controller = base_path('app/Http/Controllers/InstallationController.php');
+
+    $public = base_path('public/install');
+    
+    $views = base_path('resources/views/install');
+
+    if(is_dir($public)) {
+        rmdir($public);
+    }
+
+    if(is_dir($views)) {
+        rmdir($views);
+    }
+
+    if(file_exists($controller)) {
+        unlink($controller);
+    } 
+
+    return true;
+}
+
+function get_banner_count() {
+    return AdminVideo::where('is_banner' , 1)->count();
+}
+
+function get_expiry_days($id) {
+    
+    $data = UserPayment::where('user_id' , $id)->first();
+
+    $days = 0;
+
+    if($data) {
+        $start_date = new \DateTime(date('Y-m-d h:i:s'));
+        $end_date = new \DateTime($data->expiry_date);
+
+        $time_interval = date_diff($start_date,$end_date);
+        $days = $time_interval->days;
+    }
+
+    return $days;
+}
+
+function all_videos($web = NULL , $skip = 0) 
+{
+
+    $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
+                ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                ->select(
+                    'admin_videos.id as admin_video_id' , 
+                    'admin_videos.default_image' , 
+                    'admin_videos.ratings' , 
+                    'admin_videos.watch_count' , 
+                    'admin_videos.title' ,
+                    'admin_videos.description',
+                    'admin_videos.sub_category_id' , 
+                    'admin_videos.category_id',
+                    'categories.name as category_name',
+                    'sub_categories.name as sub_category_name',
+                    'admin_videos.duration',
+                    DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
+                    )
+                ->orderby('admin_videos.created_at' , 'desc');
+
+    if($web) {
+        $videos = $videos_query->paginate(20);
+    } else {
+        $videos = $videos_query->skip($skip)->take(20)->get();
+    }
+
+    return $videos;
+} 
+
+function get_trending_count() {
+
+    $data = AdminVideo::where('watch_count' , '>' , 0)
+                    ->where('admin_videos.is_approved' , 1)
+                    ->where('admin_videos.status' , 1)
+                    ->skip(0)->take(20)
+                    ->count();
+
+    return $data;
+
+}
+
+function get_wishlist_count($id) {
+    
+    $data = Wishlist::where('user_id' , $id)
+                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
+                ->where('admin_videos.is_approved' , 1)
+                ->where('admin_videos.status' , 1)
+                ->where('wishlists.status' , 1)
+                ->count();
+
+    return $data;
+
+}
+
+function get_suggestion_count($id) {
+
+    $data = Wishlist::where('user_id' , $id)
+                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
+                ->where('admin_videos.is_approved' , 1)
+                ->where('admin_videos.status' , 1)
+                ->where('wishlists.status' , 1)
+                ->count();
+
+    return $data;
+
+}
+
+function get_recent_count($id) {
+
+    $data = Wishlist::where('user_id' , $id)
+                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
+                ->where('admin_videos.is_approved' , 1)
+                ->where('admin_videos.status' , 1)
+                ->where('wishlists.status' , 1)
+                ->count();
+
+    return $data;
+
+}
+
+function get_history_count($id) {
+
+    $data = UserHistory::where('user_id' , $id)
+                ->leftJoin('admin_videos' ,'user_histories.admin_video_id' , '=' , 'admin_videos.id')
+                ->where('admin_videos.is_approved' , 1)
+                ->where('admin_videos.status' , 1)
+                ->count();
+
+    return $data;
 
 }

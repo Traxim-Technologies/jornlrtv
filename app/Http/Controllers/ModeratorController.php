@@ -589,6 +589,7 @@ class ModeratorController extends Controller
                     'sub_category_id' => 'required|integer|exists:sub_categories,id,category_id,'.$request->category_id,
                     'genre'     => 'exists:genres,id,sub_category_id,'.$request->sub_category_id,
                     'default_image' => 'required|mimes:jpeg,jpg,bmp,png',
+                    'banner_image' => 'mimes:jpeg,jpg,bmp,png',
                     'other_image1' => 'required|mimes:jpeg,jpg,bmp,png',
                     'other_image2' => 'required|mimes:jpeg,jpg,bmp,png',
                     'ratings' => 'required',
@@ -615,6 +616,8 @@ class ModeratorController extends Controller
 
             if($request->video_type == VIDEO_TYPE_UPLOAD) {
 
+                $video->video_upload_type = $request->video_upload_type;
+
                 if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
 
                     $video->video = Helper::upload_picture($video_link);
@@ -637,11 +640,16 @@ class ModeratorController extends Controller
 
             $video->video_type = $request->video_type;
 
-            $video->video_upload_type = $request->video_upload_type;
-
             // $video->publish_time = date('Y-m-d H:i:s', strtotime($request->publish_time));
             
             $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
+
+            if($request->is_banner) {
+                $video->is_banner = 1;
+                if($request->hasFile('banner_image')) {
+                    $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
+                }
+            }
 
             $video->ratings = $request->ratings;
             $video->reviews = $request->reviews;
@@ -739,6 +747,7 @@ class ModeratorController extends Controller
                     'sub_category_id' => 'required|integer|exists:sub_categories,id,category_id,'.$request->category_id,
                     'genre'     => 'exists:genres,id,sub_category_id,'.$request->sub_category_id,
                     'default_image' => 'mimes:jpeg,jpg,bmp,png',
+                    'banner_image' => 'mimes:jpeg,jpg,bmp,png',
                     'other_image1' => 'mimes:jpeg,jpg,bmp,png',
                     'other_image2' => 'mimes:jpeg,jpg,bmp,png',
                     'ratings' => 'required',
@@ -799,6 +808,13 @@ class ModeratorController extends Controller
             if($request->hasFile('default_image')) {
                 Helper::delete_picture($video->default_image);
                 $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
+            }
+
+            if($video->is_banner == 1) {
+                if($request->hasFile('banner_image')) {
+                    Helper::delete_picture($video->banner_image);
+                    $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
+                }
             }
             
             $video->ratings = $request->has('ratings') ? $request->ratings : $video->ratings;

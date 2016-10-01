@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
 
@@ -83,12 +84,15 @@ class AuthController extends Controller
      * @return User
      */
     protected function create(array $data)
-    {
+    {        
         $User = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'picture' => asset('placeholder.png'),
+            'is_activated' => 1,
+            'login_by' => 'manual',
+            'device_type' => 'web'
         ]);
 
         register_mobile('web');
@@ -96,10 +100,24 @@ class AuthController extends Controller
         // Send welcome email to the new user:
         $subject = Helper::tr('user_welcome_title');
         $email_data = $User;
-        $page = "emails.user.welcome";
+        $page = "emails.welcome";
         $email = $data['email'];
-        // Helper::send_email($page,$subject,$email,$email_data);
+        $result = Helper::send_email($page,$subject,$email,$email_data);
+
+        // \Log::info("Email".$result);
         
         return $User;
+    }
+
+    protected function authenticated(Request $request, User $user){
+
+        if(\Auth::check()) {
+            if($user = User::find(\Auth::user()->id)) {
+                $user->login_by = 'manual';
+                $user->save();
+            }   
+        }
+       
+       return redirect()->intended($this->redirectPath());
     }
 }

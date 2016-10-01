@@ -11,6 +11,16 @@
 |
 */
 
+// Installation
+
+Route::get('/install/theme', 'InstallationController@install')->name('installTheme');
+
+Route::get('/system/check', 'InstallationController@system_check_process')->name('system-check');
+
+Route::post('/install/theme', 'InstallationController@theme_check_process')->name('install.theme');
+
+Route::post('/install/settings', 'InstallationController@settings_process')->name('install.settings');
+
 Route::get('/test', 'ApplicationController@test')->name('test');
 
 // Elastic Search Test
@@ -22,6 +32,10 @@ Route::get('/addAll', 'ApplicationController@addAllVideoToEs')->name('addAll');
 // CRON
 
 Route::get('/publish/video', 'ApplicationController@cron_publish_video')->name('publish');
+
+Route::get('/notification/payment', 'ApplicationController@send_notification_user_payment')->name('notification.user.payment');
+
+Route::get('/payment/expiry', 'ApplicationController@user_payment_expiry')->name('user.payment.expiry');
 
 // Static Pages
 
@@ -179,7 +193,17 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('/video/decline/{id}', 'AdminController@decline_video')->name('admin.video.decline');
 
+    // Slider Videos
+
     Route::get('/slider/video/{id}', 'AdminController@slider_video')->name('admin.slider.video');
+
+    // Banner Videos
+
+    Route::get('/banner/videos', 'AdminController@banner_videos')->name('admin.banner.videos');
+
+    Route::get('/add/banner/video', 'AdminController@add_banner_video')->name('admin.add.banner.video');
+
+    Route::get('/change/banner/video/{id}', 'AdminController@change_banner_video')->name('admin.change.video');
     
     // User Payment details
     Route::get('user/payments' , 'AdminController@user_payments')->name('admin.user.payments');
@@ -193,7 +217,28 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('theme/settings' , 'AdminController@theme_settings')->name('admin.theme.settings');
     
     Route::post('settings' , 'AdminController@settings_process')->name('admin.save.settings');
+
     Route::get('help' , 'AdminController@help')->name('admin.help');
+
+    // Pages
+
+    Route::get('/viewPage', array('as' => 'viewPages', 'uses' => 'AdminController@viewPages'));
+
+    Route::get('/editPage/{id}', array('as' => 'editPage', 'uses' => 'AdminController@editPage'));
+
+    Route::post('/editPage', array('as' => 'editPageProcess', 'uses' => 'AdminController@pagesProcess'));
+
+    Route::get('/pages', array('as' => 'addPage', 'uses' => 'AdminController@add_page'));
+
+    Route::post('/pages', array('as' => 'adminPagesProcess', 'uses' => 'AdminController@pagesProcess'));
+
+    Route::get('/deletePage/{id}', array('as' => 'deletePage', 'uses' => 'AdminController@deletePage'));
+
+    // Custom Push
+
+    Route::get('/custom/push', 'AdminController@custom_push')->name('admin.push');
+
+    Route::post('/custom/push', 'AdminController@custom_push_process')->name('admin.send.push');
 
 });
 
@@ -204,6 +249,8 @@ Route::get('/single', 'UserController@single_video');
 Route::get('/user/searchall' , 'ApplicationController@search_video')->name('search');
 
 Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
+
+// Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
 
 // Categories and single video 
 
@@ -254,6 +301,12 @@ Route::group([], function(){
     Route::get('/profile/password', 'UserController@profile_change_password')->name('user.change.password');
 
     Route::post('/profile/password', 'UserController@profile_save_password')->name('user.profile.password');
+
+    // Delete Account
+
+    Route::get('/delete/account', 'UserController@delete_account')->name('user.delete.account');
+
+    Route::post('/delete/account', 'UserController@delete_account_process')->name('user.delete.account.process');
 
 
     Route::get('history', 'UserController@history')->name('user.history');
@@ -385,7 +438,9 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::get('/tokenRenew', 'UserApiController@token_renew');
 
-    Route::get('/deleteAccount', 'UserApiController@delete_account');
+    Route::post('/deleteAccount', 'UserApiController@delete_account');
+
+    Route::post('/settings', 'UserApiController@settings');
 
 
     // Categories And SubCategories

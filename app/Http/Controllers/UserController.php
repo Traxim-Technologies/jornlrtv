@@ -20,6 +20,8 @@ use App\Page;
 
 use Validator;
 
+use Setting;
+
 define('WEB' , 1);
 
 
@@ -47,34 +49,43 @@ class UserController extends Controller
      */
     public function index() {
 
-        counter('home');
+        $database = config('database.connections.mysql.database');
+        $username = config('database.connections.mysql.username');
 
-        $watch_lists = $wishlists = array();
+        if($database && $username && Setting::get('installation_process') == 3) {
 
-        if(\Auth::check()){
-            $wishlists  = Helper::wishlist(\Auth::user()->id,WEB);  
+            counter('home');
 
-            $watch_lists = Helper::watch_list(\Auth::user()->id,WEB);  
+            $watch_lists = $wishlists = array();
+
+            if(\Auth::check()){
+
+                $wishlists  = Helper::wishlist(\Auth::user()->id,WEB);  
+
+                $watch_lists = Helper::watch_list(\Auth::user()->id,WEB);  
+            }
+            
+            $recent_videos = Helper::recently_added(WEB);
+
+            $trendings = Helper::trending(WEB);
+            
+            $suggestions  = Helper::suggestion_videos(WEB);
+
+            $categories = get_categories();
+
+            return view('user.index')
+                        ->with('page' , 'home')
+                        ->with('subPage' , 'home')
+                        ->with('wishlists' , $wishlists)
+                        ->with('recent_videos' , $recent_videos)
+                        ->with('trendings' , $trendings)
+                        ->with('watch_lists' , $watch_lists)
+                        ->with('suggestions' , $suggestions)
+                        ->with('categories' , $categories);
+        } else {
+            return redirect()->route('installTheme');
         }
         
-        $recent_videos = Helper::recently_added(WEB);
-
-        $trendings = Helper::trending(WEB);
-        
-        $suggestions  = Helper::suggestion_videos(WEB);
-
-        $categories = get_categories();
-
-
-        return view('user.index')
-                    ->with('page' , 'home')
-                    ->with('subPage' , 'home')
-                    ->with('wishlists' , $wishlists)
-                    ->with('recent_videos' , $recent_videos)
-                    ->with('trendings' , $trendings)
-                    ->with('watch_lists' , $watch_lists)
-                    ->with('suggestions' , $suggestions)
-                    ->with('categories' , $categories);
     }
 
     public function single_video($id) {
@@ -98,6 +109,7 @@ class UserController extends Controller
             $history_status = Helper::history_status(\Auth::user()->id,$id);
 
         }
+        $share_link = route('user.single' , $id);
         
         return view('user.single-video')
                     ->with('page' , '')
@@ -119,11 +131,9 @@ class UserController extends Controller
      */
     public function profile()
     {
-        $categories = get_categories();
         return view('user.profile')
                     ->with('page' , 'profile')
-                    ->with('subPage' , 'user-profile')
-                    ->with('categories' , $categories);
+                    ->with('subPage' , 'user-profile');
     }
 
     /**
@@ -133,11 +143,8 @@ class UserController extends Controller
      */
     public function update_profile()
     {
-        $categories = get_categories();
-        return view('user.edit-profile')
-                    ->with('page' , 'profile')
-                    ->with('subPage' , 'user-update-profile')
-                    ->with('categories' , $categories);
+        return view('user.edit-profile')->with('page' , 'profile')
+                    ->with('subPage' , 'user-update-profile');
     }
 
     /**
@@ -243,11 +250,9 @@ class UserController extends Controller
     public function history(Request $request) {
 
         $histories = Helper::watch_list(\Auth::user()->id,WEB);
-        $categories = get_categories();
 
         return view('user.history')
                         ->with('page' , 'profile')
-                        ->with('categories' , $categories)
                         ->with('subPage' , 'user-history')
                         ->with('histories' , $histories);
     }
@@ -301,12 +306,10 @@ class UserController extends Controller
     public function wishlist(Request $request) {
         
         $videos = Helper::wishlist(\Auth::user()->id,WEB);
-        $categories = get_categories();
 
         return view('user.wishlist')
                     ->with('page' , 'profile')
                     ->with('subPage' , 'user-wishlist')
-                    ->with('categories' , $categories)
                     ->with('videos' , $videos);
     }
 
@@ -429,7 +432,7 @@ class UserController extends Controller
 
     public function about(Request $request) {
 
-        $about = Page::where('type', 'terms')->first();
+        $about = Page::where('type', 'about')->first();
 
         return view('about')->with('about' , $about)
                         ->with('page' , 'about')
@@ -449,11 +452,66 @@ class UserController extends Controller
 
     public function trending()
     {
-        $trending = Helper::trending();
+        $trending = Helper::trending(1);
         $categories = get_categories();
 
         return view('user.trending')->with('page', 'trending')
                                     ->with('videos',$trending)
-                                    ->with('categories',$categories);
+                                    ->with('categories', $categories);
+    }
+
+    public function delete_account(Request $request) {
+
+        if(\Auth::user()->login_by == 'manual') {
+
+            return view('user.delete-account')
+                    ->with('page' , 'profile')
+                    ->with('subPage' , 'delete-account');
+        } else {
+
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token
+            ]);
+
+            $response = $this->UserAPI->delete_account($request)->getData();
+
+            if($response->success) {
+                return back()->with('flash_success', tr('user_account_delete_success'));
+            } else {
+                if($response->error == 101)
+                    return back()->with('flash_error', $response->error_messages);
+                else
+                    return back()->with('flash_error', $response->error);
+            }
+
+            return back()->with('flash_error', Helper::get_error_message(146));
+
+        }
+        
+    }
+
+    public function delete_account_process(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token
+        ]);
+
+        $response = $this->UserAPI->delete_account($request)->getData();
+
+        if($response->success) {
+            return back()->with('flash_success', tr('user_account_delete_success'));
+        } else {
+            if($response->error == 101)
+                return back()->with('flash_error', $response->error_messages);
+            else
+                return back()->with('flash_error', $response->error);
+        }
+
+        return back()->with('flash_error', Helper::get_error_message(146));
+
     }
 }

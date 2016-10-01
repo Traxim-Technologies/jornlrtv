@@ -114,14 +114,22 @@ class PaypalController extends Controller {
 
         if(isset($redirect_url)) {
 
-            if(!$user_payment = UserPayment::where('user_id' , $request->id)->first()) {
+            $user_payment = UserPayment::where('user_id' , $request->id)->first();
+            $expiry_days = Setting::get('expiry_days' , 30);
+
+            if($user_payment) {
+
+                if($user_payment) {
+                    $expiry_date = $user_payment->expiry_date;
+                    $user_payment->expiry_date = date('Y-m-d', strtotime($expiry_date. "+".$expiry_days." days"));
+                }
+            } else {
                 $user_payment = new UserPayment;
+                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$expiry_days." days"));
             }
 
             $user_payment->payment_id  = $payment->getId();
             $user_payment->user_id = $request->id;
-            $expiry_days = Setting::get('expiry_days' , 30);
-            $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$expiry_days." days"));
             $user_payment->save();
 
             $response_array = array('success' => true); 
@@ -168,7 +176,10 @@ class PaypalController extends Controller {
             $payment = UserPayment::where('payment_id',$payment_id)->first();
             $payment->status = 1;
             $payment->amount = Setting::get('amount');
+
             $payment->save();
+
+            
 
             if($payment) {
                 if($user = User::find($payment->user_id)) {
@@ -187,7 +198,7 @@ class PaypalController extends Controller {
 
             // return back()->with('flash_success' , 'Payment Successful');
 
-            return redirect()->route('user.dashboard')->with('response', $response);
+            return redirect()->route('user.profile')->with('response', $response);
        
         } else {
 

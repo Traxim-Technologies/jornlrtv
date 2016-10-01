@@ -44,7 +44,7 @@ class SocialAuthController extends Controller
 			if($social_user->email && !User::where('email',$social_user->email)->first()) {
 				$user->email = $social_user->email;
 			} else {
-				$user->email = "social".uniqid()."@live-streaming.com";
+				$user->email = "social".uniqid()."@startstreaming.co";
 			}
 
 			// Save Dummy details

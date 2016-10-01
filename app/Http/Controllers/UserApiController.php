@@ -16,6 +16,8 @@ use File;
 
 use DB;
 
+use Setting;
+
 use App\User;
 
 use App\Admin;
@@ -31,6 +33,8 @@ use App\UserRating;
 use App\Wishlist;
 
 use App\UserHistory;
+
+use App\Page;
 
 use App\Jobs\NormalPushNotification;
 
@@ -67,13 +71,14 @@ define('TRENDING' , 'trending');
 define('SUGGESTIONS' , 'suggestion');
 define('WISHLIST' , 'wishlist');
 define('WATCHLIST' , 'watchlist');
+define('BANNER' , 'banner');
 
 class UserApiController extends Controller
 {   
 
     public function __construct(Request $request)
     {
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'test_search_video']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact']));
         
     }
     public function register(Request $request)
@@ -240,7 +245,6 @@ class UserApiController extends Controller
                     }
                 }
                 
-
                 $user->is_activated = 1;
                
                 $user->save();
@@ -250,7 +254,7 @@ class UserApiController extends Controller
                 if($new_user) {
                     $subject = Helper::tr('user_welcome_title');
                     $email_data = $user;
-                    $page = "emails.user.welcome";
+                    $page = "emails.welcome";
                     $email = $user->email;
                     Helper::send_email($page,$subject,$email,$email_data);
                 }
@@ -268,6 +272,7 @@ class UserApiController extends Controller
                     'token' => $user->token,
                     'token_expiry' => $user->token_expiry,
                     'login_by' => $user->login_by,
+                    'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
                 );
 
@@ -402,6 +407,7 @@ class UserApiController extends Controller
                     'token' => $user->token,
                     'token_expiry' => $user->token_expiry,
                     'login_by' => $user->login_by,
+                    'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
                 );
 
@@ -435,9 +441,10 @@ class UserApiController extends Controller
             
             $email_data = array();
             $subject = Helper::tr('user_forgot_email_title');
-            $email_data['password']  = $new_password;
+            $email = $user->email;
             $email_data['user']  = $user;
-            $page = "emails.user.forgot_password";
+            $email_data['password'] = $new_password;
+            $page = "emails.forgot-password";
             $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
 
             $response_array['success'] = true;
@@ -619,21 +626,49 @@ class UserApiController extends Controller
 
     public function delete_account(Request $request) {
 
-		$user_id = $request->id;
-    	
-		// Should delete user ratings and review. and user image also.
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'password' => '',
+            ));
 
-    	$user = User::find($user_id)->delete();
+        if ($validator->fails()) {
+            $error_messages = implode(',',$validator->messages()->all()); 
+            $response_array = array('success' => false,'error' => Helper::get_error_message(101),'error_code' => 101,'error_messages' => $error_messages
+            );
+        } else {
+            
+            $user = User::find($request->id);
 
-    	if($user) {
-    		$response_array = array('success' => true , 'message' => 'Account deleted successfully');
-    		$response_code = 200;
-    	}
+            if($user->login_by != 'manual') {
+                $allow = 1;
+            } else {
 
-			
-		$response = Response::json($response_array,$response_code);
+                if(Hash::check($request->password, $user->password)) {
+                    $allow = 1;
+                } else {
+                    $allow = 0 ;
 
-		return $response;
+                    $response_array = array('success' => false , 'error' => Helper::get_error_message(108) ,'error_code' => 108);
+                }
+
+            }
+
+            if($allow) {
+
+                $user = User::where('id',$request->id)->first()->delete();
+
+                if($user) {
+                    $response_array = array('success' => true , 'message' => tr('user_account_delete_success'));
+                } else {
+                    $response_array = array('success' =>false , 'error' => Helper::get_error_message(146), 'error_code' => 146);
+                }
+
+            } 
+
+        }
+
+		return response()->json($response_array,200);
 	
 	}
 
@@ -646,7 +681,7 @@ class UserApiController extends Controller
             array(
                 'admin_video_id' => 'required|integer|exists:admin_videos,id',
                 'rating' => 'integer|in:'.RATINGS,
-                'comments' => 'max:255',
+                'comments' => '',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please provide correct video id',
@@ -668,15 +703,15 @@ class UserApiController extends Controller
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
             
-			$response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans());
+			$response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans(),'message' => tr('comment_success') );
         }
 
         $response = response()->json($response_array, 200);
         return $response;
     } 
 
-    public function add_wishlist(Request $request) 
-	{
+    public function add_wishlist(Request $request) {
+        
         $user = User::find($request->id);
 
         $validator = Validator::make(
@@ -696,20 +731,32 @@ class UserApiController extends Controller
         
         } else {
 
-            if(Wishlist::where('user_id' , $request->id)->where('admin_video_id' , $request->admin_video_id)->where('status' , 1)->count()) {
+            $wishlist = Wishlist::where('user_id' , $request->id)->where('admin_video_id' , $request->admin_video_id)->first();
 
-                $response_array = array('success' => false ,'error' => 'The video is already added in wishlist.' , 'error_code' => 145);
-                return response()->json($response_array, 200);
+            $status = 1;
+
+            if(count($wishlist) > 0) {
+
+                if($wishlist->status == 1) 
+                    $status = 0;
+
+                $wishlist->status = $status;
+                $wishlist->save();
+            } else {
+
+                //Save Wishlist
+                $wishlist = new Wishlist();
+                $wishlist->user_id = $request->id;
+                $wishlist->admin_video_id = $request->admin_video_id;
+                $wishlist->status = $status;
+                $wishlist->save();
             }
+            if($status)
+                $message = "Added to wishlist";
+            else
+                $message = "Removed from wishlist";
 
-            //Save Wishlist
-            $wishlist = new Wishlist();
-            $wishlist->user_id = $request->id;
-            $wishlist->admin_video_id = $request->admin_video_id;
-            $wishlist->status = 1;
-            $wishlist->save();
-            
-			$response_array = array('success' => true ,'wishlist_id' => $wishlist->id);
+            $response_array = array('success' => true ,'wishlist_id' => $wishlist->id , 'wishlist_status' => $wishlist->status,'message' => $message);
         }
 
         $response = response()->json($response_array, 200);
@@ -718,9 +765,11 @@ class UserApiController extends Controller
 
     public function get_wishlist(Request $request)  {
 
-        $wishlist = Helper::wishlist($request->id);
+        $wishlist = Helper::wishlist($request->id,NULL,$request->skip);
 
-		$response_array = array('success' => true, 'wishlist' => $wishlist);
+        $total = get_wishlist_count($request->id);
+
+		$response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
     
         return response()->json($response_array, 200);
     } 
@@ -807,9 +856,11 @@ class UserApiController extends Controller
         
 		//get wishlist
 
-        $history = Helper::watch_list($request->id)->toArray();
+        $history = Helper::watch_list($request->id,NULL,$request->skip)->toArray();
 
-		$response_array = array('success' => true, 'history' => $history);
+        $total = get_history_count($request->id);
+
+		$response_array = array('success' => true, 'history' => $history , 'total' => $total);
 
         return response()->json($response_array, 200);
     } 
@@ -899,7 +950,11 @@ class UserApiController extends Controller
 
     public function home(Request $request) {
 
-        $videos = $wishlist = $recent = $trending = $history = $suggestion =array();
+        $videos = $wishlist = $recent =  $banner = $trending = $history = $suggestion =array();
+
+        $banner['name'] = 'Special';
+        $banner['key'] = BANNER;
+        $banner['list'] = Helper::banner_videos();
 
         $wishlist['name'] = 'Wishlist';
         $wishlist['key'] = WISHLIST;
@@ -931,7 +986,7 @@ class UserApiController extends Controller
 
         array_push($videos , $suggestion);
 
-        $response_array = array('success' => true , 'data' => $videos);
+        $response_array = array('success' => true , 'data' => $videos , 'banner' => $banner);
 
         return response()->json($response_array , 200);
 
@@ -941,28 +996,35 @@ class UserApiController extends Controller
 
         $key = $request->key;
 
+        $total = 18;
+
         switch($key) {
             case TRENDING:
-                $videos = Helper::trending();
+                $videos = Helper::trending(NULL,$request->skip);
+                // $total = get_trending_count();
                 break;
             case WISHLIST:
-                $videos = Helper::wishlist($request->id);
+                $videos = Helper::wishlist($request->id,NULL,$request->skip);
+                $total = get_wishlist_count($request->id);
                 break;
             case SUGGESTIONS:
-                $videos = Helper::suggestion_videos();
+                $videos = Helper::suggestion_videos(NULL,$request->skip);
+                // $total = get_suggestion_count($request->id);
                 break;
             case RECENTLY_ADDED:
-                $videos = Helper::recently_added();
+                $videos = Helper::recently_added(NULL,$request->skip);
+                // $total = get_recent_count();
                 break;
             case WATCHLIST:
-                $videos = Helper::watch_list($request->id);
+                $videos = Helper::watch_list($request->id,NULL,$request->skip);
+                $total = get_history_count($request->id);
                 break;
             default:
-                $videos = Helper::recently_added();
+                $videos = Helper::recently_added(NULL,$request->skip);
         }
 
 
-        $response_array = array('success' => true , 'data' => $videos);
+        $response_array = array('success' => true , 'data' => $videos , 'total' => $total);
 
         return response()->json($response_array , 200);
 
@@ -1022,6 +1084,7 @@ class UserApiController extends Controller
             $request->all(),
             array(
                 'sub_category_id' => 'required|integer|exists:sub_categories,id',
+                'skip' => 'integer'
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists',
@@ -1033,13 +1096,18 @@ class UserApiController extends Controller
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
         
         } else {
+
             $data = array();
 
-            if($videos = Helper::sub_category_videos($request->sub_category_id)) {
+            $total = 18;
+
+            if($videos = Helper::sub_category_videos($request->sub_category_id , NULL,$request->skip)) {
                 $data = $videos->toArray();
             }
 
-            $response_array = array('success' => true, 'data' => $data);
+            $total = get_sub_category_video_count($request->sub_category_id);
+
+            $response_array = array('success' => true, 'data' => $data , 'total' => $total);
         
         }
 
@@ -1070,6 +1138,21 @@ class UserApiController extends Controller
 
             $data = Helper::get_video_details($request->admin_video_id);
 
+            $trailer_video = $data->trailer_video;
+
+            $video = $data->video;
+
+            if($data->video_type == 1 && $data->video_upload_type == 2) {
+
+                if(check_valid_url($data->tralier_video)) {
+                    $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);    
+                }
+
+                if(check_valid_url($data->video)) {
+                    $trailer_video = Setting::get('streaming_url').get_video_end($data->video);    
+                }
+            }
+
             $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->admin_video_id)
                                 ->orderBy('is_default' , 'desc')
                                 ->get();
@@ -1079,10 +1162,19 @@ class UserApiController extends Controller
             }
 
             $wishlist_status = Helper::wishlist_status($request->admin_video_id,$request->id);
+            $history_status = Helper::history_status($request->id,$request->admin_video_id);
+            $share_link = route('user.single' , $request->admin_video_id);
+
+            $user = User::find($request->id);
 
             $response_array = array(
                         'success' => true, 
+                        'user_type' => $user->user_type ? $user->user_type : 0,
                         'wishlist_status' => $wishlist_status,
+                        'history_status' => $history_status,
+                        'share_link' => $share_link,
+                        'main_video' => $video,
+                        'tralier_video' => $trailer_video,
                         'video' => $data , 
                         'video_images' => $admin_video_images,
                         'comments' => $ratings
@@ -1113,38 +1205,7 @@ class UserApiController extends Controller
         
         } else {
 
-            $results = AdminVideo::where('is_approved' , 1)->where('status' , 1)->select('id as admin_video_id' , 'title')->orderBy('created_at' , 'desc')->get()->toArray();
-
-            $response_array = array('success' => true, 'data' => $results);
-        }
-
-        $response = response()->json($response_array, 200);
-        return $response;
-   
-    }
-
-    public function test_search_video(Request $request) {
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'key' => 'required',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists',
-            )
-        );
-    
-        if ($validator->fails()) {
-
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
-        } else {
-
-            $q = $request->key;
-
-            $results = Helper::search_video($request->key);
+            $results = AdminVideo::where('is_approved' , 1)->where('status' , 1)->select('id as admin_video_id' , 'title' , 'default_image')->orderBy('created_at' , 'desc')->get()->toArray();
 
             $response_array = array('success' => true, 'data' => $results);
         }
@@ -1211,6 +1272,39 @@ class UserApiController extends Controller
         $response_array = array('success' => true , 'page' => $page_data);
         return response()->json($response_array,200);
     
+    }
+
+    public function settings(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'status' => 'required',
+            )
+        );
+    
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        
+        } else {
+            
+            $user = User::find($request->id);
+            $user->push_status = $request->status;
+            $user->save();
+
+            if($request->status) {
+                $message = tr('push_notification_enable');
+            } else {
+                $message = tr('push_notification_disable');
+            }
+
+            $response_array = array('success' => true, 'message' => $message);
+        }
+
+        $response = response()->json($response_array, 200);
+        return $response;
     }
 
 
