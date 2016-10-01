@@ -97,7 +97,7 @@ body {
 }
 .page-content{
 	margin-top: 90px;
-	min-height: 500px;
+	min-height: 550px;
 }
 .box-title{
 	background-color: #1a1a1b;
@@ -161,6 +161,7 @@ body {
 .main-title{
 	position: relative;
 	left: 10px;
+    top: 5px; /** Vidhya Added */
 }
 .video-box h5.video-title{
     position: absolute;
@@ -339,6 +340,16 @@ a.gp-share{
     margin-right: 15px;
     color: #fff;
 }
+a.gp-share:hover,a.gp-share:active,a.gp-share:focus{
+    background-color: #d0412f;
+    color: #fff;
+    text-decoration: none;
+}
+a.fb-share:hover,a.fb-share:focus,a.fb-share:active{
+    text-decoration: none;
+    color: #fff;
+    background-color: #304a82;
+}
 /*.content .btns{
 	margin-bottom: 10px;
 }*/
@@ -349,7 +360,7 @@ a.gp-share{
 	display: block;
 	float: left;
 	width: 24.5%;
-	height: auto;
+	/*height: auto;*/
 	margin-bottom: 0.5%;
 	margin-right: 0.5%;
 }
@@ -361,7 +372,7 @@ a.gp-share{
 	display: block;
 	float: left;
 	width: 49.5%;
-	height: auto;
+	height: 110px;
 	margin-bottom: 0.5%;
 	margin-right: 0.5%;
 }
@@ -553,7 +564,7 @@ a.gp-share{
     font-size: 16px;
 }
 .edit-pro{
-	padding: 5px 10px;
+    padding: 5px 10px;
     font-size: 12px;
     border-radius: 3px;
     border: 0;
@@ -566,7 +577,37 @@ a.gp-share{
     width: 100%;
     max-width: 300px;
     margin-top: 15px;
+    text-decoration: none;
 
+}
+
+.edit-pro:hover,.edit-pro:active,.edit-pro:focus {
+    background-color: #a00a0a;
+    color: #fff!important;
+    text-decoration: none;
+}
+.payment-pro{
+	padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 0;
+    background-color: #968b05;
+    color: #fff!important;
+    display: block;
+    text-align: center;
+    margin:0 auto;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 15px;
+    cursor: pointer;
+
+}
+
+.payment-pro:hover,.payment-pro:active,.payment-pro:focus {
+    background-color: #797006;
+    color: #fff!important;
+    text-decoration: none;
 }
 .change-pwd{
 	clear:both;
@@ -583,6 +624,12 @@ a.gp-share{
     width: 100%;
     max-width: 300px;
 
+}
+
+.change-pwd:hover,.change-pwd:active,.change-pwd:focus {
+    background-color: #3e3d3d;
+    color: #fff!important;
+    text-decoration: none;
 }
 .profile form{
     max-width: 300px;
@@ -674,13 +721,20 @@ animation-direction: alternate;
     border-bottom: 0;
 }
 
-.cus-mod .btn,.cus-mod .btn:hover,.cus-mod .btn:active,.cus-mod .btn:focus{    
+.cus-mod .btn{    
     display: block;
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 30px!important;
     background-color: #dd4b39;
+    color: #fff;
+    text-decoration: none;
+    border: 0;
+}
+
+.cus-mod .btn:hover,.cus-mod .btn:active,.cus-mod .btn:focus{    
+     background-color: #d60b0b;
     color: #fff;
     text-decoration: none;
     border: 0;
@@ -786,4 +840,27 @@ animation-direction: alternate;
 
 .error-image {
     width: 100%;
+}
+
+.pagination > .active > span:hover,.pagination > .active > span {
+    background: #9c0303;
+    border-color: #9c0303;
+}
+
+.see-all {
+    float: right;
+    text-decoration: none;
+    display: block;
+    padding: 4px 10px;
+    background: #cc181e;
+    color: white;
+    border-radius: 2px;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.see-all:hover,.see-all:active,.see-all:focus {
+    text-decoration: none;
+    color: #FFF;
+    background-color: #b11419;
 }

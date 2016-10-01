@@ -963,6 +963,11 @@ input[type=checkbox]:checked + .customLabel:before {
 
 #category {
   margin-bottom: 30px; }
+
+#recent_video_content {
+  margin-bottom: 30px; 
+}
+
   #category #owl-demo-cat .item-cat {
     overflow: hidden;
     text-align: center; }
@@ -2150,21 +2155,23 @@ footer {
 	14- vertical thumb slider
    ========================================================================== */
 #verticalSlider {
-  background: #303030;
+  background: #f0f0f0;
   padding: 25px 0; }
 
 .thumb-slider {
   height: 400px; }
   .thumb-slider .main-image {
-    width: 800px;
+    width: 830px;
     height: 100%;
     float: left;
     overflow: hidden; }
     .thumb-slider .main-image .image {
-      position: relative; }
+      position: relative; 
+      height: 400px;
+    }
       .thumb-slider .main-image .image img {
         width: 100%;
-        height: 100%;
+        min-height: 100%;
         object-fit: cover;
         -o-object-fit: cover; }
       .thumb-slider .main-image .image iframe {
@@ -3263,19 +3270,23 @@ footer {
   .registration .social-login h5 {
     font-weight: 600;
     margin-bottom: 30px; }
-  .registration .social-login .social-login-btn {
-    height: 50px;
-    margin-bottom: 20px; }
+
+    .registration .social-login .social-login-btn {
+        height: 50px;
+        margin-bottom: 20px; 
+    }
+    
     .registration .social-login .social-login-btn a {
-      display: block;
-      font-size: 14px;
-      text-transform: capitalize;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      -ms-border-radius: 4px;
-      border-radius: 4px;
-      font-weight: bold; }
-      .registration .social-login .social-login-btn a i {
+        display: block;
+        font-size: 14px;
+        text-transform: capitalize;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -ms-border-radius: 4px;
+        border-radius: 4px;
+        font-weight: bold; 
+    }
+    .registration .social-login .social-login-btn a i {
         display: inline-block;
         width: 50px;
         line-height: 50px;
@@ -3284,31 +3295,43 @@ footer {
         margin-right: 10px;
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
-        font-size: 16px; }
+        font-size: 16px; 
+    }
+
     .registration .social-login .social-login-btn.facebook a {
-      color: #fff;
-      background: #395996; }
-      .registration .social-login .social-login-btn.facebook a i {
         color: #fff;
-        background: #335087; }
+        background: #395996; 
+    }
+    .registration .social-login .social-login-btn.facebook a i {
+        color: #fff;
+        background: #335087; 
+    }
+
     .registration .social-login .social-login-btn.twitter a {
-      color: #fff;
-      background: #43b3e5; }
-      .registration .social-login .social-login-btn.twitter a i {
         color: #fff;
-        background: #3ca1ce; }
+        background: #43b3e5; 
+    }
+
+    .registration .social-login .social-login-btn.twitter a i {
+        color: #fff;
+        background: #3ca1ce; 
+    }
     .registration .social-login .social-login-btn.g-plus a {
-      color: #fff;
-      background: #fb3333; }
-      .registration .social-login .social-login-btn.g-plus a i {
         color: #fff;
-        background: #e12e2e; }
+        background: #fb3333; 
+    }
+    .registration .social-login .social-login-btn.g-plus a i {
+        color: #fff;
+        background: #e12e2e; 
+    }
     .registration .social-login .social-login-btn.linkedin a {
-      color: #fff;
-      background: #007bb6; }
-      .registration .social-login .social-login-btn.linkedin a i {
         color: #fff;
-        background: #006ea3; }
+        background: #007bb6; 
+    }
+    .registration .social-login .social-login-btn.linkedin a i {
+        color: #fff;
+        background: #006ea3; 
+    }
   .registration .middle-text {
     position: relative; }
     .registration .middle-text p {
@@ -3764,4 +3787,9 @@ article.page-content {
 }
 .tab-content.active {
   display:block;
+}
+
+.forgot-password-min {
+  min-height: 500px;
+  overflow: hidden;
 }

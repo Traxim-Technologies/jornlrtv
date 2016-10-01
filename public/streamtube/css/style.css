@@ -56,7 +56,7 @@ body{
 	list-style-type: none;
 }
 .y-home li:hover{
-	background-color: #989898;
+	background-color: #444;
 }
 .y-home a{
 	display: block;
@@ -483,6 +483,20 @@ videos (single page) css
 	color:#fff;
 	text-decoration: none;
 }
+
+.share-twitter{
+	background-color: #4099ff;
+	border-color: transparent;
+	padding: 5px 10px;
+	display: inline-block;
+	margin-left: 10px;
+    color: #fff;
+}
+.share-twitter:hover,.share-twitter:focus,.share-twitter:active{
+	background-color: #3f91ef;
+	color:#fff;
+	text-decoration: none;
+}
 .share i{
 	margin-right: 5px;
 }
@@ -701,6 +715,8 @@ videos (single page) css
 	padding: 0px;
 	font-size: 9px;
 	color: rgb(75, 70, 70);
+
+
 }
 .time p{
 	margin: 0;
@@ -869,6 +885,15 @@ history (single page) css
     font-size: 12px;
     line-height: 16px;
     margin-bottom: 0;
+    display: block;
+  	display: -webkit-box;
+  /* Fallback for non-webkit */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 33px;
+
 }
 .duration{
 	font-size: 11px;
@@ -944,6 +969,17 @@ signup.html css
     font-weight: bold;
     margin-bottom: 15px;
 }
+
+.social-twitter button{
+	background-color: #4099ff;
+	border-color: transparent;
+	padding: 7px;
+    color: #fff;
+    margin-bottom: 10px;
+    width: 100%;
+    border-radius: 4px;
+}
+
 .social-fb button{
 	background-color: #3b5998;
 	border-color: transparent;
@@ -964,7 +1000,7 @@ signup.html css
 .signup-form input{
 	width: 100%;
 	margin-bottom: 10px;
-	padding: 10px;
+	/*padding: 10px;*/
 	border-radius: 3px;
 	color: #333;
 }
@@ -1316,12 +1352,23 @@ recommended.html css
 	display: block;
   display: -webkit-box;
   /* Fallback for non-webkit */
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 38px;
+  max-height: 20px;
   line-height: 19px;
+}
+
+.suggn-title h5 {
+	display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 40px;
+    line-height: 19px;
 }
 .recom-show{
 	float: right;
@@ -1433,6 +1480,7 @@ changes
     width: 30px;
     height: 38px;
     background-color: #eee;
+    line-height: 7px;
  }
 
 .slick-prev {
@@ -1507,52 +1555,52 @@ margin: 0px auto 35px;
 }
 
 /* Large Devices, Wide Screens */
-    @media only screen and (max-width : 1200px) {
+@media only screen and (max-width : 1200px) {
 
-    }
+}
 
-    /* Medium Devices, Desktops */
-    @media only screen and (max-width : 992px) {
-    	.slide-image {
-		    width: 100%;
-		    height: 90px;
-		    overflow: hidden;
-		}
-		.recom-image{
-			height: 90px!important;
-		}
-		.custom-side{
-			padding-right: 15px;
-			padding-left: 15px;
-			margin-top: 20px;
-		}
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+	.slide-image {
+	    width: 100%;
+	    height: 90px;
+	    overflow: hidden;
+	}
+	.recom-image{
+		height: 90px!important;
+	}
+	.custom-side{
+		padding-right: 15px;
+		padding-left: 15px;
+		margin-top: 20px;
+	}
 
-    }
+}
 
-    /* Small Devices, Tablets */
-    @media only screen and (max-width : 768px) {
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
 
-    	.tube-image{
-    		margin-bottom: 15px;
-    	}
-    	
-    }
+	.tube-image{
+		margin-bottom: 15px;
+	}
+	
+}
 
-    /* Extra Small Devices, Phones */ 
-    @media only screen and (max-width : 480px) {
-    	.recom-image{
-			height: 150px!important;
-		}
-    }
+/* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 480px) {
+	.recom-image{
+		height: 150px!important;
+	}
+}
 
-    /* Custom, iPhone Retina */ 
-    @media only screen and (max-width : 320px) {
-        .slide-image {
-		    width: 100%;
-		    height:123px;
-		    overflow: hidden;
-		}
-    }
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 320px) {
+    .slide-image {
+	    width: 100%;
+	    height:123px;
+	    overflow: hidden;
+	}
+}
 .error-image {
 	width: 100%;
 }
@@ -1563,4 +1611,58 @@ margin: 0px auto 35px;
 	border-radius: 4px;
 }
 
+.active {
+    background-color: #cc181e;
+    color: white;
+}
 
+.active a{
+    color: white;
+}
+.text-none {
+	text-decoration:none;
+}
+.float-left {
+	float: left;
+}
+.float-right {
+	float: right;
+}
+.see-all {
+	float: right;
+    text-decoration: none;
+    display: block;
+    padding: 4px 16px;
+    background: #cc181e;
+    color: white;
+    border-radius: 4px;
+    margin-top: 12px !important;
+}
+
+.see-all:hover,.see-all:active,.see-all:focus {
+	background-color: #b31010;
+	color:white;
+	text-decoration: none;
+}
+
+.pagination>.active>span{
+	background-color: #cc181e !important;
+    border-color: #cc181e !important;
+}
+
+.pagination>li>a {
+	color:#333;
+}
+
+.forgot-password-reset {
+	min-height: 600px;
+}
+
+.slick-prev.slick-disabled:before, .slick-next.slick-disabled:before {
+	margin-left: -5px;
+}
+
+.ui-menu-item:hover ,.ui-menu-item:active , .ui-menu-item:focus {
+	background-color: #cc181e;
+	color: #fff;
+}
