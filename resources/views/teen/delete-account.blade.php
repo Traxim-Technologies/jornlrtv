@@ -5,10 +5,10 @@
     @include('notification.notify')
 
     <div class="login-box">
-        <h4>We hope we will see again!!</h4>
+        <h4>{{tr('delete_account_heading')}}</h4>
 
         <p style="color: gray">
-            <strong>Note:</strong> Once you deleted account, you will lose your history and wishlist details.
+            <strong>Note:</strong> {{tr('delete_account_content')}}
         </p>
         
         <form role="form" method="POST" action="{{ route('user.delete.account.process') }}">
