@@ -291,7 +291,7 @@ class AdminController extends Controller
                 $email_data['email'] = $user->email;
 
                 $subject = tr('user_welcome_title');
-                $page = "emails.admin.welcome";
+                $page = "emails.admin_user_welcome";
                 $email = $user->email;
                 Helper::send_email($page,$subject,$email,$email_data);
             }

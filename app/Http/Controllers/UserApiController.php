@@ -274,6 +274,7 @@ class UserApiController extends Controller
                     'login_by' => $user->login_by,
                     'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
+                    'push_status' => $user->push_status,
                 );
 
                 $response_array = Helper::null_safe($response_array);
@@ -409,6 +410,7 @@ class UserApiController extends Controller
                     'login_by' => $user->login_by,
                     'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
+                    'push_status' => $user->push_status,
                 );
 
                 $response_array = Helper::null_safe($response_array);
@@ -668,12 +670,12 @@ class UserApiController extends Controller
 
         }
 
-		return response()->json($response_array,200);
-	
-	}
+        return response()->json($response_array,200);
+    
+    }
 
-	public function user_rating(Request $request) 
-	{
+    public function user_rating(Request $request) 
+    {
         $user = User::find($request->id);
 
         $validator = Validator::make(
@@ -703,7 +705,7 @@ class UserApiController extends Controller
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
             
-			$response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans(),'message' => tr('comment_success') );
+            $response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans(),'message' => tr('comment_success') );
         }
 
         $response = response()->json($response_array, 200);
@@ -769,13 +771,13 @@ class UserApiController extends Controller
 
         $total = get_wishlist_count($request->id);
 
-		$response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
+        $response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
     
         return response()->json($response_array, 200);
     } 
 
     public function delete_wishlist(Request $request) 
-	{
+    {
         $user = User::find($request->id);
 
         $validator = Validator::make(
@@ -801,7 +803,7 @@ class UserApiController extends Controller
                 $wishlist = Wishlist::where('id',$request->wishlist_id)->delete(); 
             }
 
-			$response_array = array('success' => true);
+            $response_array = array('success' => true);
         }
 
         $response = response()->json($response_array, 200);
@@ -847,20 +849,20 @@ class UserApiController extends Controller
                 }
 
                 $response_array = array('success' => true);
-            }			
+            }           
         }
         return response()->json($response_array, 200);
     } 
 
     public function get_history(Request $request) {
         
-		//get wishlist
+        //get wishlist
 
         $history = Helper::watch_list($request->id,NULL,$request->skip)->toArray();
 
         $total = get_history_count($request->id);
 
-		$response_array = array('success' => true, 'history' => $history , 'total' => $total);
+        $response_array = array('success' => true, 'history' => $history , 'total' => $total);
 
         return response()->json($response_array, 200);
     } 
@@ -1300,7 +1302,7 @@ class UserApiController extends Controller
                 $message = tr('push_notification_disable');
             }
 
-            $response_array = array('success' => true, 'message' => $message);
+            $response_array = array('success' => true, 'message' => $message , 'push_status' => $user->push_status);
         }
 
         $response = response()->json($response_array, 200);

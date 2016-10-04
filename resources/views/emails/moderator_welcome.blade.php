@@ -177,7 +177,7 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <p >
-                                                    	"Welcome to {{Setting::get('site_name' , 'Start Streaming')}}.
+                                                        "Welcome to {{Setting::get('site_name' , 'Start Streaming')}}.
                                                     </p>
                                                     <br />
 
@@ -202,7 +202,7 @@
                                                     <td bgcolor="#cf4545" align="center" style="border-radius:4px;" width="200" height="50">
                                                         <div class="contentEditableContainer contentTextEditable">
                                                             <div class="contentEditable" >
-                                                                <a target='_blank' href="{{route('moderator.login')}}" style="color: #FFF;text-decoration: none" class='link2'>Login Now</a>
+                                                                <a target='_blank' href="{{route('user.dashboard')}}" style="color: #FFF;text-decoration: none" class='link2'>Visit our Website</a>
                                                             </div>
                                                         </div>
 
