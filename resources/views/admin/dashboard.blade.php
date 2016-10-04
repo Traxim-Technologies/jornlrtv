@@ -96,7 +96,7 @@
                     <i class="ion ion-bag"></i>
                 </div>
 
-                <a target="_blank" href="{{route('admin.videos')}}" class="small-box-footer">
+                <a target="_blank" href="{{route('admin.user.payments')}}" class="small-box-footer">
                     {{tr('more_info')}}
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>

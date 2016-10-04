@@ -48,7 +48,7 @@
 						</tbody>
 					</table>
 				@else
-					<h3 class="no-result">{{tr('no_history_found')}}</h3>
+					<h3 class="no-result">{{tr('no_result_found')}}</h3>
 				@endif
             </div>
           </div>
