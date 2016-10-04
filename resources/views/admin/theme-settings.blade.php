@@ -43,7 +43,7 @@
 
                             </form>
 
-                            <span style="margin-left:0px !important" class="description">Posted 5 photos - 5 days ago</span>
+                            <span style="margin-left:0px !important" class="description"></span>
                         </div>
                               
                         <div class="row margin-bottom">
