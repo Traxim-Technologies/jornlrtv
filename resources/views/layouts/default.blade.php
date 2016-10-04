@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{Setting::get('site_name' , "Start Streaming")}}</title>
+    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif</title>
 
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
 
@@ -20,7 +20,6 @@
 
     <link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
     
-
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{{asset('assets/layerslider/css/layerslider.css')}}">
 
@@ -40,15 +39,15 @@
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+    <meta property="og:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif" />
     <meta property="og:description" content="The best solution to start up a video streaming venture!" />
     <meta property="og:url" content="" />
-    <meta property="og:site_name" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+    <meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif" />
     <meta property="og:image" content="{{Setting::get('site_icon')}}" />
 
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:description" content="The best solution to start up a video streaming venture!"/>
-    <meta name="twitter:title" content="{{Setting::get('site_name' , 'Start Streaming')}}"/>
+    <meta name="twitter:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif"/>
     <meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
 
     <style type="text/css">

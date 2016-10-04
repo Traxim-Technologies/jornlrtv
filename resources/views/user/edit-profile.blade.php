@@ -17,7 +17,11 @@
                                 <h4 class="edit-head">{{tr('edit_profile')}}</h4>
                                 
                                 <div class="image-profile edit-image">
-                                    <img src="{{Auth::user()->picture}}">                               
+                                    @if(Auth::user()->picture)
+                                    <img src="{{Auth::user()->picture}}">
+                                    @else
+                                        <img src="{{asset('placeholder.png')}}">
+                                    @endif                               
                                 </div><!--end of image-profile-->
 
                                 <div class="editform-content"> 

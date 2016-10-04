@@ -14,11 +14,10 @@
 
         <div class="social-form">
             <div class="signup-head">
-                <h3>We hope we will see again!!</h3>
+                <h3>{{tr('delete_account_heading')}}</h3>
 
                  <p>
-                    <strong style="color: brown">Note:</strong> Once you deleted account, you will lose your history and wishlist details.
-                </p>
+                    <strong style="color: brown">Note:</strong> {{tr('delete_account_content')}}                </p>
             </div><!--end  of signup-head-->         
         </div><!--end of socila-form-->
 
