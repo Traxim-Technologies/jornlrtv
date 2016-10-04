@@ -16,13 +16,13 @@
 
                             <div class="image {{$slider_video->admin_video_id}}">
 
-                                <!-- @if($slider_video->video_type != 1) --> <!-- Check the video type is other than the local upload -->
+                                <!-- if($slider_video->video_type != 1) --> <!-- Check the video type is other than the local upload -->
 
                                     <!-- <span id="trailer_video_play">
                                         <iframe id="iframe_trailer_video" width="580" height="315" src="{{$slider_video->trailer_video}}?autoplay=0" allowfullscreen></iframe>
                                     </span> -->
 
-                                <!-- @else -->
+                                <!-- else -->
 
                                         <img src="{{$slider_video->default_image}}" alt="imaga">
                                         <a href="{{route('user.single' , $slider_video->admin_video_id)}}" class="hover-posts">
@@ -31,10 +31,10 @@
 
                                     <?php /** @if(check_valid_url($slider_video->trailer_video))
                                         <div id="trailer-video-player"></div>
-                                    @else
+                                    else
                                         <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
                                     @endif **/ ?>
-                                <!-- @endif -->
+                                <!-- endif -->
 
                             </div>  
 

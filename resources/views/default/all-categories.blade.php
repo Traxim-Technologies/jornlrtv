@@ -235,27 +235,6 @@
 	            
 	            <div class="row">
 
-	                <!-- search Widget -->
-	                
-	                <div style="display:none" class="large-12 medium-7 medium-centered columns">
-	                    <div class="widgetBox">
-	                        <div class="widgetTitle">
-	                            <h5>Search Videos</h5>
-	                        </div><!--end of widget-title-->
-	                        <form id="searchform" method="get" role="search">
-	                            <div class="input-group">
-	                                <input class="input-group-field" type="text" placeholder="Enter your keyword">
-	                                <div class="input-group-button">
-	                                    <input type="submit" class="button" value="Submit">
-	                                </div>
-	                            </div>
-	                        </form>
-	                    </div><!--end of widget-box-->
-	                
-	                </div>
-
-	                <!-- End search Widget -->
-
 	                <!-- categories -->
 
 	                @if(count($categories) > 0)
@@ -316,79 +295,83 @@
 	                <!--end of large-12-->
 
 	                <!-- slide video -->
+
+	                @if(count($trendings) > 0)
 	                
-	                <div class="large-12 medium-7 medium-centered columns">
+		                <div class="large-12 medium-7 medium-centered columns">
 
-	                    <section class="widgetBox">
+		                    <section class="widgetBox">
 
-	                        <div class="row">
+		                        <div class="row">
 
-	                            <div class="large-12 columns">
+		                            <div class="large-12 columns">
 
-	                                <div class="column row">
+		                                <div class="column row">
 
-	                                    <div class="heading category-heading clearfix">
+		                                    <div class="heading category-heading clearfix">
 
-	                                        <div class="cat-head pull-left">
-	                                            <h4>{{tr('trending')}}</h4>
-	                                        </div>
+		                                        <div class="cat-head pull-left">
+		                                            <h4>{{tr('trending')}}</h4>
+		                                        </div>
 
-	                                        <!--end of heading-->
+		                                        <!--end of heading-->
 
-	                                        <div class="sidebar-video-nav">
-	                                            <div class="navText pull-right">
-	                                                <a class="prev secondary-button"><i class="fa fa-angle-left"></i></a>
-	                                                <a class="next secondary-button"><i class="fa fa-angle-right"></i></a>
-	                                            </div><!--end of navText-->
-	                                        
-	                                        </div>
+		                                        <div class="sidebar-video-nav">
+		                                            <div class="navText pull-right">
+		                                                <a class="prev secondary-button"><i class="fa fa-angle-left"></i></a>
+		                                                <a class="next secondary-button"><i class="fa fa-angle-right"></i></a>
+		                                            </div><!--end of navText-->
+		                                        
+		                                        </div>
 
-	                                        <!--end of sidebar-video-nav-->
-	                                    </div>
-	                                    <!--end of heading-->
-	                                </div>
-	                                <!--end of column-->
-
-	                                <!-- slide Videos-->
-
-	                                <div id="owl-demo-video" class="owl-carousel carousel" data-car-length="1" data-items="1" data-loop="true" data-nav="false" data-autoplay="true" data-autoplay-timeout="3000" data-dots="false">
-	                                    
-	                                    @foreach($trendings as $t => $trending)
-	                                    
-		                                    <div class="item item-video thumb-border">
-		                                        <figure class="premium-img">
-		                                            <img src="{{$trending->default_image}}" alt="carousel">
-		                                            <a href="{{route('user.single' , $trending->admin_video_id)}}" class="hover-posts">
-		                                                <span><i class="fa fa-play"></i></span>
-		                                            </a>
-		                                        </figure>
-		                                        <div class="video-des">
-		                                            <h6><a href="#">{{$trending->title}}</a></h6>
-		                                            <div class="post-stats clearfix">
-		                                                <p class="pull-left">
-		                                                    <i class="fa fa-clock-o"></i>
-		                                                    <span>{{date('d M Y',strtotime($recent_video->publish_time))}}</span>
-		                                                </p>
-		                                                <p class="pull-left">
-		                                                    <i class="fa fa-eye"></i>
-		                                                    <span>{{$recent_video->watch_count}}</span>
-		                                                </p>
-		                                            </div><!--end of post-stats-->
-		                                        </div><!--end of video-des-->
-		                                    
+		                                        <!--end of sidebar-video-nav-->
 		                                    </div>
-		                                    <!--end of item-->
+		                                    <!--end of heading-->
+		                                </div>
+		                                <!--end of column-->
 
-	                                    @endforeach
+		                                <!-- slide Videos-->
 
-	                                </div>
+		                                <div id="owl-demo-video" class="owl-carousel carousel" data-car-length="1" data-items="1" data-loop="true" data-nav="false" data-autoplay="true" data-autoplay-timeout="3000" data-dots="false">
+		                                    
+		                                    @foreach($trendings as $t => $trending)
+		                                    
+			                                    <div class="item item-video thumb-border">
+			                                        <figure class="premium-img">
+			                                            <img src="{{$trending->default_image}}" alt="carousel">
+			                                            <a href="{{route('user.single' , $trending->admin_video_id)}}" class="hover-posts">
+			                                                <span><i class="fa fa-play"></i></span>
+			                                            </a>
+			                                        </figure>
+			                                        <div class="video-des">
+			                                            <h6><a href="#">{{$trending->title}}</a></h6>
+			                                            <div class="post-stats clearfix">
+			                                                <p class="pull-left">
+			                                                    <i class="fa fa-clock-o"></i>
+			                                                    <span>{{date('d M Y',strtotime($recent_video->publish_time))}}</span>
+			                                                </p>
+			                                                <p class="pull-left">
+			                                                    <i class="fa fa-eye"></i>
+			                                                    <span>{{$recent_video->watch_count}}</span>
+			                                                </p>
+			                                            </div><!--end of post-stats-->
+			                                        </div><!--end of video-des-->
+			                                    
+			                                    </div>
+			                                    <!--end of item-->
 
-	                                <!-- end carousel -->
-	                            </div><!--large-12 end-->
-	                        </div><!--end of widgetbox row-->
-	                    </section><!-- End Category -->
-	                
-	                </div>
+		                                    @endforeach
+
+		                                </div>
+
+		                                <!-- end carousel -->
+		                            </div><!--large-12 end-->
+		                        </div><!--end of widgetbox row-->
+		                    </section><!-- End Category -->
+		                
+		                </div>
+
+	                @endif
 
 	                <!-- End slide video -->
 

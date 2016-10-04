@@ -24,7 +24,7 @@
                             <div class="top-bar-left">
                                 <ul class="menu">
                                     <li class="menu-text" style="padding:0px !important">
-                                        <a href="{{route('user.dashboard')}}"><img src="{{Setting::get('site_logo',asset('assets/images/logo-small.png')) }}" alt="logo"></a>
+                                        <a href="{{route('user.dashboard')}}"><img src="@if(Setting::get('site_logo')) {{Setting::get('site_logo') }} @else {{asset('logo.png')}} @endif" alt="logo"></a>
                                     </li>
                                 </ul>
                             </div><!--top-bar-left end-->

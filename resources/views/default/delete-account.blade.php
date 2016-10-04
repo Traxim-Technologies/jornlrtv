@@ -25,10 +25,10 @@
 
                         <div class="register-form">
 
-                        <h5 class="text-center">We hope we will see again!!</h5>
+                        <h5 class="text-center">{{tr('delete_account_heading')}}</h5>
 
                         <p>
-                            <strong style="color: brown">Note:</strong> Once you deleted account, you will lose your history and wishlist details.
+                            <strong style="color: brown">Note:</strong> {{tr('delete_account_content')}}
                         </p>
 
                             <form method="post" data-abide="bhwxrp-abide" novalidate="" action="{{ route('user.delete.account.process') }}">                                
