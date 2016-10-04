@@ -538,10 +538,14 @@ function check_php_configure() {
 function check_mysql_configure() {
 
     $output = shell_exec('mysql -V');
-    
-    preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version); 
+    $data = 1;
+    if($output) {
+        preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version); 
+        // $data = $version[0];
+    }
 
-    return $version[0]; 
+    return $data; 
+
 }
 
 function check_database_configure() {

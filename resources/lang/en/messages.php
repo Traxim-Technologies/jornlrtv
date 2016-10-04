@@ -48,8 +48,8 @@ return array(
 	'add_to' => 'ADD TO',	
 	
 	// mail title configure
-	'user_welcome_title' => 'Welcome to Live Streaming',
-	'provider_welcome_title' => 'Welcome to Live Streaming',
+	'user_welcome_title' => 'Welcome to Start Streaming',
+	'provider_welcome_title' => 'Welcome to Start Streaming',
 
 	'user_forgot_email_title' => "Your new password",
 	'provider_forgot_email_title' =>  'Your new password',
@@ -67,6 +67,10 @@ return array(
 	'login_via_twitter' => 'Login Via Twitter',
 	'login_via_google' => 'Login Via Google',
 	'login_via_social' => 'Login via Social Profile',
+	'signup_via_fb' => 'Login Via Facebook',
+	'signup_via_twitter' => 'Login Via Twitter',
+	'signup_via_google' => 'Login Via Google',
+	'signup_via_social' => 'Login via Social Profile',
 	'share_on_fb' => 'Share On Facebook',
 	'share_on_google' => 'Share On Google+',
 	'share_on_twitter' => 'Share On Twitter',
@@ -119,7 +123,6 @@ return array(
 	'cancel'	=> 	'Cancel',
 	
 	'payment_successful'	=> 'Payment Successful',
-
 	
 	'unknown_error' 	=>	'Unknown error please try again later',
 	'something_error' 	=>	'Something went wrong! please try again later',
@@ -482,7 +485,6 @@ return array(
 	'heading' => 'Heading',
 	'page_type' => 'Page Type',
 
-
 	'user_account_delete_success' => 'Account deleted successfully!!!',
 	'delete_account' => 'Delete Account',
 
@@ -494,5 +496,9 @@ return array(
 	'reset_password' => 'Reset Password',
 
 	'back_profile' => 'Back Profile',
+	'delete_account_heading' => 'Hope, see you soon',
+	'delete_account_content' => 'Once you deleted account, you will lose your history and wishlist details.',
+	'edit_profile' => 'Edit Profile',
+	'upload_image' => 'Uplaod Image',
 	
 );

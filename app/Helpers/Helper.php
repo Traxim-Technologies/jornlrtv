@@ -1,4 +1,4 @@
-<?php // Code within app\Helpers\Helper.php
+<?php 
 
    namespace App\Helpers;
 
