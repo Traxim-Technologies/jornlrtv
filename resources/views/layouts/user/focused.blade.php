@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{Setting::get('site_name' , "Live Stream")}}</title>
+    <title>{{Setting::get('site_name' , "Start Streaming")}}</title>
     
     <meta name="viewport" content="width=device-width,  initial-scale=1">
     <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">
@@ -83,6 +83,18 @@
 </script>
 
     @yield('scripts')
+
+    <!-- Start of LiveChat (www.livechatinc.com) code -->
+    <script type="text/javascript">
+    window.__lc = window.__lc || {};
+    window.__lc.license = 8284281;
+    (function() {
+    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+    })();
+    </script>
+    <!-- End of LiveChat code -->
 </body>
 
 
