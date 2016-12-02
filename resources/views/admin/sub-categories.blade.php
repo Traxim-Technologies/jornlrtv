@@ -46,16 +46,16 @@
 							@foreach($data as $i => $sub_category)
 
 								<?php $images = get_sub_category_image($sub_category->id); ?>
-					
+
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$sub_category->sub_category_name}}</td>
 							      	<td>{{$sub_category->description}}</td>
 
 							      	<td>
-							      		@if($sub_category->is_approved) 
+							      		@if($sub_category->is_approved)
 							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else 
+							       		@else
 							       			<span class="label label-warning">{{tr('pending')}}</span>
 							       		@endif
 							       </td>
@@ -69,7 +69,7 @@
 								      	</td>
 
 							      	@endif
-							      	
+
 							      	<td>
 							      		<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#image{{$i}}">
 											{{tr('view_images')}}
@@ -83,10 +83,16 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.edit.sub_category' , array('category_id' => $category->id,'sub_category_id' => $sub_category->id))}}">{{tr('edit_sub_category')}}</a></li>
-								                  	
+
+								                  	<li role="presentation">
+														@if(Setting::get('admin_delete_control'))
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit_sub_category')}}</a>
+                                                        @else
+															<a role="menuitem" tabindex="-1" href="{{route('admin.edit.sub_category' , array('category_id' => $category->id,'sub_category_id' => $sub_category->id))}}">{{tr('edit_sub_category')}}</a></li>
+														@endif
+
 								                  	<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('view_sub_category')}}</a></li> -->
-							                  	
+
 
 								                  	<li class="divider" role="presentation"></li>
 
@@ -96,10 +102,21 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.sub_category.approve' , array('id' => $sub_category->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
-								                  	<li role="presentation"><a role="menuitem" onclick="return confirm('Are you sure?')" tabindex="-1" href="{{route('admin.delete.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('delete_sub_category')}}</a></li>
-								                  	
+								                  	<li role="presentation">
+
+								                  		@if(Setting::get('admin_delete_control'))
+
+									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete_sub_category')}}</a>
+
+									                  	 @else
+
+								                  			<a role="menuitem" onclick="return confirm('Are you sure?')" tabindex="-1" href="{{route('admin.delete.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('delete_sub_category')}}</a>
+								                  		@endif
+
+								                  	</li>
+
 								                  	<li class="divider" role="presentation"></li>
-								                  	
+
 								                </ul>
               								</li>
             							</ul>
@@ -130,7 +147,7 @@
 										                        <img class="img-responsive" src="{{$image->picture}}" alt="SubCategory">
 										                    </div>
 									                    @endforeach
-									                
+
 									                </div>
 
 								                @endif
@@ -141,14 +158,14 @@
 								          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								        	</div>
 								    	</div>
-								      
+
 									</div>
-								
+
 								</div>
 
 								<!-- Modalfor sub category images -->
 								@if($category->is_series)
-								
+
 									<div class="modal fade" id="genres{{$i}}" role="dialog">
 
 									    <div class="modal-dialog">
@@ -178,7 +195,7 @@
 																              		<a title="Decline" href="{{route('admin.genre.approve' , array('id' => $genre->id , 'status' => 0))}}" class="btn btn-warning btn-sm">
 																                  		<i class="fa fa-times"></i>
 																                  	</a>
-																	       		@else 
+																	       		@else
 																	       			<a title="Approve" href="{{route('admin.genre.approve' , array('id' => $genre->id , 'status' => 1))}}" class="btn btn-success btn-sm">
 																                  		<i class="fa fa-check"></i>
 																                  	</a>
@@ -193,7 +210,7 @@
 											                		</div>
 											                  	</div>
 										                    @endforeach
-										                
+
 										                </div>
 
 										            @else
@@ -206,9 +223,9 @@
 									          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 									        	</div>
 									    	</div>
-									      
+
 										</div>
-									
+
 									</div>
 
 								@endif
@@ -230,9 +247,7 @@
             </div>
           </div>
         </div>
-    
+
     </div>
 
 @endsection
-
-

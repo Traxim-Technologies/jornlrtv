@@ -309,17 +309,22 @@ class ApplicationController extends Controller {
             
             $results = Helper::search_video($q);
 
-            foreach ($results as $i => $key) {
+            if($results) {
 
-                $check = $i+1;
+                foreach ($results as $i => $key) {
 
-                if($check <=10) {
- 
-                    array_push($items,$key->title);
+                    $check = $i+1;
 
-                } if($check == 10 ) {
-                    array_push($items,"View All" );
+                    if($check <=10) {
+     
+                        array_push($items,$key->title);
+
+                    } if($check == 10 ) {
+                        array_push($items,"View All" );
+                    }
+                
                 }
+
             }
 
             return response()->json($items);

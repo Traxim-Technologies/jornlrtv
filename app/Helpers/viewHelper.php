@@ -74,6 +74,8 @@ function get_categories() {
                         ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
                             'categories.is_series' ,'categories.status' , 'categories.is_approved')
                         ->leftJoin('admin_videos' , 'categories.id' , '=' , 'admin_videos.category_id')
+                        ->where('admin_videos.status' , 1)
+                        ->where('admin_videos.is_approved' , 1)
                         ->groupBy('admin_videos.category_id')
                         ->havingRaw("COUNT(admin_videos.id) > 0")
                         ->orderBy('name' , 'ASC')
@@ -538,14 +540,15 @@ function check_php_configure() {
 function check_mysql_configure() {
 
     $output = shell_exec('mysql -V');
+
     $data = 1;
+
     if($output) {
         preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version); 
         // $data = $version[0];
     }
 
     return $data; 
-
 }
 
 function check_database_configure() {
@@ -613,6 +616,7 @@ function all_videos($web = NULL , $skip = 0)
 {
 
     $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
+                ->where('admin_videos.status' , 1)
                 ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                 ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                 ->select(

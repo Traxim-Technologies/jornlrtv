@@ -74,12 +74,12 @@ define('WATCHLIST' , 'watchlist');
 define('BANNER' , 'banner');
 
 class UserApiController extends Controller
-{   
+{
 
     public function __construct(Request $request)
     {
         $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact']));
-        
+
     }
     public function register(Request $request)
     {
@@ -135,9 +135,9 @@ class UserApiController extends Controller
                     Log::info('Registration social validation failed');
 
                 }else {
-                    
+
                     $check_social_user = User::where('email' , $request->email)->first();
-                    
+
                     if($check_social_user) {
                         $new_user = DEFAULT_FALSE;
                     }
@@ -161,7 +161,7 @@ class UserApiController extends Controller
                     )
                 );
 
-                // validate email existence 
+                // validate email existence
 
                 $emailValidator = Validator::make(
                     $request->all(),
@@ -186,7 +186,7 @@ class UserApiController extends Controller
                     Log::info('Registration passed manual validation');
                     $operation = true;
                 }
-            
+
             }
 
             if($operation) {
@@ -200,22 +200,22 @@ class UserApiController extends Controller
                 }
 
                 if($request->has('name')) {
-                    $user->name = $request->name;    
+                    $user->name = $request->name;
                 }
 
                 if($request->has('email')) {
-                    $user->email = $request->email;    
+                    $user->email = $request->email;
                 }
-                
+
                 if($request->has('mobile')) {
-                    $user->mobile = $request->mobile;    
+                    $user->mobile = $request->mobile;
                 }
 
                 if($request->has('password'))
                     $user->password = Hash::make($request->password);
 
                 $user->gender = $request->has('gender') ? $request->gender : "male";
-                
+
                 $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
 
@@ -232,21 +232,22 @@ class UserApiController extends Controller
                 $user->social_unique_id = $request->has('social_unique_id') ? $request->social_unique_id : '';
 
                 $user->picture = asset('placeholder.png');
-                
+
                 // Upload picture
                 if($request->login_by == "manual") {
 
                     if($request->hasFile('picture')) {
-                        $user->picture = Helper::normal_upload_picture($request->file('picture'));    
+                        $user->picture = Helper::normal_upload_picture($request->file('picture'));
                     }
                 } else {
                     if($request->has('picture')) {
                         $user->picture = $request->picture;
                     }
                 }
-                
+
                 $user->is_activated = 1;
-               
+                $user->user_type = 1;
+
                 $user->save();
 
 
@@ -280,7 +281,7 @@ class UserApiController extends Controller
                 $response_array = Helper::null_safe($response_array);
 
                 Log::info('Registration completed');
-            
+
             }
 
         }
@@ -385,7 +386,7 @@ class UserApiController extends Controller
                 // Generate new tokens
                 $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
-                
+
                 // Save device details
                 $user->device_token = $device_token;
                 $user->device_type = $device_type;
@@ -434,13 +435,13 @@ class UserApiController extends Controller
         if ($validator->fails()) {
             $error_messages = implode(',',$validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
-        } 
-        else 
+        }
+        else
         {
             $user = User::where('email' , $email)->first();
             $new_password = Helper::generate_password();
             $user->password = Hash::make($new_password);
-            
+
             $email_data = array();
             $subject = Helper::tr('user_forgot_email_title');
             $email = $user->email;
@@ -463,8 +464,8 @@ class UserApiController extends Controller
         $old_password = $request->old_password;
         $new_password = $request->password;
         $confirm_password = $request->confirm_password;
-        
-        $validator = Validator::make($request->all(), [              
+
+        $validator = Validator::make($request->all(), [
                 'password' => 'required|confirmed',
                 'old_password' => 'required',
             ]);
@@ -481,7 +482,7 @@ class UserApiController extends Controller
                 $user->save();
 
                 $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_message(102)));
-                
+
             } else {
                 $response_array = array('success' => false , 'error' => Helper::get_error_message(131),'error_messages' => Helper::get_error_message(131) ,'error_code' => 131);
             }
@@ -490,7 +491,7 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array,200);
         return $response;
-    
+
     }
 
     public function user_details(Request $request)
@@ -532,7 +533,7 @@ class UserApiController extends Controller
 
         if ($validator->fails()) {
             // Error messages added in response for debugging
-            $error_messages = implode(',',$validator->messages()->all()); 
+            $error_messages = implode(',',$validator->messages()->all());
             $response_array = array(
                     'success' => false,
                     'error' => Helper::get_error_message(101),
@@ -547,7 +548,7 @@ class UserApiController extends Controller
             $picture = $request->file('picture');
 
             $user = User::find($user_id);
-            
+
             if($request->has('name')) {
                 $user->name = $request->name;
             }
@@ -576,7 +577,7 @@ class UserApiController extends Controller
             // Generate new tokens
             // $user->token = Helper::generate_token();
             // $user->token_expiry = Helper::generate_token_expiry();
-            
+
             $user->save();
 
             $payment_mode_status = $user->payment_mode ? $user->payment_mode : "";
@@ -603,7 +604,7 @@ class UserApiController extends Controller
 
     public function token_renew(Request $request)
     {
-       
+
         $user_id = $request->id;
 
         $token_refresh = $request->token;
@@ -635,11 +636,11 @@ class UserApiController extends Controller
             ));
 
         if ($validator->fails()) {
-            $error_messages = implode(',',$validator->messages()->all()); 
+            $error_messages = implode(',',$validator->messages()->all());
             $response_array = array('success' => false,'error' => Helper::get_error_message(101),'error_code' => 101,'error_messages' => $error_messages
             );
         } else {
-            
+
             $user = User::find($request->id);
 
             if($user->login_by != 'manual') {
@@ -666,16 +667,16 @@ class UserApiController extends Controller
                     $response_array = array('success' =>false , 'error' => Helper::get_error_message(146), 'error_code' => 146);
                 }
 
-            } 
+            }
 
         }
 
-        return response()->json($response_array,200);
-    
-    }
+		return response()->json($response_array,200);
 
-    public function user_rating(Request $request) 
-    {
+	}
+
+	public function user_rating(Request $request)
+	{
         $user = User::find($request->id);
 
         $validator = Validator::make(
@@ -690,11 +691,11 @@ class UserApiController extends Controller
                 'unique' => 'The :attribute already rated.'
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             //Save Rating
@@ -704,16 +705,16 @@ class UserApiController extends Controller
             $rating->rating = $request->has('rating') ? $request->rating : 0;
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
-            
-            $response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans(),'message' => tr('comment_success') );
+
+			$response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans(),'message' => tr('comment_success') );
         }
 
         $response = response()->json($response_array, 200);
         return $response;
-    } 
+    }
 
     public function add_wishlist(Request $request) {
-        
+
         $user = User::find($request->id);
 
         $validator = Validator::make(
@@ -726,11 +727,11 @@ class UserApiController extends Controller
                 'unique' => 'The :attribute already added in wishlist.'
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             $wishlist = Wishlist::where('user_id' , $request->id)->where('admin_video_id' , $request->admin_video_id)->first();
@@ -739,7 +740,7 @@ class UserApiController extends Controller
 
             if(count($wishlist) > 0) {
 
-                if($wishlist->status == 1) 
+                if($wishlist->status == 1)
                     $status = 0;
 
                 $wishlist->status = $status;
@@ -763,7 +764,7 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array, 200);
         return $response;
-    } 
+    }
 
     public function get_wishlist(Request $request)  {
 
@@ -771,13 +772,13 @@ class UserApiController extends Controller
 
         $total = get_wishlist_count($request->id);
 
-        $response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
-    
-        return response()->json($response_array, 200);
-    } 
+		$response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
 
-    public function delete_wishlist(Request $request) 
-    {
+        return response()->json($response_array, 200);
+    }
+
+    public function delete_wishlist(Request $request)
+	{
         $user = User::find($request->id);
 
         $validator = Validator::make(
@@ -789,26 +790,26 @@ class UserApiController extends Controller
                 'exists' => 'The :attribute doesn\'t exists please add to wishlists',
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
             if($request->status == 1) {
                 //delete wishlist
-                $wishlist = Wishlist::where('user_id',$request->id)->delete(); 
+                $wishlist = Wishlist::where('user_id',$request->id)->delete();
             } else {
                 //delete wishlist
-                $wishlist = Wishlist::where('id',$request->wishlist_id)->delete(); 
+                $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
             }
 
-            $response_array = array('success' => true);
+			$response_array = array('success' => true);
         }
 
         $response = response()->json($response_array, 200);
         return $response;
-    } 
+    }
 
     public function add_history(Request $request)  {
 
@@ -824,11 +825,11 @@ class UserApiController extends Controller
                 'unique' => 'The :attribute already added in history.'
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             if($history = UserHistory::where('user_id' , $request->id)->where('admin_video_id' ,$request->admin_video_id)->first()) {
@@ -849,23 +850,23 @@ class UserApiController extends Controller
                 }
 
                 $response_array = array('success' => true);
-            }           
+            }
         }
         return response()->json($response_array, 200);
-    } 
+    }
 
     public function get_history(Request $request) {
-        
-        //get wishlist
+
+		//get wishlist
 
         $history = Helper::watch_list($request->id,NULL,$request->skip)->toArray();
 
         $total = get_history_count($request->id);
 
-        $response_array = array('success' => true, 'history' => $history , 'total' => $total);
+		$response_array = array('success' => true, 'history' => $history , 'total' => $total);
 
         return response()->json($response_array, 200);
-    } 
+    }
 
     public function delete_history(Request $request) {
 
@@ -880,14 +881,14 @@ class UserApiController extends Controller
                 'exists' => 'The :attribute doesn\'t exists please add to history',
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
         } else {
 
             if($request->has('status')) {
-                $history = UserHistory::where('user_id',$request->id)->delete();            
+                $history = UserHistory::where('user_id',$request->id)->delete();
             } else {
                 //delete history
                 $history = UserHistory::where('user_id',$request->id)->where('id' ,  $request->history_id )->delete();
@@ -898,7 +899,7 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array, 200);
         return $response;
-    } 
+    }
 
     public function get_categories(Request $request) {
 
@@ -911,9 +912,9 @@ class UserApiController extends Controller
         } else {
             $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
         }
-        
+
         $response = response()->json($response_array, 200);
-        return $response;   
+        return $response;
     }
 
     public function get_sub_categories(Request $request) {
@@ -927,11 +928,11 @@ class UserApiController extends Controller
                 'exists' => 'The :attribute doesn\'t exists',
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             $sub_categories = get_sub_categories($request->category_id);
@@ -945,9 +946,9 @@ class UserApiController extends Controller
             }
 
         }
-        
+
         $response = response()->json($response_array, 200);
-        return $response;   
+        return $response;
     }
 
     public function home(Request $request) {
@@ -1043,11 +1044,11 @@ class UserApiController extends Controller
                 'exists' => 'The :attribute doesn\'t exists',
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             $data = array();
@@ -1077,7 +1078,7 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array, 200);
         return $response;
-    
+
     }
 
     public function get_sub_category_videos(Request $request) {
@@ -1092,11 +1093,11 @@ class UserApiController extends Controller
                 'exists' => 'The :attribute doesn\'t exists',
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             $data = array();
@@ -1110,12 +1111,12 @@ class UserApiController extends Controller
             $total = get_sub_category_video_count($request->sub_category_id);
 
             $response_array = array('success' => true, 'data' => $data , 'total' => $total);
-        
+
         }
 
         $response = response()->json($response_array, 200);
         return $response;
-    
+
     }
 
     public function single_video(Request $request) {
@@ -1129,29 +1130,34 @@ class UserApiController extends Controller
                 'exists' => 'The :attribute doesn\'t exists',
             )
         );
-    
+
         if ($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             $data = array();
 
             $data = Helper::get_video_details($request->admin_video_id);
 
-            $trailer_video = $data->trailer_video;
+            $trailer_video = $ios_trailer_video = $data->trailer_video;
 
-            $video = $data->video;
+            $video = $ios_video = $data->video;
 
             if($data->video_type == 1 && $data->video_upload_type == 2) {
 
                 if(check_valid_url($data->tralier_video)) {
-                    $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);    
+                    $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);
+                    if(env('HLS_STREAMING_URL'))
+                        $ios_trailer_video = env('HLS_STREAMING_URL').get_video_end($data->trailer_video);
                 }
 
                 if(check_valid_url($data->video)) {
-                    $trailer_video = Setting::get('streaming_url').get_video_end($data->video);    
+                    $video = Setting::get('streaming_url').get_video_end($data->video);
+
+                    if(env('HLS_STREAMING_URL'))
+                        $ios_video = env('HLS_STREAMING_URL').get_video_end($data->video);
                 }
             }
 
@@ -1170,22 +1176,24 @@ class UserApiController extends Controller
             $user = User::find($request->id);
 
             $response_array = array(
-                        'success' => true, 
+                        'success' => true,
                         'user_type' => $user->user_type ? $user->user_type : 0,
                         'wishlist_status' => $wishlist_status,
                         'history_status' => $history_status,
                         'share_link' => $share_link,
                         'main_video' => $video,
                         'tralier_video' => $trailer_video,
-                        'video' => $data , 
+                        'ios_video' => $ios_video,
+                        'ios_tralier_video' => $ios_trailer_video,
+                        'video' => $data ,
                         'video_images' => $admin_video_images,
                         'comments' => $ratings
                         );
         }
 
         $response = response()->json($response_array, 200);
-        return $response;   
-    
+        return $response;
+
     }
 
     public function search_video(Request $request) {
@@ -1199,12 +1207,12 @@ class UserApiController extends Controller
                 'exists' => 'The :attribute doesn\'t exists',
             )
         );
-    
+
         if ($validator->fails()) {
 
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
 
             $results = AdminVideo::where('is_approved' , 1)->where('status' , 1)->select('id as admin_video_id' , 'title' , 'default_image')->orderBy('created_at' , 'desc')->get()->toArray();
@@ -1214,7 +1222,7 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array, 200);
         return $response;
-   
+
     }
 
     public function privacy(Request $request) {
@@ -1233,7 +1241,7 @@ class UserApiController extends Controller
         $response_array = array('success' => true , 'page' => $page_data);
 
         return response()->json($response_array,200);
-    
+
     }
 
     public function about(Request $request) {
@@ -1253,7 +1261,7 @@ class UserApiController extends Controller
 
         $response_array = array('success' => true , 'page' => $page_data);
         return response()->json($response_array,200);
-    
+
     }
 
     public function terms(Request $request) {
@@ -1273,7 +1281,7 @@ class UserApiController extends Controller
 
         $response_array = array('success' => true , 'page' => $page_data);
         return response()->json($response_array,200);
-    
+
     }
 
     public function settings(Request $request) {
@@ -1284,14 +1292,14 @@ class UserApiController extends Controller
                 'status' => 'required',
             )
         );
-    
+
         if ($validator->fails()) {
 
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-        
+
         } else {
-            
+
             $user = User::find($request->id);
             $user->push_status = $request->status;
             $user->save();

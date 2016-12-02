@@ -57,9 +57,15 @@
 
                                                     
                                                     <li role="presentation">
+                                                      @if(Setting::get('admin_delete_control'))
+
+                                                        <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
+
+                                                       @else
                                                         <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('deletePage',array('id' => $page->id))}}">
                                                             Delete Page
                                                         </a>
+                                                      @endif
                                                     </li>
                                                 </ul>
                                             </li>

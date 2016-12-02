@@ -37,7 +37,7 @@
 
 						<tbody>
 							@foreach($moderators as $i => $moderator)
-					
+
 							    <tr>
 							      <td>{{$i+1}}</td>
 							      <td>{{$moderator->name}}</td>
@@ -46,9 +46,9 @@
 							      <td>{{$moderator->mobile}}</td>
 							      <td>{{$moderator->address}}</td>
 							      <td>
-							      		@if($moderator->is_activated) 
+							      		@if($moderator->is_activated)
 							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else 
+							       		@else
 							       			<span class="label label-warning">{{tr('pending')}}</span>
 							       		@endif
 							       </td>
@@ -64,10 +64,27 @@
 								                	@else
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.moderator.approve',$moderator->id)}}">{{tr('approve')}}</a></li>
 								                  	@endif
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.edit.moderator',$moderator->id)}}">{{tr('edit_moderator')}}</a></li>
+								                  	<li role="presentation">
+														@if(Setting::get('admin_delete_control'))
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit_moderator')}}</a>
+                                                        @else
+															<a role="menuitem" tabindex="-1" href="{{route('admin.edit.moderator',$moderator->id)}}">{{tr('edit_moderator')}}</a>
+														@endif
+													</li>
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.moderator.view',$moderator->id)}}">{{tr('view_moderator')}}</a></li>
 								                  	<li role="presentation" class="divider"></li>
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.moderator', $moderator->id)}}">Delete Account</a></li>
+								                  	<li role="presentation">
+
+								                  		@if(Setting::get('admin_delete_control'))
+
+									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
+
+									                  	 @else
+
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.moderator', $moderator->id)}}">{{tr('delete')}}</a>
+								                  		@endif
+
+								                  		</li>
 								                </ul>
               								</li>
             							</ul>
@@ -85,5 +102,3 @@
     </div>
 
 @endsection
-
-

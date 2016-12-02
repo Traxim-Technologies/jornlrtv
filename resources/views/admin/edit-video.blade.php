@@ -220,12 +220,12 @@
 
                                 <div class="form-group">
                                     <label for="other_video" class="">{{tr('video')}}</label>
-                                    <input type="text" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}" value="{{$video->video}}">
+                                    <input type="text" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}" @if($video->video_type == 2 || $video->video_type == 3) value="{{$video->video}}" @endif>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="other_trailer_video" class="">{{tr('trailer_video')}}</label>
-                                    <input type="text" class="form-control" id="other_trailer_video" name="other_trailer_video" placeholder="{{tr('trailer_video')}}" value="{{$video->trailer_video}}">
+                                    <input type="text" class="form-control" id="other_trailer_video" name="other_trailer_video" placeholder="{{tr('trailer_video')}}" @if($video->video_type == 2 || $video->video_type == 3) value="{{$video->trailer_video}}" @endif>
                                 </div>
 
                             </div>

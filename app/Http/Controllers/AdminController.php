@@ -275,6 +275,8 @@ class AdminController extends Controller
                 $new_password = substr($new_password, 0, 8);
                 $user->password = Hash::make($new_password);
                 $message = tr('admin_add_user');
+                $user->login_by = 'manual';
+                $user->device_type = 'web';
             }
 
             $user->name = $request->has('name') ? $request->name : '';
@@ -299,6 +301,7 @@ class AdminController extends Controller
             $user->save();
 
             if($user) {
+                register_mobile('web');
                 return back()->with('flash_success', $message);
             } else {
                 return back()->with('flash_error', Helper::tr('admin_not_error'));
@@ -569,7 +572,7 @@ class AdminController extends Controller
                 $email_data['email'] = $user->email;
 
                 $subject = Helper::tr('user_welcome_title');
-                $page = "emails.admin.welcome";
+                $page = "emails.moderator_welcome";
                 $email = $user->email;
                 Helper::send_email($page,$subject,$email,$email_data);
             }
@@ -1689,11 +1692,11 @@ class AdminController extends Controller
 
                     $temp_setting->value = $logo;
 
-                } else if($request->$key!=''){  
-
+                } else if($request->$key!=''){
+                 
                     if($key == "theme") {
                         if($request->has($key)) {
-                            change_theme($setting->value , $request->$key);
+                            // change_theme($setting->value , $request->$key);
                         }
                     }
 

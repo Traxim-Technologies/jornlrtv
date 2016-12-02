@@ -38,7 +38,7 @@
 
 						<tbody>
 							@foreach($users as $i => $user)
-					
+
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$user->name}}</td>
@@ -55,9 +55,9 @@
 
 							      </td>
 							      <!-- <td>
-							      		if($user->is_activated) 
+							      		if($user->is_activated)
 							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		else 
+							       		else
 							       			<span class="label label-warning">{{tr('pending')}}</span>
 							       		endif
 							       </td> -->
@@ -77,7 +77,19 @@
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.user.wishlist', $user->id)}}">{{tr('view_wishlist')}}</a></li>
 
 								                  	<li role="presentation" class="divider"></li>
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.user', array('id' => $user->id))}}">{{tr('delete_user')}}</a></li>
+								                  	<li role="presentation">
+
+								                  	 @if(Setting::get('admin_delete_control'))
+								                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete_user')}}</a>
+								                  	 @else
+
+								                  	 	<a role="menuitem" tabindex="-1"
+								                  			onclick="return confirm('Are you sure?');" href="{{route('admin.delete.user', array('id' => $user->id))}}">{{tr('delete_user')}}
+								                  		</a>
+
+								                  	 @endif
+
+								                  	</li>
 
 								                </ul>
               								</li>
@@ -96,5 +108,3 @@
     </div>
 
 @endsection
-
-

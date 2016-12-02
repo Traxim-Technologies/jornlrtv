@@ -42,7 +42,7 @@
 
     use DB;
 
-    class Helper 
+    class Helper
     {
         public static function tr($key) {
 
@@ -105,7 +105,7 @@
         }
 
         public static function send_email($page,$subject,$email,$email_data)
-        {       
+        {
             \Log::info(env('MAIL_USERNAME'));
 
             \Log::info(env('MAIL_PASSWORD'));
@@ -124,6 +124,7 @@
                     return Helper::get_error_message(123);
                 }
                 return Helper::get_message(105);
+
             } else {
                 return Helper::get_error_message(123);
             }
@@ -198,7 +199,7 @@
                 case 146:
                     $string = "Something went Wrong.Please try again later!.";
                     break;
-              
+
                 default:
                     $string = "Unknown error occurred.";
             }
@@ -212,7 +213,7 @@
                     $string = "Success";
                     break;
                 case 102:
-                    $string = "Changed password successfully.";
+                    $string = "Password Changed successfully.";
                     break;
                 case 103:
                     $string = "Successfully logged in.";
@@ -297,7 +298,7 @@
             }
 
             return $string;
-        
+
         }
 
         public static function generate_password()
@@ -315,9 +316,9 @@
 
             if($check_video_image) {
                 $video_image = $check_video_image;
-                
+
                 Helper::delete_picture($video_image->image);
-            
+
             } else {
                 $video_image = new AdminVideoImage;
             }
@@ -330,7 +331,7 @@
             } else {
                 $video_image->is_default = DEFAULT_FALSE;
             }
-            
+
             $video_image->position = $position;
             $video_image->save();
 
@@ -350,7 +351,7 @@
             if(config('filesystems')['disks']['s3']['key'] && config('filesystems')['disks']['s3']['secret']) {
 
                 Storage::disk('s3')->put($local_url, file_get_contents($picture) ,'public');
-                 
+
                 $s3_url = Storage::url($local_url);
             } else {
                 $ext = $picture->getClientOriginalExtension();
@@ -359,7 +360,7 @@
 
                 $s3_url = Helper::web_url().'/uploads/'.$local_url;
             }
-            
+
             return $s3_url;
         }
 
@@ -377,7 +378,7 @@
             $local_url = $file_name . "." . $ext;
 
             $s3_url = Helper::web_url().'/uploads/'.$local_url;
-            
+
             return $s3_url;
         }
 
@@ -388,7 +389,7 @@
 
         public static function s3_delete_picture($picture) {
             Log::info($picture);
-            
+
             Storage::Delete(basename($picture));
             return true;
         }
@@ -420,12 +421,12 @@
                 $videos = $videos_query->paginate(16);
 
             } else {
-                $videos = $videos_query->skip($skip)->take(20)
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
                             ->get();
             }
-            
+
             return $videos;
-        }   
+        }
 
         public static function wishlist($user_id, $web = NULL , $skip = 0) {
 
@@ -447,8 +448,7 @@
                 $videos = $videos_query->paginate(16);
 
             } else {
-
-                $videos = $videos_query->skip($skip)->take(20)
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
                             ->get();
             }
 
@@ -474,11 +474,11 @@
 
             } else {
 
-                $videos = $videos_query->skip($skip)->take(20)->get();
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
             }
 
             return $videos;
-        
+
         }
 
         public static function banner_videos() {
@@ -487,7 +487,7 @@
                             ->where('admin_videos.status' , 1)
                             ->where('admin_videos.is_banner' , 1)
                             ->select(
-                                'admin_videos.id as admin_video_id' , 
+                                'admin_videos.id as admin_video_id' ,
                                 'admin_videos.title','admin_videos.ratings',
                                 'admin_videos.banner_image as default_image'
                                 )
@@ -503,7 +503,7 @@
                             ->where('admin_videos.status' , 1)
                             ->leftJoin('categories' ,'admin_videos.category_id' , '=' , 'categories.id')
                             ->select(
-                                'admin_videos.id as admin_video_id' , 
+                                'admin_videos.id as admin_video_id' ,
                                 'admin_videos.title',
                                 'admin_videos.description',
                                 'admin_videos.duration',
@@ -511,7 +511,7 @@
                                 'admin_videos.default_image',
                                 'admin_videos.category_id',
                                 'categories.name as category_name',
-                                'default_image','admin_videos.watch_count' , 
+                                'default_image','admin_videos.watch_count' ,
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                                 )
                             ->orderByRaw('RAND()');
@@ -520,12 +520,12 @@
 
             } else {
 
-                $videos = $videos_query->skip($skip)->take(20)
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
                             ->get();
             }
 
             return $videos;
-        
+
         }
 
         public static function trending($web = NULL , $skip = 0) {
@@ -535,25 +535,25 @@
                             ->where('admin_videos.status' , 1)
                             ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                             ->select(
-                                'admin_videos.id as admin_video_id' , 
+                                'admin_videos.id as admin_video_id' ,
                                 'admin_videos.title',
                                 'admin_videos.description',
                                 'admin_videos.duration',
                                 'admin_videos.category_id',
                                 'admin_videos.ratings',
                                 'categories.name as category_name',
-                                'default_image','admin_videos.watch_count' , 
+                                'default_image','admin_videos.watch_count' ,
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                                 )
                             ->orderby('watch_count' , 'desc');
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
-                $videos = $videos_query->skip($skip)->take(20)->get();
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
             }
 
             return $videos;
-        
+
         }
 
         public static function category_videos($category_id, $web = NULL , $skip = 0) {
@@ -563,11 +563,11 @@
                         ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                         ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                         ->where('admin_videos.category_id' , $category_id)
-                        ->select('admin_videos.id as admin_video_id' , 
-                                'admin_videos.default_image' , 
-                                'admin_videos.sub_category_id' , 
+                        ->select('admin_videos.id as admin_video_id' ,
+                                'admin_videos.default_image' ,
+                                'admin_videos.sub_category_id' ,
                                 'admin_videos.category_id',
-                                'admin_videos.watch_count' , 
+                                'admin_videos.watch_count' ,
                                 'admin_videos.title' ,
                                 'admin_videos.ratings',
                                 'admin_videos.description',
@@ -581,11 +581,11 @@
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
-                $videos = $videos_query->skip($skip)->take(20)->get();
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
             }
 
             return $videos;
-        } 
+        }
 
         public static function sub_category_videos($sub_category_id , $web = NULL , $skip = 0) {
 
@@ -595,13 +595,13 @@
                         ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                         ->where('admin_videos.sub_category_id' , $sub_category_id)
                         ->select(
-                            'admin_videos.id as admin_video_id' , 
-                            'admin_videos.default_image' , 
-                            'admin_videos.watch_count' , 
+                            'admin_videos.id as admin_video_id' ,
+                            'admin_videos.default_image' ,
+                            'admin_videos.watch_count' ,
                             'admin_videos.title' ,
                             'admin_videos.description',
                             'admin_videos.ratings',
-                            'admin_videos.sub_category_id' , 
+                            'admin_videos.sub_category_id' ,
                             'admin_videos.category_id',
                             'categories.name as category_name',
                             'sub_categories.name as sub_category_name',
@@ -613,11 +613,11 @@
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
-                $videos = $videos_query->skip($skip)->take(20)->get();
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
             }
 
             return $videos;
-        } 
+        }
 
         public static function genre_videos($id , $web = NULL , $skip = 0) {
 
@@ -627,12 +627,12 @@
                         ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                         ->where('admin_videos.genre_id' , $id)
                         ->select(
-                            'admin_videos.id as admin_video_id' , 
-                            'admin_videos.default_image' , 
-                            'admin_videos.watch_count' , 
+                            'admin_videos.id as admin_video_id' ,
+                            'admin_videos.default_image' ,
+                            'admin_videos.watch_count' ,
                             'admin_videos.title' ,
                             'admin_videos.description',
-                            'admin_videos.sub_category_id' , 
+                            'admin_videos.sub_category_id' ,
                             'admin_videos.category_id',
                             'admin_videos.ratings',
                             +
@@ -646,11 +646,11 @@
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
-                $videos = $videos_query->skip($skip)->take(20)->get();
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
             }
 
             return $videos;
-        } 
+        }
 
         public static function get_video_details($video_id) {
 
@@ -658,8 +658,8 @@
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                    ->select('admin_videos.id as admin_video_id' ,'admin_videos.title' , 
-                             'admin_videos.description' , 'admin_videos.ratings' , 
+                    ->select('admin_videos.id as admin_video_id' ,'admin_videos.title' ,
+                             'admin_videos.description' , 'admin_videos.ratings' ,
                              'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
                              'admin_videos.video','admin_videos.trailer_video',
                              'admin_videos.default_image','admin_videos.watch_count',
@@ -691,7 +691,7 @@
             $ratings = UserRating::where('admin_video_id' , $video_id)
                             ->leftJoin('users' , 'user_ratings.user_id' , '=' , 'users.id')
                             ->select('users.id as user_id' , 'users.name as username',
-                                    'users.picture as user_picture' , 
+                                    'users.picture as user_picture' ,
 
                                     'user_ratings.rating' , 'user_ratings.comment',
                                     'user_ratings.created_at')
@@ -724,26 +724,27 @@
 
         public static function search_video($key,$web = NULL,$skip = 0) {
 
-            $videos_query = AdminVideo::where('title','like', '%'.$key.'%')
-                        ->where('admin_videos.is_approved' , 1)
+            $videos_query = AdminVideo::where('admin_videos.is_approved' ,'=', 1)
+                        ->where('title','like', '%'.$key.'%')
                         ->where('admin_videos.status' , 1)
-                        ->orWhere('description' , 'like' , '%'.$key.'%')
-                        ->select( 'admin_videos.id as admin_video_id' , 
+                        ->select( 'admin_videos.id as admin_video_id' ,
                                 'admin_videos.title',
                                 'admin_videos.description',
                                 'admin_videos.default_image',
                                 'admin_videos.category_id',
                                 'admin_videos.ratings',
-                                'default_image','admin_videos.watch_count' , 
+                                'default_image','admin_videos.watch_count' ,
                                 'admin_videos.duration',
+                                'admin_videos.is_approved','admin_videos.status',
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                                 )
                         ->orderBy('created_at' , 'desc');
 
+
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
-                $videos = $videos_query->skip($skip)->take(20)->get();
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
             }
 
             return $videos;
@@ -762,15 +763,15 @@
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'))
                             ->orderby('user_ratings.created_at' , 'desc')
                             ->groupBy('admin_videos.id');
-            
+
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
-                $videos = $videos_query->skip($skip)->take(20)->get();
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
             }
 
             return $videos;
-        
+
         }
 
         public static function get_video_comments($video_id,$skip = 0 ,$web = NULL) {
@@ -781,7 +782,7 @@
                             ->where('admin_videos.is_approved' , 1)
                             ->where('admin_videos.status' , 1)
                             ->select('admin_videos.id as admin_video_id' ,
-                                'user_ratings.user_id as rating_user_id' , 
+                                'user_ratings.user_id as rating_user_id' ,
                                 'user_ratings.rating as rating',
                                 'user_ratings.comment', 'user_ratings.created_at',
                                 'users.name as username' , 'users.picture')
@@ -789,11 +790,11 @@
             if($web) {
                 $videos = $videos_query->get();
             } else {
-                $videos = $videos_query->skip($skip)->take(10);
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' , 12));
             }
 
             return $videos;
-        
+
         }
 
         public static function check_wishlist_status($user_id,$video_id) {
@@ -801,7 +802,7 @@
             $status = Wishlist::where('user_id' , $user_id)
                                         ->where('admin_video_id' , $video_id)
                                         ->where('status' , 1)
-                                        ->first();  
+                                        ->first();
             return $status;
         }
 
@@ -815,7 +816,7 @@
             $user = User::find($user_id)->delete();
 
             return true;
-        
+
         }
 
         public static function delete_category($id) {
@@ -835,12 +836,12 @@
         public static function send_notification($id,$title,$message) {
 
             Log::info("Send Push Started");
-    
+
             // Check the user type whether "USER" or "PROVIDER"
             if($id == "all") {
                 $users = User::where('push_status' , 1)->get();
             } else {
-                $users = User::find($id);    
+                $users = User::find($id);
             }
 
             $push_data = array();
@@ -860,17 +861,17 @@
                     foreach ($users as $key => $user) {
 
                         Log::info('Individual User');
-                        
+
                         if ($user->device_type == 'ios') {
 
                             Log::info("iOS push Started");
 
                             require_once app_path().'/ios/apns.php';
 
-                            $msg = array("alert" => "" . $title,
+                            $msg = array("alert" => $message,
                                 "status" => "success",
                                 "title" => $title,
-                                // "message" => $push_message,
+                                "message" => $push_message,
                                 "badge" => 1,
                                 "sound" => "default",
                                 "status" => "",
@@ -918,25 +919,18 @@
                             $gcm->send_notification($registatoin_ids, $message);
 
                             Log::info("Andriod push end");
-                        
+
                         }
 
                     }
-                
-                }   
-            
+
+                }
+
             } else {
                 Log::info('Push notifictaion is not enabled. Please contact admin');
             }
 
             Log::info("*************************************");
-        
+
         }
     }
-
-    
-
-
-
-
-

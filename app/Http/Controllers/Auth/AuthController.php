@@ -92,7 +92,8 @@ class AuthController extends Controller
             'picture' => asset('placeholder.png'),
             'is_activated' => 1,
             'login_by' => 'manual',
-            'device_type' => 'web'
+            'device_type' => 'web',
+            'user_type'  => 1
         ]);
 
         register_mobile('web');
@@ -103,12 +104,10 @@ class AuthController extends Controller
         $page = "emails.welcome";
         $email = $data['email'];
         $result = Helper::send_email($page,$subject,$email,$email_data);
-
-        // \Log::info("Email".$result);
         
         return $User;
     }
-
+ 
     protected function authenticated(Request $request, User $user){
 
         if(\Auth::check()) {

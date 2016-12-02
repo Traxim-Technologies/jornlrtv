@@ -35,7 +35,7 @@
 
 						<tbody>
 							@foreach($categories as $i => $category)
-					
+
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$category->name}}</td>
@@ -44,17 +44,17 @@
 	                            	</td>
 
 	                            	<td>
-							      		@if($category->is_series) 
+							      		@if($category->is_series)
 							      			<span class="label label-success">{{tr('yes')}}</span>
-							       		@else 
+							       		@else
 							       			<span class="label label-warning">{{tr('no')}}</span>
 							       		@endif
 							       	</td>
 
 							      <td>
-							      		@if($category->is_approved) 
+							      		@if($category->is_approved)
 							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else 
+							       		@else
 							       			<span class="label label-warning">{{tr('pending')}}</span>
 							       		@endif
 							       </td>
@@ -65,9 +65,25 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.edit.category' , array('id' => $category->id))}}">{{tr('edit_category')}}</a></li>
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.category' , array('category_id' => $category->id))}}">{{tr('delete_category')}}</a></li>
-													
+								                  	<li role="presentation">
+                                                        @if(Setting::get('admin_delete_control'))
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit_category')}}</a>
+                                                        @else
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.category' , array('id' => $category->id))}}">{{tr('edit_category')}}</a>
+                                                        @endif
+                                                    </li>
+								                  	<li role="presentation">
+
+									                  	@if(Setting::get('admin_delete_control'))
+
+										                  	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete_category')}}</a>
+
+										                @else
+
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.category' , array('category_id' => $category->id))}}">{{tr('delete_category')}}</a>
+								                  		@endif
+								                  	</li>
+
 													<li class="divider" role="presentation"></li>
 
 								                  	@if($category->is_approved)
@@ -97,5 +113,3 @@
     </div>
 
 @endsection
-
-

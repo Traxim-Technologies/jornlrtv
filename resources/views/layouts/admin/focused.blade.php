@@ -18,7 +18,7 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="{{asset('admin-css/plugins/iCheck/square/blue.css')}}">
 
-    <link rel="shortcut icon" href="{{ Setting::get('site_icon') }}">
+    <link rel="shortcut icon" href="@if( Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png')}} @endif">
 
 </head>
 
@@ -33,10 +33,8 @@
     <div class="login-box">
 
         <div class="login-logo">
-             <a href="{{route('admin.login')}}"><b> <img class="adm-log-logo" style="width:50%;height:auto" src="{{Setting::get('site_logo', asset('logo.png') )}}" /></b></a>
+             <a href="{{route('admin.login')}}"><b> <img class="adm-log-logo" style="width:50%;height:auto" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif" /></b></a>
         </div>
-
-
 
         @yield('content')
 
@@ -58,6 +56,18 @@
             });
         });
     </script>
+
+    <!-- Start of LiveChat (www.livechatinc.com) code -->
+    <script type="text/javascript">
+    window.__lc = window.__lc || {};
+    window.__lc.license = 8284281;
+    (function() {
+    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+    })();
+    </script>
+    <!-- End of LiveChat code -->
 
 </body>
 

@@ -41,7 +41,7 @@
 
 						<tbody>
 							@foreach($videos as $i => $video)
-					
+
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$video->category_name}}</td>
@@ -62,9 +62,9 @@
 
 							      	@endif
 							      	<td>
-							      		@if($video->is_approved) 
+							      		@if($video->is_approved)
 							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else 
+							       		@else
 							       			<span class="label label-warning">{{tr('pending')}}</span>
 							       		@endif
 							      	</td>
@@ -75,7 +75,13 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->video_id))}}">{{tr('edit_video')}}</a></li>
+								                  	<li role="presentation">
+                                                        @if(Setting::get('admin_delete_control'))
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit_video')}}</a>
+                                                        @else
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->video_id))}}">{{tr('edit_video')}}</a>
+                                                        @endif
+                                                    </li>
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_id))}}">{{tr('view_video')}}</a></li>
 								                  	@if($video->is_approved)
 								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video->video_id)}}">{{tr('decline')}}</a></li>
@@ -83,7 +89,15 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_id)}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_id))}}">{{tr('delete_video')}}</a></li>
+								                  	<li role="presentation">
+								                  		@if(Setting::get('admin_delete_control'))
+
+									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete_video')}}</a>
+
+									                  	@else
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_id))}}">{{tr('delete_video')}}</a>
+								                  		@endif
+								                  	</li>
 								                </ul>
               								</li>
             							</ul>
@@ -101,5 +115,3 @@
     </div>
 
 @endsection
-
-
