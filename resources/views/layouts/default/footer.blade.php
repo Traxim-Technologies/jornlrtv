@@ -1,9 +1,9 @@
 <!-- footer -->
-                
+
 <?php /** <footer>
     <div class="row">
 
-        <div class="large-3 medium-6 columns">                        
+        <div class="large-3 medium-6 columns">
             <div class="widgetBox">
                 <div class="widgetTitle">
                     <h5>About Betube</h5>
@@ -155,7 +155,7 @@
     </div>
 
     <div class="btm-footer-text text-center">
-        <p>2016 © {{Setting::get('site_name' , 'Start Streaming')}}</p>
+        <p>2016 © {{Setting::get('site_name' , 'Stream Hash')}}</p>
     </div>
 </div>
 

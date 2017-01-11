@@ -3,7 +3,7 @@
 @section('content')
 
  <div class="install-settings-outer">
-	
+
 	<div class="container">
 		<form action="{{route('install.settings')}}" method="POST" enctype="multipart/form-data" role="form">
 			<div class="install-settings-inner">
@@ -26,7 +26,7 @@
 							<h4>Site Settings</h4>
 						</div>
 					</div>
-					
+
 					<div class="row no-margin">
 
 						<div class="col-sm-6 col-xs-12">
@@ -35,7 +35,7 @@
 							    <input type="text" class="form-control" id="site_name" aria-describedby="emailHelp" name="site_name" placeholder="Please Enter Your Site Name">
 							</div><!--end of form-group-->
 						</div><!--end of column-->
-						
+
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
 							    <label for="exampleInputFile"> Site Logo</label>
@@ -56,11 +56,11 @@
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
 							    <label for="streaming_url">Streaming URL</label>
-					    		<input type="text" class="form-control" id="streaming_url" name="streaming_url" placeholder="Ex: rtmp://startstreaming.info/vod2/" aria-describedby="fileHelp">
+					    		<input type="text" class="form-control" id="streaming_url" name="streaming_url" placeholder="Ex: rtmp://streamhash.com/vod2/" aria-describedby="fileHelp">
 							</div><!--end of form-group-->
 						</div><!--end of column-->
 					</div><!--end of row-->
-		    		
+
 				</div><!--end of set-image-->
 			</div><!--end of install-settings-inner-->
 
@@ -71,7 +71,7 @@
 				</div>
 			</div>
 		</form>
-	
+
 	</div>
 
 	<!--end of container-->
@@ -82,5 +82,5 @@
 
 @section('footer')
 
-    
+
 @endsection

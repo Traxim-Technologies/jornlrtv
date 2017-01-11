@@ -9,7 +9,7 @@ return array(
 	|
 	|	This is the master keyword file. Any new keyword added to the website
 	|	should go here first.
-	| 
+	|
 	|
 	*/
 
@@ -45,11 +45,11 @@ return array(
 
 	'added_wishlist' => 'Added wishlist',
 	'add_to_wishlist' => 'ADD TO WISHLIST',
-	'add_to' => 'ADD TO',	
-	
+	'add_to' => 'ADD TO',
+
 	// mail title configure
-	'user_welcome_title' => 'Welcome to Start Streaming',
-	'provider_welcome_title' => 'Welcome to Start Streaming',
+	'user_welcome_title' => 'Welcome to Stream Hash',
+	'provider_welcome_title' => 'Welcome to Stream Hash',
 
 	'user_forgot_email_title' => "Your new password",
 	'provider_forgot_email_title' =>  'Your new password',
@@ -84,7 +84,7 @@ return array(
 	'no_result_found' => 'No results found',
 	'search' => 'Search',
 
-	// Profile 
+	// Profile
 
 	'history' => 'History',
 	'wishlist' => 'Wishlist',
@@ -121,19 +121,19 @@ return array(
 	'new_password'	=> 	'New Password',
 	'confirm_password'	=> 	'Confirm Password',
 	'cancel'	=> 	'Cancel',
-	
+
 	'payment_successful'	=> 'Payment Successful',
-	
+
 	'unknown_error' 	=>	'Unknown error please try again later',
 	'something_error' 	=>	'Something went wrong! please try again later',
-	
+
 	'profile_updated' 	=>	'Profile has been updated',
 	'password_success' 	=>	'Password has been updated. You can log in with the new password from next time.',
 	'profile_save'	=>	'Profile has been saved',
 	'password_save'	=>	'Password Updated',
-	
+
 	'you_are'	=>	'You are',
-	
+
 	'payment_details'	=>	'Payment Details',
 
 
@@ -141,20 +141,20 @@ return array(
 
 	'amount'	=> 	'Amount',
 	'user_mobile'	=>	'User Mobile',
-	
+
 
 	//Web Provider
-	
+
 	'approval_waiting'	=> 	'Waiting for Approval',
 	'upload'	=> 	'Upload',
 	'select_file'	=> 	'Select File',
 	'added'	=> 	'Added',
 	'view'	=> 	'View',
-	
+
 	'profile_update'	=> 	'Profile Update',
-	
+
 	'latitude'	=> 	'Latitude',
-	'logitude'	=> 	'Longitude',	
+	'logitude'	=> 	'Longitude',
 	'provider'		=>	'Provider',
 
 	//Web Registration
@@ -212,12 +212,12 @@ return array(
 	'profile_pic'	=>	'Profile Picture',
 	'upload_message'	=>	'Upload only .png, .jpg or .jpeg image files only',
 	'image' => 'Image',
-	
+
 	'yes'	=>	'Yes',
 	'copyright'	=>	'Copyright',
 	'copyright_message' => 'All rights reserved',
 	'paypal_email'	=>	'Paypal Email',
-	
+
 	'default'	=>	'Default',
 	'default_lang'	=>	'Default Language',
 
@@ -279,7 +279,7 @@ return array(
 	'password_reset_msg'	=>	'Enter a new password and log in to your account',
 	'password_reset_email'	=>	'Lost your password? Please enter your email address. You will receive a link to create a new password.',
 	'password_reset_button'	=>	'Reset Password',
-	
+
 	//Admin Dashboard
 	'total_users' => 'Total Users',
 	'total_days' => 'Total Days',
@@ -310,7 +310,7 @@ return array(
 	'chat_history'	=>	'Chat History',
 
 	//Admin Button
-	'submit'	=>	'Submit',	
+	'submit'	=>	'Submit',
 
 	//Admin Users
 	'users' => 'Users',
@@ -335,7 +335,7 @@ return array(
 
 	'upgrade' => 'Upgrade',
 	'disable' => 'Disable',
-	
+
 	//Admin moderators
 	'approve'	=>	'Approve',
 	'decline'	=>	'Decline',
@@ -447,7 +447,7 @@ return array(
 	'site_settings' => 'Site Settings',
 
 	'other_settings' => 'Other Settings',
-	
+
 	'theme_settings' => 'Theme Settings',
 
 	'browser_key' => 'Browser Key',
@@ -500,5 +500,5 @@ return array(
 	'delete_account_content' => 'Once you deleted account, you will lose your history and wishlist details.',
 	'edit_profile' => 'Edit Profile',
 	'upload_image' => 'Uplaod Image',
-	
+
 );

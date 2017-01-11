@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => env('MAIL_USERNAME'), 'name' => "Start Streaming"],
+    'from' => ['address' => env('MAIL_USERNAME'), 'name' => "Stream Hash"],
 
     /*
     |--------------------------------------------------------------------------

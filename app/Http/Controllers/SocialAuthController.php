@@ -18,8 +18,8 @@ class SocialAuthController extends Controller
 {
     public function redirect(Request $request)
     {
-        return Socialite::driver($request->provider)->redirect();   
-    }   
+        return Socialite::driver($request->provider)->redirect();
+    }
 
     public function callback(Request $request ,$provider)
 	{
@@ -44,7 +44,7 @@ class SocialAuthController extends Controller
 			if($social_user->email && !User::where('email',$social_user->email)->first()) {
 				$user->email = $social_user->email;
 			} else {
-				$user->email = "social".uniqid()."@startstreaming.co";
+				$user->email = "social".uniqid()."@streamhash.com";
 			}
 
 			// Save Dummy details
@@ -63,7 +63,7 @@ class SocialAuthController extends Controller
             $user->token_expiry = Helper::generate_token_expiry();
 
 			$user->save();
-		
+
 		}
 
 	    auth()->login($user);

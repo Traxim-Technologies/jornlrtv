@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{Setting::get('site_name' , "Start Streaming")}}</title>
+    <title>{{Setting::get('site_name' , "Stream Hash")}}</title>
 
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
 
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/theme.css')}}">
 
     <link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
-    
+
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{{asset('assets/layerslider/css/layerslider.css')}}">
@@ -42,9 +42,9 @@
 <body>
 
     <div class="off-canvas-wrapper">
-        
+
         <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
-        
+
             <!--header-->
 
             <!--off-canvas position-left light-off-menu end-->
@@ -72,7 +72,7 @@
         </div>
 
         <!--end off canvas wrapper inner-->
-    
+
     </div>
 
     <!--end off canvas wrapper-->
@@ -111,7 +111,7 @@
                     // set the value of the currently focused text box to the correct value
 
                     if (event.type == "autocompleteselect"){
-                        
+
                         // console.log( "logged correctly: " + ui.item.value );
 
                         var username = ui.item.value;
@@ -130,10 +130,10 @@
                             jQuery('#userSearch').submit();
                         }
 
-                    }                        
+                    }
                 }      // select
 
-            }); 
+            });
 
         });
 

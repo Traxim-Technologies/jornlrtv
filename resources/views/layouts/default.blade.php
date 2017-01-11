@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif</title>
+    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Stream Hash @endif</title>
 
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
 
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/theme.css')}}">
 
     <link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
-    
+
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{{asset('assets/layerslider/css/layerslider.css')}}">
 
@@ -32,22 +32,22 @@
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 
     <link rel="shortcut icon" href=" @if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif">
-    
+
     @if(Setting::get('google_analytics'))
         <?php echo Setting::get('google_analytics'); ?>
     @endif
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif" />
+    <meta property="og:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Stream Hash @endif" />
     <meta property="og:description" content="The best solution to start up a video streaming venture!" />
     <meta property="og:url" content="" />
-    <meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif" />
+    <meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Stream Hash @endif" />
     <meta property="og:image" content="{{Setting::get('site_icon')}}" />
 
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:description" content="The best solution to start up a video streaming venture!"/>
-    <meta name="twitter:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Start Streaming @endif"/>
+    <meta name="twitter:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else Stream Hash @endif"/>
     <meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
 
     <style type="text/css">
@@ -63,9 +63,9 @@
 <body>
 
     <div class="off-canvas-wrapper">
-        
+
         <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
-        
+
             <!--header-->
 
             <!--- Responsive header -->
@@ -97,7 +97,7 @@
         </div>
 
         <!--end off canvas wrapper inner-->
-    
+
     </div>
 
     <!--end off canvas wrapper-->
@@ -140,7 +140,7 @@
                     // set the value of the currently focused text box to the correct value
 
                     if (event.type == "autocompleteselect"){
-                        
+
                         // console.log( "logged correctly: " + ui.item.value );
 
                         var username = ui.item.value;
@@ -159,7 +159,7 @@
                             jQuery('#userSearch').submit();
                         }
 
-                    }                        
+                    }
                 }      // select
 
             });
@@ -172,7 +172,7 @@
                     // set the value of the currently focused text box to the correct value
 
                     if (event.type == "autocompleteselect"){
-                        
+
                         // console.log( "logged correctly: " + ui.item.value );
 
                         var username = ui.item.value;
@@ -191,10 +191,10 @@
                             jQuery('#userSearch').submit();
                         }
 
-                    }                        
+                    }
                 }      // select
 
-            }); 
+            });
 
         });
 

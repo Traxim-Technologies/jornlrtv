@@ -19,17 +19,17 @@
         img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
         a img {border:none;display:inline-block;}
         .image_fix {display:block;}
-        
+
         h1, h2, h3, h4, h5, h6 {color: white !important;}
 
         h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: blue !important;}
 
         h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-            color: red !important; 
+            color: red !important;
         }
 
         h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-            color: purple !important; 
+            color: purple !important;
         }
 
         table td {border-collapse: collapse;}
@@ -129,7 +129,7 @@
                 <table cellpadding="0" class="table-full" cellspacing="0" border="0" align="center" width="100%" style="border-collapse:collapse;">
                     <tr>
                         <td class='movableContentContainer'>
-                            
+
                             <div class='movableContent'>
                                 <table cellpadding="0" cellspacing="0" border="0" align="center" width="600">
                                     <tr height="40">
@@ -162,11 +162,11 @@
                                         <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:25px;">
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
-                                                    <h2 >Hi @if(isset($email_data))  
+                                                    <h2 >Hi @if(isset($email_data))
                                                                 @if(isset($email_data['user']) )
-                                                                    {{$email_data['user']->name}}! 
+                                                                    {{$email_data['user']->name}}!
 
-                                                                @endif 
+                                                                @endif
                                                             @endif</h2>
                                                 </div>
                                             </div>
@@ -178,7 +178,7 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <p >
-                                                        You recently requested to reset password for your {{Setting::get('site_name' , 'Start Streaming')}} account.
+                                                        You recently requested to reset password for your {{Setting::get('site_name' , 'Stream Hash')}} account.
                                                     </p>
                                                     <br />
 

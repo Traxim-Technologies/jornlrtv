@@ -23,7 +23,7 @@
                                     <input type="checkbox" name="default_theme" id="default_theme_check_box" class="form-check-input">Select Theme
                                     </label>
                                 </div>
-                                <a href="http://default.startstreaming.info/"  target="_blank"class="demo-button">Demo</a>
+                                <a href="http://default.streamhash.com/"  target="_blank"class="demo-button">Demo</a>
                             </form>
                         </div><!--end of install-demo-->
                     </div><!--end of theme-select-->
@@ -45,11 +45,11 @@
                                     <input type="checkbox" name="streamtube_theme" id="streamtube_theme_check_box" class="form-check-input">Select Theme
                                     </label>
                                 </div>
-                                <a href="http://streamtube.startstreaming.info/"  target="_blank" class="demo-button">Demo</a>
+                                <a href="http://streamtube.streamhash.com/"  target="_blank" class="demo-button">Demo</a>
                             </form>
                         </div><!--end of install-demo-->
                     </div><!--end of theme-select-->
-                
+
                 </div><!--end of coloumn-->
 
                 <div class="col-lg-4 col-md-4 col-sm-4" id="teen_theme">
@@ -68,15 +68,15 @@
                                     <input type="checkbox" name="teen_theme" id="teen_theme_check_box" class="form-check-input"> <span>Select Theme</span>
                                     </label>
                                 </div>
-                                <a href="http://teen.startstreaming.info/" target="_blank" class="demo-button">Demo</a>
+                                <a href="http://teen.streamhash.com/" target="_blank" class="demo-button">Demo</a>
                             </form>
                         </div><!--end of install-demo-->
                     </div><!--end of theme-select-->
-                
+
                 </div><!--end of coloumn-->
 
-            </div><!--end of row--> 
-                    
+            </div><!--end of row-->
+
         </div><!--end of install-theme-inner-->
     </div><!--end of container-->
 </div><!--end of install-theme-outer-->
@@ -100,7 +100,7 @@
         </div><!--end of skip-continue-->
     </div><!--end of container-->
 </footer>
-    
+
 @endsection
 
 @section('scripts')
@@ -208,7 +208,7 @@
 
                 }
             });
-        });  
+        });
     </script>
-    
+
 @endsection

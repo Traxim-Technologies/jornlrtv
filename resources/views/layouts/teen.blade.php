@@ -28,15 +28,15 @@
 
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+        <meta property="og:title" content="{{Setting::get('site_name' , 'Stream Hash')}}" />
         <meta property="og:description" content="The best solution to start up a video streaming venture!" />
         <meta property="og:url" content="" />
-        <meta property="og:site_name" content="{{Setting::get('site_name' , 'Start Streaming')}}" />
+        <meta property="og:site_name" content="{{Setting::get('site_name' , 'Stream Hash')}}" />
         <meta property="og:image" content="{{Setting::get('site_icon')}}" />
 
         <meta name="twitter:card" content="summary"/>
         <meta name="twitter:description" content="The best solution to start up a video streaming venture!"/>
-        <meta name="twitter:title" content="{{Setting::get('site_name' , 'Start Streaming')}}"/>
+        <meta name="twitter:title" content="{{Setting::get('site_name' , 'Stream Hash')}}"/>
         <meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
 
     </head>
@@ -50,13 +50,13 @@
             <div class="row page-content">
 
                 <div class="container">
-                   
+
                     <div class="row">
 
                         @yield('content')
 
                     </div>
-                
+
                 </div>
 
             </div>
@@ -72,7 +72,7 @@
 
         @yield('scripts')
 
-            
+
         <script type="text/javascript">
                 $("#{{$page}}").addClass("active");
         </script>
@@ -89,7 +89,7 @@
                         // set the value of the currently focused text box to the correct value
 
                         if (event.type == "autocompleteselect"){
-                            
+
                             // console.log( "logged correctly: " + ui.item.value );
 
                             var username = ui.item.value;
@@ -109,10 +109,10 @@
                                 jQuery('#userSearch').submit();
                             }
 
-                        }                        
+                        }
                     }      // select
 
-                }); 
+                });
 
             });
 
