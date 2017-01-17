@@ -21,7 +21,11 @@
               <h6>{{Auth::user()->address}}</h6>
               <h6>{{Auth::user()->description}}</h6>
 
-              <a class="payment-pro" href="{{route('paypal' , Auth::user()->id)}}">{{tr('payment')}}</a>
+
+                @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
+                    <a class="payment-pro" href="{{route('paypal' , Auth::user()->id)}}">{{tr('payment')}}</a>
+                @endif
+
               <a class="edit-pro" href="{{route('user.update.profile')}}">{{tr('edit')}} {{tr('profile')}}</a>
               <a class="change-pwd" href="{{route('user.change.password')}}">{{tr('change_password')}}</a>
             </div>

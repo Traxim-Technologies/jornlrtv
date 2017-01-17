@@ -1265,7 +1265,7 @@ class AdminController extends Controller
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
                 if($video->is_banner)
-                    return redirect(route('admin.banner-videos'));
+                    return redirect(route('admin.banner.videos'));
                 else
                     return redirect(route('admin.videos'));
             } else {

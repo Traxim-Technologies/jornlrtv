@@ -53,7 +53,15 @@ textarea[name=comments] {
                                     @else
                                         @if(check_valid_url($video->video))
 
-                                            <?php $url = Setting::get('streaming_url').get_video_end($video->video); ?>
+                                            @if(Setting::get('streaming_url'))
+
+                                                <?php $url = Setting::get('streaming_url').get_video_end($video->video); ?>
+
+                                            @else
+
+                                                <?php $url = $video->video; ?>
+
+                                            @endif
 
                                             <div id="main-video-player" style="display:none"></div>
 
@@ -80,7 +88,12 @@ textarea[name=comments] {
 
                                         @if(check_valid_url($video->trailer_video))
 
-                                            <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
+                                            @if(Setting::get('streaming_url'))
+
+                                                <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
+                                            @else 
+                                                <?php $trailer_url = $video->trailer_video; ?>
+                                            @endif
 
                                             <div id="trailer-video-player"></div>
 
@@ -116,7 +129,13 @@ textarea[name=comments] {
                                                                 <!-- <p>{{tr('duration')}} {{$video->duration}}</p> -->
                                                             @else
 
-                                                                <button  type="button" class="watch-button" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
+                                                                @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
+
+                                                                    <button  type="button" class="watch-button" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
+                                                                @else
+
+                                                                    <button  type="button" class="watch-button" disabled>{{tr('watch_main_video')}}</button>
+                                                                @endif
 
                                                                 <div class="modal fade cus-mod" id="paypal" role="dialog">
                                                                     <div class="modal-dialog">
@@ -425,7 +444,7 @@ textarea[name=comments] {
 
                         jQuery('#trailer_video_setup_error').show();
                         jQuery('#main_video_setup_error').hide();
-                        confirm('The video format is not supported in this browser. Please option some other browser.');
+                        confirm('The video format is not supported in this browser. Please open with some other browser.');
 
                     } else {
 
@@ -447,7 +466,7 @@ textarea[name=comments] {
 
                             jQuery('#trailer_video_setup_error').css("display", "block");
 
-                            confirm('The video format is not supported in this browser. Please option some other browser.');
+                            confirm('The video format is not supported in this browser. Please open with some other browser.');
                         
                         });
 

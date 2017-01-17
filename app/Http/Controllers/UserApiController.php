@@ -1148,13 +1148,18 @@ class UserApiController extends Controller
             if($data->video_type == 1 && $data->video_upload_type == 2) {
 
                 if(check_valid_url($data->tralier_video)) {
-                    $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);
+
+                    if(Setting::get('streaming_url'))
+                        $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);
+
                     if(env('HLS_STREAMING_URL'))
                         $ios_trailer_video = env('HLS_STREAMING_URL').get_video_end($data->trailer_video);
                 }
 
                 if(check_valid_url($data->video)) {
-                    $video = Setting::get('streaming_url').get_video_end($data->video);
+
+                    if(Setting::get('streaming_url'))
+                        $video = Setting::get('streaming_url').get_video_end($data->video);
 
                     if(env('HLS_STREAMING_URL'))
                         $ios_video = env('HLS_STREAMING_URL').get_video_end($data->video);
