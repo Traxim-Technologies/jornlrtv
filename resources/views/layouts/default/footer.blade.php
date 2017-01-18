@@ -155,7 +155,7 @@
     </div>
 
     <div class="btm-footer-text text-center">
-        <p>2016 © {{Setting::get('site_name' , 'Stream Hash')}}</p>
+        <p><a href="http://streamhash.com" target="_blank">2017 © {{Setting::get('site_name' , 'StreamHash')}}</a></p>
     </div>
 </div>
 

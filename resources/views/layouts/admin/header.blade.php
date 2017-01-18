@@ -10,6 +10,8 @@
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
 
+        <!-- <a href="" class="btn btn-sm btn-default ml15">Hello</a> -->
+
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
@@ -21,6 +23,16 @@
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
+
+                <li class="dropdown notifications-menu">
+
+                    <a href="{{url('/')}}" class="btn btn-default" target="_blank" style="color:black"> 
+                        <i class="fa fa-external-link"></i>
+                        <b> Visit Website</b>
+                        <span class="label label-warning"></span>
+                    </a>
+
+                </li>
 
                 <li class="dropdown user user-menu">
 
@@ -36,7 +48,7 @@
 
                             <p>
                               {{Auth::guard('admin')->user()->name}}
-                              <small>Admin</small>
+                              <small>{tr('admin')}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -59,3 +71,9 @@
     </nav>
 
 </header>
+
+<style>
+.nav>li>a:hover,.nav>li>a:active,.nav>li>a:focus {
+    background: #fdfdfd !important;
+}
+</style>

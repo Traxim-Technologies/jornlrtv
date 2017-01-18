@@ -47,7 +47,15 @@
 		              <span class="icon-bar"></span>
 		              <span class="icon-bar"></span>
 		            </button>
-		            <a class="navbar-brand" href="{{route('user.dashboard')}}"><img src="{{Setting::get('site_logo' , asset('logo.png'))}}"></a>
+		            <a class="navbar-brand" href="{{route('user.dashboard')}}">
+		            	
+		            	@if(Setting::get('site_logo'))
+			            	<img src="{{Setting::get('site_logo' , asset('logo.png'))}}">
+			            @else
+			            	<img src="{{asset('logo.png')}}">
+			            @endif
+
+		            </a>
 	          	</div>
 
 	          	<!-- Collect the nav links, forms, and other content for toggling -->

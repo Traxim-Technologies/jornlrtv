@@ -1,7 +1,15 @@
 <div class="y-menu col-sm-3 col-md-2">
     <ul class="y-home menu1">
-        <li id="home"><a href="{{route('user.dashboard')}}"><img src="{{asset('streamtube/images/y1.jpg')}}">{{tr('home')}}</a></li>
-        <li id="trending"><a href="{{route('user.trending')}}"><img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}</a></li>
+        <li id="home">
+            <a href="{{route('user.dashboard')}}">
+                <img src="{{asset('streamtube/images/y1.jpg')}}">{{tr('home')}}
+            </a>
+        </li>
+        <li id="trending">
+            <a href="{{route('user.trending')}}">
+                <img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}
+            </a>
+        </li>
     </ul>
 
     @if(count($categories = get_categories()) > 0)

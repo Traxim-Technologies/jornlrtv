@@ -11,39 +11,51 @@
                 </div><!--end  of signup-head-->
 
                 <div class="social-btn">
-                    <div class="social-fb">
-                        <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
-                        <input type="hidden" value="facebook" name="provider" id="provider">
-                        <a href="#">
-                            <button type="submit">
-                                <i class="fa fa-facebook"></i>{{tr('login_via_fb')}}
-                            </button>
-                        </a>
-                    </form>
-                    </div>
 
-                    <div class="social-twitter">
-                        <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
-                        <input type="hidden" value="twitter" name="provider" id="provider">
-                        <a href="#">
-                            <button type="submit">
-                                <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
-                            </button>
-                        </a>
-                        </form>
-                    </div>
+                    @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
+                        <div class="social-fb">
+                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                <input type="hidden" value="facebook" name="provider" id="provider">
+                                <a href="#">
+                                    <button type="submit">
+                                        <i class="fa fa-facebook"></i>{{tr('login_via_fb')}}
+                                    </button>
+                                </a>
+                            </form>
+                        </div>
+                    
+                    @endif
 
+                    @if(config('services.twitter.client_id') && config('services.twitter.client_secret'))
 
-                    <div class="social-google">
-                        <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
-                        <input type="hidden" value="google" name="provider" id="provider">
-                        <a href="#">
-                            <button type="submit">
-                                <i class="fa fa-google-plus"></i>{{tr('login_via_google')}}
-                            </button>
-                        </a>
-                        </form>
-                    </div>
+                        <div class="social-twitter">
+                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                <input type="hidden" value="twitter" name="provider" id="provider">
+                                <a href="#">
+                                    <button type="submit">
+                                        <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
+                                    </button>
+                                </a>
+                            </form>
+                        </div>
+
+                    @endif
+
+                    @if(config('services.google.client_id') && config('services.google.client_secret'))
+
+                        <div class="social-google">
+                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                <input type="hidden" value="google" name="provider" id="provider">
+                                <a href="#">
+                                    <button type="submit">
+                                        <i class="fa fa-google-plus"></i>{{tr('login_via_google')}}
+                                    </button>
+                                </a>
+                            </form>
+                        </div>
+                        
+                    @endif
+
                 </div><!--end of social-btn-->          
             </div><!--end of socila-form-->
 

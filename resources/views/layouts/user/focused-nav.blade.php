@@ -1,7 +1,13 @@
 <div class="youtube-nav signup-nav">
     <div class="row">
         <div class="test you-image">
-            <a href="{{route('user.dashboard')}}" class="y-image"><img src="{{Setting::get('site_logo' , asset('logo.png'))}}"></a>
+            <a href="{{route('user.dashboard')}}" class="y-image">
+                @if(Setting::get('site_logo'))
+                    <img src="{{Setting::get('site_logo')}}">
+                @else
+                    <img src="{{asset('logo.png')}}">
+                @endif
+            </a>
         </div><!--test end-->
 
         <div class="y-button">

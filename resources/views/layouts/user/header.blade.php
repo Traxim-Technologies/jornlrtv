@@ -4,7 +4,13 @@
             <a href="#"><i class="fa fa-align-justify toggle-icon" aria-hidden="true"></i></a>
         </div>
         <div class="test you-image">
-            <a href="{{route('user.dashboard')}}" class="y-image"><img src="{{Setting::get('site_logo' , asset('logo.png'))}}"></a>
+            <a href="{{route('user.dashboard')}}" class="y-image">
+                @if(Setting::get('site_logo'))
+                    <img src="{{Setting::get('site_logo')}}">
+                @else
+                    <img src="{{asset('logo.png')}}">
+                @endif
+            </a>
         </div><!--test end-->
 
         <div id="custom-search-input" class="">

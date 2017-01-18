@@ -50,6 +50,16 @@
 
         <div class="content-wrapper">
 
+            <div style="padding: 20px 30px; background: #e11a31; z-index: 999999; font-size: 16px; font-weight: 600;">
+                <!-- <a class="pull-right" href="#" data-toggle="tooltip" data-placement="left" title="Never show me this again!" style="color: rgb(255, 255, 255); font-size: 20px;">×</a> -->
+
+                <a href="https://streamhash.dpdcart.com/cart/add?product_id=144188&method_id=154016" target="_blank" style="font-size:20px;color: rgba(255, 255, 255, 0.901961); display: inline-block; margin-right: 10px; text-decoration: none;"><b>$500 Worth Video Streaming Script is FREE! Start today.</b></a>
+
+                <a class="btn btn-default btn-sm" target="_blank" href="https://streamhash.dpdcart.com/cart/add?product_id=144188&method_id=154016" style="font-size:14px;margin-top: -5px; border: 0px; box-shadow: none; color: #e11a31; font-weight: 600; background: rgb(255, 255, 255);">
+                    <i class="fa fa-download"></i><b> Free Download</b>
+                </a>
+            </div>
+
             <section class="content-header">
                 <h1>@yield('content-header')<small>@yield('content-sub-header')</small></h1>
                 <ol class="breadcrumb">@yield('breadcrumb')</ol>
@@ -142,17 +152,20 @@
         });
     </script>
 
-    <!-- Start of LiveChat (www.livechatinc.com) code -->
-    <script type="text/javascript">
-    window.__lc = window.__lc || {};
-    window.__lc.license = 8284281;
-    (function() {
-    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-    })();
-    </script>
-    <!-- End of LiveChat code -->
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/586a34df1aad8833902f6578/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
 
 </body>
 

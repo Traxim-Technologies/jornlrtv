@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{Setting::get('site_name' , "Start Streaming")}}</title>
+    <title>{{Setting::get('site_name' , "StreamHash")}}</title>
     
     <meta name="viewport" content="width=device-width,  initial-scale=1">
     <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">
@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive.css')}}">
 
-    <link rel="shortcut icon" type="image/png" href="{{Setting::get('site_icon' , asset('img/favicon.png'))}}"/>
+    <link rel="shortcut icon" type="image/png" href="@if(Setting::get('site_icon')) {{Setting::get('site_icon')}} @else {{asset('img/favicon.png')}} @endif"/>
 
     <style type="text/css">
         .ui-autocomplete{
@@ -84,17 +84,21 @@
 
     @yield('scripts')
 
-    <!-- Start of LiveChat (www.livechatinc.com) code -->
-    <script type="text/javascript">
-    window.__lc = window.__lc || {};
-    window.__lc.license = 8284281;
-    (function() {
-    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-    })();
-    </script>
-    <!-- End of LiveChat code -->
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/586a34df1aad8833902f6578/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
 </body>
 
 
