@@ -141,7 +141,8 @@ class AdminController extends Controller
                 'email' => 'email|max:255',
                 'mobile' => 'digits_between:6,13',
                 'address' => 'max:300',
-                'id' => 'required|exists:admins,id'
+                'id' => 'required|exists:admins,id',
+                'picture' => 'mimes:jpeg,jpg,png'
             )
         );
         

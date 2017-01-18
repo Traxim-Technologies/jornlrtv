@@ -105,6 +105,7 @@ class ModeratorController extends Controller
                 'email' => 'email|max:255',
                 'mobile' => 'digits_between:6,13',
                 'address' => 'max:300',
+                'picture' => 'mimes:jpeg,jpg,png'
             )
         );
         

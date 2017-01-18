@@ -126,7 +126,7 @@
                                 <label for="picture" class="col-sm-2 control-label">Picture</label>
 
                                 <div class="col-sm-10">
-                                  <input type="file" required class="form-control" name="picture" id="picture">
+                                  <input type="file" required class="form-control" accept="image/x-png,image/gif,image/jpeg" name="picture" id="picture">
                                 </div>
                             </div>
 

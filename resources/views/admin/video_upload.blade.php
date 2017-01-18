@@ -116,17 +116,17 @@
 
                             <div class="form-group">
                                 <label for="default_image" class="">{{tr('default_image')}}</label>
-                                <input type="file" required class="form-control" id="default_image" name="default_image" placeholder="{{tr('default_image')}}">
+                                <input type="file" required class="form-control" id="default_image" accept="image/x-png,image/gif,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}">
                             </div>
 
                             <div class="form-group">
                                 <label for="other_image1" class="">{{tr('other_image1')}}</label>
-                                <input type="file" required class="form-control" id="other_image1" name="other_image1" placeholder="{{tr('other_image1')}}">
+                                <input type="file" required class="form-control" id="other_image1" accept="image/x-png,image/gif,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}">
                             </div>
 
                             <div class="form-group">
                                 <label for="other_image2" class="">{{tr('other_image2')}}</label>
-                                <input type="file" required class="form-control" id="other_image2" name="other_image2" placeholder="{{tr('other_image2')}}">
+                                <input type="file" required class="form-control" id="other_image2" accept="image/x-png,image/gif,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}">
                             </div>
 
                             <div class="form-group">
