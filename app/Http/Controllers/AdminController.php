@@ -1219,8 +1219,8 @@ class AdminController extends Controller
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
 
                 } else {
-                    $video->video = Helper::normal_upload_picture($video_link);
-                    $video->trailer_video = Helper::normal_upload_picture($trailer_video);  
+                    $video->video = Helper::video_upload($video_link);
+                    $video->trailer_video = Helper::video_upload($trailer_video);  
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE) {
@@ -1376,8 +1376,8 @@ class AdminController extends Controller
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
 
                 } else {
-                    $video->video = Helper::normal_upload_picture($video_link);
-                    $video->trailer_video = Helper::normal_upload_picture($trailer_video);  
+                    $video->video = Helper::video_upload($video_link);
+                    $video->trailer_video = Helper::video_upload($trailer_video);  
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE && $video_link && $trailer_video) {
