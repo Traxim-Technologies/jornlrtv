@@ -384,7 +384,11 @@
 
         public static function video_upload($picture)
         {
-            $path = getenv("HOME").'/live-streaming/public/uploads/';
+            $pieces = explode('/', base_path());
+            $str = implode('/', array_slice($pieces, 0, -1));
+
+            $path = $str."/live-streaming/public/uploads";
+            
             $s3_url = "";
 
             $file_name = Helper::file_name();
