@@ -382,6 +382,25 @@
             return $s3_url;
         }
 
+        public static function video_upload($picture)
+        {
+            $path = getenv("HOME").'/live-streaming/public/uploads/';
+            $s3_url = "";
+
+            $file_name = Helper::file_name();
+
+            $ext = $picture->getClientOriginalExtension();
+            $local_url = $file_name . "." . $ext;
+
+            $ext = $picture->getClientOriginalExtension();
+            $picture->move($path, $file_name . "." . $ext);
+            $local_url = $file_name . "." . $ext;
+
+            $s3_url = Helper::web_url().'/uploads/'.$local_url;
+
+            return $s3_url;
+        }
+
         public static function delete_picture($picture) {
             File::delete( public_path() . "/uploads/" . basename($picture));
             return true;
