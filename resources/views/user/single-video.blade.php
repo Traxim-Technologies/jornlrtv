@@ -451,7 +451,7 @@ textarea[name=comments] {
                         var playerInstance = jwplayer("trailer-video-player");
 
                         playerInstance.setup({
-                            file: "{{$trailer_url}}",
+                            file: "rtmp://startstreaming.info:1935/vod2/50d331c49ea9576598fa60c35a78f9ba2d096528.mp4",
                             image: "{{$video->default_image}}",
                             width: "100%",
                             aspectratio: "16:9",

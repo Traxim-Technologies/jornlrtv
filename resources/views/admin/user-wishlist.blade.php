@@ -44,7 +44,7 @@
 							      	<td>{{$wishlist->date}}</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
-            								<li class="dropdown">
+            								<li class="dropup">
 
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} 

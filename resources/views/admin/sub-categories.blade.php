@@ -78,7 +78,7 @@
 
 								    <td>
             							<ul class="admin-action btn btn-default">
-            								<li class="dropdown">
+            								<li class="dropup">
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
@@ -86,9 +86,9 @@
 
 								                  	<li role="presentation">
 														@if(Setting::get('admin_delete_control'))
-                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit_sub_category')}}</a>
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-															<a role="menuitem" tabindex="-1" href="{{route('admin.edit.sub_category' , array('category_id' => $category->id,'sub_category_id' => $sub_category->id))}}">{{tr('edit_sub_category')}}</a></li>
+															<a role="menuitem" tabindex="-1" href="{{route('admin.edit.sub_category' , array('category_id' => $category->id,'sub_category_id' => $sub_category->id))}}">{{tr('edit')}}</a></li>
 														@endif
 
 								                  	<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('view_sub_category')}}</a></li> -->
@@ -106,17 +106,15 @@
 
 								                  		@if(Setting::get('admin_delete_control'))
 
-									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete_sub_category')}}</a>
+									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	 @else
 
-								                  			<a role="menuitem" onclick="return confirm('Are you sure?')" tabindex="-1" href="{{route('admin.delete.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('delete_sub_category')}}</a>
+								                  			<a role="menuitem" onclick="return confirm('Are you sure?')" tabindex="-1" href="{{route('admin.delete.sub_category' , array('sub_category_id' => $sub_category->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 
 								                  	</li>
-
-								                  	<li class="divider" role="presentation"></li>
-
+								              
 								                </ul>
               								</li>
             							</ul>

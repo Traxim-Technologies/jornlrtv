@@ -60,27 +60,29 @@
 							       </td>
 							      <td>
             							<ul class="admin-action btn btn-default">
-            								<li class="dropdown">
+            								
+            								<li class="dropup">
+            								
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
 								                  	<li role="presentation">
                                                         @if(Setting::get('admin_delete_control'))
-                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit_category')}}</a>
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.category' , array('id' => $category->id))}}">{{tr('edit_category')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.category' , array('id' => $category->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
 								                  	<li role="presentation">
 
 									                  	@if(Setting::get('admin_delete_control'))
 
-										                  	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete_category')}}</a>
+										                  	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 										                @else
 
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.category' , array('category_id' => $category->id))}}">{{tr('delete_category')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.category' , array('category_id' => $category->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 

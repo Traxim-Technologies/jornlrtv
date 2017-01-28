@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{{Setting::get('site_name')}}</title>
+    <title>{{Setting::get('site_name' , 'StreamHash')}}</title>
     <style type="text/css">
 
         body {
@@ -142,7 +142,7 @@
                                         <td width="200" valign="top" align="center">
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
-                                                    <img src="{{Setting::get('site_icon' ,asset('favicon.png'))}}" width="155" height='155' alt='Logo'  data-default="placeholder" />
+                                                    <img src="@if(Setting::get('site_logo')) {{Setting::get('site_logo' )}} @else {{ asset('logo.png')}} @endif" width="155" height='155' alt='Logo'  data-default="placeholder" />
                                                 </div>
                                             </div>
                                         </td>

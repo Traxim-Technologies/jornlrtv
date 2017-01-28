@@ -27,7 +27,6 @@
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('email')}}</th>
-						      <th>{{tr('dob')}}</th>
 						      <th>{{tr('mobile')}}</th>
 						      <th>{{tr('address')}}</th>
 						      <th>{{tr('status')}}</th>
@@ -42,7 +41,6 @@
 							      <td>{{$i+1}}</td>
 							      <td>{{$moderator->name}}</td>
 							      <td>{{$moderator->email}}</td>
-							      <td>@if($moderator->dob && $moderator->dob != 0000-00-00) {{date('d M, Y',strtotime($moderator->dob))}} @else - @endif</td>
 							      <td>{{$moderator->mobile}}</td>
 							      <td>{{$moderator->address}}</td>
 							      <td>
@@ -54,24 +52,29 @@
 							       </td>
 							      <td>
             							<ul class="admin-action btn btn-default">
-            								<li class="dropdown">
+            								<li class="dropup">
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
-								                	@if($moderator->is_activated)
+								                	
+								                  	<li role="presentation">
+														@if(Setting::get('admin_delete_control'))
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
+                                                        @else
+															<a role="menuitem" tabindex="-1" href="{{route('admin.edit.moderator',$moderator->id)}}">{{tr('edit')}}</a>
+														@endif
+													</li>
+
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.moderator.view',$moderator->id)}}">{{tr('view')}}</a></li>
+								                  	
+								                  	<li role="presentation" class="divider"></li>
+								                  	@if($moderator->is_activated)
 								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.moderator.decline',$moderator->id)}}">{{tr('decline')}}</a></li>
 								                	@else
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.moderator.approve',$moderator->id)}}">{{tr('approve')}}</a></li>
 								                  	@endif
-								                  	<li role="presentation">
-														@if(Setting::get('admin_delete_control'))
-                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit_moderator')}}</a>
-                                                        @else
-															<a role="menuitem" tabindex="-1" href="{{route('admin.edit.moderator',$moderator->id)}}">{{tr('edit_moderator')}}</a>
-														@endif
-													</li>
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.moderator.view',$moderator->id)}}">{{tr('view_moderator')}}</a></li>
+								                  	
 								                  	<li role="presentation" class="divider"></li>
 								                  	<li role="presentation">
 
