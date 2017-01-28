@@ -172,7 +172,7 @@ class AdminController extends Controller
             $admin->is_activated = 1;
             $admin->save();
 
-            return back()->with('flash_success', Helper::tr('admin_not_profile'));
+            return back()->with('flash_success', tr('admin_not_profile'));
             
         }
     
@@ -266,7 +266,7 @@ class AdminController extends Controller
 
             if($request->id != '') {
                 $user = User::find($request->id);
-                $message = Helper::tr('admin_not_user');
+                $message = tr('admin_not_user');
             } else {
                 //Add New User
                 $user = new User;
@@ -305,7 +305,7 @@ class AdminController extends Controller
                 register_mobile('web');
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
 
         }
@@ -316,10 +316,10 @@ class AdminController extends Controller
 
         if($user = User::where('id',$request->id)->first()->delete()) {
 
-            return back()->with('flash_success',Helper::tr('admin_not_user_del'));
+            return back()->with('flash_success',tr('admin_not_user_del'));
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -333,7 +333,7 @@ class AdminController extends Controller
                         ->with('sub_page','users');
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -366,7 +366,7 @@ class AdminController extends Controller
 
                 $email_data = array();
 
-                $subject = Helper::tr('user_welcome_title');
+                $subject = tr('user_welcome_title');
                 $page = "emails.moderator_welcome";
                 $email = $user->email;
                 $email_data['name'] = $moderator_user->name;
@@ -388,13 +388,13 @@ class AdminController extends Controller
                 $moderator->is_user = 1;
                 $moderator->save();
 
-                return back()->with('flash_warning',Helper::tr('admin_user_upgrade'));
+                return back()->with('flash_warning',tr('admin_user_upgrade'));
             } else  {
-                return back()->with('flash_error',Helper::tr('admin_not_error'));    
+                return back()->with('flash_error',tr('admin_not_error'));    
             }
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
 
     }
@@ -412,11 +412,11 @@ class AdminController extends Controller
 
             $moderator->save();
 
-            return back()->with('flash_success',Helper::tr('admin_user_upgrade_disable'));
+            return back()->with('flash_success',tr('admin_user_upgrade_disable'));
 
         } else {
 
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -443,7 +443,7 @@ class AdminController extends Controller
                         ->with('sub_page','users');
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -451,12 +451,12 @@ class AdminController extends Controller
 
         if($user_history = UserHistory::find($id)) {
 
-            $user_history = UserHistory::find($id)->delete();
+            $user_history->delete();
 
-            return back()->with('flash_success',Helper::tr('admin_not_history_del'));
+            return back()->with('flash_success',tr('admin_not_history_del'));
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -483,7 +483,7 @@ class AdminController extends Controller
                         ->with('sub_page','users');
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -491,12 +491,12 @@ class AdminController extends Controller
 
         if($user_wishlist = Wishlist::find($id)) {
 
-            $user_wishlist = Wishlist::find($id)->delete();
+            $user_wishlist->delete();
 
-            return back()->with('flash_success',Helper::tr('admin_not_wishlist_del'));
+            return back()->with('flash_success',tr('admin_not_wishlist_del'));
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -545,9 +545,9 @@ class AdminController extends Controller
 
             if($request->id != '') {
                 $user = Moderator::find($request->id);
-                $message = Helper::tr('admin_not_moderator');
+                $message = tr('admin_not_moderator');
             } else {
-                $message = Helper::tr('admin_add_moderator');
+                $message = tr('admin_add_moderator');
                 //Add New User
                 $user = new Moderator;
                 $new_password = time();
@@ -572,7 +572,7 @@ class AdminController extends Controller
                 $email_data['password'] = $new_password;
                 $email_data['email'] = $user->email;
 
-                $subject = Helper::tr('user_welcome_title');
+                $subject = tr('user_welcome_title');
                 $page = "emails.moderator_welcome";
                 $email = $user->email;
                 Helper::send_email($page,$subject,$email,$email_data);
@@ -583,7 +583,7 @@ class AdminController extends Controller
             if($user) {
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
 
         }
@@ -594,13 +594,12 @@ class AdminController extends Controller
 
         if($moderator = Moderator::find($request->id)) {
 
-            $moderator = Moderator::find($request->id)->delete();
+            $moderator->delete();
 
-        }
-        if($moderator) {
-            return back()->with('flash_success',Helper::tr('admin_not_moderator_del'));
+            return back()->with('flash_success',tr('admin_not_moderator_del'));
+
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -613,9 +612,9 @@ class AdminController extends Controller
         $moderator->save();
 
         if($moderator->is_activated ==1) {
-            $message = Helper::tr('admin_not_moderator_approve');
+            $message = tr('admin_not_moderator_approve');
         } else {
-            $message = Helper::tr('admin_not_moderator_decline');
+            $message = tr('admin_not_moderator_decline');
         }
 
         return back()->with('flash_success', $message);
@@ -623,20 +622,22 @@ class AdminController extends Controller
 
     public function moderator_decline(Request $request) {
         
-        $moderators = Moderator::orderBy('created_at' , 'asc')->get();
+        if($moderator = Moderator::find($request->id)) {
+            
+            $moderator->is_activated = 0;
 
-        $moderator = Moderator::find($request->id);
+            $moderator->save(); 
 
-        $moderator->is_activated = 0;
-
-        $moderator->save();
-
-        if($moderator->is_activated == 1){
-            $message = Helper::tr('admin_not_moderator_approve');
+            $message = tr('admin_not_moderator_decline');
+        
+            return back()->with('flash_success', $message);  
         } else {
-            $message = Helper::tr('admin_not_moderator_decline');
+            return back()->with('flash_error' , tr('admin_not_error'));
         }
-        return back()->with('flash_success', $message)->with('moderators',$moderators);
+
+    
+    
+            
     }
 
     public function moderator_view_details($id) {
@@ -646,7 +647,7 @@ class AdminController extends Controller
                         ->withPage('moderator')
                         ->with('sub_page','view-moderators');
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -728,7 +729,7 @@ class AdminController extends Controller
             if($category) {
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
 
         }
@@ -743,11 +744,11 @@ class AdminController extends Controller
 
         $category->save();
 
-        $message = Helper::tr('admin_not_category_decline');
+        $message = tr('admin_not_category_decline');
 
         if($category->is_approved == DEFAULT_TRUE){
 
-            $message = Helper::tr('admin_not_category_approve');
+            $message = tr('admin_not_category_approve');
         }
 
         return back()->with('flash_success', $message);
@@ -756,12 +757,13 @@ class AdminController extends Controller
 
     public function delete_category(Request $request) {
         
-        $category = Category::where('id' , $id)->first()->delete();
+        $category = Category::where('id' , $request->category_id)->first();
 
         if($category) {
-            return back()->with('flash_success',Helper::tr('admin_not_category_del'));
+            $category->delete();
+            return back()->with('flash_success',tr('admin_not_category_del'));
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -911,7 +913,7 @@ class AdminController extends Controller
             if($sub_category) {
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
 
         }
@@ -926,11 +928,11 @@ class AdminController extends Controller
 
         $sub_category->save();
 
-        $message = Helper::tr('admin_not_sub_category_decline');
+        $message = tr('admin_not_sub_category_decline');
 
         if($sub_category->is_approved == DEFAULT_TRUE){
 
-            $message = Helper::tr('admin_not_sub_category_approve');
+            $message = tr('admin_not_sub_category_approve');
         }
 
         return back()->with('flash_success', $message);
@@ -939,12 +941,15 @@ class AdminController extends Controller
 
     public function delete_sub_category(Request $request) {
 
-        $sub_category = SubCategory::where('id' , $id)->first()->delete();
+        $sub_category = SubCategory::where('id' , $request->id)->first();
 
         if($sub_category) {
-            return back()->with('flash_success',Helper::tr('admin_not_category_del'));
+
+            $sub_category->delete();
+
+            return back()->with('flash_success',tr('admin_not_sub_category_del'));
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -984,7 +989,7 @@ class AdminController extends Controller
             if($genre) {
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
         }
     
@@ -1002,11 +1007,11 @@ class AdminController extends Controller
 
         $genre->save();
 
-        $message = Helper::tr('admin_not_genre_decline');
+        $message = tr('admin_not_genre_decline');
 
         if($genre->is_approved == DEFAULT_TRUE){
 
-            $message = Helper::tr('admin_not_genre_approve');
+            $message = tr('admin_not_genre_approve');
         }
 
         return back()->with('flash_success', $message);
@@ -1045,12 +1050,14 @@ class AdminController extends Controller
     }
 
     public function delete_genre(Request $request) {
-        if($genre = Genre::where('id',$request->id)->first()->delete()) {
+        if($genre = Genre::where('id',$request->id)->first()) {
 
-            return back()->with('flash_success',Helper::tr('admin_not_user_del'));
+            $genre->delete();
+
+            return back()->with('flash_success',tr('admin_not_genre_del'));
 
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -1493,11 +1500,11 @@ class AdminController extends Controller
 
         if($video->is_approved == DEFAULT_TRUE)
         {
-            $message = Helper::tr('admin_not_video_approve');
+            $message = tr('admin_not_video_approve');
         }
         else
         {
-            $message = Helper::tr('admin_not_video_decline');
+            $message = tr('admin_not_video_decline');
         }
         return back()->with('flash_success', $message);
     }
@@ -1511,9 +1518,9 @@ class AdminController extends Controller
         $video->save();
 
         if($video->is_approved == DEFAULT_TRUE){
-            $message = Helper::tr('admin_not_video_approve');
+            $message = tr('admin_not_video_approve');
         } else {
-            $message = Helper::tr('admin_not_video_decline');
+            $message = tr('admin_not_video_decline');
         }
 
         return back()->with('flash_success', $message);
@@ -1521,7 +1528,9 @@ class AdminController extends Controller
 
     public function delete_video($id) {
 
-        $video = AdminVideo::where('id' , $id)->first()->delete(); 
+        if($video = AdminVideo::where('id' , $id)->first())  {
+            $video->delete();
+        }
 
         return back()->with('flash_success', 'Video deleted successfully');
     }
@@ -1613,7 +1622,10 @@ class AdminController extends Controller
 
     public function delete_user_ratings(Request $request) {
 
-        $user = UserRating::find($request->id)->delete();
+        if($user = UserRating::find($request->id)) {
+            $user->delete();
+        }
+
         return back()->with('flash_success', tr('admin_not_ur_del'));
     }
 
