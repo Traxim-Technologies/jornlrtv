@@ -120,7 +120,7 @@ class UserController extends Controller
                     }
                 }
 
-                if(check_valid_url($video->trailer_video) && $video->video_upload_type == 2)) {
+                if(check_valid_url($video->trailer_video) && $video->video_upload_type == 2) {
                     if(\Setting::get('streaming_url')) {
                         $trailer_video = \Setting::get('streaming_url').get_video_end($video->trailer_video);
                     }
