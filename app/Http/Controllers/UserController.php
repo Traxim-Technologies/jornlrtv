@@ -104,6 +104,33 @@ class UserController extends Controller
 
         $wishlist_status = $history_status = WISHLIST_EMPTY;
 
+        $trailer_video = $main_video = "";
+
+        if($video) {
+
+            $trailer_video = $video->trailer_video;
+
+            $main_video = $video->video; 
+
+            if($video->video_type == 1) {
+
+                if(check_valid_url($video->video) && $video->video_upload_type) {
+                    if(\Setting::get('streaming_url')) {
+                        $main_video = \Setting::get('streaming_url').get_video_end($video->video);
+                    }
+                }
+
+                if(check_valid_url($video->trailer_video) && ($video->video_upload_type)) {
+                    if(\Setting::get('streaming_url')) {
+                        $trailer_video = \Setting::get('streaming_url').get_video_end($video->trailer_video);
+                    }
+                }
+
+            }
+        }
+
+        
+
         if(\Auth::check()) {
             $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$id);
             $history_status = Helper::history_status(\Auth::user()->id,$id);
@@ -121,6 +148,9 @@ class UserController extends Controller
                     ->with('suggestions',$suggestions)
                     ->with('wishlist_status' , $wishlist_status)
                     ->with('history_status' , $history_status)
+                    ->with('trailer_video' , $trailer_video)
+                    ->with('main_video' , $main_video)
+                    ->with('url' , $main_video)
                     ->with('categories' , $categories);
     }
 
@@ -163,13 +193,14 @@ class UserController extends Controller
         $response = $this->UserAPI->update_profile($request)->getData();
 
         if($response->success) {
-            $response->message = tr('profile_updated');
-        } else {
-            $response->success = false;
-            $response->message = $response->error." ".$response->error_messages;
-        }
 
-        return back()->with('response', $response);
+            return back()->with('flash_success' , tr('profile_updated'));
+
+        } else {
+
+            $message = $response->error." ".$response->error_messages;
+            return back()->with('flash_error' , $message);
+        }
     }
 
     /**
@@ -188,10 +219,10 @@ class UserController extends Controller
         $response = $this->UserAPI->change_password($request)->getData();
 
         if($response->success) {
-            $response->message = tr('password_success');
+            return back()->with('flash_success' , tr('password_success'));
         } else {
-            $response->success = false;
-            $response->message = $response->error." ".$response->error_messages;
+            $message = $response->error." ".$response->error_messages;
+            return back()->with('flash_error' , $message);
         }
 
         return back()->with('response', $response);
@@ -294,13 +325,10 @@ class UserController extends Controller
         $response = $this->UserAPI->delete_wishlist($request)->getData();
 
         if($response->success) {
-            $response->message = Helper::get_message(118);
+            return back()->with('flash_success',Helper::get_message(118));
         } else {
-            $response->success = false;
-            $response->message = "Something Went Wrong";
+            return back()->with('flash_error', "Something Went Wrong");
         }
-
-        return back()->with('response', $response);
     } 
 
     public function wishlist(Request $request) {

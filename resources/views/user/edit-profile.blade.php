@@ -4,12 +4,18 @@
 
 <div class="y-content">
     <div class="row y-content-row">
+
         @include('layouts.user.nav')
 
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
-            
+
+
             <div class="profile-content">
+               
                 <div class="row no-margin">
+
+                    @include('notification.notify')
+
                     <div class="col-sm-7 profile-view">
                         <div class="edit-profile profile-view">
                             <div class="edit-form">

@@ -688,7 +688,6 @@
                              'admin_videos.default_image','admin_videos.watch_count',
                              'admin_videos.video_type','admin_videos.video_upload_type',
                              'admin_videos.ratings','admin_videos.reviews',
-
                             'admin_videos.duration',
                             DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'),
 

@@ -515,17 +515,16 @@ class UserApiController extends Controller
         return $response;
     }
 
-    public function update_profile(Request $request)
-    {
+    public function update_profile(Request $request) {
+        
         $user_id = $request->id;
 
         $validator = Validator::make(
             $request->all(),
             array(
-                'id' => 'required',
                 'name' => 'required|max:255',
                 'email' => 'email|unique:users,email,'.$user_id.'|max:255',
-                'mobile' => 'required|digits_between:6,13',
+                'mobile' => 'digits_between:6,13',
                 'picture' => 'mimes:jpeg,bmp,png',
                 'gender' => 'in:male,female,others',
                 'device_token' => '',

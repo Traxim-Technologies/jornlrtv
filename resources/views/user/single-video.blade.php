@@ -1,6 +1,7 @@
 @extends('layouts.user')
 
 @section('styles')
+
 <style type="text/css">
 .common-youtube {
     min-height: 0px !important;
@@ -9,13 +10,13 @@ textarea[name=comments] {
     resize: none;
 }
 </style>
+
 @endsection
 
 @section('content')
 
-    <?php $url = $trailer_url = ""; ?>
-
     <div class="y-content">
+
         <div class="row y-content-row">
 
             @include('layouts.user.nav')
@@ -23,92 +24,19 @@ textarea[name=comments] {
             <div class="page-inner col-sm-9 col-md-10 profile-edit">
             
                 <div class="profile-content">
+
                     <div class="row no-margin">
+
                         <div class="col-sm-12 col-md-8 play-video">
-                            <!-- <div class="iframe" > -->   
-                                <!-- 16:9 aspect ratio -->
 
-                                @if($video->video_type != 1)
+                            <!-- Check the video type is youtube -->
 
-                                    <div class="embed-responsive embed-responsive-16by9" id="trailer_video_play">
-                                        <iframe id="iframe_trailer_video" width="580" height="315" src="{{$video->trailer_video}}?autoplay=0" allowfullscreen></iframe>
-                                    </div>   
+                            @if($video->video_type == 2)
+                                @include('user.videos.youtube')
+                            @else
+                                @include('user.videos.streaming')
 
-                                    <div class="embed-responsive embed-responsive-16by9" id="main_video_play" style="display:none">
-                                        <iframe id="iframe_main_video" width="580" height="315" src="{{$video->video}}?autoplay=0" allowfullscreen></iframe>
-                                    </div>
-
-                                @else
-
-                                    <div class="embed-responsive embed-responsive-16by9" id="main_video_setup_error" style="display: none;">
-                                        <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Trailer Video">
-                                    </div>
-
-                                    @if($video->video_upload_type == 1)
-                                        
-                                        <?php $url = $video->video; ?>
-                                        
-                                        <div id="main-video-player" style="display:none"></div>
-
-                                    @else
-                                        @if(check_valid_url($video->video))
-
-                                            @if(Setting::get('streaming_url'))
-
-                                                <?php $url = Setting::get('streaming_url').get_video_end($video->video); ?>
-
-                                            @else
-
-                                                <?php $url = $video->video; ?>
-
-                                            @endif
-
-                                            <div id="main-video-player" style="display:none"></div>
-
-                                        @else
-
-                                            <div class="embed-responsive embed-responsive-16by9" style="display:none" id="main_video_error">
-                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Main Video">
-                                            </div>
-
-                                        @endif
-
-                                    @endif
-
-                                    @if($video->video_upload_type == 1)
-
-                                        <?php $trailer_url = $video->trailer_video; ?>
-
-                                        <div id="trailer-video-player"></div>
-                                    @else
-
-                                        <div class="embed-responsive embed-responsive-16by9" id="trailer_video_setup_error" style="display: none;">
-                                            <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Trailer Video">
-                                        </div>
-
-                                        @if(check_valid_url($video->trailer_video))
-
-                                            @if(Setting::get('streaming_url'))
-
-                                                <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
-                                            @else 
-                                                <?php $trailer_url = $video->trailer_video; ?>
-                                            @endif
-
-                                            <div id="trailer-video-player"></div>
-
-                                        @else
-
-                                            <div class="embed-responsive embed-responsive-16by9" id="trailer_video_error">
-                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Trailer Video">
-                                            </div>
-
-                                        @endif
-                                    @endif
-
-                                @endif
-
-                            <!-- </div> -->  <!--end of iframe-->
+                            @endif
 
                             <div class="main-content">
                                 <div class="video-content">
@@ -349,8 +277,12 @@ textarea[name=comments] {
                                 @if(count($comments) > 0) </div> @endif<!--end of v-comments-->
                                                                 
                             </div>
+
                             <!--end of main-content-->
-                        </div><!--end of col-sm-8 and play-video-->
+
+                        </div>
+
+                        <!--end of col-sm-8 and play-video-->
 
                         <div class="col-sm-12 col-md-4 side-video custom-side">
                             <div class="up-next">
@@ -394,6 +326,7 @@ textarea[name=comments] {
                             </div><!--end of up-next-->
                                                 
                         </div><!--end of col-sm-4-->
+
                     </div>
                 </div>
             
@@ -421,7 +354,7 @@ textarea[name=comments] {
         
         jQuery(document).ready(function(){   
 
-            @if($video->video_type == 1)
+            @if($video->video_type == 1 || $video->video_type == 3)
 
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -438,7 +371,7 @@ textarea[name=comments] {
                 // Blink engine detection
                 var isBlink = (isChrome || isOpera) && !!window.CSS;
 
-                @if($trailer_url)
+                @if($trailer_video)
 
                     if(isOpera || isSafari) {
 
@@ -451,7 +384,7 @@ textarea[name=comments] {
                         var playerInstance = jwplayer("trailer-video-player");
 
                         playerInstance.setup({
-                            file: "rtmp://startstreaming.info:1935/vod2/50d331c49ea9576598fa60c35a78f9ba2d096528.mp4",
+                            file: "{{$trailer_video}}",
                             image: "{{$video->default_image}}",
                             width: "100%",
                             aspectratio: "16:9",
@@ -607,9 +540,9 @@ textarea[name=comments] {
 
                 jQuery('#watch_main_video_button').fadeOut();
 
-                @if($video->video_type == 1)
+                @if($video->video_type == 1 || $video->video_type == 3)
 
-                    @if($url)
+                    @if($main_video)
 
                         if(isOpera || isSafari) {
 
@@ -625,7 +558,7 @@ textarea[name=comments] {
 
                             playerInstance.setup({
                                
-                                file: "{{$url}}",
+                                file: "{{$main_video}}",
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -634,11 +567,11 @@ textarea[name=comments] {
                                 "controlbar.idlehide" : false,
                                 controlBarMode:'floating',
                                 "controls": {
-                                  "enableFullscreen": false,
-                                  "enablePlay": false,
-                                  "enablePause": false,
-                                  "enableMute": true,
-                                  "enableVolume": true
+                                    "enableFullscreen": false,
+                                    "enablePlay": false,
+                                    "enablePause": false,
+                                    "enableMute": true,
+                                    "enableVolume": true
                                 },
                                 // autostart : true,
                                 "sharing": {
@@ -667,8 +600,18 @@ textarea[name=comments] {
                     jQuery("#main-video-player").show();
                 
                 @else
+
+                    // Reemove trailer video url, to stop the autoplay while playing main video
+
+                    //First get the  iframe URL
+                    var url = $('#iframe_trailer_video').attr('src');
+
+                    $('#iframe_trailer_video').attr('src', '');
+
                     jQuery("#trailer_video_play").hide();
+
                     jQuery("#main_video_play").show();
+
 
                     @if(!$history_status)
 
@@ -702,4 +645,5 @@ textarea[name=comments] {
 
         });
     </script>
+
 @endsection

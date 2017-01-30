@@ -5,6 +5,8 @@
     <div class="form-background">
         <div class="common-form login-common">
 
+            @include('notification.notify')
+
             <div class="social-form">
                 <div class="signup-head">
                     <h3>{{tr('change_password')}}</h3>

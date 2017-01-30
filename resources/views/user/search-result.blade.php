@@ -57,7 +57,7 @@
 
                         @else
 
-                            <p class="no-result">{{tr('no_search_found')}}</p>
+                            <p class="no-result">{{tr('no_search_result')}}</p>
 
                         @endif
                        
