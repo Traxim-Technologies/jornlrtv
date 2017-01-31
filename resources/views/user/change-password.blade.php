@@ -17,18 +17,18 @@
                 <form class="signup-form login-form" method="post" action="{{ route('user.profile.password') }}">
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">{{tr('old_password')}}</label>
-                        <input type="password" name="old_password" class="form-control" id="exampleInputPassword1" placeholder="Enter Old Password">
+                        <label for="old_password">{{tr('old_password')}}</label>
+                        <input type="password" name="old_password" class="form-control" id="old_password" placeholder="{{tr('old_password')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">{{tr('new_password')}}</label>
-                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Enter New Password">
+                        <label for="new_password">{{tr('new_password')}}</label>
+                        <input type="password" name="password" class="form-control" id="new_password" placeholder="{{tr('new_password')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">{{tr('confirm_password')}}</label>
-                        <input type="password" name="password_confirmation" class="form-control" id="exampleInputPassword1" placeholder="Confirm Password">
+                        <label for="confirm_password">{{tr('confirm_password')}}</label>
+                        <input type="password" name="password_confirmation" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}">
                     </div>
 
                     <div class="change-pwd">

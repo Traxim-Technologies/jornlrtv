@@ -23,18 +23,6 @@
                 </a>
             </li>
 
-            <li class="treeview" id="categories" style="display:none">
-                <a href="{{route('moderator.categories')}}">
-                    <i class="fa fa-suitcase"></i> <span>{{tr('categories')}}</span>
-                </a>
-
-                <ul class="treeview-menu">
-                    <li id="add-category"><a href="{{route('moderator.add.category')}}"><i class="fa fa-circle-o"></i>{{tr('add_category')}}</a></li>
-                    <li id="view-categories"><a href="{{route('moderator.categories')}}"><i class="fa fa-circle-o"></i>{{tr('view_categories')}}</a></li>
-                </ul>
-
-            </li>
-
             <li class="treeview" id="videos">
                 <a href="{{route('moderator.videos')}}">
                     <i class="fa fa-video-camera"></i> <span>{{tr('videos')}}</span>

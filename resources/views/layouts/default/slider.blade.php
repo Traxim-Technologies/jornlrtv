@@ -107,9 +107,10 @@
 @endif
 
 @section('scripts')
-        <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
+    
+    <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-    <script>jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";</script>
+    <script>jwplayer.key="{{env('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
         

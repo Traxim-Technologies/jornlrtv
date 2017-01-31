@@ -81,15 +81,15 @@
 
             <form class="signup-form login-form" role="form" method="POST" action="{{ url('/login') }}">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">{{tr('email')}}</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your email">
+                    <label for="email">{{tr('email')}}</label>
+                    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}">
 
                     
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInputPassword1">{{tr('password')}}</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password">
+                    <label for="password">{{tr('password')}}</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
 
                     <span class="form-error">
                         @if ($errors->has('password'))

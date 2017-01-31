@@ -8,15 +8,20 @@
         @include('layouts.user.nav')
 
         <div class="history-content page-inner col-sm-9 col-md-10">
+
+            @include('notification.notify')
+
             <div class="new-history">
                 <div class="content-head">
                     <div><h4>{{tr('history')}}</h4></div>
 
                     @if(count($histories) > 0)
                         <div class="clear-button">
-                            <form method="get" action="{{route('user.delete.history' , array('status' => 1))}}">
+                            <form method="get" action="{{route('user.delete.history')}}">
+                                <input type="hidden" name="status" value="1">
                                 <button onclick="return confirm('Are you sure?');" type="submit">Clear All History</button>
                             </form>
+
                         </div>  
                     @endif              
                 </div><!--end of content-head-->

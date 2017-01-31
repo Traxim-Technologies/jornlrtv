@@ -26,22 +26,22 @@
 
                     <h3 class="profile-username text-center">{{Auth::guard('moderator')->user()->name}}</h3>
 
-                    <p class="text-muted text-center">Moderator</p>
+                    <p class="text-muted text-center">{{tr('moderator')}}</p>
 
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <b>Username</b> <a class="pull-right">{{Auth::guard('moderator')->user()->name}}</a>
+                            <b>{{tr('name')}}</b> <a class="pull-right">{{Auth::guard('moderator')->user()->name}}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Email</b> <a class="pull-right">{{Auth::guard('moderator')->user()->email}}</a>
-                        </li>
-
-                        <li class="list-group-item">
-                            <b>Mobile</b> <a class="pull-right">{{Auth::guard('moderator')->user()->mobile}}</a>
+                            <b>{{tr('email')}}</b> <a class="pull-right">{{Auth::guard('moderator')->user()->email}}</a>
                         </li>
 
                         <li class="list-group-item">
-                            <b>Address</b> <a class="pull-right">{{Auth::guard('moderator')->user()->address}}</a>
+                            <b>{{tr('mobile')}}</b> <a class="pull-right">{{Auth::guard('moderator')->user()->mobile}}</a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <b>{{tr('address')}}</b> <a class="pull-right">{{Auth::guard('moderator')->user()->address}}</a>
                         </li>
                     </ul>
                 
@@ -55,9 +55,9 @@
             <div class="nav-tabs-custom">
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#profile" data-toggle="tab">Update Profile</a></li>
-                    <li><a href="#image" data-toggle="tab">Upload Image</a></li>
-                    <li><a href="#password" data-toggle="tab">Change Password</a></li>
+                    <li class="active"><a href="#profile" data-toggle="tab">{{tr('update_profile')}}</a></li>
+                    <li><a href="#image" data-toggle="tab">{{tr('upload_image')}}</a></li>
+                    <li><a href="#password" data-toggle="tab">{{tr('change_password')}}</a></li>
                 </ul>
                
                 <div class="tab-content">
@@ -69,41 +69,41 @@
                             <input type="hidden" name="id" value="{{Auth::guard('moderator')->user()->id}}">
 
                             <div class="form-group">
-                                <label for="name" required class="col-sm-2 control-label">Username</label>
+                                <label for="name" required class="col-sm-2 control-label">{{tr('name')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="name"  name="name" value="{{Auth::guard('moderator')->user()->name}}" placeholder="Username">
+                                  <input type="text" class="form-control" id="name"  name="name" value="{{Auth::guard('moderator')->user()->name}}" placeholder="{{tr('name')}}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="email" class="col-sm-2 control-label">Email</label>
+                                <label for="email" class="col-sm-2 control-label">{{tr('email')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="email" required value="{{Auth::guard('moderator')->user()->email}}" name="email" class="form-control" id="email" placeholder="Email">
+                                  <input type="email" required value="{{Auth::guard('moderator')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}">
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                                <label for="mobile" class="col-sm-2 control-label">Mobile</label>
+                                <label for="mobile" class="col-sm-2 control-label">{{tr('mobile')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" required value="{{Auth::guard('moderator')->user()->mobile}}" name="mobile" class="form-control" id="mobile" placeholder="Mobile">
+                                  <input type="text" required value="{{Auth::guard('moderator')->user()->mobile}}" name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="address" class="col-sm-2 control-label">Address</label>
+                                <label for="address" class="col-sm-2 control-label">{{tr('address')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" required value="{{Auth::guard('moderator')->user()->address}}" name="address" class="form-control" id="address" placeholder="Address">
+                                  <input type="text" required value="{{Auth::guard('moderator')->user()->address}}" name="address" class="form-control" id="address" placeholder="{{tr('address')}}">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                  <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
                                 </div>
                             </div>
 
@@ -123,16 +123,16 @@
                             @endif
 
                             <div class="form-group">
-                                <label for="picture" class="col-sm-2 control-label">Picture</label>
+                                <label for="picture" class="col-sm-2 control-label">{{tr('picture')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="file" required class="form-control" name="picture" id="picture">
+                                  <input type="file" required class="form-control" accept="image/x-png, image/jpeg" name="picture" id="picture">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                  <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
                                 </div>
                             </div>
 
@@ -146,32 +146,32 @@
                             <input type="hidden" name="id" value="{{Auth::guard('moderator')->user()->id}}">
 
                             <div class="form-group">
-                                <label for="old_password" class="col-sm-3 control-label">Old Password</label>
+                                <label for="old_password" class="col-sm-3 control-label">{{tr('old_password')}}</label>
 
                                 <div class="col-sm-8">
-                                  <input required type="password" class="form-control" name="old_password" id="old_password" placeholder="Old Password">
+                                  <input required type="password" class="form-control" name="old_password" id="old_password" placeholder="{{tr('old_password')}}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="password" class="col-sm-3 control-label">New Password</label>
+                                <label for="password" class="col-sm-3 control-label">{{tr('new_password')}}</label>
 
                                 <div class="col-sm-8">
-                                  <input required type="password" class="form-control" name="password" id="password" placeholder="New Password">
+                                  <input required type="password" class="form-control" name="password" id="password" placeholder="{{tr('new_password')}}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="confirm_password" class="col-sm-3 control-label">Confirm Password</label>
+                                <label for="confirm_password" class="col-sm-3 control-label">{{tr('confirm_password')}}</label>
 
                                 <div class="col-sm-8">
-                                  <input required type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
+                                  <input required type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="{{tr('confirm_password')}}">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <button type="submit" class="btn btn-danger">Submit</button>
+                                  <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
                                 </div>
                             </div>
 

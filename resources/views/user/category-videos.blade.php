@@ -14,7 +14,7 @@
                  <div class="slide-area">
                     <div class="box-head row no-margin">
                         <h3 class="float-left">{{$sub_category->name}}</h3>
-                        <a class="float-right see-all" href="{{route('user.sub-category' ,$sub_category->id)}}">See All </a>
+                        <a class="float-right see-all" href="{{route('user.sub-category' ,$sub_category->id)}}">{{tr('see_all')}} </a>
 
                     </div>
 

@@ -348,7 +348,7 @@ textarea[name=comments] {
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-    <script>jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";</script>
+    <script>jwplayer.key="{{env('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
         
@@ -601,7 +601,7 @@ textarea[name=comments] {
                 
                 @else
 
-                    // Reemove trailer video url, to stop the autoplay while playing main video
+                    // Remove trailer video url, to stop the autoplay while playing main video
 
                     //First get the  iframe URL
                     var url = $('#iframe_trailer_video').attr('src');

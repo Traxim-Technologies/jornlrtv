@@ -85,11 +85,6 @@
                         </div>  
 
                         <div class="form-group">
-                            <label for="browser_key">{{tr('browser_key')}}</label>
-                            <input type="text" class="form-control" value="{{Setting::get('browser_key')  }}" name="browser_key" id="browser_key" placeholder="Browser Key">
-                        </div>
-
-                        <div class="form-group">
                             <label for="amount">{{tr('amount')}}</label>
                             <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{tr('amount')}}">
                         </div>

@@ -54,7 +54,7 @@
                         <div class="checkbox">
                             <label for="picture" class="col-sm-1 control-label"></label>
                             <label>
-                                <input type="checkbox" name="is_series" value="1" @if($category->is_series) checked @endif> Is Tv series?
+                                <input type="checkbox" name="is_series" value="1" @if($category->is_series) checked @endif> {{tr('is_series')}}
                             </label>
                         </div>
 

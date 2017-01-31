@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Page')
+@section('title', tr('edit_page'))
 
-@section('content-header', 'Edit Page')
+@section('content-header', tr('edit_page'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Home</a></li>
-    <li><a href="{{route('viewPages')}}"><i class="fa fa-book"></i> Pages</a></li>
-    <li class="active"> Edit Page</li>
+    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+    <li><a href="{{route('viewPages')}}"><i class="fa fa-book"></i> {{tr('pages')}}</a></li>
+    <li class="active"> {{tr('edit_page')}}</li>
 @endsection
 
 @section('content')
@@ -43,8 +43,8 @@
                 </div>
 
               <div class="box-footer">
-                    <button type="reset" class="btn btn-danger">Cancel</button>
-                    <button type="submit" class="btn btn-success pull-right">Submit</button>
+                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
+                    <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
               </div>
 
             </form>

@@ -25,8 +25,8 @@ use Setting;
 define('WEB' , 1);
 
 
-class UserController extends Controller
-{
+class UserController extends Controller {
+
     protected $UserAPI;
     protected $Paypal;
 
@@ -50,6 +50,7 @@ class UserController extends Controller
     public function index() {
 
         $database = config('database.connections.mysql.database');
+        
         $username = config('database.connections.mysql.username');
 
         if($database && $username && Setting::get('installation_process') == 3) {
@@ -128,8 +129,6 @@ class UserController extends Controller
 
             }
         }
-
-        
 
         if(\Auth::check()) {
             $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$id);
@@ -269,13 +268,11 @@ class UserController extends Controller
         $response = $this->UserAPI->delete_history($request)->getData();
 
         if($response->success) {
-            $response->message = Helper::get_message(121);
-        } else {
-            $response->success = false;
-            $response->message = "Something Went Wrong";
-        }
+            return back()->with('flash_success' , Helper::get_message(121));
 
-        return back()->with('response', $response);
+        } else {
+            return back()->with('flash_error' , tr('admin_not_error'));
+        }
     }
 
     public function history(Request $request) {
@@ -316,6 +313,7 @@ class UserController extends Controller
 
     public function delete_wishlist(Request $request) {
 
+
         $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
@@ -325,7 +323,7 @@ class UserController extends Controller
         $response = $this->UserAPI->delete_wishlist($request)->getData();
 
         if($response->success) {
-            return back()->with('flash_success',Helper::get_message(118));
+            return back()->with('flash_success',tr('wishlist_removed'));
         } else {
             return back()->with('flash_error', "Something Went Wrong");
         }

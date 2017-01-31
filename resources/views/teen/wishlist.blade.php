@@ -3,9 +3,12 @@
 @section('content')
 
     <div class="video-full-box">
+            @include('notification.notify')
 
         <div class="box-title">
-          <h3 class="main-title">{{tr('wishlist')}}</h3>
+            <h3 class="main-title">{{tr('wishlist')}}</h3>
+
+            
         </div>
 
         @foreach($videos as $i => $video)

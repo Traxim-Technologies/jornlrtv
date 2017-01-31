@@ -109,7 +109,7 @@
                                                     </div><!--post-stats end-->
 
                                                     <div class="post-summary">
-                                                        <p>{{$video->decription}}</p>
+                                                        <p>{{$video->description}}</p>
                                                     </div><!--post-summary end-->
 
                                                     <div class="post-button">

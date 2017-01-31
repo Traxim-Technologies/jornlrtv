@@ -114,11 +114,11 @@
 
             <li class="treeview" id="pages">
                 <a href="{{route('viewPages')}}">
-                    <i class="fa fa-book"></i> <span>Pages</span>
+                    <i class="fa fa-book"></i> <span>{{tr('pages')}}</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li id="add_page"><a href="{{route('addPage')}}"><i class="fa fa-circle-o"></i>Add Page</a></li>
-                    <li id="view_pages"><a href="{{route('viewPages')}}"><i class="fa fa-circle-o"></i>View Page</a></li>
+                    <li id="add_page"><a href="{{route('addPage')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
+                    <li id="view_pages"><a href="{{route('viewPages')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
                 </ul>
             </li>
 

@@ -17,7 +17,7 @@
                 <h3>{{tr('delete_account_heading')}}</h3>
 
                  <p>
-                    <strong style="color: brown">Note:</strong> {{tr('delete_account_content')}}                </p>
+                    <strong style="color: brown">Note:</strong> {{tr('delete_account_content')}}</p>
             </div><!--end  of signup-head-->         
         </div><!--end of socila-form-->
 
@@ -41,7 +41,7 @@
 
                 <div class="form-group">
                     <label for="password">{{tr('password')}}</label>
-                    <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
 
                     <span class="form-error">
                         @if ($errors->has('password'))

@@ -33,6 +33,9 @@
     <!-- right side content area -->
 
     <div class="large-8 columns profile-inner mar-top-space">
+
+        @include('notification.notify')
+        
         <!-- profile settings -->
         <section class="profile-settings">
             <div class="row secBg">
@@ -76,13 +79,13 @@
 
                                             <div class="medium-6 columns">
                                                 <label>{{tr('address')}}:
-                                                    <input type="text" name="address" required value="{{Auth::user()->address}}" placeholder="enter your Address..">
+                                                    <input type="text" name="address" value="{{Auth::user()->address}}" placeholder="enter your Address..">
                                                 </label>
                                             </div>
 
                                             <div class="medium-6 columns end">
                                                 <label>{{tr('mobile')}}:
-                                                    <input type="tel" name="mobile" required value="{{Auth::user()->mobile}}" placeholder="enter your Mobile No..">
+                                                    <input type="tel" name="mobile" value="{{Auth::user()->mobile}}" placeholder="enter your Mobile No..">
                                                 </label>
                                             </div>
 
@@ -102,7 +105,7 @@
 
                                             <div class="medium-12 columns">
                                                 <label>{{tr('picture')}}:
-                                                    <input type="file" name="picture" id="picture">
+                                                    <input type="file" name="picture" id="picture" accept="image/x-png, image/jpeg">
                                                 </label>
                                             </div>
                                             <div class="medium-12 columns">

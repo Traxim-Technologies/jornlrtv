@@ -151,7 +151,7 @@
                             <input type="search" id="auto_complete_search" name="key" placeholder="Search Here your video">
                         </div>
                         <div class="search-btn float-right text-right">
-                            <button class="button" id="" name="search" type="submit">search</button>
+                            <button class="button" id="" name="search" type="submit">{{tr('search')}}</button>
                         </div>
                     </form>
                 </div>

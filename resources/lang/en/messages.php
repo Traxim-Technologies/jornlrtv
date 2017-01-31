@@ -13,28 +13,121 @@ return array(
 	|
 	*/
 
-	'test'	=> 'test',
+	// Global Variables
+
+	'admin' => 'Admin',
+	'users' 	=>	'Users',
+	'user' => 'User',
+	'moderators' => 'Moderators',
+	'moderator' => 'Moderator',
+	'home'	=>	'Home',
+	'dashboard'	=> 	'Dashboard',
 	'menu' => 'Menu',
+
+	'register'	=>	'Register',
+	'signup'	=>	'Signup',
+	'login'	=>	'Login',
+	'logout'	=>	'Logout',
+	'sign_out' => 'Sign out',
+
+	'profile'	=>	'Profile',
+	'account'	=> 	'Account',
+	'edit_profile' => 'Edit Profile',
+	'update_profile'	=> 	'Update Profile',
+	'settings'	=>	'Settings',
+	'delete_account' => 'Delete Account',
+
+	'forgot_password'	=>	'Forgot Password?',
+	'forgot'	=>	'Forgot Your Password?',
+	'remember'	=>	'Remember Me',
+
+	'reset_password' => 'Reset Password',
+	'change_password'	=> 	'Change Password',
+	'old_password'	=> 	'Old Password',
+	'new_password'	=> 	'New Password',
+	'confirm_password'	=> 	'Confirm Password',
+	'password_confirmation' => 'Confirm Password',
+	'confirm_password' => 'Confirm Password',
+
+	'help'	=>	'Help',
+	'contact' => 'Contact Us',
+	'about' => 'About Us',
+	'terms_conditions' => 'Terms and Conditions',
+	'privacy' => 'Privacy',
+
+	'action'	=>	'Action',
+	'view'	=> 	'View',
+	'edit'	=> 	'Edit',
+	'delete'	=>	'Delete',
+	'select'	=>	'Select',
+	'cancel'	=> 	'Cancel',
+	'disable' => 'Disable',
+	'remove'	=> 	'Remove',
+	'change'	=> 	'Change',
+	'upgrade' => 'Upgrade',
+	'submit'	=>	'Submit',
+
+	'status'	=>	'Status',
+	'upload'	=> 	'Upload',
+	'latitude'	=> 	'Latitude',
+	'logitude'	=> 	'Longitude',
+
 	'paynow'	=> 'Paynow',
 	'duration' => 'Duration',
 	'close' => 'Close',
-	'payment' => 'Payment',
-	'payment_content' => 'Please Pay to see the full video',
-	'google_analytics' => 'Google Analytics',
-	'expiry_date' => 'Expiry Date',
-	'payment_id' => 'Payment ID',
-	'user_payments' => 'User Payments',
-	's3_key' => 'S3 Key',
-	's3_secret' => 'S3 Secret',
-	's3_region' => 'S3 Region',
-	's3_bucket' => 'S3 Bucket',
-	'streaming_url' => 'Streaming URL',
+	'search' => 'Search',
+	'view_all' => 'View All',
+	'see_all' => 'See All',
+	
+	'yes' => 'Yes',
+	'no' => 'No',
+	'from'	=>	'From',
+	'to'	=>	'To',
+	'date' => 'Date',
 
-	'payment_settings' => 'Payment Settings',
-	'paypal_client_id' => 'Paypal Client ID',
-	'paypal_secret' => 'Paypal Secret Key',
-	'expiry_days' => 'Expiry Days',
+	'message' => 'Message',
+	'upload_image' => 'Uplaod Image',
+	'amount'	=> 	'Amount',
+	'currency' 	=>	'Currency',
 
+	'approve'	=>	'Approve',
+	'decline'	=>	'Decline',
+	'approved'	=>	'Approved',
+	'pending'	=>	'pending',
+	'unapproved'	=>	'Unapproved',
+	'added'	=> 	'Added',
+
+	// Form Elements
+
+	'id'	=>	'ID',
+	'name'	=>	'Name',
+	'username' => 'Username',
+	'email'	=>	'Email',
+	'password'	=>	'Password',
+	'mobile'	=>	'Mobile',
+	'picture'	=>	'Picture',
+	'first_name'	=>	'First Name',
+	'last_name'	=>	'Last Name',
+	'dob' => 'DOB',
+	'gender'	=>	'Gender',
+	'male'	=>	'Male',
+	'female'	=>	'Female',
+	'others'	=>	'Others',
+	'address'	=>	'Address',
+
+	'image' => 'Image',
+	'upload_message'	=>	'Upload only .png, .jpg or .jpeg image files only',
+	'title' => 'Title',
+	'description' => 'Description',
+	
+	// Web Register 
+	'registration_form'	=>	'Registration Form',
+	'already_register'	=>	'Already Registered? Login',
+	'already_account' => 'Already Have an Account?',
+	
+	'login_form'	=>	'Login Form',
+	'password_ph'	=>	'Atleast 6 letters',
+	
 	// Theme
 	'select_theme' => 'Activate',
 	'default_theme' =>  'Default Theme',
@@ -43,11 +136,10 @@ return array(
 	'teen' => 'Teen',
 	'current_theme' => 'Current',
 
-	'added_wishlist' => 'Added wishlist',
-	'add_to_wishlist' => 'ADD TO WISHLIST',
-	'add_to' => 'ADD TO',
+	// User
 
 	// mail title configure
+
 	'user_welcome_title' => 'Welcome to Stream Hash',
 	'provider_welcome_title' => 'Welcome to Stream Hash',
 
@@ -55,8 +147,6 @@ return array(
 	'provider_forgot_email_title' =>  'Your new password',
 
 	'new_provider_signup' => 'New provider registered',
-
-	//Web User
 
 	// Login
 
@@ -77,29 +167,9 @@ return array(
 	'reset_now' => 'Reset Now',
 	'update_now' => 'Update Now',
 
-	// Search
+	// Home Page
 
-	'search_result' => 'SHOWING RESULTS FOR',
-	'no_search_result' => 'No results found',
-	'no_result_found' => 'No results found',
-	'search' => 'Search',
-
-	// Profile
-
-	'history' => 'History',
-	'wishlist' => 'Wishlist',
-	'my_account' => 'My Account',
-
-	// History
-
-	'view_all_video' => 'View All Video',
-	'watch_video' => 'Watch Video',
-
-	'see_comments' => 'See Comments',
-	'most_view_videos' => 'Most View Videos',
-	'no_comments' => 'No Comments',
-	'add_comment_msg' => 'Add a public comment here',
-
+	'watch_lists' => 'Watch Lists',
 	'trending' => 'Trending',
 	'recent_videos' => 'Recent Videos',
 	'browse_category' => 'Browse Videos By Category',
@@ -107,123 +177,84 @@ return array(
 	'all_videos' => 'All Videos',
 	'suggestions' => 'Suggestions',
 
+	// Search
+
+	'search_result' => 'SHOWING RESULTS FOR',
+	'no_search_result' => 'No results found',
+	'no_result_found' => 'No results found',
+
+	// Wishlist
+
+	'wishlist' => 'Wishlist',
+	'added_wishlist' => 'Added wishlist',
+	'add_to_wishlist' => 'ADD TO WISHLIST',
+	'add_to' => 'ADD TO',
+
+	// Profile
+
+	'my_account' => 'My Account',
 	'welcome_user'	=> 	'Welcome',
 	'payment_method'	=> 	'Payment Method',
-	'account'	=> 	'Account',
 	'rating'	=> 	'Rating',
-	'remove'	=> 	'Remove',
+	
 	'select_image'	=> 	'Select Image',
-	'change'	=> 	'Change',
 	'img_upload' => 'Image preview only works in IE10+, FF3.6+, Safari6.0+, Chrome6.0+ and Opera11.1+.',
-	'update_profile'	=> 	'Update Profile',
-	'change_password'	=> 	'Change Password',
-	'old_password'	=> 	'Old Password',
-	'new_password'	=> 	'New Password',
-	'confirm_password'	=> 	'Confirm Password',
-	'cancel'	=> 	'Cancel',
 
-	'payment_successful'	=> 'Payment Successful',
+	'user_mobile'	=>	'User Mobile',
 
-	'unknown_error' 	=>	'Unknown error please try again later',
-	'something_error' 	=>	'Something went wrong! please try again later',
+	'profile_update'	=> 	'Profile Update',
+
+	'you_are'	=>	'You are',
+	'payment_details'	=>	'Payment Details',
 
 	'profile_updated' 	=>	'Profile has been updated',
 	'password_success' 	=>	'Password has been updated. You can log in with the new password from next time.',
 	'profile_save'	=>	'Profile has been saved',
 	'password_save'	=>	'Password Updated',
 
-	'you_are'	=>	'You are',
+	'payment_successful'	=> 'Payment Successfully completed',
 
-	'payment_details'	=>	'Payment Details',
+	'push_notification_enable' => 'Push Notification Enabled',
+	'push_notification_disable' => 'Push Notification Disabled',
 
+	// User Delete Account
 
-	//Web User Request
+	'user_account_delete_success' => 'Account deleted successfully!!!',
+	'delete_account_heading' => 'Hope, see you soon',
+	'delete_account_content' => 'Once you deleted account, you will lose your history and wishlist details.',
 
-	'amount'	=> 	'Amount',
-	'user_mobile'	=>	'User Mobile',
+	// History
 
+	'history' => 'History',
+	'watch_video' => 'Watch Video',
 
-	//Web Provider
+	// Comments
 
-	'approval_waiting'	=> 	'Waiting for Approval',
-	'upload'	=> 	'Upload',
-	'select_file'	=> 	'Select File',
-	'added'	=> 	'Added',
-	'view'	=> 	'View',
-
-	'profile_update'	=> 	'Profile Update',
-
-	'latitude'	=> 	'Latitude',
-	'logitude'	=> 	'Longitude',
-	'provider'		=>	'Provider',
-
-	//Web Registration
-	'registration_form'	=>	'Registration Form',
-	'already_register'	=>	'Already Registered? Login',
-	'register'	=>	'Register',
-	'login_form'	=>	'Login Form',
-	'password_ph'	=>	'Atleast 6 letters',
-	'login'	=>	'Login',
-	'signup'	=>	'Signup',
-	'forgot_password'	=>	'Forgot Password?',
+	'see_comments' => 'See Comments',
+	'no_comments' => 'No Comments',
+	'add_comment_msg' => 'Add a public comment here',
+	'comment_success' => 'Comment added successfully',
 
 
+	// Common Errors
 
-//Admin General
-	'admin' => 'Admin',
-	'dashboard'	=> 	'Dashboard',
-	'users' 	=>	'Users',
-	'currency' 	=>	'Currency',
-	'logout'	=>	'Logout',
-	'sign_out' => 'Sign out',
-	'settings'	=>	'Settings',
-	'profile'	=>	'Profile',
-	'help'	=>	'Help',
-	'contact' => 'Contact Us',
-	'about' => 'About',
+	'unknown_error' 	=>	'Unknown error please try again later',
+	'something_error' 	=>	'Something went wrong! please try again later',
 
-	'edit'	=> 	'Edit',
-	'action'	=>	'Action',
-	'delete'	=>	'Delete',
-	'select'	=>	'Select',
+	//Admin General
+
 	'view_history'	=>	'View History',
-	'status'	=>	'Status',
-	'home'	=>	'Home',
-
-	'delete_confirmation'	=> 'Are you sure want to Delete?',
-
-	'id'	=>	'ID',
-	'on_off'	=>	'ON / OFF',
-	'email'	=>	'Email',
-	'mobile'	=>	'Mobile',
-	'dob' => 'DOB',
-	'gender'	=>	'Gender',
-	'picture'	=>	'Picture',
-	'full_name'	=>	'Full Name',
-	'first_name'	=>	'First Name',
-	'last_name'	=>	'Last Name',
-	'username' => 'Username',
-	'name'	=>	'Name',
-	'male'	=>	'Male',
-	'female'	=>	'Female',
-	'others'	=>	'Others',
-	'contact_num'	=>	'Contact Number',
-	'address'	=>	'Address',
-	'profile_pic'	=>	'Profile Picture',
-	'upload_message'	=>	'Upload only .png, .jpg or .jpeg image files only',
-	'image' => 'Image',
-
-	'yes'	=>	'Yes',
 	'copyright'	=>	'Copyright',
 	'copyright_message' => 'All rights reserved',
 	'paypal_email'	=>	'Paypal Email',
-
 	'default'	=>	'Default',
 	'default_lang'	=>	'Default Language',
+	'delete_confirmation'	=> 'Are you sure want to Delete?',
+
 
 	//Admin Notifications
-	'admin_not_profile'	=>	'Admin Details updated Successfully',
 
+	'admin_not_profile'	=>	'Admin Details updated Successfully',
 	'admin_not_error'	=>	'Something Went Wrong, Try Again!',
 
 	'admin_add_user' => 'User added successfully',
@@ -243,24 +274,6 @@ return array(
 	'admin_not_moderator_decline'	=>	'Moderator Unapproved Successfully',
 	'admin_not_moderator_del'	=>	'Moderator deleted Successfully',
 
-	'admin_not_category'	=>	'Category updated Successfully',
-	'admin_add_category'	=>	'Category added Successfully',
-	'admin_not_category_del'	=>	'Category deleted Successfully',
-	'admin_not_category_approve' => 'Category Approved Successfully',
-	'admin_not_category_decline' => 'Category Unapproved Successfully',
-
-	'admin_not_sub_category'	=>	'Sub Category updated Successfully',
-	'admin_add_sub_category'	=>	'Sub Category added Successfully',
-	'admin_not_sub_category_del'	=>	'Sub Category deleted Successfully',
-	'admin_not_sub_category_approve' => 'Sub Category Approved Successfully',
-	'admin_not_sub_category_decline' => 'Sub Category Unapproved Successfully',
-
-	'admin_not_genre_approve' => 'Genre Approved Successfully',
-	'admin_not_genre_decline' => 'Genre Unapproved Successfully',
-	'admin_not_genre_del' =>'Genre deleted Successfully',
-
-	'admin_not_video_approve'	=>	'Video Approved Successfully',
-	'admin_not_video_decline'	=>	'Video Unapproved Successfully',
 
 	// Moderator Notifications
 
@@ -269,17 +282,19 @@ return array(
 
 
 	//Admin Login
-	'welcome'	=>	'Welcome to Xuber. Please sign in to your account',
+	'welcome'	=>	'Welcome to StreamHash. Please sign in to your account',
 	'email_add'	=>	'E-mail Address',
-	'password'	=>	'Password',
-	'password_confirmation' => 'Confirm Password',
-	'confirm_password' => 'Confirm Password',
-	'login'	=>	'Login',
-	'forgot'	=>	'Forgot Your Password?',
-	'remember'	=>	'Remember Me',
+	
 	'password_reset_msg'	=>	'Enter a new password and log in to your account',
 	'password_reset_email'	=>	'Lost your password? Please enter your email address. You will receive a link to create a new password.',
 	'password_reset_button'	=>	'Reset Password',
+
+	// Admin Success & Errors
+	'back_profile' => 'Back Profile',
+
+	'password_change_success' => 'Password Changed successfully',
+	'password_mismatch' =>  'Pasword is mismatched',
+	'push_send_success' => 'Push Notifications Sent Successfully',
 
 	//Admin Dashboard
 	'total_users' => 'Total Users',
@@ -295,27 +310,12 @@ return array(
 	'total_revenue' => 'Total Revenue',
 	'daily_view_count' => 'Recent Site View Count',
 	'total_videos' => 'Total Videos',
-	'total_payment'	=>	'Total Payment',
-	'card_payment'	=>	'Stripe Payment',
-	'cash_payment'	=>	'Cash Payment',
-	'paypal_payment'	=>	'Paypal Payment',
-	'top_provider'	=>	'Top Rated Provider',
-	'tot_revenue'	=>	'Total Revenue',
-	'avg_review'	=>	'Average Reviews',
-	'avg_rating'	=>	'Average Rating',
-	'available'	=>	'Available',
-	'n_a'	=>	'N/A',
-	'recent_reviews'	=>	'Recent User Reviews',
-	'from'	=>	'From',
-	'to'	=>	'To',
-	'chat_history'	=>	'Chat History',
+
 
 	//Admin Button
-	'submit'	=>	'Submit',
 
 	//Admin Users
 	'users' => 'Users',
-	'user' => 'User',
 
 	'view_photo'	=>	'View Photo',
 	'view_users'	=>	'View Users',
@@ -326,25 +326,21 @@ return array(
 	'add_user'	=>	'Add User',
 	'edit_user'	=>	'Edit User',
 	'delete_user'	=>	'Delete User',
+	'user_type' => 'User Type',
+	
 
 	'no_user_found' => 'No users found',
 	'no_history_found' => 'No History Found',
 	'no_wishlist_found' => 'No Wishlist Found',
-	'date' => 'Date',
 	'delete_history' => 'Delete History',
-	'delete_wishlist' => 'Delete Wishlist',
 
-	'upgrade' => 'Upgrade',
-	'disable' => 'Disable',
+	'delete_wishlist' => 'Delete Wishlist',
+	'wishlist_removed' => 'Successfully removed from wishlist',
+	
 
 	//Admin moderators
-	'approve'	=>	'Approve',
-	'decline'	=>	'Decline',
-	'approved'	=>	'Approved',
-	'pending'	=>	'pending',
-	'unapproved'	=>	'Unapproved',
-	'moderators' => 'Moderators',
-	'moderator' => 'Moderator',
+
+	
 	'view_moderators'	=>	'View Moderators',
 	'view_moderator'	=>	'View Moderator',
 	'add_moderator'	=>	'Add Moderator',
@@ -359,8 +355,11 @@ return array(
 	'delete_category'	=>	'Delete Category',
 	'sub_category_count' => 'Total Subcategory',
 	'is_series' => 'Is Series',
-	'yes' => 'Yes',
-	'no' => 'No',
+	'admin_not_category'	=>	'Category updated Successfully',
+	'admin_add_category'	=>	'Category added Successfully',
+	'admin_not_category_del'	=>	'Category deleted Successfully',
+	'admin_not_category_approve' => 'Category Approved Successfully',
+	'admin_not_category_decline' => 'Category Unapproved Successfully',
 
 	//Admin Sub Categories
 	'no_sub_category_found' => 'No sub categories found for this category.',
@@ -377,6 +376,12 @@ return array(
 	'genre_placeholder' => 'Please enter genre name',
 	'image_validate' => 'Please enter .png .jpeg .jpg images only.',
 
+	'admin_not_sub_category'	=>	'Sub Category updated Successfully',
+	'admin_add_sub_category'	=>	'Sub Category added Successfully',
+	'admin_not_sub_category_del'	=>	'Sub Category deleted Successfully',
+	'admin_not_sub_category_approve' => 'Sub Category Approved Successfully',
+	'admin_not_sub_category_decline' => 'Sub Category Unapproved Successfully',
+
 	// Admin genre
 	'admin_add_genre' => 'Genre Added successfully',
 	'genre' => 'Genre',
@@ -384,6 +389,9 @@ return array(
 	'add_genre' => 'Add Genre',
 	'view_genres' => 'View Genres',
 	'view_images' => 'View Images',
+	'admin_not_genre_approve' => 'Genre Approved Successfully',
+	'admin_not_genre_decline' => 'Genre Unapproved Successfully',
+	'admin_not_genre_del' =>'Genre deleted Successfully',
 
 	//Admin Videos
 	'videos' => 'Videos',
@@ -397,18 +405,14 @@ return array(
 	'select_category' => 'Select Category',
 	'select_sub_category' => 'Select Sub Category',
 	'select_genre' => 'Select Genre',
-	'title' => 'Title',
-	'description' => 'Description',
+	
 	'ratings' => 'Ratings',
 	'reviews' => 'Reviews',
+
 	'default_image' => 'Default image',
-	'banner_image' => 'Banner image',
-	'banner_videos' => 'Banner Videos',
-	'add_banner_videos' => 'Upload Banner Videos',
 	'other_image1' => 'Other Image 1',
 	'other_image2' => 'Other Image 2',
-	'no_video_found' => 'No videos found....!',
-	'empty' => 'List is empty....!',
+
 	'publish_time' => 'Publish Time',
 
 	'video_type' => 'Video Type',
@@ -419,14 +423,28 @@ return array(
 	'other_link' => 'Others',
 	'video_upload_link' => 'Upload Video',
 	'watch_main_video' => 'Watch Full Video',
-	'view_all' => 'View All',
+	'set_slider' => 'Set Slider',
+	'slider_video' => 'Slider Video',
+	'slider' => 'Current',
+
+	'admin_not_video_approve'	=>	'Video Approved Successfully',
+	'admin_not_video_decline'	=>	'Video Unapproved Successfully',
+	'slider_success' => 'The video is added as slider video',
+	'no_video_found' => 'No videos found....!',
+	'empty' => 'List is empty....!',
+
+	// Admin Banner videos
+
+	'change_banner_video_success' => 'Banner Video Changed as normal video',
+	'banner_image' => 'Banner image',
+	'banner_videos' => 'Banner Videos',
+	'add_banner_videos' => 'Upload Banner Videos',
 
 	//Admin Documents
 	'document_list'	=>	'Documents List',
 	'edit_document'	=>	'Edit Document Type',
 	'create_document'	=>	'Create New Document Type',
 	'document_name'	=>	'Document Name',
-	''	=>	'',
 
 	//Admin Reviews
 	'user_name'	=>	'User Name',
@@ -436,15 +454,24 @@ return array(
 	'comments'	=>	'Comments',
 
 	//Admin Payment
+	'payment'	=>	'Payment',
+	'payment_id' => 'Payment ID',
 	'total_amount'	=>	'Total Amount',
 	'payment_mode'	=>	'Payment Mode',
 	'payment_status'	=>	'Payment Status',
-	'payment'	=>	'Payment',
 	'transaction_id'	=>	'Transaction Id',
 	'paid'	=>	'Paid',
 	'not_paid'	=>	'Not Paid',
 
+	// Admin Custom Push
+
+	'custom_push' => 'Custom Push',
+
+
 	//Admin Settings
+
+	'settings_success' => 'Settings Updated Successfully',
+
 	'site_settings' => 'Site Settings',
 
 	'other_settings' => 'Other Settings',
@@ -458,48 +485,52 @@ return array(
 	'site_logo'	=>	'Site Logo',
 	'email_logo'	=>	'Email Logo',
 	'site_icon'	=>	'Site Favicon',
-	'price_per_min'	=>	'Price Per Minute',
-	'cod'	=>	'Cash on Delivery',
 	'paypal'	=>	'Paypal',
-	'manual_request'	=>	'Manual Request',
-
 	'no_of_days_expiry' => 'The Pack will Expiry within ',
+
+	// S3 bucket 
+
+	's3_key' => 'S3 Key',
+	's3_secret' => 'S3 Secret',
+	's3_region' => 'S3 Region',
+	's3_bucket' => 'S3 Bucket',
+	'streaming_url' => 'Streaming URL',
+
+	// Payment Settings
+
+	'payment_notification' => 'Payment Notification',
+	'remaining_days' => 'Remaining Days',
+
+	'payment_settings' => 'Payment Settings',
+	'paypal_client_id' => 'Paypal Client ID',
+	'paypal_secret' => 'Paypal Secret Key',
+	'expiry_days' => 'Expiry Days',
+	
+	'payment_content' => 'Please Pay to see the full video',
+	'google_analytics' => 'Google Analytics',
+	'expiry_date' => 'Expiry Date',
+	'user_payments' => 'User Payments',
+
+	// Admin Pages
+
+	'pages' => 'Pages',
+	'page' => 'Page',
+	'add_page' => 'Add Page',
+	'edit_page' => 'Edit Page',
+	'delete_page' => 'Delete Page',
+	'view_page' => 'View Page',
+	'view_pages' => 'View Pages',
+	'heading' => 'Heading',
+	'page_type' => 'Page Type',
+	'select_page_type' => 'Select Page Type',
+	'page_create_success' => 'Page added successfully',
+	'page_already_alert' => 'Page already added',
+	'page_delete_success' => 'Page deleted successfully',
 
 	// Moderator dashboard
 
 	'category_count' => 'Total Category',
 	'sub_category_count' => 'Total Sub Category',
 	'today_videos' => 'Today Videos',
-	'slider_video' => 'Slider Video',
-	'slider' => 'Current',
-	'set_slider' => 'Set Slider',
-	'slider_success' => 'The video is added as slider video',
-
-	'change_banner_video_success' => 'Banner Video Changed as normal video',
-	'user_type' => 'User Type',
-	'remaining_days' => 'Remaining Days',
-	'payment_notification' => 'Payment Notification',
-
-	'push_notification_enable' => 'Push Notification Enabled',
-	'push_notification_disable' => 'Push Notification Disabled',
-
-	'heading' => 'Heading',
-	'page_type' => 'Page Type',
-
-	'user_account_delete_success' => 'Account deleted successfully!!!',
-	'delete_account' => 'Delete Account',
-
-	'comment_success' => 'Comment added successfully',
-
-	'custom_push' => 'Custom Push',
-	'message' => 'Message',
-
-	'reset_password' => 'Reset Password',
-
-	'back_profile' => 'Back Profile',
-	'delete_account_heading' => 'Hope, see you soon',
-	'delete_account_content' => 'Once you deleted account, you will lose your history and wishlist details.',
-	'edit_profile' => 'Edit Profile',
-	'upload_image' => 'Uplaod Image',
 
 );

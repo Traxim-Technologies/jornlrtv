@@ -23,7 +23,7 @@
 
 					<div class="row no-margin">
 						<div class="col-md-12">
-							<h4>Site Settings</h4>
+							<h4>{{tr('site_settings')}}</h4>
 						</div>
 					</div>
 
@@ -31,15 +31,15 @@
 
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
-							    <label for="site_name">Site Name</label>
+							    <label for="site_name">{{tr('site_name')}}</label>
 							    <input type="text" class="form-control" id="site_name" aria-describedby="emailHelp" name="site_name" placeholder="Please Enter Your Site Name">
 							</div><!--end of form-group-->
 						</div><!--end of column-->
 
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
-							    <label for="exampleInputFile"> Site Logo</label>
-					    		<input type="file" name="site_logo" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+							    <label for="exampleInputFile"> {{tr('site_logo')}}</label>
+					    		<input type="file" name="site_logo" class="form-control-file" accept="image/x-png, image/jpeg" id="exampleInputFile" aria-describedby="fileHelp">
 							</div><!--end of form-group-->
 						</div><!--end of column-->
 
@@ -48,8 +48,8 @@
 					<div class="row no-margin">
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
-							    <label for="fav_icon"> Fav Icon</label>
-					    		<input type="file" name="site_icon" class="form-control-file" id="fav_icon" aria-describedby="fileHelp">
+							    <label for="fav_icon"> {{tr('site_icon')}}</label>
+					    		<input type="file" name="site_icon" class="form-control-file" id="fav_icon" accept="image/x-png, image/jpeg" aria-describedby="fileHelp">
 							</div><!--end of form-group-->
 						</div><!--end of column-->
 
@@ -67,7 +67,7 @@
 			<div class="row">
 				<div class="col-md-6 text-center col-md-offset-3">
 
-					   <button type="submit" style="margin-top: 25px;" class="btn btn-success btn-lg btn-block">Submit</button>
+					   <button type="submit" style="margin-top: 25px;" class="btn btn-success btn-lg btn-block">{{tr('submit')}}</button>
 				</div>
 			</div>
 		</form>

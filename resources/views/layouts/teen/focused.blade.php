@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{Setting::get('site_name' , "Live Stream")}}</title>
+        <title>{{Setting::get('site_name' , "StreamHash")}}</title>
 
         <meta name="description" content="">
         <meta name="author" content="">

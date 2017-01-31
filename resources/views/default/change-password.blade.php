@@ -33,6 +33,9 @@
     <!-- right side content area -->
 
     <div class="large-8 columns profile-inner mar-top-space">
+
+        @include('notification.notify')
+        
         <!-- profile settings -->
         <section class="profile-settings">
             <div class="row secBg">

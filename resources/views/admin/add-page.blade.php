@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Pages')
+@section('title', tr('add_page'))
 
-@section('content-header', 'Pages')
+@section('content-header', tr('add_page'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Home</a></li>
-    <li class="active"><i class="fa fa-book"></i> Pages</li>
+    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+    <li class="active"><i class="fa fa-book"></i> {{tr('pages')}}</li>
 @endsection
 
 @section('content')
@@ -27,12 +27,12 @@
 	                <div class="box-body">
 
 	                     <div class="form-group floating-label">
-	                     	<label for="select2">Select Page Type</label>
+	                     	<label for="select2">{{tr('select_page_type')}}</label>
                             <select id="select2" name="type" class="form-control">
                                 <option value="">&nbsp;</option>
-                                <option value="about" selected="true">About Us</option>
-                                <option value="terms">Terms and Condition</option>
-                                <option value="privacy">Privacy</option>
+                                <option value="about" selected="true">{{tr('about')}}</option>
+                                <option value="terms">{{tr('terms_conditions')}}</option>
+                                <option value="privacy">{{tr('privacy')}}</option>
                             </select>
                             
                         </div>
@@ -52,8 +52,8 @@
 	                </div>
 
 	              <div class="box-footer">
-	                    <button type="reset" class="btn btn-danger">Cancel</button>
-	                    <button type="submit" class="btn btn-success pull-right">Submit</button>
+	                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
+	                    <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
 	              </div>
 
 	            </form>

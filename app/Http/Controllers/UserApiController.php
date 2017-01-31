@@ -869,8 +869,6 @@ class UserApiController extends Controller
 
     public function delete_history(Request $request) {
 
-        $user = User::find($request->id);
-
         $validator = Validator::make(
             $request->all(),
             array(

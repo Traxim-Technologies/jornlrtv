@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard')
+@section('title', tr('dashboard'))
 
-@section('content-header', 'Dashboard')
+@section('content-header', tr('dashboard'))
 
 @section('breadcrumb')
-    <li class="active"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active"><i class="fa fa-dashboard"></i> {{tr('dashboard')}}</a></li>
 @endsection
 
 <style type="text/css">
@@ -69,7 +69,7 @@
           	<div class="small-box bg-yellow">
             	<div class="inner">
               		<h3>{{$video_count}}</h3>
-              		<p>{{tr('today_videos')}}</p>
+              		<p>{{tr('total_videos')}}</p>
             	</div>
             	
             	<div class="icon">

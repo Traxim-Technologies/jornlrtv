@@ -3,6 +3,9 @@
 @section('content')
 
     <div class="col-md-9 col-sm-8">
+
+        @include('notification.notify')
+        
         <div class="row">
             <div class="profile">
                 @if(Auth::user()->picture == "")
@@ -13,7 +16,7 @@
               <form action="{{ route('user.profile.save') }}" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                   <label for="pro-image">{{tr('upload')}} {{tr('image')}}:</label>
-                  <input type="file" name="picture" class="form-control" id="pro-image">
+                  <input type="file" name="picture" accept="image/x-png, image/jpeg" class="form-control" id="pro-image">
                 </div>
                 <div class="form-group">
                   <label for="name">{{tr('name')}}</label>

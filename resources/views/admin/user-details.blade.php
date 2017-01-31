@@ -48,7 +48,6 @@
 		                <li><a href="#">{{tr('mobile')}} <span class="pull-right">{{$user->mobile}}</span></a></li>
 		                <li><a href="#">{{tr('address')}} <span class="pull-right">{{$user->address}}</span></a></li>
 		                
-		                <li><a href="#">{{tr('dob')}} <span class="pull-right">@if($user->dob && $user->dob != 0000-00-00) {{date('d M, Y',strtotime($seeker->dob))}} @else - @endif</span></a></li>
 		                <li>
 		                	<a href="#">{{tr('status')}} 
 		                		<span class="pull-right">

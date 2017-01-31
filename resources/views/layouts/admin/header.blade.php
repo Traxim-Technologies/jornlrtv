@@ -48,7 +48,7 @@
 
                             <p>
                               {{Auth::guard('admin')->user()->name}}
-                              <small>{tr('admin')}</small>
+                              <small>{{tr('admin')}}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -56,10 +56,10 @@
                       <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{route('admin.profile')}}" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{route('admin.profile')}}" class="btn btn-default btn-flat">{{tr('profile')}}</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{route('admin.logout')}}" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="{{route('admin.logout')}}" class="btn btn-default btn-flat">{{tr('logout')}}</a>
                             </div>
                         </li>
                     </ul>

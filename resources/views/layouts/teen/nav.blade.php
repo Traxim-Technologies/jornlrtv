@@ -74,7 +74,7 @@
 
 		            <form class="navbar-form navbar-right" role="search" id="userSearch" action="{{route('search-all')}}">
 		              	<div class="form-group">
-		                	<input type="search" required id="auto_complete_search" class="form-control" name="key" placeholder="Search">
+		                	<input type="search" required id="auto_complete_search" class="form-control" name="key" placeholder="{{tr('search')}}">
 		              	</div>
 
 		              	<button type="submit" class="btn btn-default">

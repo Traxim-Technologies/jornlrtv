@@ -23,7 +23,7 @@
 
 		<!-- Total Users -->
 
-		<div class="col-lg-3 col-xs-6">
+		<div class="col-lg-3 col-xs-6" style="display:none">
 
           	<div class="small-box bg-green">
             	<div class="inner">
@@ -44,7 +44,7 @@
 
 		<!-- Total Moderators -->
 
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-xs-6" style="display:none">
 
           	<div class="small-box bg-red">
             	<div class="inner">

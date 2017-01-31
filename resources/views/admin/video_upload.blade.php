@@ -174,12 +174,12 @@
 
                                 <div class="form-group">
                                     <label for="video" class="">{{tr('video')}}</label>
-                                    <input type="file" class="form-control" id="video" name="video" placeholder="{{tr('picture')}}">
+                                    <input type="file" class="form-control" id="video" accept="video/mp4,video/mov" name="video" placeholder="{{tr('picture')}}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="trailer_video" class="">{{tr('trailer_video')}}</label>
-                                    <input type="file" class="form-control" id="trailer_video" name="trailer_video" placeholder="{{tr('trailer_video')}}">
+                                    <input type="file" class="form-control" id="trailer_video" accept="video/mp4,video/mov" name="trailer_video" placeholder="{{tr('trailer_video')}}">
                                 </div>
 
                                 <div class="form-group">

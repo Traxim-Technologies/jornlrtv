@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label for="email" class="col-sm-1 control-label">{{tr('email')}}</label>
                             <div class="col-sm-10">
-                                <input type="email" required class="form-control" value="{{$moderator->email}}" id="email" name="email" placeholder="Email">
+                                <input type="email" required class="form-control" value="{{$moderator->email}}" id="email" name="email" placeholder="{{tr('email')}}">
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@
                             <label for="username" class="col-sm-1 control-label">{{tr('username')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="text" required name="name" value="{{$moderator->name}}" class="form-control" id="username" placeholder="Username">
+                                <input type="text" required name="name" value="{{$moderator->name}}" class="form-control" id="username" placeholder="{{tr('name')}}">
                             </div>
                         </div>
 
@@ -48,7 +48,7 @@
                             <label for="mobile" class="col-sm-1 control-label">{{tr('mobile')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="text" required name="mobile" value="{{$moderator->mobile}}" class="form-control" id="mobile" placeholder="Mobile">
+                                <input type="text" required name="mobile" value="{{$moderator->mobile}}" class="form-control" id="mobile" placeholder="{{tr('mobile')}}">
                             </div>
                         </div>
 

@@ -36,7 +36,7 @@
 
                             <p>
                               {{Auth::guard('moderator')->user()->name}}
-                              <small>Moderator</small>
+                              <small>{{tr('moderator')}}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -44,10 +44,10 @@
                       <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{route('moderator.profile')}}" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{route('moderator.profile')}}" class="btn btn-default btn-flat">{{tr('profile')}}</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{route('moderator.logout')}}" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="{{route('moderator.logout')}}" class="btn btn-default btn-flat">{{tr('logout')}}</a>
                             </div>
                         </li>
                     </ul>

@@ -37,14 +37,14 @@
                         <div class="form-group">
                             <label for="picture" class="col-sm-1 control-label">{{tr('picture')}}</label>
                             <div class="col-sm-10">
-                                <input type="file" required class="form-control" id="picture" name="picture" placeholder="{{tr('picture')}}">
+                                <input type="file" required class="form-control" accept="image/x-png, image/jpeg" id="picture" name="picture" placeholder="{{tr('picture')}}">
                             </div>
                         </div>
 
                         <div class="checkbox">
                             <label for="picture" class="col-sm-1 control-label"></label>
                             <label>
-                                <input type="checkbox" name="is_series" value="1"> Is Tv series?
+                                <input type="checkbox" name="is_series" value="1"> {{tr('is_series')}}
                             </label>
                         </div>
 

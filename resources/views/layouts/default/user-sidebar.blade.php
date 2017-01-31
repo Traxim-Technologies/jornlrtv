@@ -23,7 +23,7 @@
                         <a data-rel="lightcase"><img src="{{$image}}"></a>
                     </div><!--end round-->
 
-                    <div class="user-name"><p>@if(Auth::check()) {{Auth::user()->name}} @else User @endif</p></div>
+                    <div class="user-name"><p>@if(Auth::check()) {{Auth::user()->name}} @else {{tr('user')}} @endif</p></div>
 
                     <div class="widgetContent">
                         <ul class="profile-overview">

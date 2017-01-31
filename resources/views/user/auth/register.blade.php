@@ -94,28 +94,28 @@
                     @endif
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">{{tr('name')}}</label>
-                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
+                        <label for="name">{{tr('name')}}</label>
+                        <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">{{tr('email')}}</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">{{tr('password')}}</label>
-                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        <label for="email">{{tr('email')}}</label>
+                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputPassword1">{{tr('confirm_password')}}</label>
-                        <input type="password" name="password_confirmation" class="form-control" id="exampleInputPassword1" placeholder="Confirm Your Password">
+                        <label for="password">{{tr('password')}}</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">{{tr('confirm_password')}}</label>
+                        <input type="password" name="password_confirmation" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}">
                     </div>
 
                     <div class="change-pwd">
                         <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
                     </div>  
-                    <p>Already Have an Account? <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
+                    <p>{{tr('already_account')}} <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
                 </form>
             </div><!--end of sign-up-->
         </div><!--end of common-form-->     

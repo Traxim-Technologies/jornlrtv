@@ -8,6 +8,9 @@
         @include('layouts.user.nav')
 
         <div class="history-content page-inner col-sm-9 col-md-10">
+            
+            @include('notification.notify')
+
             <div class="new-history">
                 <div class="content-head">
                     <div><h4>{{tr('wishlist')}}</h4></div>              

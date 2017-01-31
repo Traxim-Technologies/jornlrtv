@@ -33,6 +33,8 @@
 
     <div class="large-8 columns mar-top-space">
 
+        @include('notification.notify')
+
         <!-- author videos -->
         <section class="content content-with-sidebar margin-bottom-10">
 

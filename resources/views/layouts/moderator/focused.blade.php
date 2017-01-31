@@ -27,7 +27,8 @@
     <div class="login-box">
 
         <div class="login-logo">
-            <!-- <a href="{{route('moderator.login')}}"><b>{{Setting::get('site_name')}}</b></a> -->
+             <a href="{{route('admin.login')}}"><b> 
+                <img class="adm-log-logo" style="width:50%;height:auto" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif" /></b></a>
         </div>
 
         @yield('content')

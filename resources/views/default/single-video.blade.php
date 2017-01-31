@@ -56,76 +56,13 @@
 
                     <div class="flex-video widescreen">
 
-                        @if($video->video_type != 1) <!-- Check the video type is other than the local upload -->
+                        @if($video->video_type == 2) <!-- Check the video type is other than the local upload -->
 
-                            <span id="trailer_video_play">
-                                <iframe id="iframe_trailer_video" width="580" height="315" src="{{$video->trailer_video}}?autoplay=0" allowfullscreen></iframe>
-                            </span>
-
-                            <span id="main_video_play" style="display:none">
-                                <iframe id="iframe_main_video" width="580" height="315" src="{{$video->video}}?autoplay=0" allowfullscreen></iframe>
-                            </span>
+                            @include('user.videos.youtube')
 
                         @else
 
-                            <div class="image" id="main_video_setup_error" style="display:none">
-                                <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
-                            </div>
-
-                            @if($video->video_upload_type == 1)
-
-                                <?php $url = $video->video; ?>
-
-                                <div id="main-video-player" style="display:none"></div>
-                            @else
-
-                                @if(check_valid_url($video->video))
-
-                                    @if(Setting::get('streaming_url'))
-                                        <?php $url = Setting::get('streaming_url').get_video_end($video->video); ?>
-                                    @else
-                                        <?php $url = $video->video; ?>
-                                    @endif
-
-                                    <div id="main-video-player" style="display:none"></div>
-
-                                @else
-                                    <div class="image" id="main_video_error" style="display:none">
-                                        <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
-                                    </div>
-
-                                @endif
-
-                            @endif
-
-                            <div class="image" id="trailer_video_setup_error" style="display: none;">
-                                <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
-                            </div>
-                            @if($video->video_upload_type == 1)
-
-                                <?php $trailer_url = $video->trailer_video; ?>
-
-                                <div id="trailer-video-player"></div>
-                            @else
-
-                                @if(check_valid_url($video->trailer_video))
-
-                                    @if(Setting::get('streaming_url'))
-                                        <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
-                                    @else
-                                        <?php $trailer_url = $video->trailer_video; ?>
-                                    @endif
-
-                                    <div id="trailer-video-player"></div>
-
-                                @else
-
-                                    <div class="image" id="trailer_video_error">
-                                        <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
-                                    </div>
-
-                                @endif
-                            @endif
+                            @include('user.videos.streaming')
 
                         @endif
 
@@ -742,13 +679,13 @@
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-    <script>jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";</script>
+    <script>jwplayer.key="{{env('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
         
         jQuery(document).ready(function(){
 
-            @if($video->video_type == 1)    
+            @if($video->video_type == 1 && $video->video_type == 2)    
 
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -767,14 +704,12 @@
 
                 // console.log('Inside Trailer Video');
 
-                @if($trailer_url)
+                @if($trailer_video)
 
                     jQuery('#trailer_video_setup_error').hide();
                     jQuery('#main_video_setup_error').hide();
 
                     if(isOpera || isSafari) {
-
-                        // console.log('Opera OR Safari');
 
                         jQuery('#trailer_video_setup_error').show();
 
@@ -787,7 +722,7 @@
                         var playerInstance = jwplayer("trailer-video-player");
 
                         playerInstance.setup({
-                            file: "{{$trailer_url}}",
+                            file: "{{$trailer_video}}",
                             image: "{{$video->default_image}}",
                             width: "100%",
                             aspectratio: "16:9",
@@ -796,8 +731,6 @@
                         });
 
                         playerInstance.on('setupError', function() {
-
-                            // console.log('Trailer_video_setup_error');
 
                             jQuery("#trailer-video-player").css("display", "none");
                             jQuery('#main_video_setup_error').hide();
@@ -947,9 +880,9 @@
 
                 jQuery('#watch_main_video_button').hide();
 
-                @if($video->video_type == 1)
+                @if($video->video_type == 1 && $video_type == 3)
                     
-                    @if($url)
+                    @if($main_video)
 
                         // console.log('Valid main Video URl');
 
@@ -971,7 +904,7 @@
 
                             playerInstance.setup({
                                
-                                file: "{{$url}}",
+                                file: "{{$main_video}}",
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -1017,6 +950,14 @@
                     jQuery("#main-video-player").show();
                 
                 @else
+
+                    // Remove trailer video url, to stop the autoplay while playing main video
+
+                    //First get the  iframe URL
+                    var url = jQuery('#iframe_trailer_video').attr('src');
+
+                    jQuery('#iframe_trailer_video').attr('src', '');
+
                     jQuery("#trailer_video_play").hide();
                     jQuery("#main_video_play").show();
 

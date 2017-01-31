@@ -24,11 +24,11 @@
 
                         <thead>
                             <tr>
-                              <th>#{{tr('id')}}</th>
-                              <th>{{tr('heading')}}</th>
-                              <th>{{tr('description')}}</th>
-                              <th>{{tr('page_type')}}</th>
-                              <th>{{tr('action')}}</th>
+                                <th>#{{tr('id')}}</th>
+                                <th>{{tr('heading')}}</th>
+                                <th>{{tr('description')}}</th>
+                                <th>{{tr('page_type')}}</th>
+                                <th>{{tr('action')}}</th>
                             </tr>
                         </thead>
 
@@ -36,48 +36,52 @@
                             @foreach($view_pages as $i => $page)
                     
                                 <tr>
-                                  <td>{{$i+1}}</td>
-                                  <td>{{$page->heading}}</td>
-                                  <td>{{$page->description}}</td>
-                                  <td>{{$page->type}}</td>
-                                  <td>
+                                    <td>{{$i+1}}</td>
+                                    <td>{{$page->heading}}</td>
+                                    <td>{{$page->description}}</td>
+                                    <td>{{$page->type}}</td>
+                                    <td>
                                         <ul class="admin-action btn btn-default">
                                             <li class="dropdown">
+                                                
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                  Action <span class="caret"></span>
+                                                  {{tr('action')}} <span class="caret"></span>
                                                 </a>
 
                                                 <ul class="dropdown-menu">
                                                    
                                                     <li role="presentation">
                                                         <a role="menuitem" tabindex="-1" href="{{route('editPage', array('id' => $page->id))}}">
-                                                            Edit Page
+                                                            {{tr('edit_page')}}
                                                         </a>
                                                     </li>
 
                                                     
                                                     <li role="presentation">
-                                                      @if(Setting::get('admin_delete_control'))
+                                                        @if(Setting::get('admin_delete_control'))
 
-                                                        <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
+                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
-                                                       @else
-                                                        <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('deletePage',array('id' => $page->id))}}">
-                                                            Delete Page
-                                                        </a>
-                                                      @endif
+                                                        @else
+                                                            <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('deletePage',array('id' => $page->id))}}">
+                                                                {{tr('delete_page')}}
+                                                            </a>
+                                                        @endif
                                                     </li>
+
                                                 </ul>
+
                                             </li>
                                         
                                         </ul>
-                                  </td>
+                                    </td>
+                                
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 @else
-                    <h3 class="no-result">No results found</h3>
+                    <h3 class="no-result">{{tr('no_result_found')}}</h3>
                 @endif
             </div>
           </div>

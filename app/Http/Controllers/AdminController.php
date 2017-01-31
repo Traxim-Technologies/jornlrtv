@@ -95,7 +95,7 @@ class AdminController extends Controller
     }
 
     public function dashboard() {
-
+        
         $admin = Admin::first();
 
         $admin->token = Helper::generate_token();
@@ -206,10 +206,10 @@ class AdminController extends Controller
                 $admin->password = Hash::make($new_password);
                 $admin->save();
 
-                return back()->with('flash_success', "Password Changed successfully");
+                return back()->with('flash_success', tr('password_change_success'));
                 
             } else {
-                return back()->with('flash_error', "Pasword is mismatched");
+                return back()->with('flash_error', tr('password_mismatch'));
             }
         }
 
@@ -1671,54 +1671,73 @@ class AdminController extends Controller
 
         $settings = Settings::all();
 
-        foreach ($settings as $setting) {
+        $check_streaming_url = "";
 
-            $key = $setting->key;
-           
-            $temp_setting = Settings::find($setting->id);
+        if($settings) {
 
-                if($temp_setting->key == 'site_icon'){
-                    $site_icon = $request->file('site_icon');
-                    if($site_icon == null) {
-                        $icon = $temp_setting->value;
-                    } else {
+            foreach ($settings as $setting) {
 
-                        if($temp_setting->value) {
-                            Helper::delete_picture($temp_setting->value);
+                $key = $setting->key;
+               
+                if($setting->key == 'site_icon') {
+
+                    if($request->hasFile('site_icon')) {
+                        
+                        if($setting->value) {
+                            Helper::delete_picture($setting->value);
                         }
 
-                        $icon = Helper::normal_upload_picture($site_icon);
-                    }
-
-                    $temp_setting->value = $icon;
+                        $setting->value = Helper::normal_upload_picture($request->file('site_icon'));
                     
-                } else if($temp_setting->key == 'site_logo'){
-                    $picture = $request->file('site_logo');
-                    if($picture == null){
-                        $logo = $temp_setting->value;
-                    } else {
-                        if($temp_setting->value) {
-                            Helper::delete_picture($temp_setting->value);
+                    }
+                    
+                } else if($setting->key == 'site_logo') {
+
+                    if($request->hasFile('site_logo')) {
+
+                        if($setting->value) {
+
+                            Helper::delete_picture($setting->value);
                         }
-                        $logo = Helper::normal_upload_picture($picture);
+
+                        $setting->value = Helper::normal_upload_picture($request->file('site_logo'));
                     }
 
-                    $temp_setting->value = $logo;
+                } else if($setting->key == 'streaming_url') {
 
-                } else if($request->$key!=''){
-                 
-                    if($key == "theme") {
-                        if($request->has($key)) {
-                            change_theme($setting->value , $request->$key);
+                    if($request->has('streaming_url') && $request->streaming_url != $setting->value) {
+
+                        if(check_nginx_configure()) {
+                            $setting->value = $request->streaming_url;
+                        } else {
+                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
                         }
+                    }  
+
+                } else if($setting->key == "theme") {
+
+                    if($request->has('theme')) {
+                        change_theme($setting->value , $request->$key);
                     }
 
-                    $temp_setting->value = $request->$key;
+                    $setting->value = $request->theme;
+
+                } else if($request->$key!='') {
+
+                    $setting->value = $request->$key;
+
                 }
-            $temp_setting->save();
+
+                $setting->save();
+            
+            }
+
         }
         
-        return back()->with('setting', $settings)->with('flash_success','Settings Updated Successfully');
+        
+        $message = "Settings Updated Successfully"." ".$check_streaming_url;
+        
+        return back()->with('setting', $settings)->with('flash_success', $message);    
     
     }
 
@@ -1726,96 +1745,82 @@ class AdminController extends Controller
         return view('admin.help')->withPage('help')->with('sub_page' , "");
     }
 
-    public function viewPages()
-    {
+    public function viewPages() {
+
         $all_pages = Page::all();
 
         return view('admin.viewpages')->with('page',"view_pages")->with('sub_page',"view_pages")->with('view_pages',$all_pages);
     }
 
-    public function add_page()
-    {
+    public function add_page() {
+
         $pages = Page::all();
         return view('admin.add-page')->with('page' , 'pages')->with('sub_page',"add_page")->with('view_pages',$pages);
     }
 
-    public function editPage($id)
-    {
+    public function editPage($id) {
         $page = Page::find($id);
-        if($page)
-        {
+
+        if($page) {
             return view('admin.editPage')->withPage('viewpage')->with('sub_page',"view_pages")->with('pages',$page);
-        }
-        else
-        {
-            return back()->with('flash_error',"Something went wrong");
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
-    public function pagesProcess(Request $request)
-    {
+    public function pagesProcess(Request $request) {
+
         $type = $request->type;
         $id = $request->id;
         $heading = $request->heading;
         $description = $request->description;
 
-        $validator = Validator::make(array(
-            'heading' => $request->heading,
-            'description' => $request->description),
+        $validator = Validator::make($request->all(),
             array('heading' => 'required',
                 'description' => 'required'));
-        if($validator->fails())
-        {
+
+        if($validator->fails()) {
             $error = $validator->messages()->all();
             return back()->with('flash_errors',$error);
-        }
-        else
-        {
-            if($request->has('id'))
-            {
+        } else {
+
+            if($request->has('id')) {
+
                 $pages = Page::find($id);
                 $pages->heading = $heading;
                 $pages->description = $description;
                 $pages->save();
-            }
-            else
-            {
+
+            } else {
+
                 $check_page = Page::where('type',$type)->first();
-                if(!$check_page)
-                {
+                
+                if(!$check_page) {
                     $pages = new Page;
                     $pages->type = $type;
                     $pages->heading = $heading;
                     $pages->description = $description;
                     $pages->save();
-                }
-                else
-                {
-                    return back()->with('flash_error',"Page already added");
+                } else {
+                    return back()->with('flash_error',tr('page_already_alert'));
                 }
             }
-            if($pages)
-            {
-                return back()->with('flash_success',"Page added successfully");
-            }
-            else
-            {
-                return back()->with('flash_error',"Something went wrong");
+            if($pages) {
+                return back()->with('flash_success',tr('page_create_success'));
+            } else {
+                return back()->with('flash_error',tr('admin_not_error'));
             }
         }
     }
 
-    public function deletePage($id)
-    {
+    public function deletePage($id) {
+
         $page = Page::where('id',$id)->delete();
 
-        if($page)
-        {
-            return back()->with('flash_success',"Page deleted successfully");
-        }
-        else
-        {
-            return back()->with('flash_error',"Something went wrong");
+        if($page) {
+            return back()->with('flash_success',tr('page_delete_success'));
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -1828,12 +1833,8 @@ class AdminController extends Controller
     public function custom_push_process(Request $request) {
 
         $validator = Validator::make(
-            array(
-                'message' => $request->message
-                ),
-            array(
-                'message' => 'required'
-                )
+            $request->all(),
+            array( 'message' => 'required')
         );
 
         if($validator->fails()) {
@@ -1854,9 +1855,7 @@ class AdminController extends Controller
 
             Helper::send_notification($id,$title,$message);
 
-            // $this->dispatch( new NormalPushNotification($id,$title, $message));
-
-            return back()->with('flash_success' , "Push Notifications sent successfully");
+            return back()->with('flash_success' , tr('push_send_success'));
         }
     }
 }

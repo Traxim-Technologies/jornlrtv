@@ -18,7 +18,8 @@
 
             <div class="form-inputs">
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <input type="email" class="form-control input-lg" name="email" placeholder="Email" value="admin@streamhash.com">
+
+                    <input type="email" class="form-control input-lg" name="email" placeholder="{{tr('email')}}" value="admin@streamhash.com">
 
                     @if ($errors->has('email'))
                         <span class="help-block">
@@ -30,7 +31,7 @@
 
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
 
-                    <input type="password" class="form-control input-lg" name="password" placeholder="Password" value="123456">
+                    <input type="password" class="form-control input-lg" name="password" placeholder="{{tr('password')}}" value="123456">
 
                     @if ($errors->has('password'))
                         <span class="help-block">
@@ -45,12 +46,12 @@
 
             <div class="col-md-6 col-md-offset-3">
                 <button class="btn btn-success btn-block mb15" type="submit">
-                    <h5><span><i class="fa fa-btn fa-sign-in"></i> Login</span></h5>
+                    <h5><span><i class="fa fa-btn fa-sign-in"></i> {{tr('login')}}</span></h5>
                 </button>
             </div>
 
             <div class="form-group">
-                    <a style="margin-left:100px" class="btn btn-link" href="{{ url('/admin/password/reset') }}">Reset Password</a>
+                    <a style="margin-left:100px" class="btn btn-link" href="{{ url('/admin/password/reset') }}">{{tr('reset_password')}}</a>
             </div>
 
         </form>
