@@ -528,9 +528,12 @@ function check_nginx_configure() {
     if($nginx) {
         return true;
     } else {
-        return false;
+        if(file_exists("/usr/local/nginx-streaming/conf/nginx.conf")) {
+            return true;
+        } else {
+           return false; 
+        }
     }
-    // return file_exists('/usr/local/nginx-streaming/conf/nginx.conf');
 }
 
 function check_php_configure() {
@@ -545,7 +548,7 @@ function check_mysql_configure() {
 
     if($output) {
         preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version); 
-        // $data = $version[0];
+        $data = $version[0];
     }
 
     return $data; 

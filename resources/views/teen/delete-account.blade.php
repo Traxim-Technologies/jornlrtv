@@ -14,8 +14,8 @@
         <form role="form" method="POST" action="{{ route('user.delete.account.process') }}">
 
             <div class="form-group">
-                <label for="pwd">Password:</label>
-                <input type="password" name="password" required class="form-control" id="pwd">
+                <label for="pwd">{{tr('password')}}:</label>
+                <input type="password" name="password" required placeholder="{{tr('password')}}" class="form-control" id="pwd">
                 <span class="form-error">
                     @if ($errors->has('password'))
                         <strong>{{ $errors->first('password') }}</strong>

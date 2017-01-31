@@ -13,6 +13,15 @@ return array(
 	|
 	*/
 
+	// Mobile Home 
+
+	'mobile_banner_heading' => 'Special Collections',
+	'mobile_wishlist_heading' => 'Wishlist',
+	'mobile_trending_heading' => 'Trending',
+	'mobile_recent_upload_heading' => 'Recent Uploads',
+	'mobile_watch_again_heading' => 'Watch It Again',
+	'mobile_suggestion_heading' => 'Recommended',
+
 	// Global Variables
 
 	'admin' => 'Admin',
@@ -78,6 +87,7 @@ return array(
 	'search' => 'Search',
 	'view_all' => 'View All',
 	'see_all' => 'See All',
+	'clear_all' => 'Clear All',
 	
 	'yes' => 'Yes',
 	'no' => 'No',
@@ -194,7 +204,13 @@ return array(
 
 	'my_account' => 'My Account',
 	'welcome_user'	=> 	'Welcome',
+
 	'payment_method'	=> 	'Payment Method',
+
+	'pay_now_content' => 'Please Pay to see the full video',
+	'pay_now_login_content' => 'Please Login to watch Full Video',
+	'please_login' => 'Please Login',
+
 	'rating'	=> 	'Rating',
 	
 	'select_image'	=> 	'Select Image',

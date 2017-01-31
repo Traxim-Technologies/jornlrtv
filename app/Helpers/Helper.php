@@ -111,8 +111,7 @@
             \Log::info(env('MAIL_PASSWORD'));
 
             if( config('mail.username') &&  config('mail.password')) {
-                try
-                {
+                try {
 
                     $site_url=url('/');
                     Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
@@ -826,33 +825,6 @@
                                         ->where('status' , 1)
                                         ->first();
             return $status;
-        }
-
-        public static function delete_user($user_id) {
-
-            $user_history = UserHistory::where('user_id' , $user_id)->delete();
-            $user_wishlist = Wishlist::where('user_id' , $user_id)->delete();
-            $user_ratings = UserRating::where('user_id' , $user_id)->delete();
-            $user_payments = UserPayment::where('user_id' , $user_id)->delete();
-
-            $user = User::find($user_id)->delete();
-
-            return true;
-
-        }
-
-        public static function delete_category($id) {
-
-            $category = Category::where('id' , $id)->first()->delete();
-
-        }
-
-        public static function delete_video($id) {
-
-            $video = AdminVideo::where('id' , $id)->first()->delete();
-
-            Log::info('Video deleted');
-
         }
 
         public static function send_notification($id,$title,$message) {

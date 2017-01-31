@@ -49,7 +49,7 @@
 
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Please Pay to watch Full video</h4>
+                                                <h4 class="modal-title">{{tr('pay_now_content')}}</h4>
                                             </div>
 
                                             <div class="modal-body">
@@ -77,7 +77,7 @@
 
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Please Login to watch Full video</h4>
+                                            <h4 class="modal-title">{{tr('pay_now_login_content')}}</h4>
                                         </div>
 
                                         <div class="modal-body">
@@ -129,7 +129,7 @@
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Please login</h4>
+                                        <h4 class="modal-title">{{tr('please_login')}}</h4>
                                     </div>
 
                                     <div class="modal-body">

@@ -50,8 +50,8 @@
             {!! csrf_field() !!}
 
             <div class="form-group">
-                <label for="email">Email address:</label>
-                <input type="email" name="email" required class="form-control" id="email">
+                <label for="email">{{tr('email')}}:</label>
+                <input type="email" name="email" required class="form-control" placeholder="{{tr('email')}}" id="email">
 
                 @if($errors->has('email'))
                     <span class="form-error"><strong>{{ $errors->first('email') }}</strong></span>
@@ -60,7 +60,7 @@
 
             <div class="form-group">
                 <label for="pwd">Password:</label>
-                <input type="password" name="password" required class="form-control" id="pwd">
+                <input type="password" name="password" required class="form-control" placeholder="{{tr('password')}}" id="pwd">
                 <span class="form-error">
                     @if ($errors->has('password'))
                         <strong>{{ $errors->first('password') }}</strong>

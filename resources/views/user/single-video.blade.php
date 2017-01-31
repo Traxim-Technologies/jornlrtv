@@ -73,7 +73,7 @@ textarea[name=comments] {
 
                                                                             <div class="modal-header">
                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                <h4 class="modal-title text-center">Please Pay to see the full video</h4>
+                                                                                <h4 class="modal-title text-center">{{tr('pay_now_content')}}</h4>
                                                                             </div>
 
                                                                             <div class="modal-body">
@@ -102,7 +102,7 @@ textarea[name=comments] {
 
                                                                         <div class="modal-header">
                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            <h4 class="modal-title text-center">Please Login to watch Full Video</h4>
+                                                                            <h4 class="modal-title text-center">{{tr('pay_now_login_content')}}</h4>
                                                                         </div>
 
                                                                         <div class="modal-body text-center">

@@ -290,8 +290,8 @@ class UserApiController extends Controller
         return $response;
     }
 
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
+
         $response_array = array();
         $operation = false;
 
@@ -305,92 +305,62 @@ class UserApiController extends Controller
         );
 
         if($basicValidator->fails()){
+            
             $error_messages = implode(',',$basicValidator->messages()->all());
+            
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
-        }else{
+        
+        } else {
 
             $login_by = $request->login_by;
-            if($login_by == 'manual'){
+            /*validate manual login fields*/
+            $manualValidator = Validator::make(
+                $request->all(),
+                array(
+                    'email' => 'required|email',
+                    'password' => 'required',
+                )
+            );
 
-                /*validate manual login fields*/
-                $manualValidator = Validator::make(
-                    $request->all(),
-                    array(
-                        'email' => 'required|email',
-                        'password' => 'required',
-                    )
-                );
-
-                if ($manualValidator->fails()) {
-                    $error_messages = implode(',',$manualValidator->messages()->all());
-                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
-                } else {
-
-                    $email = $request->email;
-                    $password = $request->password;
-
-                    // Validate the user credentials
-                    if($user = User::where('email', '=', $email)->first()){
-                        if($user->is_activated) {
-                            if(Hash::check($password, $user->password)){
-
-                                /*manual login success*/
-                                $operation = true;
-
-                            }else{
-                                $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
-                            }
-                        } else {
-                            $response_array = array('success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144);
-                        }
-
-                    } else {
-                        $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
-                    }
-                }
-
+            if ($manualValidator->fails()) {
+                $error_messages = implode(',',$manualValidator->messages()->all());
+                $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+            
             } else {
-                /*validate social login fields*/
-                $socialValidator = Validator::make(
-                    $request->all(),
-                    array(
-                        'social_unique_id' => 'required',
-                    )
-                );
 
-                if ($socialValidator->fails()) {
-                    $error_messages = implode(',',$socialValidator->messages()->all());
-                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
-                } else {
-                    $social_unique_id = $request->social_unique_id;
-                    if ($user = User::where('social_unique_id', '=', $social_unique_id)->first()) {
-                        if($user->is_activated) {
-                            /*social login success*/
+                // Validate the user credentials
+                if($user = User::where('email', '=', $request->email)->first()) {
+
+                    if($user->is_activated) {
+
+                        if(Hash::check($request->password, $user->password)){
+
+                            /*manual login success*/
                             $operation = true;
-                        } else {
-                            $response_array = array('success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144);
-                        }
 
-                    }else{
-                        $response_array = array('success' => false, 'error' => Helper::get_error_message(125), 'error_code' => 125);
+                        } else {
+                            $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
+                        }
+                    } else {
+                        $response_array = array('success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144);
                     }
 
+                } else {
+                    $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
                 }
+            
             }
 
-            if($operation){
-
-                $device_token = $request->device_token;
-                $device_type = $request->device_type;
+            if($operation) {
 
                 // Generate new tokens
                 $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 // Save device details
-                $user->device_token = $device_token;
-                $user->device_type = $device_type;
-                $user->login_by = $login_by;
+                $user->device_token = $request->device_token;
+                $user->device_type = $request->device_type;
+                $user->login_by = $request->login_by;
 
                 $user->save();
 
@@ -415,6 +385,7 @@ class UserApiController extends Controller
                 );
 
                 $response_array = Helper::null_safe($response_array);
+            
             }
         }
 
@@ -422,8 +393,8 @@ class UserApiController extends Controller
         return $response;
     }
 
-    public function forgot_password(Request $request)
-    {
+    public function forgot_password(Request $request) {
+
         $email =$request->email;
         // Validate the email field
         $validator = Validator::make(
@@ -432,27 +403,36 @@ class UserApiController extends Controller
                 'email' => 'required|email|exists:users,email',
             )
         );
+
         if ($validator->fails()) {
+            
             $error_messages = implode(',',$validator->messages()->all());
+            
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
-        }
-        else
-        {
+        
+        } else {
+
             $user = User::where('email' , $email)->first();
-            $new_password = Helper::generate_password();
-            $user->password = Hash::make($new_password);
 
-            $email_data = array();
-            $subject = Helper::tr('user_forgot_email_title');
-            $email = $user->email;
-            $email_data['user']  = $user;
-            $email_data['password'] = $new_password;
-            $page = "emails.forgot-password";
-            $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
+            if($user) {
 
-            $response_array['success'] = true;
-            $response_array['message'] = Helper::get_message(106);
-            $user->save();
+                $new_password = Helper::generate_password();
+                $user->password = Hash::make($new_password);
+
+                $email_data = array();
+                $subject = Helper::tr('user_forgot_email_title');
+                $email = $user->email;
+                $email_data['user']  = $user;
+                $email_data['password'] = $new_password;
+                $page = "emails.forgot-password";
+                $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
+
+                $response_array['success'] = true;
+                $response_array['message'] = Helper::get_message(106);
+                $user->save();
+
+            }
+
         }
 
         $response = response()->json($response_array, 200);
@@ -461,24 +441,25 @@ class UserApiController extends Controller
 
     public function change_password(Request $request) {
 
-        $old_password = $request->old_password;
-        $new_password = $request->password;
-        $confirm_password = $request->confirm_password;
-
         $validator = Validator::make($request->all(), [
                 'password' => 'required|confirmed',
                 'old_password' => 'required',
             ]);
 
         if($validator->fails()) {
+            
             $error_messages = implode(',',$validator->messages()->all());
+           
             $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 401, 'error_messages' => $error_messages );
+       
         } else {
+
             $user = User::find($request->id);
 
-            if(Hash::check($old_password,$user->password))
-            {
-                $user->password = Hash::make($new_password);
+            if(Hash::check($request->old_password,$user->password)) {
+
+                $user->password = Hash::make($request->new_password);
+                
                 $user->save();
 
                 $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_message(102)));
@@ -494,8 +475,8 @@ class UserApiController extends Controller
 
     }
 
-    public function user_details(Request $request)
-    {
+    public function user_details(Request $request) {
+
         $user = User::find($request->id);
 
         $response_array = array(
@@ -517,13 +498,11 @@ class UserApiController extends Controller
 
     public function update_profile(Request $request) {
         
-        $user_id = $request->id;
-
         $validator = Validator::make(
             $request->all(),
             array(
                 'name' => 'required|max:255',
-                'email' => 'email|unique:users,email,'.$user_id.'|max:255',
+                'email' => 'email|unique:users,email,'.$request->id.'|max:255',
                 'mobile' => 'digits_between:6,13',
                 'picture' => 'mimes:jpeg,bmp,png',
                 'gender' => 'in:male,female,others',
@@ -541,43 +520,29 @@ class UserApiController extends Controller
             );
         } else {
 
-            $name = $request->name;
-            $email = $request->email;
-            $mobile = $request->mobile;
-            $picture = $request->file('picture');
+            $user = User::find($request->id);
 
-            $user = User::find($user_id);
+            if($user) {
+                
+                $user->name = $request->name ? $request->name : $user->name;
+                
+                if($request->has('email')) {
+                    $user->email = $request->email;
+                }
 
-            if($request->has('name')) {
-                $user->name = $request->name;
-            }
-            if($request->has('email')) {
-                $user->email = $email;
-            }
-            if ($mobile != "")
-                $user->mobile = $mobile;
-            // Upload picture
-            if ($picture != "") {
-                Helper::delete_picture($user->picture); // Delete the old pic
-                $user->picture = Helper::normal_upload_picture($picture);
-            }
-            if($request->has('gender')) {
-                $user->gender = $request->gender;
-            }
+                $user->mobile = $request->mobile ? $request->mobile : $user->mobile;
+                $user->gender = $request->gender ? $request->gender : $user->gender;
+                $user->address = $request->address ? $request->address : $user->address;
+                $user->description = $request->description ? $request->description : $user->address;
 
-            if($request->has('address')) {
-                $user->address = $request->address;
+                // Upload picture
+                if ($picture != "") {
+                    Helper::delete_picture($user->picture); // Delete the old pic
+                    $user->picture = Helper::normal_upload_picture($request->file('picture'));
+                }
+
+                $user->save();
             }
-
-            if($request->has('description')) {
-                $user->description = $request->description;
-            }
-
-            // Generate new tokens
-            // $user->token = Helper::generate_token();
-            // $user->token_expiry = Helper::generate_token_expiry();
-
-            $user->save();
 
             $payment_mode_status = $user->payment_mode ? $user->payment_mode : "";
 
@@ -594,32 +559,9 @@ class UserApiController extends Controller
                 'login_by' => $user->login_by,
                 'social_unique_id' => $user->social_unique_id,
             );
+
             $response_array = Helper::null_safe($response_array);
-        }
-
-        $response = response()->json($response_array, 200);
-        return $response;
-    }
-
-    public function token_renew(Request $request)
-    {
-
-        $user_id = $request->id;
-
-        $token_refresh = $request->token;
-
-        // Check if refresher token is valid
-
-        if ($user = User::where('id', '=', $user_id)->where('token', '=', $token_refresh)->first()) {
-
-            // Generate new tokens
-            $user->token = Helper::generate_token();
-            $user->token_expiry = Helper::generate_token_expiry();
-
-            $user->save();
-            $response_array = Helper::null_safe(array('success' => true,'token' => $user->token));
-        } else {
-            $response_array = array('success' => false,'error' => Helper::get_error_message(115),'error_code' => 115);
+        
         }
 
         $response = response()->json($response_array, 200);
@@ -658,9 +600,10 @@ class UserApiController extends Controller
 
             if($allow) {
 
-                $user = User::where('id',$request->id)->first()->delete();
+                $user = User::where('id',$request->id)->first();
 
                 if($user) {
+                    $user->delete();
                     $response_array = array('success' => true , 'message' => tr('user_account_delete_success'));
                 } else {
                     $response_array = array('success' =>false , 'error' => Helper::get_error_message(146), 'error_code' => 146);
@@ -674,9 +617,7 @@ class UserApiController extends Controller
 
 	}
 
-	public function user_rating(Request $request)
-	{
-        $user = User::find($request->id);
+	public function user_rating(Request $request) {
 
         $validator = Validator::make(
             $request->all(),
@@ -710,11 +651,10 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array, 200);
         return $response;
+    
     }
 
     public function add_wishlist(Request $request) {
-
-        $user = User::find($request->id);
 
         $validator = Validator::make(
             $request->all(),
@@ -763,6 +703,7 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array, 200);
         return $response;
+    
     }
 
     public function get_wishlist(Request $request)  {
@@ -774,11 +715,10 @@ class UserApiController extends Controller
 		$response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
 
         return response()->json($response_array, 200);
+    
     }
 
-    public function delete_wishlist(Request $request)
-	{
-        $user = User::find($request->id);
+    public function delete_wishlist(Request $request) {
 
         $validator = Validator::make(
             $request->all(),
@@ -795,11 +735,15 @@ class UserApiController extends Controller
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
 
         } else {
+
+            /** Clear All wishlist of the loggedin user */
+
             if($request->status == 1) {
-                //delete wishlist
+
                 $wishlist = Wishlist::where('user_id',$request->id)->delete();
-            } else {
-                //delete wishlist
+
+            } else {  /** Clear particularv wishlist of the loggedin user */
+
                 $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
             }
 
@@ -808,11 +752,10 @@ class UserApiController extends Controller
 
         $response = response()->json($response_array, 200);
         return $response;
+    
     }
 
     public function add_history(Request $request)  {
-
-        $user = User::find($request->id);
 
         $validator = Validator::make(
             $request->all(),
@@ -852,6 +795,7 @@ class UserApiController extends Controller
             }
         }
         return response()->json($response_array, 200);
+    
     }
 
     public function get_history(Request $request) {
@@ -865,6 +809,7 @@ class UserApiController extends Controller
 		$response_array = array('success' => true, 'history' => $history , 'total' => $total);
 
         return response()->json($response_array, 200);
+    
     }
 
     public function delete_history(Request $request) {
@@ -952,35 +897,35 @@ class UserApiController extends Controller
 
         $videos = $wishlist = $recent =  $banner = $trending = $history = $suggestion =array();
 
-        $banner['name'] = 'Special';
+        $banner['name'] = tr('mobile_banner_heading');
         $banner['key'] = BANNER;
         $banner['list'] = Helper::banner_videos();
 
-        $wishlist['name'] = 'Wishlist';
+        $wishlist['name'] = tr('mobile_wishlist_heading');
         $wishlist['key'] = WISHLIST;
         $wishlist['list'] = Helper::wishlist($request->id);
 
         array_push($videos , $wishlist);
 
-        $recent['name'] = 'Recently Uploaded';
+        $recent['name'] = tr('mobile_recent_upload_heading');
         $recent['key'] = RECENTLY_ADDED;
         $recent['list'] = Helper::recently_added();
 
         array_push($videos , $recent);
 
-        $trending['name'] = "Trending";
+        $trending['name'] = tr('mobile_trending_heading');
         $trending['key'] = TRENDING;
         $trending['list'] = Helper::trending();
 
         array_push($videos, $trending);
 
-        $history['name'] = "Watch It Again";
+        $history['name'] = tr('mobile_watch_again_heading');
         $history['key'] = WATCHLIST;
         $history['list'] = Helper::watch_list($request->id);
 
         array_push($videos , $history);
 
-        $suggestion['name'] = "Recommended";
+        $suggestion['name'] = tr('mobile_suggestion_heading');
         $suggestion['key'] = SUGGESTIONS;
         $suggestion['list'] = Helper::suggestion_videos();
 
@@ -1001,7 +946,6 @@ class UserApiController extends Controller
         switch($key) {
             case TRENDING:
                 $videos = Helper::trending(NULL,$request->skip);
-                // $total = get_trending_count();
                 break;
             case WISHLIST:
                 $videos = Helper::wishlist($request->id,NULL,$request->skip);
@@ -1009,11 +953,9 @@ class UserApiController extends Controller
                 break;
             case SUGGESTIONS:
                 $videos = Helper::suggestion_videos(NULL,$request->skip);
-                // $total = get_suggestion_count($request->id);
                 break;
             case RECENTLY_ADDED:
                 $videos = Helper::recently_added(NULL,$request->skip);
-                // $total = get_recent_count();
                 break;
             case WATCHLIST:
                 $videos = Helper::watch_list($request->id,NULL,$request->skip);
@@ -1112,6 +1054,7 @@ class UserApiController extends Controller
         }
 
         $response = response()->json($response_array, 200);
+        
         return $response;
 
     }

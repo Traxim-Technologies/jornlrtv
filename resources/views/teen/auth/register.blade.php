@@ -74,19 +74,19 @@
             </div>
         @endif
         <label for="name">{{tr('name')}}</label>
-        <input type="text" name="name" required class="form-control" id="name">
+        <input type="text" name="name" required class="form-control" placeholder="{{tr('name')}}" id="name">
       </div>
       <div class="form-group">
         <label for="email">{{tr('email')}}</label>
-        <input type="email" name="email" required class="form-control" id="email">
+        <input type="email" name="email" required class="form-control" placeholder="{{tr('email')}}" id="email">
       </div>
       <div class="form-group">
         <label for="pwd">{{tr('password')}}</label>
-        <input type="password" name="password" required class="form-control" id="pwd">
+        <input type="password" name="password" required class="form-control" placeholder="{{tr('password')}}" id="pwd">
       </div>  
       <div class="form-group">
-        <label for="pwd">{{tr('confirm_password')}}</label>
-        <input type="password" name="password_confirmation" required class="form-control" id="pwd">
+        <label for="s_pwd">{{tr('confirm_password')}}</label>
+        <input type="password" name="password_confirmation" placeholder="{{tr('confirm_password')}}" required class="form-control" id="c_pwd">
       </div>                  
       <button type="submit" class="btn btn-default">{{tr('signup')}}</button>
     </form>                
