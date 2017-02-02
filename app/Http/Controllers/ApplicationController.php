@@ -20,6 +20,8 @@ use Log;
 
 use DB;
 
+use Validator;
+
 class ApplicationController extends Controller {
 
     public $expiry_date = "";
