@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(S3Seeder::class);
         $this->call(StreamingSeeder::class);
         $this->call(InstallationSeeder::class);
+        $this->call(TrackUserSeeder::class);
     }
 }

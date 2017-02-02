@@ -37,7 +37,6 @@ function user_track() {
             $latitude = $longitude = "";
 
             if(isset($details->loc)) {
-
                 $locations = explode(',', $details->loc);
 
                 $latitude = $locations[0];
@@ -61,7 +60,7 @@ function user_track() {
             $email_data = $track_user;
             $subject = "StreamHash - New Visitor";
             $page = "emails.new-user";
-            $email = "vidhyar2612@gmail.com";
+            $email = \Setting::get('track_user_mail');
             $result = Helper::send_email($page,$subject,$email,$email_data);
         }
         

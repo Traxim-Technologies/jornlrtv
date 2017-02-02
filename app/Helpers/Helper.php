@@ -657,7 +657,6 @@
                             'admin_videos.sub_category_id' ,
                             'admin_videos.category_id',
                             'admin_videos.ratings',
-                            +
                             'categories.name as category_name',
                             'sub_categories.name as sub_category_name',
                             'admin_videos.duration',
