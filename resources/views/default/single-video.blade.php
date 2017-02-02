@@ -685,7 +685,7 @@
         
         jQuery(document).ready(function(){
 
-            @if($video->video_type == 1 && $video->video_type == 2)    
+            @if($video->video_type == 1 && $video->video_type == 3)    
 
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -880,7 +880,7 @@
 
                 jQuery('#watch_main_video_button').hide();
 
-                @if($video->video_type == 1 && $video_type == 3)
+                @if($video->video_type == 1 && $video->video_type == 3)
                     
                     @if($main_video)
 
