@@ -8,11 +8,7 @@ use App\Requests;
 
 use App\Helpers\Helper;
 
-use App\Category;
-
 use App\SubCategory;
-
-use App\SubCategoryImage;
 
 use App\Genre;
 
@@ -20,39 +16,19 @@ use App\AdminVideo;
 
 use App\User;
 
-use App\UserPayment;
-
-use Validator;
-
-use Hash;
-
-use Mail;
-
-use Auth;
-
-use Redirect;
-
-use Setting;
-
 use Log;
 
 use DB;
-
-use Elasticsearch\ClientBuilder;
-
-define('NO_INSTALL' , 0);
-
-define('SYSTEM_CHECK' , 1);
-
-define('THEME_CHECK' , 2);
-
-define('INSTALL_COMPLETE' , 3);
-
 
 class ApplicationController extends Controller {
 
     public $expiry_date = "";
 
+    public function test() {
+
+        // return view('emails.new-user')->with('email_data' , $email_data);
+
+    }
 
     public function select_genre(Request $request) {
         
@@ -64,6 +40,7 @@ class ApplicationController extends Controller {
                           ->get();
 
         return response()->json($genres);
+    
     }
 
     public function select_sub_category(Request $request) {
@@ -76,6 +53,7 @@ class ApplicationController extends Controller {
                           ->get();
 
         return response()->json($subcategories);
+    
     }
 
     public function cron_publish_video(Request $request) {
@@ -89,10 +67,11 @@ class ApplicationController extends Controller {
             $video->status = 1;
             $video->save();
         }
+    
     }
 
-    public function send_notification_user_payment()
-    {
+    public function send_notification_user_payment(Request $request) {
+
         Log::info("Notification to User for Payment");
 
         $time = date("Y-m-d");
@@ -135,10 +114,11 @@ class ApplicationController extends Controller {
         } else {
             Log::info(" records not found ....:-(");
         }
+    
     }
 
-    public function user_payment_expiry()
-    {
+    public function user_payment_expiry(Request $request) {
+
         Log::info("user_payment_expiry");
 
         $time = date("Y-m-d");
@@ -180,104 +160,7 @@ class ApplicationController extends Controller {
         } else {
             Log::info(" records not found ....:-(");
         }
-    }
-
-    public function addIndex() {
-
-        $params = array();
-
-        $client = ClientBuilder::create()->build();
-
-        $params['body']  = array(
-          'id' => 0
-        );
-
-        $params['index'] = 'live-streaming';
-        $params['type']  = 'live-streaming';
-        $params['id'] = 'live-streaming';
-
-        $result = $client->index($params);
-    }
-
-    public function add_value_index() {
-
-        $client = ClientBuilder::create()->build();
-
-        $params = array();
-
-        $params['body']  = array(
-          'video_id' => $video->id,
-          'title' => $video->title,
-          'description' => $video->description
-        );
-
-        $params['index'] = 'start_streaming';
-        $params['type']  = 'streaming_type';
-        $params['id'] = 'streaming_id';
-
-        $result = $client->index($params);
-
-        dd($result);
-    }
-
-    public function addAllVideoToEs() {
-
-        $videos = AdminVideo::where('is_approved' , 1)->get();
-
-        if(count($videos)) {
-
-            foreach ($videos as $video) {
-
-                $params = array();
-
-                $client = ClientBuilder::create()->build();
-
-                $params['body']  = array(
-                  'id' => $video->id,
-                  'title' => $video->title,
-                  'description' => $video->description,
-                );
-
-                $params['index'] = 'live-streaming';
-                $params['type']  = 'live-streaming';
-                $params['id'] = $video->id;
-
-                $result = $client->index($params);
-
-                Log::info("Result Elasticsearch ".print_r($result ,true));
-
-            }
-
-        }
-    }
-
-    public function test() {
-
-        return view('emails.test');
-
-        $settings = Setting::get('installation_process');
-
-        if( $settings == NO_INSTALL) {
-            $title = "System Check";
-            return view('install.system-check')->with('title' , $title);
-        } 
-        if ($settings == SYSTEM_CHECK) {
-            $title = "Choose Theme";
-            return view('install.install-theme')->with('title' , $title);
-        } 
-
-        if($settings == THEME_CHECK ) {
-            $title = "Configure Site Settings";
-
-            return view('install.install-others')->with('title' , $title);
-        }
-
-        if($settings == INSTALL_COMPLETE) {
-            return \Redirect::route('user.dashboard');
-        }
-        
-        return \Redirect::route('user.dashboard');    
-
+    
     }
 
     public function search_video(Request $request) {
@@ -329,6 +212,7 @@ class ApplicationController extends Controller {
 
             return response()->json($items);
         }     
+    
     }
 
     public function search_all(Request $request) {
@@ -364,6 +248,7 @@ class ApplicationController extends Controller {
 
             return view('user.search-result')->with('key' , $q)->with('videos' , $videos)->with('page' , "")->with('subPage' , "");
         }     
+    
     }
 
 }

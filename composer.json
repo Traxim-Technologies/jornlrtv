@@ -11,7 +11,8 @@
         "aws/aws-sdk-php-laravel": "^3.1",
         "league/flysystem-aws-s3-v3": "^1.0",
         "laravel/socialite": "^2.0",
-        "paypal/rest-api-sdk-php": "*"
+        "paypal/rest-api-sdk-php": "*",
+        "vidhyar2612/enveditor": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -28,7 +29,8 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Helpers/viewHelper.php"
+            "app/Helpers/viewHelper.php",
+            "app/Helpers/tracker.php"
         ]
     },
     "autoload-dev": {

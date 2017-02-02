@@ -95,7 +95,8 @@ class AdminController extends Controller
     }
 
     public function dashboard() {
-        
+
+
         $admin = Admin::first();
 
         $admin->token = Helper::generate_token();
@@ -114,6 +115,8 @@ class AdminController extends Controller
         $total_revenue = total_revenue();
 
         $view = last_days(10);
+
+        user_track();
 
         return view('admin.dashboard')->withPage('dashboard')
                     ->with('sub_page','')
@@ -1633,6 +1636,33 @@ class AdminController extends Controller
         $payments = UserPayment::orderBy('created_at' , 'desc')->paginate(20);
 
         return view('admin.user-payments')->with('data' , $payments)->withPage('user-payments')->with('sub_page',''); 
+    }
+
+    public function email_settings() {
+
+        $result = \Enveditor::all();
+
+        return view('admin.email-settings')->with('result',$result)->withPage('email-settings')->with('sub_page',''); 
+    }
+
+
+    public function email_settings_process(Request $request) {
+
+        $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
+
+        foreach ($email_settings as $key => $data) {
+
+            if($request->has($data)) {
+                \Enveditor::set($data,$request->$data);
+            }
+        }
+
+        \Artisan::call('config:cache');
+
+        $result = \Enveditor::all();
+
+        return back()->with('result' , $result)->with('flash_success' , tr('email_settings_success'));
+
     }
 
     public function settings() {

@@ -158,6 +158,7 @@ return [
         anlutro\LaravelSettings\ServiceProvider::class,
         Aws\Laravel\AwsServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        vidhyar2612\Enveditor\EnveditorServiceProvider::class
 
     ],
 
@@ -207,6 +208,7 @@ return [
         'Setting' => anlutro\LaravelSettings\Facade::class,
         'AWS' => Aws\Laravel\AwsFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Enveditor' => 'vidhyar2612\Enveditor\Facade',
     ],
 
 ];

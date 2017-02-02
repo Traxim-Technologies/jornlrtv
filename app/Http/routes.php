@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/test' , 'ApplicationController@test');
+
 // Installation
 
 Route::get('/install/theme', 'InstallationController@install')->name('installTheme');
@@ -217,6 +219,10 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('theme/settings' , 'AdminController@theme_settings')->name('admin.theme.settings');
     
     Route::post('settings' , 'AdminController@settings_process')->name('admin.save.settings');
+
+    Route::get('settings/email' , 'AdminController@email_settings')->name('admin.email.settings');
+
+    Route::post('settings/email' , 'AdminController@email_settings_process')->name('admin.email.settings.save');
 
     Route::get('help' , 'AdminController@help')->name('admin.help');
 

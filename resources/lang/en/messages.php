@@ -549,4 +549,15 @@ return array(
 	'sub_category_count' => 'Total Sub Category',
 	'today_videos' => 'Today Videos',
 
+	'email_settings_success' => 'Email Configuration Updated successfully',
+
+	'MAIL_DRIVER' => 'MAIL DRIVER',
+	'MAIL_HOST' => 'MAIL HOST',
+	'MAIL_PORT' => 'MAIL PORT',
+	'MAIL_USERNAME' => 'MAIL USERNAME',
+	'MAIL_PASSWORD' => 'MAIL PASSWORD',
+	'MAIL_ENCRYPTION' => 'MAIL ENCRYPTION',
+
+	'email_settings' => 'Email Settings',
+
 );
