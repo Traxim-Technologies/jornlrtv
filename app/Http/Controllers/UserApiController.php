@@ -536,7 +536,7 @@ class UserApiController extends Controller
                 $user->description = $request->description ? $request->description : $user->address;
 
                 // Upload picture
-                if ($picture != "") {
+                if ($request->hasFile('picture') != "") {
                     Helper::delete_picture($user->picture); // Delete the old pic
                     $user->picture = Helper::normal_upload_picture($request->file('picture'));
                 }
