@@ -311,6 +311,7 @@
             @if($video->video_type == 1 || $video->video_type == 3)
 
                 // Opera 8.0+
+                
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
                 // Firefox 1.0+
                 var isFirefox = typeof InstallTrigger !== 'undefined';
