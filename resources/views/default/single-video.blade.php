@@ -593,60 +593,7 @@
 
                 @endif
 
-                <!-- end most view Widget -->                
-
-                <!-- Recent post videos -->
-
-                <?php /** @if(count($recent_videos) > 0)
-
-                    <div class="large-12 medium-7 medium-centered columns">
-
-                        <div class="widgetBox">
-
-                            <div class="widgetTitle">
-                                <h5>{{tr('recent_videos')}}</h5>
-                            </div>
-
-                            <div class="widgetContent">
-
-                                @foreach($recent_videos as $recent_video)
-
-                                    @if($recent_video->admin_video_id != $video->admin_video_id)
-
-                                        <div class="media-object stack-for-small">
-
-                                            <div class="media-object-section">
-
-                                                <div class="recent-img">
-                                                    <img src= "{{$recent_video->default_image}}" alt="recent">
-                                                    <a href="{{route('user.single' , $recent_video->admin_video_id)}}" class="hover-posts">
-                                                        <span><i class="fa fa-play"></i></span>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="media-object-section">
-                                                <div class="media-content">
-                                                    <h6><a href="#">{{$recent_video->title}}</a></h6>
-                                                    <p>
-                                                        <i class="fa fa-user"></i>
-                                                        <span>{{tr('admin')}}</span>
-                                                        <i class="fa fa-clock-o"></i>
-                                                        <span>{{date('d M Y',strtotime($recent_video->publish_time))}}</span></p>
-                                                </div><!--media-content end-->
-                                            </div><!--media-object-section end-->
-                                        
-                                        </div>
-
-                                    @endif
-
-                                @endforeach
-
-                            </div><!--widget-content end-->
-                        </div>
-                    </div>
-
-                @endif */ ?>
+                <!-- end most view Widget --> 
 
             </div>
 
