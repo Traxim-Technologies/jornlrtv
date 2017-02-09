@@ -15,7 +15,7 @@ class SettingsTableSeeder extends Seeder
     	DB::table('settings')->insert([
     		[
 		        'key' => 'site_name',
-		        'value' => 'Live Streaming'
+		        'value' => 'StreamHash'
 		    ],
 		    [
 		        'key' => 'site_logo',
