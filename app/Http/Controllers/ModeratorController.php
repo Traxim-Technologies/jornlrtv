@@ -76,7 +76,8 @@ class ModeratorController extends Controller
 
         $moderator->save();
         
-        $today_videos = AdminVideo::where('created_at' , '>=' , date('Y-m-d H:i:s'))->count();
+        $today_videos = AdminVideo::count();
+
         $category_count = Category::count();
         $sub_category_count = SubCategory::count();
 
