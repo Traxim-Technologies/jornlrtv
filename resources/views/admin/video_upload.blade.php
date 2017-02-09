@@ -312,6 +312,7 @@
 
     
     <script type="text/javascript">
+    
         $(function () {
             //Date picker
             // $('#datepicker').datepicker({
@@ -323,10 +324,10 @@
                 minDate: moment(),
             });
 
-            $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-              checkboxClass: 'icheckbox_flat-green',
-              radioClass: 'iradio_flat-green'
-            });
+            // $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            //     checkboxClass: 'icheckbox_flat-green',
+            //     radioClass: 'iradio_flat-green'
+            // });
 
             $('#upload').show();
             $('#others').hide();

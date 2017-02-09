@@ -188,13 +188,13 @@
                                     
                                     @if(check_s3_configure())
                                         <label style="margin-top:10px" >
-                                            <input type="radio" required name="video_upload_type" value="1" class="flat-red" checked>
+                                            <input type="radio" name="video_upload_type" value="1" class="flat-red" checked>
                                             {{tr('s3')}}
                                         </label>
                                     @endif
 
                                     <label style="margin-top:10px">
-                                        <input type="radio" required name="video_upload_type" class="flat-red"  value="2">
+                                        <input type="radio" name="video_upload_type" class="flat-red"  value="2">
                                         {{tr('direct')}}
                                     </label>
 
@@ -324,10 +324,10 @@
                 minDate: moment(),
             });
 
-            $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-              checkboxClass: 'icheckbox_flat-green',
-              radioClass: 'iradio_flat-green'
-            });
+            // $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            //     checkboxClass: 'icheckbox_flat-green',
+            //     radioClass: 'iradio_flat-green'
+            // });
 
             $('#upload').show();
             $('#others').hide();

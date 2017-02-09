@@ -8,18 +8,23 @@
               <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown">
                @if(Auth::check()) {{Auth::user()->name}} @else User @endif <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
-                <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>                
-                <li>
-                	<a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>
-                        <i class="fa fa-trash"></i>{{tr('delete_account')}}
-                    </a>
+              	<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
+					<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>     
 
-                </li>  
+					<li role="separator" class="divider"></li>
 
-                <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>                
-              </ul>
+					<li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>     
+
+					<li>
+						<a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>
+					        <i class="fa fa-trash"></i>{{tr('delete_account')}}
+					    </a>
+
+					</li>  
+
+					<li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>                
+              	</ul>
             </div>  
           </div>
 

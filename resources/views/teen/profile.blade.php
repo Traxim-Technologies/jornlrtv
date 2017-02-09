@@ -5,29 +5,36 @@
     <div class="col-md-9 col-sm-8">
         <div class="row">
             <div class="profile">
-            @if(Auth::user()->picture == "")
-              <img src="{{asset('placeholder.png')}}">
-            @else
-              <img src="{{Auth::user()->picture}}">
-            @endif
-              <h5>{{Auth::user()->name}}</h5>
-              @if(Auth::user()->login_by == 'manual')
-                <h6>{{Auth::user()->email}}</h6>
-              @endif
-              @if(Auth::user()->user_type) 
-                <h5 style="color:rgb(241, 19, 19)">The Pack will Expiry within <b>{{get_expiry_days(Auth::user()->id)}} days</b></h5>
-              @endif
-              <h6>{{Auth::user()->mobile}}</h6>
-              <h6>{{Auth::user()->address}}</h6>
-              <h6>{{Auth::user()->description}}</h6>
+
+                @if(Auth::user()->picture == "")
+                    <img src="{{asset('placeholder.png')}}">
+                @else
+                    <img src="{{Auth::user()->picture}}">
+                @endif
+
+                <h5>{{Auth::user()->name}}</h5>
+                
+                @if(Auth::user()->login_by == 'manual')
+                    <h6>{{Auth::user()->email}}</h6>
+                @endif
+
+                @if(Auth::user()->user_type) 
+                    <h5 style="color:rgb(241, 19, 19)">The Pack will Expiry within <b>{{get_expiry_days(Auth::user()->id)}} days</b></h5>
+                @endif
+
+                <h6>{{Auth::user()->mobile}}</h6>
+                <h6>{{Auth::user()->address}}</h6>
+                <h6>{{Auth::user()->description}}</h6>
 
 
                 @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
                     <a class="payment-pro" href="{{route('paypal' , Auth::user()->id)}}">{{tr('payment')}}</a>
                 @endif
 
-              <a class="edit-pro" href="{{route('user.update.profile')}}">{{tr('edit')}} {{tr('profile')}}</a>
-              <a class="change-pwd" href="{{route('user.change.password')}}">{{tr('change_password')}}</a>
+                
+                <a class="edit-pro" href="{{route('user.update.profile')}}">{{tr('edit')}} {{tr('profile')}}</a>
+                
+                <a class="change-pwd" href="{{route('user.change.password')}}">{{tr('change_password')}}</a>
             </div>
         </div>
 

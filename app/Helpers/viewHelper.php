@@ -279,7 +279,7 @@ function trending() {
 
 function category_video_count($category_id)
 {
-    $category_video_count = AdminVideo::where('category_id',$category_id)->count();
+    $category_video_count = AdminVideo::where('category_id',$category_id)->where('is_approved' , 1)->count();
     return $category_video_count;
 }
 

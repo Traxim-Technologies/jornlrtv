@@ -140,7 +140,7 @@
 				                                            <!--end of post-summary-->
 				                                           
 				                                            <div class="post-button">
-				                                                <a href="#" class="secondary-button">
+				                                                <a href="{{route('user.single' , $video->admin_video_id)}}" class="secondary-button">
 				                                                	<i class="fa fa-play-circle"></i>
 				                                                	{{tr('watch_video')}}
 				                                                </a>
