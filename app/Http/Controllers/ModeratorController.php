@@ -669,29 +669,13 @@ class ModeratorController extends Controller
 
             $params = array();
 
-            // $client = ClientBuilder::create()->build();
-
-            // $params['body']  = array(
-            //   'id' => $video->id,
-            //   'title' => $video->title,
-            //   'description' => $video->description,
-            // );
-
-            // $params['index'] = 'live-streaming';
-            // $params['type']  = 'live-streaming';
-            // $params['id'] = $video->id;
-
-            // $result = $client->index($params);
-
-            // Log::info("Result Elasticsearch ".print_r($result ,true));
-
             if($video) {
 
                 Helper::upload_video_image($request->file('other_image1'),$video->id,2);
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
 
-                return redirect(route('admin.videos'));
+                return redirect(route('moderator.videos'));
 
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
