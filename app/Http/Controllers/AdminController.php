@@ -1239,7 +1239,7 @@ class AdminController extends Controller
                 $video->trailer_video = get_youtube_embed_link($trailer_video);
             } else {
 
-                $video->video = $video;
+                $video->video = $video_link;
                 $video->trailer_video = $trailer_video;
             }
 
