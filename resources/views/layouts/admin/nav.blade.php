@@ -100,11 +100,11 @@
                 </a>
             </li>
 
-            <li id="settings">
+            {{-- <li id="settings">
                 <a href="{{route('admin.email.settings')}}">
                     <i class="fa fa-envelope"></i> <span>{{tr('email_settings')}}</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li id="theme-settings">
                 <a href="{{route('admin.theme.settings')}}">
