@@ -257,7 +257,7 @@ class UserApiController extends Controller
                     $email_data = $user;
                     $page = "emails.welcome";
                     $email = $user->email;
-                    Helper::send_email($page,$subject,$email,$email_data);
+                    // Helper::send_email($page,$subject,$email,$email_data);
                 }
 
                 // Response with registered user details:
