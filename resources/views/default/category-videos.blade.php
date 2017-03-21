@@ -157,7 +157,7 @@
 
 				                                        <div class="post-des">
 				                                            <h6>
-				                                            	<a href="recent_video">{{$video->title}}</a>
+				                                            	<a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a>
 				                                            </h6>
 				                                            <div class="post-stats clearfix">
 				                                                <p class="pull-left">

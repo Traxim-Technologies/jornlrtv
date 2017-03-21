@@ -2,6 +2,8 @@
 
 @section('content')
 
+@include('notification.notify')
+
     <div class="login-box">
         
         <h4>{{tr('change_password')}}</h4>     
