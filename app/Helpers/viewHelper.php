@@ -434,6 +434,21 @@ function register_mobile($device_type) {
     
 }
 
+/**
+ * Function Name : subtract_count()
+ * While Delete user, subtract the count from mobile register table based on the device type
+ *
+ * @param string $device_ype : Device Type (Andriod,web or IOS)
+ * 
+ * @return boolean
+ */
+function subtract_count($device_type) {
+    if($reg = MobileRegister::where('type' , $device_type)->first()) {
+        $reg->count = $reg->count - 1;
+        $reg->save();
+    }
+}
+
 function get_register_count() {
 
     $ios_count = MobileRegister::where('type' , 'ios')->first()->count;

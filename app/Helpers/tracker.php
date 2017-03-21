@@ -44,12 +44,12 @@ function user_track() {
             
             }
 
-            $track_user->city  = $details->city ? $details->city : "";
-            $track_user->region  = $details->region ? $details->region : "";
-            $track_user->country  = $details->country ? $details->country : "";
+            $track_user->city  = isset($details->city) ? $details->city : "";
+            $track_user->region  = isset($details->region) ? $details->region : "";
+            $track_user->country  = isset($details->country) ? $details->country : "";
             $track_user->latitude  = $latitude ? $latitude : "";
             $track_user->longitude  = $longitude ? $longitude : "";
-            $track_user->others = $details->org ? $details->org : "";
+            $track_user->others = isset($details->org) ? $details->org : "";
         
         }
 

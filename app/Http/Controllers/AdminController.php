@@ -316,14 +316,20 @@ class AdminController extends Controller
     }
 
     public function delete_user(Request $request) {
-
-        if($user = User::where('id',$request->id)->first()->delete()) {
-
-            return back()->with('flash_success',tr('admin_not_user_del'));
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
+        if($user = User::where('id',$request->id)->first()) {
+            // Check User Exists or not
+            if ($user) {
+                if ($user->device_type) {
+                    // Load Mobile Registers
+                    subtract_count($user->device_type);
+                }
+                // After reduce the count from mobile register model delete the user
+                if ($user->delete()) {
+                    return back()->with('flash_success',tr('admin_not_user_del'));   
+                }
+            }
         }
+        return back()->with('flash_error',tr('admin_not_error'));
     }
 
     public function view_user($id) {
@@ -855,15 +861,15 @@ class AdminController extends Controller
                 $message = tr('admin_not_sub_category');
 
                 if($request->hasFile('picture1')) {
-                    delete_picture($request->file('picture1'));
+                    Helper::delete_picture($request->file('picture1'));
                 }
 
                 if($request->hasFile('picture2')) {
-                    delete_picture($request->file('picture2'));
+                    Helper::delete_picture($request->file('picture2'));
                 }
 
                 if($request->hasFile('picture3')) {
-                    delete_picture($request->file('picture3'));
+                    Helper::delete_picture($request->file('picture3'));
                 }
             } else {
                 $message = tr('admin_add_sub_category');
@@ -1633,7 +1639,7 @@ class AdminController extends Controller
     }
 
     public function user_payments() {
-        $payments = UserPayment::orderBy('created_at' , 'desc')->paginate(20);
+        $payments = UserPayment::orderBy('created_at' , 'desc')->get();
 
         return view('admin.user-payments')->with('data' , $payments)->withPage('user-payments')->with('sub_page',''); 
     }
