@@ -421,6 +421,7 @@ return array(
 	'select_category' => 'Select Category',
 	'select_sub_category' => 'Select Sub Category',
 	'select_genre' => 'Select Genre',
+	'publish' => 'Publish',
 	
 	'ratings' => 'Ratings',
 	'reviews' => 'Reviews',
@@ -445,6 +446,10 @@ return array(
 
 	'admin_not_video_approve'	=>	'Video Approved Successfully',
 	'admin_not_video_decline'	=>	'Video Unapproved Successfully',
+
+	'admin_published_video_success'	=>	'Video Published Successfully',
+	'admin_published_video_failure'	=>	'Oops! Something went wrong. Try again later',
+
 	'slider_success' => 'The video is added as slider video',
 	'no_video_found' => 'No videos found....!',
 	'empty' => 'List is empty....!',

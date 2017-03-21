@@ -1518,6 +1518,31 @@ class AdminController extends Controller
         return back()->with('flash_success', $message);
     }
 
+
+    /**
+     * Function Name : publish_video()
+     * To Publish the video for user
+     *
+     * @param int $id : Video id
+     *
+     * @return Flash Message
+     */
+    public function publish_video($id) {
+        // Load video based on Auto increment id
+        $video = AdminVideo::find($id);
+        // Check the video present or not
+        if ($video) {
+            $video->status = DEFAULT_TRUE;
+            $video->publish_time = date('Y-m-d H:i:s');
+            // Save the values in DB
+            if ($video->save()) {
+                return back()->with('flash_success', tr('admin_published_video_success'));
+            }
+        }
+        return back()->with('flash_error', tr('admin_published_video_failure'));
+    }
+
+
     public function decline_video($id) {
         
         $video = AdminVideo::find($id);

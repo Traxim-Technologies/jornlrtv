@@ -193,6 +193,8 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('/video/approve/{id}', 'AdminController@approve_video')->name('admin.video.approve');
 
+    Route::get('/video/publish-video/{id}', 'AdminController@publish_video')->name('admin.video.publish-video');
+
     Route::get('/video/decline/{id}', 'AdminController@decline_video')->name('admin.video.decline');
 
     // Slider Videos

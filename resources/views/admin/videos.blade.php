@@ -92,6 +92,10 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_id)}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
+								                  	@if($video->status == 0)
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.publish-video',$video->video_id)}}">{{tr('publish')}}</a></li>
+								                  	@endif
+
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	<li role="presentation">
