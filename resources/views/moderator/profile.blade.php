@@ -72,7 +72,7 @@
                                 <label for="name" required class="col-sm-2 control-label">{{tr('name')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="name"  name="name" value="{{Auth::guard('moderator')->user()->name}}" placeholder="{{tr('name')}}">
+                                  <input type="text" class="form-control" id="name"  name="name" value="{{Auth::guard('moderator')->user()->name}}" placeholder="{{tr('name')}}" required>
                                 </div>
                             </div>
 
@@ -80,7 +80,7 @@
                                 <label for="email" class="col-sm-2 control-label">{{tr('email')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="email" required value="{{Auth::guard('moderator')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}">
+                                  <input type="email" required value="{{Auth::guard('moderator')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}" readonly>
                                 </div>
                             </div>
 
@@ -89,7 +89,8 @@
                                 <label for="mobile" class="col-sm-2 control-label">{{tr('mobile')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" required value="{{Auth::guard('moderator')->user()->mobile}}" name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}">
+                                  <input type="text" required value="{{Auth::guard('moderator')->user()->mobile}}" name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}" pattern="[0-9]{6,}">
+                                  <small style="color:brown">Note : The mobile must be between 6 and 13 digits.</small>
                                 </div>
                             </div>
 

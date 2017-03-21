@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label for="email" class="col-sm-1 control-label">{{tr('email')}}</label>
                             <div class="col-sm-10">
-                                <input type="email" required class="form-control" id="email" name="email" placeholder="{{tr('email')}}">
+                                <input type="email" maxlength="255" required class="form-control" id="email" name="email" placeholder="{{tr('email')}}">
                             </div>
                         </div>
 
@@ -46,7 +46,9 @@
                             <label for="mobile" class="col-sm-1 control-label">{{tr('mobile')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="text" required name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}">
+                                <input type="text" required name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}" minlength="6" maxlength="13" pattern="[0-9]{6,}">
+                                <br>
+                                 <small style="color:brown">Note : The mobile must be between 6 and 13 digits.</small>
                             </div>
                         </div>
 

@@ -86,12 +86,12 @@
 
                         <div class="form-group">
                             <label for="amount">{{tr('amount')}}</label>
-                            <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{tr('amount')}}">
+                            <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
                         </div>
 
                         <div class="form-group">
                             <label for="expiry_days">{{tr('expiry_days')}}</label>
-                            <input type="text" class="form-control" value="{{Setting::get('expiry_days')  }}" name="expiry_days" id="expiry_days" placeholder="{{tr('expiry_days')}}">
+                            <input type="text" class="form-control" value="{{Setting::get('expiry_days')  }}" name="expiry_days" id="expiry_days" placeholder="{{tr('expiry_days')}}" pattern="[0-9]{1,}">
                         </div>                    
 
                   </div>
