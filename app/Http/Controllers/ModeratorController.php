@@ -700,19 +700,35 @@ class ModeratorController extends Controller
 
         $video_validator = array();
 
+        $video_link = $video->video;
+
+        $trailer_video = $video->trailer_video;
+
         // dd($request->all());
 
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 
-            $video_validator = Validator::make( $request->all(), array(
+            if (isset($request->video)) {
+                $video_validator = Validator::make( $request->all(), array(
                         'video'     => 'required|mimes:mkv,mp4,qt',
+                        // 'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                        )
+                    );
+
+                $video_link = $request->hasFile('video') ? $request->file('video') : array();   
+
+            }
+
+            if (isset($request->trailer_video)) {
+                $video_validator = Validator::make( $request->all(), array(
+                        // 'video'     => 'required|mimes:mkv,mp4,qt',
                         'trailer_video'  => 'required|mimes:mkv,mp4,qt',
                         )
                     );
 
-            $video_link = $request->hasFile('video') ? $request->file('video') : array();
-
-            $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+                $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+            }
+        
 
         } elseif($request->has('video_type') && in_array($request->video_type , array(VIDEO_TYPE_YOUTUBE,VIDEO_TYPE_OTHER))) {
 
@@ -775,22 +791,32 @@ class ModeratorController extends Controller
             if($request->video_type == VIDEO_TYPE_UPLOAD && $video_link && $trailer_video) {
 
                 // Check Previous Video Upload Type, to delete the videos
-
                 if($video->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
                     Helper::s3_delete_picture($video->video);   
                     Helper::s3_delete_picture($video->trailer_video);  
                 } else {
-                    Helper::delete_picture($video->video);
-                    Helper::delete_picture($video->trailer_video);
+                    if ($request->hasFile('video')) {
+                        Helper::delete_picture($video->video);    
+                    }
+                    if ($request->hasFile('trailer_video')) {
+                        Helper::delete_picture($video->trailer_video);
+                    }
                 }
 
                 if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
                     $video->video = Helper::s3_upload_picture($video_link);
                     $video->trailer_video = Helper::s3_upload_picture($trailer_video); 
-
                 } else {
-                    $video->video = Helper::video_upload($video_link);
-                    $video->trailer_video = Helper::video_upload($trailer_video);  
+                    if ($request->hasFile('video')) {
+                        $video->video = Helper::video_upload($video_link);
+                    } else {
+                        $video->video = $video_link;
+                    }
+                    if ($request->hasFile('trailer_video')) {
+                        $video->trailer_video = Helper::video_upload($trailer_video);  
+                    } else {
+                        $video->trailer_video = $trailer_video;
+                    }
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE && $video_link && $trailer_video) {
