@@ -107,7 +107,7 @@ class AdminController extends Controller
         $user_count = User::count();
         $provider_count = Moderator::count();
         $video_count = AdminVideo::count();
-        $trending = trending();
+        // $trending = trending();
         $recent_videos = Helper::recently_added();
 
         $get_registers = get_register_count();
@@ -123,7 +123,7 @@ class AdminController extends Controller
                     ->with('user_count' , $user_count)
                     ->with('video_count' , $video_count)
                     ->with('provider_count' , $provider_count)
-                    ->with('trending' , $trending)
+                    // ->with('trending' , $trending)
                     ->with('get_registers' , $get_registers)
                     ->with('view' , $view)
                     ->with('total_revenue' , $total_revenue)
