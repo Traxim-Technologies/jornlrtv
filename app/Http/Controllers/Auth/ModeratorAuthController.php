@@ -96,6 +96,7 @@ class ModeratorAuthController extends Controller
         $moderator = Moderator::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
+            'timezone'=>$data['timezone'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'is_available' => 1,
@@ -103,5 +104,16 @@ class ModeratorAuthController extends Controller
         ]);
 
         return $moderator;
+    }
+
+    protected function authenticated(Request $request, Moderator $moderator){
+
+        if(\Auth::guard('moderator')->check()) {
+            if($moderator = Admin::find(\Auth::guard('moderator')->user()->id)) {
+                $moderator->timezone = $request->has('timezone') ? $request->timezone : '';
+                $moderator->save();
+            }   
+        };
+       return redirect()->intended($this->redirectPath());
     }
 }

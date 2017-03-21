@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
 
 class AdminAuthController extends Controller
 {
@@ -94,5 +95,16 @@ class AdminAuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    protected function authenticated(Request $request, Admin $admin){
+
+        if(\Auth::guard('admin')->check()) {
+            if($admin = Admin::find(\Auth::guard('admin')->user()->id)) {
+                $admin->timezone = $request->has('timezone') ? $request->timezone : '';
+                $admin->save();
+            }   
+        };
+       return redirect()->intended($this->redirectPath());
     }
 }

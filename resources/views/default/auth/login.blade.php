@@ -75,7 +75,7 @@
                                 </div> -->
 
                                 <button class="button expanded" type="submit" name="submit">{{tr('login')}}</button>
-                                
+                                <input type="hidden" name="timezone" value="" id="userTimezone">
                                 <p class="loginclick">
                                     <a href="{{ url('/password/reset') }}">{{tr('forgot_password')}}</a>
                                     {{tr('new_here')}} 
@@ -156,5 +156,21 @@
         </div>
     </div>
 </section>
+
+@endsection
+@section('scripts')
+
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+<script>
+    
+    $(document).ready(function() {
+
+        var dMin = new Date().getTimezoneOffset();
+        var dtz = -(dMin/60);
+        // alert(dtz);
+        $("#userTimezone").val(jstz.determine().name());
+    });
+
+</script>
 
 @endsection

@@ -58,6 +58,7 @@
                         <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
                         <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
                     </div>
+                    <input type="hidden" name="timezone" value="" id="userTimezone">
                 </form>
             
             </div>
@@ -65,5 +66,22 @@
         </div>
 
     </div>
+
+@endsection
+
+@section('scripts')
+
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+<script>
+    
+    $(document).ready(function() {
+
+        var dMin = new Date().getTimezoneOffset();
+        var dtz = -(dMin/60);
+        // alert(dtz);
+        $("#userTimezone").val(jstz.determine().name());
+    });
+
+</script>
 
 @endsection

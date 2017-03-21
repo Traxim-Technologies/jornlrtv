@@ -89,6 +89,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'timezone' => $data['timezone'],
             'picture' => asset('placeholder.png'),
             'is_activated' => 1,
             'login_by' => 'manual',
@@ -107,16 +108,18 @@ class AuthController extends Controller
         
         return $User;
     }
- 
+
+
     protected function authenticated(Request $request, User $user){
 
         if(\Auth::check()) {
             if($user = User::find(\Auth::user()->id)) {
                 $user->login_by = 'manual';
+                $user->timezone = $request->has('timezone') ? $request->timezone : '';
                 $user->save();
             }   
-        }
-       
+        };
        return redirect()->intended($this->redirectPath());
     }
+
 }

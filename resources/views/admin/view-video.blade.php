@@ -39,12 +39,7 @@
 
                 <div class="box-body">
 
-                    @if($video->video_type != 1) 
-                        <div class="large-12">
-                            <iframe width="580" height="315" src="{{$video->video}}" allowfullscreen></iframe>
-                        </div>
-
-                    @else
+                   
                         @if($video->video_upload_type == 1)
                             <?php $url = $video->video; ?>
                             <div id="main-video-player"></div>
@@ -60,8 +55,6 @@
                             @endif
 
                         @endif
-
-                    @endif
 
                     <h4 style="font-weight:800;color:#3c8dbc">{{tr('description')}}</h4>
 
@@ -259,7 +252,6 @@
         
         jQuery(document).ready(function(){
 
-            @if($video->video_type == 1)
 
                 console.log('Inside Video');
                     
@@ -307,8 +299,6 @@
                     });
 
                 @endif
-
-            @endif
         });
 
     </script>

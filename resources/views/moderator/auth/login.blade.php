@@ -48,6 +48,7 @@
                 </button>
             </div>
 
+            <input type="hidden" name="timezone" value="" id="userTimezone">
             <!-- <div class="form-group">
                     <a style="margin-left:100px" class="btn btn-link" href="{{ url('/moderator/password/reset') }}">Reset Password</a>
             </div> -->
@@ -55,5 +56,22 @@
         </form>
 
     </div>
+
+@endsection
+
+@section('scripts')
+
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+<script>
+    
+    $(document).ready(function() {
+
+        var dMin = new Date().getTimezoneOffset();
+        var dtz = -(dMin/60);
+        // alert(dtz);
+        $("#userTimezone").val(jstz.determine().name());
+    });
+
+</script>
 
 @endsection

@@ -94,6 +94,7 @@
                                     <a href="{{ url('/password/reset') }}">{{tr('forgot_password')}}</a>
                                     
                                 </p>
+                                <input type="hidden" name="timezone" value="" id="userTimezone">
                             </form>
                         </div>
                     </div>
@@ -169,5 +170,21 @@
         </div>
     </div>
 </section>
+
+@endsection
+@section('scripts')
+
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+<script>
+    
+    $(document).ready(function() {
+
+        var dMin = new Date().getTimezoneOffset();
+        var dtz = -(dMin/60);
+        // alert(dtz);
+        $("#userTimezone").val(jstz.determine().name());
+    });
+
+</script>
 
 @endsection

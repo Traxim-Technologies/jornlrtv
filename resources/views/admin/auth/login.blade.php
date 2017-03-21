@@ -12,6 +12,7 @@
 
             <div class="login-logo">
                <!-- <a href="{{route('admin.login')}}"><b>{{Setting::get('site_name')}}</b></a> -->
+               <input type="hidden" name="timezone" value="" id="userTimezone">
             </div>
 
             <p class="text-center mb30"></p>
@@ -54,8 +55,28 @@
                     <a style="margin-left:100px" class="btn btn-link" href="{{ url('/admin/password/reset') }}">{{tr('reset_password')}}</a>
             </div>
 
+            
+
         </form>
 
     </div>
 
 @endsection
+
+@section('scripts')
+
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+<script>
+    
+    $(document).ready(function() {
+
+        var dMin = new Date().getTimezoneOffset();
+        var dtz = -(dMin/60);
+        // alert(dtz);
+        $("#userTimezone").val(jstz.determine().name());
+    });
+
+</script>
+
+@endsection
+

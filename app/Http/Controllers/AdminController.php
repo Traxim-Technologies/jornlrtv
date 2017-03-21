@@ -283,6 +283,8 @@ class AdminController extends Controller
                 $user->device_type = 'web';
             }
 
+            $user->timezone = $request->has('timezone') ? $request->timezone : '';
+
             $user->name = $request->has('name') ? $request->name : '';
             $user->email = $request->has('email') ? $request->email: '';
             $user->mobile = $request->has('mobile') ? $request->mobile : '';
@@ -568,6 +570,7 @@ class AdminController extends Controller
 
             }
 
+            $user->timezone = $request->has('timezone') ? $request->timezone : '';
             $user->name = $request->has('name') ? $request->name : '';
             $user->email = $request->has('email') ? $request->email: '';
             $user->mobile = $request->has('mobile') ? $request->mobile : '';

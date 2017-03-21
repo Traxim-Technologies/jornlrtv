@@ -99,6 +99,8 @@
 
                 </div>
 
+                <input type="hidden" name="timezone" value="" id="userTimezone">
+
                 <div class="change-pwd">
                     <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
                 </div>  
@@ -109,5 +111,22 @@
 
     </div><!--end of common-form-->     
 </div><!--end of form-background-->
+
+@endsection
+
+@section('scripts')
+
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+<script>
+    
+    $(document).ready(function() {
+
+        var dMin = new Date().getTimezoneOffset();
+        var dtz = -(dMin/60);
+        // alert(dtz);
+        $("#userTimezone").val(jstz.determine().name());
+    });
+
+</script>
 
 @endsection

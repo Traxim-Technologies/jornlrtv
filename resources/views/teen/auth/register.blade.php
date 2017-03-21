@@ -88,9 +88,26 @@
         <label for="s_pwd">{{tr('confirm_password')}}</label>
         <input type="password" name="password_confirmation" placeholder="{{tr('confirm_password')}}" required class="form-control" id="c_pwd">
       </div>                  
+      <input type="hidden" name="timezone" value="" id="userTimezone">
       <button type="submit" class="btn btn-default">{{tr('signup')}}</button>
     </form>                
     <p class="help"><a href="{{ route('user.login.form') }}">{{tr('login')}}</a></p>         
 </div>
+
+@endsection
+@section('scripts')
+
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+<script>
+    
+    $(document).ready(function() {
+
+        var dMin = new Date().getTimezoneOffset();
+        var dtz = -(dMin/60);
+        // alert(dtz);
+        $("#userTimezone").val(jstz.determine().name());
+    });
+
+</script>
 
 @endsection
