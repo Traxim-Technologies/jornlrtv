@@ -127,7 +127,8 @@
                                 <label for="picture" class="col-sm-2 control-label">{{tr('picture')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="file" required class="form-control" accept="image/x-png, image/jpeg" name="picture" id="picture">
+                                  <input type="file" required accept="image/x-png, image/jpeg" name="picture" id="picture">
+                                  <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
 

@@ -45,8 +45,8 @@
                             @endif
 
                             <div class="col-sm-10" style="margin-left:70px !important">
-                                <input type="file" class="form-control" accept="image/x-png, image/jpeg" id="picture" name="picture" placeholder="{{tr('picture')}}">
-                                 <p class="help-block">Please enter .png .jpeg .jpg images only.</p>
+                                <input type="file" accept="image/x-png, image/jpeg" id="picture" name="picture" placeholder="{{tr('picture')}}">
+                                <p class="help-block">{{tr('image_validate')}}</p>
                             </div>
                             
                         </div>

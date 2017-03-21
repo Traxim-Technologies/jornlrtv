@@ -53,7 +53,7 @@
                             <label for="picture1" class="col-sm-2 control-label">{{tr('picture1')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" accept="image/x-png, image/jpeg" id="picture1" name="picture1" placeholder="{{tr('picture1')}}">
+                                <input type="file" accept="image/x-png, image/jpeg" id="picture1" name="picture1" placeholder="{{tr('picture1')}}">
                                  <p class="help-block">{{tr('image_validate')}}</p>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                             <label for="picture2" class="col-sm-2 control-label">{{tr('picture2')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" accept="image/x-png, image/jpeg" id="picture2" name="picture2" placeholder="{{tr('picture2')}}">
+                                <input type="file" accept="image/x-png, image/jpeg" id="picture2" name="picture2" placeholder="{{tr('picture2')}}">
                                  <p class="help-block">{{tr('image_validate')}}</p>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                             <label for="picture3" class="col-sm-2 control-label">{{tr('picture3')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" accept="image/x-png, image/jpeg" id="picture3" name="picture3" placeholder="{{tr('picture3')}}">
+                                <input type="file" accept="image/x-png, image/jpeg" id="picture3" name="picture3" placeholder="{{tr('picture3')}}">
                                  <p class="help-block">{{tr('image_validate')}}</p>
                             </div>
                         </div>

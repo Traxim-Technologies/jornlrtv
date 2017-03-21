@@ -392,6 +392,7 @@ return array(
 	'picture3' => 'Image 3',
 	'genre_placeholder' => 'Please enter genre name',
 	'image_validate' => 'Please enter .png .jpeg .jpg images only.',
+	'video_validate' => 'Please enter .mkv .mp4 .qt videos only.',
 
 	'admin_not_sub_category'	=>	'Sub Category updated Successfully',
 	'admin_add_sub_category'	=>	'Sub Category added Successfully',
