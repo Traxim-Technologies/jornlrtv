@@ -39,6 +39,14 @@
 
                 <div class="box-body">
 
+                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('category')}}</h4>
+
+                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->category_name}}</p>
+
+                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('sub_category')}}</h4>
+
+                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->sub_category_name}}</p>
+
                     @if($video->video_type != 1) 
                         <div class="large-12">
                             <iframe width="580" height="315" src="{{$video->video}}" allowfullscreen></iframe>
@@ -62,12 +70,17 @@
                         @endif
 
                     @endif
+                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('duration')}}</h4>
+
+                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->duration}}</p>
 
                     <h4 style="font-weight:800;color:#3c8dbc">{{tr('description')}}</h4>
 
                     <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->description}}</p>
 
                     <h4 style="font-weight:800;color:#3c8dbc">{{tr('ratings')}}</h4>
+
+
 
                     <span class="starRating-view">
                         <input id="rating5" type="radio" name="ratings" value="5" @if($video->ratings == 5) checked @endif>
@@ -89,6 +102,31 @@
                     <h4 style="font-weight:800;color:#3c8dbc">{{tr('reviews')}}</h4>
 
                     <p style="">{{$video->reviews}}</p>
+
+                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('video_type')}}</h4>
+
+                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">
+                        @if($video->video_type == 1)
+                            {{tr('video_upload_link')}}
+                        @endif
+                        @if($video->video_type == 2)
+                            {{tr('youtube')}}
+                        @endif
+                        @if($video->video_type == 3)
+                            {{tr('other_link')}}
+                        @endif
+                    </p>
+
+                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('video_upload_type')}}</h4>
+
+                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">
+                        @if($video->video_upload_type == 1)
+                            {{tr('s3')}}
+                        @endif
+                        @if($video->video_upload_type == 2)
+                            {{tr('direct')}}
+                        @endif          
+                    </p>
                 
                 </div>
 

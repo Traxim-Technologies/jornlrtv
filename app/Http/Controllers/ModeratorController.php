@@ -866,7 +866,7 @@ class ModeratorController extends Controller
                              'admin_videos.genre_id',
                              'admin_videos.video_type',
                              'admin_videos.video_upload_type',
-
+                             'admin_videos.duration',
                              'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
                     ->orderBy('admin_videos.created_at' , 'desc')
