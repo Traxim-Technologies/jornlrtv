@@ -23,9 +23,18 @@
                 </span>
             </div>     
 
-          <button type="submit" class="btn btn-default" onclick="return confirm('Are you sure?.')">{{tr('delete_account')}}</button>
+          <button type="submit" class="btn btn-default" onclick="getPassword();">{{tr('delete_account')}}</button>
 
         </form> 
     </div>
-
+<script>
+    function getPassword() {
+        var password = $('#pwd').val(); 
+        if(password != '') {
+            return confirm('Are you sure?.')  
+        } else {
+            return false; 
+        }  
+    }
+</script>
 @endsection
