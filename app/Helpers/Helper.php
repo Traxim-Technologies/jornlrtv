@@ -519,7 +519,7 @@
             return $videos;
         }
 
-        public static function suggestion_videos($web = NULL , $skip = 0) {
+        public static function suggestion_videos($web = NULL , $skip = 0, $id = null) {
 
             $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
                             ->where('admin_videos.status' , 1)
@@ -537,6 +537,9 @@
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                                 )
                             ->orderByRaw('RAND()');
+            if ($id) {
+                $videos_query->where('admin_videos.id', '!=', $id);
+            }
             if($web) {
                 $videos = $videos_query->paginate(16);
 

@@ -101,7 +101,7 @@ class UserController extends Controller {
 
         $comments = Helper::get_video_comments($id,0,WEB);
 
-        $suggestions = Helper::suggestion_videos();
+        $suggestions = Helper::suggestion_videos('', '', $id);
 
         $wishlist_status = $history_status = WISHLIST_EMPTY;
 
