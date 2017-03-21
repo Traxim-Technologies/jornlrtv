@@ -78,15 +78,10 @@ class ModeratorController extends Controller
         
         $today_videos = AdminVideo::count();
 
-        $category_count = Category::count();
-        $sub_category_count = SubCategory::count();
-
         return view('moderator.dashboard')
                     ->withPage('dashboard')
                     ->with('sub_page','')
-                    ->with('today_videos' , $today_videos)
-                    ->with('category_count' , $category_count)
-                    ->with('sub_category_count' , $sub_category_count);
+                    ->with('today_videos' , $today_videos);
     }
 
 
@@ -508,7 +503,14 @@ class ModeratorController extends Controller
 
     public function add_video(Request $request) {
 
-    $categories = Category::orderBy('name' , 'asc')->get();
+    $categories = Category::where('categories.is_approved' , 1)
+                        ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
+                            'categories.is_series' ,'categories.status' , 'categories.is_approved')
+                        ->leftJoin('sub_categories' , 'categories.id' , '=' , 'sub_categories.category_id')
+                        ->groupBy('sub_categories.category_id')
+                        ->havingRaw("COUNT(sub_categories.id) > 0")
+                        ->orderBy('categories.name' , 'asc')
+                        ->get();
 
      return view('moderator.video_upload')
             ->with('categories' , $categories)
@@ -519,7 +521,14 @@ class ModeratorController extends Controller
 
     public function edit_video(Request $request) {
 
-        $categories = Category::orderBy('name' , 'asc')->get();
+        $categories = Category::where('categories.is_approved' , 1)
+                        ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
+                            'categories.is_series' ,'categories.status' , 'categories.is_approved')
+                        ->leftJoin('sub_categories' , 'categories.id' , '=' , 'sub_categories.category_id')
+                        ->groupBy('sub_categories.category_id')
+                        ->havingRaw("COUNT(sub_categories.id) > 0")
+                        ->orderBy('categories.name' , 'asc')
+                        ->get();
 
         $video = AdminVideo::where('admin_videos.id' , $request->id)
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
@@ -690,6 +699,8 @@ class ModeratorController extends Controller
         $video = AdminVideo::find($request->id);
 
         $video_validator = array();
+
+        // dd($request->all());
 
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 

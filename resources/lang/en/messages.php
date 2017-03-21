@@ -96,7 +96,7 @@ return array(
 	'date' => 'Date',
 
 	'message' => 'Message',
-	'upload_image' => 'Uplaod Image',
+	'upload_image' => 'Upload Image',
 	'amount'	=> 	'Amount',
 	'currency' 	=>	'Currency',
 

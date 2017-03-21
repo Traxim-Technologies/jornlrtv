@@ -55,14 +55,14 @@
             <div class="nav-tabs-custom">
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#profile" data-toggle="tab">{{tr('update_profile')}}</a></li>
+                    <li class="active"><a href="#profile_name" data-toggle="tab">{{tr('update_profile')}}</a></li>
                     <li><a href="#image" data-toggle="tab">{{tr('upload_image')}}</a></li>
                     <li><a href="#password" data-toggle="tab">{{tr('change_password')}}</a></li>
                 </ul>
                
                 <div class="tab-content">
                    
-                    <div class="active tab-pane" id="profile">
+                    <div class="active tab-pane" id="profile_name">
 
                         <form class="form-horizontal" action="{{route('moderator.save.profile')}}" method="POST" enctype="multipart/form-data" role="form">
 
@@ -97,7 +97,7 @@
                                 <label for="address" class="col-sm-2 control-label">{{tr('address')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" required value="{{Auth::guard('moderator')->user()->address}}" name="address" class="form-control" id="address" placeholder="{{tr('address')}}">
+                                  <input type="text" value="{{Auth::guard('moderator')->user()->address}}" name="address" class="form-control" id="address" placeholder="{{tr('address')}}">
                                 </div>
                             </div>
 
@@ -116,10 +116,10 @@
 
                             <input type="hidden" name="id" value="{{Auth::guard('moderator')->user()->id}}">
 
-                            @if(count(Auth::guard('moderator')->user()->picture) > 0)
+                            @if(Auth::guard('moderator')->user()->picture)
                                 <img style="height: 90px; margin-bottom: 15px; border-radius:2em;" src="{{Auth::guard('moderator')->user()->picture}}">
                             @else
-                                <img style="height: 90px; margin-bottom: 15px; border-radius:2em;"  src="{{asset('logo.png')}}">
+                                <img style="height: 90px; margin-bottom: 15px; border-radius:2em;"  src="{{asset('admin-css/dist/img/avatar.png')}}">
                             @endif
 
                             <div class="form-group">
