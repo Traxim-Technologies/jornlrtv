@@ -40,7 +40,7 @@
                             @endif
 
                             <label for="site_logo">{{tr('site_logo')}}</label>
-                            <input type="file" id="site_logo" name="site_logo" accept="image/x-png, image/jpeg">
+                            <input type="file" id="site_logo" name="site_logo" accept="image/png, image/jpeg">
                             <p class="help-block">Please enter .png images only.</p>
                         </div>
 
@@ -50,7 +50,7 @@
                                 <img style="height: 50px; width:75px; margin-bottom: 15px; border-radius:2em;" src="{{Setting::get('site_icon')}}">
                             @endif
                             <label for="site_icon">{{tr('site_icon')}}</label>
-                            <input type="file" id="site_icon" name="site_icon" accept="image/x-png, image/jpeg">
+                            <input type="file" id="site_icon" name="site_icon" accept="image/png, image/jpeg">
                             <p class="help-block">Please enter .png images only.</p>
                         </div>
 

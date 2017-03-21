@@ -116,19 +116,19 @@
 
                             <div class="form-group">
                                 <label for="default_image" class="">{{tr('default_image')}}</label>
-                                <input type="file" required id="default_image" name="default_image" accept="image/x-png, image/jpeg" placeholder="{{tr('default_image')}}">
+                                <input type="file" required id="default_image" name="default_image" accept="image/png, image/jpeg" placeholder="{{tr('default_image')}}">
                                 <p class="help-block">{{tr('image_validate')}}</p>
                             </div>
 
                             <div class="form-group">
                                 <label for="other_image1" class="">{{tr('other_image1')}}</label>
-                                <input type="file" required id="other_image1" name="other_image1" accept="image/x-png, image/jpeg" placeholder="{{tr('other_image1')}}">
+                                <input type="file" required id="other_image1" name="other_image1" accept="image/png, image/jpeg" placeholder="{{tr('other_image1')}}">
                                 <p class="help-block">{{tr('image_validate')}}</p>
                             </div>
 
                             <div class="form-group">
                                 <label for="other_image2" class="">{{tr('other_image2')}}</label>
-                                <input type="file" required id="other_image2" name="other_image2" accept="image/x-png, image/jpeg" placeholder="{{tr('other_image2')}}">
+                                <input type="file" required id="other_image2" name="other_image2" accept="image/png, image/jpeg" placeholder="{{tr('other_image2')}}">
                                 <p class="help-block">{{tr('image_validate')}}</p>
                             </div>
 
@@ -177,13 +177,13 @@
 
                                 <div class="form-group">
                                     <label for="video" class="">{{tr('video')}}</label>
-                                    <input type="file" id="video" accept="video/mp4,video/mov" name="video" placeholder="{{tr('picture')}}">
+                                    <input type="file" id="video" accept="video/mp4" name="video" placeholder="{{tr('picture')}}">
                                     <p class="help-block">{{tr('video_validate')}}</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="trailer_video" class="">{{tr('trailer_video')}}</label>
-                                    <input type="file" id="trailer_video" accept="video/mp4,video/mov" name="trailer_video" placeholder="{{tr('trailer_video')}}">
+                                    <input type="file" id="trailer_video" accept="video/mp4" name="trailer_video" placeholder="{{tr('trailer_video')}}">
                                     <p class="help-block">{{tr('video_validate')}}</p>
                                 </div>
 

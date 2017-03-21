@@ -105,7 +105,8 @@
 
                                             <div class="medium-12 columns">
                                                 <label>{{tr('picture')}}:
-                                                    <input type="file" name="picture" id="picture" accept="image/x-png, image/jpeg">
+                                                    <input type="file" name="picture" id="picture" accept="image/png, image/jpeg">
+                                                     <p class="help-block">{{tr('image_validate')}}</p>
                                                 </label>
                                             </div>
                                             <div class="medium-12 columns">
