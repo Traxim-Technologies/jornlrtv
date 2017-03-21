@@ -724,3 +724,15 @@ function get_history_count($id) {
     return $data;
 
 }
+
+
+//this function convert string to UTC time zone
+
+function convertTimeToUTCzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
+
+    $new_str = new DateTime($str, new DateTimeZone($userTimezone));
+
+    $new_str->setTimeZone(new DateTimeZone('UTC'));
+
+    return $new_str->format( $format);
+}
