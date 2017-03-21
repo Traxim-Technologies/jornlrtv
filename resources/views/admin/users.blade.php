@@ -29,6 +29,7 @@
 						      <th>{{tr('email')}}</th>
 						      <th>{{tr('mobile')}}</th>
 						      <th>{{tr('upgrade')}}</th>
+						      <th>{{tr('validity_days')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -49,6 +50,11 @@
 							      		@endif
 
 							      </td>
+							      <td>
+							      	@if($user->user_type)
+                                        {{get_expiry_days($user->id)}}
+                                    @endif
+							      </td>
 							 
 							      <td>
             							<ul class="admin-action btn btn-default">
@@ -64,14 +70,15 @@
 								                  	<li role="presentation" class="divider"></li>
 
 								                  	<li role="presentation">
-
 								                  	 	@if(Setting::get('admin_delete_control'))
 								                  	 		<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
-								                  	 	@else
+								                  	 	@elseif(get_expiry_days($user->id) > 0)
 
-								                  	 		<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.user', array('id' => $user->id))}}">{{tr('delete')}}
+								                  	 		<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure want to delete the premium user?');" href="{{route('admin.delete.user', array('id' => $user->id))}}">{{tr('delete')}}
 								                  			</a>
-
+								                  		@else 
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.user', array('id' => $user->id))}}">{{tr('delete')}}
+								                  			</a>
 								                  	 	@endif
 
 								                  	</li>
