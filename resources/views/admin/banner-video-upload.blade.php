@@ -239,6 +239,7 @@
                             <button type="submit" class="btn btn-success pull-right" disabled>{{tr('submit')}}</button>
                         @else
                             <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
+                        @endif
                     </div>
                 </form>
             
