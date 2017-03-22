@@ -75,7 +75,7 @@
                     <h3 class="box-title">{{tr('other_settings')}}</h3>
                 </div>
 
-                <form action="{{(Setting::get('admin_delete_control') == 1) ? : '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
                     <div class="box-body">
 
                         <div class="form-group">
