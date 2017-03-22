@@ -8,7 +8,7 @@ class SubCategory extends Model
 {
 	public function subCategoryImage()
     {
-        return $this->hasMany('App\subCategoryImage');
+        return $this->hasMany('App\SubCategoryImage');
     }
 
     public function genres()
