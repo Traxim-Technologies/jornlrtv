@@ -72,7 +72,7 @@
 
 @endsection
 
-
+@section('scripts')
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
 <script>
     
