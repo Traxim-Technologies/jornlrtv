@@ -33,7 +33,7 @@
 		                  If you want to make any changes to your site, drop a mail to contact@streamhash.com or Skype us @ contact@streamhash.com and we will help you out!
 		                </p>
 
-		                <a href="https://www.facebook.com/StreamHash/" target="_blank"><img class="aligncenter size-full wp-image-159 help-image" src="http://default.streamhash.info/helpsocial/Facebook.png" alt="Facebook-100" width="100" height="100" /></a>
+		                <a href="https://www.facebook.com/StreamHash/" target="_blank"><img class="aligncenter size-full wp-image-159 help-image" src="http://default.streamhash.com/helpsocial/Facebook.png" alt="Facebook-100" width="100" height="100" /></a>
 		                &nbsp;
 
 		                <a href="https://twitter.com/StreamHash" target="_blank"><img class="size-full wp-image-155 alignleft help-image" src="http://default.streamhash.com/helpsocial/twitter.png " alt="Twitter" width="100" height="100" /></a>
