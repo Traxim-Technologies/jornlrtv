@@ -64,7 +64,7 @@
                    
                     <div class="active tab-pane" id="profile_name">
 
-                        <form class="form-horizontal" action="{{route('moderator.save.profile')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('moderator.save.profile')}}" method="POST" enctype="multipart/form-data" role="form">
 
                             <input type="hidden" name="id" value="{{Auth::guard('moderator')->user()->id}}">
 
@@ -104,7 +104,11 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
+                                    @if(Setting::get('admin_delete_control') == 1)
+                                        <button type="submit" class="btn btn-danger" disabled>{{tr('submit')}}</button>
+                                    @else 
+                                        <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
+                                    @endif
                                 </div>
                             </div>
 
@@ -113,7 +117,7 @@
 
                     <div class="tab-pane" id="image">
 
-                        <form class="form-horizontal" action="{{route('moderator.save.profile')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('moderator.save.profile')}}" method="POST" enctype="multipart/form-data" role="form">
 
                             <input type="hidden" name="id" value="{{Auth::guard('moderator')->user()->id}}">
 
@@ -134,7 +138,11 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
+                                    @if (Setting::get('admin_delete_control') == 1) 
+                                        <button type="submit" class="btn btn-danger" disabled>{{tr('submit')}}</button>
+                                    @else
+                                        <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
+                                    @endif
                                 </div>
                             </div>
 
@@ -143,7 +151,7 @@
 
                     <div class="tab-pane" id="password">
 
-                        <form class="form-horizontal" action="{{route('moderator.change.password')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('moderator.change.password')}}" method="POST" enctype="multipart/form-data" role="form">
 
                             <input type="hidden" name="id" value="{{Auth::guard('moderator')->user()->id}}">
 
@@ -173,7 +181,11 @@
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                  <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
+                                    @if(Setting::get('admin_delete_control') == 1) 
+                                        <button type="submit" class="btn btn-danger" disabled>{{tr('submit')}}</button>
+                                    @else 
+                                        <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
+                                    @endif
                                 </div>
                             </div>
 

@@ -31,7 +31,7 @@
                 <div class="box-header">
                 </div>
 
-                <form class="form-horizontal" action="{{route('moderator.save.edit.video')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('moderator.save.edit.video')}}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
@@ -243,9 +243,14 @@
                     <div class="box-footer">
                         <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
 
-                        <button type="submit" class="btn btn-success pull-right">{{tr('add_video')}}</button>
+                        @if(Setting::get('admin_delete_control') == 1)  
+                            <button type="submit" class="btn btn-success pull-right" disabled>{{tr('add_video')}}</button>  
+                        @else 
+                            <button type="submit" class="btn btn-success pull-right">{{tr('add_video')}}</button> 
+                        @endif
 
                         <a target="_blank" style="margin-right:50px" href="{{route('moderator.view.video' , array('id' => $video->admin_video_id))}}" class="btn btn-primary pull-right">{{tr('view_video')}}</a>
+
 
                     </div>
 

@@ -6,6 +6,7 @@
 
 @section('styles')
 
+<!--admin_delete_control-->
     <link rel="stylesheet" href="{{asset('admin-css/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">
 
     <link rel="stylesheet" href="{{asset('admin-css/plugins/iCheck/all.css')}}">
