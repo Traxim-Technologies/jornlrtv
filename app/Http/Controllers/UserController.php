@@ -128,6 +128,8 @@ class UserController extends Controller {
                 }
 
             }
+        } else {
+            return redirect('/')->with('flash_error' , tr('video_not_found'));
         }
 
         if(\Auth::check()) {

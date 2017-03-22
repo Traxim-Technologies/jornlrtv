@@ -6,6 +6,8 @@
 
     <div class="video-full-box">
 
+        @include('notification.notify')
+
         <div class="box-title">
           <h3 class="main-title">{{tr('recent_videos')}}</h3>
         </div>

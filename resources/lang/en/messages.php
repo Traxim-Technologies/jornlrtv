@@ -412,6 +412,7 @@ return array(
 	'admin_not_genre_approve' => 'Genre Approved Successfully',
 	'admin_not_genre_decline' => 'Genre Unapproved Successfully',
 	'admin_not_genre_del' =>'Genre deleted Successfully',
+	'video_not_found'=>'Video Not Found',
 
 	//Admin Videos
 	'videos' => 'Videos',

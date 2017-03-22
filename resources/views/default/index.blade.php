@@ -6,6 +6,8 @@
 
  <!-- Premium Videos -->
 
+ @include('notification.notify')
+
 @if(count($wishlists) > 3)
 
     <section id="premium">
