@@ -291,6 +291,8 @@ return array(
 	'admin_not_moderator_decline'	=>	'Moderator Unapproved Successfully',
 	'admin_not_moderator_del'	=>	'Moderator deleted Successfully',
 
+	'moderator_disable'	=>	'Your account is been disabled. Please contact administrator',
+
 
 	// Moderator Notifications
 

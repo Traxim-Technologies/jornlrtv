@@ -4,8 +4,9 @@
 
 @section('content')
 
-    <div class="login-box-body" style="height:275px">
+    <div class="login-box-body" style="height:300px">
 
+    @include('notification.notify')
 
         <form class="form-layout" role="form" method="POST" action="{{ url('/moderator/login') }}">
             {{ csrf_field() }}

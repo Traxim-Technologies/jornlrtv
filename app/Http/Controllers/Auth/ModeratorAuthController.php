@@ -110,6 +110,11 @@ class ModeratorAuthController extends Controller
 
         if(\Auth::guard('moderator')->check()) {
             if($moderator = Moderator::find(\Auth::guard('moderator')->user()->id)) {
+                // $moderator->is_activated == 0);
+                if ($moderator->is_activated == 0) {
+                    \Auth::guard('moderator')->logout();
+                    return back()->with('flash_errors', tr('moderator_disable'));
+                }
                 $moderator->timezone = $request->has('timezone') ? $request->timezone : '';
                 $moderator->save();
             }   
