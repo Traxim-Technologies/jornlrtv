@@ -23,7 +23,7 @@
             <div class="box-header">
             </div>
 
-            <form  action="{{route('editPageProcess')}}" method="POST" enctype="multipart/form-data" role="form">
+            <form  action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('editPageProcess')}}" method="POST" enctype="multipart/form-data" role="form">
 
                 <div class="box-body">
                     <input type="hidden" name="id" value="{{$pages->id}}">
@@ -44,7 +44,11 @@
 
               <div class="box-footer">
                     <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
-                    <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
+                    @if(Setting::get('admin_delete_control') == 1) 
+                        <button type="submit" class="btn btn-success pull-right" disabled>{{tr('submit')}}</button>
+                    @else
+                        <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
+                    @endif
               </div>
 
             </form>
