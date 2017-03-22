@@ -109,7 +109,7 @@ class ModeratorAuthController extends Controller
     protected function authenticated(Request $request, Moderator $moderator){
 
         if(\Auth::guard('moderator')->check()) {
-            if($moderator = Admin::find(\Auth::guard('moderator')->user()->id)) {
+            if($moderator = Moderator::find(\Auth::guard('moderator')->user()->id)) {
                 $moderator->timezone = $request->has('timezone') ? $request->timezone : '';
                 $moderator->save();
             }   
