@@ -27,7 +27,7 @@
                         
                         <div class="user-block">
 
-                            <form action="{{route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            <form action="{{(Setting::get('admin_theme_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
 
                                 <span class="username" style="margin-left:0px !important">
                                     <a href="#" @if($s== 0) style="color:#fff" @endif>
@@ -37,7 +37,11 @@
                                         <button type="submit" class="pull-right btn btn-warning full-opacity" disabled>{{tr('current_theme')}}</button>
                                     @else
                                         <input type="hidden" name="theme" value="{{$setting}}">
-                                        <button type="submit" class="pull-right btn btn-primary">{{tr('select_theme')}}</button>
+                                        @if(Setting::get('admin_theme_control') == 1)
+                                            <button type="submit" class="pull-right btn btn-primary" disabled>{{tr('select_theme')}}</button>
+                                        @else 
+                                            <button type="submit" class="pull-right btn btn-primary">{{tr('select_theme')}}</button>
+                                        @endif
                                     @endif
                                 </span>
 

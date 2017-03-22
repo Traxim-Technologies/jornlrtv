@@ -29,7 +29,7 @@
                 <div class="box-header">
                 </div>
 
-                <form class="form-horizontal" id="video-upload" action="{{route('admin.save.video')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form class="form-horizontal" id="video-upload" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.video')}}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
@@ -227,7 +227,11 @@
 
                     <div class="box-footer">
                         <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
-                        <button type="submit" class="btn btn-success pull-right">{{tr('add_video')}}</button>
+                        @if(Setting::get('admin_delete_control') == 1) 
+                            <button type="submit" class="btn btn-success pull-right" disabled>{{tr('add_video')}}</button>
+                        @else
+                            <button type="submit" class="btn btn-success pull-right">{{tr('add_video')}}</button>
+                        @endif
                     </div>
                 </form>
             

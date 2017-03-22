@@ -150,7 +150,7 @@
                             </div>
 
                             <!-- <div class="form-group">
-
+ 
                                 <label for="datepicker" class="">{{tr('publish_time')}}</label>
 
                                 <input type="text" value="{{$video->publish_time}}" name="publish_time" placeholder="Select the Publish Time i.e YYYY-MM-DD" class="form-control pull-right" id="datepicker">

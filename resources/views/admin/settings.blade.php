@@ -21,7 +21,7 @@
                     <h3 class="box-title">{{tr('site_settings')}}</h3>
                 </div>
 
-                <form action="{{route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
                         <div class="form-group">
@@ -58,7 +58,11 @@
                   <!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                    @if(Setting::get('admin_delete_control') == 1)
+                        <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                    @else
+                        <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                    @endif
                   </div>
                 </form>
 
@@ -71,7 +75,7 @@
                     <h3 class="box-title">{{tr('other_settings')}}</h3>
                 </div>
 
-                <form action="{{route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{(Setting::get('admin_delete_control') == 1) ? : '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
                     <div class="box-body">
 
                         <div class="form-group">
@@ -98,7 +102,11 @@
                   <!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                    @if(Setting::get('admin_delete_control') == 1) 
+                        <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                    @else
+                        <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                    @endif
                   </div>
                 </form>
 
