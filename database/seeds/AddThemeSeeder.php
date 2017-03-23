@@ -14,7 +14,7 @@ class AddThemeSeeder extends Seeder
         DB::table('settings')->insert([
     		[
 		        'key' => 'theme',
-		        'value' => 'default'
+		        'value' => 'streamtube'
 		    ],
 		    [
 		        'key' => 'paypal_client_id',
