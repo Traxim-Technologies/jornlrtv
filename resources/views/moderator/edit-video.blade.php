@@ -68,6 +68,7 @@
             <form id="video-upload" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('moderator.save.edit.video')}}" method="POST" enctype="multipart/form-data" role="form">
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
+                        <input type="hidden" value="1" name="ajax_key">
                         <!-- <h3>Video Details</h3> -->
                         <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span> fields are mandatory. Please fill and click next.</small></div> 
                         <hr>
@@ -326,6 +327,12 @@
                             <li class="pull-right"><button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full">Finish</button></li>
                             @else
                                 <li class="pull-right"><button id="{{REQUEST_STEP_FINAL}}" type="submit" class="btn btn-primary btn-info-full">Finish</button></li>
+                                <li class="pull-right">
+                                    <div class="progress">
+                                        <div class="bar"></div >
+                                        <div class="percent">0%</div >
+                                    </div>
+                                <li>
                             @endif
                             <div class="clearfix"></div>
                         </ul>
@@ -342,76 +349,14 @@
 
 @section('scripts')
 
-    <script type="text/javascript">
-
-        $(function () {
-
-            window.onbeforeunload = function() {
-                  return "Data will be lost if you leave the page, are you sure?";
-            };
-
-            $('#category').change(function(){
-
-                var id = $(this).val();
-                var url = "{{ url('select/sub_category')}}";
-                
-                $.post(url,{ option: id },
-                
-                    function(data) {
-
-                        $('#sub_category').empty(); 
-
-                        $('#sub_category').append("<option value=''>Select Sub category</option>");
-
-                        if(data.length != 0) {
-                            document.getElementById("sub_category").disabled=false;
-                        } else {
-                            document.getElementById("sub_category").disabled=true;
-                        }
-
-                        $.each(data, function(index, element) {
-                            $('#sub_category').append("<option value='"+ element.id +"'>" + element.name + "</option>");
-                        });
-                });
-
-            });
-
-            $('#sub_category').change(function(){
-
-                var id = $(this).val();
-                var url = "{{ url('select/genre')}}";
-                
-                $.post(url,{ option: id },
-                
-                    function(data) {
-
-                        $('#genre').empty(); 
-
-                        $('#genre').append("<option value=''>Select genre</option>");
-
-                        if(data.length != 0) {
-                            document.getElementById("genre").disabled=false;
-                        } else {
-                            document.getElementById("genre").disabled=true;
-                        }
-
-                        $.each(data, function(index, element) {
-                            $('#genre').append("<option value='"+ element.id +"'>" + element.name + "</option>");
-                        });
-                });
-
-            });
-
-        });
-    </script>
-
     <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/moment.min.js')}}"></script> 
 
     <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script> 
 
     <script src="{{asset('admin-css/plugins/iCheck/icheck.min.js')}}"></script>
 
-    
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+
     <script type="text/javascript">
         var cat_url = "{{ url('select/sub_category')}}";
         var step3 = "{{REQUEST_STEP_3}}";
@@ -453,6 +398,7 @@
                 $("#upload").hide();
             });
         });
+
     </script>  
     <script src="{{asset('assets/js/wizard.js')}}"></script>
 @endsection

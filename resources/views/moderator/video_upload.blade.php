@@ -70,6 +70,7 @@
                         <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span> fields are mandatory. Please fill and click next.</small></div> 
                         <hr>
                         <div class="">
+                            <input type="hidden" value="1" name="ajax_key">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="title" class="">{{tr('title')}} * </label>
@@ -294,6 +295,12 @@
                             <li class="pull-right"><button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full">Finish</button></li>
                             @else
                                 <li class="pull-right"><button id="{{REQUEST_STEP_FINAL}}" type="submit" class="btn btn-primary btn-info-full">Finish</button></li>
+                                 <li class="pull-right">
+                                    <div class="progress">
+                                        <div class="bar"></div >
+                                        <div class="percent">0%</div >
+                                    </div>
+                                <li>
                             @endif
                             <div class="clearfix"></div>
                         </ul>
@@ -309,6 +316,12 @@
 @endsection
 
 @section('scripts')
+
+    <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/moment.min.js')}}"></script> 
+
+    <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script> 
+
+    <script src="{{asset('admin-css/plugins/iCheck/icheck.min.js')}}"></script>
 
     <script type="text/javascript">
         var cat_url = "{{ url('select/sub_category')}}";
@@ -339,12 +352,7 @@
         });
     </script>
 
-
-    <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/moment.min.js')}}"></script> 
-
-    <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script> 
-
-    <script src="{{asset('admin-css/plugins/iCheck/icheck.min.js')}}"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
 
     <script src="{{asset('assets/js/wizard.js')}}"></script>
 @endsection

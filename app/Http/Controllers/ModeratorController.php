@@ -594,8 +594,11 @@ class ModeratorController extends Controller
 
              if($video_validator->fails()) {
                 $error_messages = implode(',', $video_validator->messages()->all());
-                return back()->with('flash_errors', $error_messages);
-
+                if ($request->has('ajax_key')) {
+                    return $error_messages;
+                } else {
+                    return back()->with('flash_errors', $error_messages);
+                }
             }
         }
 
@@ -617,8 +620,11 @@ class ModeratorController extends Controller
 
         if($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
-
+            if ($request->has('ajax_key')) {
+                return $error_messages;
+            } else {
+                return back()->with('flash_errors', $error_messages);
+            }
         } else {
 
             $video = new AdminVideo;
@@ -691,10 +697,17 @@ class ModeratorController extends Controller
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
 
-                return redirect(route('moderator.view.video', array('id', $video->id)));
-
+                if ($request->has('ajax_key')) {
+                    return ['id'=>$video->id];
+                } else {
+                    return redirect(route('moderator.view.video', array('id', $video->id)));
+                }
             } else {
-                return back()->with('flash_error', tr('admin_not_error'));
+                if ($request->has('ajax_key')) {
+                    return tr('admin_not_error');
+                } else {
+                    return back()->with('flash_error', tr('admin_not_error'));
+                }
             }
         }
     
@@ -715,24 +728,28 @@ class ModeratorController extends Controller
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 
             if (isset($request->video)) {
-                $video_validator = Validator::make( $request->all(), array(
-                        'video'     => 'required|mimes:mkv,mp4,qt',
-                        // 'trailer_video'  => 'required|mimes:mkv,mp4,qt',
-                        )
-                    );
+                if ($request->video != '') {
+                    $video_validator = Validator::make( $request->all(), array(
+                            'video'     => 'required|mimes:mkv,mp4,qt',
+                            // 'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                            )
+                        );
 
-                $video_link = $request->hasFile('video') ? $request->file('video') : array();   
+                    $video_link = $request->hasFile('video') ? $request->file('video') : array();  
+                } 
 
             }
 
             if (isset($request->trailer_video)) {
-                $video_validator = Validator::make( $request->all(), array(
-                        // 'video'     => 'required|mimes:mkv,mp4,qt',
-                        'trailer_video'  => 'required|mimes:mkv,mp4,qt',
-                        )
-                    );
+                if ($request->trailer_video != '') {
+                    $video_validator = Validator::make( $request->all(), array(
+                            // 'video'     => 'required|mimes:mkv,mp4,qt',
+                            'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                            )
+                        );
 
-                $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+                    $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+                }
             }
         
 
@@ -753,7 +770,11 @@ class ModeratorController extends Controller
 
              if($video_validator->fails()) {
                 $error_messages = implode(',', $video_validator->messages()->all());
-                return back()->with('flash_errors', $error_messages);
+                if ($request->has('ajax_key')) {
+                    return $error_messages;
+                } else {
+                    return back()->with('flash_errors', $error_messages);
+                }
 
             }
         }
@@ -776,8 +797,11 @@ class ModeratorController extends Controller
 
         if($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
-
+            if ($request->has('ajax_key')) {
+                return $error_messages;
+            }else {
+                return back()->with('flash_errors', $error_messages);
+            }
         } else {
 
             $video->title = $request->has('title') ? $request->title : $video->title;
@@ -865,10 +889,18 @@ class ModeratorController extends Controller
                 }
 
                 // dd($video->id);
-                return redirect(route('moderator.view.video', array('id'=>$video->id)));
+                if ($request->has('ajax_key')) {
+                    return ['id'=>$video->id];
+                } else {
+                    return redirect(route('moderator.view.video', array('id'=>$video->id)));
+                }
 
             } else {
-                return back()->with('flash_error', tr('admin_not_error'));
+                if ($request->has('ajax_key')) {
+                    return tr('admin_not_error');
+                } else {
+                    return back()->with('flash_error', tr('admin_not_error'));
+                }
             }
         }
     

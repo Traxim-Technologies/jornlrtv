@@ -1184,6 +1184,7 @@ class AdminController extends Controller
 
     public function add_video_process(Request $request) {
 
+
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 
             $video_validator = Validator::make( $request->all(), array(
@@ -1212,11 +1213,14 @@ class AdminController extends Controller
 
              if($video_validator->fails()) {
                 $error_messages = implode(',', $video_validator->messages()->all());
-                return back()->with('flash_errors', $error_messages);
 
+                if ($request->has('ajax_key')) {
+                    return $error_messages;
+                } else {
+                    return back()->with('flash_errors', $error_messages);
+                }
             }
         }
-
         $validator = Validator::make( $request->all(), array(
                     'title'         => 'required|max:255',
                     'description'   => 'required',
@@ -1232,10 +1236,14 @@ class AdminController extends Controller
                     'duration' => 'required',
                     )
                 );
-
         if($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
+
+            if ($request->has('ajax_key')) {
+                return $error_messages;
+            } else  {
+                return back()->with('flash_errors', $error_messages);
+            }
 
         } else {
 
@@ -1308,9 +1316,18 @@ class AdminController extends Controller
                 /*if($video->is_banner)
                     return redirect(route('admin.banner.videos'));
                 else*/
+                if ($request->has('ajax_key')) {
+                    return ['id'=>$video->id];
+                } else  {
                     return redirect(route('admin.view.video', array('id'=>$video->id)));
+                }
             } else {
-                return back()->with('flash_error', tr('admin_not_error'));
+                if($request->has('ajax_key')) {
+                    // dd(tr('admin_not_error'));
+                    return tr('admin_not_error');
+                } else { 
+                    return back()->with('flash_error', tr('admin_not_error'));
+                }
             }
         }
     
@@ -1331,24 +1348,29 @@ class AdminController extends Controller
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 
             if (isset($request->video)) {
-                $video_validator = Validator::make( $request->all(), array(
-                        'video'     => 'required|mimes:mkv,mp4,qt',
-                        // 'trailer_video'  => 'required|mimes:mkv,mp4,qt',
-                        )
-                    );
+                if ($request->video != '') {
 
-                $video_link = $request->hasFile('video') ? $request->file('video') : array();   
+                    $video_validator = Validator::make( $request->all(), array(
+                            'video'     => 'required|mimes:mkv,mp4,qt',
+                            // 'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                            )
+                        );
 
+                    $video_link = $request->hasFile('video') ? $request->file('video') : array();   
+
+                }
             }
 
             if (isset($request->trailer_video)) {
-                $video_validator = Validator::make( $request->all(), array(
-                        // 'video'     => 'required|mimes:mkv,mp4,qt',
-                        'trailer_video'  => 'required|mimes:mkv,mp4,qt',
-                        )
-                    );
+                if ($request->trailer_video != '') {
+                    $video_validator = Validator::make( $request->all(), array(
+                            // 'video'     => 'required|mimes:mkv,mp4,qt',
+                            'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                            )
+                        );
 
-                $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+                    $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+                }
             }
         
 
@@ -1369,8 +1391,11 @@ class AdminController extends Controller
 
              if($video_validator->fails()) {
                 $error_messages = implode(',', $video_validator->messages()->all());
-                return back()->with('flash_errors', $error_messages);
-
+                if ($request->has('ajax_key')) {
+                    return $error_messages;
+                } else {
+                    return back()->with('flash_errors', $error_messages);
+                }
             }
         }
 
@@ -1393,7 +1418,11 @@ class AdminController extends Controller
 
         if($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
+            if ($request->has('ajax_key')) {
+                return $error_messages;
+            } else {
+                return back()->with('flash_errors', $error_messages);
+            }
 
         } else {
 
@@ -1443,6 +1472,7 @@ class AdminController extends Controller
                     } else {
                         $video->video = $video_link;
                     }
+                    // dd($request->hasFile('trailer_video'));
                     if ($request->hasFile('trailer_video')) {
                         $video->trailer_video = Helper::video_upload($trailer_video);  
                     } else {
@@ -1495,10 +1525,18 @@ class AdminController extends Controller
                    Helper::upload_video_image($request->file('other_image2'),$video->id,3); 
                 }
 
-                return redirect(route('admin.view.video', array('id'=>$video->id)));
+                if ($request->has('ajax_key')) {
+                    return ['id'=>$video->id];
+                } else {
+                    return redirect(route('admin.view.video', array('id'=>$video->id)));
+                }
 
             } else {
-                return back()->with('flash_error', tr('admin_not_error'));
+                if ($request->has('ajax_key')) {
+                    return tr('admin_not_error');
+                } else {
+                    return back()->with('flash_error', tr('admin_not_error'));
+                }
             }
         }
     

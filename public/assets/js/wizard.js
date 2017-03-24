@@ -174,3 +174,34 @@ function saveSubCategory(sub_category_id, step) {
         }
     });
 }
+
+
+var bar = $('.bar');
+var percent = $('.percent');
+
+$('form').ajaxForm({
+    beforeSend: function() {
+        var percentVal = '0%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+    },
+    uploadProgress: function(event, position, total, percentComplete) {
+        var percentVal = percentComplete + '%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+    },
+    complete: function(xhr) {
+        bar.width("100%");
+        percent.html("100%");
+    },
+    error : function(xhr) {
+        alert(xhr);
+    },
+    success : function(xhr) {
+        if(xhr.id == '' && xhr.id == undefined) {
+            alert(xhr);
+        } else {
+            window.location.href="/admin/view/video?id="+xhr.id;
+        }
+    }
+}); 

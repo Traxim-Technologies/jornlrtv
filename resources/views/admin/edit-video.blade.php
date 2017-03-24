@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="{{asset('assets/css/wizard.css')}}">
 
     <link rel="stylesheet" href="{{asset('admin-css/plugins/iCheck/all.css')}}">
-
-
 @endsection
 
 @section('breadcrumb')
@@ -79,6 +77,7 @@
                         <hr>
                         <div class="">
                             <input type="hidden" value="{{$video->video_id}}" name="id">
+                            <input type="hidden" value="1" name="ajax_key">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="title" class="">{{tr('title')}} * </label>
@@ -331,7 +330,14 @@
                             @if(Setting::get('admin_delete_control') == 1) 
                             <li class="pull-right"><button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full">Finish</button></li>
                             @else
-                                <li class="pull-right"><button id="{{REQUEST_STEP_FINAL}}" type="submit" class="btn btn-primary btn-info-full">Finish</button></li>
+                            
+                            <li class="pull-right"><button id="{{REQUEST_STEP_FINAL}}" type="submit" class="btn btn-primary btn-info-full">Finish</button></li>
+                            <li class="pull-right">
+                                <div class="progress">
+                                    <div class="bar"></div >
+                                    <div class="percent">0%</div >
+                                </div>
+                            <li>
                             @endif
                             <div class="clearfix"></div>
                         </ul>
@@ -354,6 +360,8 @@
     <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script> 
 
     <script src="{{asset('admin-css/plugins/iCheck/icheck.min.js')}}"></script>
+    
+    <script src="http://malsup.github.com/jquery.form.js"></script>
 
     <script type="text/javascript">
 
