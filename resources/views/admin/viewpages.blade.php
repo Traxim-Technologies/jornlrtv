@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Pages')
+@section('title', tr('pages'))
 
-@section('content-header', 'Pages')
+@section('content-header', tr('pages'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Home</a></li>
-    <li class="active"><i class="fa fa-book"></i> Pages</li>
+    <li class="active"><i class="fa fa-book"></i> {{tr('pages')}}</li>
 @endsection
 
 @section('content')
@@ -15,10 +15,14 @@
 
     <div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box box-primary">
+            <div class="box-header label-primary">
+                <b style="font-size:18px;">{{tr('pages')}}</b>
+                <a href="{{route('addPage')}}" class="btn btn-default pull-right">{{tr('add_page')}}</a>
+            </div>
             <div class="box-body">
 
-                @if(count($view_pages) > 0)
+                @if(count($data) > 0)
 
                     <table id="example1" class="table table-bordered table-striped">
 
@@ -33,13 +37,13 @@
                         </thead>
 
                         <tbody>
-                            @foreach($view_pages as $i => $page)
+                            @foreach($data as $i => $value)
                     
                                 <tr>
                                     <td>{{$i+1}}</td>
-                                    <td>{{$page->heading}}</td>
-                                    <td>{{$page->description}}</td>
-                                    <td>{{$page->type}}</td>
+                                    <td>{{$value->heading}}</td>
+                                    <td>{{$value->description}}</td>
+                                    <td>{{$value->type}}</td>
                                     <td>
                                         <ul class="admin-action btn btn-default">
                                             <li class="dropdown">
@@ -51,7 +55,7 @@
                                                 <ul class="dropdown-menu">
                                                    
                                                     <li role="presentation">
-                                                        <a role="menuitem" tabindex="-1" href="{{route('editPage', array('id' => $page->id))}}">
+                                                        <a role="menuitem" tabindex="-1" href="{{route('editPage', array('id' => $value->id))}}">
                                                             {{tr('edit_page')}}
                                                         </a>
                                                     </li>
@@ -63,7 +67,7 @@
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('deletePage',array('id' => $page->id))}}">
+                                                            <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('deletePage',array('id' => $value->id))}}">
                                                                 {{tr('delete_page')}}
                                                             </a>
                                                         @endif

@@ -33,12 +33,18 @@
     		<div class="box box-widget widget-user-2">
 
             	<div class="widget-user-header bg-gray">
-              		<div class="widget-user-image">
-                		<img class="img-circle" src="@if($moderator->picture) {{$moderator->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" alt="User Avatar">
-              		</div>
+            		<div class="pull-left">
+	              		<div class="widget-user-image">
+	                		<img class="img-circle" src="@if($moderator->picture) {{$moderator->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" alt="User Avatar">
+	              		</div>
 
-              		<h3 class="widget-user-username">{{$moderator->name}} </h3>
-      				<h5 class="widget-user-desc">{{tr('moderator')}}</h5>
+	              		<h3 class="widget-user-username">{{$moderator->name}} </h3>
+	      				<h5 class="widget-user-desc">{{tr('moderator')}}</h5>
+	      			</div>
+	      			<div class='pull-right'>
+	      			<a href="{{route('admin.edit.moderator',$moderator->id)}}" class="btn btn-sm btn-warning">{{tr('edit')}}</a>
+	      			</div>
+	      			<div class="clearfix"></div>
             	</div>
 
             	<div class="box-footer no-padding">

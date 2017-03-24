@@ -5,11 +5,11 @@
     <div class="y-content">
         <div class="row content-row">
 
-            @include('notification.notify')
-
             @include('layouts.user.nav')
 
             <div class="page-inner col-sm-9 col-md-10">
+
+                @include('notification.notify')
 
                 @if(count($wishlists) > 0)
 

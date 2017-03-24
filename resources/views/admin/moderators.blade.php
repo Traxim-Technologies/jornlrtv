@@ -15,7 +15,11 @@
 
 	<div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box box-primary">
+          	<div class="box-header label-primary">
+                <b style="font-size:18px;">{{tr('moderators')}}</b>
+                <a href="{{route('admin.add.moderator')}}" class="btn btn-default pull-right">{{tr('add_moderator')}}</a>
+            </div>
             <div class="box-body">
 
             	@if(count($moderators) > 0)

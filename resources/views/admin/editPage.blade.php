@@ -18,9 +18,11 @@
 
     <div class="col-md-10">
 
-        <div class="box box-info">
+        <div class="box box-primary">
 
-            <div class="box-header">
+            <div class="box-header label-primary">
+                <b style="font-size:18px;">{{tr('pages')}}</b>
+                <a href="{{route('addPage')}}" class="btn btn-default pull-right">{{tr('add_page')}}</a>
             </div>
 
             <form  action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('editPageProcess')}}" method="POST" enctype="multipart/form-data" role="form">

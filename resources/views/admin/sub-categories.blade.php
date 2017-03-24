@@ -20,7 +20,11 @@
 
 	<div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box box-primary">
+          	<div class="box-header label-primary">
+                <b style="font-size:18px;">{{tr('sub_categories')}}</b>
+                <a href="{{route('admin.add.sub_category' , array('category' => $category->id))}}" class="btn btn-default pull-right">{{tr('add_sub_category')}}</a>
+            </div>
             <div class="box-body">
 
             	@if(count($data) > 0)

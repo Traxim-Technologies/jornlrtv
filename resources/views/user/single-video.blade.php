@@ -43,14 +43,17 @@ textarea[name=comments] {
                                     <div class="details">
                                         <div class="video-title">
                                             <div class="title row">
-                                                <h3>{{$video->title}}</h3>
-
+                                                <div style="width: 55%;">
+                                                    <h3>{{$video->title}}</h3>
+                                                </div>
                                                 <div class="watch-duration">
 
-                                                    <form method="post" name="watch_main_video">     
+                                                    <form method="post" name="watch_main_video">  
+                                                        
                                                         @if(Auth::check())
 
-                                                            @if(Auth::user()->user_type ==  1)                             
+															<div class="pull-left">
+                                                            @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)                             
                                                             
                                                                 <button type="submit" id="watch_main_video_button" class="watch-button">{{tr('watch_main_video')}}</button>
 
@@ -65,6 +68,8 @@ textarea[name=comments] {
                                                                     <button  type="button" class="watch-button" disabled>{{tr('watch_main_video')}}</button>
                                                                 @endif
 
+
+
                                                                 <div class="modal fade cus-mod" id="paypal" role="dialog">
                                                                     <div class="modal-dialog">
                                                                     
@@ -78,7 +83,11 @@ textarea[name=comments] {
 
                                                                             <div class="modal-body">
                                                                                 <!-- <p>Please Pay to see the full video</p>  -->
-                                                                                <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
+                                                                                @if($video->amount > 0)
+                                                                                    <a href="{{route('videoPaypal' , $video->admin_video_id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
+                                                                                @else 
+                                                                                    <a href="{{route('paypal' , $video->user_id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
+                                                                                @endif
                                                                             </div>
 
                                                                             
@@ -89,7 +98,16 @@ textarea[name=comments] {
                                                                 </div>
 
                                                             @endif
-                                                    
+                                                        </div>
+                                                        <div class="pull-right">
+                                                            @if($flaggedVideo == '')
+                                                                <button onclick="showReportForm();" type="button" class="watch-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                            @else 
+                                                                <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
+                                                            @endif
+
+                                                        </div>
+                                                        <div class="clearfix"></div>
                                                         @else
 
                                                             <button type="button" class="watch-button" data-toggle="modal" data-target="#watchMainVideo">{{tr('watch_main_video')}}</button>
@@ -130,6 +148,24 @@ textarea[name=comments] {
                                         </div><!--end of video-title-->                                                             
                                     </div><!--end of details-->
 
+                                    @if ($flaggedVideo == '')
+                                        <div class="more-content" style="display: none;" id="report_video_form">
+                                            <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
+                                                <b>Report this Video ?</b>
+                                                <br>
+                                                @foreach($report_video as $report) 
+                                                    <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
+                                                @endforeach
+                                                <input type="hidden" name="video_id" value="{{$video->admin_video_id}}" />
+                                                <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                                <div class="pull-right">
+                                                    <button class="btn btn-success btn-sm">Mark as Spam</button>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </form>
+                                        </div>
+                                    @endif
+
                                     <div class="more-content">
                                         
                                         <div class="share-details row">
@@ -145,26 +181,27 @@ textarea[name=comments] {
 
                                                         <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
 
+                                                        @if($flaggedVideo == '')
                                                         <div class="mylist">
                                                             <button style="background-color:rgb(229, 45, 39);" type="submit" id="added_wishlist" data-toggle="tooltip" title="Add to My List">
                                                                 <i class="fa fa-heart"></i>
                                                                 <span>{{tr('added_wishlist')}}</span>
                                                             </button> 
                                                         </div>
-
+                                                        @endif
                                                     @else
 
                                                         <input type="hidden" id="status" value="1" name="status">
 
                                                         <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
-
-                                                        <div class="mylist">
-                                                            <button type="submit" id="added_wishlist" data-toggle="tooltip" title="Add to My List">
-                                                                <i class="fa fa-heart"></i>
-                                                                <span>{{tr('add_to_wishlist')}}</span>
-                                                            </button> 
-                                                        </div>
-                                                        
+                                                        @if($flaggedVideo == '')
+                                                            <div class="mylist">
+                                                                <button type="submit" id="added_wishlist" data-toggle="tooltip" title="Add to My List">
+                                                                    <i class="fa fa-heart"></i>
+                                                                    <span>{{tr('add_to_wishlist')}}</span>
+                                                                </button> 
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 
                                                 @else
@@ -344,6 +381,14 @@ textarea[name=comments] {
         $(document).ready(function(){
             $('.video-y-menu').addClass('hidden');
         }); 
+        function showReportForm() {
+            var divId = document.getElementById('report_video_form').style.display;
+            if (divId == 'none') {
+                $('#report_video_form').show(500);
+            } else {
+                $('#report_video_form').hide(500);
+            }
+        }
     </script>
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
@@ -374,7 +419,7 @@ textarea[name=comments] {
                 @if($trailer_video)
 
                     if(isOpera || isSafari) {
-
+alert("sdd");
                         jQuery('#trailer_video_setup_error').show();
                         jQuery('#main_video_setup_error').hide();
                         confirm('The video format is not supported in this browser. Please open with some other browser.');
@@ -393,6 +438,7 @@ textarea[name=comments] {
 
                         playerInstance.on('setupError', function() {
 
+alert("dd");
                             jQuery("#trailer-video-player").css("display", "none");
 
                             jQuery('#main_video_setup_error').hide();
@@ -644,6 +690,7 @@ textarea[name=comments] {
             });
 
         });
+
     </script>
 
 @endsection

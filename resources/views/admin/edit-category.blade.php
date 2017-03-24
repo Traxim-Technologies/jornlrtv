@@ -18,9 +18,11 @@
 
         <div class="col-md-10">
 
-            <div class="box box-info">
+            <div class="box box-primary">
 
-                <div class="box-header">
+                <div class="box-header label-primary">
+                    <b style="font-size:18px;">{{tr('edit_category')}}</b>
+                    <a href="{{route('admin.add.category')}}" class="btn btn-default pull-right">{{tr('add_category')}}</a>
                 </div>
 
                 <form class="form-horizontal" action="{{route('admin.save.category')}}" method="POST" enctype="multipart/form-data" role="form">

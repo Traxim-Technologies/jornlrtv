@@ -6,7 +6,8 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active"><i class="fa fa-book"></i> {{tr('pages')}}</li>
+    <li><a href="{{route('viewPages')}}"><i class="fa fa-book"></i>{{tr('pages')}}</a></li>
+    <li class="active"><i class="fa fa-book"></i> {{tr('add_page')}}</li>
 @endsection
 
 @section('content')
@@ -17,10 +18,12 @@
 
 	    <div class="col-md-10">
 
-	        <div class="box box-info">
+	        <div class="box box-primary">
 
-	            <div class="box-header">
-	            </div>
+	            <div class="box-header label-primary">
+                    <b style="font-size:18px;">{{tr('add_page')}}</b>
+                    <a href="{{route('viewPages')}}" class="btn btn-default pull-right">{{tr('pages')}}</a>
+                </div>
 
 	            <form  action="{{route('adminPagesProcess')}}" method="POST" enctype="multipart/form-data" role="form">
 

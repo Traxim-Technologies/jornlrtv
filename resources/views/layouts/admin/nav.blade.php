@@ -52,7 +52,7 @@
 
             <li class="treeview" id="categories">
                 <a href="{{route('admin.categories')}}">
-                    <i class="fa fa-suitcase"></i> <span>{{tr('categories')}}</span>
+                    <i class="fa fa-suitcase"></i> <span>{{tr('categories')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
@@ -64,7 +64,7 @@
 
             <li class="treeview" id="videos">
                 <a href="{{route('admin.videos')}}">
-                    <i class="fa fa-video-camera"></i> <span>{{tr('videos')}}</span>
+                    <i class="fa fa-video-camera"></i> <span>{{tr('videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
@@ -76,7 +76,7 @@
 
             <li class="treeview" id="banner-videos">
                 <a href="{{route('admin.banner.videos')}}">
-                    <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span>
+                    <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
@@ -88,11 +88,21 @@
 
             </li>
 
-            <li id="user-payments">
+            
+            <li id="payments">
                 <a href="{{route('admin.user.payments')}}">
-                    <i class="fa fa-credit-card"></i> <span>{{tr('user_payments')}}</span>
+                    <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li id="user-payments"><a href="{{route('admin.user.payments')}}">
+                        <i class="fa fa-credit-card"></i> <span>{{tr('user_payments')}}</span>
+                    </a></li>
+                    <li id="video-subscription"><a href="{{route('admin.user.video-payments')}}">
+                        <i class="fa fa-credit-card"></i> <span>{{tr('video_payments')}}</span>
+                    </a></li>
+                </ul>
             </li>
+
 
             <li id="settings">
                 <a href="{{route('admin.settings')}}">
@@ -118,9 +128,9 @@
                 </a>
             </li>
 
-            <li class="treeview" id="pages">
+            <li class="treeview" id="pages_id">
                 <a href="{{route('viewPages')}}">
-                    <i class="fa fa-book"></i> <span>{{tr('pages')}}</span>
+                    <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li id="add_page"><a href="{{route('addPage')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
@@ -131,6 +141,12 @@
             <li id="profile">
                 <a href="{{route('admin.profile')}}">
                     <i class="fa fa-diamond"></i> <span>{{tr('account')}}</span>
+                </a>
+            </li>
+
+            <li id="spam_videos">
+                <a href="{{route('admin.spam-videos')}}">
+                    <i class="fa fa-flag"></i> <span>{{tr('spam_videos')}}</span>
                 </a>
             </li>
 

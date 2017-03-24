@@ -89,7 +89,7 @@
 
                         <div class="media-object-section object-second" style="display:block;width:100%;">
                             <div class="author-des clearfix">
-                                <div class="post-title">
+                                <div class="post-title" style="width:57%">
                                     <h4>{{$video->title}}</h4>
                                     <p>
                                         <span>
@@ -112,49 +112,59 @@
                                     </p>
                                 </div><!--post-title end-->
 
-                                <div class="subscribe">
+                                <div class="subscribe" style="width:43%">
 
                                     <form method="post" name="watch_main_video">
 
-                                        @if(Auth::check())
+                                        
+                                            @if(Auth::check())
+											<div class="pull-left">
+                                                @if(Auth::user()->user_type == 1)
+                                                    
+                                                    <button id="watch_main_video_button" style="background:#e96969;color:#fff" type="submit" name="subscribe">{{tr('watch_main_video')}}</button>
 
-                                            @if(Auth::user()->user_type == 1)
-                                                
-                                                <button id="watch_main_video_button" style="background:#e96969;color:#fff" type="submit" name="subscribe">{{tr('watch_main_video')}}</button>
-
-                                            @else
-
-                                                @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
-
-                                                    <button style="background:#e96969;color:#fff" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
                                                 @else
-                                                    <button style="background:#e96969;color:#fff" type="button" class="btn btn-info btn-lg" disabled>{{tr('watch_main_video')}}</button>
+
+                                                    @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
+
+                                                        <button style="background:#e96969;color:#fff" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
+                                                    @else
+                                                        <button style="background:#e96969;color:#fff" type="button" class="btn btn-info btn-lg" disabled>{{tr('watch_main_video')}}</button>
+                                                    @endif
+
+                                                    <div class="modal fade" id="paypal" role="dialog">
+                                                        <div class="modal-dialog">
+                                                        
+                                                          <!-- Modal content-->
+                                                          <div class="modal-content log-popup">
+
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    <h4 class="modal-title">Please Pay to Watch the Full Video</h4>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-info">{{tr('paynow')}}</a>
+                                                                </div>
+
+                                                                
+                                                          </div>
+                                                          
+                                                        </div>
+                                                    
+                                                    </div>
+
+                                                @endif
+                                            </div>
+                                             <div class="pull-right">
+                                                @if($flaggedVideo == '')
+                                                    <button onclick="showReportForm();" type="button" style="background:#e96969;color:#fff" id="mark-as-spam"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                @else 
+                                                    <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning" style="padding: 8px 12px;"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
                                                 @endif
 
-                                                <div class="modal fade" id="paypal" role="dialog">
-                                                    <div class="modal-dialog">
-                                                    
-                                                      <!-- Modal content-->
-                                                      <div class="modal-content log-popup">
-
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                <h4 class="modal-title">Please Pay to Watch the Full Video</h4>
-                                                            </div>
-
-                                                            <div class="modal-body">
-                                                                <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-info">{{tr('paynow')}}</a>
-                                                            </div>
-
-                                                            
-                                                      </div>
-                                                      
-                                                    </div>
-                                                
-                                                </div>
-
-                                            @endif
-                                        
+                                            </div>
+                                            <div class="clearfix"></div>
                                         @else
 
                                             <button style="background:#e96969;color:#fff" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#watchMainVideo">{{tr('watch_main_video')}}</button>
@@ -251,6 +261,25 @@
 
                                 </div><!--post-like-btn end-->
                             </div>
+
+                             @if ($flaggedVideo == '')
+                                <div class="more-content" style="display: none;" id="report_video_form">
+                                    <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
+                                        <b>Report this Video ?</b>
+                                        <br>
+                                        @foreach($report_video as $report) 
+                                            <input style="display:inline-block" type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
+                                        @endforeach
+                                        <input type="hidden" name="video_id" value="{{$video->admin_video_id}}" />
+                                        <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                        <div class="pull-right">
+                                            <button class="btn btn-success btn-sm">Mark as Spam</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+                            @endif
+
 
                             <!--social-share end-->
 
@@ -629,6 +658,15 @@
     <script>jwplayer.key="{{env('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
+
+        function showReportForm() {
+            var divId = document.getElementById('report_video_form').style.display;
+            if (divId == 'none') {
+                jQuery('#report_video_form').show(500);
+            } else {
+                jQuery('#report_video_form').hide(500);
+            }
+        }
         
         jQuery(document).ready(function(){
 

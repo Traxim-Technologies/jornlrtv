@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active">{{tr('custom_push')}}</li>
+    <li class="active"><i class="fa fa-send"></i> {{tr('custom_push')}}</li>
 @endsection
 
 @section('content')

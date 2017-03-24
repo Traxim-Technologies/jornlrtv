@@ -290,19 +290,6 @@ use  Carbon\Carbon;
                                 <img style="width:60px;height:60px" src="@if($user->picture) {{$user->picture}} @else {{asset('placeholder.png')}} @endif" alt="User Image">
                                 <a class="users-list-name" href="{{route('admin.view.user' , $user->id)}}" target="_blank">{{$user->name}}</a>
                                 <span class="users-list-date">
-
-                              <?php
-
-                                      // create a $dt object with the UTC timezone
-                                      $dt = new DateTime($user->created_at, new DateTimeZone('UTC'));
-
-                                      // change the timezone of the object without changing it's time
-                                      $dt->setTimezone(new DateTimeZone('Asia/Kolkata'));
-
-                                      // format the datetime
-                                      echo $dt->format('Y-m-d H:i:s');
-
-                              ?>
                                 {{$user->created_at->diffForHumans()}}</span>
                             </li>
 

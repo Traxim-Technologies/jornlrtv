@@ -10,7 +10,9 @@
               </button>
               	<ul class="dropdown-menu dropdown-menu-right">
 					<li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
-					<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>     
+					<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>   
+					<li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>  
+					<li><a href="{{route('user.pay-per-videos')}}">{{tr('pay_per_videos')}}</a></li>  
 
 					<li role="separator" class="divider"></li>
 

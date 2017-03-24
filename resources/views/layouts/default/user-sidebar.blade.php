@@ -60,10 +60,26 @@
                                 </a>
                             </li>
 
+                             <li class="clearfix">
+                                <a id="user-spam-videos" href="{{route('user.spam-videos')}}">
+                                    <i class="fa fa-flag"></i>{{tr('spam_videos')}}
+                                    <span class="float-right">
+                                        {{getFlagVideosCnt(Auth::user()->id)}}
+                                    </span>
+                                </a>
+                            </li>
+
                             <li class="clearfix">
                                 <a href="{{route('user.comments')}}" id="user-comments">
                                     <i class="fa fa-comments-o"></i>{{tr('comments')}}
                                     <span class="float-right">{{get_user_comment_count(Auth::user()->id)}}</span>
+                                </a>
+                            </li>
+
+                            <li class="clearfix">
+                                <a id="pay_per_videos" href="{{route('user.pay-per-videos')}}">
+                                    <i class="fa fa-video-camera"></i>{{tr('pay_per_videos')}}
+                                    <span class="float-right">${{user_total_amount()}}</span>
                                 </a>
                             </li>
 

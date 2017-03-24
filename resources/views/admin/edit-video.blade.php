@@ -15,7 +15,11 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
+    @if($video->is_banner) 
+        <li><a href="{{route('admin.banner.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
+    @else
+        <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
+    @endif
     <li class="active"> {{tr('edit_video')}}</li>
 @endsection 
 
@@ -27,9 +31,15 @@
 
         <div class="col-md-12">
 
-            <div class="box box-info">
+            <div class="box box-primary">
 
-                <div class="box-header">
+                <div class="box-header label-primary">
+                    <b style="font-size:18px;">{{tr('edit_video')}}</b>
+                    @if($video->is_banner) 
+                        <a href="{{route('admin.add.banner.video')}}" class="btn btn-default pull-right">{{tr('add_banner_videos')}}</a>
+                    @else
+                        <a href="{{route('admin.add.video')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
+                    @endif
                 </div>
 
                 <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.edit.video')}}" method="POST" enctype="multipart/form-data" role="form">

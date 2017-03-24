@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', tr('user_payments'))
+@section('title', tr('video_payments'))
 
-@section('content-header',tr('user_payments'))
+@section('content-header',tr('video_payments') . ' ( $ ' . total_video_revenue() . ' ) ' ) 
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active"><i class="fa fa-credit-card"></i> {{tr('user_payments')}}</li>
+    <li class="active"><i class="fa fa-credit-card	"></i> {{tr('video_payments')}}</li>
 @endsection
 
 @section('content')
@@ -17,7 +17,6 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-body">
-
             	@if(count($data) > 0)
 
 	              	<table id="example1" class="table table-bordered table-striped">
@@ -38,7 +37,7 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->user->name}} </a></td>
+							      	<td><a href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->userVideos->name}} </a></td>
 							      	<td>{{$payment->payment_id}}</td>
 							      	<td>$ {{$payment->amount}}</td>
 							      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>

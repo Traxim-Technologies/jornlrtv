@@ -23,9 +23,11 @@
 
         <div class="col-md-8">
 
-            <div class="box box-info">
+            <div class="box box-primary">
 
-                <div class="box-header">
+                <div class="box-header label-primary">
+                    <b style="font-size:18px;">{{tr('sub_categories')}}</b>
+                    <a href="{{route('admin.add.sub_category' , array('category' => $category->id))}}" class="btn btn-default pull-right">{{tr('add_sub_category')}}</a>
                 </div>
 
                 <form class="form-horizontal" action="{{route('admin.save.sub_category')}}" method="POST" enctype="multipart/form-data" role="form">

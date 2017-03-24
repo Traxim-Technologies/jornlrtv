@@ -18,9 +18,11 @@
 
         <div class="col-md-10">
 
-            <div class="box box-info">
+            <div class="box box-primary">
 
-                <div class="box-header">
+                <div class="box-header label-primary">
+                    <b style="font-size:18px;">{{tr('add_moderator')}}</b>
+                    <a href="{{route('admin.moderators')}}" class="btn btn-default pull-right">{{tr('moderators')}}</a>
                 </div>
 
                 <form class="form-horizontal" action="{{route('admin.save.moderator')}}" method="POST" enctype="multipart/form-data" role="form">

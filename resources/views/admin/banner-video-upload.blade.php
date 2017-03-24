@@ -24,9 +24,11 @@
 
         <div class="col-md-12">
 
-            <div class="box box-info">
+            <div class="box box-primary">
 
-                <div class="box-header">
+                <div class="box-header label-primary">
+                    <b style="font-size:18px;">{{tr('add_banner_videos')}}</b>
+                    <a href="{{route('admin.banner.videos')}}" class="btn btn-default pull-right">{{tr('videos')}}</a>
                 </div>
 
                 <form class="form-horizontal" id="video-upload" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.video')}}" method="POST" enctype="multipart/form-data" role="form">

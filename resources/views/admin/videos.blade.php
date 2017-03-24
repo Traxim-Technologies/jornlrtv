@@ -16,7 +16,13 @@
 
 	<div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box box-primary">
+
+          	<div class="box-header label-primary">
+                <b style="font-size:18px;">{{tr('videos')}}</b>
+                <a href="{{route('admin.add.video')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
+            </div>
+
             <div class="box-body">
 
             	@if(count($videos) > 0)
@@ -84,6 +90,8 @@
                                                     </li>
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_id))}}">{{tr('view')}}</a></li>
 
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#{{$video->video_id}}">{{tr('pay_per_view')}}</a></li>
+
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@if($video->is_approved)
@@ -112,6 +120,63 @@
             							</ul>
 								    </td>
 							    </tr>
+
+								<!-- Modal -->
+								<div id="{{$video->video_id}}" class="modal fade" role="dialog">
+								  <div class="modal-dialog">
+								  <form action="{{route('admin.save.video-payment', $video->video_id)}}" method="POST">
+									    <!-- Modal content-->
+									   	<div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal">&times;</button>
+									        <h4 class="modal-title">Pay Per View</h4>
+									      </div>
+									      <div class="modal-body">
+									        <div class="row">
+									        	<div class="col-lg-3">
+									        		<label>{{tr('type_of_user')}}</label>
+									        	</div>
+								                <div class="col-lg-9">
+								                  <div class="input-group">
+								                        <input type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('normal_user')}}</label>
+								                        <input type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('paid_user')}}</label> 
+								                        <input type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('both_user')}}</label> 
+								                  </div>
+								                  <!-- /input-group -->
+								                </div>
+								            </div>
+								            <br>
+								            <div class="row">
+									        	<div class="col-lg-3">
+									        		<label>{{tr('type_of_subscription')}}</label>
+									        	</div>
+								                <div class="col-lg-9">
+								                  <div class="input-group">
+								                        <input type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('one_time_payment')}}</label>
+								                        <input type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('recurring_payment')}}</label> 
+								                  </div>
+								                  <!-- /input-group -->
+								                </div>
+								            </div>
+								            <br>
+								            <div class="row">
+									        	<div class="col-lg-3">
+									        		<label>{{tr('amount')}}</label>
+									        	</div>
+								                <div class="col-lg-9">
+								                       <input type="text" required value="{{$video->amount}}" name="amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+								                  <!-- /input-group -->
+								                </div>
+								            </div>
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									        <button type="submit" class="btn btn-primary">Submit</button>
+									      </div>
+									    </div>
+									</form>
+								  </div>
+								</div>
 							@endforeach
 						</tbody>
 					</table>
@@ -122,5 +187,6 @@
           </div>
         </div>
     </div>
+
 
 @endsection

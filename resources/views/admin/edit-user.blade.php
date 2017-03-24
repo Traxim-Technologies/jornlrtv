@@ -18,15 +18,16 @@
 
         <div class="col-md-10">
 
-            <div class="box box-info">
+            <div class="box box-primary">
 
-                <div class="box-header">
+                <div class="box-header label-primary">
+                    <b style="font-size:18px;">{{tr('edit_user')}}</b>
+                    <a href="{{route('admin.add.user')}}" class="btn btn-default pull-right">{{tr('add_user')}}</a>
                 </div>
 
                 <form class="form-horizontal" action="{{route('admin.save.user')}}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
-
                         <input type="hidden" name="id" value="{{$user->id}}">
 
                         <div class="form-group">
@@ -69,6 +70,7 @@
 
 @endsection
 
+@section('scripts')
 
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
 <script>

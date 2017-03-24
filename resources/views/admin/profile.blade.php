@@ -108,6 +108,7 @@
                                         <button type="submit" class="btn btn-danger" disabled>{{tr('submit')}}</button>
                                     @else
                                         <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
+                                    @endif
                                 </div>
                             </div>
 
