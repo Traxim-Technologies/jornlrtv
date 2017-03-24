@@ -550,12 +550,18 @@ class ModeratorController extends Controller
                              'genres.name as genre_name')
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->first();
+        $subcategories = [];
+
+        if($video->category_id) {
+            $subcategories = get_sub_categories($video->category_id);
+        }
 
          return view('moderator.edit-video')
                 ->with('categories' , $categories)
                 ->with('video' ,$video)
                 ->with('page' ,'videos')
-                ->with('sub_page' ,'add-video');
+                ->with('sub_page' ,'add-video')
+                ->with('subCategories',$subcategories);
     }
 
     public function add_video_process(Request $request) {

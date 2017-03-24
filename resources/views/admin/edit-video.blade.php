@@ -13,8 +13,6 @@
 
     <link rel="stylesheet" href="{{asset('admin-css/plugins/iCheck/all.css')}}">
 
-    <link rel="stylesheet" href="{{asset('assets/css/wizard.css')}}">
-
 
 @endsection
 
@@ -227,7 +225,9 @@
                                 </div>
                             @endif
                             <div class="clearfix"></div>
-
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                               <small style="color:brown">Note : Check the view video for video images.</small>
+                            </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="default_image" class="">{{tr('default_image')}} *</label>
