@@ -40,6 +40,8 @@ use App\Page;
 
 use App\Helpers\Helper;
 
+use App\Helpers\EnvEditorHelper;
+
 use App\Flag;
 
 use Validator;
@@ -59,6 +61,7 @@ use Redirect;
 use Setting;
 
 use Log;
+
 
 use App\Jobs\NormalPushNotification;
 
@@ -1794,8 +1797,8 @@ class AdminController extends Controller
 
     public function settings() {
         $settings = array();
-
-        return view('admin.settings')->with('settings' , $settings)->withPage('settings')->with('sub_page',''); 
+        $result = EnvEditorHelper::getEnvValues();
+        return view('admin.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
     }
 
     public function payment_settings() {
@@ -2087,5 +2090,29 @@ class AdminController extends Controller
         } catch(Exception $e) {
             return back()->with('flash_error', $e);
         }
+    }
+
+    /**
+     * Function Name : save_common_settings
+     * Save the values in env file
+     *
+     * @param object $request Post Attribute values
+     * 
+     * @return settings values
+     */
+    public function save_common_settings(Request $request) {
+
+        foreach ($request->all() as $key => $data) {
+
+            if($request->has($key)) {
+                \Enveditor::set($key,$data);
+            }
+        }
+
+        \Artisan::call('config:cache');
+
+        $result = EnvEditorHelper::getEnvValues();
+
+        return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 }

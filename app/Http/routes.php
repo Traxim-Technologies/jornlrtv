@@ -245,6 +245,8 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('settings' , 'AdminController@settings')->name('admin.settings');
 
+    Route::post('save_common_settings' , 'AdminController@save_common_settings')->name('admin.save.common-settings');
+
     Route::get('payment/settings' , 'AdminController@payment_settings')->name('admin.payment.settings');
 
     Route::get('theme/settings' , 'AdminController@theme_settings')->name('admin.theme.settings');

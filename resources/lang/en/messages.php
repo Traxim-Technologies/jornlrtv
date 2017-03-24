@@ -33,6 +33,30 @@ return array(
 	'normal_user'=>'Normal Users',
 	'paid_user'=>'Paid Users',
 	'both_user'=>'Both Users',
+	'common_settings'=>'Common Settings',
+
+	'S3_KEY'=>'S3 Key',
+	'S3_SECRET'=>'S3 Secret Key',
+	'S3_REGION'=>'S3 Region',
+	'S3_BUCKET'=>'S3 Bucket',
+	'S3_SES_REGION'=>'S3 Ses Region',
+
+	'FB_CLIENT_ID'=>'FB Client Id',
+	'FB_CLIENT_SECRET'=>'FB Client Secret',
+	'FB_CALL_BACK'=>'FB CallBack',
+
+	'TWITTER_CLIENT_ID'=>'Twitter Client Id',
+	'TWITTER_CLIENT_SECRET'=>'Twitter Client Secret',
+	'TWITTER_CALL_BACK'=>'Twitter CallBack',
+
+	'GOOGLE_CLIENT_ID'=>'Google Client Id',
+	'GOOGLE_CLIENT_SECRET'=>'Google Client Secret',
+	'GOOGLE_CALL_BACK'=>'Google CallBack',
+
+	'PAYPAL_ID'=>'Paypal Id',
+	'PAYPAL_SECRET'=>'Paypal Secret',
+	'PAYPAL_MODE'=>'Paypal Mode',
+
 	// Global Variables
 
 	'admin' => 'Admin',
@@ -582,6 +606,8 @@ return array(
 	'today_videos' => 'Today Videos',
 
 	'email_settings_success' => 'Email Configuration Updated successfully',
+
+	'common_settings_success' => 'Common Configuration Updated successfully',
 
 	'MAIL_DRIVER' => 'MAIL DRIVER',
 	'MAIL_HOST' => 'MAIL HOST',
