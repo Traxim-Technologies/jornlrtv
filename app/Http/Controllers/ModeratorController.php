@@ -685,7 +685,7 @@ class ModeratorController extends Controller
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
 
-                return redirect(route('moderator.videos'));
+                return redirect(route('moderator.view.video', array('id', $video->id)));
 
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
@@ -858,7 +858,8 @@ class ModeratorController extends Controller
                    Helper::upload_video_image($request->file('other_image2'),$video->id,3); 
                 }
 
-                return redirect(route('moderator.videos'));
+                // dd($video->id);
+                return redirect(route('moderator.view.video', array('id'=>$video->id)));
 
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
@@ -868,7 +869,6 @@ class ModeratorController extends Controller
     }
 
     public function view_video(Request $request) {
-
         $validator = Validator::make($request->all() , [
                 'id' => 'required|exists:admin_videos,id'
             ]);

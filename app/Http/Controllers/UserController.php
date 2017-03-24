@@ -18,9 +18,17 @@ use App\Category;
 
 use App\Page;
 
+use App\Flag;
+
+use Auth;
+
 use Validator;
 
 use Setting;
+
+use Exception;
+
+use App\PayPerView;
 
 define('WEB' , 1);
 
@@ -107,6 +115,12 @@ class UserController extends Controller {
 
         $trailer_video = $main_video = "";
 
+        $report_video = getReportVideoTypes();
+
+        // Load the user flag
+
+        $flaggedVideo = (Auth::check()) ? Flag::where('video_id',$id)->where('user_id', Auth::user()->id)->first() : '';
+
         if($video) {
 
             $trailer_video = $video->trailer_video;
@@ -152,7 +166,9 @@ class UserController extends Controller {
                     ->with('trailer_video' , $trailer_video)
                     ->with('main_video' , $main_video)
                     ->with('url' , $main_video)
-                    ->with('categories' , $categories);
+                    ->with('categories' , $categories)
+                    ->with('report_video', $report_video)
+                    ->with('flaggedVideo', $flaggedVideo);
     }
 
     /**
@@ -541,5 +557,105 @@ class UserController extends Controller {
 
         return back()->with('flash_error', Helper::get_error_message(146));
 
+    }
+
+    /**
+     * Function Name : save_report_videos
+     * Save report videos based on user based
+     *
+     * @param object $request - Post Attributes
+     *
+     * @return flash message
+     */
+    public function save_report_video(Request $request) {
+        try {
+            // Validate the coming post values
+            $validator = Validator::make($request->all(), [
+                'video_id' => 'required',
+                'reason' => 'required',
+            ]);
+            // If validator Fails, redirect same with error values
+            if ($validator->fails()) {
+                throw new Exception("error", tr('admin_published_video_failure'));
+            }
+            // Assign Post request values into Data variable
+            $data = $request->all();
+            // include user_id index into the data varaible  "Auth::user()->id" -> Logged In user id
+            $data['user_id'] = \Auth::user()->id;
+            // Save the values in DB
+            if ($report_video = Flag::create($data)) {
+                return redirect('/')->with('flash_success', tr('report_video_success_msg'));
+            } else {
+                throw new Exception("error", tr('admin_published_video_failure'));
+            }
+        } catch (Exception $e) {
+            return back()->with('flash_error', $e);
+        }
+    }
+
+    /**
+     * Function Name : remove_report_video()
+     * Remove the video from spam folder and make it as unspam
+     *
+     * @param integer $id Flag id
+     *
+     * @return flash error/flash success
+     */
+    public function remove_report_video($id) {
+        try {
+            // Load Spam Video from flag section
+            $model = Flag::where('id', $id);
+            // If the flag model exists then delete the row
+            if ($model) {
+                if ($model->delete()) {
+                    return back()->with('flash_success', tr('unmark_report_video_success_msg'));
+                } else {
+                    throw new Exception("error", tr('admin_published_video_failure'));
+                }
+            } else {
+                throw new Exception("error", tr('admin_published_video_failure'));
+            }
+        } catch (Exception $e) {
+            return back()->with('flash_error', $e);
+        }
+    }
+
+    /**
+     * Function Name : spam_videos()
+     * Based on logged in user load spam videos
+     *
+     * @return spam videos
+     */
+    public function spam_videos() {
+        // Get logged in user id
+        $id = Auth::user()->id;
+        $model = Flag::where('user_id', $id)
+            ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
+            ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+            ->where('admin_videos.is_approved' , 1)
+            ->where('admin_videos.status' , 1)
+            ->paginate(16);
+        // Return array of values
+        return view('user.spam_videos')->with('model' , $model)
+                        ->with('page' , 'Profile')
+                        ->with('subPage' , 'Spam Videos');
+    }   
+
+    /**
+     * Function Name: payper_videos()
+     * To load all the paper views
+     *
+     * @return view page
+     */
+    public function payper_videos() {
+        // Get Logged in user id
+        $id = Auth::user()->id;
+        // Load all the paper view videos based on logged in user id
+        $model = PayPerView::where('user_id', $id)->where('status', 1)->paginate(16);
+        // Return the view page
+        return view('user.payperview')->with('model' , $model)
+                        ->with('page' , 'Profile')
+                        ->with('subPage' , 'Payper Videos');
     }
 }

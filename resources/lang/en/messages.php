@@ -22,6 +22,17 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 
+	'report'=>'Mark as Spam',
+	'spam_videos' => 'Spam Videos',
+	'user_count'=>'User Count',
+	'user_reports'=>'User Reports',
+	'reason'=>'Reason',
+	'pay_per_view'=>'Pay Per View',
+	'pay_per_videos'=>'Pay Per Videos',
+	'type_of_user'=> 'User Type',
+	'normal_user'=>'Normal Users',
+	'paid_user'=>'Paid Users',
+	'both_user'=>'Both Users',
 	// Global Variables
 
 	'admin' => 'Admin',
@@ -106,6 +117,10 @@ return array(
 	'pending'	=>	'pending',
 	'unapproved'	=>	'Unapproved',
 	'added'	=> 	'Added',
+	'type_of_subscription'=>'Subscription Type',
+	'one_time_payment'=> 'One Time Payment',
+	'recurring_payment'=> 'Recurring Payment',
+	'payment_added'=> 'Payment Added Successfully',
 
 	// Form Elements
 
@@ -351,6 +366,8 @@ return array(
 	'no_user_found' => 'No users found',
 	'no_history_found' => 'No History Found',
 	'no_wishlist_found' => 'No Wishlist Found',
+	'no_spam_found' => 'No Spam Videos Found',
+	'no_payper_found' => 'No Videos Found',
 	'delete_history' => 'Delete History',
 
 	'delete_wishlist' => 'Delete Wishlist',
@@ -454,6 +471,9 @@ return array(
 
 	'admin_published_video_success'	=>	'Video Published Successfully',
 	'admin_published_video_failure'	=>	'Oops! Something went wrong. Try again later',
+	'report_video_success_msg'=> 'Successfully, Marked the video as spam',
+	'remove_report'=>'Mark as Unspam',
+	'unmark_report_video_success_msg'=> 'Successfully, Removed the video from spam',
 
 	'slider_success' => 'The video is added as slider video',
 	'no_video_found' => 'No videos found....!',
@@ -535,7 +555,9 @@ return array(
 	'payment_content' => 'Please Pay to see the full video',
 	'google_analytics' => 'Google Analytics',
 	'expiry_date' => 'Expiry Date',
-	'user_payments' => 'User Payments',
+	'payments'=> 'Payments',
+	'user_payments' => 'User SubScription',
+	'video_payments' => 'Video SubScription',
 
 	// Admin Pages
 

@@ -11,6 +11,26 @@
 |
 */
 
+// Report Video type
+
+if(!defined('REPORT_VIDEO_KEY')) define('REPORT_VIDEO_KEY', 'REPORT_VIDEO');
+
+// User Type
+if(!defined('NORMAL_USER')) define('NORMAL_USER', 1);
+if(!defined('PAID_USER')) define('PAID_USER', 2);
+if(!defined('BOTH_USERS')) define('BOTH_USERS', 3);
+
+// Subscription Type
+if(!defined('ONE_TIME_PAYMENT')) define('ONE_TIME_PAYMENT', 1);
+if(!defined('RECURRING_PAYMENT')) define('RECURRING_PAYMENT', 2);
+
+// REQUEST STATE
+
+if(!defined('REQUEST_STEP_1')) define('REQUEST_STEP_1', 1);
+if(!defined('REQUEST_STEP_2')) define('REQUEST_STEP_2', 2);
+if(!defined('REQUEST_STEP_3')) define('REQUEST_STEP_3', 3);
+if(!defined('REQUEST_STEP_FINAL')) define('REQUEST_STEP_FINAL', 4);
+
 Route::get('/test' , 'ApplicationController@test');
 
 // Installation
@@ -115,6 +135,11 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('/delete/wishlist/{id}', 'AdminController@delete_wishlist')->name('admin.delete.wishlist');
 
+    // Spam Videos
+    Route::get('/spam-videos', 'AdminController@spam_videos')->name('admin.spam-videos');
+
+    Route::get('/view-users/{id}', 'AdminController@view_users')->name('admin.view-users');
+
     // Moderators
 
     Route::get('/moderators', 'AdminController@moderators')->name('admin.moderators');
@@ -189,6 +214,8 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::post('/add/video', 'AdminController@add_video_process')->name('admin.save.video');
 
+    Route::post('/save_video_payment/{id}', 'AdminController@save_video_payment')->name('admin.save.video-payment');
+
     Route::get('/delete/video/{id}', 'AdminController@delete_video')->name('admin.delete.video');
 
     Route::get('/video/approve/{id}', 'AdminController@approve_video')->name('admin.video.approve');
@@ -211,6 +238,8 @@ Route::group(['prefix' => 'admin'], function(){
     
     // User Payment details
     Route::get('user/payments' , 'AdminController@user_payments')->name('admin.user.payments');
+
+    Route::get('user/video-payments' , 'AdminController@video_payments')->name('admin.user.video-payments');
 
     // Settings
 
@@ -323,6 +352,16 @@ Route::group([], function(){
 
     Route::post('addHistory', 'UserController@add_history')->name('user.add.history');
 
+    // Report Spam Video
+
+    Route::post('markSpamVideo', 'UserController@save_report_video')->name('user.add.spam_video');
+
+    Route::get('unMarkSpamVideo/{id}', 'UserController@remove_report_video')->name('user.remove.report_video');
+
+    Route::get('spamVideos', 'UserController@spam_videos')->name('user.spam-videos');
+
+    Route::get('pay-per-videos', 'UserController@payper_videos')->name('user.pay-per-videos');
+
     // Wishlist
 
     Route::post('addWishlist', 'UserController@add_wishlist')->name('user.add.wishlist');
@@ -341,6 +380,10 @@ Route::group([], function(){
     Route::get('/paypal/{id}','PaypalController@pay')->name('paypal');
 
     Route::get('/user/payment/status','PaypalController@getPaymentStatus')->name('paypalstatus');
+
+    Route::get('/videoPaypal/{id}','PaypalController@videoSubscriptionPay')->name('videoPaypal');
+
+    Route::get('/user/payment/video-status','PaypalController@getVideoPaymentStatus')->name('videoPaypalstatus');
 
     Route::get('/trending', 'UserController@trending')->name('user.trending');
 

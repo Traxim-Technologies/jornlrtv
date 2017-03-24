@@ -49,10 +49,13 @@ class ApplicationController extends Controller {
         
         $id = $request->option;
 
-        $subcategories = Subcategory::where('category_id', '=', $id)
-                        ->where('is_approved' , 1)
-                          ->orderBy('name', 'asc')
-                          ->get();
+        $subcategories = SubCategory::where('category_id', '=', $id)
+                            ->leftJoin('sub_category_images' , 'sub_categories.id' , '=' , 'sub_category_images.sub_category_id')
+                            ->select('sub_category_images.picture' , 'sub_categories.*')
+                            ->where('sub_category_images.position' , 1)
+                            ->where('is_approved' , 1)
+                            ->orderBy('name', 'asc')
+                            ->get();
 
         return response()->json($subcategories);
     

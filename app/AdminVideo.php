@@ -26,8 +26,33 @@ class AdminVideo extends Model
         return $this->hasMany('App\Wishlist');
     }
 
+
     public function category() {
         return $this->belongsTo('App\Category');
+    }
+
+    public function subCategory() {
+        return $this->belongsTo('App\SubCategory');
+    }
+
+    public function genreName() {
+        return $this->belongsTo('App\Genre');
+    }
+
+    /**
+     * Get the flag record associated with the video.
+     */
+    public function userFlags()
+    {
+        return $this->hasMany('App\Flag', 'video_id', 'id');
+    }
+
+    /**
+     * Get the pay per view record associated with the video.
+     */
+    public function userVideoSubscription()
+    {
+        return $this->hasMany('App\PayPerView', 'video_id', 'id');
     }
 
     public static function boot()

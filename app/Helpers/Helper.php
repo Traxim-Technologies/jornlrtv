@@ -26,6 +26,8 @@
 
     use App\UserPayment;
 
+    use Auth;
+
     use AWS;
 
     use App\Requests;
@@ -439,6 +441,15 @@
                                 'admin_videos.category_id','categories.name as category_name',
                                 'admin_videos.title','admin_videos.description','default_image')
                             ->orderby('admin_videos.created_at' , 'desc');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
+
+                if($flagVideos) {
+                    $videos_query->whereNotIn('admin_videos.id',$flagVideos);
+                }
+            }
+
             if($web) {
                 $videos = $videos_query->paginate(16);
 
@@ -466,6 +477,12 @@
                                     DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time') , 'categories.name as category_name')
                             ->orderby('wishlists.created_at' , 'desc');
 
+            // Check any flagged videos are present
+            $flagVideos = getFlagVideos($user_id);
+            if($flagVideos) {
+                $videos_query->whereNotIn('admin_video_id', $flagVideos);
+            }
+
             if($web) {
                 $videos = $videos_query->paginate(16);
 
@@ -490,6 +507,12 @@
                                 'default_image','admin_videos.watch_count','admin_videos.ratings',
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'), 'admin_videos.category_id','categories.name as category_name')
                             ->orderby('user_histories.created_at' , 'desc');
+            // Check any flagged videos are present
+            $flagVideos = getFlagVideos($user_id);
+
+            if($flagVideos) {
+                $videos_query->whereNotIn('admin_videos.id', $flagVideos);
+            }
 
             if($web) {
                 $videos = $videos_query->paginate(16);
@@ -537,6 +560,15 @@
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                                 )
                             ->orderByRaw('RAND()');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
+
+                if($flagVideos) {
+                    $videos_query->whereNotIn('admin_videos.id',$flagVideos);
+                }
+            }
+
             if ($id) {
                 $videos_query->where('admin_videos.id', '!=', $id);
             }
@@ -571,6 +603,15 @@
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                                 )
                             ->orderby('watch_count' , 'desc');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
+
+                if($flagVideos) {
+                    $videos_query->whereNotIn('admin_videos.id', $flagVideos);
+                }
+            }
+
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
@@ -602,6 +643,14 @@
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                                 )
                         ->orderby('admin_videos.sub_category_id' , 'asc');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
+
+                if($flagVideos) {
+                    $videos_query->whereNotIn('admin_videos.id', $flagVideos);
+                }
+            }
 
             if($web) {
                 $videos = $videos_query->paginate(16);
@@ -634,7 +683,15 @@
                             DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                             )
                         ->orderby('admin_videos.sub_category_id' , 'asc');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
 
+                if($flagVideos) {
+                    $videos_query->whereNotIn('admin_videos.id', $flagVideos);
+                }
+            }
+            
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
@@ -688,6 +745,9 @@
                              'admin_videos.video','admin_videos.trailer_video',
                              'admin_videos.default_image','admin_videos.watch_count',
                              'admin_videos.video_type','admin_videos.video_upload_type',
+                             'admin_videos.amount',
+                             'admin_videos.type_of_user',
+                             'admin_videos.type_of_subscription',
                              'admin_videos.ratings','admin_videos.reviews',
                             'admin_videos.duration',
                             DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'),

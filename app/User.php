@@ -44,6 +44,22 @@ class User extends Authenticatable
         return $this->hasMany('App\UserPayment');
     }
 
+    /**
+     * Get the flag record associated with the user.
+     */
+    public function userFlag()
+    {
+        return $this->hasMany('App\Flag', 'user_id', 'id');
+    }
+
+    /**
+     * Get the pay per view record associated with the user.
+     */
+    public function userVideoSubscription()
+    {
+        return $this->hasMany('App\PayPerView', 'user_id', 'id');
+    }
+
     public static function boot()
     {
         //execute the parent's boot method 

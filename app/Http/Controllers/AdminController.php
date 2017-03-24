@@ -12,6 +12,8 @@ use App\User;
 
 use App\UserPayment;
 
+use App\PayPerView;
+
 use App\Admin;
 
 use App\Category;
@@ -38,6 +40,8 @@ use App\Page;
 
 use App\Helpers\Helper;
 
+use App\Flag;
+
 use Validator;
 
 use Hash;
@@ -47,6 +51,8 @@ use Mail;
 use DB;
 
 use Auth;
+
+use Exception;
 
 use Redirect;
 
@@ -308,7 +314,7 @@ class AdminController extends Controller
 
             if($user) {
                 register_mobile('web');
-                return back()->with('flash_success', $message);
+                return redirect('/admin/view/user/'.$user->id)->with('flash_success', $message);
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
             }
@@ -593,7 +599,7 @@ class AdminController extends Controller
             $user->save();
 
             if($user) {
-                return back()->with('flash_success', $message);
+                return redirect('/admin/view/moderator/'.$user->id)->with('flash_success', $message);
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
             }
@@ -1083,7 +1089,9 @@ class AdminController extends Controller
                              'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
                              'admin_videos.default_image',
                              'admin_videos.banner_image',
-
+                             'admin_videos.amount',
+                             'admin_videos.type_of_user',
+                             'admin_videos.type_of_subscription',
                              'admin_videos.category_id as category_id',
                              'admin_videos.sub_category_id',
                              'admin_videos.genre_id',
@@ -1284,10 +1292,10 @@ class AdminController extends Controller
                 Helper::upload_video_image($request->file('other_image1'),$video->id,2);
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
-                if($video->is_banner)
+                /*if($video->is_banner)
                     return redirect(route('admin.banner.videos'));
-                else
-                    return redirect(route('admin.videos'));
+                else*/
+                    return redirect(route('admin.view.video', array('id'=>$video->id)));
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
             }
@@ -1444,7 +1452,7 @@ class AdminController extends Controller
                    Helper::upload_video_image($request->file('other_image2'),$video->id,3); 
                 }
 
-                return redirect(route('admin.videos'));
+                return redirect(route('admin.view.video', array('id'=>$video->id)));
 
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
@@ -1473,7 +1481,9 @@ class AdminController extends Controller
                              'admin_videos.video','admin_videos.trailer_video',
                              'admin_videos.default_image','admin_videos.banner_image','admin_videos.is_banner','admin_videos.video_type',
                              'admin_videos.video_upload_type',
-
+                             'admin_videos.amount',
+                             'admin_videos.type_of_user',
+                             'admin_videos.type_of_subscription',
                              'admin_videos.category_id as category_id',
                              'admin_videos.sub_category_id',
                              'admin_videos.genre_id',
@@ -1669,7 +1679,7 @@ class AdminController extends Controller
     public function user_payments() {
         $payments = UserPayment::orderBy('created_at' , 'desc')->get();
 
-        return view('admin.user-payments')->with('data' , $payments)->withPage('user-payments')->with('sub_page',''); 
+        return view('admin.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','user-payments'); 
     }
 
     public function email_settings() {
@@ -1813,13 +1823,13 @@ class AdminController extends Controller
 
         $all_pages = Page::all();
 
-        return view('admin.viewpages')->with('page',"view_pages")->with('sub_page',"view_pages")->with('view_pages',$all_pages);
+        return view('admin.viewpages')->with('page','pages_id')->with('sub_page',"view_pages")->with('data',$all_pages);
     }
 
     public function add_page() {
 
         $pages = Page::all();
-        return view('admin.add-page')->with('page' , 'pages')->with('sub_page',"add_page")->with('view_pages',$pages);
+        return view('admin.add-page')->with('page','pages_id')->with('sub_page',"add_page")->with('view_pages',$pages);
     }
 
     public function editPage($id) {
@@ -1920,6 +1930,79 @@ class AdminController extends Controller
             Helper::send_notification($id,$title,$message);
 
             return back()->with('flash_success' , tr('push_send_success'));
+        }
+    }
+
+    /**
+     * Function Name : spam_videos()
+     * Load all the videos from flag table
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos() {
+        // Load all the videos from flag table
+        $model = Flag::groupBy('video_id')->get();
+        // Return array of values
+        return view('admin.spam_videos')->with('model' , $model)
+                        ->with('page' , 'Spam Videos')
+                        ->with('subPage' , '');
+    }
+
+    /**
+     * Function Name : view_users()
+     * Load all the flags based on the video id
+     *
+     * @param integer $id Video id
+     *
+     * @return all the spam videos
+     */
+    public function view_users($id) {
+        // Load all the users
+        $model = Flag::where('video_id', $id)->get();
+        // Return array of values
+        return view('admin.user_report')->with('model' , $model)
+                        ->with('page' , 'Spam Videos')
+                        ->with('subPage' , 'User Reports');   
+    }
+
+    /**
+     * Function Name : video_payments()
+     * To get payments based on the video subscription
+     *
+     * @return array of payments
+     */
+    public function video_payments() {
+        $payments = PayPerView::orderBy('created_at' , 'desc')->get();
+
+        return view('admin.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
+    }
+
+    /**
+     * Function Name : save_video_payment
+     * Brief : To save the payment details
+     *
+     * @param integer $id Video Id
+     * @param object  $request Object (Post Attributes)
+     *
+     * @return flash message
+     */
+    public function save_video_payment($id, Request $request){
+        try {
+            // Load Video Model
+            $model = AdminVideo::find($id);
+            // Get post attribute values and save the values
+            if ($model) {
+                if ($data = $request->all()) {
+                    // Update the post
+                    if (DB::table('admin_videos')->where('id', $id)->update($data)) {
+                        // Redirect into particular value
+                        return back()->with('flash_success', tr('payment_added'));       
+                    } 
+                }
+            }
+            throw new Exception('error', tr('admin_published_video_failure'));
+        } catch(Exception $e) {
+            return back()->with('flash_error', $e);
         }
     }
 }

@@ -32,6 +32,10 @@ use App\UserPayment;
 
 use App\Settings;
 
+use App\Flag;
+
+use App\PayPerView;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -74,6 +78,7 @@ function get_categories() {
                         ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
                             'categories.is_series' ,'categories.status' , 'categories.is_approved')
                         ->leftJoin('admin_videos' , 'categories.id' , '=' , 'admin_videos.category_id')
+                        // ->leftJoin('flags' , 'flags.video_id' , '=' , 'admin_videos.id')
                         ->where('admin_videos.status' , 1)
                         ->where('admin_videos.is_approved' , 1)
                         ->groupBy('admin_videos.category_id')
@@ -286,7 +291,7 @@ function category_video_count($category_id)
 function sub_category_videos($sub_category_id) 
 {
 
-    $videos = AdminVideo::where('admin_videos.is_approved' , 1)
+    $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
                 ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                 ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                 ->where('admin_videos.sub_category_id' , $sub_category_id)
@@ -304,8 +309,17 @@ function sub_category_videos($sub_category_id)
                     'admin_videos.duration',
                     DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                     )
-                ->orderby('admin_videos.sub_category_id' , 'asc')
-                ->get();
+                ->orderby('admin_videos.sub_category_id' , 'asc');
+    if (Auth::check()) {
+        // Check any flagged videos are present
+        $flagVideos = getFlagVideos(Auth::user()->id);
+
+        if($flagVideos) {
+            $videos_query->whereNotIn('admin_videos.id', $flagVideos);
+        }
+    }
+
+    $videos = $videos_query->get();
 
     if(!$videos) {
         $videos = array();
@@ -652,6 +666,14 @@ function all_videos($web = NULL , $skip = 0)
                     DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
                     )
                 ->orderby('admin_videos.created_at' , 'desc');
+    if (Auth::check()) {
+        // Check any flagged videos are present
+        $flagVideos = getFlagVideos(Auth::user()->id);
+
+        if($flagVideos) {
+            $videos_query->whereNotIn('admin_videos.id',$flagVideos);
+        }
+    }
 
     if($web) {
         $videos = $videos_query->paginate(20);
@@ -735,4 +757,119 @@ function convertTimeToUTCzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
     $new_str->setTimeZone(new DateTimeZone('UTC'));
 
     return $new_str->format( $format);
+}
+
+/**
+ * Function Name : getReportVideoTypes()
+ * Load all report video types in settings table
+ *
+ * @return array of values
+ */ 
+function getReportVideoTypes() {
+    // Load Report Video values
+    $model = Settings::where('key', REPORT_VIDEO_KEY)->get();
+    // Return array of values
+    return $model;
+}
+
+/**
+ * Function Name : getFlagVideos()
+ * To load the videos based on the user
+ *
+ * @param int $id User Id
+ *
+ * @return array of values
+ */
+function getFlagVideos($id) {
+    // Load Flag videos based on logged in user id
+    $model = Flag::where('user_id', $id)
+        ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
+        ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+        ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+        ->where('admin_videos.is_approved' , 1)
+        ->where('admin_videos.status' , 1)
+        ->pluck('video_id')->toArray();
+    // Return array of id's
+    return $model;
+}
+
+/**
+ * Function Name : getFlagVideosCnt()
+ * To load the videos cnt based on the user 
+ *
+ * @param int $id User Id
+ *
+ * @return cnt
+ */
+function getFlagVideosCnt($id) {
+    // Load Flag videos based on logged in user id
+    $model = Flag::where('user_id', $id)
+        ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
+        ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+        ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+        ->where('admin_videos.is_approved' , 1)
+        ->where('admin_videos.status' , 1)
+        ->count();
+    // Return array of id's
+    return $model;
+}
+
+
+/**
+ * Function Name : watchFullVideo()
+ * To check whether the user has to pay the amount or not
+ * 
+ * @param integer $user_id User id
+ * @param integer $user_type User Type
+ * @param integer $video_id Video Id
+ * 
+ * @return true or not
+ */
+function watchFullVideo($user_id, $user_type, $video) {
+    if ($user_type == 1) {
+        if ($video->amount == 0) {
+            return true;
+        }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
+            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                // Load Payment view
+                $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->where('status', 1)->first();
+                if ($paymentView) {
+                    return true;
+                }
+            }
+        } else if($video->amount > 0 && $video->type_of_user == NORMAL_USER){
+            return true;
+        }
+    } else {
+        if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
+            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                // Load Payment view
+                $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->where('status', 1)->first();
+                if ($paymentView) {
+                    return true;
+                }
+            }
+        } 
+    }
+    return false;
+}
+
+/**
+ * Function Name : total_video_revenue
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function total_video_revenue() {
+    return PayPerView::where('status', 1)->sum('amount');
+}
+
+/**
+ * Function Name : user_total_amount
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function user_total_amount() {
+    return PayPerView::where('user_id', Auth::user()->id)->where('status', 1)->sum('amount');
 }
