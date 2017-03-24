@@ -205,3 +205,15 @@ $('form').ajaxForm({
         }
     }
 }); 
+
+function loadFile(event, id){
+    // alert(event.files[0]);
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById(id);
+      // alert(output);
+      output.src = reader.result;
+       //$("#imagePreview").css("background-image", "url("+this.result+")");
+    };
+    reader.readAsDataURL(event.files[0]);
+}

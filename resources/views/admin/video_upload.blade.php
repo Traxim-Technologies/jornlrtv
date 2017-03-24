@@ -196,14 +196,22 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="default_image" class="">{{tr('default_image')}} *</label>
-                                    <input type="file" required id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}">
+                                    <input type="file" id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}" style="display:none" onchange="loadFile(this,'default_img')" required>
+                                    <div>
+                                        <img src="{{asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
+                                        onclick="$('#default_image').click();return false;" id="default_img"/>
+                                    </div>
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="other_image1" class="">{{tr('other_image1')}} * </label>
-                                    <input type="file" required id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}">
+                                    <input type="file" id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}" style="display:none" onchange="loadFile(this,'other_img1')" required>
+                                    <div>
+                                        <img src="{{asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
+                                        onclick="$('#other_image1').click();return false;" id="other_img1"/>
+                                    </div>
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
@@ -211,7 +219,11 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="other_image2" class="">{{tr('other_image2')}} *</label>
-                                    <input type="file" required id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}">
+                                    <input type="file" id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}" style="display:none" onchange="loadFile(this,'other_img2')" required>
+                                    <div>
+                                        <img src="{{asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
+                                        onclick="$('#other_image2').click();return false;" id="other_img2"/>
+                                    </div>
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
