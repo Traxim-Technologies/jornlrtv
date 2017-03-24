@@ -324,6 +324,29 @@
         var step3 = "{{REQUEST_STEP_3}}";
         var sub_cat_url = "{{ url('select/genre')}}";
 
+        $('#datepicker').datetimepicker({
+            minTime: "00:00:00",
+            minDate: moment(),
+        });
+        $('#upload').show();
+        $('#others').hide();
+
+        $("#video_upload").click(function(){
+            console.log("video upload");
+            $("#upload").show();
+            $("#others").hide();
+        });
+
+        $("#youtube").click(function(){
+            $("#others").show();
+            $("#upload").hide();
+        });
+
+        $("#other_link").click(function(){
+            $("#others").show();
+            $("#upload").hide();
+        });
+
     </script>
 
 

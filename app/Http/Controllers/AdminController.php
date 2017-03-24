@@ -1157,6 +1157,12 @@ class AdminController extends Controller
         $page = 'videos';
         $sub_page = 'add-video';
 
+        $subcategories = [];
+
+        if($video->category_id) {
+            $subcategories = get_sub_categories($video->category_id);
+        }
+
         if($video->is_banner == 1) {
             $page = 'banner-videos';
             $sub_page = 'banner-videos';
@@ -1166,7 +1172,7 @@ class AdminController extends Controller
                 ->with('categories' , $categories)
                 ->with('video' ,$video)
                 ->with('page' ,$page)
-                ->with('sub_page' ,$sub_page);
+                ->with('sub_page' ,$sub_page)->with('subCategories',$subcategories);
     }
 
     public function add_video_process(Request $request) {
