@@ -35,6 +35,32 @@ function prevTab(elem) {
 }
 
 
+    
+$(function () {
+$('#datepicker').datetimepicker({
+    minTime: "00:00:00",
+    minDate: moment(),
+});
+$('#upload').show();
+$('#others').hide();
+
+$("#video_upload").click(function(){
+    console.log("video upload");
+    $("#upload").show();
+    $("#others").hide();
+});
+
+$("#youtube").click(function(){
+    $("#others").show();
+    $("#upload").hide();
+});
+
+$("#other_link").click(function(){
+    $("#others").show();
+    $("#upload").hide();
+});
+});
+
 
 /**
  * Function Name : saveVideoDetails()
@@ -133,7 +159,7 @@ function displaySubCategory(category_id,step) {
             $("#"+step).click();
         },
         error : function(data) {
-            BootstrapDialog.alert("Oops Something went wrong. Kindly contact your administrator.");
+            alert("Oops Something went wrong. Kindly contact your administrator.");
         }
     });
 }
@@ -149,5 +175,29 @@ function displaySubCategory(category_id,step) {
  */
 function saveSubCategory(sub_category_id, step) {
     var subCategoryId = $("#sub_category_id").val(sub_category_id);
-    $("#"+step).click();  
+    $("#"+step).click();   
+    // console.log(sub_cat_url);
+    $.ajax ({
+        type : 'post',
+        url : sub_cat_url,
+        data : {option: sub_category_id},
+        success : function(data) {
+            $('#genre').empty(); 
+
+            $('#genre').append("<option value=''>Select genre</option>");
+
+            if(data.length != 0) {
+                document.getElementById("genre").disabled=false;
+            } else {
+                document.getElementById("genre").disabled=true;
+            }
+
+            $.each(data, function(index, element) {
+                $('#genre').append("<option value='"+ element.id +"'>" + element.name + "</option>");
+            });
+        },
+        error : function(data) {
+            alert("Oops Something went wrong. Kindly contact your administrator.");
+        }
+    });
 }

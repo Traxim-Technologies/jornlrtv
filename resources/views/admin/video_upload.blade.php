@@ -15,6 +15,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+    <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
     <li class="active"><i class="fa fa-video-camera"></i> {{tr('add_video')}}</li>
 @endsection 
 
@@ -182,14 +183,25 @@
                         <div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="default_image" class="">{{tr('default_image')}}</label>
+
+                                    <label for="genre" class="">{{tr('select_genre')}}</label>
+
+                                    <select id="genre" name="genre_id" class="form-control" disabled>
+                                        <option value="">{{tr('select_genre')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="default_image" class="">{{tr('default_image')}} *</label>
                                     <input type="file" required id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}">
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="other_image1" class="">{{tr('other_image1')}}</label>
+                                    <label for="other_image1" class="">{{tr('other_image1')}} * </label>
                                     <input type="file" required id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}">
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
@@ -197,14 +209,14 @@
                         
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="other_image2" class="">{{tr('other_image2')}}</label>
+                                    <label for="other_image2" class="">{{tr('other_image2')}} *</label>
                                     <input type="file" required id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}">
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="video_type" class="">{{tr('video_type')}}</label></br>
+                                    <label for="video_type" class="">{{tr('video_type')}} *</label></br>
                                     <label style="margin-top:10px" id="video_upload">
                                         <input required type="radio" name="video_type" value="1" class="flat-red" checked>
                                         {{tr('video_upload_link')}}
@@ -280,7 +292,11 @@
                         <ul class="list-inline">
                             <li><button type="button" class="btn btn-danger prev-step">Previous</button></li>
                             <!-- <li><button type="button" class="btn btn-default next-step">Skip</button></li> -->
-                            <li class="pull-right"><button  id="{{REQUEST_STEP_FINAL}}" type="submit" class="btn btn-primary btn-info-full">Finish</button></li>
+                            @if(Setting::get('admin_delete_control') == 1) 
+                            <li class="pull-right"><button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full">Finish</button></li>
+                            @else
+                                <li class="pull-right"><button id="{{REQUEST_STEP_FINAL}}" type="submit" class="btn btn-primary btn-info-full">Finish</button></li>
+                            @endif
                             <div class="clearfix"></div>
                         </ul>
                     </div>
@@ -300,44 +316,8 @@
 
         var cat_url = "{{ url('select/sub_category')}}";
         var step3 = "{{REQUEST_STEP_3}}";
+        var sub_cat_url = "{{ url('select/genre')}}";
 
-        $(function () {
-
-            $('form').submit(function () {
-                window.onbeforeunload = null;
-            });
-
-            window.onbeforeunload = function() {
-                  return "Data will be lost if you leave the page, are you sure?";
-            };
-
-            $('#sub_category').change(function(){
-
-                var id = $(this).val();
-                var url = "{{ url('select/genre')}}";
-                
-                $.post(url,{ option: id },
-                
-                    function(data) {
-
-                        $('#genre').empty(); 
-
-                        $('#genre').append("<option value=''>Select genre</option>");
-
-                        if(data.length != 0) {
-                            document.getElementById("genre").disabled=false;
-                        } else {
-                            document.getElementById("genre").disabled=true;
-                        }
-
-                        $.each(data, function(index, element) {
-                            $('#genre').append("<option value='"+ element.id +"'>" + element.name + "</option>");
-                        });
-                });
-
-            });
-
-        });
     </script>
 
 
@@ -348,45 +328,7 @@
     <script src="{{asset('admin-css/plugins/iCheck/icheck.min.js')}}"></script>
 
     <script src="{{asset('assets/js/wizard.js')}}"></script>
-
-    <script type="text/javascript">
-    
-        $(function () {
-            //Date picker
-            // $('#datepicker').datepicker({
-            //     autoclose: true
-            // });
-
-            $('#datepicker').datetimepicker({
-                minTime: "00:00:00",
-                minDate: moment(),
-            });
-
-            // $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-            //     checkboxClass: 'icheckbox_flat-green',
-            //     radioClass: 'iradio_flat-green'
-            // });
-
-            $('#upload').show();
-            $('#others').hide();
-
-            $("#video_upload").click(function(){
-                console.log("video upload");
-                $("#upload").show();
-                $("#others").hide();
-            });
-
-            $("#youtube").click(function(){
-                $("#others").show();
-                $("#upload").hide();
-            });
-
-            $("#other_link").click(function(){
-                $("#others").show();
-                $("#upload").hide();
-            });
-        });
-    </script>   
+ 
 @endsection
 
 
