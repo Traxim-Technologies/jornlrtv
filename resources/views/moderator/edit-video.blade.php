@@ -72,7 +72,7 @@
                         <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span> fields are mandatory. Please fill and click next.</small></div> 
                         <hr>
                         <div class="">
-                            <input type="hidden" value="{{$video->video_id}}" name="id">
+                            <input type="hidden" value="{{$video->admin_video_id}}" name="id">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="title" class="">{{tr('title')}} * </label>
