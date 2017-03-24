@@ -47,7 +47,7 @@
 
                     <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->sub_category_name}}</p>
 
-                    @if($video->video_type != 1) 
+                    @if($video->video_type != 1)
                         <div class="large-12">
                             <iframe width="580" height="315" src="{{$video->video}}" allowfullscreen></iframe>
                         </div>

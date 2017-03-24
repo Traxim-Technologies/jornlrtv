@@ -1131,7 +1131,14 @@ class AdminController extends Controller
 
     public function edit_video(Request $request) {
 
-        $categories = Category::orderBy('name' , 'asc')->get();
+        $categories =  $categories = Category::where('categories.is_approved' , 1)
+                        ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
+                            'categories.is_series' ,'categories.status' , 'categories.is_approved')
+                        ->leftJoin('sub_categories' , 'categories.id' , '=' , 'sub_categories.category_id')
+                        ->groupBy('sub_categories.category_id')
+                        ->havingRaw("COUNT(sub_categories.id) > 0")
+                        ->orderBy('categories.name' , 'asc')
+                        ->get();
 
         $video = AdminVideo::where('admin_videos.id' , $request->id)
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
@@ -1315,17 +1322,35 @@ class AdminController extends Controller
 
         $video_validator = array();
 
+        $video_link = $video->video;
+
+        $trailer_video = $video->trailer_video;
+
+        // dd($request->all());
+
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 
-            $video_validator = Validator::make( $request->all(), array(
+            if (isset($request->video)) {
+                $video_validator = Validator::make( $request->all(), array(
                         'video'     => 'required|mimes:mkv,mp4,qt',
+                        // 'trailer_video'  => 'required|mimes:mkv,mp4,qt',
+                        )
+                    );
+
+                $video_link = $request->hasFile('video') ? $request->file('video') : array();   
+
+            }
+
+            if (isset($request->trailer_video)) {
+                $video_validator = Validator::make( $request->all(), array(
+                        // 'video'     => 'required|mimes:mkv,mp4,qt',
                         'trailer_video'  => 'required|mimes:mkv,mp4,qt',
                         )
                     );
 
-            $video_link = $request->hasFile('video') ? $request->file('video') : array();
-
-            $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+                $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
+            }
+        
 
         } elseif($request->has('video_type') && in_array($request->video_type , array(VIDEO_TYPE_YOUTUBE,VIDEO_TYPE_OTHER))) {
 
@@ -1400,8 +1425,12 @@ class AdminController extends Controller
                     Helper::s3_delete_picture($video->video);   
                     Helper::s3_delete_picture($video->trailer_video);  
                 } else {
-                    Helper::delete_picture($video->video);
-                    Helper::delete_picture($video->trailer_video);
+                     if ($request->hasFile('video')) {
+                        Helper::delete_picture($video->video);    
+                    }
+                    if ($request->hasFile('trailer_video')) {
+                        Helper::delete_picture($video->trailer_video);
+                    }
                 }
 
                 if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
@@ -1409,8 +1438,16 @@ class AdminController extends Controller
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
 
                 } else {
-                    $video->video = Helper::video_upload($video_link);
-                    $video->trailer_video = Helper::video_upload($trailer_video);  
+                    if ($request->hasFile('video')) {
+                        $video->video = Helper::video_upload($video_link);
+                    } else {
+                        $video->video = $video_link;
+                    }
+                    if ($request->hasFile('trailer_video')) {
+                        $video->trailer_video = Helper::video_upload($trailer_video);  
+                    } else {
+                        $video->trailer_video = $trailer_video;
+                    }
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE && $video_link && $trailer_video) {
@@ -1493,7 +1530,9 @@ class AdminController extends Controller
                              'admin_videos.category_id as category_id',
                              'admin_videos.sub_category_id',
                              'admin_videos.genre_id',
-
+                             'admin_videos.video_type',
+                             'admin_videos.video_upload_type',
+                             'admin_videos.duration',
                              'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
                     ->orderBy('admin_videos.created_at' , 'desc')

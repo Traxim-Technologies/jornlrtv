@@ -39,7 +39,7 @@
             <div class="wizard-inner">
                 <div class="connecting-line"></div>
                 <ul class="nav nav-tabs" role="tablist">
-
+                <!--class="disabled"-->
                     <li role="presentation" class="active">
                         <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Video Details">
                             <span class="round-tab">
@@ -48,14 +48,14 @@
                         </a>
                     </li>
 
-                    <li role="presentation" class="disabled">
+                    <li role="presentation">
                         <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Category">
                             <span class="round-tab">
                                 <i class="fa fa-suitcase"></i>
                             </span>
                         </a>
                     </li>
-                    <li role="presentation" class="disabled">
+                    <li role="presentation">
                         <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Sub Category">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-folder-open"></i>
@@ -63,7 +63,7 @@
                         </a>
                     </li>
 
-                    <li role="presentation" class="disabled">
+                    <li role="presentation">
                         <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Upload Video/Image">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-picture"></i>
@@ -166,7 +166,7 @@
                                 </a>
                             </div>
                             @endforeach
-                            <input type="hidden" name="category_id" id="category_id" />
+                            <input type="hidden" name="category_id" id="category_id" value="{{$video->category_id}}"/>
                         </div>
                         <ul class="list-inline">
                             <li class="pull-left"><button type="button" class="btn btn-danger prev-step">Previous</button></li>
@@ -190,7 +190,7 @@
                             </div>
                             @endforeach
                         </div>
-                        <input type="hidden" name="sub_category_id" id="sub_category_id" />
+                        <input type="hidden" name="sub_category_id" id="sub_category_id" value="{{$video->sub_category_id}}"/>
                         <div class="clearfix"></div>
                         <ul class="list-inline">
                             <li><button type="button" class="btn btn-danger prev-step">Previous</button></li>
@@ -231,14 +231,14 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="default_image" class="">{{tr('default_image')}} *</label>
-                                    <input type="file" required id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}">
+                                    <input type="file" id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}">
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="other_image1" class="">{{tr('other_image1')}} * </label>
-                                    <input type="file" required id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}">
+                                    <input type="file" id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}">
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>
@@ -246,7 +246,7 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="other_image2" class="">{{tr('other_image2')}} *</label>
-                                    <input type="file" required id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}">
+                                    <input type="file" id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}">
                                     <p class="help-block">{{tr('image_validate')}}</p>
                                 </div>
                             </div>

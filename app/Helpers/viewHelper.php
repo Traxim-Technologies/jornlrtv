@@ -94,6 +94,9 @@ function get_sub_categories($category_id) {
                         ->select('sub_categories.id as id' , 'sub_categories.name' ,
                             'sub_categories.status' , 'sub_categories.is_approved')
                         ->leftJoin('admin_videos' , 'sub_categories.id' , '=' , 'admin_videos.sub_category_id')
+                        ->leftJoin('sub_category_images' , 'sub_categories.id' , '=' , 'sub_category_images.sub_category_id')
+                        ->select('sub_category_images.picture' , 'sub_categories.*')
+                        ->where('sub_category_images.position' , 1)
                         ->groupBy('admin_videos.sub_category_id')
                         ->havingRaw("COUNT(admin_videos.id) > 0")
                         ->where('sub_categories.is_approved' , 1)
