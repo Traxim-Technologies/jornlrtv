@@ -105,7 +105,7 @@ class AdminController extends Controller
 
         user_track();
 
-        return view('admin.dashboard')->withPage('dashboard')
+        return view('admin.dashboard.dashboard')->withPage('dashboard')
                     ->with('sub_page','')
                     ->with('user_count' , $user_count)
                     ->with('video_count' , $video_count)
@@ -121,7 +121,7 @@ class AdminController extends Controller
     public function profile() {
 
         $admin = Admin::first();
-        return view('admin.profile')->with('admin' , $admin)->withPage('profile')->with('sub_page','');
+        return view('admin.account.profile')->with('admin' , $admin)->withPage('profile')->with('sub_page','');
     }
 
     public function profile_process(Request $request) {
@@ -212,19 +212,19 @@ class AdminController extends Controller
 
         $users = User::orderBy('created_at','desc')->get();
 
-        return view('admin.users')->withPage('users')
+        return view('admin.users.users')->withPage('users')
                         ->with('users' , $users)
                         ->with('sub_page','view-user');
     }
 
     public function add_user() {
-        return view('admin.add-user')->with('page' , 'users')->with('sub_page','add-user');
+        return view('admin.users.add-user')->with('page' , 'users')->with('sub_page','add-user');
     }
 
     public function edit_user(Request $request) {
 
         $user = User::find($request->id);
-        return view('admin.edit-user')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
+        return view('admin.users.edit-user')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
     }
 
     public function add_user_process(Request $request) {
@@ -325,7 +325,7 @@ class AdminController extends Controller
 
         if($user = User::find($id)) {
 
-            return view('admin.user-details')
+            return view('admin.users.user-details')
                         ->with('user' , $user)
                         ->withPage('users')
                         ->with('sub_page','users');
@@ -435,7 +435,7 @@ class AdminController extends Controller
                                 )
                             ->get();
 
-            return view('admin.user-history')
+            return view('admin.users.user-history')
                         ->with('data' , $user_history)
                         ->withPage('users')
                         ->with('sub_page','users');
@@ -475,7 +475,7 @@ class AdminController extends Controller
                                 )
                             ->get();
 
-            return view('admin.user-wishlist')
+            return view('admin.users.user-wishlist')
                         ->with('data' , $user_wishlist)
                         ->withPage('users')
                         ->with('sub_page','users');
@@ -502,18 +502,18 @@ class AdminController extends Controller
 
         $moderators = Moderator::orderBy('created_at','desc')->get();
 
-        return view('admin.moderators')->with('moderators' , $moderators)->withPage('moderators')->with('sub_page','view-moderator');
+        return view('admin.moderators.moderators')->with('moderators' , $moderators)->withPage('moderators')->with('sub_page','view-moderator');
     }
 
     public function add_moderator() {
-        return view('admin.add-moderator')->with('page' ,'moderators')->with('sub_page' ,'add-moderator');
+        return view('admin.moderators.add-moderator')->with('page' ,'moderators')->with('sub_page' ,'add-moderator');
     }
 
     public function edit_moderator($id) {
 
         $moderator = Moderator::find($id);
 
-        return view('admin.edit-moderator')->with('moderator' , $moderator)->with('page' ,'moderators')->with('sub_page' ,'edit-moderator');
+        return view('admin.moderators.edit-moderator')->with('moderator' , $moderator)->with('page' ,'moderators')->with('sub_page' ,'edit-moderator');
     }
 
     public function add_moderator_process(Request $request) {
@@ -642,7 +642,7 @@ class AdminController extends Controller
     public function moderator_view_details($id) {
 
         if($moderator = Moderator::find($id)) {
-            return view('admin.moderator-details')->with('moderator' , $moderator)
+            return view('admin.moderators.moderator-details')->with('moderator' , $moderator)
                         ->withPage('moderator')
                         ->with('sub_page','view-moderators');
         } else {
@@ -664,18 +664,18 @@ class AdminController extends Controller
                         ->distinct('categories.id')
                         ->get();
 
-        return view('admin.categories')->with('categories' , $categories)->withPage('categories')->with('sub_page','view-categories');
+        return view('admin.categories.categories')->with('categories' , $categories)->withPage('categories')->with('sub_page','view-categories');
     }
 
     public function add_category() {
-        return view('admin.add-category')->with('page' ,'categories')->with('sub_page' ,'add-category');
+        return view('admin.categories.add-category')->with('page' ,'categories')->with('sub_page' ,'add-category');
     }
 
     public function edit_category($id) {
 
         $category = Category::find($id);
 
-        return view('admin.edit-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'edit-category');
+        return view('admin.categories.edit-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'edit-category');
     }
 
     public function add_category_process(Request $request) {
@@ -782,14 +782,14 @@ class AdminController extends Controller
                         ->orderBy('sub_categories.created_at', 'desc')
                         ->get();
 
-        return view('admin.sub-categories')->with('category' , $category)->with('data' , $sub_categories)->withPage('categories')->with('sub_page','view-categories');
+        return view('admin.categories.subcategories.sub-categories')->with('category' , $category)->with('data' , $sub_categories)->withPage('categories')->with('sub_page','view-categories');
     }
 
     public function add_sub_category($category_id) {
 
         $category = Category::find($category_id);
     
-        return view('admin.add-sub-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'add-category');
+        return view('admin.categories.subcategories.add-sub-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'add-category');
     }
 
     public function edit_sub_category(Request $request) {
@@ -805,7 +805,7 @@ class AdminController extends Controller
                         ->orderBy('position' , 'asc')
                         ->get();
 
-        return view('admin.edit-sub-category')
+        return view('admin.categories.subcategories.edit-sub-category')
                 ->with('category' , $category)
                 ->with('sub_category' , $sub_category)
                 ->with('sub_category_images' , $sub_category_images)
@@ -1042,7 +1042,7 @@ class AdminController extends Controller
                     ->orderBy('genres.position' , 'asc')
                     ->get();
 
-        return view('admin.view-genre')->with('genres' , $genres)
+        return view('admin.categories.subcategories.genres.view-genre')->with('genres' , $genres)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
         }
@@ -1086,7 +1086,7 @@ class AdminController extends Controller
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->get();
 
-        return view('admin.videos')->with('videos' , $videos)
+        return view('admin.videos.videos')->with('videos' , $videos)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
    
@@ -1103,7 +1103,7 @@ class AdminController extends Controller
                         ->orderBy('categories.name' , 'asc')
                         ->get();
 
-         return view('admin.video_upload')
+         return view('admin.videos.video_upload')
                 ->with('categories' , $categories)
                 ->with('page' ,'videos')
                 ->with('sub_page' ,'add-video');
@@ -1156,7 +1156,7 @@ class AdminController extends Controller
             $sub_page = 'banner-videos';
         }
 
-         return view('admin.edit-video')
+         return view('admin.videos.edit-video')
                 ->with('categories' , $categories)
                 ->with('video' ,$video)
                 ->with('page' ,$page)
@@ -1569,7 +1569,7 @@ class AdminController extends Controller
             $sub_page = 'banner-videos';
         }
 
-        return view('admin.view-video')->with('video' , $videos)
+        return view('admin.videos.view-video')->with('video' , $videos)
                     ->with('video_images' , $admin_video_images)
                     ->withPage($page)
                     ->with('sub_page',$sub_page);
@@ -1681,7 +1681,7 @@ class AdminController extends Controller
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->get();
 
-        return view('admin.banner-videos')->with('videos' , $videos)
+        return view('admin.banner_videos.banner-videos')->with('videos' , $videos)
                     ->withPage('banner-videos')
                     ->with('sub_page','view-banner-videos');
    
@@ -1698,7 +1698,7 @@ class AdminController extends Controller
                         ->orderBy('categories.name' , 'asc')
                         ->get();
 
-        return view('admin.banner-video-upload')
+        return view('admin.banner_videos.banner-video-upload')
                 ->with('categories' , $categories)
                 ->with('page' ,'banner-videos')
                 ->with('sub_page' ,'add-banner-video');
@@ -1743,7 +1743,7 @@ class AdminController extends Controller
     public function user_payments() {
         $payments = UserPayment::orderBy('created_at' , 'desc')->get();
 
-        return view('admin.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','user-payments'); 
+        return view('admin.payments.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','user-payments'); 
     }
 
     public function email_settings() {
@@ -1776,7 +1776,7 @@ class AdminController extends Controller
     public function settings() {
         $settings = array();
         $result = EnvEditorHelper::getEnvValues();
-        return view('admin.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
+        return view('admin.settings.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
     }
 
     public function payment_settings() {
@@ -1802,7 +1802,7 @@ class AdminController extends Controller
             $settings[] = 'teen';
         }
 
-        return view('admin.theme-settings')->with('settings' , $settings)->withPage('theme-settings')->with('sub_page',''); 
+        return view('admin.theme.theme-settings')->with('settings' , $settings)->withPage('theme-settings')->with('sub_page',''); 
     }
 
     public function settings_process(Request $request) {
@@ -1880,27 +1880,27 @@ class AdminController extends Controller
     }
 
     public function help() {
-        return view('admin.help')->withPage('help')->with('sub_page' , "");
+        return view('admin.static.help')->withPage('help')->with('sub_page' , "");
     }
 
     public function viewPages() {
 
         $all_pages = Page::all();
 
-        return view('admin.viewpages')->with('page','pages_id')->with('sub_page',"view_pages")->with('data',$all_pages);
+        return view('admin.pages.viewpages')->with('page','pages_id')->with('sub_page',"view_pages")->with('data',$all_pages);
     }
 
     public function add_page() {
 
         $pages = Page::all();
-        return view('admin.add-page')->with('page','pages_id')->with('sub_page',"add_page")->with('view_pages',$pages);
+        return view('admin.pages.add-page')->with('page','pages_id')->with('sub_page',"add_page")->with('view_pages',$pages);
     }
 
     public function editPage($id) {
         $page = Page::find($id);
 
         if($page) {
-            return view('admin.editPage')->withPage('viewpage')->with('sub_page',"view_pages")->with('pages',$page);
+            return view('admin.pages.editPage')->withPage('viewpage')->with('sub_page',"view_pages")->with('pages',$page);
         } else {
             return back()->with('flash_error',tr('admin_not_error'));
         }
@@ -1964,7 +1964,7 @@ class AdminController extends Controller
 
     public function custom_push() {
 
-        return view('admin.push')->with('title' , "Custom Push")->with('page' , "custom-push");
+        return view('admin.static.push')->with('title' , "Custom Push")->with('page' , "custom-push");
 
     }
 
@@ -2007,7 +2007,7 @@ class AdminController extends Controller
         // Load all the videos from flag table
         $model = Flag::groupBy('video_id')->get();
         // Return array of values
-        return view('admin.spam_videos')->with('model' , $model)
+        return view('admin.spam_videos.spam_videos')->with('model' , $model)
                         ->with('page' , 'Spam Videos')
                         ->with('subPage' , '');
     }
@@ -2024,7 +2024,7 @@ class AdminController extends Controller
         // Load all the users
         $model = Flag::where('video_id', $id)->get();
         // Return array of values
-        return view('admin.user_report')->with('model' , $model)
+        return view('admin.spam_videos.user_report')->with('model' , $model)
                         ->with('page' , 'Spam Videos')
                         ->with('subPage' , 'User Reports');   
     }
@@ -2038,7 +2038,7 @@ class AdminController extends Controller
     public function video_payments() {
         $payments = PayPerView::orderBy('created_at' , 'desc')->get();
 
-        return view('admin.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
+        return view('admin.payments.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
     }
 
     /**

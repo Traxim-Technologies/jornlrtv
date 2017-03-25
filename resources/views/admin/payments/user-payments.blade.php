@@ -38,12 +38,11 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->user->name}} </a></td>
+							      	<td><a href="{{route('admin.view.user' , $payment->user_id)}}"> {{($payment->user) ? $payment->user->name : ''}} </a></td>
 							      	<td>{{$payment->payment_id}}</td>
 							      	<td>$ {{$payment->amount}}</td>
 							      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>
 							    </tr>					
-
 							@endforeach
 						</tbody>
 					</table>

@@ -16,11 +16,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    @if($video->is_banner) 
-        <li><a href="{{route('admin.banner.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
-    @else
-        <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
-    @endif
+    <li><a href="{{request()->headers->get('referer')}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
     <li class="active"> {{tr('edit_video')}}</li>
 @endsection 
 
