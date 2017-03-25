@@ -192,15 +192,15 @@
                                 </div>
                             </div>
                             <input type="hidden"  name="is_banner" value="1">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="banner_image" class="">{{tr('banner_image')}}</label> <strong style="color:brown"> Note : Upload rectangle images 4:3 Ex: 400 * 300</strong>
+                                    <label for="banner_image" class="">{{tr('banner_image')}}</label>
                                      <input type="file" required id="banner_image" name="banner_image" accept="image/png, image/jpeg" placeholder="{{tr('banner_image')}}" style="display:none" onchange="loadFile(this, 'banner_img')">
                                     <div>
                                         <img src="{{asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
                                         onclick="$('#banner_image').click();return false;" id="banner_img"/>
                                     </div>
-                                    <p class="help-block">{{tr('image_validate')}}</p>
+                                    <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -212,7 +212,7 @@
                                         <img src="{{asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
                                         onclick="$('#default_image').click();return false;" id="default_img"/>
                                     </div>
-                                    <p class="help-block">{{tr('image_validate')}}</p>
+                                    <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -223,7 +223,7 @@
                                         <img src="{{asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
                                         onclick="$('#other_image1').click();return false;" id="other_img1"/>
                                     </div>
-                                    <p class="help-block">{{tr('image_validate')}}</p>
+                                    <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
                                 </div>
                             </div>
                         
@@ -235,7 +235,7 @@
                                         <img src="{{asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
                                         onclick="$('#other_image2').click();return false;" id="other_img2"/>
                                     </div>
-                                    <p class="help-block">{{tr('image_validate')}}</p>
+                                    <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
