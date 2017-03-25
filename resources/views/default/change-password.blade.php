@@ -58,18 +58,18 @@
 
                                             <div class="medium-12 columns">
                                                 <label>{{tr('old_password')}}:
-                                                    <input type="password" name="old_password" placeholder="enter your {{tr('old_password')}}..">
+                                                    <input type="password" name="old_password" placeholder="enter your {{tr('old_password')}}.." required>
                                                 </label>
                                             </div>
                                             
                                             <div class="medium-12 columns">
                                                 <label>{{tr('new_password')}}:
-                                                    <input type="password" name="password" placeholder="enter your {{tr('new_password')}}..">
+                                                    <input type="password" name="password" placeholder="enter your {{tr('new_password')}}.." required>
                                                 </label>
                                             </div>
                                             <div class="medium-12 columns">
                                                 <label>{{tr('confirm_password')}}:
-                                                    <input type="password" name="password_confirmation" placeholder="enter your {{tr('confirm_password')}}..">
+                                                    <input type="password" name="password_confirmation" placeholder="enter your {{tr('confirm_password')}}.." required>
                                                 </label>
                                             </div>
                                             <div class="medium-12 columns">

@@ -18,17 +18,17 @@
 
                     <div class="form-group">
                         <label for="old_password">{{tr('old_password')}}</label>
-                        <input type="password" name="old_password" class="form-control" id="old_password" placeholder="{{tr('old_password')}}">
+                        <input type="password" required name="old_password" class="form-control" id="old_password" placeholder="{{tr('old_password')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="new_password">{{tr('new_password')}}</label>
-                        <input type="password" name="password" class="form-control" id="new_password" placeholder="{{tr('new_password')}}">
+                        <input type="password" required name="password" class="form-control" id="new_password" placeholder="{{tr('new_password')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="confirm_password">{{tr('confirm_password')}}</label>
-                        <input type="password" name="password_confirmation" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}">
+                        <input type="password" required name="password_confirmation" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}">
                     </div>
 
                     <div class="change-pwd">
