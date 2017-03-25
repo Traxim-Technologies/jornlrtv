@@ -115,7 +115,7 @@ class ModeratorController extends Controller
             $moderator->is_activated = 1;
             $moderator->save();
 
-            return back()->with('flash_success', Helper::tr('moderator_not_profile'));
+            return back()->with('flash_success', tr('moderator_not_profile'));
             
         }
     
@@ -226,7 +226,7 @@ class ModeratorController extends Controller
             if($category) {
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
 
         }
@@ -239,9 +239,9 @@ class ModeratorController extends Controller
             $user = Moderator::find($request->id)->delete();
         }
         if($user) {
-            return back()->with('flash_success',Helper::tr('admin_not_moderator_del'));
+            return back()->with('flash_success',tr('admin_not_moderator_del'));
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -391,7 +391,7 @@ class ModeratorController extends Controller
             if($sub_category) {
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
 
         }
@@ -404,9 +404,9 @@ class ModeratorController extends Controller
             $user = Moderator::find($request->id)->delete();
         }
         if($user) {
-            return back()->with('flash_success',Helper::tr('admin_not_moderator_del'));
+            return back()->with('flash_success',tr('admin_not_moderator_del'));
         } else {
-            return back()->with('flash_error',Helper::tr('admin_not_error'));
+            return back()->with('flash_error',tr('admin_not_error'));
         }
     }
 
@@ -446,7 +446,7 @@ class ModeratorController extends Controller
             if($genre) {
                 return back()->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', Helper::tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error'));
             }
         }
     

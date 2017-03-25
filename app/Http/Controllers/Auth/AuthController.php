@@ -100,7 +100,7 @@ class AuthController extends Controller
         register_mobile('web');
         
         // Send welcome email to the new user:
-        $subject = Helper::tr('user_welcome_title');
+        $subject = tr('user_welcome_title');
         $email_data = $User;
         $page = "emails.welcome";
         $email = $data['email'];

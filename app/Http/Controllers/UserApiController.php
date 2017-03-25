@@ -218,7 +218,7 @@ class UserApiController extends Controller
 
                 // Send welcome email to the new user:
                 if($new_user) {
-                    $subject = Helper::tr('user_welcome_title');
+                    $subject = tr('user_welcome_title');
                     $email_data = $user;
                     $page = "emails.welcome";
                     $email = $user->email;
@@ -385,7 +385,7 @@ class UserApiController extends Controller
                 $user->password = Hash::make($new_password);
 
                 $email_data = array();
-                $subject = Helper::tr('user_forgot_email_title');
+                $subject = tr('user_forgot_email_title');
                 $email = $user->email;
                 $email_data['user']  = $user;
                 $email_data['password'] = $new_password;
