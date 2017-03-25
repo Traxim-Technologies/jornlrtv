@@ -371,7 +371,7 @@
 			                                            </a>
 			                                        </figure>
 			                                        <div class="video-des">
-			                                            <h6><a href="#">{{$trending->title}}</a></h6>
+			                                            <h6><a href="{{route('user.single' , $trending->admin_video_id)}}">{{$trending->title}}</a></h6>
 			                                            <div class="post-stats clearfix">
 			                                                
 			                                                <p class="pull-left">

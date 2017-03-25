@@ -151,7 +151,7 @@
 
 			                                        <div class="post-des">
 			                                            <h6>
-			                                            	<a href="recent_video">{{$recent_video->title}}</a>
+			                                            	<a href="{{route('user.single' , $recent_video->admin_video_id)}}">{{$recent_video->title}}</a>
 			                                            </h6>
 			                                            <div class="post-stats clearfix">
 			                                               
@@ -344,15 +344,15 @@
 			                                            </a>
 			                                        </figure>
 			                                        <div class="video-des">
-			                                            <h6><a href="#">{{$trending->title}}</a></h6>
+			                                            <h6><a href="{{route('user.single' , $trending->admin_video_id)}}">{{$trending->title}}</a></h6>
 			                                            <div class="post-stats clearfix">
 			                                                <p class="pull-left">
 			                                                    <i class="fa fa-clock-o"></i>
-			                                                    <span>{{date('d M Y',strtotime($recent_video->publish_time))}}</span>
+			                                                    <span>{{date('d M Y',strtotime($trending->publish_time))}}</span>
 			                                                </p>
 			                                                <p class="pull-left">
 			                                                    <i class="fa fa-eye"></i>
-			                                                    <span>{{$recent_video->watch_count}}</span>
+			                                                    <span>{{$trending->watch_count}}</span>
 			                                                </p>
 			                                            </div><!--end of post-stats-->
 			                                        </div><!--end of video-des-->

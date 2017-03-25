@@ -118,7 +118,7 @@
 
 				                                        <div class="post-des">
 				                                            <h6>
-				                                            	<a href="recent_video">{{$video->title}}</a>
+				                                            	<a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a>
 				                                            </h6>
 				                                            <div class="post-stats clearfix">
 				                                                <p class="pull-left">
@@ -302,7 +302,7 @@
 		                                            </a>
 		                                        </figure>
 		                                        <div class="video-des">
-		                                            <h6><a href="#">{{$trending->title}}</a></h6>
+		                                            <h6><a href="{{route('user.single' , $trending->admin_video_id)}}">{{$trending->title}}</a></h6>
 		                                            <div class="post-stats clearfix">
 		                                                
 		                                                <p class="pull-left">
