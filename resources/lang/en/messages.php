@@ -172,7 +172,8 @@ return array(
 	'title' => 'Title',
 	'description' => 'Description',
 
-	'rectangle_image_square' => 'Upload rectangle images 2:2 Ratio Ex: 300 * 300',
+	'image_square' => 'Upload Square images 2:2 Ratio Ex: 300 * 300',
+	'rectangle_image' => 'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
 	
 	// Web Register 
 	'registration_form'	=>	'Registration Form',

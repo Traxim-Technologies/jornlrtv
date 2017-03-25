@@ -132,7 +132,7 @@
 
                                 <div class="col-sm-10">
                                   <input type="file" required accept="image/png,image/jpeg" name="picture" id="picture">
-                                  <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
+                                  <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
                                 </div>
                             </div>
 
