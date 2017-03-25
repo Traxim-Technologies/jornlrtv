@@ -40,7 +40,7 @@
                             <label for="picture" class="col-sm-1 control-label">{{tr('picture')}}</label>
                             <div class="col-sm-10">
                                 <input type="file" required accept="image/png, image/jpeg" id="picture" name="picture" placeholder="{{tr('picture')}}">
-                                <p class="help-block">{{tr('image_validate')}}</p>
+                                <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
                             </div>
                         </div>
 

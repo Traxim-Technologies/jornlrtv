@@ -65,7 +65,7 @@
 
                             <div class="col-sm-10">
                                 <input type="file" accept="image/png, image/jpeg" id="picture1" name="picture1" placeholder="{{tr('picture1')}}">
-                                <p class="help-block">{{tr('image_validate')}}</p>
+                                <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
                             </div>
 
                         </div>
@@ -83,7 +83,7 @@
 
                             <div class="col-sm-10">
                                 <input type="file" accept="image/png, image/jpeg" id="picture2" name="picture2" placeholder="{{tr('picture2')}}">
-                                <p class="help-block">{{tr('image_validate')}}</p>
+                                <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
                             </div>
                         </div>
 
@@ -101,7 +101,7 @@
 
                             <div class="col-sm-10">
                                 <input type="file" accept="image/png, image/jpeg" id="picture3" name="picture3" placeholder="{{tr('picture3')}}">
-                                <p class="help-block">{{tr('image_validate')}}</p>
+                                <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
                             </div>
                         </div>
 

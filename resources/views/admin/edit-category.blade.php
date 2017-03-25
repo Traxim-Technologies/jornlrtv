@@ -48,7 +48,7 @@
 
                             <div class="col-sm-10" style="margin-left:70px !important">
                                 <input type="file" accept="image/png, image/jpeg" id="picture" name="picture" placeholder="{{tr('picture')}}">
-                                <p class="help-block">{{tr('image_validate')}}</p>
+                                <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
                             </div>
                             
                         </div>

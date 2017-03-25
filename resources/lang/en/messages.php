@@ -171,6 +171,8 @@ return array(
 	'upload_message'	=>	'Upload only .png, .jpg or .jpeg image files only',
 	'title' => 'Title',
 	'description' => 'Description',
+
+	'rectangle_image_square' => 'Upload rectangle images 2:2 Ratio Ex: 300 * 300',
 	
 	// Web Register 
 	'registration_form'	=>	'Registration Form',

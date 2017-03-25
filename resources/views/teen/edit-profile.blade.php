@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label for="pro-image">{{tr('upload')}} {{tr('image')}}:</label>
                         <input type="file" name="picture" accept="image/png, image/jpeg" id="pro-image">
-                         <p class="help-block">{{tr('image_validate')}}</p>
+                         <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
                     </div>
 
                     <div class="form-group">

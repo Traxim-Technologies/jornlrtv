@@ -36,7 +36,7 @@
                                          <div class="form-group">
                                             <label for="exampleInputFile">{{tr('upload_image')}}</label>
                                             <input type="file" name="picture" class="form-control-file" accept="image/png, image/jpeg" id="exampleInputFile" aria-describedby="fileHelp">
-                                            <p class="help-block">{{tr('image_validate')}}</p>
+                                            <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image_square')}}</p>
                                         </div>
 
                                         <div class="form-group">
