@@ -18,7 +18,7 @@
 
                             <h5 class="text-center">{{tr('reset_password')}}</h5>
 
-                            <form data-abide="xdc2hs-abide" novalidate="" role="form" method="POST" action="{{ url('admin/password/reset') }}">
+                            <form data-abide="xdc2hs-abide" novalidate="" role="form" method="POST" action="{{ url('password/reset') }}">
                                 {{ csrf_field() }}
 
                                 <input type="hidden" name="token" value="{{ $token }}">
