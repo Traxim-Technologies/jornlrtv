@@ -11,9 +11,6 @@ use App\User;
 use Hash;
 use App\Helpers\Helper;
 
-define('DEFAULT_TRUE', 1);
-define('DEFAULT_FALSE', 0);
-
 class SocialAuthController extends Controller
 {
     public function redirect(Request $request)

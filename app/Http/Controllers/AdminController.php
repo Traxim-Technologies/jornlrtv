@@ -65,28 +65,6 @@ use Log;
 
 use App\Jobs\NormalPushNotification;
 
-define('USER', 0);
-
-define('Moderator',1);
-
-define('NONE', 0);
-
-
-define('DEFAULT_TRUE', 1);
-define('DEFAULT_FALSE', 0);
-
-define('ADMIN', 'admin');
-define('MODERATOR', 'moderator');
-
-define('VIDEO_TYPE_UPLOAD', 1);
-define('VIDEO_TYPE_YOUTUBE', 2);
-define('VIDEO_TYPE_OTHER', 3);
-
-
-define('VIDEO_UPLOAD_TYPE_s3', 1);
-define('VIDEO_UPLOAD_TYPE_DIRECT', 2);
-
-
 class AdminController extends Controller
 {
     /**

@@ -30,8 +30,6 @@ use Exception;
 
 use App\PayPerView;
 
-define('WEB' , 1);
-
 
 class UserController extends Controller {
 

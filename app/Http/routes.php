@@ -31,6 +31,65 @@ if(!defined('REQUEST_STEP_2')) define('REQUEST_STEP_2', 2);
 if(!defined('REQUEST_STEP_3')) define('REQUEST_STEP_3', 3);
 if(!defined('REQUEST_STEP_FINAL')) define('REQUEST_STEP_FINAL', 4);
 
+
+if(!defined('USER')) define('USER', 0);
+
+if(!defined('Moderator')) define('Moderator',1);
+
+if(!defined('NONE')) define('NONE', 0);
+
+
+if(!defined('DEFAULT_TRUE')) define('DEFAULT_TRUE', 1);
+if(!defined('DEFAULT_FALSE')) define('DEFAULT_FALSE', 0);
+
+if(!defined('ADMIN')) define('ADMIN', 'admin');
+if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
+
+if(!defined('VIDEO_TYPE_UPLOAD')) define('VIDEO_TYPE_UPLOAD', 1);
+if(!defined('VIDEO_TYPE_YOUTUBE')) define('VIDEO_TYPE_YOUTUBE', 2);
+if(!defined('VIDEO_TYPE_OTHER')) define('VIDEO_TYPE_OTHER', 3);
+
+
+if(!defined('VIDEO_UPLOAD_TYPE_s3')) define('VIDEO_UPLOAD_TYPE_s3', 1);
+if(!defined('VIDEO_UPLOAD_TYPE_DIRECT')) define('VIDEO_UPLOAD_TYPE_DIRECT', 2);
+
+if(!defined('NO_INSTALL')) define('NO_INSTALL' , 0);
+
+if(!defined('SYSTEM_CHECK')) define('SYSTEM_CHECK' , 1);
+
+if(!defined('THEME_CHECK')) define('THEME_CHECK' , 2);
+
+if(!defined('INSTALL_COMPLETE')) define('INSTALL_COMPLETE' , 3);
+
+
+if(!defined('ADMIN')) define('ADMIN', 'admin');
+if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
+
+// Payment Constants
+if(!defined('COD')) define('COD',   'cod');
+if(!defined('PAYPAL')) define('PAYPAL', 'paypal');
+if(!defined('CARD')) define('CARD',  'card');
+
+
+if(!defined('RATINGS')) define('RATINGS', '0,1,2,3,4,5');
+
+if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
+if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
+
+if(!defined('WISHLIST_EMPTY')) define('WISHLIST_EMPTY' , 0);
+if(!defined('WISHLIST_ADDED')) define('WISHLIST_ADDED' , 1);
+if(!defined('WISHLIST_REMOVED')) define('WISHLIST_REMOVED' , 2);
+
+if(!defined('RECENTLY_ADDED')) define('RECENTLY_ADDED' , 'recent');
+if(!defined('TRENDING')) define('TRENDING' , 'trending');
+if(!defined('SUGGESTIONS')) define('SUGGESTIONS' , 'suggestion');
+if(!defined('WISHLIST')) define('WISHLIST' , 'wishlist');
+if(!defined('WATCHLIST')) define('WATCHLIST' , 'watchlist');
+if(!defined('BANNER')) define('BANNER' , 'banner');
+
+if(!defined('WEB')) define('WEB' , 1);
+
+
 Route::get('/test' , 'ApplicationController@test');
 
 // Installation

@@ -38,41 +38,6 @@ use App\Page;
 
 use App\Jobs\NormalPushNotification;
 
-use Elasticsearch\ClientBuilder;
-
-define('ADMIN',1);
-
-define('MODERATOR',2);
-
-define('USER', 3);
-
-define('NONE', 0);
-
-define('DEFAULT_FALSE', 0);
-define('DEFAULT_TRUE', 1);
-
-// Payment Constants
-define('COD',   'cod');
-define('PAYPAL', 'paypal');
-define('CARD',  'card');
-
-
-define('RATINGS', '0,1,2,3,4,5');
-
-define('DEVICE_ANDROID', 'android');
-define('DEVICE_IOS', 'ios');
-
-define('WISHLIST_EMPTY' , 0);
-define('WISHLIST_ADDED' , 1);
-define('WISHLIST_REMOVED' , 2);
-
-define('RECENTLY_ADDED' , 'recent');
-define('TRENDING' , 'trending');
-define('SUGGESTIONS' , 'suggestion');
-define('WISHLIST' , 'wishlist');
-define('WATCHLIST' , 'watchlist');
-define('BANNER' , 'banner');
-
 class UserApiController extends Controller
 {
 

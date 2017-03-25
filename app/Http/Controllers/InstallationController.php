@@ -10,14 +10,6 @@ use App\Settings;
 
 use App\Helpers\Helper;
 
-define('NO_INSTALL' , 0);
-
-define('SYSTEM_CHECK' , 1);
-
-define('THEME_CHECK' , 2);
-
-define('INSTALL_COMPLETE' , 3);
-
 class InstallationController extends Controller {
 
     public function install() {
