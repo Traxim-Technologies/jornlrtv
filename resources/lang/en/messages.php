@@ -34,6 +34,8 @@ return array(
 	'paid_user'=>'Paid Users',
 	'both_user'=>'Both Users',
 	'common_settings'=>'Common Settings',
+	'video_edit_success'=>'Successfully updated the video details.',
+	'video_create_success'=>'Successfully created the video details.',
 
 	'S3_KEY'=>'S3 Key',
 	'S3_SECRET'=>'S3 Secret Key',

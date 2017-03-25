@@ -700,7 +700,7 @@ class ModeratorController extends Controller
                 if ($request->has('ajax_key')) {
                     return ['id'=>$video->id];
                 } else {
-                    return redirect(route('moderator.view.video', array('id', $video->id)));
+                    return redirect(route('moderator.view.video', array('id', $video->id)))->with('flash_success', tr('video_create_success'));
                 }
             } else {
                 if ($request->has('ajax_key')) {
@@ -892,7 +892,7 @@ class ModeratorController extends Controller
                 if ($request->has('ajax_key')) {
                     return ['id'=>$video->id];
                 } else {
-                    return redirect(route('moderator.view.video', array('id'=>$video->id)));
+                    return redirect(route('moderator.view.video', array('id'=>$video->id)))->with('flash_success', tr('video_edit_success'));
                 }
 
             } else {

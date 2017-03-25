@@ -12,11 +12,11 @@
 
 @section('content')
 
-    @include('notification.notify')
-
     <?php $url = $trailer_url = ""; ?>
 
     <div class="row">
+
+        @include('notification.notify')
 
         <div class="col-lg-7">
 
