@@ -63,7 +63,7 @@ class ModeratorController extends Controller
         
         $today_videos = AdminVideo::count();
 
-        return view('moderator.dashboard')
+        return view('moderator.dashboard.dashboard')
                     ->withPage('dashboard')
                     ->with('sub_page','')
                     ->with('today_videos' , $today_videos);
@@ -71,7 +71,7 @@ class ModeratorController extends Controller
 
 
     public function profile() {
-        return view('moderator.profile')->withPage('profile')->with('sub_page','');
+        return view('moderator.account.profile')->withPage('profile')->with('sub_page','');
     }
 
     /**
@@ -478,7 +478,7 @@ class ModeratorController extends Controller
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->get();
 
-        return view('moderator.videos')->with('videos' , $videos)
+        return view('moderator.videos.videos')->with('videos' , $videos)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
    
@@ -497,7 +497,7 @@ class ModeratorController extends Controller
                         ->orderBy('categories.name' , 'asc')
                         ->get();
 
-     return view('moderator.video_upload')
+     return view('moderator.videos.video_upload')
             ->with('categories' , $categories)
             ->with('page' ,'videos')
             ->with('sub_page' ,'add-video');
@@ -541,7 +541,7 @@ class ModeratorController extends Controller
             $subcategories = get_sub_categories($video->category_id);
         }
 
-         return view('moderator.edit-video')
+         return view('moderator.videos.edit-video')
                 ->with('categories' , $categories)
                 ->with('video' ,$video)
                 ->with('page' ,'videos')
@@ -925,7 +925,7 @@ class ModeratorController extends Controller
                                 ->orderBy('is_default' , 'desc')
                                 ->get();
 
-        return view('moderator.view-video')->with('video' , $videos)
+        return view('moderator.videos.view-video')->with('video' , $videos)
                     ->with('video_images' , $admin_video_images)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
