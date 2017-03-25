@@ -22,6 +22,8 @@ use DB;
 
 use Validator;
 
+use App\Page;
+
 class ApplicationController extends Controller {
 
     public $expiry_date = "";
@@ -60,6 +62,39 @@ class ApplicationController extends Controller {
         return response()->json($subcategories);
     
     }
+
+    public function about(Request $request) {
+
+        $about = Page::where('type', 'about')->first();
+
+        return view('static.about-us')->with('about' , $about)
+                        ->with('page' , 'about')
+                        ->with('subPage' , '');
+
+    }
+
+    public function privacy(Request $request) {
+
+        $page = Page::where('type', 'privacy')->first();;
+
+        // dd($page);
+        return view('static.privacy')->with('data' , $page)
+                        ->with('page' , 'conact_page')
+                        ->with('subPage' , '');
+
+    }
+
+    public function terms(Request $request) {
+
+        $page = Page::where('type', 'terms')->first();;
+
+        // dd($page);
+        return view('static.terms')->with('data' , $page)
+                        ->with('page' , 'terms_and_condition')
+                        ->with('subPage' , '');
+
+    }
+
 
     public function cron_publish_video(Request $request) {
         

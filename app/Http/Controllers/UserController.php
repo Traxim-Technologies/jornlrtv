@@ -47,7 +47,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','about','single_video','all_categories' ,'category_videos' , 'sub_category_videos' ,  'about' , 'contact','trending']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending']]);
     }
 
     /**
@@ -472,16 +472,6 @@ class UserController extends Controller {
                     ->with('trendings' , $trendings)
                     ->with('genre' , $genre)
                     ->with('suggestions' , $suggestions);
-    }
-
-    public function about(Request $request) {
-
-        $about = Page::where('type', 'about')->first();
-
-        return view('about')->with('about' , $about)
-                        ->with('page' , 'about')
-                        ->with('subPage' , '');
-
     }
 
     public function contact(Request $request) {
