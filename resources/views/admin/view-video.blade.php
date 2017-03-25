@@ -52,7 +52,7 @@
                         @else
                             @if(check_valid_url($video->video))
 
-                                <?php $url = Setting::get('streaming_url').get_video_end($video->video); ?>
+                                <?php $url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->video) : $video->video; ?>
                                 <div id="main-video-player"></div>
                             @else
                                 <div class="image">
@@ -189,7 +189,7 @@
 
                             @if(check_valid_url($video->trailer_video))
 
-                                <?php $trailer_url = Setting::get('streaming_url').get_video_end($video->trailer_video); ?>
+                                <?php $trailer_url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->trailer_video) : $video->trailer_video; ?>
 
                                 <div id="trailer-video-player"></div>
 
