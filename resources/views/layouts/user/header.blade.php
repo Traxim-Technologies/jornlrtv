@@ -45,9 +45,10 @@
                         <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
                         <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                          <li><a href="{{route('user.pay-per-videos')}}">{{tr('pay_per_videos')}}</a></li>
-                        <li role="separator" class="divider"></li>
-
-                        <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
+                        @if (Auth::user()->login_by == 'manual') 
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
+                        @endif
 
                         <li role="separator" class="divider"></li>
                         <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
