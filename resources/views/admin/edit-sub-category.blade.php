@@ -10,9 +10,9 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.categories')}}"><i class="fa fa-users"></i> {{tr('categories')}}</a></li>
-    <li><a href="{{route('admin.sub_categories' , array('category' => $category->id))}}"><i class="fa fa-users"></i> {{tr('sub_categories')}}</a></li>
-    <li class="active">{{tr('edit_sub_category')}}</li>
+    <li><a href="{{route('admin.categories')}}"><i class="fa fa-suitcase"></i> {{tr('categories')}}</a></li>
+    <li><a href="{{route('admin.sub_categories' , array('category' => $category->id))}}"><i class="fa fa-suitcase"></i> {{tr('sub_categories')}}</a></li>
+    <li class="active"><i class="fa fa-suitcase"></i> {{tr('edit_sub_category')}}</li>
 @endsection
 
 @section('content')
