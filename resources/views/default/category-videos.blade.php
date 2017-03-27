@@ -44,7 +44,7 @@
 
         	@foreach($sub_categories as $key => $sub_category)
 
-        		<?php $sub_category_images = get_sub_category_image($sub_category->id); ?>
+        		<?php $sub_category_images = $sub_category->subCategoryImage; ?>
 
         		@if(count($sub_category_images) > 0)
 	            
@@ -282,7 +282,8 @@
 
 			                            	<li class="accordion-item @if($c_key == 0) is-active @endif" data-accordion-item>
 
-			                            		<?php $sub_categories = array(); $sub_categories = get_sub_categories($category->id); ?>
+			                            		<?php $sub_categories = array(); 
+			                            			$sub_categories = get_sub_categories($category->id); ?>
 
 			                                    <a href="#" class="accordion-title">{{$category->name}}</a>
 

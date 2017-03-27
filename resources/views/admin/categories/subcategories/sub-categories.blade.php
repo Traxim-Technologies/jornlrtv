@@ -49,7 +49,7 @@
 
 							@foreach($data as $i => $sub_category)
 
-								<?php $images = get_sub_category_image($sub_category->id); ?>
+								<?php $images = ($sub_category->subCategoryImage != null && !empty($sub_category->subCategoryImage)) ? $sub_category->subCategoryImage : []; ?>
 
 							    <tr>
 							      	<td>{{$i+1}}</td>

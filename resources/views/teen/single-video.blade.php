@@ -245,7 +245,7 @@
                 <div class="video-box">
                      <a href="{{route('user.single' , $recent_video->admin_video_id)}}">
                         <?php 
-                        $video_imagess = get_video_image($recent_video->admin_video_id); 
+                            $video_imagess = get_video_image($recent_video->admin_video_id); 
                         ?>
 
                         @if($video_imagess->count() == 0)
@@ -290,7 +290,7 @@
                 <div class="video-box">
                      <a href="{{route('user.single' , $suggestion->admin_video_id)}}">
                         <?php 
-                        $video_images = get_video_image($suggestion->admin_video_id); 
+                            $video_images = get_video_image($suggestion->admin_video_id); 
                         ?>
 
                         @if($video_images->count() == 0)

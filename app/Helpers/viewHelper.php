@@ -62,6 +62,8 @@ function sub_category_image($picture , $sub_category_id,$position) {
 
     return true;
 }
+
+/*
 function get_sub_category_image($sub_category_id) {
 
     $images = SubCategoryImage::where('sub_category_id' , $sub_category_id)
@@ -70,7 +72,7 @@ function get_sub_category_image($sub_category_id) {
 
     return $images;
 
-}
+}*/
 
 function get_categories() {
 

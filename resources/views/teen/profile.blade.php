@@ -51,7 +51,7 @@
                     <div class="video-box">
                         <a href="{{route('user.single' , $video->admin_video_id)}}">
                             <?php 
-                            $video_images = get_video_image($video->admin_video_id); 
+                                $video_images = get_video_image($video->admin_video_id);
                             ?>
                             @if($video_images->count() == 0)
                                 <img class="first" src="{{$video->default_image}}"><!-- main image -->
@@ -102,7 +102,7 @@
                     <div class="video-box">
                         <a href="{{route('user.single' , $videos->admin_video_id)}}">
                             <?php 
-                            $video_imagess = get_video_image($videos->admin_video_id); 
+                                $video_imagess = get_video_image($videos->admin_video_id); 
                             ?>
                             @if($video_imagess->count() == 0)
                                 <img class="first" src="{{$videos->default_image}}"><!-- main image -->

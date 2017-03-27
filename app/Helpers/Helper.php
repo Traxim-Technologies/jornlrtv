@@ -422,16 +422,11 @@
         public static function recently_added($web = NULL , $skip = 0) {
 
             $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                            ->leftJoin('categories' ,'admin_videos.category_id' , '=' , 'categories.id')
+                            ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                            ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                             ->where('admin_videos.status' , 1)
-                            ->select(
-                                'admin_videos.id as admin_video_id' ,
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'),
-                                'admin_videos.watch_count' ,
-                                'admin_videos.duration',
-                                'admin_videos.ratings',
-                                'admin_videos.category_id','categories.name as category_name',
-                                'admin_videos.title','admin_videos.description','default_image')
+                            ->videoResponse()
                             ->orderby('admin_videos.created_at' , 'desc');
             if (Auth::check()) {
                 // Check any flagged videos are present
@@ -538,19 +533,10 @@
 
             $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
                             ->where('admin_videos.status' , 1)
-                            ->leftJoin('categories' ,'admin_videos.category_id' , '=' , 'categories.id')
-                            ->select(
-                                'admin_videos.id as admin_video_id' ,
-                                'admin_videos.title',
-                                'admin_videos.description',
-                                'admin_videos.duration',
-                                'admin_videos.ratings',
-                                'admin_videos.default_image',
-                                'admin_videos.category_id',
-                                'categories.name as category_name',
-                                'default_image','admin_videos.watch_count' ,
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
-                                )
+                            ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                            ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
+                            ->videoResponse()
                             ->orderByRaw('RAND()');
             if (Auth::check()) {
                 // Check any flagged videos are present
@@ -583,17 +569,9 @@
                             ->where('admin_videos.is_approved' , 1)
                             ->where('admin_videos.status' , 1)
                             ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                            ->select(
-                                'admin_videos.id as admin_video_id' ,
-                                'admin_videos.title',
-                                'admin_videos.description',
-                                'admin_videos.duration',
-                                'admin_videos.category_id',
-                                'admin_videos.ratings',
-                                'categories.name as category_name',
-                                'default_image','admin_videos.watch_count' ,
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
-                                )
+                            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                            ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
+                            ->videoResponse()
                             ->orderby('watch_count' , 'desc');
             if (Auth::check()) {
                 // Check any flagged videos are present
@@ -620,20 +598,9 @@
                         ->where('admin_videos.status' , 1)
                         ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                         ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                         ->where('admin_videos.category_id' , $category_id)
-                        ->select('admin_videos.id as admin_video_id' ,
-                                'admin_videos.default_image' ,
-                                'admin_videos.sub_category_id' ,
-                                'admin_videos.category_id',
-                                'admin_videos.watch_count' ,
-                                'admin_videos.title' ,
-                                'admin_videos.ratings',
-                                'admin_videos.description',
-                                'admin_videos.duration',
-                                'admin_videos.category_id',
-                                'categories.name as category_name',
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
-                                )
+                        ->videoResponse()
                         ->orderby('admin_videos.sub_category_id' , 'asc');
             if (Auth::check()) {
                 // Check any flagged videos are present
@@ -659,21 +626,9 @@
                         ->where('admin_videos.status' , 1)
                         ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                         ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                         ->where('admin_videos.sub_category_id' , $sub_category_id)
-                        ->select(
-                            'admin_videos.id as admin_video_id' ,
-                            'admin_videos.default_image' ,
-                            'admin_videos.watch_count' ,
-                            'admin_videos.title' ,
-                            'admin_videos.description',
-                            'admin_videos.ratings',
-                            'admin_videos.sub_category_id' ,
-                            'admin_videos.category_id',
-                            'categories.name as category_name',
-                            'sub_categories.name as sub_category_name',
-                            'admin_videos.duration',
-                            DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
-                            )
+                        ->videoResponse()
                         ->orderby('admin_videos.sub_category_id' , 'asc');
             if (Auth::check()) {
                 // Check any flagged videos are present
@@ -699,21 +654,9 @@
                         ->where('admin_videos.status' , 1)
                         ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                         ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                         ->where('admin_videos.genre_id' , $id)
-                        ->select(
-                            'admin_videos.id as admin_video_id' ,
-                            'admin_videos.default_image' ,
-                            'admin_videos.watch_count' ,
-                            'admin_videos.title' ,
-                            'admin_videos.description',
-                            'admin_videos.sub_category_id' ,
-                            'admin_videos.category_id',
-                            'admin_videos.ratings',
-                            'categories.name as category_name',
-                            'sub_categories.name as sub_category_name',
-                            'admin_videos.duration',
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
-                            )
+                        ->videoResponse()
                         ->orderby('admin_videos.sub_category_id' , 'asc');
 
             if($web) {
@@ -731,26 +674,7 @@
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                    ->select('admin_videos.id as admin_video_id' ,'admin_videos.title' ,
-                             'admin_videos.description' , 'admin_videos.ratings' ,
-                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
-                             'admin_videos.video','admin_videos.trailer_video',
-                             'admin_videos.default_image','admin_videos.watch_count',
-                             'admin_videos.video_type','admin_videos.video_upload_type',
-                             'admin_videos.amount',
-                             'admin_videos.type_of_user',
-                             'admin_videos.type_of_subscription',
-                             'admin_videos.ratings','admin_videos.reviews',
-                            'admin_videos.duration',
-                            DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'),
-
-                             'admin_videos.category_id as category_id',
-                             'admin_videos.sub_category_id',
-                             'admin_videos.genre_id',
-                             'categories.is_series',
-
-                             'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
-                             'genres.name as genre_name')
+                    ->videoResponse()
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->first();
 
@@ -800,20 +724,13 @@
         public static function search_video($key,$web = NULL,$skip = 0) {
 
             $videos_query = AdminVideo::where('admin_videos.is_approved' ,'=', 1)
+                        ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+                        ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                         ->where('title','like', '%'.$key.'%')
                         ->where('admin_videos.status' , 1)
-                        ->select( 'admin_videos.id as admin_video_id' ,
-                                'admin_videos.title',
-                                'admin_videos.description',
-                                'admin_videos.default_image',
-                                'admin_videos.category_id',
-                                'admin_videos.ratings',
-                                'default_image','admin_videos.watch_count' ,
-                                'admin_videos.duration',
-                                'admin_videos.is_approved','admin_videos.status',
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
-                                )
-                        ->orderBy('created_at' , 'desc');
+                        ->videoResponse()
+                        ->orderBy('admin_videos.created_at' , 'desc');
 
 
             if($web) {
