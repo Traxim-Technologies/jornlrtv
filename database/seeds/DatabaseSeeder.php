@@ -20,5 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TrackUserSeeder::class);
         $this->call(SetttingsTableAddedKey::class);
         $this->call(AddedReportVideoSettingsTable::class);
+        $this->call(AddedResolutionsInSettingsTable::class);
+        $this->call(AddedImageResolutionsInSettingsTable::class);
+        $this->call(AddVideoCompressSizeInSettingsTable::class);
     }
 }

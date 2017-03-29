@@ -878,3 +878,106 @@ function total_video_revenue() {
 function user_total_amount() {
     return PayPerView::where('user_id', Auth::user()->id)->where('status', 1)->sum('amount');
 }
+
+
+/**
+ * Function Name : getImageResolutions()
+ * Load all image resoltions types in settings table
+ *
+ * @return array of values
+ */ 
+function getImageResolutions() {
+    // Load Report Video values
+    $model = Settings::where('key', IMAGE_RESOLUTIONS_KEY)->get();
+    // Return array of values
+    return $model;
+}
+
+/**
+ * Function Name : getVideoResolutions()
+ * Load all video resoltions types in settings table
+ *
+ * @return array of values
+ */ 
+function getVideoResolutions() {
+    // Load Report Video values
+    $model = Settings::where('key', VIDEO_RESOLUTIONS_KEY)->get();
+    // Return array of values
+    return $model;
+}
+
+/**
+ * Function Name : convertMegaBytes()
+ * Convert bytes into mega bytes
+ *
+ * @return number
+ */
+function convertMegaBytes($bytes) {
+    return number_format($bytes / 1048576, 2);
+}
+
+/**
+ * Function Name : get_video_attributes()
+ * To get video Attributes
+ *
+ * @param string $video Video file name
+ *
+ * @return attributes
+ */
+function get_video_attributes($video) {
+
+    $command = 'ffmpeg -i ' . $video . ' -vstats 2>&1';
+    $output = shell_exec($command);
+
+    $regex_sizes = "/Video: ([^,]*), ([^,]*), ([0-9]{1,4})x([0-9]{1,4})/";
+    if (preg_match($regex_sizes, $output, $regs)) {
+        $codec = $regs [1] ? $regs [1] : null;
+        $width = $regs [3] ? $regs [3] : null;
+        $height = $regs [4] ? $regs [4] : null;
+    }
+
+    $regex_duration = "/Duration: ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}).([0-9]{1,2})/";
+    if (preg_match($regex_duration, $output, $regs)) {
+        $hours = $regs [1] ? $regs [1] : null;
+        $mins = $regs [2] ? $regs [2] : null;
+        $secs = $regs [3] ? $regs [3] : null;
+        $ms = $regs [4] ? $regs [4] : null;
+    }
+
+    return array('codec' => $codec,
+        'width' => $width,
+        'height' => $height,
+        'hours' => $hours,
+        'mins' => $mins,
+        'secs' => $secs,
+        'ms' => $ms
+    );
+}
+
+
+/**
+ * Function Name :readFile()
+ * To read a input file and get attributes
+ * 
+ * @param string $inputFile File name
+ *
+ * @return $attributes
+ */
+function readFileName($inputFile) {
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+    $mime_type = finfo_file($finfo, $inputFile); // check mime type
+
+    finfo_close($finfo);
+
+    $video_attributes = [];
+    
+    if (preg_match('/video\/*/', $mime_type)) {
+
+        $video_attributes = get_video_attributes($inputFile, 'ffmpeg');
+    } 
+
+    return $video_attributes;
+}
+

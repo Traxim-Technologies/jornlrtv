@@ -44,6 +44,8 @@
 
     use DB;
 
+    use App\Jobs\CompressVideo;
+
     class Helper
     {
         public static function clean($string)
@@ -377,23 +379,43 @@
 
         public static function video_upload($picture)
         {
-            $pieces = explode('/', base_path());
-            $str = implode('/', array_slice($pieces, 0, -1));
-
-            $path = $str."/live-streaming/public/uploads";
             
             $s3_url = "";
 
             $file_name = Helper::file_name();
 
             $ext = $picture->getClientOriginalExtension();
+
             $local_url = $file_name . "." . $ext;
 
-            $ext = $picture->getClientOriginalExtension();
-            $picture->move($path, $file_name . "." . $ext);
-            $local_url = $file_name . "." . $ext;
+            // Convert bytes into MB
+            $bytes = convertMegaBytes($picture->getClientSize());
 
-            $s3_url = Helper::web_url().'/uploads/'.$local_url;
+            $inputFile = base_path('public/uploads/videos/original/'.$local_url);
+
+            if ($bytes > Setting::get('video_compress_size')) {
+
+                // Compress the video and save in original folder
+                $FFmpeg = new \FFmpeg;
+
+                $FFmpeg
+                    ->input($picture->getPathname())
+                    ->vcodec('h264')
+                    ->constantRateFactor('28')
+                    ->output($inputFile)
+                    ->ready();
+
+            } else {
+
+                $picture->move(public_path() . "/uploads/videos/original/", $local_url);
+
+            }
+
+            if (file_exists($inputFile)) {
+                dispatch(new CompressVideo($inputFile, $local_url));
+            }
+
+            $s3_url = Helper::web_url().'/uploads/videos/'.$local_url;
 
             return $s3_url;
         }
