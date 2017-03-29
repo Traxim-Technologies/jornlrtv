@@ -1304,7 +1304,7 @@ class AdminController extends Controller
                 }
             } else {
                 if($request->has('ajax_key')) {
-                    // dd(tr('admin_not_error'));
+                    
                     return tr('admin_not_error');
                 } else { 
                     return back()->with('flash_error', tr('admin_not_error'));
@@ -1748,7 +1748,11 @@ class AdminController extends Controller
 
     public function email_settings() {
 
-        $result = \Enveditor::all();
+        $admin_id = \Auth::guard('admin')->user()->id;
+
+        $result = EnvEditorHelper::getEnvValues();
+
+        \Auth::guard('admin')->loginUsingId($admin_id);
 
         return view('admin.email-settings')->with('result',$result)->withPage('email-settings')->with('sub_page',''); 
     }
@@ -1757,6 +1761,8 @@ class AdminController extends Controller
     public function email_settings_process(Request $request) {
 
         $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
+
+        $admin_id = \Auth::guard('admin')->user()->id;
 
         foreach ($email_settings as $key => $data) {
 
@@ -1767,25 +1773,32 @@ class AdminController extends Controller
 
         \Artisan::call('config:cache');
 
-        $result = \Enveditor::all();
+        Auth::guard('admin')->loginUsingId($admin_id);
+
+        $result = EnvEditorHelper::getEnvValues();
 
         return back()->with('result' , $result)->with('flash_success' , tr('email_settings_success'));
 
     }
 
     public function settings() {
+
         $settings = array();
+
         $result = EnvEditorHelper::getEnvValues();
+
         return view('admin.settings.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
     }
 
     public function payment_settings() {
+
         $settings = array();
 
         return view('admin.payment-settings')->with('settings' , $settings)->withPage('payment-settings')->with('sub_page',''); 
     }
 
     public function theme_settings() {
+
         $settings = array();
 
         $settings[] =  Setting::get('theme');
@@ -2078,7 +2091,10 @@ class AdminController extends Controller
      * 
      * @return settings values
      */
+    
     public function save_common_settings(Request $request) {
+
+        $admin_id = \Auth::guard('admin')->user()->id;
 
         foreach ($request->all() as $key => $data) {
 
@@ -2088,6 +2104,8 @@ class AdminController extends Controller
         }
 
         \Artisan::call('config:cache');
+
+        \Auth::guard('admin')->loginUsingId($admin_id);
 
         $result = EnvEditorHelper::getEnvValues();
 
