@@ -929,6 +929,8 @@ function get_video_attributes($video) {
     $command = 'ffmpeg -i ' . $video . ' -vstats 2>&1';
     $output = shell_exec($command);
 
+    $codec = null;
+    
     $regex_sizes = "/Video: ([^,]*), ([^,]*), ([0-9]{1,4})x([0-9]{1,4})/";
     if (preg_match($regex_sizes, $output, $regs)) {
         $codec = $regs [1] ? $regs [1] : null;
