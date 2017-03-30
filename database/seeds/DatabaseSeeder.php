@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedResolutionsInSettingsTable::class);
         $this->call(AddedImageResolutionsInSettingsTable::class);
         $this->call(AddVideoCompressSizeInSettingsTable::class);
+        $this->call(AddedImageCompressSize::class);
     }
 }

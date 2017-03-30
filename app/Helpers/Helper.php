@@ -366,13 +366,33 @@
             $file_name = Helper::file_name();
 
             $ext = $picture->getClientOriginalExtension();
+
             $local_url = $file_name . "." . $ext;
 
-            $ext = $picture->getClientOriginalExtension();
-            $picture->move(public_path() . "/uploads", $file_name . "." . $ext);
-            $local_url = $file_name . "." . $ext;
+            $path = '/uploads/images/';
 
-            $s3_url = Helper::web_url().'/uploads/'.$local_url;
+            $inputFile = base_path('public'.$path.$local_url);
+
+            // Convert bytes into MB
+            $bytes = convertMegaBytes($picture->getClientSize());
+
+            if ($bytes > Setting::get('image_compress_size')) {
+
+                // Compress the video and save in original folder
+                $FFmpeg = new \FFmpeg;
+
+                $FFmpeg
+                    ->input($picture->getPathname())
+                    ->output($inputFile)
+                    ->ready();
+                // dd($FFmpeg->command);
+            } else {
+
+                $picture->move(public_path() . "/uploads/images/", $local_url);
+
+            }
+
+            $s3_url = Helper::web_url().'/uploads/images/'.$local_url;
 
             return $s3_url;
         }
