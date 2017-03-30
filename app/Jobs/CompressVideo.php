@@ -9,6 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use File;
 
+use Log; 
+
 class CompressVideo extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
