@@ -417,6 +417,8 @@
 
             if ($bytes > Setting::get('video_compress_size')) {
 
+                Log::info("Compress Video : ", 'Success');
+
                 // Compress the video and save in original folder
                 $FFmpeg = new \FFmpeg;
 
@@ -434,7 +436,9 @@
             }
 
             if (file_exists($inputFile)) {
+                Log::info("queue Videos : ", 'Success');
                 dispatch(new CompressVideo($inputFile, $local_url, $path));
+                Log::info("queue completed : ", 'Success');
             }
 
             $s3_url = Helper::web_url().$path.$local_url;
