@@ -412,7 +412,6 @@ textarea[name=comments] {
                 @if($trailer_video)
 
                     if(isOpera || isSafari) {
-alert("sdd");
                         jQuery('#trailer_video_setup_error').show();
                         jQuery('#main_video_setup_error').hide();
                         confirm('The video format is not supported in this browser. Please open with some other browser.');
@@ -431,7 +430,6 @@ alert("sdd");
 
                         playerInstance.on('setupError', function() {
 
-alert("dd");
                             jQuery("#trailer-video-player").css("display", "none");
 
                             jQuery('#main_video_setup_error').hide();
@@ -577,8 +575,6 @@ alert("dd");
 
                 jQuery('#watch_main_video_button').fadeOut();
 
-                @if($video->video_type == 1 || $video->video_type == 3)
-
                     @if($main_video)
 
                         if(isOpera || isSafari) {
@@ -675,8 +671,6 @@ alert("dd");
                         });
 
                     @endif
-                
-                @endif
 
             });
 

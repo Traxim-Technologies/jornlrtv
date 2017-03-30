@@ -529,7 +529,7 @@ class ModeratorController extends Controller
                              'admin_videos.category_id as category_id',
                              'admin_videos.sub_category_id',
                              'admin_videos.genre_id',
-
+                             'admin_videos.default_image',
                              'categories.name as category_name' , 'categories.is_series',
                              'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
