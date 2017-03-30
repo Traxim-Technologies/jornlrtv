@@ -177,11 +177,6 @@
 
                 <div class="box-body">
 
-                    @if($video->video_type != 1) 
-                        <div class="large-12">
-                            <iframe width="400" height="315" src="{{$video->trailer_video}}" allowfullscreen></iframe>
-                        </div>
-                    @else
                         @if($video->video_upload_type == 1)
                             <?php $trailer_url = $video->trailer_video; ?>
                             <div id="trailer-video-player"></div>
@@ -200,8 +195,6 @@
                             @endif
 
                         @endif
-
-                    @endif
 
                 </div>
 

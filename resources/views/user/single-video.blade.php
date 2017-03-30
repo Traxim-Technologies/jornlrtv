@@ -31,12 +31,7 @@ textarea[name=comments] {
 
                             <!-- Check the video type is youtube -->
 
-                            @if($video->video_type == 2)
-                                @include('user.videos.youtube')
-                            @else
-                                @include('user.videos.streaming')
-
-                            @endif
+                            @include('user.videos.streaming')
 
                             <div class="main-content">
                                 <div class="video-content">
@@ -399,8 +394,6 @@ textarea[name=comments] {
         
         jQuery(document).ready(function(){   
 
-            @if($video->video_type == 1 || $video->video_type == 3)
-
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
                 // Firefox 1.0+
@@ -474,9 +467,7 @@ alert("dd");
                     
                     }
 
-                @endif               
-
-            @endif       
+                @endif                
 
             //hang on event of form with id=myform
             jQuery("form[name='add_to_wishlist']").submit(function(e) {

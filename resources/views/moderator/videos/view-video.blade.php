@@ -46,27 +46,18 @@
                     <h4 style="font-weight:800;color:#3c8dbc">{{tr('sub_category')}}</h4>
 
                     <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->sub_category_name}}</p>
-
-                    @if($video->video_type != 1)
-                        <div class="large-12">
-                            <iframe width="580" height="315" src="{{$video->video}}" allowfullscreen></iframe>
-                        </div>
-
+                    @if($video->video_upload_type == 1)
+                        <?php $url = $video->video; ?>
+                        <div id="main-video-player"></div>
                     @else
-                        @if($video->video_upload_type == 1)
-                            <?php $url = $video->video; ?>
+                        @if(check_valid_url($video->video))
+
+                            <?php $url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->video) : $video->video; ?>
                             <div id="main-video-player"></div>
                         @else
-                            @if(check_valid_url($video->video))
-
-                                <?php $url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->video) : $video->video; ?>
-                                <div id="main-video-player"></div>
-                            @else
-                                <div class="image">
-                                    <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
-                                </div>
-                            @endif
-
+                            <div class="image">
+                                <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
+                            </div>
                         @endif
 
                     @endif
@@ -162,11 +153,6 @@
 
                 <div class="box-body">
 
-                    @if($video->video_type != 1) 
-                        <div class="large-12">
-                            <iframe width="400" height="315" src="{{$video->trailer_video}}" allowfullscreen></iframe>
-                        </div>
-                    @else
                         @if($video->video_upload_type == 1)
                             <?php $trailer_url = $video->trailer_video; ?>
                             <div id="trailer-video-player"></div>
@@ -185,8 +171,6 @@
                             @endif
 
                         @endif
-
-                    @endif
 
                 </div>
 
@@ -272,8 +256,6 @@
         
         jQuery(document).ready(function(){
 
-            @if($video->video_type == 1)
-
                 @if($url)
 
                     var playerInstance = jwplayer("main-video-player");
@@ -316,8 +298,6 @@
                     });
 
                 @endif
-
-            @endif
         });
 
     </script>
