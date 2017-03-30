@@ -1325,6 +1325,8 @@ class AdminController extends Controller
 
     public function edit_video_process(Request $request) {
 
+        dd($request);
+
         $video = AdminVideo::find($request->id);
 
         $video_validator = array();
