@@ -632,8 +632,10 @@ class ModeratorController extends Controller
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
 
                 } else {
-                    $video->video = Helper::video_upload($video_link);
-                    $video->trailer_video = Helper::video_upload($trailer_video);  
+                    $main_video_url = Helper::video_upload($video_link);
+                    $video->video = $main_video_url['db_url'];
+                    $trailer_video_url = Helper::video_upload($trailer_video);
+                    $video->trailer_video = $trailer_video_url['db_url'];  
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE) {
@@ -823,12 +825,14 @@ class ModeratorController extends Controller
                     $video->trailer_video = Helper::s3_upload_picture($trailer_video); 
                 } else {
                     if ($request->hasFile('video')) {
-                        $video->video = Helper::video_upload($video_link);
+                        $main_video_url = Helper::video_upload($video_link);
+                        $video->video = $main_video_url['db_url'];
                     } else {
                         $video->video = $video_link;
                     }
                     if ($request->hasFile('trailer_video')) {
-                        $video->trailer_video = Helper::video_upload($trailer_video);  
+                        $trailer_video_url = Helper::video_upload($trailer_video);
+                        $video->trailer_video = $trailer_video_url['db_url'];  
                     } else {
                         $video->trailer_video = $trailer_video;
                     }

@@ -1214,7 +1214,6 @@ class AdminController extends Controller
                     'other_image2' => 'required|mimes:jpeg,jpg,bmp,png',
                     'ratings' => 'required',
                     'reviews' => 'required',
-                    'duration' => 'required',
                     )
                 );
         if($validator->fails()) {
@@ -1234,9 +1233,6 @@ class AdminController extends Controller
             $video->category_id = $request->category_id;
             $video->sub_category_id = $request->sub_category_id;
             $video->genre_id = $request->has('genre_id') ? $request->genre_id : 0;
-            if($request->has('duration')) {
-                $video->duration = $request->duration;
-            }
 
             if($request->video_type == VIDEO_TYPE_UPLOAD) {
 
@@ -1248,16 +1244,27 @@ class AdminController extends Controller
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
 
                 } else {
-                    $video->video = Helper::video_upload($video_link);
-                    $video->trailer_video = Helper::video_upload($trailer_video);  
-                }                
+                    $main_video_duration = Helper::video_upload($video_link);
+                    $video->video = $main_video_duration['db_url'];
+                    $trailer_video_duration = Helper::video_upload($trailer_video);
+                    $video->trailer_video = $trailer_video_duration['db_url'];  
+                    /* $getDuration = readFileName($main_video_duration['baseUrl']);
+                    if ($getDuration) {
+                        $video->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
+                    }     
+                    $getTrailerDuration = readFileName($trailer_video_duration['baseUrl']);
+                    if ($getTrailerDuration) {
+                        $video->trailer_duration = $getTrailerDuration['hours'].':'.$getTrailerDuration['mins'].':'.$getTrailerDuration['secs'];
+                    }  */  
+                }     
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE) {
 
                 $video->video = get_youtube_embed_link($video_link);
+                // $video->duration = getYoutubeDuration($video->video);
                 $video->trailer_video = get_youtube_embed_link($trailer_video);
+                // $video->trailer_duration = getYoutubeDuration($video->trailer_video);
             } else {
-
                 $video->video = $video_link;
                 $video->trailer_video = $trailer_video;
             }
@@ -1286,6 +1293,8 @@ class AdminController extends Controller
             }
             
             $video->uploaded_by = ADMIN;
+
+            // dd($video);
 
             $video->save();
 
@@ -1449,13 +1458,15 @@ class AdminController extends Controller
 
                 } else {
                     if ($request->hasFile('video')) {
-                        $video->video = Helper::video_upload($video_link);
+                        $main_video_url = Helper::video_upload($video_link);
+                        $video->video = $main_video_url['db_url'];
                     } else {
                         $video->video = $video_link;
                     }
                     // dd($request->hasFile('trailer_video'));
                     if ($request->hasFile('trailer_video')) {
-                        $video->trailer_video = Helper::video_upload($trailer_video);  
+                        $trailer_video_url = Helper::video_upload($trailer_video);
+                        $video->trailer_video = $trailer_video_url['db_url'];  
                     } else {
                         $video->trailer_video = $trailer_video;
                     }

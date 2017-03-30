@@ -218,16 +218,20 @@ function get_genres($id) {
 function get_youtube_embed_link($video_url) {
 
     if(strpos($video_url , 'embed')) {
-       return $video_url;
+        $video_url_id = explode('embed/', $video_url);
+        if (count($video_url_id) == 2) {
+            return "https://www.youtube.com/watch?v=".$video_url_id[1];
+        }
     }
 
-    $video_url_id = substr($video_url, strpos($video_url, "=") + 1);
+    // $video_url_id = substr($video_url, strpos($video_url, "=") + 1);
 
-    $youtube_embed = "https://www.youtube.com/embed/" . $video_url_id;
+    // $youtube_embed = "https://www.youtube.com/embed/" . $video_url_id;
 
-    return $youtube_embed;
+    return $video_url;
 
 }
+
 
 function get_video_end($video_url) {
     $url = explode('/',$video_url);

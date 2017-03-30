@@ -419,7 +419,7 @@
 
             $s3_url = Helper::web_url().$path.$local_url;
 
-            return $s3_url;
+            return ['db_url'=>$s3_url, 'baseUrl'=> $inputFile];
         }
 
         public static function delete_picture($picture) {
