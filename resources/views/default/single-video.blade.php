@@ -56,15 +56,7 @@
 
                     <div class="flex-video widescreen">
 
-                        @if($video->video_type == 2) <!-- Check the video type is other than the local upload -->
-
-                            @include('user.videos.youtube')
-
-                        @else
-
                             @include('user.videos.streaming')
-
-                        @endif
 
                     </div><!--end flex-video-->
 
@@ -668,9 +660,7 @@
             }
         }
         
-        jQuery(document).ready(function(){
-
-            @if($video->video_type == 1 || $video->video_type == 3)    
+        jQuery(document).ready(function(){ 
 
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -751,8 +741,6 @@
                     }
 
                 @endif
-
-            @endif
 
             //hang on event of form with id=myform
             jQuery("form[name='add_to_wishlist']").submit(function(e) {

@@ -11,15 +11,8 @@
             <div class="video-player">
                 <div class="videoWrapper">
 
-                    @if($video->video_type == 2) <!-- Check the video type is other than the local upload -->
+                    @include('user.videos.streaming')
 
-                        @include('user.videos.youtube')
-
-                    @else
-
-                        @include('user.videos.streaming')
-
-                    @endif
                 </div>
             </div>
             
@@ -343,9 +336,6 @@
         
         jQuery(document).ready(function(){
 
-
-            @if($video->video_type == 1 || $video->video_type == 3)
-
                 // Opera 8.0+
                 
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -421,8 +411,6 @@
 
                         @endif
                     }
-
-                @endif
 
             @endif
 
