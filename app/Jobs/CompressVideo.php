@@ -63,5 +63,6 @@ class CompressVideo extends Job implements ShouldQueue
                 }
             }
         }
+        Log::info("Queue Videos Ended");
     }
 }
