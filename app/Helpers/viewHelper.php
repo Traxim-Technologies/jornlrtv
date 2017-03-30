@@ -929,8 +929,8 @@ function get_video_attributes($video) {
     $command = 'ffmpeg -i ' . $video . ' -vstats 2>&1';
     $output = shell_exec($command);
 
-    $codec = null;
-    
+    $codec = null; $width = null; $height = null;
+
     $regex_sizes = "/Video: ([^,]*), ([^,]*), ([0-9]{1,4})x([0-9]{1,4})/";
     if (preg_match($regex_sizes, $output, $regs)) {
         $codec = $regs [1] ? $regs [1] : null;
@@ -938,6 +938,8 @@ function get_video_attributes($video) {
         $height = $regs [4] ? $regs [4] : null;
     }
 
+    $hours = $mins = $secs = $ms = null;
+    
     $regex_duration = "/Duration: ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}).([0-9]{1,2})/";
     if (preg_match($regex_duration, $output, $regs)) {
         $hours = $regs [1] ? $regs [1] : null;
@@ -945,7 +947,6 @@ function get_video_attributes($video) {
         $secs = $regs [3] ? $regs [3] : null;
         $ms = $regs [4] ? $regs [4] : null;
     }
-
     return array('codec' => $codec,
         'width' => $width,
         'height' => $height,

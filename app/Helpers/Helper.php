@@ -388,10 +388,12 @@
 
             $local_url = $file_name . "." . $ext;
 
+            $path = '/uploads/videos/original/';
+
             // Convert bytes into MB
             $bytes = convertMegaBytes($picture->getClientSize());
 
-            $inputFile = base_path('public/uploads/videos/original/'.$local_url);
+            $inputFile = base_path('public'.$path.$local_url);
 
             if ($bytes > Setting::get('video_compress_size')) {
 
@@ -407,15 +409,15 @@
 
             } else {
 
-                $picture->move(public_path() . "/uploads/videos/original/", $local_url);
+                $picture->move(public_path() . $path, $local_url);
 
             }
 
             if (file_exists($inputFile)) {
-                dispatch(new CompressVideo($inputFile, $local_url));
+                dispatch(new CompressVideo($inputFile, $local_url, $path));
             }
 
-            $s3_url = Helper::web_url().'/uploads/videos/'.$local_url;
+            $s3_url = Helper::web_url().$path.$local_url;
 
             return $s3_url;
         }

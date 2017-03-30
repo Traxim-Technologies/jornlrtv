@@ -16,7 +16,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{request()->headers->get('referer')}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
+    <li><a href="{{request()->headers->get('referer')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
     <li class="active"> {{tr('edit_video')}}</li>
 @endsection 
 
