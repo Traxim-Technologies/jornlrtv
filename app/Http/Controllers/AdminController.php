@@ -1325,7 +1325,7 @@ class AdminController extends Controller
 
     public function edit_video_process(Request $request) {
 
-        Log::info("Initiaization Edit Process : ", print_r($request->all(),true));
+        Log::info("Initiaization Edit Process : ".print_r($request->all(),true));
 
         $video = AdminVideo::find($request->id);
 
@@ -1339,7 +1339,7 @@ class AdminController extends Controller
 
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 
-            Log::info("Video Type : ", $request->has('video_type'));
+            Log::info("Video Type : ".$request->has('video_type'));
 
             if (isset($request->video)) {
                 if ($request->video != '') {
@@ -1420,7 +1420,7 @@ class AdminController extends Controller
 
         } else {
 
-            Log::info("Success validation checking : ", 'Success');
+            Log::info("Success validation checking : Success");
 
             $video->title = $request->has('title') ? $request->title : $video->title;
 
@@ -1444,7 +1444,7 @@ class AdminController extends Controller
 
             if($request->video_type == VIDEO_TYPE_UPLOAD && $video_link && $trailer_video) {
 
-                 Log::info("To Be upload videos : ", 'Success');
+                 Log::info("To Be upload videos : ".'Success');
 
                 // Check Previous Video Upload Type, to delete the videos
 
@@ -1454,11 +1454,11 @@ class AdminController extends Controller
                 } else {
                      if ($request->hasFile('video')) {
                         Helper::delete_picture($video->video); 
-                        Log::info("Deleted Main Video : ", 'Success');   
+                        Log::info("Deleted Main Video : ".'Success');   
                     }
                     if ($request->hasFile('trailer_video')) {
                         Helper::delete_picture($video->trailer_video);
-                        Log::info("Deleted Trailer Video : ", 'Success');
+                        Log::info("Deleted Trailer Video : ".'Success');
                     }
                 }
 
@@ -1469,7 +1469,7 @@ class AdminController extends Controller
                 } else {
                     if ($request->hasFile('video')) {
                         $main_video_url = Helper::video_upload($video_link);
-                        Log::info("New Video Uploaded ( Main Video ) : ", 'Success');
+                        Log::info("New Video Uploaded ( Main Video ) : ".'Success');
                         $video->video = $main_video_url['db_url'];
                     } else {
                         $video->video = $video_link;
@@ -1477,7 +1477,7 @@ class AdminController extends Controller
                     // dd($request->hasFile('trailer_video'));
                     if ($request->hasFile('trailer_video')) {
                         $trailer_video_url = Helper::video_upload($trailer_video);
-                        Log::info("New Video Uploaded ( Trailer Video ) : ", 'Success');
+                        Log::info("New Video Uploaded ( Trailer Video ) : ".'Success');
                         $video->trailer_video = $trailer_video_url['db_url'];  
                     } else {
                         $video->trailer_video = $trailer_video;
@@ -1519,7 +1519,7 @@ class AdminController extends Controller
 
             $video->save();
 
-            Log::info("saved Video Object : ", 'Success');
+            Log::info("saved Video Object : ".'Success');
 
             if($video) {
 

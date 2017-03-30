@@ -34,7 +34,7 @@ class CompressVideo extends Job implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("Inside Queue Videos : ", 'Success');
+        Log::info("Inside Queue Videos : ". 'Success');
         $attributes = readFileName($this->inputFile); 
         if($attributes) {
             // Get Video Resolutions
@@ -49,7 +49,7 @@ class CompressVideo extends Job implements ShouldQueue
                     if (!is_dir($dirPath)) {
                         File::makeDirectory($dirPath, $mode = 0777, true, true);
                     }
-                    Log::info("Compressing Queue Videos : ", $solution->value);
+                    Log::info("Compressing Queue Videos : ".$solution->value);
                     $FFmpeg = new \FFmpeg;
                     $FFmpeg
                     ->input($this->inputFile)
