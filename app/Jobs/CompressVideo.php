@@ -48,10 +48,10 @@ class CompressVideo extends Job implements ShouldQueue
                 $getwidth = (count($exp) == 2) ? $exp[0] : 0;
                 if ($getwidth <= $attributes['width']) {
                     $dirPath = base_path('public/uploads/videos/'.$solution->value);
-                    if (!is_dir($dirPath)) {
+                    /*if (!is_dir($dirPath)) {
                         File::makeDirectory($dirPath, $mode = 0777, true, true);
-                    }
-                    Log::info("Compressing Queue Videos : ".$solution->value);
+                    }*/
+                    Log::info("Compressing Queue Videos : ".$dirPath);
                     $FFmpeg = new \FFmpeg;
                     $FFmpeg
                     ->input($this->inputFile)
@@ -60,6 +60,8 @@ class CompressVideo extends Job implements ShouldQueue
                     ->constantRateFactor('28')
                     ->output(base_path('public/uploads/videos/'.$solution->value.'/'.$this->local_url))
                     ->ready();
+
+                    Log::info('Output'.base_path('public/uploads/videos/'.$solution->value.'/'.$this->local_url));
                 }
             }
         }
