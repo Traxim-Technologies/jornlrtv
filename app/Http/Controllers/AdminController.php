@@ -1112,6 +1112,8 @@ class AdminController extends Controller
 
     public function edit_video(Request $request) {
 
+        Log::info("Queue Driver ".env('QUEUE_DRIVER'));
+
         $categories =  $categories = Category::where('categories.is_approved' , 1)
                         ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
                             'categories.is_series' ,'categories.status' , 'categories.is_approved')
@@ -1327,6 +1329,7 @@ class AdminController extends Controller
 
         Log::info("Initiaization Edit Process : ".print_r($request->all(),true));
 
+
         $video = AdminVideo::find($request->id);
 
         $video_validator = array();
@@ -1452,12 +1455,14 @@ class AdminController extends Controller
                     Helper::s3_delete_picture($video->video);   
                     Helper::s3_delete_picture($video->trailer_video);  
                 } else {
-                     if ($request->hasFile('video')) {
-                        Helper::delete_picture($video->video); 
+                    $videopath = '/uploads/videos/original/';
+
+                    if ($request->hasFile('video')) {
+                        Helper::delete_picture($video->video, $videopath); 
                         Log::info("Deleted Main Video : ".'Success');   
                     }
                     if ($request->hasFile('trailer_video')) {
-                        Helper::delete_picture($video->trailer_video);
+                        Helper::delete_picture($video->trailer_video, $videopath);
                         Log::info("Deleted Trailer Video : ".'Success');
                     }
                 }
