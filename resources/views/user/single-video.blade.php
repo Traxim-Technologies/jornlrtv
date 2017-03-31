@@ -411,6 +411,7 @@ textarea[name=comments] {
 
                 @if($trailer_video)
 
+
                     if(isOpera || isSafari) {
                         jQuery('#trailer_video_setup_error').show();
                         jQuery('#main_video_setup_error').hide();
@@ -632,18 +633,20 @@ textarea[name=comments] {
                     jQuery("#trailer-video-player").hide();
                     jQuery("#main-video-player").show();
                 
-                @else
+                
 
                     // Remove trailer video url, to stop the autoplay while playing main video
 
                     //First get the  iframe URL
-                    var url = $('#iframe_trailer_video').attr('src');
+                    /*var url = $('#iframe_trailer_video').attr('src');
 
                     $('#iframe_trailer_video').attr('src', '');
 
                     jQuery("#trailer_video_play").hide();
 
-                    jQuery("#main_video_play").show();
+                    jQuery("#main_video_play").show();*/
+
+
 
 
                     @if(!$history_status)
