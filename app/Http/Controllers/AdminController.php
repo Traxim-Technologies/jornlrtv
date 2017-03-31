@@ -1182,6 +1182,9 @@ class AdminController extends Controller
             $video_link = $request->file('video');
             $trailer_video = $request->file('trailer_video');
 
+            Log::info("Inside Main Video".$video_link);
+            Log::info("Inside Trailer Video".$trailer_video);
+
         } else {
 
             $video_validator = Validator::make( $request->all(), array(
@@ -1197,7 +1200,12 @@ class AdminController extends Controller
 
         if($video_validator) {
 
+             Log::info("Inside Video Validator");
+
              if($video_validator->fails()) {
+
+                Log::info("Fails Validator 2");
+
                 $error_messages = implode(',', $video_validator->messages()->all());
 
                 if ($request->has('ajax_key')) {
@@ -1223,6 +1231,9 @@ class AdminController extends Controller
                     )
                 );
         if($validator->fails()) {
+
+            Log::info("Fails Validator 1");
+
             $error_messages = implode(',', $validator->messages()->all());
 
             if ($request->has('ajax_key')) {
@@ -1232,6 +1243,8 @@ class AdminController extends Controller
             }
 
         } else {
+
+            Log::info("Success validation and navigated to create new object");
 
             $video = new AdminVideo;
             $video->title = $request->title;
