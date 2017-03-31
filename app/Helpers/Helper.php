@@ -44,7 +44,6 @@
 
     use DB;
 
-    use App\Jobs\CompressVideo;
 
     class Helper
     {
@@ -430,20 +429,12 @@
                     ->ready();
 
             } else {
-
                 $picture->move(public_path() . $path, $local_url);
-
-            }
-
-            if (file_exists($inputFile)) {
-                Log::info("queue Videos : ".'Success');
-                dispatch(new CompressVideo($inputFile, $local_url, $path));
-                Log::info("queue completed : ".'Success');
             }
 
             $s3_url = Helper::web_url().$path.$local_url;
 
-            return ['db_url'=>$s3_url, 'baseUrl'=> $inputFile];
+            return ['db_url'=>$s3_url, 'baseUrl'=> $inputFile, 'local_url'=>$local_url];
         }
 
         public static function delete_picture($picture) {

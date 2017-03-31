@@ -62,6 +62,8 @@ use Setting;
 
 use Log;
 
+use App\Jobs\CompressVideo;
+
 
 use App\Jobs\NormalPushNotification;
 
@@ -1167,6 +1169,7 @@ class AdminController extends Controller
 
     public function add_video_process(Request $request) {
 
+        Log::info("Initiaization Add Process : ".print_r($request->all(),true));
 
         if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
 
@@ -1216,6 +1219,7 @@ class AdminController extends Controller
                     'other_image2' => 'required|mimes:jpeg,jpg,bmp,png',
                     'ratings' => 'required',
                     'reviews' => 'required',
+                    'duration'=>'required',
                     )
                 );
         if($validator->fails()) {
@@ -1236,6 +1240,13 @@ class AdminController extends Controller
             $video->sub_category_id = $request->sub_category_id;
             $video->genre_id = $request->has('genre_id') ? $request->genre_id : 0;
 
+            if($request->has('duration')) {
+                $video->duration = $request->duration;
+            }
+
+            $main_video_duration = null;
+            $trailer_video_duration = null;
+
             if($request->video_type == VIDEO_TYPE_UPLOAD) {
 
                 $video->video_upload_type = $request->video_upload_type;
@@ -1246,6 +1257,7 @@ class AdminController extends Controller
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
 
                 } else {
+                    // if(ini_get('upload_max_size') > )
                     $main_video_duration = Helper::video_upload($video_link);
                     $video->video = $main_video_duration['db_url'];
                     $trailer_video_duration = Helper::video_upload($trailer_video);
@@ -1284,9 +1296,7 @@ class AdminController extends Controller
             }
 
             $video->ratings = $request->ratings;
-            $video->reviews = $request->reviews;
-
-            $video->is_approved = DEFAULT_TRUE;  
+            $video->reviews = $request->reviews;             
 
             if(strtotime($request->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
                 $video->status = DEFAULT_TRUE;
@@ -1297,11 +1307,36 @@ class AdminController extends Controller
             $video->uploaded_by = ADMIN;
 
             // dd($video);
+            Log::info("Approved : ".$video->is_approved);
 
             $video->save();
 
+            Log::info("saved Video Object : ".'Success');
+
+
             if($video) {
 
+                if ($main_video_duration) {
+                    $inputFile = $main_video_duration['baseUrl'];
+                    $local_url = $main_video_duration['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Main queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id));
+                        Log::info("Main Compress Status : ".$video->compress_status);
+                        Log::info("Main queue completed : ".'Success');
+                    }
+                }
+                if ($trailer_video_duration) {
+                    $inputFile = $trailer_video_duration['baseUrl'];
+                    $local_url = $main_video_duration['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Trailer queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id));
+                        Log::info("Trailer Compress Status : ".$video->compress_status);
+                        Log::info("Trailer queue completed : ".'Success');
+                    }
+                }
+                
                 Helper::upload_video_image($request->file('other_image1'),$video->id,2);
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
@@ -1473,7 +1508,9 @@ class AdminController extends Controller
 
                 } else {
                     if ($request->hasFile('video')) {
-                        $main_video_url = Helper::video_upload($video_link);
+                        $video->compress_status = DEFAULT_FALSE;
+                        $video->is_approved = DEFAULT_FALSE;
+                        $main_video_url = Helper::video_upload($video_link, $video, MAIN_VIDEO);
                         Log::info("New Video Uploaded ( Main Video ) : ".'Success');
                         $video->video = $main_video_url['db_url'];
                     } else {
@@ -1481,7 +1518,9 @@ class AdminController extends Controller
                     }
                     // dd($request->hasFile('trailer_video'));
                     if ($request->hasFile('trailer_video')) {
-                        $trailer_video_url = Helper::video_upload($trailer_video);
+                        $video->trailer_compress_status = DEFAULT_FALSE;
+                        $video->is_approved = DEFAULT_FALSE;
+                        $trailer_video_url = Helper::video_upload($trailer_video, $video, TRAILER_VIDEO);
                         Log::info("New Video Uploaded ( Trailer Video ) : ".'Success');
                         $video->trailer_video = $trailer_video_url['db_url'];  
                     } else {
@@ -1520,7 +1559,7 @@ class AdminController extends Controller
 
             $video->edited_by = ADMIN;
 
-            // $video->is_approved = DEFAULT_TRUE;
+            Log::info("Approved : ".$video->is_approved);
 
             $video->save();
 

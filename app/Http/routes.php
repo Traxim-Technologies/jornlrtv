@@ -40,6 +40,9 @@ if(!defined('Moderator')) define('Moderator',1);
 
 if(!defined('NONE')) define('NONE', 0);
 
+if(!defined('MAIN_VIDEO')) define('MAIN_VIDEO', 1);
+if(!defined('TRAILER_VIDEO')) define('TRAILER_VIDEO', 2);
+
 
 if(!defined('DEFAULT_TRUE')) define('DEFAULT_TRUE', 1);
 if(!defined('DEFAULT_FALSE')) define('DEFAULT_FALSE', 0);
