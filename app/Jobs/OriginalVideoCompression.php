@@ -32,11 +32,12 @@ class OriginalVideoCompression extends Job implements ShouldQueue
      */
     public function handle()
     {
+        
         // Compress the video and save in original folder
         $FFmpeg = new \FFmpeg;
 
         $FFmpeg
-            ->input($this->getPathname)
+            ->input($this->getPathname->getPathname())
             ->vcodec('h264')
             ->constantRateFactor('28')
             ->output($this->inputFile)
