@@ -113,15 +113,15 @@
 											<div class="pull-left">
                                                 @if(Auth::user()->user_type == 1)
                                                     
-                                                    <button id="watch_main_video_button" style="background:#e96969;color:#fff" type="submit" name="subscribe">{{tr('watch_main_video')}}</button>
+                                                    <button id="watch_main_video_button" style="background:green;color:#fff" type="submit" name="subscribe">{{tr('watch_main_video')}}</button>
 
                                                 @else
 
                                                     @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
 
-                                                        <button style="background:#e96969;color:#fff" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
+                                                        <button style="background:green;color:#fff" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
                                                     @else
-                                                        <button style="background:#e96969;color:#fff" type="button" class="btn btn-info btn-lg" disabled>{{tr('watch_main_video')}}</button>
+                                                        <button style="background:green;color:#fff" type="button" class="btn btn-info btn-lg" disabled>{{tr('watch_main_video')}}</button>
                                                     @endif
 
                                                     <div class="modal fade" id="paypal" role="dialog">

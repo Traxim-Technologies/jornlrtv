@@ -1,5 +1,6 @@
 @extends('layouts.user')
 
+
 @section('content')
 
     <?php $url = $trailer_url = ""; ?>
@@ -24,14 +25,14 @@
                         @if(Auth::check())
                             <div class="pull-left">
                                 @if(Auth::user()->user_type == 1)
-                                    <input class="watch-full" type="submit" id="watch_main_video_button" name="submit" value="{{tr('watch_main_video')}}">
+                                    <input class="watch-full" type="submit" id="watch_main_video_button" name="submit" value="{{tr('watch_main_video')}}" style="background: green">
                                 @else
 
                                     @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
-                                        <button type="button" class="btn btn-default watch-full" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
+                                        <button type="button" class="btn btn-default watch-full" data-toggle="modal" data-target="#paypal" style="background: green">{{tr('watch_main_video')}}</button>
                                     @else
 
-                                        <button type="button" class="btn btn-default watch-full" disabled>{{tr('watch_main_video')}}</button>
+                                        <button type="button" class="btn btn-default watch-full" disabled style="background: green">{{tr('watch_main_video')}}</button>
                                     @endif
 
                                     <div class="modal fade cus-mod" id="paypal" role="dialog">

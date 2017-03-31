@@ -9,6 +9,7 @@
 textarea[name=comments] {
     resize: none;
 }
+
 </style>
 
 @endsection
@@ -50,17 +51,17 @@ textarea[name=comments] {
 															<div class="pull-left">
                                                             @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)                             
                                                             
-                                                                <button type="submit" id="watch_main_video_button" class="watch-button">{{tr('watch_main_video')}}</button>
+                                                                <button type="submit" id="watch_main_video_button" class="watch-button" style="background:green;">{{tr('watch_main_video')}}</button>
 
                                                                 <!-- <p>{{tr('duration')}} {{$video->duration}}</p> -->
                                                             @else
 
                                                                 @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
 
-                                                                    <button  type="button" class="watch-button" data-toggle="modal" data-target="#paypal">{{tr('watch_main_video')}}</button>
+                                                                    <button  type="button" class="watch-button" data-toggle="modal" data-target="#paypal"  style="background:green;">{{tr('watch_main_video')}}</button>
                                                                 @else
 
-                                                                    <button  type="button" class="watch-button" disabled>{{tr('watch_main_video')}}</button>
+                                                                    <button  type="button" class="watch-button" disabled  style="background:green;">{{tr('watch_main_video')}}</button>
                                                                 @endif
 
 
@@ -96,7 +97,7 @@ textarea[name=comments] {
                                                         </div>
                                                         <div class="pull-right">
                                                             @if($flaggedVideo == '')
-                                                                <button onclick="showReportForm();" type="button" class="watch-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                                <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
                                                             @else 
                                                                 <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
                                                             @endif

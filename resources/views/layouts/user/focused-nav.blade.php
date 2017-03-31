@@ -16,6 +16,7 @@
         		<a href="{{route('user.profile')}}" class="y-signin">{{tr('back_profile')}}</a>
         	@else
         		<a href="{{route('user.register.form')}}" class="y-signin">{{tr('signup')}}</a>
+                <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
         	@endif
         
         </div><!--y-button end-->

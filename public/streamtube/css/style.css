@@ -383,9 +383,23 @@ videos (single page) css
 	float: right;
 	padding: 5px 10px;
 }
+
 .title button:hover{
-	background-color: #b31217
+	background-color: #b31217;
 }
+
+.report-button{
+    background-color: #b31217;
+	color: #fff;
+	box-shadow: none;
+	border-color: transparent;
+	border-radius: 4px;
+	margin-bottom: 5px;
+	float: right;
+	padding: 5px 10px;
+}
+
+
 .video-title h4{
 	font-size: 13px;
     font-weight: bold;
