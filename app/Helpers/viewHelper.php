@@ -992,14 +992,13 @@ function readFileName($inputFile) {
 function getResolutionsPath($video, $resolutions, $streaming_url) {
 
     $video_resolutions = ($streaming_url) ? [$streaming_url.get_video_end($video),$video] : [$video];
-    
+
     $pixels = ['Original'];
     $exp = explode('original/', $video);
 
     if (count($exp) == 2) {
         if ($resolutions) {
             $split = explode(',', $resolutions);
-            array_push()
             foreach ($split as $key => $resoltuion) {
                 array_push($video_resolutions, $exp[0].$resoltuion.'/'.$exp[1]);
                 $splitre = explode('x', $resoltuion);
