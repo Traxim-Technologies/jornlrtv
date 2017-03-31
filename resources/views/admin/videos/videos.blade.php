@@ -68,9 +68,6 @@
 
 							      	@endif
 							      	<td>
-							      	{{$video->compress_status}}
-							      		{{$video->compress_status == 0}}
-							      		{{$video->trailer_compress_status == 0}}
 							      		@if ($video->compress_status == 0 || $video->trailer_compress_status == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>
 							      		@else

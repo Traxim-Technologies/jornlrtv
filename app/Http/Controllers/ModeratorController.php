@@ -471,6 +471,8 @@ class ModeratorController extends Controller
                              'admin_videos.category_id as category_id',
                              'admin_videos.sub_category_id',
                              'admin_videos.genre_id',
+                             'admin_videos.compress_status',
+                             'admin_videos.trailer_compress_status',
 
                              'admin_videos.status','admin_videos.uploaded_by',
                              'admin_videos.edited_by','admin_videos.is_approved',
