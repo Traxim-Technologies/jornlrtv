@@ -202,7 +202,7 @@ class ModeratorController extends Controller
                 $message = tr('admin_not_category');
 
                 if($request->hasFile('picture')) {
-                    delete_picture($category->picture);
+                    delete_picture($category->picture, "/uploads/");
                 }
 
             } else {
@@ -332,15 +332,15 @@ class ModeratorController extends Controller
                 $message = tr('admin_not_sub_category');
 
                 if($request->hasFile('picture1')) {
-                    delete_picture($request->file('picture1'));
+                    delete_picture($request->file('picture1'), "/uploads/");
                 }
 
                 if($request->hasFile('picture2')) {
-                    delete_picture($request->file('picture2'));
+                    delete_picture($request->file('picture2'), "/uploads/");
                 }
 
                 if($request->hasFile('picture3')) {
-                    delete_picture($request->file('picture3'));
+                    delete_picture($request->file('picture3'), "/uploads/");
                 }
             } else {
                 $message = tr('admin_add_sub_category');
@@ -840,10 +840,10 @@ class ModeratorController extends Controller
                     Helper::s3_delete_picture($video->trailer_video);  
                 } else {
                     if ($request->hasFile('video')) {
-                        Helper::delete_picture($video->video);    
+                        Helper::delete_picture($video->video, "/uploads/videos/original/");    
                     }
                     if ($request->hasFile('trailer_video')) {
-                        Helper::delete_picture($video->trailer_video);
+                        Helper::delete_picture($video->trailer_video, "/uploads/videos/original/");
                     }
                 }
 
@@ -879,13 +879,13 @@ class ModeratorController extends Controller
             }
 
             if($request->hasFile('default_image')) {
-                Helper::delete_picture($video->default_image);
+                Helper::delete_picture($video->default_image, "/uploads/images/");
                 $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
             }
 
             if($video->is_banner == 1) {
                 if($request->hasFile('banner_image')) {
-                    Helper::delete_picture($video->banner_image);
+                    Helper::delete_picture($video->banner_image, "/uploads/images/");
                     $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
                 }
             }

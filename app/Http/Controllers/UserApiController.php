@@ -502,7 +502,7 @@ class UserApiController extends Controller
 
                 // Upload picture
                 if ($request->hasFile('picture') != "") {
-                    Helper::delete_picture($user->picture); // Delete the old pic
+                    Helper::delete_picture($user->picture, "/uploads/"); // Delete the old pic
                     $user->picture = Helper::normal_upload_picture($request->file('picture'));
                 }
 

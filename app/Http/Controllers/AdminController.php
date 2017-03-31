@@ -156,7 +156,7 @@ class AdminController extends Controller
             $admin->address = $request->has('address') ? $request->address : $admin->address;
 
             if($request->hasFile('picture')) {
-                Helper::delete_picture($admin->picture);
+                Helper::delete_picture($admin->picture, "/uploads/");
                 $admin->picture = Helper::normal_upload_picture($request->picture);
             }
                 
@@ -707,7 +707,7 @@ class AdminController extends Controller
                 $category = Category::find($request->id);
                 $message = tr('admin_not_category');
                 if($request->hasFile('picture')) {
-                    Helper::delete_picture($category->picture);
+                    Helper::delete_picture($category->picture, "/uploads/");
                 }
             } else {
                 $message = tr('admin_add_category');
@@ -853,15 +853,15 @@ class AdminController extends Controller
                 $message = tr('admin_not_sub_category');
 
                 if($request->hasFile('picture1')) {
-                    Helper::delete_picture($request->file('picture1'));
+                    Helper::delete_picture($request->file('picture1'), "/uploads/");
                 }
 
                 if($request->hasFile('picture2')) {
-                    Helper::delete_picture($request->file('picture2'));
+                    Helper::delete_picture($request->file('picture2'), "/uploads/");
                 }
 
                 if($request->hasFile('picture3')) {
-                    Helper::delete_picture($request->file('picture3'));
+                    Helper::delete_picture($request->file('picture3'), "/uploads/");
                 }
             } else {
                 $message = tr('admin_add_sub_category');
@@ -1514,6 +1514,10 @@ class AdminController extends Controller
                     }
                     if ($request->hasFile('trailer_video')) {
                         Helper::delete_picture($video->trailer_video, $videopath);
+                        // @TODO
+                        foreach ($ as $key => $value) {
+                            # code...
+                        }
                         Log::info("Deleted Trailer Video : ".'Success');
                     }
                 }
@@ -1554,13 +1558,13 @@ class AdminController extends Controller
             }
 
             if($request->hasFile('default_image')) {
-                Helper::delete_picture($video->default_image);
+                Helper::delete_picture($video->default_image, "/uploads/images/");
                 $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
             }
 
             if($video->is_banner == 1) {
                 if($request->hasFile('banner_image')) {
-                    Helper::delete_picture($video->banner_image);
+                    Helper::delete_picture($video->banner_image, "/uploads/images/");
                     $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
                 }
             }
@@ -1941,7 +1945,7 @@ class AdminController extends Controller
                     if($request->hasFile('site_icon')) {
                         
                         if($setting->value) {
-                            Helper::delete_picture($setting->value);
+                            Helper::delete_picture($setting->value, "/uploads/");
                         }
 
                         $setting->value = Helper::normal_upload_picture($request->file('site_icon'));
@@ -1954,7 +1958,7 @@ class AdminController extends Controller
 
                         if($setting->value) {
 
-                            Helper::delete_picture($setting->value);
+                            Helper::delete_picture($setting->value, "/uploads/");
                         }
 
                         $setting->value = Helper::normal_upload_picture($request->file('site_logo'));

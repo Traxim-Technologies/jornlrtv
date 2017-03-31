@@ -56,7 +56,7 @@ class CompressVideo extends Job implements ShouldQueue
                 $exp = explode('x', $solution->value);
                 // Explode $solution value
                 $getwidth = (count($exp) == 2) ? $exp[0] : 0;
-                if ($getwidth <= $attributes['width']) {
+                if ($getwidth < $attributes['width']) {
                     $dirPath = base_path('public/uploads/videos/'.$solution->value);
                     Log::info("Compressing Queue Videos : ".$dirPath);
                     $FFmpeg = new \FFmpeg;

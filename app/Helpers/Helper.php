@@ -311,7 +311,7 @@
             if($check_video_image) {
                 $video_image = $check_video_image;
 
-                Helper::delete_picture($video_image->image);
+                Helper::delete_picture($video_image->image, "/uploads/");
 
             } else {
                 $video_image = new AdminVideoImage;
@@ -333,7 +333,7 @@
 
         public static function upload_picture($picture)
         {
-            Helper::delete_picture($picture);
+            Helper::delete_picture($picture, "/uploads/");
 
             $s3_url = "";
 
@@ -437,8 +437,9 @@
             return ['db_url'=>$s3_url, 'baseUrl'=> $inputFile, 'local_url'=>$local_url];
         }
 
-        public static function delete_picture($picture) {
-            File::delete( public_path() . "/uploads/" . basename($picture));
+        public static function delete_picture($picture, $path) {
+            // "/uploads/"
+            File::delete( public_path() . $path . basename($picture));
             return true;
         }
 
