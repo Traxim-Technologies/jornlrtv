@@ -124,7 +124,7 @@ class AdminVideo extends Model
             'admin_videos.is_approved',
             'admin_videos.status',
             'admin_videos.trailer_video_resolutions',
-            'admin_videos.video_resolutions',
+            'admin_videos.video_resolutions'
         );
     }
 }
