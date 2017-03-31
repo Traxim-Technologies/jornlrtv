@@ -580,7 +580,8 @@ class UserController extends Controller {
             ]);
             // If validator Fails, redirect same with error values
             if ($validator->fails()) {
-                throw new Exception("error", tr('admin_published_video_failure'));
+                 //throw new Exception("error", tr('admin_published_video_failure'));
+                return back()->with('flash_error', tr('admin_published_video_failure'));
             }
             // Assign Post request values into Data variable
             $data = $request->all();
@@ -590,7 +591,8 @@ class UserController extends Controller {
             if ($report_video = Flag::create($data)) {
                 return redirect('/')->with('flash_success', tr('report_video_success_msg'));
             } else {
-                throw new Exception("error", tr('admin_published_video_failure'));
+                //throw new Exception("error", tr('admin_published_video_failure'));
+                return back()->with('flash_error', tr('admin_published_video_failure'));
             }
         } catch (Exception $e) {
             return back()->with('flash_error', $e);
@@ -614,10 +616,12 @@ class UserController extends Controller {
                 if ($model->delete()) {
                     return back()->with('flash_success', tr('unmark_report_video_success_msg'));
                 } else {
-                    throw new Exception("error", tr('admin_published_video_failure'));
+                    // throw new Exception("error", tr('admin_published_video_failure'));
+                    return back()->with('flash_error', tr('admin_published_video_failure'));
                 }
             } else {
-                throw new Exception("error", tr('admin_published_video_failure'));
+                // throw new Exception("error", tr('admin_published_video_failure'));
+                return back()->with('flash_error', tr('admin_published_video_failure'));
             }
         } catch (Exception $e) {
             return back()->with('flash_error', $e);
