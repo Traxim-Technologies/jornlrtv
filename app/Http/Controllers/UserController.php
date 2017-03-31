@@ -138,8 +138,17 @@ class UserController extends Controller {
                         $trailer_video = \Setting::get('streaming_url').get_video_end($video->trailer_video);
                     }
                 }
-
             }
+            $trailerResolution = getResolutionsPath($video->trailer_video, $video->trailer_video_resolutions);
+
+            $trailer_re_path = $trailerResolution['video_resolutions'];
+            $trailer_pixels = $trailerResolution['pixels'];
+            
+            $videoResolution = getResolutionsPath($video->video, $video->video_resolutions);
+
+            $video_re_path = $videoResolution['video_resolutions'];
+            $video_pixels = $videoResolution['pixels'];
+            
         } else {
             return redirect('/')->with('flash_error' , tr('video_not_found'));
         }
@@ -166,6 +175,10 @@ class UserController extends Controller {
                     ->with('url' , $main_video)
                     ->with('categories' , $categories)
                     ->with('report_video', $report_video)
+                    ->with('video_video_path', $video_re_path)
+                    ->with('video_pixels', $video_pixels)
+                    ->with('trailer_video_path', $trailer_re_path)
+                    ->with('trailer_pixels', $trailer_pixels)
                     ->with('flaggedVideo', $flaggedVideo);
     }
 

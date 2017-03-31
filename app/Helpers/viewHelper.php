@@ -988,3 +988,21 @@ function readFileName($inputFile) {
     return $video_attributes;
 }
 
+function getResolutionsPath($video, $resolutions) {
+    $video_resolutions = [$video];
+    $pixels = ['Original'];
+    $exp = explode('original/', $video);
+    if (count($exp) == 2) {
+        if ($resolutions) {
+            $split = explode(',', $resolutions);
+            foreach ($split as $key => $resoltuion) {
+                array_push($video_resolutions, $exp[0].$resoltuion.'/'.$exp[1]);
+                $splitre = explode('x', $resoltuion);
+                array_push($pixels, $splitre[1].'p');
+            }
+        }
+    }
+    $video_resolutions = implode(',', $video_resolutions);
+    $pixels = implode(',', $pixels);
+    return ['video_resolutions' => $video_resolutions, 'pixels'=> $pixels];
+}

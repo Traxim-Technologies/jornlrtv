@@ -421,12 +421,21 @@ textarea[name=comments] {
 
                         var playerInstance = jwplayer("trailer-video-player");
 
+                        var trailerVideoPath = "{{$trailer_video_path}}";
+                        var trailerVideoPixels = "{{$trailer_pixels}}";
+
+                        var trailerPath = [];
+
+                        var splitTrailer = trailerVideoPath.split(',');
+
+                        for (var i = 0 ; i < splitTrailer.length; i++) {
+                            trailerPath.push({file : trailerVideoPath[i], label : trailerVideoPixels[i]});
+                        }
+
+                        console.log(trailerPath);
+
                         playerInstance.setup({
-                            sources: [{ 
-                                file: "{{$trailer_video}}"
-                            },{
-                                file: "{{$video->trailer_video}}"
-                            }] ,
+                            sources: trailerPath,
                             image: "{{$video->default_image}}",
                             width: "100%",
                             aspectratio: "16:9",
