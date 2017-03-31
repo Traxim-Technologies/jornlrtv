@@ -21,7 +21,7 @@ return array(
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
-	'compress'=>'Video Compressing...'
+	'compress'=>'Video Compressing...',
 
 	'report'=>'Mark as Spam',
 	'spam_videos' => 'Spam Videos',
