@@ -992,11 +992,17 @@ function readFileName($inputFile) {
 
 function getResolutionsPath($video, $resolutions) {
     Log::info("Video Resoltuion Value : ".print_r($video,true));
+
+    Log::info("Video Resoltuion Value : ".print_r($resolutions,true));
     $video_resolutions = [$video];
     $pixels = ['Original'];
     $exp = explode('original/', $video);
     Log::info("Video Resoltuion Value : ".print_r($exp,true));
+
+    Log::info("Count : ".print_r(count($exp),true));
     if (count($exp) == 2) {
+
+        Log::info("Inside Resoltuions");
         if ($resolutions) {
             Log::info("Video Resoltuion Value : ".print_r($resolutions,true));
             $split = explode(',', $resolutions);
