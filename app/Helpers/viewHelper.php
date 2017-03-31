@@ -991,7 +991,7 @@ function readFileName($inputFile) {
 
 function getResolutionsPath($video, $resolutions, $streaming_url) {
 
-    $video_resolutions = ($streaming_url) ? [$streaming_url.get_video_end($video),$video] : [$video];
+    $video_resolutions = ($streaming_url) ? [$streaming_url.get_video_end($video)] : [$video];
 
     $pixels = ['Original'];
     $exp = explode('original/', $video);
@@ -1000,7 +1000,8 @@ function getResolutionsPath($video, $resolutions, $streaming_url) {
         if ($resolutions) {
             $split = explode(',', $resolutions);
             foreach ($split as $key => $resoltuion) {
-                array_push($video_resolutions, $exp[0].$resoltuion.'/'.$exp[1]);
+                $streamUrl = ($streaming_url) ? $streaming_url.$exp[1] : $exp[0].$resoltuion.'/'.$exp[1];
+                array_push($video_resolutions, $streamUrl);
                 $splitre = explode('x', $resoltuion);
                 array_push($pixels, $splitre[1].'p');
             }
