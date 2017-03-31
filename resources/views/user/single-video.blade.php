@@ -432,7 +432,8 @@ textarea[name=comments] {
                             trailerPath.push({file : trailerVideoPath[i], label : trailerVideoPixels[i]});
                         }
 
-                        // console.log(trailerPath);
+                        alert(trailerPath);
+                        console.log(trailerPath);
 
                         playerInstance.setup({
                             sources: trailerPath,
