@@ -615,7 +615,7 @@ class UserController extends Controller {
             // If the flag model exists then delete the row
             if ($model) {
                 Log::info("Loaded Values 1 : ".print_r($model, true));
-                Log::info("Delete values " : print_r($model->delete()));
+                Log::info("Delete values :". print_r($model->delete()));
                 if ($model->delete()) {
                     return back()->with('flash_success', tr('unmark_report_video_success_msg'));
                 } else {
