@@ -24,7 +24,7 @@
 
                 <div class="box-header with-border">
                     <div class="user-block">
-                        <span style="margin-left:0px" class="username"><a href="#">{{$video->title}}</a></span>
+                        <span style="margin-left:0px" class="username"><a href="#">{{$video->title}} @if ($video->compress_status == 0 || $video->trailer_compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>@endif</a></span>
                         <span style="margin-left:0px" class="description">Created Time - {{$video->video_date}}</span>
                     </div>
                     

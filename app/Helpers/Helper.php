@@ -418,7 +418,7 @@
 
             if ($bytes > Setting::get('video_compress_size')) {
 
-                dispatch(new OriginalVideoCompression($inputFile, $picture->getPathname()));
+                dispatch(new OriginalVideoCompression($picture->getPathname(), $inputFile));
 
                 Log::info("Compress Video : ".'Success');
 
