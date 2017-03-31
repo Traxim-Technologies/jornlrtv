@@ -289,12 +289,23 @@
 
                     var playerInstance = jwplayer("main-video-player");
 
+                    var videoPath = "{{$video_video_path}}";
+                    var videoPixels = "{{$video_pixels}}";
+
+                    var path = [];
+
+                    var splitVideo = videoPath.split(',');
+
+                    var splitVideoPixel = videoPixels.split(',');
+
+
+                    for (var i = 0 ; i < splitVideo.length; i++) {
+
+                        path.push({file : splitVideo[i], label : splitVideoPixel[i]});
+                    }
+
                     playerInstance.setup({
-                        sources: [{ 
-                                    file: "{{$url}}"
-                                },{
-                                    file: "{{$video->video}}"
-                                }] ,
+                        sources: path,
                         image: "{{$video->default_image}}",
                         width: "100%",
                         aspectratio: "16:9",
@@ -321,12 +332,23 @@
 
                     var playerInstance = jwplayer("trailer-video-player");
 
+                    var trailerVideoPath = "{{$trailer_video_path}}";
+                    var trailerVideoPixels = "{{$trailer_pixels}}";
+
+                    var trailerPath = [];
+
+                    var splitTrailer = trailerVideoPath.split(',');
+
+                    var splitTrailerPixel = trailerVideoPixels.split(',');
+
+
+                    for (var i = 0 ; i < splitTrailer.length; i++) {
+
+                        trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
+                    }
+
                     playerInstance.setup({
-                        sources: [{ 
-                                    file: "{{$trailer_url}}"
-                                },{
-                                    file: "{{$video->trailer_video}}"
-                                }] ,
+                        sources: trailerPath,
                         image: "{{$video->default_image}}",
                         width: "100%",
                         aspectratio: "16:9",

@@ -997,14 +997,28 @@ class ModeratorController extends Controller
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->first();
 
-            $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)
+        $trailerResolution = getResolutionsPath($videos->trailer_video, $videos->trailer_video_resolutions,\Setting::get('streaming_url'));
+
+        $trailer_re_path = $trailerResolution['video_resolutions'];
+        $trailer_pixels = $trailerResolution['pixels'];
+        
+        $videoResolution = getResolutionsPath($videos->video, $videos->video_resolutions,\Setting::get('streaming_url'));
+
+        $video_re_path = $videoResolution['video_resolutions'];
+        $video_pixels = $videoResolution['pixels'];
+
+        $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)
                                 ->orderBy('is_default' , 'desc')
                                 ->get();
 
         return view('moderator.videos.view-video')->with('video' , $videos)
                     ->with('video_images' , $admin_video_images)
                     ->withPage('videos')
-                    ->with('sub_page','view-videos');
+                    ->with('sub_page','view-videos')
+                    ->with('video_video_path', $video_re_path)
+                    ->with('video_pixels', $video_pixels)
+                    ->with('trailer_video_path', $trailer_re_path)
+                    ->with('trailer_pixels', $trailer_pixels);
         }
     }
 
