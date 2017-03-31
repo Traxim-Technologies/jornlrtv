@@ -4,6 +4,17 @@
 
 @section('content-header', tr('view_video'))
 
+@section('styles')
+
+<style>
+hr {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+</style>
+
+@endsection
+
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i> {{tr('videos')}}</a></li>
@@ -131,19 +142,69 @@
               <hr>
 
               <div class="row">
-                  <div class="col-lg-6">
-                      <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('description')}}</strong>
+                <div class="col-lg-12">
+                    <div class="col-lg-6">
+                          <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('description')}}</strong>
 
-                      <p style="margin-top: 10px;">{{$video->description}}.</p>
-                </div>
-                 <div class="col-lg-6">
-                      <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('reviews')}}</strong>
+                          <p style="margin-top: 10px;">{{$video->description}}.</p>
+                    </div>
+                     <div class="col-lg-6">
+                          <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('reviews')}}</strong>
 
-                      <p style="margin-top: 10px;">{{$video->reviews}}.</p>
+                          <p style="margin-top: 10px;">{{$video->reviews}}.</p>
+                    </div>
                 </div>
-            </div>
+             </div>
 
               <hr>
+
+              @if($video->amount > 0)
+
+              <h4 style="margin-left: 15px;font-weight: bold;">{{tr('pay_per_view')}}</h4>
+              <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('type_of_user')}}</strong>
+
+                        <p style="margin-top: 10px;">
+                            @if($video->type_of_user == NORMAL_USER)
+                                {{tr('normal_user')}}
+                            @elseif($video->type_of_user == PAID_USER)
+                                {{tr('paid_user')}}
+                            @elseif($video->type_of_user == BOTH_USERS) 
+                                {{tr('both_user')}}
+                            @else
+                                -
+                            @endif
+                        </p>
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('type_of_subscription')}}</strong>
+
+                        <p style="margin-top: 10px;">
+                            @if($video->type_of_subscription == ONE_TIME_PAYMENT)
+                                {{tr('one_time_payment')}}
+                            @elseif($video->type_of_subscription == RECURRING_PAYMENT)
+                                {{tr('recurring_payment')}}
+                            @else
+                                -
+                            @endif
+                        </p>
+                    </div>
+                    <div class="col-lg-4">
+                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('amount')}}</strong>
+
+                        <p style="margin-top: 10px;">
+                           {{$video->amount}}
+                        </p>
+                    </div>
+                </div>
+              </div>
+
+              <hr>
+              @endif
+              
 
                 <div class="row">
                   <div class="col-lg-12">
