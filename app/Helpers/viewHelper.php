@@ -991,13 +991,13 @@ function readFileName($inputFile) {
 }
 
 function getResolutionsPath($video, $resolutions) {
-    Log::info("Video Resoltuion Value : ".print_r($video,true));
+    Log::info("Video Resoltuion Path : ".print_r($video,true));
 
-    Log::info("Video Resoltuion Value : ".print_r($resolutions,true));
+    Log::info("Video Resoltuions : ".print_r($resolutions,true));
     $video_resolutions = [$video];
     $pixels = ['Original'];
     $exp = explode('original/', $video);
-    Log::info("Video Resoltuion Value : ".print_r($exp,true));
+    Log::info("Split Path : ".print_r($exp,true));
 
     Log::info("Count : ".print_r(count($exp),true));
     if (count($exp) == 2) {
