@@ -428,7 +428,7 @@ textarea[name=comments] {
 
                         var splitTrailer = trailerVideoPath.split(',');
 
-                        var splitTrailerPixel = trailerVideoPath.split(',');
+                        var splitTrailerPixel = trailerVideoPixels.split(',');
 
 
                         for (var i = 0 ; i < splitTrailer.length; i++) {
