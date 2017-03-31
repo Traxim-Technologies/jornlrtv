@@ -20,35 +20,35 @@
 
                     <ul class="history-list">
 
-                        @foreach($model as $i => $video)
+                        @foreach($model as $i => $spamvideo)
 
                         <li class="sub-list row">
                             <div class="main-history">
                                  <div class="history-image">
-                                    <a href="{{route('user.single' , $video->video_id)}}"><img src="{{$video->adminVideo->default_image}}"></a>                        
+                                    <a href="{{route('user.single' , $spamvideo->video_id)}}"><img src="{{$spamvideo->adminVideo->default_image}}"></a>                        
                                 </div><!--history-image-->
 
                                 <div class="history-title">
                                     <div class="history-head row">
                                         <div class="cross-title">
-                                            <h5><a href="{{route('user.single' , $video->video_id)}}">{{$video->adminVideo->title}}</a></h5>
-                                            <p class="duration">{{tr('duration')}}: {{$video->adminVideo->duration}}</p>
+                                            <h5><a href="{{route('user.single' , $spamvideo->video_id)}}">{{$spamvideo->adminVideo->title}}</a></h5>
+                                            <p class="duration">{{tr('duration')}}: {{$spamvideo->adminVideo->duration}}</p>
                                         </div> 
                                         <div class="cross-mark">
-                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.remove.report_video',$video->id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.remove.report_video',$spamvideo->id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                         </div><!--end of cross-mark-->                       
                                     </div> <!--end of history-head--> 
 
                                     <div class="description">
-                                        <p>{{$video->adminVideo->description}}</p>
+                                        <p>{{$spamvideo->adminVideo->description}}</p>
                                     </div><!--end of description--> 
 
                                     <span class="stars">
-                                        <a href="#"><i @if($video->adminVideo->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->adminVideo->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->adminVideo->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->adminVideo->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->adminVideo->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->adminVideo->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->adminVideo->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->adminVideo->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->adminVideo->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->adminVideo->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span>                                                       
                                 </div><!--end of history-title--> 
                                 

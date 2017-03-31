@@ -608,26 +608,18 @@ class UserController extends Controller {
      * @return flash error/flash success
      */
     public function remove_report_video($id) {
-        try {
-            // Load Spam Video from flag section
-            $model = Flag::where('id', $id)->first();
-            Log::info("Loaded Values : ".print_r($model, true));
-            // If the flag model exists then delete the row
-            if ($model) {
-                Log::info("Loaded Values 1 : ".print_r($model, true));
-                Log::info("Delete values :". print_r($model->delete()));
-                if ($model->delete()) {
-                    return back()->with('flash_success', tr('unmark_report_video_success_msg'));
-                } else {
-                    // throw new Exception("error", tr('admin_published_video_failure'));
-                    return back()->with('flash_error', tr('admin_published_video_failure'));
-                }
-            } else {
-                // throw new Exception("error", tr('admin_published_video_failure'));
-                return back()->with('flash_error', tr('admin_published_video_failure'));
-            }
-        } catch (Exception $e) {
-            return back()->with('flash_error', $e);
+        // Load Spam Video from flag section
+        $model = Flag::where('id', $id)->first();
+        Log::info("Loaded Values : ".print_r($model, true));
+        // If the flag model exists then delete the row
+        if ($model) {
+            Log::info("Loaded Values 1 : ".print_r($model, true));
+            Log::info("Delete values :". print_r($model->delete()));
+            $model->delete();
+            return back()->with('flash_success', tr('unmark_report_video_success_msg'));
+        } else {
+            // throw new Exception("error", tr('admin_published_video_failure'));
+            return back()->with('flash_error', tr('admin_published_video_failure'));
         }
     }
 
@@ -644,6 +636,7 @@ class UserController extends Controller {
             ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
             ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
             ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
+            ->select('flags.*','admin_videos.is_approved', 'admin_videos.status')
             ->where('admin_videos.is_approved' , 1)
             ->where('admin_videos.status' , 1)
             ->paginate(16);
