@@ -34,12 +34,11 @@
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('category')}}</th>
 						      <th>{{tr('sub_category')}}</th>
-						      <th>{{tr('genre')}}</th>
 						      <th>{{tr('title')}}</th>
-						      <th>{{tr('description')}}</th>
 						      @if(Setting::get('theme') == 'default')
 						      	<th>{{tr('slider_video')}}</th>
 						      @endif
+						      <th>{{tr('pay_per_view')}}</th>
 						      <th>{{tr('status')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
@@ -52,9 +51,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$video->category_name}}</td>
 							      	<td>{{$video->sub_category_name}}</td>
-							      	<td>@if($video->genre_name) {{$video->genre_name}} @else - @endif</td>
 							      	<td>{{substr($video->title , 0,25)}}...</td>
-							      	<td>{{substr($video->description , 0, 25)}}...</td>
 							      	@if(Setting::get('theme') == 'default')
 							      	<td>
 							      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
@@ -67,6 +64,13 @@
 							      	</td>
 
 							      	@endif
+							      	<td class="text-center">
+							      		@if($video->amount > 0)
+							      			<span class="label label-success">{{tr('yes')}}</span>
+							      		@else
+							      			<span class="label label-danger">{{tr('no')}}</span>
+							      		@endif
+							      	</td>
 							      	<td>
 							      		@if ($video->compress_status == 0 || $video->trailer_compress_status == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>
