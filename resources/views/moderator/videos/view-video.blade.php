@@ -60,6 +60,7 @@
                                     @endif
                                     </a>
                                 </li>
+                                @if ($video->video_upload_type == 1 || $video->video_upload_type == 2)
                                 <li class="list-group-item">
                                   <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('video_upload_type')}}</b> <a class="pull-right"> 
                                         @if($video->video_upload_type == 1)
@@ -70,6 +71,7 @@
                                         @endif 
                                     </a>
                                 </li>
+                                @endif
                                 <li class="list-group-item">
                                   <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a class="pull-right">{{$video->duration}}</a>
                                 </li>
