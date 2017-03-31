@@ -1342,7 +1342,7 @@ class AdminController extends Controller
                 }
                 if ($trailer_video_duration) {
                     $inputFile = $trailer_video_duration['baseUrl'];
-                    $local_url = $main_video_duration['local_url'];
+                    $local_url = $trailer_video_duration['local_url'];
                     if (file_exists($inputFile)) {
                         Log::info("Trailer queue Videos : ".'Success');
                         dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id));
