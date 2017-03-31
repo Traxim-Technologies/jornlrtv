@@ -12,262 +12,193 @@
 
 @section('content')
 
-    @include('notification.notify')
-
     <?php $url = $trailer_url = ""; ?>
 
     <div class="row">
 
-        <div class="col-lg-7">
-
-            <div class="box box-widget">
-
-                <div class="box-header with-border">
-                    <div class="user-block">
-                        <span style="margin-left:0px" class="username"><a href="#">{{$video->title}} @if ($video->compress_status == 0 || $video->trailer_compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>@endif</a></span>
-                        <span style="margin-left:0px" class="description">Created Time - {{$video->video_date}}</span>
-                    </div>
-                    
-                    
-                    <div class="box-tools">
-                        <button data-widget="collapse" class="btn btn-box-tool" type="button">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-
+        @include('notification.notify')
+        <div class="col-lg-12">
+            <div class="box box-primary">
+            <div class="box-header with-border">
+                <div class='pull-left'>
+                    <h3 class="box-title"> <b>{{$video->title}}</b></h3>
+                    <br>
+                    <span style="margin-left:0px" class="description">Created Time - {{$video->video_date}}</span>
                 </div>
+                <div class='pull-right'>
+                    @if ($video->compress_status == 0 || $video->trailer_compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>@endif
+                    <a href="{{route('admin.edit.video' , array('id' => $video->video_id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
 
-                <div class="box-body">
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('category')}}</h4>
+              <div class="row">
+                  <div class="col-lg-12 row">
 
-                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->category_name}}</p>
+                    <div class="col-lg-4">
+                        <div class="box-body box-profile">
+                        <h4>{{tr('details')}}</h4>
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('category')}}</b> <a class="pull-right">{{$video->category_name}}</a>
+                                </li>
+                                <li class="list-group-item">
+                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('sub_category')}}</b> <a class="pull-right">{{$video->sub_category_name}}</a>
+                                </li>
+                                <li class="list-group-item">
+                                  <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('video_type')}}</b> <a class="pull-right">
+                                    @if($video->video_type == 1)
+                                        {{tr('video_upload_link')}}
+                                    @endif
+                                    @if($video->video_type == 2)
+                                        {{tr('youtube')}}
+                                    @endif
+                                    @if($video->video_type == 3)
+                                        {{tr('other_link')}}
+                                    @endif
+                                    </a>
+                                </li>
+                                <li class="list-group-item">
+                                  <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('video_upload_type')}}</b> <a class="pull-right"> 
+                                        @if($video->video_upload_type == 1)
+                                            {{tr('s3')}}
+                                        @endif
+                                        @if($video->video_upload_type == 2)
+                                            {{tr('direct')}}
+                                        @endif 
+                                    </a>
+                                </li>
+                                <li class="list-group-item">
+                                  <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a class="pull-right">{{$video->duration}}</a>
+                                </li>
+                                <li class="list-group-item">
+                                  <b><i class="fa fa-star margin-r-5"></i>{{tr('ratings')}}</b> <a class="pull-right">
+                                      <span class="starRating-view">
+                                        <input id="rating5" type="radio" name="ratings" value="5" @if($video->ratings == 5) checked @endif>
+                                        <label for="rating5">5</label>
 
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('sub_category')}}</h4>
+                                        <input id="rating4" type="radio" name="ratings" value="4" @if($video->ratings == 4) checked @endif>
+                                        <label for="rating4">4</label>
 
-                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->sub_category_name}}</p>
-                   
-                        @if($video->video_upload_type == 1)
-                            <?php $url = $video->video; ?>
-                            <div id="main-video-player"></div>
-                        @else
-                            @if(check_valid_url($video->video))
+                                        <input id="rating3" type="radio" name="ratings" value="3" @if($video->ratings == 3) checked @endif>
+                                        <label for="rating3">3</label>
 
-                                <?php $url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->video) : $video->video; ?>
-                                <div id="main-video-player"></div>
-                            @else
-                                <div class="image">
-                                    <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
+                                        <input id="rating2" type="radio" name="ratings" value="2" @if($video->ratings == 2) checked @endif>
+                                        <label for="rating2">2</label>
+
+                                        <input id="rating1" type="radio" name="ratings" value="1" @if($video->ratings == 1) checked @endif>
+                                        <label for="rating1">1</label>
+                                    </span>
+                                  </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <strong><i class="fa fa-file-picture-o margin-r-5"></i> {{tr('images')}}</strong>
+
+                        <div class="row margin-bottom" style="margin-top: 10px;">
+                            <div class="col-lg-6">
+                              <img alt="Photo" src="{{isset($video->default_image) ? $video->default_image : ''}}" class="img-responsive" style="width:100%;height:250px;">
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-lg-6">
+                              <div class="row">
+                                 @foreach($video_images as $i => $image)
+                                <div class="col-lg-6">
+                                  <img alt="Photo" src="{{$image->image}}" class="img-responsive" style="width:100%;height:130px">
+                                  <br>
                                 </div>
-                            @endif
+                                @endforeach
+                                @if ($video->banner_image == 1) 
+                                    <img alt="Photo" src="{{$video->banner_image}}" class="img-responsive" style="width:100%;height:130px">
+                                @endif
+                                <!-- /.col -->
+                              </div>
+                            </div>
+                              <!-- /.row -->
+                        </div>
 
-                        @endif
-
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('duration')}}</h4>
-
-                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->duration}}</p>
-
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('description')}}</h4>
-
-                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">{{$video->description}}</p>
-
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('ratings')}}</h4>
-
-                    <span class="starRating-view">
-                        <input id="rating5" type="radio" name="ratings" value="5" @if($video->ratings == 5) checked @endif>
-                        <label for="rating5">5</label>
-
-                        <input id="rating4" type="radio" name="ratings" value="4" @if($video->ratings == 4) checked @endif>
-                        <label for="rating4">4</label>
-
-                        <input id="rating3" type="radio" name="ratings" value="3" @if($video->ratings == 3) checked @endif>
-                        <label for="rating3">3</label>
-
-                        <input id="rating2" type="radio" name="ratings" value="2" @if($video->ratings == 2) checked @endif>
-                        <label for="rating2">2</label>
-
-                        <input id="rating1" type="radio" name="ratings" value="1" @if($video->ratings == 1) checked @endif>
-                        <label for="rating1">1</label>
-                    </span>
+                    </div>
                     
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('reviews')}}</h4>
-
-                    <p style="">{{$video->reviews}}</p>
-
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('video_type')}}</h4>
-
-                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">
-                        @if($video->video_type == 1)
-                            {{tr('video_upload_link')}}
-                        @endif
-                        @if($video->video_type == 2)
-                            {{tr('youtube')}}
-                        @endif
-                        @if($video->video_type == 3)
-                            {{tr('other_link')}}
-                        @endif
-                    </p>
-
-                    <h4 style="font-weight:800;color:#3c8dbc">{{tr('video_upload_type')}}</h4>
-
-                    <p style="margin-top:10px;border-bottom: 1px solid #f4f4f4;padding-bottom: 10px;">
-                        @if($video->video_upload_type == 1)
-                            {{tr('s3')}}
-                        @endif
-                        @if($video->video_upload_type == 2)
-                            {{tr('direct')}}
-                        @endif          
-                    </p>
-                
+                  </div>
                 </div>
 
+              <hr>
+
+              <div class="row">
+                  <div class="col-lg-6">
+                      <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('description')}}</strong>
+
+                      <p style="margin-top: 10px;">{{$video->description}}.</p>
+                </div>
+                 <div class="col-lg-6">
+                      <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('reviews')}}</strong>
+
+                      <p style="margin-top: 10px;">{{$video->reviews}}.</p>
+                </div>
             </div>
 
-            @if($video->banner_image)
+              <hr>
 
-                <div class="box box-widget">
+                <div class="row">
+                  <div class="col-lg-12">
+                       <div class="col-lg-6">
 
-                    <div class="box-header with-border">
-                        <div class="user-block">
-                            <span style="margin-left:0px" class="username"><a href="#">{{tr('banner_image')}}</a></span>
+                            <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('trailer_video')}}</strong>
+
+                            <div class="">
+                                @if($video->video_upload_type == 1)
+                                <?php $trailer_url = $video->trailer_video; ?>
+                                    <div id="trailer-video-player"></div>
+                                @else
+
+                                    @if(check_valid_url($video->trailer_video))
+
+                                        <?php $trailer_url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->trailer_video) : $video->trailer_video; ?>
+
+                                        <div id="trailer-video-player"></div>
+
+                                    @else
+                                        <div class="image">
+                                            <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
+                                        </div>
+                                    @endif
+
+                                @endif
+                            </div>
                         </div>
+                        <div class="col-lg-6">
 
-                        <div class="box-tools">
+                            <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('full_video')}}</strong>
 
-                            <button data-widget="collapse" class="btn btn-box-tool" type="button">
-                                <i class="fa fa-minus"></i>
-                            </button>
+                            <div class="">
+                                    @if($video->video_upload_type == 1)
+                                    <?php $url = $video->video; ?>
+                                    <div id="main-video-player"></div>
+                                @else
+                                    @if(check_valid_url($video->video))
+
+                                        <?php $url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->video) : $video->video; ?>
+                                        <div id="main-video-player"></div>
+                                    @else
+                                        <div class="image">
+                                            <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
+                                        </div>
+                                    @endif
+
+                                @endif
+                            </div>
                         </div>
-
-                    </div>
-
-                    <div class="box-body">
-                        <img alt="Photo" src="{{$video->banner_image}}" style="width:100%;height:150px;">
                     </div>
                 </div>
-
-            @endif
-
-        </div>
-
-        <div class="col-lg-5">
-
-            <div class="box box-widget">
-
-                <div class="box-header with-border">
-                    <div class="user-block">
-                        <span style="margin-left:0px" class="username"><a href="#">{{tr('trailer_video')}}</a></span>
-                    </div>
-
-                    <div class="box-tools">
-
-                        <!-- <button title="Mark as read" data-toggle="tooltip" class="btn btn-box-tool" type="button">
-                            <i class="fa fa-circle-o"></i>
-                        </button> -->
-
-                        <button data-widget="collapse" class="btn btn-box-tool" type="button">
-                            <i class="fa fa-minus"></i>
-                        </button>
-
-                        <!-- <button data-widget="remove" class="btn btn-box-tool" type="button">
-                            <i class="fa fa-times"></i>
-                        </button> -->
-                    </div>
-
-                </div>
-
-                <div class="box-body">
-
-                        @if($video->video_upload_type == 1)
-                            <?php $trailer_url = $video->trailer_video; ?>
-                            <div id="trailer-video-player"></div>
-                        @else
-
-                            @if(check_valid_url($video->trailer_video))
-
-                                <?php $trailer_url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->trailer_video) : $video->trailer_video; ?>
-
-                                <div id="trailer-video-player"></div>
-
-                            @else
-                                <div class="image">
-                                    <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
-                                </div>
-                            @endif
-
-                        @endif
-
-                </div>
-
+            <!-- /.box-body -->
             </div>
-
-            @if($video->default_image)
-
-                <div class="box box-widget">
-
-                    <div class="box-header with-border">
-                        <div class="user-block">
-                            <span style="margin-left:0px" class="username"><a href="#">{{tr('default_image')}}</a></span>
-                        </div>
-
-                        <div class="box-tools">
-
-                            <button data-widget="collapse" class="btn btn-box-tool" type="button">
-                                <i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-
-                    </div>
-
-                    <div class="box-body">
-                        <img alt="Photo" src="{{$video->default_image}}" style="width:100%;height:150px;">
-                    </div>
-                </div>
-
-            @endif
-
-
-            @if(count($video_images) > 0)
-                
-                @foreach($video_images as $i => $image)
-                    
-                    <div class="box box-widget">
-
-                        <div class="box-header with-border">
-                            <div class="user-block">
-                                <span style="margin-left:0px" class="username"><a href="#">Image {{$image->position}}</a></span>
-                            </div>
-
-                            <div class="box-tools">
-
-                                <!-- <button title="Mark as read" data-toggle="tooltip" class="btn btn-box-tool" type="button">
-                                    <i class="fa fa-circle-o"></i>
-                                </button> -->
-
-                                <button data-widget="collapse" class="btn btn-box-tool" type="button">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-
-                                <!-- <button data-widget="remove" class="btn btn-box-tool" type="button">
-                                    <i class="fa fa-times"></i>
-                                </button> -->
-                            </div>
-
-                        </div>
-
-                        <div class="box-body">
-                            <img alt="Photo" src="{{$image->image}}" style="width:100%;height:150px;">
-                        </div>
-                    </div>
-
-                @endforeach
-
-            @endif
-
         </div>
-
-
     </div>
-
+    </div>
 @endsection
 
 @section('scripts')

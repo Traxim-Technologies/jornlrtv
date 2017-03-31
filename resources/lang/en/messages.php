@@ -22,6 +22,8 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 	'compress'=>'Video Compressing...',
+	'images' => 'Images',
+	'details' => 'Details',
 
 	'report'=>'Mark as Spam',
 	'spam_videos' => 'Spam Videos',
@@ -37,6 +39,7 @@ return array(
 	'common_settings'=>'Common Settings',
 	'video_edit_success'=>'Successfully updated the video details.',
 	'video_create_success'=>'Successfully created the video details.',
+	'full_video'=>'Full Video',
 
 	's3_settings' => 'S3 Settings',
 	'fb_settings' => 'FB Settings',
