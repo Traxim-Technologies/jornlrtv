@@ -290,8 +290,11 @@
                     var playerInstance = jwplayer("main-video-player");
 
                     playerInstance.setup({
-                       
-                        file: "{{$url}}",
+                        sources: [{ 
+                                    file: "{{$url}}"
+                                },{
+                                    file: "{{$video->video}}"
+                                }] ,
                         image: "{{$video->default_image}}",
                         width: "100%",
                         aspectratio: "16:9",
@@ -319,7 +322,11 @@
                     var playerInstance = jwplayer("trailer-video-player");
 
                     playerInstance.setup({
-                        file: "{{$trailer_url}}",
+                        sources: [{ 
+                                    file: "{{$trailer_url}}"
+                                },{
+                                    file: "{{$video->trailer_video}}"
+                                }] ,
                         image: "{{$video->default_image}}",
                         width: "100%",
                         aspectratio: "16:9",

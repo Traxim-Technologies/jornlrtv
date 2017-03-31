@@ -422,12 +422,17 @@ textarea[name=comments] {
                         var playerInstance = jwplayer("trailer-video-player");
 
                         playerInstance.setup({
-                            file: "{{$trailer_video}}",
+                            sources: [{ 
+                                file: "{{$trailer_video}}"
+                            },{
+                                file: "{{$video->trailer_video}}"
+                            }] ,
                             image: "{{$video->default_image}}",
                             width: "100%",
                             aspectratio: "16:9",
                             primary: "flash",
                         });
+
 
                         playerInstance.on('setupError', function() {
 
@@ -591,8 +596,11 @@ textarea[name=comments] {
                             var playerInstance = jwplayer("main-video-player");
 
                             playerInstance.setup({
-                               
-                                file: "{{$main_video}}",
+                                sources: [{ 
+                                    file: "{{$main_video}}"
+                                },{
+                                    file: "{{$video->video}}"
+                                }],
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
