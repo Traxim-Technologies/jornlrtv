@@ -609,12 +609,23 @@ textarea[name=comments] {
 
                             var playerInstance = jwplayer("main-video-player");
 
+                            var videoPath = "{{$video_video_path}}";
+                            var videoPixels = "{{$video_pixels}}";
+
+                            var path = [];
+
+                            var splitVideo = videoPath.split(',');
+
+                            var splitVideoPixel = videoPixels.split(',');
+
+
+                            for (var i = 0 ; i < splitVideo.length; i++) {
+
+                                path.push({file : splitVideo[i], label : splitVideoPixel[i]});
+                            }
+
                             playerInstance.setup({
-                                sources: [{ 
-                                    file: "{{$main_video}}"
-                                },{
-                                    file: "{{$video->video}}"
-                                }],
+                                sources: path,
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
