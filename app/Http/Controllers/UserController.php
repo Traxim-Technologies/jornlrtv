@@ -30,6 +30,8 @@ use Exception;
 
 use App\PayPerView;
 
+use Log;
+
 
 class UserController extends Controller {
 
@@ -141,7 +143,7 @@ class UserController extends Controller {
             }
 
             Log::info("Resolution Value : ".$video->trailer_video_resolutions);
-            
+
             $trailerResolution = getResolutionsPath($video->trailer_video, $video->trailer_video_resolutions);
 
             $trailer_re_path = $trailerResolution['video_resolutions'];
