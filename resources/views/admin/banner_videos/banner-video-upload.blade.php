@@ -15,7 +15,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.banner.videos')}}"><i class="fa fa-university"></i>{{tr('videos')}}</a></li>
+    <li><a href="{{route('admin.banner.videos')}}"><i class="fa fa-university"></i>{{tr('banner_videos')}}</a></li>
     <li class="active"><i class="fa fa-university"></i> {{tr('add_banner_videos')}}</li>
 @endsection 
 
@@ -357,6 +357,7 @@
         $('#datepicker').datetimepicker({
             minTime: "00:00:00",
             minDate: moment(),
+            autoclose:true,
         });
         $('#upload').show();
         $('#others').hide();

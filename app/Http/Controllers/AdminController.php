@@ -1510,13 +1510,23 @@ class AdminController extends Controller
 
                     if ($request->hasFile('video')) {
                         Helper::delete_picture($video->video, $videopath); 
+                        // @TODO
+                        $splitVideos = ($video->video_resolutions) 
+                                    ? explode(',', $video->video_resolutions)
+                                    : [];
+                        foreach ($splitVideos as $key => $value) {
+                           Helper::delete_picture($video->video, $videopath.$value.'/');
+                        }
                         Log::info("Deleted Main Video : ".'Success');   
                     }
                     if ($request->hasFile('trailer_video')) {
                         Helper::delete_picture($video->trailer_video, $videopath);
                         // @TODO
-                        foreach ($ as $key => $value) {
-                            # code...
+                        $splitTrailer = ($video->trailer_video_resolutions) 
+                                    ? explode(',', $video->trailer_video_resolutions)
+                                    : [];
+                        foreach ($splitTrailer as $key => $value) {
+                           Helper::delete_picture($video->trailer_video, $videopath.$value.'/');
                         }
                         Log::info("Deleted Trailer Video : ".'Success');
                     }

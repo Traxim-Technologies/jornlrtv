@@ -350,6 +350,7 @@
         $('#datepicker').datetimepicker({
             minTime: "00:00:00",
             minDate: moment(),
+            autoclose:true,
         });
         $('#upload').show();
         $('#others').hide();

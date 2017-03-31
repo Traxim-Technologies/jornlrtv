@@ -164,7 +164,7 @@
                         <div class="clearfix"></div>
                         <ul class="list-inline">
                             <li class="pull-left"><button type="button" class="btn btn-danger prev-step">Previous</button></li>
-                            <li class="pull-right" style="display: none"><button type="button" class="btn btn-primary next-step" id="{{REQUEST_STEP_2}}">Save and continue</button></li>
+                            <li class="pull-right"><button type="button" class="btn btn-primary next-step" id="{{REQUEST_STEP_2}}">Next</button></li>
                             <div class="clearfix"></div>
                         </ul>
                     </div>
@@ -189,7 +189,7 @@
                         <ul class="list-inline">
                             <li><button type="button" class="btn btn-danger prev-step">Previous</button></li>
                             <!-- <li><button type="button" class="btn btn-default next-step">Skip</button></li> -->
-                            <li class="pull-right" style="display:none"><button  id="{{REQUEST_STEP_3}}" type="button" class="btn btn-primary btn-info-full next-step">Save and continue</button></li>
+                            <li class="pull-right"><button  id="{{REQUEST_STEP_3}}" type="button" class="btn btn-primary btn-info-full next-step">Next</button></li>
                             <div class="clearfix"></div>
                         </ul>
                     </div>
@@ -394,6 +394,7 @@
                 minTime: "00:00:00",
                 maxDate: moment(),
                 defaultDate: "{{$video->publish_time}}",
+                autoclose:true,
             });
 
             $('#upload').hide();

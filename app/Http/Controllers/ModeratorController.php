@@ -839,12 +839,30 @@ class ModeratorController extends Controller
                     Helper::s3_delete_picture($video->video);   
                     Helper::s3_delete_picture($video->trailer_video);  
                 } else {
+
                     if ($request->hasFile('video')) {
-                        Helper::delete_picture($video->video, "/uploads/videos/original/");    
+                        Helper::delete_picture($video->video, $videopath); 
+                        // @TODO
+                        $splitVideos = ($video->video_resolutions) 
+                                    ? explode(',', $video->video_resolutions)
+                                    : [];
+                        foreach ($splitVideos as $key => $value) {
+                           Helper::delete_picture($video->video, $videopath.$value.'/');
+                        }
+                        Log::info("Deleted Main Video : ".'Success');   
                     }
                     if ($request->hasFile('trailer_video')) {
-                        Helper::delete_picture($video->trailer_video, "/uploads/videos/original/");
+                        Helper::delete_picture($video->trailer_video, $videopath);
+                        // @TODO
+                        $splitTrailer = ($video->trailer_video_resolutions) 
+                                    ? explode(',', $video->trailer_video_resolutions)
+                                    : [];
+                        foreach ($splitTrailer as $key => $value) {
+                           Helper::delete_picture($video->trailer_video, $videopath.$value.'/');
+                        }
+                        Log::info("Deleted Trailer Video : ".'Success');
                     }
+
                 }
 
                 if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
