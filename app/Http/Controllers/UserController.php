@@ -610,7 +610,7 @@ class UserController extends Controller {
     public function remove_report_video($id) {
         try {
             // Load Spam Video from flag section
-            $model = Flag::where('id', $id);
+            $model = Flag::where('id', $id)->first();
             // If the flag model exists then delete the row
             if ($model) {
                 if ($model->delete()) {
