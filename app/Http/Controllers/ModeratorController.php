@@ -40,6 +40,8 @@ use Setting;
 
 use Log;
 
+use App\Jobs\CompressVideo;
+
 class ModeratorController extends Controller
 {
     /**
@@ -621,6 +623,8 @@ class ModeratorController extends Controller
             if($request->has('duration')) {
                 $video->duration = $request->duration;
             }
+            $main_video_url = null;
+            $trailer_video_url = null;
 
             if($request->video_type == VIDEO_TYPE_UPLOAD) {
 
@@ -679,6 +683,27 @@ class ModeratorController extends Controller
             $params = array();
 
             if($video) {
+
+                if ($main_video_url) {
+                    $inputFile = $main_video_url['baseUrl'];
+                    $local_url = $main_video_url['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Main queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id));
+                        Log::info("Main Compress Status : ".$video->compress_status);
+                        Log::info("Main queue completed : ".'Success');
+                    }
+                }
+                if ($trailer_video_url) {
+                    $inputFile = $trailer_video_url['baseUrl'];
+                    $local_url = $trailer_video_url['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Trailer queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id));
+                        Log::info("Trailer Compress Status : ".$video->compress_status);
+                        Log::info("Trailer queue completed : ".'Success');
+                    }
+                }
 
                 Helper::upload_video_image($request->file('other_image1'),$video->id,2);
 
@@ -805,6 +830,8 @@ class ModeratorController extends Controller
                 $video->duration = $request->duration;
             }
 
+            $main_video_url = $trailer_video_url = null;
+
             if($request->video_type == VIDEO_TYPE_UPLOAD && $video_link && $trailer_video) {
 
                 // Check Previous Video Upload Type, to delete the videos
@@ -825,12 +852,16 @@ class ModeratorController extends Controller
                     $video->trailer_video = Helper::s3_upload_picture($trailer_video); 
                 } else {
                     if ($request->hasFile('video')) {
+                        $video->compress_status = DEFAULT_FALSE;
+                        $video->is_approved = DEFAULT_FALSE;
                         $main_video_url = Helper::video_upload($video_link);
                         $video->video = $main_video_url['db_url'];
                     } else {
                         $video->video = $video_link;
                     }
                     if ($request->hasFile('trailer_video')) {
+                        $video->trailer_compress_status = DEFAULT_FALSE;
+                        $video->is_approved = DEFAULT_FALSE;
                         $trailer_video_url = Helper::video_upload($trailer_video);
                         $video->trailer_video = $trailer_video_url['db_url'];  
                     } else {
@@ -868,6 +899,27 @@ class ModeratorController extends Controller
             $video->save();
 
             if($video) {
+
+                if ($main_video_url) {
+                    $inputFile = $main_video_url['baseUrl'];
+                    $local_url = $main_video_url['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Main queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id));
+                        Log::info("Main Compress Status : ".$video->compress_status);
+                        Log::info("Main queue completed : ".'Success');
+                    }
+                }
+                if ($trailer_video_url) {
+                    $inputFile = $trailer_video_url['baseUrl'];
+                    $local_url = $trailer_video_url['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Trailer queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id));
+                        Log::info("Trailer Compress Status : ".$video->compress_status);
+                        Log::info("Trailer queue completed : ".'Success');
+                    }
+                }
 
                 if($request->hasFile('other_image1')) {
                     Helper::upload_video_image($request->file('other_image1'),$video->id,2);  

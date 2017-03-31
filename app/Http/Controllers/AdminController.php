@@ -1493,6 +1493,9 @@ class AdminController extends Controller
                 $video->status = DEFAULT_FALSE;
             }
 
+            $main_video_url = null;
+            $trailer_video_url = null;
+
             if($request->video_type == VIDEO_TYPE_UPLOAD && $video_link && $trailer_video) {
 
                  Log::info("To Be upload videos : ".'Success');
@@ -1523,7 +1526,7 @@ class AdminController extends Controller
                     if ($request->hasFile('video')) {
                         $video->compress_status = DEFAULT_FALSE;
                         $video->is_approved = DEFAULT_FALSE;
-                        $main_video_url = Helper::video_upload($video_link, $video, MAIN_VIDEO);
+                        $main_video_url = Helper::video_upload($video_link);
                         Log::info("New Video Uploaded ( Main Video ) : ".'Success');
                         $video->video = $main_video_url['db_url'];
                     } else {
@@ -1533,7 +1536,7 @@ class AdminController extends Controller
                     if ($request->hasFile('trailer_video')) {
                         $video->trailer_compress_status = DEFAULT_FALSE;
                         $video->is_approved = DEFAULT_FALSE;
-                        $trailer_video_url = Helper::video_upload($trailer_video, $video, TRAILER_VIDEO);
+                        $trailer_video_url = Helper::video_upload($trailer_video);
                         Log::info("New Video Uploaded ( Trailer Video ) : ".'Success');
                         $video->trailer_video = $trailer_video_url['db_url'];  
                     } else {
@@ -1579,6 +1582,27 @@ class AdminController extends Controller
             Log::info("saved Video Object : ".'Success');
 
             if($video) {
+
+                if ($main_video_url) {
+                    $inputFile = $main_video_url['baseUrl'];
+                    $local_url = $main_video_url['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Main queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id));
+                        Log::info("Main Compress Status : ".$video->compress_status);
+                        Log::info("Main queue completed : ".'Success');
+                    }
+                }
+                if ($trailer_video_url) {
+                    $inputFile = $trailer_video_url['baseUrl'];
+                    $local_url = $trailer_video_url['local_url'];
+                    if (file_exists($inputFile)) {
+                        Log::info("Trailer queue Videos : ".'Success');
+                        dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id));
+                        Log::info("Trailer Compress Status : ".$video->compress_status);
+                        Log::info("Trailer queue completed : ".'Success');
+                    }
+                }
 
                 if($request->hasFile('other_image1')) {
                     Helper::upload_video_image($request->file('other_image1'),$video->id,2);  

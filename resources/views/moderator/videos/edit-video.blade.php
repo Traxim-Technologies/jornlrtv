@@ -218,9 +218,9 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="default_image" class="">{{tr('default_image')}} *</label>
-                                    <input type="file" id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}" style="display:none" onchange="loadFile(this,'default_img')" required>
+                                    <input type="file" id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}" style="display:none" onchange="loadFile(this,'default_img')">
                                     <div>
-                                        <img src="{{($video->default_image) ? $video->default_image : asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
+                                        <img src="{{($video->default_image) ? $video->default_image : asset('images/320x150.png')}}" style="width:150px;height:75px;" 
                                         onclick="$('#default_image').click();return false;" id="default_img"/>
                                     </div>
                                     <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
@@ -230,9 +230,9 @@
                             <?php $videoimages = get_video_image($video->admin_video_id);?>
                                 <div class="form-group">
                                     <label for="other_image1" class="">{{tr('other_image1')}} * </label>
-                                    <input type="file" id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}" style="display:none" onchange="loadFile(this,'other_img1')" required>
+                                    <input type="file" id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}" style="display:none" onchange="loadFile(this,'other_img1')">
                                     <div>
-                                        <img src="{{isset($videoimages[0]->image) ? $videoimages[0]->image : asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
+                                        <img src="{{isset($videoimages[0]->image) ? $videoimages[0]->image : asset('images/320x150.png')}}" style="width:150px;height:75px;" 
                                         onclick="$('#other_image1').click();return false;" id="other_img1"/>
                                     </div>
                                     <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
@@ -242,9 +242,9 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="other_image2" class="">{{tr('other_image2')}} *</label>
-                                    <input type="file" id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}" style="display:none" onchange="loadFile(this,'other_img2')" required>
+                                    <input type="file" id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}" style="display:none" onchange="loadFile(this,'other_img2')">
                                     <div>
-                                        <img src="{{isset($videoimages->image) ? $videoimages->image : asset('uploads/320x150.png')}}" style="width:150px;height:75px;" 
+                                        <img src="{{isset($videoimages[1]->image) ? $videoimages[1]->image : asset('images/320x150.png')}}" style="width:150px;height:75px;" 
                                         onclick="$('#other_image2').click();return false;" id="other_img2"/>
                                     </div>
                                     <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>

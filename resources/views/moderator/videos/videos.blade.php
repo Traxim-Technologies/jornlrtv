@@ -52,11 +52,15 @@
 							      	<td>{{substr($video->title , 0,25)}}...</td>
 							      	<td>{{substr($video->description , 0, 25)}}...</td>
 							      	<td>
-							      		@if($video->is_approved) 
-							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else 
-							       			<span class="label label-warning">{{tr('pending')}}</span>
-							       		@endif
+							      		@if ($video->compress_status == 0 || $video->trailer_compress_status == 0)
+							      			<span class="label label-danger">{{tr('compress')}}</span>
+							      		@else
+								      		@if($video->is_approved)
+								      			<span class="label label-success">{{tr('approved')}}</span>
+								       		@else
+								       			<span class="label label-warning">{{tr('pending')}}</span>
+								       		@endif
+								       	@endif
 							      	</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
