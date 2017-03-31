@@ -428,11 +428,15 @@ textarea[name=comments] {
 
                         var splitTrailer = trailerVideoPath.split(',');
 
+                        var splitTrailerPixel = trailerVideoPath.split(',');
+
+
                         for (var i = 0 ; i < splitTrailer.length; i++) {
-                            trailerPath.push({file : trailerVideoPath[i], label : trailerVideoPixels[i]});
+
+                            trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
                         }
 
-                        alert(trailerPath);
+                        // alert(trailerPath);
                         console.log(trailerPath);
 
                         playerInstance.setup({
