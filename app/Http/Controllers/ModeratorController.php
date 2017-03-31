@@ -636,6 +636,8 @@ class ModeratorController extends Controller
 
                     $video->video = Helper::upload_picture($video_link);
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
+                    $video->compress_status = DEFAULT_TRUE;
+                    $video->trailer_compress_status = DEFAULT_TRUE;
 
                 } else {
                     $main_video_url = Helper::video_upload($video_link);
@@ -648,10 +650,16 @@ class ModeratorController extends Controller
 
                 $video->video = get_youtube_embed_link($video_link);
                 $video->trailer_video = get_youtube_embed_link($trailer_video);
+                $video->compress_status = DEFAULT_TRUE;
+                $video->trailer_compress_status = DEFAULT_TRUE;
+
             } else {
 
                 $video->video = $video;
                 $video->trailer_video = $trailer_video;
+                $video->compress_status = DEFAULT_TRUE;
+                $video->trailer_compress_status = DEFAULT_TRUE;
+
             }
 
             $video->video_type = $request->video_type;

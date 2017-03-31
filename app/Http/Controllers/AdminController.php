@@ -1271,6 +1271,8 @@ class AdminController extends Controller
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
 
                     $video->is_approved = DEFAULT_TRUE;
+                    $video->compress_status = DEFAULT_TRUE;
+                    $video->trailer_compress_status = DEFAULT_TRUE;
 
                 } else {
                     // if(ini_get('upload_max_size') > )
@@ -1295,11 +1297,17 @@ class AdminController extends Controller
                 $video->trailer_video = get_youtube_embed_link($trailer_video);
 
                 $video->is_approved = DEFAULT_TRUE;
+                $video->compress_status = DEFAULT_TRUE;
+                $video->trailer_compress_status = DEFAULT_TRUE;
+                 $video->is_approved = DEFAULT_TRUE;
                 // $video->trailer_duration = getYoutubeDuration($video->trailer_video);
             } else {
                 $video->video = $video_link;
                 $video->trailer_video = $trailer_video;
                 $video->is_approved = DEFAULT_TRUE;
+                $video->compress_status = DEFAULT_TRUE;
+                $video->trailer_compress_status = DEFAULT_TRUE;
+                 $video->is_approved = DEFAULT_TRUE;
             }
 
             $video->video_type = $request->video_type;
