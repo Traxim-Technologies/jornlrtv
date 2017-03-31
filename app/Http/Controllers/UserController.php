@@ -611,8 +611,11 @@ class UserController extends Controller {
         try {
             // Load Spam Video from flag section
             $model = Flag::where('id', $id)->first();
+            Log::info("Loaded Values : ".print_r($model, true));
             // If the flag model exists then delete the row
             if ($model) {
+                Log::info("Loaded Values 1 : ".print_r($model, true));
+                Log::info("Delete values " : print_r($model->delete()));
                 if ($model->delete()) {
                     return back()->with('flash_success', tr('unmark_report_video_success_msg'));
                 } else {
