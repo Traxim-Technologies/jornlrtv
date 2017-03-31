@@ -68,11 +68,15 @@
 
 							      	@endif
 							      	<td>
-							      		@if($video->is_approved)
-							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else
-							       			<span class="label label-warning">{{tr('pending')}}</span>
-							       		@endif
+							      		@if ($video->compress_status == 0 || $video->trailer_compress_status == 0)
+							      			<span class="label label-danger">{{tr('compress')}}</span>
+							      		@else
+								      		@if($video->is_approved)
+								      			<span class="label label-success">{{tr('approved')}}</span>
+								       		@else
+								       			<span class="label label-warning">{{tr('pending')}}</span>
+								       		@endif
+								       	@endif
 							      	</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
@@ -97,7 +101,11 @@
 								                  	@if($video->is_approved)
 								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video->video_id)}}">{{tr('decline')}}</a></li>
 								                	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_id)}}">{{tr('approve')}}</a></li>
+								                		@if ($video->compress_status == 0 || $video->trailer_compress_status == 0)
+								                			<li role="presentation"><a role="menuitem" tabindex="-1">{{tr('compress')}}</a></li>
+								                		@else 
+								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_id)}}">{{tr('approve')}}</a></li>
+								                  		@endif
 								                  	@endif
 
 								                  	@if($video->status == 0)
