@@ -14,8 +14,6 @@ use App\SubCategory;
 
 use App\Genre;
 
-use Log;
-
 use App\Wishlist;
 
 use App\AdminVideo;

@@ -44,6 +44,8 @@
 
     use DB;
 
+    use App\Jobs\OriginalVideoCompression;
+
 
     class Helper
     {
@@ -416,17 +418,9 @@
 
             if ($bytes > Setting::get('video_compress_size')) {
 
+                dispatch(new OriginalVideoCompression($inputFile, $picture->getPathname()));
+
                 Log::info("Compress Video : ".'Success');
-
-                // Compress the video and save in original folder
-                $FFmpeg = new \FFmpeg;
-
-                $FFmpeg
-                    ->input($picture->getPathname())
-                    ->vcodec('h264')
-                    ->constantRateFactor('28')
-                    ->output($inputFile)
-                    ->ready();
 
             } else {
                 $picture->move(public_path() . $path, $local_url);
