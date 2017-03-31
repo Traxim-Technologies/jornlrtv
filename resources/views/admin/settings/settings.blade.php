@@ -21,7 +21,9 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#site_settings" data-toggle="tab">{{tr('site_settings')}}</a></li>
                     <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>
-                    <li><a href="#common_settings" data-toggle="tab">{{tr('common_settings')}}</a></li>
+                    <li><a href="#s3_settings" data-toggle="tab">{{tr('s3_settings')}}</a></li>
+                    <li><a href="#social_settings" data-toggle="tab">{{tr('social_settings')}}</a></li>
+                    <li><a href="#paypal_settings" data-toggle="tab">{{tr('paypal_settings')}}</a></li>
                 </ul>
                
                 <div class="tab-content">
@@ -122,12 +124,10 @@
                         </form>
                     </div>
 
-                    <div class="tab-pane" id="common_settings">
+                    <div class="tab-pane" id="s3_settings">
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
-                                <h4>S3 Settings</h4>
-                                <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="s3_key">{{tr('S3_KEY')}}</label>
@@ -159,7 +159,24 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <h4>FB Settings</h4>
+
+                            </div>
+                            <div class="box-footer">
+                                @if(Setting::get('admin_delete_control') == 1) 
+                                    <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                @endif
+                          </div>
+                        </form>
+
+                    </div>
+
+                    <div class="tab-pane" id="social_settings">
+
+                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            <div class="box-body">
+                                <h4>{{tr('fb_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -180,7 +197,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <h4>Twitter Settings</h4>
+                                <h4>{{tr('twitter_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -201,7 +218,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <h4>Google Settings</h4>
+                                <h4>{{tr('google_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -211,7 +228,6 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                    {{env('GOOGLE_CLIENT_SECRET')}} 
                                         <label for="google_client_secret">{{tr('GOOGLE_CLIENT_SECRET')}}</label>    
                                         <input type="text" class="form-control" name="GOOGLE_CLIENT_SECRET" id="google_client_secret" placeholder="{{tr('GOOGLE_CLIENT_SECRET')}}" value="{{$result['GOOGLE_CLIENT_SECRET']}}">
                                     </div>
@@ -223,8 +239,23 @@
                                     </div>
                                 </div>
                                 <div class='clearfix'></div>
-                                <h4>Paypal Settings</h4>
-                                <hr>
+                            </div>
+                            <div class="box-footer">
+                                @if(Setting::get('admin_delete_control') == 1) 
+                                    <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                @endif
+                          </div>
+                        </form>
+
+                    </div>
+
+                    <div class="tab-pane" id="paypal_settings">
+
+                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            <div class="box-body">
+    
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="paypal_id">{{tr('PAYPAL_ID')}}</label>
@@ -258,7 +289,7 @@
                 </div>
 
             </div>
-    </div>
+        </div>
     
     </div>
 

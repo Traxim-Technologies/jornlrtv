@@ -38,6 +38,13 @@ return array(
 	'video_edit_success'=>'Successfully updated the video details.',
 	'video_create_success'=>'Successfully created the video details.',
 
+	's3_settings' => 'S3 Settings',
+	'fb_settings' => 'FB Settings',
+	'twitter_settings' => 'Twitter Settings',
+	'google_settings' => 'Google Settings',
+	'social_settings' => 'Social Settings',
+	'paypal_settings' => 'Payment Settings',
+
 	'S3_KEY'=>'S3 Key',
 	'S3_SECRET'=>'S3 Secret Key',
 	'S3_REGION'=>'S3 Region',
