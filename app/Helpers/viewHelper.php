@@ -14,6 +14,8 @@ use App\SubCategory;
 
 use App\Genre;
 
+use Log;
+
 use App\Wishlist;
 
 use App\AdminVideo;
@@ -989,13 +991,19 @@ function readFileName($inputFile) {
 }
 
 function getResolutionsPath($video, $resolutions) {
+    Log::info("Video Resoltuion Value : ".print_r($video,true));
     $video_resolutions = [$video];
     $pixels = ['Original'];
     $exp = explode('original/', $video);
+    Log::info("Video Resoltuion Value : ".print_r($exp,true));
     if (count($exp) == 2) {
         if ($resolutions) {
+            Log::info("Video Resoltuion Value : ".print_r($resolutions,true));
             $split = explode(',', $resolutions);
+
+            Log::info("Split Video Resoltuion Value : ".print_r($resolutions,true));
             foreach ($split as $key => $resoltuion) {
+                Log::info("Each Split Video Resoltuion Value : ".print_r($resoltuion,true));
                 array_push($video_resolutions, $exp[0].$resoltuion.'/'.$exp[1]);
                 $splitre = explode('x', $resoltuion);
                 array_push($pixels, $splitre[1].'p');
@@ -1003,6 +1011,11 @@ function getResolutionsPath($video, $resolutions) {
         }
     }
     $video_resolutions = implode(',', $video_resolutions);
+
+    Log::info("Video Resolutions : ".print_r($video_resolutions,true));
+
     $pixels = implode(',', $pixels);
+
+    Log::info("Video pixels : ".print_r($pixels,true));
     return ['video_resolutions' => $video_resolutions, 'pixels'=> $pixels];
 }
