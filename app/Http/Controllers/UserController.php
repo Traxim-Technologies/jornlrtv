@@ -144,12 +144,12 @@ class UserController extends Controller {
 
             Log::info("Resolution Value : ".$video->trailer_video_resolutions);
 
-            $trailerResolution = getResolutionsPath($video->trailer_video, $video->trailer_video_resolutions);
+            $trailerResolution = getResolutionsPath($video->trailer_video, $video->trailer_video_resolutions,\Setting::get('streaming_url'));
 
             $trailer_re_path = $trailerResolution['video_resolutions'];
             $trailer_pixels = $trailerResolution['pixels'];
             
-            $videoResolution = getResolutionsPath($video->video, $video->video_resolutions);
+            $videoResolution = getResolutionsPath($video->video, $video->video_resolutions,\Setting::get('streaming_url'));
 
             $video_re_path = $videoResolution['video_resolutions'];
             $video_pixels = $videoResolution['pixels'];

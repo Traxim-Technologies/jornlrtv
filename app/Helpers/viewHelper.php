@@ -238,7 +238,6 @@ function get_youtube_embed_link($video_url) {
 function get_video_end($video_url) {
     $url = explode('/',$video_url);
     $result = end($url);
-
     return $result;
 }
 
@@ -990,26 +989,18 @@ function readFileName($inputFile) {
     return $video_attributes;
 }
 
-function getResolutionsPath($video, $resolutions) {
-    Log::info("Video Resoltuion Path : ".print_r($video,true));
+function getResolutionsPath($video, $resolutions, $streaming_url) {
 
-    Log::info("Video Resoltuions : ".print_r($resolutions,true));
-    $video_resolutions = [$video];
+    $video_resolutions = ($streaming_url) ? [$streaming_url.get_video_end($video),$video] : [$video];
+    
     $pixels = ['Original'];
     $exp = explode('original/', $video);
-    Log::info("Split Path : ".print_r($exp,true));
 
-    Log::info("Count : ".print_r(count($exp),true));
     if (count($exp) == 2) {
-
-        Log::info("Inside Resoltuions");
         if ($resolutions) {
-            Log::info("Video Resoltuion Value : ".print_r($resolutions,true));
             $split = explode(',', $resolutions);
-
-            Log::info("Split Video Resoltuion Value : ".print_r($resolutions,true));
+            array_push()
             foreach ($split as $key => $resoltuion) {
-                Log::info("Each Split Video Resoltuion Value : ".print_r($resoltuion,true));
                 array_push($video_resolutions, $exp[0].$resoltuion.'/'.$exp[1]);
                 $splitre = explode('x', $resoltuion);
                 array_push($pixels, $splitre[1].'p');
@@ -1018,10 +1009,6 @@ function getResolutionsPath($video, $resolutions) {
     }
     $video_resolutions = implode(',', $video_resolutions);
 
-    Log::info("Video Resolutions : ".print_r($video_resolutions,true));
-
     $pixels = implode(',', $pixels);
-
-    Log::info("Video pixels : ".print_r($pixels,true));
     return ['video_resolutions' => $video_resolutions, 'pixels'=> $pixels];
 }
