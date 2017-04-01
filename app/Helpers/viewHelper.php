@@ -838,7 +838,7 @@ function watchFullVideo($user_id, $user_type, $video) {
         if ($video->amount == 0) {
             return true;
         }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->where('status', 1)->first();
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
                 if ($paymentView) {
@@ -856,7 +856,7 @@ function watchFullVideo($user_id, $user_type, $video) {
         }
     } else {
         if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->where('status', 1)->first();
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
                 if ($paymentView) {
@@ -882,7 +882,7 @@ function watchFullVideo($user_id, $user_type, $video) {
  * @return amount
  */
 function total_video_revenue() {
-    return PayPerView::where('status', 1)->sum('amount');
+    return PayPerView::sum('amount');
 }
 
 /**
@@ -892,7 +892,7 @@ function total_video_revenue() {
  * @return amount
  */
 function user_total_amount() {
-    return PayPerView::where('user_id', Auth::user()->id)->where('status', 1)->sum('amount');
+    return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
 }
 
 
