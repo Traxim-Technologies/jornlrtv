@@ -181,7 +181,7 @@ var percent = $('.percent');
 
 
 
-/*$('form').ajaxForm({
+$('form').ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
         bar.width(percentVal)
@@ -197,14 +197,14 @@ var percent = $('.percent');
         bar.width(percentVal)
         percent.html(percentVal);
         if (percentComplete == 100) {
-            $("#"+final).text("Loading...");
+            $("#"+final).text("Video Compressing...");
             $("#"+final).attr('disabled', true);
         }
     },
     complete: function(xhr) {
         bar.width("100%");
         percent.html("100%");
-        $("#"+final).text("Loading...");
+        $("#"+final).text("Redirecting...");
         $("#"+final).attr('disabled', true);
         console.log(xhr);
     },
@@ -212,7 +212,7 @@ var percent = $('.percent');
         alert(xhr);
     },
     success : function(xhr) {
-        $("#"+final).text("Finish");
+        $("#"+final).text("Finished");
         $("#"+final).attr('disabled', false);
         if(xhr.id == '' && xhr.id == undefined) {
             alert(xhr);
@@ -220,7 +220,7 @@ var percent = $('.percent');
             // window.location.href="/admin/view/video?id="+xhr.id;
         }
     }
-}); */
+}); 
 
 function loadFile(event, id){
     // alert(event.files[0]);
