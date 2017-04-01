@@ -2231,23 +2231,19 @@ class AdminController extends Controller
      * @return flash message
      */
     public function save_video_payment($id, Request $request){
-        try {
-            // Load Video Model
-            $model = AdminVideo::find($id);
-            // Get post attribute values and save the values
-            if ($model) {
-                if ($data = $request->all()) {
-                    // Update the post
-                    if (DB::table('admin_videos')->where('id', $id)->update($data)) {
-                        // Redirect into particular value
-                        return back()->with('flash_success', tr('payment_added'));       
-                    } 
-                }
+        // Load Video Model
+        $model = AdminVideo::find($id);
+        // Get post attribute values and save the values
+        if ($model) {
+            if ($data = $request->all()) {
+                // Update the post
+                if (DB::table('admin_videos')->where('id', $id)->update($data)) {
+                    // Redirect into particular value
+                    return back()->with('flash_success', tr('payment_added'));       
+                } 
             }
-            throw new Exception('error', tr('admin_published_video_failure'));
-        } catch(Exception $e) {
-            return back()->with('flash_error', $e);
         }
+        return back()->with('flash_error', tr('admin_published_video_failure'));
     }
 
     /**
