@@ -24,6 +24,8 @@ return array(
 	'compress'=>'Video Compressing...',
 	'images' => 'Images',
 	'details' => 'Details',
+	'compress_video'=> 'Compress Video',
+	'resize_video_resolutions'=>'Resize Video Resolutions',
 
 	'report'=>'Mark as Spam',
 	'spam_videos' => 'Spam Videos',

@@ -228,7 +228,7 @@
                                     <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
                                 </div>
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="video_type" class="">{{tr('video_type')}} *</label></br>
                                     <label style="margin-top:10px" id="video_upload">
@@ -247,6 +247,22 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" id="compress">
+                                <label>{{tr('compress_video')}}</label>
+                                <div>
+                                    <input type="radio" name="compress_video" value="1"> <label style="vertical-align: 5px;">{{tr('yes')}}</label> &nbsp;&nbsp;
+                                    <input type="radio" name="compress_video" value="0"> <label style="vertical-align: 5px;">{{tr('no')}}</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" id="resolution">
+                                <label>{{tr('resize_video_resolutions')}}</label>
+                                <div>
+                                    @foreach(getVideoResolutions() as $resolution)
+                                        <input type="checkbox" name="video_resolutions[]" value="{{$resolution->value}}"> <label style="vertical-align: 5px;">{{$resolution->value}}</label> &nbsp;&nbsp;
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
                             <div id="upload">
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <div class="form-group">
@@ -354,21 +370,28 @@
         });
         $('#upload').show();
         $('#others').hide();
+        $("#compress").hide();
+        $("#resolution").hide();
 
         $("#video_upload").click(function(){
-            console.log("video upload");
             $("#upload").show();
             $("#others").hide();
+            $("#compress").show();
+            $("#resolution").show();
         });
 
         $("#youtube").click(function(){
             $("#others").show();
             $("#upload").hide();
+            $("#compress").hide();
+            $("#resolution").hide();
         });
 
         $("#other_link").click(function(){
             $("#others").show();
             $("#upload").hide();
+            $("#compress").hide();
+            $("#resolution").hide();
         });
     </script>
 

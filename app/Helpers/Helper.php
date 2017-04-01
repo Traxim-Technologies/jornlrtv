@@ -398,7 +398,7 @@
             return $s3_url;
         }
 
-        public static function video_upload($picture)
+        public static function video_upload($picture, $compress_type)
         {
             
             $s3_url = "";
@@ -416,7 +416,7 @@
 
             $inputFile = base_path('public'.$path.$local_url);
 
-            if ($bytes > Setting::get('video_compress_size')) {
+            if ($bytes > Setting::get('video_compress_size') && $compress_type == DEFAULT_TRUE) {
 
                 // dispatch(new OriginalVideoCompression($picture->getPathname(), $inputFile));
 
@@ -534,7 +534,7 @@
                             ->where('admin_videos.is_approved' , 1)
                             ->where('admin_videos.status' , 1)
                             ->select('user_histories.id as history_id','admin_videos.id as admin_video_id' ,
-                                'admin_videos.title','admin_videos.description' ,
+                                'admin_videos.title','admin_videos.description' , 'admin_videos.duration',
                                 'default_image','admin_videos.watch_count','admin_videos.ratings',
                                 DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'), 'admin_videos.category_id','categories.name as category_name')
                             ->orderby('user_histories.created_at' , 'desc');

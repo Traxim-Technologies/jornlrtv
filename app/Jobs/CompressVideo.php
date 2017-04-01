@@ -50,26 +50,27 @@ class CompressVideo extends Job implements ShouldQueue
         Log::info("attributes : ". print_r($attributes, true));
         if($attributes) {
             // Get Video Resolutions
-            $resolutions = getVideoResolutions();
+            $resolutions = $video->video_resolutions ? explode(',', $video->video_resolutions) : [];
             $array_resolutions = [];
             foreach ($resolutions as $key => $solution) {
-                $exp = explode('x', $solution->value);
+                $exp = explode('x', $solution);
+                Log::info("Resoltuion : ". print_r($exp, true));
                 // Explode $solution value
                 $getwidth = (count($exp) == 2) ? $exp[0] : 0;
                 if ($getwidth < $attributes['width']) {
-                    $dirPath = base_path('public/uploads/videos/'.$solution->value);
+                    $dirPath = base_path('public/uploads/videos/'.$solution);
                     Log::info("Compressing Queue Videos : ".$dirPath);
                     $FFmpeg = new \FFmpeg;
                     $FFmpeg
                     ->input($this->inputFile)
-                    ->size($solution->value)
+                    ->size($solution)
                     ->vcodec('h264')
                     ->constantRateFactor('28')
-                    ->output(base_path('public/uploads/videos/'.$solution->value.'/'.$this->local_url))
+                    ->output(base_path('public/uploads/videos/'.$solution.'/'.$this->local_url))
                     ->ready();
 
-                    Log::info('Output'.base_path('public/uploads/videos/'.$solution->value.'/'.$this->local_url));
-                    $array_resolutions[] = $solution->value;
+                    Log::info('Output'.base_path('public/uploads/videos/'.$solution.'/'.$this->local_url));
+                    $array_resolutions[] = $solution;
                 }
             }
             Log::info("Before saving Compress Video : ".$this->video_type);
