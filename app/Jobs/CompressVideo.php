@@ -11,6 +11,8 @@ use File;
 
 use App\AdminVideo;
 
+use App\Helpers\Helper;
+
 use Log; 
 
 class CompressVideo extends Job implements ShouldQueue

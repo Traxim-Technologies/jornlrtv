@@ -1727,10 +1727,10 @@ class AdminController extends Controller
             }
         } else {
 
-            $videoPath = $videos->video_resize_path ? $videos->video_resize_path : '';
-            $video_pixels = $videos->video_resolutions ? $videos->video_resolutions : '';
-            $trailer_video_path = $videos->trailer_video_path ? $videos->trailer_video_path : '';
-            $trailer_pixels = $videos->trailer_video_resolutions ? $videos->trailer_video_resolutions : '';
+            $videoPath = $videos->video_resize_path ? $video->video.','.$videos->video_resize_path : $video->video;
+            $video_pixels = $videos->video_resolutions ? 'original,'.$videos->video_resolutions : 'original';
+            $trailer_video_path = $videos->trailer_video_path ? $video->trailer_video.','.$videos->trailer_video_path : $video->trailer_video;
+            $trailer_pixels = $videos->trailer_video_resolutions ? 'original'.$videos->trailer_video_resolutions : 'original';
 
             /*$trailerResolution = getResolutionsPath($videos->trailer_video, $videos->trailer_video_resolutions,);
 
