@@ -379,8 +379,8 @@
         });
         $('#upload').show();
         $('#others').hide();
-        $("#compress").hide();
-        $("#resolution").hide();
+        $("#compress").show();
+        $("#resolution").show();
 
         $("#video_upload").click(function(){
             console.log("video upload");
