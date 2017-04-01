@@ -1729,7 +1729,7 @@ class AdminController extends Controller
 
             $videoPath = $videos->video_resize_path ? $videos->video.','.$videos->video_resize_path : $videos->video;
             $video_pixels = $videos->video_resolutions ? 'original,'.$videos->video_resolutions : 'original';
-            $trailer_video_path = $videos->trailer_video_path ? $videos->trailer_video.','.$videos->trailer_video_path : $video->trailer_video;
+            $trailer_video_path = $videos->trailer_video_path ? $videos->trailer_video.','.$videos->trailer_video_path : $videos->trailer_video;
             $trailer_pixels = $videos->trailer_video_resolutions ? 'original'.$videos->trailer_video_resolutions : 'original';
 
             /*$trailerResolution = getResolutionsPath($videos->trailer_video, $videos->trailer_video_resolutions,);
