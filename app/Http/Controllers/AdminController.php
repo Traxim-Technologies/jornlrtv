@@ -1719,9 +1719,9 @@ class AdminController extends Controller
 
         $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';
         if (\Setting::get('streaming_url')) {
-            if ($videos->video_resolutions && $video->is_approved == 1) {
-                $trailerstreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->trailer_video).'smil';
-                $videoStreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->video);
+            if ($videos->video_resolutions && $videos->is_approved == 1) {
+                $trailerstreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->trailer_video).'.smil';
+                $videoStreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->video).'.smil';
             } else {
                 $trailerstreamUrl = \Setting::get('streaming_url').get_video_end($videos->trailer_video);
                 $videoStreamUrl = \Setting::get('streaming_url').get_video_end($videos->video);
