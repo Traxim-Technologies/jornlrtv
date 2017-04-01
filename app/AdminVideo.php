@@ -128,7 +128,7 @@ class AdminVideo extends Model
             'admin_videos.video_resolutions',
             'admin_videos.video_resize_path',
             'admin_videos.trailer_resize_path',
-            'admin_videos.trailer_video_resolutions',
+            'admin_videos.trailer_video_resolutions'
         );
     }
 }
