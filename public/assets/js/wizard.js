@@ -184,6 +184,8 @@ $('form').ajaxForm({
         var percentVal = '0%';
         bar.width(percentVal)
         percent.html(percentVal);
+        $("#"+final).text("Wait Progressing...");
+        $("#"+final).attr('disabled', true);
     },
     uploadProgress: function(event, position, total, percentComplete) {
         var percentVal = percentComplete + '%';
@@ -193,11 +195,15 @@ $('form').ajaxForm({
     complete: function(xhr) {
         bar.width("100%");
         percent.html("100%");
+        $("#"+final).text("Loading...");
+        $("#"+final).attr('disabled', true);
     },
     error : function(xhr) {
         alert(xhr);
     },
     success : function(xhr) {
+        $("#"+final).text("Finish");
+        $("#"+final).attr('disabled', false);
         if(xhr.id == '' && xhr.id == undefined) {
             alert(xhr);
         } else {

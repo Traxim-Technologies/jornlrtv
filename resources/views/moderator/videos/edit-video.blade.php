@@ -385,6 +385,7 @@
 
         $("#"+"{{$video->category_id}}"+"_i").show();
         $("#"+"{{$video->sub_category_id}}"+"_sub_i").show();
+        var final = "{{REQUEST_STEP_FINAL}}";
 
         $(function () {
 
