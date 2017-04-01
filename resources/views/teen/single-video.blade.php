@@ -24,7 +24,7 @@
 
                         @if(Auth::check())
                             <div class="pull-left">
-                                @if(Auth::user()->user_type == 1)
+                                @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)
                                     <input class="watch-full" type="submit" id="watch_main_video_button" name="submit" value="{{tr('watch_main_video')}}" style="background: green">
                                 @else
 

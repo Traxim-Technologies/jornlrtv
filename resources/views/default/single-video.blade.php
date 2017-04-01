@@ -111,7 +111,7 @@
                                         
                                             @if(Auth::check())
 											<div class="pull-left">
-                                                @if(Auth::user()->user_type == 1)
+                                                @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)
                                                     
                                                     <button id="watch_main_video_button" style="background:green;color:#fff" type="submit" name="subscribe">{{tr('watch_main_video')}}</button>
 
