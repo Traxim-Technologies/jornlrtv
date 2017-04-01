@@ -91,7 +91,7 @@ class CompressVideo extends Job implements ShouldQueue
             if ($video->compress_status == 1 && $video->trailer_compress_status == 1) {
                 $video->is_approved = DEFAULT_TRUE; 
             }
-            if ($video->array_resolutions) {
+            if ($array_resolutions) {
                 $myfile = fopen(base_path('public/uploads/smil/'.$this->file_name.'.smil'), "w");
                 $txt = '<smil>
                   <head>
