@@ -13,7 +13,7 @@
         @foreach($model as $i => $video)
 
             <div class="video-box">
-                <a href="{{($video->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}">
+                <a href="{{($video->adminVideo->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}">
                     <?php 
                         $video_images = get_video_image($video->video_id); 
                     ?>

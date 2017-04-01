@@ -25,13 +25,13 @@
                         <li class="sub-list row">
                             <div class="main-history">
                                  <div class="history-image">
-                                    <a href="{{($video->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}"><img src="{{$video->adminVideo->default_image}}"></a>                        
+                                    <a href="{{($video->adminVideo->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}"><img src="{{$video->adminVideo->default_image}}"></a>                        
                                 </div><!--history-image-->
 
                                 <div class="history-title">
                                     <div class="history-head row">
                                         <div class="cross-title">
-                                            <h5><a href="{{($video->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}">{{$video->adminVideo->title}} (${{$video->amount}})</a></h5>
+                                            <h5><a href="{{($video->adminVideo->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}">{{$video->adminVideo->title}} (${{$video->amount}})</a></h5>
                                             <p class="duration">{{tr('duration')}}: {{$video->adminVideo->duration}}</p>
                                         </div> 
                                     </div> <!--end of history-head--> 

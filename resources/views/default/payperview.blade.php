@@ -76,7 +76,7 @@
 
                                                 <div class="post-thumb">
                                                     <img src="{{$video->adminVideo->default_image}}" alt="new video">
-                                                    <a target="_blank" href="{{($video->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}" class="hover-posts">
+                                                    <a target="_blank" href="{{($video->adminVideo->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}" class="hover-posts">
                                                         <span><i class="fa fa-play"></i>{{tr('watch_video')}}</span>
                                                     </a>
                                                     <div class="video-stats clearfix">
@@ -99,7 +99,7 @@
                                                 </div>
 
                                                 <div class="post-des">
-                                                    <h6><a href="{{($video->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}">{{$video->adminVideo->title}} (${{$video->amount}})</a></h6>
+                                                    <h6><a href="{{($video->adminVideo->is_approved == 1) ? route('user.single' , $video->video_id) : ''}}">{{$video->adminVideo->title}} (${{$video->amount}})</a></h6>
                                                     <div class="post-stats clearfix">
                                                         
                                                         <p class="pull-left">
