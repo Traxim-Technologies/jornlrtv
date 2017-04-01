@@ -423,11 +423,10 @@ textarea[name=comments] {
                         var playerInstance = jwplayer("trailer-video-player");
 
                         @if($trailerstreamUrl)
-                            // alert(trailerPath);
-                            console.log(trailerPath);
+
 
                             playerInstance.setup({
-                                file: $trailerstreamUrl,
+                                file: "{{$trailerstreamUrl}}",
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -629,7 +628,7 @@ textarea[name=comments] {
                             @if($videoStreamUrl) 
 
                             playerInstance.setup({
-                                file: $videoStreamUrl,
+                                file: "{{$videoStreamUrl}}",
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",

@@ -699,7 +699,7 @@
                         @if($trailerstreamUrl)
 
                         playerInstance.setup({
-                            sources: $trailerstreamUrl,
+                            sources: "{{$trailerstreamUrl}}",
                             image: "{{$video->default_image}}",
                             width: "100%",
                             aspectratio: "16:9",
@@ -908,7 +908,7 @@
   
                             playerInstance.setup({
                                
-                                file: $videoStreamUrl,
+                                file: "{{$videoStreamUrl}}",
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
