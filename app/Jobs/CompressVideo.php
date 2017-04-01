@@ -75,7 +75,7 @@ class CompressVideo extends Job implements ShouldQueue
 
                     Log::info('Output'.base_path('public/uploads/videos/'.$solution.$this->local_url));
                     $array_resolutions[] = $solution;
-                    $video_resize_path[] = Helper::web_url().$path.$solution.$this->local_url;
+                    $video_resize_path[] = Helper::web_url().'/uploads/videos/original/'.$solution.$this->local_url;
                     $pathnames[] = $solution.$this->local_url;
                 }
             }
