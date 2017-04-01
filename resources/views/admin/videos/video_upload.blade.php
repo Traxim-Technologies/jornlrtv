@@ -65,7 +65,7 @@
                 </ul>
             </div>
 
-            <form id="video-upload" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.video')}}" method="POST" enctype="multipart/form-data" role="form">
+            <form id="video-upload" method="POST" enctype="multipart/form-data" role="form">
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
@@ -251,7 +251,7 @@
                                 <label>{{tr('compress_video')}}</label>
                                 <div>
                                     <input type="radio" name="compress_video" value="1"> <label style="vertical-align: 5px;">{{tr('yes')}}</label> &nbsp;&nbsp;
-                                    <input type="radio" name="compress_video" value="0"> <label style="vertical-align: 5px;">{{tr('no')}}</label>
+                                    <input type="radio" name="compress_video" value="0" checked> <label style="vertical-align: 5px;">{{tr('no')}}</label>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" id="resolution">
@@ -394,6 +394,80 @@
             $("#compress").hide();
             $("#resolution").hide();
         });
+
+
+$('#video-upload').submit(function(e) {
+
+    var formData = new FormData(this);
+
+    $.ajax({
+        type:'POST',
+        url: "{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.video')}}",
+        data:formData,
+        beforeSend: function() {
+            var percentVal = '0%';
+            bar.width(percentVal)
+            percent.html(percentVal);
+        },
+        xhr: function() {
+                var myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){
+                    myXhr.upload.addEventListener('progress',progress, false);
+                }
+                return myXhr;
+        },
+        cache:false,
+        contentType: false,
+        processData: false,
+
+        success:function(data){
+            console.log(data);
+
+            if(data.id == '' && data.id == undefined) {
+                alert(data);
+            } else {
+                window.location.href="/admin/view/video?id="+data.id;
+            }
+
+            // alert('data returned successfully');
+
+        },
+
+        error: function(data){
+            console.log(data);
+        }
+    });
+
+    e.preventDefault();
+
+});
+
+
+function progress(e){
+
+    if(e.lengthComputable){
+        var max = e.total;
+        var current = e.loaded;
+
+        var Percentage = (current * 100)/max;
+        console.log(Percentage);
+
+        bar.width(Math.round(Percentage)+'%')
+        percent.html(Math.round(Percentage)+'%');
+
+        $("#"+final).text("Wait Progressing...");
+        $("#"+final).attr('disabled', true);
+
+
+        if(Percentage >= 100)
+        {
+           // process completed 
+           console.log("process completed") ;
+           $("#"+final).text("Finish");
+           $("#"+final).attr('disabled', false);
+        }
+    }  
+ }
     </script>
 
 

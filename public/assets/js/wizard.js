@@ -179,7 +179,9 @@ function saveSubCategory(sub_category_id, step) {
 var bar = $('.bar');
 var percent = $('.percent');
 
-$('form').ajaxForm({
+
+
+/*$('form').ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
         bar.width(percentVal)
@@ -188,15 +190,23 @@ $('form').ajaxForm({
         $("#"+final).attr('disabled', true);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        console.log(total);
+        console.log(position);
+        console.log(event);
         var percentVal = percentComplete + '%';
         bar.width(percentVal)
         percent.html(percentVal);
+        if (percentComplete == 100) {
+            $("#"+final).text("Loading...");
+            $("#"+final).attr('disabled', true);
+        }
     },
     complete: function(xhr) {
         bar.width("100%");
         percent.html("100%");
         $("#"+final).text("Loading...");
         $("#"+final).attr('disabled', true);
+        console.log(xhr);
     },
     error : function(xhr) {
         alert(xhr);
@@ -207,10 +217,10 @@ $('form').ajaxForm({
         if(xhr.id == '' && xhr.id == undefined) {
             alert(xhr);
         } else {
-            window.location.href="/admin/view/video?id="+xhr.id;
+            // window.location.href="/admin/view/video?id="+xhr.id;
         }
     }
-}); 
+}); */
 
 function loadFile(event, id){
     // alert(event.files[0]);

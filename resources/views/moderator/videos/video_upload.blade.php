@@ -249,7 +249,7 @@
                                 <label>{{tr('compress_video')}}</label>
                                 <div>
                                     <input type="radio" name="compress_video" value="1"> <label style="vertical-align: 5px;">{{tr('yes')}}</label> &nbsp;&nbsp;
-                                    <input type="radio" name="compress_video" value="0"> <label style="vertical-align: 5px;">{{tr('no')}}</label>
+                                    <input type="radio" name="compress_video" value="0" checked> <label style="vertical-align: 5px;">{{tr('no')}}</label>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" id="resolution">
