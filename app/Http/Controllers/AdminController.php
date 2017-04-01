@@ -1710,6 +1710,7 @@ class AdminController extends Controller
                              'admin_videos.video_resolutions',
                              'admin_videos.video_resize_path',
                              'admin_videos.trailer_resize_path',
+                             'admin_videos.is_approved',
                              'admin_videos.trailer_video_resolutions',
                              'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
@@ -1718,8 +1719,8 @@ class AdminController extends Controller
 
         $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';
         if (\Setting::get('streaming_url')) {
-            if ($videos->video_resolutions) {
-                $trailerstreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->trailer_video);
+            if ($videos->video_resolutions && $video->is_approved == 1) {
+                $trailerstreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->trailer_video).'smil';
                 $videoStreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->video);
             } else {
                 $trailerstreamUrl = \Setting::get('streaming_url').get_video_end($videos->trailer_video);
