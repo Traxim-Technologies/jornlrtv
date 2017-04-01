@@ -7,7 +7,7 @@
         @include('notification.notify')
 
         <div class="box-title">
-            <h3 class="main-title">{{tr('wishlist')}}</h3>
+            <h3 class="main-title">{{tr('spam_videos')}}</h3>
         </div>
 
         @foreach($model as $i => $video)
