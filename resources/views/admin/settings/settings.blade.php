@@ -109,7 +109,43 @@
                                         <label for="google_analytics">{{tr('google_analytics')}}</label>
                                         <textarea class="form-control" id="google_analytics" name="google_analytics">{{Setting::get('google_analytics')}}</textarea>
                                     </div>
-                                </div>                  
+                                </div>   
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="original_key">{{tr('original_key')}}</label>
+                                        <input type="text" value="{{ Setting::get('original_key')}}" class="form-control" name="original_key" id="original_key">
+                                    </div> 
+                                </div>  
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="426x240_key">{{tr('426x240_key')}}</label>
+                                        <input type="text" value="{{ Setting::get('426x240_key')}}" class="form-control" name="426x240_key" id="426x240_key">
+                                    </div> 
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="640x360_key">{{tr('640x360_key')}}</label>
+                                        <input type="text" value="{{ Setting::get('640x360_key')}}" class="form-control" name="640x360_key" id="640x360_key">
+                                    </div> 
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="854x480_key">{{tr('854x480_key')}}</label>
+                                        <input type="text" value="{{ Setting::get('854x480_key')}}" class="form-control" name="854x480_key" id="854x480_key">
+                                    </div> 
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="1280x720_key">{{tr('1280x720_key')}}</label>
+                                        <input type="text" value="{{ Setting::get('1280x720_key')}}" class="form-control" name="1280x720_key" id="1280x720_key">
+                                    </div> 
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label for="1920x1080_key">{{tr('1920x1080_key')}}</label>
+                                        <input type="text" value="{{ Setting::get('1920x1080_key')}}" class="form-control" name="1920x1080_key" id="1920x1080_key">
+                                    </div> 
+                                </div>             
 
                           </div>
                           <!-- /.box-body -->
