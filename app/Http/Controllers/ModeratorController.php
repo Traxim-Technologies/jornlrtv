@@ -636,8 +636,6 @@ class ModeratorController extends Controller
 
                     $video->video = Helper::upload_picture($video_link);
                     $video->trailer_video = Helper::upload_picture($trailer_video); 
-                    $video->compress_status = DEFAULT_TRUE;
-                    $video->trailer_compress_status = DEFAULT_TRUE;
 
                 } else {
                     $main_video_url = Helper::video_upload($video_link, $request->compress_video);
@@ -645,23 +643,24 @@ class ModeratorController extends Controller
                     $trailer_video_url = Helper::video_upload($trailer_video, $request->compress_video);
                     $video->trailer_video = $trailer_video_url['db_url'];
                     $video->video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : '';
-                    $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : '';
+                    $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : ''
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE) {
 
                 $video->video = get_youtube_embed_link($video_link);
                 $video->trailer_video = get_youtube_embed_link($trailer_video);
-                $video->compress_status = DEFAULT_TRUE;
-                $video->trailer_compress_status = DEFAULT_TRUE;
 
             } else {
 
                 $video->video = $video;
                 $video->trailer_video = $trailer_video;
+
+            }
+
+            if (empty($video->video_resolutions)) {
                 $video->compress_status = DEFAULT_TRUE;
                 $video->trailer_compress_status = DEFAULT_TRUE;
-
             }
 
             $video->video_type = $request->video_type;
@@ -931,6 +930,11 @@ class ModeratorController extends Controller
             $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;
 
             $video->edited_by = MODERATOR;
+
+            if (empty($video->video_resolutions)) {
+                $video->compress_status = DEFAULT_TRUE;
+                $video->trailer_compress_status = DEFAULT_TRUE;
+            }
 
             $video->save();
 

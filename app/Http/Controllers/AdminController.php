@@ -1270,11 +1270,7 @@ class AdminController extends Controller
                 if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
 
                     $video->video = Helper::upload_picture($video_link);
-                    $video->trailer_video = Helper::upload_picture($trailer_video); 
-
-                    $video->is_approved = DEFAULT_TRUE;
-                    $video->compress_status = DEFAULT_TRUE;
-                    $video->trailer_compress_status = DEFAULT_TRUE;
+                    $video->trailer_video = Helper::upload_picture($trailer_video);
 
                 } else {
                     // if(ini_get('upload_max_size') > )
@@ -1282,6 +1278,7 @@ class AdminController extends Controller
                     $video->video = $main_video_duration['db_url'];
                     $trailer_video_duration = Helper::video_upload($trailer_video, $request->compress_video);
                     $video->trailer_video = $trailer_video_duration['db_url'];  
+                    
                     $video->video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : '';
                     $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : '';
                     /* $getDuration = readFileName($main_video_duration['baseUrl']);
@@ -1300,18 +1297,10 @@ class AdminController extends Controller
                 // $video->duration = getYoutubeDuration($video->video);
                 $video->trailer_video = get_youtube_embed_link($trailer_video);
 
-                $video->is_approved = DEFAULT_TRUE;
-                $video->compress_status = DEFAULT_TRUE;
-                $video->trailer_compress_status = DEFAULT_TRUE;
-                $video->is_approved = DEFAULT_TRUE;
                 // $video->trailer_duration = getYoutubeDuration($video->trailer_video);
             } else {
                 $video->video = $video_link;
                 $video->trailer_video = $trailer_video;
-                $video->is_approved = DEFAULT_TRUE;
-                $video->compress_status = DEFAULT_TRUE;
-                $video->trailer_compress_status = DEFAULT_TRUE;
-                $video->is_approved = DEFAULT_TRUE;
             }
 
             $video->video_type = $request->video_type;
@@ -1333,6 +1322,12 @@ class AdminController extends Controller
                 $video->status = DEFAULT_TRUE;
             } else {
                 $video->status = DEFAULT_FALSE;
+            }
+
+            if (empty($video->video_resolutions)) {
+                $video->compress_status = DEFAULT_TRUE;
+                $video->trailer_compress_status = DEFAULT_TRUE;
+                $video->is_approved = DEFAULT_TRUE;
             }
             
             $video->uploaded_by = ADMIN;
@@ -1615,7 +1610,14 @@ class AdminController extends Controller
 
             $video->edited_by = ADMIN;
 
+            if (empty($video->video_resolutions)) {
+                $video->compress_status = DEFAULT_TRUE;
+                $video->trailer_compress_status = DEFAULT_TRUE;
+                $video->is_approved = DEFAULT_TRUE;
+            }
+
             Log::info("Approved : ".$video->is_approved);
+
 
             $video->save();
 
