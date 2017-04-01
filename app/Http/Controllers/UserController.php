@@ -285,6 +285,14 @@ class UserController extends Controller {
 
         $response->status = $request->status;
 
+        // Load Payperview
+        $payperview = PayPerView::where('user_id', \Auth::user()->id)->where('video_id',$request->admin_video_id)
+                        ->where('status',0)->first();
+        if ($payperview) {
+            $payperview->status = DEFAULT_TRUE;
+            $payperview->save();
+        }
+
         return response()->json($response);
     
     }

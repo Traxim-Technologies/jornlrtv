@@ -441,6 +441,8 @@
 
             $s3_url = Helper::web_url().$path.$local_url;
 
+            Log::info("Compress Video completed");
+
             return ['db_url'=>$s3_url, 'baseUrl'=> $inputFile, 'local_url'=>$local_url];
         }
 

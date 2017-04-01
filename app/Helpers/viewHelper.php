@@ -846,8 +846,7 @@ function watchFullVideo($user_id, $user_type, $video) {
                 }
             } else {
                 if ($paymentView) {
-                    $split = explode(' ', $paymentView->expiry_date);
-                    if ($split[0] == date('Y-m-d')) {
+                    if ($paymentView->status == DEFAULT_TRUE) {
                         return true;
                     }
                 }   
@@ -857,16 +856,16 @@ function watchFullVideo($user_id, $user_type, $video) {
         }
     } else {
         if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->where('status', 1)->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
-                $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->where('status', 1)->first();
                 if ($paymentView) {
                     return true;
                 }
             } else {
+
                 if ($paymentView) {
-                    $split = explode(' ', $paymentView->expiry_date);
-                    if ($split[0] == date('Y-m-d')) {
+                    if ($paymentView->status == DEFAULT_TRUE) {
                         return true;
                     }
                 }  

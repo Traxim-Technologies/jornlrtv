@@ -197,7 +197,7 @@ $('form').ajaxForm({
         bar.width(percentVal)
         percent.html(percentVal);
         if (percentComplete == 100) {
-            $("#"+final).text("Video Compressing...");
+            $("#"+final).text("Video Uploading...");
             $("#"+final).attr('disabled', true);
         }
     },

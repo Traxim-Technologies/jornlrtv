@@ -89,6 +89,7 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
+								                	@if ($video->compress_status == 1 && $video->trailer_compress_status == 1)
 								                  	<li role="presentation">
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
@@ -96,6 +97,7 @@
                                                             <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->video_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
+                                                    @endif
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_id))}}">{{tr('view')}}</a></li>
 
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#{{$video->video_id}}">{{tr('pay_per_view')}}</a></li>
@@ -116,17 +118,19 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.publish-video',$video->video_id)}}">{{tr('publish')}}</a></li>
 								                  	@endif
 
-								                  	<li class="divider" role="presentation"></li>
+								                  	@if ($video->compress_status == 1 && $video->trailer_compress_status == 1)
+									                  	<li class="divider" role="presentation"></li>
 
-								                  	<li role="presentation">
-								                  		@if(Setting::get('admin_delete_control'))
+									                  	<li role="presentation">
+									                  		@if(Setting::get('admin_delete_control'))
 
-									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
+										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
-									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_id))}}">{{tr('delete')}}</a>
-								                  		@endif
-								                  	</li>
+										                  	@else
+									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_id))}}">{{tr('delete')}}</a>
+									                  		@endif
+									                  	</li>
+								                  	@endif
 								                </ul>
               								</li>
             							</ul>

@@ -73,7 +73,9 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
+								                	@if ($video->compress_status == 1 && $video->trailer_compress_status == 1)
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('moderator.edit.video' , array('id' => $video->video_id))}}">{{tr('edit_video')}}</a></li>
+								                  	@endif
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('moderator.view.video' , array('id' => $video->video_id))}}">{{tr('view_video')}}</a></li>
 								                </ul>
               								</li>
