@@ -1377,6 +1377,7 @@ class AdminController extends Controller
                     return redirect(route('admin.banner.videos'));
                 else*/
                 if ($request->has('ajax_key')) {
+                    Log::info('Video Id Ajax : '.$video->id);
                     return ['id'=>$video->id];
                 } else  {
                     Log::info('Video Id : '.$video->id);

@@ -329,7 +329,9 @@
             }
 
             $video_image->position = $position;
+
             $video_image->save();
+            Log::info('VIDEO IMAGE SAVED : '.$video_image->id);
 
         }
 
@@ -433,6 +435,7 @@
                     ->ready();
 
             } else {
+                Log::info("Original Video");
                 $picture->move(public_path() . $path, $local_url);
             }
 
