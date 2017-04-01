@@ -846,7 +846,7 @@ function watchFullVideo($user_id, $user_type, $video) {
                 }
             } else {
                 if ($paymentView) {
-                    if ($paymentView->status == DEFAULT_TRUE) {
+                    if ($paymentView->status == DEFAULT_FALSE) {
                         return true;
                     }
                 }   
@@ -865,7 +865,7 @@ function watchFullVideo($user_id, $user_type, $video) {
             } else {
 
                 if ($paymentView) {
-                    if ($paymentView->status == DEFAULT_TRUE) {
+                    if ($paymentView->status == DEFAULT_FALSE) {
                         return true;
                     }
                 }  
