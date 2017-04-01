@@ -177,7 +177,7 @@ class PaypalController extends Controller {
         if ($result->getState() == 'approved') { // payment made
 
             $payment = UserPayment::where('payment_id',$payment_id)->first();
-            $payment->status = 1;
+            // $payment->status = 1;
             $payment->amount = Setting::get('amount');
 
             $payment->save();
@@ -340,7 +340,7 @@ class PaypalController extends Controller {
         if ($result->getState() == 'approved') { // payment made
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
-            $payment->status = 1;
+            // $payment->status = 1;
             $payment->amount = $payment->adminVideo->amount;
 
             $payment->save();
