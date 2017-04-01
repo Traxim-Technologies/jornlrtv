@@ -1346,9 +1346,10 @@ class AdminController extends Controller
                     if ($main_video_duration) {
                         $inputFile = $main_video_duration['baseUrl'];
                         $local_url = $main_video_duration['local_url'];
+                        $file_name = $main_video_duration['file_name'];
                         if (file_exists($inputFile)) {
                             Log::info("Main queue Videos : ".'Success');
-                            dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id));
+                            dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id, $file_name));
                             Log::info("Main Compress Status : ".$video->compress_status);
                             Log::info("Main queue completed : ".'Success');
                         }
@@ -1356,9 +1357,10 @@ class AdminController extends Controller
                     if ($trailer_video_duration) {
                         $inputFile = $trailer_video_duration['baseUrl'];
                         $local_url = $trailer_video_duration['local_url'];
+                        $file_name = $trailer_video_duration['file_name'];
                         if (file_exists($inputFile)) {
                             Log::info("Trailer queue Videos : ".'Success');
-                            dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id));
+                            dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id,$file_name));
                             Log::info("Trailer Compress Status : ".$video->compress_status);
                             Log::info("Trailer queue completed : ".'Success');
                         }
@@ -1628,9 +1630,10 @@ class AdminController extends Controller
                     if ($main_video_url) {
                         $inputFile = $main_video_url['baseUrl'];
                         $local_url = $main_video_url['local_url'];
+                        $file_name = $main_video_url['file_name'];
                         if (file_exists($inputFile)) {
                             Log::info("Main queue Videos : ".'Success');
-                            dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id));
+                            dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id,$file_name));
                             Log::info("Main Compress Status : ".$video->compress_status);
                             Log::info("Main queue completed : ".'Success');
                         }
@@ -1638,9 +1641,10 @@ class AdminController extends Controller
                     if ($trailer_video_url) {
                         $inputFile = $trailer_video_url['baseUrl'];
                         $local_url = $trailer_video_url['local_url'];
+                        $file_name = $trailer_video_url['file_name'];
                         if (file_exists($inputFile)) {
                             Log::info("Trailer queue Videos : ".'Success');
-                            dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id));
+                            dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id, $file_name));
                             Log::info("Trailer Compress Status : ".$video->compress_status);
                             Log::info("Trailer queue completed : ".'Success');
                         }
@@ -1704,23 +1708,43 @@ class AdminController extends Controller
                              'admin_videos.compress_status',
                              'admin_videos.trailer_compress_status',
                              'admin_videos.video_resolutions',
+                             'admin_videos.video_resize_path',
+                             'admin_videos.trailer_resize_path',
                              'admin_videos.trailer_video_resolutions',
                              'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->first();
 
-        $trailerResolution = getResolutionsPath($videos->trailer_video, $videos->trailer_video_resolutions,\Setting::get('streaming_url'));
+        $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';
+        if (\Setting::get('streaming_url')) {
+            if ($videos->video_resolutions) {
+                $trailerstreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->trailer_video);
+                $videoStreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($videos->video);
+            } else {
+                $trailerstreamUrl = \Setting::get('streaming_url').get_video_end($videos->trailer_video);
+                $videoStreamUrl = \Setting::get('streaming_url').get_video_end($videos->video);
+            }
+        } else {
 
-        $trailer_re_path = $trailerResolution['video_resolutions'];
-        $trailer_pixels = $trailerResolution['pixels'];
+            $videoPath = $videos->video_resize_path ? $videos->video_resize_path : '';
+            $video_pixels = $videos->video_resolutions ? $videos->video_resolutions : '';
+            $trailer_video_path = $videos->trailer_video_path ? $videos->trailer_video_path : '';
+            $trailer_pixels = $videos->trailer_video_resolutions ? $videos->trailer_video_resolutions : '';
+
+            /*$trailerResolution = getResolutionsPath($videos->trailer_video, $videos->trailer_video_resolutions,);
+
+            $trailer_re_path = $trailerResolution['video_resolutions'];
+            $trailer_pixels = $trailerResolution['pixels'];
+            
+            $videoResolution = getResolutionsPath($videos->video, $videos->video_resolutions,\Setting::get('streaming_url'));
+
+            $video_re_path = $videoResolution['video_resolutions'];
+            $video_pixels = $videoResolution['pixels'];*/
+
+        }
         
-        $videoResolution = getResolutionsPath($videos->video, $videos->video_resolutions,\Setting::get('streaming_url'));
-
-        $video_re_path = $videoResolution['video_resolutions'];
-        $video_pixels = $videoResolution['pixels'];
-
-            $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)
+        $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)
                                 ->orderBy('is_default' , 'desc')
                                 ->get();
 
@@ -1736,10 +1760,12 @@ class AdminController extends Controller
                     ->with('video_images' , $admin_video_images)
                     ->withPage($page)
                     ->with('sub_page',$sub_page)
-                    ->with('video_video_path', $video_re_path)
+                    ->with('videoPath', $videoPath)
                     ->with('video_pixels', $video_pixels)
-                    ->with('trailer_video_path', $trailer_re_path)
-                    ->with('trailer_pixels', $trailer_pixels);
+                    ->with('trailer_video_path', $trailer_video_path)
+                    ->with('trailer_pixels', $trailer_pixels)
+                    ->with('videoStreamUrl', $videoStreamUrl)
+                    ->with('trailerstreamUrl', $trailerstreamUrl);
         }
     }
 

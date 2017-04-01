@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddVideoCompressSizeInSettingsTable::class);
         $this->call(AddedImageCompressSize::class);
         $this->call(AddVideoFolderKeys::class);
+        $this->call(AddDeleteControl::class);
     }
 }

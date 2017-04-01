@@ -239,6 +239,19 @@ function get_video_end($video_url) {
     return $result;
 }
 
+function get_video_end_smil($video_url) {
+    $url = explode('/',$video_url);
+    $result = end($url);
+    if ($result) {
+        $split = explode('.', $result);
+        if (count($split) == 2) {
+            $result = $split[0];
+        }
+    }
+    return $result;
+}
+
+
 function get_video_image($video_id)
 {
     $video_image = AdminVideoImage::where('admin_video_id',$video_id)->orderBy('position','ASC')->get();
