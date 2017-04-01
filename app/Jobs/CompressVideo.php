@@ -62,7 +62,7 @@ class CompressVideo extends Job implements ShouldQueue
                 // Explode $solution value
                 $getwidth = (count($exp) == 2) ? $exp[0] : 0;
                 if ($getwidth < $attributes['width']) {
-                    $dirPath = base_path('public/uploads/videos/'.$solution);
+                    // $dirPath = base_path('public/uploads/videos/original/'.$solution);
                     Log::info("Compressing Queue Videos : ".$dirPath);
                     $FFmpeg = new \FFmpeg;
                     $FFmpeg
@@ -70,11 +70,12 @@ class CompressVideo extends Job implements ShouldQueue
                     ->size($solution)
                     ->vcodec('h264')
                     ->constantRateFactor('28')
-                    ->output(base_path('public/uploads/videos/'.$solution.$this->local_url))
+                    ->output(base_path('public/uploads/videos/original/'.$solution.$this->local_url))
                     ->ready();
 
-                    Log::info('Output'.base_path('public/uploads/videos/'.$solution.$this->local_url));
+                    Log::info('Output'.base_path('public/uploads/videos/original/'.$solution.$this->local_url));
                     $array_resolutions[] = $solution;
+                    Log::info('Url'.Helper::web_url().'/uploads/videos/original/'.$solution.$this->local_url);
                     $video_resize_path[] = Helper::web_url().'/uploads/videos/original/'.$solution.$this->local_url;
                     $pathnames[] = $solution.$this->local_url;
                 }
