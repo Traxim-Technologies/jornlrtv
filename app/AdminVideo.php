@@ -123,8 +123,12 @@ class AdminVideo extends Model
             'genres.name as genre_name',
             'admin_videos.is_approved',
             'admin_videos.status',
+            'admin_videos.compress_status',
+            'admin_videos.trailer_compress_status',
+            'admin_videos.video_resolutions',
+            'admin_videos.video_resize_path',
+            'admin_videos.trailer_resize_path',
             'admin_videos.trailer_video_resolutions',
-            'admin_videos.video_resolutions'
         );
     }
 }

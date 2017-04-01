@@ -142,15 +142,24 @@ class UserController extends Controller {
                 }
             }
 
-            $trailerResolution = getResolutionsPath($video->trailer_video, $video->trailer_video_resolutions,\Setting::get('streaming_url'));
 
-            $trailer_re_path = $trailerResolution['video_resolutions'];
-            $trailer_pixels = $trailerResolution['pixels'];
-            
-            $videoResolution = getResolutionsPath($video->video, $video->video_resolutions,\Setting::get('streaming_url'));
+            $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';
+            if (\Setting::get('streaming_url')) {
+                if ($video->video_resolutions) {
+                    $trailerstreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($video->trailer_video);
+                    $videoStreamUrl = Helper::web_url().'/uploads/videos/smil/'.get_video_end_smil($video->video);
+                } else {
+                    $trailerstreamUrl = \Setting::get('streaming_url').get_video_end($video->trailer_video);
+                    $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
+                }
+            } else {
 
-            $video_re_path = $videoResolution['video_resolutions'];
-            $video_pixels = $videoResolution['pixels'];
+                $videoPath = $video->video_resize_path ? $video->video.','.$video->video_resize_path : $video->video;
+                $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                $trailer_video_path = $video->trailer_video_path ? $video->trailer_video.','.$video->trailer_video_path : $video->trailer_video;
+                $trailer_pixels = $video->trailer_video_resolutions ? 'original'.$video->trailer_video_resolutions : 'original';
+
+            }
             
         } else {
             return redirect('/')->with('flash_error' , tr('video_not_found'));
@@ -178,10 +187,12 @@ class UserController extends Controller {
                     ->with('url' , $main_video)
                     ->with('categories' , $categories)
                     ->with('report_video', $report_video)
-                    ->with('video_video_path', $video_re_path)
+                    ->with('videoPath', $videoPath)
                     ->with('video_pixels', $video_pixels)
-                    ->with('trailer_video_path', $trailer_re_path)
+                    ->with('trailer_video_path', $trailer_video_path)
                     ->with('trailer_pixels', $trailer_pixels)
+                    ->with('videoStreamUrl', $videoStreamUrl)
+                    ->with('trailerstreamUrl', $trailerstreamUrl)
                     ->with('flaggedVideo', $flaggedVideo);
     }
 

@@ -370,28 +370,42 @@
 
                         var playerInstance = jwplayer("trailer-video-player");
 
-                        var trailerVideoPath = "{{$trailer_video_path}}";
-                        var trailerVideoPixels = "{{$trailer_pixels}}";
 
-                        var trailerPath = [];
+                        @if($trailerstreamUrl)
 
-                        var splitTrailer = trailerVideoPath.split(',');
+                            playerInstance.setup({
+                                path: $trailerstreamUrl,
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                            });
+                        @else
 
-                        var splitTrailerPixel = trailerVideoPixels.split(',');
+                             var trailerVideoPath = "{{$trailer_video_path}}";
+                            var trailerVideoPixels = "{{$trailer_pixels}}";
+
+                            var trailerPath = [];
+
+                            var splitTrailer = trailerVideoPath.split(',');
+
+                            var splitTrailerPixel = trailerVideoPixels.split(',');
 
 
-                        for (var i = 0 ; i < splitTrailer.length; i++) {
+                            for (var i = 0 ; i < splitTrailer.length; i++) {
 
-                            trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
-                        }
+                                trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
+                            }
 
-                        playerInstance.setup({
-                            sources: trailerPath,
-                            image: "{{$video->default_image}}",
-                            width: "100%",
-                            aspectratio: "16:9",
-                            primary: "flash",
-                        });
+                            playerInstance.setup({
+                                sources: trailerPath,
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                            });
+
+                        @endif
 
                         playerInstance.on('setupError', function() {
 
@@ -557,7 +571,34 @@
                             
                             var playerInstance = jwplayer("main-video-player");
 
-                            var videoPath = "{{$video_video_path}}";
+                             @if($videoStreamUrl)
+
+
+                            playerInstance.setup({
+                                path: $videoStreamUrl,
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                                controls : true,
+                                "controlbar.idlehide" : false,
+                                controlBarMode:'floating',
+                                "controls": {
+                                    "enableFullscreen": false,
+                                    "enablePlay": false,
+                                    "enablePause": false,
+                                    "enableMute": true,
+                                    "enableVolume": true
+                                },
+                                autostart : true,
+                                "sharing": {
+                                    "sites": ["reddit","facebook","twitter"]
+                                  }
+                            
+                            });
+
+                            @else
+                                var videoPath = "{{$video_video_path}}";
                             var videoPixels = "{{$video_pixels}}";
 
                             var path = [];
@@ -596,6 +637,8 @@
                             
                             });
 
+
+                            @endif
                             playerInstance.on('setupError', function() {
 
                                 jQuery("#main-video-player").css("display", "none");

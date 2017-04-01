@@ -275,42 +275,68 @@ hr {
 
                     var playerInstance = jwplayer("main-video-player");
 
-                    var videoPath = "{{$video_video_path}}";
-                    var videoPixels = "{{$video_pixels}}";
+                
+                    @if($videoStreamUrl) 
 
-                    var path = [];
+                        playerInstance.setup({
+                           file: $videoStreamUrl,
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
+                            controls : true,
+                            "controlbar.idlehide" : false,
+                            controlBarMode:'floating',
+                            "controls": {
+                              "enableFullscreen": false,
+                              "enablePlay": false,
+                              "enablePause": false,
+                              "enableMute": true,
+                              "enableVolume": true
+                            },
+                            // autostart : true,
+                            "sharing": {
+                                "sites": ["reddit","facebook","twitter"]
+                              }
+                        });
+                @else 
+                        var videoPath = "{{$videoPath}}";
+                        var videoPixels = "{{$video_pixels}}";
 
-                    var splitVideo = videoPath.split(',');
+                        var path = [];
 
-                    var splitVideoPixel = videoPixels.split(',');
+                        var splitVideo = videoPath.split(',');
+
+                        var splitVideoPixel = videoPixels.split(',');
 
 
-                    for (var i = 0 ; i < splitVideo.length; i++) {
+                        for (var i = 0 ; i < splitVideo.length; i++) {
 
-                        path.push({file : splitVideo[i], label : splitVideoPixel[i]});
-                    }
+                            path.push({file : splitVideo[i], label : splitVideoPixel[i]});
+                        }
 
-                    playerInstance.setup({
-                       sources: path,
-                        image: "{{$video->default_image}}",
-                        width: "100%",
-                        aspectratio: "16:9",
-                        primary: "flash",
-                        controls : true,
-                        "controlbar.idlehide" : false,
-                        controlBarMode:'floating',
-                        "controls": {
-                          "enableFullscreen": false,
-                          "enablePlay": false,
-                          "enablePause": false,
-                          "enableMute": true,
-                          "enableVolume": true
-                        },
-                        // autostart : true,
-                        "sharing": {
-                            "sites": ["reddit","facebook","twitter"]
-                          }
-                    });
+                        playerInstance.setup({
+                           sources: path,
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
+                            controls : true,
+                            "controlbar.idlehide" : false,
+                            controlBarMode:'floating',
+                            "controls": {
+                              "enableFullscreen": false,
+                              "enablePlay": false,
+                              "enablePause": false,
+                              "enableMute": true,
+                              "enableVolume": true
+                            },
+                            // autostart : true,
+                            "sharing": {
+                                "sites": ["reddit","facebook","twitter"]
+                              }
+                        });
+                @endif
 
                 @endif
 
@@ -318,28 +344,38 @@ hr {
 
                     var playerInstance = jwplayer("trailer-video-player");
 
-                    var trailerVideoPath = "{{$trailer_video_path}}";
-                    var trailerVideoPixels = "{{$trailer_pixels}}";
+                    @if($trailerstreamUrl)
+                        playerInstance.setup({
+                            file : $trailerstreamUrl,
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
+                        });
+                    @else 
+                         var trailerVideoPath = "{{$trailer_video_path}}";
+                        var trailerVideoPixels = "{{$trailer_pixels}}";
 
-                    var trailerPath = [];
+                        var trailerPath = [];
 
-                    var splitTrailer = trailerVideoPath.split(',');
+                        var splitTrailer = trailerVideoPath.split(',');
 
-                    var splitTrailerPixel = trailerVideoPixels.split(',');
+                        var splitTrailerPixel = trailerVideoPixels.split(',');
 
 
-                    for (var i = 0 ; i < splitTrailer.length; i++) {
+                        for (var i = 0 ; i < splitTrailer.length; i++) {
 
-                        trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
-                    }
+                            trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
+                        }
 
-                    playerInstance.setup({
-                        sources: trailerPath,
-                        image: "{{$video->default_image}}",
-                        width: "100%",
-                        aspectratio: "16:9",
-                        primary: "flash",
-                    });
+                        playerInstance.setup({
+                            sources: trailerPath,
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
+                        });
+                    @endif
 
                 @endif
         });

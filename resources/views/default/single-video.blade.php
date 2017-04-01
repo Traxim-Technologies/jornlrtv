@@ -696,7 +696,19 @@
 
                         var playerInstance = jwplayer("trailer-video-player");
 
-                        var trailerVideoPath = "{{$trailer_video_path}}";
+                        @if($trailerstreamUrl)
+
+                        playerInstance.setup({
+                            sources: $trailerstreamUrl,
+                            image: "{{$video->default_image}}",
+                            width: "100%",
+                            aspectratio: "16:9",
+                            primary: "flash",
+                        
+                        });
+                        @else
+
+                         var trailerVideoPath = "{{$trailer_video_path}}";
                         var trailerVideoPixels = "{{$trailer_pixels}}";
 
                         var trailerPath = [];
@@ -719,6 +731,7 @@
                             primary: "flash",
                         
                         });
+                        @endif
 
                         playerInstance.on('setupError', function() {
 
@@ -890,6 +903,35 @@
                             
                             var playerInstance = jwplayer("main-video-player");
 
+                            @if($videoStreamUrl) 
+
+  
+                            playerInstance.setup({
+                               
+                                file: $videoStreamUrl,
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                                controls : true,
+                                "controlbar.idlehide" : false,
+                                controlBarMode:'floating',
+                                "controls": {
+                                  "enableFullscreen": false,
+                                  "enablePlay": false,
+                                  "enablePause": false,
+                                  "enableMute": true,
+                                  "enableVolume": true
+                                },
+                                // autostart : true,
+                                "sharing": {
+                                    "sites": ["reddit","facebook","twitter"]
+                                  }
+                            
+                            });
+
+                            @else
+
                             var videoPath = "{{$video_video_path}}";
                             var videoPixels = "{{$video_pixels}}";
 
@@ -929,6 +971,8 @@
                             
                             });
 
+
+                            @endif
                             playerInstance.on('setupError', function() {
 
                                 // console.log('main_video_setup_error');
