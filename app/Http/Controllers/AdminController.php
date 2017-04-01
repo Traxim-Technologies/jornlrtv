@@ -1209,6 +1209,8 @@ class AdminController extends Controller
 
                 $error_messages = implode(',', $video_validator->messages()->all());
 
+                Log::info("Errors :".print_r($error_messages, true));
+
                 if ($request->has('ajax_key')) {
                     return $error_messages;
                 } else {
@@ -1377,6 +1379,7 @@ class AdminController extends Controller
                 if ($request->has('ajax_key')) {
                     return ['id'=>$video->id];
                 } else  {
+                    Log::info('Video Id : '.$video->id);
                     return redirect(route('admin.view.video', array('id'=>$video->id)));
                 }
             } else {
