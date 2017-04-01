@@ -354,7 +354,7 @@ hr {
                     @if($trailerstreamUrl)
 
                             playerInstance.setup({
-                                file : "{{$trailerstreamUrl}",
+                                file : "{{$trailerstreamUrl}}",
                                 image: "{{$video->default_image}}",
                                 width: "100%",
 
