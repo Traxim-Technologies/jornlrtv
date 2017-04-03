@@ -933,7 +933,7 @@ class ModeratorController extends Controller
 
             $video->edited_by = MODERATOR;
 
-            if($video->video_upload_type != VIDEO_TYPE_UPLOAD) {
+            if($video->video_type != VIDEO_TYPE_UPLOAD) {
                 $video->trailer_resize_path = null;
                 $video->video_resize_path = null;
                 $video->trailer_video_resolutions = null;
