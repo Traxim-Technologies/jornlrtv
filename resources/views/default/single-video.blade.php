@@ -755,7 +755,7 @@
                                 jQuery.ajax({
                                     url: "{{route('user.add.history')}}",
                                     type: 'post',
-                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                    data: {'admin_video_id' : "{{$video->admin_video_id}}", 'video_status' : 0},
                                     success: function(data) {
 
                                        if(data.success == true) {
@@ -1016,7 +1016,7 @@
                         jQuery.ajax({
                             url: "{{route('user.add.history')}}",
                             type: 'post',
-                            data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                            data: {'admin_video_id' : "{{$video->admin_video_id}}", 'video_status' : 1},
                             success: function(data) {
 
                                if(data.success == true) {
