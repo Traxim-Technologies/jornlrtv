@@ -160,8 +160,10 @@ function saveSubCategory(sub_category_id, step) {
             $('#genre').append("<option value=''>Select genre</option>");
 
             if(data.length != 0) {
+                $("#genre_id").show();
                 document.getElementById("genre").disabled=false;
             } else {
+                $("#genre_id").hide();
                 document.getElementById("genre").disabled=true;
             }
 

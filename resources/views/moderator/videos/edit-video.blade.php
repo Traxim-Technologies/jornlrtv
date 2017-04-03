@@ -197,7 +197,7 @@
                         <h3>Upload Video/Image</h3>
                         <hr>
                         <div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" id="genre_id">
                                 <div class="form-group">
 
                                     <label for="genre" class="">{{tr('select_genre')}}</label>
