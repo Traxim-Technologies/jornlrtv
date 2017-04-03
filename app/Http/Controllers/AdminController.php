@@ -745,23 +745,27 @@ class AdminController extends Controller
 
         $category->save();
 
-        foreach($category->subCategory as $sub_category)
-        {                
-            $sub_category->is_approved = $request->status;
-            $sub_category->save();
-        } 
+        // ($category->subCategory) ? $category->subCategory()->update(['is_approved' => $request->status]) : '';
 
-        foreach($category->adminVideo as $video)
-        {                
-            $video->is_approved = $request->status;
-            $video->save();
-        } 
+        if ($request->status == 0) {
+            foreach($category->subCategory as $sub_category)
+            {                
+                $sub_category->is_approved = $request->status;
+                $sub_category->save();
+            } 
 
-        foreach($category->genre as $genre)
-        {                
-            $genre->is_approved = $request->status;
-            $genre->save();
-        } 
+            foreach($category->adminVideo as $video)
+            {                
+                $video->is_approved = $request->status;
+                $video->save();
+            } 
+
+            foreach($category->genre as $genre)
+            {                
+                $genre->is_approved = $request->status;
+                $genre->save();
+            } 
+        }
 
         $message = tr('admin_not_category_decline');
 
@@ -947,18 +951,21 @@ class AdminController extends Controller
 
         $sub_category->save();
 
-        foreach($sub_category->adminVideo as $video)
-        {                
-            $video->is_approved = $request->status;
-            $video->save();
-        } 
+        if ($request->status == 0) {
 
-        foreach($sub_category->genre as $genre)
-        {                
-            $genre->is_approved = $request->status;
-            $genre->save();
-        } 
+            foreach($sub_category->adminVideo as $video)
+            {                
+                $video->is_approved = $request->status;
+                $video->save();
+            } 
 
+            foreach($sub_category->genre as $genre)
+            {                
+                $genre->is_approved = $request->status;
+                $genre->save();
+            } 
+
+        }
 
         $message = tr('admin_not_sub_category_decline');
 
@@ -1037,13 +1044,15 @@ class AdminController extends Controller
 
         $genre->is_approved = $request->status;
 
-        foreach($genre->adminVideo as $video)
-        {                
-            $video->is_approved = $request->status;
-            $video->save();
-        }
-
         $genre->save();
+
+        if ($request->status == 0) {
+            foreach($genre->adminVideo as $video)
+            {                
+                $video->is_approved = $request->status;
+                $video->save();
+            }
+        }
 
         $message = tr('admin_not_genre_decline');
 
