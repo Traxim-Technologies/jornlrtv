@@ -1172,7 +1172,7 @@ class AdminController extends Controller
 
         Log::info("Initiaization Add Process : ".print_r($request->all(),true));
 
-        Log::info("Max Upload Size : ".print_r(ini_get('upload_max_size'),true));
+        Log::info("Max Upload Size : ".print_r(ini_get('upload_max_filesize'),true));
 
         Log::info("Post Max Size : ".print_r(ini_get('post_max_size'),true));
 
