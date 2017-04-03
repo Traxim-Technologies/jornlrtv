@@ -1583,6 +1583,8 @@ class AdminController extends Controller
                     }
                     $video->video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : $video->video_resolutions;
                     $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : $video->trailer_video_resolutions;
+                    Log::info("Video Resoltuions : ".print_r($video->video_resolutions, true));
+                    Log::info("Trailer Video Resoltuions : ".print_r($video->trailer_video_resolutions, true));
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE && $video_link && $trailer_video) {
@@ -1627,6 +1629,7 @@ class AdminController extends Controller
                 $video->compress_status = DEFAULT_TRUE;
                 $video->trailer_compress_status = DEFAULT_TRUE;
                 $video->is_approved = DEFAULT_TRUE;
+                Log::info("Empty Resoltuions");
             }
 
             Log::info("Approved : ".$video->is_approved);
