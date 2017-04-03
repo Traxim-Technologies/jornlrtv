@@ -1612,6 +1612,13 @@ class AdminController extends Controller
 
             $video->edited_by = ADMIN;
 
+            if($video->video_upload_type != VIDEO_TYPE_UPLOAD) {
+                $video->trailer_resize_path = null;
+                $video->video_resize_path = null;
+                $video->trailer_video_resolutions = null;
+                $video->video_resolutions = null;
+            }
+
             if (empty($video->video_resolutions)) {
                 $video->compress_status = DEFAULT_TRUE;
                 $video->trailer_compress_status = DEFAULT_TRUE;
