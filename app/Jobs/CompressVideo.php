@@ -99,6 +99,7 @@ class CompressVideo extends Job implements ShouldQueue
                   </head>
                   <body>
                     <switch>';
+                    $txt .= '<video src="'.$this->local_url.'" height="'.$attributes['height'].'" width="'.$attributes['width'].'" />';
                     foreach ($pathnames as $i => $value) {
                         $resoltionsplit = explode('x', $array_resolutions[$i]);
                         if (count($resoltionsplit))
