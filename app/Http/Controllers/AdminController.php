@@ -1718,7 +1718,7 @@ class AdminController extends Controller
                     ->first();
 
         $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';
-        if ($video->video_type == 1) {
+        if ($videos->video_type == 1) {
             if (\Setting::get('streaming_url')) {
                 if ($videos->video_resolutions && $videos->is_approved == 1) {
                     $trailerstreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($videos->trailer_video).'.smil';
