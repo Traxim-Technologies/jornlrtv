@@ -1718,31 +1718,36 @@ class AdminController extends Controller
                     ->first();
 
         $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';
-        if (\Setting::get('streaming_url')) {
-            if ($videos->video_resolutions && $videos->is_approved == 1) {
-                $trailerstreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($videos->trailer_video).'.smil';
-                $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($videos->video).'.smil';
+        if ($video->video_type == 1) {
+            if (\Setting::get('streaming_url')) {
+                if ($videos->video_resolutions && $videos->is_approved == 1) {
+                    $trailerstreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($videos->trailer_video).'.smil';
+                    $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($videos->video).'.smil';
+                } else {
+                    $trailerstreamUrl = \Setting::get('streaming_url').get_video_end($videos->trailer_video);
+                    $videoStreamUrl = \Setting::get('streaming_url').get_video_end($videos->video);
+                }
             } else {
-                $trailerstreamUrl = \Setting::get('streaming_url').get_video_end($videos->trailer_video);
-                $videoStreamUrl = \Setting::get('streaming_url').get_video_end($videos->video);
+
+                $videoPath = $videos->video_resize_path ? $videos->video.','.$videos->video_resize_path : $videos->video;
+                $video_pixels = $videos->video_resolutions ? 'original,'.$videos->video_resolutions : 'original';
+                $trailer_video_path = $videos->trailer_video_path ? $videos->trailer_video.','.$videos->trailer_video_path : $videos->trailer_video;
+                $trailer_pixels = $videos->trailer_video_resolutions ? 'original'.$videos->trailer_video_resolutions : 'original';
+
+                /*$trailerResolution = getResolutionsPath($videos->trailer_video, $videos->trailer_video_resolutions,);
+
+                $trailer_re_path = $trailerResolution['video_resolutions'];
+                $trailer_pixels = $trailerResolution['pixels'];
+                
+                $videoResolution = getResolutionsPath($videos->video, $videos->video_resolutions,\Setting::get('streaming_url'));
+
+                $video_re_path = $videoResolution['video_resolutions'];
+                $video_pixels = $videoResolution['pixels'];*/
+
             }
         } else {
-
-            $videoPath = $videos->video_resize_path ? $videos->video.','.$videos->video_resize_path : $videos->video;
-            $video_pixels = $videos->video_resolutions ? 'original,'.$videos->video_resolutions : 'original';
-            $trailer_video_path = $videos->trailer_video_path ? $videos->trailer_video.','.$videos->trailer_video_path : $videos->trailer_video;
-            $trailer_pixels = $videos->trailer_video_resolutions ? 'original'.$videos->trailer_video_resolutions : 'original';
-
-            /*$trailerResolution = getResolutionsPath($videos->trailer_video, $videos->trailer_video_resolutions,);
-
-            $trailer_re_path = $trailerResolution['video_resolutions'];
-            $trailer_pixels = $trailerResolution['pixels'];
-            
-            $videoResolution = getResolutionsPath($videos->video, $videos->video_resolutions,\Setting::get('streaming_url'));
-
-            $video_re_path = $videoResolution['video_resolutions'];
-            $video_pixels = $videoResolution['pixels'];*/
-
+            $trailerstreamUrl = $video->video;
+            $videoStreamUrl = $video->trailer_video;
         }
         
         $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)

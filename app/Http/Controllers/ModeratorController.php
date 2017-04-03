@@ -1031,6 +1031,7 @@ class ModeratorController extends Controller
                     ->first();
 
             $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';
+         if ($video->video_type == 1) {
             if (\Setting::get('streaming_url') && $videos->is_approved == 1) {
                 if ($videos->video_resolutions) {
                     $trailerstreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($videos->trailer_video).'.smil';
@@ -1046,6 +1047,10 @@ class ModeratorController extends Controller
                 $trailer_video_path = $videos->trailer_video_path ? $videos->trailer_video.','.$videos->trailer_video_path : $videos->trailer_video;
                 $trailer_pixels = $videos->trailer_video_resolutions ? 'original'.$videos->trailer_video_resolutions : 'original';
             }
+        } else {
+            $trailerstreamUrl = $video->video;
+            $videoStreamUrl = $video->trailer_video;
+        }
 
         return view('moderator.videos.view-video')->with('video' , $videos)
                     ->with('video_images' , $admin_video_images)
