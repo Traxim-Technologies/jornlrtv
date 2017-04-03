@@ -395,6 +395,7 @@
         var step3 = "{{REQUEST_STEP_3}}";
         var sub_cat_url = "{{ url('select/genre')}}";
         var video_id = "{{$video->id}}";
+        var genreId = "{{$video->genre_id}}";
 
         $("#"+"{{$video->category_id}}"+"_i").show();
         $("#"+"{{$video->sub_category_id}}"+"_sub_i").show();
@@ -451,7 +452,7 @@
 
     </script>  
     <script src="{{asset('assets/js/wizard.js')}}"></script>
-    <script>loadGenre();</script>
+    <script>loadGenre(genreId);</script>
 @endsection
 
 

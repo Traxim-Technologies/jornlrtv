@@ -179,6 +179,7 @@ function saveSubCategory(sub_category_id, step) {
 
 function loadGenre() {
     var subCategoryId = $("#sub_category_id").val();
+    // var genre_id = $("#genre").val();
     console.log(subCategoryId);
     $.ajax ({
         type : 'post',
@@ -201,6 +202,7 @@ function loadGenre() {
             $.each(data, function(index, element) {
                 $('#genre').append("<option value='"+ element.id +"'>" + element.name + "</option>");
             });
+            $("#genre").val(genreId);
         },
         error : function(data) {
             alert("Oops Something went wrong. Kindly contact your administrator.");
