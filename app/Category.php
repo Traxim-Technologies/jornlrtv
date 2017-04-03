@@ -39,6 +39,11 @@ class Category extends Model
                 $video->delete();
             } 
 
+            foreach($categories->genre as $genre)
+            {                
+                $genre->delete();
+            } 
+
         });	
 
     }

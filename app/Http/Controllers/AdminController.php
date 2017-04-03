@@ -745,6 +745,24 @@ class AdminController extends Controller
 
         $category->save();
 
+        foreach($category->subCategory as $sub_category)
+        {                
+            $sub_category->is_approved = $request->status;
+            $sub_category->save();
+        } 
+
+        foreach($category->adminVideo as $video)
+        {                
+            $video->is_approved = $request->status;
+            $video->delete();
+        } 
+
+        foreach($category->genre as $genre)
+        {                
+            $genre->is_approved = $request->status;
+            $genre->save();
+        } 
+
         $message = tr('admin_not_category_decline');
 
         if($category->is_approved == DEFAULT_TRUE){
@@ -929,6 +947,19 @@ class AdminController extends Controller
 
         $sub_category->save();
 
+        foreach($sub_category->adminVideo as $video)
+        {                
+            $video->is_approved = $request->status;
+            $video->delete();
+        } 
+
+        foreach($sub_category->genre as $genre)
+        {                
+            $genre->is_approved = $request->status;
+            $genre->save();
+        } 
+
+
         $message = tr('admin_not_sub_category_decline');
 
         if($sub_category->is_approved == DEFAULT_TRUE){
@@ -1005,6 +1036,12 @@ class AdminController extends Controller
         $genre = Genre::find($request->id);
 
         $genre->is_approved = $request->status;
+
+        foreach($genre->adminVideo as $video)
+        {                
+            $video->is_approved = $request->status;
+            $video->delete();
+        }
 
         $genre->save();
 
