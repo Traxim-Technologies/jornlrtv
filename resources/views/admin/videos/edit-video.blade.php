@@ -189,7 +189,7 @@
                         <ul class="list-inline">
                             <li><button type="button" class="btn btn-danger prev-step">Previous</button></li>
                             <!-- <li><button type="button" class="btn btn-default next-step">Skip</button></li> -->
-                            <li class="pull-right"><button  id="{{REQUEST_STEP_3}}" type="button" class="btn btn-primary btn-info-full next-step">Next</button></li>
+                            <li class="pull-right" style="display: none"><button  id="{{REQUEST_STEP_3}}" type="button" class="btn btn-primary btn-info-full next-step">Next</button></li>
                             <div class="clearfix"></div>
                         </ul>
                     </div>

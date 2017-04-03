@@ -30,12 +30,25 @@ class Category extends Model
         static::deleting(function($categories)
         {
             foreach($categories->subCategory as $sub_category)
-            {                
+            {  
+                if($sub_category->picture1) {
+                    Helper::delete_picture($sub_category->picture1, "/uploads/");
+                }
+
+                if($sub_category->picture2) {
+                    Helper::delete_picture($sub_category->picture1, "/uploads/");
+                }
+
+                if($sub_category->picture3) {
+                    Helper::delete_picture($sub_category->picture1, "/uploads/");
+                }
+
                 $sub_category->delete();
             } 
 
             foreach($categories->adminVideo as $video)
-            {                
+            {           
+                deleteVideoAndImages($video);
                 $video->delete();
             } 
 

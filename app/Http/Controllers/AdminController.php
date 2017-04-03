@@ -782,7 +782,7 @@ class AdminController extends Controller
         
         $category = Category::where('id' , $request->category_id)->first();
 
-        if($category) {
+        if($category) {          
             $category->delete();
             return back()->with('flash_success',tr('admin_not_category_del'));
         } else {

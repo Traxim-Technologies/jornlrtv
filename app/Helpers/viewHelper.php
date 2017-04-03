@@ -1037,3 +1037,41 @@ function getResolutionsPath($video, $resolutions, $streaming_url) {
     $pixels = implode(',', $pixels);
     return ['video_resolutions' => $video_resolutions, 'pixels'=> $pixels];
 }
+
+
+function deleteVideoAndImages($video) {
+    if ($video->video_type == VIDEO_TYPE_UPLOAD ) {
+        if($video->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
+            Helper::s3_delete_picture($video->video);   
+            Helper::s3_delete_picture($video->trailer_video);  
+        } else {
+            $videopath = '/uploads/videos/original/';
+            Helper::delete_picture($video->video, $videopath); 
+            $splitVideos = ($video->video_resolutions) 
+                        ? explode(',', $video->video_resolutions)
+                        : [];
+            foreach ($splitVideos as $key => $value) {
+               Helper::delete_picture($video->video, $videopath.$value.'/');
+            }
+
+            Helper::delete_picture($video->trailer_video, $videopath);
+            // @TODO
+            $splitTrailer = ($video->trailer_video_resolutions) 
+                        ? explode(',', $video->trailer_video_resolutions)
+                        : [];
+            foreach ($splitTrailer as $key => $value) {
+               Helper::delete_picture($video->trailer_video, $videopath.$value.'/');
+            }
+        }
+    }
+
+    if($video->default_image) {
+        Helper::delete_picture($video->default_image, "/uploads/images/");
+    }
+
+    if($video->is_banner == 1) {
+        if($video->banner_image) {
+            Helper::delete_picture($video->banner_image, "/uploads/images/");
+        }
+    }
+}

@@ -45,6 +45,7 @@ class SubCategory extends Model
 
             foreach($sub_categories->adminVideo as $video)
             {                
+                deleteVideoAndImages($video);
                 $video->delete();
             } 
 
