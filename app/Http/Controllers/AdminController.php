@@ -1746,8 +1746,8 @@ class AdminController extends Controller
 
             }
         } else {
-            $trailerstreamUrl = $video->video;
-            $videoStreamUrl = $video->trailer_video;
+            $trailerstreamUrl = $videos->video;
+            $videoStreamUrl = $videos->trailer_video;
         }
         
         $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)

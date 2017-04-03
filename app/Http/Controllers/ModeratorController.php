@@ -1048,8 +1048,8 @@ class ModeratorController extends Controller
                 $trailer_pixels = $videos->trailer_video_resolutions ? 'original'.$videos->trailer_video_resolutions : 'original';
             }
         } else {
-            $trailerstreamUrl = $video->video;
-            $videoStreamUrl = $video->trailer_video;
+            $trailerstreamUrl = $videos->video;
+            $videoStreamUrl = $videos->trailer_video;
         }
 
         return view('moderator.videos.view-video')->with('video' , $videos)
