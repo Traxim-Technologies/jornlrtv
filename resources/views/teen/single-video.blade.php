@@ -63,7 +63,7 @@
                                 @if($flaggedVideo == '')
                                     <button onclick="showReportForm();" type="button" class="watch-full" id="mark-as-spam"><i class="fa fa-flag"></i> {{tr('report')}}</button>
                                 @else 
-                                    <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning" style="padding: 8px 12px;"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
+                                    <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning" style="padding: 4px 5px;font-size: 12px;"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
                                 @endif
 
                             </div>
