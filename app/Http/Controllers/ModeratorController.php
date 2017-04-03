@@ -726,7 +726,7 @@ class ModeratorController extends Controller
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
 
                 if ($request->has('ajax_key')) {
-                    return ['id'=>$video->id];
+                    return ['id'=>"/moderator/view/video?id=".$video->id];
                 } else {
                     return redirect(route('moderator.view.video', array('id', $video->id)))->with('flash_success', tr('video_create_success'));
                 }
@@ -933,7 +933,7 @@ class ModeratorController extends Controller
 
             $video->edited_by = MODERATOR;
 
-            if($video->video_type != VIDEO_TYPE_UPLOAD) {
+            if($video->video_type != VIDEO_TYPE_UPLOAD) {   
                 $video->trailer_resize_path = null;
                 $video->video_resize_path = null;
                 $video->trailer_video_resolutions = null;
@@ -986,7 +986,7 @@ class ModeratorController extends Controller
 
                 // dd($video->id);
                 if ($request->has('ajax_key')) {
-                    return ['id'=>$video->id];
+                    return ['id'=>"/moderator/view/video?id=".$video->id];
                 } else {
                     return redirect(route('moderator.view.video', array('id'=>$video->id)))->with('flash_success', tr('video_edit_success'));
                 }
@@ -1062,6 +1062,10 @@ class ModeratorController extends Controller
             $trailerstreamUrl = $videos->video;
             $videoStreamUrl = $videos->trailer_video;
         }
+
+        $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)
+                                ->orderBy('is_default' , 'desc')
+                                ->get();
 
         return view('moderator.videos.view-video')->with('video' , $videos)
                     ->with('video_images' , $admin_video_images)

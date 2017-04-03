@@ -222,7 +222,7 @@ $('form').ajaxForm({
         if(xhr.id == '' && xhr.id == undefined) {
             alert(xhr);
         } else {
-            window.location.href="/admin/view/video?id="+xhr.id;
+            window.location.href= xhr.id;
         }
     }
 }); 
