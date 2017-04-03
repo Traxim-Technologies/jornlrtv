@@ -38,7 +38,7 @@
                                     <div class="modal fade cus-mod" id="paypal" role="dialog">
                                         <div class="modal-dialog">
                                         
-                                          <!-- Modal content-->
+                                          
                                           <div class="modal-content">
 
                                                 <div class="modal-header">
