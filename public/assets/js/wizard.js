@@ -34,7 +34,6 @@ function prevTab(elem) {
     $(elem).prev().find('a[data-toggle="tab"]').click();
 }
 
-
 /**
  * Function Name : saveVideoDetails()
  * To save first step of the job details
@@ -150,6 +149,36 @@ function saveSubCategory(sub_category_id, step) {
     var subCategoryId = $("#sub_category_id").val(sub_category_id);
     $("#"+step).click();   
     // console.log(sub_cat_url);
+    $.ajax ({
+        type : 'post',
+        url : sub_cat_url,
+        data : {option: sub_category_id},
+        success : function(data) {
+            $('#genre').empty(); 
+
+            $('#genre').append("<option value=''>Select genre</option>");
+
+            if(data.length != 0) {
+                $("#genre_id").show();
+                document.getElementById("genre").disabled=false;
+            } else {
+                $("#genre_id").hide();
+                document.getElementById("genre").disabled=true;
+            }
+
+            $.each(data, function(index, element) {
+                $('#genre').append("<option value='"+ element.id +"'>" + element.name + "</option>");
+            });
+        },
+        error : function(data) {
+            alert("Oops Something went wrong. Kindly contact your administrator.");
+        }
+    });
+}
+
+
+function loadGenre() {
+    var subCategoryId = $("#sub_category_id").val(sub_category_id);
     $.ajax ({
         type : 'post',
         url : sub_cat_url,

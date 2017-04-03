@@ -410,6 +410,9 @@
         var step3 = "{{REQUEST_STEP_3}}";
         var sub_cat_url = "{{ url('select/genre')}}";
         var final = "{{REQUEST_STEP_FINAL}}";
+        var video_id = "{{$video->id}}";
+
+        loadGenre();
 
         $("#"+"{{$video->category_id}}"+"_i").show();
         $("#"+"{{$video->sub_category_id}}"+"_sub_i").show();
