@@ -68,7 +68,7 @@ class User extends Authenticatable
         //delete your related models here, for example
         static::deleting(function($user)
         {
-            if (count($video->userHistory) > 0) {
+            if (count($user->userHistory) > 0) {
 
                 foreach($user->userHistory as $history)
                 {
@@ -77,7 +77,7 @@ class User extends Authenticatable
 
             }
 
-            if (count($video->userRating) > 0) {
+            if (count($user->userRating) > 0) {
 
                 foreach($user->userRating as $rating)
                 {
@@ -86,7 +86,7 @@ class User extends Authenticatable
 
             }
 
-            if (count($video->userWishlist) > 0) {
+            if (count($user->userWishlist) > 0) {
 
                 foreach($user->userWishlist as $wishlist)
                 {
@@ -95,7 +95,7 @@ class User extends Authenticatable
 
             }
 
-            if (count($video->userFlag) > 0) {
+            if (count($user->userFlag) > 0) {
 
                 foreach($user->userFlag as $flag)
                 {
@@ -104,7 +104,7 @@ class User extends Authenticatable
 
             }
 
-            if (count($video->userVideoSubscription) > 0) {
+            if (count($user->userVideoSubscription) > 0) {
 
                 foreach($user->userVideoSubscription as $video)
                 {
@@ -112,7 +112,7 @@ class User extends Authenticatable
                 }
             }
 
-            if (count($video->userPayment) > 0) {
+            if (count($user->userPayment) > 0) {
 
                 foreach($user->userPayment as $payment)
                 {
