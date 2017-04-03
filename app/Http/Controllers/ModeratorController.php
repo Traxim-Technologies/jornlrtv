@@ -743,6 +743,7 @@ class ModeratorController extends Controller
 
     public function edit_video_process(Request $request) {
 
+
         $video = AdminVideo::find($request->id);
 
         $video_validator = array();
@@ -1059,8 +1060,8 @@ class ModeratorController extends Controller
                 $trailer_pixels = $videos->trailer_video_resolutions ? 'original'.$videos->trailer_video_resolutions : 'original';
             }
         } else {
-            $trailerstreamUrl = $videos->video;
-            $videoStreamUrl = $videos->trailer_video;
+            $trailerstreamUrl = $videos->trailer_video;
+            $videoStreamUrl = $videos->video;
         }
 
         $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->id)
