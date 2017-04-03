@@ -754,7 +754,7 @@ class AdminController extends Controller
         foreach($category->adminVideo as $video)
         {                
             $video->is_approved = $request->status;
-            $video->delete();
+            $video->save();
         } 
 
         foreach($category->genre as $genre)
@@ -950,7 +950,7 @@ class AdminController extends Controller
         foreach($sub_category->adminVideo as $video)
         {                
             $video->is_approved = $request->status;
-            $video->delete();
+            $video->save();
         } 
 
         foreach($sub_category->genre as $genre)
@@ -1040,7 +1040,7 @@ class AdminController extends Controller
         foreach($genre->adminVideo as $video)
         {                
             $video->is_approved = $request->status;
-            $video->delete();
+            $video->save();
         }
 
         $genre->save();
