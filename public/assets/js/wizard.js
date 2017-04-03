@@ -178,11 +178,11 @@ function saveSubCategory(sub_category_id, step) {
 
 
 function loadGenre() {
-    var subCategoryId = $("#sub_category_id").val(sub_category_id);
+    var subCategoryId = $("#sub_category_id").val();
     $.ajax ({
         type : 'post',
         url : sub_cat_url,
-        data : {option: sub_category_id},
+        data : {option: subCategoryId},
         success : function(data) {
             $('#genre').empty(); 
 
