@@ -30,8 +30,6 @@ textarea[name=comments] {
 
                         <div class="col-sm-12 col-md-8 play-video">
 
-                            <!-- Check the video type is youtube -->
-
                             @include('user.videos.streaming')
 
                             <div class="main-content">
