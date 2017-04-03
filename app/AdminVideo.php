@@ -65,25 +65,47 @@ class AdminVideo extends Model
         //delete your related models here, for example
         static::deleting(function($video)
         {
-            foreach($video->videoImage as $image)
-            {
-                $image->delete();
-            } 
+            if (count($video->videoImage) > 0) {
+                foreach($video->videoImage as $image)
+                {
+                    $image->delete();
+                } 
+            }
 
-            foreach($video->userHistory as $history)
-            {
-                $history->delete();
-            } 
+            if (count($video->userHistory) > 0) {
+                foreach($video->userHistory as $history)
+                {
+                    $history->delete();
+                } 
+            }
 
-            foreach($video->userRating as $rating)
-            {
-                $rating->delete();
-            } 
+            if (count($video->userRating) > 0) {
+                foreach($video->userRating as $rating)
+                {
+                    $rating->delete();
+                } 
+            }
 
-            foreach($video->userWishlist as $wishlist)
-            {
-                $wishlist->delete();
-            } 
+            if (count($video->userFlags) > 0) {
+                foreach($video->userFlags as $flag)
+                {
+                    $flag->delete();
+                } 
+            }
+
+            if (count($video->userVideoSubscription) > 0) {
+                foreach($video->userVideoSubscription as $videoSubscription)
+                {
+                    $videoSubscription->delete();
+                } 
+            }
+
+            if (count($video->userWishlist) > 0) {
+                foreach($video->userWishlist as $wishlist)
+                {
+                    $wishlist->delete();
+                } 
+            }
         });	
 
     }

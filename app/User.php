@@ -68,26 +68,57 @@ class User extends Authenticatable
         //delete your related models here, for example
         static::deleting(function($user)
         {
+            if (count($video->userHistory) > 0) {
 
-            foreach($user->userHistory as $history)
-            {
-                $history->delete();
-            } 
+                foreach($user->userHistory as $history)
+                {
+                    $history->delete();
+                } 
 
-            foreach($user->userRating as $rating)
-            {
-                $rating->delete();
-            } 
+            }
 
-            foreach($user->userWishlist as $wishlist)
-            {
-                $wishlist->delete();
-            } 
+            if (count($video->userRating) > 0) {
 
-            foreach($user->userPayment as $payment)
-            {
-                $payment->delete();
-            } 
+                foreach($user->userRating as $rating)
+                {
+                    $rating->delete();
+                } 
+
+            }
+
+            if (count($video->userWishlist) > 0) {
+
+                foreach($user->userWishlist as $wishlist)
+                {
+                    $wishlist->delete();
+                } 
+
+            }
+
+            if (count($video->userFlag) > 0) {
+
+                foreach($user->userFlag as $flag)
+                {
+                    $flag->delete();
+                }
+
+            }
+
+            if (count($video->userVideoSubscription) > 0) {
+
+                foreach($user->userVideoSubscription as $video)
+                {
+                    $video->delete();
+                }
+            }
+
+            if (count($video->userPayment) > 0) {
+
+                foreach($user->userPayment as $payment)
+                {
+                    $payment->delete();
+                } 
+            }
         }); 
 
     }

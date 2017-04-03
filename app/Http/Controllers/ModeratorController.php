@@ -643,7 +643,7 @@ class ModeratorController extends Controller
                     $trailer_video_url = Helper::video_upload($trailer_video, $request->compress_video);
                     $video->trailer_video = $trailer_video_url['db_url'];
                     $video->video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : '';
-                    $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : ''
+                    $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : '';
                 }                
 
             } elseif($request->video_type == VIDEO_TYPE_YOUTUBE) {
@@ -653,7 +653,7 @@ class ModeratorController extends Controller
 
             } else {
 
-                $video->video = $video;
+                $video->video = $video_link;
                 $video->trailer_video = $trailer_video;
 
             }
