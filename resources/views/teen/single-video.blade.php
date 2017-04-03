@@ -554,8 +554,6 @@
 
                 jQuery('#watch_main_video_button').hide();
 
-                @if($video->video_type == 1 || $video->video_type == 3)
-
                     @if($main_video)
 
                         if(isOpera || isSafari) {
@@ -568,10 +566,9 @@
 
                         } else {
 
-                            
                             var playerInstance = jwplayer("main-video-player");
 
-                             @if($videoStreamUrl)
+                            @if($videoStreamUrl)
 
 
                             playerInstance.setup({
@@ -598,7 +595,7 @@
                             });
 
                             @else
-                                var videoPath = "{{$video_video_path}}";
+                                var videoPath = "{{$videoPath}}";
                             var videoPixels = "{{$video_pixels}}";
 
                             var path = [];
@@ -639,6 +636,9 @@
 
 
                             @endif
+                            
+
+                             
                             playerInstance.on('setupError', function() {
 
                                 jQuery("#main-video-player").css("display", "none");
@@ -659,17 +659,16 @@
 
                     @endif
 
-                @else
 
                     // Remove trailer video url, to stop the autoplay while playing main video
 
                     //First get the  iframe URL
-                    var url = jQuery('#iframe_trailer_video').attr('src');
+                   /* var url = jQuery('#iframe_trailer_video').attr('src');
 
-                    jQuery('#iframe_trailer_video').attr('src', '');
+                    jQuery('#iframe_trailer_video').attr('src', '');*/
 
-                    jQuery("#trailer_video_play").hide();
-                    jQuery("#main_video_play").show();
+                    /*jQuery("#trailer_video_play").hide();
+                    jQuery("#main_video_play").show();*/
 
                     @if(!$history_status)
 
@@ -696,7 +695,6 @@
                         });
 
                     @endif
-                @endif
 
             });
 

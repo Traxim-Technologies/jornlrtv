@@ -650,7 +650,7 @@ textarea[name=comments] {
                             
                             });
                             @else
-                                var videoPath = "{{$video_video_path}}";
+                                var videoPath = "{{$videoPath}}";
                                 var videoPixels = "{{$video_pixels}}";
 
                                 var path = [];
