@@ -187,7 +187,7 @@ span.round-tab:hover {
 
 
 #loading-img {
-    background: url(http://preloaders.net/preloaders/360/Velocity.gif) center center no-repeat;
+    background: url(https://www.drupal.org/files/issues/ajax-loader.gif) center center no-repeat;
     height: 100%;
     z-index: 20;
 }
