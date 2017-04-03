@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{asset('admin-css/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">
 
     <link rel="stylesheet" href="{{asset('admin-css/plugins/iCheck/all.css')}}">
+
 @endsection
 
 @section('breadcrumb')
@@ -342,6 +343,11 @@
         </div>
     </section>
    </div>
+</div>
+
+
+<div class="overlay">
+    <div id="loading-img"></div>
 </div>
 
 @endsection

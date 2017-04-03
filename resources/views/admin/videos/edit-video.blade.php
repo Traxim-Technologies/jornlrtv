@@ -382,6 +382,10 @@
    </div>
 </div>
 
+<div class="overlay">
+    <div id="loading-img"></div>
+</div>
+
 @endsection
 
 @section('scripts')

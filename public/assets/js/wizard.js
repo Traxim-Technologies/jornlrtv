@@ -200,12 +200,14 @@ $('form').ajaxForm({
         percent.html(percentVal);
         if (percentComplete == 100) {
             $("#"+final).text("Video Uploading...");
+            $(".overlay").show();
             $("#"+final).attr('disabled', true);
         }
     },
     complete: function(xhr) {
         bar.width("100%");
         percent.html("100%");
+        $(".overlay").show();
         $("#"+final).text("Redirecting...");
         $("#"+final).attr('disabled', true);
         console.log(xhr);
@@ -216,6 +218,7 @@ $('form').ajaxForm({
     success : function(xhr) {
         $("#"+final).text("Finished");
         $("#"+final).attr('disabled', false);
+        $(".overlay").hide();
         if(xhr.id == '' && xhr.id == undefined) {
             alert(xhr);
         } else {
