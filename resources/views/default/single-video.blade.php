@@ -701,50 +701,51 @@
 
                         var playerInstance = jwplayer("trailer-video-player");
 
+
                         @if($trailerstreamUrl)
 
-                        playerInstance.setup({
-                            sources: "{{$trailerstreamUrl}}",
-                            image: "{{$video->default_image}}",
-                            width: "100%",
-                            aspectratio: "16:9",
-                            primary: "flash",
-                        
-                        });
+                            playerInstance.setup({
+                                file: "{{$trailerstreamUrl}}",
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                            
+                            });
                         @else
 
-                         var trailerVideoPath = "{{$trailer_video_path}}";
-                        var trailerVideoPixels = "{{$trailer_pixels}}";
+                            var trailerVideoPath = "{{$trailer_video_path}}";
+                            var trailerVideoPixels = "{{$trailer_pixels}}";
 
-                        var trailerPath = [];
+                            var trailerPath = [];
 
-                        var splitTrailer = trailerVideoPath.split(',');
+                            var splitTrailer = trailerVideoPath.split(',');
 
-                        var splitTrailerPixel = trailerVideoPixels.split(',');
+                            var splitTrailerPixel = trailerVideoPixels.split(',');
 
 
-                        for (var i = 0 ; i < splitTrailer.length; i++) {
+                            for (var i = 0 ; i < splitTrailer.length; i++) {
 
-                            trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
-                        }
+                                trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
+                            }
 
-                        playerInstance.setup({
-                            sources: trailerPath,
-                            image: "{{$video->default_image}}",
-                            width: "100%",
-                            aspectratio: "16:9",
-                            primary: "flash",
-                        
-                        });
+                            playerInstance.setup({
+                                sources: trailerPath,
+                                image: "{{$video->default_image}}",
+                                width: "100%",
+                                aspectratio: "16:9",
+                                primary: "flash",
+                            
+                            });
                         @endif
 
                         playerInstance.on('setupError', function() {
 
-                            jQuery("#trailer-video-player").css("display", "none");
+                            /*jQuery("#trailer-video-player").css("display", "none");
                             jQuery('#main_video_setup_error').hide();
                             jQuery('#trailer_video_setup_error').css("display", "block");
                             
-                            confirm('The video format is not supported in this browser. Please open with some other browser.');
+                            confirm('The video format is not supported in this browser. Please open with some other browser.');*/
                         
                         });
 
