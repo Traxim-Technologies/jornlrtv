@@ -136,7 +136,12 @@
                                                                 </div>
 
                                                                 <div class="modal-body">
-                                                                    <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-info">{{tr('paynow')}}</a>
+                                                                   
+                                                                    @if($video->amount > 0)
+                                                                                    <a href="{{route('videoPaypal' , $video->admin_video_id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
+                                                                                @else 
+                                                                                    <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
+                                                                                @endif
                                                                 </div>
 
                                                                 
