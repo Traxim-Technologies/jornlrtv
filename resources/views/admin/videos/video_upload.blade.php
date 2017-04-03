@@ -183,139 +183,149 @@
                     <div class="tab-pane" role="tabpanel" id="complete">
                         <h3>Upload Video/Image</h3>
                         <hr>
-                        <div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" id="genre_id">
-                                <div class="form-group">
-
-                                    <label for="genre" class="">{{tr('select_genre')}}</label>
-
-                                    <select id="genre" name="genre_id" class="form-control" disabled>
-                                        <option value="">{{tr('select_genre')}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="default_image" class="">{{tr('default_image')}} *</label>
-                                    <input type="file" id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}" style="display:none" onchange="loadFile(this,'default_img')" required>
-                                    <div>
-                                        <img src="{{asset('images/320x150.png')}}" style="width:150px;height:75px;" 
-                                        onclick="$('#default_image').click();return false;" id="default_img"/>
-                                    </div>
-                                    <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="other_image1" class="">{{tr('other_image1')}} * </label>
-                                    <input type="file" id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}" style="display:none" onchange="loadFile(this,'other_img1')" required>
-                                    <div>
-                                        <img src="{{asset('images/320x150.png')}}" style="width:150px;height:75px;" 
-                                        onclick="$('#other_image1').click();return false;" id="other_img1"/>
-                                    </div>
-                                    <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
-                                </div>
-                            </div>
-                        
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="other_image2" class="">{{tr('other_image2')}} *</label>
-                                    <input type="file" id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}" style="display:none" onchange="loadFile(this,'other_img2')" required>
-                                    <div>
-                                        <img src="{{asset('images/320x150.png')}}" style="width:150px;height:75px;" 
-                                        onclick="$('#other_image2').click();return false;" id="other_img2"/>
-                                    </div>
-                                    <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="video_type" class="">{{tr('video_type')}} *</label></br>
-                                    <label style="margin-top:10px" id="video_upload">
-                                        <input required type="radio" name="video_type" value="1" class="flat-red" checked>
-                                        {{tr('video_upload_link')}}
-                                    </label>
-
-                                    <label style="margin-top:10px" id="youtube">
-                                        <input required type="radio" name="video_type" class="flat-red"  value="2">
-                                        {{tr('youtube')}}
-                                    </label>
-
-                                    <label style="margin-top:10px" id="other_link">
-                                        <input required type="radio" name="video_type" value="3" class="flat-red">
-                                        {{tr('other_link')}}
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" id="compress">
-                                <label>{{tr('compress_video')}}</label>
-                                <div>
-                                    <input type="radio" name="compress_video" value="1"> <label style="vertical-align: 5px;">{{tr('yes')}}</label> &nbsp;&nbsp;
-                                    <input type="radio" name="compress_video" value="0" checked> <label style="vertical-align: 5px;">{{tr('no')}}</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" id="resolution">
-                                <label>{{tr('resize_video_resolutions')}}</label>
-                                <div>
-                                    @foreach(getVideoResolutions() as $resolution)
-                                        <input type="checkbox" name="video_resolutions[]" value="{{$resolution->value}}"> <label style="vertical-align: 5px;">{{$resolution->value}}</label> &nbsp;&nbsp;
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div id="upload">
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="video" class="">{{tr('video')}}</label>
-                                        <input type="file" id="video" accept="video/mp4" name="video" placeholder="{{tr('picture')}}">
-                                        <p class="help-block">{{tr('video_validate')}}</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="trailer_video" class="">{{tr('trailer_video')}}</label>
-                                        <input type="file" id="trailer_video" accept="video/mp4" name="trailer_video" placeholder="{{tr('trailer_video')}}">
-                                        <p class="help-block">{{tr('video_validate')}}</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="genre_id">
                                     <div class="form-group">
 
-                                        <label for="video_upload_type" class="">{{tr('video_upload_type')}}</label></br>
+                                        <label for="genre" class="">{{tr('select_genre')}}</label>
 
-                                        @if(check_s3_configure())
-                                            <label style="margin-top:10px" >
-                                                <input type="radio" name="video_upload_type" value="1" class="flat-red">
-                                                {{tr('s3')}}
-                                            </label>
-                                        @endif
-
-                                        <label style="margin-top:10px">
-                                            <input type="radio" name="video_upload_type" class="flat-red"  value="2" checked>
-                                            {{tr('direct')}}
+                                        <select id="genre" name="genre_id" class="form-control" disabled>
+                                            <option value="">{{tr('select_genre')}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="default_image" class="">{{tr('default_image')}} *</label>
+                                        <input type="file" id="default_image" accept="image/png,image/jpeg" name="default_image" placeholder="{{tr('default_image')}}" style="display:none" onchange="loadFile(this,'default_img')" required>
+                                        <div>
+                                            <img src="{{asset('images/320x150.png')}}" style="width:150px;height:75px;" 
+                                            onclick="$('#default_image').click();return false;" id="default_img"/>
+                                        </div>
+                                        <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="other_image1" class="">{{tr('other_image1')}} * </label>
+                                        <input type="file" id="other_image1" accept="image/png,image/jpeg" name="other_image1" placeholder="{{tr('other_image1')}}" style="display:none" onchange="loadFile(this,'other_img1')" required>
+                                        <div>
+                                            <img src="{{asset('images/320x150.png')}}" style="width:150px;height:75px;" 
+                                            onclick="$('#other_image1').click();return false;" id="other_img1"/>
+                                        </div>
+                                        <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="other_image2" class="">{{tr('other_image2')}} *</label>
+                                        <input type="file" id="other_image2" accept="image/png,image/jpeg" name="other_image2" placeholder="{{tr('other_image2')}}" style="display:none" onchange="loadFile(this,'other_img2')" required>
+                                        <div>
+                                            <img src="{{asset('images/320x150.png')}}" style="width:150px;height:75px;" 
+                                            onclick="$('#other_image2').click();return false;" id="other_img2"/>
+                                        </div>
+                                        <p class="help-block">{{tr('image_validate')}} {{tr('rectangle_image')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="video_type" class="">{{tr('video_type')}} *</label></br>
+                                        <label style="margin-top:10px" id="video_upload">
+                                            <input required type="radio" name="video_type" value="1" class="flat-red" checked>
+                                            {{tr('video_upload_link')}}
                                         </label>
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="others">
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="other_video" class="">{{tr('video')}}</label>
-                                        <input type="text" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}">
-                                    </div>
-                                </div>
+                                        <label style="margin-top:10px" id="youtube">
+                                            <input required type="radio" name="video_type" class="flat-red"  value="2">
+                                            {{tr('youtube')}}
+                                        </label>
 
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="other_trailer_video" class="">{{tr('trailer_video')}}</label>
-                                        <input type="text" class="form-control" id="other_trailer_video" name="other_trailer_video" placeholder="{{tr('trailer_video')}}">
+                                        <label style="margin-top:10px" id="other_link">
+                                            <input required type="radio" name="video_type" value="3" class="flat-red">
+                                            {{tr('other_link')}}
+                                        </label>
                                     </div>
                                 </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="compress">
+                                    <div class="form-group">
+                                    <label>{{tr('compress_video')}}</label>
+                                    <br>
+                                    <div>
+                                        <input type="radio" name="compress_video" value="1"> <label style="vertical-align: 5px;">{{tr('yes')}}</label> &nbsp;&nbsp;
+                                        <input type="radio" name="compress_video" value="0" checked> <label style="vertical-align: 5px;">{{tr('no')}}</label>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="resolution">
+                                    <div class="form-group">
+                                    <label>{{tr('resize_video_resolutions')}}</label>
+                                    <br>
+                                    <div>
+                                        @foreach(getVideoResolutions() as $resolution)
+                                            <input type="checkbox" name="video_resolutions[]" value="{{$resolution->value}}"> <label style="vertical-align: 5px;">{{$resolution->value}}</label> &nbsp;&nbsp;
+                                        @endforeach
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div id="upload">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="video" class="">{{tr('video')}}</label>
+                                            <input type="file" id="video" accept="video/mp4" name="video" placeholder="{{tr('picture')}}">
+                                            <p class="help-block">{{tr('video_validate')}}</p>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="trailer_video" class="">{{tr('trailer_video')}}</label>
+                                            <input type="file" id="trailer_video" accept="video/mp4" name="trailer_video" placeholder="{{tr('trailer_video')}}">
+                                            <p class="help-block">{{tr('video_validate')}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+
+                                            <label for="video_upload_type" class="">{{tr('video_upload_type')}}</label></br>
+
+                                            @if(check_s3_configure())
+                                                <label style="margin-top:10px" >
+                                                    <input type="radio" name="video_upload_type" value="1" class="flat-red">
+                                                    {{tr('s3')}}
+                                                </label>
+                                            @endif
+
+                                            <label style="margin-top:10px">
+                                                <input type="radio" name="video_upload_type" class="flat-red"  value="2" checked>
+                                                {{tr('direct')}}
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="others">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="other_video" class="">{{tr('video')}}</label>
+                                            <input type="text" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="other_trailer_video" class="">{{tr('trailer_video')}}</label>
+                                            <input type="text" class="form-control" id="other_trailer_video" name="other_trailer_video" placeholder="{{tr('trailer_video')}}">
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                         <div class="clearfix"></div>
