@@ -14,10 +14,8 @@ class AddPayPerViewsTable extends Migration
     {
         Schema::create('pay_per_views', function (Blueprint $table) {
             $table->increments('id')->comment('Primary Key, It is an unique key');
-            $table->integer('user_id')->unsigned()->index()->comment('User table Primary key given as Foreign Key');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('video_id')->unsigned()->index()->comment('Admin Video table Primary key given as Foreign Key');
-            $table->foreign('video_id')->references('id')->on('admin_videos');
+            $table->integer('user_id')->unsigned()->comment('User table Primary key given as Foreign Key');
+            $table->integer('video_id')->unsigned()->comment('Admin Video table Primary key given as Foreign Key');
             $table->string('payment_id');
             $table->float('amount');
             $table->dateTime('expiry_date');
