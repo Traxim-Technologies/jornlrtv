@@ -264,8 +264,8 @@
                                     <label>{{tr('compress_video')}}</label>
                                     <br>
                                     <div>
-                                        <input type="radio" name="compress_video" value="1"> <label style="vertical-align: 5px;">{{tr('yes')}}</label> &nbsp;&nbsp;
-                                        <input type="radio" name="compress_video" value="0" checked> <label style="vertical-align: 5px;">{{tr('no')}}</label>
+                                        <input type="radio" name="compress_video" value="1"> <label>{{tr('yes')}}</label> &nbsp;&nbsp;
+                                        <input type="radio" name="compress_video" value="0" checked> <label>{{tr('no')}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -275,7 +275,7 @@
                                     <br>
                                     <div>
                                         @foreach(getVideoResolutions() as $resolution)
-                                            <input type="checkbox" name="video_resolutions[]" value="{{$resolution->value}}"> <label style="vertical-align: 5px;">{{$resolution->value}}</label> &nbsp;&nbsp;
+                                            <input type="checkbox" name="video_resolutions[]" value="{{$resolution->value}}"> <label>{{$resolution->value}}</label> &nbsp;&nbsp;
                                         @endforeach
                                     </div>
                                 </div>

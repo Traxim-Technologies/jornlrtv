@@ -152,9 +152,9 @@
 									        	</div>
 								                <div class="col-lg-9">
 								                  <div class="input-group">
-								                        <input type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('normal_user')}}</label>
-								                        <input type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('paid_user')}}</label> 
-								                        <input type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('both_user')}}</label> 
+								                        <input type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}}> <label>{{tr('normal_user')}}</label>
+								                        <input type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}}> <label>{{tr('paid_user')}}</label> 
+								                        <input type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}}> <label>{{tr('both_user')}}</label> 
 								                  </div>
 								                  <!-- /input-group -->
 								                </div>
@@ -166,8 +166,8 @@
 									        	</div>
 								                <div class="col-lg-9">
 								                  <div class="input-group">
-								                        <input type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('one_time_payment')}}</label>
-								                        <input type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}}> <label style=" vertical-align: 5px;">{{tr('recurring_payment')}}</label> 
+								                        <input type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}}> <label>{{tr('one_time_payment')}}</label>
+								                        <input type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}}> <label>{{tr('recurring_payment')}}</label> 
 								                  </div>
 								                  <!-- /input-group -->
 								                </div>
