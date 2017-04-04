@@ -24,9 +24,9 @@
 						<thead>
 						    <tr>
 						      <th>{{tr('id')}}</th>
+						      <th>{{tr('video')}}</th>
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('payment_id')}}</th>
-						      <th>{{tr('video')}}</th>
 						      <th>{{tr('amount')}}</th>
 						      <th>{{tr('expiry_date')}}</th>
 						    </tr>
