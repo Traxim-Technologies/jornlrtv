@@ -1425,7 +1425,7 @@ class AdminController extends Controller
                 else*/
                 if ($request->has('ajax_key')) {
                     Log::info('Video Id Ajax : '.$video->id);
-                    return ['id'=>"/admin/view/video?id=".$video->id];
+                    return ['id'=>route('admin.view.video', array('id'=>$video->id))];
                 } else  {
                     Log::info('Video Id : '.$video->id);
                     return redirect(route('admin.view.video', array('id'=>$video->id)));
@@ -1720,7 +1720,7 @@ class AdminController extends Controller
                 }
 
                 if ($request->has('ajax_key')) {
-                    return ['id'=>"/admin/view/video?id=".$video->id];
+                    return ['id'=>route('admin.view.video', array('id'=>$video->id))];
                 } else {
                     return redirect(route('admin.view.video', array('id'=>$video->id)));
                 }
