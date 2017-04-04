@@ -26,6 +26,7 @@
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('payment_id')}}</th>
+						      <th>{{tr('title')}}</th>
 						      <th>{{tr('amount')}}</th>
 						      <th>{{tr('expiry_date')}}</th>
 						    </tr>
@@ -39,6 +40,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td><a href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->userVideos->name}} </a></td>
 							      	<td>{{$payment->payment_id}}</td>
+							      	<td>{{$payment->adminVideo->title}}</td>
 							      	<td>$ {{$payment->amount}}</td>
 							      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>
 							    </tr>					
