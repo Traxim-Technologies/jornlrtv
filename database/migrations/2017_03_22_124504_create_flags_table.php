@@ -14,8 +14,8 @@ class CreateFlagsTable extends Migration
     {
         Schema::create('flags', function (Blueprint $table) {
             $table->increments('id')->comment('Primary Key, It is an unique key');
-            $table->integer('user_id')->unsigned()->index()->comment('User table Primary key given as Foreign Key');
-            $table->integer('video_id')->unsigned()->index()->comment('Admin Video table Primary key given as Foreign Key')
+            $table->integer('user_id')->unsigned();
+            $table->integer('video_id')->unsigned();
             $table->longText('reason')->nullable()->comment('Reason for flagging the video');
             $table->smallInteger('status')->default(0)->comment('Status of the flag table');
             $table->timestamps();
