@@ -725,12 +725,10 @@ class ModeratorController extends Controller
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
 
-                dd($video);
-
                 if ($request->has('ajax_key')) {
-                    return ['id'=>route('moderator.view.video', array('id', $video->id))];
+                    return ['id'=>route('moderator.view.video', array('id'=>$video->id))];
                 } else {
-                    return redirect(route('moderator.view.video', array('id', $video->id)))->with('flash_success', tr('video_create_success'));
+                    return redirect(route('moderator.view.video', array('id'=>$video->id)))->with('flash_success', tr('video_create_success'));
                 }
             } else {
                 if ($request->has('ajax_key')) {
@@ -744,6 +742,7 @@ class ModeratorController extends Controller
     }
 
     public function edit_video_process(Request $request) {
+
 
         $video = AdminVideo::find($request->id);
 
@@ -988,7 +987,7 @@ class ModeratorController extends Controller
 
                 // dd($video->id);
                 if ($request->has('ajax_key')) {
-                    return ['id'=>route('moderator.view.video', array('id', $video->id))];
+                    return ['id'=>route('moderator.view.video', array('id'=>$video->id))];
                 } else {
                     return redirect(route('moderator.view.video', array('id'=>$video->id)))->with('flash_success', tr('video_edit_success'));
                 }

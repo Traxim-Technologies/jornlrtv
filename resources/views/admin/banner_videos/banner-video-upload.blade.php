@@ -156,6 +156,7 @@
                             @endforeach
                             <input type="hidden" name="category_id" id="category_id" />
                         </div>
+                        <div class="clearfix"></div>
                         <ul class="list-inline">
                             <li class="pull-left"><button type="button" class="btn btn-danger prev-step">Previous</button></li>
                             <li class="pull-right" style="display: none"><button type="button" class="btn btn-primary next-step" id="{{REQUEST_STEP_2}}">Save and continue</button></li>
@@ -422,9 +423,12 @@
 
     <script src="{{asset('assets/js/wizard.js')}}"></script>
     <script>
-        $(window).bind('beforeunload', function(){
-          return 'Are you sure you want to leave?';
+        $('form').submit(function () {
+           window.onbeforeunload = null;
         });
+        window.onbeforeunload = function() {
+             return "Data will be lost if you leave the page, are you sure?";
+        };
     </script>
 @endsection
 
