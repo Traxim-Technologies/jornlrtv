@@ -91,7 +91,7 @@ use  Carbon\Carbon;
 
             <div class="small-box label-primary">
                 <div class="inner">
-                    <h3>$ {{$total_revenue}}</h3>
+                    <h3>$ {{($total_revenue > 0 && $total_revenue != '') ? $total_revenue : 0}}</h3>
                     <p>{{tr('total_revenue')}}</p>
                 </div>
                 
