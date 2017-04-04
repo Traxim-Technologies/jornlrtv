@@ -2131,9 +2131,8 @@ class AdminController extends Controller
 
                     if($request->has('theme')) {
                         change_theme($setting->value , $request->$key);
+                        $setting->value = $request->theme;
                     }
-
-                    $setting->value = $request->theme;
 
                 } else if($request->$key!='') {
 

@@ -8,38 +8,42 @@ class EnvEditorHelper
 {
 	
 	public static function getEnvValues() {
+		$data =  array();
 
-		$dotenv = new \Dotenv\Dotenv(base_path()); // Laravel 5.2
-        $dotenv->load();
+		$path = base_path('.env');
 
-		// $data =  array();
+		if(file_exists($path)) {
 
-		// $path = base_path('.env');
+			$values = file_get_contents($path);
 
-		// if(file_exists($path)) {
+			$values = explode("\n", $values);
 
-		// 	$values = file_get_contents($path);
+			foreach ($values as $key => $value) {
 
-		// 	$values = explode("\n", $values);
+				$var = explode('=',$value);
 
-		// 	foreach ($values as $key => $value) {
+				if(count($var) == 2 ) {
+					if($var[0] != "")
+						$data[$var[0]] = $var[1] ? $var[1] : null;
+				} else if(count($var) > 2 ) {
+					$keyvalue = "";
+					foreach ($var as $i => $imp) {
+						if ($i != 0) {
+							$keyvalue = ($keyvalue) ? $keyvalue.'='.$imp : $imp;
+						}
+					}
+					$data[$var[0]] = $var[1] ? $keyvalue : null;
+				}else {
+					if($var[0] != "")
+						$data[$var[0]] = null;
+				}
+			}
 
-		// 		$var = explode('=',$value);
-
-		// 		if(count($var) ==  2) {
-		// 			if($var[0] != "")
-		// 				$data[$var[0]] = $var[1] ? $var[1] : null;
-		// 		} else {
-		// 			if($var[0] != "")
-		// 				$data[$var[0]] = null;
-		// 		}
-		// 	}
-
-		// 	array_filter($data);
+			array_filter($data);
 		
-		// }
+		}
 
-		return $_ENV;
+		return $data;
 
 	}
 
