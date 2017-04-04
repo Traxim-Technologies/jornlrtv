@@ -23,7 +23,7 @@
                                     <input type="checkbox" name="default_theme" id="default_theme_check_box" class="form-check-input">Select Theme
                                     </label>
                                 </div>
-                                <a href="http://default.streamhash.com/"  target="_blank"class="demo-button">Demo</a>
+                                <a href="http://demo.streamhash.com/"  target="_blank"class="demo-button">Demo</a>
                             </form>
                         </div><!--end of install-demo-->
                     </div><!--end of theme-select-->
@@ -45,7 +45,7 @@
                                     <input type="checkbox" name="streamtube_theme" id="streamtube_theme_check_box" class="form-check-input">Select Theme
                                     </label>
                                 </div>
-                                <a href="http://streamtube.streamhash.com/"  target="_blank" class="demo-button">Demo</a>
+                                <a href="http://demo.streamhash.com/"  target="_blank" class="demo-button">Demo</a>
                             </form>
                         </div><!--end of install-demo-->
                     </div><!--end of theme-select-->
@@ -68,7 +68,7 @@
                                     <input type="checkbox" name="teen_theme" id="teen_theme_check_box" class="form-check-input"> <span>Select Theme</span>
                                     </label>
                                 </div>
-                                <a href="http://teen.streamhash.com/" target="_blank" class="demo-button">Demo</a>
+                                <a href="http://demo.streamhash.com/" target="_blank" class="demo-button">Demo</a>
                             </form>
                         </div><!--end of install-demo-->
                     </div><!--end of theme-select-->
