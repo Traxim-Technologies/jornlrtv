@@ -454,8 +454,11 @@
     <script src="{{asset('assets/js/wizard.js')}}"></script>
     <script>
         loadGenre(genreId);
+        $('form').submit(function () {
+           window.onbeforeunload = null;
+        });
         $(window).bind('beforeunload', function(){
-          return 'Are you sure you want to leave?';
+          return 'Data will be lost if you leave the page, are you sure?';
         });
     </script>
 @endsection
