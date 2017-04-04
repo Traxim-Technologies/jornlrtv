@@ -29,7 +29,7 @@
                             @else
                                 <img class="third" src="{{$video_image->image}}"><!-- second image -->
                             @endif
-                            <img class="second" src="{{$video->default_image}}"><!-- main image -->
+                            <img class="second" src="{{$video->adminVideo->default_image}}"><!-- main image -->
                         @endforeach
                     @endif
                     <span class="time">{{$video->adminVideo->duration}}</span>
