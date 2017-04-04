@@ -466,6 +466,12 @@
         });
     </script>  
     <script src="{{asset('assets/js/wizard.js')}}"></script>
-    <script>loadGenre(genreId);</script>
+    <script>
+        loadGenre(genreId);
+        $(window).bind('beforeunload', function(){
+          return 'Are you sure you want to leave?';
+        });
+    </script>
+
 @endsection
 

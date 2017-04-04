@@ -406,5 +406,11 @@
     <script src="http://malsup.github.com/jquery.form.js"></script>
 
     <script src="{{asset('assets/js/wizard.js')}}"></script>
+
+    <script>
+        $(window).bind('beforeunload', function(){
+          return 'Are you sure you want to leave?';
+        });
+    </script>
 @endsection
 
