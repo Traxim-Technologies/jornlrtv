@@ -959,7 +959,7 @@ class AdminController extends Controller
                 $video->save();
             } 
 
-            foreach($sub_category->genre as $genre)
+            foreach($sub_category->genres as $genre)
             {                
                 $genre->is_approved = $request->status;
                 $genre->save();
