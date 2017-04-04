@@ -54,7 +54,7 @@ textarea[name=comments] {
                                                                 <!-- <p>{{tr('duration')}} {{$video->duration}}</p> -->
                                                             @else
 
-                                                                @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
+                                                                @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
 
                                                                     <button  type="button" class="watch-button" data-toggle="modal" data-target="#paypal"  style="background:green;">{{tr('watch_main_video')}}</button>
                                                                 @else
@@ -388,7 +388,7 @@ textarea[name=comments] {
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-    <script>jwplayer.key="{{env('JWPLAYER_KEY')}}";</script>
+    <script>jwplayer.key="{{envfile('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
         
@@ -411,7 +411,6 @@ textarea[name=comments] {
 
                 @if($trailer_video)
 
-
                     if(isOpera || isSafari) {
                         jQuery('#trailer_video_setup_error').show();
                         jQuery('#main_video_setup_error').hide();
@@ -422,7 +421,6 @@ textarea[name=comments] {
                         var playerInstance = jwplayer("trailer-video-player");
 
                         @if($trailerstreamUrl)
-
 
                             playerInstance.setup({
                                 file: "{{$trailerstreamUrl}}",

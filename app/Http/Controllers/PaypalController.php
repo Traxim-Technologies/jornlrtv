@@ -37,6 +37,12 @@ class PaypalController extends Controller {
         // setup PayPal api context
 
         $paypal_conf = config('paypal');
+
+        $paypal_conf['client_id'] = envfile('PAYPAL_ID') ?  envfile('PAYPAL_ID') : $paypal_conf['client_id'];
+        $paypal_conf['secret'] = envfile('PAYPAL_SECRET') ?  envfile('PAYPAL_SECRET') : $paypal_conf['secret'];
+        $paypal_conf['settings']['mode'] = envfile('PAYPAL_MODE') ?  envfile('PAYPAL_MODE') : $paypal_conf['settings']['mode'];
+
+        Log::info("PAYPAL CONFIGURATION".print_r($paypal_conf,true));
         
         $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf['client_id'], $paypal_conf['secret']));
 
@@ -47,7 +53,7 @@ class PaypalController extends Controller {
 
     public function pay(Request $request) {
 
-        $total = Setting::get('amount');
+        $total = Setting::get('amount') ? Setting::get('amount') : "1.00" ;
 
 		$item = new Item();
 

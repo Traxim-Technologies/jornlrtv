@@ -27,7 +27,7 @@
                 <h6>{{Auth::user()->description}}</h6>
 
 
-                @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
+                @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
                     <a class="payment-pro" href="{{route('paypal' , Auth::user()->id)}}">{{tr('payment')}}</a>
                 @endif
 

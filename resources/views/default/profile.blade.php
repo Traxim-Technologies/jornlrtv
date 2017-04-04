@@ -39,7 +39,7 @@
                         <i class="fa fa-user" style="font-size:20px;"></i>
                         <h4>{{tr('description')}}</h4>
 
-                        @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
+                        @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
 
                             <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning" style="float:right"><i class="fa fa-envelope" style="color:white"></i>Pay now</a>  
                         @endif

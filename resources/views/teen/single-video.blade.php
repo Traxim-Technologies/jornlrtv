@@ -28,7 +28,7 @@
                                     <input class="watch-full" type="submit" id="watch_main_video_button" name="submit" value="{{tr('watch_main_video')}}" style="background: green">
                                 @else
 
-                                    @if(env('PAYPAL_ID') && env('PAYPAL_SECRET'))
+                                    @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
                                         <button type="button" class="watch-full" data-toggle="modal" data-target="#paypal" style="background: green">{{tr('watch_main_video')}}</button>
                                     @else
 
@@ -327,7 +327,7 @@
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-    <script>jwplayer.key="{{env('JWPLAYER_KEY')}}";</script>
+    <script>jwplayer.key="{{envfile('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
 

@@ -2361,6 +2361,8 @@ class AdminController extends Controller
             }
         }
 
+        \Artisan::call('config:clear');
+
         \Artisan::call('config:cache');
 
         \Auth::guard('admin')->loginUsingId($admin_id);
@@ -2377,6 +2379,7 @@ class AdminController extends Controller
      * @return falsh success
      */
     public function remove_payper_view($id) {
+        
         // Load video model using auto increment id of the table
         $model = AdminVideo::find($id);
         if ($model) {

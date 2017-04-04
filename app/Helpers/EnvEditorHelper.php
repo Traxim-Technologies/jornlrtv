@@ -6,36 +6,65 @@ use Artisan;
 
 class EnvEditorHelper
 {
+	
 	public static function getEnvValues() {
-		$data =  array();
 
-		// Artisan::call('config:cache');
+		$dotenv = new \Dotenv\Dotenv(base_path()); // Laravel 5.2
+        $dotenv->load();
 
-		$path = base_path('.env');
+		// $data =  array();
 
-		if(file_exists($path)) {
+		// $path = base_path('.env');
 
-			$values = file_get_contents($path);
+		// if(file_exists($path)) {
 
-			$values = explode("\n", $values);
+		// 	$values = file_get_contents($path);
 
-			foreach ($values as $key => $value) {
+		// 	$values = explode("\n", $values);
 
-				$var = explode('=',$value);
+		// 	foreach ($values as $key => $value) {
 
-				if(count($var) ==  2) {
-					if($var[0] != "")
-						$data[$var[0]] = $var[1] ? $var[1] : null;
-				} else {
-					if($var[0] != "")
-						$data[$var[0]] = null;
-				}
-			}
+		// 		$var = explode('=',$value);
 
-			array_filter($data);
-		}
+		// 		if(count($var) ==  2) {
+		// 			if($var[0] != "")
+		// 				$data[$var[0]] = $var[1] ? $var[1] : null;
+		// 		} else {
+		// 			if($var[0] != "")
+		// 				$data[$var[0]] = null;
+		// 		}
+		// 	}
 
-		return $data;
+		// 	array_filter($data);
+		
+		// }
+
+		return $_ENV;
+
+	}
+
+	public static function setEnv($environmentName, $configKey, $newValue) {
+
+	    file_put_contents(\App::environmentFilePath(), str_replace(
+
+	        $environmentName . '=' . \Config::get($configKey),
+	        $environmentName . '=' . $newValue,
+	        file_get_contents(\App::environmentFilePath())
+	    ));
+
+	    $data = \Config::set($configKey, $newValue);
+
+	    \Log::info($data);
+
+	    \Log::info("Cache path".\App::getCachedConfigPath());
+
+	    // Reload the cached config       
+	    if (file_exists(\App::getCachedConfigPath())) {
+	       
+	        \Artisan::call("config:cache");
+
+	        \Log::info("Cache File Clear");
+	    }
 	}
 }
 ?>

@@ -2,6 +2,8 @@
 
 use App\Helpers\Helper;
 
+use App\Helpers\EnvEditorHelper;
+
 use Carbon\Carbon;
 
 use App\SubCategoryImage;
@@ -44,7 +46,18 @@ function tr($key) {
 
 }
 
-function sub_category_image($picture , $sub_category_id,$position) {
+function envfile($key) {
+
+    $data = EnvEditorHelper::getEnvValues();
+
+    if($data) {
+        return $data[$key];
+    }
+
+    return "";
+}
+
+function sub_category_image($picture , $sub_category_id , $position) {
 
     $image = new SubCategoryImage;
 
