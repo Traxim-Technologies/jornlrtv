@@ -2369,4 +2369,25 @@ class AdminController extends Controller
 
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
+
+    /**
+     * Function Name : remove_payper_view()
+     * To remove pay per view
+     * 
+     * @return falsh success
+     */
+    public function remove_payper_view($id) {
+        // Load video model using auto increment id of the table
+        $model = AdminVideo::find($id);
+        if ($model) {
+            $model->amount = 0;
+            $model->type_of_subscription = 0;
+            $model->type_of_user = 0;
+            $model->save();
+            if ($model) {
+                return back()->with('flash_success' , tr('removed_pay_per_view'));
+            }
+        }
+        return back()->with('flash_error' , tr('admin_published_video_failure'));
+    }
 }

@@ -309,6 +309,8 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('user/video-payments' , 'AdminController@video_payments')->name('admin.user.video-payments');
 
+    Route::get('/remove_payper_view/{id}', 'AdminController@remove_payper_view')->name('admin.remove_pay_per_view');
+
     // Settings
 
     Route::get('settings' , 'AdminController@settings')->name('admin.settings');

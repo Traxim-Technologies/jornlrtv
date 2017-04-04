@@ -27,13 +27,7 @@ return array(
 	'compress_video'=> 'Compress Video',
 	'resize_video_resolutions'=>'Resize Video Resolutions',
 
-	'426x240_key'=>'426x240 Folder Key',
-	'640x360_key'=>'640x360 Folder Key',
-	'854x480_key'=>'854x480 Folder Key',
-	'1280x720_key'=>'1280x720 Folder Key',
-	'1920x1080_key'=>'1920x1080 Folder Key',
-	'original_key'=> 'Original Folder Key',
-
+	'remove_pay_per_view'=>'Remove Pay Per View',
 	'report'=>'Mark as Spam',
 	'spam_videos' => 'Spam Videos',
 	'user_count'=>'User Count',
@@ -48,6 +42,7 @@ return array(
 	'common_settings'=>'Common Settings',
 	'video_edit_success'=>'Successfully updated the video details.',
 	'video_create_success'=>'Successfully created the video details.',
+	'removed_pay_per_view'=> 'Successfully, Removed Pay Per View',
 	'full_video'=>'Full Video',
 
 	's3_settings' => 'S3 Settings',

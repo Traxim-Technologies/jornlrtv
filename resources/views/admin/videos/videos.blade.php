@@ -184,8 +184,14 @@
 								            </div>
 									      </div>
 									      <div class="modal-footer">
-									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									        <button type="submit" class="btn btn-primary">Submit</button>
+									      	<div class="pull-left">
+									       		<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_id)}}">{{tr('remove_pay_per_view')}}</a>
+									       	</div>
+									        <div class="pull-right">
+										        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										        <button type="submit" class="btn btn-primary">Submit</button>
+										    </div>
+										    <div class="clearfix"></div>
 									      </div>
 									    </div>
 									</form>
@@ -201,6 +207,5 @@
           </div>
         </div>
     </div>
-
 
 @endsection

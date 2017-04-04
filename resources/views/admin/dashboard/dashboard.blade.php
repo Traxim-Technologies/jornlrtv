@@ -38,7 +38,7 @@ use  Carbon\Carbon;
               		<i class="fa fa-user"></i>
             	</div>
 
-            	<a target="_blank" href="{{route('admin.users')}}" class="small-box-footer">
+            	<a href="{{route('admin.users')}}" class="small-box-footer">
               		{{tr('more_info')}}
               		<i class="fa fa-arrow-circle-right"></i>
             	</a>
@@ -59,7 +59,7 @@ use  Carbon\Carbon;
               		<i class="fa fa-users"></i>
             	</div>
 
-            	<a target="_blank" href="{{route('admin.moderators')}}" class="small-box-footer">
+            	<a href="{{route('admin.moderators')}}" class="small-box-footer">
               		{{tr('more_info')}}
               		<i class="fa fa-arrow-circle-right"></i>
             	</a>
@@ -79,7 +79,7 @@ use  Carbon\Carbon;
               		<i class="fa fa-video-camera"></i>
             	</div>
 
-            	<a target="_blank" href="{{route('admin.videos')}}" class="small-box-footer">
+            	<a href="{{route('admin.videos')}}" class="small-box-footer">
               		{{tr('more_info')}}
               		<i class="fa fa-arrow-circle-right"></i>
             	</a>
@@ -99,7 +99,7 @@ use  Carbon\Carbon;
                     <i class="ion ion-bag"></i>
                 </div>
 
-                <a target="_blank" href="{{route('admin.user.payments')}}" class="small-box-footer">
+                <a href="{{route('admin.user.payments')}}" class="small-box-footer">
                     {{tr('more_info')}}
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
@@ -123,7 +123,7 @@ use  Carbon\Carbon;
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
                         
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                       <!--  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
                     </div>
                 </div>
 
@@ -202,7 +202,7 @@ use  Carbon\Carbon;
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
                         
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
                     </div>
                 </div>
 
@@ -276,8 +276,8 @@ use  Carbon\Carbon;
                         <!-- <span class="label label-danger">8 New Members</span> -->
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-                        </button>
+                        <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button> -->
                     </div>
                 </div>
 
@@ -323,9 +323,9 @@ use  Carbon\Carbon;
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
 
-                            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <!-- <button type="button" class="btn btn-box-tool" data-widget="remove">
                                 <i class="fa fa-times"></i>
-                            </button>
+                            </button> -->
                       </div>
 
                     </div>
