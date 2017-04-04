@@ -185,7 +185,9 @@
 									      </div>
 									      <div class="modal-footer">
 									      	<div class="pull-left">
-									       		<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_id)}}">{{tr('remove_pay_per_view')}}</a>
+									      		@if($video->amount > 0)
+									       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_id)}}">{{tr('remove_pay_per_view')}}</a>
+									       		@endif
 									       	</div>
 									        <div class="pull-right">
 										        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
