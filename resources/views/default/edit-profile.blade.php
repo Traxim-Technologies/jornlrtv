@@ -85,27 +85,28 @@
 
                                             <div class="medium-6 columns end">
                                                 <label>{{tr('mobile')}}:
-                                                    <input type="tel" name="mobile" value="{{Auth::user()->mobile}}" placeholder="enter your Mobile No..">
+                                                    <input type="tel" name="mobile" value="{{Auth::user()->mobile}}" placeholder="enter your Mobile No.." maxlength="13">
+                                                    <small style="color:brown">Note : The mobile must be between 6 and 13 digits.</small>
                                                 </label>
                                             </div>
 
                                             <div class="medium-12 columns">
-                                                <label>{{tr('description')}}:
+                                                <label>{{tr('about_me')}}:
                                                     <textarea name="description">{{Auth::user()->description}}</textarea>
                                                 </label>
                                             </div>
 
                                             <div class="medium-12 columns">
                                             @if(Auth::user()->picture)
-                                                <img class="up-img" src="{{Auth::user()->picture}}">
+                                                <img class="up-img" src="{{Auth::user()->picture}}" id="img_profile">
                                             @else
-                                                <img class="up-img" src="{{asset('placeholder.png')}}">
+                                                <img class="up-img" src="{{asset('placeholder.png')}}" id="img_profile">
                                             @endif
                                             </div>
 
                                             <div class="medium-12 columns">
                                                 <label>{{tr('picture')}}:
-                                                    <input type="file" name="picture" id="picture" accept="image/png, image/jpeg">
+                                                    <input type="file" name="picture" id="picture" accept="image/png, image/jpeg" onchange="loadFile(this,'img_profile')">
                                                      <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
                                                 </label>
                                             </div>
@@ -132,5 +133,21 @@
 
     <!-- end left side content area -->
 </div><!-- row end-->
+
+@endsection
+@section('scripts')
+
+<script type="text/javascript">
+function loadFile(event, id){
+    // alert(event.files[0]);
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById(id);
+      output.src = reader.result;
+       //$("#imagePreview").css("background-image", "url("+this.result+")");
+    };
+    reader.readAsDataURL(event.files[0]);
+}
+</script>
 
 @endsection

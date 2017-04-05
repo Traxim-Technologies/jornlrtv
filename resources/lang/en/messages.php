@@ -26,6 +26,7 @@ return array(
 	'details' => 'Details',
 	'compress_video'=> 'Compress Video',
 	'resize_video_resolutions'=>'Resize Video Resolutions',
+	'about_me'=>'About Me',
 
 	'remove_pay_per_view'=>'Remove Pay Per View',
 	'report'=>'Mark as Spam',
@@ -159,9 +160,12 @@ return array(
 	'unapproved'	=>	'Unapproved',
 	'added'	=> 	'Added',
 	'type_of_subscription'=>'Subscription Type',
+	'subscription'=>'SubScription',
 	'one_time_payment'=> 'One Time Payment',
 	'recurring_payment'=> 'Recurring Payment',
 	'payment_added'=> 'Payment Added Successfully',
+	'for_subscription'=>'Please click here to subscribe!',
+	'for_pay_per_view'=>'Please Pay to see the full video!',
 
 	// Form Elements
 

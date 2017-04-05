@@ -12,6 +12,7 @@
 
         <link href="{{asset('adult/css/bootstrap.min.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('adult/css/jquery-ui.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('streamtube/fonts/font-awesome/css/font-awesome.min.css')}}">
         <link href="{{asset('adult/css/style.css')}}" rel="stylesheet">
 
         <link rel="shortcut icon" type="image/png" href="{{Setting::get('site_icon' , asset('img/favicon.png'))}}"/>
@@ -38,6 +39,8 @@
         <meta name="twitter:description" content="The best solution to start up a video streaming venture!"/>
         <meta name="twitter:title" content="{{Setting::get('site_name' , 'Stream Hash')}}"/>
         <meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
+
+        @yield('styles')
 
     </head>
 

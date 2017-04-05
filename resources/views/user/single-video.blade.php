@@ -10,6 +10,62 @@ textarea[name=comments] {
     resize: none;
 }
 
+.small-box {
+    border-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+    color: #fff;    
+}
+
+.bg-green{
+    background-color: #00a65a !important;
+}
+
+.bg-aqua {
+    background-color: #00c0ef !important;
+}
+
+.small-box h3, .small-box p {
+    z-index: 5;
+}
+.small-box h3 {
+    font-size: 38px;
+    font-weight: bold;
+    margin: 0 0 10px;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.small-box > .inner {
+    padding: 10px;
+}
+
+.small-box p {
+    font-size: 15px;
+}
+
+.small-box .icon {
+    color: rgba(0, 0, 0, 0.15);
+    font-size: 90px;
+    position: absolute;
+    right: 10px;
+    top: -10px;
+    transition: all 0.3s linear 0s;
+    z-index: 0;
+}
+
+.small-box > .small-box-footer {
+    background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    display: block;
+    padding: 3px 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    z-index: 10;
+}
 </style>
 
 @endsection
@@ -78,11 +134,42 @@ textarea[name=comments] {
 
                                                                             <div class="modal-body">
                                                                                 <!-- <p>Please Pay to see the full video</p>  -->
-                                                                                @if($video->amount > 0)
-                                                                                    <a href="{{route('videoPaypal' , $video->admin_video_id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
-                                                                                @else 
-                                                                                    <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-danger">{{tr('paynow')}}</a>
-                                                                                @endif
+
+
+                    <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-12'}}">
+                      <!-- small box -->
+                      <div class="small-box bg-green">
+                        <div class="inner">
+                          <h3>${{Setting::get('amount')}}</h3>
+                          <div class="clearfix"></div>
+                          <p style="float: none;text-align: left;">{{tr('subscription')}}</p>
+                        </div>
+                        <div class="icon">
+                          <i class="fa fa-money"></i>
+                        </div>
+                         <div class="clearfix"></div>
+                        <a href="{{route('paypal' , Auth::user()->id)}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                      </div>
+                    </div>
+                    @if($video->amount > 0)
+                        <div class="col-lg-6">
+                          <!-- small box -->
+                          <div class="small-box bg-aqua">
+                            <div class="inner">
+                              <h3>${{$video->amount}}</h3>
+                              <div class="clearfix"></div>
+                              <p style="float: none;text-align: left;">{{tr('pay_per_view')}}</p>
+                            </div>
+                            <div class="icon">
+                              <i class="fa fa-money"></i>
+                            </div>
+                             <div class="clearfix"></div>
+                            <a href="{{route('videoPaypal' , $video->admin_video_id)}}" class="small-box-footer">{{tr('for_pay_per_view')}} <i class="fa fa-arrow-circle-right"></i></a>
+                          </div>
+                        </div>
+                    @endif
+                            <div class="clearfix"></div>
+                                                                                
                                                                             </div>
 
                                                                             
