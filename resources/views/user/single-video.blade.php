@@ -505,7 +505,8 @@ textarea[name=comments] {
                         confirm('The video format is not supported in this browser. Please open with some other browser.');
 
                     } else {
-
+                        
+                         var playerInstance = jwplayer("trailer-video-player");
 
                         @if($trailerstreamUrl)
 
@@ -550,20 +551,18 @@ textarea[name=comments] {
 
                         playerInstance.on('setupError', function() {
 
-                            var playerInstance = jwplayer("trailer-video-player");
-
                             var hasFlash = false;
                             try {
-                              var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-                              if (fo) {
-                                hasFlash = true;
-                              }
+                                var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                                if (fo) {
+                                    hasFlash = true;
+                                }
                             } catch (e) {
-                              if (navigator.mimeTypes
-                                    && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-                                    && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-                                hasFlash = true;
-                              }
+                                if (navigator.mimeTypes
+                                        && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                        && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                                    hasFlash = true;
+                                }
                             }
 
                             jQuery("#trailer-video-player").css("display", "none");
