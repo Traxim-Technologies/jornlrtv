@@ -506,7 +506,6 @@ textarea[name=comments] {
 
                     } else {
 
-                        var playerInstance = jwplayer("trailer-video-player");
 
                         @if($trailerstreamUrl)
 
@@ -551,11 +550,32 @@ textarea[name=comments] {
 
                         playerInstance.on('setupError', function() {
 
+                            var playerInstance = jwplayer("trailer-video-player");
+
+                            var hasFlash = false;
+                            try {
+                              var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                              if (fo) {
+                                hasFlash = true;
+                              }
+                            } catch (e) {
+                              if (navigator.mimeTypes
+                                    && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                    && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                                hasFlash = true;
+                              }
+                            }
+
                             jQuery("#trailer-video-player").css("display", "none");
 
                             jQuery('#main_video_setup_error').hide();
 
                             jQuery('#trailer_video_setup_error').css("display", "block");
+
+                            if (hasFlash == false) {
+                                confirm('Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.');
+                                return false;
+                            }
 
                             confirm('The video format is not supported in this browser. Please open with some other browser.');
                         
