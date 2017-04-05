@@ -836,10 +836,6 @@
 
                         playerInstance.on('setupError', function() {
 
-                            jQuery("#trailer-video-player").css("display", "none");
-                            jQuery('#main_video_setup_error').hide();
-                            jQuery('#trailer_video_setup_error').css("display", "block");
-
                             var hasFlash = false;
                             try {
                                 var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
@@ -858,12 +854,12 @@
 
                             jQuery('#main_video_setup_error').hide();
 
-                            jQuery('#trailer_video_setup_error').css("display", "block");
-
                             if (hasFlash == false) {
                                 jQuery('#flash_error_display').show();
                                 return false;
                             }
+
+                            jQuery('#trailer_video_setup_error').css("display", "block");
                             
                             confirm('The video format is not supported in this browser. Please open with some other browser.');
                         
@@ -1101,11 +1097,9 @@
 
                                 // console.log('main_video_setup_error');
 
-                                jQuery('#trailer_video_setup_error').hide();
-
                                 jQuery("#main-video-player").css("display", "none");
-
-                                jQuery('#main_video_setup_error').css("display", "block");
+                                jQuery('#trailer_video_setup_error').hide();
+                               
 
                                 var hasFlash = false;
                                 try {
@@ -1121,17 +1115,13 @@
                                     }
                                 }
 
-                                jQuery("#trailer-video-player").css("display", "none");
-
-                                jQuery('#main_video_setup_error').hide();
-
-                                jQuery('#trailer_video_setup_error').css("display", "block");
-
                                 if (hasFlash == false) {
                                     jQuery('#flash_error_display').show();
                                     return false;
                                 }
 
+                                jQuery('#main_video_setup_error').css("display", "block");
+                                
                                 confirm('The video format is not supported in this browser. Please option some other browser.');
                             
                             });

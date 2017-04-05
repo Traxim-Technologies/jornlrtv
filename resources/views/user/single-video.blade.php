@@ -569,12 +569,12 @@ textarea[name=comments] {
 
                             jQuery('#main_video_setup_error').hide();
 
-                            jQuery('#trailer_video_setup_error').css("display", "block");
-
                             if (hasFlash == false) {
                                 jQuery('#flash_error_display').show();
                                 return false;
                             }
+
+                            jQuery('#trailer_video_setup_error').css("display", "block");
 
                             confirm('The video format is not supported in this browser. Please open with some other browser.');
                         
@@ -798,7 +798,7 @@ textarea[name=comments] {
 
                                 jQuery("#main-video-player").css("display", "none");
                                 jQuery('#trailer_video_setup_error').hide();
-                                jQuery('#main_video_setup_error').css("display", "block");
+                               
 
                                 var hasFlash = false;
                                 try {
@@ -814,16 +814,12 @@ textarea[name=comments] {
                                     }
                                 }
 
-                                jQuery("#trailer-video-player").css("display", "none");
-
-                                jQuery('#main_video_setup_error').hide();
-
-                                jQuery('#trailer_video_setup_error').css("display", "block");
-
                                 if (hasFlash == false) {
                                     jQuery('#flash_error_display').show();
                                     return false;
                                 }
+
+                                jQuery('#main_video_setup_error').css("display", "block");
 
                                 confirm('The video format is not supported in this browser. Please option some other browser.');
                             
