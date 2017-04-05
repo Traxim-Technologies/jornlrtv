@@ -135,24 +135,25 @@ textarea[name=comments] {
                                                                             <div class="modal-body">
                                                                                 <!-- <p>Please Pay to see the full video</p>  -->
 
-
-                    <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-12'}}">
-                      <!-- small box -->
-                      <div class="small-box bg-green">
-                        <div class="inner">
-                          <h3>${{Setting::get('amount')}}</h3>
-                          <div class="clearfix"></div>
-                          <p style="float: none;text-align: left;">{{tr('subscription')}}</p>
+                    @if(Auth::user()->user_type != DEFAULT_TRUE)
+                        <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-12'}}">
+                          <!-- small box -->
+                          <div class="small-box bg-green">
+                            <div class="inner">
+                              <h3>${{Setting::get('amount')}}</h3>
+                              <div class="clearfix"></div>
+                              <p style="float: none;text-align: left;">{{tr('subscription')}}</p>
+                            </div>
+                            <div class="icon">
+                              <i class="fa fa-money"></i>
+                            </div>
+                             <div class="clearfix"></div>
+                            <a href="{{route('paypal' , Auth::user()->id)}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                          </div>
                         </div>
-                        <div class="icon">
-                          <i class="fa fa-money"></i>
-                        </div>
-                         <div class="clearfix"></div>
-                        <a href="{{route('paypal' , Auth::user()->id)}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
-                      </div>
-                    </div>
+                    @endif
                     @if($video->amount > 0)
-                        <div class="col-lg-6">
+                        <div class="{{(Auth::user()->user_type == 1) ? 'col-lg-12' : 'col-lg-6'}}">
                           <!-- small box -->
                           <div class="small-box bg-aqua">
                             <div class="inner">
