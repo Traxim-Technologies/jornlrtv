@@ -67,10 +67,9 @@ class InstallationController extends Controller {
     	}
 
     	if($theme = Settings::where('key' , 'theme')->first()) {
+            change_theme($theme->value , $request->theme);
     		$theme->value = $request->theme;
     		$theme->save();
-
-    		// change_theme($theme->value , 'theme');
     	}
 
     	if($Settings) {

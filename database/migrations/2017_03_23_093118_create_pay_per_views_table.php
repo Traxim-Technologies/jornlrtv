@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPayPerViewsTable extends Migration
+class CreatePayPerViewsTable extends Migration
 {
     /**
      * Run the migrations.
