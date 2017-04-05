@@ -94,7 +94,7 @@ class AuthController extends Controller
             'is_activated' => 1,
             'login_by' => 'manual',
             'device_type' => 'web',
-            'user_type'  => 1
+            'user_type'  => 0
         ]);
 
         register_mobile('web');
