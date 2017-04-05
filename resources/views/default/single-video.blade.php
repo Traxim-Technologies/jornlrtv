@@ -836,11 +836,36 @@
 
                         playerInstance.on('setupError', function() {
 
-                            /*jQuery("#trailer-video-player").css("display", "none");
+                            jQuery("#trailer-video-player").css("display", "none");
                             jQuery('#main_video_setup_error').hide();
                             jQuery('#trailer_video_setup_error').css("display", "block");
+
+                            var hasFlash = false;
+                            try {
+                                var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                                if (fo) {
+                                    hasFlash = true;
+                                }
+                            } catch (e) {
+                                if (navigator.mimeTypes
+                                        && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                        && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                                    hasFlash = true;
+                                }
+                            }
+
+                            jQuery("#trailer-video-player").css("display", "none");
+
+                            jQuery('#main_video_setup_error').hide();
+
+                            jQuery('#trailer_video_setup_error').css("display", "block");
+
+                            if (hasFlash == false) {
+                                jQuery('#flash_error_display').show();
+                                return false;
+                            }
                             
-                            confirm('The video format is not supported in this browser. Please open with some other browser.');*/
+                            confirm('The video format is not supported in this browser. Please open with some other browser.');
                         
                         });
 
@@ -1081,6 +1106,31 @@
                                 jQuery("#main-video-player").css("display", "none");
 
                                 jQuery('#main_video_setup_error').css("display", "block");
+
+                                var hasFlash = false;
+                                try {
+                                    var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                                    if (fo) {
+                                        hasFlash = true;
+                                    }
+                                } catch (e) {
+                                    if (navigator.mimeTypes
+                                            && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                            && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                                        hasFlash = true;
+                                    }
+                                }
+
+                                jQuery("#trailer-video-player").css("display", "none");
+
+                                jQuery('#main_video_setup_error').hide();
+
+                                jQuery('#trailer_video_setup_error').css("display", "block");
+
+                                if (hasFlash == false) {
+                                    jQuery('#flash_error_display').show();
+                                    return false;
+                                }
 
                                 confirm('The video format is not supported in this browser. Please option some other browser.');
                             

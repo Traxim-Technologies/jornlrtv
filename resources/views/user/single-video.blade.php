@@ -455,8 +455,7 @@ textarea[name=comments] {
         </div><!--y-content-row-->
     </div>
 
-    <!--end of y-content-->
-    
+
 @endsection
 
 @section('scripts')
@@ -505,8 +504,9 @@ textarea[name=comments] {
                         confirm('The video format is not supported in this browser. Please open with some other browser.');
 
                     } else {
+
                         
-                         var playerInstance = jwplayer("trailer-video-player");
+                        var playerInstance = jwplayer("trailer-video-player");
 
                         @if($trailerstreamUrl)
 
@@ -572,7 +572,7 @@ textarea[name=comments] {
                             jQuery('#trailer_video_setup_error').css("display", "block");
 
                             if (hasFlash == false) {
-                                confirm('Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.');
+                                jQuery('#flash_error_display').show();
                                 return false;
                             }
 
@@ -799,6 +799,31 @@ textarea[name=comments] {
                                 jQuery("#main-video-player").css("display", "none");
                                 jQuery('#trailer_video_setup_error').hide();
                                 jQuery('#main_video_setup_error').css("display", "block");
+
+                                var hasFlash = false;
+                                try {
+                                    var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                                    if (fo) {
+                                        hasFlash = true;
+                                    }
+                                } catch (e) {
+                                    if (navigator.mimeTypes
+                                            && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                            && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                                        hasFlash = true;
+                                    }
+                                }
+
+                                jQuery("#trailer-video-player").css("display", "none");
+
+                                jQuery('#main_video_setup_error').hide();
+
+                                jQuery('#trailer_video_setup_error').css("display", "block");
+
+                                if (hasFlash == false) {
+                                    jQuery('#flash_error_display').show();
+                                    return false;
+                                }
 
                                 confirm('The video format is not supported in this browser. Please option some other browser.');
                             

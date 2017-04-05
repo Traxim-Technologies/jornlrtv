@@ -21,6 +21,12 @@
     <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Trailer Video">
 </div>
 
+<div class="embed-responsive embed-responsive-16by9" id="flash_error_display" style="display: none;">
+   <div style="width: 100%;background: black; color:#fff;height:350px;">
+   		 <div style="text-align: center;padding-top:25%">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+   </div>
+</div>
+
 <div id="trailer-video-player"></div>
 
 @if(!check_valid_url($video->trailer_video))
