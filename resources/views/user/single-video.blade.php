@@ -136,7 +136,7 @@ textarea[name=comments] {
                                                                                 <!-- <p>Please Pay to see the full video</p>  -->
 
                     @if(Auth::user()->user_type != DEFAULT_TRUE)
-                        <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-12'}}">
+                        <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-6 col-lg-offset-3'}}">
                           <!-- small box -->
                           <div class="small-box bg-green">
                             <div class="inner">
@@ -153,7 +153,7 @@ textarea[name=comments] {
                         </div>
                     @endif
                     @if($video->amount > 0)
-                        <div class="{{(Auth::user()->user_type == 1) ? 'col-lg-12' : 'col-lg-6'}}">
+                        <div class="{{(Auth::user()->user_type == 1) ? 'col-lg-6 col-lg-offset-3' : 'col-lg-6'}}">
                           <!-- small box -->
                           <div class="small-box bg-aqua">
                             <div class="inner">
