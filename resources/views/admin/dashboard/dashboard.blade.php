@@ -335,14 +335,13 @@ use  Carbon\Carbon;
 
                         <ul class="products-list product-list-in-box">
                             @foreach($recent_videos as $v => $video)
-
                                 @if($v < 5)
                                     <li class="item">
                                         <div class="product-img">
                                             <img src="{{$video->default_image}}" alt="Product Image">
                                         </div>
                                         <div class="product-info">
-                                            <a href="javascript:void(0)" class="product-title">{{substr($video->title, 0,50)}}
+                                            <a href="{{route('admin.view.video' , array('id' => $video->admin_video_id))}}" class="product-title">{{substr($video->title, 0,50)}}
                                                 <span class="label label-warning pull-right">{{$video->duration}}</span>
                                             </a>
                                             <span class="product-description">
