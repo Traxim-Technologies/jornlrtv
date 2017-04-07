@@ -118,11 +118,11 @@ class AuthController extends Controller
 
                 if(!$user->is_verified) {
 
+                    \Auth::logout();
+
                     // Check the verification code expiry
 
                     Helper::check_email_verification("" , $user, $error);
-
-                    \Auth::logout();
 
                     return redirect(route('user.login.form'))->with('flash_error', tr('email_verify_alert'));
 
