@@ -31,7 +31,7 @@
                             <li class="clearfix">
                                 <a id="user-profile" href="{{route('user.profile')}}">
                                     <i class="fa fa-user"></i>
-                                    {{tr('about')}}
+                                    {{tr('about_me')}}
                                 </a>
                             </li>
 

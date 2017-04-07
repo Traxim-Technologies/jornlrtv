@@ -216,7 +216,7 @@
 										                </div>
 
 										            @else
-										            	<p style="padding: 5px">No genres Availble right Now!!!</p>
+										            	<p style="padding: 5px">{{tr('no_genre')}}</p>
 									                @endif
 
 									        	</div>

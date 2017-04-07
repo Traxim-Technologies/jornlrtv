@@ -10,7 +10,7 @@
             <nav aria-label="You are here:" role="navigation">
                 <ul class="breadcrumbs">
                     <li><i class="fa fa-home"></i><a href="{{route('user.dashboard')}}">{{tr('home')}}</a></li>
-                    <li><span class="show-for-sr">Current: </span>{{tr('profile')}}</a></li>
+                    <li><span class="show-for-sr">{{tr('current')}}: </span>{{tr('profile')}}</a></li>
                 </ul>
             </nav>
         </div>
@@ -76,18 +76,17 @@
                             <button><i class="fa fa-user"></i>{{tr('user')}}</button>
                             @if(Auth::user()->user_type) 
                                 <span class="inner-btn" style="background-color:#2f922f;color:white">
-                                    <strong>Premium</strong>
+                                    <strong>{{tr('premium')}}</strong>
                                 </span> 
                             @else 
                                 <span class="inner-btn" style="background-color:#e40d0d;color:white">
-                                    <strong>Normal</strong>
+                                    <strong>{{tr('normal')}}</strong>
                                 </span> 
                             @endif
                         </div>
 
                         @if(Auth::user()->user_type) 
                             <div class="email profile-margin">
-                                <!-- <button><i class="fa fa-user"></i>{{tr('remaning_days')}}</button> -->
                                 <span class="btn btn-info">
                                     <strong>{{tr('no_of_days_expiry')}} {{get_expiry_days(Auth::user()->id)}} days</strong>
                                 </span> 

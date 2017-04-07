@@ -177,7 +177,7 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <p >
-                                                        "Welcome to {{Setting::get('site_name' , 'Stream Hash')}}.
+                                                        "Welcome to {{Setting::get('site_name' , tr('site_name'))}}.
                                                     </p>
                                                     <br />
 

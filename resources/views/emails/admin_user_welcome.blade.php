@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{{Setting::get('site_name' , 'StreamHash')}}</title>
+    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>
     <style type="text/css">
 
         body {
@@ -177,7 +177,7 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <p >
-                                                    	"Welcome to {{Setting::get('site_name' , 'Stream Hash')}}.
+                                                    	"Welcome to {{Setting::get('site_name' , tr('site_name'))}}.
                                                     </p>
                                                     <br />
 

@@ -110,10 +110,24 @@ class AuthController extends Controller
     }
 
 
-    protected function authenticated(Request $request, User $user){
+    protected function authenticated(Request $request, User $user) {
 
         if(\Auth::check()) {
+
             if($user = User::find(\Auth::user()->id)) {
+
+                if(!$user->is_verified) {
+
+                    // Check the verification code expiry
+
+                    Helper::check_email_verification("" , $user, $error);
+
+                    \Auth::logout();
+
+                    return redirect(route('user.login.form'))->with('flash_error', tr('email_verify_alert'));
+
+                }
+
                 $user->login_by = 'manual';
                 $user->timezone = $request->has('timezone') ? $request->timezone : '';
                 $user->save();

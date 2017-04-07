@@ -97,6 +97,8 @@ if(!defined('WEB')) define('WEB' , 1);
 
 Route::get('/test' , 'ApplicationController@test');
 
+Route::get('/email/verification' , 'ApplicationController@email_verify')->name('email.verify');
+
 // Installation
 
 Route::get('/install/theme', 'InstallationController@install')->name('installTheme');
@@ -106,8 +108,6 @@ Route::get('/system/check', 'InstallationController@system_check_process')->name
 Route::post('/install/theme', 'InstallationController@theme_check_process')->name('install.theme');
 
 Route::post('/install/settings', 'InstallationController@settings_process')->name('install.settings');
-
-Route::get('/test', 'ApplicationController@test')->name('test');
 
 // Elastic Search Test
 
@@ -358,8 +358,6 @@ Route::get('/single', 'UserController@single_video');
 Route::get('/user/searchall' , 'ApplicationController@search_video')->name('search');
 
 Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
-
-// Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
 
 // Categories and single video 
 

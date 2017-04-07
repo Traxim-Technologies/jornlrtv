@@ -90,7 +90,7 @@
 
                                 <div class="col-sm-10">
                                   <input type="text" required value="{{Auth::guard('admin')->user()->mobile}}" name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}" pattern="[0-9]{6,}">
-                                  <small style="color:brown">Note : The mobile must be between 6 and 13 digits.</small>
+                                  <small style="color:brown">{{tr('mobile_note')}}</small>
                                 </div>
                             </div>
 

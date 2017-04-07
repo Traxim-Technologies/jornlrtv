@@ -3,7 +3,10 @@
 @section('content')
 
     <div class="login-box">
+
         <h4>{{tr('login')}}</h4>
+
+        @include('notification.notify')
 
         @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
 

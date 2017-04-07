@@ -57,7 +57,7 @@
                                         <div class="form-group">
                                             <label for="mobile">{{tr('mobile')}}</label>
                                             <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="Enter mobile" maxlength="13">
-                                            <small style="color:brown">Note : The mobile must be between 6 and 13 digits.</small>
+                                            <small style="color:brown">{{tr('mobile_note')}}</small>
                                         </div>
                                               
                                         <div class="form-group">

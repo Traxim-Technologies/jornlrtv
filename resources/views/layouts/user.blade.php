@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{Setting::get('site_name' , "Start Streaming")}}</title>
+    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>
     
     <meta name="viewport" content="width=device-width,  initial-scale=1">
     <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">
@@ -28,15 +28,15 @@
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{Setting::get('site_name' , 'StreamHash')}}" />
+    <meta property="og:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
     <meta property="og:description" content="The best solution to start up a video streaming venture!" />
     <meta property="og:url" content="" />
-    <meta property="og:site_name" content="{{Setting::get('site_name' , 'StreamHash')}}" />
+    <meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
     <meta property="og:image" content="{{Setting::get('site_icon')}}" />
 
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:description" content="The best solution to start up a video streaming venture!"/>
-    <meta name="twitter:title" content="{{Setting::get('site_name' , 'StreamHash')}}"/>
+    <meta name="twitter:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif"/>
     <meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
 
     @yield('styles')

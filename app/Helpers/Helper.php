@@ -61,6 +61,72 @@
             return url('/');
         }
 
+        public static function generate_email_code($value = "")
+        {
+            return uniqid($value);
+        }
+
+        public static function generate_email_expiry()
+        {
+            return time() + 24*3600*30;  // 30 days
+        }
+
+        // Check whether email verification code and expiry
+
+        public static function check_email_verification($verification_code , $data , &$error) 
+        {
+
+            // Check the data exists
+
+            if($data) {
+
+                // Check whether verification code is empty or not
+
+                if($verification_code) {
+
+                    if ($verification_code !=  $data->verification_code ) {
+
+                        $error = 'Verification Code Mismatched';
+
+                        return FALSE;
+
+                    }
+
+                }
+                    
+                // Check whether verification code expiry 
+
+                if ($data->verification_code_expiry > time()) {
+
+                    // Token is valid
+
+                    $error = NULL;
+
+                    return true;
+
+                } else {
+
+                    $data->verification_code = Helper::generate_email_code();
+
+                    $data->verification_code_expiry = Helper::generate_email_expiry();
+
+                    $data->save();
+
+                    // If code expired means send mail to that user
+
+                    $subject = tr('verification_code_title');
+                    $email_data = $data;
+                    $page = "emails.welcome";
+                    $email = $data['email'];
+                    $result = Helper::send_email($page,$subject,$email,$email_data);
+
+                    $error = 'Verification Code Expired';
+
+                    return FALSE;
+                }
+            }
+        }
+
         // Note: $error is passed by reference
         public static function is_token_valid($entity, $id, $token, &$error)
         {
@@ -270,7 +336,9 @@
                     break;
                 default:
                     $string = "";
+            
             }
+            
             return $string;
         }
 

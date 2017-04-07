@@ -3,11 +3,15 @@
 @section('content')
 
 <div class="form-background">
+
     <div class="common-form login-common">
+
+        @include('notification.notify')
+
 
         <div class="social-form">
             <div class="signup-head">
-                <h3>Login</h3>
+                <h3>{{tr('login')}}</h3>
             </div><!--end  of signup-head-->
 
             <div class="social-btn">

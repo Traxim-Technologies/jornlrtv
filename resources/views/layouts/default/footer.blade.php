@@ -6,7 +6,7 @@
     </div>
 
     <div class="btm-footer-text text-center">
-        <p><a href="http://streamhash.com" target="_blank">2017 © {{Setting::get('site_name' , 'StreamHash')}}</a></p>
+        <p><a href="http://streamhash.com" target="_blank">2017 © @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></p>
     </div>
 </div>
 

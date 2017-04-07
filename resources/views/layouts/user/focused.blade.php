@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{Setting::get('site_name' , "StreamHash")}}</title>
+    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>
     
     <meta name="viewport" content="width=device-width,  initial-scale=1">
     <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">

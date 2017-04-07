@@ -79,9 +79,9 @@
 							      	</td>
 							      	<td>
 							      		@if(Setting::get('admin_delete_control') == 1) 
-							      			<button class="btn btn-primary btn-xs" disabled>Remove Banner</button>
+							      			<button class="btn btn-primary btn-xs" disabled>{{tr('remove_banner')}}</button>
 							      		@else
-							      			<a class="btn btn-primary btn-xs" href="{{route('admin.change.video' ,$video->video_id )}}">Remove Banner</a>
+							      			<a class="btn btn-primary btn-xs" href="{{route('admin.change.video' ,$video->video_id )}}">{{tr('remove_banner')}}</a>
 							      		@endif
 							      	</td>
 								    <td>

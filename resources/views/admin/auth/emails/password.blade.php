@@ -173,7 +173,7 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <p>
-                                                    	"You recently requested to reset password for your {{Setting::get('site_name' , 'Stream Hash')}} account. Click the reset button to reset password."
+                                                    	"You recently requested to reset password for your {{Setting::get('site_name' , tr('site_name'))}} account. Click the reset button to reset password."
                                                     </p>
                                                 </div>
                                             </div>

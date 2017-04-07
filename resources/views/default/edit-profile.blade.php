@@ -86,7 +86,7 @@
                                             <div class="medium-6 columns end">
                                                 <label>{{tr('mobile')}}:
                                                     <input type="tel" name="mobile" value="{{Auth::user()->mobile}}" placeholder="enter your Mobile No.." maxlength="13">
-                                                    <small style="color:brown">Note : The mobile must be between 6 and 13 digits.</small>
+                                                    <small style="color:brown">{{tr('mobile_note')}}</small>
                                                 </label>
                                             </div>
 

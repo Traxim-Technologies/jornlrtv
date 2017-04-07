@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <label for="phone">{{tr('mobile')}}</label>
                         <input type="text" name="mobile" required value="{{Auth::user()->mobile}}" class="form-control" placeholder="{{tr('mobile')}}" id="phone" maxlength="13">
-                        <small style="color:brown">Note : The mobile must be between 6 and 13 digits.</small>
+                        <small style="color:brown">{{tr('mobile_note')}}</small>
                     </div>
 
                     <div class="form-group">

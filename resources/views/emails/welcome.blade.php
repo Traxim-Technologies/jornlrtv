@@ -173,7 +173,7 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <p >
-                                                    	"Welcome to {{Setting::get('site_name' , 'Stream Hash')}} and thanks for signing up! and to let you know we're here to answer any questions."
+                                                    	"Welcome to {{Setting::get('site_name' , tr('site_name'))}} and thanks for signing up! and to let you know we're here to answer any questions."
                                                     </p>
                                                 </div>
                                             </div>
@@ -190,7 +190,7 @@
                                         <td width="400" align="center" style="padding-top:25px;padding-bottom:115px;">
                                             <table cellpadding="0" cellspacing="0" border="0" align="center" width="200" height="50">
                                                 <tr>
-                                                    <td bgcolor="#cf4545" align="center" style="border-radius:4px;" width="200" height="50">
+                                                    <td bgcolor="#cf4545" align="center" style="border-radius:4px;cursor: pointer;" width="200" height="50">
                                                         <div class="contentEditableContainer contentTextEditable">
                                                             <div class="contentEditable" >
                                                                 <a target='_blank' href="{{route('user.dashboard')}}" style="color: #FFF;text-orientation: none" class='link2'>Visit our Website</a>
@@ -200,6 +200,23 @@
                                                     </td>
                                                 </tr>
                                             </table>
+                                        </td>
+                                        <td width="400" align="center" style="padding-top:25px;padding-bottom:115px;">
+
+                                            <table cellpadding="0" cellspacing="0" border="0" align="center" width="200" height="50">
+
+                                                <tr>
+                                                    <td bgcolor="green" align="center" style="border-radius:4px;margin-top: 10px" width="200" height="50">
+                                                        <div class="contentEditableContainer contentTextEditable">
+                                                            <div class="contentEditable" >
+                                                                <a target='_blank' href="{{route('email.verify' , ['id' => $email_data->id , 'verification_code' => $email_data->verification_code])}}" style="color: #FFF;text-orientation: none;cursor: pointer;" class='link2'>Verify Now</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
                                         </td>
                                         <td width="100">&nbsp;</td>
                                     </tr>

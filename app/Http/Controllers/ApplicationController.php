@@ -30,7 +30,13 @@ class ApplicationController extends Controller {
 
     public function test() {
 
-        // return view('emails.new-user')->with('email_data' , $email_data);
+        $subject = tr('user_welcome_title');
+        $email_data = User::find(3);
+        $page = "emails.welcome";
+        $email = "test@mail.com";
+
+        return view($page)->with('email_data' , $email_data);
+        // $result = Helper::send_email($page,$subject,$email,$email_data);
 
     }
 
@@ -288,6 +294,63 @@ class ApplicationController extends Controller {
 
             return view('user.search-result')->with('key' , $q)->with('videos' , $videos)->with('page' , "")->with('subPage' , "");
         }     
+    
+    }
+
+    /**
+     * To verify the email from user
+     *
+     */
+
+    public function email_verify(Request $request) {
+
+        // Check the request have user ID
+
+        if($request->id) {
+
+            // Check the user record exists
+
+            if($user = User::find($request->id)) {
+
+                // Check the user already verified
+
+                if($user->is_verified) {
+
+                    // Check the verification code and expiry of the code
+
+                    $response = Helper::check_email_verification($request->verification_code , $user, $error);
+
+                    if($response) {
+
+                        $user->is_verified = true;
+                        $user->save();
+
+                        \Auth::loginUsingId($request->id);
+
+                        return redirect(route('user.profile'))->with('flash_success' , "Email verified successfully!!!");
+
+                    } else {
+
+                        return redirect(route('user.login.form'))->with('flash_error' , $error);
+                    }
+
+                } else {
+
+                    \Log::info('User Already verified');
+
+                    \Auth::loginUsingId($request->id);
+
+                    return redirect(route('user.dashboard'));
+                }
+
+            } else {
+                return redirect(route('user.login.form'))->with('flash_error' , "User Record Not Found");
+            }
+
+        } else {
+
+            return redirect(route('user.login.form'))->with('flash_error' , "Something Missing From Email verification");
+        }
     
     }
 

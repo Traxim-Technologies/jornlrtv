@@ -25,6 +25,8 @@
 
                             <h5 class="text-center">{{tr('login')}}</h5>
 
+                            @include('notification.notify')
+
                             <form data-abide="xdc2hs-abide" novalidate="" role="form" method="POST" action="{{ url('/login') }}">
 
                                 {!! csrf_field() !!}

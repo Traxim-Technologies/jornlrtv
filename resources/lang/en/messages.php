@@ -28,6 +28,8 @@ return array(
 	'resize_video_resolutions'=>'Resize Video Resolutions',
 	'about_me'=>'About Me',
 
+	'site_name' => 'Stream Hash',
+
 	'remove_pay_per_view'=>'Remove Pay Per View',
 	'report'=>'Mark as Spam',
 	'spam_videos' => 'Spam Videos',
@@ -116,6 +118,7 @@ return array(
 	'about' => 'About Us',
 	'terms_conditions' => 'Terms and Conditions',
 	'privacy' => 'Privacy',
+	'go_home' => 'Go Home',
 
 	'action'	=>	'Action',
 	'view'	=> 	'View',
@@ -136,6 +139,7 @@ return array(
 
 	'paynow'	=> 'Paynow',
 	'duration' => 'Duration',
+	'duration_note' => 'Note : Format must be HH:MM:SS',
 	'close' => 'Close',
 	'search' => 'Search',
 	'view_all' => 'View All',
@@ -147,9 +151,15 @@ return array(
 	'from'	=>	'From',
 	'to'	=>	'To',
 	'date' => 'Date',
+	'current' => 'Current',
+	'previous' => 'Previous',
+	'next' => 'Next',
+	'save_continue' => 'Save and continue',
+	'finish' => 'Finish',
 
 	'message' => 'Message',
 	'upload_image' => 'Upload Image',
+	'upload_video_image' => 'Upload Video/Image',
 	'amount'	=> 	'Amount',
 	'currency' 	=>	'Currency',
 
@@ -215,6 +225,7 @@ return array(
 	// mail title configure
 
 	'user_welcome_title' => 'Welcome to Stream Hash',
+	'verification_code_title' => 'Please Verify Your Account',
 	'provider_welcome_title' => 'Welcome to Stream Hash',
 
 	'user_forgot_email_title' => "Your new password",
@@ -409,7 +420,8 @@ return array(
 	'edit_user'	=>	'Edit User',
 	'delete_user'	=>	'Delete User',
 	'user_type' => 'User Type',
-	
+	'premium' => 'Premium',
+	'normal' => 'Normal',
 
 	'no_user_found' => 'No users found',
 	'no_history_found' => 'No History Found',
@@ -474,6 +486,7 @@ return array(
 	'add_genre' => 'Add Genre',
 	'view_genres' => 'View Genres',
 	'view_images' => 'View Images',
+	'no_genre' => 'No genres Availble right Now!!!',
 	'admin_not_genre_approve' => 'Genre Approved Successfully',
 	'admin_not_genre_decline' => 'Genre Unapproved Successfully',
 	'admin_not_genre_del' =>'Genre deleted Successfully',
@@ -492,6 +505,7 @@ return array(
 	'select_sub_category' => 'Select Sub Category',
 	'select_genre' => 'Select Genre',
 	'publish' => 'Publish',
+	'view_images_video_note' => 'Note : Check the view video for video images',
 	
 	'ratings' => 'Ratings',
 	'reviews' => 'Reviews',
@@ -533,6 +547,7 @@ return array(
 	'banner_image' => 'Banner image',
 	'banner_videos' => 'Banner Videos',
 	'add_banner_videos' => 'Upload Banner Videos',
+	'remove_banner' => 'Remove Banner',
 
 	//Admin Documents
 	'document_list'	=>	'Documents List',
@@ -641,5 +656,9 @@ return array(
 	'MAIL_ENCRYPTION' => 'MAIL ENCRYPTION',
 
 	'email_settings' => 'Email Settings',
+
+	'mobile_note' => 'Note : The mobile must be between 6 and 13 digits.',
+
+	'email_verify_alert' => 'Check your inbox to verify your email',
 
 );

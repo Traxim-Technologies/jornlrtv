@@ -11,21 +11,12 @@
         </div><!--end of col-sm-2-->
 
         <div class="col-sm-10 foot-content">
-            <!-- <ul class="about">
-                <li><a href="{{route('user.about')}}">About</a></li>
-                <li><a href="#">Copyright</a></li>
-                <li><a href="#">Press</a></li>
-                <li><a href="#">Creators</a></li>
-                <li><a href="#">Advertise</a></li>
-                <li><a href="#">Developers</a></li>
-                <li><a href="http://streamhash.com/" target="_blank">{{Setting::get('site_name' , 'StreamHash')}}</a></li>
-            </ul>
-         -->
+
             <ul class="term">
-                <li><a href="{{route('user.about')}}">About Us</a></li>
-                <li><a href="{{route('user.terms-condition')}}">Terms &amp; Conditions</a></li>
-                <li><a href="{{route('user.privacy_policy')}}">Privacy &amp; Policy</a></li>
-                <li><a href="http://streamhash.com/" target="_blank">&#169; 2017 {{Setting::get('site_name' , 'StreamHash')}}</a></li>
+                <li><a target="_blank" href="{{route('user.about')}}">{{tr('about')}}</a></li>
+                <li><a target="_blank" href="{{route('user.terms-condition')}}">{{tr('terms_conditions')}}/a></li>
+                <li><a target="_blank" href="{{route('user.privacy_policy')}}">{{tr('privacy')}}</a></li>
+                <li><a target="_blank" href="http://streamhash.com/" target="_blank">&#169; 2017 @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
             </ul>
         </div>   
     </div><!--end of footer1-->

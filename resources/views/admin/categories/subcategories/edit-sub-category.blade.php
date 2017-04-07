@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">{{tr('name')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" required class="form-control" value="{{$sub_category->name}}" id="name" name="name" placeholder="Sub Category Name">
+                                <input type="text" required class="form-control" value="{{$sub_category->name}}" id="name" name="name" placeholder="{{tr('name')}}">
                             </div>
                         </div>
 
