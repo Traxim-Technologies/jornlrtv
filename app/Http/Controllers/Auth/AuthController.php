@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
 
+use Setting;
+
 class AuthController extends Controller
 {
     /*
@@ -98,6 +100,13 @@ class AuthController extends Controller
         ]);
 
         register_mobile('web');
+
+        if(!Setting::get('email_verify_control')) {
+
+            $User->is_verified = 1;
+
+            $User->save();
+        }
         
         // Send welcome email to the new user:
         $subject = tr('user_welcome_title');
@@ -116,15 +125,21 @@ class AuthController extends Controller
 
             if($user = User::find(\Auth::user()->id)) {
 
-                if(!$user->is_verified) {
+                // Check Admin Enabled the email verification
 
-                    \Auth::logout();
+                if(Setting::get('email_verify_control')) {
 
-                    // Check the verification code expiry
+                    if(!$user->is_verified) {
 
-                    Helper::check_email_verification("" , $user, $error);
+                        \Auth::logout();
 
-                    return redirect(route('user.login.form'))->with('flash_error', tr('email_verify_alert'));
+                        // Check the verification code expiry
+
+                        Helper::check_email_verification("" , $user, $error);
+
+                        return redirect(route('user.login.form'))->with('flash_error', tr('email_verify_alert'));
+
+                    }
 
                 }
 

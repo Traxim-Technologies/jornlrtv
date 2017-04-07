@@ -201,22 +201,26 @@
                                                 </tr>
                                             </table>
                                         </td>
-                                        <td width="400" align="center" style="padding-top:25px;padding-bottom:115px;">
 
-                                            <table cellpadding="0" cellspacing="0" border="0" align="center" width="200" height="50">
+                                        @if(Setting::get('email_verify_control'))
+                                            <td width="400" align="center" style="padding-top:25px;padding-bottom:115px;">
 
-                                                <tr>
-                                                    <td bgcolor="green" align="center" style="border-radius:4px;margin-top: 10px" width="200" height="50">
-                                                        <div class="contentEditableContainer contentTextEditable">
-                                                            <div class="contentEditable" >
-                                                                <a target='_blank' href="{{route('email.verify' , ['id' => $email_data->id , 'verification_code' => $email_data->verification_code])}}" style="color: #FFF;text-orientation: none;cursor: pointer;" class='link2'>Verify Now</a>
+                                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="200" height="50">
+
+                                                    <tr>
+                                                        <td bgcolor="green" align="center" style="border-radius:4px;margin-top: 10px" width="200" height="50">
+                                                            <div class="contentEditableContainer contentTextEditable">
+                                                                <div class="contentEditable" >
+                                                                    <a target='_blank' href="{{route('email.verify' , ['id' => $email_data->id , 'verification_code' => $email_data->verification_code])}}" style="color: #FFF;text-orientation: none;cursor: pointer;" class='link2'>Verify Now</a>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        @endif
+                                        
                                         </td>
                                         <td width="100">&nbsp;</td>
                                     </tr>

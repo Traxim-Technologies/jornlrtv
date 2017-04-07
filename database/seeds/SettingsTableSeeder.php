@@ -47,11 +47,11 @@ class SettingsTableSeeder extends Seeder
 		    ],
 		    [
 	            'key' => 'admin_delete_control',
-			    'value' => 1        	
+			    'value' => 0       	
 			],
         	[
 	        	'key' => 'admin_theme_control',
-			    'value' => 1
+			    'value' => 0
         	],
         	[
 		        'key' => 'theme',
