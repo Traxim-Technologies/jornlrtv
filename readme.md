@@ -32,7 +32,7 @@
 
 	* 1920x1080
 
-* Admin Settings
+* Admin Settings *
 	
 	* Email Configuration
 
@@ -42,15 +42,17 @@
 
 	* AWS s3 Settings
 
-* Pay Per Video
+* Pay Per Video *
 	
 	* Can choose user type - All users , Paid Users or Normal users
 
 	* Can choose payment type - Recurring Payment or OneTime Payment
 
+* Email Verification Added *
+
 *** Please create folders for resoluions with 777 permissions. ***
 
-<code> public/uploads/videos/ </code>
+public/uploads/videos/ 
 
 	* 426x240
 
@@ -63,7 +65,7 @@
 	* 1920x1080
 
 
-<code>public/uploads/images/ </code>
+public/uploads/images/ 
 
 
 
