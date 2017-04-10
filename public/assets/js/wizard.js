@@ -252,10 +252,10 @@ $('form').ajaxForm({
         $("#"+final).text("Finished");
         $("#"+final).attr('disabled', false);
         $(".overlay").hide();
-        if(xhr.id == '' && xhr.id == undefined) {
-            alert(xhr);
-        } else {
+        if(xhr.id != '' && xhr.id != undefined) {
             window.location.href= xhr.id;
+        } else {
+            alert(xhr);
         }
     }
 }); 
