@@ -970,11 +970,19 @@ function convertMegaBytes($bytes) {
 function get_video_attributes($video) {
 
     $command = 'ffmpeg -i ' . $video . ' -vstats 2>&1';
+
+    Log::info("Path ".$video);
+
     $output = shell_exec($command);
+
+    Log::info("Shell Exec : ".$output);
+
 
     $codec = null; $width = null; $height = null;
 
     $regex_sizes = "/Video: ([^,]*), ([^,]*), ([0-9]{1,4})x([0-9]{1,4})/";
+
+    Log::info("Preg Match :" .preg_match($regex_sizes, $output, $regs));
     if (preg_match($regex_sizes, $output, $regs)) {
         $codec = $regs [1] ? $regs [1] : null;
         $width = $regs [3] ? $regs [3] : null;
@@ -990,6 +998,10 @@ function get_video_attributes($video) {
         $secs = $regs [3] ? $regs [3] : null;
         $ms = $regs [4] ? $regs [4] : null;
     }
+
+    Log::info("Width of the video : ".$width);
+    Log::info("Height of the video : ".$height);
+
     return array('codec' => $codec,
         'width' => $width,
         'height' => $height,
@@ -1020,6 +1032,8 @@ function readFileName($inputFile) {
     $video_attributes = [];
     
     if (preg_match('/video\/*/', $mime_type)) {
+
+        Log::info("Inside ffmpeg");
 
         $video_attributes = get_video_attributes($inputFile, 'ffmpeg');
     } 
