@@ -237,11 +237,41 @@ function get_youtube_embed_link($video_url) {
         }
     }
 
-    // $video_url_id = substr($video_url, strpos($video_url, "=") + 1);
-
-    // $youtube_embed = "https://www.youtube.com/embed/" . $video_url_id;
-
     return $video_url;
+
+}
+
+// Need to convert the youtube link to mobile acceptable format
+
+function get_api_youtube_link($url) {
+
+    $youtube_embed = $url;
+    
+    if($url) {
+
+        // Ex : https://www.youtube.com/watch?v=jebJ9itYTJE 
+
+        if(strpos($url, "=")) {
+
+            $video_url_id = substr($url, strpos($url, "=") + 1);
+
+            $youtube_embed = "https://www.youtube.com/embed/" . $video_url_id;
+
+        } elseif(strpos($url , 'embed')) {
+
+            $youtube_embed = $url;
+
+        } else {
+
+            // EX : https://youtu.be/2CLJuuKvou4
+
+            if(strpos($url , "youtu.be")) {
+                $youtube_embed = str_replace("https://youtu.be/", "https://www.youtube.com/embed/" , $url );
+            }
+        }
+    }
+
+    return $youtube_embed;
 
 }
 
