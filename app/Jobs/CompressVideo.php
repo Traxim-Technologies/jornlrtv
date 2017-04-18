@@ -68,10 +68,10 @@ class CompressVideo extends Job implements ShouldQueue
                     ->size($solution)
                     ->vcodec('h264')
                     ->constantRateFactor('28')
-                    ->output(base_path('public/uploads/videos/original/'.$solution.$this->local_url))
+                    ->output(public_path().'/uploads/videos/original/'.$solution.$this->local_url)
                     ->ready();
 
-                    Log::info('Output'.base_path('public/uploads/videos/original/'.$solution.$this->local_url));
+                    Log::info('Output'.public_path().'/uploads/videos/original/'.$solution.$this->local_url);
                     $array_resolutions[] = $solution;
                     Log::info('Url'.Helper::web_url().'/uploads/videos/original/'.$solution.$this->local_url);
                     $video_resize_path[] = Helper::web_url().'/uploads/videos/original/'.$solution.$this->local_url;
@@ -91,8 +91,9 @@ class CompressVideo extends Job implements ShouldQueue
             if ($video->compress_status == 1 && $video->trailer_compress_status == 1) {
                 $video->is_approved = DEFAULT_TRUE; 
             }
+            Log::info("AArray Resolutions : ".print_r($array_resolutions, true));
             if ($array_resolutions) {
-                $myfile = fopen(base_path('public/uploads/smil/'.$this->file_name.'.smil'), "w");
+                $myfile = fopen(public_path().'/uploads/smil/'.$this->file_name.'.smil', "w");
                 $txt = '<smil>
                   <head>
                     <meta base="'.\Setting::get('streaming_url').'" />

@@ -105,7 +105,7 @@ class AdminController extends Controller
 
         $view = last_days(10);
 
-        user_track();
+        //      user_track();
 
         return view('admin.dashboard.dashboard')->withPage('dashboard')
                     ->with('sub_page','')
@@ -1614,6 +1614,7 @@ class AdminController extends Controller
                         $main_video_url = Helper::video_upload($video_link, $request->compress_video);
                         Log::info("New Video Uploaded ( Main Video ) : ".'Success');
                         $video->video = $main_video_url['db_url'];
+                        $video->video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : null;
                     } else {
                         $video->video = $video_link;
                     }
@@ -1623,12 +1624,12 @@ class AdminController extends Controller
                         $video->is_approved = DEFAULT_FALSE;
                         $trailer_video_url = Helper::video_upload($trailer_video, $request->compress_video);
                         Log::info("New Video Uploaded ( Trailer Video ) : ".'Success');
-                        $video->trailer_video = $trailer_video_url['db_url'];  
+                        $video->trailer_video = $trailer_video_url['db_url']; 
+                        $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : null; 
                     } else {
                         $video->trailer_video = $trailer_video;
                     }
-                    $video->video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : $video->video_resolutions;
-                    $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : $video->trailer_video_resolutions;
+                
                     Log::info("Video Resoltuions : ".print_r($video->video_resolutions, true));
                     Log::info("Trailer Video Resoltuions : ".print_r($video->trailer_video_resolutions, true));
                 }                
@@ -1686,7 +1687,7 @@ class AdminController extends Controller
             Log::info("saved Video Object : ".'Success');
 
             if($video) {
-                if ($request->hasFile('video') && $request->hasFile('trailer_video') && $video->video_resolutions) {
+                if ($request->hasFile('video') && $video->video_resolutions) {
                     if ($main_video_url) {
                         $inputFile = $main_video_url['baseUrl'];
                         $local_url = $main_video_url['local_url'];
@@ -1698,6 +1699,9 @@ class AdminController extends Controller
                             Log::info("Main queue completed : ".'Success');
                         }
                     }
+                }
+
+                if($request->hasFile('trailer_video') && $video->trailer_video_resolutions) {
                     if ($trailer_video_url) {
                         $inputFile = $trailer_video_url['baseUrl'];
                         $local_url = $trailer_video_url['local_url'];

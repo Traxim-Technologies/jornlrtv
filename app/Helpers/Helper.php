@@ -484,7 +484,7 @@
             // Convert bytes into MB
             $bytes = convertMegaBytes($picture->getClientSize());
 
-            $inputFile = base_path('public'.$path.$local_url);
+            $inputFile = public_path().$path.$local_url;
 
             if ($bytes > Setting::get('video_compress_size') && $compress_type == DEFAULT_TRUE) {
 
