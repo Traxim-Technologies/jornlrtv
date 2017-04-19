@@ -725,6 +725,17 @@ class ModeratorController extends Controller
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
 
+                if (env('QUEUE_DRIVER') != 'redis') {
+
+                    \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
+
+                    $video->compress_status = DEFAULT_TRUE;
+
+                    $video->trailer_compress_status = DEFAULT_TRUE;
+
+                    $video->save();
+                }
+
                 if ($request->has('ajax_key')) {
                     return ['id'=>route('moderator.view.video', array('id'=>$video->id))];
                 } else {
@@ -988,6 +999,17 @@ class ModeratorController extends Controller
 
                 if($request->hasFile('other_image2')) {
                    Helper::upload_video_image($request->file('other_image2'),$video->id,3); 
+                }
+
+                if (env('QUEUE_DRIVER') != 'redis') {
+
+                    \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
+
+                    $video->compress_status = DEFAULT_TRUE;
+
+                    $video->trailer_compress_status = DEFAULT_TRUE;
+
+                    $video->save();
                 }
 
                 // dd($video->id);

@@ -662,5 +662,6 @@ return array(
 	'email_verify_alert' => 'Check your inbox to verify your email',
 	'admin_theme_control'=> 'Theme Control',
 	'admin_delete_control'=>'Delete/Update Control',
-	'admin_control'=>'Admin Control'
+	'admin_control'=>'Admin Control',
+	'warning_error_queue'=>'Redis Queue Driver not Configured. Kindly configure and upload the videos to compress queue videos',
 );

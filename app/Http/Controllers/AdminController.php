@@ -1420,12 +1420,23 @@ class AdminController extends Controller
                 Helper::upload_video_image($request->file('other_image1'),$video->id,2);
 
                 Helper::upload_video_image($request->file('other_image2'),$video->id,3);
+
+                if (env('QUEUE_DRIVER') != 'redis') {
+
+                    \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
+
+                    $video->compress_status = DEFAULT_TRUE;
+
+                    $video->trailer_compress_status = DEFAULT_TRUE;
+
+                    $video->save();
+                }
                 /*if($video->is_banner)
                     return redirect(route('admin.banner.videos'));
                 else*/
                 if ($request->has('ajax_key')) {
                     Log::info('Video Id Ajax : '.$video->id);
-                    return ['id'=>route('admin.view.video', array('id'=>$video->id))];
+                    return ['id'=>route('admin.view.video', array('id'=>$video->id)), 'driver'=>$driver];
                 } else  {
                     Log::info('Video Id : '.$video->id);
                     return redirect(route('admin.view.video', array('id'=>$video->id)));
@@ -1721,6 +1732,18 @@ class AdminController extends Controller
 
                 if($request->hasFile('other_image2')) {
                    Helper::upload_video_image($request->file('other_image2'),$video->id,3); 
+                }
+
+
+                if (env('QUEUE_DRIVER') != 'redis') {
+
+                    \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
+
+                    $video->compress_status = DEFAULT_TRUE;
+
+                    $video->trailer_compress_status = DEFAULT_TRUE;
+
+                    $video->save();
                 }
 
                 if ($request->has('ajax_key')) {
