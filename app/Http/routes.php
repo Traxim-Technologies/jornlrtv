@@ -1,5 +1,9 @@
 <?php
 
+
+use Illuminate\Support\Facades\Redis;
+
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -12,6 +16,12 @@
 */
 
 // Report Video type
+
+Route::get('redis/test',function(){
+    $redis = Redis::connection();    
+    $views=$redis->incr('view');
+    dd($views);
+});
 
 if(!defined('REPORT_VIDEO_KEY')) define('REPORT_VIDEO_KEY', 'REPORT_VIDEO');
 if (!defined('IMAGE_RESOLUTIONS_KEY')) define('IMAGE_RESOLUTIONS_KEY', 'IMAGE_RESOLUTIONS');
@@ -142,6 +152,10 @@ Route::get('/about', 'ApplicationController@about')->name('user.about');
 Route::post('select/sub_category' , 'ApplicationController@select_sub_category')->name('select.sub_category');
 
 Route::post('select/genre' , 'ApplicationController@select_genre')->name('select.genre');
+
+Route::get('admin_control', 'ApplicationController@admin_control')->name('admin_control');
+
+Route::post('save_admin_control', 'ApplicationController@save_admin_control')->name('save_admin_control');
 
 
 Route::group(['prefix' => 'admin'], function(){
