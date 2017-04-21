@@ -979,7 +979,7 @@ class ModeratorController extends Controller
                     }
                 }
 
-                if($request->hasFile('trailer_video') && $video->trailer_video_resolutions)
+                if($request->hasFile('trailer_video') && $video->trailer_video_resolutions) {
                     if ($trailer_video_url) {
                         $inputFile = $trailer_video_url['baseUrl'];
                         $local_url = $trailer_video_url['local_url'];
