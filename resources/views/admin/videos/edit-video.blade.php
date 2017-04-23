@@ -31,6 +31,7 @@
     <button type="button" class="close" data-dismiss="alert">×</button>
         {{tr('warning_error_queue')}}
 </div>
+
 @endif
 
 <div class="row">

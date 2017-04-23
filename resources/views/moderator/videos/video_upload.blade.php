@@ -25,7 +25,7 @@
 
 
 
-@if (env('QUEUE_DRIVER') != 'redis') 
+@if (envfile('QUEUE_DRIVER') != 'redis') 
  <div class="alert alert-warning">
     <button type="button" class="close" data-dismiss="alert">×</button>
         {{tr('warning_error_queue')}}
