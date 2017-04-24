@@ -80,7 +80,7 @@
                                 <label for="email" class="col-sm-2 control-label">{{tr('email')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="email" required value="{{Auth::guard('admin')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}" readonly>
+                                  <input type="email" required value="{{Auth::guard('admin')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}">
                                 </div>
                             </div>
 
