@@ -1132,3 +1132,31 @@ function deleteVideoAndImages($video) {
         }
     }
 }
+
+/**
+ * Check the default subscription is enabled by admin
+ *
+ */
+
+function user_type_check($user) {
+
+    $user = User::find($user);
+
+    if($user) {
+
+        // User need subscripe the plan
+
+        if(Setting::get('is_subscription')) {
+
+            $user->user_type = 0;
+
+        } else {
+            // Enable the user as paid user
+            $user->user_type = 1;
+        }
+
+        $user->save();
+
+    }
+
+}

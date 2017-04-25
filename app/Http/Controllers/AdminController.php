@@ -295,6 +295,10 @@ class AdminController extends Controller
 
             $user->save();
 
+            // Check the default subscription and save the user type 
+
+            user_type_check($user->id);
+
             if($user) {
                 register_mobile('web');
                 return redirect('/admin/view/user/'.$user->id)->with('flash_success', $message);

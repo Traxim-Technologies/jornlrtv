@@ -46,6 +46,7 @@ class UserApiController extends Controller
         $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact']));
 
     }
+    
     public function register(Request $request)
     {
         $response_array = array();
@@ -211,10 +212,12 @@ class UserApiController extends Controller
                 }
 
                 $user->is_activated = 1;
-                $user->user_type = 1;
 
                 $user->save();
 
+                // Check the default subscription and save the user type 
+
+                user_type_check($user->id);
 
                 // Send welcome email to the new user:
                 if($new_user) {

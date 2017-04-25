@@ -144,11 +144,15 @@
                 </a>
             </li>
 
-            <li id="spam_videos">
-                <a href="{{route('admin.spam-videos')}}">
-                    <i class="fa fa-flag"></i> <span>{{tr('spam_videos')}}</span>
-                </a>
-            </li>
+            @if(Setting::get('is_spam'))
+
+                <li id="spam_videos">
+                    <a href="{{route('admin.spam-videos')}}">
+                        <i class="fa fa-flag"></i> <span>{{tr('spam_videos')}}</span>
+                    </a>
+                </li>
+
+            @endif
 
             <li id="help">
                 <a href="{{route('admin.help')}}">

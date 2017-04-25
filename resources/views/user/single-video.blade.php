@@ -182,14 +182,20 @@ textarea[name=comments] {
 
                                                             @endif
                                                         </div>
-                                                        <div class="pull-right">
-                                                            @if($flaggedVideo == '')
-                                                                <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
-                                                            @else 
-                                                                <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
-                                                            @endif
 
-                                                        </div>
+                                                        @if(Setting::get('is_spam'))
+                                                        
+                                                            <div class="pull-right">
+                                                                @if($flaggedVideo == '')
+                                                                    <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                                @else 
+                                                                    <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
+                                                                @endif
+
+                                                            </div>
+
+                                                        @endif
+
                                                         <div class="clearfix"></div>
                                                         @else
 
@@ -231,22 +237,27 @@ textarea[name=comments] {
                                         </div><!--end of video-title-->                                                             
                                     </div><!--end of details-->
 
-                                    @if ($flaggedVideo == '')
-                                        <div class="more-content" style="display: none;" id="report_video_form">
-                                            <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
-                                                <b>Report this Video ?</b>
-                                                <br>
-                                                @foreach($report_video as $report) 
-                                                    <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
-                                                @endforeach
-                                                <input type="hidden" name="video_id" value="{{$video->admin_video_id}}" />
-                                                <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
-                                                <div class="pull-right">
-                                                    <button class="btn btn-success btn-sm">Mark as Spam</button>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </form>
-                                        </div>
+                                    @if(Setting::get('is_spam'))
+
+                                        @if ($flaggedVideo == '')
+                                            <div class="more-content" style="display: none;" id="report_video_form">
+                                                <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
+                                                    <b>Report this Video ?</b>
+                                                    <br>
+                                                    @foreach($report_video as $report) 
+                                                        <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
+                                                    @endforeach
+                                                    <input type="hidden" name="video_id" value="{{$video->admin_video_id}}" />
+                                                    <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                                    <div class="pull-right">
+                                                        <button class="btn btn-success btn-sm">Mark as Spam</button>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </form>
+                                            </div>
+                                        
+                                        @endif
+
                                     @endif
 
                                     <div class="more-content">
@@ -499,6 +510,7 @@ textarea[name=comments] {
                 @if($trailer_video)
 
                     if(isOpera || isSafari) {
+                        
                         jQuery('#trailer_video_setup_error').show();
                         jQuery('#main_video_setup_error').hide();
                         confirm('The video format is not supported in this browser. Please open with some other browser.');

@@ -96,8 +96,11 @@ class AuthController extends Controller
             'is_activated' => 1,
             'login_by' => 'manual',
             'device_type' => 'web',
-            'user_type'  => 0
         ]);
+
+        // Check the default subscription and save the user type 
+
+        user_type_check($User->id);
 
         register_mobile('web');
 

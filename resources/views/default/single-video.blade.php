@@ -176,7 +176,9 @@
 
                                         
                                             @if(Auth::check())
+
 											<div class="pull-left">
+
                                                 @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)
                                                     
                                                     <button id="watch_main_video_button" style="background:green;color:#fff" type="submit" name="subscribe">{{tr('watch_main_video')}}</button>
@@ -247,15 +249,23 @@
                                                     </div>
 
                                                 @endif
-                                            </div>
-                                             <div class="pull-right">
-                                                @if($flaggedVideo == '')
-                                                    <button onclick="showReportForm();" type="button" style="background:#e96969;color:#fff" id="mark-as-spam"><i class="fa fa-flag"></i> {{tr('report')}}</button>
-                                                @else 
-                                                    <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning" style="padding: 8px 12px;"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
-                                                @endif
 
                                             </div>
+
+                                            @if(Setting::get('is_spam'))
+
+                                                <div class="pull-right">
+                                                
+                                                    @if($flaggedVideo == '')
+                                                        <button onclick="showReportForm();" type="button" style="background:#e96969;color:#fff" id="mark-as-spam"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                    @else 
+                                                        <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning" style="padding: 8px 12px;"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
+                                                    @endif
+
+                                                </div>
+
+                                            @endif
+
                                             <div class="clearfix"></div>
                                         @else
 
@@ -354,22 +364,26 @@
                                 </div><!--post-like-btn end-->
                             </div>
 
-                             @if ($flaggedVideo == '')
-                                <div class="more-content" style="display: none;" id="report_video_form">
-                                    <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
-                                        <b>Report this Video ?</b>
-                                        <br>
-                                        @foreach($report_video as $report) 
-                                            <input style="display:inline-block" type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
-                                        @endforeach
-                                        <input type="hidden" name="video_id" value="{{$video->admin_video_id}}" />
-                                        <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
-                                        <div class="pull-right">
-                                            <button class="btn btn-success btn-sm">Mark as Spam</button>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </form>
-                                </div>
+                            @if(Setting::get('is_spam')) 
+
+                                @if ($flaggedVideo == '')
+                                    <div class="more-content" style="display: none;" id="report_video_form">
+                                        <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
+                                            <b>Report this Video ?</b>
+                                            <br>
+                                            @foreach($report_video as $report) 
+                                                <input style="display:inline-block" type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
+                                            @endforeach
+                                            <input type="hidden" name="video_id" value="{{$video->admin_video_id}}" />
+                                            <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                            <div class="pull-right">
+                                                <button class="btn btn-success btn-sm">Mark as Spam</button>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </form>
+                                    </div>
+                                @endif
+
                             @endif
 
 
