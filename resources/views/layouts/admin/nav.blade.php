@@ -93,10 +93,19 @@
                 <a href="{{route('admin.user.payments')}}">
                     <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
+
                 <ul class="treeview-menu">
-                    <li id="user-payments"><a href="{{route('admin.user.payments')}}">
-                        <i class="fa fa-credit-card"></i> <span>{{tr('user_payments')}}</span>
-                    </a></li>
+
+                    @if(Setting::get('is_subscription'))
+                    
+                        <li id="user-payments">
+                            <a href="{{route('admin.user.payments')}}">
+                                <i class="fa fa-credit-card"></i> <span>{{tr('user_payments')}}</span>
+                            </a>
+                        </li>
+
+                    @endif
+                    
                     <li id="video-subscription"><a href="{{route('admin.user.video-payments')}}">
                         <i class="fa fa-credit-card"></i> <span>{{tr('video_payments')}}</span>
                     </a></li>
