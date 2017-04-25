@@ -361,13 +361,21 @@ class ApplicationController extends Controller {
     }
 
     public function save_admin_control(Request $request) {
+
         $model = Settings::get();
+
         foreach ($model as $key => $value) {
+
             if($value->key == 'admin_theme_control') {
                 $value->value = $request->admin_theme_control;
             } else if ($value->key == 'admin_delete_control') {
                 $value->value = $request->admin_delete_control;
+            } else if ($value->key == 'is_spam') {
+                $value->value = $request->is_spam;
+            } else if ($value->key == 'is_subscription') {
+                $value->value = $request->is_subscription;
             }
+            
             $value->save();
         }
         return back()->with('flash_success' , tr('settings_success'));

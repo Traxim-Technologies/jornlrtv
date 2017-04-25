@@ -51,7 +51,35 @@
                             </label>
 
                             <label>
-                                <input required type="radio" name="admin_delete_control" class="flat-red"  value="0" @if(Setting::get('admin_delete_controladmin_delete_control') == 0) checked @endif>
+                                <input required type="radio" name="admin_delete_control" class="flat-red"  value="0" @if(Setting::get('admin_delete_control') == 0) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Spam Video</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_spam" value="1" class="flat-red" @if(Setting::get('is_spam')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_spam" class="flat-red"  value="0" @if(!Setting::get('is_spam')) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Default Subscription</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_subscription" value="1" class="flat-red" @if(Setting::get('is_subscription')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_subscription" class="flat-red"  value="0" @if(!Setting::get('is_subscription')) checked @endif>
                                 {{tr('no')}}
                             </label>
                         </div>
