@@ -76,7 +76,7 @@
                             @if($errors->has('email')) 
                                 {{ $errors->first('email') }}
                             @else 
-                                $errors->first('password')
+                                {{$errors->first('password')}}
                             @endif
                         </strong>
                     </p>
