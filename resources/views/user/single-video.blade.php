@@ -102,8 +102,9 @@ textarea[name=comments] {
                                                         
                                                         @if(Auth::check())
 
-															<div class="pull-left">
-                                                            @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)                             
+															@if(Setting::get('is_spam')) <div class="pull-left"> @endif 
+                                                            
+                                                                @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)                             
                                                             
                                                                 <button type="submit" id="watch_main_video_button" class="watch-button" style="background:green;">{{tr('watch_main_video')}}</button>
 
@@ -117,7 +118,6 @@ textarea[name=comments] {
 
                                                                     <button  type="button" class="watch-button" disabled  style="background:green;">{{tr('watch_main_video')}}</button>
                                                                 @endif
-
 
 
                                                                 <div class="modal fade cus-mod" id="paypal" role="dialog">
@@ -135,41 +135,42 @@ textarea[name=comments] {
                                                                             <div class="modal-body">
                                                                                 <!-- <p>Please Pay to see the full video</p>  -->
 
-                    @if(Auth::user()->user_type != DEFAULT_TRUE)
-                        <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-6 col-lg-offset-3'}}">
-                          <!-- small box -->
-                          <div class="small-box bg-green">
-                            <div class="inner">
-                              <h3>${{Setting::get('amount')}}</h3>
-                              <div class="clearfix"></div>
-                              <p style="float: none;text-align: left;">{{tr('subscription')}}</p>
-                            </div>
-                            <div class="icon">
-                              <i class="fa fa-money"></i>
-                            </div>
-                             <div class="clearfix"></div>
-                            <a href="{{route('paypal' , Auth::user()->id)}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
-                          </div>
-                        </div>
-                    @endif
-                    @if($video->amount > 0)
-                        <div class="{{(Auth::user()->user_type == 1) ? 'col-lg-6 col-lg-offset-3' : 'col-lg-6'}}">
-                          <!-- small box -->
-                          <div class="small-box bg-aqua">
-                            <div class="inner">
-                              <h3>${{$video->amount}}</h3>
-                              <div class="clearfix"></div>
-                              <p style="float: none;text-align: left;">{{tr('pay_per_view')}}</p>
-                            </div>
-                            <div class="icon">
-                              <i class="fa fa-money"></i>
-                            </div>
-                             <div class="clearfix"></div>
-                            <a href="{{route('videoPaypal' , $video->admin_video_id)}}" class="small-box-footer">{{tr('for_pay_per_view')}} <i class="fa fa-arrow-circle-right"></i></a>
-                          </div>
-                        </div>
-                    @endif
-                            <div class="clearfix"></div>
+                                                                                @if(Auth::user()->user_type != DEFAULT_TRUE)
+                                                                                    <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-6 col-lg-offset-3'}}">
+                                                                                      <!-- small box -->
+                                                                                      <div class="small-box bg-green">
+                                                                                        <div class="inner">
+                                                                                          <h3>${{Setting::get('amount')}}</h3>
+                                                                                          <div class="clearfix"></div>
+                                                                                          <p style="float: none;text-align: left;">{{tr('subscription')}}</p>
+                                                                                        </div>
+                                                                                        <div class="icon">
+                                                                                          <i class="fa fa-money"></i>
+                                                                                        </div>
+                                                                                         <div class="clearfix"></div>
+                                                                                        <a href="{{route('paypal' , Auth::user()->id)}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                @endif
+                                                                                @if($video->amount > 0)
+                                                                                    <div class="{{(Auth::user()->user_type == 1) ? 'col-lg-6 col-lg-offset-3' : 'col-lg-6'}}">
+                                                                                      <!-- small box -->
+                                                                                      <div class="small-box bg-aqua">
+                                                                                        <div class="inner">
+                                                                                          <h3>${{$video->amount}}</h3>
+                                                                                          <div class="clearfix"></div>
+                                                                                          <p style="float: none;text-align: left;">{{tr('pay_per_view')}}</p>
+                                                                                        </div>
+                                                                                        <div class="icon">
+                                                                                          <i class="fa fa-money"></i>
+                                                                                        </div>
+                                                                                         <div class="clearfix"></div>
+                                                                                        <a href="{{route('videoPaypal' , $video->admin_video_id)}}" class="small-box-footer">{{tr('for_pay_per_view')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                @endif
+                                                                                
+                                                                                <div class="clearfix"></div>
                                                                                 
                                                                             </div>
 
@@ -181,11 +182,15 @@ textarea[name=comments] {
                                                                 </div>
 
                                                             @endif
-                                                        </div>
+
+                                                            <!-- For UI Alignment i Have checked from here -->
 
                                                         @if(Setting::get('is_spam'))
+
+                                                        </div>
                                                         
                                                             <div class="pull-right">
+
                                                                 @if($flaggedVideo == '')
                                                                     <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
                                                                 @else 

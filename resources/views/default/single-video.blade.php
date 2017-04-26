@@ -177,7 +177,17 @@
                                         
                                             @if(Auth::check())
 
-											<div class="pull-left">
+                                                <!-- UI Purpose -->
+
+    											@if(Setting::get('is_spam'))  
+
+                                                    <div class="pull-left"> 
+
+                                                @else
+
+                                                    <div class="pull-right">
+
+                                                @endif
 
                                                 @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)
                                                     
@@ -250,7 +260,11 @@
 
                                                 @endif
 
+                                                </div> 
+
                                             </div>
+
+                                            <!-- For UI Purpose I have Checked the condition Here -->
 
                                             @if(Setting::get('is_spam'))
 

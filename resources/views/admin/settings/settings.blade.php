@@ -92,18 +92,26 @@
                                         <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="Enter Streaming URL">
                                     </div> 
                                 </div>
-                                <div class="col-lg-3">
-                                     <div class="form-group">
-                                        <label for="amount">{{tr('amount')}}</label>
-                                        <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+
+                                @if(Setting::get('is_subscription'))
+
+                                    <div class="col-lg-3">
+                                         <div class="form-group">
+                                            <label for="amount">{{tr('amount')}}</label>
+                                            <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="expiry_days">{{tr('expiry_days')}}</label>
-                                        <input type="text" class="form-control" value="{{Setting::get('expiry_days')  }}" name="expiry_days" id="expiry_days" placeholder="{{tr('expiry_days')}}" pattern="[0-9]{1,}">
-                                    </div>   
-                                </div>
+                                    
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="expiry_days">{{tr('expiry_days')}}</label>
+                                            <input type="text" class="form-control" value="{{Setting::get('expiry_days')  }}" name="expiry_days" id="expiry_days" placeholder="{{tr('expiry_days')}}" pattern="[0-9]{1,}">
+                                        </div>   
+                                    </div>
+
+                                @endif
+
+
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="google_analytics">{{tr('google_analytics')}}</label>
