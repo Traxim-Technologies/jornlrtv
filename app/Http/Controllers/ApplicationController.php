@@ -32,12 +32,14 @@ class ApplicationController extends Controller {
 
     public function test() {
 
-        $subject = tr('user_welcome_title');
-        $email_data = User::find(3);
-        $page = "emails.welcome";
-        $email = "test@mail.com";
+        Log::info("MAIN VIDEO MOBILE");
 
-        return view($page)->with('email_data' , $email_data);
+        // $subject = tr('user_welcome_title');
+        // $email_data = User::find(3);
+        // $page = "emails.welcome";
+        // $email = "test@mail.com";
+
+        // return view($page)->with('email_data' , $email_data);
         // $result = Helper::send_email($page,$subject,$email,$email_data);
 
     }

@@ -769,7 +769,7 @@ textarea[name=comments] {
 
                             var playerInstance = jwplayer("main-video-player");
 
-                            if(!jQuery.browser.mobile) {
+                            if(jQuery.browser.mobile) {
 
                                 $('#mainVideo').show();
                                 
@@ -818,6 +818,15 @@ textarea[name=comments] {
                                     console.log('You are using a mobile device!');
 
                                     var path = "{{$hls_video}}";
+
+                                    jQuery.ajax({
+                                        url: "{{route('test')}}",
+                                        type: 'post',
+                                        data: {'test' : "test"},
+                                        success: function(data) {
+
+                                        }
+                                    });
 
                                 } else {
 
