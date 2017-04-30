@@ -812,7 +812,7 @@ textarea[name=comments] {
                             @else
 
 
-                                if(!jQuery.browser.mobile) {
+                                if(jQuery.browser.mobile) {
 
                                     $('#mainVideo').show();
                                     
