@@ -6,31 +6,23 @@ use Illuminate\Http\Request;
 
 use App\Requests;
 
-use App\Moderator;
-
-use App\User;
-
-use App\UserPayment;
-
-use App\PayPerView;
-
 use App\Admin;
 
-use App\Category;
-
-use App\SubCategory;
-
-use App\SubCategoryImage;
-
-use App\Genre;
+use App\Moderator;
 
 use App\AdminVideo;
 
 use App\AdminVideoImage;
 
+use App\User;
+
+use App\UserPayment;
+
 use App\UserHistory;
 
 use App\Wishlist;
+
+use App\Flag;
 
 use App\UserRating;
 
@@ -42,21 +34,9 @@ use App\Helpers\Helper;
 
 use App\Helpers\EnvEditorHelper;
 
-use App\Flag;
-
 use Validator;
 
-use Hash;
-
-use Mail;
-
-use DB;
-
 use Auth;
-
-use Exception;
-
-use Redirect;
 
 use Setting;
 
@@ -85,7 +65,6 @@ class AdminController extends Controller
 
     public function dashboard() {
 
-
         $admin = Admin::first();
 
         $admin->token = Helper::generate_token();
@@ -105,14 +84,13 @@ class AdminController extends Controller
 
         $view = last_days(10);
 
-        //      user_track();
+        // user_track();
 
         return view('admin.dashboard.dashboard')->withPage('dashboard')
                     ->with('sub_page','')
                     ->with('user_count' , $user_count)
                     ->with('video_count' , $video_count)
                     ->with('provider_count' , $provider_count)
-                    // ->with('trending' , $trending)
                     ->with('get_registers' , $get_registers)
                     ->with('view' , $view)
                     ->with('total_revenue' , $total_revenue)
@@ -193,9 +171,9 @@ class AdminController extends Controller
 
             $admin = Admin::find($request->id);
 
-            if(Hash::check($old_password,$admin->password))
+            if(\Hash::check($old_password,$admin->password))
             {
-                $admin->password = Hash::make($new_password);
+                $admin->password = \Hash::make($new_password);
                 $admin->save();
 
                 return back()->with('flash_success', tr('password_change_success'));
@@ -266,7 +244,7 @@ class AdminController extends Controller
                 $new_password .= rand();
                 $new_password = sha1($new_password);
                 $new_password = substr($new_password, 0, 8);
-                $user->password = Hash::make($new_password);
+                $user->password = \Hash::make($new_password);
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
                 $user->device_type = 'web';
@@ -360,7 +338,7 @@ class AdminController extends Controller
                     $new_password .= rand();
                     $new_password = sha1($new_password);
                     $new_password = substr($new_password, 0, 8);
-                    $moderator_user->password = Hash::make($new_password);
+                    $moderator_user->password = \Hash::make($new_password);
                 }
 
                 $moderator_user->picture = $user->picture;
@@ -509,6 +487,7 @@ class AdminController extends Controller
         $moderators = Moderator::orderBy('created_at','desc')->get();
 
         return view('admin.moderators.moderators')->with('moderators' , $moderators)->withPage('moderators')->with('sub_page','view-moderator');
+    
     }
 
     public function add_moderator() {
@@ -558,7 +537,7 @@ class AdminController extends Controller
                 $new_password .= rand();
                 $new_password = sha1($new_password);
                 $new_password = substr($new_password, 0, 8);
-                $user->password = Hash::make($new_password);
+                $user->password = \Hash::make($new_password);
                 $user->is_activated = 1;
 
             }
@@ -606,6 +585,7 @@ class AdminController extends Controller
         } else {
             return back()->with('flash_error',tr('admin_not_error'));
         }
+    
     }
 
     public function moderator_approve(Request $request) {
@@ -623,6 +603,7 @@ class AdminController extends Controller
         }
 
         return back()->with('flash_success', $message);
+    
     }
 
     public function moderator_decline(Request $request) {
@@ -639,9 +620,6 @@ class AdminController extends Controller
         } else {
             return back()->with('flash_error' , tr('admin_not_error'));
         }
-
-    
-    
             
     }
 
@@ -654,470 +632,13 @@ class AdminController extends Controller
         } else {
             return back()->with('flash_error',tr('admin_not_error'));
         }
-    }
-
-    public function categories() {
-
-        $categories = Category::select('categories.id',
-                            'categories.name' , 
-                            'categories.picture',
-                            'categories.is_series',
-                            'categories.status',
-                            'categories.is_approved',
-                            'categories.created_by'
-                        )
-                        ->orderBy('categories.created_at', 'desc')
-                        ->distinct('categories.id')
-                        ->get();
-
-        return view('admin.categories.categories')->with('categories' , $categories)->withPage('categories')->with('sub_page','view-categories');
-    }
-
-    public function add_category() {
-        return view('admin.categories.add-category')->with('page' ,'categories')->with('sub_page' ,'add-category');
-    }
-
-    public function edit_category($id) {
-
-        $category = Category::find($id);
-
-        return view('admin.categories.edit-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'edit-category');
-    }
-
-    public function add_category_process(Request $request) {
-
-        if($request->id != '') {
-            $validator = Validator::make( $request->all(), array(
-                        'name' => 'required|max:255',
-                        'picture' => 'mimes:jpeg,jpg,bmp,png',
-                    )
-                );
-        } else {
-            $validator = Validator::make( $request->all(), array(
-                    'name' => 'required|max:255',
-                    'picture' => 'required|mimes:jpeg,jpg,bmp,png',
-                )
-            );
-        
-        }
-       
-        if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
-
-        } else {
-
-            if($request->id != '') {
-                $category = Category::find($request->id);
-                $message = tr('admin_not_category');
-                if($request->hasFile('picture')) {
-                    Helper::delete_picture($category->picture, "/uploads/");
-                }
-            } else {
-                $message = tr('admin_add_category');
-                //Add New User
-                $category = new Category;
-                $category->is_approved = DEFAULT_TRUE;
-                $category->created_by = ADMIN;
-            }
-
-            $category->name = $request->has('name') ? $request->name : '';
-            $category->is_series = $request->has('is_series') ? $request->is_series : 0;
-            $category->status = 1;
-            
-            if($request->hasFile('picture') && $request->file('picture')->isValid()) {
-                $category->picture = Helper::normal_upload_picture($request->file('picture'));
-            }
-
-            $category->save();
-
-            if($category) {
-                return back()->with('flash_success', $message);
-            } else {
-                return back()->with('flash_error', tr('admin_not_error'));
-            }
-
-        }
     
-    }
-
-    public function approve_category(Request $request) {
-
-        $category = Category::find($request->id);
-
-        $category->is_approved = $request->status;
-
-        $category->save();
-
-        // ($category->subCategory) ? $category->subCategory()->update(['is_approved' => $request->status]) : '';
-
-        if ($request->status == 0) {
-            foreach($category->subCategory as $sub_category)
-            {                
-                $sub_category->is_approved = $request->status;
-                $sub_category->save();
-            } 
-
-            foreach($category->adminVideo as $video)
-            {                
-                $video->is_approved = $request->status;
-                $video->save();
-            } 
-
-            foreach($category->genre as $genre)
-            {                
-                $genre->is_approved = $request->status;
-                $genre->save();
-            } 
-        }
-
-        $message = tr('admin_not_category_decline');
-
-        if($category->is_approved == DEFAULT_TRUE){
-
-            $message = tr('admin_not_category_approve');
-        }
-
-        return back()->with('flash_success', $message);
-    
-    }
-
-    public function delete_category(Request $request) {
-        
-        $category = Category::where('id' , $request->category_id)->first();
-
-        if($category) {          
-            $category->delete();
-            return back()->with('flash_success',tr('admin_not_category_del'));
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    }
-
-
-    public function sub_categories($category_id) {
-
-        $category = Category::find($category_id);
-
-        $sub_categories = SubCategory::where('category_id' , $category_id)
-                        ->select(
-                                'sub_categories.id as id',
-                                'sub_categories.name as sub_category_name',
-                                'sub_categories.description',
-                                'sub_categories.is_approved',
-                                'sub_categories.created_by'
-                                )
-                        ->orderBy('sub_categories.created_at', 'desc')
-                        ->get();
-
-        return view('admin.categories.subcategories.sub-categories')->with('category' , $category)->with('data' , $sub_categories)->withPage('categories')->with('sub_page','view-categories');
-    }
-
-    public function add_sub_category($category_id) {
-
-        $category = Category::find($category_id);
-    
-        return view('admin.categories.subcategories.add-sub-category')->with('category' , $category)->with('page' ,'categories')->with('sub_page' ,'add-category');
-    }
-
-    public function edit_sub_category(Request $request) {
-
-        $category = Category::find($request->category_id);
-
-        $sub_category = SubCategory::find($request->sub_category_id);
-
-        $sub_category_images = SubCategoryImage::where('sub_category_id' , $request->sub_category_id)
-                                    ->orderBy('position' , 'ASC')->get();
-
-        $genres = Genre::where('sub_category_id' , $request->sub_category_id)
-                        ->orderBy('position' , 'asc')
-                        ->get();
-
-        return view('admin.categories.subcategories.edit-sub-category')
-                ->with('category' , $category)
-                ->with('sub_category' , $sub_category)
-                ->with('sub_category_images' , $sub_category_images)
-                ->with('genres' , $genres)
-                ->with('page' ,'categories')
-                ->with('sub_page' ,'');
-    }
-
-    public function add_sub_category_process(Request $request) {
-
-        if($request->id != '') {
-            $validator = Validator::make( $request->all(), array(
-                        'category_id' => 'required|integer|exists:categories,id',
-                        'id' => 'required|integer|exists:sub_categories,id',
-                        'name' => 'required|max:255',
-                        'picture1' => 'mimes:jpeg,jpg,bmp,png',
-                        'picture2' => 'mimes:jpeg,jpg,bmp,png',
-                        'picture3' => 'mimes:jpeg,jpg,bmp,png',
-                    )
-                );
-        } else {
-            $validator = Validator::make( $request->all(), array(
-                    'name' => 'required|max:255',
-                    'description' => 'required|max:255',
-                    'picture1' => 'required|mimes:jpeg,jpg,bmp,png',
-                    'picture2' => 'required|mimes:jpeg,jpg,bmp,png',
-                    'picture3' => 'required|mimes:jpeg,jpg,bmp,png',
-                )
-            );
-        
-        }
-       
-        if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
-
-        } else {
-
-            if($request->id != '') {
-
-                $sub_category = SubCategory::find($request->id);
-
-                $message = tr('admin_not_sub_category');
-
-                if($request->hasFile('picture1')) {
-                    Helper::delete_picture($request->file('picture1'), "/uploads/");
-                }
-
-                if($request->hasFile('picture2')) {
-                    Helper::delete_picture($request->file('picture2'), "/uploads/");
-                }
-
-                if($request->hasFile('picture3')) {
-                    Helper::delete_picture($request->file('picture3'), "/uploads/");
-                }
-            } else {
-                $message = tr('admin_add_sub_category');
-                //Add New User
-                $sub_category = new SubCategory;
-
-                $sub_category->is_approved = DEFAULT_TRUE;
-                $sub_category->created_by = ADMIN;
-            }
-
-            $sub_category->category_id = $request->has('category_id') ? $request->category_id : '';
-            
-            if($request->has('name')) {
-                $sub_category->name = $request->name;
-            }
-
-            if($request->has('description')) {
-                $sub_category->description =  $request->description;   
-            }
-
-            $sub_category->save(); // Otherwise it will save empty values
-
-            if($request->has('genre')) {
-
-                foreach ($request->genre as $key => $genres) {
-                    $genre = new Genre;
-                    $genre->category_id = $request->category_id;
-                    $genre->sub_category_id = $sub_category->id;
-                    $genre->name = $genres;
-                    $genre->status = DEFAULT_TRUE;
-                    $genre->is_approved = DEFAULT_TRUE;
-                    $genre->created_by = ADMIN;
-                    $genre->position = $key+1;
-                    $genre->save();
-                }
-            }
-            
-            if($request->hasFile('picture1')) {
-                sub_category_image($request->file('picture1') , $sub_category->id,1);
-            }
-
-            if($request->hasFile('picture2')) {
-                sub_category_image($request->file('picture2'), $sub_category->id , 2);
-            }
-
-            if($request->hasFile('picture3')) {
-                sub_category_image($request->file('picture3'), $sub_category->id , 3);
-            }
-
-            if($sub_category) {
-                return back()->with('flash_success', $message);
-            } else {
-                return back()->with('flash_error', tr('admin_not_error'));
-            }
-
-        }
-    
-    }
-
-    public function approve_sub_category(Request $request) {
-
-        $sub_category = SubCategory::find($request->id);
-
-        $sub_category->is_approved = $request->status;
-
-        $sub_category->save();
-
-        if ($request->status == 0) {
-
-            foreach($sub_category->adminVideo as $video)
-            {                
-                $video->is_approved = $request->status;
-                $video->save();
-            } 
-
-            foreach($sub_category->genres as $genre)
-            {                
-                $genre->is_approved = $request->status;
-                $genre->save();
-            } 
-
-        }
-
-        $message = tr('admin_not_sub_category_decline');
-
-        if($sub_category->is_approved == DEFAULT_TRUE){
-
-            $message = tr('admin_not_sub_category_approve');
-        }
-
-        return back()->with('flash_success', $message);
-    
-    }
-
-    public function delete_sub_category(Request $request) {
-
-        $sub_category = SubCategory::where('id' , $request->id)->first();
-
-        if($sub_category) {
-
-            $sub_category->delete();
-
-            return back()->with('flash_success',tr('admin_not_sub_category_del'));
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    }
-
-    public function save_genre(Request $request) {
-
-        $validator = Validator::make( $request->all(), array(
-                    'category_id' => 'required|integer|exists:categories,id',
-                    'id' => 'required|integer|exists:sub_categories,id',
-                    'genre' => 'required|max:255',
-                )
-            );
-
-        if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
-
-        } else {
-            // To order the position of the genres
-            $position = 1;
-
-            if($check_position = Genre::where('sub_category_id' , $request->id)->orderBy('position' , 'desc')->first()) {
-                $position = $check_position->position +1;
-            } 
-
-            $genre = new Genre;
-            $genre->category_id = $request->category_id;
-            $genre->sub_category_id = $request->id;
-            $genre->name = $request->genre;
-            $genre->position = $position;
-            $genre->status = DEFAULT_TRUE;
-            $genre->is_approved = DEFAULT_TRUE;
-            $genre->created_by = ADMIN;
-            $genre->save();
-
-            $message = tr('admin_add_genre');
-
-            if($genre) {
-                return back()->with('flash_success', $message);
-            } else {
-                return back()->with('flash_error', tr('admin_not_error'));
-            }
-        }
-    
-    }
-
-    public function edit_genre(Request $request) {
-
-    }
-
-    public function approve_genre(Request $request) {
-
-        $genre = Genre::find($request->id);
-
-        $genre->is_approved = $request->status;
-
-        $genre->save();
-
-        if ($request->status == 0) {
-            foreach($genre->adminVideo as $video)
-            {                
-                $video->is_approved = $request->status;
-                $video->save();
-            }
-        }
-
-        $message = tr('admin_not_genre_decline');
-
-        if($genre->is_approved == DEFAULT_TRUE){
-
-            $message = tr('admin_not_genre_approve');
-        }
-
-        return back()->with('flash_success', $message);
-    
-    }
-
-    public function view_genre(Request $request) {
-
-        $validator = Validator::make($request->all() , [
-                'id' => 'required|exists:genres,id'
-            ]);
-
-        if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
-        } else {
-            $genres = Genre::where('genres.id' , $request->id)
-                    ->leftJoin('categories' , 'genres.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'genres.sub_category_id' , '=' , 'sub_categories.id')
-                    ->select('genres.id as genre_id' ,'genres.name as genre_name' , 
-                             'genres.position' , 'genres.status' , 
-                             'genres.is_approved' , 'genres.created_at as genre_date' ,
-                             'genres.created_by',
-
-                             'genres.category_id as category_id',
-                             'genres.sub_category_id',
-                             'categories.name as category_name',
-                             'sub_categories.name as sub_category_name')
-                    ->orderBy('genres.position' , 'asc')
-                    ->get();
-
-        return view('admin.categories.subcategories.genres.view-genre')->with('genres' , $genres)
-                    ->withPage('videos')
-                    ->with('sub_page','view-videos');
-        }
-    }
-
-    public function delete_genre(Request $request) {
-        if($genre = Genre::where('id',$request->id)->first()) {
-
-            $genre->delete();
-
-            return back()->with('flash_success',tr('admin_not_genre_del'));
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
     }
 
     public function videos(Request $request) {
 
-        $videos = AdminVideo::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                    ->select('admin_videos.id as video_id' ,'admin_videos.title' , 
+        $videos = AdminVideo::select('admin_videos.id as video_id' ,
+                                'admin_videos.title' , 
                              'admin_videos.description' , 'admin_videos.ratings' , 
                              'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
                              'admin_videos.default_image',
@@ -1125,17 +646,12 @@ class AdminController extends Controller
                              'admin_videos.amount',
                              'admin_videos.type_of_user',
                              'admin_videos.type_of_subscription',
-                             'admin_videos.category_id as category_id',
-                             'admin_videos.sub_category_id',
-                             'admin_videos.genre_id',
+                             
                              'admin_videos.is_home_slider',
                              'admin_videos.compress_status',
                              'admin_videos.trailer_compress_status',
                              'admin_videos.status','admin_videos.uploaded_by',
-                             'admin_videos.edited_by','admin_videos.is_approved',
-
-                             'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
-                             'genres.name as genre_name')
+                             'admin_videos.edited_by','admin_videos.is_approved')
                     ->orderBy('admin_videos.created_at' , 'desc')
                     ->get();
 
@@ -1147,14 +663,7 @@ class AdminController extends Controller
 
     public function add_video(Request $request) {
 
-        $categories = Category::where('categories.is_approved' , 1)
-                        ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
-                            'categories.is_series' ,'categories.status' , 'categories.is_approved')
-                        ->leftJoin('sub_categories' , 'categories.id' , '=' , 'sub_categories.category_id')
-                        ->groupBy('sub_categories.category_id')
-                        ->havingRaw("COUNT(sub_categories.id) > 0")
-                        ->orderBy('categories.name' , 'asc')
-                        ->get();
+        $categories = [];
 
          return view('admin.videos.video_upload')
                 ->with('categories' , $categories)
@@ -1167,14 +676,7 @@ class AdminController extends Controller
 
         Log::info("Queue Driver ".env('QUEUE_DRIVER'));
 
-        $categories =  $categories = Category::where('categories.is_approved' , 1)
-                        ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
-                            'categories.is_series' ,'categories.status' , 'categories.is_approved')
-                        ->leftJoin('sub_categories' , 'categories.id' , '=' , 'sub_categories.category_id')
-                        ->groupBy('sub_categories.category_id')
-                        ->havingRaw("COUNT(sub_categories.id) > 0")
-                        ->orderBy('categories.name' , 'asc')
-                        ->get();
+        $categories =  [];
 
         $video = AdminVideo::where('admin_videos.id' , $request->id)
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
@@ -2034,6 +1536,7 @@ class AdminController extends Controller
     }
 
     public function user_payments() {
+
         $payments = UserPayment::orderBy('created_at' , 'desc')->get();
 
         return view('admin.payments.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','user-payments'); 
@@ -2090,27 +1593,6 @@ class AdminController extends Controller
         return view('admin.payment-settings')->with('settings' , $settings)->withPage('payment-settings')->with('sub_page',''); 
     }
 
-    public function theme_settings() {
-
-        $settings = array();
-
-        $settings[] =  Setting::get('theme');
-
-        if(Setting::get('theme')!= 'default') {
-            $settings[] = 'default';
-        }
-
-        if(Setting::get('theme')!= 'streamtube') {
-            $settings[] = 'streamtube';
-        }
-
-        if(Setting::get('theme')!= 'teen') {
-            $settings[] = 'teen';
-        }
-
-        return view('admin.theme.theme-settings')->with('settings' , $settings)->withPage('theme-settings')->with('sub_page',''); 
-    }
-
     public function settings_process(Request $request) {
 
         $settings = Settings::all();
@@ -2157,13 +1639,6 @@ class AdminController extends Controller
                             $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
                         }
                     }  
-
-                } else if($setting->key == "theme") {
-
-                    if($request->has('theme')) {
-                        change_theme($setting->value , $request->$key);
-                        $setting->value = $request->theme;
-                    }
 
                 } else if($request->$key!='') {
 
@@ -2341,7 +1816,7 @@ class AdminController extends Controller
      * @return array of payments
      */
     public function video_payments() {
-        $payments = PayPerView::orderBy('created_at' , 'desc')->get();
+        $payments = [];
 
         return view('admin.payments.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
     }
@@ -2355,14 +1830,18 @@ class AdminController extends Controller
      *
      * @return flash message
      */
-    public function save_video_payment($id, Request $request){
+    public function save_video_payment($id, Request $request) {
+
         // Load Video Model
         $model = AdminVideo::find($id);
+
         // Get post attribute values and save the values
         if ($model) {
+
             if ($data = $request->all()) {
+
                 // Update the post
-                if (DB::table('admin_videos')->where('id', $id)->update($data)) {
+                if (AdminVideo::where('id', $id)->update($data)) {
                     // Redirect into particular value
                     return back()->with('flash_success', tr('payment_added'));       
                 } 
@@ -2402,25 +1881,4 @@ class AdminController extends Controller
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 
-    /**
-     * Function Name : remove_payper_view()
-     * To remove pay per view
-     * 
-     * @return falsh success
-     */
-    public function remove_payper_view($id) {
-        
-        // Load video model using auto increment id of the table
-        $model = AdminVideo::find($id);
-        if ($model) {
-            $model->amount = 0;
-            $model->type_of_subscription = 0;
-            $model->type_of_user = 0;
-            $model->save();
-            if ($model) {
-                return back()->with('flash_success' , tr('removed_pay_per_view'));
-            }
-        }
-        return back()->with('flash_error' , tr('admin_published_video_failure'));
-    }
 }
