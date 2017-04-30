@@ -495,7 +495,16 @@ textarea[name=comments] {
 
     <script type="text/javascript">
         
-        jQuery(document).ready(function(){   
+        jQuery(document).ready(function(){  
+
+        if(jQuery.browser.mobile)
+        {
+           console.log('You are using a mobile device!');
+        }
+        else
+        {
+           console.log('You are not using a mobile device!');
+        } 
 
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
