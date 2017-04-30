@@ -803,14 +803,14 @@ textarea[name=comments] {
                                 var is_mobile = false;
 
                                 if(jQuery.browser.mobile) {
+
+                                    {{\Log::info("djdjdjdjd")}}
                                     
                                     is_mobile = true;
                                     
                                     console.log('You are using a mobile device!');
 
                                     var path = "{{$hls_video}}";
-
-                                    alert(path);
 
                                 } else {
 
