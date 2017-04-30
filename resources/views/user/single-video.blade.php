@@ -528,7 +528,12 @@ textarea[name=comments] {
                         @if($trailerstreamUrl)
 
                             playerInstance.setup({
-                                file: "{{$trailerstreamUrl}}",
+                                sources: [{
+                                    file: "{{$trailerstreamUrl}}"
+                                  },{
+                                    file: "{{$original_trailer_video}}"
+                                  }],
+                                // file: "{{$trailerstreamUrl}}",
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
