@@ -810,6 +810,8 @@ textarea[name=comments] {
 
                                     var path = "{{$hls_video}}";
 
+                                    alert(path);
+
                                 } else {
 
                                     var videoPath = "{{$videoPath}}";
@@ -826,6 +828,8 @@ textarea[name=comments] {
 
                                         path.push({file : splitVideo[i], label : splitVideoPixel[i]});
                                     }
+
+                                    alert("HELELo");
                                 }
 
                                 playerInstance.setup({
