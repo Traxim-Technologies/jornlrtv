@@ -497,15 +497,6 @@ textarea[name=comments] {
         
         jQuery(document).ready(function(){  
 
-        if(jQuery.browser.mobile)
-        {
-           console.log('You are using a mobile device!');
-        }
-        else
-        {
-           console.log('You are not using a mobile device!');
-        } 
-
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
                 // Firefox 1.0+
@@ -531,7 +522,6 @@ textarea[name=comments] {
 
                     } else {
 
-                        
                         var playerInstance = jwplayer("trailer-video-player");
 
                         @if($trailerstreamUrl)
@@ -548,25 +538,39 @@ textarea[name=comments] {
                                 aspectratio: "16:9",
                                 primary: "flash",
                             });
+
                         @else
 
+                            var is_mobile = false;
 
-                            var trailerVideoPath = "{{$trailer_video_path}}";
-                            var trailerVideoPixels = "{{$trailer_pixels}}";
+                            if(jQuery.browser.mobile) {
+                                
+                                is_mobile = true;
+                                
+                                console.log('You are using a mobile device!');
 
-                            var trailerPath = [];
+                                var trailerPath = "{{$original_trailer_video}}";
 
-                            var splitTrailer = trailerVideoPath.split(',');
+                            } else {
 
-                            var splitTrailerPixel = trailerVideoPixels.split(',');
+                                var trailerVideoPath = "{{$trailer_video_path}}";
+                                var trailerVideoPixels = "{{$trailer_pixels}}";
 
+                                var trailerPath = [];
 
-                            for (var i = 0 ; i < splitTrailer.length; i++) {
+                                var splitTrailer = trailerVideoPath.split(',');
 
-                                trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
+                                var splitTrailerPixel = trailerVideoPixels.split(',');
+
+                                for (var i = 0 ; i < splitTrailer.length; i++) {
+
+                                    trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
+                                }
+
+                                // alert(trailerPath);
+
                             }
-
-                            // alert(trailerPath);
+                            
                             console.log(trailerPath);
 
                             playerInstance.setup({
@@ -795,28 +799,42 @@ textarea[name=comments] {
                             
                             });
                             @else
-                                var videoPath = "{{$videoPath}}";
-                                var videoPixels = "{{$video_pixels}}";
 
-                                var path = [];
+                                var is_mobile = false;
 
-                                var splitVideo = videoPath.split(',');
+                                if(jQuery.browser.mobile) {
+                                    
+                                    is_mobile = true;
+                                    
+                                    console.log('You are using a mobile device!');
 
-                                var splitVideoPixel = videoPixels.split(',');
+                                    var path = "{{$original_main_video}}";
+
+                                } else {
+
+                                    var videoPath = "{{$videoPath}}";
+                                    var videoPixels = "{{$video_pixels}}";
+
+                                    var path = [];
+
+                                    var splitVideo = videoPath.split(',');
+
+                                    var splitVideoPixel = videoPixels.split(',');
 
 
-                                for (var i = 0 ; i < splitVideo.length; i++) {
+                                    for (var i = 0 ; i < splitVideo.length; i++) {
 
-                                    path.push({file : splitVideo[i], label : splitVideoPixel[i]});
+                                        path.push({file : splitVideo[i], label : splitVideoPixel[i]});
+                                    }
                                 }
 
                                 playerInstance.setup({
-                                    sources: [{
-                                        file: path
-                                      },{
-                                        file: "{{$original_main_video}}"
-                                      }],
-                                    // sources: path,
+                                    // sources: [{
+                                    //     file: path
+                                    //   },{
+                                    //     file: "{{$original_main_video}}"
+                                    //   }],
+                                    sources: path,
                                     image: "{{$video->default_image}}",
                                     width: "100%",
                                     aspectratio: "16:9",
