@@ -561,7 +561,12 @@ textarea[name=comments] {
                             console.log(trailerPath);
 
                             playerInstance.setup({
-                                sources: trailerPath,
+                                sources: [{
+                                    file: trailerPath
+                                  },{
+                                    file: "{{$original_trailer_video}}"
+                                  }],
+                                // sources: trailerPath,
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -754,7 +759,12 @@ textarea[name=comments] {
                             @if($videoStreamUrl) 
 
                             playerInstance.setup({
-                                file: "{{$videoStreamUrl}}",
+                                // file: "{{$videoStreamUrl}}",
+                                sources: [{
+                                    file: "{{$videoStreamUrl}}"
+                                  },{
+                                    file: "{{$original_main_video}}"
+                                  }],
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -792,7 +802,12 @@ textarea[name=comments] {
                                 }
 
                                 playerInstance.setup({
-                                    sources: path,
+                                    sources: [{
+                                        file: path
+                                      },{
+                                        file: "{{$original_main_video}}"
+                                      }],
+                                    // sources: path,
                                     image: "{{$video->default_image}}",
                                     width: "100%",
                                     aspectratio: "16:9",
