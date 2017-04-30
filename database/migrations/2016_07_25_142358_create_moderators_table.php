@@ -14,10 +14,11 @@ class CreateModeratorsTable extends Migration
     {
          Schema::create('moderators', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('unique_id');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-             $table->string('token');
+            $table->string('token');
             $table->string('token_expiry');
             $table->string('picture');
             $table->string('description');
@@ -26,6 +27,10 @@ class CreateModeratorsTable extends Migration
             $table->string('mobile');
             $table->string('paypal_email');
             $table->string('address');
+            $table->integer('status');
+            $table->integer('is_user');
+            $table->integer('user_id');
+            $table->string('timezone');
             $table->rememberToken();
             $table->timestamps();
         });

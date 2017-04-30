@@ -14,10 +14,11 @@ class CreateAdminVideoImagesTable extends Migration
     {
         Schema::create('admin_video_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('video_id');
+            $table->integer('admin_video_id');
             $table->string('image');
             $table->integer('is_default');
             $table->integer('position');
+            $table->integer('status');
             $table->timestamps();
         });
     }

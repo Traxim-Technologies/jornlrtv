@@ -26,14 +26,6 @@ class SettingsTableSeeder extends Seeder
 		        'value' => ''
 		    ],
 		    [
-		        'key' => 'tag_name',
-		        'value' => ''
-		    ],
-		    [
-		        'key' => 'paypal_email',
-		        'value' => ''
-		    ],
-		    [
 		        'key' => 'browser_key',
 		        'value' => ''
 		    ],
@@ -49,21 +41,13 @@ class SettingsTableSeeder extends Seeder
 	            'key' => 'admin_delete_control',
 			    'value' => 0       	
 			],
-        	[
-	        	'key' => 'admin_theme_control',
-			    'value' => 0
-        	],
-        	[
-		        'key' => 'theme',
-		        'value' => 'streamtube'
-		    ],
 		    [
-		        'key' => 'paypal_client_id',
-		        'value' => ''
-		    ],
-		    [
-		        'key' => 'paypal_secret',
-		        'value' => ''
+			    'key' => "email_verify_control",
+	            'value' => 0
+            ],
+            [
+		        'key' => 'is_subscription',
+		        'value' => 1
 		    ],
 		    [
 		        'key' => 'installation_process',
@@ -96,22 +80,6 @@ class SettingsTableSeeder extends Seeder
 		    [
 		    	'key' => 'image_compress_size',
 		    	'value' => 8
-		    ],
-		    [
-		        'key' => 's3_key',
-		        'value' => ''
-		    ],
-		    [
-		        'key' => 's3_secret',
-		        'value' => ''
-		    ],
-		    [
-		        'key' => 's3_region',
-		        'value' => ''
-		    ],
-		    [
-		        'key' => 's3_bucket',
-		        'value' => ''
 		    ],
 		    [
 		        'key' => 'track_user_mail',

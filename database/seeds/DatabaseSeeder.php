@@ -14,7 +14,5 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSeeder::class);
         $this->call(SettingsTableSeeder::class);
         $this->call(MobileRegisterSeeder::class);
-        $this->call(EmailVerificationSeeder::class);
-        $this->call(SubscriptionSeeder::class);
     }
 }

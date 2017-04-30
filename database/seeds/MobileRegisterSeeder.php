@@ -11,7 +11,9 @@ class MobileRegisterSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('mobile_registers')->insert([
+        DB::table('mobile_registers')->delete();
+
+        DB::table('mobile_registers')->insert([
     		[
 		        'type' => 'android',
 		        'count' => 0
