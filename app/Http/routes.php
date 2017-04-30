@@ -107,7 +107,7 @@ if(!defined('WEB')) define('WEB' , 1);
 
 Route::get('/test' , 'ApplicationController@test');
 
-Route::post('/test' , 'ApplicationController@test');
+Route::post('/test' , 'ApplicationController@test')->name('test');
 
 Route::get('/email/verification' , 'ApplicationController@email_verify')->name('email.verify');
 
