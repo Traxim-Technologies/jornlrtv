@@ -549,7 +549,7 @@ textarea[name=comments] {
                                 
                                 console.log('You are using a mobile device!');
 
-                                var trailerPath = "{{$original_trailer_video}}";
+                                var trailerPath = "{{$hls_trailer_video}}";
 
                             } else {
 
@@ -808,7 +808,7 @@ textarea[name=comments] {
                                     
                                     console.log('You are using a mobile device!');
 
-                                    var path = "{{$original_main_video}}";
+                                    var path = "{{$hls_video}}";
 
                                 } else {
 

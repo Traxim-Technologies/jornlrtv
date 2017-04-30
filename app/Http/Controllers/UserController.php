@@ -133,12 +133,16 @@ class UserController extends Controller {
                     if(\Setting::get('streaming_url')) {
                         $main_video = \Setting::get('streaming_url').get_video_end($video->video);
                     }
+
+                    $hls_video = envfile('HLS_STREAMING_URL').get_video_end($video->video);
                 }
 
                 if(check_valid_url($video->trailer_video) && $video->video_upload_type == 2) {
                     if(\Setting::get('streaming_url')) {
                         $trailer_video = \Setting::get('streaming_url').get_video_end($video->trailer_video);
                     }
+
+                    $hls_trailer_video = envfile('HLS_STREAMING_URL').get_video_end($video->trailer_video);
                 }
             }
 
@@ -213,7 +217,9 @@ class UserController extends Controller {
                     ->with('videoStreamUrl', $videoStreamUrl)
                     ->with('trailerstreamUrl', $trailerstreamUrl)
                     ->with('original_trailer_video' , $original_trailer_video)
+                    ->with('hls_trailer_video' , $hls_trailer_video)
                     ->with('original_main_video' , $original_main_video)
+                    ->with('hls_video' , $hls_video)
                     ->with('flaggedVideo', $flaggedVideo);
     }
 
