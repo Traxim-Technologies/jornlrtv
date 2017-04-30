@@ -769,7 +769,7 @@ textarea[name=comments] {
 
                             var playerInstance = jwplayer("main-video-player");
 
-                            if(jQuery.browser.mobile) {
+                            if(!jQuery.browser.mobile) {
 
                                 $('#mainVideo').show();
                                 
@@ -810,7 +810,6 @@ textarea[name=comments] {
                                 });
 
                             @else
-
 
                                 if(jQuery.browser.mobile) {
 
