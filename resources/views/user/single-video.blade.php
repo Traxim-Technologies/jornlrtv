@@ -94,7 +94,7 @@ textarea[name=comments] {
                                         <div class="video-title">
                                             <div class="title row">
                                                 <div style="width: 55%;">
-                                                    <h3>{{$video->title}}</h3>
+                                                    <h3>{{$video->title}} <span id="mainVideo" style="display: none;">{{$hls_video}} {{$hls_trailer_video}}</span></h3>
                                                 </div>
                                                 <div class="watch-duration">
 
@@ -769,44 +769,52 @@ textarea[name=comments] {
 
                             var playerInstance = jwplayer("main-video-player");
 
+                            if(jQuery.browser.mobile) {
+
+                                $('#mainVideo').show();
+                                
+                                console.log('You are using a mobile device!');
+
+                                <?php $videoStreamUrl = $hls_video; ?>
+
+                            }
+
                             @if($videoStreamUrl) 
 
-                            playerInstance.setup({
-                                // file: "{{$videoStreamUrl}}",
-                                sources: [{
-                                    file: "{{$videoStreamUrl}}"
-                                  },{
-                                    file: "{{$original_main_video}}"
-                                  }],
-                                image: "{{$video->default_image}}",
-                                width: "100%",
-                                aspectratio: "16:9",
-                                primary: "flash",
-                                controls : true,
-                                "controlbar.idlehide" : false,
-                                controlBarMode:'floating',
-                                "controls": {
-                                    "enableFullscreen": false,
-                                    "enablePlay": false,
-                                    "enablePause": false,
-                                    "enableMute": true,
-                                    "enableVolume": true
-                                },
-                                // autostart : true,
-                                "sharing": {
-                                    "sites": ["reddit","facebook","twitter"]
-                                  }
-                            
-                            });
+                                playerInstance.setup({
+                                    // file: "{{$videoStreamUrl}}",
+                                    sources: [{
+                                        file: "{{$videoStreamUrl}}"
+                                      },{
+                                        file: "{{$original_main_video}}"
+                                      }],
+                                    image: "{{$video->default_image}}",
+                                    width: "100%",
+                                    aspectratio: "16:9",
+                                    primary: "flash",
+                                    controls : true,
+                                    "controlbar.idlehide" : false,
+                                    controlBarMode:'floating',
+                                    "controls": {
+                                        "enableFullscreen": false,
+                                        "enablePlay": false,
+                                        "enablePause": false,
+                                        "enableMute": true,
+                                        "enableVolume": true
+                                    },
+                                    // autostart : true,
+                                    "sharing": {
+                                        "sites": ["reddit","facebook","twitter"]
+                                      }
+                                
+                                });
+
                             @else
 
-                                var is_mobile = false;
 
-                                if(jQuery.browser.mobile) {
+                                if(!jQuery.browser.mobile) {
 
-                                    {{\Log::info("djdjdjdjd")}}
-                                    
-                                    is_mobile = true;
+                                    $('#mainVideo').show();
                                     
                                     console.log('You are using a mobile device!');
 
