@@ -94,7 +94,7 @@ textarea[name=comments] {
                                         <div class="video-title">
                                             <div class="title row">
                                                 <div style="width: 55%;">
-                                                    <h3>{{$video->title}} <span id="mainVideo" style="display: none;">{{$hls_video}} {{$hls_trailer_video}}</span></h3>
+                                                    <h3>{{$video->title}}</h3>
                                                 </div>
                                                 <div class="watch-duration">
 
@@ -769,10 +769,11 @@ textarea[name=comments] {
 
                             var playerInstance = jwplayer("main-video-player");
 
-                            if(jQuery.browser.mobile) {
+                            if(!jQuery.browser.mobile) {
 
                             } else {
-                                 $('#mainVideo').show();
+
+                                // $('#mainVideo').show();
                                 
                                 console.log('You are using a mobile device!');
 
