@@ -777,6 +777,15 @@ textarea[name=comments] {
 
                                 <?php $videoStreamUrl = $hls_video; ?>
 
+                                jQuery.ajax({
+                                        url: "{{route('test')}}",
+                                        type: 'post',
+                                        data: {'test' : "test"},
+                                        success: function(data) {
+
+                                        }
+                                    });
+
                             }
 
                             @if($videoStreamUrl) 
