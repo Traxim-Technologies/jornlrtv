@@ -771,7 +771,8 @@ textarea[name=comments] {
 
                             if(jQuery.browser.mobile) {
 
-                                $('#mainVideo').show();
+                            } else {
+                                 $('#mainVideo').show();
                                 
                                 console.log('You are using a mobile device!');
 
@@ -785,7 +786,6 @@ textarea[name=comments] {
 
                                         }
                                     });
-
                             }
 
                             @if($videoStreamUrl) 
