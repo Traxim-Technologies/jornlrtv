@@ -828,7 +828,12 @@
                         @if($trailerstreamUrl)
 
                             playerInstance.setup({
-                                file: "{{$trailerstreamUrl}}",
+                                // file: "{{$trailerstreamUrl}}",
+                                sources: [{
+                                    file: "{{$trailerstreamUrl}}"
+                                  },{
+                                    file: "{{$original_trailer_video}}"
+                                  }],
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -853,7 +858,12 @@
                             }
 
                             playerInstance.setup({
-                                sources: trailerPath,
+                                // sources: trailerPath,
+                                sources: [{
+                                    file: trailerPath
+                                  },{
+                                    file: "{{$original_trailer_video}}"
+                                  }],
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -1055,8 +1065,12 @@
 
   
                             playerInstance.setup({
-                               
-                                file: "{{$videoStreamUrl}}",
+                                // file: "{{$videoStreamUrl}}",
+                                sources: [{
+                                    file: "{{$videoStreamUrl}}"
+                                  },{
+                                    file: "{{$original_main_video}}"
+                                  }],
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
@@ -1096,8 +1110,12 @@
                             }
 
                             playerInstance.setup({
-                               
-                                sources: path,
+                                // sources: path,
+                                sources: [{
+                                    file: path
+                                  },{
+                                    file: "{{$original_main_video}}"
+                                  }],
                                 image: "{{$video->default_image}}",
                                 width: "100%",
                                 aspectratio: "16:9",
