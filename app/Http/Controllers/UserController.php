@@ -194,6 +194,10 @@ class UserController extends Controller {
 
         }
         $share_link = route('user.single' , $id);
+
+        \Log::info("HLS VIDEO".print_r($hls_video , true));
+
+        \Log::info("HLS TRAILER VIDEO".print_r($hls_trailer_video , true));
         
         return view('user.single-video')
                     ->with('page' , '')
