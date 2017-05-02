@@ -28,19 +28,6 @@ class AdminVideo extends Model
         return $this->hasMany('App\Wishlist');
     }
 
-
-    public function category() {
-        return $this->belongsTo('App\Category');
-    }
-
-    public function subCategory() {
-        return $this->belongsTo('App\SubCategory');
-    }
-
-    public function genreName() {
-        return $this->belongsTo('App\Genre');
-    }
-
     /**
      * Get the flag record associated with the video.
      */
@@ -123,8 +110,6 @@ class AdminVideo extends Model
             'admin_videos.watch_count' ,
             'admin_videos.duration',
             'admin_videos.ratings',
-            'admin_videos.category_id',
-            'categories.name as category_name',
             'admin_videos.title',
             'admin_videos.description',
             'admin_videos.default_image',
@@ -139,7 +124,6 @@ class AdminVideo extends Model
             'admin_videos.amount',
             'admin_videos.type_of_user',
             'admin_videos.type_of_subscription',
-            'admin_videos.category_id as category_id',
             'admin_videos.genre_id',
             'categories.is_series',
             'genres.name as genre_name',

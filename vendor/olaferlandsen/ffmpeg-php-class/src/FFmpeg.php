@@ -42,8 +42,6 @@ class FFmpeg
 		'vframes'	=>	'videoFrames',
 		'y'			=>	'overwrite',
 		'log'		=>	'logLevel',
-		'crf'		=>  'constantRateFactor',
-		'preset'	=>  'lossLessFactor'
 	);
 	/**
 	*	
@@ -166,7 +164,7 @@ class FFmpeg
 				$options [] = "-".$option." ".strval($values);
 			}
 		}
-		$this->command = $this->ffmpeg." ".join(' ',$options). " ".$output . $this->STD;
+		$this->command = $this->ffmpeg." ".join(' ',$options)." ".$output . $this->STD;
 		return $this;
 	}
 	/**
@@ -309,32 +307,6 @@ class FFmpeg
 	{
 		return $this->set('b',$b,false);
 	}
-
-	/**
-	*   @param	string	$b	set constantRateFactor
-	*   @return	object
-	*   @access	public
-	*   @example    $ffmpeg->constantRateFactor('28');
-	
-	*/
-	public function constantRateFactor( $crf )
-	{
-		return $this->set('crf',$crf,false);
-	}
-
-	/**
-	*   @param	string	$b	set lossLessFactor
-	*   @return	object
-	*   @access	public
-	*   @example    $ffmpeg->lossLessFactor('28');
-	
-	*/
-	public function lossLessFactor( $llf )
-	{
-		return $this->set('preset',$llf,false);
-	}
-
-
 	/**
 	*   @param	string	$r	Set frame rate (Hz value, fraction or abbreviation).
 	*   @return	object
