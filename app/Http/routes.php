@@ -104,8 +104,22 @@ if(!defined('BANNER')) define('BANNER' , 'banner');
 
 if(!defined('WEB')) define('WEB' , 1);
 
+Route::get('/ui' , 'ApplicationController@ui')->name('ui');
 
-Route::get('/test' , 'ApplicationController@test');
+Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
+
+Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
+
+Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
+
+Route::get('/channels/create' , 'ApplicationController@channel_create')->name('channels.create');
+
+Route::get('/channels/view' , 'ApplicationController@channel_view')->name('channels.view');
+
+Route::get('/channels/index' , 'ApplicationController@channel_index')->name('channels.index');
+
+
+Route::get('/test' , 'ApplicationController@test')->name('test');
 
 Route::post('/test' , 'ApplicationController@test')->name('test');
 

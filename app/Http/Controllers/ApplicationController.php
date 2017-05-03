@@ -28,6 +28,29 @@ use App\Page;
 
 class ApplicationController extends Controller {
 
+    public function channel_create() {
+        return view('ui.channels.create');
+    }
+    public function ui() {
+        return view('ui.index');
+    }
+
+    public function channel_view() {
+        return view('ui.channels.view');
+    }
+
+    public function subscriptions() {
+        return view('ui.subscriptions.index');
+    }
+
+    public function subscription_view() {
+        return view('ui.subscriptions.view');
+    }
+
+    public function video_create() {
+        return view('ui.videos.create');
+    } 
+
     public $expiry_date = "";
 
     public function test() {

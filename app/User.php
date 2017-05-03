@@ -64,6 +64,28 @@ class User extends Authenticatable
         return $this->hasMany('App\PayPerView', 'user_id', 'id');
     }
 
+    /**
+     * Save the password with the help of Hash
+     *
+     *
+     */
+    public function setPasswordAttribute($pass){
+
+        $this->attributes['password'] = \Hash::make($pass);
+
+    }
+
+    /**
+     * Save the unique ID 
+     *
+     *
+     */
+    public function setUniqueIdAttribute($value){
+
+        $this->attributes['unique_id'] = uniqid(str_replace(' ', '-', $value));
+
+    }
+
      /**
      * Boot function for using with User Events
      *
@@ -129,11 +151,14 @@ class User extends Authenticatable
                     $payment->delete();
                 } 
             }
+        
         }); 
 
         static::creating(function ($model) {
 
             $model->generateEmailCode();
+
+            $model->generateToken();
 
         });
     }
@@ -152,6 +177,21 @@ class User extends Authenticatable
         $this->attributes['verification_code_expiry'] = Helper::generate_email_expiry();
 
         $this->attributes['is_verified'] = 0;
+
+        return true;
+    }
+
+    /**
+     * Generates Token and Token Expiry
+     * 
+     * @return bool returns true if successful. false on failure.
+     */
+
+    protected function generateToken() {
+
+        $this->attributes['token'] = Helper::generate_token();
+
+        $this->attributes['token_expiry'] = Helper::generate_token_expiry();
 
         return true;
     }

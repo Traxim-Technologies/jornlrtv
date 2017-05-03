@@ -12,12 +12,6 @@
 
     use App\AdminVideoImage;
 
-    use App\Category;
-
-    use App\SubCategory;
-
-    use App\SubCategoryImage;
-
     use App\Wishlist;
 
     use App\UserHistory;
@@ -539,9 +533,6 @@
         public static function recently_added($web = NULL , $skip = 0) {
 
             $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                            ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                            ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                             ->where('admin_videos.status' , 1)
                             ->videoResponse()
                             ->orderby('admin_videos.created_at' , 'desc');
@@ -569,7 +560,6 @@
 
             $videos_query = Wishlist::where('user_id' , $user_id)
                             ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                            ->leftJoin('categories' ,'admin_videos.category_id' , '=' , 'categories.id')
                             ->where('admin_videos.is_approved' , 1)
                             ->where('admin_videos.status' , 1)
                             ->where('wishlists.status' , 1)
@@ -577,8 +567,8 @@
                                     'wishlists.id as wishlist_id','admin_videos.id as admin_video_id' ,
                                     'admin_videos.title','admin_videos.description' ,
                                     'default_image','admin_videos.watch_count','admin_videos.ratings',
-                                    'admin_videos.duration','admin_videos.category_id',
-                                    DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time') , 'categories.name as category_name')
+                                    'admin_videos.duration',
+                                    DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'))
                             ->orderby('wishlists.created_at' , 'desc');
 
             // Check any flagged videos are present

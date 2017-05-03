@@ -31,7 +31,6 @@ class CreateAdminVideosTable extends Migration
             $table->enum('edited_by',array('admin','moderator','user' ,'other'));
             $table->integer('watch_count');
             $table->integer('is_approved');
-            $table->integer('is_home_slider')->default(0)
             $table->integer('status');
 
             $table->timestamps();

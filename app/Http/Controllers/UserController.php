@@ -14,8 +14,6 @@ use App\User;
 
 use App\Wishlist;
 
-use App\Category;
-
 use App\Page;
 
 use App\Flag;
@@ -27,8 +25,6 @@ use Validator;
 use Setting;
 
 use Exception;
-
-use App\PayPerView;
 
 use Log;
 
@@ -69,9 +65,9 @@ class UserController extends Controller {
 
             if(\Auth::check()){
 
-                $wishlists  = Helper::wishlist(\Auth::user()->id,WEB);  
+                // $wishlists  = Helper::wishlist(\Auth::user()->id,WEB);  
 
-                $watch_lists = Helper::watch_list(\Auth::user()->id,WEB);  
+                // $watch_lists = Helper::watch_list(\Auth::user()->id,WEB);  
             }
             
             $recent_videos = Helper::recently_added(WEB);
@@ -80,7 +76,7 @@ class UserController extends Controller {
             
             $suggestions  = Helper::suggestion_videos(WEB);
 
-            $categories = get_categories();
+            $categories = [];
 
             return view('user.index')
                         ->with('page' , 'home')
