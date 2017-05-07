@@ -11,7 +11,7 @@
         
     </ul>
 
-    <?php  $categories = get_categories(); ?>
+    <?php  $categories = []; ?>
 
     @if(count($categories) > 0)
         

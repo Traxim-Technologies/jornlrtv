@@ -20,14 +20,6 @@ use Setting;
 
 use App\User;
 
-use App\Admin;
-
-use App\AdminVideo;
-
-use App\AdminVideoImage;
-
-use App\Settings;
-
 use App\UserRating;
 
 use App\Wishlist;
@@ -41,14 +33,20 @@ use App\Jobs\NormalPushNotification;
 class UserApiController extends Controller
 {
 
-    public function __construct(Request $request)
-    {
+    public function __construct(Request $request) {
+
         $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact']));
 
     }
+
+    /**
+     * User manual and social register save 
+     *
+     *
+     */
     
-    public function register(Request $request)
-    {
+    public function register(Request $request) {
+
         $response_array = array();
         $operation = false;
         $new_user = DEFAULT_TRUE;
@@ -66,8 +64,10 @@ class UserApiController extends Controller
 
         if($basicValidator->fails()) {
 
-            $error_messages = implode(',', $basicValidator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+            $errors = implode(',', $basicValidator->messages()->all());
+            
+            $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+
             Log::info('Registration basic validation failed');
 
         } else {
@@ -77,7 +77,7 @@ class UserApiController extends Controller
 
             // check login-by
 
-            if(in_array($login_by,$allowedSocialLogin)){
+            if(in_array($login_by,$allowedSocialLogin)) {
 
                 // validate social registration fields
 
@@ -100,7 +100,7 @@ class UserApiController extends Controller
 
                     Log::info('Registration social validation failed');
 
-                }else {
+                } else {
 
                     $check_social_user = User::where('email' , $request->email)->first();
 
@@ -110,6 +110,7 @@ class UserApiController extends Controller
 
                     Log::info('Registration passed social validation');
                     $operation = true;
+               
                 }
 
             } else {
@@ -138,14 +139,18 @@ class UserApiController extends Controller
 
                 if($manualValidator->fails()) {
 
-                    $error_messages = implode(',', $manualValidator->messages()->all());
-                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+                    $errors = implode(',', $manualValidator->messages()->all());
+                    
+                    $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+
                     Log::info('Registration manual validation failed');
 
                 } elseif($emailValidator->fails()) {
 
-                    $error_messages = implode(',', $emailValidator->messages()->all());
-                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+                    $errors = implode(',', $emailValidator->messages()->all());
+
+                    $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+
                     Log::info('Registration manual email validation failed');
 
                 } else {
@@ -251,16 +256,22 @@ class UserApiController extends Controller
                 Log::info('Registration completed');
 
             }
-
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
+    
     }
+
+    /**
+     * User manual and social login 
+     *
+     *
+     */
 
     public function login(Request $request) {
 
-        $response_array = array();
+        $response_array = [];
+
         $operation = false;
 
         $basicValidator = Validator::make(
@@ -274,9 +285,9 @@ class UserApiController extends Controller
 
         if($basicValidator->fails()){
             
-            $error_messages = implode(',',$basicValidator->messages()->all());
+            $errors = implode(',',$basicValidator->messages()->all());
             
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+            $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
         
         } else {
 
@@ -291,30 +302,33 @@ class UserApiController extends Controller
             );
 
             if ($manualValidator->fails()) {
-                $error_messages = implode(',',$manualValidator->messages()->all());
-                $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+
+                $errors = implode(',',$manualValidator->messages()->all());
+
+                $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
             
             } else {
 
                 // Validate the user credentials
+
                 if($user = User::where('email', '=', $request->email)->first()) {
 
                     if($user->is_activated) {
 
                         if(Hash::check($request->password, $user->password)){
 
-                            /*manual login success*/
+                            /* manual login success */
                             $operation = true;
 
                         } else {
-                            $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
+                            $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
                         }
                     } else {
-                        $response_array = array('success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144);
+                        $response_array = ['success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144];
                     }
 
                 } else {
-                    $response_array = array( 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 );
+                    $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
                 }
             
             }
@@ -353,12 +367,10 @@ class UserApiController extends Controller
                 );
 
                 $response_array = Helper::null_safe($response_array);
-            
             }
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
     }
 
     public function forgot_password(Request $request) {

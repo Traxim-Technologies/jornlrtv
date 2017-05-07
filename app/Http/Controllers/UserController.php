@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
 use App\Http\Requests;
 
 use App\Helpers\Helper;
@@ -51,7 +53,8 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    
+    public function index(Request $request) {
 
         $database = config('database.connections.mysql.database');
         
@@ -65,16 +68,16 @@ class UserController extends Controller {
 
             if(\Auth::check()){
 
-                // $wishlists  = Helper::wishlist(\Auth::user()->id,WEB);  
+                $wishlists  = VideoRepo::wishlist(\Auth::user()->id,WEB);  
 
-                // $watch_lists = Helper::watch_list(\Auth::user()->id,WEB);  
+                $watch_lists = VideoRepo::watch_list(\Auth::user()->id,WEB);  
             }
             
-            $recent_videos = Helper::recently_added(WEB);
+            $recent_videos = VideoRepo::recently_added(WEB);
 
-            $trendings = Helper::trending(WEB);
+            $trendings = VideoRepo::trending(WEB);
             
-            $suggestions  = Helper::suggestion_videos(WEB);
+            $suggestions  = VideoRepo::suggestion_videos(WEB);
 
             $categories = [];
 
@@ -550,14 +553,17 @@ class UserController extends Controller {
 
     }
 
-    public function trending()
-    {
-        $trending = Helper::trending(1);
-        $categories = get_categories();
+    /**
+     * Trending Videos
+     *
+     */
+
+    public function trending(Request $request) {
+
+        $trending = VideoRepo::trending(WEB);
 
         return view('user.trending')->with('page', 'trending')
-                                    ->with('videos',$trending)
-                                    ->with('categories', $categories);
+                                    ->with('videos',$trending);
     }
 
     public function delete_account(Request $request) {
