@@ -736,13 +736,17 @@ class UserApiController extends Controller
     }
 
 
-    public function wishlist($id, $count = null) {
+    public function wishlist($id, $count = null, $skip = 0) {
 
         $model = Wishlist::where('user_id', $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc');
 
         if($count) {
 
             $model->paginate($count);
+
+        } else if($skip) {
+
+            $model->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
 
         } else {
 
@@ -753,6 +757,32 @@ class UserApiController extends Controller
         $response = response()->json($model, 200);
 
     }
+
+
+    public function history($id, $count = null, $skip = 0) {
+
+        $model = UserHistory::where('user_id', $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc');
+
+        if($count) {
+
+            $model->paginate($count);
+
+        } else if($skip) {
+
+            $model->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        } else {
+
+            $model->get();
+
+        }
+
+        $response = response()->json($model, 200);
+
+    }
+
+
+
 
     public function add_history(Request $request)  {
 

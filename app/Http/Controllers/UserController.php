@@ -370,7 +370,7 @@ class UserController extends Controller {
 
     public function history(Request $request) {
 
-        $histories = Helper::watch_list(\Auth::user()->id,WEB);
+        $histories = $this->UserAPI->history(\Auth::user()->id);
 
         return view('user.history')
                         ->with('page' , 'profile')
@@ -424,7 +424,7 @@ class UserController extends Controller {
 
     public function wishlist(Request $request) {
         
-        $videos = Helper::wishlist(\Auth::user()->id,WEB);
+        $videos = $this->UserAPI->wishlist(\Auth::user()->id);
 
         return view('user.wishlist')
                     ->with('page' , 'profile')
