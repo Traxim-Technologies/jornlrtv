@@ -438,7 +438,7 @@ class UserApiController extends Controller
 
             if(Hash::check($request->old_password,$user->password)) {
 
-                $user->password = Hash::make($request->new_password);
+                $user->password = $request->password;
                 
                 $user->save();
 
@@ -733,6 +733,25 @@ class UserApiController extends Controller
         $response = response()->json($response_array, 200);
         return $response;
     
+    }
+
+
+    public function wishlist($id, $count = null) {
+
+        $model = Wishlist::where('user_id', $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc');
+
+        if($count) {
+
+            $model->paginate($count);
+
+        } else {
+
+            $model->get();
+
+        }
+
+        $response = response()->json($model, 200);
+
     }
 
     public function add_history(Request $request)  {

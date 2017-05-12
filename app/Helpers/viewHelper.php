@@ -34,6 +34,7 @@ function tr($key) {
 
 }
 
+
 function envfile($key) {
 
     $data = EnvEditorHelper::getEnvValues();
@@ -518,3 +519,22 @@ function user_type_check($user) {
     }
 
 }
+
+
+function get_expiry_days($id) {
+    
+    $data = UserPayment::where('user_id' , $id)->first();
+
+    $days = 0;
+
+    if($data) {
+        $start_date = new \DateTime(date('Y-m-d h:i:s'));
+        $end_date = new \DateTime($data->expiry_date);
+
+        $time_interval = date_diff($start_date,$end_date);
+        $days = $time_interval->days;
+    }
+
+    return $days;
+}
+

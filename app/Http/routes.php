@@ -429,6 +429,8 @@ Route::group([], function(){
 
     Route::post('password/reset', 'Auth\PasswordController@reset');
 
+    
+
     Route::get('profile', 'UserController@profile')->name('user.profile');
 
     Route::get('update/profile', 'UserController@update_profile')->name('user.update.profile');

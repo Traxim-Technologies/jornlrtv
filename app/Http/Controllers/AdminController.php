@@ -10,7 +10,7 @@ use App\Admin;
 
 use App\Moderator;
 
-use App\AdminVideo;
+use App\VideoTape;
 
 use App\AdminVideoImage;
 
@@ -74,7 +74,7 @@ class AdminController extends Controller
         
         $user_count = User::count();
         $provider_count = Moderator::count();
-        $video_count = AdminVideo::count();
+        $video_count = VideoTape::count();
         // $trending = trending();
         $recent_videos = Helper::recently_added();
 
@@ -637,7 +637,7 @@ class AdminController extends Controller
 
     public function videos(Request $request) {
 
-        $videos = AdminVideo::select('admin_videos.id as video_id' ,
+        $videos = VideoTape::select('admin_videos.id as video_id' ,
                                 'admin_videos.title' , 
                              'admin_videos.description' , 'admin_videos.ratings' , 
                              'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
@@ -678,7 +678,7 @@ class AdminController extends Controller
 
         $categories =  [];
 
-        $video = AdminVideo::where('admin_videos.id' , $request->id)
+        $video = VideoTape::where('admin_videos.id' , $request->id)
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
@@ -805,7 +805,7 @@ class AdminController extends Controller
 
             Log::info("Success validation and navigated to create new object");
 
-            $video = new AdminVideo;
+            $video = new VideoTape;
             $video->title = $request->title;
             $video->description = $request->description;
             $video->category_id = $request->category_id;
@@ -964,7 +964,7 @@ class AdminController extends Controller
         Log::info("Initiaization Edit Process : ".print_r($request->all(),true));
 
 
-        $video = AdminVideo::find($request->id);
+        $video = VideoTape::find($request->id);
 
         $video_validator = array();
 
@@ -1279,7 +1279,7 @@ class AdminController extends Controller
             $error_messages = implode(',', $validator->messages()->all());
             return back()->with('flash_errors', $error_messages);
         } else {
-            $videos = AdminVideo::where('admin_videos.id' , $request->id)
+            $videos = VideoTape::where('admin_videos.id' , $request->id)
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
@@ -1373,7 +1373,7 @@ class AdminController extends Controller
 
     public function approve_video($id) {
 
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
 
         $video->is_approved = DEFAULT_TRUE;
 
@@ -1401,7 +1401,7 @@ class AdminController extends Controller
      */
     public function publish_video($id) {
         // Load video based on Auto increment id
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
         // Check the video present or not
         if ($video) {
             $video->status = DEFAULT_TRUE;
@@ -1417,7 +1417,7 @@ class AdminController extends Controller
 
     public function decline_video($id) {
         
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
 
         $video->is_approved = DEFAULT_FALSE;
 
@@ -1434,7 +1434,7 @@ class AdminController extends Controller
 
     public function delete_video($id) {
 
-        if($video = AdminVideo::where('id' , $id)->first())  {
+        if($video = VideoTape::where('id' , $id)->first())  {
             $video->delete();
         }
 
@@ -1443,9 +1443,9 @@ class AdminController extends Controller
 
     public function slider_video($id) {
 
-        $video = AdminVideo::where('is_home_slider' , 1 )->update(['is_home_slider' => 0]); 
+        $video = VideoTape::where('is_home_slider' , 1 )->update(['is_home_slider' => 0]); 
 
-        $video = AdminVideo::where('id' , $id)->update(['is_home_slider' => 1] );
+        $video = VideoTape::where('id' , $id)->update(['is_home_slider' => 1] );
 
         return back()->with('flash_success', tr('slider_success'));
     
@@ -1453,7 +1453,7 @@ class AdminController extends Controller
 
     public function banner_videos(Request $request) {
 
-        $videos = AdminVideo::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+        $videos = VideoTape::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                     ->where('admin_videos.is_banner' , 1 )
@@ -1502,7 +1502,7 @@ class AdminController extends Controller
 
     public function change_banner_video($id) {
 
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
 
         $video->is_banner = 0 ;
 
@@ -1833,7 +1833,7 @@ class AdminController extends Controller
     public function save_video_payment($id, Request $request) {
 
         // Load Video Model
-        $model = AdminVideo::find($id);
+        $model = VideoTape::find($id);
 
         // Get post attribute values and save the values
         if ($model) {
@@ -1841,7 +1841,7 @@ class AdminController extends Controller
             if ($data = $request->all()) {
 
                 // Update the post
-                if (AdminVideo::where('id', $id)->update($data)) {
+                if (VideoTape::where('id', $id)->update($data)) {
                     // Redirect into particular value
                     return back()->with('flash_success', tr('payment_added'));       
                 } 

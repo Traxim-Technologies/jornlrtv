@@ -90,10 +90,9 @@ class AuthController extends Controller
         $User = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => $data['password'],
             'timezone' => $data['timezone'],
             'picture' => asset('placeholder.png'),
-            'is_activated' => 1,
             'login_by' => 'manual',
             'device_type' => 'web',
         ]);

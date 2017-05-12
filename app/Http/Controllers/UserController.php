@@ -68,7 +68,7 @@ class UserController extends Controller {
 
             if(\Auth::check()){
 
-                $wishlists  = VideoRepo::wishlist(\Auth::user()->id,WEB);  
+                $wishlists  =  VideoRepo::wishlist(\Auth::user()->id,WEB);
 
                 $watch_lists = VideoRepo::watch_list(\Auth::user()->id,WEB);  
             }
@@ -236,9 +236,12 @@ class UserController extends Controller {
      */
     public function profile()
     {
-        return view('user.profile')
+
+        $wishlist = $this->UserAPI->wishlist(Auth::user()->id);
+
+        return view('user.account.profile')
                     ->with('page' , 'profile')
-                    ->with('subPage' , 'user-profile');
+                    ->with('subPage' , 'user-profile')->with('wishlist', $wishlist);
     }
 
     /**
@@ -248,8 +251,11 @@ class UserController extends Controller {
      */
     public function update_profile()
     {
-        return view('user.edit-profile')->with('page' , 'profile')
-                    ->with('subPage' , 'user-update-profile');
+
+        $wishlist = $this->UserAPI->wishlist(Auth::user()->id);
+
+        return view('user.account.edit-profile')->with('page' , 'profile')
+                    ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
     }
 
     /**
@@ -269,7 +275,7 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return back()->with('flash_success' , tr('profile_updated'));
+            return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
 
         } else {
 

@@ -14,6 +14,7 @@ class CreateVideoTapesTable extends Migration
     {
         Schema::create('video_tapes', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('channel_id');
             $table->string('unique_id');
             $table->string('title');
             $table->text('description');

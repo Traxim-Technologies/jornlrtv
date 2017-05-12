@@ -7,13 +7,17 @@ use App\Helpers\Helper;
 
 use Illuminate\Http\Request;
 
-use App\VideoTape;
-
 use Validator;
 
 use Log;
 
 use Auth;
+
+use App\VideoTape;
+
+use App\Wishlist;
+
+use App\UserHistory;
 
 class VideoTapeRepository {
 
@@ -48,7 +52,7 @@ class VideoTapeRepository {
 
 	public static function recently_added($web = 1) {
 
-		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				->where('video_tapes.status' , 1)
+		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				               ->where('video_tapes.status' , 1)
                           ->orderby('video_tapes.created_at' , 'desc')
                           ->videoResponse();
 
@@ -153,11 +157,14 @@ class VideoTapeRepository {
 	public static function wishlist($user_id, $web = NULL , $skip = 0) {
 
         $base_query = Wishlist::where('user_id' , $user_id)
-                        ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                        ->leftJoin('video_tapes', function ($join)
+                            {
+                                $join->on('wishlists.video_tape_id', '=', 'video_tapes.id');
+                                $join = (new VideoTape())->videoResponse();
+                            })
                         ->where('video_tapes.is_approved' , 1)
                         ->where('video_tapes.status' , 1)
                         ->where('wishlists.status' , 1)
-                       	->videoResponse()
                         ->orderby('wishlists.created_at' , 'desc');
 
         if (Auth::check()) {
@@ -191,10 +198,12 @@ class VideoTapeRepository {
     public static function watch_list($user_id, $web = NULL , $skip = 0) {
 
         $base_query = UserHistory::where('user_id' , $user_id)
-                        ->leftJoin('video_tapes' ,'user_histories.admin_video_id' , '=' , 'video_tapes.id')
+                        ->leftJoin('video_tapes', function($join) {
+                            $join->on('video_tapes.id', '=', 'video_tape_id');
+                            $join = (new VideoTape())->videoResponse();
+                        })
                         ->where('video_tapes.is_approved' , 1)
                         ->where('video_tapes.status' , 1)
-                        ->videoResponse()
                         ->orderby('user_histories.created_at' , 'desc');
         
         if (Auth::check()) {

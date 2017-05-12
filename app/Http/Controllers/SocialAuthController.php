@@ -30,7 +30,6 @@ class SocialAuthController extends Controller
 			$user = new User;
 			$user->social_unique_id = $social_user->id;
 			$user->login_by = $provider;
-			$user->is_activated = 1;
 
 			if($social_user->name) {
 				$user->name = $social_user->name;
@@ -53,7 +52,6 @@ class SocialAuthController extends Controller
 				}
 			}
 
-			$user->is_activated = DEFAULT_TRUE;
 			$user->password = Hash::make($social_user->id);
 
             $user->token = Helper::generate_token();

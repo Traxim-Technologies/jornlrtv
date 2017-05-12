@@ -339,9 +339,11 @@ class ApplicationController extends Controller {
 
             if($user = User::find($request->id)) {
 
+                // dd($user->is_verified);
+
                 // Check the user already verified
 
-                if($user->is_verified) {
+                if(!$user->is_verified) {
 
                     // Check the verification code and expiry of the code
 
