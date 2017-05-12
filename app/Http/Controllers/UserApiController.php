@@ -782,8 +782,6 @@ class UserApiController extends Controller
     }
 
 
-
-
     public function add_history(Request $request)  {
 
         $validator = Validator::make(

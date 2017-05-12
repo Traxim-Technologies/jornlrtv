@@ -28,6 +28,8 @@
 
     use App\Jobs\OriginalVideoCompression;
 
+    use App\VideoTape;
+
 
     class Helper
     {
@@ -589,4 +591,24 @@
             Log::info("*************************************");
 
         }
+
+
+
+        public static function search_video($key,$web = NULL,$skip = 0) {
+
+            $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
+                        ->where('title','like', '%'.$key.'%')
+                        ->where('video_tapes.status' , 1)
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc');
+
+            if($web) {
+                $videos = $videos_query->paginate(16);
+            } else {
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            }
+
+            return $videos;
+        }
+
     }
