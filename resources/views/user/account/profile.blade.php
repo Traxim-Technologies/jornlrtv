@@ -32,7 +32,8 @@
                                         @endif
                                         
                                         @if(Auth::user()->user_type)
-                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days(Auth::user()->id)}} days</b></p>
+                                            <?php $subscription_details = get_expiry_days(Auth::user()->id);?>
+                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
                                         @endif
                                         <p>{{Auth::user()->mobile   }}</p>  
                                         <p>{{Auth::user()->description}}</p>
@@ -41,11 +42,15 @@
                                     <br>
                                         <div class="change-pwd edit-pwd edit-pro-btn">
 
-                                            @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
+                                            <!-- @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
 
                                                 <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning">{{tr('payment')}}</a>
                                                  
-                                            @endif
+                                            @endif -->
+
+
+                                             <a href="{{route('user.subscriptions')}}" class="btn btn-warning">{{tr('subscriptions')}}</a>
+
 
                                             <a href="{{route('user.update.profile')}}" class="btn btn-primary">{{tr('edit_profile')}}</a>
                                             

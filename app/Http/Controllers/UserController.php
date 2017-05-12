@@ -30,6 +30,7 @@ use Exception;
 
 use Log;
 
+use App\Subscription;
 
 class UserController extends Controller {
 
@@ -311,7 +312,7 @@ class UserController extends Controller {
 
     public function profile_change_password(Request $request) {
 
-        return view('user.change-password')->with('page' , 'profile')
+        return view('user.account.change-password')->with('page' , 'profile')
                     ->with('subPage' , 'user-change-password');
 
     }
@@ -372,7 +373,7 @@ class UserController extends Controller {
 
         $histories = $this->UserAPI->history(\Auth::user()->id);
 
-        return view('user.history')
+        return view('user.account.history')
                         ->with('page' , 'profile')
                         ->with('subPage' , 'user-history')
                         ->with('histories' , $histories);
@@ -426,7 +427,7 @@ class UserController extends Controller {
         
         $videos = $this->UserAPI->wishlist(\Auth::user()->id);
 
-        return view('user.wishlist')
+        return view('user.account.wishlist')
                     ->with('page' , 'profile')
                     ->with('subPage' , 'user-wishlist')
                     ->with('videos' , $videos);
@@ -576,7 +577,7 @@ class UserController extends Controller {
 
         if(\Auth::user()->login_by == 'manual') {
 
-            return view('user.delete-account')
+            return view('user.account.delete-account')
                     ->with('page' , 'profile')
                     ->with('subPage' , 'delete-account');
         } else {
@@ -726,4 +727,32 @@ class UserController extends Controller {
                         ->with('page' , 'Profile')
                         ->with('subPage' , 'Payper Videos');
     }
+
+
+    public function subscriptions() {
+
+        $model = Subscription::where('status', DEFAULT_TRUE)->get();
+
+        return view('user.account.subscriptions')->with('subscriptions', $model)->with('page', 'Profile')->with('subPage', 'Subscriptions');
+    }
+
+    public function subscription_save(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token
+        ]);
+
+        $response = $this->UserAPI->subscription_save($request)->getData();
+
+        if($response->success) {
+            return redirect()->route('user.dashboard')->with('flash_success' , tr('user_subscribe_success'));
+        } else {
+            return back()->with('flash_error', $response->error);
+        }
+    }
+
+
+    
 }

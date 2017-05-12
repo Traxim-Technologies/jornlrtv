@@ -523,7 +523,11 @@ function user_type_check($user) {
 
 function get_expiry_days($id) {
     
-    $data = UserPayment::where('user_id' , $id)->first();
+    $data = UserPayment::where('user_id' , $id)->orderBy('id', 'desc')->first();
+
+    // User Amount
+
+    $amt = UserPayment::select('user_id', DB::raw('sum(amount) as amt'))->where('user_id', $id)->groupBy('user_id')->first();
 
     $days = 0;
 
@@ -535,6 +539,6 @@ function get_expiry_days($id) {
         $days = $time_interval->days;
     }
 
-    return $days;
+    return ['days'=>$days, 'amount'=>($amt) ? $amt->amt : 0];
 }
 

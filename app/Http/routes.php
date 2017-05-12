@@ -489,6 +489,10 @@ Route::group([], function(){
 
     Route::get('/trending', 'UserController@trending')->name('user.trending');
 
+    Route::get('/subscriptions', 'UserController@subscriptions')->name('user.subscriptions');
+
+    Route::get('/subscription/save', 'UserController@subscription_save')->name('subscription.save');
+
 });
 
 
