@@ -462,7 +462,6 @@ Route::group([], function(){
 
     Route::get('spamVideos', 'UserController@spam_videos')->name('user.spam-videos');
 
-    Route::get('pay-per-videos', 'UserController@payper_videos')->name('user.pay-per-videos');
 
     // Wishlist
 
@@ -483,15 +482,9 @@ Route::group([], function(){
 
     Route::get('/user/payment/status','PaypalController@getPaymentStatus')->name('paypalstatus');
 
-    Route::get('/videoPaypal/{id}','PaypalController@videoSubscriptionPay')->name('videoPaypal');
-
-    Route::get('/user/payment/video-status','PaypalController@getVideoPaymentStatus')->name('videoPaypalstatus');
-
     Route::get('/trending', 'UserController@trending')->name('user.trending');
 
     Route::get('/subscriptions', 'UserController@subscriptions')->name('user.subscriptions');
-
-    Route::get('/subscription/save', 'UserController@subscription_save')->name('subscription.save');
 
 });
 

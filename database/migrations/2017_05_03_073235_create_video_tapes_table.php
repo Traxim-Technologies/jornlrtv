@@ -20,6 +20,7 @@ class CreateVideoTapesTable extends Migration
             $table->text('description');
             $table->string('default_image');
             $table->string('video');
+            $table->time('duration')->nullable();
             $table->string('video_publish_type')->comment="1 - publish now , 2 Publish later";
             $table->dateTime('publish_time');
             $table->integer('is_approved')->comment="Admin Approve and UnApprove";

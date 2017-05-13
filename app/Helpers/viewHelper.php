@@ -46,6 +46,12 @@ function envfile($key) {
     return "";
 }
 
+function get_video_end($video_url) {
+    $url = explode('/',$video_url);
+    $result = end($url);
+    return $result;
+}
+
 
 function register_mobile($device_type) {
     if($reg = MobileRegister::where('type' , $device_type)->first()) {
@@ -251,62 +257,6 @@ function getFlagVideosCnt($id) {
         ->count();
     // Return array of id's
     return $model;
-
-}
-
-
-/**
- * Function Name : watchFullVideo()
- * To check whether the user has to pay the amount or not
- * 
- * @param integer $user_id User id
- * @param integer $user_type User Type
- * @param integer $video_id Video Id
- * 
- * @return true or not
- */
-function watchFullVideo($user_id, $user_type, $video) {
-
-    if ($user_type == 1) {
-        if ($video->amount == 0) {
-            return true;
-        }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)
-                ->orderBy('created_at', 'desc')->first();
-            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
-                // Load Payment view
-                if ($paymentView) {
-                    return true;
-                }
-            } else {
-                if ($paymentView) {
-                    if ($paymentView->status == DEFAULT_FALSE) {
-                        return true;
-                    }
-                }   
-            }
-        } else if($video->amount > 0 && $video->type_of_user == NORMAL_USER){
-            return true;
-        }
-    } else {
-        if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->orderBy('created_at', 'desc')->first();
-            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
-                // Load Payment view
-                if ($paymentView) {
-                    return true;
-                }
-            } else {
-
-                if ($paymentView) {
-                    if ($paymentView->status == DEFAULT_FALSE) {
-                        return true;
-                    }
-                }  
-            }
-        } 
-    }
-    return false;
 
 }
 
@@ -540,5 +490,40 @@ function get_expiry_days($id) {
     }
 
     return ['days'=>$days, 'amount'=>($amt) ? $amt->amt : 0];
+}
+
+
+//this function convert string to UTC time zone
+
+function convertTimeToUTCzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
+
+    try {
+        $new_str = new DateTime($str, new DateTimeZone($userTimezone));
+
+        $new_str->setTimeZone(new DateTimeZone('UTC'));
+    }
+    catch(\Exception $e) {
+
+    }
+
+    return $new_str->format( $format);
+}
+
+//this function converts string from UTC time zone to current user timezone
+
+function convertTimeToUSERzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
+
+    if(empty($str)){
+        return '';
+    }
+    try{
+        $new_str = new DateTime($str, new DateTimeZone('UTC') );
+        $new_str->setTimeZone(new DateTimeZone( $userTimezone ));
+    }
+    catch(\Exception $e) {
+        // Do Nothing
+    }
+    
+    return $new_str->format( $format);
 }
 

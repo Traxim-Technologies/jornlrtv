@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Auth;
+
 class VideoTape extends Model
 {
 
@@ -24,7 +26,27 @@ class VideoTape extends Model
             'video_tapes.video',
             'video_tapes.is_approved',
             'video_tapes.status',
-            'video_tapes.watch_count'
+            'video_tapes.watch_count',
+            'video_tapes.duration',
+            'video_tapes.video_publish_type'
         );
     }
+
+
+    public function getUserRatings() {
+
+         return $this->hasMany('App\UserRating', 'video_tape_id', 'id');
+
+    }
+
+
+/*    public function toArray()
+    {
+        $array = parent::toArray();
+
+        $array['publish_time'] = date('F j Y, g:i a', strtotime($this->publish_time));
+
+        return $array;
+    }*/
+
 }

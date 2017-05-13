@@ -30,6 +30,10 @@
 
     use App\VideoTape;
 
+    use App\Wishlist;
+
+    use App\UserHistory;
+
 
     class Helper
     {
@@ -594,6 +598,9 @@
 
 
 
+        /**
+         *  Function Name : search_video()
+         */
         public static function search_video($key,$web = NULL,$skip = 0) {
 
             $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
@@ -609,6 +616,25 @@
             }
 
             return $videos;
+        }
+
+
+        public static function check_wishlist_status($user_id,$video_id) {
+
+            $status = Wishlist::where('user_id' , $user_id)
+                                        ->where('video_tape_id' , $video_id)
+                                        ->where('status' , 1)
+                                        ->first();
+            return $status;
+        }
+
+
+        public static function history_status($video_id,$user_id) {
+            if(UserHistory::where('video_tape_id' , $video_id)->where('user_id' , $user_id)->count()) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
 
     }

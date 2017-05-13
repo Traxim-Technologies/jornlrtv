@@ -84,7 +84,7 @@ class VideoTapeRepository {
 	 * 
 	 */
 
-	public static function trending($web = 1) {
+	public static function trending($web, $skip = null) {
 
 	    $base_query = VideoTape::where('watch_count' , '>' , 0)
 	                    ->videoResponse()
@@ -101,13 +101,14 @@ class VideoTapeRepository {
             }
         }
 
-	   if($web) {
+	   if($skip) {
 
-            $videos = $base_query->paginate(16);
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
 
         } else {
 
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            $videos = $base_query->paginate(16);
+            
         }
 
 	    return $videos;
@@ -119,9 +120,10 @@ class VideoTapeRepository {
 	 * 
 	 */
 
-	public static function suggestion_videos($web = 1) {
+	public static function suggestion_videos($web = 1, $skip = null) {
 
-		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				->where('video_tapes.status' , 1)
+		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				
+                            ->where('video_tapes.status' , 1)
                           ->orderby('video_tapes.created_at' , 'desc')
                           ->videoResponse()
                           ->orderByRaw('RAND()');
@@ -137,12 +139,13 @@ class VideoTapeRepository {
             }
         }
 
-        if($web) {
+        if($skip) {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            
+        } else {
 
             $videos = $base_query->paginate(16);
-
-        } else {
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
         }
 
         return $videos;

@@ -82,6 +82,8 @@ textarea[name=comments] {
             
                 <div class="profile-content">
 
+                    @include('notification.notify')
+
                     <div class="row no-margin">
 
                         <div class="col-sm-12 col-md-8 play-video">
@@ -96,142 +98,20 @@ textarea[name=comments] {
                                                 <div style="width: 55%;">
                                                     <h3>{{$video->title}}</h3>
                                                 </div>
-                                                <div class="watch-duration">
-
-                                                    <form method="post" name="watch_main_video">  
+                                                @if(Setting::get('is_spam'))
                                                         
-                                                        @if(Auth::check())
+                                                    <div class="pull-right">
 
-															@if(Setting::get('is_spam')) <div class="pull-left"> @endif 
-                                                            
-                                                                @if(watchFullVideo(Auth::user()->id, Auth::user()->user_type, $video) ==  1)                             
-                                                            
-                                                                <button type="submit" id="watch_main_video_button" class="watch-button" style="background:green;">{{tr('watch_main_video')}}</button>
-
-                                                                <!-- <p>{{tr('duration')}} {{$video->duration}}</p> -->
-                                                            @else
-
-                                                                @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
-
-                                                                    <button  type="button" class="watch-button" data-toggle="modal" data-target="#paypal"  style="background:green;">{{tr('watch_main_video')}}</button>
-                                                                @else
-
-                                                                    <button  type="button" class="watch-button" disabled  style="background:green;">{{tr('watch_main_video')}}</button>
-                                                                @endif
-
-
-                                                                <div class="modal fade cus-mod" id="paypal" role="dialog">
-                                                                    <div class="modal-dialog">
-                                                                    
-                                                                      <!-- Modal content-->
-                                                                      <div class="modal-content">
-
-                                                                            <div class="modal-header">
-                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                <h4 class="modal-title text-center">{{tr('pay_now_content')}}</h4>
-                                                                            </div>
-
-
-                                                                            <div class="modal-body">
-                                                                                <!-- <p>Please Pay to see the full video</p>  -->
-
-                                                                                @if(Auth::user()->user_type != DEFAULT_TRUE)
-                                                                                    <div class="{{($video->amount > 0) ? 'col-lg-6' : 'col-lg-6 col-lg-offset-3'}}">
-                                                                                      <!-- small box -->
-                                                                                      <div class="small-box bg-green">
-                                                                                        <div class="inner">
-                                                                                          <h3>${{Setting::get('amount')}}</h3>
-                                                                                          <div class="clearfix"></div>
-                                                                                          <p style="float: none;text-align: left;">{{tr('subscription')}}</p>
-                                                                                        </div>
-                                                                                        <div class="icon">
-                                                                                          <i class="fa fa-money"></i>
-                                                                                        </div>
-                                                                                         <div class="clearfix"></div>
-                                                                                        <a href="{{route('paypal' , Auth::user()->id)}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
-                                                                                      </div>
-                                                                                    </div>
-                                                                                @endif
-                                                                                @if($video->amount > 0)
-                                                                                    <div class="{{(Auth::user()->user_type == 1) ? 'col-lg-6 col-lg-offset-3' : 'col-lg-6'}}">
-                                                                                      <!-- small box -->
-                                                                                      <div class="small-box bg-aqua">
-                                                                                        <div class="inner">
-                                                                                          <h3>${{$video->amount}}</h3>
-                                                                                          <div class="clearfix"></div>
-                                                                                          <p style="float: none;text-align: left;">{{tr('pay_per_view')}}</p>
-                                                                                        </div>
-                                                                                        <div class="icon">
-                                                                                          <i class="fa fa-money"></i>
-                                                                                        </div>
-                                                                                         <div class="clearfix"></div>
-                                                                                        <a href="{{route('videoPaypal' , $video->admin_video_id)}}" class="small-box-footer">{{tr('for_pay_per_view')}} <i class="fa fa-arrow-circle-right"></i></a>
-                                                                                      </div>
-                                                                                    </div>
-                                                                                @endif
-                                                                                
-                                                                                <div class="clearfix"></div>
-                                                                                
-                                                                            </div>
-
-                                                                            
-                                                                      </div>
-                                                                      
-                                                                    </div>
-                                                                
-                                                                </div>
-
-                                                            @endif
-
-                                                            <!-- For UI Alignment i Have checked from here -->
-
-                                                        @if(Setting::get('is_spam'))
-
-                                                        </div>
-                                                        
-                                                            <div class="pull-right">
-
-                                                                @if($flaggedVideo == '')
-                                                                    <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
-                                                                @else 
-                                                                    <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
-                                                                @endif
-
-                                                            </div>
-
+                                                        @if($flaggedVideo == '')
+                                                            <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                        @else 
+                                                            <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
                                                         @endif
 
-                                                        <div class="clearfix"></div>
-                                                        @else
+                                                    </div>
+                                                    <div class="clearfix"></div>
 
-                                                            <button type="button" class="watch-button" data-toggle="modal" data-target="#watchMainVideo">{{tr('watch_main_video')}}</button>
-
-                                                            <div class="modal fade cus-mod" id="watchMainVideo" role="dialog">
-                                                                <div class="modal-dialog">
-                                                                
-                                                                  <!-- Modal content-->
-                                                                  <div class="modal-content">
-
-                                                                        <div class="modal-header">
-                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            <h4 class="modal-title text-center">{{tr('pay_now_login_content')}}</h4>
-                                                                        </div>
-
-                                                                        <div class="modal-body text-center">
-                                                                            <!-- <p>Click here to login</p>  -->
-                                                                            <a href="{{route('user.login.form')}}" class="btn btn-danger">{{tr('login')}}</a>
-                                                                        </div>
-
-                                                                  </div>
-                                                                  
-                                                                </div>
-                                                            </div>
-                                                        
-                                                        @endif
-
-                                                    </form>
-
-                                                </div>
+                                                @endif
                                                 
                                             </div>
 
@@ -244,7 +124,8 @@ textarea[name=comments] {
 
                                     @if(Setting::get('is_spam'))
 
-                                        @if ($flaggedVideo == '')
+
+                                        @if (!$flaggedVideo)
                                             <div class="more-content" style="display: none;" id="report_video_form">
                                                 <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
                                                     <b>Report this Video ?</b>
@@ -252,7 +133,7 @@ textarea[name=comments] {
                                                     @foreach($report_video as $report) 
                                                         <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
                                                     @endforeach
-                                                    <input type="hidden" name="video_id" value="{{$video->admin_video_id}}" />
+                                                    <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
                                                     <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
                                                     <div class="pull-right">
                                                         <button class="btn btn-success btn-sm">Mark as Spam</button>
@@ -323,13 +204,15 @@ textarea[name=comments] {
                                                 </a> 
                                             </div><!--end of share-->
 
-                                            <div class="stars ratings">
+                                            <?php 
+
+                                             /*<div class="stars ratings">
                                                 <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                            </div><!--end of stars-->
+                                            </div><!--end of stars--> */ ?>
 
                                         </div><!--end of share-details-->                               
                                     </div>
@@ -426,7 +309,8 @@ textarea[name=comments] {
 
                                 <ul class="video-sugg"> 
 
-                                    @foreach($suggestions as $suggestion)
+                                    @foreach($suggestions->data as $suggestion)
+                                    
                                         <li class="sugg-list row">
                                             <div class="main-video">
                                                  <div class="video-image">
@@ -444,13 +328,13 @@ textarea[name=comments] {
                                                         <p>{{tr('duration')}}: {{$suggestion->duration}}</p>
                                                     </div><!--end of sugg-description--> 
 
-                                                    <span class="stars">
+                                                    <?php /* <span class="stars">
                                                         <a href="#"><i @if($suggestion->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    </span>                                                       
+                                                    </span>                          */?>                              
                                                 </div><!--end of sugg-head-->
                                     
                                             </div><!--end of main-video-->
@@ -512,140 +396,6 @@ textarea[name=comments] {
                 // Blink engine detection
                 var isBlink = (isChrome || isOpera) && !!window.CSS;
 
-                @if($trailer_video)
-
-                    if(isOpera || isSafari) {
-                        
-                        jQuery('#trailer_video_setup_error').show();
-                        jQuery('#main_video_setup_error').hide();
-                        confirm('The video format is not supported in this browser. Please open with some other browser.');
-
-                    } else {
-
-                        var playerInstance = jwplayer("trailer-video-player");
-
-                        @if($trailerstreamUrl)
-
-                            playerInstance.setup({
-                                sources: [{
-                                    file: "{{$trailerstreamUrl}}"
-                                  },{
-                                    file: "{{$original_trailer_video}}"
-                                  }],
-                                // file: "{{$trailerstreamUrl}}",
-                                image: "{{$video->default_image}}",
-                                width: "100%",
-                                aspectratio: "16:9",
-                                primary: "flash",
-                            });
-
-                        @else
-
-                            var is_mobile = false;
-
-                            if(jQuery.browser.mobile) {
-                                
-                                is_mobile = true;
-                                
-                                console.log('You are using a mobile device!');
-
-                                var trailerPath = "{{$hls_trailer_video}}";
-
-                            } else {
-
-                                var trailerVideoPath = "{{$trailer_video_path}}";
-                                var trailerVideoPixels = "{{$trailer_pixels}}";
-
-                                var trailerPath = [];
-
-                                var splitTrailer = trailerVideoPath.split(',');
-
-                                var splitTrailerPixel = trailerVideoPixels.split(',');
-
-                                for (var i = 0 ; i < splitTrailer.length; i++) {
-
-                                    trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
-                                }
-
-                                // alert(trailerPath);
-
-                            }
-                            
-                            console.log(trailerPath);
-
-                            playerInstance.setup({
-                                sources: [{
-                                    file: trailerPath
-                                  },{
-                                    file: "{{$original_trailer_video}}"
-                                  }],
-                                // sources: trailerPath,
-                                image: "{{$video->default_image}}",
-                                width: "100%",
-                                aspectratio: "16:9",
-                                primary: "flash",
-                            });
-
-                        @endif
-
-
-                        playerInstance.on('setupError', function() {
-
-                            var hasFlash = false;
-                            try {
-                                var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-                                if (fo) {
-                                    hasFlash = true;
-                                }
-                            } catch (e) {
-                                if (navigator.mimeTypes
-                                        && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-                                        && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-                                    hasFlash = true;
-                                }
-                            }
-
-                            jQuery("#trailer-video-player").css("display", "none");
-
-                            jQuery('#main_video_setup_error').hide();
-
-                            if (hasFlash == false) {
-                                jQuery('#flash_error_display').show();
-                                return false;
-                            }
-
-                            jQuery('#trailer_video_setup_error').css("display", "block");
-
-                            confirm('The video format is not supported in this browser. Please open with some other browser.');
-                        
-                        });
-
-                        @if(!$history_status && Auth::check())
-
-                            jwplayer().on('displayClick', function(e) {
-                                jQuery.ajax({
-                                    url: "{{route('user.add.history')}}",
-                                    type: 'post',
-                                    data: {'admin_video_id' : "{{$video->admin_video_id}}", 'video_status' : 0},
-                                    success: function(data) {
-
-                                       if(data.success == true) {
-
-                                        console.log('Added to history');
-
-                                       } else {
-                                            console.log('Wrong...!');
-                                       }
-                                    }
-                                });
-                                
-                            });
-
-                        @endif
-                    
-                    }
-
-                @endif                
 
             //hang on event of form with id=myform
             jQuery("form[name='add_to_wishlist']").submit(function(e) {
@@ -748,14 +498,16 @@ textarea[name=comments] {
 
             });
 
-            jQuery("form[name='watch_main_video']").submit(function(e) {
+           //  jQuery("form[name='watch_main_video']").submit(function(e) {
 
                 //prevent Default functionality
-                e.preventDefault();
+               //  e.preventDefault();
 
-                jQuery('#watch_main_video_button').fadeOut();
+               //  jQuery('#watch_main_video_button').fadeOut();
 
                     @if($main_video)
+
+
 
                         if(isOpera || isSafari) {
 
@@ -796,7 +548,7 @@ textarea[name=comments] {
                                     sources: [{
                                         file: "{{$videoStreamUrl}}"
                                       },{
-                                        file: "{{$original_main_video}}"
+                                        file: "{{$main_video}}"
                                       }],
                                     image: "{{$video->default_image}}",
                                     width: "100%",
@@ -855,15 +607,11 @@ textarea[name=comments] {
                                         path.push({file : splitVideo[i], label : splitVideoPixel[i]});
                                     }
 
-                                    alert("HELELo");
+                                    //alert("HELELo");
                                 }
 
                                 playerInstance.setup({
-                                    // sources: [{
-                                    //     file: path
-                                    //   },{
-                                    //     file: "{{$original_main_video}}"
-                                    //   }],
+                                    
                                     sources: path,
                                     image: "{{$video->default_image}}",
                                     width: "100%",
@@ -927,22 +675,31 @@ textarea[name=comments] {
 
                     jQuery("#trailer-video-player").hide();
                     jQuery("#main-video-player").show();
-                
-                
-
-                    // Remove trailer video url, to stop the autoplay while playing main video
-
-                    //First get the  iframe URL
-                    /*var url = $('#iframe_trailer_video').attr('src');
-
-                    $('#iframe_trailer_video').attr('src', '');
-
-                    jQuery("#trailer_video_play").hide();
-
-                    jQuery("#main_video_play").show();*/
 
 
 
+                    @if(!$history_status && Auth::check())
+
+                        jwplayer().on('displayClick', function(e) {
+                            jQuery.ajax({
+                                url: "{{route('user.add.history')}}",
+                                type: 'post',
+                                data: {'admin_video_id' : "{{$video->admin_video_id}}", 'video_status' : 0},
+                                success: function(data) {
+
+                                   if(data.success == true) {
+
+                                    console.log('Added to history');
+
+                                   } else {
+                                        console.log('Wrong...!');
+                                   }
+                                }
+                            });
+                            
+                        });
+
+                    @endif
 
                     @if(!$history_status)
 
@@ -970,7 +727,7 @@ textarea[name=comments] {
 
                     @endif
 
-            });
+            // });
 
         });
 
