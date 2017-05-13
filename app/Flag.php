@@ -20,7 +20,7 @@ class Flag extends Model
      */
     public function videoTape()
     {
-        return $this->hasOne('App\VideoTape', 'id', 'video_tape_id');
+        return $this->hasOne('App\VideoTape', 'id', 'video_tape_id')->videoResponse();
     }
 
     /**
@@ -34,7 +34,9 @@ class Flag extends Model
     public function toArray()
     {
         $array = parent::toArray();
+
         $array['video_tape'] = $this->videoTape;
+        
         return $array;
     }
 

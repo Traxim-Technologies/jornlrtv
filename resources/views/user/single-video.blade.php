@@ -505,6 +505,8 @@ textarea[name=comments] {
 
                //  jQuery('#watch_main_video_button').fadeOut();
 
+                    var playerInstance = jwplayer("main-video-player");  
+
                     @if($main_video)
 
 
@@ -519,7 +521,6 @@ textarea[name=comments] {
 
                         } else {
 
-                            var playerInstance = jwplayer("main-video-player");
 
                             if(!jQuery.browser.mobile) {
 
@@ -610,6 +611,7 @@ textarea[name=comments] {
                                     //alert("HELELo");
                                 }
 
+
                                 playerInstance.setup({
                                     
                                     sources: path,
@@ -670,13 +672,131 @@ textarea[name=comments] {
                     
                     @else
                         jQuery('#main_video_error').show();
-                        jQuery('#trailer_video_error').hide();
+                        
                     @endif
 
-                    jQuery("#trailer-video-player").hide();
                     jQuery("#main-video-player").show();
 
+                    console.log(jwplayer().getPosition());
 
+                    var intervalId;
+
+
+                    var timings = [10, 20];
+
+                    var adtimings = 5;
+
+                    var time = 0;
+
+                    // console.log("Timings " + timings.length);
+
+                    function timer(){
+
+                         intervalId = setInterval(function(){
+
+                            var video_time = Math.round(playerInstance.getPosition());
+
+
+                            console.log("Video Timing "+video_time);
+
+
+                            for(var i = 0; i < timings.length ; i++) {
+
+                                if (video_time == timings[i] && time != video_time) {
+
+                                     jwplayer().pause();
+
+                                     time = video_time;
+
+                                     stop();
+
+                                     $('#main-video-player').hide();
+
+                                     $('#main_video_setup_error').show();
+
+
+                                     adsPage();
+
+                                }
+                            }
+
+                            if (playerInstance.getState() == "complete") {
+
+                                $('#main-video-player').hide();
+
+                                $('#main_video_setup_error').show();
+
+                                stop();
+
+                                adsPage();
+
+                            }
+
+
+                         }, 1000);
+
+                    }
+
+                    function stop(){
+                       clearInterval(intervalId);
+                    }
+
+
+                    var adCount = 0;
+
+                    function adsPage(){
+
+
+                         intervalId = setInterval(function(){
+
+                            adCount += 1;
+
+                            console.log("Ad Count " +adCount);
+ 
+                            if (adCount == adtimings) {
+
+                                adCount = 0;
+
+                                stop();
+
+                                $('#main_video_setup_error').hide();
+
+                                $('#main-video-player').show();
+
+                                if (playerInstance.getState() != "complete") {
+
+                                    jwplayer().play();
+
+                                    timer();
+
+                                }
+
+                            }
+
+                         }, 1000);
+
+                    }
+
+                    jwplayer().on('displayClick', function(e) {
+
+                        console.log("state pos "+jwplayer().getState());
+
+
+                        if (jwplayer().getState() == 'idle') {
+
+
+                             jwplayer().pause();
+
+                             $('#main-video-player').hide();
+
+                             $('#main_video_setup_error').show();
+
+                             adsPage();
+
+                        }
+                       
+
+                    })
 
                     @if(!$history_status && Auth::check())
 
@@ -686,6 +806,7 @@ textarea[name=comments] {
                                 type: 'post',
                                 data: {'admin_video_id' : "{{$video->admin_video_id}}", 'video_status' : 0},
                                 success: function(data) {
+
 
                                    if(data.success == true) {
 
@@ -698,10 +819,6 @@ textarea[name=comments] {
                             });
                             
                         });
-
-                    @endif
-
-                    @if(!$history_status)
 
                         jQuery.ajax({
                             url: "{{route('user.add.history')}}",

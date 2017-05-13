@@ -19,7 +19,7 @@
                 @if(count($model->data) > 0)
 
                     <ul class="history-list">
-
+                    
                         @foreach($model->data as $i => $spamvideo)
 
                         <li class="sub-list row">
