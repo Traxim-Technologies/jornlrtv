@@ -32,7 +32,8 @@
                                         @endif
                                         
                                         @if(Auth::user()->user_type)
-                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days(Auth::user()->id)}} days</b></p>
+                                            <?php $subscription_details = get_expiry_days(Auth::user()->id);?>
+                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
                                         @endif
                                         <p>{{Auth::user()->mobile   }}</p>  
                                         <p>{{Auth::user()->description}}</p>
@@ -41,11 +42,15 @@
                                     <br>
                                         <div class="change-pwd edit-pwd edit-pro-btn">
 
-                                            @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
+                                            <!-- @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
 
                                                 <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning">{{tr('payment')}}</a>
                                                  
-                                            @endif
+                                            @endif -->
+
+
+                                             <a href="{{route('user.subscriptions')}}" class="btn btn-warning">{{tr('subscriptions')}}</a>
+
 
                                             <a href="{{route('user.update.profile')}}" class="btn btn-primary">{{tr('edit_profile')}}</a>
                                             
@@ -64,45 +69,49 @@
                     </div><!--profile-view end--> 
 
 
-                    <?php $wishlist = wishlist(Auth::user()->id); ?>
+                    <?php // $wishlist = wishlist(Auth::user()->id); ?>
                     
-                    @if(count($wishlist))
+                    @if(count($wishlist->data) > 0)
                         
                         <div class="mylist-profile col-sm-5">
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
                             <ul class="history-list profile-history">
 
-                                @foreach($wishlist as $i => $video)
+                                @foreach($wishlist->data as $i => $video)
 
                                     <li class="sub-list row no-margin">
                                         <div class="main-history">
                                             <div class="history-image">
-                                                <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>                        
+                                                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_tape->default_image}}"></a>                        
                                             </div><!--history-image-->
 
                                             <div class="history-title">
                                                 <div class="history-head row">
                                                     <div class="cross-title">
-                                                        <h5><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
-                                                        <p class="duration">{{tr('duration')}}: {{$video->duration}}</p>
+                                                        <h5><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->video_tape->title}}</a></h5>
+                                                        <p class="duration">{{tr('duration')}}: {{$video->video_tape->duration}}</p>
                                                     </div> 
                                                     <div class="cross-mark">
-                                                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->wishlist_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                     </div><!--end of cross-mark-->                       
                                                 </div> <!--end of history-head--> 
 
-                                                <!-- <div class="description">
-                                                    <p>{{$video->description}}</p>
-                                                </div> --><!--end of description--> 
+                                                
 
-                                                <span class="stars">
+                                                <?php 
+
+                                                /* <div class="description">
+                                                    <p>{{$video->video_tape->description}}</p>
+                                                </div> 
+
+                                                 <span class="stars">
                                                     <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                </span>                                                       
+                                                </span>   */?>                                                    
                                             </div><!--end of history-title--> 
                                         </div><!--end of main-history-->
                                     </li>

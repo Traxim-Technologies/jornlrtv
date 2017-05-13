@@ -6,11 +6,9 @@ use App\Helpers\EnvEditorHelper;
 
 use Carbon\Carbon;
 
-use App\AdminVideoImage;
-
 use App\Wishlist;
 
-use App\AdminVideo;
+use App\VideoTape;
 
 use App\UserHistory;
 
@@ -36,6 +34,7 @@ function tr($key) {
 
 }
 
+
 function envfile($key) {
 
     $data = EnvEditorHelper::getEnvValues();
@@ -47,266 +46,12 @@ function envfile($key) {
     return "";
 }
 
-function sub_category_image($picture , $sub_category_id , $position) {
-
-    return true;
-}
-
-function get_categories() {
-   return [];
-}
-
-function get_sub_categories($category_id) {
-
-   return [];
-
-}
-
-function get_category_video_count($category_id) {
-
-    return 0;
-}
-
-function get_video_fav_count($video_id) {
-
-    $count = Wishlist::where('admin_video_id' , $video_id)
-                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->count();
-
-    return $count;
-}
-
-function get_user_history_count($user_id) {
-    $count = UserHistory::where('user_id' , $user_id)
-                ->leftJoin('admin_videos' ,'user_histories.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->count();
-
-    return $count;
-}
-
-function get_user_wishlist_count($user_id) {
-
-    $count = Wishlist::where('user_id' , $user_id)
-                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->count();
-
-    return $count;
-}
-
-function get_user_comment_count($user_id) {
-
-    $count = UserRating::where('user_id' , $user_id)
-                ->leftJoin('admin_videos' ,'user_ratings.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->count();
-
-    return $count;
-
-}
-
-function get_video_comment_count($video_id) {
-
-    $count = UserRating::where('admin_video_id' , $video_id)
-                ->leftJoin('admin_videos' ,'user_ratings.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->count();
-
-    return $count;
-
-}
-
-function total_video_count() {
-    
-    $count = AdminVideo::where('is_approved' , 1)->where('admin_videos.status' , 1)->count();
-
-    return $count;
-
-}
-
-function get_sub_category_video_count($id) {
-    
-    $count = 0;
-
-    return $count;
-}
-function get_genre_video_count($id) {
-    
-    $count = 0;
-
-    return $count;
-}
-
-function get_sub_category_details($id) {
-
-    return 0;
-}
-
-function get_genre_details($id) {
-
-    return [];
-}
-
-function get_genres($id) {
-
-    return [];
-}
-
-function get_youtube_embed_link($video_url) {
-
-    if(strpos($video_url , 'embed')) {
-        $video_url_id = explode('embed/', $video_url);
-        if (count($video_url_id) == 2) {
-            return "https://www.youtube.com/watch?v=".$video_url_id[1];
-        }
-    }
-
-    return $video_url;
-
-}
-
-// Need to convert the youtube link to mobile acceptable format
-
-function get_api_youtube_link($url) {
-
-    $youtube_embed = $url;
-    
-    if($url) {
-
-        // Ex : https://www.youtube.com/watch?v=jebJ9itYTJE 
-
-        if(strpos($url, "=")) {
-
-            $video_url_id = substr($url, strpos($url, "=") + 1);
-
-            $youtube_embed = "https://www.youtube.com/embed/" . $video_url_id;
-
-        } elseif(strpos($url , 'embed')) {
-
-            $youtube_embed = $url;
-
-        } else {
-
-            // EX : https://youtu.be/2CLJuuKvou4
-
-            if(strpos($url , "youtu.be")) {
-                $youtube_embed = str_replace("https://youtu.be/", "https://www.youtube.com/embed/" , $url );
-            }
-        }
-    }
-
-    return $youtube_embed;
-
-}
-
-
 function get_video_end($video_url) {
     $url = explode('/',$video_url);
     $result = end($url);
     return $result;
 }
 
-function get_video_end_smil($video_url) {
-    $url = explode('/',$video_url);
-    $result = end($url);
-    if ($result) {
-        $split = explode('.', $result);
-        if (count($split) == 2) {
-            $result = $split[0];
-        }
-    }
-    return $result;
-}
-
-
-function get_video_image($video_id)
-{
-    $video_image = AdminVideoImage::where('admin_video_id',$video_id)->orderBy('position','ASC')->get();
-    return $video_image;
-}
-
-function wishlist($user_id) {
-
-    $videos = Wishlist::where('user_id' , $user_id)
-                    ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                    ->where('admin_videos.is_approved' , 1)
-                    ->select(
-                            'wishlists.id as wishlist_id',
-                            'admin_videos.id as admin_video_id' ,
-                            'admin_videos.title','admin_videos.description' ,
-                            'default_image','admin_videos.watch_count',
-                            'admin_videos.default_image',
-                            'admin_videos.ratings',
-                            'admin_videos.duration',
-                            DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'))
-                    ->orderby('wishlists.created_at' , 'desc')
-                    ->skip(0)->take(10)
-                    ->get();
-
-    if(!$videos) {
-        $videos = array();
-    }
-
-    return $videos;
-}
-
-function trending() {
-
-    $videos = AdminVideo::where('watch_count' , '>' , 0)
-                    ->select(
-                        'admin_videos.id as admin_video_id' , 
-                        'admin_videos.title',
-                        'admin_videos.description',
-                        'default_image','admin_videos.watch_count' , 
-                        'admin_videos.publish_time',
-                        'admin_videos.default_image',
-                        'admin_videos.ratings'
-                        )
-                    ->orderby('watch_count' , 'desc')
-                    ->skip(0)->take(10)
-                    ->get();
-
-    return $videos;
-}
-
-function category_video_count($category_id)
-{
-    return 0;
-}
-
-function sub_category_videos($sub_category_id) 
-{
-
-    $videos_query = AdminVideo::where('admin_videos.is_approved' , 1);
-
-    if (Auth::check()) {
-        // Check any flagged videos are present
-        $flagVideos = getFlagVideos(Auth::user()->id);
-
-        if($flagVideos) {
-            $videos_query->whereNotIn('admin_videos.id', $flagVideos);
-        }
-    }
-
-    $videos = $videos_query->get();
-
-    if(!$videos) {
-        $videos = array();
-    }
-
-    return $videos;
-} 
-
-function change_theme($old_theme,$new_theme) {
-    return true;
-}
 
 function register_mobile($device_type) {
     if($reg = MobileRegister::where('type' , $device_type)->first()) {
@@ -354,6 +99,7 @@ function last_days($days){
   return $arr;
 
 }
+
 function counter($page){
 
     $count_home = PageCounter::wherePage($page)->where('created_at', '>=', new DateTime('today'));
@@ -401,12 +147,6 @@ function check_s3_configure() {
     }
 }
 
-function get_slider_video() {
-    return AdminVideo::where('is_home_slider' , 1)
-            ->select('admin_videos.id as admin_video_id' , 'admin_videos.default_image',
-                'admin_videos.title','admin_videos.trailer_video', 'admin_videos.video_type','admin_videos.video_upload_type')
-            ->first();
-}
 
 function check_valid_url($file) {
 
@@ -463,135 +203,7 @@ function check_settings_seeder() {
     return Settings::count();
 }
 
-function get_banner_count() {
-    return AdminVideo::where('is_banner' , 1)->count();
-}
 
-function get_expiry_days($id) {
-    
-    $data = UserPayment::where('user_id' , $id)->first();
-
-    $days = 0;
-
-    if($data) {
-        $start_date = new \DateTime(date('Y-m-d h:i:s'));
-        $end_date = new \DateTime($data->expiry_date);
-
-        $time_interval = date_diff($start_date,$end_date);
-        $days = $time_interval->days;
-    }
-
-    return $days;
-}
-
-function all_videos($web = NULL , $skip = 0) 
-{
-
-    $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->select(
-                    'admin_videos.id as admin_video_id' , 
-                    'admin_videos.default_image' , 
-                    'admin_videos.ratings' , 
-                    'admin_videos.watch_count' , 
-                    'admin_videos.title' ,
-                    'admin_videos.description',                    
-                    'admin_videos.duration',
-                    DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time')
-                    )
-                ->orderby('admin_videos.created_at' , 'desc');
-    if (Auth::check()) {
-        // Check any flagged videos are present
-        $flagVideos = getFlagVideos(Auth::user()->id);
-
-        if($flagVideos) {
-            $videos_query->whereNotIn('admin_videos.id',$flagVideos);
-        }
-    }
-
-    if($web) {
-        $videos = $videos_query->paginate(20);
-    } else {
-        $videos = $videos_query->skip($skip)->take(20)->get();
-    }
-
-    return $videos;
-} 
-
-function get_trending_count() {
-
-    $data = AdminVideo::where('watch_count' , '>' , 0)
-                    ->where('admin_videos.is_approved' , 1)
-                    ->where('admin_videos.status' , 1)
-                    ->skip(0)->take(20)
-                    ->count();
-
-    return $data;
-
-}
-
-function get_wishlist_count($id) {
-    
-    $data = Wishlist::where('user_id' , $id)
-                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->where('wishlists.status' , 1)
-                ->count();
-
-    return $data;
-
-}
-
-function get_suggestion_count($id) {
-
-    $data = Wishlist::where('user_id' , $id)
-                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->where('wishlists.status' , 1)
-                ->count();
-
-    return $data;
-
-}
-
-function get_recent_count($id) {
-
-    $data = Wishlist::where('user_id' , $id)
-                ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->where('wishlists.status' , 1)
-                ->count();
-
-    return $data;
-
-}
-
-function get_history_count($id) {
-
-    $data = UserHistory::where('user_id' , $id)
-                ->leftJoin('admin_videos' ,'user_histories.admin_video_id' , '=' , 'admin_videos.id')
-                ->where('admin_videos.is_approved' , 1)
-                ->where('admin_videos.status' , 1)
-                ->count();
-
-    return $data;
-
-}
-
-
-//this function convert string to UTC time zone
-
-function convertTimeToUTCzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
-
-    $new_str = new DateTime($str, new DateTimeZone($userTimezone));
-
-    $new_str->setTimeZone(new DateTimeZone('UTC'));
-
-    return $new_str->format( $format);
-}
 
 /**
  * Function Name : getReportVideoTypes()
@@ -604,6 +216,7 @@ function getReportVideoTypes() {
     $model = Settings::where('key', REPORT_VIDEO_KEY)->get();
     // Return array of values
     return $model;
+
 }
 
 /**
@@ -614,14 +227,15 @@ function getReportVideoTypes() {
  *
  * @return array of values
  */
-function getFlagVideos($id) {
+function flag_videos($id) {
+
     // Load Flag videos based on logged in user id
     $model = Flag::where('user_id', $id)
-        ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
-       
-        ->where('admin_videos.is_approved' , 1)
-        ->where('admin_videos.status' , 1)
-        ->pluck('video_id')->toArray();
+        ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
+        ->where('video_tapes.is_approved' , 1)
+        ->where('video_tapes.status' , 1)
+        ->pluck('video_tape_id')->toArray();
+
     // Return array of id's
     return $model;
 }
@@ -638,86 +252,12 @@ function getFlagVideosCnt($id) {
     // Load Flag videos based on logged in user id
     $model = Flag::where('user_id', $id)
         ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
-       
         ->where('admin_videos.is_approved' , 1)
         ->where('admin_videos.status' , 1)
         ->count();
     // Return array of id's
     return $model;
-}
 
-
-/**
- * Function Name : watchFullVideo()
- * To check whether the user has to pay the amount or not
- * 
- * @param integer $user_id User id
- * @param integer $user_type User Type
- * @param integer $video_id Video Id
- * 
- * @return true or not
- */
-function watchFullVideo($user_id, $user_type, $video) {
-    if ($user_type == 1) {
-        if ($video->amount == 0) {
-            return true;
-        }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)
-                ->orderBy('created_at', 'desc')->first();
-            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
-                // Load Payment view
-                if ($paymentView) {
-                    return true;
-                }
-            } else {
-                if ($paymentView) {
-                    if ($paymentView->status == DEFAULT_FALSE) {
-                        return true;
-                    }
-                }   
-            }
-        } else if($video->amount > 0 && $video->type_of_user == NORMAL_USER){
-            return true;
-        }
-    } else {
-        if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->orderBy('created_at', 'desc')->first();
-            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
-                // Load Payment view
-                if ($paymentView) {
-                    return true;
-                }
-            } else {
-
-                if ($paymentView) {
-                    if ($paymentView->status == DEFAULT_FALSE) {
-                        return true;
-                    }
-                }  
-            }
-        } 
-    }
-    return false;
-}
-
-/**
- * Function Name : total_video_revenue
- * To sum all the payment based on video subscription
- *
- * @return amount
- */
-function total_video_revenue() {
-    return PayPerView::sum('amount');
-}
-
-/**
- * Function Name : user_total_amount
- * To sum all the payment based on video subscription
- *
- * @return amount
- */
-function user_total_amount() {
-    return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
 }
 
 
@@ -865,6 +405,7 @@ function getResolutionsPath($video, $resolutions, $streaming_url) {
 
 
 function deleteVideoAndImages($video) {
+
     if ($video->video_type == VIDEO_TYPE_UPLOAD ) {
         if($video->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
             Helper::s3_delete_picture($video->video);   
@@ -928,3 +469,61 @@ function user_type_check($user) {
     }
 
 }
+
+
+function get_expiry_days($id) {
+    
+    $data = UserPayment::where('user_id' , $id)->orderBy('id', 'desc')->first();
+
+    // User Amount
+
+    $amt = UserPayment::select('user_id', DB::raw('sum(amount) as amt'))->where('user_id', $id)->groupBy('user_id')->first();
+
+    $days = 0;
+
+    if($data) {
+        $start_date = new \DateTime(date('Y-m-d h:i:s'));
+        $end_date = new \DateTime($data->expiry_date);
+
+        $time_interval = date_diff($start_date,$end_date);
+        $days = $time_interval->days;
+    }
+
+    return ['days'=>$days, 'amount'=>($amt) ? $amt->amt : 0];
+}
+
+
+//this function convert string to UTC time zone
+
+function convertTimeToUTCzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
+
+    try {
+        $new_str = new DateTime($str, new DateTimeZone($userTimezone));
+
+        $new_str->setTimeZone(new DateTimeZone('UTC'));
+    }
+    catch(\Exception $e) {
+
+    }
+
+    return $new_str->format( $format);
+}
+
+//this function converts string from UTC time zone to current user timezone
+
+function convertTimeToUSERzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
+
+    if(empty($str)){
+        return '';
+    }
+    try{
+        $new_str = new DateTime($str, new DateTimeZone('UTC') );
+        $new_str->setTimeZone(new DateTimeZone( $userTimezone ));
+    }
+    catch(\Exception $e) {
+        // Do Nothing
+    }
+    
+    return $new_str->format( $format);
+}
+

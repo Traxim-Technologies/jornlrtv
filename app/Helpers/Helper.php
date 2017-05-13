@@ -8,18 +8,6 @@
 
     use App\User;
 
-    use App\AdminVideo;
-
-    use App\AdminVideoImage;
-
-    use App\Wishlist;
-
-    use App\UserHistory;
-
-    use App\UserRating;
-
-    use App\UserPayment;
-
     use Auth;
 
     use AWS;
@@ -39,6 +27,12 @@
     use DB;
 
     use App\Jobs\OriginalVideoCompression;
+
+    use App\VideoTape;
+
+    use App\Wishlist;
+
+    use App\UserHistory;
 
 
     class Helper
@@ -368,35 +362,6 @@
             return $new_password;
         }
 
-        public static function upload_video_image($image,$video_id,$position) {
-
-            $check_video_image = AdminVideoImage::where('admin_video_id' , $video_id)->where('position',$position)->first();
-
-            if($check_video_image) {
-                $video_image = $check_video_image;
-
-                Helper::delete_picture($video_image->image, "/uploads/");
-
-            } else {
-                $video_image = new AdminVideoImage;
-            }
-
-            $video_image->admin_video_id = $video_id;
-            $video_image->image = Helper::normal_upload_picture($image);
-
-            if($position == 1) {
-                $video_image->is_default = DEFAULT_TRUE;
-            } else {
-                $video_image->is_default = DEFAULT_FALSE;
-            }
-
-            $video_image->position = $position;
-
-            $video_image->save();
-            Log::info('VIDEO IMAGE SAVED : '.$video_image->id);
-
-        }
-
         public static function upload_picture($picture)
         {
             Helper::delete_picture($picture, "/uploads/");
@@ -530,381 +495,6 @@
             return $file_name;
         }
 
-        public static function recently_added($web = NULL , $skip = 0) {
-
-            $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->videoResponse()
-                            ->orderby('admin_videos.created_at' , 'desc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
-
-                if($flagVideos) {
-                    $videos_query->whereNotIn('admin_videos.id',$flagVideos);
-                }
-            }
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
-                            ->get();
-            }
-
-            return $videos;
-        }
-
-        public static function wishlist($user_id, $web = NULL , $skip = 0) {
-
-            $videos_query = Wishlist::where('user_id' , $user_id)
-                            ->leftJoin('admin_videos' ,'wishlists.admin_video_id' , '=' , 'admin_videos.id')
-                            ->where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->where('wishlists.status' , 1)
-                            ->select(
-                                    'wishlists.id as wishlist_id','admin_videos.id as admin_video_id' ,
-                                    'admin_videos.title','admin_videos.description' ,
-                                    'default_image','admin_videos.watch_count','admin_videos.ratings',
-                                    'admin_videos.duration',
-                                    DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'))
-                            ->orderby('wishlists.created_at' , 'desc');
-
-            // Check any flagged videos are present
-            $flagVideos = getFlagVideos($user_id);
-            if($flagVideos) {
-                $videos_query->whereNotIn('admin_video_id', $flagVideos);
-            }
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
-                            ->get();
-            }
-
-            return $videos;
-
-        }
-
-        public static function watch_list($user_id, $web = NULL , $skip = 0) {
-
-            $videos_query = UserHistory::where('user_id' , $user_id)
-                            ->leftJoin('admin_videos' ,'user_histories.admin_video_id' , '=' , 'admin_videos.id')
-                            ->leftJoin('categories' ,'admin_videos.category_id' , '=' , 'categories.id')
-                            ->where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->select('user_histories.id as history_id','admin_videos.id as admin_video_id' ,
-                                'admin_videos.title','admin_videos.description' , 'admin_videos.duration',
-                                'default_image','admin_videos.watch_count','admin_videos.ratings',
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'), 'admin_videos.category_id','categories.name as category_name')
-                            ->orderby('user_histories.created_at' , 'desc');
-            // Check any flagged videos are present
-            $flagVideos = getFlagVideos($user_id);
-
-            if($flagVideos) {
-                $videos_query->whereNotIn('admin_videos.id', $flagVideos);
-            }
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-
-            } else {
-
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
-
-            return $videos;
-
-        }
-
-        public static function banner_videos() {
-
-            $videos = AdminVideo::where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->where('admin_videos.is_banner' , 1)
-                            ->select(
-                                'admin_videos.id as admin_video_id' ,
-                                'admin_videos.title','admin_videos.ratings',
-                                'admin_videos.banner_image as default_image'
-                                )
-                            ->orderBy('created_at' , 'desc')
-                            ->get();
-
-            return $videos;
-        }
-
-        public static function suggestion_videos($web = NULL , $skip = 0, $id = null) {
-
-            $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                            ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                            ->videoResponse()
-                            ->orderByRaw('RAND()');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
-
-                if($flagVideos) {
-                    $videos_query->whereNotIn('admin_videos.id',$flagVideos);
-                }
-            }
-
-            if ($id) {
-                $videos_query->where('admin_videos.id', '!=', $id);
-            }
-            if($web) {
-                $videos = $videos_query->paginate(16);
-
-            } else {
-
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
-                            ->get();
-            }
-
-            return $videos;
-
-        }
-
-        public static function trending($web = NULL , $skip = 0) {
-
-            $videos_query = AdminVideo::where('watch_count' , '>' , 0)
-                            ->where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                            ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                            ->videoResponse()
-                            ->orderby('watch_count' , 'desc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
-
-                if($flagVideos) {
-                    $videos_query->whereNotIn('admin_videos.id', $flagVideos);
-                }
-            }
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
-
-            return $videos;
-
-        }
-
-        public static function category_videos($category_id, $web = NULL , $skip = 0) {
-
-            $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                        ->where('admin_videos.status' , 1)
-                        ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                        ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                        ->where('admin_videos.category_id' , $category_id)
-                        ->videoResponse()
-                        ->orderby('admin_videos.sub_category_id' , 'asc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
-
-                if($flagVideos) {
-                    $videos_query->whereNotIn('admin_videos.id', $flagVideos);
-                }
-            }
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
-
-            return $videos;
-        }
-
-        public static function sub_category_videos($sub_category_id , $web = NULL , $skip = 0) {
-
-            $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                        ->where('admin_videos.status' , 1)
-                        ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                        ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                        ->where('admin_videos.sub_category_id' , $sub_category_id)
-                        ->videoResponse()
-                        ->orderby('admin_videos.sub_category_id' , 'asc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
-
-                if($flagVideos) {
-                    $videos_query->whereNotIn('admin_videos.id', $flagVideos);
-                }
-            }
-            
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
-
-            return $videos;
-        }
-
-        public static function genre_videos($id , $web = NULL , $skip = 0) {
-
-            $videos_query = AdminVideo::where('admin_videos.is_approved' , 1)
-                        ->where('admin_videos.status' , 1)
-                        ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                        ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                        ->where('admin_videos.genre_id' , $id)
-                        ->videoResponse()
-                        ->orderby('admin_videos.sub_category_id' , 'asc');
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
-
-            return $videos;
-        }
-
-        public static function get_video_details($video_id) {
-
-            $videos = AdminVideo::where('admin_videos.id' , $video_id)
-                    ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                    ->videoResponse()
-                    ->orderBy('admin_videos.created_at' , 'desc')
-                    ->first();
-
-            if(!$videos) {
-                $videos = array();
-            }
-
-            return $videos;
-        }
-
-        public static function video_ratings($video_id) {
-
-            $ratings = UserRating::where('admin_video_id' , $video_id)
-                            ->leftJoin('users' , 'user_ratings.user_id' , '=' , 'users.id')
-                            ->select('users.id as user_id' , 'users.name as username',
-                                    'users.picture as user_picture' ,
-
-                                    'user_ratings.rating' , 'user_ratings.comment',
-                                    'user_ratings.created_at')
-                            ->get();
-            if(!$ratings) {
-                $ratings = array();
-            }
-
-            return $ratings;
-        }
-
-        public static function wishlist_status($video_id,$user_id) {
-            if($wishlist = Wishlist::where('admin_video_id' , $video_id)->where('user_id' , $user_id)->first()) {
-                if($wishlist->status)
-                    return 1;
-                else
-                    return 0 ;
-            } else {
-                return 0;
-            }
-        }
-
-        public static function history_status($video_id,$user_id) {
-            if(UserHistory::where('admin_video_id' , $video_id)->where('user_id' , $user_id)->count()) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
-        public static function search_video($key,$web = NULL,$skip = 0) {
-
-            $videos_query = AdminVideo::where('admin_videos.is_approved' ,'=', 1)
-                        ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                        ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                        ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                        ->where('title','like', '%'.$key.'%')
-                        ->where('admin_videos.status' , 1)
-                        ->videoResponse()
-                        ->orderBy('admin_videos.created_at' , 'desc');
-
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
-
-            return $videos;
-        }
-
-        public static function get_user_comments($user_id,$web = NULL) {
-
-            $videos_query = UserRating::where('user_id' , $user_id)
-                            ->leftJoin('admin_videos' ,'user_ratings.admin_video_id' , '=' , 'admin_videos.id')
-                            ->where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->select('admin_videos.id as admin_video_id' ,
-                                'admin_videos.title','admin_videos.description' ,
-                                'default_image','admin_videos.watch_count',
-                                'admin_videos.duration',
-                                DB::raw('DATE_FORMAT(admin_videos.publish_time , "%e %b %y") as publish_time'))
-                            ->orderby('user_ratings.created_at' , 'desc')
-                            ->groupBy('admin_videos.id');
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
-
-            return $videos;
-
-        }
-
-        public static function get_video_comments($video_id,$skip = 0 ,$web = NULL) {
-
-            $videos_query = UserRating::where('admin_video_id' , $video_id)
-                            ->leftJoin('admin_videos' ,'user_ratings.admin_video_id' , '=' , 'admin_videos.id')
-                            ->leftJoin('users' ,'user_ratings.user_id' , '=' , 'users.id')
-                            ->where('admin_videos.is_approved' , 1)
-                            ->where('admin_videos.status' , 1)
-                            ->select('admin_videos.id as admin_video_id' ,
-                                'user_ratings.user_id as rating_user_id' ,
-                                'user_ratings.rating as rating',
-                                'user_ratings.comment', 'user_ratings.created_at',
-                                'users.name as username' , 'users.picture')
-                            ->orderby('user_ratings.created_at' , 'desc');
-            if($web) {
-                $videos = $videos_query->get();
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' , 12));
-            }
-
-            return $videos;
-
-        }
-
-        public static function check_wishlist_status($user_id,$video_id) {
-
-            $status = Wishlist::where('user_id' , $user_id)
-                                        ->where('admin_video_id' , $video_id)
-                                        ->where('status' , 1)
-                                        ->first();
-            return $status;
-        }
-
         public static function send_notification($id,$title,$message) {
 
             Log::info("Send Push Started");
@@ -1005,4 +595,46 @@
             Log::info("*************************************");
 
         }
+
+
+
+        /**
+         *  Function Name : search_video()
+         */
+        public static function search_video($key,$web = NULL,$skip = 0) {
+
+            $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
+                        ->where('title','like', '%'.$key.'%')
+                        ->where('video_tapes.status' , 1)
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc');
+
+            if($web) {
+                $videos = $videos_query->paginate(16);
+            } else {
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            }
+
+            return $videos;
+        }
+
+
+        public static function check_wishlist_status($user_id,$video_id) {
+
+            $status = Wishlist::where('user_id' , $user_id)
+                                        ->where('video_tape_id' , $video_id)
+                                        ->where('status' , 1)
+                                        ->first();
+            return $status;
+        }
+
+
+        public static function history_status($video_id,$user_id) {
+            if(UserHistory::where('video_tape_id' , $video_id)->where('user_id' , $user_id)->count()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
     }

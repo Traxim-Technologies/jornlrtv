@@ -15,7 +15,7 @@ class CreateUserRatingsTable extends Migration
          Schema::create('user_ratings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('admin_video_id');
+            $table->integer('video_tape_id');
             $table->integer('rating');
             $table->string('comment');
             $table->integer('status');

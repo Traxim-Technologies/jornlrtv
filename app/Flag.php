@@ -12,15 +12,15 @@ class Flag extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'video_id', 'reason', 'status'
+        'user_id', 'video_tape_id', 'reason', 'status'
     ];
 
     /**
      * Get the video record associated with the flag.
      */
-    public function adminVideo()
+    public function videoTape()
     {
-        return $this->hasOne('App\AdminVideo', 'id', 'video_id');
+        return $this->hasOne('App\VideoTape', 'id', 'video_tape_id');
     }
 
     /**
@@ -29,6 +29,13 @@ class Flag extends Model
     public function userVideos()
     {
         return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        $array['video_tape'] = $this->videoTape;
+        return $array;
     }
 
 }

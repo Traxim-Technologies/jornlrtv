@@ -80,7 +80,6 @@
                     </div><!--profile-view end-->  
 
 
-                    <?php $wishlist = wishlist(Auth::user()->id); ?>
                     
                     @if(count($wishlist))
                         

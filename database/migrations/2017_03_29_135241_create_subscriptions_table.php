@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePagesTable extends Migration
+class CreateSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,15 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('heading');
+            $table->string('unique_id');
+            $table->string('title');
             $table->text('description');
-            $table->enum('type',array('about','privacy','terms'));
+            $table->string('subscription_type')->comment="month,year,days";
+            $table->string('plan');
+            $table->float('amount');
+            $table->integer('total_subscription');
             $table->integer('status');
             $table->timestamps();
         });
@@ -29,6 +33,6 @@ class CreatePagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pages');
+        Schema::drop('subscriptions');
     }
 }

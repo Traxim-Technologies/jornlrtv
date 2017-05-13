@@ -664,4 +664,6 @@ return array(
 	'admin_delete_control'=>'Delete/Update Control',
 	'admin_control'=>'Admin Control',
 	'warning_error_queue'=>'Redis Queue Driver not Configured. Kindly configure and upload the videos to compress queue videos',
+	'choose'=>'Choose',
+	'subscriptions'=>'Subscriptions',
 );

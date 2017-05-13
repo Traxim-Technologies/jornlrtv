@@ -13,7 +13,8 @@
         "laravel/socialite": "^2.0",
         "paypal/rest-api-sdk-php": "*",
         "vidhyar2612/enveditor": "^1.1",
-        "olaferlandsen/ffmpeg-php-class": "^0.1.4"
+        "olaferlandsen/ffmpeg-php-class": "^0.1.4",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
