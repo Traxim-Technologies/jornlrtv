@@ -136,6 +136,11 @@ class SettingsTableSeeder extends Seeder
 		    [
 	            'key' => 'VIDEO_RESOLUTIONS',
 			    'value' => '1920x1080'
+		    ],
+
+		    [
+		    	'key'=>'is_spam',
+		    	'value'=>1,
 		    ]
 		]);
     }

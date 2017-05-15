@@ -56,13 +56,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Flag', 'user_id', 'id');
     }
 
-    /**
-     * Get the pay per view record associated with the user.
-     */
-    public function userVideoSubscription()
-    {
-        return $this->hasMany('App\PayPerView', 'user_id', 'id');
-    }
 
     /**
      * Save the password with the help of Hash
@@ -136,13 +129,6 @@ class User extends Authenticatable
 
             }
 
-            if (count($user->userVideoSubscription) > 0) {
-
-                foreach($user->userVideoSubscription as $video)
-                {
-                    $video->delete();
-                }
-            }
 
             if (count($user->userPayment) > 0) {
 

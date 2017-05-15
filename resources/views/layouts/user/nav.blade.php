@@ -12,7 +12,7 @@
         </li>
     </ul>
 
-    @if(count($categories = get_categories()) > 0)
+    @if(count($categories = []) > 0)
         
         <ul class="y-home ">
             <h3>{{tr('categories')}}</h3>

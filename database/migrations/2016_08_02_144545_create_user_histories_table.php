@@ -15,7 +15,7 @@ class CreateUserHistoriesTable extends Migration
          Schema::create('user_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('admin_video_id');
+            $table->integer('video_tape_id');
             $table->integer('status');
             $table->timestamps();
         });

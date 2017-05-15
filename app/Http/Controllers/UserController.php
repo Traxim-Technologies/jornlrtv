@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
 use App\Http\Requests;
 
 use App\Helpers\Helper;
@@ -28,6 +30,7 @@ use Exception;
 
 use Log;
 
+use App\Subscription;
 
 class UserController extends Controller {
 
@@ -51,7 +54,8 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    
+    public function index(Request $request) {
 
         $database = config('database.connections.mysql.database');
         
@@ -65,16 +69,16 @@ class UserController extends Controller {
 
             if(\Auth::check()){
 
-                // $wishlists  = Helper::wishlist(\Auth::user()->id,WEB);  
+                $wishlists  =  VideoRepo::wishlist(\Auth::user()->id,WEB);
 
-                // $watch_lists = Helper::watch_list(\Auth::user()->id,WEB);  
+                $watch_lists = VideoRepo::watch_list(\Auth::user()->id,WEB);  
             }
             
-            $recent_videos = Helper::recently_added(WEB);
+            $recent_videos = VideoRepo::recently_added(WEB);
 
-            $trendings = Helper::trending(WEB);
+            $trendings = VideoRepo::trending(WEB);
             
-            $suggestions  = Helper::suggestion_videos(WEB);
+            $suggestions  = VideoRepo::suggestion_videos(WEB);
 
             $categories = [];
 
@@ -95,135 +99,30 @@ class UserController extends Controller {
 
     public function single_video($id) {
 
-        $video = Helper::get_video_details($id);
 
-        $trendings = Helper::trending(WEB);
+        $response = $this->UserAPI->getSingleVideo($id)->getData();
 
-        $recent_videos = Helper::recently_added(WEB);
-
-        $categories = get_categories();
-
-        $comments = Helper::get_video_comments($id,0,WEB);
-
-        $suggestions = Helper::suggestion_videos('', '', $id);
-
-        $wishlist_status = $history_status = WISHLIST_EMPTY;
-
-        $trailer_video = $main_video = "";
-
-        $report_video = getReportVideoTypes();
-
-        // Load the user flag
-
-        $flaggedVideo = (Auth::check()) ? Flag::where('video_id',$id)->where('user_id', Auth::user()->id)->first() : '';
-
-        if($video) {
-
-            $trailer_video = $video->trailer_video;
-
-            $main_video = $video->video; 
-
-            if($video->video_type == 1) {
-
-                if(check_valid_url($video->video) && $video->video_upload_type == 2) {
-                    if(\Setting::get('streaming_url')) {
-                        $main_video = \Setting::get('streaming_url').get_video_end($video->video);
-                    }
-                }
-
-                if(check_valid_url($video->trailer_video) && $video->video_upload_type == 2) {
-                    if(\Setting::get('streaming_url')) {
-                        $trailer_video = \Setting::get('streaming_url').get_video_end($video->trailer_video);
-                    }
-                }
-           
-            }
-
-            $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = $original_trailer_video = $original_main_video = '';
-
-            $original_trailer_video = $video->trailer_video;
-
-            $original_main_video = $video->video;
-
-            $hls_video = $hls_trailer_video = "";
-
-            if ($video->video_type == 1) {
-
-                $hls_video = envfile('HLS_STREAMING_URL').get_video_end($video->video);
-
-                $hls_trailer_video = envfile('HLS_STREAMING_URL').get_video_end($video->trailer_video);
-
-                if (\Setting::get('streaming_url')) {
-
-                    $trailerstreamUrl = \Setting::get('streaming_url').get_video_end($video->trailer_video);
-
-                    $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
-
-                    if ($video->is_approved == 1) {
-
-                        if($video->trailer_video_resolutions) {
-                            $trailerstreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->trailer_video).'.smil';
-                        } 
-                        if ($video->video_resolutions) {
-                            $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
-                        }
-                    }
-
-                } else {
-
-                    $videoPath = $video->video_resize_path ? $video->video.','.$video->video_resize_path : $video->video;
-                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
-                    $trailer_video_path = $video->trailer_video_path ? $video->trailer_video.','.$video->trailer_video_path : $video->trailer_video;
-                    $trailer_pixels = $video->trailer_video_resolutions ? 'original'.$video->trailer_video_resolutions : 'original';
-
-                }
-
-            } else {
-                $trailerstreamUrl = $video->trailer_video;
-                $videoStreamUrl = $video->video;
-            }
-            
-        } else {
-            return redirect('/')->with('flash_error' , tr('video_not_found'));
-        }
-
-        if(\Auth::check()) {
-            $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$id);
-            $history_status = Helper::history_status(\Auth::user()->id,$id);
-
-        }
-        $share_link = route('user.single' , $id);
-
-        \Log::info("HLS VIDEO".print_r($hls_video , true));
-
-        \Log::info("HLS TRAILER VIDEO".print_r($hls_trailer_video , true));
+        // dd($response);
         
         return view('user.single-video')
                     ->with('page' , '')
                     ->with('subPage' , '')
-                    ->with('video' , $video)
-                    ->with('recent_videos' , $recent_videos)
-                    ->with('trendings' , $trendings)
-                    ->with('comments' , $comments)
-                    ->with('suggestions',$suggestions)
-                    ->with('wishlist_status' , $wishlist_status)
-                    ->with('history_status' , $history_status)
-                    ->with('trailer_video' , $trailer_video)
-                    ->with('main_video' , $main_video)
-                    ->with('url' , $main_video)
-                    ->with('categories' , $categories)
-                    ->with('report_video', $report_video)
-                    ->with('videoPath', $videoPath)
-                    ->with('video_pixels', $video_pixels)
-                    ->with('trailer_video_path', $trailer_video_path)
-                    ->with('trailer_pixels', $trailer_pixels)
-                    ->with('videoStreamUrl', $videoStreamUrl)
-                    ->with('trailerstreamUrl', $trailerstreamUrl)
-                    ->with('original_trailer_video' , $original_trailer_video)
-                    ->with('hls_trailer_video' , $hls_trailer_video)
-                    ->with('original_main_video' , $original_main_video)
-                    ->with('hls_video' , $hls_video)
-                    ->with('flaggedVideo', $flaggedVideo);
+                    ->with('video' , $response->video)
+                    ->with('recent_videos' , $response->recent_videos)
+                    ->with('trendings' , $response->trendings)
+                    ->with('comments' , $response->comments)
+                    ->with('suggestions',$response->suggestions)
+                    ->with('wishlist_status' , $response->wishlist_status)
+                    ->with('history_status' , $response->history_status)
+                    ->with('main_video' , $response->main_video)
+                    ->with('url' , $response->main_video)
+                    ->with('channels' , $response->channels)
+                    ->with('report_video', $response->report_video)
+                    ->with('videoPath', $response->videoPath)
+                    ->with('video_pixels', $response->video_pixels)
+                    ->with('videoStreamUrl', $response->videoStreamUrl)
+                    ->with('hls_video' , $response->hls_video)
+                    ->with('flaggedVideo', $response->flaggedVideo);
     }
 
     /**
@@ -233,9 +132,12 @@ class UserController extends Controller {
      */
     public function profile()
     {
-        return view('user.profile')
+
+        $wishlist = $this->UserAPI->wishlist(Auth::user()->id, null, 0)->getData();
+
+        return view('user.account.profile')
                     ->with('page' , 'profile')
-                    ->with('subPage' , 'user-profile');
+                    ->with('subPage' , 'user-profile')->with('wishlist', $wishlist);
     }
 
     /**
@@ -245,8 +147,11 @@ class UserController extends Controller {
      */
     public function update_profile()
     {
-        return view('user.edit-profile')->with('page' , 'profile')
-                    ->with('subPage' , 'user-update-profile');
+
+        $wishlist = $this->UserAPI->wishlist(Auth::user()->id);
+
+        return view('user.account.edit-profile')->with('page' , 'profile')
+                    ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
     }
 
     /**
@@ -266,7 +171,7 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return back()->with('flash_success' , tr('profile_updated'));
+            return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
 
         } else {
 
@@ -302,7 +207,7 @@ class UserController extends Controller {
 
     public function profile_change_password(Request $request) {
 
-        return view('user.change-password')->with('page' , 'profile')
+        return view('user.account.change-password')->with('page' , 'profile')
                     ->with('subPage' , 'user-change-password');
 
     }
@@ -326,16 +231,6 @@ class UserController extends Controller {
 
         $response->status = $request->status;
 
-        if ($request->video_status == 1) {
-
-            // Load Payperview
-            $payperview = PayPerView::where('user_id', \Auth::user()->id)->where('video_id',$request->admin_video_id)
-                            ->where('status',0)->first();
-            if ($payperview) {
-                $payperview->status = DEFAULT_TRUE;
-                $payperview->save();
-            }
-        }
 
         return response()->json($response);
     
@@ -361,9 +256,9 @@ class UserController extends Controller {
 
     public function history(Request $request) {
 
-        $histories = Helper::watch_list(\Auth::user()->id,WEB);
+        $histories = $this->UserAPI->history(\Auth::user()->id, 12)->getData();
 
-        return view('user.history')
+        return view('user.account.history')
                         ->with('page' , 'profile')
                         ->with('subPage' , 'user-history')
                         ->with('histories' , $histories);
@@ -415,9 +310,9 @@ class UserController extends Controller {
 
     public function wishlist(Request $request) {
         
-        $videos = Helper::wishlist(\Auth::user()->id,WEB);
+        $videos = $this->UserAPI->wishlist(\Auth::user()->id, 12)->getData();
 
-        return view('user.wishlist')
+        return view('user.account.wishlist')
                     ->with('page' , 'profile')
                     ->with('subPage' , 'user-wishlist')
                     ->with('videos' , $videos);
@@ -550,21 +445,24 @@ class UserController extends Controller {
 
     }
 
-    public function trending()
-    {
-        $trending = Helper::trending(1);
-        $categories = get_categories();
+    /**
+     * Trending Videos
+     *
+     */
+
+    public function trending(Request $request) {
+
+        $trending = VideoRepo::trending(WEB);
 
         return view('user.trending')->with('page', 'trending')
-                                    ->with('videos',$trending)
-                                    ->with('categories', $categories);
+                                    ->with('videos',$trending);
     }
 
     public function delete_account(Request $request) {
 
         if(\Auth::user()->login_by == 'manual') {
 
-            return view('user.delete-account')
+            return view('user.account.delete-account')
                     ->with('page' , 'profile')
                     ->with('subPage' , 'delete-account');
         } else {
@@ -624,31 +522,33 @@ class UserController extends Controller {
      * @return flash message
      */
     public function save_report_video(Request $request) {
-        try {
+       //  try {
             // Validate the coming post values
-            $validator = Validator::make($request->all(), [
-                'video_id' => 'required',
-                'reason' => 'required',
-            ]);
-            // If validator Fails, redirect same with error values
-            if ($validator->fails()) {
-                 //throw new Exception("error", tr('admin_published_video_failure'));
-                return back()->with('flash_error', tr('admin_published_video_failure'));
-            }
-            // Assign Post request values into Data variable
-            $data = $request->all();
-            // include user_id index into the data varaible  "Auth::user()->id" -> Logged In user id
-            $data['user_id'] = \Auth::user()->id;
-            // Save the values in DB
-            if ($report_video = Flag::create($data)) {
-                return redirect('/')->with('flash_success', tr('report_video_success_msg'));
-            } else {
-                //throw new Exception("error", tr('admin_published_video_failure'));
-                return back()->with('flash_error', tr('admin_published_video_failure'));
-            }
-        } catch (Exception $e) {
-            return back()->with('flash_error', $e);
+        $validator = Validator::make($request->all(), [
+            'video_tape_id' => 'required',
+            'reason' => 'required',
+        ]);
+        // If validator Fails, redirect same with error values
+        if ($validator->fails()) {
+             //throw new Exception("error", tr('admin_published_video_failure'));
+            return back()->with('flash_error', tr('admin_published_video_failure'));
         }
+        // Assign Post request values into Data variable
+        $data = $request->all();
+
+        // include user_id index into the data varaible  "Auth::user()->id" -> Logged In user id
+        $data['user_id'] = \Auth::user()->id;
+        $data['status'] = DEFAULT_TRUE;
+        // Save the values in DB
+        if (Flag::create($data)) {
+            return redirect('/')->with('flash_success', tr('report_video_success_msg'));
+        } else {
+            //throw new Exception("error", tr('admin_published_video_failure'));
+            return back()->with('flash_error', tr('admin_published_video_failure'));
+        }
+        /*} catch (Exception $e) {
+            return back()->with('flash_error', $e);
+        }*/
     }
 
     /**
@@ -683,35 +583,20 @@ class UserController extends Controller {
      */
     public function spam_videos() {
         // Get logged in user id
-        $id = Auth::user()->id;
-        $model = Flag::where('user_id', $id)
-            ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
-            ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-            ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-            ->select('flags.*','admin_videos.is_approved', 'admin_videos.status')
-            ->where('admin_videos.is_approved' , 1)
-            ->where('admin_videos.status' , 1)
-            ->paginate(16);
+
+        $model = $this->UserAPI->spam_videos(\Auth::user()->id, 12)->getData();
+
         // Return array of values
         return view('user.spam_videos')->with('model' , $model)
                         ->with('page' , 'Profile')
                         ->with('subPage' , 'Spam Videos');
     }   
 
-    /**
-     * Function Name: payper_videos()
-     * To load all the paper views
-     *
-     * @return view page
-     */
-    public function payper_videos() {
-        // Get Logged in user id
-        $id = Auth::user()->id;
-        // Load all the paper view videos based on logged in user id
-        $model = PayPerView::where('user_id', $id)->paginate(16);
-        // Return the view page
-        return view('user.payperview')->with('model' , $model)
-                        ->with('page' , 'Profile')
-                        ->with('subPage' , 'Payper Videos');
+
+    public function subscriptions() {
+
+        $model = Subscription::where('status', DEFAULT_TRUE)->get();
+
+        return view('user.account.subscriptions')->with('subscriptions', $model)->with('page', 'Profile')->with('subPage', 'Subscriptions');
     }
 }

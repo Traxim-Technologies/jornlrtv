@@ -10,11 +10,13 @@ use App\Admin;
 
 use App\Moderator;
 
-use App\AdminVideo;
+use App\VideoTape;
 
 use App\AdminVideoImage;
 
 use App\User;
+
+use App\Subscription;
 
 use App\UserPayment;
 
@@ -43,6 +45,12 @@ use Setting;
 use Log;
 
 use App\Jobs\CompressVideo;
+
+use App\VideoAd;
+
+use App\AdsDetail;
+
+use App\Channel;
 
 
 use App\Jobs\NormalPushNotification;
@@ -73,9 +81,11 @@ class AdminController extends Controller
         $admin->save();
         
         $user_count = User::count();
+
         $provider_count = Moderator::count();
-        $video_count = AdminVideo::count();
-        // $trending = trending();
+
+        $video_count = VideoTape::count();
+ 
         $recent_videos = Helper::recently_added();
 
         $get_registers = get_register_count();
@@ -139,7 +149,7 @@ class AdminController extends Controller
             }
                 
             $admin->remember_token = Helper::generate_token();
-            $admin->is_activated = 1;
+           // @ $admin->is_activated = 1;
             $admin->save();
 
             return back()->with('flash_success', tr('admin_not_profile'));
@@ -258,7 +268,7 @@ class AdminController extends Controller
             
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
-            $user->is_activated = 1;                   
+            // $user->is_activated = 1;                   
 
             if($request->id == ''){
                 $email_data['name'] = $user->name;
@@ -366,7 +376,7 @@ class AdminController extends Controller
                 $user->moderator_id = $moderator->id;
                 $user->save();
 
-                $moderator->is_activated = 1;
+                // $moderator->is_activated = 1;
                 $moderator->is_user = 1;
                 $moderator->save();
 
@@ -390,7 +400,7 @@ class AdminController extends Controller
                 $user->save();
             }
 
-            $moderator->is_activated = 0;
+            // $moderator->is_activated = 0;
 
             $moderator->save();
 
@@ -637,7 +647,7 @@ class AdminController extends Controller
 
     public function videos(Request $request) {
 
-        $videos = AdminVideo::select('admin_videos.id as video_id' ,
+        $videos = VideoTape::select('admin_videos.id as video_id' ,
                                 'admin_videos.title' , 
                              'admin_videos.description' , 'admin_videos.ratings' , 
                              'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
@@ -678,7 +688,7 @@ class AdminController extends Controller
 
         $categories =  [];
 
-        $video = AdminVideo::where('admin_videos.id' , $request->id)
+        $video = VideoTape::where('admin_videos.id' , $request->id)
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
@@ -805,7 +815,7 @@ class AdminController extends Controller
 
             Log::info("Success validation and navigated to create new object");
 
-            $video = new AdminVideo;
+            $video = new VideoTape;
             $video->title = $request->title;
             $video->description = $request->description;
             $video->category_id = $request->category_id;
@@ -964,7 +974,7 @@ class AdminController extends Controller
         Log::info("Initiaization Edit Process : ".print_r($request->all(),true));
 
 
-        $video = AdminVideo::find($request->id);
+        $video = VideoTape::find($request->id);
 
         $video_validator = array();
 
@@ -1279,7 +1289,7 @@ class AdminController extends Controller
             $error_messages = implode(',', $validator->messages()->all());
             return back()->with('flash_errors', $error_messages);
         } else {
-            $videos = AdminVideo::where('admin_videos.id' , $request->id)
+            $videos = VideoTape::where('admin_videos.id' , $request->id)
                     ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
@@ -1373,7 +1383,7 @@ class AdminController extends Controller
 
     public function approve_video($id) {
 
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
 
         $video->is_approved = DEFAULT_TRUE;
 
@@ -1401,7 +1411,7 @@ class AdminController extends Controller
      */
     public function publish_video($id) {
         // Load video based on Auto increment id
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
         // Check the video present or not
         if ($video) {
             $video->status = DEFAULT_TRUE;
@@ -1417,7 +1427,7 @@ class AdminController extends Controller
 
     public function decline_video($id) {
         
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
 
         $video->is_approved = DEFAULT_FALSE;
 
@@ -1434,7 +1444,7 @@ class AdminController extends Controller
 
     public function delete_video($id) {
 
-        if($video = AdminVideo::where('id' , $id)->first())  {
+        if($video = VideoTape::where('id' , $id)->first())  {
             $video->delete();
         }
 
@@ -1443,9 +1453,9 @@ class AdminController extends Controller
 
     public function slider_video($id) {
 
-        $video = AdminVideo::where('is_home_slider' , 1 )->update(['is_home_slider' => 0]); 
+        $video = VideoTape::where('is_home_slider' , 1 )->update(['is_home_slider' => 0]); 
 
-        $video = AdminVideo::where('id' , $id)->update(['is_home_slider' => 1] );
+        $video = VideoTape::where('id' , $id)->update(['is_home_slider' => 1] );
 
         return back()->with('flash_success', tr('slider_success'));
     
@@ -1453,7 +1463,7 @@ class AdminController extends Controller
 
     public function banner_videos(Request $request) {
 
-        $videos = AdminVideo::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
+        $videos = VideoTape::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
                     ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
                     ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
                     ->where('admin_videos.is_banner' , 1 )
@@ -1502,7 +1512,7 @@ class AdminController extends Controller
 
     public function change_banner_video($id) {
 
-        $video = AdminVideo::find($id);
+        $video = VideoTape::find($id);
 
         $video->is_banner = 0 ;
 
@@ -1785,7 +1795,7 @@ class AdminController extends Controller
      */
     public function spam_videos() {
         // Load all the videos from flag table
-        $model = Flag::groupBy('video_id')->get();
+        $model = Flag::groupBy('video_tape_id')->get();
         // Return array of values
         return view('admin.spam_videos.spam_videos')->with('model' , $model)
                         ->with('page' , 'Spam Videos')
@@ -1833,7 +1843,7 @@ class AdminController extends Controller
     public function save_video_payment($id, Request $request) {
 
         // Load Video Model
-        $model = AdminVideo::find($id);
+        $model = VideoTape::find($id);
 
         // Get post attribute values and save the values
         if ($model) {
@@ -1841,7 +1851,7 @@ class AdminController extends Controller
             if ($data = $request->all()) {
 
                 // Update the post
-                if (AdminVideo::where('id', $id)->update($data)) {
+                if (VideoTape::where('id', $id)->update($data)) {
                     // Redirect into particular value
                     return back()->with('flash_success', tr('payment_added'));       
                 } 
@@ -1881,4 +1891,327 @@ class AdminController extends Controller
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 
+
+
+
+    public function channels() {
+
+        $channels = Channel::orderBy('channels.created_at', 'desc')
+                        ->distinct('channels.id')
+                        ->get();
+
+        return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels');
+    }
+
+    public function add_channel() {
+        return view('admin.channels.add-channel')->with('page' ,'channels')->with('sub_page' ,'add-channel');
+    }
+
+    public function edit_channel($id) {
+
+        $channel = Channel::find($id);
+
+        return view('admin.channels.edit-channel')->with('channel' , $channel)->with('page' ,'channels')->with('sub_page' ,'edit-channel');
+    }
+
+    public function add_channel_process(Request $request) {
+
+        if($request->id != '') {
+            $validator = Validator::make( $request->all(), array(
+                        'name' => 'required|max:255',
+                        'picture' => 'mimes:jpeg,jpg,bmp,png',
+                    )
+                );
+        } else {
+            $validator = Validator::make( $request->all(), array(
+                    'name' => 'required|max:255',
+                    'picture' => 'required|mimes:jpeg,jpg,bmp,png',
+                )
+            );
+        
+        }
+       
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+                $channel = Channel::find($request->id);
+                $message = tr('admin_not_channel');
+                if($request->hasFile('picture')) {
+                    Helper::delete_picture($channel->picture, "/uploads/");
+                }
+            } else {
+                $message = tr('admin_add_channel');
+                //Add New User
+                $channel = new Channel;
+                $channel->is_approved = DEFAULT_TRUE;
+                $channel->created_by = ADMIN;
+            }
+
+            $channel->name = $request->has('name') ? $request->name : '';
+
+            $channel->status = 1;
+            
+            if($request->hasFile('picture') && $request->file('picture')->isValid()) {
+                $channel->picture = Helper::normal_upload_picture($request->file('picture'));
+            }
+
+            $channel->save();
+
+            if($category) {
+                return back()->with('flash_success', $message);
+            } else {
+                return back()->with('flash_error', tr('admin_not_error'));
+            }
+
+        }
+    
+    }
+
+    public function approve_channel(Request $request) {
+
+        $channel = Channel::find($request->id);
+
+        $channel->is_approved = $request->status;
+
+        $channel->save();
+
+        if ($request->status == 0) {
+           
+            foreach($category->videoTape as $video)
+            {                
+                $video->is_approved = $request->status;
+                $video->save();
+            } 
+
+        }
+
+        $message = tr('admin_not_channel_decline');
+
+        if($category->is_approved == DEFAULT_TRUE){
+
+            $message = tr('admin_not_channel_approve');
+        }
+
+        return back()->with('flash_success', $message);
+    
+    }
+
+    public function delete_channel(Request $request) {
+        
+        $channel = Channel::where('id' , $request->category_id)->first();
+
+        if($channel) {          
+            $channel->delete();
+            return back()->with('flash_success',tr('admin_not_channel_del'));
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+    }
+
+
+     public function subscriptions() {
+
+        $data = Subscription::orderBy('created_at','desc')->get();
+
+        return view('admin.subscriptions.index')->withPage('hotels')
+                        ->with('data' , $data)
+                        ->with('sub_page','view-subscription');        
+
+    }
+
+    public function subscription_create() {
+
+        return view('admin.subscriptions.create')->with('page' , 'subscriptions')
+                    ->with('sub_page','subscriptions-add');
+    }
+
+    public function subscription_edit($unique_id) {
+
+        $data = Subscription::where('unique_id' ,$unique_id)->first();
+
+        return view('admin.subscriptions.edit')->withData($data)
+                    ->with('sub_page','subscriptions-view')
+                    ->with('page' , 'subscriptions ');
+
+    }
+
+    public function subscription_save(Request $request) {
+
+        $validator = Validator::make($request->all(),[
+                'title' => 'required|max:255',
+                'plan' => 'required',
+                'amount' => 'required',
+                'picture' => 'mimes:jpeg,png,jpg'
+        ]);
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+
+                $model = Subscription::find($request->id);
+
+
+                if($request->hasFile('image')) {
+
+                    $model->picture ? Helper::delete_picture('subscriptions' , $model->picture) : "";
+
+                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+                    
+                    $request->request->add(['picture' => $picture , 'image' => '']);
+
+                }
+
+                $model->update($request->all());
+
+            } else {
+
+                if($request->hasFile('picture')) {
+
+                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+
+                    $request->request->add(['picture' => $picture , 'image'=> '']);
+                }
+
+                $model = Subscription::create($request->all());
+
+                $model->status = 1;
+
+                $model->unique_id = $request->title;
+
+                $model->save();
+            }
+        
+            if($model) {
+                return redirect(route('admin.subscriptions.view', $model->unique_id))->with('flash_success', $request->id ? tr('subscription_update_success') : tr('subscription_create_success'));
+
+            } else {
+                return back()->with('flash_error',tr('admin_not_error'));
+            }
+        }
+    
+        
+    }
+
+    /** 
+     * 
+     * Subscription View
+     *
+     */
+
+    public function subscription_view($unique_id) {
+
+        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
+
+            return view('admin.subscriptions.view')
+                        ->with('data' , $data)
+                        ->withPage('subscriptions')
+                        ->with('sub_page','subscriptions-view');
+
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+   
+    }
+
+
+    public function subscription_delete($id) {
+
+        if($data = Subscription::where('id',$id)->first()->delete()) {
+
+            return back()->with('flash_success',tr('subscription_delete_success'));
+
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+        
+    }
+
+    /** 
+     * Subscription status change
+     * 
+     *
+     */
+
+    public function subscription_status($unique_id) {
+
+        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
+
+            $data->status  = $data->status ? 0 : 1;
+
+            $data->save();
+
+            return back()->with('flash_success' , $data->status ? tr('subscription_approve_success') : tr('subscription_decline_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+            
+        }
+    }
+
+    public function user_subscription_payments($id = "") {
+
+        $page = "user-payments";
+
+        $base_query = UserPayment::orderBy('created_at' , 'desc');
+
+        $subscription = [];
+
+        if($id) {
+
+            $subscription = Subscription::find($id);
+
+            $base_query = $base_query->where('subscription_id' , $id);
+
+            $page = "user-payments";
+        }
+
+        $payments = $base_query->get();
+
+        return view('admin.users.subscription_payments')->with('data' , $payments)->withPage($page)->with('sub_page','')->with('subscription' , $subscription); 
+    
+    }
+
+
+    public function add_between_ads(Request $request) {
+
+        $index = $request->index + 1;
+        
+        return view('admin.ads._sub_form')->with('index' , $index);
+    }
+
+
+    public function ads_create(Request $request) {
+
+        $vModel = VideoTape::find($request->video_tape_id);
+
+        $videoPath = '';
+
+        $video_pixels = '';
+
+        if ($vModel) {
+
+            $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
+            $video_pixels = $vModel->video_resolutions ? 'original,'.$vModel->video_resolutions : 'original';
+
+        }
+
+        $model = new VideoAd();
+
+        $adDetail = new AdsDetail();
+
+        $index = 0;
+
+        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'video_ads')->with('sub_page', 'create_ad')->with('model', $model)->with('adDetail', $adDetail)->with('index', $index);
+    }
 }

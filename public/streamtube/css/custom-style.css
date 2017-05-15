@@ -396,6 +396,7 @@ a:focus {
 }
 .yt-thumb-clip > img {
     width: 100%;
+<<<<<<< HEAD
 }
 .slide-box.recom-box.big-box-slide {
     float: none;
@@ -417,4 +418,6 @@ a:focus {
     font-weight: 500;
     line-height: 24px;
     padding: 20px;
+=======
+>>>>>>> 1725b05b7b9a6264267f1e1827d817358723f94b
 }

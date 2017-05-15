@@ -3,6 +3,7 @@
 @section('content')
 
     <div class="y-content">
+        
         <div class="row content-row">
 
             @include('layouts.user.nav')
@@ -42,16 +43,22 @@
                         @endforeach
                         
 
-                    </div><!--end of recommend-list-->
+                    </div>
+
+                    <!--end of recommend-list-->
 
                      @if(count($videos) > 0)
+                        
                         <div class="row">
                             <div class="col-md-12">
-                                <div align="center" id="paglink"><?php //echo $videos->links(); ?></div>
+                                <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
                             </div>
                         </div>
+
                     @endif
-                </div><!--end of slide-area-->
+                </div>
+
+                <!--end of slide-area-->
 
                 
             </div>

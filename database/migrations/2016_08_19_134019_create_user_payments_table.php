@@ -15,6 +15,7 @@ class CreateUserPaymentsTable extends Migration
         Schema::create('user_payments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer('subscription_id');
             $table->string('payment_id');
             $table->float('amount');
             $table->dateTime('expiry_date');

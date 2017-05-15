@@ -47,7 +47,12 @@ use  Carbon\Carbon;
 
 		<!-- Total Moderators -->
 
-        <div class="col-lg-3 col-xs-6">
+        <?php 
+        
+        /* @TODO
+
+
+         <div class="col-lg-3 col-xs-6">
 
           	<div class="small-box bg-red">
             	<div class="inner">
@@ -65,7 +70,7 @@ use  Carbon\Carbon;
             	</a>
           	</div>
         
-        </div>
+        </div> */ ?>
 
         <div class="col-lg-3 col-xs-6">
 
