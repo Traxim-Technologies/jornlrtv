@@ -498,6 +498,8 @@ Route::group([], function(){
 
     Route::get('/user_subscriptions', 'UserController@subscriptions')->name('user.subscriptions');
 
+    Route::post('ad_request', 'UserController@ad_request')->name('user.ad_request');
+
 });
 
 

@@ -34,6 +34,7 @@
 						      <th>{{tr('mobile')}}</th>
 						      <th>{{tr('upgrade')}}</th>
 						      <th>{{tr('validity_days')}}</th>
+						      <th>{{tr('ad_status')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -58,6 +59,19 @@
 							      	@if($user->user_type)
                                         {{get_expiry_days($user->id)['days']}}
                                     @endif
+							      </td>
+
+							      <td>
+
+							      @if($user->ads_status) 
+
+							      	<span class="label label-success">{{tr('enabled')}}</span>
+
+							      @else
+
+							      	<span class="label label-warning">{{tr('disabled')}}</span>
+
+							      @endif
 							      </td>
 							 
 							      <td>

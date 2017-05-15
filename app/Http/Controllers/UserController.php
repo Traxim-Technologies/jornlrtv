@@ -599,4 +599,22 @@ class UserController extends Controller {
 
         return view('user.account.subscriptions')->with('subscriptions', $model)->with('page', 'Profile')->with('subPage', 'Subscriptions');
     }
+
+
+     public function ad_request(Request $request) {
+
+        if($data = User::find(Auth::user()->id)) {
+
+            $data->ads_status  = $data->ads_status ? 0 : 1;
+
+            $data->save();
+
+            return response()->json(true, 200);
+
+        } else {
+
+            return response()->json(false, 200);
+            
+        }
+    }   
 }

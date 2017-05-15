@@ -669,5 +669,11 @@ return array(
 	'between_ad'=>'Between Ad',
 	'video_time'=>'Video Time',
 
-	'cover'=>'Cover'
+	'cover'=>'Cover',
+	'enabled'=>'Enabled',
+	'disabled'=>'Disabled',
+	'ad_status'=>'Ad Status',
+	'disable_ad'=>'Disable Ad',
+	'enable_ad'=>'Enable Ad',
+
 );

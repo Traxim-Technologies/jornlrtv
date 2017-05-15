@@ -1,5 +1,58 @@
 @extends('layouts.user')
 
+@section('styles')
+
+<style type="text/css">
+
+.switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+.switch input {
+    display: none;
+}
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: all 0.4s ease 0s;
+}
+.slider::before {
+    background-color: white;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: all 0.4s ease 0s;
+    width: 26px;
+}
+input:checked + .slider {
+    background-color: #51af33;
+}
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+}
+input:checked + .slider::before {
+    transform: translateX(26px);
+}
+.slider.round {
+    border-radius: 34px;
+}
+.slider.round::before {
+    border-radius: 50%;
+}
+
+</style>
+
+@endsection
+
 @section('content')
 
 <div class="y-content">
@@ -48,6 +101,13 @@
                                                  
                                             @endif -->
 
+                                            
+                                            <label class="switch" style="margin-right: 10px;" title="{{Auth::user()->ads_status ? tr('disable_ad') : tr('enable_ad')}}">
+                                                <input id="change_adstatus_id" type="checkbox" @if(Auth::user()->ads_status) checked @endif onchange="change_adstatus(this.value)">
+                                                <div class="slider round"></div>
+                                            </label>
+
+                                            <div class="clearfix"></div>
 
                                              <a href="{{route('user.subscriptions')}}" class="btn btn-warning">{{tr('subscriptions')}}</a>
 
@@ -134,4 +194,33 @@
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
+
+<script>
+    
+    function change_adstatus(val) {
+
+        var url = "{{route('user.ad_request')}}";
+
+        var id = "{{Auth::user()->id}}";
+        var token = "{{Auth::user()->token}}";
+
+        $.ajax({
+            url : url,
+            method : "POST",
+            data : {id : id , token : token, status : val},
+            success : function(result) {
+                console.log(result);
+
+                if (result == true) {
+                    window.location.reload();
+                }
+            }
+
+        });
+
+    }
+</script>
 @endsection
