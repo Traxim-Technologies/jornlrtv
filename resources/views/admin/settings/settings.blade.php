@@ -111,6 +111,20 @@
 
                                 @endif
 
+                                 <div class="col-lg-3">
+                                     <div class="form-group">
+                                        <label for="viewers_count_per_video">{{tr('viewers_count_per_video')}}</label>
+                                        <input type="text" class="form-control" value="{{Setting::get('viewers_count_per_video')  }}" name="viewers_count_per_video" id="viewers_count_per_video" placeholder="{{tr('viewers_count_per_video')}}" pattern="[0-9]{1,}">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="amount_per_video">{{tr('amount_per_video')}}</label>
+                                        <input type="text" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="expiry_days" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
+                                    </div>   
+                                </div>
+
 
                                 <div class="col-lg-12">
                                     <div class="form-group">

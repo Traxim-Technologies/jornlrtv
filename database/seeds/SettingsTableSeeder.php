@@ -47,7 +47,7 @@ class SettingsTableSeeder extends Seeder
             ],
             [
 		        'key' => 'is_subscription',
-		        'value' => 1
+		        'value' => 0
 		    ],
 		    [
 		        'key' => 'installation_process',
@@ -141,6 +141,14 @@ class SettingsTableSeeder extends Seeder
 		    [
 		    	'key'=>'is_spam',
 		    	'value'=>1,
+		    ],
+		    [
+		    	'key'=>'viewers_count_per_video',
+		    	'value'=>10,
+		    ],
+		    [
+		    	'key'=>'amount_per_video',
+		    	'value'=>100,
 		    ]
 		]);
     }

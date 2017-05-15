@@ -675,5 +675,7 @@ return array(
 	'ad_status'=>'Ad Status',
 	'disable_ad'=>'Disable Ad',
 	'enable_ad'=>'Enable Ad',
+	'viewers_count_per_video'=> 'Viewers Count Per Video',
+	'amount_per_video'=>'Amount Per Video'
 
 );
