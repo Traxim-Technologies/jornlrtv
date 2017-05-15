@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', tr('add_category'))
+@section('title', tr('add_channel'))
 
-@section('content-header', tr('add_category'))
+@section('content-header', tr('add_channel'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.categories')}}"><i class="fa fa-suitcase"></i> {{tr('categories')}}</a></li>
-    <li class="active">{{tr('add_category')}}</li>
+    <li><a href="{{route('admin.channels')}}"><i class="fa fa-suitcase"></i> {{tr('channels')}}</a></li>
+    <li class="active">{{tr('add_channel')}}</li>
 @endsection
 
 @section('content')
@@ -21,11 +21,11 @@
             <div class="box box-primary">
 
                 <div class="box-header label-primary">
-                    <b style="font-size:18px;">{{tr('add_category')}}</b>
-                    <a href="{{route('admin.categories')}}" class="btn btn-default pull-right">{{tr('categories')}}</a>
+                    <b style="font-size:18px;">{{tr('add_channel')}}</b>
+                    <a href="{{route('admin.channels')}}" class="btn btn-default pull-right">{{tr('channels')}}</a>
                 </div>
 
-                <form class="form-horizontal" action="{{route('admin.save.category')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form class="form-horizontal" action="{{route('admin.save.channel')}}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
@@ -44,12 +44,7 @@
                             </div>
                         </div>
 
-                        <div class="checkbox">
-                            <label for="picture" class="col-sm-1 control-label"></label>
-                            <label>
-                                <input type="checkbox" name="is_series" value="1"> {{tr('is_series')}}
-                            </label>
-                        </div>
+                        
 
                     </div>
 

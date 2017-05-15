@@ -16,6 +16,8 @@ use App\AdminVideoImage;
 
 use App\User;
 
+use App\Subscription;
+
 use App\UserPayment;
 
 use App\UserHistory;
@@ -47,6 +49,8 @@ use App\Jobs\CompressVideo;
 use App\VideoAd;
 
 use App\AdsDetail;
+
+use App\Channel;
 
 
 use App\Jobs\NormalPushNotification;
@@ -145,7 +149,7 @@ class AdminController extends Controller
             }
                 
             $admin->remember_token = Helper::generate_token();
-           //  $admin->is_activated = 1;
+           // @ $admin->is_activated = 1;
             $admin->save();
 
             return back()->with('flash_success', tr('admin_not_profile'));
@@ -1885,6 +1889,297 @@ class AdminController extends Controller
         $result = EnvEditorHelper::getEnvValues();
 
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
+    }
+
+
+
+
+    public function channels() {
+
+        $channels = Channel::orderBy('channels.created_at', 'desc')
+                        ->distinct('channels.id')
+                        ->get();
+
+        return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels');
+    }
+
+    public function add_channel() {
+        return view('admin.channels.add-channel')->with('page' ,'channels')->with('sub_page' ,'add-channel');
+    }
+
+    public function edit_channel($id) {
+
+        $channel = Channel::find($id);
+
+        return view('admin.channels.edit-channel')->with('channel' , $channel)->with('page' ,'channels')->with('sub_page' ,'edit-channel');
+    }
+
+    public function add_channel_process(Request $request) {
+
+        if($request->id != '') {
+            $validator = Validator::make( $request->all(), array(
+                        'name' => 'required|max:255',
+                        'picture' => 'mimes:jpeg,jpg,bmp,png',
+                    )
+                );
+        } else {
+            $validator = Validator::make( $request->all(), array(
+                    'name' => 'required|max:255',
+                    'picture' => 'required|mimes:jpeg,jpg,bmp,png',
+                )
+            );
+        
+        }
+       
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+                $channel = Channel::find($request->id);
+                $message = tr('admin_not_channel');
+                if($request->hasFile('picture')) {
+                    Helper::delete_picture($channel->picture, "/uploads/");
+                }
+            } else {
+                $message = tr('admin_add_channel');
+                //Add New User
+                $channel = new Channel;
+                $channel->is_approved = DEFAULT_TRUE;
+                $channel->created_by = ADMIN;
+            }
+
+            $channel->name = $request->has('name') ? $request->name : '';
+
+            $channel->status = 1;
+            
+            if($request->hasFile('picture') && $request->file('picture')->isValid()) {
+                $channel->picture = Helper::normal_upload_picture($request->file('picture'));
+            }
+
+            $channel->save();
+
+            if($category) {
+                return back()->with('flash_success', $message);
+            } else {
+                return back()->with('flash_error', tr('admin_not_error'));
+            }
+
+        }
+    
+    }
+
+    public function approve_channel(Request $request) {
+
+        $channel = Channel::find($request->id);
+
+        $channel->is_approved = $request->status;
+
+        $channel->save();
+
+        if ($request->status == 0) {
+           
+            foreach($category->videoTape as $video)
+            {                
+                $video->is_approved = $request->status;
+                $video->save();
+            } 
+
+        }
+
+        $message = tr('admin_not_channel_decline');
+
+        if($category->is_approved == DEFAULT_TRUE){
+
+            $message = tr('admin_not_channel_approve');
+        }
+
+        return back()->with('flash_success', $message);
+    
+    }
+
+    public function delete_channel(Request $request) {
+        
+        $channel = Channel::where('id' , $request->category_id)->first();
+
+        if($channel) {          
+            $channel->delete();
+            return back()->with('flash_success',tr('admin_not_channel_del'));
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+    }
+
+
+     public function subscriptions() {
+
+        $data = Subscription::orderBy('created_at','desc')->get();
+
+        return view('admin.subscriptions.index')->withPage('hotels')
+                        ->with('data' , $data)
+                        ->with('sub_page','view-subscription');        
+
+    }
+
+    public function subscription_create() {
+
+        return view('admin.subscriptions.create')->with('page' , 'subscriptions')
+                    ->with('sub_page','subscriptions-add');
+    }
+
+    public function subscription_edit($unique_id) {
+
+        $data = Subscription::where('unique_id' ,$unique_id)->first();
+
+        return view('admin.subscriptions.edit')->withData($data)
+                    ->with('sub_page','subscriptions-view')
+                    ->with('page' , 'subscriptions ');
+
+    }
+
+    public function subscription_save(Request $request) {
+
+        $validator = Validator::make($request->all(),[
+                'title' => 'required|max:255',
+                'plan' => 'required',
+                'amount' => 'required',
+                'picture' => 'mimes:jpeg,png,jpg'
+        ]);
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+
+                $model = Subscription::find($request->id);
+
+
+                if($request->hasFile('image')) {
+
+                    $model->picture ? Helper::delete_picture('subscriptions' , $model->picture) : "";
+
+                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+                    
+                    $request->request->add(['picture' => $picture , 'image' => '']);
+
+                }
+
+                $model->update($request->all());
+
+            } else {
+
+                if($request->hasFile('picture')) {
+
+                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+
+                    $request->request->add(['picture' => $picture , 'image'=> '']);
+                }
+
+                $model = Subscription::create($request->all());
+
+                $model->status = 1;
+
+                $model->unique_id = $request->title;
+
+                $model->save();
+            }
+        
+            if($model) {
+                return redirect(route('admin.subscriptions.view', $model->unique_id))->with('flash_success', $request->id ? tr('subscription_update_success') : tr('subscription_create_success'));
+
+            } else {
+                return back()->with('flash_error',tr('admin_not_error'));
+            }
+        }
+    
+        
+    }
+
+    /** 
+     * 
+     * Subscription View
+     *
+     */
+
+    public function subscription_view($unique_id) {
+
+        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
+
+            return view('admin.subscriptions.view')
+                        ->with('data' , $data)
+                        ->withPage('subscriptions')
+                        ->with('sub_page','subscriptions-view');
+
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+   
+    }
+
+
+    public function subscription_delete($id) {
+
+        if($data = Subscription::where('id',$id)->first()->delete()) {
+
+            return back()->with('flash_success',tr('subscription_delete_success'));
+
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+        
+    }
+
+    /** 
+     * Subscription status change
+     * 
+     *
+     */
+
+    public function subscription_status($unique_id) {
+
+        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
+
+            $data->status  = $data->status ? 0 : 1;
+
+            $data->save();
+
+            return back()->with('flash_success' , $data->status ? tr('subscription_approve_success') : tr('subscription_decline_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+            
+        }
+    }
+
+    public function user_subscription_payments($id = "") {
+
+        $page = "user-payments";
+
+        $base_query = UserPayment::orderBy('created_at' , 'desc');
+
+        $subscription = [];
+
+        if($id) {
+
+            $subscription = Subscription::find($id);
+
+            $base_query = $base_query->where('subscription_id' , $id);
+
+            $page = "user-payments";
+        }
+
+        $payments = $base_query->get();
+
+        return view('admin.users.subscription_payments')->with('data' , $payments)->withPage($page)->with('sub_page','')->with('subscription' , $subscription); 
+    
     }
 
 

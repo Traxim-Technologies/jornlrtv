@@ -264,45 +264,21 @@ Route::group(['prefix' => 'admin'], function(){
 
     // Categories
 
-    Route::get('/categories', 'AdminController@categories')->name('admin.categories');
+    Route::get('/channels', 'AdminController@channels')->name('admin.channels');
 
-    Route::get('/add/category', 'AdminController@add_category')->name('admin.add.category');
+    Route::get('/add/channel', 'AdminController@add_channel')->name('admin.add.channel');
 
-    Route::get('/edit/category/{id}', 'AdminController@edit_category')->name('admin.edit.category');
+    Route::get('/edit/channel/{id}', 'AdminController@edit_channel')->name('admin.edit.channel');
 
-    Route::post('/add/category', 'AdminController@add_category_process')->name('admin.save.category');
+    Route::post('/add/channel', 'AdminController@add_channel_process')->name('admin.save.channel');
 
-    Route::get('/delete/category', 'AdminController@delete_category')->name('admin.delete.category');
+    Route::get('/delete/channel', 'AdminController@delete_channel')->name('admin.delete.channel');
 
-    Route::get('/view/category/{id}', 'AdminController@view_category')->name('admin.view.category');
+    Route::get('/view/channel/{id}', 'AdminController@view_channel')->name('admin.view.channel');
 
-    Route::get('/category/approve', 'AdminController@approve_category')->name('admin.category.approve');
+    Route::get('/channel/approve', 'AdminController@approve_channel')->name('admin.channel.approve');
 
-    // Admin Sub Categories
-
-    Route::get('/subCategories/{category}', 'AdminController@sub_categories')->name('admin.sub_categories');
-
-    Route::get('/add/subCategory/{category}', 'AdminController@add_sub_category')->name('admin.add.sub_category');
-
-    Route::get('/edit/subCategory/{category_id}/{sub_category_id}', 'AdminController@edit_sub_category')->name('admin.edit.sub_category');
-
-    Route::post('/add/subCategory', 'AdminController@add_sub_category_process')->name('admin.save.sub_category');
-
-    Route::get('/delete/subCategory/{id}', 'AdminController@delete_sub_category')->name('admin.delete.sub_category');
-
-    Route::get('/view/subCategory/{id}', 'AdminController@view_sub_category')->name('admin.view.sub_category');
-
-    Route::get('/subCategory/approve', 'AdminController@approve_sub_category')->name('admin.sub_category.approve');
-
-    // Genre
-
-    Route::post('/save/genre' , 'AdminController@save_genre')->name('admin.save.genre');
-
-    Route::get('/genre/approve', 'AdminController@approve_genre')->name('admin.genre.approve');
-
-    Route::get('/delete/genre/{id}', 'AdminController@delete_genre')->name('admin.delete.genre');
-
-    Route::get('/view/genre/{id}', 'AdminController@view_genre')->name('admin.view.genre');
+    
 
     // Videos
 
@@ -383,6 +359,9 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::post('/custom/push', 'AdminController@custom_push_process')->name('admin.send.push');
 
+
+    // Ads
+
     Route::get('ads_create/{video_tape_id}','AdminController@ads_create')->name('admin.ads_create');
 
     Route::post('save_ads','AdminController@save_ads')->name('admin.save_ads');
@@ -392,6 +371,25 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('ads_index','AdminController@ads_index')->name('admin.ads_index');
 
     Route::post('add_between_ads', 'AdminController@add_between_ads')->name('admin.add.between_ads');
+
+
+    // Subscriptions
+
+    Route::get('users/subscription/payments/{id?}' , 'AdminController@user_subscription_payments')->name('admin.user.subscription.payments');
+
+    Route::get('/subscriptions', 'AdminController@subscriptions')->name('admin.subscriptions.index');
+
+    Route::get('/subscriptions/create', 'AdminController@subscription_create')->name('admin.subscriptions.create');
+
+    Route::get('/subscriptions/edit/{id}', 'AdminController@subscription_edit')->name('admin.subscriptions.edit');
+
+    Route::post('/subscriptions/create', 'AdminController@subscription_save')->name('admin.subscriptions.save');
+
+    Route::get('/subscriptions/delete/{id}', 'AdminController@subscription_delete')->name('admin.subscriptions.delete');
+
+    Route::get('/subscriptions/view/{id}', 'AdminController@subscription_view')->name('admin.subscriptions.view');
+
+    Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('admin.subscriptions.status');
 
 });
 
@@ -498,7 +496,7 @@ Route::group([], function(){
 
     Route::get('/trending', 'UserController@trending')->name('user.trending');
 
-    Route::get('/subscriptions', 'UserController@subscriptions')->name('user.subscriptions');
+    Route::get('/user_subscriptions', 'UserController@subscriptions')->name('user.subscriptions');
 
 });
 

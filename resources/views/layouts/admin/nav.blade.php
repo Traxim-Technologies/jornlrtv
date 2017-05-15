@@ -54,14 +54,14 @@
             
             </li> */?>
 
-            <li class="treeview" id="categories">
-                <a href="{{route('admin.categories')}}">
-                    <i class="fa fa-suitcase"></i> <span>{{tr('categories')}}</span> <i class="fa fa-angle-left pull-right"></i>
+            <li class="treeview" id="channels">
+                <a href="{{route('admin.channels')}}">
+                    <i class="fa fa-suitcase"></i> <span>{{tr('channels')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="add-category"><a href="{{route('admin.add.category')}}"><i class="fa fa-circle-o"></i>{{tr('add_category')}}</a></li>
-                    <li id="view-categories"><a href="{{route('admin.categories')}}"><i class="fa fa-circle-o"></i>{{tr('view_categories')}}</a></li>
+                    <li id="add-channel"><a href="{{route('admin.add.channel')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
+                    <li id="view-channels"><a href="{{route('admin.channels')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
                 </ul>
 
             </li>
@@ -111,6 +111,20 @@
                 </ul>
 
             </li>*/ ?>
+
+
+            <li class="treeview" id="subscriptions">
+
+                <a href="#">
+                    <i class="fa fa-key"></i> <span>{{tr('subscriptions')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+                <ul class="treeview-menu">
+
+                    <li id="subscriptions-add"><a href="{{route('admin.subscriptions.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_subscription')}}</a></li>
+                    <li id="subscriptions-view"><a href="{{route('admin.subscriptions.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_subscriptions')}}</a></li>
+                </ul>
+            </li>
 
             
             <li id="payments">

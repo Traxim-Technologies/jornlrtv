@@ -665,5 +665,27 @@
         }
 
 
+        public static function upload_avatar($folder,$picture) {
+
+            $file_name = Helper::file_name();
+
+            $ext = $picture->getClientOriginalExtension();
+
+            $local_url = $file_name . "." . $ext;
+
+            $ext = $picture->getClientOriginalExtension();
+
+            $picture->move(public_path()."/".$folder, $file_name . "." . $ext);
+
+            $url = Helper::web_url().'/'.$folder."/".$local_url;
+
+            return $url;
+        
+        }
+
+        public static function delete_avatar($folder,$picture) {
+            File::delete( public_path() . "/".$folder."/". basename($picture));
+            return true;
+        }
 
     }

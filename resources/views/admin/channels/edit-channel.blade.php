@@ -6,8 +6,8 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.categories')}}"><i class="fa fa-suitcase"></i> {{tr('categories')}}</a></li>
-    <li class="active">{{tr('edit_category')}}</li>
+    <li><a href="{{route('admin.channels')}}"><i class="fa fa-suitcase"></i> {{tr('channels')}}</a></li>
+    <li class="active">{{tr('edit_channel')}}</li>
 @endsection
 
 @section('content')

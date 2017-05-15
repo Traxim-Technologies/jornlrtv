@@ -11,7 +11,7 @@ class Subscription extends Model
      *
      * @var array
      */
-    protected $fillable = array('title', 'description', 'plan' , 'amount');
+    protected $fillable = array('title', 'description', 'plan' , 'amount', 'picture', 'unique_id', 'total_subscription', 'status');
 
     /**
 	 * Save the unique ID 

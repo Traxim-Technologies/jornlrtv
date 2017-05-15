@@ -546,3 +546,11 @@ function getFlagVideos($id) {
     // Return array of id's
     return $model;
 }
+
+function total_subscription_revenue($id = "") {
+
+    if($id) {
+        return UserPayment::where('subscription_id' , $id)->sum('amount');
+    }
+    return UserPayment::sum('amount');
+}
