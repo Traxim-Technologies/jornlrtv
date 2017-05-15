@@ -23,6 +23,12 @@ Route::get('redis/test',function(){
     dd($views);
 });
 
+// Ad Types
+
+if(!defined('PRE_AD')) define('PRE_AD', 1);
+if(!defined('POST_AD')) define('POST_AD', 2);
+if(!defined('BETWEEN_AD')) define('BETWEEN_AD', 3);
+
 if(!defined('REPORT_VIDEO_KEY')) define('REPORT_VIDEO_KEY', 'REPORT_VIDEO');
 if (!defined('IMAGE_RESOLUTIONS_KEY')) define('IMAGE_RESOLUTIONS_KEY', 'IMAGE_RESOLUTIONS');
 if (!defined('VIDEO_RESOLUTIONS_KEY')) define('VIDEO_RESOLUTIONS_KEY', 'VIDEO_RESOLUTIONS');
@@ -348,8 +354,6 @@ Route::group(['prefix' => 'admin'], function(){
     Route::post('save_common_settings' , 'AdminController@save_common_settings')->name('admin.save.common-settings');
 
     Route::get('payment/settings' , 'AdminController@payment_settings')->name('admin.payment.settings');
-
-    Route::get('theme/settings' , 'AdminController@theme_settings')->name('admin.theme.settings');
     
     Route::post('settings' , 'AdminController@settings_process')->name('admin.save.settings');
 
@@ -378,6 +382,16 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/custom/push', 'AdminController@custom_push')->name('admin.push');
 
     Route::post('/custom/push', 'AdminController@custom_push_process')->name('admin.send.push');
+
+    Route::get('ads_create/{video_tape_id}','AdminController@ads_create')->name('admin.ads_create');
+
+    Route::post('save_ads','AdminController@save_ads')->name('admin.save_ads');
+
+    Route::get('ads_edit/{id}','AdminController@ads_edit')->name('admin.ads_edit');
+
+    Route::get('ads_index','AdminController@ads_index')->name('admin.ads_index');
+
+    Route::post('add_between_ads', 'AdminController@add_between_ads')->name('admin.add.between_ads');
 
 });
 

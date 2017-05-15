@@ -56,7 +56,7 @@
 							      </td>
 							      <td>
 							      	@if($user->user_type)
-                                        {{get_expiry_days($user->id)}}
+                                        {{get_expiry_days($user->id)['days']}}
                                     @endif
 							      </td>
 							 

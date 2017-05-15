@@ -44,6 +44,10 @@ use Log;
 
 use App\Jobs\CompressVideo;
 
+use App\VideoAd;
+
+use App\AdsDetail;
+
 
 use App\Jobs\NormalPushNotification;
 
@@ -73,9 +77,11 @@ class AdminController extends Controller
         $admin->save();
         
         $user_count = User::count();
+
         $provider_count = Moderator::count();
+
         $video_count = VideoTape::count();
-        // $trending = trending();
+ 
         $recent_videos = Helper::recently_added();
 
         $get_registers = get_register_count();
@@ -139,7 +145,7 @@ class AdminController extends Controller
             }
                 
             $admin->remember_token = Helper::generate_token();
-            $admin->is_activated = 1;
+           //  $admin->is_activated = 1;
             $admin->save();
 
             return back()->with('flash_success', tr('admin_not_profile'));
@@ -258,7 +264,7 @@ class AdminController extends Controller
             
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
-            $user->is_activated = 1;                   
+            // $user->is_activated = 1;                   
 
             if($request->id == ''){
                 $email_data['name'] = $user->name;
@@ -366,7 +372,7 @@ class AdminController extends Controller
                 $user->moderator_id = $moderator->id;
                 $user->save();
 
-                $moderator->is_activated = 1;
+                // $moderator->is_activated = 1;
                 $moderator->is_user = 1;
                 $moderator->save();
 
@@ -390,7 +396,7 @@ class AdminController extends Controller
                 $user->save();
             }
 
-            $moderator->is_activated = 0;
+            // $moderator->is_activated = 0;
 
             $moderator->save();
 
@@ -1785,7 +1791,7 @@ class AdminController extends Controller
      */
     public function spam_videos() {
         // Load all the videos from flag table
-        $model = Flag::groupBy('video_id')->get();
+        $model = Flag::groupBy('video_tape_id')->get();
         // Return array of values
         return view('admin.spam_videos.spam_videos')->with('model' , $model)
                         ->with('page' , 'Spam Videos')
@@ -1881,4 +1887,36 @@ class AdminController extends Controller
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 
+
+    public function add_between_ads(Request $request) {
+
+        $index = $request->index + 1;
+        
+        return view('admin.ads._sub_form')->with('index' , $index);
+    }
+
+
+    public function ads_create(Request $request) {
+
+        $vModel = VideoTape::find($request->video_tape_id);
+
+        $videoPath = '';
+
+        $video_pixels = '';
+
+        if ($vModel) {
+
+            $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
+            $video_pixels = $vModel->video_resolutions ? 'original,'.$vModel->video_resolutions : 'original';
+
+        }
+
+        $model = new VideoAd();
+
+        $adDetail = new AdsDetail();
+
+        $index = 0;
+
+        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'video_ads')->with('sub_page', 'create_ad')->with('model', $model)->with('adDetail', $adDetail)->with('index', $index);
+    }
 }

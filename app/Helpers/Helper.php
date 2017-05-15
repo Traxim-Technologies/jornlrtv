@@ -637,4 +637,33 @@
             }
         }
 
+
+        public static function recently_added($web = NULL , $skip = 0) {
+
+            $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->videoResponse()
+                            ->orderby('video_tapes.created_at' , 'desc');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
+
+                if($flagVideos) {
+                    $videos_query->whereNotIn('video_tapes.id',$flagVideos);
+                }
+            }
+
+            if($web) {
+                $videos = $videos_query->paginate(16);
+
+            } else {
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
+                            ->get();
+            }
+
+            return $videos;
+        }
+
+
+
     }

@@ -666,4 +666,13 @@ return array(
 	'warning_error_queue'=>'Redis Queue Driver not Configured. Kindly configure and upload the videos to compress queue videos',
 	'choose'=>'Choose',
 	'subscriptions'=>'Subscriptions',
+	'create_ad'=>'Create Ad',
+	'video_ads'=>'Video Ads',
+	'view_ads'=>'View Ads',
+	'pre_ad'=>'Pre Ad',
+	'ad_type'=>'Ad Type',
+	'ad_time'=>'Ad Time',
+	'post_ad'=>'Post Ad',
+	'between_ad'=>'Between Ad',
+	'video_time'=>'Video Time',
 );

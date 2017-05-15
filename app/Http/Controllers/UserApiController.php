@@ -224,7 +224,7 @@ class UserApiController extends Controller
                     }
                 }
 
-                $user->is_activated = 1;
+                // $user->is_activated = 1;
 
                 $user->save();
 
@@ -321,7 +321,7 @@ class UserApiController extends Controller
 
                 if($user = User::where('email', '=', $request->email)->first()) {
 
-                    if($user->is_activated) {
+                    // if($user->is_activated) {
 
                         if(Hash::check($request->password, $user->password)){
 
@@ -331,9 +331,9 @@ class UserApiController extends Controller
                         } else {
                             $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
                         }
-                    } else {
+                    /*} else {
                         $response_array = ['success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144];
-                    }
+                    }*/
 
                 } else {
                     $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
