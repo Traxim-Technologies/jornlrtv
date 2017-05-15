@@ -396,4 +396,28 @@ a:focus {
 }
 .yt-thumb-clip > img {
     width: 100%;
+<<<<<<< HEAD
+}
+.slide-box.recom-box.big-box-slide {
+    float: none;
+    height: auto;
+    width: 100%;
+}
+.slide-image.recom-image.hbb {
+    height: 100%;
+    max-height: 100%;
+}
+.y-content .page-inner {
+    margin-top: 58px;
+}
+.big-section-main {
+    padding: 0 15px;
+}
+.abt-sec-head h5 {
+    color: #333;
+    font-weight: 500;
+    line-height: 24px;
+    padding: 20px;
+=======
+>>>>>>> 1725b05b7b9a6264267f1e1827d817358723f94b
 }
