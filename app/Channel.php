@@ -30,4 +30,8 @@ class Channel extends Model
 
     }
 
+    public function getVideos() {
+        return $this->hasMany('App\VideoTape')->videoResponse()->where('status', DEFAULT_TRUE)->where('is_approved', DEFAULT_TRUE);
+    }
+
 }
