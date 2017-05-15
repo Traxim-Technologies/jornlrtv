@@ -102,10 +102,10 @@ class InstallationController extends Controller {
                     } else {
 
                         if($temp_setting->value) {
-                            Helper::delete_picture($temp_setting->value, "/uploads/");
+                            Helper::delete_picture($temp_setting->value, "/uploads/images/");
                         }
 
-                        $icon = Helper::normal_upload_picture($site_icon);
+                        $icon = Helper::normal_upload_picture($site_icon, "/uploads/images/");
                     }
 
                     $temp_setting->value = $icon;
@@ -116,9 +116,9 @@ class InstallationController extends Controller {
                         $logo = $temp_setting->value;
                     } else {
                         if($temp_setting->value) {
-                            Helper::delete_picture($temp_setting->value, "/uploads/");
+                            Helper::delete_picture($temp_setting->value, "/uploads/images/");
                         }
-                        $logo = Helper::normal_upload_picture($picture);
+                        $logo = Helper::normal_upload_picture($picture, "/uploads/images/");
                     }
 
                     $temp_setting->value = $logo;

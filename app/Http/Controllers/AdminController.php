@@ -144,8 +144,8 @@ class AdminController extends Controller
             $admin->address = $request->has('address') ? $request->address : $admin->address;
 
             if($request->hasFile('picture')) {
-                Helper::delete_picture($admin->picture, "/uploads/");
-                $admin->picture = Helper::normal_upload_picture($request->picture);
+                Helper::delete_picture($admin->picture, "/uploads/images/");
+                $admin->picture = Helper::normal_upload_picture($request->picture, "/uploads/images/");
             }
                 
             $admin->remember_token = Helper::generate_token();
@@ -874,11 +874,11 @@ class AdminController extends Controller
 
             $video->publish_time = date('Y-m-d H:i:s', strtotime($request->publish_time));
             
-            $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
+            $video->default_image = Helper::normal_upload_picture($request->file('default_image'), "/uploads/images/");
 
             if($request->is_banner) {
                 $video->is_banner = 1;
-                $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
+                $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'), "/uploads/images/");
             }
 
             $video->ratings = $request->ratings;
@@ -1172,13 +1172,13 @@ class AdminController extends Controller
 
             if($request->hasFile('default_image')) {
                 Helper::delete_picture($video->default_image, "/uploads/images/");
-                $video->default_image = Helper::normal_upload_picture($request->file('default_image'));
+                $video->default_image = Helper::normal_upload_picture($request->file('default_image'), "/uploads/images/");
             }
 
             if($video->is_banner == 1) {
                 if($request->hasFile('banner_image')) {
                     Helper::delete_picture($video->banner_image, "/uploads/images/");
-                    $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'));
+                    $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'), "/uploads/images/");
                 }
             }
 
@@ -1620,10 +1620,10 @@ class AdminController extends Controller
                     if($request->hasFile('site_icon')) {
                         
                         if($setting->value) {
-                            Helper::delete_picture($setting->value, "/uploads/");
+                            Helper::delete_picture($setting->value, "/uploads/images/");
                         }
 
-                        $setting->value = Helper::normal_upload_picture($request->file('site_icon'));
+                        $setting->value = Helper::normal_upload_picture($request->file('site_icon'), "/uploads/images/");
                     
                     }
                     
@@ -1633,10 +1633,10 @@ class AdminController extends Controller
 
                         if($setting->value) {
 
-                            Helper::delete_picture($setting->value, "/uploads/");
+                            Helper::delete_picture($setting->value, "/uploads/images/");
                         }
 
-                        $setting->value = Helper::normal_upload_picture($request->file('site_logo'));
+                        $setting->value = Helper::normal_upload_picture($request->file('site_logo'),"/uploads/images/");
                     }
 
                 } else if($setting->key == 'streaming_url') {
@@ -1904,14 +1904,19 @@ class AdminController extends Controller
     }
 
     public function add_channel() {
-        return view('admin.channels.add-channel')->with('page' ,'channels')->with('sub_page' ,'add-channel');
+
+        $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->get();
+
+        return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
     }
 
     public function edit_channel($id) {
 
         $channel = Channel::find($id);
 
-        return view('admin.channels.edit-channel')->with('channel' , $channel)->with('page' ,'channels')->with('sub_page' ,'edit-channel');
+        $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->get();
+
+        return view('admin.channels.edit-channel')->with('channel' , $channel)->with('page' ,'channels')->with('sub_page' ,'edit-channel')->with('users', $users);
     }
 
     public function add_channel_process(Request $request) {
@@ -1939,29 +1944,48 @@ class AdminController extends Controller
 
             if($request->id != '') {
                 $channel = Channel::find($request->id);
+
                 $message = tr('admin_not_channel');
+
                 if($request->hasFile('picture')) {
-                    Helper::delete_picture($channel->picture, "/uploads/");
+                    Helper::delete_picture($channel->picture, "/uploads/channel/picture/");
                 }
+
+                if($request->hasFile('cover')) {
+                    Helper::delete_picture($channel->cover, "/uploads/channel/cover/");
+                }
+
             } else {
                 $message = tr('admin_add_channel');
                 //Add New User
                 $channel = new Channel;
+
                 $channel->is_approved = DEFAULT_TRUE;
-                $channel->created_by = ADMIN;
+
+               //  $channel->created_by = ADMIN;
             }
 
             $channel->name = $request->has('name') ? $request->name : '';
 
-            $channel->status = 1;
+            $channel->description = $request->has('description') ? $request->description : '';
+
+            $channel->user_id = $request->has('user_id') ? $request->user_id : '';
+
+            $channel->status = DEFAULT_TRUE;
+
+            $channel->unique_id =  $channel->name;
             
             if($request->hasFile('picture') && $request->file('picture')->isValid()) {
-                $channel->picture = Helper::normal_upload_picture($request->file('picture'));
+                $channel->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/channel/picture/");
+            }
+
+            if($request->hasFile('cover') && $request->file('cover')->isValid()) {
+                $channel->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channel/cover/");
             }
 
             $channel->save();
 
-            if($category) {
+            if($channel) {
                 return back()->with('flash_success', $message);
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));
@@ -1981,7 +2005,7 @@ class AdminController extends Controller
 
         if ($request->status == 0) {
            
-            foreach($category->videoTape as $video)
+            foreach($channel->videoTape as $video)
             {                
                 $video->is_approved = $request->status;
                 $video->save();
@@ -1991,7 +2015,7 @@ class AdminController extends Controller
 
         $message = tr('admin_not_channel_decline');
 
-        if($category->is_approved == DEFAULT_TRUE){
+        if($channel->is_approved == DEFAULT_TRUE){
 
             $message = tr('admin_not_channel_approve');
         }
@@ -2002,7 +2026,7 @@ class AdminController extends Controller
 
     public function delete_channel(Request $request) {
         
-        $channel = Channel::where('id' , $request->category_id)->first();
+        $channel = Channel::where('id' , $request->channel_id)->first();
 
         if($channel) {          
             $channel->delete();

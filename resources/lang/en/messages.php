@@ -655,6 +655,8 @@ return array(
 	'subscription_approve_success' => 'Subscription Approved successfully',
 	'subscription_decline_success' => 'Subscription Declined successfully',
 
+	'select_user'=>'Select User',
+
 	'total_subscription' => 'Total Subscriptions',
 
 	'create_ad'=>'Create Ad',
@@ -666,4 +668,6 @@ return array(
 	'post_ad'=>'Post Ad',
 	'between_ad'=>'Between Ad',
 	'video_time'=>'Video Time',
+
+	'cover'=>'Cover'
 );

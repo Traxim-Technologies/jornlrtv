@@ -389,7 +389,7 @@
             return $s3_url;
         }
 
-        public static function normal_upload_picture($picture)
+        public static function normal_upload_picture($picture, $path)
         {
             $s3_url = "";
 
@@ -399,7 +399,7 @@
 
             $local_url = $file_name . "." . $ext;
 
-            $path = '/uploads/images/';
+            // $path = '/uploads/images/';
 
             $inputFile = base_path('public'.$path.$local_url);
 

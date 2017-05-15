@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', tr('edit_category'))
+@section('title', tr('edit_channel'))
 
-@section('content-header', tr('edit_category'))
+@section('content-header', tr('edit_channel'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
@@ -21,20 +21,41 @@
             <div class="box box-primary">
 
                 <div class="box-header label-primary">
-                    <b style="font-size:18px;">{{tr('edit_category')}}</b>
-                    <a href="{{route('admin.add.category')}}" class="btn btn-default pull-right">{{tr('add_category')}}</a>
+                    <b style="font-size:18px;">{{tr('edit_channel')}}</b>
+                    <a href="{{route('admin.add.channel')}}" class="btn btn-default pull-right">{{tr('add_channel')}}</a>
                 </div>
 
-                <form class="form-horizontal" action="{{route('admin.save.category')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form class="form-horizontal" action="{{route('admin.save.channel')}}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
-                        <input type="hidden" name="id" value="{{$category->id}}">
+                        <input type="hidden" name="id" value="{{$channel->id}}">
+
+                         <div class="form-group">
+                            <label for="name" class="col-sm-1 control-label">{{tr('user_name')}}</label>
+                            <div class="col-sm-10">
+                                
+                                <select id="user_id" name="user_id" class="form-control">
+                                    <option value="">{{tr('select_user')}}</option>
+                                    @foreach($users as $user)
+                                        <option value="{{$user->id}}" @if($user->id == $channel->user_id) selected @endif>{{$user->name}}</option>
+                                    @endforeach
+                                </select>
+                               
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="name" class="col-sm-1 control-label">{{tr('name')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" required class="form-control" value="{{$category->name}}" id="name" name="name" placeholder="Category Name">
+                                <input type="text" required class="form-control" value="{{$channel->name}}" id="name" name="name" placeholder="Category Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="col-sm-1 control-label">{{tr('description')}}</label>
+                            <div class="col-sm-10">
+                                <textarea required class="form-control" id="description" name="description" placeholder="Description">{{$channel->description}}</textarea> 
                             </div>
                         </div>
 
@@ -42,8 +63,8 @@
 
                             <label for="picture" class="col-sm-1 control-label">{{tr('picture')}}</label>
 
-                            @if($category->picture)
-                                <img style="height: 90px;margin-bottom: 15px; border-radius:2em;" src="{{$category->picture}}">
+                            @if($channel->picture)
+                                <img style="height: 90px;margin-bottom: 15px; border-radius:2em;" src="{{$channel->picture}}">
                             @endif
 
                             <div class="col-sm-10" style="margin-left:70px !important">
@@ -53,13 +74,19 @@
                             
                         </div>
 
-                        <div class="checkbox">
-                            <label for="picture" class="col-sm-1 control-label"></label>
-                            <label>
-                                <input type="checkbox" name="is_series" value="1" @if($category->is_series) checked @endif> {{tr('is_series')}}
-                            </label>
+                         <div class="form-group">
+                            <label for="cover" class="col-sm-1 control-label">{{tr('cover')}}</label>
+
+                            @if($channel->cover)
+                                <img style="height: 90px;margin-bottom: 15px; border-radius:2em;" src="{{$channel->cover}}">
+                            @endif
+                            <div class="col-sm-10">
+                                <input type="file" accept="image/png, image/jpeg" id="cover" name="cover" placeholder="{{tr('cover')}}">
+                                <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
+                            </div>
                         </div>
 
+                        
                     </div>
 
                     <div class="box-footer">

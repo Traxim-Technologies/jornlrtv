@@ -216,7 +216,7 @@ class UserApiController extends Controller
                 if($request->login_by == "manual") {
 
                     if($request->hasFile('picture')) {
-                        $user->picture = Helper::normal_upload_picture($request->file('picture'));
+                        $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
                     }
                 } else {
                     if($request->has('picture')) {
@@ -525,8 +525,8 @@ class UserApiController extends Controller
 
                 // Upload picture
                 if ($request->hasFile('picture') != "") {
-                    Helper::delete_picture($user->picture, "/uploads/"); // Delete the old pic
-                    $user->picture = Helper::normal_upload_picture($request->file('picture'));
+                    Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
+                    $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
                 }
 
                 $user->save();

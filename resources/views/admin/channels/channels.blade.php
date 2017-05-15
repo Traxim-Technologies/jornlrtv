@@ -30,7 +30,9 @@
 						    <tr>
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('channel')}}</th>
+						      <th>{{tr('user_name')}}</th>
 						      <th>{{tr('picture')}}</th>
+						      <th>{{tr('cover')}}</th>
 						      <th>{{tr('status')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
@@ -42,20 +44,22 @@
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$channel->name}}</td>
+							      	<td>{{$channel->getUser ? $channel->getUser->name : ''}}</td>
 							      	<td>
 	                                	<img style="height: 30px;" src="{{$channel->picture}}">
 	                            	</td>
 
-	                            	
-
-							      <td>
-							      		@if($channel->is_approved)
-							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else
-							       			<span class="label label-warning">{{tr('pending')}}</span>
-							       		@endif
-							       </td>
-							      <td>
+	                            	<td>
+	                                	<img style="height: 30px;" src="{{$channel->cover}}">
+	                            	</td>
+								    <td>
+								      		@if($channel->is_approved)
+								      			<span class="label label-success">{{tr('approved')}}</span>
+								       		@else
+								       			<span class="label label-warning">{{tr('pending')}}</span>
+								       		@endif
+								    </td>
+							     	<td>
             							<ul class="admin-action btn btn-default">
             								
             								<li class="dropup">
