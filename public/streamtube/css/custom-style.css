@@ -430,12 +430,22 @@ a:focus {
     float: right;
 	margin-top:20px;
 }
-.btn.btn-primary.create-btn-btn{
-    background-color: #d9230f;
-    border-color: #d9230f;
+.btn.create-btn-btn{
+    background-color: #126db3;
+    border-color: transparent;
+    border-radius: 3px;
     color: #fff;
-	border-radius: 0;
+    display: inline-block;
+    margin-left: 16px;
+    margin-top: 3px;
+    padding: 4px 15px;
 }
+.btn.create-btn-btn:hover, .btn.create-btn-btn:active, .btn.btn-primary.create-btn-btn:focus{
+    background-color: #155586;
+    color: #fff;
+    text-decoration: none;
+}
+
 .channel-header-profile-image {
     max-height: 100px;
     max-width: 100px;
@@ -482,9 +492,14 @@ a:focus {
 
 
 
+/*Media Queries start*/
 
-
-
+@media screen and (max-width: 996px){
+	.lohp-medium-shelves-container.col-md-6{
+		margin: 0;
+		padding: 0;
+	}
+}
 
 
 

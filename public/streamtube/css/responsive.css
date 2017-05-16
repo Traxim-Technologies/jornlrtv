@@ -125,6 +125,10 @@ videos.html responsive
 		margin-right: 0;
 		margin-left: 0;
 	}
+	.lohp-medium-shelves-container.col-md-6{
+		margin: 0;
+		padding: 0;
+	}
 }
 @media screen and (max-width: 935px){
 	.watch-video .container{
@@ -369,7 +373,7 @@ signup.html css
 	.signup-nav .you-image a {
     	float: left !important;
 	}
-	..y-button {
+	.y-button {
 	    /*float: right !important;*/
 	    /*margin-top: 10px !important;*/
 	    margin: 0 !important;

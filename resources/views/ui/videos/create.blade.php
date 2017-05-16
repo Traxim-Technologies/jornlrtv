@@ -220,7 +220,7 @@
 						
 						<div class="col-md-12">
 							<div class="btn-create-w-vd">
-					<button id="cancel-create" name="cancel" class="btn btn-primary create-btn-btn">cancel</button>
+					<button id="cancel-create" name="cancel" class="btn create-btn-btn">cancel</button>
 					<button id="done-create" name="Done" class="btn btn-success create-btn-btn">Done</button>
 
 					</div>
