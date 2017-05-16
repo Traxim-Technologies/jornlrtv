@@ -9,6 +9,7 @@ use Validator;
 use App\User;
 use Hash;
 use Log;
+use App\Channel;
 
 class CommonRepository {
 
@@ -148,6 +149,94 @@ class CommonRepository {
 
 	    return true;
 
+	}
+
+
+
+	public static function channel_save($request) {
+
+		if($request->id != '') {
+			
+            $validator = Validator::make( $request->all(), array(
+                        'name' => 'required|max:255',
+                        'picture' => 'mimes:jpeg,jpg,bmp,png',
+                    )
+                );
+        } else {
+            $validator = Validator::make( $request->all(), array(
+                    'name' => 'required|max:255',
+                    'picture' => 'required|mimes:jpeg,jpg,bmp,png',
+                )
+            );
+        
+        }
+       
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=> false, 'error'=>$error_messages];
+
+            // return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+
+                $channel = Channel::find($request->id);
+
+                $message = tr('admin_not_channel');
+
+                if($request->hasFile('picture')) {
+                    Helper::delete_picture($channel->picture, "/uploads/channel/picture/");
+                }
+
+                if($request->hasFile('cover')) {
+                    Helper::delete_picture($channel->cover, "/uploads/channel/cover/");
+                }
+
+            } else {
+                $message = tr('admin_add_channel');
+                //Add New User
+                $channel = new Channel;
+
+                $channel->is_approved = DEFAULT_TRUE;
+
+               //  $channel->created_by = ADMIN;
+            }
+
+            $channel->name = $request->has('name') ? $request->name : '';
+
+            $channel->description = $request->has('description') ? $request->description : '';
+
+            $channel->user_id = $request->has('user_id') ? $request->user_id : '';
+
+            $channel->status = DEFAULT_TRUE;
+
+            $channel->unique_id =  $channel->name;
+            
+            if($request->hasFile('picture') && $request->file('picture')->isValid()) {
+                $channel->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/channel/picture/");
+            }
+
+            if($request->hasFile('cover') && $request->file('cover')->isValid()) {
+                $channel->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channel/cover/");
+            }
+
+            $channel->save();
+
+            if($channel) {
+                // return back()->with('flash_success', $message);
+                $response_array = ['success'=>true, 'message'=>$message];
+            } else {
+                // return back()->with('flash_error', tr('admin_not_error'));
+                $response_array = ['success'=>false, 'error'=>tr('admin_not_error')];
+            }
+
+        }
+
+        return response()->json($response_array, 200);
+    
 	}
 
 }

@@ -405,11 +405,8 @@ Route::any('/user/search' , 'ApplicationController@search_all')->name('search-al
 
 Route::get('categories', 'UserController@all_categories')->name('user.categories');
 
-Route::get('category/{id}', 'UserController@category_videos')->name('user.category');
+Route::get('channel/{id}', 'UserController@channel_videos')->name('user.channel');
 
-Route::get('subcategory/{id}', 'UserController@sub_category_videos')->name('user.sub-category');
-
-Route::get('genre/{id}', 'UserController@genre_videos')->name('user.genre');
 
 Route::get('video/{id}', 'UserController@single_video')->name('user.single');
 
@@ -653,6 +650,8 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::get('/clearHistory', 'UserApiController@clear_history');
 
-    // 
+    // Index
+
+    Route::post('/index', 'UserApiController@index');
 
 });

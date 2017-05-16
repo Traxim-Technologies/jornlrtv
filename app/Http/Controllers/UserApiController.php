@@ -940,13 +940,13 @@ class UserApiController extends Controller
         return $response;
     }
 
-    public function get_categories(Request $request) {
+    public function get_channels(Request $request) {
 
-        $categories = get_categories();
+        $channels = getChannels();
 
-        if($categories) {
+        if($channels) {
 
-            $response_array = array('success' => true , 'categories' => $categories->toArray());
+            $response_array = array('success' => true , 'categories' => $channels->toArray());
 
         } else {
             $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
@@ -956,37 +956,21 @@ class UserApiController extends Controller
         return $response;
     }
 
-    public function get_sub_categories(Request $request) {
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'category_id' => 'required|integer|exists:categories,id',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists',
-            )
-        );
+    public function get_videos(Request $request) {
 
-        if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+        $channels = VideoRepo::all_videos(WEB);
+
+        if($channels) {
+
+            $response_array = array('success' => true , 'channels' => $channels->toArray());
 
         } else {
-
-            $sub_categories = get_sub_categories($request->category_id);
-
-            if($sub_categories) {
-
-                $response_array = array('success' => true , 'sub_categories' => $sub_categories->toArray());
-
-            } else {
-                $response_array = array('success' => false,'error' => Helper::get_error_message(130),'error_code' => 130);
-            }
-
+            $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
         }
 
         $response = response()->json($response_array, 200);
+        
         return $response;
     }
 
@@ -1069,12 +1053,12 @@ class UserApiController extends Controller
 
     }
 
-    public function get_category_videos(Request $request) {
+    public function get_channel_videos(Request $request) {
 
         $validator = Validator::make(
             $request->all(),
             array(
-                'category_id' => 'required|integer|exists:categories,id',
+                'channel_id' => 'required|integer|exists:channels,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists',
@@ -1089,22 +1073,23 @@ class UserApiController extends Controller
 
             $data = array();
 
-            $sub_categories = get_sub_categories($request->category_id);
+            $channels = getChannels($request->channel_id);
 
-            if($sub_categories) {
+            if($channels) {
 
-                foreach ($sub_categories as $key => $sub_category) {
+                foreach ($channels as $key => $channels) {
 
-                    $videos = Helper::sub_category_videos($sub_category->id);
+                    $videos = VideoRepo::channel_videos($channels->id, WEB);
 
                     if(count($videos) > 0) {
 
-                        $results['sub_category_name'] = $sub_category->name;
-                        $results['key'] = $sub_category->id;
-                        $results['videos_count'] = count($videos);
-                        $results['videos'] = $videos->toArray();
+                        $results['channel_name'] = $channels->name;
+                        $results['key'] = $channels->id;
+                        $results['videos_count'] = count($channels);
+                        $results['videos'] = $channels->toArray();
 
                         array_push($data, $results);
+
                     }
                 }
             }
@@ -1113,48 +1098,13 @@ class UserApiController extends Controller
         }
 
         $response = response()->json($response_array, 200);
+
         return $response;
 
     }
 
-    public function get_sub_category_videos(Request $request) {
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'sub_category_id' => 'required|integer|exists:sub_categories,id',
-                'skip' => 'integer'
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists',
-            )
-        );
 
-        if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
-
-        } else {
-
-            $data = array();
-
-            $total = 18;
-
-            if($videos = Helper::sub_category_videos($request->sub_category_id , NULL,$request->skip)) {
-                $data = $videos->toArray();
-            }
-
-            $total = get_sub_category_video_count($request->sub_category_id);
-
-            $response_array = array('success' => true, 'data' => $data , 'total' => $total);
-
-        }
-
-        $response = response()->json($response_array, 200);
-        
-        return $response;
-
-    }
 
     public function single_video(Request $request) {
 

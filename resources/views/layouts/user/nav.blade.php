@@ -12,21 +12,23 @@
         </li>
     </ul>
 
-    @if(count($categories = []) > 0)
-        
-        <ul class="y-home ">
-            <h3>{{tr('categories')}}</h3>
-            @foreach($categories as $category)
-                <li>
-                    <a href="{{route('user.category',$category->id)}}"><img src="{{$category->picture}}">{{$category->name}}</a>
-                </li>
-            @endforeach              
-        </ul>
-
-    @endif
 
    
     @if(Auth::check())
+
+                
+        @if(count($channels = getChannels(Auth::user()->id)) > 0)
+            
+            <ul class="y-home ">
+                <h3>{{tr('channels')}}</h3>
+                @foreach($channels as $channel)
+                    <li>
+                        <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
+                    </li>
+                @endforeach              
+            </ul>
+
+        @endif
 
     @else
         <div class="menu4">

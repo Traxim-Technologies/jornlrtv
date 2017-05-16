@@ -676,6 +676,8 @@ return array(
 	'disable_ad'=>'Disable Ad',
 	'enable_ad'=>'Enable Ad',
 	'viewers_count_per_video'=> 'Viewers Count Per Video',
-	'amount_per_video'=>'Amount Per Video'
+	'amount_per_video'=>'Amount Per Video',
+	'about_tab'=>'About',
+	'no_channel_description_found'=> 'Channel Description Not Found',
 
 );

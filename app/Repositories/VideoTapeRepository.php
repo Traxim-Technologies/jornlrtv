@@ -97,6 +97,7 @@ class VideoTapeRepository {
             $flag_videos = flag_videos(Auth::user()->id);
 
             if($flag_videos) {
+                
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
             }
         }
@@ -231,6 +232,63 @@ class VideoTapeRepository {
         return $videos;
 
     }
+
+
+
+    public static function channel_videos($channel_id, $web = NULL , $skip = 0) {
+
+            $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.status' , 1)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->where('video_tapes.channel_id' , $channel_id)
+                        ->videoResponse()
+                        ->orderby('video_tapes.created_at' , 'asc');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
+
+                if($flagVideos) {
+                    $videos_query->whereNotIn('video_tapes.id', $flagVideos);
+                }
+            }
+
+            if($web) {
+                $videos = $videos_query->paginate(16);
+            } else {
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            }
+
+            return $videos;
+    }
+
+
+    public static function all_videos($web = NULL , $skip = 0) {
+
+            $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.status' , 1)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->where('video_tapes.channel_id' , $channel_id)
+                        ->videoResponse()
+                        ->rand()
+                        ->orderby('video_tapes.created_at' , 'asc');
+            if (Auth::check()) {
+                // Check any flagged videos are present
+                $flagVideos = getFlagVideos(Auth::user()->id);
+
+                if($flagVideos) {
+                    $videos_query->whereNotIn('video_tapes.id', $flagVideos);
+                }
+            }
+
+            if($web) {
+                $videos = $videos_query->paginate(16);
+            } else {
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            }
+
+            return $videos;
+    }
+
 
 
 }

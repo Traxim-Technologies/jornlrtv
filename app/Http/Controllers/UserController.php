@@ -32,6 +32,8 @@ use Log;
 
 use App\Subscription;
 
+use App\Channel;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -65,13 +67,15 @@ class UserController extends Controller {
 
             counter('home');
 
+            $id = Auth::check() ? Auth::user()->id : null;
+
             $watch_lists = $wishlists = array();
 
-            if(\Auth::check()){
+            if($id){
 
-                $wishlists  =  VideoRepo::wishlist(\Auth::user()->id,WEB);
+                $wishlists  =  VideoRepo::wishlist($id,WEB);
 
-                $watch_lists = VideoRepo::watch_list(\Auth::user()->id,WEB);  
+                $watch_lists = VideoRepo::watch_list($id,WEB);  
             }
             
             $recent_videos = VideoRepo::recently_added(WEB);
@@ -80,7 +84,8 @@ class UserController extends Controller {
             
             $suggestions  = VideoRepo::suggestion_videos(WEB);
 
-            $categories = [];
+            $channels = getChannels(WEB);
+
 
             return view('user.index')
                         ->with('page' , 'home')
@@ -90,7 +95,7 @@ class UserController extends Controller {
                         ->with('trendings' , $trendings)
                         ->with('watch_lists' , $watch_lists)
                         ->with('suggestions' , $suggestions)
-                        ->with('categories' , $categories);
+                        ->with('channels' , $channels);
         } else {
             return redirect()->route('installTheme');
         }
@@ -368,72 +373,21 @@ class UserController extends Controller {
                     ->with('recent_videos' , $recent_videos);
     }
 
+    public function channel_videos($id) {
 
-    public function category_videos($id) {
+        $channel = Channel::find($id);
 
-        $sub_categories = get_sub_categories($id);
+        $videos = $channel->getVideos;
 
-        $videos = Helper::category_videos($id,WEB);
+        $trending_videos = VideoRepo::trending(WEB);
 
-        $trendings = Helper::trending(WEB);
-
-        $suggestions = Helper::suggestion_videos(WEB);
-
-        $categories = get_categories();
-
-        $category = Category::find($id);
-
-        return view('user.category-videos')
+        return view('user.channel-videos')
                     ->with('page' , 'categories')
                     ->with('subPage' , 'categories')
-                    ->with('category' , $category)
-                    ->with('categories' , $categories)
-                    ->with('sub_categories' , $sub_categories)
-                    ->with('trendings' , $trendings)
-                    ->with('suggestions' , $suggestions)
-                    ->with('videos' , $videos);
+                    ->with('channel' , $channel)
+                    ->with('videos' , $videos)->with('trending_videos', $trending_videos);
     }
 
-    public function sub_category_videos($id) {
-
-        $videos = Helper::sub_category_videos($id,WEB);
-
-        $trendings = Helper::trending(WEB);
-
-        $suggestions = Helper::suggestion_videos(WEB);
-
-        $sub_category = get_sub_category_details($id);
-
-        $genres = get_genres($id);
-
-        return view('user.sub_categories')
-                    ->with('page' , 'categories')
-                    ->with('subPage' , 'categories')
-                    ->with('videos' , $videos)
-                    ->with('trendings' , $trendings)
-                    ->with('genres' , $genres)
-                    ->with('sub_category' , $sub_category)
-                    ->with('suggestions' , $suggestions);
-    } 
-
-    public function genre_videos($id) {
-
-        $videos = Helper::genre_videos($id,WEB);
-
-        $trendings = Helper::trending(WEB);
-
-        $suggestions = Helper::suggestion_videos(WEB);
-
-        $genre = get_genre_details($id);
-
-        return view('user.genres')
-                    ->with('page' , 'categories')
-                    ->with('subPage' , 'categories')
-                    ->with('videos' , $videos)
-                    ->with('trendings' , $trendings)
-                    ->with('genre' , $genre)
-                    ->with('suggestions' , $suggestions);
-    }
 
     public function contact(Request $request) {
 
@@ -587,7 +541,7 @@ class UserController extends Controller {
         $model = $this->UserAPI->spam_videos(\Auth::user()->id, 12)->getData();
 
         // Return array of values
-        return view('user.spam_videos')->with('model' , $model)
+        return view('user.account.spam_videos')->with('model' , $model)
                         ->with('page' , 'Profile')
                         ->with('subPage' , 'Spam Videos');
     }   

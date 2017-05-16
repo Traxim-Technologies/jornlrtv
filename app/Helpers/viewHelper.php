@@ -26,6 +26,8 @@ use App\Settings;
 
 use App\Flag;
 
+use App\Channel;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -553,4 +555,12 @@ function total_subscription_revenue($id = "") {
         return UserPayment::where('subscription_id' , $id)->sum('amount');
     }
     return UserPayment::sum('amount');
+}
+
+
+function getChannels($id) {
+
+    $model = Channel::where('user_id', $id)->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->get();
+
+    return $model;
 }
