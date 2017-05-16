@@ -413,7 +413,7 @@ recommend.html css
 ----------------------------------------------------------------------------------------------------------------------------------------*/
 @media screen and (max-width: 599px){
 	.recom-box{
-		width: 49% !important;
+		width: 49%;
 	}
 }
 @media screen and (max-width: 479px){
