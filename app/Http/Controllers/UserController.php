@@ -34,6 +34,10 @@ use App\Subscription;
 
 use App\Channel;
 
+use App\VideoTape;
+
+use App\Repositories\CommonRepository as CommonRepo;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -48,7 +52,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos']]);
     }
 
     /**
@@ -377,15 +381,39 @@ class UserController extends Controller {
 
         $channel = Channel::find($id);
 
-        $videos = $channel->getVideos;
+        $videos = VideoRepo::channel_videos($id, WEB);
 
-        $trending_videos = VideoRepo::trending(WEB);
+        $trending_videos = VideoRepo::channel_trending($id, WEB, null, 5);
 
-        return view('user.channel-videos')
-                    ->with('page' , 'categories')
-                    ->with('subPage' , 'categories')
+        return view('user.channels.index')
+                    ->with('page' , 'channels')
+                    ->with('subPage' , 'channels')
                     ->with('channel' , $channel)
                     ->with('videos' , $videos)->with('trending_videos', $trending_videos);
+    }
+
+    public function channel_create() {
+
+        $model = new Channel;
+
+        return view('user.channels.create')->with('page', 'channels')
+                    ->with('subPage', 'create_channel')->with('model', $model);
+
+    }
+
+    public function save_channel(Request $request) {
+
+        $response = CommonRepo::channel_save($request)->getData();
+
+        if($response->success) {
+            // $response->message = Helper::get_message(118);
+            return redirect(route('user.channel', ['id'=>$response->data->id]))
+                ->with('flash_success', $response->message);
+        } else {
+            
+            return back()->with('flash_error', $response->error);
+        }
+
     }
 
 
@@ -554,8 +582,7 @@ class UserController extends Controller {
         return view('user.account.subscriptions')->with('subscriptions', $model)->with('page', 'Profile')->with('subPage', 'Subscriptions');
     }
 
-
-     public function ad_request(Request $request) {
+    public function ad_request(Request $request) {
 
         if($data = User::find(Auth::user()->id)) {
 
@@ -570,5 +597,52 @@ class UserController extends Controller {
             return response()->json(false, 200);
             
         }
+    }
+
+    public function video_upload(Request $request) {
+
+        $model = new VideoTape;
+
+        $id = $request->id;
+
+        return view('user.videos.create')->with('model', $model)->with('page', 'videos')
+            ->with('subPage', 'upload_video')->with('id', $id);
+    }
+
+
+    public function video_save(Request $request) {
+
+        $response = CommonRepo::video_save($request)->getData();
+
+        if ($response->success) {
+
+            $view = \View::make('user.videos.select_image')->with('model', $response)->render();
+
+            return response()->json(['path'=>$view, 'data'=>$response->data], 200);
+
+        } else {
+
+            return response()->json(['message'=>$response->message], 400);
+
+        }
+
     }   
+
+
+    public function save_default_img(Request $request) {
+
+        $response = CommonRepo::set_default_image($request)->getData();
+
+        return response()->json($response);
+
+    }
+
+    public function upload_video_image(Request $request) {
+
+
+        $response = CommonRepo::upload_video_image($request)->getData();
+
+        return response()->json(['success'=>$response]);
+
+    }
 }

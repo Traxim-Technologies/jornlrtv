@@ -88,7 +88,8 @@ function saveVideoDetails(step) {
  */
 function saveCategory(category_id, step) {
     var categoryId = $("#category_id").val(category_id);
-    displaySubCategory(category_id, step);
+    // displaySubCategory(category_id, step);
+    $("#"+step).click();
 }
 
 /**

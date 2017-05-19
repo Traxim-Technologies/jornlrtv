@@ -418,16 +418,16 @@
                 // dd($FFmpeg->command);
             } else {
 
-                $picture->move(public_path() . "/uploads/images/", $local_url);
+                $picture->move(public_path() . $path, $local_url);
 
             }
 
-            $s3_url = Helper::web_url().'/uploads/images/'.$local_url;
+            $s3_url = Helper::web_url().$path.$local_url;
 
             return $s3_url;
         }
 
-        public static function video_upload($picture, $compress_type)
+        public static function video_upload($picture)
         {
             
             $s3_url = "";
@@ -436,16 +436,18 @@
 
             $ext = $picture->getClientOriginalExtension();
 
-            $local_url = $file_name . "." . $ext;
+            $local_url = $file_name . ".mp4";
 
-            $path = '/uploads/videos/original/';
+            $path = '/uploads/videos/';
+
+            // dd($picture);
 
             // Convert bytes into MB
             $bytes = convertMegaBytes($picture->getClientSize());
 
             $inputFile = public_path().$path.$local_url;
 
-            if ($bytes > Setting::get('video_compress_size') && $compress_type == DEFAULT_TRUE) {
+            if ($bytes > Setting::get('video_compress_size')) {
 
                 // dispatch(new OriginalVideoCompression($picture->getPathname(), $inputFile));
 
@@ -458,15 +460,16 @@
                     ->input($picture->getPathname())
                     ->vcodec('h264')
                     ->constantRateFactor('28')
-                    ->output($inputFile)
+                    ->output($inputFile, 'mp4')
                     ->ready();
 
             } else {
                 Log::info("Original Video");
+
                 $picture->move(public_path() . $path, $local_url);
             }
 
-            $s3_url = Helper::web_url().$path.$local_url;
+            $s3_url = Helper::web_url().$path.$local_url;        
 
             Log::info("Compress Video completed");
 

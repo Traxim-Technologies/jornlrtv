@@ -460,26 +460,26 @@ class ModeratorController extends Controller
 
     public function videos(Request $request) {
 
-        $videos = AdminVideo::leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                   ->select('admin_videos.id as video_id' ,'admin_videos.title' , 
-                             'admin_videos.description' , 'admin_videos.ratings' , 
-                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
-                             'admin_videos.default_image',
+        $videos = AdminVideo::leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                    ->leftJoin('sub_categories' , 'video_tapes.sub_category_id' , '=' , 'sub_categories.id')
+                    ->leftJoin('genres' , 'video_tapes.genre_id' , '=' , 'genres.id')
+                   ->select('video_tapes.id as video_id' ,'video_tapes.title' , 
+                             'video_tapes.description' , 'video_tapes.ratings' , 
+                             'video_tapes.reviews' , 'video_tapes.created_at as video_date' ,
+                             'video_tapes.default_image',
 
-                             'admin_videos.category_id as category_id',
-                             'admin_videos.sub_category_id',
-                             'admin_videos.genre_id',
-                             'admin_videos.compress_status',
-                             'admin_videos.trailer_compress_status',
+                             'video_tapes.category_id as category_id',
+                             'video_tapes.sub_category_id',
+                             'video_tapes.genre_id',
+                             'video_tapes.compress_status',
+                             'video_tapes.trailer_compress_status',
 
-                             'admin_videos.status','admin_videos.uploaded_by',
-                             'admin_videos.edited_by','admin_videos.is_approved',
+                             'video_tapes.status','video_tapes.uploaded_by',
+                             'video_tapes.edited_by','video_tapes.is_approved',
 
                              'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
-                    ->orderBy('admin_videos.created_at' , 'desc')
+                    ->orderBy('video_tapes.created_at' , 'desc')
                     ->get();
 
         return view('moderator.videos.videos')->with('videos' , $videos)
@@ -519,25 +519,25 @@ class ModeratorController extends Controller
                         ->orderBy('categories.name' , 'asc')
                         ->get();
 
-        $video = AdminVideo::where('admin_videos.id' , $request->id)
-                    ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                    ->select('admin_videos.id as admin_video_id' ,'admin_videos.title' , 
-                             'admin_videos.description' , 'admin_videos.ratings' , 
-                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
-                             'admin_videos.video','admin_videos.trailer_video',
-                             'admin_videos.video_type','admin_videos.video_upload_type',
-                             'admin_videos.publish_time','admin_videos.duration',
+        $video = AdminVideo::where('video_tapes.id' , $request->id)
+                    ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                    ->leftJoin('sub_categories' , 'video_tapes.sub_category_id' , '=' , 'sub_categories.id')
+                    ->leftJoin('genres' , 'video_tapes.genre_id' , '=' , 'genres.id')
+                    ->select('video_tapes.id as admin_video_id' ,'video_tapes.title' , 
+                             'video_tapes.description' , 'video_tapes.ratings' , 
+                             'video_tapes.reviews' , 'video_tapes.created_at as video_date' ,
+                             'video_tapes.video','video_tapes.trailer_video',
+                             'video_tapes.video_type','video_tapes.video_upload_type',
+                             'video_tapes.publish_time','video_tapes.duration',
 
-                             'admin_videos.category_id as category_id',
-                             'admin_videos.sub_category_id',
-                             'admin_videos.genre_id',
-                             'admin_videos.default_image',
+                             'video_tapes.category_id as category_id',
+                             'video_tapes.sub_category_id',
+                             'video_tapes.genre_id',
+                             'video_tapes.default_image',
                              'categories.name as category_name' , 'categories.is_series',
                              'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
-                    ->orderBy('admin_videos.created_at' , 'desc')
+                    ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
         $subcategories = [];
 
@@ -1039,31 +1039,31 @@ class ModeratorController extends Controller
             $error_messages = implode(',', $validator->messages()->all());
             return back()->with('flash_errors', $error_messages);
         } else {
-            $videos = AdminVideo::where('admin_videos.id' , $request->id)
-                    ->leftJoin('categories' , 'admin_videos.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'admin_videos.sub_category_id' , '=' , 'sub_categories.id')
-                    ->leftJoin('genres' , 'admin_videos.genre_id' , '=' , 'genres.id')
-                    ->select('admin_videos.id as video_id' ,'admin_videos.title' , 
-                             'admin_videos.description' , 'admin_videos.ratings' , 
-                             'admin_videos.reviews' , 'admin_videos.created_at as video_date' ,
-                             'admin_videos.video','admin_videos.trailer_video',
-                             'admin_videos.default_image',
+            $videos = AdminVideo::where('video_tapes.id' , $request->id)
+                    ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                    ->leftJoin('sub_categories' , 'video_tapes.sub_category_id' , '=' , 'sub_categories.id')
+                    ->leftJoin('genres' , 'video_tapes.genre_id' , '=' , 'genres.id')
+                    ->select('video_tapes.id as video_id' ,'video_tapes.title' , 
+                             'video_tapes.description' , 'video_tapes.ratings' , 
+                             'video_tapes.reviews' , 'video_tapes.created_at as video_date' ,
+                             'video_tapes.video','video_tapes.trailer_video',
+                             'video_tapes.default_image',
 
-                             'admin_videos.category_id as category_id',
-                             'admin_videos.sub_category_id',
-                             'admin_videos.genre_id',
-                             'admin_videos.video_type',
-                             'admin_videos.video_upload_type',
-                             'admin_videos.duration',
-                             'admin_videos.compress_status',
-                             'admin_videos.trailer_compress_status',
-                             'admin_videos.video_resolutions',
-                             'admin_videos.video_resize_path',
-                             'admin_videos.trailer_resize_path',
-                             'admin_videos.trailer_video_resolutions',
+                             'video_tapes.category_id as category_id',
+                             'video_tapes.sub_category_id',
+                             'video_tapes.genre_id',
+                             'video_tapes.video_type',
+                             'video_tapes.video_upload_type',
+                             'video_tapes.duration',
+                             'video_tapes.compress_status',
+                             'video_tapes.trailer_compress_status',
+                             'video_tapes.video_resolutions',
+                             'video_tapes.video_resize_path',
+                             'video_tapes.trailer_resize_path',
+                             'video_tapes.trailer_video_resolutions',
                              'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
                              'genres.name as genre_name')
-                    ->orderBy('admin_videos.created_at' , 'desc')
+                    ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
 
             $videoPath = $video_pixels = $trailer_video_path = $trailer_pixels = $trailerstreamUrl = $videoStreamUrl = '';

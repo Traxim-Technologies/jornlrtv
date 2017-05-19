@@ -84,7 +84,7 @@ class VideoTapeRepository {
 	 * 
 	 */
 
-	public static function trending($web, $skip = null) {
+	public static function trending($web, $skip = null, $count = 0) {
 
 	    $base_query = VideoTape::where('watch_count' , '>' , 0)
 	                    ->videoResponse()
@@ -106,6 +106,10 @@ class VideoTapeRepository {
 
             $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
 
+        } else if($count > 0){
+
+            $videos = $base_query->skip(0)->take($count)->get();
+
         } else {
 
             $videos = $base_query->paginate(16);
@@ -115,6 +119,44 @@ class VideoTapeRepository {
 	    return $videos;
 	
 	}
+
+
+    public static function channel_trending($id, $web, $skip = null, $count = 0) {
+
+        $base_query = VideoTape::where('watch_count' , '>' , 0)
+                        ->videoResponse()
+                        ->where('channel_id', $id)
+                        ->orderby('watch_count' , 'desc');
+
+        if (Auth::check()) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos(Auth::user()->id);
+
+            if($flag_videos) {
+                
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        }
+
+       if($skip) {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        } else if($count > 0){
+
+            $videos = $base_query->skip(0)->take($count)->get();
+
+        } else {
+
+            $videos = $base_query->paginate(16);
+            
+        }
+
+        return $videos;
+    
+    }
 
 	/**
 	 * Suggestion videos based on the Created At 
@@ -234,31 +276,30 @@ class VideoTapeRepository {
     }
 
 
-
     public static function channel_videos($channel_id, $web = NULL , $skip = 0) {
 
-            $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->where('video_tapes.channel_id' , $channel_id)
-                        ->videoResponse()
-                        ->orderby('video_tapes.created_at' , 'asc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
+        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.status' , 1)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('video_tapes.channel_id' , $channel_id)
+                    ->videoResponse()
+                    ->orderby('video_tapes.created_at' , 'asc');
+        if (Auth::check()) {
+            // Check any flagged videos are present
+            $flagVideos = getFlagVideos(Auth::user()->id);
 
-                if($flagVideos) {
-                    $videos_query->whereNotIn('video_tapes.id', $flagVideos);
-                }
+            if($flagVideos) {
+                $videos_query->whereNotIn('video_tapes.id', $flagVideos);
             }
+        }
 
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
+        if($web) {
+            $videos = $videos_query->paginate(16);
+        } else {
+            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+        }
 
-            return $videos;
+        return $videos;
     }
 
 

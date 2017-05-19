@@ -57,13 +57,13 @@
                             </span>
                         </a>
                     </li>
-                    <li role="presentation" class="disabled">
+                    <!-- <li role="presentation" class="disabled">
                         <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Sub Category">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-folder-open"></i>
                             </span>
                         </a>
-                    </li>
+                    </li> -->
 
                     <li role="presentation" class="disabled">
                         <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="{{tr('upload_video_image')}}">
@@ -157,15 +157,15 @@
                         <h3>{{tr('category')}}</h3>
                         <hr>
                         <div id="category">
-                            @foreach($categories as $category)
+                            @foreach($channels as $channel)
                             <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
-                                <a onclick="saveCategory({{$category->id}}, {{REQUEST_STEP_2}})" class="category-item text-center">
-                                    <div style="background-image: url({{$category->picture}})" class="category-img bg-img"></div>
-                                    <h3 class="category-tit">{{$category->name}}</h3>
+                                <a onclick="saveCategory({{$channel->id}}, {{REQUEST_STEP_2}})" class="category-item text-center">
+                                    <div style="background-image: url({{$channel->picture}})" class="category-img bg-img"></div>
+                                    <h3 class="category-tit">{{$channel->name}}</h3>
                                 </a>
                             </div>
                             @endforeach
-                            <input type="hidden" name="category_id" id="category_id" />
+                            <input type="hidden" name="channel_id" id="channel_id" />
                         </div>
                         <div class="clearfix"></div>
                         <ul class="list-inline">
@@ -174,37 +174,13 @@
                             <div class="clearfix"></div>
                         </ul>
                     </div>
-                    <div class="tab-pane" role="tabpanel" id="step3">
-                        <h3>{{tr('sub_category')}}</h3>
-                        <hr>
-                        <div id="sub_category">
-                            
-                        </div>
-                        <input type="hidden" name="sub_category_id" id="sub_category_id" />
-                        <div class="clearfix"></div>
-                        <ul class="list-inline">
-                            <li><button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button></li>
-                            <!-- <li><button type="button" class="btn btn-default next-step">Skip</button></li> -->
-                            <li class="pull-right" style="display:none"><button  id="{{REQUEST_STEP_3}}" type="button" class="btn btn-primary btn-info-full next-step">{{tr('save_continue')}}</button></li>
-                            <div class="clearfix"></div>
-                        </ul>
-                    </div>
+                    
                     <div class="tab-pane" role="tabpanel" id="complete">
                         <h3>{{tr('upload_video_image')}}</h3>
                         <hr>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="genre_id">
-                                    <div class="form-group">
-
-                                        <label for="genre" class="">{{tr('select_genre')}}</label>
-
-                                        <select id="genre" name="genre_id" class="form-control" disabled>
-                                            <option value="">{{tr('select_genre')}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
+                                
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label for="default_image" class="">{{tr('default_image')}} *</label>
@@ -248,40 +224,9 @@
                                             <input required type="radio" name="video_type" value="1" class="flat-red" checked>
                                             {{tr('video_upload_link')}}
                                         </label>
-
-                                        <label style="margin-top:10px" id="youtube">
-                                            <input required type="radio" name="video_type" class="flat-red"  value="2">
-                                            {{tr('youtube')}}
-                                        </label>
-
-                                        <label style="margin-top:10px" id="other_link">
-                                            <input required type="radio" name="video_type" value="3" class="flat-red">
-                                            {{tr('other_link')}}
-                                        </label>
                                     </div>
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="compress">
-                                    <div class="form-group">
-                                    <label>{{tr('compress_video')}}</label>
-                                    <br>
-                                    <div>
-                                        <input type="radio" name="compress_video" value="1"> <label>{{tr('yes')}}</label> &nbsp;&nbsp;
-                                        <input type="radio" name="compress_video" value="0" checked> <label>{{tr('no')}}</label>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="resolution">
-                                    <div class="form-group">
-                                    <label>{{tr('resize_video_resolutions')}}</label>
-                                    <br>
-                                    <div>
-                                        @foreach(getVideoResolutions() as $resolution)
-                                            <input type="checkbox" name="video_resolutions[]" value="{{$resolution->value}}"> <label>{{$resolution->value}}</label> &nbsp;&nbsp;
-                                        @endforeach
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
+                               
                                 <div id="upload">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
@@ -291,13 +236,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <label for="trailer_video" class="">{{tr('trailer_video')}}</label>
-                                            <input type="file" id="trailer_video" accept="video/mp4" name="trailer_video" placeholder="{{tr('trailer_video')}}">
-                                            <p class="help-block">{{tr('video_validate')}}</p>
-                                        </div>
-                                    </div>
+                                    
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">

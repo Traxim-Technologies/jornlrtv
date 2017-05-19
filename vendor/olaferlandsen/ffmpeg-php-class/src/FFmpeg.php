@@ -42,6 +42,9 @@ class FFmpeg
 		'vframes'	=>	'videoFrames',
 		'y'			=>	'overwrite',
 		'log'		=>	'logLevel',
+		'crf'		=>  'constantRateFactor',
+		'preset'	=>  'lossLessFactor',
+		'vf'		=>  'vframes',
 	);
 	/**
 	*	
@@ -58,6 +61,9 @@ class FFmpeg
 	*	
 	*/
 	private $ffmpeg		=	'ffmpeg';
+
+
+	private $fps = 1/60;
 	/**
 	*	
 	*/
@@ -164,7 +170,11 @@ class FFmpeg
 				$options [] = "-".$option." ".strval($values);
 			}
 		}
-		$this->command = $this->ffmpeg." ".join(' ',$options)." ".$output . $this->STD;
+		/*if ($this->fps) {
+			$this->command = $this->ffmpeg." ".join(' ',$options). " fps=".$this->fps." ".$output . $this->STD;
+		} else {*/
+			$this->command = $this->ffmpeg." ".join(' ',$options). " ".$output . $this->STD;
+		//}
 		return $this;
 	}
 	/**
@@ -307,6 +317,56 @@ class FFmpeg
 	{
 		return $this->set('b',$b,false);
 	}
+
+	/**
+	*   @param	string	$b	set constantRateFactor
+	*   @return	object
+	*   @access	public
+	*   @example    $ffmpeg->constantRateFactor('28');
+	
+	*/
+	public function constantRateFactor( $crf )
+	{
+		return $this->set('crf',$crf,false);
+	}
+
+	/**
+	*   @param	string	$b	set constantRateFactor
+	*   @return	object
+	*   @access	public
+	*   @example    $ffmpeg->constantRateFactor('28');
+	
+	*/
+	public function constantVideoFrames($vframes)
+	{
+		return $this->set('vframes', $vframes , false);
+	}
+
+	public function customVideoFrames($vf)
+	{
+		return $this->set('vf', "fps=$vf", false);
+	}
+
+/*	public function customFps($fps) {
+
+		$this->fps = $fps; 
+
+		return $fps;
+	}*/
+
+	/**
+	*   @param	string	$b	set lossLessFactor
+	*   @return	object
+	*   @access	public
+	*   @example    $ffmpeg->lossLessFactor('28');
+	
+	*/
+	public function lossLessFactor( $llf )
+	{
+		return $this->set('preset',$llf,false);
+	}
+
+
 	/**
 	*   @param	string	$r	Set frame rate (Hz value, fraction or abbreviation).
 	*   @return	object

@@ -253,9 +253,9 @@ function flag_videos($id) {
 function getFlagVideosCnt($id) {
     // Load Flag videos based on logged in user id
     $model = Flag::where('user_id', $id)
-        ->leftJoin('admin_videos' , 'flags.video_id' , '=' , 'admin_videos.id')
-        ->where('admin_videos.is_approved' , 1)
-        ->where('admin_videos.status' , 1)
+        ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
+        ->where('video_tapes.is_approved' , 1)
+        ->where('video_tapes.status' , 1)
         ->count();
     // Return array of id's
     return $model;
@@ -557,10 +557,24 @@ function total_subscription_revenue($id = "") {
     return UserPayment::sum('amount');
 }
 
+function loadChannels() {
 
-function getChannels($id) {
-
-    $model = Channel::where('user_id', $id)->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->get();
-
+    $model = Channel::where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->get();
+    
     return $model;
+}
+
+
+function getChannels($id = null) {
+
+    $model = Channel::where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE);
+
+
+    if ($id) {
+        $model->where('user_id', $id);
+    }
+
+    $response = $model->get();
+
+    return $response;
 }

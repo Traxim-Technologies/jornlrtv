@@ -14,21 +14,38 @@
 
 
    
-    @if(Auth::check())
+    
 
                 
-        @if(count($channels = getChannels(Auth::user()->id)) > 0)
-            
-            <ul class="y-home ">
-                <h3>{{tr('channels')}}</h3>
-                @foreach($channels as $channel)
-                    <li>
-                        <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
-                    </li>
-                @endforeach              
-            </ul>
+    @if(count($channels = getChannels()) > 0)
+        
+        <ul class="y-home" style="margin-top: 10px;">
+            <h3>{{tr('channels')}}</h3>
+            @foreach($channels as $channel)
+                <li>
+                    <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
+                </li>
+            @endforeach              
+        </ul>
 
-        @endif
+    @endif
+
+    @if(Auth::check())
+
+        <ul class="y-home" style="margin-top: 10px;">
+            <h3>{{tr('my_channels')}}</h3>
+            <?php $channels = getChannels(Auth::user()->id);?>
+            @foreach($channels as $channel)
+                <li>
+                    <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
+                </li>
+            @endforeach     
+
+            <li>
+                <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
+            </li>         
+        </ul>
+
 
     @else
         <div class="menu4">

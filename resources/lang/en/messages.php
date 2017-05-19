@@ -27,6 +27,10 @@ return array(
 	'compress_video'=> 'Compress Video',
 	'resize_video_resolutions'=>'Resize Video Resolutions',
 	'about_me'=>'About Me',
+	'make_default'=>'Make Default',
+	'select_image_short_notes'=>'Select any one of the images which is given below. The selected Image will reflect as a thumbnail of your video',
+
+	'marked_default'=>'Marked Default',
 
 	'site_name' => 'Stream Hash',
 
@@ -47,6 +51,8 @@ return array(
 	'video_create_success'=>'Successfully created the video details.',
 	'removed_pay_per_view'=> 'Successfully, Removed Pay Per View',
 	'full_video'=>'Full Video',
+	'click_here'=>'Click Here to Drop a file',
+	'do_upload'=>'Do you want to upload a video?',
 
 	's3_settings' => 'S3 Settings',
 	'fb_settings' => 'FB Settings',
@@ -155,11 +161,18 @@ return array(
 	'previous' => 'Previous',
 	'next' => 'Next',
 	'save_continue' => 'Save and continue',
+	'video_title'=>'Video Title',
 	'finish' => 'Finish',
+	'video_details'=>'Video Details',
+	'publish_type'=>'Publish Type',
+	'publish_now'=>'Now',
+	'publish_later'=>'Later',
 
 	'message' => 'Message',
 	'upload_image' => 'Upload Image',
 	'upload_video_image' => 'Upload Video/Image',
+	'video_short_notes'=>"By submitting your videos to Streamtube, you acknowledge that you agree to Streamtube's Terms of Service and Privacy Policy",
+	'upload_video'=>'Upload Video',
 	'amount'	=> 	'Amount',
 	'currency' 	=>	'Currency',
 
@@ -450,11 +463,11 @@ return array(
 	'edit_channel'	=>	'Edit Channel',
 	'delete_Channel'	=>	'Delete Channel',
 	'is_series' => 'Is Series',
-	'admin_not_channel'	=>	'Channel updated Successfully',
-	'admin_add_channel'	=>	'Channel added Successfully',
-	'admin_not_channel_del'	=>	'Channel deleted Successfully',
-	'admin_not_channel_approve' => 'Channel Approved Successfully',
-	'admin_not_channel_decline' => 'Channel Unapproved Successfully',
+	'channel_update_success'	=>	'Channel has been updated Successfully',
+	'channel_create_success'	=>	'Channel has been created Successfully',
+	'channel_delete_success'	=>	'Channel has been deleted Successfully',
+	'channel_approve_success' => 'Channel has been Approved Successfully',
+	'channel_decline_success' => 'Channel has been Declined Successfully',
 
 	'image_validate' => 'Please enter .png .jpeg .jpg images only.',
 	'video_validate' => 'Please enter .mkv .mp4 .qt videos only.',
@@ -505,6 +518,7 @@ return array(
 	'slider_success' => 'The video is added as slider video',
 	'no_video_found' => 'No videos found....!',
 	'empty' => 'List is empty....!',
+
 
 	// Admin Banner videos
 
@@ -679,5 +693,10 @@ return array(
 	'amount_per_video'=>'Amount Per Video',
 	'about_tab'=>'About',
 	'no_channel_description_found'=> 'Channel Description Not Found',
+	'ago'=>'ago',
+	'my_channels'=>'My Channels',
+	'create_channel'=>'Create Channel',
+	'reset'=>'Reset',
+	'add_cover_photo'=>'Add cover photo',
 
 );

@@ -28,7 +28,8 @@ class VideoTape extends Model
             'video_tapes.status',
             'video_tapes.watch_count',
             'video_tapes.duration',
-            'video_tapes.video_publish_type'
+            'video_tapes.video_publish_type',
+            'video_tapes.ratings'
         );
     }
 
@@ -40,13 +41,20 @@ class VideoTape extends Model
     }
 
 
-/*    public function toArray()
+    public function getVideoTapeImages() {
+
+         return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'id');
+
+    }
+
+
+    public function toArray()
     {
         $array = parent::toArray();
 
-        $array['publish_time'] = date('F j Y, g:i a', strtotime($this->publish_time));
+        $array['tape_images'] = $this->getVideoTapeImages;
 
         return $array;
-    }*/
+    }
 
 }

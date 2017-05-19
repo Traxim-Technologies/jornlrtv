@@ -5,6 +5,8 @@
     <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>
     
     <meta name="viewport" content="width=device-width,  initial-scale=1">
+
+    
     <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/jquery-ui.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/fonts/font-awesome/css/font-awesome.min.css')}}">
@@ -142,6 +144,8 @@
             }); 
 
         });
+
+        
 
     </script>
 

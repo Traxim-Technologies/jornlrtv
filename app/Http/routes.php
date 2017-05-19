@@ -94,6 +94,10 @@ if(!defined('CARD')) define('CARD',  'card');
 
 if(!defined('RATINGS')) define('RATINGS', '0,1,2,3,4,5');
 
+
+if(!defined('PUBLISH_NOW')) define('PUBLISH_NOW', 1);
+if(!defined('PUBLISH_LATER')) define('PUBLISH_LATER', 2);
+
 if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
 if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
 
@@ -494,6 +498,22 @@ Route::group([], function(){
     Route::get('/trending', 'UserController@trending')->name('user.trending');
 
     Route::get('/user_subscriptions', 'UserController@subscriptions')->name('user.subscriptions');
+
+    // Channels
+
+    Route::get('create_channel', 'UserController@channel_create')->name('user.create_channel');
+
+    Route::post('save_channel', 'UserController@save_channel')->name('user.save_channel');
+
+    // Video Upload
+
+    Route::get('upload_video', 'UserController@video_upload')->name('user.video_upload');
+
+    Route::post('video_save', 'UserController@video_save')->name('user.video_save');
+
+    Route::post('save_default_img', 'UserController@save_default_img')->name('user.save_default_img');
+
+    Route::post('upload_video_image', 'UserController@upload_video_image')->name('user.upload_video_image');
 
     Route::post('ad_request', 'UserController@ad_request')->name('user.ad_request');
 

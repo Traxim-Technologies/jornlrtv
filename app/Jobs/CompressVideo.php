@@ -30,13 +30,12 @@ class CompressVideo extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($inputFile, $local_url, $video_type, $videoId, $file_name)
+    public function __construct($inputFile, $local_url, $videoId, $file_name)
     {
         Log::info("Inside Construct");
        $this->inputFile = $inputFile;
        $this->local_url = $local_url;
        $this->videoId = $videoId;
-       $this->video_type = $video_type;
        $this->file_name = $file_name;
     }
 
@@ -71,27 +70,20 @@ class CompressVideo extends Job implements ShouldQueue
                     ->output(public_path().'/uploads/videos/original/'.$solution.$this->local_url)
                     ->ready();
 
-                    Log::info('Output'.public_path().'/uploads/videos/original/'.$solution.$this->local_url);
+                    Log::info('Output'.public_path().'/uploads/videos/'.$solution.$this->local_url);
                     $array_resolutions[] = $solution;
-                    Log::info('Url'.Helper::web_url().'/uploads/videos/original/'.$solution.$this->local_url);
-                    $video_resize_path[] = Helper::web_url().'/uploads/videos/original/'.$solution.$this->local_url;
+                    Log::info('Url'.Helper::web_url().'/uploads/videos/'.$solution.$this->local_url);
+                    $video_resize_path[] = Helper::web_url().'/uploads/videos/'.$solution.$this->local_url;
                     $pathnames[] = $solution.$this->local_url;
                 }
             }
-            Log::info("Before saving Compress Video : ".$this->video_type);
-            if ($this->video_type == MAIN_VIDEO) {
-                $video->compress_status = 1;
-                $video->video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
-                $video->video_resize_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
-            } else {
-                $video->trailer_compress_status = 1;
-                $video->trailer_video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
-                $video->trailer_resize_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
-            }
-            if ($video->compress_status == 1 && $video->trailer_compress_status == 1) {
-                $video->is_approved = DEFAULT_TRUE; 
-            }
-            Log::info("AArray Resolutions : ".print_r($array_resolutions, true));
+
+            $video->video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
+            $video->video_resize_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
+        
+            $video->status = DEFAULT_TRUE; 
+
+            Log::info("Array Resolutions : ".print_r($array_resolutions, true));
             if ($array_resolutions) {
                 $myfile = fopen(public_path().'/uploads/smil/'.$this->file_name.'.smil', "w");
                 $txt = '<smil>
@@ -112,9 +104,7 @@ class CompressVideo extends Job implements ShouldQueue
                 fwrite($myfile, $txt);
                 fclose($myfile);
             }
-            Log::info("Compress Video : ".$this->video_type);
-            Log::info("Compress Status : ".$video->compress_status);
-            Log::info("Trailer Compress Status : ".$video->trailer_compress_status);
+
             $video->save();
         }
     }
