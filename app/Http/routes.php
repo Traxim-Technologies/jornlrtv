@@ -296,7 +296,11 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('/view/video', 'AdminController@view_video')->name('admin.view.video');
 
-    Route::post('/add/video', 'AdminController@add_video_process')->name('admin.save.video');
+    Route::post('save_video', 'AdminController@video_save')->name('admin.video_save');
+
+    Route::post('save_default_img', 'AdminController@save_default_img')->name('admin.save_default_img');
+
+    Route::post('upload_video_image', 'AdminController@upload_video_image')->name('admin.upload_video_image');
 
     Route::post('/save_video_payment/{id}', 'AdminController@save_video_payment')->name('admin.save.video-payment');
 

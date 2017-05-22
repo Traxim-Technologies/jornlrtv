@@ -7,16 +7,16 @@
     padding: 10px;
 }
 
-    .wizard .nav-tabs {
-        position: relative;
-        margin: 40px auto;
-        margin-bottom: 0;
-        border-bottom-color: #e0e0e0;
-    }
+.wizard .nav-tabs {
+    position: relative;
+    margin: 40px auto;
+    margin-bottom: 0;
+    border-bottom-color: #e0e0e0;
+}
 
-    .wizard > div.wizard-inner {
-        position: relative;
-    }
+.wizard > div.wizard-inner {
+    position: relative;
+}
 
 .connecting-line {
     height: 2px;
@@ -69,7 +69,7 @@ span.round-tab:hover {
 }
 
 .wizard .nav-tabs > li {
-    width: 33.33%;
+    width: 25%;
 }
 
 .wizard li:after {
@@ -181,8 +181,13 @@ span.round-tab:hover {
     margin-bottom: 10px;
 }
 
-.progress { position:relative; width:400px; border: 1px solid #ddd; border-radius: 3px; }
-.bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+.progress { position:relative; border: 1px solid #ddd; border-radius: 3px; }
+.bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; 
+    background-size: 30px 30px;
+background-image: -webkit-linear-gradient(135deg, #F6F6F6 25%, transparent 25%, transparent 50%, #F6F6F6 50%, #F6F6F6 75%, transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, #F6F6F6 25%, transparent 25%, transparent 50%, #F6F6F6 50%, #F6F6F6 75%, transparent 75%, transparent);
+    -webkit-animation: stripes 2s linear infinite;
+            animation: stripes 2s linear infinite;}
 .percent { position:absolute; display:inline-block; top:0px; left:48%; }
 
 
@@ -202,3 +207,42 @@ span.round-tab:hover {
     left: 0;
     opacity: 0.5;
 }  
+
+
+.dropify-wrapper {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+    padding: 0;
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial";
+    font-size: 14px;
+    line-height: 22px;
+    color: #727272;
+    background-color: #fff;
+    background-image: none;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+}
+
+.dropify-wrapper .dropify-message {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.dropify-wrapper .dropify-message span.file-icon {
+    font-size: 42px;
+    color: rgba(0, 0, 0, 0.26);
+}
+
+.dropify-wrapper {
+    background-size: 30px 30px;
+    background-image: -webkit-linear-gradient(135deg, #F6F6F6 25%, transparent 25%, transparent 50%, #F6F6F6 50%, #F6F6F6 75%, transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, #F6F6F6 25%, transparent 25%, transparent 50%, #F6F6F6 50%, #F6F6F6 75%, transparent 75%, transparent);
+    -webkit-animation: stripes 2s linear infinite;
+            animation: stripes 2s linear infinite; 
+}

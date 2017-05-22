@@ -1326,7 +1326,9 @@ class UserApiController extends Controller
                     ->videoResponse()
                     ->first();
 
-        $comments = $video->getUserRatings;
+        $comments = $video->getScopeUserRatings;
+
+        $ads = $video->getScopeVideoAds;
 
         $trendings = VideoRepo::trending(WEB);
 
@@ -1408,7 +1410,8 @@ class UserApiController extends Controller
             'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
             'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
             'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
-            'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video
+            'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
+            'ads'=>$ads
             ];
 
         return response()->json($response_array, 200);

@@ -334,7 +334,7 @@ textarea[name=comments] {
                                                         <a href="#"><i @if($suggestion->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    </span>                          */?>                              
+                                                    </span>                          */ ?>                              
                                                 </div><!--end of sugg-head-->
                                     
                                             </div><!--end of main-video-->
@@ -355,6 +355,19 @@ textarea[name=comments] {
         </div><!--y-content-row-->
     </div>
 
+
+<?php
+
+    $ads_timing = $video_timings = [] ;
+
+    foreach ($ads->between_ad as $key => $obj) {
+        
+        $video_timings[] = $obj->video_time;
+
+        $ads_timing[] = $obj->ad_time;
+    }
+
+?>
 
 @endsection
 
@@ -568,7 +581,7 @@ textarea[name=comments] {
                                     // autostart : true,
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
-                                      }
+                                    }
                                 
                                 });
 
@@ -682,9 +695,9 @@ textarea[name=comments] {
                     var intervalId;
 
 
-                    var timings = [10, 20];
+                    var timings = "{{count($ads->between_ad)}}";
 
-                    var adtimings = 5;
+                    // var adtimings = 5;
 
                     var time = 0;
 
@@ -699,38 +712,65 @@ textarea[name=comments] {
 
                             console.log("Video Timing "+video_time);
 
+                            @if(count($ads->between_ad) > 0)
 
-                            for(var i = 0; i < timings.length ; i++) {
+                                @foreach($ads->between_ad as $i => $obj) {
 
-                                if (video_time == timings[i] && time != video_time) {
+                                    var video_timing = "{{$obj->video_time}}";
 
-                                     jwplayer().pause();
+                                    console.log("Video Timing "+video_timing);
 
-                                     time = video_time;
+                                    var a = video_timing.split(':'); // split it at the colons
 
-                                     stop();
+                                     if (a.length == 3) {
+                                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+                                     } else {
+                                         var seconds = parseInt(a[0]) * 60 + parseInt(a[1]);
+                                     }
 
-                                     $('#main-video-player').hide();
+                                     console.log("Seconds "+seconds);
 
-                                     $('#main_video_setup_error').show();
+                                    if (video_time == seconds && time != video_time) {
+
+                                         jwplayer().pause();
+
+                                         time = video_time;
+
+                                         stop();
+
+                                         $('#main-video-player').hide();
+
+                                         $('#main_video_ad').show();
+
+                                         $("#ad_image").attr("src","{{$obj->file}}");
 
 
-                                     adsPage();
+                                         adsPage("{{$obj->ad_time}}");
+
+                                    }
+                                }
+
+                                @endforeach
+
+                            @endif
+
+
+                            @if($ads->post_ad)
+
+                                if (playerInstance.getState() == "complete") {
+
+                                    $('#main-video-player').hide();
+
+                                    $('#main_video_ad').show();
+
+                                    $("#ad_image").attr("src","{{$ads->post_ad->file}}");
+
+                                    stop();
+
+                                    adsPage("{{$ads->post_ad->ad_time}}");
 
                                 }
-                            }
-
-                            if (playerInstance.getState() == "complete") {
-
-                                $('#main-video-player').hide();
-
-                                $('#main_video_setup_error').show();
-
-                                stop();
-
-                                adsPage();
-
-                            }
+                            @endif
 
 
                          }, 1000);
@@ -744,8 +784,9 @@ textarea[name=comments] {
 
                     var adCount = 0;
 
-                    function adsPage(){
+                    function adsPage(adtimings){
 
+                         adtimings = adtimings * 60;
 
                          intervalId = setInterval(function(){
 
@@ -759,7 +800,7 @@ textarea[name=comments] {
 
                                 stop();
 
-                                $('#main_video_setup_error').hide();
+                                $('#main_video_ad').hide();
 
                                 $('#main-video-player').show();
 
@@ -777,6 +818,12 @@ textarea[name=comments] {
 
                     }
 
+                    @if (count($ads->between_ad) > 0 && empty($ads->pre_ad)) 
+
+                        timer();
+
+                    @endif
+
                     jwplayer().on('displayClick', function(e) {
 
                         console.log("state pos "+jwplayer().getState());
@@ -785,13 +832,19 @@ textarea[name=comments] {
                         if (jwplayer().getState() == 'idle') {
 
 
-                             jwplayer().pause();
+                            @if($ads->pre_ad)
 
-                             $('#main-video-player').hide();
+                                 jwplayer().pause();
 
-                             $('#main_video_setup_error').show();
+                                 $('#main-video-player').hide();
 
-                             adsPage();
+                                 $('#main_video_ad').show();
+
+                                 $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
+
+                                 adsPage("{{$ads->pre_ad->ad_time}}");
+
+                            @endif
 
                         }
                        

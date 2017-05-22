@@ -45,22 +45,20 @@ function prevTab(elem) {
 function saveVideoDetails(step) {
    var title = $("#title").val();
    var datepicker = $("#datepicker").val();
-   var duration = $("#duration").val();
    var rating = $("#rating").val();
    var description = $("#description").val();
    var reviews = $("#reviews").val();
+   var video_publish_type = $("#video_publish_type").val();
+
    if (title == '') {
         alert('Title Should not be blank');
         return false;
    }
-   if (datepicker == '') {
+   if (datepicker == '' && video_publish_type == 2) {
         alert('Publish Time Should not be blank');
         return false;
    }
-   if (duration == '') {
-        alert('Duration Should not be blank');
-        return false;
-   }
+
    if (rating == '') {
         alert('Ratings Should not be blank');
         return false;
@@ -86,129 +84,10 @@ function saveVideoDetails(step) {
  *
  * @return Json response
  */
-function saveCategory(category_id, step) {
-    var categoryId = $("#category_id").val(category_id);
+function saveCategory(channel_id, step) {
+    $("#channel_id").val(channel_id);
     // displaySubCategory(category_id, step);
     $("#"+step).click();
-}
-
-/**
- * Function Name : displaySubCategory()
- * To Display all sub categories based on category id
- *
- * @var category_id    Selected Category id
- * 
- * @return Json Response
- */
-function displaySubCategory(category_id,step) {
-    $("#sub_category").html("<p class='text-center'><i class='fa fa-spinner'></i></p>");
-    $.ajax ({
-        type : 'post',
-        url : cat_url,
-        data : {option: category_id},
-        success : function(data) {
-            $("#sub_category").html("");
-            // console.log(data);return false;
-            if (data == undefined) {
-                alert("Oops Something went wrong. Kindly contact your administrator.");
-                return false;
-            }
-            if (data.length == 0) {
-                alert('No sub categories available. Kindly contact support team.');
-                return false;
-            }
-            var subcategory = '';
-            for(var i=0; i < data.length; i++) {
-                var value = data[i];
-                subcategory += '<div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">'+
-                                    '<a class="category-item text-center" onclick="saveSubCategory('+value.id+', '+step3+')">'+
-                                        '<div class="category-img bg-img" '+
-                                            ' style="background-image: url('+value.picture+')">'+
-                                        '</div><h3 class="category-tit">'+value.name+'</h3>'+
-                                    '</a>'+
-                                '</div>';
-            }
-            $("#sub_category").append(subcategory);
-            $("#"+step).click();
-        },
-        error : function(data) {
-            alert("Oops Something went wrong. Kindly contact your administrator.");
-        }
-    });
-}
-
-/**
- * Function Name : saveSubCategory()
- * To save third step of the job details
- * 
- * @var sub_category_id     Sub Category Id (Dynamic values)
- * @var step                Step Position 3
- *
- * @return Json response
- */
-function saveSubCategory(sub_category_id, step) {
-    var subCategoryId = $("#sub_category_id").val(sub_category_id);
-    $("#"+step).click();   
-    // console.log(sub_cat_url);
-    $.ajax ({
-        type : 'post',
-        url : sub_cat_url,
-        data : {option: sub_category_id},
-        success : function(data) {
-            $('#genre').empty(); 
-
-            $('#genre').append("<option value=''>Select genre</option>");
-
-            if(data.length != 0) {
-                $("#genre_id").show();
-                document.getElementById("genre").disabled=false;
-            } else {
-                $("#genre_id").hide();
-                document.getElementById("genre").disabled=true;
-            }
-
-            $.each(data, function(index, element) {
-                $('#genre').append("<option value='"+ element.id +"'>" + element.name + "</option>");
-            });
-        },
-        error : function(data) {
-            alert("Oops Something went wrong. Kindly contact your administrator.");
-        }
-    });
-}
-
-
-function loadGenre() {
-    var subCategoryId = $("#sub_category_id").val();
-    // var genre_id = $("#genre").val();
-    console.log(subCategoryId);
-    $.ajax ({
-        type : 'post',
-        url : sub_cat_url,
-        data : {option: subCategoryId},
-        success : function(data) {
-            console.log(data);
-            $('#genre').empty(); 
-
-            $('#genre').append("<option value=''>Select genre</option>");
-
-            if(data.length != 0) {
-                $("#genre_id").show();
-                document.getElementById("genre").disabled=false;
-            } else {
-                $("#genre_id").hide();
-                document.getElementById("genre").disabled=true;
-            }
-
-            $.each(data, function(index, element) {
-                $('#genre').append("<option value='"+ element.id +"'>" + element.name + "</option>");
-            });
-            $("#genre").val(genreId);
-        },
-        error : function(data) {
-            alert("Oops Something went wrong. Kindly contact your administrator.");
-        }
-    });
 }
 
 
@@ -222,8 +101,8 @@ $('form').ajaxForm({
         var percentVal = '0%';
         bar.width(percentVal)
         percent.html(percentVal);
-        $("#"+final).text("Wait Progressing...");
-        $("#"+final).attr('disabled', true);
+        $("#next_btn").text("Wait Progressing...");
+        $("#next_btn").attr('disabled', true);
     },
     uploadProgress: function(event, position, total, percentComplete) {
         console.log(total);
@@ -233,42 +112,159 @@ $('form').ajaxForm({
         bar.width(percentVal)
         percent.html(percentVal);
         if (percentComplete == 100) {
-            $("#"+final).text("Video Uploading...");
+            $("#next_btn").text("Video Uploading...");
             $(".overlay").show();
-            $("#"+final).attr('disabled', true);
+            $("#next_btn").attr('disabled', true);
         }
     },
     complete: function(xhr) {
         bar.width("100%");
         percent.html("100%");
-        $(".overlay").show();
-        $("#"+final).text("Redirecting...");
-        $("#"+final).attr('disabled', true);
+        $(".overlay").hide();
+        $("#next_btn").text("Redirecting...");
+        $("#next_btn").attr('disabled', false);
         console.log(xhr);
     },
     error : function(xhr) {
         alert(xhr);
     },
     success : function(xhr) {
-        $("#"+final).text("Finished");
-        $("#"+final).attr('disabled', false);
+        console.log(xhr);
+
+
         $(".overlay").hide();
-        if(xhr.id != '' && xhr.id != undefined) {
-            window.location.href= xhr.id;
+
+        if(xhr.data) {
+
+            console.log("Inside " +xhr.data);
+
+            $("#select_image_div").html(xhr.path);
+
+            $("#next_btn").val("Next");
+
+            $("#next_btn").attr('disabled', false);
+
+            $("#main_id").val(xhr.data.id);
+
+            $("#btn-next").click();
+
         } else {
-            alert(xhr);
+            console.log(xhr);
         }
     }
 }); 
 
-function loadFile(event, id){
-    // alert(event.files[0]);
-    var reader = new FileReader();
-    reader.onload = function(){
-      var output = document.getElementById(id);
-      // alert(output);
-      output.src = reader.result;
-       //$("#imagePreview").css("background-image", "url("+this.result+")");
-    };
-    reader.readAsDataURL(event.files[0]);
-}
+function redirect() {
+
+      var formData = new FormData($("#video-upload")[0]);
+
+      $.ajax({
+
+          method : 'post',
+          url : upload_video_image_url,
+          data : formData,
+          async: false,
+          contentType: false,
+          processData: false,
+          success : function(data) {
+              if (data.id)  {
+                  console.log(data);
+                  window.location.href = '/admin/view/video/'+data.id;
+              } else {
+                  console.log(data);
+              }
+          }
+      });
+
+      // window.location.href = '/channel/'+$("#channel_id").val();
+   } 
+
+   function removePicture(idx) {
+
+      $("#image_div_id_"+idx).show();
+
+      $("#preview_image_div_"+idx).hide();
+
+      var e = $('#img_'+idx);
+      e.wrap('<form>').closest('form').get(0).reset();
+      e.unwrap();
+
+
+      return false;
+
+   }
+
+   function loadFile(event, id, idx){
+
+       $("#image_div_id_"+idx).hide();
+
+       $("#preview_image_div_"+idx).show();
+
+       $("#remove_circle_"+idx).show();
+
+        // alert(event.files[0]);
+        var reader = new FileReader();
+        reader.onload = function(){
+          var output = document.getElementById(id);
+          // alert(output);
+          output.src = reader.result;
+           //$("#imagePreview").css("background-image", "url("+this.result+")");
+        };
+        reader.readAsDataURL(event.files[0]);
+    }
+
+    function saveAsDefault(value, idx, count, image) {
+
+        for(var i = 0; i < count; i++) {
+
+          $("#btn_"+i).removeClass('btn-success'); 
+
+          $("#btn_"+i).addClass('btn-danger');
+
+          $("#btn_"+i).html("Make Default"); 
+
+        }
+
+        if ($("#btn_"+idx).find('btn-danger')) {
+
+          $("#btn_"+idx).removeClass('btn-danger');
+
+          $("#btn_"+idx).addClass('btn-success');
+
+          $("#btn_"+idx).html("Marked Default"); 
+
+        } else {
+
+          $("#btn_"+idx).removeClass('btn-success');
+
+          $("#btn_"+idx).addClass('btn-danger');
+
+          $("#btn_"+idx).html("Make Default"); 
+        }
+
+        console.log(value);
+
+        console.log(idx);
+
+        $.ajax({
+
+          type: "post",
+
+          url : save_img_url,
+
+          data : {id : value, idx : idx, img : image},
+
+          success : function(data) {
+
+              console.log(data);
+          },
+
+          error:function(data) {
+
+            console.log(data);
+
+          }
+
+        })
+
+    }

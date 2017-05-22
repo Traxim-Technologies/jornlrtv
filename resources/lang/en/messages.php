@@ -669,6 +669,13 @@ return array(
 	'subscription_approve_success' => 'Subscription Approved successfully',
 	'subscription_decline_success' => 'Subscription Declined successfully',
 
+
+	'ad_create_success' => 'Ad has been added successfully',
+	'ad_update_success'	=>	'Ad has been updated Successfully',
+	'ad_delete_success'	=>	'Ad deleted successfully',
+	'ad_approve_success' => 'Ad has been Approved successfully',
+	'ad_decline_success' => 'Ad has been Declined successfully',
+
 	'select_user'=>'Select User',
 
 	'total_subscription' => 'Total Subscriptions',

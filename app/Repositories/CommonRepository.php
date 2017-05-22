@@ -507,6 +507,7 @@ class CommonRepository {
     }
 
     public static function upload_video_image($request) {
+
         
         if ($request->default_image)  {
 
@@ -528,11 +529,12 @@ class CommonRepository {
             if($model->image)  {
                 Helper::delete_picture($model->image, "/uploads/images/");
             }
-            $model->image = Helper::normal_upload_picture($request->file('image'), "/uploads/images/");
+            $model->image = Helper::normal_upload_picture($request->file('other_image_1'), "/uploads/images/");
 
             $model->save();
             
         }
+
 
         if ($request->other_image_2)  {
 
@@ -541,13 +543,13 @@ class CommonRepository {
             if($model->image)  {
                 Helper::delete_picture($model->image, "/uploads/images/");
             }
-            $model->image = Helper::normal_upload_picture($request->file('image'), "/uploads/images/");
+            $model->image = Helper::normal_upload_picture($request->file('other_image_2'), "/uploads/images/");
 
             $model->save();
             
         }
 
-        return response()->json(true);
+        return response()->json($request->default_image_id);
 
     }
 

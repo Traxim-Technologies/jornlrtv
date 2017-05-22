@@ -144,9 +144,9 @@
 
                     @endif
                     
-                    <li id="video-subscription"><a href="{{route('admin.user.video-payments')}}">
+                   <!--  <li id="video-subscription"><a href="{{route('admin.user.video-payments')}}">
                         <i class="fa fa-credit-card"></i> <span>{{tr('video_payments')}}</span>
-                    </a></li>
+                    </a></li> -->
                 </ul>
             </li>
 

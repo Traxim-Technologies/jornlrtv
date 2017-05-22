@@ -8,7 +8,7 @@
 
                <br>
 
-               <input type="checkbox" name="between_ad_type" id="between_ad_type" value="{{BETWEEN_AD}}"> {{tr('between_ad')}}
+               <input type="checkbox" name="between_ad_type[{{$index}}]" id="between_ad_type" value="{{BETWEEN_AD}}"> {{tr('between_ad')}}
 
           </div>
 
@@ -17,7 +17,7 @@
 
                <label>{{tr('ad_time')}}</label>
 
-               <input type="text" name="between_ad_time" id="between_ad_time" class="form-control">
+               <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time" class="form-control">
 
           </div>
 
@@ -25,7 +25,7 @@
 
                <label>{{tr('video_time')}}</label>
 
-               <input type="text" class="form-control" name="between_ad_video_time" id="between_ad_video_time" />
+               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time" />
 
           </div>
 
@@ -33,7 +33,7 @@
 
                <label>{{tr('image')}}</label>
 
-               <input type="file" name="between_ad_file" id="between_ad_file" accept="image/png,image/jpeg">
+               <input type="file" name="between_ad_file[{{$index}}]" id="between_ad_file" accept="image/png,image/jpeg">
 
           </div>
 

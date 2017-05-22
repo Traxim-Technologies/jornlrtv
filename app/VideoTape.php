@@ -40,10 +40,27 @@ class VideoTape extends Model
 
     }
 
+    public function getScopeUserRatings() {
+
+         return $this->hasMany('App\UserRating', 'video_tape_id', 'admin_video_id');
+
+    }
+
+    public function getScopeVideoAds() {
+
+         return $this->hasOne('App\VideoAd', 'video_tape_id', 'admin_video_id');
+
+    }
 
     public function getVideoTapeImages() {
 
          return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'id');
+
+    }
+
+    public function getScopeVideoTapeImages() {
+
+         return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'admin_video_id');
 
     }
 

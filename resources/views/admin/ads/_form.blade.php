@@ -13,6 +13,7 @@
 
             <form  action="{{route('admin.save_ads')}}" method="POST" enctype="multipart/form-data" role="form">
 
+                <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{$vModel->id}}">
 
                 <div class="box-body">
 
@@ -37,9 +38,7 @@
 
                     			<label>{{tr('ad_type')}}</label>
 
-                    			<input type="hidden" name="pre_ad_video_time" id="pre_ad_video_time" />
-
-                    			<br>
+                                <br>
 
                     			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{PRE_AD}}"> {{tr('pre_ad')}}
 
@@ -77,16 +76,14 @@
 
                     			<label>{{tr('ad_type')}}</label>
 
-                    			<input type="hidden" name="post_ad_video_time" id="post_ad_video_time" />
-
-                    			<br>
+                                <br>
 
                     			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}"> {{tr('post_ad')}}
 
                     		</div>
 
 
-                    		<div class="col-md-3">
+                    	   <div class="col-md-3">
 
                     			<label>{{tr('ad_time')}}</label>
 
@@ -190,6 +187,7 @@
                           }
                     });
                 
+                 // console.log("Duration" + playerInstance.getDuration());
                 
 
             @endif
@@ -230,6 +228,19 @@ function removeQuestion(index) {
     $('#adsDiv_'+index).hide();
 
 }
+
+/*function getTime(value) {
+    alert("{{POST_AD}}");
+    if(value == "{{PRE_AD}}") {
+        $("#pre_ad_video_time").val('00:00');
+    }else if(value == "{{POST_AD}}") {
+        var playerInstance = jwplayer("main-video-player");
+        alert(playerInstance);
+        var jwplayerTime = playerInstance.getDuration();
+        alert(jwplayerTime);
+        $("#post_ad_video_time").val(jwplayerTime);
+    }
+}*/
 </script>
 
 

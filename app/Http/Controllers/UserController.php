@@ -131,7 +131,8 @@ class UserController extends Controller {
                     ->with('video_pixels', $response->video_pixels)
                     ->with('videoStreamUrl', $response->videoStreamUrl)
                     ->with('hls_video' , $response->hls_video)
-                    ->with('flaggedVideo', $response->flaggedVideo);
+                    ->with('flaggedVideo', $response->flaggedVideo)
+                    ->with('ads', $response->ads);
     }
 
     /**

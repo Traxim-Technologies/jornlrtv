@@ -55,11 +55,9 @@ hr {
                         <h4>{{tr('details')}}</h4>
                             <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
-                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('category')}}</b> <a class="pull-right">{{$video->category_name}}</a>
+                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('channel')}}</b> <a class="pull-right">{{$video->category_name}}</a>
                                 </li>
-                                <li class="list-group-item">
-                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('sub_category')}}</b> <a class="pull-right">{{$video->sub_category_name}}</a>
-                                </li>
+                              
                                 <li class="list-group-item">
                                   <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('video_type')}}</b> <a class="pull-right">
                                     @if($video->video_type == 1)
@@ -112,134 +110,36 @@ hr {
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <strong><i class="fa fa-file-picture-o margin-r-5"></i> {{tr('images')}}</strong>
+                        
+                         <div class="row">
+                            <div class="col-lg-12">
+                              <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('description')}}</strong>
 
-                        <div class="row margin-bottom" style="margin-top: 10px;">
-                            <div class="col-lg-6">
-                              <img alt="Photo" src="{{isset($video->default_image) ? $video->default_image : ''}}" class="img-responsive" style="width:100%;height:250px;">
+                              <p style="margin-top: 10px;">{{$video->description}}.</p>
                             </div>
-                            <!-- /.col -->
-                            <div class="col-lg-6">
-                              <div class="row">
-                                 @foreach($video_images as $i => $image)
-                                <div class="col-lg-6">
-                                  <img alt="Photo" src="{{$image->image}}" class="img-responsive" style="width:100%;height:130px">
-                                  <br>
-                                </div>
-                                @endforeach
-                                @if ($video->banner_image == 1) 
-                                    <img alt="Photo" src="{{$video->banner_image}}" class="img-responsive" style="width:100%;height:130px">
-                                @endif
-                                <!-- /.col -->
-                              </div>
+                            <div class="col-lg-12">
+                                  <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('reviews')}}</strong>
+
+                                  <p style="margin-top: 10px;">{{$video->reviews}}.</p>
                             </div>
-                              <!-- /.row -->
-                        </div>
+                           
+                         </div>
 
                     </div>
                     
                   </div>
                 </div>
 
-              <hr>
+                <hr>
 
-              <div class="row">
-                <div class="col-lg-12">
-                    <div class="col-lg-6">
-                          <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('description')}}</strong>
-
-                          <p style="margin-top: 10px;">{{$video->description}}.</p>
-                    </div>
-                     <div class="col-lg-6">
-                          <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('reviews')}}</strong>
-
-                          <p style="margin-top: 10px;">{{$video->reviews}}.</p>
-                    </div>
-                </div>
-             </div>
-
-              <hr>
-
-              @if($video->amount > 0)
-
-              <h4 style="margin-left: 15px;font-weight: bold;">{{tr('pay_per_view')}}</h4>
-              <div class="row">
-
-                <div class="col-lg-12">
-                    <div class="col-lg-4">
-                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('type_of_user')}}</strong>
-
-                        <p style="margin-top: 10px;">
-                            @if($video->type_of_user == NORMAL_USER)
-                                {{tr('normal_user')}}
-                            @elseif($video->type_of_user == PAID_USER)
-                                {{tr('paid_user')}}
-                            @elseif($video->type_of_user == BOTH_USERS) 
-                                {{tr('both_user')}}
-                            @else
-                                -
-                            @endif
-                        </p>
-                    </div>
-                    <div class="col-lg-4">
-                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('type_of_subscription')}}</strong>
-
-                        <p style="margin-top: 10px;">
-                            @if($video->type_of_subscription == ONE_TIME_PAYMENT)
-                                {{tr('one_time_payment')}}
-                            @elseif($video->type_of_subscription == RECURRING_PAYMENT)
-                                {{tr('recurring_payment')}}
-                            @else
-                                -
-                            @endif
-                        </p>
-                    </div>
-                    <div class="col-lg-4">
-                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('amount')}}</strong>
-
-                        <p style="margin-top: 10px;">
-                           {{$video->amount}}
-                        </p>
-                    </div>
-                </div>
-              </div>
-
-              <hr>
-              @endif
-              
 
                 <div class="row">
                   <div class="col-lg-12">
-                       <div class="col-lg-6">
-
-                            <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('trailer_video')}}</strong>
-
-                            <div class="">
-                                @if($video->video_upload_type == 1)
-                                <?php $trailer_url = $video->trailer_video; ?>
-                                    <div id="trailer-video-player"></div>
-                                @else
-
-                                    @if(check_valid_url($video->trailer_video))
-
-                                        <?php $trailer_url = (Setting::get('streaming_url')) ? Setting::get('streaming_url').get_video_end($video->trailer_video) : $video->trailer_video; ?>
-
-                                        <div id="trailer-video-player"></div>
-
-                                    @else
-                                        <div class="image">
-                                            <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
-                                        </div>
-                                    @endif
-
-                                @endif
-                            </div>
-                        </div>
                         <div class="col-lg-6">
 
                             <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('full_video')}}</strong>
 
-                            <div class="">
+                            <div class="margin-t-10" style="margin-top:10px;">
                                     @if($video->video_upload_type == 1)
                                     <?php $url = $video->video; ?>
                                     <div id="main-video-player"></div>
@@ -257,6 +157,34 @@ hr {
                                 @endif
                             </div>
                         </div>
+
+                       <div class="col-lg-6">
+
+                           <strong><i class="fa fa-file-picture-o margin-r-5"></i> {{tr('images')}}</strong>
+
+                            <div class="row margin-bottom" style="margin-top: 10px;">
+                                <!-- /.col -->
+                                <div class="col-lg-12">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                        <img alt="Photo" src="{{isset($video->default_image) ? $video->default_image : ''}}" class="img-responsive" style="width:100%;height:130px;">
+                                    </div>
+                                    @foreach($video_images as $i => $image)
+                                    <div class="col-lg-6">
+                                      <img alt="Photo" src="{{$image->image}}" class="img-responsive" style="width:100%;height:130px">
+                                      <br>
+                                    </div>
+                                    @endforeach
+                                    @if ($video->banner_image == 1) 
+                                        <img alt="Photo" src="{{$video->banner_image}}" class="img-responsive" style="width:100%;height:130px">
+                                    @endif
+                                    <!-- /.col -->
+                                  </div>
+                                </div>
+                                  <!-- /.row -->
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             <!-- /.box-body -->
