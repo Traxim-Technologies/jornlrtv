@@ -19,6 +19,16 @@
 	#c4-header-bg-container .hd-banner-image {
 		background-image: url({{$channel->cover}});
 	}
+
+	.payment_class {
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-height: 38px;
+		line-height: 19px;
+		padding: 0 !important;
+		font-weight: bolder !important;
+	}
 </style>
 
 @endsection 
@@ -89,14 +99,21 @@
 					<div id="channel-subheader" class="clearfix branded-page-gutter-padding appbar-content-trigger">
 						<ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
-								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">Home</span></a>
+								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('home')}}</span></a>
 							</li>
 							<li role="presentation">
-								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">Videos</span> </a>
+								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
 							</li>
 							<li role="presentation">
-								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab"><span class="yt-uix-button-content">About</span> </a>
+								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('about_video')}}</span> </a>
 							</li>
+							@if(Auth::check())
+								@if($channel->user_id == Auth::user()->id)
+									<li role="presentation">
+										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> </a>
+									</li>
+								@endif
+							@endif
 						</ul>
 					</div>
 				</div>
@@ -231,7 +248,7 @@
 											<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
 										</div>
 										<div class="sugg-description">
-											<p>{{tr('duration')}} : {{$video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span>
+											<p style="color: #000">{{tr('duration')}} : {{$video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span>
 											</p>
 										</div>
 
@@ -273,6 +290,83 @@
 						</div>
 					</div>
 
+
+				</li>
+
+
+				<li role="tabpanel" class="tab-pane" id="payment_managment">
+
+					<div class="slide-area recom-area abt-sec">
+						<div class="abt-sec-head">
+							
+							 <div class="new-history">
+					                <div class="content-head">
+					                    <div><h4>{{tr('payment_videos')}}</h4></div>              
+					                </div><!--end of content-head-->
+
+					                @if(count($payment_videos) > 0)
+
+					                    <ul class="history-list">
+
+					                        @foreach($payment_videos as $i => $video)
+
+
+					                        <li class="sub-list row">
+					                            <div class="main-history">
+					                                 <div class="history-image">
+					                                    <a href="{{route('user.single' , $video->id)}}"><img src="{{$video->default_image}}"></a>                        
+					                                </div><!--history-image-->
+
+					                                <div class="history-title">
+					                                    <div class="history-head row">
+					                                        <div class="cross-title">
+					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
+					                                            <p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p>
+					                                        </div> 
+					                                        <div class="cross-mark">
+					                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+					                                        </div><!--end of cross-mark-->                       
+					                                    </div> <!--end of history-head--> 
+
+					                                    <div class="description">
+					                                        <p>{{$video->description}}</p>
+					                                    </div><!--end of description--> 
+
+					                                   	<span class="stars">
+					                                        <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                    </span>                                                      
+					                                </div><!--end of history-title--> 
+					                                
+					                            </div><!--end of main-history-->
+					                        </li>    
+
+					                        @endforeach
+					                       
+					                    </ul>
+
+					                @else
+					                    <p style="color: #000">{{tr('no_videos_found')}}</p>
+					                @endif
+
+					                @if(count($payment_videos) > 0)
+
+					                    @if($payment_videos)
+					                    <div class="row">
+					                        <div class="col-md-12">
+					                            <div align="center" id="paglink"><?php echo $payment_videos->links(); ?></div>
+					                        </div>
+					                    </div>
+					                    @endif
+					                @endif
+					                
+					            </div>
+
+						</div>
+					</div>
 
 				</li>
 			</ul>

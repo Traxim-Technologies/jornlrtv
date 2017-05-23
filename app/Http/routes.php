@@ -535,6 +535,8 @@ Route::group([], function(){
 
     Route::post('ad_request', 'UserController@ad_request')->name('user.ad_request');
 
+    Route::get('/delete/video/{id}', 'UserController@delete_video')->name('user.delete.video');
+
 });
 
 

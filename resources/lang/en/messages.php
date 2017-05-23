@@ -34,6 +34,10 @@ return array(
 	'edit_cover_photo'=>'Edit Cover Photo',
 	'terms'=>'Terms',
 	'total_channels'=>'Total Channels',
+	'about_video'=>'About',
+	'payment_managment'=>'Payment Management',
+	'payment_videos'=>'Payment Videos',
+	'no_videos_found'=>'No Videos Found',
 
 	'marked_default'=>'Marked Default',
 

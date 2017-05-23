@@ -386,11 +386,14 @@ class UserController extends Controller {
 
         $trending_videos = VideoRepo::channel_trending($id, WEB, null, 5);
 
+        $payment_videos = VideoRepo::payment_videos($id, WEB, null);
+
         return view('user.channels.index')
                     ->with('page' , 'channels')
                     ->with('subPage' , 'channels')
                     ->with('channel' , $channel)
-                    ->with('videos' , $videos)->with('trending_videos', $trending_videos);
+                    ->with('videos' , $videos)->with('trending_videos', $trending_videos)
+                    ->with('payment_videos', $payment_videos);
     }
 
     public function channel_create() {
@@ -699,5 +702,16 @@ class UserController extends Controller {
 
         }
 
+    }
+
+    public function delete_video($id) {
+
+        if($video = VideoTape::where('id' , $id)->first())  {
+
+            $video->delete();
+            
+        }
+
+        return back()->with('flash_success', 'Video deleted successfully');
     }
 }

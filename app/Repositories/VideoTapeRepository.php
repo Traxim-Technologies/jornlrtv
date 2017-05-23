@@ -161,6 +161,33 @@ class VideoTapeRepository {
     
     }
 
+
+    public static function payment_videos($id, $web, $skip = null, $count = 0) {
+
+        $base_query = VideoTape::where('amount' , '>' , 0)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->where('channel_id', $id)
+                        ->orderby('amount' , 'desc');
+
+       if($skip) {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        } else if($count > 0){
+
+            $videos = $base_query->skip(0)->take($count)->get();
+
+        } else {
+
+            $videos = $base_query->paginate(16);
+            
+        }
+
+        return $videos;
+    
+    }
+
 	/**
 	 * Suggestion videos based on the Created At 
 	 * 

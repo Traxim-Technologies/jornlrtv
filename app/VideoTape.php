@@ -37,6 +37,7 @@ class VideoTape extends Model
             'video_tapes.compress_status',
             'video_tapes.ad_status',
             'video_tapes.reviews',
+            'video_tapes.amount',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date')
         );
     }

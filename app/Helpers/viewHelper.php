@@ -578,3 +578,11 @@ function getChannels($id = null) {
 
     return $response;
 }
+
+function getAmountBasedChannel($id) {
+
+    $model = VideoTape::where('channel_id', $id)->sum('amount');
+
+    return $model;
+
+}
