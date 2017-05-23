@@ -161,7 +161,7 @@
           contentType: false,
           processData: false,
           success : function(data) {
-              if (data.success == true)  {
+              if (data.id)  {
                   window.location.href = '/channel/'+$("#channel_id").val();
               } else {
                   console.log(data);

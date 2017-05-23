@@ -351,17 +351,16 @@ Route::group(['prefix' => 'admin'], function(){
 
     // Pages
 
-    Route::get('/viewPage', array('as' => 'viewPages', 'uses' => 'AdminController@viewPages'));
+    Route::get('/pages', 'AdminController@pages')->name('admin.pages.index');
 
-    Route::get('/editPage/{id}', array('as' => 'editPage', 'uses' => 'AdminController@editPage'));
+    Route::get('/pages/edit/{id}', 'AdminController@page_edit')->name('admin.pages.edit');
 
-    Route::post('/editPage', array('as' => 'editPageProcess', 'uses' => 'AdminController@pagesProcess'));
+    Route::get('/pages/create', 'AdminController@page_create')->name('admin.pages.create');
 
-    Route::get('/pages', array('as' => 'addPage', 'uses' => 'AdminController@add_page'));
+    Route::post('/pages/create', 'AdminController@page_save')->name('admin.pages.save');
 
-    Route::post('/pages', array('as' => 'adminPagesProcess', 'uses' => 'AdminController@pagesProcess'));
+    Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('admin.pages.delete');
 
-    Route::get('/deletePage/{id}', array('as' => 'deletePage', 'uses' => 'AdminController@deletePage'));
 
     // Custom Push
 
@@ -517,6 +516,10 @@ Route::group([], function(){
     Route::get('create_channel', 'UserController@channel_create')->name('user.create_channel');
 
     Route::post('save_channel', 'UserController@save_channel')->name('user.save_channel');
+
+    Route::get('edit_channel/{id}', 'UserController@channel_edit')->name('user.channel_edit');
+
+    Route::get('delete_channel', 'UserController@channel_delete')->name('user.delete.channel');
 
     // Video Upload
 

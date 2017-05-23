@@ -77,7 +77,9 @@
 						<div class="pull-right upload_a">
 							@if(Auth::check())
 								@if($channel->user_id == Auth::user()->id)
-									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> Upload Video</a>
+									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
+									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
+									<a class="st_video_upload_btn" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
 								@endif
 							@endif
 						</div>
@@ -135,7 +137,7 @@
 															<a href="{{route('user.single', $trending_videos[0]->admin_video_id)}}"> {{$trending_videos[0]->title}}</a>
 														</div>
 														<div class="sugg-description">
-															<p>{{tr('duration')}}: {{$trending_videos[0]->duration}}<span class="content-item-time-created lohp-video-metadata-item" title="11 months ago"><i class="fa fa-clock-o" aria-hidden="true"></i> {{$trending_videos[0]->created_at ? $trending_videos[0]->created_at->diffForHumans() : 0}} {{tr('ago')}}</span>
+															<p>{{tr('duration')}}: {{$trending_videos[0]->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{$trending_videos[0]->created_at ? $trending_videos[0]->created_at->diffForHumans() : 0}} </span>
 															</p>
 														</div>
 														<!--end of sugg-description-->
@@ -171,7 +173,7 @@
 																<a href="{{route('user.single', $trending_video->admin_video_id)}}">{{$trending_video->title}}</a>
 															</div>
 															<div class="sugg-description">
-																<p>{{tr('duration')}}: {{$trending_video->duration}}<span class="content-item-time-created lohp-video-metadata-item" title="11 months ago"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($trending_video->created_at) ? $trending_video->created_at->diffForHumans() : 0}} {{tr('ago')}}</span>
+																<p>{{tr('duration')}}: {{$trending_video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($trending_video->created_at) ? $trending_video->created_at->diffForHumans() : 0}}</span>
 																</p>
 															</div>
 															<!--end of sugg-description-->
@@ -229,7 +231,7 @@
 											<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
 										</div>
 										<div class="sugg-description">
-											<p>{{tr('duration')}} : {{$video->duration}}<span class="content-item-time-created lohp-video-metadata-item" title="11 months ago"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}} {{tr('ago')}}</span>
+											<p>{{tr('duration')}} : {{$video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span>
 											</p>
 										</div>
 

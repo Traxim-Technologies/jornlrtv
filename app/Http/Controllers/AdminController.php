@@ -269,6 +269,7 @@ class AdminController extends Controller
             $user->name = $request->has('name') ? $request->name : '';
             $user->email = $request->has('email') ? $request->email: '';
             $user->mobile = $request->has('mobile') ? $request->mobile : '';
+            $user->description = $request->has('description') ? $request->description : '';
             
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
@@ -283,6 +284,14 @@ class AdminController extends Controller
                 $page = "emails.admin_user_welcome";
                 $email = $user->email;
                 Helper::send_email($page,$subject,$email,$email_data);
+            }
+
+            // Upload picture
+            if ($request->hasFile('picture') != "") {
+                if ($request->id) {
+                    Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
+                }
+                $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
             }
 
             $user->save();
@@ -664,15 +673,15 @@ class AdminController extends Controller
     public function ad_videos() {
 
         $videos = VideoTape::videoResponse()
-                    ->leftJoin('channels' , 'channels.id' , '=' , 'video_tape.channel_id')
+                    ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
                     ->leftJoin('users' , 'users.id' , '=' , 'channels.user_id')
                     ->where('users.ads_status', DEFAULT_TRUE)
                     ->orderBy('video_tapes.created_at' , 'desc')
-                    ->get();
+                    ->get()->toArray();
 
         return view('admin.videos.videos')->with('videos' , $videos)
-                    ->withPage('videos')
-                    ->with('sub_page','view-videos');
+                    ->withPage('videos_ads')
+                    ->with('sub_page','ad-videos');
    
     }
 
@@ -1432,85 +1441,108 @@ class AdminController extends Controller
         return view('admin.static.help')->withPage('help')->with('sub_page' , "");
     }
 
-    public function viewPages() {
+    public function pages() {
 
         $all_pages = Page::all();
 
-        return view('admin.pages.viewpages')->with('page','pages_id')->with('sub_page',"view_pages")->with('data',$all_pages);
+        return view('admin.pages.index')->with('page',"viewpages")->with('sub_page','view_pages')->with('data',$all_pages);
     }
 
-    public function add_page() {
+    public function page_create() {
 
-        $pages = Page::all();
-        return view('admin.pages.add-page')->with('page','pages_id')->with('sub_page',"add_page")->with('view_pages',$pages);
+        $all = Page::all();
+
+        return view('admin.pages.create')->with('page' , 'viewpages')->with('sub_page',"add_page")
+                ->with('view_pages',$all);
     }
 
-    public function editPage($id) {
-        $page = Page::find($id);
+    public function page_edit($id) {
 
-        if($page) {
-            return view('admin.pages.editPage')->withPage('viewpage')->with('sub_page',"view_pages")->with('pages',$page);
+        $data = Page::find($id);
+
+        if($data) {
+            return view('admin.pages.edit')->withPage('viewpages')->with('sub_page',"view_pages")
+                    ->with('data',$data);
         } else {
-            return back()->with('flash_error',tr('admin_not_error'));
+            return back()->with('flash_error',tr('something_error'));
         }
     }
 
-    public function pagesProcess(Request $request) {
+    public function page_save(Request $request) {
 
-        $type = $request->type;
-        $id = $request->id;
-        $heading = $request->heading;
-        $description = $request->description;
-
-        $validator = Validator::make($request->all(),
-            array('heading' => 'required',
-                'description' => 'required'));
+        if($request->has('id')) {
+            $validator = Validator::make($request->all() , array(
+                'title' => '',
+                'heading' => 'required',
+                'description' => 'required'
+            ));
+        } else {
+            $validator = Validator::make($request->all() , array(
+                'type' => 'required',
+                'title' => 'required|max:255|unique:pages',
+                'heading' => 'required',
+                'description' => 'required'
+            ));
+        }
 
         if($validator->fails()) {
-            $error = $validator->messages()->all();
+            $error = implode('',$validator->messages()->all());
             return back()->with('flash_errors',$error);
         } else {
 
             if($request->has('id')) {
-
-                $pages = Page::find($id);
-                $pages->heading = $heading;
-                $pages->description = $description;
-                $pages->save();
+                $pages = Page::find($request->id);
 
             } else {
+                if(Page::count() <= 5) {
 
-                $check_page = Page::where('type',$type)->first();
-                
-                if(!$check_page) {
+                    if($request->type != 'others') {
+                        $check_page_type = Page::where('type',$request->type)->first();
+                        if($check_page_type){
+                            return back()->with('flash_error',"You have already created $request->type page");
+                        }
+                    }
+                    
+                    
                     $pages = new Page;
-                    $pages->type = $type;
-                    $pages->heading = $heading;
-                    $pages->description = $description;
-                    $pages->save();
-                } else {
-                    return back()->with('flash_error',tr('page_already_alert'));
+
+                    $check_page = Page::where('title',$request->title)->first();
+                    
+                    if($check_page) {
+                        return back()->with('flash_error',tr('page_already_alert'));
+                    }
+                }else {
+                    return back()->with('flash_error',"You cannot create more pages");
                 }
+                
+            }
+
+            if($pages) {
+
+                $pages->type = $request->type ? $request->type : $pages->type;
+                $pages->title = $request->title ? $request->title : $pages->title;
+                $pages->heading = $request->heading ? $request->heading : $pages->heading;
+                $pages->description = $request->description ? $request->description : $pages->description;
+                $pages->save();
             }
             if($pages) {
                 return back()->with('flash_success',tr('page_create_success'));
             } else {
-                return back()->with('flash_error',tr('admin_not_error'));
+                return back()->with('flash_error',tr('something_error'));
             }
         }
     }
 
-    public function deletePage($id) {
+    public function page_delete($id) {
 
         $page = Page::where('id',$id)->delete();
 
         if($page) {
             return back()->with('flash_success',tr('page_delete_success'));
         } else {
-            return back()->with('flash_error',tr('admin_not_error'));
+            return back()->with('flash_error',tr('something_error'));
         }
     }
-
     public function custom_push() {
 
         return view('admin.static.push')->with('title' , "Custom Push")->with('page' , "custom-push");
@@ -1712,11 +1744,11 @@ class AdminController extends Controller
 
         }
 
-        $message = tr('admin_not_channel_decline');
+        $message = tr('channel_decline_success');
 
         if($channel->is_approved == DEFAULT_TRUE){
 
-            $message = tr('admin_not_channel_approve');
+            $message = tr('channel_approve_success');
         }
 
         return back()->with('flash_success', $message);
@@ -1731,11 +1763,11 @@ class AdminController extends Controller
 
             $channel->delete();
 
-            return back()->with('flash_success',tr('admin_not_channel_del'));
+            return back()->with('flash_success',tr('channel_delete_success'));
 
         } else {
 
-            return back()->with('flash_error',tr('admin_not_error'));
+            return back()->with('flash_error',tr('something_error'));
 
         }
     }

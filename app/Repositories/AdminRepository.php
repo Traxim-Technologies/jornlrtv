@@ -12,6 +12,7 @@ use DB;
 use Exception;
 use App\VideoAd;
 use App\AdsDetail;
+use App\VideoTape;
 
 class AdminRepository {
 
@@ -128,7 +129,21 @@ class AdminRepository {
 
                             $between_ad_model->ad_type = BETWEEN_AD;
 
-                            $between_ad_model->video_time = $request->has('between_ad_time') ? $request->between_ad_time[$key] : $between_ad_model->video_time;
+                            $time = $request->has('between_ad_time') ? $request->between_ad_time[$key] : $between_ad_model->video_time;
+
+                            $expTime = explode(':', $time);
+
+                            if (count($expTime) == 3) {
+
+                                $between_ad_model->video_time = $time;
+
+                            }
+
+                            if (count($expTime) == 2) {
+
+                                 $between_ad_model->video_time = "00:".$expTime[0].":".$expTime[1];
+                            }
+
 
                             $between_ad_model->ad_time = $request->has('between_ad_time') ? $request->between_ad_time[$key] : $between_ad_model->between_ad_time;
 
@@ -162,7 +177,18 @@ class AdminRepository {
 
                 if ($model->save()) {
 
-                    
+                    $video_tape = VideoTape::find($request->video_tape_id);
+
+                    $video_tape->ad_status = DEFAULT_TRUE;
+
+                    if ($video_tape->save()) {
+
+
+                    } else {
+
+                        throw new Exception(tr('something_error'));
+
+                    }
 
                 } else {
 

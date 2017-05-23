@@ -80,8 +80,10 @@ class CompressVideo extends Job implements ShouldQueue
 
             $video->video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
             $video->video_resize_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
-        
-            $video->status = DEFAULT_TRUE; 
+
+            $video->status = DEFAULT_TRUE;
+
+            $video->compress_status = DEFAULT_TRUE; 
 
             Log::info("Array Resolutions : ".print_r($array_resolutions, true));
             if ($array_resolutions) {

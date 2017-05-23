@@ -68,7 +68,7 @@
 							      		@endif
 							      	</td>
 							      	<td>
-							      		@if ($video['publish_status'] == 0)
+							      		@if ($video['compress_status'] == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>
 							      		@else
 								      		@if($video['is_approved'])
@@ -85,7 +85,7 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
-								                	@if ($video['publish_status'] == 1)
+								                	@if ($video['compress_status'] == 1)
 								                  	<li role="presentation">
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
@@ -103,24 +103,24 @@
 								                  	@if($video['is_approved'])
 								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video['admin_video_id'])}}">{{tr('decline')}}</a></li>
 								                	@else
-								                		@if ($video['publish_status'] == 0)
+								                		@if ($video['compress_status'] == 0)
 								                			<li role="presentation"><a role="menuitem" tabindex="-1">{{tr('compress')}}</a></li>
 								                		@else 
 								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video['admin_video_id'])}}">{{tr('approve')}}</a></li>
 								                  		@endif
 								                  	@endif
 
-								                  	@if($video['status'] == 0)
+								                  	@if($video['publish_status'] == 0 && $video['compress_status'] == 1)
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.publish-video',$video['admin_video_id'])}}">{{tr('publish')}}</a></li>
 								                  	@endif
 
-								                  	@if($video['user_details']['ads_status']) 
+								                  	@if(!$video['ad_status']) 
 
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_create', $video['admin_video_id'])}}">{{tr('video_ad')}}</a></li>
 
 								                  	@endif
 
-								                  	@if ($video['publish_status'] == 1)
+								                  	@if ($video['compress_status'] == 1)
 									                  	<li class="divider" role="presentation"></li>
 
 									                  	<li role="presentation">

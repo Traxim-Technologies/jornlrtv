@@ -30,14 +30,14 @@
                     <div class="box-body">
 
                         <div class="form-group">
-                            <label for="email" class="col-sm-1 control-label">{{tr('email')}}</label>
+                            <label for="email" class="col-sm-2 control-label">{{tr('email')}}</label>
                             <div class="col-sm-10">
                                 <input type="email" maxlength="255" required class="form-control" id="email" name="email" placeholder="{{tr('email')}}">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="username" class="col-sm-1 control-label">{{tr('username')}}</label>
+                            <label for="username" class="col-sm-2 control-label">{{tr('username')}}</label>
 
                             <div class="col-sm-10">
                                 <input type="text" required name="name" class="form-control" id="username" placeholder="{{tr('name')}}">
@@ -45,13 +45,33 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-1 control-label">{{tr('mobile')}}</label>
+                            <label for="mobile" class="col-sm-2 control-label">{{tr('mobile')}}</label>
 
                             <div class="col-sm-10">
                                 <input type="text" required name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}" minlength="6" maxlength="13" pattern="[0-9]{6,}">
                                 <br>
                                  <small style="color:brown">{{tr('mobile_note')}}</small>
                             </div>
+                        </div>
+
+                         <div class="form-group">
+                            <label for="mobile" class="col-sm-2 control-label">{{tr('description')}}</label>
+
+                            <div class="col-sm-10">
+                                <textarea type="text" name="description" class="form-control" id="description" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobile" class="col-sm-2 control-label">{{tr('picture')}}</label>
+
+                            <div class="col-sm-3">
+                                <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" />
+                                <br>
+                                <img id="picture_preview" style="width: 150px;height: 150px;" />
+                            </div>
+                        
+                            
                         </div>
 
                     </div>
@@ -83,6 +103,19 @@
         // alert(dtz);
         $("#userTimezone").val(jstz.determine().name());
     });
+
+
+function loadFile(event, id){
+    // alert(event.files[0]);
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById(id);
+      // alert(output);
+      output.src = reader.result;
+      //$("#c4-header-bg-container .hd-banner-image").css("background-image", "url("+this.result+")");
+    };
+    reader.readAsDataURL(event.files[0]);
+}
 
 </script>
 

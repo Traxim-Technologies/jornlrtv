@@ -158,7 +158,7 @@ class UserController extends Controller {
     public function update_profile()
     {
 
-        $wishlist = $this->UserAPI->wishlist(Auth::user()->id);
+        $wishlist = $this->UserAPI->wishlist(Auth::user()->id)->getData();
 
         return view('user.account.edit-profile')->with('page' , 'profile')
                     ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
@@ -417,6 +417,32 @@ class UserController extends Controller {
 
     }
 
+    public function channel_edit($id) {
+
+        $model = Channel::find($id);
+
+        return view('user.channels.edit')->with('page', 'channels')
+                    ->with('subPage', 'edit_channel')->with('model', $model);
+
+    }
+
+    public function channel_delete(Request $request) {
+
+        $channel = Channel::where('id' , $request->id)->first();
+
+        if($channel) {       
+
+            $channel->delete();
+
+            return redirect(route('user.dashboard'))->with('flash_success',tr('channel_delete_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('something_error'));
+
+        }
+
+    }
 
     public function contact(Request $request) {
 
@@ -654,7 +680,7 @@ class UserController extends Controller {
 
         $response = CommonRepo::upload_video_image($request)->getData();
 
-        return response()->json(['success'=>$response]);
+        return response()->json(['id'=>$response]);
 
     }
 

@@ -80,12 +80,14 @@
             </li>
 
              <li class="treeview" id="videos_ads">
+
                 <a href="{{route('admin.ads_index')}}">
                     <i class="fa fa-bullhorn"></i> <span>{{tr('video_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
                     <!-- <li id="add-video"><a href="{{route('admin.add.video')}}"><i class="fa fa-circle-o"></i>{{tr('add_video')}}</a></li> -->
+                    <li id="ad-videos"><a href="{{route('admin.ad_videos')}}"><i class="fa fa-circle-o"></i>{{tr('ad_videos')}}</a></li>
                     <li id="view-ads"><a href="{{route('admin.ads_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li>
                 </ul>
 
@@ -130,12 +132,12 @@
             
             <li id="payments">
                 <a href="{{route('admin.user.payments')}}">
-                    <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> 
                 </a>
 
-                <ul class="treeview-menu">
+                <?php /*<ul class="treeview-menu">
 
-                    @if(Setting::get('is_subscription'))
+                   <!--  @if(Setting::get('is_subscription')) -->
                     
                         <li id="user-payments">
                             <a href="{{route('admin.user.payments')}}">
@@ -143,12 +145,12 @@
                             </a>
                         </li>
 
-                    @endif
+                    <!-- @endif -->
                     
                    <!--  <li id="video-subscription"><a href="{{route('admin.user.video-payments')}}">
                         <i class="fa fa-credit-card"></i> <span>{{tr('video_payments')}}</span>
                     </a></li> -->
-                </ul>
+                </ul> */?>
             </li>
 
 
@@ -170,13 +172,13 @@
                 </a>
             </li>
 
-            <li class="treeview" id="pages_id">
-                <a href="{{route('viewPages')}}">
+            <li class="treeview" id="viewpages">
+                <a href="{{route('admin.pages.index')}}">
                     <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li id="add_page"><a href="{{route('addPage')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
-                    <li id="view_pages"><a href="{{route('viewPages')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
+                    <li id="add_page"><a href="{{route('admin.pages.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
+                    <li id="view_pages"><a href="{{route('admin.pages.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
                 </ul>
             </li>
 

@@ -34,4 +34,37 @@ class Channel extends Model
         return $this->hasMany('App\VideoTape')->videoResponse()->where('status', DEFAULT_TRUE)->where('is_approved', DEFAULT_TRUE);
     }
 
+    public function getVideoTape() {
+        return $this->hasMany('App\VideoTape');
+    }
+
+    /**
+     * Boot function for using with User Events
+     *
+     * @return void
+     */
+
+    public static function boot()
+    {
+        //execute the parent's boot method 
+        parent::boot();
+
+        //delete your related models here, for example
+        static::deleting(function($model)
+        {
+            if (count($model->getVideoTape) > 0) {
+
+                foreach ($model->getVideoTape as $key => $value) {
+
+                   $value->delete();    
+
+                }
+
+            }
+
+        }); 
+
+    }
+
+
 }

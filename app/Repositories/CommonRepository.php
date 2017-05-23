@@ -256,14 +256,14 @@ class CommonRepository {
                 
                 if($request->hasFile('picture') && $request->file('picture')->isValid()) {
                     if($channel->id)  {
-                        Helper::delete_picture($model->cover, "/uploads/channels/picture/");
+                        Helper::delete_picture($channel->picture, "/uploads/channels/picture/");
                     }
                     $channel->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/channels/picture/");
                 }
 
                 if($request->hasFile('cover') && $request->file('cover')->isValid()) {
                     if($channel->id)  {
-                        Helper::delete_picture($model->cover, "/uploads/channels/cover/");
+                        Helper::delete_picture($channel->cover, "/uploads/channels/cover/");
                     }
                     $channel->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channels/cover/");
                 }
@@ -351,12 +351,13 @@ class CommonRepository {
 
             $model->status = DEFAULT_FALSE;
 
-            $model->publish_status = DEFAULT_FALSE;
-                     
+            $model->publish_status = DEFAULT_TRUE;
 
             if($model->publish_time) {
                 if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
                     $model->publish_status = DEFAULT_TRUE;
+                } else {
+                    $model->publish_status = DEFAULT_FALSE;
                 }
             }
 
@@ -385,6 +386,8 @@ class CommonRepository {
                     \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
 
                     $model->status = DEFAULT_TRUE;
+
+                    $model->compress_status = DEFAULT_TRUE;
 
                     $model->save();
                 }

@@ -31,6 +31,8 @@ return array(
 	'select_image_short_notes'=>'Select any one of the images which is given below. The selected Image will reflect as a thumbnail of your video',
 	'subscription_plans'=>'Plans',
 	'subscription_applied_success'=>'Subscription applied successfully',
+	'edit_cover_photo'=>'Edit Cover Photo',
+	'terms'=>'Terms',
 
 	'marked_default'=>'Marked Default',
 
@@ -459,6 +461,7 @@ return array(
 	'view_moderator'	=>	'View Moderator',
 	'add_moderator'	=>	'Add Moderator',
 	'edit_moderator'	=>	'Edit Moderator',
+	'ad_videos'=>'Ad Videos',
 
 	//Admin Categories
 	'channel' => 'Channel',
@@ -466,7 +469,7 @@ return array(
 	'view_channels'	=>	'View Channels',
 	'add_channel'	=>	'Add Channel',
 	'edit_channel'	=>	'Edit Channel',
-	'delete_Channel'	=>	'Delete Channel',
+	'delete_channel'	=>	'Delete Channel',
 	'is_series' => 'Is Series',
 	'channel_update_success'	=>	'Channel has been updated Successfully',
 	'channel_create_success'	=>	'Channel has been created Successfully',

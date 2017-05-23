@@ -360,11 +360,14 @@ textarea[name=comments] {
 
     $ads_timing = $video_timings = [] ;
 
-    foreach ($ads->between_ad as $key => $obj) {
-        
-        $video_timings[] = $obj->video_time;
+    if(count($ads) > 0 && $ads != null) {
 
-        $ads_timing[] = $obj->ad_time;
+        foreach ($ads->between_ad as $key => $obj) {
+            
+            $video_timings[] = $obj->video_time;
+
+            $ads_timing[] = $obj->ad_time;
+        }
     }
 
 ?>
@@ -695,7 +698,7 @@ textarea[name=comments] {
                     var intervalId;
 
 
-                    var timings = "{{count($ads->between_ad)}}";
+                    var timings = "{{($ads) ? count($ads->between_ad) : 0}}";
 
                     // var adtimings = 5;
 
@@ -712,64 +715,68 @@ textarea[name=comments] {
 
                             console.log("Video Timing "+video_time);
 
-                            @if(count($ads->between_ad) > 0)
+                            @if($ads)
 
-                                @foreach($ads->between_ad as $i => $obj) {
+                                @if(count($ads->between_ad) > 0)
 
-                                    var video_timing = "{{$obj->video_time}}";
+                                    @foreach($ads->between_ad as $i => $obj) {
 
-                                    console.log("Video Timing "+video_timing);
+                                        var video_timing = "{{$obj->video_time}}";
 
-                                    var a = video_timing.split(':'); // split it at the colons
+                                        console.log("Video Timing "+video_timing);
 
-                                     if (a.length == 3) {
-                                         var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                                     } else {
-                                         var seconds = parseInt(a[0]) * 60 + parseInt(a[1]);
-                                     }
+                                        var a = video_timing.split(':'); // split it at the colons
 
-                                     console.log("Seconds "+seconds);
+                                         if (a.length == 3) {
+                                             var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+                                         } else {
+                                             var seconds = parseInt(a[0]) * 60 + parseInt(a[1]);
+                                         }
 
-                                    if (video_time == seconds && time != video_time) {
+                                         console.log("Seconds "+seconds);
 
-                                         jwplayer().pause();
+                                        if (video_time == seconds && time != video_time) {
 
-                                         time = video_time;
+                                             jwplayer().pause();
 
-                                         stop();
+                                             time = video_time;
 
-                                         $('#main-video-player').hide();
+                                             stop();
 
-                                         $('#main_video_ad').show();
+                                             $('#main-video-player').hide();
 
-                                         $("#ad_image").attr("src","{{$obj->file}}");
+                                             $('#main_video_ad').show();
+
+                                             $("#ad_image").attr("src","{{$obj->file}}");
 
 
-                                         adsPage("{{$obj->ad_time}}");
+                                             adsPage("{{$obj->ad_time}}");
+
+                                        }
+                                    }
+
+                                    @endforeach
+
+                                @endif
+
+
+                                @if($ads->post_ad)
+
+                                    if (playerInstance.getState() == "complete") {
+
+                                        $('#main-video-player').hide();
+
+                                        $('#main_video_ad').show();
+
+                                        $("#ad_image").attr("src","{{$ads->post_ad->file}}");
+
+                                        stop();
+
+                                        adsPage("{{$ads->post_ad->ad_time}}");
 
                                     }
-                                }
-
-                                @endforeach
-
-                            @endif
-
-
-                            @if($ads->post_ad)
-
-                                if (playerInstance.getState() == "complete") {
-
-                                    $('#main-video-player').hide();
-
-                                    $('#main_video_ad').show();
-
-                                    $("#ad_image").attr("src","{{$ads->post_ad->file}}");
-
-                                    stop();
-
-                                    adsPage("{{$ads->post_ad->ad_time}}");
-
-                                }
+                                @endif
+                                
                             @endif
 
 
@@ -827,18 +834,21 @@ textarea[name=comments] {
 
                         if (jwplayer().getState() == 'idle') {
 
+                            @if($ads)
 
-                            @if($ads->pre_ad)
+                                @if($ads->pre_ad)
 
-                                 jwplayer().pause();
+                                     jwplayer().pause();
 
-                                 $('#main-video-player').hide();
+                                     $('#main-video-player').hide();
 
-                                 $('#main_video_ad').show();
+                                     $('#main_video_ad').show();
 
-                                 $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
+                                     $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
 
-                                 adsPage("{{$ads->pre_ad->ad_time}}");
+                                     adsPage("{{$ads->pre_ad->ad_time}}");
+
+                                @endif
 
                             @endif
 
@@ -870,10 +880,12 @@ textarea[name=comments] {
 
                         }
 
-                        @if (((count($ads->between_ad) > 0) || !empty($ads->post_ad)) && empty($ads->pre_ad)) 
+                        @if($ads)
+                            @if (((count($ads->between_ad) > 0) || !empty($ads->post_ad)) && empty($ads->pre_ad)) 
 
-                            timer();
+                                timer();
 
+                            @endif
                         @endif
 
                     })

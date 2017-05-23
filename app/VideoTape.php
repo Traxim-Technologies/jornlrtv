@@ -32,7 +32,9 @@ class VideoTape extends Model
             'video_tapes.duration',
             'video_tapes.video_publish_type',
             'video_tapes.publish_status',
-            'video_tapes.ratings'
+            'video_tapes.ratings',
+            'video_tapes.compress_status',
+            'video_tapes.ad_status'
         );
     }
 
@@ -52,6 +54,12 @@ class VideoTape extends Model
     public function getScopeVideoAds() {
 
          return $this->hasOne('App\VideoAd', 'video_tape_id', 'admin_video_id');
+
+    }
+
+    public function getVideoAds() {
+
+         return $this->hasOne('App\VideoAd', 'video_tape_id', 'id');
 
     }
 
@@ -85,6 +93,44 @@ class VideoTape extends Model
         $array['user_details'] = $this->getChannel->getUser;
 
         return $array;
+    }
+
+    /**
+     * Boot function for using with User Events
+     *
+     * @return void
+     */
+
+    public static function boot()
+    {
+        //execute the parent's boot method 
+        parent::boot();
+
+        //delete your related models here, for example
+        static::deleting(function($model)
+        {
+            if (count($model->getVideoTapeImages) > 0) {
+
+                foreach ($model->getVideoTapeImages as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+
+            }
+
+            if (count($model->getVideoAds) > 0) {
+
+                if(!is_null($model->getVideoAds)) {
+
+                    $model->getVideoAds->delete();   
+
+                }             
+
+            }
+
+        }); 
+
     }
 
 }

@@ -99,4 +99,32 @@ class VideoAd extends Model
         return $types;
     }
 
+    /**
+     * Boot function for using with User Events
+     *
+     * @return void
+     */
+
+    public static function boot()
+    {
+        //execute the parent's boot method 
+        parent::boot();
+
+        //delete your related models here, for example
+        static::deleting(function($model)
+        {
+            if (count($model->getAdDetails) > 0) {
+
+                foreach ($model->getAdDetails as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+             
+            }
+
+        }); 
+
+    }
+
 }

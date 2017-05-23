@@ -81,7 +81,7 @@
 
 
                     
-                    @if(count($wishlist))
+                    @if(count($wishlist->data) > 0)
                         
                         <div class="mylist-profile col-sm-5">
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
@@ -93,13 +93,13 @@
                                     <li class="sub-list row no-margin">
                                         <div class="main-history">
                                             <div class="history-image">
-                                                <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>                        
+                                                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a>                        
                                             </div><!--history-image-->
 
                                             <div class="history-title">
                                                 <div class="history-head row">
                                                     <div class="cross-title">
-                                                        <h5><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+                                                        <h5><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
                                                         <p class="duration">{{tr('duration')}}: {{$video->duration}}</p>
                                                     </div> 
                                                     <div class="cross-mark">

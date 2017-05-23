@@ -1,13 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', tr('add_page'))
+@section('title', tr('pages'))
 
-@section('content-header', tr('add_page'))
+@section('content-header', tr('pages'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('viewPages')}}"><i class="fa fa-book"></i>{{tr('pages')}}</a></li>
-    <li class="active"><i class="fa fa-book"></i> {{tr('add_page')}}</li>
+    <li class="active"><i class="fa fa-book"></i> {{tr('pages')}}</li>
 @endsection
 
 @section('content')
@@ -21,34 +20,41 @@
 	        <div class="box box-primary">
 
 	            <div class="box-header label-primary">
-                    <b style="font-size:18px;">{{tr('add_page')}}</b>
-                    <a href="{{route('viewPages')}}" class="btn btn-default pull-right">{{tr('pages')}}</a>
-                </div>
+	                <b>{{tr('add_page')}}</b>
+	                <a href="{{route('admin.pages.index')}}" style="float:right" class="btn btn-default">{{tr('pages')}}</a>
+	            </div>
 
-	            <form  action="{{route('adminPagesProcess')}}" method="POST" enctype="multipart/form-data" role="form">
+	            <form  action="{{route('admin.pages.save')}}" method="POST" enctype="multipart/form-data" role="form">
 
 	                <div class="box-body">
 
-	                     <div class="form-group floating-label">
-	                     	<label for="select2">{{tr('select_page_type')}}</label>
+	                	<div class="form-group floating-label">
+	                     	<label for="select2">{{tr('page_type')}}</label>
                             <select id="select2" name="type" class="form-control">
                                 <option value="">&nbsp;</option>
                                 <option value="about" selected="true">{{tr('about')}}</option>
-                                <option value="terms">{{tr('terms_conditions')}}</option>
+                                <option value="terms">{{tr('terms')}}</option>
                                 <option value="privacy">{{tr('privacy')}}</option>
+                                <option value="contact">{{tr('contact')}}</option>
+                                <option value="others">{{tr('others')}}</option>
                             </select>
                             
                         </div>
 
+	                	<div class="form-group">
+	                        <label for="title">{{tr('title')}}</label>
+	                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title">
+	                    </div>
+
 	                    <div class="form-group">
 	                        <label for="heading">{{tr('heading')}}</label>
-	                        <input type="text" required class="form-control" name="heading" id="heading" placeholder="Enter heading">
+	                        <input type="text" class="form-control" name="heading" id="heading" placeholder="Enter heading">
 	                    </div>
 
 	                    <div class="form-group">
 	                        <label for="description">{{tr('description')}}</label>
 
-	                        <textarea id="ckeditor" required name="description" class="form-control" placeholder="Enter text ..."></textarea>
+	                        <textarea id="ckeditor" name="description" class="form-control" placeholder="Enter text ..."></textarea>
 	                        
 	                    </div>
 
