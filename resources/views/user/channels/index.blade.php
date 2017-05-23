@@ -323,7 +323,7 @@
 							
 							 <div class="new-history">
 					                <div class="content-head">
-					                    <div><h4>{{tr('payment_videos')}}</h4></div>              
+					                    <div><h4 style="color: #000;">{{tr('payment_videos')}}</h4></div>              
 					                </div><!--end of content-head-->
 
 					                @if(count($payment_videos) > 0)
