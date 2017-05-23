@@ -192,4 +192,12 @@ class AdminRepository {
     }
 
 
+    public static function ad_index() {
+
+        $model = VideoAd::with('getVideoTape')->get();
+
+        return response()->json($model, 200);
+
+    }
+
 }

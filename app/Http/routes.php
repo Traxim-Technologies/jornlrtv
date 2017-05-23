@@ -288,6 +288,8 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('/videos', 'AdminController@videos')->name('admin.videos');
 
+    Route::get('/ad_videos', 'AdminController@ad_videos')->name('admin.ad_videos');
+
     Route::get('/add/video', 'AdminController@add_video')->name('admin.add.video');
 
     Route::get('/edit/video/{id}', 'AdminController@edit_video')->name('admin.edit.video');
@@ -384,6 +386,11 @@ Route::group(['prefix' => 'admin'], function(){
     // Subscriptions
 
     Route::get('users/subscription/payments/{id?}' , 'AdminController@user_subscription_payments')->name('admin.user.subscription.payments');
+
+    Route::get('/user_subscriptions/{id}', 'AdminController@user_subscriptions')->name('admin.subscriptions.plans');
+
+    Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'AdminController@user_subscription_save')->name('admin.subscription.save');
+
 
     Route::get('/subscriptions', 'AdminController@subscriptions')->name('admin.subscriptions.index');
 
@@ -502,6 +509,8 @@ Route::group([], function(){
     Route::get('/trending', 'UserController@trending')->name('user.trending');
 
     Route::get('/user_subscriptions', 'UserController@subscriptions')->name('user.subscriptions');
+
+    Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'UserController@user_subscription_save')->name('user.subscription.save');
 
     // Channels
 

@@ -88,7 +88,7 @@ input:checked + .slider::before {
                                             <?php $subscription_details = get_expiry_days(Auth::user()->id);?>
                                             <p style="color:#cc181e">The Pack will Expiry within <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
                                         @endif
-                                        <p>{{Auth::user()->mobile   }}</p>  
+                                        <p>{{Auth::user()->mobile}}</p>  
                                         <p>{{Auth::user()->description}}</p>
                                     </div><!--end of profile-title-->
                                     <form>

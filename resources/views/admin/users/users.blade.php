@@ -107,6 +107,12 @@
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.user.wishlist', $user->id)}}">{{tr('wishlist')}}</a></li>
 
 
+								                  	<li>
+														<a href="{{route('admin.subscriptions.plans' , $user->id)}}">		
+															<span>{{tr('subscription_plans')}}</span>
+														</a>
+
+													</li>
 								                  	
 
 								                </ul>

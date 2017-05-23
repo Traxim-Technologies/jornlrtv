@@ -52,7 +52,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history']]);
     }
 
     /**
@@ -224,11 +224,11 @@ class UserController extends Controller {
 
     public function add_history(Request $request) {
 
-        $request->request->add([ 
+        /*$request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token
-        ]);
+        ]);*/
 
         $response = $this->UserAPI->add_history($request)->getData();
 
@@ -578,7 +578,18 @@ class UserController extends Controller {
 
     public function subscriptions() {
 
-        $model = Subscription::where('status', DEFAULT_TRUE)->get();
+        $query = Subscription::where('status', DEFAULT_TRUE);
+
+        if(Auth::check()) {
+            if(Auth::user()->zero_subscription_status) {
+
+                $query->whereNotIn('amount', [0]);
+
+            }
+
+        }
+
+        $model = $query->get();
 
         return view('user.account.subscriptions')->with('subscriptions', $model)->with('page', 'Profile')->with('subPage', 'Subscriptions');
     }
@@ -644,6 +655,23 @@ class UserController extends Controller {
         $response = CommonRepo::upload_video_image($request)->getData();
 
         return response()->json(['success'=>$response]);
+
+    }
+
+
+    public function user_subscription_save($s_id, $u_id) {
+
+        $response = CommonRepo::save_subscription($s_id, $u_id)->getData();
+
+        if($response->success) {
+
+            return back()->with('false_success', $response->message);
+
+        } else {
+
+            return back()->with('false_errors', $response->message);
+
+        }
 
     }
 }

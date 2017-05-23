@@ -651,21 +651,22 @@ class AdminController extends Controller
 
     public function videos(Request $request) {
 
-        $videos = VideoTape::select('video_tapes.id as video_id' ,
-                                'video_tapes.title' , 
-                             'video_tapes.description' , 'video_tapes.ratings' , 
-                             'video_tapes.reviews' , 'video_tapes.created_at as video_date' ,
-                             'video_tapes.default_image',
-                             // 'video_tapes.banner_image',
-                             // 'video_tapes.amount',
-                            /* 'video_tapes.type_of_user',
-                             'video_tapes.type_of_subscription',*/
-                             
-                             //'video_tapes.is_home_slider',
-                             'video_tapes.status',
-                             // 'video_tapes.uploaded_by',
-                             // 'video_tapes.edited_by',
-                             'video_tapes.is_approved')
+        $videos = VideoTape::videoResponse()->orderBy('video_tapes.created_at' , 'desc')
+                    ->get()->toArray();
+
+        return view('admin.videos.videos')->with('videos' , $videos)
+                    ->withPage('videos')
+                    ->with('sub_page','view-videos');
+   
+    }
+
+
+    public function ad_videos() {
+
+        $videos = VideoTape::videoResponse()
+                    ->leftJoin('channels' , 'channels.id' , '=' , 'video_tape.channel_id')
+                    ->leftJoin('users' , 'users.id' , '=' , 'channels.user_id')
+                    ->where('users.ads_status', DEFAULT_TRUE)
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->get();
 
@@ -1958,5 +1959,41 @@ class AdminController extends Controller
 
         }
         
+    }
+
+    public function ads_index() {
+
+        $response = AdminRepo::ad_index()->getData();
+
+        return view('admin.ads.index')->with('model', $response)->with('page', 'videos_ads')->with('subPage', 'view-ads');        
+
+    }
+
+
+     public function user_subscriptions($id) {
+
+        $data = Subscription::orderBy('created_at','desc')->get();
+
+        return view('admin.subscriptions.user_plans')->withPage('users')
+                        ->with('subscriptions' , $data)
+                        ->with('id', $id)
+                        ->with('subPage','users');        
+
+    }
+
+    public function user_subscription_save($s_id, $u_id) {
+
+        $response = CommonRepo::save_subscription($s_id, $u_id);
+
+        if($response->success) {
+
+            return back()->with('false_success', $response->message);
+
+        } else {
+
+            return back()->with('false_errors', $response->message);
+
+        }
+
     }
 }

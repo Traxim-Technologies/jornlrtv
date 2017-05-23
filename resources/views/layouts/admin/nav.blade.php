@@ -12,6 +12,7 @@
                 <p>{{Auth::guard('admin')->user()->name}}</p>
                 <a href="{{route('admin.profile')}}">{{ tr('admin') }}</a>
             </div>
+            <div class="clearfix" style="height: 10px;clear:both"></div>
         </div>
 
         <!-- sidebar menu: : style can be found in sidebar.less -->

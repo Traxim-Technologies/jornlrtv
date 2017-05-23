@@ -51,7 +51,7 @@
 								@if(count($subscriptions) > 0)
 
 									@foreach($subscriptions as $s => $subscription)
-
+									
 										<div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
 
 											<div class="thumbnail">
@@ -72,8 +72,12 @@
 
 														<!-- <a href="#" class="btn btn-success pull-right">{{tr('choose')}}</a> -->
 
-														<a href="{{route('paypal' , $subscription->id)}}" class="btn btn-success pull-right">{{tr('payment')}}</a>
+														@if($subscription->amount > 0)
+															<a href="{{route('paypal' , $subscription->id)}}" class="btn btn-success pull-right">{{tr('payment')}}</a>
+														@else
+															<a href="{{route('user.subscription.save' , ['s_id' => $subscription->id, 'u_is'=>Auth::user()->id])}}" class="btn btn-success pull-right">{{tr('payment')}}</a>
 
+														@endif
 													</p>
 													<br>
 													<br>

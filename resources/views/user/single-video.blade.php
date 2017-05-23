@@ -818,11 +818,7 @@ textarea[name=comments] {
 
                     }
 
-                    @if (count($ads->between_ad) > 0 && empty($ads->pre_ad)) 
 
-                        timer();
-
-                    @endif
 
                     jwplayer().on('displayClick', function(e) {
 
@@ -846,56 +842,45 @@ textarea[name=comments] {
 
                             @endif
 
+                            @if(!$history_status)
+                                jQuery.ajax({
+                                    url: "{{route('user.add.history')}}",
+                                    type: 'post',
+                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                    success: function(data) {
+
+                                       if(data.success == true) {
+
+                                        console.log('Added to history');
+
+                                        /*var watch_count = 0;
+                                        var count = 0;
+                                        watch_count = jQuery('#watch_count').text();
+                                        var count = parseInt(watch_count) + 1;
+                                        jQuery('#watch_count').text(count);
+
+                                        console.log('Added to history');*/
+
+                                       } else {
+                                            console.log('Wrong...!');
+                                       }
+                                    }
+                                });
+                            @endif
+
                         }
-                       
+
+                        @if (((count($ads->between_ad) > 0) || !empty($ads->post_ad)) && empty($ads->pre_ad)) 
+
+                            timer();
+
+                        @endif
 
                     })
 
-                    @if(!$history_status && Auth::check())
-
-                        jwplayer().on('displayClick', function(e) {
-                            jQuery.ajax({
-                                url: "{{route('user.add.history')}}",
-                                type: 'post',
-                                data: {'admin_video_id' : "{{$video->admin_video_id}}", 'video_status' : 0},
-                                success: function(data) {
 
 
-                                   if(data.success == true) {
-
-                                    console.log('Added to history');
-
-                                   } else {
-                                        console.log('Wrong...!');
-                                   }
-                                }
-                            });
-                            
-                        });
-
-                        jQuery.ajax({
-                            url: "{{route('user.add.history')}}",
-                            type: 'post',
-                            data: {'admin_video_id' : "{{$video->admin_video_id}}", 'video_status' : 1},
-                            success: function(data) {
-
-                               if(data.success == true) {
-
-                                var watch_count = 0;
-                                var count = 0;
-                                watch_count = jQuery('#watch_count').text();
-                                var count = parseInt(watch_count) + 1;
-                                jQuery('#watch_count').text(count);
-
-                                console.log('Added to history');
-
-                               } else {
-                                    console.log('Wrong...!');
-                               }
-                            }
-                        });
-
-                    @endif
+                    
 
             // });
 

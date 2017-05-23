@@ -13,6 +13,7 @@ use App\Channel;
 use App\VideoTape;
 use App\Jobs\CompressVideo;
 use App\VideoTapeImage;
+use App\UserPayment;
 
 
 class CommonRepository {
@@ -551,6 +552,50 @@ class CommonRepository {
 
         return response()->json($request->default_image_id);
 
+    }
+
+
+
+    public static function save_subscription($s_id, $u_id) {
+
+        $load = UserPayment::where('user_id', $u_id)->orderBy('created_at', 'desc')->first();
+
+        $payment = new UserPayment();
+
+        $payment->subscription_id = $s_id;
+
+        $payment->user_id = $u_id;
+
+        $payment->amount = ($payment->getSubscription) ? $payment->getSubscription->amount  : 0;
+
+        $payment->payment_id = ($payment->amount > 0) ? uniqid(str_replace(' ', '-', 'PAY')) : 'Free Plan'; 
+
+        if ($load) {
+            $payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$payment->getSubscription->plan} months", strtotime($load->expiry_date)));
+        } else {
+            $payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$payment->getSubscription->plan} months"));
+        }
+
+        $payment->status = DEFAULT_TRUE;
+
+        if ($payment->save())  {
+
+            $payment->user->user_type = DEFAULT_TRUE;
+
+            if($payment->amount == 0) {
+
+                $payment->user->zero_subscription_status = DEFAULT_TRUE;
+            }
+
+            if ($payment->user->save()) {
+
+                return response()->json(['success'=> true, 'message'=>tr('subscription_applied_success')]);
+
+            }
+
+        }
+
+        return response()->json(['success'=> false, 'message'=>tr('something_error')]);
     }
 
 }

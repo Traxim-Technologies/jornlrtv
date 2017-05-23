@@ -52,6 +52,51 @@ class VideoAd extends Model
 
         $array['between_ad'] = $this->getBetweenAdDetails;
 
+        $array['ads_types'] = self::getTypeOfAds($this->types_of_ad);
+
         return $array;
     }
+
+    public function getTypeOfAds($ad_type) {
+
+        $types = [];
+
+        if ($ad_type) {
+
+            $exp = explode(',', $ad_type);
+
+            $ads = [];
+
+            foreach ($exp as $key => $value) {
+
+                if ($value == PRE_AD) {
+                
+                    $ads[] =  'Pre Ad';
+
+                }
+
+                if ($value == POST_AD) {
+                
+                    $ads[] =  'Post Ad';
+
+                }
+
+
+                if ($value == BETWEEN_AD) {
+                
+                    $ads[] =  'Between Ad';
+
+                }
+
+            }
+
+            // $types = implode(',', $ads);
+
+            $types = $ads;
+
+        }
+
+        return $types;
+    }
+
 }
