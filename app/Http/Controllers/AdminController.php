@@ -1443,7 +1443,7 @@ class AdminController extends Controller
      */
     public function view_users($id) {
         // Load all the users
-        $model = Flag::where('video_id', $id)->get();
+        $model = Flag::where('video_tape_id', $id)->get();
         // Return array of values
         return view('admin.spam_videos.user_report')->with('model' , $model)
                         ->with('page' , 'Spam Videos')

@@ -86,6 +86,13 @@ class VideoTape extends Model
     }
 
 
+    public function getScopeUserFlags() {
+
+         return $this->hasMany('App\Flag', 'video_tape_id', 'admin_video_id');
+
+    }
+
+
     public function toArray()
     {
         $array = parent::toArray();
