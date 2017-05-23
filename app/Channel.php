@@ -9,7 +9,7 @@ class Channel extends Model
     //
 
     public function videoTape() {
-        return $this->hasMany('App\VideoTape')->videoResponse();
+        return $this->hasMany('App\VideoTape')->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')->videoResponse();
     }
 
     /**
@@ -31,7 +31,7 @@ class Channel extends Model
     }
 
     public function getVideos() {
-        return $this->hasMany('App\VideoTape')->videoResponse()->where('status', DEFAULT_TRUE)->where('is_approved', DEFAULT_TRUE);
+        return $this->hasMany('App\VideoTape')->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')->videoResponse()->where('status', DEFAULT_TRUE)->where('is_approved', DEFAULT_TRUE);
     }
 
     public function getVideoTape() {

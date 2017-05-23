@@ -52,9 +52,10 @@ class VideoTapeRepository {
 
 	public static function recently_added($web = 1) {
 
-		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				               ->where('video_tapes.status' , 1)
-                          ->orderby('video_tapes.created_at' , 'desc')
-                          ->videoResponse();
+		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				                ->where('video_tapes.status' , 1)
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->videoResponse();
 
         if (Auth::check()) {
 
@@ -87,6 +88,7 @@ class VideoTapeRepository {
 	public static function trending($web, $skip = null, $count = 0) {
 
 	    $base_query = VideoTape::where('watch_count' , '>' , 0)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
 	                    ->videoResponse()
 	                    ->orderby('watch_count' , 'desc');
 
@@ -124,6 +126,7 @@ class VideoTapeRepository {
     public static function channel_trending($id, $web, $skip = null, $count = 0) {
 
         $base_query = VideoTape::where('watch_count' , '>' , 0)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->where('channel_id', $id)
                         ->orderby('watch_count' , 'desc');
@@ -165,11 +168,12 @@ class VideoTapeRepository {
 
 	public static function suggestion_videos($web = 1, $skip = null) {
 
-		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				
+		$base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                             ->where('video_tapes.status' , 1)
-                          ->orderby('video_tapes.created_at' , 'desc')
-                          ->videoResponse()
-                          ->orderByRaw('RAND()');
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->videoResponse()
+                            ->orderByRaw('RAND()');
 
         if (Auth::check()) {
 
@@ -203,11 +207,7 @@ class VideoTapeRepository {
 	public static function wishlist($user_id, $web = NULL , $skip = 0) {
 
         $base_query = Wishlist::where('user_id' , $user_id)
-                        ->leftJoin('video_tapes', function ($join)
-                            {
-                                $join->on('wishlists.video_tape_id', '=', 'video_tapes.id');
-                                $join = (new VideoTape())->videoResponse();
-                            })
+                        ->leftJoin('video_tapes', 'wishlists.video_tape_id', '=', 'video_tapes.id')
                         ->where('video_tapes.is_approved' , 1)
                         ->where('video_tapes.status' , 1)
                         ->where('wishlists.status' , 1)
@@ -244,10 +244,7 @@ class VideoTapeRepository {
     public static function watch_list($user_id, $web = NULL , $skip = 0) {
 
         $base_query = UserHistory::where('user_id' , $user_id)
-                        ->leftJoin('video_tapes', function($join) {
-                            $join->on('video_tapes.id', '=', 'video_tape_id');
-                            $join = (new VideoTape())->videoResponse();
-                        })
+                        ->leftJoin('video_tapes', 'video_tapes.id', '=', 'video_tape_id')
                         ->where('video_tapes.is_approved' , 1)
                         ->where('video_tapes.status' , 1)
                         ->orderby('user_histories.created_at' , 'desc');

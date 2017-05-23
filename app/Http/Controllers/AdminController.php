@@ -86,7 +86,7 @@ class AdminController extends Controller
         
         $user_count = User::count();
 
-        $provider_count = Moderator::count();
+        $channel_count = Channel::count();
 
         $video_count = VideoTape::count();
  
@@ -104,7 +104,7 @@ class AdminController extends Controller
                     ->with('sub_page','')
                     ->with('user_count' , $user_count)
                     ->with('video_count' , $video_count)
-                    ->with('provider_count' , $provider_count)
+                    ->with('channel_count' , $channel_count)
                     ->with('get_registers' , $get_registers)
                     ->with('view' , $view)
                     ->with('total_revenue' , $total_revenue)
@@ -660,7 +660,9 @@ class AdminController extends Controller
 
     public function videos(Request $request) {
 
-        $videos = VideoTape::videoResponse()->orderBy('video_tapes.created_at' , 'desc')
+        $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->videoResponse()
+                    ->orderBy('video_tapes.created_at' , 'desc')
                     ->get()->toArray();
 
         return view('admin.videos.videos')->with('videos' , $videos)
@@ -689,7 +691,7 @@ class AdminController extends Controller
 
         $channels = loadChannels();
 
-         return view('admin.videos.video_upload')
+        return view('admin.videos.video_upload')
                 ->with('channels' , $channels)
                 ->with('page' ,'videos')
                 ->with('sub_page' ,'add-video');
@@ -700,48 +702,29 @@ class AdminController extends Controller
 
         Log::info("Queue Driver ".env('QUEUE_DRIVER'));
 
-        $categories =  [];
 
         $video = VideoTape::where('video_tapes.id' , $request->id)
-                    ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'video_tapes.sub_category_id' , '=' , 'sub_categories.id')
-                    ->leftJoin('genres' , 'video_tapes.genre_id' , '=' , 'genres.id')
-                    ->select('video_tapes.id as video_id' ,'video_tapes.title' , 
-                             'video_tapes.description' , 'video_tapes.ratings' , 
-                             'video_tapes.reviews' , 'video_tapes.created_at as video_date' ,'video_tapes.is_banner','video_tapes.banner_image',
-                             'video_tapes.video','video_tapes.trailer_video',
-                             'video_tapes.video_type','video_tapes.video_upload_type',
-                             'video_tapes.publish_time','video_tapes.duration',
-
-                             'video_tapes.category_id as category_id',
-                             'video_tapes.sub_category_id',
-                             'video_tapes.genre_id',
-                             'video_tapes.default_image',
-                             'categories.name as category_name' , 'categories.is_series',
-                             'sub_categories.name as sub_category_name' ,
-                             'genres.name as genre_name')
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
 
         $page = 'videos';
         $sub_page = 'add-video';
 
-        $subcategories = [];
-
-        if($video->category_id) {
-            $subcategories = get_sub_categories($video->category_id);
-        }
 
         if($video->is_banner == 1) {
             $page = 'banner-videos';
             $sub_page = 'banner-videos';
         }
 
-         return view('admin.videos.edit-video')
-                ->with('categories' , $categories)
+        $channels = loadChannels();
+
+        return view('admin.videos.edit-video')
+                ->with('channels' , $channels)
                 ->with('video' ,$video)
                 ->with('page' ,$page)
-                ->with('sub_page' ,$sub_page)->with('subCategories',$subcategories);
+                ->with('sub_page' ,$sub_page);
     }
 
     public function video_save(Request $request) {
@@ -763,6 +746,15 @@ class AdminController extends Controller
     }  
 
 
+    public function get_images($id) {
+
+        $response = CommonRepo::get_video_tape_images($id)->getData();
+
+        $view = \View::make('admin.videos.select_image')->with('model', $response)->render();
+
+        return response()->json(['path'=>$view, 'data'=>$response->data]);
+
+    }  
 
     public function save_default_img(Request $request) {
 

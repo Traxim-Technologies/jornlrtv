@@ -1327,6 +1327,7 @@ class UserApiController extends Controller
 
 
         $video = VideoTape::where('video_tapes.id' , $id)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
                     ->first();
 

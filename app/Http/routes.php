@@ -314,6 +314,8 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('/video/decline/{id}', 'AdminController@decline_video')->name('admin.video.decline');
 
+    Route::get('get_images/{id}', 'AdminController@get_images')->name('admin.get_images');
+
     // Slider Videos
 
     Route::get('/slider/video/{id}', 'AdminController@slider_video')->name('admin.slider.video');

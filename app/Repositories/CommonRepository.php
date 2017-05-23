@@ -14,6 +14,7 @@ use App\VideoTape;
 use App\Jobs\CompressVideo;
 use App\VideoTapeImage;
 use App\UserPayment;
+use Auth;
 
 
 class CommonRepository {
@@ -317,6 +318,10 @@ class CommonRepository {
 
             $model->channel_id = $request->has('channel_id') ? $request->channel_id : $model->channel_id;
 
+            $model->reviews = $request->has('reviews') ? $request->reviews : $model->reviews;
+
+            $model->ratings = $request->has('ratings') ? $request->ratings : $model->ratings;
+
             $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
                     
             $main_video_duration = Helper::video_upload($request->video);
@@ -352,6 +357,8 @@ class CommonRepository {
             $model->status = DEFAULT_FALSE;
 
             $model->publish_status = DEFAULT_TRUE;
+
+            $model->is_approved = DEFAULT_TRUE;
 
             if($model->publish_time) {
                 if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
@@ -454,6 +461,29 @@ class CommonRepository {
     }
 
 
+    public static function get_video_tape_images($video_id) {
+
+        $model = VideoTape::find($video_id);
+
+        $videoTapeImage = $model->getVideoTapeImages;
+
+
+        $video_path = [$model->default_image];
+
+
+        foreach ($videoTapeImage as $key => $value) {
+            
+            array_push($video_path, $value->image);
+
+        }
+
+        $response = ['data'=>$model, 'video_path' => $video_path];
+
+        return response()->json($response, 200);
+
+    }
+
+
     public static function set_default_image($request) {
 
         if ($request->idx > 0) {
@@ -512,6 +542,25 @@ class CommonRepository {
 
     public static function upload_video_image($request) {
 
+
+        $video = VideoTape::find($request->default_image_id);
+
+        $video->title = $request->has('title') ? $request->title : $video->title;
+
+        $video->description = $request->has('description') ? $request->description : $video->description;
+
+        $video->channel_id = $request->has('channel_id') ? $request->channel_id : $video->channel_id;
+
+        $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;
+
+        $video->ratings = $request->has('ratings') ? $request->ratings : $video->ratings;
+
+        $video->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $video->video_publish_type;
+
+        $video->publish_time = $request->has('publish_time') 
+                        ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : $video->publish_time;
+
+        $video->save();
         
         if ($request->default_image)  {
 

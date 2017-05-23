@@ -74,6 +74,26 @@ use  Carbon\Carbon;
 
         <div class="col-lg-3 col-xs-6">
 
+            <div class="small-box bg-red">
+              <div class="inner">
+                  <h3>{{$channel_count}}</h3>
+                  <p>{{tr('total_channels')}}</p>
+              </div>
+              
+              <div class="icon">
+                  <i class="fa fa-tv"></i>
+              </div>
+
+              <a href="{{route('admin.channels')}}" class="small-box-footer">
+                  {{tr('more_info')}}
+                  <i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+        
+        </div> 
+
+        <div class="col-lg-3 col-xs-6">
+
           	<div class="small-box bg-yellow">
             	<div class="inner">
               		<h3>{{$video_count}}</h3>
@@ -154,42 +174,7 @@ use  Carbon\Carbon;
                 </div>
                 <!-- ./box-body -->
 
-                <!-- <div class="box-footer">
-                    <div class="row">
-
-                        <div class="col-sm-3 col-xs-6">
-                            <div class="description-block border-right">
-                                <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> {{$view['count']}}</span>
-                                <h5 class="description-header"></h5>
-                                <span class="description-text">{{tr('total_days')}}</span>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3 col-xs-6">
-                            <div class="description-block border-right">
-                                <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> {{$user_count}}</span>
-                                <h5 class="description-header"></h5>
-                                <span class="description-text">{{tr('total_users')}}</span>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3 col-xs-6">
-                          <div class="description-block border-right">
-                            <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> {{$provider_count}}</span>
-                            <h5 class="description-header"></h5>
-                            <span class="description-text">{{tr('total_moderator')}}</span>
-                          </div>
-                        </div>
-
-                        <div class="col-sm-3 col-xs-6">
-                            <div class="description-block">
-                                <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> {{$get_registers['total']}}</span>
-                                <h5 class="description-header"></h5>
-                                <span class="description-text">Register Users</span>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+                
                 <!-- /.box-footer -->
             </div>
             <!-- /.box -->

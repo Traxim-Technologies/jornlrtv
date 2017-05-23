@@ -20,7 +20,7 @@ class Flag extends Model
      */
     public function videoTape()
     {
-        return $this->hasOne('App\VideoTape', 'id', 'video_tape_id')->videoResponse();
+        return $this->hasOne('App\VideoTape', 'id', 'video_tape_id')->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')->videoResponse();
     }
 
     /**

@@ -37,9 +37,9 @@ hr {
                     <span style="margin-left:0px" class="description">Created Time - {{$video->video_date}}</span>
                 </div>
                 <div class='pull-right'>
-                    @if ($video->compress_status == 0 || $video->trailer_compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>
+                    @if ($video->compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>
                     @else
-                    <a href="{{route('admin.edit.video' , array('id' => $video->video_id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+                    <a href="{{route('admin.edit.video' , array('id' => $video->admin_video_id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
                     @endif
                 </div>
                 <div class="clearfix"></div>
@@ -55,10 +55,10 @@ hr {
                         <h4>{{tr('details')}}</h4>
                             <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
-                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('channel')}}</b> <a class="pull-right">{{$video->category_name}}</a>
+                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('channel')}}</b> <a class="pull-right">{{$video->channel_name}}</a>
                                 </li>
                               
-                                <li class="list-group-item">
+                                <?php /*<li class="list-group-item">
                                   <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('video_type')}}</b> <a class="pull-right">
                                     @if($video->video_type == 1)
                                         {{tr('video_upload_link')}}
@@ -82,7 +82,7 @@ hr {
                                         @endif 
                                     </a>
                                 </li>
-                                @endif
+                                @endif */?>
                                 <li class="list-group-item">
                                   <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a class="pull-right">{{$video->duration}}</a>
                                 </li>

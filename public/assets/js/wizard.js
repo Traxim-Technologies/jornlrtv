@@ -169,7 +169,7 @@ function redirect() {
           success : function(data) {
               if (data.id)  {
                   console.log(data);
-                  window.location.href = '/admin/view/video/'+data.id;
+                  window.location.href = '/admin/view/video?id='+data.id;
               } else {
                   console.log(data);
               }

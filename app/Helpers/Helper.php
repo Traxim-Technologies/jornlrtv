@@ -607,6 +607,7 @@
         public static function search_video($key,$web = NULL,$skip = 0) {
 
             $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
                         ->videoResponse()
@@ -644,6 +645,7 @@
         public static function recently_added($web = NULL , $skip = 0) {
 
             $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->where('video_tapes.status' , 1)
                             ->videoResponse()
                             ->orderby('video_tapes.created_at' , 'desc');

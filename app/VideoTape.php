@@ -19,6 +19,7 @@ class VideoTape extends Model
 
         return $query->select(
             'video_tapes.id as admin_video_id' ,
+            'channels.name as channel_name',
             'video_tapes.title',
             'video_tapes.description',
             'video_tapes.default_image',
@@ -34,7 +35,9 @@ class VideoTape extends Model
             'video_tapes.publish_status',
             'video_tapes.ratings',
             'video_tapes.compress_status',
-            'video_tapes.ad_status'
+            'video_tapes.ad_status',
+            'video_tapes.reviews',
+            \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date')
         );
     }
 

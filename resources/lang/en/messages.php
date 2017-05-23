@@ -33,6 +33,7 @@ return array(
 	'subscription_applied_success'=>'Subscription applied successfully',
 	'edit_cover_photo'=>'Edit Cover Photo',
 	'terms'=>'Terms',
+	'total_channels'=>'Total Channels',
 
 	'marked_default'=>'Marked Default',
 
