@@ -286,7 +286,7 @@ class AdminController extends Controller
                 $page = "emails.admin_user_welcome";
                 $email = $user->email;
                 Log::info("TEST EMAIL");
-                // Helper::send_email($page,$subject,$email,$email_data);
+                Helper::send_email($page,$subject,$email,$email_data);
             }
 
             // Upload picture
