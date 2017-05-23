@@ -38,26 +38,9 @@
     
             </li>
 
-            <?php /*
-
-
-            @TODO
-            <li class="treeview" id="moderators">
-                
-                <a href="#">
-                    <i class="fa fa-users"></i> <span>{{tr('moderators')}}</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-
-                <ul class="treeview-menu">
-                    <li id="add-moderator"><a href="{{route('admin.add.moderator')}}"><i class="fa fa-circle-o"></i>{{tr('add_moderator')}}</a></li>
-                    <li id="view-moderator"><a href="{{route('admin.moderators')}}"><i class="fa fa-circle-o"></i>{{tr('view_moderators')}}</a></li>
-                </ul>
-            
-            </li> */?>
-
             <li class="treeview" id="channels">
                 <a href="{{route('admin.channels')}}">
-                    <i class="fa fa-suitcase"></i> <span>{{tr('channels')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-tv"></i> <span>{{tr('channels')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
@@ -86,7 +69,6 @@
                 </a>
 
                 <ul class="treeview-menu">
-                    <!-- <li id="add-video"><a href="{{route('admin.add.video')}}"><i class="fa fa-circle-o"></i>{{tr('add_video')}}</a></li> -->
                     <li id="ad-videos"><a href="{{route('admin.ad_videos')}}"><i class="fa fa-circle-o"></i>{{tr('ad_videos')}}</a></li>
                     <li id="view-ads"><a href="{{route('admin.ads_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li>
                 </ul>
@@ -134,23 +116,6 @@
                 <a href="{{route('admin.user.payments')}}">
                     <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> 
                 </a>
-
-                <?php /*<ul class="treeview-menu">
-
-                   <!--  @if(Setting::get('is_subscription')) -->
-                    
-                        <li id="user-payments">
-                            <a href="{{route('admin.user.payments')}}">
-                                <i class="fa fa-credit-card"></i> <span>{{tr('user_payments')}}</span>
-                            </a>
-                        </li>
-
-                    <!-- @endif -->
-                    
-                   <!--  <li id="video-subscription"><a href="{{route('admin.user.video-payments')}}">
-                        <i class="fa fa-credit-card"></i> <span>{{tr('video_payments')}}</span>
-                    </a></li> -->
-                </ul> */?>
             </li>
 
 
@@ -159,12 +124,6 @@
                     <i class="fa fa-gears"></i> <span>{{tr('settings')}}</span>
                 </a>
             </li>
-
-            {{-- <li id="settings">
-                <a href="{{route('admin.email.settings')}}">
-                    <i class="fa fa-envelope"></i> <span>{{tr('email_settings')}}</span>
-                </a>
-            </li> --}}
 
             <li id="custom-push">
                 <a href="{{route('admin.push')}}">
