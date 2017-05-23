@@ -48,7 +48,7 @@
                                     <div class="col-sm-7">
                                         <label for="name" class="control-label">{{tr('title')}}</label>
                                         <div>
-                                            <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}">
+                                            <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}" value="{{$model->title}}">
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
@@ -56,21 +56,21 @@
                                             <label for="name" class="control-label">{{tr('publish_type')}}</label>&nbsp;&nbsp;
                                              <div class="clearfix"></div>
                                              <div>
-                                              <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_NOW}}" checked class='video_publish_type_class' required> {{tr('publish_now')}} &nbsp;
-                                              <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_LATER}}" class="video_publish_type_class" required /> {{tr('publish_later')}}
+                                              <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_NOW}}" checked class='video_publish_type_class' required @if($model->video_publish_type == PUBLISH_NOW) checked @endif> {{tr('publish_now')}} &nbsp;
+                                              <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_LATER}}" class="video_publish_type_class" required @if($model->video_publish_type == PUBLISH_LATER) checked @endif/> {{tr('publish_later')}}
                                              </div>
                                        </div>
                                     </div>
                                     <div class="col-sm-3">
                                       <div class="form-group" style="display: none;" id="publish_time_div">
                                           <label for="datepicker" class="">{{tr('publish_time')}} * </label>
-                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker">
+                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" value="{{$model->publish_time}}">
                                       </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <label for="name" class="control-label">{{tr('description')}}</label>
                                         <div>
-                                            <textarea placeholder="Description...." rows="5" required class="form-control" id="description" name="description" ></textarea>
+                                            <textarea placeholder="Description...." rows="5" required class="form-control" id="description" name="description" >{{$model->description}}</textarea>
                                         </div>
                                     </div>
                                    
@@ -171,6 +171,15 @@
 
       // window.location.href = '/channel/'+$("#channel_id").val();
    } 
+
+
+    $.ajax({
+        method : 'get',
+        url : "{{route('user.get_images', $model->id)}}",
+        success : function(data) {
+          $("#select_image_div").html(data.path);
+        }
+    });   
 
    function removePicture(idx) {
 

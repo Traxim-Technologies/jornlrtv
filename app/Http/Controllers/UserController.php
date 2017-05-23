@@ -725,4 +725,15 @@ class UserController extends Controller {
 
     }
 
+
+    public function get_images($id) {
+
+        $response = CommonRepo::get_video_tape_images($id)->getData();
+
+        $view = \View::make('user.videos.select_image')->with('model', $response)->render();
+
+        return response()->json(['path'=>$view, 'data'=>$response->data]);
+
+    }  
+
 }

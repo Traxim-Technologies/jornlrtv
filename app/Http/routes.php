@@ -543,6 +543,8 @@ Route::group([], function(){
 
     Route::get('/edit_video/{id}', 'UserController@video_edit')->name('user.edit.video');
 
+    Route::get('get_images/{id}', 'UserController@get_images')->name('user.get_images');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
