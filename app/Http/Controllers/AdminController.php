@@ -229,6 +229,7 @@ class AdminController extends Controller
                         'name' => 'required|max:255',
                         'email' => 'required|email|max:255',
                         'mobile' => 'required|digits_between:6,13',
+
                     )
                 );
         
@@ -237,6 +238,7 @@ class AdminController extends Controller
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255|unique:users,email',
                     'mobile' => 'required|digits_between:6,13',
+                    'password' => 'required|min:6|confirmed',
                 )
             );
         
@@ -254,11 +256,11 @@ class AdminController extends Controller
             } else {
                 //Add New User
                 $user = new User;
-                $new_password = time();
+                /* $new_password = time();
                 $new_password .= rand();
                 $new_password = sha1($new_password);
-                $new_password = substr($new_password, 0, 8);
-                $user->password = \Hash::make($new_password);
+                $new_password = substr($new_password, 0, 8);*/
+                $user->password = ($request->password) ? \Hash::make($request->password) : ;
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
                 $user->device_type = 'web';
