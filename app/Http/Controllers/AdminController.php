@@ -1792,6 +1792,14 @@ class AdminController extends Controller
 
         $video_pixels = '';
 
+        $preAd = new AdsDetail;
+
+        $postAd = new AdsDetail;
+
+        $betweenAd = new AdsDetail;
+
+        $model = new VideoAd;
+
         if ($vModel) {
 
             $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
@@ -1799,13 +1807,38 @@ class AdminController extends Controller
 
         }
 
-        $model = new VideoAd();
+        $index = 0;
 
-        $adDetail = new AdsDetail();
+        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'video_ads')->with('sub_page', 'create_ad')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd);
+    }
+
+
+    public function ads_edit(Request $request) { 
+
+        $model = VideoAd::find($request->id);
+
+        $preAd = $model->getPreAdDetail ? $model->getPreAdDetail : new AdsDetail;
+
+        $postAd = $model->getPostAdDetail ? $model->getPostAdDetail : new AdsDetail;
+
+        $betweenAd = (count($model->getBetweenAdDetails) > 0) ? $model->getBetweenAdDetails : new AdsDetail;
 
         $index = 0;
 
-        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'video_ads')->with('sub_page', 'create_ad')->with('model', $model)->with('adDetail', $adDetail)->with('index', $index);
+        $vModel = $model->getVideoTape;
+
+        $videoPath = '';
+
+        $video_pixels = '';
+
+        if ($vModel) {
+
+            $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
+            $video_pixels = $vModel->video_resolutions ? 'original,'.$vModel->video_resolutions : 'original';
+
+        }
+
+        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'video_ads')->with('sub_page', 'create_ad')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index);
     }
 
 

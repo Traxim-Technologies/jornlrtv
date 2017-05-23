@@ -8,7 +8,7 @@
 
                <br>
 
-               <input type="checkbox" name="between_ad_type[{{$index}}]" id="between_ad_type" value="{{BETWEEN_AD}}"> {{tr('between_ad')}}
+               <input type="checkbox" name="between_ad_type[{{$index}}]" id="between_ad_type" value="{{BETWEEN_AD}}" @if($b_ad->ad_type == BETWEEN_AD) checked @endif> {{tr('between_ad')}}
 
           </div>
 
@@ -17,7 +17,7 @@
 
                <label>{{tr('ad_time')}}</label>
 
-               <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time" class="form-control">
+               <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time" class="form-control" value="{{$b_ad->ad_time}}">
 
           </div>
 
@@ -25,7 +25,7 @@
 
                <label>{{tr('video_time')}}</label>
 
-               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time" />
+               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time" value="{{$b_ad->video_time}}"/>
 
           </div>
 

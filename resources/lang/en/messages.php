@@ -40,6 +40,7 @@ return array(
 	'no_videos_found'=>'No Videos Found',
 	'preview_ad'=>'Preview Ad',
 	'in_min'=>'In Min',
+	'edit_ad'=>'Edit Ad',
 
 	'marked_default'=>'Marked Default',
 

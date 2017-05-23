@@ -60,14 +60,14 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
-								                	<?php /*
+								                	
 								                  	<li role="presentation">
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video['admin_video_id']))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.ads_edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
                                                         @endif
-                                                    </li>*/?>
+                                                    </li>
                                                     
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.ads_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
 								               

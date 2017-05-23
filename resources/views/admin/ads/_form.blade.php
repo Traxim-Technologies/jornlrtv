@@ -7,13 +7,15 @@
         <div class="box box-primary">
 
             <div class="box-header label-primary">
-                <b style="font-size:18px;">{{tr('create_ad')}}</b>
+                <b style="font-size:18px;">@yield('title')</b>
                 <a href="{{route('admin.ads_index')}}" class="btn btn-default pull-right">{{tr('video_ads')}}</a>
             </div>
 
             <form  action="{{route('admin.save_ads')}}" method="POST" enctype="multipart/form-data" role="form">
 
                 <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{$vModel->id}}">
+
+                <input type="hidden" name="id" id="id" value="{{$model->id}}">
 
                 <div class="box-body">
 
@@ -40,7 +42,8 @@
 
                                 <br>
 
-                    			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{PRE_AD}}"> {{tr('pre_ad')}}
+                    			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{PRE_AD}}"
+                                @if($preAd->ad_type == PRE_AD) checked @endif> {{tr('pre_ad')}}
 
                     		</div>
 
@@ -49,7 +52,7 @@
 
                     			<label>{{tr('ad_time')}}</label>
 
-                    			<input type="text" name="pre_ad_time" id="pre_ad_time" class="form-control">
+                    			<input type="text" name="pre_ad_time" id="pre_ad_time" class="form-control" value="{{$preAd->ad_time}}">
 
                     		</div>
 
@@ -78,7 +81,7 @@
 
                                 <br>
 
-                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}"> {{tr('post_ad')}}
+                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}" @if($postAd->ad_type == POST_AD) checked @endif> {{tr('post_ad')}}
 
                     		</div>
 
@@ -87,7 +90,7 @@
 
                     			<label>{{tr('ad_time')}}</label>
 
-                    			<input type="text" name="post_ad_time" id="post_ad_time" class="form-control">
+                    			<input type="text" name="post_ad_time" id="post_ad_time" class="form-control" value="{{$postAd->ad_time}}">
 
                     		</div>
 
@@ -103,10 +106,26 @@
 
                     	</div>
                         
-                    </div>
+                    </div>                   
 
 
-                    @include('admin.ads._sub_form')
+                    @if(count($betweenAd) > 0 && $model->id)
+
+                        @foreach($betweenAd as $index => $b_ad) 
+
+                            @include('admin.ads._sub_form')
+
+                        @endforeach
+
+                    @else 
+
+                        <?php $b_ad = $betweenAd; ?>
+
+                        @include('admin.ads._sub_form')
+
+
+                    @endif
+
 
                     <div id="questionAdd"></div>
 
