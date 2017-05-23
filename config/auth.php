@@ -85,10 +85,10 @@ return [
             'model' => App\Admin::class,
         ],
 
-        'moderators' => [
+        /*'moderators' => [
             'driver' => 'eloquent',
             'model' => App\Moderator::class,
-        ],
+        ],*/
     ],
 
     /*
