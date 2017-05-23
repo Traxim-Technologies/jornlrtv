@@ -279,7 +279,7 @@ class AdminController extends Controller
 
             if($request->id == ''){
                 $email_data['name'] = $user->name;
-                $email_data['password'] = $new_password;
+                $email_data['password'] = $user->password;
                 $email_data['email'] = $user->email;
 
                 $subject = tr('user_welcome_title');
