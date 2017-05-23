@@ -66,8 +66,6 @@
 									    </a>
 									</li>
 
-									
-
 								</ul>
 
 							</div>
@@ -244,8 +242,32 @@
 									<!--end of slide-image-->
 
 									<div class="video-details recom-details">
-										<div class="video-head">
+										<div class="video-head" style="width: 100%">
+										@if(Auth::check())
+											@if($channel->user_id == Auth::user()->id)
+											<div class="pull-left" style="width: 80%">
+												<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
+											</div>
+											<div class="pull-right" style="width: 20%;color: #000;">
+												
+												<div class="pull-right">
+													<a style="display:inline-block;" href="{{route('user.edit.video', $video->admin_video_id)}}"><i class="fa fa-edit" aria-hidden="true"></i></a>
+													<a style="display:inline-block;" href="{{route('user.delete.video', $video->admin_video_id)}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+												</div>
+												
+											</div>
+											<div class="clearfix"></div>
+											@else
+												
 											<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
+												
+
+											@endif
+										@else 
+											
+											<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
+											
+										@endif
 										</div>
 										<div class="sugg-description">
 											<p style="color: #000">{{tr('duration')}} : {{$video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span>

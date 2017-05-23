@@ -18,7 +18,7 @@ hr {
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.ads_index')}}"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</a></li>
-    <li class="active">{{tr('view_ad')}}</li>
+    <li class="active">{{tr('view_ads')}}</li>
 @endsection 
 
 @section('content')

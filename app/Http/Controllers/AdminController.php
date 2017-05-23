@@ -1055,8 +1055,7 @@ class AdminController extends Controller
         if($video = VideoTape::where('id' , $id)->first())  {
             $video->delete();
         }
-
-        return back()->with('flash_success', 'Video deleted successfully');
+        return back()->with('flash_success', tr('video_delete_success'));
     }
 
     public function slider_video($id) {

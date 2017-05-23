@@ -41,6 +41,7 @@ return array(
 	'preview_ad'=>'Preview Ad',
 	'in_min'=>'In Min',
 	'edit_ad'=>'Edit Ad',
+	'video_delete_success'=>'Video deleted successfully',
 
 	'marked_default'=>'Marked Default',
 

@@ -651,6 +651,17 @@ class UserController extends Controller {
     }
 
 
+    public function video_edit($id) {
+
+        $model = VideoTape::find($id);
+
+        $model->publish_time = $model->publish_time ? (($model->publish_time != '0000-00-00 00:00:00') ? date('d-m-Y H:i:s', strtotime($model->publish_time)) : null) : null;
+
+        return view('user.videos.edit')->with('model', $model)->with('page', 'videos')
+            ->with('subPage', 'upload_video');
+    }
+
+
     public function video_save(Request $request) {
 
         $response = CommonRepo::video_save($request)->getData();
@@ -668,6 +679,16 @@ class UserController extends Controller {
         }
 
     }   
+
+    public function video_delete($id) {
+
+        if($video = VideoTape::where('id' , $id)->first())  {
+
+            $video->delete();
+        }
+
+        return back()->with('flash_success', tr('video_delete_success'));
+    }
 
 
     public function save_default_img(Request $request) {
@@ -704,14 +725,4 @@ class UserController extends Controller {
 
     }
 
-    public function delete_video($id) {
-
-        if($video = VideoTape::where('id' , $id)->first())  {
-
-            $video->delete();
-            
-        }
-
-        return back()->with('flash_success', 'Video deleted successfully');
-    }
 }
