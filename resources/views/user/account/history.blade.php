@@ -53,13 +53,13 @@
                                             <p>{{$history->video_tape->description}}</p>
                                         </div><!--end of description--> 
 
-                                        <?php /* <span class="stars">
-                                           <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        </span>       */?>                                                 
+                                        <span class="stars">
+                                           <a href="#"><i @if($history->video_tape->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a href="#"><i @if($history->video_tape->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a href="#"><i @if($history->video_tape->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a href="#"><i @if($history->video_tape->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a href="#"><i @if($history->video_tape->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        </span>                                               
                                     </div><!--end of history-title--> 
                                     
                                 </div><!--end of main-history-->

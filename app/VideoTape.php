@@ -19,6 +19,7 @@ class VideoTape extends Model
 
         return $query->select(
             'video_tapes.id as admin_video_id' ,
+            'channels.id as channel_id' ,
             'channels.name as channel_name',
             'video_tapes.title',
             'video_tapes.description',
