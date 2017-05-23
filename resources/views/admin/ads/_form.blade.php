@@ -45,7 +45,7 @@
                                 <br>
 
                     			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{PRE_AD}}"
-                                @if($preAd->ad_type == PRE_AD) checked @endif> {{tr('pre_ad')}}
+                                @if($preAd->ad_type == PRE_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value)"> {{tr('pre_ad')}}
 
                     		</div>
 
@@ -89,7 +89,7 @@
 
                                 <br>
 
-                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}" @if($postAd->ad_type == POST_AD) checked @endif> {{tr('post_ad')}}
+                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}" @if($postAd->ad_type == POST_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value)"> {{tr('post_ad')}}
 
                     		</div>
 
@@ -259,6 +259,12 @@ function removeQuestion(index) {
 
     $('#adsDiv_'+index).hide();
 
+    $('#adsDiv_'+index).find('input:text').val('');
+
+    /*var e = $('#adsDiv_'+index);
+    e.wrap('<form>').closest('form').get(0).reset();
+    e.unwrap();    
+*/
 }
 
 function loadFile(event, id){
@@ -271,18 +277,37 @@ function loadFile(event, id){
     reader.readAsDataURL(event.files[0]);
 }
 
-/*function getTime(value) {
-    alert("{{POST_AD}}");
-    if(value == "{{PRE_AD}}") {
-        $("#pre_ad_video_time").val('00:00');
-    }else if(value == "{{POST_AD}}") {
-        var playerInstance = jwplayer("main-video-player");
-        alert(playerInstance);
-        var jwplayerTime = playerInstance.getDuration();
-        alert(jwplayerTime);
-        $("#post_ad_video_time").val(jwplayerTime);
+function getCheckBoxValue(id, ad_type) {
+ 
+    if(!($('#' + id).is(":checked"))) {
+
+        if(ad_type == 1) {
+
+            $('#pre_ad_time').val('');
+
+            $("#pre_ad_preview").hide();
+
+            var e = $('#pre_ad_file');
+            e.wrap('<form>').closest('form').get(0).reset();
+            e.unwrap(); 
+
+        } 
+
+        if(ad_type == 2) {
+
+            $('#post_ad_time').val('');
+
+            $("#post_ad_preview").hide();
+
+            var e = $('#post_ad_file');
+            e.wrap('<form>').closest('form').get(0).reset();
+            e.unwrap(); 
+
+        }
+
     }
-}*/
+
+}
 </script>
 
 
