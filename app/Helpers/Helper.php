@@ -165,7 +165,7 @@
                 try {
 
                     $site_url=url('/');
-                    Mail::send($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
+                    Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
 
                             $message->to($email)->subject($subject);
                     });
