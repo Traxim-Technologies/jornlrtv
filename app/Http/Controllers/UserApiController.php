@@ -889,7 +889,9 @@ class UserApiController extends Controller
 
                 if($video = VideoTape::find($request->admin_video_id)) {
 
-                    if($video->watch_count == Setting::get('viewers_count_per_video')) {
+                    $ads_status = ($video->getChannel) ? ($video->getChannel->getUser ? $video->getChannel->getUser->ads_status : 0 ) : 0;
+
+                    if($video->watch_count == Setting::get('viewers_count_per_video') && $ads_status) {
 
                         $video->watch_count = 1;
 
@@ -897,7 +899,7 @@ class UserApiController extends Controller
 
                     } else {
 
-                        $video->watch_count = $video->watch_count + 1;
+                        $video->watch_count += 1;
 
                     }
                     $video->save();
