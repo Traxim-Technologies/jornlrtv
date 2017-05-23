@@ -53,7 +53,7 @@
 								<div class="hd-banner-image "></div>
 							</div>
 							<div id="header-links">
-								<ul class="about-secondary-links">
+								<!-- <ul class="about-secondary-links">
 									<li class="channel-links-item">
 										<a href="http://www.facebook.com/adele" rel="me nofollow" target="_blank" title="Facebook" class="about-channel-link yt-uix-redirect-link about-channel-link-with-icon">
 									        <img src="//s2.googleusercontent.com/s2/favicons?domain_url=http%3A%2F%2Fwww.facebook.com%2Fadele&amp;feature=youtube_channel" class="about-channel-link-favicon" alt="" width="16" height="16">
@@ -66,7 +66,7 @@
 									    </a>
 									</li>
 
-								</ul>
+								</ul> -->
 
 							</div>
 
