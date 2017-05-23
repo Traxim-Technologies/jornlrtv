@@ -204,21 +204,23 @@ textarea[name=comments] {
                                                 </a> 
                                             </div><!--end of share-->
 
-                                            <?php 
+                                            
 
-                                             /*<div class="stars ratings">
-                                                <a href="#"><i @if($video->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                            </div><!--end of stars--> */ ?>
+                                             <div class="stars ratings">
+                                                <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                            </div><!--end of stars-->
 
                                         </div><!--end of share-details-->                               
                                     </div>
                                     <!--end of more-content-->
 
                                 </div><!--end of video-content-->
+
+                                <?php /*
                                 
                                 @if(count($comments) > 0) <div class="v-comments"> @endif
 
@@ -294,6 +296,8 @@ textarea[name=comments] {
                                     </div>
 
                                 @if(count($comments) > 0) </div> @endif<!--end of v-comments-->
+
+                                */ ?>
                                                                 
                             </div>
 
