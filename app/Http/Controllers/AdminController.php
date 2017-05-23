@@ -1809,7 +1809,7 @@ class AdminController extends Controller
 
         $index = 0;
 
-        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'video_ads')->with('sub_page', 'create_ad')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd);
+        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos')->with('subPage', 'videos')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd);
     }
 
 
@@ -1838,15 +1838,17 @@ class AdminController extends Controller
 
         }
 
-        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'video_ads')->with('sub_page', 'create_ad')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index);
+        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('subPage', 'view-ads')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index);
     }
 
 
     public function add_between_ads(Request $request) {
 
         $index = $request->index + 1;
+
+        $b_ad = new AdsDetail;
         
-        return view('admin.ads._sub_form')->with('index' , $index);
+        return view('admin.ads._sub_form')->with('index' , $index)->with('b_ad', $b_ad);
     }
 
 
@@ -1856,7 +1858,7 @@ class AdminController extends Controller
 
         if($response->success) {
 
-            return back()->with('flash_success', $response->message);
+            return redirect(route('admin.ads_view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
 
         } else {
 

@@ -22,8 +22,6 @@ class AdminRepository {
 
             DB::beginTransaction();
 
-            // dd($request->all());
-
             $model = ($request->has('video_ad_id')) ? VideoAd::find($request->video_ad_id) : new VideoAd();
 
             $model->video_tape_id = $request->has('video_tape_id') ? $request->video_tape_id : $model->video_tape_id;
@@ -74,6 +72,7 @@ class AdminRepository {
 
                 }
 
+
                 if($request->has('post_ad_type')) {
 
                     if($request->post_ad_type == POST_AD) {
@@ -88,7 +87,7 @@ class AdminRepository {
 
                         $post_ad_model->video_time = $model->getVideoTape ? $model->getVideoTape->duration : '00:00:00';
 
-                        $post_ad_model->ad_time = $request->has('pre_ad_time') ? $request->post_ad_time : $post_ad_model->post_ad_time;
+                        $post_ad_model->ad_time = $request->has('post_ad_time') ? $request->post_ad_time : $post_ad_model->post_ad_time;
 
                         if ($request->post_ad_file) {
 
@@ -115,6 +114,7 @@ class AdminRepository {
 
                 }
 
+
                 if($request->has('between_ad_type')) {
 
                     $ad_types[] = BETWEEN_AD;
@@ -129,9 +129,11 @@ class AdminRepository {
 
                             $between_ad_model->ad_type = BETWEEN_AD;
 
-                            $time = $request->has('between_ad_time') ? $request->between_ad_time[$key] : $between_ad_model->video_time;
+                            $time = $request->has('between_ad_video_time') ? $request->between_ad_video_time[$key] : $between_ad_model->video_time;
 
                             $expTime = explode(':', $time);
+
+                           //  dd($time);
 
                             if (count($expTime) == 3) {
 
@@ -149,13 +151,18 @@ class AdminRepository {
 
                             if ($request->between_ad_file) {
 
-                                if($request->has('between_ad_type_id')) {
 
-                                    Helper::delete_picture($between_ad_model->file, "/uploads/ad/");
+                                if($request->between_ad_file[$key] != null) {
+
+                                    if($request->has('between_ad_type_id')) {
+
+                                        Helper::delete_picture($between_ad_model[$key]->file, "/uploads/ad/");
+
+                                    }
+
+                                    $between_ad_model->file = Helper::normal_upload_picture($request->between_ad_file[$key], "/uploads/ad/");
 
                                 }
-
-                                $between_ad_model->file = Helper::normal_upload_picture($request->between_ad_file[$key], "/uploads/ad/");
                             }
 
                             if ($between_ad_model->save()) {
@@ -204,7 +211,7 @@ class AdminRepository {
 
             DB::commit();
 
-            $response_array = ['success' => true,'message' => ($request->video_ad_id) ? tr('ad_update_success') : tr('ad_create_success')];
+            $response_array = ['success' => true,'message' => ($request->video_ad_id) ? tr('ad_update_success') : tr('ad_create_success'), 'data'=>$model];
 
         } catch(Exception $e) {
 

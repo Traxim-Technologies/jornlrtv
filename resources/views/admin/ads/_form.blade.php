@@ -15,7 +15,7 @@
 
                 <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{$vModel->id}}">
 
-                <input type="hidden" name="id" id="id" value="{{$model->id}}">
+                <input type="hidden" name="video_ad_id" id="id" value="{{$model->id}}">
 
                 <div class="box-body">
 
@@ -40,6 +40,8 @@
 
                     			<label>{{tr('ad_type')}}</label>
 
+                                <input type="hidden" name="pre_ad_type_id" id="pre_ad_id" value="{{$preAd->id}}">
+
                                 <br>
 
                     			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{PRE_AD}}"
@@ -61,7 +63,11 @@
 
                     			<label>{{tr('image')}}</label>
 
-                    			<input type="file" name="pre_ad_file" id="pre_ad_file" accept="image/png,image/jpeg">
+                    			<input type="file" name="pre_ad_file" id="pre_ad_file" accept="image/png,image/jpeg" onchange="loadFile(this, 'pre_ad_preview')">
+
+                                <br>
+
+                                <img src="{{$preAd->file ? $preAd->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="pre_ad_preview"/>
 
                     		</div>
 
@@ -78,6 +84,8 @@
                     		<div class="col-md-2">
 
                     			<label>{{tr('ad_type')}}</label>
+
+                                <input type="hidden" name="post_ad_type_id" id="post_ad_id" value="{{$postAd->id}}">
 
                                 <br>
 
@@ -99,7 +107,12 @@
 
                     			<label>{{tr('image')}}</label>
 
-                    			<input type="file" name="post_ad_file" id="post_ad_file" accept="image/png,image/jpeg">
+                    			<input type="file" name="post_ad_file" id="post_ad_file" accept="image/png,image/jpeg" onchange="loadFile(this, 'post_ad_preview')">
+
+
+                                <br>
+                                
+                                <img src="{{$postAd->file ? $postAd->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="post_ad_preview"/>
 
                     		</div>
 
@@ -246,6 +259,16 @@ function removeQuestion(index) {
 
     $('#adsDiv_'+index).hide();
 
+}
+
+function loadFile(event, id){
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById(id);
+      output.src = reader.result;
+       //$("#imagePreview").css("background-image", "url("+this.result+")");
+    };
+    reader.readAsDataURL(event.files[0]);
 }
 
 /*function getTime(value) {

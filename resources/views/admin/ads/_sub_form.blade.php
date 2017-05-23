@@ -6,6 +6,8 @@
 
                <label>{{tr('ad_type')}}</label>
 
+               <input type="hidden" name="between_ad_type_id[{{$index}}]" id="between_ad_type_id" value="{{$b_ad->id}}">
+
                <br>
 
                <input type="checkbox" name="between_ad_type[{{$index}}]" id="between_ad_type" value="{{BETWEEN_AD}}" @if($b_ad->ad_type == BETWEEN_AD) checked @endif> {{tr('between_ad')}}
@@ -33,7 +35,11 @@
 
                <label>{{tr('image')}}</label>
 
-               <input type="file" name="between_ad_file[{{$index}}]" id="between_ad_file" accept="image/png,image/jpeg">
+               <input type="file" name="between_ad_file[{{$index}}]" id="between_ad_file[{{$index}}]" accept="image/png,image/jpeg" onchange="loadFile(this, 'between_ad_preview_'+{{$index}})">
+
+               <br>
+                                
+               <img src="{{$b_ad->file ? $b_ad->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="between_ad_preview_{{$index}}"/>
 
           </div>
 
