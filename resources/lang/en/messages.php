@@ -29,10 +29,15 @@ return array(
 	'about_me'=>'About Me',
 	'make_default'=>'Make Default',
 	'select_image_short_notes'=>'Select any one of the images which is given below. The selected Image will reflect as a thumbnail of your video',
+	'subscription_plans'=>'Plans',
+	'subscription_applied_success'=>'Subscription applied successfully',
 
 	'marked_default'=>'Marked Default',
 
 	'site_name' => 'Stream Hash',
+	'video_ad'=>'Video Ad',
+	'type_of_ads'=>'Type of Ads',
+	'no_ads_found'=>'No Ads Found',
 
 	'remove_pay_per_view'=>'Remove Pay Per View',
 	'report'=>'Mark as Spam',
