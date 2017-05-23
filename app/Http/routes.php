@@ -379,7 +379,11 @@ Route::group(['prefix' => 'admin'], function(){
 
     Route::get('ads_edit/{id}','AdminController@ads_edit')->name('admin.ads_edit');
 
+    Route::get('ads_delete','AdminController@ads_delete')->name('admin.ads_delete');
+
     Route::get('ads_index','AdminController@ads_index')->name('admin.ads_index');
+
+    Route::get('ads_view','AdminController@ads_view')->name('admin.ads_view');
 
     Route::post('add_between_ads', 'AdminController@add_between_ads')->name('admin.add.between_ads');
 

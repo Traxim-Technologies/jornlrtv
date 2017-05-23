@@ -38,6 +38,8 @@ return array(
 	'payment_managment'=>'Payment Management',
 	'payment_videos'=>'Payment Videos',
 	'no_videos_found'=>'No Videos Found',
+	'preview_ad'=>'Preview Ad',
+	'in_min'=>'In Min',
 
 	'marked_default'=>'Marked Default',
 

@@ -54,44 +54,38 @@
 								       	@endforeach
 							      	</td>
 								    <td>
-            							<?php /*<ul class="admin-action btn btn-default">
+            							<ul class="admin-action btn btn-default">
             								<li class="dropup">
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu">
-								                	@if ($video['publish_status'] == 1)
+								                	<?php /*
 								                  	<li role="presentation">
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
                                                             <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video['admin_video_id']))}}">{{tr('edit')}}</a>
                                                         @endif
-                                                    </li>
-                                                    @endif
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video['admin_video_id']))}}">{{tr('view')}}</a></li>
-
+                                                    </li>*/?>
+                                                    
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.ads_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
 								               
-
+														
 								                  	<li class="divider" role="presentation"></li>
 
-								                  
-								                  	@if ($video['publish_status'] == 1)
-									                  	<li class="divider" role="presentation"></li>
+								                  	<li role="presentation">
+								                  		@if(Setting::get('admin_delete_control'))
 
-									                  	<li role="presentation">
-									                  		@if(Setting::get('admin_delete_control'))
+									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
-										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
-
-										                  	@else
-									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video['admin_video_id']))}}">{{tr('delete')}}</a>
-									                  		@endif
-									                  	</li>
-								                  	@endif
+									                  	@else
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.ads_delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
+								                  		@endif
+								                  	</li>
 								                </ul>
               								</li>
-            							</ul> */?>
+            							</ul>
 								    </td>
 							    </tr>
 

@@ -226,4 +226,12 @@ class AdminRepository {
 
     }
 
+
+    public static function ad_view($request) {
+
+        $model = VideoAd::with('getVideoTape')->find($request->id);
+
+        return response()->json($model);
+
+    }
 }

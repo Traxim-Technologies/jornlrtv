@@ -17,7 +17,7 @@ class VideoAd extends Model
 
     public function getAdDetails() {
 
-        return $this->hasMany('App\AdsDetail', 'ads_id', 'id');
+        return $this->hasMany('App\AdsDetail', 'ads_id', 'id')->orderBy('video_time', 'asc');
 
     }
 

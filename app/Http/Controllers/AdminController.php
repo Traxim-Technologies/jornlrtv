@@ -1842,7 +1842,34 @@ class AdminController extends Controller
     }
 
 
-     public function user_subscriptions($id) {
+    public function ads_delete(Request $request) {
+
+        $model = VideoAd::find($request->id);
+
+        if($model) {
+
+            if($model->delete()) {
+
+                return back()->with('flash_success', tr('ad_delete_success'));
+
+            }
+
+        }
+
+        return back()->with('flash_error', tr('something_error'));
+
+    }
+
+    public function ads_view(Request $request) {
+
+        $model = AdminRepo::ad_view($request)->getData();
+
+        return view('admin.ads.view')->with('ads', $model)->with('page', 'videos_ads')->with('subPage', 'view-ads');
+
+    }
+
+
+    public function user_subscriptions($id) {
 
         $data = Subscription::orderBy('created_at','desc')->get();
 
@@ -1859,11 +1886,11 @@ class AdminController extends Controller
 
         if($response->success) {
 
-            return back()->with('false_success', $response->message);
+            return back()->with('flash_success', $response->message);
 
         } else {
 
-            return back()->with('false_errors', $response->message);
+            return back()->with('flash_error', $response->message);
 
         }
 

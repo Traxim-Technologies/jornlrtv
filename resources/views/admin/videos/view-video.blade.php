@@ -140,7 +140,7 @@ hr {
                             <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('full_video')}}</strong>
 
                             <div class="margin-t-10" style="margin-top:10px;">
-                                    @if($video->video_upload_type == 1)
+                                @if($video->video_upload_type == 1)
                                     <?php $url = $video->video; ?>
                                     <div id="main-video-player"></div>
                                 @else
