@@ -1677,7 +1677,7 @@ class AdminController extends Controller
 
             } else {
 
-                if($request->hasFile('picture')) {
+                if($request->hasFile('image')) {
 
                     $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
 
