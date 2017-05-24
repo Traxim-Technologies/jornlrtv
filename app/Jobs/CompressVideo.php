@@ -79,7 +79,7 @@ class CompressVideo extends Job implements ShouldQueue
             }
 
             $video->video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
-            $video->video_resize_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
+            $video->video_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
 
             $video->status = DEFAULT_TRUE;
 
