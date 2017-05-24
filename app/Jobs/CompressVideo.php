@@ -53,10 +53,10 @@ class CompressVideo extends Job implements ShouldQueue
         Log::info("attributes : ". print_r($attributes, true));
         if($attributes) {
             // Get Video Resolutions
-            $resolutions = $video->video_resolutions ? explode(',', $video->video_resolutions) : [];
+            $resolutions = getVideoResolutions();
             $array_resolutions = $video_resize_path = $pathnames = [];
             foreach ($resolutions as $key => $solution) {
-                $exp = explode('x', $solution);
+                $exp = explode('x', $solution->value);
                 Log::info("Resoltuion : ". print_r($exp, true));
                 // Explode $solution value
                 $getwidth = (count($exp) == 2) ? $exp[0] : 0;
