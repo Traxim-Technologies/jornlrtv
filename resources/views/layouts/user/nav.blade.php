@@ -39,11 +39,15 @@
                 <li>
                     <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
                 </li>
-            @endforeach     
+            @endforeach  
+
+            @if(Auth::user()->user_type)    
 
             <li>
                 <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
-            </li>         
+            </li>    
+
+            @endif     
         </ul>
 
 
