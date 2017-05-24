@@ -64,17 +64,17 @@ class CompressVideo extends Job implements ShouldQueue
                     $FFmpeg = new \FFmpeg;
                     $FFmpeg
                     ->input($this->inputFile)
-                    ->size($solution)
+                    ->size($solution->value)
                     ->vcodec('h264')
                     ->constantRateFactor('28')
-                    ->output(public_path().'/uploads/videos/original/'.$solution.$this->local_url)
+                    ->output(public_path().'/uploads/videos/original/'.$solution->value.$this->local_url)
                     ->ready();
 
-                    Log::info('Output'.public_path().'/uploads/videos/'.$solution.$this->local_url);
-                    $array_resolutions[] = $solution;
-                    Log::info('Url'.Helper::web_url().'/uploads/videos/'.$solution.$this->local_url);
-                    $video_resize_path[] = Helper::web_url().'/uploads/videos/'.$solution.$this->local_url;
-                    $pathnames[] = $solution.$this->local_url;
+                    Log::info('Output'.public_path().'/uploads/videos/'.$solution->value.$this->local_url);
+                    $array_resolutions[] = $solution->value;
+                    Log::info('Url'.Helper::web_url().'/uploads/videos/'.$solution->value.$this->local_url);
+                    $video_resize_path[] = Helper::web_url().'/uploads/videos/'.$solution->value.$this->local_url;
+                    $pathnames[] = $solution->value.$this->local_url;
                 }
             }
 
