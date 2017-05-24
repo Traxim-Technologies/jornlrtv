@@ -382,7 +382,7 @@ class CommonRepository {
 
                     if (file_exists($inputFile)) {
                         Log::info("Main queue Videos : ".'Success');
-                        dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $model->id, $file_name));
+                        dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
                         Log::info("Main queue completed : ".'Success');
                     }
                 }
