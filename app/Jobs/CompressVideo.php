@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use File;
 
-use App\AdminVideo;
+use App\VideoTape;
 
 use App\Helpers\Helper;
 
@@ -48,7 +48,7 @@ class CompressVideo extends Job implements ShouldQueue
     {
         Log::info("Inside Queue Videos : ". 'Success');
         // Load Video Model
-        $video = AdminVideo::where('id', $this->videoId)->first();
+        $video = VideoTape::where('id', $this->videoId)->first();
         $attributes = readFileName($this->inputFile); 
         Log::info("attributes : ". print_r($attributes, true));
         if($attributes) {
