@@ -182,7 +182,9 @@ class AdminRepository {
 
                             if($delete == 0) {
 
-                                $between_ad_model = ($request->has('between_ad_type_id')) ? AdsDetail::find($request->between_ad_type_id[$key]) : new AdsDetail;
+                                $id = ($request->has('between_ad_type_id')) ? $request->between_ad_type_id[$key] : '';
+
+                                $between_ad_model = ($id) ? AdsDetail::find($id) : new AdsDetail;
 
                                 $between_ad_model->ads_id = $model->id;
 
