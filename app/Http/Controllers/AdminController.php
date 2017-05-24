@@ -1858,6 +1858,8 @@ class AdminController extends Controller
 
         $response = AdminRepo::save_ad($request)->getData();
 
+       // dd($response);
+
         if($response->success) {
 
             return redirect(route('admin.ads_view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
@@ -1884,6 +1886,14 @@ class AdminController extends Controller
         $model = VideoAd::find($request->id);
 
         if($model) {
+
+            if($model->getVideoTape) {
+
+                $model->getVideoTape->ad_status = DEFAULT_FALSE;
+
+                $model->getVideoTape->save();
+
+            } 
 
             if($model->delete()) {
 
