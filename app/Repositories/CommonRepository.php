@@ -320,7 +320,7 @@ class CommonRepository {
 
             $model->reviews = $request->has('reviews') ? $request->reviews : $model->reviews;
 
-            $model->ratings = $request->has('ratings') ? $request->ratings : $model->ratings;
+            $model->ratings = $request->has('ratings') ? $request->ratings : 0;
 
             $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
                     

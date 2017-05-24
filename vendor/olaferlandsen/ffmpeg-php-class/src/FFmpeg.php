@@ -63,7 +63,7 @@ class FFmpeg
 	private $ffmpeg		=	'ffmpeg';
 
 
-	private $fps = 1/60;
+	private $fps = '1/60';
 	/**
 	*	
 	*/
