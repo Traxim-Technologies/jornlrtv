@@ -260,7 +260,7 @@ class AdminController extends Controller
                 $new_password .= rand();
                 $new_password = sha1($new_password);
                 $new_password = substr($new_password, 0, 8);*/
-                $user->password = ($request->password) ? \Hash::make($request->password) : null;
+                $user->password = ($request->password) ? $request->password : null;
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
                 $user->device_type = 'web';
