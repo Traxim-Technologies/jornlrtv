@@ -181,6 +181,8 @@ class User extends Authenticatable
 
         $this->attributes['is_verified'] = 0;
 
+        $this->attributes['status'] = DEFAULT_TRUE;
+
         return true;
     }
 

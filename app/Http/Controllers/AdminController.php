@@ -263,7 +263,7 @@ class AdminController extends Controller {
                 $new_password .= rand();
                 $new_password = sha1($new_password);
                 $new_password = substr($new_password, 0, 8);*/
-                $user->password = ($request->password) ? \Hash::make($request->password) : null;
+                $user->password = ($request->password) ? $request->password : null;
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
                 $user->device_type = 'web';
@@ -1743,7 +1743,7 @@ class AdminController extends Controller {
 
             } else {
 
-                if($request->hasFile('picture')) {
+                if($request->hasFile('image')) {
 
                     $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
 
@@ -1924,6 +1924,8 @@ class AdminController extends Controller {
 
         $response = AdminRepo::save_ad($request)->getData();
 
+       // dd($response);
+
         if($response->success) {
 
             return redirect(route('admin.ads_view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
@@ -1950,6 +1952,14 @@ class AdminController extends Controller {
         $model = VideoAd::find($request->id);
 
         if($model) {
+
+            if($model->getVideoTape) {
+
+                $model->getVideoTape->ad_status = DEFAULT_FALSE;
+
+                $model->getVideoTape->save();
+
+            } 
 
             if($model->delete()) {
 
