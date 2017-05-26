@@ -98,7 +98,7 @@ textarea[name=comments] {
                                                 <div style="width: 55%;">
                                                     <h3>{{$video->title}}</h3>
                                                 </div>
-                                                @if(Setting::get('is_spam'))
+                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->getChannel->user_id)
                                                         
                                                     <div class="pull-right">
 

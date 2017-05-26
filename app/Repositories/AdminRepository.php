@@ -258,7 +258,7 @@ class AdminRepository {
 
                     $video_tape = VideoTape::find($request->video_tape_id);
 
-                    $video_tape->ad_status = DEFAULT_TRUE;
+                    // $video_tape->ad_status = DEFAULT_TRUE;
 
                     if ($video_tape->save()) {
 

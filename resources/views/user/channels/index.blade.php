@@ -29,6 +29,54 @@
 		padding: 0 !important;
 		font-weight: bolder !important;
 	}
+
+	.switch {
+	    display: inline-block;
+	    height: 23px;
+	    position: relative;
+	    width: 45px;
+	    vertical-align: middle;
+	}
+	.switch input {
+	    display: none;
+	}
+	.slider {
+	    background-color: #ccc;
+	    bottom: 0;
+	    cursor: pointer;
+	    left: 0;
+	    position: absolute;
+	    right: 0;
+	    top: 0;
+	    transition: all 0.4s ease 0s;
+	}
+	.slider::before {
+	    background-color: white;
+	    bottom: 4px;
+	    content: "";
+	    height: 16px;
+	    left: 0px;
+	    position: absolute;
+	    transition: all 0.4s ease 0s;
+	    width: 16px;
+	}
+	input:checked + .slider {
+	    background-color: #51af33;
+	}
+	input:focus + .slider {
+	    box-shadow: 0 0 1px #2196f3;
+	}
+	input:checked + .slider::before {
+	    transform: translateX(26px);
+	}
+	.slider.round {
+	    border-radius: 34px;
+	}
+	.slider.round::before {
+	    border-radius: 50%;
+	}
+
+
 </style>
 
 @endsection 
@@ -223,87 +271,92 @@
 				</li>
 
 				<li role="tabpanel" class="tab-pane" id="videos">
-					<div class="slide-area recom-area">
 
-						<div class="recommend-list row">
+					<div class="slide-area recom-area abt-sec">
+						<div class="abt-sec-head">
+							
+							 <div class="new-history">
+					                <div class="content-head">
+					                    <div><h4 style="color: #000;">{{tr('videos')}}</h4></div>              
+					                </div><!--end of content-head-->
 
-							@if(count($videos) == 0 || empty($videos->items()))
+					                @if(count($videos) > 0)
 
-						  		<p style="color: #000">{{tr('no_video_found')}}</p>
+					                    <ul class="history-list">
 
-						  	@endif
+					                        @foreach($videos as $i => $video)
 
 
-							@if(count($videos) > 0 )
+					                        <li class="sub-list row">
+					                            <div class="main-history">
+					                                 <div class="history-image">
+					                                    <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>                        
+					                                </div><!--history-image-->
 
-								@foreach($videos as $video)
-								<div class="slide-box recom-box">
-									<div class="slide-image recom-image">
-										<a href="{{route('user.single', $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>
-									</div>
-									<!--end of slide-image-->
+					                                <div class="history-title">
+					                                    <div class="history-head row">
+					                                        <div class="cross-title">
+					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+					                                            <p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p>
+					                                        </div> 
+					                                        @if(Auth::check())
+															@if($channel->user_id == Auth::user()->id)
+					                                        <div class="cross-mark">
+					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->admin_video_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
+					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->admin_video_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
 
-									<div class="video-details recom-details">
-										<div class="video-head" style="width: 100%">
-										@if(Auth::check())
-											@if($channel->user_id == Auth::user()->id)
-											<div class="pull-left" style="width: 80%">
-												<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
-											</div>
-											<div class="pull-right" style="width: 20%;color: #000;">
-												
-												<div class="pull-right">
-													<a style="display:inline-block;" href="{{route('user.edit.video', $video->admin_video_id)}}"><i class="fa fa-edit" aria-hidden="true"></i></a>
-													<a style="display:inline-block;" href="{{route('user.delete.video', $video->admin_video_id)}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-												</div>
-												
-											</div>
-											<div class="clearfix"></div>
-											@else
-												
-											<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
-												
+					                                            <label style="float:none" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
+					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->admin_video_id}})">
+					                                                <div class="slider round"></div>
+					                                            </label>
+					                                           @endif
+					                                           @endif
 
-											@endif
-										@else 
-											
-											<a href="{{route('user.single', $video->admin_video_id)}}">{{$video->title}}</a>
-											
-										@endif
-										</div>
-										<div class="sugg-description">
-											<p style="color: #000">{{tr('duration')}} : {{$video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span>
-											</p>
-										</div>
+					                                        </div><!--end of cross-mark-->                       
+					                                    </div> <!--end of history-head--> 
 
-		                                <span class="stars">
-                                           <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        </span>  
+					                                    <div class="description">
+					                                        <p>{{$video->description}}</p>
+					                                    </div><!--end of description--> 
 
-									</div>
-									<!--end of video-details-->
-								</div>
-								@endforeach
-							@endif
+					                                   	<span class="stars">
+					                                        <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                        <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+					                                    </span>                                                      
+					                                </div><!--end of history-title--> 
+					                                
+					                            </div><!--end of main-history-->
+					                        </li>    
 
-						</div>
-						<!--end of recommend-list-->
-						<div class="row">
-							<div class="col-md-12">
-								<div id="paglink" align="center">
-									@if(count($videos) > 0 )
-									
-										<?php echo $videos->links();?>
+					                        @endforeach
+					                       
+					                    </ul>
 
-									@endif
-								</div>
-							</div>
+					                @else
+
+					                   <p style="color: #000">{{tr('no_video_found')}}</p>
+
+					                @endif
+
+					                @if(count($videos) > 0)
+
+					                    @if($videos)
+					                    <div class="row">
+					                        <div class="col-md-12">
+					                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+					                        </div>
+					                    </div>
+					                    @endif
+					                @endif
+					                
+					            </div>
+
 						</div>
 					</div>
+
 
 				</li>
 				<li role="tabpanel" class="tab-pane" id="about">
@@ -404,8 +457,29 @@
 
 @endsection
 
-@section( 'scripts' )
+@section('scripts')
 
-<!-- Add Js files and inline js here -->
+<script>
+    
+    function change_adstatus(val, id) {
 
+        var url = "{{route('user.ad_request')}}";
+
+
+        $.ajax({
+            url : url,
+            method : "POST",
+            data : {id : id , status : val},
+            success : function(result) {
+                console.log(result);
+
+                if (result == true) {
+                    // window.location.reload();
+                }
+            }
+
+        });
+
+    }
+</script>
 @endsection

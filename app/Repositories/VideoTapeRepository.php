@@ -313,8 +313,11 @@ class VideoTapeRepository {
             $flagVideos = getFlagVideos(Auth::user()->id);
 
             if($flagVideos) {
+
                 $videos_query->whereNotIn('video_tapes.id', $flagVideos);
+
             }
+
         }
 
         if($web) {

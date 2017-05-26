@@ -626,9 +626,9 @@ class UserController extends Controller {
 
     public function ad_request(Request $request) {
 
-        if($data = User::find(Auth::user()->id)) {
+        if($data = VideoTape::find($request->id)) {
 
-            $data->ads_status  = $data->ads_status ? 0 : 1;
+            $data->ad_status  = $data->ad_status ? 0 : 1;
 
             $data->save();
 
