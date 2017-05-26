@@ -34,7 +34,7 @@
 	    display: inline-block;
 	    height: 23px;
 	    position: relative;
-	    width: 45px;
+	    width: 50px;
 	    vertical-align: middle;
 	}
 	.switch input {
@@ -55,7 +55,7 @@
 	    bottom: 4px;
 	    content: "";
 	    height: 16px;
-	    left: 0px;
+	    left: 4px;
 	    position: absolute;
 	    transition: all 0.4s ease 0s;
 	    width: 16px;
