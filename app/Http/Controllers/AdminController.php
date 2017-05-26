@@ -1326,7 +1326,15 @@ class AdminController extends Controller {
                         }
                     }  
 
+                } else if($setting->key == 'multi_channel_status') {
+
+                    // dd($request->multi_channel_status);
+
+                    $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
+
                 } else if($request->$key!='') {
+
+
 
                     $setting->value = $request->$key;
 

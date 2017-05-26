@@ -42,6 +42,9 @@ return array(
 	'in_min'=>'In Min',
 	'edit_ad'=>'Edit Ad',
 	'video_delete_success'=>'Video deleted successfully',
+	'multi_channel_status'=>'Multi Channel Status',
+	'enable_channel_status'=>'Enable MultiChannel',
+	'channel_create_error'=>'For a profile, You can create only one channel',
 
 	'marked_default'=>'Marked Default',
 

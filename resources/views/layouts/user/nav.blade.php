@@ -36,11 +36,15 @@
                 </li>
             @endforeach  
 
-            @if(Auth::user()->user_type)    
+            @if(Auth::user()->user_type)  
+
+            @if(count($channels) == 0 || Setting::get('multi_channel_status'))  
 
             <li>
                 <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
             </li>    
+
+            @endif
 
             @endif     
         </ul>

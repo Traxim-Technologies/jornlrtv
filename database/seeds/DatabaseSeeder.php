@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(RedeemSeeder::class);
         $this->call(ScriptSettingSeeder::class);
+        $this->call(MultiChannelSeeder::class);
     }
 }

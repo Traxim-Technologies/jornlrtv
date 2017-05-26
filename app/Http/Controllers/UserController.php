@@ -401,8 +401,17 @@ class UserController extends Controller {
 
         $model = new Channel;
 
-        return view('user.channels.create')->with('page', 'channels')
+        $channels = getChannels(Auth::user()->id);
+
+        if(count($channels) == 0 || Setting::get('multi_channel_status')) {
+
+            return view('user.channels.create')->with('page', 'channels')
                     ->with('subPage', 'create_channel')->with('model', $model);
+
+        } else {
+
+            return back()->with('flash_error', tr('channel_create_error'));
+        }
 
     }
 
@@ -716,11 +725,11 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return back()->with('false_success', $response->message);
+            return back()->with('flash_success', $response->message);
 
         } else {
 
-            return back()->with('false_errors', $response->message);
+            return back()->with('flash_error', $response->message);
 
         }
 

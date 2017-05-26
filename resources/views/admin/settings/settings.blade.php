@@ -125,7 +125,18 @@
                                     </div>   
                                 </div>
 
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="amount_per_video">{{tr('multi_channel_status')}}</label>
 
+                                        <br>
+
+                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked @endif id="multi_channel_status" style="vertical-align: middle;"> {{tr('enable_channel_status')}}
+                                        
+                                    </div>   
+                                </div>
+
+                                
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="google_analytics">{{tr('google_analytics')}}</label>
