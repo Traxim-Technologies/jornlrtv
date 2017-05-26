@@ -119,7 +119,7 @@ thead>tr>th {
 
                                 $remaining = Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining: 0;
 
-                                $min_status = Setting::get('minimum_redeem') < Auth::user()->userRedeem->remaining;
+                                $min_status = Setting::get('minimum_redeem') < $remaining;
                             ?>
 
                             @if(count(Auth::user()->userRedeem) > 0 && $min_status)

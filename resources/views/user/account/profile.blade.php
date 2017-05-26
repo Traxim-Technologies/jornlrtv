@@ -44,8 +44,6 @@
                                     <br>
                                         <div class="change-pwd edit-pwd edit-pro-btn">
 
-                                        
-
                                             <div class="clearfix"></div>
 
                                              <a href="{{route('user.subscriptions')}}" class="btn btn-warning">{{tr('subscriptions')}}</a>
