@@ -61,7 +61,7 @@
 
 							      	@endif
 							      	<td class="text-center">
-							      		@if($video->ad_status)
+							      		@if($video['ad_status'])
 							      			<span class="label label-success">{{tr('yes')}}</span>
 							      		@else
 							      			<span class="label label-danger">{{tr('no')}}</span>
