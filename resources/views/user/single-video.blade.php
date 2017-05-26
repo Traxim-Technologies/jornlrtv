@@ -375,6 +375,7 @@ textarea[name=comments] {
 @endsection
 
 @section('scripts')
+
     <script type="text/javascript">
         $(document).ready(function(){
             $('.video-y-menu').addClass('hidden');
@@ -883,9 +884,7 @@ textarea[name=comments] {
 
                         @if($ads)
                             @if (((count($ads->between_ad) > 0) || !empty($ads->post_ad)) && empty($ads->pre_ad)) 
-
                                 timer();
-
                             @endif
                         @endif
 

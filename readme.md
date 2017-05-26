@@ -1,16 +1,12 @@
-#StreamHash V1.2 #
+#StreamTube V1.0
 
-### Features and Changes: ###
+### Features
 
-* Code Optimization
+* Social Login
 
 * CMS Update
 
 	* Easy navigation for all features
-
-	* Video Upload CRUD UI changes
-
-	* Videos - Publish option added
 
 * Flag videos
 
@@ -42,6 +38,10 @@
 
 	* AWS s3 Settings
 
+	* Control Settings (Enable/Disable Options)
+
+	* Header and body custom scripts add Option 
+
 * Pay Per Video *
 	
 	* Can choose user type - All users , Paid Users or Normal users
@@ -50,22 +50,6 @@
 
 * Email Verification Added *
 
-*** Please create folders for resoluions with 777 permissions. ***
-
-public/uploads/videos/ 
-
-	* 426x240
-
-	* 640x360
-
-	* 854x480
-
-	* 1280x720
-
-	* 1920x1080
-
-
-public/uploads/images/ 
 
 
 

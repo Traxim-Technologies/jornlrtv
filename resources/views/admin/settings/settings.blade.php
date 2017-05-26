@@ -131,6 +131,20 @@
                                         <label for="google_analytics">{{tr('google_analytics')}}</label>
                                         <textarea class="form-control" id="google_analytics" name="google_analytics">{{Setting::get('google_analytics')}}</textarea>
                                     </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="header_scripts">{{tr('header_scripts')}}</label>
+                                        <textarea class="form-control" id="header_scripts" name="header_scripts">{{Setting::get('header_scripts')}}</textarea>
+                                    </div>
+                                </div>  
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="body_end_scripts">{{tr('body_end_scripts')}}</label>
+                                        <textarea class="form-control" id="body_end_scripts" name="body_end_scripts">{{Setting::get('body_end_scripts')}}</textarea>
+                                    </div>
                                 </div>   
 
                           </div>

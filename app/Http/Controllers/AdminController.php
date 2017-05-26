@@ -52,15 +52,18 @@ use App\AdsDetail;
 
 use App\Channel;
 
+use App\Redeem;
+
+use App\RedeemRequest;
+
 use App\Repositories\CommonRepository as CommonRepo;
 
 use App\Repositories\AdminRepository as AdminRepo;
 
-
 use App\Jobs\NormalPushNotification;
 
-class AdminController extends Controller
-{
+class AdminController extends Controller {
+
     /**
      * Create a new controller instance.
      *
@@ -315,6 +318,7 @@ class AdminController extends Controller
     }
 
     public function delete_user(Request $request) {
+       
         if($user = User::where('id',$request->id)->first()) {
             // Check User Exists or not
             if ($user) {
@@ -329,6 +333,7 @@ class AdminController extends Controller
             }
         }
         return back()->with('flash_error',tr('admin_not_error'));
+    
     }
 
     public function view_user($id) {
@@ -426,6 +431,65 @@ class AdminController extends Controller
 
             return back()->with('flash_error',tr('admin_not_error'));
         }
+    
+    }
+
+    public function user_redeem_requests($id = "") {
+
+        $base_query = RedeemRequest::orderBy('status' , 'asc');
+
+        $user = [];
+
+        if($id) {
+            $base_query = $base_query->where('user_id' , $id);
+
+            $user = User::find($id);
+        }
+
+        $data = $base_query->get();
+
+        return view('admin.users.redeems')->withPage('redeems')->with('sub_page' , 'redeems')->with('data' , $data)->with('user' , $user);
+    
+    }
+
+    public function user_redeem_pay(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'redeem_request_id' => 'required|exists:redeem_requests,id',
+            'paid_amount' => 'required', 
+            ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , $validator->messages()->all())->withInput();
+
+        } else {
+
+            $redeem_request_details = RedeemRequest::find($request->redeem_request_id);
+
+            if($redeem_request_details) {
+
+                if($redeem_request_details->status == REDEEM_REQUEST_PAID ) {
+
+                    return back()->with('flash_error' , tr('redeem_request_status_mismatch'));
+
+                } else {
+
+                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
+
+                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
+
+                    $redeem_request_details->save();
+
+                    return back()->with('flash_success' , tr('action_success'));
+
+                }
+
+            } else {
+                return back()->with('flash_error' , tr('something_error'));
+            }
+        }
+
     }
 
     public function view_history($id) {
@@ -453,6 +517,7 @@ class AdminController extends Controller
         } else {
             return back()->with('flash_error',tr('admin_not_error'));
         }
+    
     }
 
     public function delete_history($id) {
@@ -466,6 +531,7 @@ class AdminController extends Controller
         } else {
             return back()->with('flash_error',tr('admin_not_error'));
         }
+    
     }
 
     public function view_wishlist($id) {
@@ -1930,6 +1996,10 @@ class AdminController extends Controller
             return back()->with('flash_error', $response->message);
 
         }
+
+    }
+
+    public function redeems(Request $request) {
 
     }
 }

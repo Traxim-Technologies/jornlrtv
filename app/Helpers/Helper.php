@@ -249,6 +249,21 @@
                 case 146:
                     $string = "Something went Wrong.Please try again later!.";
                     break;
+                case 147:
+                    $string = tr('redeem_disabled_by_admin');
+                    break;
+                case 148:
+                    $string = tr('minimum_redeem_not_have');
+                    break;
+                case 149:
+                    $string = tr('redeem_wallet_empty');
+                    break;
+                case 150:
+                    $string = tr('redeem_request_status_mismatch');
+                    break;
+                case 151:
+                    $string = tr('redeem_not_found');
+                    break;
 
                 default:
                     $string = "Unknown error occurred.";

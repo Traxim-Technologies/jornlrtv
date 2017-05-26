@@ -37,6 +37,8 @@
 
     @yield('styles')
 
+    <?php echo Setting::get('header_scripts') ?>
+
 </head>
 
 
@@ -132,6 +134,7 @@
 
     @yield('scripts')
 
+
     <script type="text/javascript">
         $("#{{$page}}").addClass("active");
         @if(isset($sub_page)) $("#{{$sub_page}}").addClass("active"); @endif
@@ -152,20 +155,7 @@
         });
     </script>
 
-    <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/586a34df1aad8833902f6578/default';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
-
+    <?php echo Setting::get('body_bottom_scripts') ?>
 
 </body>
 

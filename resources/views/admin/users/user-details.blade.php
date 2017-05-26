@@ -24,15 +24,23 @@
 		    margin: 0;
 		    border-radius: 0px;
 		}
+		.check-redeem {
+			color: #FFF !important;
+		}
+
+		.check-redeem:hover {
+			color: black;
+			background-color: green !important;
+		}
 	</style>
 
 	<div class="row">
 
-		<div class="col-md-6 col-md-offset-3">
+		<div class="col-md-5 col-md-offset-1">
 
     		<div class="box box-widget widget-user-2">
 
-            	<div class="widget-user-header bg-gray">
+            	<div class="widget-user-header bg-blue">
             		<div class="pull-left">
 	              		<div class="widget-user-image">
 	                		<img class="img-circle" src="@if($user->picture) {{$user->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" alt="User Avatar">
@@ -72,6 +80,60 @@
             	</div>
           	
           	</div>
+
+		</div>
+
+		<div class="col-md-4 col-md-offset-1">
+
+			<div class="box box-widget widget-user-2">
+
+				<div class="widget-user-header bg-green">
+
+					<h4>{{tr('redeems')}}</h4>
+
+				</div>
+
+				<div class="box-footer no-padding">
+
+              		<ul class="nav nav-stacked">
+
+              			<li>
+		                	<a href="#">{{tr('total')}} 
+		                		<span class="pull-right">
+		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->total : "0.00"}}
+		                		</span>
+		                	</a>
+		                </li>
+
+		                <li>
+		                	<a href="#">{{tr('wallet_balance')}} 
+		                		<span class="pull-right">
+		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : "0.00"}}
+		                		</span>
+		                	</a>
+		                </li>
+
+		                <li>
+		                	<a href="#">{{tr('paid_amount')}} 
+		                		<span class="pull-right">
+		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->paid : "0.00"}}
+		                		</span>
+		                	</a>
+		                </li>
+
+		                <li>
+		                	
+		                	<a href="{{route('admin.users.redeems' , $user->id)}}" class="btn btn-success check-redeem">	
+
+		                	{{tr('check_redeem_requests')}}
+
+		                	</a>
+
+		                </li>
+
+		            </ul>
+		        </div>
+			</div>
 
 		</div>
 

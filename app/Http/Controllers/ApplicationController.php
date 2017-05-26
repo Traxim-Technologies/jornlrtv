@@ -404,6 +404,10 @@ class ApplicationController extends Controller {
             } else if ($value->key == 'is_subscription') {
                 $value->value = $request->is_subscription;
             }
+
+            else if ($value->key == 'redeem_control') {
+                $value->value = $request->redeem_control;
+            }
             
             $value->save();
         }

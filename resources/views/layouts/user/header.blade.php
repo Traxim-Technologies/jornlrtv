@@ -59,6 +59,10 @@
                         <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
                         <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
                        
+                        @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
+                            <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
+                        @endif
+
                         @if(Setting::get('is_spam')) 
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                         @endif

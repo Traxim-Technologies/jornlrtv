@@ -586,3 +586,55 @@ function getAmountBasedChannel($id) {
     return $model;
 
 }
+
+// Based on the request type, it will return string value for that request type
+
+function redeem_request_status($status) {
+    
+    if($status == REDEEM_REQUEST_SENT) {
+        $string = tr('REDEEM_REQUEST_SENT');
+    } elseif($status == REDEEM_REQUEST_PROCESSING) {
+        $string = tr('REDEEM_REQUEST_PROCESSING');
+    } elseif($status == REDEEM_REQUEST_PAID) {
+        $string = tr('REDEEM_REQUEST_PAID');
+    } elseif($status == REDEEM_REQUEST_CANCEL) {
+        $string = tr('REDEEM_REQUEST_CANCEL');
+    } else {
+        $string = tr('REDEEM_REQUEST_SENT');
+    }
+
+    return $string;
+}
+
+/**
+ * Function : add_to_redeem()
+ * 
+ * @param $id = role ID
+ *
+ * @param $amount = earnings
+ *
+ * @description : If the role earned any amount, use this function to update the redeems
+ *
+ */
+
+function add_to_redeem($id , $amount) {
+
+    \Log::info('Add to Redeem Start');
+
+    if($id && $amount) {
+
+        $data = Redeem::where('user_id' , $id)->first();
+
+        if(!$data) {
+            $data = new Redeem;
+            $data->user_id = $ids;
+        }
+
+        $data->total = $data->total + $amount;
+        $data->remaining = $data->remaining+$amount;
+        $data->save();
+   
+    }
+
+    \Log::info('Add to Redeem End');
+}

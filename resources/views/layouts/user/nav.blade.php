@@ -11,11 +11,6 @@
             </a>
         </li>
     </ul>
-
-
-   
-    
-
                 
     @if(count($channels = getChannels()) > 0)
         

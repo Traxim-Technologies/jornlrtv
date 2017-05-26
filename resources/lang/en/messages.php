@@ -723,4 +723,46 @@ return array(
 	'reset'=>'Reset',
 	'add_cover_photo'=>'Add cover photo',
 
+	'header_scripts' => 'Header Scripts',
+	'body_end_scripts' => 'Body Bottom Scripts',
+
+	// REDEEM MESSAGES START
+
+	'redeem_disabled_by_admin' => 'Redeem option is disabled by admin',
+
+	'minimum_redeem_not_have' => 'You can\'t create redeem request now.',
+
+	'redeem' => 'Redeem',
+	'redeems' => 'Redeems',
+	'total' => 'Total',
+
+	'wallet_balance' => 'Wallet Balance',
+	'check_redeem_requests' => 'Check Redeem Requests',
+
+	'redeem_amount' => 'Redeem Amount',
+	'paid_amount' => 'Paid Amount',
+	'sent_date' => 'Sent Date',
+	'paid_date' => 'Paid Date',
+	'send_redeem' => 'Send Redeem',
+	'redeem_content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Send Redeem',
+
+	'REDEEM_REQUEST_SENT' => 'Sent to admin',
+
+	'REDEEM_REQUEST_PROCESSING' => 'Request Processing',
+
+	'REDEEM_REQUEST_PAID' => 'Paid',
+
+	'REDEEM_REQUEST_CANCEL' => 'Cancelled',
+
+	'send_redeem_request_success' => 'Redeem request sent to admin.',
+	'redeem_request_status_mismatch' => "You can't cancel the request now",
+	'redeem_not_found' => 'Redeem Details Not Found',
+	'redeem_wallet_empty' => "Redeem Wallet is empty",
+	'redeem_request_cancel' => 'Redeem Request Cancelled',
+
+	'action_success' => 'Successfully Done!!',
+
+	'redeem_pay_confirm' => 'Are You Sure ?',
+	// REDEEM MESSAGES END
+
 );

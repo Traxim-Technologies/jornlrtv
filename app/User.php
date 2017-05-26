@@ -56,6 +56,23 @@ class User extends Authenticatable
         return $this->hasMany('App\Flag', 'user_id', 'id');
     }
 
+    /**
+     * Get the Redeems
+     */
+
+    public function userRedeem() {
+        return $this->hasOne('App\Redeem' , 'user_id' , 'id');
+    }
+
+    /**
+     * Get the Redeems
+     */
+    
+    public function userRedeemRequests() {
+        return $this->hasMany('App\RedeemRequest')->orderBy('status' , 'asc');
+    }
+
+
 
     /**
      * Save the password with the help of Hash

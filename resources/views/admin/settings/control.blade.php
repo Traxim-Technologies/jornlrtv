@@ -23,8 +23,7 @@
 
                 </div>
 
-
-                    <form action="{{route('save_admin_control')}}" method="POST" role="form">
+                    <form action="{{route('admin.save.control')}}" method="POST" role="form">
 
                     <div class="box-body">
 
@@ -80,6 +79,20 @@
 
                             <label>
                                 <input required type="radio" name="is_subscription" class="flat-red"  value="0" @if(!Setting::get('is_subscription')) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{tr('redeems')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="redeem_control" value="1" class="flat-red" @if(Setting::get('redeem_control')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="redeem_control" class="flat-red"  value="0" @if(!Setting::get('redeem_control')) checked @endif>
                                 {{tr('no')}}
                             </label>
                         </div>

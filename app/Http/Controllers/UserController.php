@@ -41,6 +41,7 @@ use App\Repositories\CommonRepository as CommonRepo;
 class UserController extends Controller {
 
     protected $UserAPI;
+
     protected $Paypal;
 
     /**
@@ -725,7 +726,6 @@ class UserController extends Controller {
 
     }
 
-
     public function get_images($id) {
 
         $response = CommonRepo::get_video_tape_images($id)->getData();
@@ -735,5 +735,73 @@ class UserController extends Controller {
         return response()->json(['path'=>$view, 'data'=>$response->data]);
 
     }  
+
+    /**
+     * Used to get the redeems
+     *
+     */
+
+    public function redeems(Request $request) {
+
+        return view('user.redeems.index');
+
+    }
+
+    /**
+     * Send Request to admin
+     *
+     */
+
+    public function send_redeem_request(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token
+        ]);
+
+        $response = $this->UserAPI->send_redeem_request($request)->getData();
+
+        if($response->success) {
+
+            return back()->with('flash_success', tr('send_redeem_request_success'));
+
+        } else {
+
+            return back()->with('flash_error', $response->error);
+        }
+
+        return back()->with('flash_error', Helper::get_error_message(146));
+
+    }
+
+    /**
+     * Send Request to admin
+     *
+     */
+
+    public function redeem_request_cancel($id , Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'redeem_request_id' => $id,
+        ]);
+
+        $response = $this->UserAPI->redeem_request_cancel($request)->getData();
+
+        if($response->success) {
+
+            return back()->with('flash_success', tr('send_redeem_request_success'));
+
+        } else {
+
+            return back()->with('flash_error', $response->error);
+        }
+
+        return back()->with('flash_error', Helper::get_error_message(146));
+
+    }
 
 }

@@ -36,6 +36,7 @@
 @section('content')
 
 <div class="y-content">
+
 	<div class="row content-row">
 
 		@include('layouts.user.nav')
@@ -45,6 +46,7 @@
 			@include('notification.notify')
 
 			<div class="branded-page-v2-top-row">
+			
 				<div class="branded-page-v2-header channel-header yt-card">
 					<div id="gh-banner">
 						

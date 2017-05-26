@@ -111,7 +111,16 @@
                 </ul>
             </li>
 
-            
+            @if(Setting::get('redeem_control'))
+
+            <li id="redeems">
+                <a href="{{route('admin.users.redeems')}}">
+                    <i class="fa fa-trophy"></i> <span>{{tr('redeems')}}</span> 
+                </a>
+            </li>
+
+            @endif
+
             <li id="payments">
                 <a href="{{route('admin.user.payments')}}">
                     <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> 

@@ -34,6 +34,7 @@
 						      <th>{{tr('mobile')}}</th>
 						      <th>{{tr('upgrade')}}</th>
 						      <th>{{tr('validity_days')}}</th>
+						      <th>{{tr('redeems')}}</th>
 						      <th>{{tr('ad_status')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
@@ -44,7 +45,7 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td>{{$user->name}}</td>
+							      	<td><a href="{{route('admin.view.user' , $user->id)}}"> {{$user->name}}</a></td>
 							      	<td>{{$user->email}}</td>
 							      	<td>{{$user->mobile}}</td>
 							      	<td>
@@ -60,6 +61,8 @@
                                         {{get_expiry_days($user->id)['days']}}
                                     @endif
 							      </td>
+
+							      <td><b>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : 0}}</b></td>
 
 							      <td>
 
@@ -77,15 +80,26 @@
 							      <td>
             							<ul class="admin-action btn btn-default">
             								<li class="dropup">
+								               
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
+
 								                <ul class="dropdown-menu">
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.edit.user' , array('id' => $user->id))}}">{{tr('edit')}}</a></li>
 
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view.user' , $user->id)}}">{{tr('view')}}</a></li>
 								                  	
 								                  	<li role="presentation" class="divider"></li>
+								                  	
+								                  	<li role="presentation">
+								                  	
+								                  		<a role="menuitem" tabindex="-1" href="{{route('admin.users.redeems' , $user->id)}}">{{tr('redeems')}}</a>
+
+								                  	</li>
+
+								                  	<li role="presentation" class="divider"></li>
+
 
 								                  	<li role="presentation">
 								                  	 	@if(Setting::get('admin_delete_control'))
