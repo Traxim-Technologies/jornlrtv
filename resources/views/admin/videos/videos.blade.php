@@ -138,7 +138,6 @@
             							</ul>
 								    </td>
 							    </tr>
-
 								<!-- Modal -->
 								
 							@endforeach

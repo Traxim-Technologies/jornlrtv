@@ -44,11 +44,7 @@
                                     <br>
                                         <div class="change-pwd edit-pwd edit-pro-btn">
 
-                                            <!-- @if(envfile('PAYPAL_ID') && envfile('PAYPAL_SECRET'))
-
-                                                <a href="{{route('paypal' , Auth::user()->id)}}" class="btn btn-warning">{{tr('payment')}}</a>
-                                                 
-                                            @endif -->
+                                        
 
                                             <div class="clearfix"></div>
 
