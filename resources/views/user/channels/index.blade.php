@@ -309,10 +309,11 @@
 					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->admin_video_id}})">
 					                                                <div class="slider round"></div>
 					                                            </label>
-					                                           @endif
-					                                           @endif
+					                                        </div>
+					                                        @endif
+					                                        @endif
 
-					                                        </div><!--end of cross-mark-->                       
+					                                        <!--end of cross-mark-->                       
 					                                    </div> <!--end of history-head--> 
 
 					                                    <div class="description">
