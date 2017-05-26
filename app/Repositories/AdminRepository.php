@@ -150,6 +150,8 @@ class AdminRepository {
 
                 if($request->has('between_ad_type')) {
 
+                    echo "<pre>";
+
                     $b_type = DEFAULT_FALSE;
 
                     foreach ($request->between_ad_type as $key => $value) {
@@ -180,9 +182,14 @@ class AdminRepository {
 
                             }
 
+
+
                             if($delete == 0) {
 
-                                $between_ad_model = ($request->has('between_ad_type_id')) ? AdsDetail::find($request->between_ad_type_id[$key]) : new AdsDetail;
+                                $id = ($request->has('between_ad_type_id')) ? $request->between_ad_type_id[$key] : '';
+
+                                $between_ad_model = ($id) ? AdsDetail::find($id) : new AdsDetail;
+
 
                                 $between_ad_model->ads_id = $model->id;
 
@@ -191,8 +198,6 @@ class AdminRepository {
                                 $time = $request->has('between_ad_video_time') ? $request->between_ad_video_time[$key] : $between_ad_model->video_time;
 
                                 $expTime = explode(':', $time);
-
-                               //  dd($time);
 
                                 if (count($expTime) == 3) {
 
@@ -206,14 +211,15 @@ class AdminRepository {
                                 }
 
 
+
+
                                 $between_ad_model->ad_time = $request->has('between_ad_time') ? $request->between_ad_time[$key] : $between_ad_model->between_ad_time;
 
-                                if ($request->between_ad_file) {
-
+                               if ($request->between_ad_file) {
 
                                     if($request->between_ad_file[$key] != null) {
 
-                                        if($request->has('between_ad_type_id')) {
+                                        if($id) {
 
                                             Helper::delete_picture($between_ad_model[$key]->file, "/uploads/ad/");
 
@@ -223,6 +229,7 @@ class AdminRepository {
 
                                     }
                                 }
+                                
 
                                 if ($between_ad_model->save()) {
 
@@ -230,9 +237,7 @@ class AdminRepository {
 
                                 } else {
 
-
-                                    throw new Exception(tr('something_error'));
-                                    
+                                    throw new Exception(tr('something_error'));                                    
                                 }
                             }
 

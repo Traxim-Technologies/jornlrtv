@@ -320,7 +320,7 @@ class CommonRepository {
 
             $model->reviews = $request->has('reviews') ? $request->reviews : $model->reviews;
 
-            $model->ratings = $request->has('ratings') ? $request->ratings : $model->ratings;
+            $model->ratings = $request->has('ratings') ? $request->ratings : 0;
 
             $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
                     
@@ -382,7 +382,7 @@ class CommonRepository {
 
                     if (file_exists($inputFile)) {
                         Log::info("Main queue Videos : ".'Success');
-                        dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $model->id, $file_name));
+                        dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
                         Log::info("Main queue completed : ".'Success');
                     }
                 }

@@ -43,7 +43,7 @@
                                         <h4 class="info-text"> Let's start with the basic details.</h4>
                                         <input type="hidden" name="channel_id" id="channel_id" value="{{$model->channel_id}}">
 
-                                        <input type="hidden" name="id" id="main_id">
+                                        <input type="hidden" name="id" id="main_id" value="{{$model->id}}">
                                     </div>
                                     <div class="col-sm-7">
                                         <label for="name" class="control-label">{{tr('title')}}</label>

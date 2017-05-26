@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use File;
 
-use App\AdminVideo;
+use App\VideoTape;
 
 use App\Helpers\Helper;
 
@@ -48,15 +48,15 @@ class CompressVideo extends Job implements ShouldQueue
     {
         Log::info("Inside Queue Videos : ". 'Success');
         // Load Video Model
-        $video = AdminVideo::where('id', $this->videoId)->first();
+        $video = VideoTape::where('id', $this->videoId)->first();
         $attributes = readFileName($this->inputFile); 
         Log::info("attributes : ". print_r($attributes, true));
         if($attributes) {
             // Get Video Resolutions
-            $resolutions = $video->video_resolutions ? explode(',', $video->video_resolutions) : [];
+            $resolutions = getVideoResolutions();
             $array_resolutions = $video_resize_path = $pathnames = [];
             foreach ($resolutions as $key => $solution) {
-                $exp = explode('x', $solution);
+                $exp = explode('x', $solution->value);
                 Log::info("Resoltuion : ". print_r($exp, true));
                 // Explode $solution value
                 $getwidth = (count($exp) == 2) ? $exp[0] : 0;
@@ -64,22 +64,22 @@ class CompressVideo extends Job implements ShouldQueue
                     $FFmpeg = new \FFmpeg;
                     $FFmpeg
                     ->input($this->inputFile)
-                    ->size($solution)
+                    ->size($solution->value)
                     ->vcodec('h264')
                     ->constantRateFactor('28')
-                    ->output(public_path().'/uploads/videos/original/'.$solution.$this->local_url)
+                    ->output(public_path().'/uploads/videos/original/'.$solution->value.$this->local_url)
                     ->ready();
 
-                    Log::info('Output'.public_path().'/uploads/videos/'.$solution.$this->local_url);
-                    $array_resolutions[] = $solution;
-                    Log::info('Url'.Helper::web_url().'/uploads/videos/'.$solution.$this->local_url);
-                    $video_resize_path[] = Helper::web_url().'/uploads/videos/'.$solution.$this->local_url;
-                    $pathnames[] = $solution.$this->local_url;
+                    Log::info('Output'.public_path().'/uploads/videos/'.$solution->value.$this->local_url);
+                    $array_resolutions[] = $solution->value;
+                    Log::info('Url'.Helper::web_url().'/uploads/videos/'.$solution->value.$this->local_url);
+                    $video_resize_path[] = Helper::web_url().'/uploads/videos/'.$solution->value.$this->local_url;
+                    $pathnames[] = $solution->value.$this->local_url;
                 }
             }
 
             $video->video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
-            $video->video_resize_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
+            $video->video_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
 
             $video->status = DEFAULT_TRUE;
 
