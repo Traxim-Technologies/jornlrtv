@@ -410,7 +410,7 @@ class UserController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', tr('channel_create_error'));
+            return redirect(route('/'))->with('flash_error', tr('channel_create_error'));
         }
 
     }
