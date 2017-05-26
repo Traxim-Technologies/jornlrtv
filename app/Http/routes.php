@@ -126,7 +126,7 @@ if(!defined('BANNER')) define('BANNER' , 'banner');
 
 if(!defined('WEB')) define('WEB' , 1);
 
-Route::get('/ui' , 'ApplicationController@ui')->name('ui');
+// Route::get('/ui' , 'ApplicationController@ui')->name('ui');
 
 Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
 
@@ -134,11 +134,11 @@ Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->n
 
 Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
 
-Route::get('/channels/create' , 'ApplicationController@channel_create')->name('channels.create');
+// Route::get('/channels/create' , 'ApplicationController@channel_create')->name('channels.create');
 
-Route::get('/channels/view' , 'ApplicationController@channel_view')->name('channels.view');
+// Route::get('/channels/view' , 'ApplicationController@channel_view')->name('channels.view');
 
-Route::get('/channels/index' , 'ApplicationController@channel_index')->name('channels.index');
+// Route::get('/channels/index' , 'ApplicationController@channel_index')->name('channels.index');
 
 
 Route::get('/test' , 'ApplicationController@test')->name('test');
@@ -263,25 +263,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/spam-videos', 'AdminController@spam_videos')->name('spam-videos');
 
     Route::get('/view-users/{id}', 'AdminController@view_users')->name('view-users');
-
-    // Moderators
-
-    Route::get('/moderators', 'AdminController@moderators')->name('moderators');
-
-    Route::get('/add/moderator', 'AdminController@add_moderator')->name('add.moderator');
-
-    Route::get('/edit/moderator/{id}', 'AdminController@edit_moderator')->name('edit.moderator');
-
-    Route::post('/add/moderator', 'AdminController@add_moderator_process')->name('save.moderator');
-
-    Route::get('/delete/moderator/{id}', 'AdminController@delete_moderator')->name('delete.moderator');
     
-    Route::get('/moderator/approve/{id}', 'AdminController@moderator_approve')->name('moderator.approve');
-
-    Route::get('/moderator/decline/{id}', 'AdminController@moderator_decline')->name('moderator.decline');
-
-    Route::get('/view/moderator/{id}', 'AdminController@moderator_view_details')->name('moderator.view');
-
     // Categories
 
     Route::get('/channels', 'AdminController@channels')->name('channels');

@@ -383,18 +383,25 @@ class UserController extends Controller {
 
         $channel = Channel::find($id);
 
-        $videos = VideoRepo::channel_videos($id, WEB);
+        if ($channel) {
 
-        $trending_videos = VideoRepo::channel_trending($id, WEB, null, 5);
+            $videos = VideoRepo::channel_videos($id, WEB);
 
-        $payment_videos = VideoRepo::payment_videos($id, WEB, null);
+            $trending_videos = VideoRepo::channel_trending($id, WEB, null, 5);
 
-        return view('user.channels.index')
-                    ->with('page' , 'channels')
-                    ->with('subPage' , 'channels')
-                    ->with('channel' , $channel)
-                    ->with('videos' , $videos)->with('trending_videos', $trending_videos)
-                    ->with('payment_videos', $payment_videos);
+            $payment_videos = VideoRepo::payment_videos($id, WEB, null);
+
+            return view('user.channels.index')
+                        ->with('page' , 'channels')
+                        ->with('subPage' , 'channels')
+                        ->with('channel' , $channel)
+                        ->with('videos' , $videos)->with('trending_videos', $trending_videos)
+                        ->with('payment_videos', $payment_videos);
+        } else {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        }
     }
 
     public function channel_create() {
