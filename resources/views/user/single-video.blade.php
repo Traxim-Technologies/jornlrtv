@@ -98,18 +98,22 @@ textarea[name=comments] {
                                                 <div style="width: 55%;">
                                                     <h3>{{$video->title}}</h3>
                                                 </div>
-                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->getChannel->user_id)
-                                                        
-                                                    <div class="pull-right">
 
-                                                        @if($flaggedVideo == '')
-                                                            <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
-                                                        @else 
-                                                            <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
-                                                        @endif
+                                                @if(Auth::check())
+                                                    @if(Setting::get('is_spam') && Auth::user()->id != $video->getChannel->user_id)
+                                                            
+                                                        <div class="pull-right">
 
-                                                    </div>
-                                                    <div class="clearfix"></div>
+                                                            @if($flaggedVideo == '')
+                                                                <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                            @else 
+                                                                <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
+                                                            @endif
+
+                                                        </div>
+                                                        <div class="clearfix"></div>
+
+                                                    @endif
 
                                                 @endif
                                                 
