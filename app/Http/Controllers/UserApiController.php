@@ -888,15 +888,14 @@ class UserApiController extends Controller {
                     $rev_user->video_tape_id = $request->admin_video_id;
                     $rev_user->status = DEFAULT_TRUE;
                     $rev_user->save();
-                    
+
                 }
 
 
                 if($video = VideoTape::find($request->admin_video_id)) {
 
-                    $ads_status = ($video->getChannel) ? ($video->getChannel->getUser ? $video->getChannel->getUser->ads_status : 0 ) : 0;
 
-                    if($video->watch_count == Setting::get('viewers_count_per_video') && $ads_status) {
+                    if($video->watch_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
 
                         $video_amount = Setting::get('amount_per_video');
 
