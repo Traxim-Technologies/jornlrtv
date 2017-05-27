@@ -1,3 +1,5 @@
+<?php use App\AdsDetail; ?>
+
 @include('notification.notify')
 
 	<div class="row">
@@ -119,7 +121,8 @@
 
                     	</div>
                         
-                    </div>                   
+                    </div>      
+
 
 
                     @if(count($betweenAd) > 0 && $model->id)
@@ -132,7 +135,9 @@
 
                     @else 
 
-                        <?php $b_ad = $betweenAd; ?>
+
+
+                        <?php $b_ad = new AdsDetail; ?>
 
                         @include('admin.ads._sub_form')
 

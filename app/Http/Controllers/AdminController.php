@@ -1139,26 +1139,9 @@ class AdminController extends Controller {
 
     public function banner_videos(Request $request) {
 
-        $videos = VideoTape::leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
-                    ->leftJoin('sub_categories' , 'video_tapes.sub_category_id' , '=' , 'sub_categories.id')
-                    ->leftJoin('genres' , 'video_tapes.genre_id' , '=' , 'genres.id')
+        $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.is_banner' , 1 )
-                    ->select('video_tapes.id as video_id' ,'video_tapes.title' , 
-                             'video_tapes.description' , 'video_tapes.ratings' , 
-                             'video_tapes.reviews' , 'video_tapes.created_at as video_date' ,
-                             'video_tapes.default_image',
-                             'video_tapes.banner_image',
-
-                             'video_tapes.category_id as category_id',
-                             'video_tapes.sub_category_id',
-                             'video_tapes.genre_id',
-                             'video_tapes.is_home_slider',
-
-                             'video_tapes.status','video_tapes.uploaded_by',
-                             'video_tapes.edited_by','video_tapes.is_approved',
-
-                             'categories.name as category_name' , 'sub_categories.name as sub_category_name' ,
-                             'genres.name as genre_name')
+                    ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->get();
 
@@ -1170,17 +1153,10 @@ class AdminController extends Controller {
 
     public function add_banner_video(Request $request) {
 
-        $categories = Category::where('categories.is_approved' , 1)
-                        ->select('categories.id as id' , 'categories.name' , 'categories.picture' ,
-                            'categories.is_series' ,'categories.status' , 'categories.is_approved')
-                        ->leftJoin('sub_categories' , 'categories.id' , '=' , 'sub_categories.category_id')
-                        ->groupBy('sub_categories.category_id')
-                        ->havingRaw("COUNT(sub_categories.id) > 0")
-                        ->orderBy('categories.name' , 'asc')
-                        ->get();
+        $channels = getChannels();
 
         return view('admin.banner_videos.banner-video-upload')
-                ->with('categories' , $categories)
+                ->with('channels' , $channels)
                 ->with('page' ,'banner-videos')
                 ->with('sub_page' ,'add-banner-video');
 
@@ -1897,7 +1873,7 @@ class AdminController extends Controller {
 
         $postAd = $model->getPostAdDetail ? $model->getPostAdDetail : new AdsDetail;
 
-        $betweenAd = (count($model->getBetweenAdDetails) > 0) ? $model->getBetweenAdDetails : new AdsDetail;
+        $betweenAd = (count($model->getBetweenAdDetails) > 0) ? $model->getBetweenAdDetails : [];
 
         $index = 0;
 
