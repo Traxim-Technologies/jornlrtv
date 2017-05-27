@@ -24,6 +24,7 @@ return array(
 	'compress'=>'Video Compressing...',
 	'images' => 'Images',
 	'details' => 'Details',
+	'view_ad'=>'View Ad',
 	'compress_video'=> 'Compress Video',
 	'resize_video_resolutions'=>'Resize Video Resolutions',
 	'about_me'=>'About Me',

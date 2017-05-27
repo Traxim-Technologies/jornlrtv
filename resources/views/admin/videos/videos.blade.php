@@ -42,7 +42,6 @@
 						</thead>
 						<tbody>
 
-
 							@foreach($videos as $i => $video)
 							    <tr>
 							      	<td>{{$i+1}}</td>
@@ -114,9 +113,17 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.publish-video',$video->admin_video_id)}}">{{tr('publish')}}</a></li>
 								                  	@endif
 
-								                  	@if($video->ad_status) 
+								                  	@if($video->ad_status && !$video->getScopeVideoAds) 
 
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_create', $video->admin_video_id)}}">{{tr('video_ad')}}</a></li>
+
+								                  	@else
+
+								                  		@if ($video->getScopeVideoAds)
+
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_view' , array('id' => $video->getScopeVideoAds->id))}}">{{tr('view_ad')}}</a></li>
+
+								                  		@endif
 
 								                  	@endif
 
