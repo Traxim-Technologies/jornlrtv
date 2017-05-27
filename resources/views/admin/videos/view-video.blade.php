@@ -167,7 +167,7 @@ hr {
                                 <div class="col-lg-12">
                                   <div class="row">
                                     <div class="col-lg-6">
-                                        <img alt="Photo" src="{{isset($video->default_image) ? $video->default_image : ''}}" class="img-responsive" style="width:100%;height:130px;">
+                                        <img alt="Photo" src="{{($video->default_image) ? $video->default_image : ''}}" class="img-responsive" style="width:100%;height:130px;">
                                     </div>
                                     @foreach($video_images as $i => $image)
                                     <div class="col-lg-6">
@@ -175,8 +175,10 @@ hr {
                                       <br>
                                     </div>
                                     @endforeach
-                                    @if ($video->banner_image == 1) 
-                                        <img alt="Photo" src="{{$video->banner_image}}" class="img-responsive" style="width:100%;height:130px">
+                                    @if ($video->is_banner) 
+                                        <div class="col-lg-6">
+                                            <img alt="Photo" src="{{$video->banner_image}}" class="img-responsive" style="width:100%;height:130px" title="Banner Image">
+                                        </div>
                                     @endif
                                     <!-- /.col -->
                                   </div>

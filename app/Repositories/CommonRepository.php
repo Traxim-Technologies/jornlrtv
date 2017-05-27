@@ -9,12 +9,14 @@ use Validator;
 use App\User;
 use Hash;
 use Log;
+use DB;
 use App\Channel;
 use App\VideoTape;
 use App\Jobs\CompressVideo;
 use App\VideoTapeImage;
 use App\UserPayment;
 use Auth;
+use Exception;
 
 
 class CommonRepository {
@@ -290,164 +292,218 @@ class CommonRepository {
 
     public static function video_save($request) {
 
-        $validator = Validator::make( $request->all(), array(
-                    'title'         => 'required|max:255',
-                    'description'   => 'required',
-                    'channel_id'   => 'required|integer|exists:channels,id',
-                    'video'     => 'required|mimes:mkv,mp4,qt',
-                    'video_publish_type'=>'required'
-                    ));
+        try {
 
-        if($validator->fails()) {
+            DB::beginTransaction();
 
-            Log::info("Fails Validator 1");
+            $validator = Validator::make( $request->all(), array(
+                        'title'         => 'required|max:255',
+                        'description'   => 'required',
+                        'channel_id'   => 'required|integer|exists:channels,id',
+                        'video'     => 'required|mimes:mkv,mp4,qt',
+                        'video_publish_type'=>'required'
+                        ));
 
-            $error_messages = implode(',', $validator->messages()->all());
+            if($validator->fails()) {
 
-            $response_array = ['success'=>false, 'message'=>$error_messages];
+                Log::info("Fails Validator 1");
 
-        } else {
+                $error_messages = implode(',', $validator->messages()->all());
 
-            Log::info("Success validation and navigated to create new object");
+                // $response_array = ['success'=>false, 'message'=>$error_messages];
 
-            $model = $request->has('id') ? VideoTape::find($request->id) : new VideoTape;
+                throw new Exception($error_messages);
 
-            $model->title = $request->has('title') ? $request->title : $model->title;
+            } else {
 
-            $model->description = $request->has('description') ? $request->description : $model->description;
+                Log::info("Success validation and navigated to create new object");
 
-            $model->channel_id = $request->has('channel_id') ? $request->channel_id : $model->channel_id;
+                $model = $request->has('id') ? VideoTape::find($request->id) : new VideoTape;
 
-            $model->reviews = $request->has('reviews') ? $request->reviews : $model->reviews;
+                $model->title = $request->has('title') ? $request->title : $model->title;
 
-            $model->ratings = $request->has('ratings') ? $request->ratings : 0;
+                $model->description = $request->has('description') ? $request->description : $model->description;
 
-            $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
-                    
-            $main_video_duration = Helper::video_upload($request->video);
+                $model->channel_id = $request->has('channel_id') ? $request->channel_id : $model->channel_id;
 
-            $model->video = $main_video_duration['db_url'];
+                $model->reviews = $request->has('reviews') ? $request->reviews : $model->reviews;
 
-            $getDuration = readFileName($main_video_duration['baseUrl']);
+                $model->ratings = $request->has('ratings') ? $request->ratings : 0;
 
-            if ($getDuration) {
-                $model->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
-            }
+                $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
 
-            $model->unique_id = $model->title;
+                if($model->id) {
 
-            $img = time();
+                    Helper::delete_picture($model->video, "/uploads/videos/");
 
-            $FFmpeg = new \FFmpeg;
-
-            $frames = 3;
-
-            $FFmpeg
-                ->input($main_video_duration['baseUrl'])
-                ->constantVideoFrames($frames)
-                ->customVideoFrames('1/60')
-                ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
-                ->ready();
-
-
-            $model->publish_time = $request->has('publish_time') 
-                        ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : '';
-            
-
-            $model->status = DEFAULT_FALSE;
-
-            $model->publish_status = DEFAULT_TRUE;
-
-            $model->is_approved = DEFAULT_TRUE;
-
-            if($model->publish_time) {
-                if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
-                    $model->publish_status = DEFAULT_TRUE;
-                } else {
-                    $model->publish_status = DEFAULT_FALSE;
                 }
-            }
+                        
+                $main_video_duration = Helper::video_upload($request->video);
 
-            $model->save();
+                $model->video = $main_video_duration['db_url'];
 
-            Log::info("saved Video Object : ".'Success');
+                $model->is_banner = $request->has('is_banner') ? $request->is_banner : DEFAULT_FALSE;
 
-            if($model) {
+                $getDuration = readFileName($main_video_duration['baseUrl']);
 
-                if($main_video_duration) {
+                if ($getDuration) {
+                    $model->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
+                }
 
-                    $inputFile = $main_video_duration['baseUrl'];
-                    $local_url = $main_video_duration['local_url'];
-                    $file_name = $main_video_duration['file_name'];
+                $model->unique_id = $model->title;
 
-                    if (file_exists($inputFile)) {
-                        Log::info("Main queue Videos : ".'Success');
-                        dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
-                        Log::info("Main queue completed : ".'Success');
+                $img = time();
+
+                $FFmpeg = new \FFmpeg;
+
+                $frames = ($model->is_banner == DEFAULT_TRUE) ? 4 : 3;
+
+                $FFmpeg
+                    ->input($main_video_duration['baseUrl'])
+                    ->constantVideoFrames($frames)
+                    ->customVideoFrames('1/60')
+                    ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
+                    ->ready();
+
+
+                $model->publish_time = $request->has('publish_time') 
+                            ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : '';
+                
+
+                $model->status = DEFAULT_FALSE;
+
+                $model->publish_status = DEFAULT_TRUE;
+
+                $model->is_approved = DEFAULT_TRUE;
+
+                if($model->publish_time) {
+                    if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
+                        $model->publish_status = DEFAULT_TRUE;
+                    } else {
+                        $model->publish_status = DEFAULT_FALSE;
                     }
                 }
 
+                $model->save();
 
-                if (env('QUEUE_DRIVER') != 'redis') {
+                Log::info("saved Video Object : ".'Success');
 
-                    \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
+                if($model->save()) {
 
-                    $model->status = DEFAULT_TRUE;
+                    if($main_video_duration) {
 
-                    $model->compress_status = DEFAULT_TRUE;
+                        $inputFile = $main_video_duration['baseUrl'];
+                        $local_url = $main_video_duration['local_url'];
+                        $file_name = $main_video_duration['file_name'];
 
-                    $model->save();
-                }
+                        if (file_exists($inputFile)) {
+                            Log::info("Main queue Videos : ".'Success');
+                            dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
+                            Log::info("Main queue completed : ".'Success');
+                        }
+                    }
 
-               $video_path = [];
-                
-               Log::info('Video Id Ajax : '.$model->id);
 
-              
+                    if (env('QUEUE_DRIVER') != 'redis') {
 
-               $get_image_model = ($request->id) ? self::deleteVideoTapeImage($model->id) : []; 
+                        \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
 
-               for ($i = 0 ; $i < $frames; $i++) {
-     
-                    // Create a thunail images
+                        $model->status = DEFAULT_TRUE;
 
-                    $pos = $i+1;
-
-                    $video_path[] = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
-
-                    if ($i == 0) {
-
-                        $model->default_image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+                        $model->compress_status = DEFAULT_TRUE;
 
                         $model->save();
-
-                    } else {
-
-                        $video_img = new VideoTapeImage();
-
-                        $video_img->video_tape_id = $model->id;
-
-                        $video_img->image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
-
-                        $video_img->is_default = 0;
-
-                        $video_img->position = $pos;
-
-                        $video_img->save();
                     }
 
-                }
+                   $video_path = [];
+                    
+                   Log::info('Video Id Ajax : '.$model->id);
 
-                $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
-               
-            } else {
-                
-                $response_array = ['success'=>false , 'message'=>tr('admin_not_error')];
-               
+                  
+
+                    $get_image_model = ($request->id) ? self::deleteVideoTapeImage($model->id) : []; 
+
+
+                    $img_status = DEFAULT_FALSE;
+
+                    for ($i = 0 ; $i < $frames; $i++) {
+         
+                        // Create a thunail images
+
+                        $pos = $i+1;
+
+                        $video_path[] = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+
+                        if($model->is_banner && $i == 0) {
+
+                            if($model->banner_image) {
+
+                                Helper::delete_picture($model->banner_image, "/uploads/images/");
+
+                            }
+
+                            $model->banner_image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+                            // print_r($model->banner_image);
+
+                            $img_status = DEFAULT_TRUE;
+                        
+                        }
+
+                        if ($i == $img_status) {
+
+                            if($model->default_image) {
+
+                                Helper::delete_picture($model->default_image, "/uploads/images/");
+
+                            }
+
+                            $model->default_image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+                        }
+
+                        if($i > $img_status) {
+
+                            $video_img = new VideoTapeImage();
+
+                            $video_img->video_tape_id = $model->id;
+
+                            $video_img->image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+                            $video_img->is_default = 0;
+
+                            $video_img->position = $pos;
+
+                            $video_img->save();
+                        }
+
+                    }
+
+                    $model->save();
+
+                    $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
+                   
+                } else {
+                    
+                    throw new Exception(tr('admin_not_error'));
+                    
+                    // $response_array = ['success'=>false , 'message'=>tr('admin_not_error')];
+                   
+                }
             }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            $response_array = ['success'=>false, $e->getMessage()];
+
         }
 
-        return response()->json($response_array, 200);
+        return response()->json($response_array);
 
     }
 
@@ -467,8 +523,15 @@ class CommonRepository {
 
         $videoTapeImage = $model->getVideoTapeImages;
 
+        if($model->is_banner) {
 
-        $video_path = [$model->default_image];
+            $video_path = [$model->banner_image, $model->default_image];
+
+        } else {
+
+            $video_path = [$model->default_image];
+
+        }
 
 
         foreach ($videoTapeImage as $key => $value) {
@@ -486,43 +549,33 @@ class CommonRepository {
 
     public static function set_default_image($request) {
 
-        if ($request->idx > 0) {
+       // dd($request->all());
 
-            $model = VideoTapeImage::find($request->id);
+        $video_tape = ($request->video_tape_id) ? VideoTape::find($request->video_tape_id) : '';
 
-            $data = VideoTape::find($model->video_tape_id);
+        if($video_tape) {
 
-            $default_image = $data->default_image;
+            $img_status = DEFAULT_FALSE;
 
-            $data->default_image = $request->img;
+            if($video_tape->is_banner) {
 
-            if ($data->save()) {
-
-                $model->image = $default_image;
-
-                if ($model->save()) {
-
-                    return response()->json($model);
-
-                }
+                $img_status = DEFAULT_TRUE;
 
             }
 
-        } else {
+            if ($request->idx > $img_status) {
 
-            $model = VideoTape::find($request->id);
+                $model = VideoTapeImage::find($request->id);
 
-            $default_image = $model->image;
+                $data = VideoTape::find($model->video_tape_id);
 
-            $data = VideoTapeImage::where('image', $request->img)->first();
+                $default_image = $data->default_image;
 
-            if ($data) {
+                $data->default_image = $request->img;
 
-                $data->image = $default_image;
+                if ($data->save()) {
 
-                if($data->save()) {
-
-                    $model->default_image = $request->img;
+                    $model->image = $default_image;
 
                     if ($model->save()) {
 
@@ -532,6 +585,31 @@ class CommonRepository {
 
                 }
 
+            } else {
+
+                $model = VideoTape::find($request->id);
+
+                $default_image = $model->image;
+
+                $data = VideoTapeImage::where('image', $request->img)->first();
+
+                if ($data) {
+
+                    $data->image = $default_image;
+
+                    if($data->save()) {
+
+                        $model->default_image = $request->img;
+
+                        if ($model->save()) {
+
+                            return response()->json($model);
+
+                        }
+
+                    }
+
+                }
             }
 
         }
@@ -561,7 +639,19 @@ class CommonRepository {
                         ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : $video->publish_time;
 
         $video->save();
-        
+
+        if ($request->banner_image)  {
+
+            $model = VideoTape::find($request->default_image_id);
+
+            if($model->banner_image)  {
+                Helper::delete_picture($model->banner_image, "/uploads/images/");
+            }
+            $model->banner_image = Helper::normal_upload_picture($request->file('banner_image'), "/uploads/images/");
+
+            $model->save();
+
+        }
         if ($request->default_image)  {
 
             $model = VideoTape::find($request->default_image_id);

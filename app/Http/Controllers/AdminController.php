@@ -580,7 +580,9 @@ class AdminController extends Controller {
         $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
-                    ->get()->toArray();
+                    ->get();
+
+        // dd($videos);
 
         return view('admin.videos.videos')->with('videos' , $videos)
                     ->withPage('videos')

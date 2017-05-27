@@ -74,16 +74,8 @@
                 </ul>
 
             </li>
-
-
-            <?php 
-
-
-            /*
-                
-                @TODO : Need to do 
-
-             <li class="treeview" id="banner-videos">
+ 
+            <li class="treeview" id="banner-videos">
                 <a href="{{route('admin.banner.videos')}}">
                     <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -95,8 +87,7 @@
                     <li id="view-banner-videos"><a href="{{route('admin.banner.videos')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
                 </ul>
 
-            </li>*/ ?>
-
+            </li>
 
             <li class="treeview" id="subscriptions">
 

@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', tr('add_video'))
+@section('title', tr('edit_video'))
 
-@section('content-header', tr('add_video'))
+@section('content-header', tr('edit_video'))
 
 @section('styles')
 
@@ -17,7 +17,7 @@
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
-    <li class="active"><i class="fa fa-video-camera"></i> {{tr('add_video')}}</li>
+    <li class="active"><i class="fa fa-video-camera"></i> {{tr('edit_video')}}</li>
 @endsection 
 
 @section('content')
@@ -83,6 +83,7 @@
                         <hr>
                         <div class="">
                             <input type="hidden" name="id" id="main_id" value="{{$video->admin_video_id}}">
+                            <input type="hidden" name="is_banner" id="is_banner" value="{{$video->is_banner}}">
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">

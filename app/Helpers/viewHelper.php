@@ -638,3 +638,7 @@ function add_to_redeem($id , $amount) {
 
     \Log::info('Add to Redeem End');
 }
+
+function get_banner_count() {
+    return VideoTape::where('is_banner' , 1)->count();
+}

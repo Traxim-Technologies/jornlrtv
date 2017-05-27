@@ -156,6 +156,10 @@ $('form').ajaxForm({
 
 function redirect() {
 
+      var e = $('#video_file');
+      e.wrap('<form>').closest('form').get(0).reset();
+      e.unwrap();
+
       var formData = new FormData($("#video-upload")[0]);
 
       $.ajax({
@@ -213,7 +217,7 @@ function redirect() {
         reader.readAsDataURL(event.files[0]);
     }
 
-    function saveAsDefault(value, idx, count, image) {
+    function saveAsDefault(main_id, value, idx, count, image) {
 
         for(var i = 0; i < count; i++) {
 
@@ -252,7 +256,7 @@ function redirect() {
 
           url : save_img_url,
 
-          data : {id : value, idx : idx, img : image},
+          data : {id : value, idx : idx, img : image, video_tape_id : main_id},
 
           success : function(data) {
 

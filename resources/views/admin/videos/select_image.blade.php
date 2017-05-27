@@ -1,7 +1,21 @@
+<?php
+
+$default_img_status = DEFAULT_FALSE;
+
+$key_pos = DEFAULT_TRUE;
+	
+if($model->data->is_banner) {
+
+	$default_img_status = DEFAULT_TRUE;
+
+    $key_pos += DEFAULT_TRUE;
+}
+?>
+
 @foreach($model->video_path as $key => $path)
 
 
-<div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+<div class="{{ $model->data->is_banner ? 'col-lg-3 col-md-3'  :  'col-lg-4 col-md-4'}} col-sm-12 col-sx-12">
     <a class="category-item text-center">
         <div style="background-image: url({{$path}})" class="category-img bg-img" id="image_div_id_{{$key}}"
          onclick="$('#img_'+{{$key}}).click();"></div>
@@ -15,20 +29,40 @@
 			</div>
         </div>
     </a>
-    <center><button type="button" id="btn_{{$key}}" class="btn {{$key ==0 ? 'btn-success' : 'btn-danger'}}" onclick="saveAsDefault($('#other_image_id_'+{{$key}}).val(), {{$key}}, {{count($model->video_path)}}, '{{$path}}');">{{ $key == 0 ? tr('marked_default') : tr('make_default')}}</button></center>
+
+    @if($model->data->is_banner && $key == 0) 
+
+    	<center><button type="button" id="banner_btn_{{$key}}" class="btn btn-success">{{tr('banner_image')}}</button></center>
+
+    @else 
+
+    <center><button type="button" id="btn_{{$key}}" class="btn {{$key == $default_img_status ? 'btn-success' : 'btn-danger'}}" onclick="saveAsDefault({{$model->data->id}},$('#other_image_id_'+{{$key}}).val(), {{$key}}, {{count($model->video_path)}}, '{{$path}}');">{{ $key == 0 ? tr('marked_default') : tr('make_default')}}</button></center>
+
+    @endif
 </div>
 
+@if($model->data->is_banner && $key == 0) 
 
-@if($key == 0) 
+
+<input type="file" style="display:none;" name="banner_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
+
+<input type="hidden" name="banner_image_id" id="other_image_id_{{$key}}" value="{{$model->data->id}}">
+
+@endif
+
+
+@if($key == $default_img_status) 
 
 
 <input type="file" style="display:none;" name="default_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
 
 <input type="hidden" name="default_image_id" id="other_image_id_{{$key}}" value="{{$model->data->id}}">
 
-@else
+@endif
 
-<?php $pos = $key-1;  ?>
+@if($key > $default_img_status)
+
+<?php $pos = $key-$key_pos;  ?>
 
 <input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
 
@@ -58,8 +92,9 @@
 
 .st_photo {
 	position: absolute;
-	bottom: 0;
-	right: 13.5%;
+	top: 0;
+	/*right: 13.5%;*/
+	right:0;
 	display: none;
 }
 
