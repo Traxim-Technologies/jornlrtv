@@ -881,11 +881,15 @@ class UserApiController extends Controller {
 
                 // Save Wishlist
 
-                $rev_user = new UserHistory();
-                $rev_user->user_id = $request->id;
-                $rev_user->video_tape_id = $request->admin_video_id;
-                $rev_user->status = DEFAULT_TRUE;
-                $rev_user->save();
+                if($request->id) {
+
+                    $rev_user = new UserHistory();
+                    $rev_user->user_id = $request->id;
+                    $rev_user->video_tape_id = $request->admin_video_id;
+                    $rev_user->status = DEFAULT_TRUE;
+                    $rev_user->save();
+                    
+                }
 
 
                 if($video = VideoTape::find($request->admin_video_id)) {

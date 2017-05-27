@@ -225,11 +225,13 @@ class UserController extends Controller {
 
     public function add_history(Request $request) {
 
-        /*$request->request->add([ 
-            'id' => \Auth::user()->id,
-            'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token
-        ]);*/
+        if(Auth::check()) {
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token
+            ]);
+        }
 
         $response = $this->UserAPI->add_history($request)->getData();
 
