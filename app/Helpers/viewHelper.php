@@ -28,6 +28,8 @@ use App\Flag;
 
 use App\Channel;
 
+use App\Redeem;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
