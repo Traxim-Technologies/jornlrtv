@@ -629,7 +629,7 @@ function add_to_redeem($id , $amount) {
 
         if(!$data) {
             $data = new Redeem;
-            $data->user_id = $ids;
+            $data->user_id = $id;
         }
 
         $data->total = $data->total + $amount;
