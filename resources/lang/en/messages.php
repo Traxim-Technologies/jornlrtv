@@ -25,6 +25,7 @@ return array(
 	'images' => 'Images',
 	'details' => 'Details',
 	'view_ad'=>'View Ad',
+	'user_disabled'=>'User Disabled',
 	'compress_video'=> 'Compress Video',
 	'resize_video_resolutions'=>'Resize Video Resolutions',
 	'about_me'=>'About Me',

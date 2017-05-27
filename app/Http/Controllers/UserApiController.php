@@ -1351,7 +1351,7 @@ class UserApiController extends Controller {
 
         $comments = $video->getScopeUserRatings;
 
-        $ads = $video->getScopeVideoAds;
+        $ads = $video->getScopeVideoAds ? ($video->getScopeVideoAds->status ? $video->getScopeVideoAds  : '') : '';
 
         $trendings = VideoRepo::trending(WEB);
 

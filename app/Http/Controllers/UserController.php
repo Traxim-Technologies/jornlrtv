@@ -646,7 +646,15 @@ class UserController extends Controller {
 
             $data->ad_status  = $data->ad_status ? 0 : 1;
 
-            $data->save();
+            if($data->save()) {
+
+                if($data->getVideoAds) {
+
+                    $data->getVideoAds->status = $data->ad_status;
+
+                    $data->getVideoAds->save();
+                }
+            }
 
             return response()->json(true, 200);
 

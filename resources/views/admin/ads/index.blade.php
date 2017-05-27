@@ -32,6 +32,7 @@
 						      <th>{{tr('channel')}}</th>
 						      <th>{{tr('title')}}</th>
 						      <th>{{tr('type_of_ads')}}</th>
+						      <th>{{tr('status')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -52,6 +53,14 @@
 								      		<span class="label label-success">{{$type}}</span>
 
 								       	@endforeach
+							      	</td>
+							      	<td>
+							      		
+							      		@if($data->status)
+							      			<span class="label label-success">{{tr('approved')}}</span>
+							       		@else
+							       			<span class="label label-danger">{{tr('user_disabled')}}</span>
+							       		@endif
 							      	</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
