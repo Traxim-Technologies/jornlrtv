@@ -900,13 +900,17 @@ class UserApiController extends Controller {
 
                     $video_amount = Setting::get('amount_per_video');
 
+                    $video->watch_count = 1;
+
                     $video->amount += $video_amount;
 
                     add_to_redeem($request->id , $video_amount);
 
-                }
+                } else {
 
-                $video->watch_count += 1;
+                    $video->watch_count += 1;
+
+                }
 
                 $video->save();
             
