@@ -203,7 +203,7 @@ class VideoTapeRepository {
                             ->orderByRaw('RAND()');
         if($id) {
 
-            $base_query->whereNotIn('video_tapes.id', $id);
+            $base_query->whereNotIn('video_tapes.id', [$id]);
         }
 
         if (Auth::check()) {
