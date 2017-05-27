@@ -193,7 +193,7 @@ class VideoTapeRepository {
 	 * 
 	 */
 
-	public static function suggestion_videos($web = 1, $skip = null, $id) {
+	public static function suggestion_videos($web = 1, $skip = null, $id = null) {
 
 		$base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
