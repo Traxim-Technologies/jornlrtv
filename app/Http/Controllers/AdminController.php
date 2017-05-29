@@ -1971,10 +1971,19 @@ class AdminController extends Controller {
 
         $data = Subscription::orderBy('created_at','desc')->get();
 
+        $payments = []; 
+
+        if($id) {
+
+            $payments = UserPayment::orderBy('created_at' , 'desc')
+                        ->where('user_id' , $id)->get();
+
+        }
+
         return view('admin.subscriptions.user_plans')->withPage('users')
                         ->with('subscriptions' , $data)
                         ->with('id', $id)
-                        ->with('subPage','users');        
+                        ->with('subPage','users')->with('payments', $payments);        
 
     }
 

@@ -756,7 +756,7 @@ return array(
 	'sent_date' => 'Sent Date',
 	'paid_date' => 'Paid Date',
 	'send_redeem' => 'Send Redeem',
-	'redeem_content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Send Redeem',
+	'redeem_content' => 'Hey, Do you want to redeem your balance? If so, please click “send Redeem” button. Admin will process the payment.',
 
 	'REDEEM_REQUEST_SENT' => 'Sent to admin',
 
