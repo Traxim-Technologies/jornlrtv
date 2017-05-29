@@ -1,5 +1,23 @@
 @extends('layouts.user')
 
+
+@section('meta_tags')
+
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
+<meta property="og:description" content="{{$video->description}}" />
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
+<meta property="og:image" content="{{Setting::get('site_icon')}}" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:description" content="{{$video->description}}"/>
+<meta name="twitter:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif"/>
+<meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
+
+@endsection
+
 @section('styles')
 
 <style type="text/css">
