@@ -5,15 +5,20 @@
     <img src="{{asset('error.jpg')}}" class="error-image" alt="{{Setting::get('site_name')}} - Main Video">
 </div>
 
-<div class="embed-responsive embed-responsive-16by9" id="main_video_ad" style="display: none;">
+<div class="embed-responsive embed-responsive-16by9" id="main_video_ad" style="display: none">
     <img src="" class="error-image" alt="{{Setting::get('site_name')}} - Main Video Ad" id="ad_image">
+    <div class="ad_progress">
+   		<div id="timings">{{tr('ad') }} : <span class="seconds"></span></div>
+    	<div class="clearfix"></div>
+	    <div class="progress-bar-div">
+		    <span class="progress-bar-fill-div" style="width: 0%"></span>
+		</div>
+	</div>
 </div>
-
 
 <div id="main-video-player">
 	
 </div>
-
 
 
 @if(!check_valid_url($video->video))

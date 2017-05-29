@@ -28,6 +28,39 @@ textarea[name=comments] {
     resize: none;
 }
 
+#timings {
+    padding: 3px;
+}
+.ad_progress {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    opacity: 0.8;
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+}
+
+.progress-bar-div {
+    width: 100%;
+    height: 5px;
+    background: #e0e0e0;
+    /*padding: 3px;*/
+    border-radius: 3px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+    
+}
+
+.progress-bar-fill-div {
+    display: block;
+    height: 5px;
+    background: #659cef;
+    border-radius: 3px;
+    /*transition: width 250ms ease-in-out;*/
+    /*transition : width 10s ease-in-out;*/
+
+}
+
 .small-box {
     border-radius: 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -852,25 +885,31 @@ textarea[name=comments] {
 
                          // adtimings = adtimings * 60;
 
-                         intervalId = setInterval(function(){
+                        $(".seconds").html(adtimings+" sec");
+
+                        $(".progress-bar-fill-div").css('transition', 'width '+adtimings+'s ease-in-out');
+
+                        $('.progress-bar-fill-div').delay(1000).queue(function () {
+                            $(this).css('width', '100%')
+                        });
+ 
+                        intervalId = setInterval(function(){
 
                             adCount += 1;
 
+                            $(".seconds").html((adtimings - adCount) +" sec");
+
                             console.log("Ad Count " +adCount);
- 
+                            
                             if (adCount == adtimings) {
+
+                                 $(this).css('width', '100%')
 
                                 adCount = 0;
 
                                 stop();
 
                                 $('#main_video_ad').hide();
-
-                                // $('#main-video-player').show();
-
-                                // jQuery("#main-video-player").css("visiblity", "visible");
-
-                                // jQuery("#main-video-player").css('width', '100% !important');
 
                                 $("#main-video-player").css({'visibility':'visible', 'width' : '100%'});
 
@@ -901,13 +940,7 @@ textarea[name=comments] {
 
                                 @if($ads->pre_ad)
 
-                                     // $('#main-video-player').hide();
-
-                                     console.log($("#main-video-player-div"));
-
                                      $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
-
-                                   // jQuery("#main-video-player").css('width', '0%');
 
                                      $('#main_video_ad').show();
 
