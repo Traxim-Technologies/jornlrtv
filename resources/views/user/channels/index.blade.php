@@ -277,7 +277,7 @@
 							
 							 <div class="new-history">
 					                <div class="content-head">
-					                    <div><h4 style="color: #000;">{{tr('videos')}}</h4></div>              
+					                    <div><h4 style="color: #000;">{{tr('videos')}}&nbsp;&nbsp;<small style="font-size: 12px">({{tr('note')}}:{{tr('ad_note')}} )</small></h4></div>              
 					                </div><!--end of content-head-->
 
 					                @if(count($videos) > 0)

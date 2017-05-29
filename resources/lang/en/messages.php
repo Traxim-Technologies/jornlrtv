@@ -26,6 +26,8 @@ return array(
 	'details' => 'Details',
 	'view_ad'=>'View Ad',
 	'views'=>'Views',
+	'note'=>'Note',
+	'ad_note'=>'Enable / Disable the Ad by using Switch Button',
 	'subscription_error'=>'Please Subscribe and Create a Channel',
 	'user_disabled'=>'User Disabled',
 	'compress_video'=> 'Compress Video',
