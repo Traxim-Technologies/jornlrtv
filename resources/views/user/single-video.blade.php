@@ -5,16 +5,16 @@
 
 <meta property="og:locale" content="en_US" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
+<meta property="og:title" content="{{$video->title}}" />
 <meta property="og:description" content="{{$video->description}}" />
 <meta property="og:url" content="" />
 <meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
-<meta property="og:image" content="{{Setting::get('site_icon')}}" />
+<meta property="og:image" content="{{$video->default_image}}" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:description" content="{{$video->description}}"/>
-<meta name="twitter:title" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif"/>
-<meta name="twitter:image:src" content="@if(Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png') }} @endif"/>
+<meta name="twitter:title" content="{{$video->title}}"/>
+<meta name="twitter:image:src" content="{{$video->default_image}}"/>
 
 @endsection
 
