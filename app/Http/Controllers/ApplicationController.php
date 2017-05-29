@@ -8,11 +8,7 @@ use App\Requests;
 
 use App\Helpers\Helper;
 
-use App\SubCategory;
-
-use App\Genre;
-
-use App\AdminVideo;
+use App\VideoTape;
 
 use App\User;
 
@@ -67,34 +63,6 @@ class ApplicationController extends Controller {
 
     }
 
-    public function select_genre(Request $request) {
-        
-        $id = $request->option;
-
-        $genres = Genre::where('sub_category_id', '=', $id)
-                        ->where('is_approved' , 1)
-                          ->orderBy('name', 'asc')
-                          ->get();
-
-        return response()->json($genres);
-    
-    }
-
-    public function select_sub_category(Request $request) {
-        
-        $id = $request->option;
-
-        $subcategories = SubCategory::where('category_id', '=', $id)
-                            ->leftJoin('sub_category_images' , 'sub_categories.id' , '=' , 'sub_category_images.sub_category_id')
-                            ->select('sub_category_images.picture' , 'sub_categories.*')
-                            ->where('sub_category_images.position' , 1)
-                            ->where('is_approved' , 1)
-                            ->orderBy('name', 'asc')
-                            ->get();
-
-        return response()->json($subcategories);
-    
-    }
 
     public function about(Request $request) {
 
@@ -131,15 +99,15 @@ class ApplicationController extends Controller {
     }
 
 
-    public function cron_publish_video(Request $request) {
+    public function cron_publish_video() {
         
         Log::info('cron_publish_video');
 
-        $videos = AdminVideo::where('publish_time' ,'<=' ,date('Y-m-d H:i:s'))
-                        ->where('status' , 0)->get();
+        $videos = VideoTape::where('publish_time' ,'<=' ,date('Y-m-d H:i:s'))
+                        ->where('publish_status' , 0)->get();
         foreach ($videos as $key => $video) {
             Log::info('Change the status');
-            $video->status = 1;
+            $video->publish_status = 1;
             $video->save();
         }
     
