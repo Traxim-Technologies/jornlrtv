@@ -16,7 +16,7 @@
                     <div><h4>{{tr('wishlist')}}</h4></div>              
                 </div><!--end of content-head-->
 
-                @if(count($videos) > 0)
+                @if(count($videos->data) > 0)
 
                     <ul class="history-list">
 

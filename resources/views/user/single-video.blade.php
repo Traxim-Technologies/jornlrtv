@@ -862,7 +862,7 @@ textarea[name=comments] {
 
                             @endif
 
-                            @if(!$history_status)
+                           
                             
                                 jQuery.ajax({
                                     url: "{{route('user.add.history')}}",
@@ -887,7 +887,7 @@ textarea[name=comments] {
                                        }
                                     }
                                 });
-                            @endif
+                            
 
                         }
 

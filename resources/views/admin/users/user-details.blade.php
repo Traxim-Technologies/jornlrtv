@@ -10,7 +10,7 @@
     <li class="active"><i class="fa fa-user"></i> {{tr('view_user')}}</li>
 @endsection
 
-@section('content')
+@section('styles')
 
 	<style type="text/css">
 		.timeline::before {
@@ -28,11 +28,15 @@
 			color: #FFF !important;
 		}
 
-		.check-redeem:hover {
-			color: black;
+		.nav > li > a:hover, .nav > li > a:active, .nav > li > a:focus {
+			color: black !important;
 			background-color: green !important;
 		}
 	</style>
+
+@endsection
+
+@section('content')
 
 	<div class="row">
 
@@ -123,7 +127,7 @@
 
 		                <li>
 		                	
-		                	<a href="{{route('admin.users.redeems' , $user->id)}}" class="btn btn-success check-redeem">	
+		                	<a href="{{route('admin.users.redeems' , $user->id)}}" class="btn btn-success check-redeem" style="background-color: #00a65a !important;" >	
 
 		                	{{tr('check_redeem_requests')}}
 

@@ -35,7 +35,7 @@
 						      <th>{{tr('upgrade')}}</th>
 						      <th>{{tr('validity_days')}}</th>
 						      <th>{{tr('redeems')}}</th>
-						      <th>{{tr('ad_status')}}</th>
+						     <!--  <th>{{tr('ad_status')}}</th> -->
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -64,7 +64,7 @@
 
 							      <td><b>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : 0}}</b></td>
 
-							      <td>
+							      <?php /* <td>
 
 							      @if($user->ads_status) 
 
@@ -75,7 +75,7 @@
 							      	<span class="label label-warning">{{tr('disabled')}}</span>
 
 							      @endif
-							      </td>
+							      </td> */?>
 							 
 							      <td>
             							<ul class="admin-action btn btn-default">
