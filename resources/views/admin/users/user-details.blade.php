@@ -127,7 +127,7 @@
 
 		                <li>
 		                	
-		                	<a href="{{route('admin.users.redeems' , $user->id)}}" class="btn btn-success check-redeem" style="background-color: #00a65a !important;" >	
+		                	<a href="{{route('admin.users.redeems' , $user->id)}}" class="btn btn-success check-redeem" style="background-color: #00a65a !important; color: #fff !important" >	
 
 		                	{{tr('check_redeem_requests')}}
 
