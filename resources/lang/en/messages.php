@@ -49,6 +49,7 @@ return array(
 	'channel_create_error'=>'For a profile, You can create only one channel',
 
 	'marked_default'=>'Marked Default',
+	'no_trending_videos' => 'No Trending Videos Found',
 
 	'site_name' => 'Stream Hash',
 	'video_ad'=>'Video Ad',
