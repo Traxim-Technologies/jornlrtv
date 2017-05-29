@@ -16,7 +16,7 @@
 						<div id="c4-header-bg-container" class="c4-visible-on-hover-container  has-custom-banner">
 							<div class="hd-banner">
 								<div class="hd-banner-image">
-									<img src="{{asset('images/default-cover-image.jpg')}}" id="cover_preview" class="st_cover_photo_img" id="cover_preview"/>
+									<img src="{{asset('images/default-cover-image.jpg')}}" id="cover_preview" class="st_cover_photo_img" id="cover_preview" style="display: none" />
 								</div>
 							</div>
 							<div id="header-links">
@@ -47,8 +47,8 @@
 			<div class="slide-area recom-area abt-sec des-crt">
 				<div class="abt-sec-head description-create">
 
-					<input type="file" style="display: none;" name="picture" id="picture" onchange="loadFile(this, 'picture_preview');">
-            		<input type="file" style="display: none;" name="cover" id="cover" onchange="loadFile(this, 'cover_preview');">
+					<input type="file" style="display: none;" name="picture" id="picture" onchange="loadFile(this, 'picture_preview');" @if(!$model->id) required @endif >
+            		<input type="file" style="display: none;" name="cover" id="cover" onchange="loadFile(this, 'cover_preview');" @if(!$model->id) required @endif>
             		
             		<input type="hidden" name="id" id="id" value="{{$model->id}}">
 
@@ -58,11 +58,11 @@
 
 						<h5>{{tr('title')}}</h5>
 
-						<input type="text" name="name" id="title" class="form-control" value="{{$model->name}}"/>
+						<input type="text" name="name" id="title" class="form-control" value="{{$model->name}}" required/>
 
 						<h5>{{tr('description')}}</h5>
 
-						<textarea class="form-control description" id="description" name="description">{{$model->description}}</textarea>
+						<textarea class="form-control description" id="description" name="description" required>{{$model->description}}</textarea>
 						<div class="btn-create">
 							<button type="reset" name="reset" class="btn btn-danger ">{{tr('reset')}}</button>
 							<button id="done-create" name="submit" class="btn btn-primary">{{tr('submit')}}</button>
@@ -86,12 +86,15 @@
 <script type="text/javascript">
 function loadFile(event, id){
     // alert(event.files[0]);
+    if ('cover_preview' == id) {
+    	$("#cover_preview").show();
+    }
     var reader = new FileReader();
     reader.onload = function(){
       var output = document.getElementById(id);
       // alert(output);
       output.src = reader.result;
-      //$("#c4-header-bg-container .hd-banner-image").css("background-image", "url("+this.result+")");
+      // $("#c4-header-bg-container .hd-banner-image").css("background-image", "url("+reader.result+")");
     };
     reader.readAsDataURL(event.files[0]);
 }
