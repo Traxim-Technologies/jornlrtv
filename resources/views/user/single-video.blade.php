@@ -404,6 +404,7 @@ textarea[name=comments] {
 
 ?>
 
+
 @endsection
 
 @section('scripts')
@@ -427,6 +428,7 @@ textarea[name=comments] {
     <script>jwplayer.key="{{envfile('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
+
         
         jQuery(document).ready(function(){  
 
@@ -617,7 +619,21 @@ textarea[name=comments] {
                                     // autostart : true,
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
-                                    }
+                                    },
+                                   /* advertising: {
+                                        client: 'vast',
+                                        schedule: {
+                                            adbreak1: {
+                                                offset: "pre",
+                                                tag: '//adserver.com/vastResponse1.xml'
+                                            },
+                                            adbreak2: {
+                                                offset: 5,
+                                                tag: '//adserver.com/vastResponse2.xml',
+                                                type: 'nonlinear'
+                                            } 
+                                        }
+                                    }*/
                                 
                                 });
 
@@ -746,7 +762,7 @@ textarea[name=comments] {
                             var video_time = Math.round(playerInstance.getPosition());
 
 
-                            console.log("Video Timing "+video_time);
+                            console.log("Video Timing out"+video_time);
 
                             @if($ads)
 
@@ -776,7 +792,11 @@ textarea[name=comments] {
 
                                              stop();
 
-                                             $('#main-video-player').hide();
+                                             // $('#main-video-player').hide();
+
+                                             // jQuery("#main-video-player").css("display", "none");
+
+                                             $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
 
                                              $('#main_video_ad').show();
 
@@ -797,7 +817,11 @@ textarea[name=comments] {
 
                                     if (playerInstance.getState() == "complete") {
 
-                                        $('#main-video-player').hide();
+                                        // $('#main-video-player').hide();
+
+                                        // jQuery("#main-video-player").css("display", "none");
+
+                                        $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
 
                                         $('#main_video_ad').show();
 
@@ -842,7 +866,13 @@ textarea[name=comments] {
 
                                 $('#main_video_ad').hide();
 
-                                $('#main-video-player').show();
+                                // $('#main-video-player').show();
+
+                                // jQuery("#main-video-player").css("visiblity", "visible");
+
+                                // jQuery("#main-video-player").css('width', '100% !important');
+
+                                $("#main-video-player").css({'visibility':'visible', 'width' : '100%'});
 
                                 if (playerInstance.getState() != "complete") {
 
@@ -871,13 +901,19 @@ textarea[name=comments] {
 
                                 @if($ads->pre_ad)
 
-                                     jwplayer().pause();
+                                     // $('#main-video-player').hide();
 
-                                     $('#main-video-player').hide();
+                                     console.log($("#main-video-player-div"));
+
+                                     $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
+
+                                   // jQuery("#main-video-player").css('width', '0%');
 
                                      $('#main_video_ad').show();
 
                                      $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
+
+                                     jwplayer().pause();
 
                                      adsPage("{{$ads->pre_ad->ad_time}}");
 

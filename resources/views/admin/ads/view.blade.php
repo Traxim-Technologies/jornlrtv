@@ -62,7 +62,7 @@ hr {
                     <i class="fa fa-bullhorn bg-blue"></i>
 
                     <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_min')}})</span>
+                      <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_sec')}})</span>
 
                       <h3 class="timeline-header">
 
@@ -279,7 +279,9 @@ hr {
 
                                              stop();
 
-                                             $('#main-video-player').hide();
+                                             // $('#main-video-player').hide();
+
+                                             $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
 
                                              $('#main_video_ad').show();
 
@@ -300,7 +302,9 @@ hr {
 
                                     if (playerInstance.getState() == "complete") {
 
-                                        $('#main-video-player').hide();
+                                        // $('#main-video-player').hide();
+
+                                        $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
 
                                         $('#main_video_ad').show();
 
@@ -345,7 +349,9 @@ hr {
 
                                 $('#main_video_ad').hide();
 
-                                $('#main-video-player').show();
+                                // $('#main-video-player').show();
+
+                                $("#main-video-player").css({'visibility':'visible', 'width' : '100%'});
 
                                 if (playerInstance.getState() != "complete") {
 
@@ -376,9 +382,11 @@ hr {
 
                                      jwplayer().pause();
 
-                                     $('#main-video-player').hide();
+                                     // $('#main-video-player').hide();
 
                                      $('#main_video_ad').show();
+
+                                     $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
 
                                      $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
 

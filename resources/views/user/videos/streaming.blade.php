@@ -9,7 +9,12 @@
     <img src="" class="error-image" alt="{{Setting::get('site_name')}} - Main Video Ad" id="ad_image">
 </div>
 
-<div id="main-video-player"></div>
+
+<div id="main-video-player">
+	
+</div>
+
+
 
 @if(!check_valid_url($video->video))
     <div class="embed-responsive embed-responsive-16by9" style="display:none" id="main_video_error">
