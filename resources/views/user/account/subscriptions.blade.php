@@ -1,30 +1,5 @@
 @extends('layouts.user')
 
-@section('styles')
-
-<style>
-
-.subscription-image {
-	overflow: hidden !important;
-	position: relative !important;
-	height: 15em !important;
-	background-position: center !important;
-	background-repeat: no-repeat !important;
-	background-size: cover !important;
-	margin: 0 !important;
-	width: 100%;
-}
-
-.subscription-desc {
-	min-height: 10em !important;
-	max-height: 10em !important;
-	overflow: scroll !important;
-	margin-bottom: 10px !important;
-}
-
-</style>
-
-@endsection
 
 @section('content')
 

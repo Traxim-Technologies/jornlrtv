@@ -1693,3 +1693,20 @@ margin: 0px auto 35px;
 	background-color: #cc181e;
 	color: #fff;
 }
+
+.subscription-image {
+	overflow: hidden !important;
+	position: relative !important;
+	height: 15em !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	background-size: cover !important;
+	margin: 0 !important;
+	width: 100%;
+}
+
+.subscription-desc {
+	max-height: 100px;
+	overflow-y: auto;
+	margin-bottom: 10px !important;
+}
