@@ -747,6 +747,7 @@ return array(
 	'redeem' => 'Redeem',
 	'redeems' => 'Redeems',
 	'total' => 'Total',
+	'ad'=>'Ad',
 
 	'wallet_balance' => 'Wallet Balance',
 	'check_redeem_requests' => 'Check Redeem Requests',
