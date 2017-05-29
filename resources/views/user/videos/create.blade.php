@@ -214,7 +214,7 @@
         reader.readAsDataURL(event.files[0]);
     }
 
-    function saveAsDefault(value, idx, count, image) {
+    function saveAsDefault(main_id, value, idx, count, image) {
 
         for(var i = 0; i < count; i++) {
 
@@ -253,7 +253,7 @@
 
           url : "{{route('user.save_default_img')}}",
 
-          data : {id : value, idx : idx, img : image},
+          data : {id : value, idx : idx, img : image, video_tape_id : main_id},
 
           success : function(data) {
 

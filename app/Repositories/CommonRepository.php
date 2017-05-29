@@ -347,7 +347,13 @@ class CommonRepository {
                 $getDuration = readFileName($main_video_duration['baseUrl']);
 
                 if ($getDuration) {
+
+                    // dd($getDuration);
+
                     $model->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
+
+                    $seconds = $getDuration['hours'] * 3600 + $getDuration['mins'] * 60 + $getDuration['secs'];
+
                 }
 
                 $model->unique_id = $model->title;
@@ -358,10 +364,12 @@ class CommonRepository {
 
                 $frames = ($model->is_banner == DEFAULT_TRUE) ? 4 : 3;
 
+               // dd(1/ ($seconds/$frames));
+
                 $FFmpeg
                     ->input($main_video_duration['baseUrl'])
                     ->constantVideoFrames($frames)
-                    ->customVideoFrames('1/60')
+                    ->customVideoFrames(1 / ($seconds/$frames))
                     ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
                     ->ready();
 

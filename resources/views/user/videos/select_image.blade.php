@@ -15,7 +15,7 @@
 			</div>
         </div>
     </a>
-    <center><button type="button" id="btn_{{$key}}" class="btn {{$key ==0 ? 'btn-success' : 'btn-danger'}}" onclick="saveAsDefault($('#other_image_id_'+{{$key}}).val(), {{$key}}, {{count($model->video_path)}}, '{{$path}}');">{{ $key == 0 ? tr('marked_default') : tr('make_default')}}</button></center>
+    <center><button type="button" id="btn_{{$key}}" class="btn {{$key ==0 ? 'btn-success' : 'btn-danger'}}" onclick="saveAsDefault({{$model->data->id}}, $('#other_image_id_'+{{$key}}).val(), {{$key}}, {{count($model->video_path)}}, '{{$path}}');">{{ $key == 0 ? tr('marked_default') : tr('make_default')}}</button></center>
 </div>
 
 
