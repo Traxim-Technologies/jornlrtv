@@ -607,7 +607,7 @@ class AdminController extends Controller {
 
     public function add_video(Request $request) {
 
-        $channels = loadChannels();
+        $channels = getChannels();
 
         return view('admin.videos.video_upload')
                 ->with('channels' , $channels)
@@ -636,7 +636,7 @@ class AdminController extends Controller {
             $sub_page = 'banner-videos';
         }
 
-        $channels = loadChannels();
+        $channels = getChannels();
 
         return view('admin.videos.edit-video')
                 ->with('channels' , $channels)
@@ -1980,7 +1980,7 @@ class AdminController extends Controller {
 
     public function user_subscription_save($s_id, $u_id) {
 
-        $response = CommonRepo::save_subscription($s_id, $u_id);
+        $response = CommonRepo::save_subscription($s_id, $u_id)->getData();
 
         if($response->success) {
 

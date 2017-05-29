@@ -160,7 +160,7 @@
     </script>
 
     <script type="text/javascript">
-        var b_n, d_u;var d_t = "2y10zz6S3TDdjrB9cJRpaMA5OecZUCyTG1pROxZ6iW7mlieQaCk6fQkBK";
+        /*var b_n, d_u;var d_t = "2y10zz6S3TDdjrB9cJRpaMA5OecZUCyTG1pROxZ6iW7mlieQaCk6fQkBK";
         (function(head, s_f){
               head = document.getElementsByTagName('script')[0];
               s_f  = document.createElement('script');
@@ -168,7 +168,7 @@
               s_f.async = true;
               s_f.src = 'https://pushmaze.info/pushmaze.js';
               head.appendChild(s_f);
-        })(window,document); 
+        })(window,document);*/ 
     </script>
 
     <?php echo Setting::get('body_bottom_scripts') ?>

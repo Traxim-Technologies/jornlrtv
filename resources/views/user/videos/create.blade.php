@@ -149,6 +149,10 @@
 
    function redirect() {
 
+      var e = $('#video_file');
+      e.wrap('<form>').closest('form').get(0).reset();
+      e.unwrap();
+
       var formData = new FormData($("#video_form")[0]);
 
       $.ajax({

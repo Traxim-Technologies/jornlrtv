@@ -12,7 +12,7 @@
         </li>
     </ul>
                 
-    @if(count($channels = getChannels()) > 0)
+    @if(count($channels = loadChannels()) > 0)
         
         <ul class="y-home" style="margin-top: 10px;">
             <h3>{{tr('channels')}}</h3>
