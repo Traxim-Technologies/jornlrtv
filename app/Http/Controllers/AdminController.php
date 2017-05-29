@@ -1938,13 +1938,13 @@ class AdminController extends Controller {
 
         if($model) {
 
-            if($model->getVideoTape) {
+            /*if($model->getVideoTape) {
 
                 $model->getVideoTape->ad_status = DEFAULT_FALSE;
 
                 $model->getVideoTape->save();
 
-            } 
+            } */
 
             if($model->delete()) {
 
