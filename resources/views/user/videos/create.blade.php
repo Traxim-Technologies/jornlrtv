@@ -182,6 +182,8 @@
 
       $("#preview_image_div_"+idx).hide();
 
+      $("#preview_"+idx).hide();
+
       var e = $('#img_'+idx);
       e.wrap('<form>').closest('form').get(0).reset();
       e.unwrap();
@@ -196,6 +198,8 @@
        $("#image_div_id_"+idx).hide();
 
        $("#preview_image_div_"+idx).show();
+
+       $("#preview_"+idx).show();
 
        $("#remove_circle_"+idx).show();
 

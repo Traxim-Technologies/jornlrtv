@@ -7,7 +7,7 @@
          onclick="$('#img_'+{{$key}}).click();"></div>
 
         <div style="position: relative;" id="preview_image_div_{{$key}}">
-        	<img id="preview_{{$key}}" style="width: 200px;height: 150px;" onclick="$('#img_'+{{$key}}).click();"/>
+        	<img id="preview_{{$key}}" style="width: 200px;height: 150px;display: none;" onclick="$('#img_'+{{$key}}).click();"/>
     		<div class="st_photo" id="remove_circle_{{$key}}">
 				<button class="st_profile_btn" onclick="removePicture({{$key}});return false;">
 					<i class="fa fa-times-circle" ></i>

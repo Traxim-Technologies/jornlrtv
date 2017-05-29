@@ -189,6 +189,8 @@ function redirect() {
 
       $("#preview_image_div_"+idx).hide();
 
+      $("#preview_"+idx).hide();
+
       var e = $('#img_'+idx);
       e.wrap('<form>').closest('form').get(0).reset();
       e.unwrap();
@@ -205,6 +207,8 @@ function redirect() {
        $("#preview_image_div_"+idx).show();
 
        $("#remove_circle_"+idx).show();
+
+       $("#preview_"+idx).show();
 
         // alert(event.files[0]);
         var reader = new FileReader();
