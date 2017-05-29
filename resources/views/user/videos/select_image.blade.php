@@ -22,7 +22,7 @@
 @if($key == 0) 
 
 
-<input type="file" style="display:none;" name="default_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
+<input type="file" style="display:none;" name="default_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 
 <input type="hidden" name="default_image_id" id="other_image_id_{{$key}}" value="{{$model->data->id}}">
 
@@ -30,7 +30,7 @@
 
 <?php $pos = $key-1;  ?>
 
-<input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
+<input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 
 <input type="hidden" name="other_image_id_{{$key}}" id="other_image_id_{{$key}}" value="{{$model->data->tape_images[$pos]->id}}">
 

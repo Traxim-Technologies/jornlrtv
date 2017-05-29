@@ -47,8 +47,8 @@
 			<div class="slide-area recom-area abt-sec des-crt">
 				<div class="abt-sec-head description-create">
 
-					<input type="file" style="display: none;" name="picture" id="picture" onchange="loadFile(this, 'picture_preview');" @if(!$model->id) required @endif >
-            		<input type="file" style="display: none;" name="cover" id="cover" onchange="loadFile(this, 'cover_preview');" @if(!$model->id) required @endif>
+					<input type="file" style="display: none;" name="picture" id="picture" onchange="loadFile(this, 'picture_preview');" @if(!$model->id) required @endif  accept="image/png, image/jpeg">
+            		<input type="file" style="display: none;" name="cover" id="cover" onchange="loadFile(this, 'cover_preview');" @if(!$model->id) required @endif accept="image/png, image/jpeg">
             		
             		<input type="hidden" name="id" id="id" value="{{$model->id}}">
 

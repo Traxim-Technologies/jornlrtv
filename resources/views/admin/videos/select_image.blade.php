@@ -44,7 +44,7 @@ if($model->data->is_banner) {
 @if($model->data->is_banner && $key == 0) 
 
 
-<input type="file" style="display:none;" name="banner_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
+<input type="file" style="display:none;" name="banner_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 
 <input type="hidden" name="banner_image_id" id="other_image_id_{{$key}}" value="{{$model->data->id}}">
 
@@ -54,7 +54,7 @@ if($model->data->is_banner) {
 @if($key == $default_img_status) 
 
 
-<input type="file" style="display:none;" name="default_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
+<input type="file" style="display:none;" name="default_image" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 
 <input type="hidden" name="default_image_id" id="other_image_id_{{$key}}" value="{{$model->data->id}}">
 
@@ -64,7 +64,7 @@ if($model->data->is_banner) {
 
 <?php $pos = $key-$key_pos;  ?>
 
-<input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})">
+<input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 
 <input type="hidden" name="other_image_id_{{$key}}" id="other_image_id_{{$key}}" value="{{$model->data->tape_images[$pos]->id}}">
 
