@@ -477,7 +477,7 @@ function user_type_check($user) {
 
 function get_expiry_days($id) {
     
-    $data = UserPayment::where('user_id' , $id)->orderBy('id', 'desc')->first();
+    $data = UserPayment::where('user_id' , $id)->orderBy('updated_at', 'desc')->first();
 
     // User Amount
 
