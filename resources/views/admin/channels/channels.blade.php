@@ -95,9 +95,6 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
-								                  	<li class="divider" role="presentation"></li>
-
-
 								                </ul>
               								</li>
             							</ul>
