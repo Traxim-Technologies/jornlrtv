@@ -8,6 +8,8 @@ use App\Helpers\Helper;
 
 class User extends Authenticatable
 {
+
+    public $expiry_date;
     /**
      * The attributes that are mass assignable.
      *
