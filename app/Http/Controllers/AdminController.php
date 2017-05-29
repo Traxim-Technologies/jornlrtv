@@ -1311,12 +1311,9 @@ class AdminController extends Controller {
 
                 } else if($request->$key!='') {
 
-
-
                     $setting->value = $request->$key;
 
                 }
-
                 $setting->save();
             
             }
