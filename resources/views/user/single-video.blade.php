@@ -803,7 +803,7 @@ textarea[name=comments] {
 
                     function adsPage(adtimings){
 
-                         adtimings = adtimings * 60;
+                         // adtimings = adtimings * 60;
 
                          intervalId = setInterval(function(){
 

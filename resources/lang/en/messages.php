@@ -55,6 +55,7 @@ return array(
 	'video_ad'=>'Video Ad',
 	'type_of_ads'=>'Type of Ads',
 	'no_ads_found'=>'No Ads Found',
+	'in_sec'=>'In Sec',
 
 	'remove_pay_per_view'=>'Remove Pay Per View',
 	'report'=>'Mark as Spam',
@@ -73,7 +74,7 @@ return array(
 	'video_create_success'=>'Successfully created the video details.',
 	'removed_pay_per_view'=> 'Successfully, Removed Pay Per View',
 	'full_video'=>'Full Video',
-	'click_here'=>'Click Here to Drop a file',
+	'click_here'=>'Click Here to upload a file',
 	'do_upload'=>'Do you want to upload a video?',
 
 	's3_settings' => 'S3 Settings',

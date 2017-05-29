@@ -17,7 +17,7 @@
 
           <div class="col-md-3">
 
-               <label>{{tr('ad_time')}}</label>
+               <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
                <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time" class="form-control" value="{{$b_ad->ad_time}}">
 
@@ -27,7 +27,7 @@
 
                <label>{{tr('video_time')}}</label>
 
-               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time" value="{{$b_ad->video_time}}"/>
+               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time" value="{{$b_ad->video_time}}" placeholder="00:00:00" />
 
           </div>
 

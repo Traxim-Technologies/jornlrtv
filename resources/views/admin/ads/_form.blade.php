@@ -54,7 +54,7 @@
 
                     		<div class="col-md-3">
 
-                    			<label>{{tr('ad_time')}}</label>
+                    			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
                     			<input type="text" name="pre_ad_time" id="pre_ad_time" class="form-control" value="{{$preAd->ad_time}}">
 
@@ -98,7 +98,7 @@
 
                     	   <div class="col-md-3">
 
-                    			<label>{{tr('ad_time')}}</label>
+                    			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
                     			<input type="text" name="post_ad_time" id="post_ad_time" class="form-control" value="{{$postAd->ad_time}}">
 

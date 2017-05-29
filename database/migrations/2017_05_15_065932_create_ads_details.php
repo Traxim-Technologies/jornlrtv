@@ -17,7 +17,7 @@ class CreateAdsDetails extends Migration
             $table->integer('ads_id');
             $table->integer('ad_type')->nullable()->comment('1 - Pre Ad, 2 - Post Ad, 3 - In Between Ad');
             $table->time('video_time');
-            $table->integer('ad_time')->default(0)->comment('In Minutes');
+            $table->integer('ad_time')->default(0)->comment('In Seconds');
             $table->string('file')->nullable();
             $table->timestamps();
         });

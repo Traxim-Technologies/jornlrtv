@@ -28,6 +28,11 @@ hr {
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#preview_ad" data-toggle="tab" aria-expanded="true">{{tr('preview_ad')}}</a></li>
+
+      <li class="pull-right clearfix">
+        <a href="{{route('admin.ads_edit' , array('id' => $ads->get_video_tape->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+      </li>
+ 
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="preview_ad">
@@ -324,7 +329,7 @@ hr {
 
                     function adsPage(adtimings){
 
-                         adtimings = adtimings * 60;
+                         // adtimings = adtimings * 60;
 
                          intervalId = setInterval(function(){
 
