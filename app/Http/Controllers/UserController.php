@@ -412,10 +412,18 @@ class UserController extends Controller {
 
         $channels = getChannels(Auth::user()->id);
 
-        if(count($channels) == 0 || Setting::get('multi_channel_status')) {
+        if((count($channels) == 0 || Setting::get('multi_channel_status'))) {
 
-            return view('user.channels.create')->with('page', 'channels')
+            if (Auth::user()->user_type) {
+
+                return view('user.channels.create')->with('page', 'channels')
                     ->with('subPage', 'create_channel')->with('model', $model);
+
+            } else {
+
+                return redirect(route('user.dashboard'))->with('flash_error', tr('subscription_error'));
+
+            }
 
         } else {
 

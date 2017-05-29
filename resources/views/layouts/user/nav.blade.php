@@ -27,9 +27,16 @@
 
     @if(Auth::check())
 
+        <?php $channels = getChannels(Auth::user()->id);?>
+
+        @if(count($channels) > 0 || Auth::user()->user_type)
+
         <ul class="y-home" style="margin-top: 10px;">
+           
+
             <h3>{{tr('my_channels')}}</h3>
-            <?php $channels = getChannels(Auth::user()->id);?>
+
+
             @foreach($channels as $channel)
                 <li>
                     <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
@@ -38,16 +45,18 @@
 
             @if(Auth::user()->user_type)  
 
-            @if(count($channels) == 0 || Setting::get('multi_channel_status'))  
+                @if(count($channels) == 0 || Setting::get('multi_channel_status'))  
 
-            <li>
-                <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
-            </li>    
+                <li>
+                    <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
+                </li>    
 
-            @endif
+                @endif
 
             @endif     
         </ul>
+
+        @endif
 
 
     @else
