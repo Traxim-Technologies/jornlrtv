@@ -91,7 +91,6 @@ class UserController extends Controller {
 
             $channels = getChannels(WEB);
 
-
             return view('user.index')
                         ->with('page' , 'home')
                         ->with('subPage' , 'home')

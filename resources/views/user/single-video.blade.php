@@ -601,6 +601,8 @@ textarea[name=comments] {
                             jQuery('#trailer_video_setup_error').hide();
                             jQuery('#main-video-player').hide();
 
+
+
                             confirm('The video format is not supported in this browser. Please option some other browser.');
 
                         } else {
