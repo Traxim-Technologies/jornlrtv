@@ -211,7 +211,7 @@
                                                         <td bgcolor="green" align="center" style="border-radius:4px;margin-top: 10px" width="200" height="50">
                                                             <div class="contentEditableContainer contentTextEditable">
                                                                 <div class="contentEditable" >
-                                                                    <a target='_blank' href="{{$site_url}}/email/verification?id={{$email_data->id}}&verification_code=$email_data->verification_code" style="color: #FFF;text-orientation: none;cursor: pointer;" class='link2'>Verify Now</a>
+                                                                    <a target='_blank' href="{{$site_url}}/email/verification?id={{$email_data->id}}&verification_code={{$email_data->verification_code}}" style="color: #FFF;text-orientation: none;cursor: pointer;" class='link2'>Verify Now</a>
                                                                 </div>
                                                             </div>
 
