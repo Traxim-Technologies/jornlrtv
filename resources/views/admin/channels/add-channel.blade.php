@@ -30,7 +30,7 @@
                     <div class="box-body">
 
                         <div class="form-group">
-                            <label for="name" class="col-sm-1 control-label">{{tr('user_name')}}</label>
+                            <label for="name" class="col-sm-2 control-label">{{tr('user_name')}}</label>
                             <div class="col-sm-10">
                                 
                                 <select id="user_id" name="user_id" class="form-control">
@@ -44,21 +44,21 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name" class="col-sm-1 control-label">{{tr('name')}}</label>
+                            <label for="name" class="col-sm-2 control-label">{{tr('name')}}</label>
                             <div class="col-sm-10">
                                 <input type="text" required class="form-control" id="name" name="name" placeholder="Channel Name">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="description" class="col-sm-1 control-label">{{tr('description')}}</label>
+                            <label for="description" class="col-sm-2 control-label">{{tr('description')}}</label>
                             <div class="col-sm-10">
                                 <textarea required class="form-control" id="description" name="description" placeholder="Description"></textarea> 
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="picture" class="col-sm-1 control-label">{{tr('picture')}}</label>
+                            <label for="picture" class="col-sm-2 control-label">{{tr('picture')}}</label>
                             <div class="col-sm-10">
                                 <input type="file" required accept="image/png, image/jpeg" id="picture" name="picture" placeholder="{{tr('picture')}}">
                                 <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="cover" class="col-sm-1 control-label">{{tr('cover')}}</label>
+                            <label for="cover" class="col-sm-2 control-label">{{tr('cover')}}</label>
                             <div class="col-sm-10">
                                 <input type="file" required accept="image/png, image/jpeg" id="cover" name="cover" placeholder="{{tr('cover')}}">
                                 <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
