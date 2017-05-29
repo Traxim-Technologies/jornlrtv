@@ -2,63 +2,74 @@
 
 @section('content')
 
-<div class="form-background forgot-password-reset">
+<div class="y-content">
 
-    <div class="common-form login-common">
+    <div class="row y-content-row">
 
-        <div class="row">
-            <div class="col-md-12">
-                @include('notification.notify')
-            </div>
-        </div>
+        @include('layouts.user.nav')
 
-        <div class="social-form">
-            <div class="signup-head">
-                <h3>{{tr('delete_account_heading')}}</h3>
+        <div class="page-inner col-sm-9 col-md-10 profile-edit">
 
-                 <p>
-                    <strong style="color: brown">Note:</strong> {{tr('delete_account_content')}}</p>
-            </div><!--end  of signup-head-->         
-        </div><!--end of socila-form-->
+            <div class="form-background forgot-password-reset">
 
-        <div class="sign-up login-page">
+                <div class="common-form login-common">
 
-            @if($errors->has('password'))
-                <div data-abide-error="" class="alert callout">
-                    <p>
-                        <i class="fa fa-exclamation-triangle"></i> 
-                        <strong> 
-                            @if($errors->has('password')) 
-                                $errors->first('password')
-                            @endif
-                        </strong>
-                    </p>
-                </div>
-            
-            @endif
+                    <div class="row">
+                        <div class="col-md-12">
+                            @include('notification.notify')
+                        </div>
+                    </div>
 
-            <form class="signup-form login-form" role="form" method="POST" action="{{ route('user.delete.account.process') }}">
+                    <div class="social-form">
+                        <div class="signup-head">
+                            <h3>{{tr('delete_account_heading')}}</h3>
 
-                <div class="form-group">
-                    <label for="password">{{tr('password')}}</label>
-                    <input type="password" required name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
+                             <p>
+                                <strong style="color: brown">Note:</strong> {{tr('delete_account_content')}}</p>
+                        </div><!--end  of signup-head-->         
+                    </div><!--end of socila-form-->
 
-                    <span class="form-error">
-                        @if ($errors->has('password'))
-                            <strong>{{ $errors->first('password') }}</strong>
+                    <div class="sign-up login-page">
+
+                        @if($errors->has('password'))
+                            <div data-abide-error="" class="alert callout">
+                                <p>
+                                    <i class="fa fa-exclamation-triangle"></i> 
+                                    <strong> 
+                                        @if($errors->has('password')) 
+                                            $errors->first('password')
+                                        @endif
+                                    </strong>
+                                </p>
+                            </div>
+                        
                         @endif
-                    </span>
 
-                </div>
+                        <form class="signup-form login-form" role="form" method="POST" action="{{ route('user.delete.account.process') }}">
 
-                <div class="change-pwd">
-                    <button type="submit" class="btn btn-primary signup-submit">{{tr('delete')}}</button>
-                </div>  
-    
-            </form>
-        </div><!--end of sign-up-->
+                            <div class="form-group">
+                                <label for="password">{{tr('password')}}</label>
+                                <input type="password" required name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
 
-    </div><!--end of common-form-->     
-</div><!--end of form-background-->
+                                <span class="form-error">
+                                    @if ($errors->has('password'))
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    @endif
+                                </span>
+
+                            </div>
+
+                            <div class="change-pwd">
+                                <button type="submit" class="btn btn-primary signup-submit">{{tr('delete')}}</button>
+                            </div>  
+                
+                        </form>
+                    </div><!--end of sign-up-->
+
+                </div><!--end of common-form-->     
+            </div><!--end of form-background-->
+        </div>
+    </div>
+</div>
 
 @endsection
