@@ -73,7 +73,7 @@
 														<!-- <a href="#" class="btn btn-success pull-right">{{tr('choose')}}</a> -->
 
 														@if($subscription->amount > 0)
-															<a href="{{route('paypal' , $subscription->id)}}" class="btn btn-success pull-right">{{tr('payment')}}</a>
+															<a href="{{route('user.paypal' , $subscription->id)}}" class="btn btn-success pull-right">{{tr('payment')}}</a>
 														@else
 															<a href="{{route('user.subscription.save' , ['s_id' => $subscription->id, 'u_is'=>Auth::user()->id])}}" class="btn btn-success pull-right">{{tr('payment')}}</a>
 

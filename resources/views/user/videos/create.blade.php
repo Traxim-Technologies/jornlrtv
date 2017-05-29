@@ -257,6 +257,8 @@
 
           success : function(data) {
 
+              console.log("Object "+data);
+
               console.log(data);
           },
 
