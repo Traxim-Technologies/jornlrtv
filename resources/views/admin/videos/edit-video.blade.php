@@ -352,6 +352,7 @@
 
     <script>
         $('form').submit(function () {
+        alert("test");
            window.onbeforeunload = null;
         });
         window.onbeforeunload = function() {

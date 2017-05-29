@@ -162,6 +162,8 @@ function redirect() {
 
       var formData = new FormData($("#video-upload")[0]);
 
+      window.onbeforeunload = null;
+
       $.ajax({
 
           method : 'post',
