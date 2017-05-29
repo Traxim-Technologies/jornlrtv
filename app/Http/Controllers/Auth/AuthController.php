@@ -13,6 +13,8 @@ use App\Helpers\Helper;
 
 use Setting;
 
+use Auth;
+
 class AuthController extends Controller
 {
     /*
@@ -116,8 +118,26 @@ class AuthController extends Controller
         $page = "emails.welcome";
         $email = $data['email'];
         $result = Helper::send_email($page,$subject,$email,$email_data);
-        
+
         return $User;
+    }
+
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+            $this->throwValidationException(
+              $request, $validator
+            );
+        }
+
+        $user = $this->create($request->all());
+
+        if(Setting::get('email_verify_control')) {
+            return redirect($this->redirectPath())->with('flash_error', tr('email_verify_alert'));
+        } else {
+            return redirect($this->redirectPath())->with('flash_success', tr('registration_success'));
+        }
     }
 
 
@@ -130,6 +150,7 @@ class AuthController extends Controller
                 // Check Admin Enabled the email verification
 
                 if(Setting::get('email_verify_control')) {
+
 
                     if(!$user->is_verified) {
 
