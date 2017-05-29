@@ -129,8 +129,6 @@ class PaypalController extends Controller {
 
             $user_payment = UserPayment::where('user_id' , Auth::user()->id)->first();
 
-            dd($user_payment);
-
             if($user_payment) {
 
                 $expiry_date = $user_payment->expiry_date;

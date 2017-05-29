@@ -894,7 +894,8 @@ class UserApiController extends Controller {
                 $response_array = array('success' => true);
             }
 
-            if($video = VideoTape::find($request->admin_video_id)) {
+            if($video = VideoTape::where('id',$request->admin_video_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
+
 
                 if($video->redeem_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
 
@@ -1408,6 +1409,8 @@ class UserApiController extends Controller {
 
             } else {
                 $videoStreamUrl = $video->video;
+
+                $hls_video = $video->video;
             }
             
         } else {
