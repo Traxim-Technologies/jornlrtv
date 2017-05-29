@@ -756,7 +756,7 @@ return array(
 	'sent_date' => 'Sent Date',
 	'paid_date' => 'Paid Date',
 	'send_redeem' => 'Send Redeem',
-	'redeem_content' => 'Hey, Do you want to redeem your balance? If so, please click “send Redeem” button. Admin will process the payment.',
+	'redeem_content' => 'Hey, Do you want to redeem your balance? If so, please click “send Redeem” button. Admin will process your payment ASAP.',
 
 	'REDEEM_REQUEST_SENT' => 'Sent to admin',
 
