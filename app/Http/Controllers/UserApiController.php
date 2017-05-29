@@ -897,20 +897,27 @@ class UserApiController extends Controller {
             if($video = VideoTape::where('id',$request->admin_video_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
 
 
-                if($video->redeem_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
+                if($video->getVideoAds) {
 
-                    $video_amount = Setting::get('amount_per_video');
+                    if ($video->getVideoAds->status) {
 
-                    $video->redeem_count = 1;
+                        if($video->redeem_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
 
-                    $video->amount += $video_amount;
+                            $video_amount = Setting::get('amount_per_video');
 
-                    add_to_redeem($request->id , $video_amount);
+                            $video->redeem_count = 1;
 
-                } else {
+                            $video->amount += $video_amount;
 
-                    $video->redeem_count += 1;
+                            add_to_redeem($request->id , $video_amount);
 
+                        } else {
+
+                            $video->redeem_count += 1;
+
+                        }
+
+                    }
                 }
 
                 $video->watch_count += 1;

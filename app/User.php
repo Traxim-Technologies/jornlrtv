@@ -8,6 +8,8 @@ use App\Helpers\Helper;
 
 class User extends Authenticatable
 {
+
+    public $expiry_date;
     /**
      * The attributes that are mass assignable.
      *
@@ -55,6 +57,15 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Flag', 'user_id', 'id');
     }
+
+    /**
+     * Get the flag record associated with the user.
+     */
+    public function getChannel()
+    {
+        return $this->hasMany('App\Channel', 'user_id', 'id');
+    }
+
 
     /**
      * Get the Redeems
@@ -155,6 +166,25 @@ class User extends Authenticatable
                 } 
             }
         
+
+            if (count($user->userHistory) > 0) {
+
+                foreach($user->userHistory as $history)
+                {
+                    $history->delete();
+                } 
+
+            }
+
+
+            if (count($user->getChannel) > 0) {
+
+                foreach($user->getChannel as $channel)
+                {
+                    $channel->delete();
+                } 
+
+            }
         }); 
 
         static::creating(function ($model) {
