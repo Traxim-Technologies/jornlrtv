@@ -209,9 +209,14 @@ textarea[name=comments] {
                                                 </a> 
                                             </div><!--end of share-->
 
-                                            
 
                                              <div class="stars ratings">
+
+                                                <div class="views">
+                                                    <i class="fa fa-eye fa-2x"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
+                                                </div>
+                                                <div class="clearfix"></div>
+
                                                 <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                 <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>

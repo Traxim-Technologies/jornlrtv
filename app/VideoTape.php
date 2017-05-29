@@ -41,6 +41,7 @@ class VideoTape extends Model
             'video_tapes.amount',
             'video_tapes.is_banner',
             'video_tapes.banner_image',
+            'video_tapes.redeem_count',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date')
         );
     }

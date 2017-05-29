@@ -453,7 +453,7 @@ videos (single page) css
 	margin-right: 5px;
 }
 .more-content{
-	margin-top: 25px;
+	/*margin-top: 25px;*/
 	background-color: #fff;
 	min-height: 30px;
 }
@@ -467,13 +467,23 @@ videos (single page) css
 .mylist{
 	line-height: 2em;
 	float: left;
+	padding: 20px 0;
 }
 .share{
 	float: left;
+	padding: 20px 0;
 }
 .ratings{
 	float: right;
 	margin-top: 5px;
+}
+
+.views {
+	border-bottom: 1px solid #b8b8b8;
+    font-family: arial;
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 5px;
 }
 .share-fb{
 	background-color: #3b5998;

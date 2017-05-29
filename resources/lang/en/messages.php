@@ -25,6 +25,7 @@ return array(
 	'images' => 'Images',
 	'details' => 'Details',
 	'view_ad'=>'View Ad',
+	'views'=>'Views',
 	'subscription_error'=>'Please Subscribe and Create a Channel',
 	'user_disabled'=>'User Disabled',
 	'compress_video'=> 'Compress Video',
