@@ -125,7 +125,11 @@ class PaypalController extends Controller {
 
         if(isset($redirect_url)) {
 
-            $user_payment = UserPayment::where('user_id' , $request->id)->first();
+           // dd($subscription);
+
+            $user_payment = UserPayment::where('user_id' , Auth::user()->id)->first();
+
+            dd($user_payment);
 
             if($user_payment) {
 
