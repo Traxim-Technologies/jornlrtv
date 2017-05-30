@@ -193,7 +193,7 @@
                                                     <td bgcolor="#cf4545" align="center" style="border-radius:4px;cursor: pointer;" width="200" height="50">
                                                         <div class="contentEditableContainer contentTextEditable">
                                                             <div class="contentEditable" >
-                                                                <a target='_blank' href="{{route('user.dashboard')}}" style="color: #FFF;text-orientation: none" class='link2'>Visit our Website</a>
+                                                                <a target='_blank' href="{{$site_url}}" style="color: #FFF;text-orientation: none" class='link2'>Visit our Website</a>
                                                             </div>
                                                         </div>
 
@@ -211,7 +211,7 @@
                                                         <td bgcolor="green" align="center" style="border-radius:4px;margin-top: 10px" width="200" height="50">
                                                             <div class="contentEditableContainer contentTextEditable">
                                                                 <div class="contentEditable" >
-                                                                    <a target='_blank' href="{{route('email.verify' , ['id' => $email_data->id , 'verification_code' => $email_data->verification_code])}}" style="color: #FFF;text-orientation: none;cursor: pointer;" class='link2'>Verify Now</a>
+                                                                    <a target='_blank' href="{{$site_url}}/email/verification?id={{$email_data->id}}&verification_code={{$email_data->verification_code}}" style="color: #FFF;text-orientation: none;cursor: pointer;" class='link2'>Verify Now</a>
                                                                 </div>
                                                             </div>
 

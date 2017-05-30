@@ -21,7 +21,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#site_settings" data-toggle="tab">{{tr('site_settings')}}</a></li>
                     <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>
-                    <li><a href="#s3_settings" data-toggle="tab">{{tr('s3_settings')}}</a></li>
+                    <!-- <li><a href="#s3_settings" data-toggle="tab">{{tr('s3_settings')}}</a></li> -->
                     <li><a href="#social_settings" data-toggle="tab">{{tr('social_settings')}}</a></li>
                     <li><a href="#paypal_settings" data-toggle="tab">{{tr('paypal_settings')}}</a></li>
                 </ul>
@@ -171,7 +171,7 @@
                         </form>
                     </div>
 
-                    <div class="tab-pane" id="s3_settings">
+                    <div class="tab-pane" id="s3_settings1">
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
