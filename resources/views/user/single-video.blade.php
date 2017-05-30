@@ -54,7 +54,7 @@ textarea[name=comments] {
 .progress-bar-fill-div {
     display: block;
     height: 5px;
-    background: #659cef;
+    background: #cc181e;
     border-radius: 3px;
     /*transition: width 250ms ease-in-out;*/
     /*transition : width 10s ease-in-out;*/
@@ -835,7 +835,7 @@ textarea[name=comments] {
 
                                              $('#main_video_ad').show();
 
-                                             $("#ad_image").attr("src","{{$obj->file}}");
+                                             $("#ad_image").attr("src","{{$obj->assigned_ad->file}}");
 
 
                                              adsPage("{{$obj->ad_time}}");
@@ -860,7 +860,7 @@ textarea[name=comments] {
 
                                         $('#main_video_ad').show();
 
-                                        $("#ad_image").attr("src","{{$ads->post_ad->file}}");
+                                        $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
 
                                         stop();
 
@@ -946,7 +946,7 @@ textarea[name=comments] {
 
                                      $('#main_video_ad').show();
 
-                                     $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
+                                     $("#ad_image").attr("src","{{$ads->pre_ad->assigned_ad->file}}");
 
                                      jwplayer().pause();
 

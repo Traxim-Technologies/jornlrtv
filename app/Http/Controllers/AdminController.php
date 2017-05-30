@@ -44,9 +44,15 @@ use Setting;
 
 use Log;
 
+use DB;
+
+use Exception;
+
 use App\Jobs\CompressVideo;
 
 use App\VideoAd;
+
+use App\AssignVideoAd;
 
 use App\AdsDetail;
 
@@ -591,20 +597,6 @@ class AdminController extends Controller {
     }
 
 
-    public function ad_videos() {
-
-        $videos = VideoTape::videoResponse()
-                    ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
-                    ->where('video_tapes.ad_status', DEFAULT_TRUE)
-                    ->orderBy('video_tapes.created_at' , 'desc')
-                    ->get();
-
-        return view('admin.videos.videos')->with('videos' , $videos)
-                    ->withPage('videos_ads')
-                    ->with('sub_page','ad-videos');
-   
-    }
-
     public function add_video(Request $request) {
 
         $channels = getChannels();
@@ -691,315 +683,6 @@ class AdminController extends Controller {
 
     }
 
-    public function edit_video_process(Request $request) {
-
-        Log::info("Initiaization Edit Process : ".print_r($request->all(),true));
-
-
-        $video = VideoTape::find($request->id);
-
-        $video_validator = array();
-
-        $video_link = $video->video;
-
-        $trailer_video = $video->trailer_video;
-
-        // dd($request->all());
-
-        if($request->has('video_type') && $request->video_type == VIDEO_TYPE_UPLOAD) {
-
-            Log::info("Video Type : ".$request->has('video_type'));
-
-            if (isset($request->video)) {
-                if ($request->video != '') {
-
-                    $video_validator = Validator::make( $request->all(), array(
-                            'video'     => 'required|mimes:mkv,mp4,qt',
-                            // 'trailer_video'  => 'required|mimes:mkv,mp4,qt',
-                            )
-                        );
-
-                    $video_link = $request->hasFile('video') ? $request->file('video') : array();   
-
-                }
-            }
-
-            if (isset($request->trailer_video)) {
-                if ($request->trailer_video != '') {
-                    $video_validator = Validator::make( $request->all(), array(
-                            // 'video'     => 'required|mimes:mkv,mp4,qt',
-                            'trailer_video'  => 'required|mimes:mkv,mp4,qt',
-                            )
-                        );
-
-                    $trailer_video = $request->hasFile('trailer_video') ? $request->file('trailer_video') : array();
-                }
-            }
-        
-
-        } elseif($request->has('video_type') && in_array($request->video_type , array(VIDEO_TYPE_YOUTUBE,VIDEO_TYPE_OTHER))) {
-
-            $video_validator = Validator::make( $request->all(), array(
-                        'other_video'     => 'required',
-                        'other_trailer_video'  => 'required',
-                        )
-                    );
-
-            $video_link = $request->has('other_video') ? $request->other_video : array();
-
-            $trailer_video = $request->has('other_trailer_video') ? $request->other_trailer_video : array();
-        }
-
-        if($video_validator) {
-
-             if($video_validator->fails()) {
-                $error_messages = implode(',', $video_validator->messages()->all());
-                if ($request->has('ajax_key')) {
-                    return $error_messages;
-                } else {
-                    return back()->with('flash_errors', $error_messages);
-                }
-            }
-        }
-
-        $validator = Validator::make( $request->all(), array(
-                    'id' => 'required|integer|exists:video_tapes,id',
-                    'title'         => 'max:255',
-                    'description'   => '',
-                    'category_id'   => 'required|integer|exists:categories,id',
-                    'sub_category_id' => 'required|integer|exists:sub_categories,id,category_id,'.$request->category_id,
-                    'genre'     => 'exists:genres,id,sub_category_id,'.$request->sub_category_id,
-                    // 'video'     => 'mimes:mkv,mp4,qt',
-                    // 'trailer_video'  => 'mimes:mkv,mp4,qt',
-                    'default_image' => 'mimes:jpeg,jpg,bmp,png',
-                    'other_image1' => 'mimes:jpeg,jpg,bmp,png',
-                    'other_image2' => 'mimes:jpeg,jpg,bmp,png',
-                    'ratings' => 'required',
-                    'reviews' => 'required',
-                    )
-                );
-
-        if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            if ($request->has('ajax_key')) {
-                return $error_messages;
-            } else {
-                return back()->with('flash_errors', $error_messages);
-            }
-
-        } else {
-
-            Log::info("Success validation checking : Success");
-
-            $video->title = $request->has('title') ? $request->title : $video->title;
-
-            $video->description = $request->has('description') ? $request->description : $video->description;
-
-            $video->category_id = $request->has('category_id') ? $request->category_id : $video->category_id;
-
-            $video->sub_category_id = $request->has('sub_category_id') ? $request->sub_category_id : $video->sub_category_id;
-
-            $video->genre_id = $request->has('genre_id') ? $request->genre_id : $video->genre_id;
-
-            if($request->has('duration')) {
-                $video->duration = $request->duration;
-            }
-
-            if(strtotime($request->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
-                $video->status = DEFAULT_TRUE;
-            } else {
-                $video->status = DEFAULT_FALSE;
-            }
-
-            $main_video_url = null;
-            $trailer_video_url = null;
-
-            if($request->video_type == VIDEO_TYPE_UPLOAD && $video_link && $trailer_video) {
-
-                 Log::info("To Be upload videos : ".'Success');
-
-                // Check Previous Video Upload Type, to delete the videos
-
-                if($video->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
-                    Helper::s3_delete_picture($video->video);   
-                    Helper::s3_delete_picture($video->trailer_video);  
-                } else {
-                    $videopath = '/uploads/videos/original/';
-
-                    // dd($request->all());
-
-                    if ($request->hasFile('video')) {
-                        Helper::delete_picture($video->video, $videopath); 
-                        // @TODO
-                        $splitVideos = ($video->video_resolutions) 
-                                    ? explode(',', $video->video_resolutions)
-                                    : [];
-                        foreach ($splitVideos as $key => $value) {
-                           Helper::delete_picture($video->video, $videopath.$value.'/');
-                        }
-                        Log::info("Deleted Main Video : ".'Success');   
-                    }
-                    if ($request->hasFile('trailer_video')) {
-                        Helper::delete_picture($video->trailer_video, $videopath);
-                        // @TODO
-                        $splitTrailer = ($video->trailer_video_resolutions) 
-                                    ? explode(',', $video->trailer_video_resolutions)
-                                    : [];
-                        foreach ($splitTrailer as $key => $value) {
-                           Helper::delete_picture($video->trailer_video, $videopath.$value.'/');
-                        }
-                        Log::info("Deleted Trailer Video : ".'Success');
-                    }
-                }
-
-                if($request->video_upload_type == VIDEO_UPLOAD_TYPE_s3) {
-                    $video->video = Helper::upload_picture($video_link);
-                    $video->trailer_video = Helper::upload_picture($trailer_video); 
-
-                } else {
-                    if ($request->hasFile('video')) {
-                        $video->compress_status = DEFAULT_FALSE;
-                        $video->is_approved = DEFAULT_FALSE;
-                        $main_video_url = Helper::video_upload($video_link, $request->compress_video);
-                        Log::info("New Video Uploaded ( Main Video ) : ".'Success');
-                        $video->video = $main_video_url['db_url'];
-                        $video->video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : null;
-                    } else {
-                        $video->video = $video_link;
-                    }
-                    // dd($request->hasFile('trailer_video'));
-                    if ($request->hasFile('trailer_video')) {
-                        $video->trailer_compress_status = DEFAULT_FALSE;
-                        $video->is_approved = DEFAULT_FALSE;
-                        $trailer_video_url = Helper::video_upload($trailer_video, $request->compress_video);
-                        Log::info("New Video Uploaded ( Trailer Video ) : ".'Success');
-                        $video->trailer_video = $trailer_video_url['db_url']; 
-                        $video->trailer_video_resolutions = ($request->video_resolutions) ? implode(',', $request->video_resolutions) : null; 
-                    } else {
-                        $video->trailer_video = $trailer_video;
-                    }
-                
-                    Log::info("Video Resoltuions : ".print_r($video->video_resolutions, true));
-                    Log::info("Trailer Video Resoltuions : ".print_r($video->trailer_video_resolutions, true));
-                }                
-
-            } elseif($request->video_type == VIDEO_TYPE_YOUTUBE && $video_link && $trailer_video) {
-
-                $video->video = get_youtube_embed_link($video_link);
-                $video->trailer_video = get_youtube_embed_link($trailer_video);
-            } else {
-                $video->video = $video_link ? $video_link : $video->video;
-                $video->trailer_video = $trailer_video ? $trailer_video : $video->trailer_video;
-            }
-
-            if($request->hasFile('default_image')) {
-                Helper::delete_picture($video->default_image, "/uploads/images/");
-                $video->default_image = Helper::normal_upload_picture($request->file('default_image'), "/uploads/images/");
-            }
-
-            if($video->is_banner == 1) {
-                if($request->hasFile('banner_image')) {
-                    Helper::delete_picture($video->banner_image, "/uploads/images/");
-                    $video->banner_image = Helper::normal_upload_picture($request->file('banner_image'), "/uploads/images/");
-                }
-            }
-
-            $video->video_type = $request->video_type ? $request->video_type : $video->video_type;
-
-            $video->video_upload_type = $request->video_upload_type ? $request->video_upload_type : $video->video_upload_type;
-
-            $video->ratings = $request->has('ratings') ? $request->ratings : $video->ratings;
-
-            $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;
-
-            $video->edited_by = ADMIN;
-
-            if($video->video_type != VIDEO_TYPE_UPLOAD) {
-                $video->trailer_resize_path = null;
-                $video->video_resize_path = null;
-                $video->trailer_video_resolutions = null;
-                $video->video_resolutions = null;
-            }
-
-            if (empty($video->video_resolutions)) {
-                $video->compress_status = DEFAULT_TRUE;
-                $video->trailer_compress_status = DEFAULT_TRUE;
-                $video->is_approved = DEFAULT_TRUE;
-                Log::info("Empty Resoltuions");
-            }
-
-            Log::info("Approved : ".$video->is_approved);
-
-
-            $video->save();
-
-            Log::info("saved Video Object : ".'Success');
-
-            if($video) {
-                if ($request->hasFile('video') && $video->video_resolutions) {
-                    if ($main_video_url) {
-                        $inputFile = $main_video_url['baseUrl'];
-                        $local_url = $main_video_url['local_url'];
-                        $file_name = $main_video_url['file_name'];
-                        if (file_exists($inputFile)) {
-                            Log::info("Main queue Videos : ".'Success');
-                            dispatch(new CompressVideo($inputFile, $local_url, MAIN_VIDEO, $video->id,$file_name));
-                            Log::info("Main Compress Status : ".$video->compress_status);
-                            Log::info("Main queue completed : ".'Success');
-                        }
-                    }
-                }
-
-                if($request->hasFile('trailer_video') && $video->trailer_video_resolutions) {
-                    if ($trailer_video_url) {
-                        $inputFile = $trailer_video_url['baseUrl'];
-                        $local_url = $trailer_video_url['local_url'];
-                        $file_name = $trailer_video_url['file_name'];
-                        if (file_exists($inputFile)) {
-                            Log::info("Trailer queue Videos : ".'Success');
-                            dispatch(new CompressVideo($inputFile, $local_url, TRAILER_VIDEO, $video->id, $file_name));
-                            Log::info("Trailer Compress Status : ".$video->compress_status);
-                            Log::info("Trailer queue completed : ".'Success');
-                        }
-                    }
-                }
-
-                if($request->hasFile('other_image1')) {
-                    Helper::upload_video_image($request->file('other_image1'),$video->id,2);  
-                }
-
-                if($request->hasFile('other_image2')) {
-                   Helper::upload_video_image($request->file('other_image2'),$video->id,3); 
-                }
-
-
-                if (env('QUEUE_DRIVER') != 'redis') {
-
-                    \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
-
-                    $video->compress_status = DEFAULT_TRUE;
-
-                    $video->trailer_compress_status = DEFAULT_TRUE;
-
-                    $video->save();
-                }
-
-                if ($request->has('ajax_key')) {
-                    return ['id'=>route('admin.view.video', array('id'=>$video->id))];
-                } else {
-                    return redirect(route('admin.view.video', array('id'=>$video->id)));
-                }
-
-            } else {
-                if ($request->has('ajax_key')) {
-                    return tr('admin_not_error');
-                } else {
-                    return back()->with('flash_error', tr('admin_not_error'));
-                }
-            }
-        }
-    
-    }
 
     public function view_video(Request $request) {
 
@@ -1833,6 +1516,327 @@ class AdminController extends Controller {
     }
 
 
+    public function ad_create() {
+
+        $model = new AdsDetail;
+
+        return view('admin.video_ads.create')->with('model', $model)->with('page', 'videos_ads')->with('sub_page','create-ad-videos');
+
+    }
+
+
+    public function ad_edit(Request $request) {
+
+        $model = AdsDetail::find($request->id);
+
+        return view('admin.video_ads.edit')->with('model', $model)->with('page', 'videos_ads')->with('sub_page','create-ad-videos');
+
+    }
+
+    public function save_ad(Request $request) {
+
+        $response = AdminRepo::ad_save($request)->getData();
+
+        if($response->success) {
+
+            return redirect(route('admin.ad_view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->message);
+
+        }
+
+    }
+
+
+    public function ad_index() {
+
+        $response = AdminRepo::ad_index()->getData();
+
+        return view('admin.video_ads.index')->with('model', $response)->with('page', 'videos_ads')->with('subPage', 'view-ads');        
+
+    }
+
+
+
+    public function ad_videos() {
+
+        $videos = VideoAd::select('channels.id as channel_id', 'channels.name', 'video_tapes.id as admin_video_id', 'video_tapes.title', 'video_tapes.default_image', 'video_tapes.ad_status',
+            'video_ads.*','video_tapes.channel_id')
+                    ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
+                    ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
+                    ->where('video_tapes.ad_status', DEFAULT_TRUE)
+                    ->where('video_tapes.publish_status', DEFAULT_TRUE)
+                    ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                    ->where('video_tapes.status', DEFAULT_TRUE)
+                    ->orderBy('video_tapes.created_at' , 'asc')
+                    ->get();
+
+        return view('admin.video_ads.ad_videos')->with('model' , $videos)
+                    ->withPage('videos_ads')
+                    ->with('sub_page','ad-videos');
+   
+    }
+
+
+
+    public function ad_status(Request $request) {
+
+        $model = AdsDetail::find($request->id);
+
+        $model->status = $request->status;
+
+        $model->save();
+
+        /*if ($request->status == 0) {
+           
+            foreach($channel->videoTape as $video)
+            {                
+                $video->is_approved = $request->status;
+
+                $video->save();
+            } 
+
+        }*/
+
+        $message = tr('ad_status_decline');
+
+        if($model->status == DEFAULT_TRUE){
+
+            $message = tr('ad_status_approve');
+        }
+
+        return back()->with('flash_success', $message);
+    
+    }
+
+     public function ad_view(Request $request) {
+
+        $model = AdsDetail::find($request->id);
+
+        return view('admin.video_ads.view')->with('model', $model)->with('page', 'videos_ads')->with('subPage', 'view-ads');
+
+    }
+
+
+    public function ad_delete(Request $request) {
+
+        $model = AdDetail::find($request->id);
+
+        if($model) {
+
+            /*if($model->getVideoTape) {
+
+                $model->getVideoTape->ad_status = DEFAULT_FALSE;
+
+                $model->getVideoTape->save();
+
+            } */
+
+            if($model->delete()) {
+
+                return back()->with('flash_success', tr('ad_delete_success'));
+
+            }
+
+        }
+
+        return back()->with('flash_error', tr('something_error'));
+
+    }
+
+
+    public function assign_ad(Request $request) {
+
+        $model = AdsDetail::find($request->id);
+
+        $videos = VideoTape::where('status', DEFAULT_TRUE)->where('publish_status', DEFAULT_TRUE)
+            ->where('is_approved', DEFAULT_TRUE)->where('ad_status', DEFAULT_TRUE)->paginate(12);
+
+        return view('admin.video_ads.assign_ad')->with('page', 'videos_ads')->with('subPage', 'view-ads')
+            ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
+    }
+
+
+    public function save_assign_ad(Request $request) {
+
+        try {
+
+            //dd($request->all());
+
+            DB::beginTransaction();
+
+            $video_tape_ids = explode(',', $request->video_tape_id);
+
+            foreach ($video_tape_ids as $key => $video_tape_id) {
+               
+                $model = VideoAd::where('video_tape_id', $video_tape_id)->first();
+
+                if($model) {
+
+                    foreach ($request->ad_type as $key => $value) {
+
+                        $exp_type = explode(',', $model->types_of_ad);
+
+                        if(in_array($value, $exp_type)) {
+
+                            $assign = AssignVideoAd::where('video_ad_id', $model->id)
+                                    ->where('ad_type', $value)->first();
+
+                            if(!$assign) {
+
+                                throw new Exception(tr('something_error'));
+                            }
+
+                        } else {
+
+                            $assign = new AssignVideoAd;
+
+                            $ads_type[] = $value;
+
+                        }
+
+                        $assign->ad_id = $request->ad_id;
+
+                        $assign->ad_time = $request->ad_time;
+
+                        $assign->ad_type = $value;
+
+                        $assign->video_ad_id = $model->id;
+
+                        if($value == BETWEEN_AD) {
+
+                            $time = $request->video_time ? $request->video_time : "00:00:00";
+
+                            $expTime = explode(':', $time);
+
+                            if (count($expTime) == 3) {
+
+                                $assign->video_time = $time;
+
+                            }
+
+                            if (count($expTime) == 2) {
+
+                                 $assign->video_time = "00:".$expTime[0].":".$expTime[1];
+
+                            }
+                        } else {
+
+                            $assign->video_time = "00:00:00";
+                        }
+
+                        $assign->status = DEFAULT_TRUE;
+
+                        if ($assign->save()) {
+
+                            
+                        } else {
+
+                            throw new Exception(tr('something_error'));
+                            
+                        }
+
+                    }
+
+                    $model->types_of_ad = $model->types_of_ad.','.implode(',', $ads_type);
+
+                    if ($model->save()) {
+
+
+                    } else {
+
+                         throw new Exception(tr('something_error'));
+
+                    }
+
+                } else {
+
+
+                    $model = new VideoAd;
+
+                    $model->video_tape_id = $video_tape_id;
+
+                    $model->types_of_ad = implode(',', $request->ad_type);
+
+                    $model->status = DEFAULT_TRUE;
+
+                    if ($model->save()) {
+
+                        foreach ($request->ad_type as $key => $value) {
+
+                            $assign = new AssignVideoAd;
+
+                            $assign->ad_id = $request->ad_id;
+
+                            $assign->ad_type = $value;
+
+                            $assign->video_ad_id = $model->id;
+
+                            $assign->ad_time = $request->ad_time;
+
+                            $time = $request->video_time ? $request->video_time : "00:00:00";
+
+
+                            if($value == BETWEEN_AD) {
+
+                                $expTime = explode(':', $time);
+
+                                if (count($expTime) == 3) {
+
+                                    $assign->video_time = $time;
+
+                                }
+
+                                if (count($expTime) == 2) {
+
+                                     $assign->video_time = "00:".$expTime[0].":".$expTime[1];
+                                }
+
+                            } else {
+
+                                $assign->video_time = "00:00:00";
+
+                            }
+
+                            $assign->status = DEFAULT_TRUE;
+
+                            if ($assign->save()) {
+
+
+                            } else {
+
+                                throw new Exception(tr('something_error'));
+                                
+                            }
+
+                        }
+
+                    } else {
+
+                        throw new Exception(tr('something_error'));
+                        
+                    }
+
+                }
+
+            }     
+
+            DB::commit();
+
+            return back()->with('flash_success', tr('assign_ad_success'));
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with('flash_error', $e->getMessage());
+
+        }
+
+    }
+
 
     public function ads_create(Request $request) {
 
@@ -1859,7 +1863,9 @@ class AdminController extends Controller {
 
         $index = 0;
 
-        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos')->with('subPage', 'videos')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd);
+        $ads = AdsDetail::get(); 
+
+        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos')->with('subPage', 'videos')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('ads', $ads);
     }
 
 
@@ -1881,6 +1887,8 @@ class AdminController extends Controller {
 
         $video_pixels = '';
 
+        $ads = AdsDetail::get(); 
+
         if ($vModel) {
 
             $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
@@ -1888,7 +1896,7 @@ class AdminController extends Controller {
 
         }
 
-        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('subPage', 'view-ads')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index);
+        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('subPage', 'view-ads')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index)->with('ads', $ads);
     }
 
 
@@ -1897,8 +1905,10 @@ class AdminController extends Controller {
         $index = $request->index + 1;
 
         $b_ad = new AdsDetail;
+
+        $ads = AdsDetail::get(); 
         
-        return view('admin.ads._sub_form')->with('index' , $index)->with('b_ad', $b_ad);
+        return view('admin.ads._sub_form')->with('index' , $index)->with('b_ad', $b_ad)->with('ads', $ads);
     }
 
 

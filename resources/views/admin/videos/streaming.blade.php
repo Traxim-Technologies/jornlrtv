@@ -35,9 +35,9 @@
 
 <div class="embed-responsive embed-responsive-16by9" id="main_video_ad" style="display: none;width: 100%;">
     <img src="" class="error-image" alt="{{Setting::get('site_name')}} - Main Video Ad" id="ad_image" style="width: 100%;">
-    <div class="progress-bar">
+    <!-- <div class="progress-bar">
 	    <span class="progress-bar-fill" style="width: 30%"></span>
-	</div>
+	</div> -->
 </div>
 
 <div id="main-video-player"></div>

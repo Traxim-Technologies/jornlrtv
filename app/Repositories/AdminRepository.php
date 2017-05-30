@@ -13,6 +13,7 @@ use Exception;
 use App\VideoAd;
 use App\AdsDetail;
 use App\VideoTape;
+use App\AssignVideoAd;
 
 class AdminRepository {
 
@@ -34,17 +35,27 @@ class AdminRepository {
 
             if ($model->save()) {
 
+                if(!$request->has('pre_ad_type') && !empty($request->pre_ad_type_id)) {
+
+                    $p_ad = AssignVideoAd::find($request->pre_ad_type_id);
+
+                    if($p_ad) {
+
+                        $p_ad->delete();
+                        
+                    }
+
+                }
+
                 if($request->has('pre_ad_type')) {
 
                     if($request->pre_ad_type == PRE_AD) {
 
                         if(empty($request->pre_ad_time)) {
 
-                            $p_ad = AdsDetail::find($request->pre_ad_type_id);
+                            $p_ad = AssignVideoAd::find($request->pre_ad_type_id);
 
                             if($p_ad) {
-
-                                Helper::delete_picture($p_ad->file, "/uploads/ad/");
 
                                 $p_ad->delete();
                                 
@@ -54,26 +65,17 @@ class AdminRepository {
 
                             $ad_types[] = PRE_AD;
 
-                            $pre_ad_model = ($request->has('pre_ad_type_id')) ? AdsDetail::find($request->pre_ad_type_id) : new AdsDetail;
+                            $pre_ad_model = ($request->has('pre_ad_type_id')) ? AssignVideoAd::find($request->pre_ad_type_id) : new AssignVideoAd;
 
-                            $pre_ad_model->ads_id = $model->id;
+                            $pre_ad_model->ad_id = $request->pre_parent_ad_id;
+
+                            $pre_ad_model->video_ad_id = $model->id;
 
                             $pre_ad_model->ad_type = PRE_AD;
 
                             $pre_ad_model->video_time = "00:00:00";
 
                             $pre_ad_model->ad_time = $request->has('pre_ad_time') ? $request->pre_ad_time : $pre_ad_model->pre_ad_time;
-
-                            if ($request->pre_ad_file) {
-
-                                if($request->has('pre_ad_type_id')) {
-
-                                    Helper::delete_picture($pre_ad_model->file, "/uploads/ad/");
-
-                                }
-
-                                $pre_ad_model->file = Helper::normal_upload_picture($request->pre_ad_file, "/uploads/ad/");
-                            }
 
                             if ($pre_ad_model->save()) {
 
@@ -89,6 +91,18 @@ class AdminRepository {
 
                 }
 
+                if(!$request->has('post_ad_type') && !empty($request->post_ad_type_id)) {
+
+                    $post_ad = AssignVideoAd::find($request->post_ad_type_id);
+
+                    if($post_ad) {
+
+                        $post_ad->delete();
+                        
+                    }
+
+                }
+
 
                 if($request->has('post_ad_type')) {
 
@@ -96,11 +110,9 @@ class AdminRepository {
 
                         if(empty($request->post_ad_time)) {
 
-                            $post_ad = AdsDetail::find($request->post_ad_type_id);
+                            $post_ad = AssignVideoAd::find($request->post_ad_type_id);
 
                             if($post_ad) {
-
-                                Helper::delete_picture($post_ad->file, "/uploads/ad/");
 
                                 $post_ad->delete();
                                 
@@ -110,26 +122,18 @@ class AdminRepository {
 
                             $ad_types[] = POST_AD;
 
-                            $post_ad_model = ($request->has('post_ad_type_id')) ? AdsDetail::find($request->post_ad_type_id) : new AdsDetail;
-
-                            $post_ad_model->ads_id = $model->id;
+                            $post_ad_model = ($request->has('post_ad_type_id')) ? AssignVideoAd::find($request->post_ad_type_id) : new AssignVideoAd;
 
                             $post_ad_model->ad_type = POST_AD;
+
+                            $post_ad_model->ad_id = $request->post_parent_ad_id;
+
+                            $post_ad_model->video_ad_id = $model->id;
 
                             $post_ad_model->video_time = $model->getVideoTape ? $model->getVideoTape->duration : '00:00:00';
 
                             $post_ad_model->ad_time = $request->has('post_ad_time') ? $request->post_ad_time : $post_ad_model->post_ad_time;
 
-                            if ($request->post_ad_file) {
-
-                                if($request->has('post_ad_type_id')) {
-
-                                    Helper::delete_picture($post_ad_model->file, "/uploads/ad/");
-
-                                }
-
-                                $post_ad_model->file = Helper::normal_upload_picture($request->post_ad_file, "/uploads/ad/");
-                            }
 
                             if ($post_ad_model->save()) {
 
@@ -150,7 +154,7 @@ class AdminRepository {
 
                 if($request->has('between_ad_type')) {
 
-                    echo "<pre>";
+                    // echo "<pre>";
 
                     $b_type = DEFAULT_FALSE;
 
@@ -166,11 +170,9 @@ class AdminRepository {
 
                                 if(empty($b_time)) {
 
-                                    $b_ad = AdsDetail::find($request->between_ad_type_id[$key]);
+                                    $b_ad = AssignVideoAd::find($request->between_ad_type_id[$key]);
 
                                     if($b_ad) {
-
-                                        Helper::delete_picture($b_ad->file, "/uploads/ad/");
 
                                         $b_ad->delete();
 
@@ -188,12 +190,13 @@ class AdminRepository {
 
                                 $id = ($request->has('between_ad_type_id')) ? $request->between_ad_type_id[$key] : '';
 
-                                $between_ad_model = ($id) ? AdsDetail::find($id) : new AdsDetail;
-
-
-                                $between_ad_model->ads_id = $model->id;
+                                $between_ad_model = ($id) ? AssignVideoAd::find($id) : new AssignVideoAd;
 
                                 $between_ad_model->ad_type = BETWEEN_AD;
+
+                                $between_ad_model->ad_id = $request->has('between_parent_ad_id') ? $request->between_parent_ad_id[$key] : $between_ad_model->ad_id;
+
+                                $between_ad_model->video_ad_id = $model->id;
 
                                 $time = $request->has('between_ad_video_time') ? $request->between_ad_video_time[$key] : $between_ad_model->video_time;
 
@@ -210,27 +213,9 @@ class AdminRepository {
                                      $between_ad_model->video_time = "00:".$expTime[0].":".$expTime[1];
                                 }
 
-
-
-
                                 $between_ad_model->ad_time = $request->has('between_ad_time') ? $request->between_ad_time[$key] : $between_ad_model->between_ad_time;
 
-                               if ($request->between_ad_file) {
-
-                                    if($request->between_ad_file[$key] != null) {
-
-                                        if($id) {
-
-                                            Helper::delete_picture($between_ad_model[$key]->file, "/uploads/ad/");
-
-                                        }
-
-                                        $between_ad_model->file = Helper::normal_upload_picture($request->between_ad_file[$key], "/uploads/ad/");
-
-                                    }
-                                }
-                                
-
+                              
                                 if ($between_ad_model->save()) {
 
                                     $b_type = DEFAULT_TRUE;
@@ -256,18 +241,6 @@ class AdminRepository {
 
                 if ($model->save()) {
 
-                    $video_tape = VideoTape::find($request->video_tape_id);
-
-                    // $video_tape->ad_status = DEFAULT_TRUE;
-
-                    if ($video_tape->save()) {
-
-
-                    } else {
-
-                        throw new Exception(tr('something_error'));
-
-                    }
 
                 } else {
 
@@ -297,9 +270,17 @@ class AdminRepository {
     }
 
 
-    public static function ad_index() {
+/*    public static function ad_index() {
 
         $model = VideoAd::with('getVideoTape')->get();
+
+        return response()->json($model, 200);
+
+    }*/
+
+    public static function ad_index() {
+
+        $model = AdsDetail::orderBy('created_at', 'desc')->get();
 
         return response()->json($model, 200);
 
@@ -312,5 +293,70 @@ class AdminRepository {
 
         return response()->json($model);
 
+    }
+
+    public static function ad_save($request) {
+
+        try {
+
+            DB::beginTransaction();
+
+             $validator = Validator::make( $request->all(),array(
+                    'name' => 'required',
+                    'ad_time' => 'required|integer',
+                    'file' => 'mimes:jpeg,jpg,png'
+                )
+            );
+            
+            if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+                
+                throw new Exception($error_messages);
+
+            } else {
+
+                $model = ($request->has('id')) ? AdsDetail::find($request->id) : new AdsDetail();
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->name = $request->has('name') ? $request->name : $model->name;
+
+                $model->ad_time = $request->has('ad_time') ? $request->ad_time : $model->ad_time;
+
+                if ($request->file) {
+
+                    if($request->has('id')) {
+
+                        Helper::delete_picture($model->file, "/uploads/ad/");
+
+                    }
+
+                    $model->file = Helper::normal_upload_picture($request->file, "/uploads/ad/");
+                }
+
+                if ($model->save()) {
+
+
+                } else {
+
+                    throw new Exception(tr('something_error'));
+
+                }
+            }
+
+            DB::commit();
+
+            $response_array = ['success' => true,'message' => ($request->id) ? tr('ad_update_success') : tr('ad_create_success'), 'data'=>$model];
+
+        } catch(Exception $e) {
+
+            DB::rollBack();
+
+            $response_array = ['success' => false,'message' => $e->getMessage()];
+
+        }
+
+        return response()->json($response_array, 200);
     }
 }

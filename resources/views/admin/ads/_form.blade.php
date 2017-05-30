@@ -1,4 +1,4 @@
-<?php use App\AdsDetail; ?>
+<?php use App\AssignVideoAd; ?>
 
 @include('notification.notify')
 
@@ -63,14 +63,16 @@
 
                     		<div class="col-md-6">
 
-                    			<label>{{tr('image')}}</label>
+                    			<label>{{tr('ad')}}</label>
 
-                    			<input type="file" name="pre_ad_file" id="pre_ad_file" accept="image/png,image/jpeg" onchange="loadFile(this, 'pre_ad_preview')">
-
-                                <br>
-
-                                <img src="{{$preAd->file ? $preAd->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="pre_ad_preview"/>
-
+                    			
+                                <select id="pre_parent_ad_id" name="pre_parent_ad_id" class="form-control">
+                                    <option value="">{{tr('select_ad')}}</option>
+                                    @foreach($ads as $ad)
+                                        <option value="{{$ad->id}}" @if($ad->id == $preAd->ad_id) selected @endif>{{$ad->name}}</option>
+                                    @endforeach
+                                </select>
+                               
                     		</div>
 
 
@@ -107,14 +109,14 @@
 
                     		<div class="col-md-6">
 
-                    			<label>{{tr('image')}}</label>
+                    			<label>{{tr('ad')}}</label>
 
-                    			<input type="file" name="post_ad_file" id="post_ad_file" accept="image/png,image/jpeg" onchange="loadFile(this, 'post_ad_preview')">
-
-
-                                <br>
-                                
-                                <img src="{{$postAd->file ? $postAd->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="post_ad_preview"/>
+                    			<select id="post_parent_ad_id" name="post_parent_ad_id" class="form-control">
+                                    <option value="">{{tr('select_ad')}}</option>
+                                    @foreach($ads as $ad)
+                                        <option value="{{$ad->id}}" @if($ad->id == $postAd->ad_id) selected @endif>{{$ad->name}}</option>
+                                    @endforeach
+                                </select>
 
                     		</div>
 
@@ -137,7 +139,7 @@
 
 
 
-                        <?php $b_ad = new AdsDetail; ?>
+                        <?php $b_ad = new AssignVideoAd; ?>
 
                         @include('admin.ads._sub_form')
 
@@ -165,8 +167,6 @@
 
 </div>
    
-
-
 @section('scripts')
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
@@ -290,11 +290,7 @@ function getCheckBoxValue(id, ad_type) {
 
             $('#pre_ad_time').val('');
 
-            $("#pre_ad_preview").hide();
-
-            var e = $('#pre_ad_file');
-            e.wrap('<form>').closest('form').get(0).reset();
-            e.unwrap(); 
+            $('#pre_parent_ad_id option:selected').remove();
 
         } 
 
@@ -302,11 +298,7 @@ function getCheckBoxValue(id, ad_type) {
 
             $('#post_ad_time').val('');
 
-            $("#post_ad_preview").hide();
-
-            var e = $('#post_ad_file');
-            e.wrap('<form>').closest('form').get(0).reset();
-            e.unwrap(); 
+            $('#post_parent_ad_id option:selected').remove();
 
         }
 

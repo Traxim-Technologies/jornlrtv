@@ -652,3 +652,45 @@ function add_to_redeem($id , $amount) {
 function get_banner_count() {
     return VideoTape::where('is_banner' , 1)->count();
 }
+
+function getTypeOfAds($ad_type) {
+
+        $types = [];
+
+        if ($ad_type) {
+
+            $exp = explode(',', $ad_type);
+
+            $ads = [];
+
+            foreach ($exp as $key => $value) {
+
+                if ($value == PRE_AD) {
+                
+                    $ads[] =  'Pre Ad';
+
+                }
+
+                if ($value == POST_AD) {
+                
+                    $ads[] =  'Post Ad';
+
+                }
+
+
+                if ($value == BETWEEN_AD) {
+                
+                    $ads[] =  'Between Ad';
+
+                }
+
+            }
+
+            // $types = implode(',', $ads);
+
+            $types = $ads;
+
+        }
+
+        return $types;
+    }
