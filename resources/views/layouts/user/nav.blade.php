@@ -56,6 +56,15 @@
             @endif     
         </ul>
 
+
+        @elseif(!Auth::user()->user_type)
+
+            <div class="menu4">
+                <p>{{tr('subscribe_note')}}</p>
+                <a href="{{route('user.subscriptions')}}" class="btn btn-sm btn-primary">{{tr('subscribe')}}</a>
+            </div> 
+
+
         @endif
 
 

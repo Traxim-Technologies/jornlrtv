@@ -33,13 +33,14 @@
 
           <div class="col-md-3">
 
-               <label>{{tr('image')}}</label>
+               <label>{{tr('ad')}}</label>
 
-               <input type="file" name="between_ad_file[{{$index}}]" id="between_ad_file[{{$index}}]" accept="image/png,image/jpeg" onchange="loadFile(this, 'between_ad_preview_'+{{$index}})">
-
-               <br>
-                                
-               <img src="{{$b_ad->file ? $b_ad->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="between_ad_preview_{{$index}}"/>
+               <select id="ad_id_{{$index}}" name="between_parent_ad_id[{{$index}}]" class="form-control">
+                     <option value="">{{tr('select_ad')}}</option>
+                     @foreach($ads as $ad)
+                         <option value="{{$ad->id}}" @if($ad->id == $b_ad->ad_id) selected @endif>{{$ad->name}}</option>
+                     @endforeach
+                 </select>
 
           </div>
 

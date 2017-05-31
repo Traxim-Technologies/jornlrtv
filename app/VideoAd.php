@@ -14,29 +14,36 @@ class VideoAd extends Model
 
     }
 
+    public function getAd() {
 
-    public function getAdDetails() {
-
-        return $this->hasMany('App\AdsDetail', 'ads_id', 'id')->orderBy('video_time', 'asc');
+        return $this->hasOne('App\AdsDetail', 'id', 'ad_id');
 
     }
 
 
+    public function getAssingAds() {
+
+        return $this->hasMany('App\AssignVideoAd', 'video_ad_id', 'id')->orderBy('video_time', 'asc');
+
+    }
+
+
+
     public function getPreAdDetail() {
 
-        return $this->hasOne('App\AdsDetail', 'ads_id', 'id')->where('ad_type', PRE_AD);
+        return $this->hasOne('App\AssignVideoAd', 'video_ad_id', 'id')->where('ad_type', PRE_AD);
 
     }
 
     public function getPostAdDetail() {
 
-        return $this->hasOne('App\AdsDetail', 'ads_id', 'id')->where('ad_type', POST_AD);
+        return $this->hasOne('App\AssignVideoAd', 'video_ad_id', 'id')->where('ad_type', POST_AD);
 
     }
 
     public function getBetweenAdDetails() {
 
-        return $this->hasMany('App\AdsDetail', 'ads_id', 'id')->where('ad_type', BETWEEN_AD);
+        return $this->hasMany('App\AssignVideoAd', 'video_ad_id', 'id')->where('ad_type', BETWEEN_AD);
 
     }
 
@@ -44,7 +51,7 @@ class VideoAd extends Model
     {
         $array = parent::toArray();
 
-        $array['ad_details'] = $this->getAdDetails;
+        $array['ad_details'] = $this->getAssingAds;
 
         $array['post_ad'] = $this->getPostAdDetail;
 
@@ -52,52 +59,11 @@ class VideoAd extends Model
 
         $array['between_ad'] = $this->getBetweenAdDetails;
 
-        $array['ads_types'] = self::getTypeOfAds($this->types_of_ad);
+        $array['ads_types'] = getTypeOfAds($this->types_of_ad);
 
         return $array;
     }
 
-    public function getTypeOfAds($ad_type) {
-
-        $types = [];
-
-        if ($ad_type) {
-
-            $exp = explode(',', $ad_type);
-
-            $ads = [];
-
-            foreach ($exp as $key => $value) {
-
-                if ($value == PRE_AD) {
-                
-                    $ads[] =  'Pre Ad';
-
-                }
-
-                if ($value == POST_AD) {
-                
-                    $ads[] =  'Post Ad';
-
-                }
-
-
-                if ($value == BETWEEN_AD) {
-                
-                    $ads[] =  'Between Ad';
-
-                }
-
-            }
-
-            // $types = implode(',', $ads);
-
-            $types = $ads;
-
-        }
-
-        return $types;
-    }
 
     /**
      * Boot function for using with User Events
@@ -113,9 +79,9 @@ class VideoAd extends Model
         //delete your related models here, for example
         static::deleting(function($model)
         {
-            if (count($model->getAdDetails) > 0) {
+            if (count($model->getAssingAds) > 0) {
 
-                foreach ($model->getAdDetails as $key => $value) {
+                foreach ($model->getAssingAds as $key => $value) {
 
                    $value->delete();    
 

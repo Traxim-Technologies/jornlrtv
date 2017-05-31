@@ -16,7 +16,7 @@
 						<div id="c4-header-bg-container" class="c4-visible-on-hover-container  has-custom-banner">
 							<div class="hd-banner">
 								<div class="hd-banner-image">
-									<img src="{{asset('images/default-cover-image.jpg')}}" id="cover_preview" class="st_cover_photo_img" id="cover_preview" style="display: none" />
+									<img src="{{asset('images/default-cover-image.jpg')}}" id="cover_preview" class="st_cover_photo_img" id="cover_preview" style= "{{($model->id) ? 'display: none' : ''}}"; />
 								</div>
 							</div>
 							<div id="header-links">
@@ -56,6 +56,10 @@
 					
 					<div class="des-box">
 
+						<div>
+							<span id="span_error"></span>
+						</div>
+
 						<h5>{{tr('title')}}</h5>
 
 						<input type="text" name="name" id="title" class="form-control" value="{{$model->name}}" required/>
@@ -63,9 +67,11 @@
 						<h5>{{tr('description')}}</h5>
 
 						<textarea class="form-control description" id="description" name="description" required>{{$model->description}}</textarea>
-						<div class="btn-create">
-							<button type="reset" name="reset" class="btn btn-danger ">{{tr('reset')}}</button>
-							<button id="done-create" name="submit" class="btn btn-primary">{{tr('submit')}}</button>
+						<br>
+						<div>
+							<button type="reset" name="reset" class="btn btn-danger pull-left">{{tr('reset')}}</button>
+							<button id="done-create" name="submit" class="btn btn-primary pull-right" @if(!$model->id) onclick="return checkImage();" @endif>{{tr('submit')}}</button>
+							<div class="clearfix"></div>
 						</div>
 
 					</div>
@@ -97,6 +103,29 @@ function loadFile(event, id){
       // $("#c4-header-bg-container .hd-banner-image").css("background-image", "url("+reader.result+")");
     };
     reader.readAsDataURL(event.files[0]);
+}
+
+function checkImage() {
+
+	$("#span_error").html("");
+
+	var picture_val = $("#picture").val();
+
+	var cover_val = $("#cover").val();
+
+	if(picture_val == '') {
+
+		$("#span_error").html('<p class="text-danger">Channel picture should not be an empty</p>');
+
+		return false;
+	}
+
+	if(cover_val == '') {
+
+		$("#span_error").html('<p class="text-danger">Channel Cover should not be an empty</p>');
+
+		return false;
+	}
 }
 </script>
 

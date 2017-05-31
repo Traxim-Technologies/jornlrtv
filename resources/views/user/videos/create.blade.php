@@ -310,6 +310,7 @@
             percent.html(percentVal);
             $("#next_btn").val("Wait Progressing...");
             $("#next_btn").attr('disabled', true);
+            $("#video_file").attr('disabled', true);
         },
         uploadProgress: function(event, position, total, percentComplete) {
             console.log(total);
@@ -322,14 +323,16 @@
                 $("#next_btn").val("Video Uploading...");
                 // $(".overlay").show();
                 $("#next_btn").attr('disabled', true);
+                $("#video_file").attr('disabled', true);
             }
         },
         complete: function(xhr) {
             bar.width("100%");
             percent.html("100%");
            //  $(".overlay").show();
-            $("#next_btn").val("Finished...");
-            $("#next_btn").attr('disabled', true);
+            $("#next_btn").val("Next");
+            $("#next_btn").attr('disabled', false);
+            $("#video_file").removeAttr('disabled');
             console.log(xhr);
         },
         error : function(xhr) {
@@ -337,17 +340,11 @@
         },
         success : function(xhr) {
             // $(".overlay").hide();
-
-
             if(xhr.data) {
 
                 console.log("inside " +xhr.data);
 
                 $("#select_image_div").html(xhr.path);
-
-                $("#next_btn").val("Next");
-
-                $("#next_btn").attr('disabled', false);
 
                 $("#main_id").val(xhr.data.id);
 

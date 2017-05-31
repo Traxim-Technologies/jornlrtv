@@ -10,9 +10,9 @@
     <div class="ad_progress">
    		<div id="timings">{{tr('ad') }} : <span class="seconds"></span></div>
     	<div class="clearfix"></div>
-	    <div class="progress-bar-div">
-		    <span class="progress-bar-fill-div" style="width: 0%"></span>
-		</div>
+	    <div id="progress">
+        
+      </div>
 	</div>
 </div>
 

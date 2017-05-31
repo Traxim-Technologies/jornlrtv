@@ -30,7 +30,7 @@ hr {
       <li class="active"><a href="#preview_ad" data-toggle="tab" aria-expanded="true">{{tr('preview_ad')}}</a></li>
 
       <li class="pull-right clearfix">
-        <a href="{{route('admin.ads_edit' , array('id' => $ads->get_video_tape->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+        <a href="{{route('admin.ads_edit' , array('id' => $ads->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
       </li>
  
     </ul>
@@ -84,8 +84,8 @@ hr {
                       {{tr('details')}}</h3>
 
                       <div class="timeline-body">
-                            
-                            <img src="{{$details->file}}" style="width: 100%">
+                          
+                            <img src="{{$details->assigned_ad->file}}" style="width: 100%">
 
                       </div>
                       <!-- <div class="timeline-footer">
@@ -285,7 +285,7 @@ hr {
 
                                              $('#main_video_ad').show();
 
-                                             $("#ad_image").attr("src","{{$obj->file}}");
+                                             $("#ad_image").attr("src","{{$obj->assigned_ad->file}}");
 
 
                                              adsPage("{{$obj->ad_time}}");
@@ -308,7 +308,7 @@ hr {
 
                                         $('#main_video_ad').show();
 
-                                        $("#ad_image").attr("src","{{$ads->post_ad->file}}");
+                                        $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
 
                                         stop();
 
@@ -388,7 +388,7 @@ hr {
 
                                      $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
 
-                                     $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
+                                     $("#ad_image").attr("src","{{$ads->pre_ad->assigned_ad->file}}");
 
                                      adsPage("{{$ads->pre_ad->ad_time}}");
 

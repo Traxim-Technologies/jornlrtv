@@ -29,7 +29,7 @@ textarea[name=comments] {
 }
 
 #timings {
-    padding: 3px;
+    padding: 5px;
 }
 .ad_progress {
     position: absolute;
@@ -54,7 +54,7 @@ textarea[name=comments] {
 .progress-bar-fill-div {
     display: block;
     height: 5px;
-    background: #659cef;
+    background: #cc181e;
     border-radius: 3px;
     /*transition: width 250ms ease-in-out;*/
     /*transition : width 10s ease-in-out;*/
@@ -204,7 +204,7 @@ textarea[name=comments] {
 
                                     <div class="more-content">
                                         
-                                        <div class="share-details row">
+                                        <div class="share-details">
 
                                             <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
                                                 @if(Auth::check())
@@ -835,7 +835,7 @@ textarea[name=comments] {
 
                                              $('#main_video_ad').show();
 
-                                             $("#ad_image").attr("src","{{$obj->file}}");
+                                             $("#ad_image").attr("src","{{$obj->assigned_ad->file}}");
 
 
                                              adsPage("{{$obj->ad_time}}");
@@ -860,7 +860,7 @@ textarea[name=comments] {
 
                                         $('#main_video_ad').show();
 
-                                        $("#ad_image").attr("src","{{$ads->post_ad->file}}");
+                                        $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
 
                                         stop();
 
@@ -885,23 +885,40 @@ textarea[name=comments] {
 
                     function adsPage(adtimings){
 
+                        // $("#progress").html("");
+
+                        // $(".progress-bar-fill-div").css('width', '0%');
+
                          // adtimings = adtimings * 60;
 
                         $(".seconds").html(adtimings+" sec");
 
+                        $("#progress").html('<div class="progress-bar-div">'+
+                                '<span class="progress-bar-fill-div" style="width: 0%"></span>'+
+                                '</div>');
+
                         $(".progress-bar-fill-div").css('transition', 'width '+adtimings+'s ease-in-out');
 
                         $('.progress-bar-fill-div').delay(1000).queue(function () {
+
+                            console.log("playig");
+
                             $(this).css('width', '100%')
                         });
  
+                        // var width = (100/(adtimings));
+
                         intervalId = setInterval(function(){
 
                             adCount += 1;
 
                             $(".seconds").html((adtimings - adCount) +" sec");
 
+                            // console.log(width * adCount);
+
                             console.log("Ad Count " +adCount);
+
+                            // $(".progress-bar-fill-div").css('width', (width * adCount)+'%');
                             
                             if (adCount == adtimings) {
 
@@ -946,7 +963,7 @@ textarea[name=comments] {
 
                                      $('#main_video_ad').show();
 
-                                     $("#ad_image").attr("src","{{$ads->pre_ad->file}}");
+                                     $("#ad_image").attr("src","{{$ads->pre_ad->assigned_ad->file}}");
 
                                      jwplayer().pause();
 

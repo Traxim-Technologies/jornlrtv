@@ -371,6 +371,27 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Ads
 
+    Route::get('ad_create','AdminController@ad_create')->name('ad_create');
+
+    Route::get('ad_edit','AdminController@ad_edit')->name('ad_edit');
+
+    Route::post('save_ad','AdminController@save_ad')->name('save_ad');
+
+    Route::get('ad_index','AdminController@ad_index')->name('ad_index');
+
+    Route::get('ad_status','AdminController@ad_status')->name('ad_status');
+
+    Route::get('ad_delete','AdminController@ad_delete')->name('ad_delete');
+
+    Route::get('ad_view','AdminController@ad_view')->name('ad_view');
+
+    Route::get('assign_ad', 'AdminController@assign_ad')->name('assign_ad');
+
+    Route::post('assign_ad', 'AdminController@save_assign_ad')->name('assign_ads');
+
+
+
+
     Route::get('ads_create/{video_tape_id}','AdminController@ads_create')->name('ads_create');
 
     Route::post('save_ads','AdminController@save_ads')->name('save_ads');

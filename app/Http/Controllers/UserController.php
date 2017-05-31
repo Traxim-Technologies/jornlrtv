@@ -110,8 +110,6 @@ class UserController extends Controller {
 
 
         $response = $this->UserAPI->getSingleVideo($id)->getData();
-
-        // dd($response);
         
         return view('user.single-video')
                     ->with('page' , '')
