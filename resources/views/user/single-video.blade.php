@@ -146,137 +146,184 @@ textarea[name=comments] {
                                     <div class="details">
                                         <div class="video-title">
                                             <div class="title row">
-                                                <div style="width: 55%;">
+                                                <div class="col-lg-12">
                                                     <h3>{{$video->title}}</h3>
+
+                                                    <div class="clearfix"></div>
                                                 </div>
 
+                                                <div class="clearfix"></div>
 
-                                                @if(Auth::check())
-                                                    @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_details->user_id)
-                                                            
-                                                        <div class="pull-right">
+                                                <div class="col-lg-12">
+
+                                                    <div class="more-content">
+                                        
+                                                    <div class="share-details">
+
+                                                        <div class="wishlist_form"> 
+                                                            <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
+                                                                @if(Auth::check())
+
+                                                                    <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
+
+                                                                    @if(count($wishlist_status) == 1)
+
+                                                                        <input type="hidden" id="status" value="0" name="status">
+
+                                                                        <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
+
+                                                                        @if($flaggedVideo == '')
+                                                                        <div class="mylist">
+                                                                            <button style="background-color:rgb(229, 45, 39);" type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
+                                                                                <div class="added_to_wishlist" id="check_id">
+                                                                                    <i class="fa fa-times-circle"></i>
+                                                                                    <span>{{tr('wishlist')}}</span>
+                                                                                </div>
+
+                                                                                <span class="wishlist_heart_remove">
+                                                                                    <i class="fa fa-heart"></i>
+                                                                                </span>
+                                                                            </button> 
+                                                                        </div>
+                                                                        @endif
+                                                                    @else
+
+                                                                        <input type="hidden" id="status" value="1" name="status">
+
+                                                                        <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
+                                                                        @if($flaggedVideo == '')
+                                                                            <div class="mylist">
+                                                                                <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
+                                                                                    <div class="add_to_wishlist" id="check_id">
+                                                                                        <i class="fa fa-plus-circle"></i>
+                                                                                        <span>{{tr('wishlist')}}</span>
+                                                                                    </div>
+
+                                                                                    <span class="wishlist_heart">
+                                                                                        <i class="fa fa-heart"></i>
+                                                                                    </span>
+                                                                                </button> 
+                                                                            </div>
+                                                                        @endif
+                                                                    @endif
+                                                                
+                                                                @else
+                                                                    <!-- Login Popup -->
+                                                                @endif
+
+                                                            </form>
+                                                        </div>
+
+                                                        <div class="share">
+                                                            <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->admin_video_id)}}">
+                                                                
+                                                                <i class="fa fa-facebook"></i><!-- {{tr('share_on_fb')}} -->
+                                                                
+                                                            </a>
+
+                                                            <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->admin_video_id)}}">
+                                                               
+                                                                <i class="fa fa-twitter"></i><!-- {{tr('share_on_twitter')}} -->
+                                                                
+                                                            </a> 
+                                                        </div><!--end of share-->
+
+                                                        <div class="share">
 
                                                             @if($flaggedVideo == '')
-                                                                <button onclick="showReportForm();" type="button" class="report-button"><i class="fa fa-flag"></i> {{tr('report')}}</button>
+                                                                <button onclick="showReportForm();" type="button" class="report-button" title="{{tr('report')}}">
+                                                                <i class="fa fa-flag"></i> 
+                                                                <span class="report_class">
+                                                                {{tr('report')}}
+                                                                </span>
+                                                                </button>
                                                             @else 
-                                                                <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning"><i class="fa fa-flag"></i> {{tr('remove_report')}}</a>
+                                                                <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning unmark" title="{{tr('remove_report')}}">
+                                                                    <i class="fa fa-flag"></i> 
+                                                                    <span class="report_class">
+                                                                    {{tr('remove_report')}}
+                                                                    </span>
+                                                                </a>
                                                             @endif
-
+                                                        
                                                         </div>
-                                                        <div class="clearfix"></div>
 
+                                                         <div class="stars ratings">
+
+                                                            <div class="views">
+                                                                <i class="fa fa-eye fa-2x"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
+                                                            </div>
+                                                            <div class="clearfix"></div>
+
+                                                            <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        </div><!--end of stars-->
+
+                                                    </div><!--end of share-details-->                               
+                                                </div>
+
+                                                <div class="clearfix"></div>
+
+                                                @if(Setting::get('is_spam'))
+
+
+                                                    @if (!$flaggedVideo)
+                                                        <div class="more-content" style="display: none;" id="report_video_form">
+                                                            <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
+                                                                <b>Report this Video ?</b>
+                                                                <br>
+                                                                @foreach($report_video as $report) 
+                                                                    <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
+                                                                @endforeach
+                                                                <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
+                                                                <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                                                <div class="pull-right">
+                                                                    <button class="btn btn-success btn-sm">Mark as Spam</button>
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </form>
+                                                        </div>
+                                                    
                                                     @endif
 
                                                 @endif
                                                 
+
+                                                </div>
+
+                                                
+                                               <?php /* @if(Auth::check())
+                                                    @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_details->user_id) */?>
+                                                            
+                                                        
+
+                                                   <?php /*@endif
+
+                                                @endif */?>
+                                                
                                             </div>
 
-                                            <div class="video-description">
-                                                <h4>{{tr('description')}}</h4>
-                                                <p>{{$video->description}}</p>
-                                            </div><!--end of video-description-->                                       
+
+
+                                            <hr>
+
+                                            <div class="col-lg-12">
+                                                <div class="video-description">
+                                                    <h4>{{tr('description')}}</h4>
+                                                    <p>{{$video->description}}</p>
+                                                </div><!--end of video-description-->
+                                            </div>
+
+                                            <div class="clearfix"></div>                                       
                                         </div><!--end of video-title-->                                                             
                                     </div><!--end of details-->
 
-                                    @if(Setting::get('is_spam'))
+                                    
 
-
-                                        @if (!$flaggedVideo)
-                                            <div class="more-content" style="display: none;" id="report_video_form">
-                                                <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
-                                                    <b>Report this Video ?</b>
-                                                    <br>
-                                                    @foreach($report_video as $report) 
-                                                        <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
-                                                    @endforeach
-                                                    <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
-                                                    <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
-                                                    <div class="pull-right">
-                                                        <button class="btn btn-success btn-sm">Mark as Spam</button>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                </form>
-                                            </div>
-                                        
-                                        @endif
-
-                                    @endif
-
-                                    <div class="more-content">
-                                        
-                                        <div class="share-details">
-
-                                            <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
-                                                @if(Auth::check())
-
-                                                    <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
-
-                                                    @if(count($wishlist_status) == 1)
-
-                                                        <input type="hidden" id="status" value="0" name="status">
-
-                                                        <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
-
-                                                        @if($flaggedVideo == '')
-                                                        <div class="mylist">
-                                                            <button style="background-color:rgb(229, 45, 39);" type="submit" id="added_wishlist" data-toggle="tooltip" title="Add to My List">
-                                                                <i class="fa fa-heart"></i>
-                                                                <span>{{tr('added_wishlist')}}</span>
-                                                            </button> 
-                                                        </div>
-                                                        @endif
-                                                    @else
-
-                                                        <input type="hidden" id="status" value="1" name="status">
-
-                                                        <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
-                                                        @if($flaggedVideo == '')
-                                                            <div class="mylist">
-                                                                <button type="submit" id="added_wishlist" data-toggle="tooltip" title="Add to My List">
-                                                                    <i class="fa fa-heart"></i>
-                                                                    <span>{{tr('add_to_wishlist')}}</span>
-                                                                </button> 
-                                                            </div>
-                                                        @endif
-                                                    @endif
-                                                
-                                                @else
-                                                    <!-- Login Popup -->
-                                                @endif
-
-                                            </form>
-
-                                            <div class="share">
-                                                <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->admin_video_id)}}">
-                                                    
-                                                    <i class="fa fa-facebook"></i>{{tr('share_on_fb')}}
-                                                    
-                                                </a>
-
-                                                <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->admin_video_id)}}">
-                                                   
-                                                    <i class="fa fa-twitter"></i>{{tr('share_on_twitter')}}
-                                                    
-                                                </a> 
-                                            </div><!--end of share-->
-
-
-                                             <div class="stars ratings">
-
-                                                <div class="views">
-                                                    <i class="fa fa-eye fa-2x"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
-                                                </div>
-                                                <div class="clearfix"></div>
-
-                                                <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                            </div><!--end of stars-->
-
-                                        </div><!--end of share-details-->                               
-                                    </div>
+                                    
                                     <!--end of more-content-->
 
                                 </div><!--end of video-content-->
@@ -465,7 +512,6 @@ textarea[name=comments] {
     <script>jwplayer.key="{{envfile('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
-
         
         jQuery(document).ready(function(){  
 
@@ -505,17 +551,35 @@ textarea[name=comments] {
 
                                 jQuery("#added_wishlist").html("");
 
+                                /*var display_style = document.getElementById('check_id').style.display;
+
+                                alert(display_style);*/
+
                                 if(data.status == 1) {
                                     jQuery('#status').val("0");
 
                                     jQuery('#wishlist_id').val(data.wishlist_id); 
-                                    jQuery("#added_wishlist").css({'background':'rgb(229, 45, 39)','color' : '#FFFFFF'});
-                                    jQuery("#added_wishlist").append('<i class="fa fa-heart"> {{tr('added_wishlist')}}');
+                                    jQuery("#added_wishlist").css({'font-family':'arial','background-color':'#b31217','color' : '#FFFFFF'});
+
+                                    if (jQuery(window).width() > 640) {
+                                        var append = '<i class="fa fa-times-circle">&nbsp;&nbsp;{{tr('wishlist')}}';
+                                    } else {
+                                        var append = '<i class="fa fa-heart">';
+                                    }
+                                    jQuery("#added_wishlist").append(append);
+                                    
                                 } else {
                                     jQuery('#status').val("1");
                                     jQuery('#wishlist_id').val("");
-                                    jQuery("#added_wishlist").css({'background':'','color' : ''});
-                                    jQuery("#added_wishlist").append('<i class="fa fa-heart"> {{tr('add_to_wishlist')}}');
+                                    jQuery("#added_wishlist").css({'font-family':'arial','background':'','color' : ''});
+                                    if (jQuery(window).width() > 640) {
+                                        var append = '<i class="fa fa-plus-circle">&nbsp;&nbsp;{{tr('wishlist')}}';
+                                    } else {
+                                        var append = '<i class="fa fa-heart">';
+                                    }
+                                   
+                                    jQuery("#added_wishlist").append(append);
+                                    
                                 }
                            } else {
                                 console.log('Wrong...!');

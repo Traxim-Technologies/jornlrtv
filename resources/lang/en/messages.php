@@ -164,7 +164,7 @@ return array(
 	'terms_conditions' => 'Terms and Conditions',
 	'privacy' => 'Privacy',
 	'go_home' => 'Go Home',
-
+	'select_ad_type_error'=>'Select any one of the Ad Type',
 	'action'	=>	'Action',
 	'view'	=> 	'View',
 	'edit'	=> 	'Edit',
@@ -327,7 +327,7 @@ return array(
 
 	'wishlist' => 'Wishlist',
 	'added_wishlist' => 'Added wishlist',
-	'add_to_wishlist' => 'ADD TO WISHLIST',
+	'add_to_wishlist' => 'Add To Wishlist',
 	'add_to' => 'ADD TO',
 
 	// Profile

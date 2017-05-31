@@ -1691,9 +1691,13 @@ class AdminController extends Controller {
 
         try {
 
-            //dd($request->all());
-
             DB::beginTransaction();
+
+            if(!$request->ad_type) {
+
+                throw new Exception(tr('select_ad_type_error'));
+                
+            }
 
             $video_tape_ids = explode(',', $request->video_tape_id);
 
@@ -1702,6 +1706,8 @@ class AdminController extends Controller {
                 $model = VideoAd::where('video_tape_id', $video_tape_id)->first();
 
                 if($model) {
+
+                    $ads_type = [];
 
                     foreach ($request->ad_type as $key => $value) {
 
@@ -1768,7 +1774,7 @@ class AdminController extends Controller {
 
                     }
 
-                    $model->types_of_ad = $model->types_of_ad.','.implode(',', $ads_type);
+                    $model->types_of_ad = ($ads_type) ? $model->types_of_ad.','.implode(',', $ads_type) : $model->types_of_ad;
 
                     if ($model->save()) {
 
