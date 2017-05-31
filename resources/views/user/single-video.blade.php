@@ -251,15 +251,16 @@ textarea[name=comments] {
                                                          <div class="stars ratings">
 
                                                             <div class="views">
-                                                                <i class="fa fa-eye fa-2x"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
+                                                                <i class="fa fa-eye" style="color: #b31217;font-size:13px;"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
                                                             </div>
                                                             <div class="clearfix"></div>
-
-                                                            <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                            <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                            <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                            <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                            <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <center>
+                                                                <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            </center>
                                                         </div><!--end of stars-->
 
                                                     </div><!--end of share-details-->                               
