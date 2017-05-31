@@ -57,6 +57,8 @@ class SocialAuthController extends Controller
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
 
+            $user->is_verified = DEFAULT_TRUE;
+
 			$user->save();
 
 		}
