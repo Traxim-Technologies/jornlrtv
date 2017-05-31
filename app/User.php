@@ -83,19 +83,6 @@ class User extends Authenticatable
         return $this->hasMany('App\RedeemRequest')->orderBy('status' , 'asc');
     }
 
-
-
-    /**
-     * Save the password with the help of Hash
-     *
-     *
-     */
-    public function setPasswordAttribute($pass){
-
-        // $this->attributes['password'] = \Hash::make($pass);
-
-    }
-
     /**
      * Save the unique ID 
      *
