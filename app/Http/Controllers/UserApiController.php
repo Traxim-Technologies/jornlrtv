@@ -750,7 +750,7 @@ class UserApiController extends Controller {
 
     public function wishlist($id, $count = null, $skip = 0) {
 
-        $query = Wishlist::where('user_id', $id)->select('wishlists.*')
+        $query = Wishlist::where('wishlists.user_id', $id)->select('wishlists.*')
                     ->where('wishlists.status', DEFAULT_TRUE)
                     ->leftJoin('video_tapes', 'wishlists.video_tape_id', '=', 'video_tapes.id')
                     ->where('video_tapes.is_approved' , 1)
