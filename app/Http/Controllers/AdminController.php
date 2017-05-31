@@ -1178,7 +1178,7 @@ class AdminController extends Controller {
         $model = Flag::groupBy('video_tape_id')->get();
         // Return array of values
         return view('admin.spam_videos.spam_videos')->with('model' , $model)
-                        ->with('page' , 'Spam Videos')
+                        ->with('page' , 'spam_videos')
                         ->with('subPage' , '');
     }
 
