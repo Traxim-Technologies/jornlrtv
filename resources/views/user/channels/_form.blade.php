@@ -16,7 +16,7 @@
 						<div id="c4-header-bg-container" class="c4-visible-on-hover-container  has-custom-banner">
 							<div class="hd-banner">
 								<div class="hd-banner-image">
-									<img src="{{asset('images/default-cover-image.jpg')}}" id="cover_preview" class="st_cover_photo_img" id="cover_preview" style="display: none" />
+									<img src="{{asset('images/default-cover-image.jpg')}}" id="cover_preview" class="st_cover_photo_img" id="cover_preview" style= "{{($model->id) ? 'display: none' : ''}}"; />
 								</div>
 							</div>
 							<div id="header-links">
