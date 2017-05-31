@@ -353,19 +353,19 @@ videos (single page) css
 .video-content{
 	padding-bottom: 6px;
     background-color: #fff;
-    padding: 20px;
+    padding: 20px 0px;
     margin-top: 10px;
     min-height: 221px;
 }
 .details{
-	border-bottom: 1px solid #b8b8b8;
+	/*border-bottom: 1px solid #b8b8b8;*/
 }
 .title h3{
 	font-size: 18px;
 	font-weight: bold;
     margin-top: 0;
     float: left;
-    width: 70%;
+    width: 100%;
     margin-bottom: 0;
     text-transform: capitalize;
 }
@@ -399,10 +399,12 @@ videos (single page) css
 	color: #fff;
 	box-shadow: none;
 	border-color: transparent;
-	border-radius: 4px;
-	margin-bottom: 5px;
-	float: right;
-	padding: 5px 10px;
+	/*border-radius: 4px;
+	margin-bottom: 5px;*/
+	/*float: right;*/
+	margin-left: 10px;
+	padding: 4px 10px;
+	font-size: 13px;
 }
 
 
@@ -456,11 +458,11 @@ videos (single page) css
 }
 .more-content{
 	/*margin-top: 25px;*/
-	background-color: #fff;
+	/*background-color: #fff;*/
 	min-height: 30px;
 }
 .share-details i{
-	margin-right: 5px;
+	margin-right: 0px;
 }
 .more-content a{
 	/*color: #767676;*/
@@ -490,9 +492,9 @@ videos (single page) css
 .share-fb{
 	background-color: #3b5998;
 	border-color: transparent;
-	padding: 5px 10px;
+	padding: 5px 12px;
 	display: inline-block;
-	margin-left: 10px;
+	margin-left: 12px;
     color: #fff;
 }
 .share-fb:hover,.share-fb:active,.share-fb:focus{
@@ -528,7 +530,7 @@ videos (single page) css
 	text-decoration: none;
 }
 .share i{
-	margin-right: 5px;
+	margin-right: 0px;
 }
 .stars a{
 	padding: 0;
@@ -1433,7 +1435,6 @@ changes
 .share-twitter{
 	background-color: #00aced;
 	border-color: transparent;
-	padding: 3px 7px;
     color: #fff;
 }
 .share-twitter:hover .share-twitter:active .share-twitter:focus{
@@ -1733,4 +1734,71 @@ margin: 0px auto 35px;
 	color: #fff;
 	font-size: 11px;
 	padding: 4px;
+}
+
+.unmark {
+	font-size: 13px;
+	margin-left: 10px;
+	padding: 5px 10px;
+	border-radius: 0PX;
+}
+
+.wishlist_heart {
+	display: none;
+}
+
+.add_to_wishlist {
+	display: block;
+}
+
+.added_to_wishlist {
+
+	display: block;
+
+}
+
+.wishlist_heart_remove {
+	display: none;
+}
+
+.report_class {
+	display: inline-block;
+}
+
+@media screen and (max-width: 640px){
+
+	.add_to_wishlist {
+		display: none;
+		
+	}
+	.wishlist_heart {
+		display: block;
+	}
+
+	.wishlist_form {
+		width: 17%;
+		float: left;
+	}
+
+	.mylist button {
+	    padding: 1px 10px;
+	}
+
+	.added_to_wishlist {
+
+		display: none;
+
+	}
+
+	.wishlist_heart_remove {
+		display: block;
+	}
+
+	.report_class {
+		display: none;
+	}
+
+	.ratings {
+		padding-top: 5px;
+	}
 }

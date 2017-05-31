@@ -249,24 +249,24 @@ videos.html responsive
 @media screen and (max-width: 421px){
 	.share-fb{
 		margin-bottom: 10px;
-		width: 100%;
+		/*width: 100%;*/
 		margin-left: 0;
 		text-align: center;
 	}
 	.share-google{
 		margin-bottom: 10px;
-		width: 100%;
+		/*width: 100%;*/
 		margin-left: 0;
 		text-align: center;
 	}
 	.ratings {
-    float: none;
-    margin-top: 0;
-    margin: 0 auto;
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-}
+	   /* float: none;*/
+	   /* margin-top: 0;*/
+	   /* margin: 0 auto;*/
+	    display: inline-block;
+	    text-align: center;
+	    /*width: 100%;*/
+	}
 	.more-content a{
 		/*padding: 0;*/
 	}
@@ -284,10 +284,10 @@ videos.html responsive
 	}
 }
 @media screen and (max-width: 364px){
-	.title h3 {
+	/*.title h3 {
 	    font-size: 12px !important;
 	    font-weight: bold;
-	}
+	}*/
 	.video-title h4 {
 	    font-weight: 10px !important;
 	}
@@ -305,11 +305,11 @@ videos.html responsive
 	}
 }
 @media screen and (max-width: 328px){
-	.title h3 {
+	/*.title h3 {
 	    font-size: 11px !important;
 	    font-weight: bold;
 	    width: 65% !important;
-	}
+	}*/
 	.video-title p {
 	    font-size: 8px;
 	}

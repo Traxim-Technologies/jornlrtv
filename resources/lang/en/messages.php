@@ -327,7 +327,7 @@ return array(
 
 	'wishlist' => 'Wishlist',
 	'added_wishlist' => 'Added wishlist',
-	'add_to_wishlist' => 'ADD TO WISHLIST',
+	'add_to_wishlist' => 'Add To Wishlist',
 	'add_to' => 'ADD TO',
 
 	// Profile
