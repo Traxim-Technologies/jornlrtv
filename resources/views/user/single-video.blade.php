@@ -936,7 +936,13 @@ textarea[name=comments] {
 
                                              $("#ad_image").attr("src","{{$obj->assigned_ad->file}}");
 
+                                            @if($obj->assigned_ad->ad_url)
+
                                              $('.click_here_ad').html("<a target='_blank' href='{{$obj->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+
+                                             $('.click_here_ad').show();
+
+                                             @endif
 
 
                                              adsPage("{{$obj->ad_time}}");
@@ -963,7 +969,13 @@ textarea[name=comments] {
 
                                         $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
 
+                                        @if($ads->post_ad->assigned_ad->ad_url)
+
                                         $('.click_here_ad').html("<a target='_blank' href='{{$ads->post_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+
+                                        $('.click_here_ad').show();
+
+                                        @endif
 
                                         stop();
 
@@ -995,8 +1007,6 @@ textarea[name=comments] {
                          // adtimings = adtimings * 60;
 
                         $(".seconds").html(adtimings+" sec");
-
-                        $(".click_here_ad").show();
 
                         $("#progress").html('<div class="progress-bar-div">'+
                                 '<span class="progress-bar-fill-div" style="width: 0%"></span>'+
@@ -1072,7 +1082,13 @@ textarea[name=comments] {
 
                                      $("#ad_image").attr("src","{{$ads->pre_ad->assigned_ad->file}}");
 
-                                     $('.click_here_ad').html("<a target='_blank' href='{{$ads->pre_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+                                     @if($ads->pre_ad->assigned_ad->ad_url)
+
+                                         $('.click_here_ad').html("<a target='_blank' href='{{$ads->pre_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+
+                                         $(".click_here_ad").show();
+
+                                     @endif
 
                                      jwplayer().pause();
 
