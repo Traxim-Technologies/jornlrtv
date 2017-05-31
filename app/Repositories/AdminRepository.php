@@ -21,7 +21,6 @@ class AdminRepository {
 
     	try {
 
-            // dd($request->all());
 
             DB::beginTransaction();
 
@@ -151,6 +150,7 @@ class AdminRepository {
 
                 }
 
+//                dd($request->all());
 
                 if($request->has('between_ad_type')) {
 
