@@ -1420,7 +1420,7 @@ class UserApiController extends Controller {
                                 $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
                             }
 
-                             \Log::info("Resoltion".print_r($$video->video_resolutions));
+                             \Log::info("Resoltion".print_r($video->video_resolutions));
                         }
 
                         \Log::info("Video Stream Url".print_r($videoStreamUrl, true));
