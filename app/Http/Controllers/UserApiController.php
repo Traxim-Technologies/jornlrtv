@@ -229,6 +229,7 @@ class UserApiController extends Controller {
                     $user->is_verified = 1;
                 }
 
+
                 // $user->is_activated = 1;
 
                 $user->save();
@@ -410,7 +411,7 @@ class UserApiController extends Controller {
             if($user) {
 
                 $new_password = Helper::generate_password();
-                $user->password = Hash::make($new_password);
+                $user->password =$new_password;
 
                 $email_data = array();
                 $subject = tr('user_forgot_email_title');
