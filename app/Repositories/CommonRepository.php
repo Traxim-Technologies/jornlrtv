@@ -324,7 +324,18 @@ class CommonRepository {
 
                 $model->description = $request->has('description') ? $request->description : $model->description;
 
-                $model->channel_id = $request->has('channel_id') ? $request->channel_id : $model->channel_id;
+                $channel_id = $request->has('channel_id') ? $request->channel_id : $model->channel_id;
+
+                $model->channel_id = $channel_id;
+
+                if($channel_id) {
+
+                    $channel = Channel::find($channel_id);
+                    
+                    if($channel) {
+                        $model->user_id = $channel->user_id;
+                    }
+                }
 
                 $model->reviews = $request->has('reviews') ? $request->reviews : $model->reviews;
 
