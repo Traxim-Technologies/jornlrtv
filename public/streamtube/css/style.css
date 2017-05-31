@@ -883,6 +883,7 @@ history (single page) css
 .cross-title {
     width: 80%;
     float: left;
+    text-transform: capitalize;
 }
 .cross-title a:hover{
 	color: #337ab7;
