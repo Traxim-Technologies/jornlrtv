@@ -1411,11 +1411,7 @@ class UserApiController extends Controller {
 
                     if (\Setting::get('streaming_url')) {
 
-                         \Log::info("Approved".print_r($video->is_approved));
-
                         if ($video->is_approved == 1) {
-
-                            \Log::info(Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil');
 
 
                             if ($video->video_resolutions) {
@@ -1424,10 +1420,8 @@ class UserApiController extends Controller {
                                 $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
                             }
 
-                             \Log::info("Resoltion".print_r($video->video_resolutions));
                         }
 
-                        \Log::info("Video Stream Url".print_r($videoStreamUrl, true));
 
                     } else {
 
@@ -1463,9 +1457,7 @@ class UserApiController extends Controller {
             }
 
             $share_link = route('user.single' , $id);
-
-            \Log::info("HLS VIDEO".print_r($hls_video , true));
-
+            
             $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
                 'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
                 'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
