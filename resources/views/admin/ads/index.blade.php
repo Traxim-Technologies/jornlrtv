@@ -78,7 +78,7 @@
                                                         @endif
                                                     </li>
                                                     
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.ads_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
 								               
 														
 								                  	<li class="divider" role="presentation"></li>

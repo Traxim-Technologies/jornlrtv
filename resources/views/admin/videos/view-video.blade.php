@@ -61,8 +61,20 @@ hr {
                                     <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('channel')}}</b> <a class="pull-right">{{$video->channel_name}}</a>
                                 </li>
                               
+                                
+
                                 <li class="list-group-item">
-                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a class="pull-right">{{$video->duration}}</a>
+                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a href="{{}}" class="pull-right">{{$video->duration}}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-bullhorn margin-r-5"></i>{{tr('ad_status')}}</b> <a class="pull-right">
+                                        
+                                        @if($video->ad_status)
+                                            <span class="label label-success">{{tr('yes')}}</span>
+                                        @else
+                                            <span class="label label-danger">{{tr('no')}}</span>
+                                        @endif
+                                    </a>
                                 </li>
 
                                 <li class="list-group-item">
