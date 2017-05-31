@@ -2,7 +2,11 @@
 
 @section('title', tr('videos'))
 
-@section('content-header', tr('videos'))
+@section('content-header')
+
+@if(isset($channel)) <span class="text-green"> {{$channel->name}} </span>- @endif {{tr('videos')}}
+
+@endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>

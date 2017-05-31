@@ -280,6 +280,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/channel/approve', 'AdminController@approve_channel')->name('channel.approve');
 
+    Route::get('/channel/videos/{id?}', 'AdminController@channel_videos')->name('channel.videos');
+
     
 
     // Videos

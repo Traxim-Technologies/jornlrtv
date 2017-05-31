@@ -588,8 +588,6 @@ class AdminController extends Controller {
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->get();
 
-        // dd($videos);
-
         return view('admin.videos.videos')->with('videos' , $videos)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
@@ -1255,9 +1253,6 @@ class AdminController extends Controller {
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 
-
-
-
     public function channels() {
 
         $channels = Channel::orderBy('channels.created_at', 'desc')
@@ -1341,6 +1336,23 @@ class AdminController extends Controller {
             return back()->with('flash_error',tr('something_error'));
 
         }
+    }
+
+    public function channel_videos($channel_id) {
+
+        $channel = Channel::find($channel_id);
+
+        $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('channel_id' , $channel_id)
+                    ->videoResponse()
+                    ->orderBy('video_tapes.created_at' , 'desc')
+                    ->get();
+
+        return view('admin.videos.videos')->with('videos' , $videos)
+                    ->withPage('videos')
+                    ->with('channel' , $channel)
+                    ->with('sub_page','view-videos');
+   
     }
 
 

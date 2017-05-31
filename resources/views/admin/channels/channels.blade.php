@@ -79,6 +79,18 @@
                                                             <a role="menuitem" tabindex="-1" href="{{route('admin.edit.channel' , array('id' => $channel->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
+
+													<li class="divider" role="presentation"></li>
+
+
+													<li role="presentation">
+                                                       
+                                                        <a role="menuitem" tabindex="-1" href="{{route('admin.channel.videos', $channel->id)}}">{{tr('videos')}}</a>
+
+                                                    </li>
+
+													<li class="divider" role="presentation"></li>
+
 								                  	<li role="presentation">
 
 									                  	@if(Setting::get('admin_delete_control'))
