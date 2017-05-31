@@ -42,8 +42,8 @@
 
 							@foreach($model as $i => $data)
 							    <tr>
-							      	<td>{{$i+1}}</td>
-							      	<td>{{$data->name}}</td>
+							      	<td><a href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{$data->name}}</a></td>
 							      	<td>{{$data->ad_time}}</td>
 							      	<td>
 							      		<img src="{{$data->file}}" style="width: 30px;height: 30px;" />
@@ -72,7 +72,7 @@
                                                         @endif
                                                     </li>
                                                     
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
 
 								                  	@if($data->status)
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ad_status' , array('id' => $data->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
