@@ -67,7 +67,7 @@ class CompressVideo extends Job implements ShouldQueue
                     ->size($solution->value)
                     ->vcodec('h264')
                     ->constantRateFactor('28')
-                    ->output(public_path().'/uploads/videos/original/'.$solution->value.$this->local_url)
+                    ->output(public_path().'/uploads/videos/'.$solution->value.$this->local_url)
                     ->ready();
 
                     Log::info('Output'.public_path().'/uploads/videos/'.$solution->value.$this->local_url);
