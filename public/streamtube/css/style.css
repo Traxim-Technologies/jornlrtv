@@ -142,7 +142,8 @@ body{
 }
 .video-head{
 	margin-top: 6px;
-    margin-bottom: 6px;
+	text-transform: capitalize;
+    /*margin-bottom: 6px;*/
 }
 .content-row{
 	margin: 0;
@@ -366,6 +367,7 @@ videos (single page) css
     float: left;
     width: 70%;
     margin-bottom: 0;
+    text-transform: capitalize;
 }
 .watch-duration{
 	width: 45%;
@@ -845,6 +847,7 @@ history (single page) css
 	width: 20%;
 	max-height: 100px;
     overflow: hidden;
+    position: relative;
 }
 .history-image img{
 	width: 100%;
@@ -1378,12 +1381,14 @@ recommended.html css
 }
 .video-head a{
 	display: block;
+	font-weight: bolder;
   display: -webkit-box;
   /* Fallback for non-webkit */
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
   max-height: 20px;
   line-height: 19px;
 }
@@ -1397,6 +1402,7 @@ recommended.html css
     text-overflow: ellipsis;
     max-height: 40px;
     line-height: 19px;
+    text-transform: capitalize;
 }
 .recom-show{
 	float: right;
@@ -1487,8 +1493,9 @@ changes
 
 .slide-image{
 	width: 100%;
-	height: 110px;
+	height: 110px !important;
 	overflow: hidden;
+	position: relative;
 }
 
 .slide-image img{
@@ -1709,4 +1716,20 @@ margin: 0px auto 35px;
 	max-height: 100px;
 	overflow-y: auto;
 	margin-bottom: 10px !important;
+}
+.video_views {
+	color: #777;
+    font-family: arial;
+    font-size: 11px;
+}
+
+.video_duration {
+	background-color: #000;
+	opacity: 0.7;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+	color: #fff;
+	font-size: 11px;
+	padding: 4px;
 }

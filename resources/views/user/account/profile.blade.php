@@ -1,5 +1,15 @@
 @extends('layouts.user')
 
+@section('styles')
+<style type="text/css">
+.history-image{ 
+    width: 30% !important;
+}
+.history-title {
+    width: 65% !important;
+}
+</style>
+@endsection
 @section('content')
 
 <div class="y-content">
@@ -80,14 +90,22 @@
                                     <li class="sub-list row no-margin">
                                         <div class="main-history">
                                             <div class="history-image">
-                                                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_tape->default_image}}"></a>                        
+                                                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_tape->default_image}}"></a>  
+                                                 <div class="video_duration">
+                                                    {{$video->video_tape->duration}}
+                                                </div>                      
                                             </div><!--history-image-->
 
                                             <div class="history-title">
                                                 <div class="history-head row">
                                                     <div class="cross-title">
                                                         <h5><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->video_tape->title}}</a></h5>
-                                                        <p class="duration">{{tr('duration')}}: {{$video->video_tape->duration}}</p>
+                                                        <!-- <p class="duration">{{tr('duration')}}: {{$video->video_tape->duration}}</p> -->
+                                                         <span class="video_views">
+                                                            <i class="fa fa-eye"></i> {{$video->video_tape->watch_count}} {{tr('views')}} 
+                                                            <?php /*<b>.</b> 
+                                                            {{$history->video_tape->created_at->diffForHumans()}}*/?>
+                                                        </span>
                                                     </div> 
                                                     <div class="cross-mark">
                                                         <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>

@@ -36,13 +36,20 @@
                                 <div class="main-history">
                                      <div class="history-image">
                                         <a href="{{route('user.single' , $history->video_tape_id)}}"><img src="{{$history->video_tape->default_image}}"></a>
+                                        <div class="video_duration">
+                                            {{$history->video_tape->duration}}
+                                        </div>
                                     </div><!--history-image-->
 
                                     <div class="history-title">
                                         <div class="history-head row">
                                             <div class="cross-title">
                                                 <h5><a href="{{route('user.single' , $history->video_tape_id)}}">{{$history->video_tape->title}}</a></h5>
-                                                <p class="duration">{{tr('duration')}}: {{$history->video_tape->duration}}</p>
+                                                <span class="video_views">
+                                                    <i class="fa fa-eye"></i> {{$history->video_tape->watch_count}} {{tr('views')}} 
+                                                    <?php /*<b>.</b> 
+                                                    {{$history->video_tape->created_at->diffForHumans()}}*/?>
+                                                </span>
                                             </div> 
                                             <div class="cross-mark">
                                                 <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.history' , array('history_id' => $history->id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
@@ -59,7 +66,8 @@
                                            <a href="#"><i @if($history->video_tape->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                            <a href="#"><i @if($history->video_tape->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                            <a href="#"><i @if($history->video_tape->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        </span>                                               
+                                        </span>      
+
                                     </div><!--end of history-title--> 
                                     
                                 </div><!--end of main-history-->

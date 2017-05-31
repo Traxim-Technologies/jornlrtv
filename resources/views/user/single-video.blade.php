@@ -381,25 +381,29 @@ textarea[name=comments] {
                                                  <div class="video-image">
                                                     <div class="video-image-outer">
                                                         <a href="{{route('user.single' , $suggestion->admin_video_id)}}"><img src="{{$suggestion->default_image}}"></a>
-                                                    </div>                       
-                                                </div><!--video-image-->
+                                                    </div>  
+                                                    <div class="video_duration">
+                                                        {{$suggestion->duration}}
+                                                    </div> 
+                                                 </div><!--video-image-->
 
                                                 <div class="sugg-head">
                                                     <div class="suggn-title">                                          
                                                         <h5><a href="{{route('user.single' , $suggestion->admin_video_id)}}">{{$suggestion->title}}</a></h5>
                                                     </div><!--end of sugg-title-->
 
-                                                    <div class="sugg-description">
-                                                        <p>{{tr('duration')}}: {{$suggestion->duration}}</p>
-                                                    </div><!--end of sugg-description--> 
-
-                                                    <?php /* <span class="stars">
+                                                    <span class="video_views">
+                                                        <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <?php /*<b>.</b> 
+                                                        {{$suggestion->created_at->diffForHumans()}} */?>
+                                                    </span> 
+                                                    <br>
+                                                    <span class="stars">
                                                         <a href="#"><i @if($suggestion->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#"><i @if($suggestion->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    </span>                          */ ?>                              
+                                                    </span>                              
                                                 </div><!--end of sugg-head-->
                                     
                                             </div><!--end of main-video-->
