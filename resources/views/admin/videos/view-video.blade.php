@@ -64,7 +64,7 @@ hr {
                                 
 
                                 <li class="list-group-item">
-                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a href="{{}}" class="pull-right">{{$video->duration}}</a>
+                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a href="#" class="pull-right">{{$video->duration}}</a>
                                 </li>
                                 <li class="list-group-item">
                                     <b><i class="fa fa-bullhorn margin-r-5"></i>{{tr('ad_status')}}</b> <a class="pull-right">
