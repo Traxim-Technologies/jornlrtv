@@ -1406,7 +1406,7 @@ class AdminController extends Controller {
                 'title' => 'required|max:255',
                 'plan' => 'required',
                 'amount' => 'required',
-                'picture' => 'mimes:jpeg,png,jpg'
+                'image' => 'mimes:jpeg,png,jpg'
         ]);
         
         if($validator->fails()) {

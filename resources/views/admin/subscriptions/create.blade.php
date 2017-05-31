@@ -45,7 +45,7 @@
                             <label for="image" class="">{{tr('image')}}</label>
 
                             <!-- <div class="col-sm-10"> -->
-                                <input type="file" required name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}">
+                                <input type="file" required name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}" accept="image/png, image/jpeg">
                             <!-- </div> -->
                         </div>
 

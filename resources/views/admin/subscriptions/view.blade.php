@@ -26,7 +26,7 @@
                         
                         <div class="user-block">
 
-                            <img class="img-circle img-bordered-sm" src="{{$data->user ?  $data->user->picture : asset('placeholder.png') }}" alt="User Image">
+                           <!--  <img class="img-circle img-bordered-sm" src="{{$data->user ?  $data->user->picture : asset('placeholder.png') }}" alt="User Image"> -->
 
                             <span class="username">
                                 <a href="">{{$data->title}}</a>
