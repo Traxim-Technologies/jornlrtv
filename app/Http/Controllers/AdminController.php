@@ -211,6 +211,24 @@ class AdminController extends Controller {
         return $response;
     }
 
+    public function user_channels($user_id) {
+
+        if($user_id){
+
+            $user = User::find($user_id);
+
+            $channels = Channel::orderBy('channels.created_at', 'desc')
+                            ->where('user_id' , $user_id)
+                            ->distinct('channels.id')
+                            ->get();
+
+            return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels')->with('user' , $user);
+
+        } else {
+            return back()->with('flash_error' , tr('something_error'));
+        }
+    }
+
     public function users() {
 
         $users = User::orderBy('created_at','desc')->get();
@@ -587,8 +605,6 @@ class AdminController extends Controller {
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->get();
-
-        // dd($videos);
 
         return view('admin.videos.videos')->with('videos' , $videos)
                     ->withPage('videos')
@@ -1255,9 +1271,6 @@ class AdminController extends Controller {
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 
-
-
-
     public function channels() {
 
         $channels = Channel::orderBy('channels.created_at', 'desc')
@@ -1269,7 +1282,7 @@ class AdminController extends Controller {
 
     public function add_channel() {
 
-        $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->get();
+        $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->get();
 
         return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
     }
@@ -1288,8 +1301,6 @@ class AdminController extends Controller {
         $response = CommonRepo::channel_save($request)->getData();
 
         if($response->success) {
-            // $response->message = Helper::get_message(118);
-
             return back()->with('flash_success', $response->message);
         } else {
             
@@ -1343,6 +1354,23 @@ class AdminController extends Controller {
             return back()->with('flash_error',tr('something_error'));
 
         }
+    }
+
+    public function channel_videos($channel_id) {
+
+        $channel = Channel::find($channel_id);
+
+        $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('channel_id' , $channel_id)
+                    ->videoResponse()
+                    ->orderBy('video_tapes.created_at' , 'desc')
+                    ->get();
+
+        return view('admin.videos.videos')->with('videos' , $videos)
+                    ->withPage('videos')
+                    ->with('channel' , $channel)
+                    ->with('sub_page','view-videos');
+   
     }
 
 

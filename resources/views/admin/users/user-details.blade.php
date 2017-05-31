@@ -64,7 +64,6 @@
 		                <li><a href="#">{{tr('username')}} <span class="pull-right">{{$user->name}}</span></a></li>
 		                <li><a href="#">{{tr('email')}} <span class="pull-right">{{$user->email}}</span></a></li>
 		                <li><a href="#">{{tr('mobile')}} <span class="pull-right">{{$user->mobile}}</span></a></li>
-		                <li><a href="#">{{tr('address')}} <span class="pull-right">{{$user->address}}</span></a></li>
 		                <li><a href="#">{{tr('validity_days')}} <span class="pull-right"> 
 		                				@if($user->user_type)
                                             <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>
@@ -80,6 +79,8 @@
 		                		</span>
 		                	</a>
 		                </li>
+		                <li><a href="#">{{tr('description')}} <span class="pull-right">{{$user->description}}</span></a></li>
+
               		</ul>
             	</div>
           	

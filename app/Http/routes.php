@@ -227,6 +227,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // users
 
+    Route::get('/user/channels/{id}', 'AdminController@user_channels')->name('users.channels');
+
     Route::get('/users', 'AdminController@users')->name('users');
 
     Route::get('/add/user', 'AdminController@add_user')->name('add.user');
@@ -279,6 +281,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/view/channel/{id}', 'AdminController@view_channel')->name('view.channel');
 
     Route::get('/channel/approve', 'AdminController@approve_channel')->name('channel.approve');
+
+    Route::get('/channel/videos/{id?}', 'AdminController@channel_videos')->name('channel.videos');
 
     
 

@@ -35,7 +35,6 @@
 						      <th>{{tr('upgrade')}}</th>
 						      <th>{{tr('validity_days')}}</th>
 						      <th>{{tr('redeems')}}</th>
-						     <!--  <th>{{tr('ad_status')}}</th> -->
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -63,19 +62,6 @@
 							      </td>
 
 							      <td><b>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : 0}}</b></td>
-
-							      <?php /* <td>
-
-							      @if($user->ads_status) 
-
-							      	<span class="label label-success">{{tr('enabled')}}</span>
-
-							      @else
-
-							      	<span class="label label-warning">{{tr('disabled')}}</span>
-
-							      @endif
-							      </td> */?>
 							 
 							      <td>
             							<ul class="admin-action btn btn-default">
@@ -91,6 +77,9 @@
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view.user' , $user->id)}}">{{tr('view')}}</a></li>
 								                  	
 								                  	<li role="presentation" class="divider"></li>
+
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.channels' , $user->id)}}">{{tr('channels')}}</a></li>
+
 								                  	
 								                  	<li role="presentation">
 								                  	
