@@ -542,7 +542,7 @@ function convertTimeToUSERzone($str, $userTimezone, $format = 'Y-m-d H:i:s') {
  */
 function getFlagVideos($id) {
     // Load Flag videos based on logged in user id
-    $model = Flag::where('user_id', $id)
+    $model = Flag::where('flags.user_id', $id)
         ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
         ->where('video_tapes.is_approved' , 1)
         ->where('video_tapes.status' , 1)
