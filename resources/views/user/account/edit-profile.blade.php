@@ -77,7 +77,9 @@
                                         <div class="change-pwd save-pro-btn">
                                             <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
 
+                                            @if (Auth::user()->login_by == 'manual')
                                             <a href="{{route('user.change.password')}}" class="btn btn-danger">{{tr('change_password')}}</a>
+                                            @endif
 
                                         </div>                                              
 
