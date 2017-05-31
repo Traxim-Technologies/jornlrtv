@@ -23,13 +23,17 @@
                                 <div class="slide-box recom-box">
                                     <div class="slide-image recom-image">
                                         <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}" /></a>
+
+                                        <div class="video_duration">
+                                            {{$video->duration}}
+                                        </div>
                                     </div><!--end of slide-image-->
 
                                     <div class="video-details recom-details">
                                         <div class="video-head">
                                             <a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a>
                                         </div>
-                                        <div class="sugg-description">
+                                        <?php /*<div class="sugg-description">
                                             <p>{{tr('duration')}}: {{$video->duration}}</p>
                                         </div><!--end of sugg-description--> 
 
@@ -39,7 +43,12 @@
                                            <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                            <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                            <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        </span>  
+                                        </span>   */?>
+
+                                        <span class="video_views">
+                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                            {{$video->created_at->diffForHumans()}}
+                                        </span> 
                                     </div><!--end of video-details-->
                                 </div><!--end of slide-box-->
                             @endforeach

@@ -82,6 +82,8 @@ class UserController extends Controller {
 
                 $watch_lists = VideoRepo::watch_list($id,WEB);  
             }
+
+            //dd($watch_lists);
             
             $recent_videos = VideoRepo::recently_added(WEB);
 
