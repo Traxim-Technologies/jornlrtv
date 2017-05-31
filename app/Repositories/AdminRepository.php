@@ -21,10 +21,11 @@ class AdminRepository {
 
     	try {
 
-
             DB::beginTransaction();
 
             $model = ($request->has('video_ad_id')) ? VideoAd::find($request->video_ad_id) : new VideoAd();
+
+            $newOne = ($model->id) ? DEFAULT_FALSE : DEFAULT_TRUE;
 
             $model->video_tape_id = $request->has('video_tape_id') ? $request->video_tape_id : $model->video_tape_id;
 
@@ -150,11 +151,26 @@ class AdminRepository {
 
                 }
 
-//                dd($request->all());
 
                 if($request->has('between_ad_type')) {
 
-                    // echo "<pre>";
+
+                    if(!$newOne) {
+
+                        if(count($model->getBetweenAdDetails) > 0) {
+
+                            foreach ($model->getBetweenAdDetails as $key => $value) {
+                              
+                                  if(!in_array($value->id, $request->between_ad_type_id)) {
+
+                                        $value->delete();
+
+                                  }
+
+                            }
+                        }
+
+                    }
 
                     $b_type = DEFAULT_FALSE;
 
@@ -170,13 +186,13 @@ class AdminRepository {
 
                                 if(empty($b_time)) {
 
+                                    $delete = 1;
+
                                     $b_ad = AssignVideoAd::find($request->between_ad_type_id[$key]);
 
                                     if($b_ad) {
 
                                         $b_ad->delete();
-
-                                        $delete = 1;
 
                                     }
 
