@@ -502,7 +502,7 @@ class AdminController extends Controller {
 
         if($user = User::find($id)) {
 
-            $user_history = UserHistory::where('user_id' , $id)
+            $user_history = UserHistory::where('user_histories.user_id' , $id)
                             ->leftJoin('users' , 'user_histories.user_id' , '=' , 'users.id')
                             ->leftJoin('video_tapes' , 'user_histories.video_tape_id' , '=' , 'video_tapes.id')
                             ->select(
@@ -544,7 +544,7 @@ class AdminController extends Controller {
 
         if($user = User::find($id)) {
 
-            $user_wishlist = Wishlist::where('user_id' , $id)
+            $user_wishlist = Wishlist::where('wishlists.user_id' , $id)
                             ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
                             ->leftJoin('video_tapes' , 'wishlists.video_tape_id' , '=' , 'video_tapes.id')
                             ->select(

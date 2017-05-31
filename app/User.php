@@ -179,10 +179,21 @@ class User extends Authenticatable
 
             if (count($user->getChannel) > 0) {
 
-                foreach($user->getChannel as $channel)
-                {
+                foreach($user->getChannel as $channel) {
                     $channel->delete();
                 } 
+
+            }
+
+            if (count($user->userRedeem) > 0) {
+
+                $user->userRedeem()->delete();
+
+            }
+
+            if (count($user->userRedeemRequests) > 0) {
+
+                $user->userRedeemRequests()->delete();
 
             }
         }); 

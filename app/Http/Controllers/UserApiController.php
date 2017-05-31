@@ -785,7 +785,7 @@ class UserApiController extends Controller {
 
     public function spam_videos($id, $count = null, $skip = 0) {
 
-        $query = Flag::where('user_id', $id)->select('flags.*')
+        $query = Flag::where('flags.user_id', $id)->select('flags.*')
                     ->where('flags.status', DEFAULT_TRUE)
                     ->leftJoin('video_tapes', 'flags.video_tape_id', '=', 'video_tapes.id')
                     ->where('video_tapes.is_approved' , 1)
@@ -820,7 +820,7 @@ class UserApiController extends Controller {
 
     public function history($id, $count = null, $skip = 0) {
 
-        $query = UserHistory::where('user_id', $id)
+        $query = UserHistory::where('user_histories.user_id', $id)
                     ->select('user_histories.*')
                     ->where('user_histories.status', DEFAULT_TRUE)
                     ->leftJoin('video_tapes', 'user_histories.video_tape_id', '=', 'video_tapes.id')
@@ -856,6 +856,8 @@ class UserApiController extends Controller {
 
     public function add_history(Request $request)  {
 
+        \Log::info("ADD History Start");
+
         $validator = Validator::make(
             $request->all(),
             array(
@@ -873,7 +875,7 @@ class UserApiController extends Controller {
 
         } else {
 
-            if($history = UserHistory::where('user_id' , $request->id)->where('video_tape_id' ,$request->admin_video_id)->first()) {
+            if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->admin_video_id)->first()) {
 
                 $response_array = array('success' => true , 'error' => Helper::get_error_message(145) , 'error_code' => 145);
 
@@ -896,10 +898,13 @@ class UserApiController extends Controller {
 
             if($video = VideoTape::where('id',$request->admin_video_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
 
+                \Log::info("ADD History - Watch Count Start");
 
                 if($video->getVideoAds) {
 
                     if ($video->getVideoAds->status) {
+
+                        // Check the video view count reached admin viewers count, to add amount for each view
 
                         if($video->redeem_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
 
@@ -909,9 +914,14 @@ class UserApiController extends Controller {
 
                             $video->amount += $video_amount;
 
-                            add_to_redeem($request->id , $video_amount);
+                            add_to_redeem($video->user_id , $video_amount);
+
+                            \Log::info("ADD History - add_to_redeem");
+
 
                         } else {
+
+                            \Log::info("ADD History - NO REDEEM");
 
                             $video->redeem_count += 1;
 
@@ -923,7 +933,9 @@ class UserApiController extends Controller {
                 $video->watch_count += 1;
 
                 $video->save();
-            
+
+                \Log::info("ADD History - Watch Count Start");
+
             }
         }
         return response()->json($response_array, 200);
