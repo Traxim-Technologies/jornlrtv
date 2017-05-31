@@ -1391,8 +1391,6 @@ class UserApiController extends Controller {
 
             $wishlist_status = $history_status = WISHLIST_EMPTY;
 
-            $main_video = "";
-
             $report_video = getReportVideoTypes();
 
              // Load the user flag
@@ -1407,7 +1405,7 @@ class UserApiController extends Controller {
 
                 $main_video = $video->video; 
 
-                if ($video->video_publish_type == 1) {
+                if ($video->publish_status == 1) {
 
                     $hls_video = (envfile('HLS_STREAMING_URL')) ? envfile('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
 
@@ -1421,6 +1419,8 @@ class UserApiController extends Controller {
                             }
                         }
 
+                        \Log::info("Video Stream Url".print_r($videoStreamUrl, true));
+
                     } else {
 
 
@@ -1432,6 +1432,7 @@ class UserApiController extends Controller {
                     }
 
                 } else {
+
                     $videoStreamUrl = $video->video;
 
                     $hls_video = $video->video;

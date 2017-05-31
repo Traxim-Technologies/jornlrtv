@@ -667,7 +667,7 @@ textarea[name=comments] {
 
                     var playerInstance = jwplayer("main-video-player");  
 
-                    @if($main_video)
+                    @if($videoStreamUrl)
 
 
 
@@ -733,8 +733,6 @@ textarea[name=comments] {
                                     // file: "{{$videoStreamUrl}}",
                                     sources: [{
                                         file: "{{$videoStreamUrl}}"
-                                      },{
-                                        file: "{{$main_video}}"
                                       }],
                                     image: "{{$video->default_image}}",
                                     width: "100%",
