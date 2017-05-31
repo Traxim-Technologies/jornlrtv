@@ -1415,6 +1415,8 @@ class UserApiController extends Controller {
 
                         if ($video->is_approved == 1) {
 
+                            \Log::info(Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil');
+
                             if ($video->video_resolutions) {
 
                                 $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
