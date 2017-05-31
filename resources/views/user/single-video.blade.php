@@ -204,7 +204,7 @@ textarea[name=comments] {
 
                                     <div class="more-content">
                                         
-                                        <div class="share-details row">
+                                        <div class="share-details">
 
                                             <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
                                                 @if(Auth::check())
