@@ -31,7 +31,7 @@
 
                         <input type="hidden" name="id" value="{{$channel->id}}">
 
-                         <div class="form-group">
+                         <?php /*<div class="form-group">
                             <label for="name" class="col-sm-2 control-label">{{tr('user_name')}}</label>
                             <div class="col-sm-10">
                                 
@@ -43,7 +43,7 @@
                                 </select>
                                
                             </div>
-                        </div>
+                        </div> */?>
 
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">{{tr('name')}}</label>
