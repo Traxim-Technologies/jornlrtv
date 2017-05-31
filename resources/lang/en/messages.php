@@ -788,6 +788,8 @@ return array(
 	'action_success' => 'Successfully Done!!',
 
 	'redeem_pay_confirm' => 'Are You Sure ?',
+	'subscribe_note'=>'Subscribe to create your own channel and videos!',
+	'subscribe'=>'Subscribe',
 	// REDEEM MESSAGES END
 
 );
