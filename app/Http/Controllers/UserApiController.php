@@ -225,6 +225,8 @@ class UserApiController extends Controller {
                     if($request->has('picture')) {
                         $user->picture = $request->picture;
                     }
+
+                    $user->is_verified = 1;
                 }
 
                 // $user->is_activated = 1;
