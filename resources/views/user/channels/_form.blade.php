@@ -57,6 +57,10 @@
 					<div class="des-box">
 
 						<div>
+							<p><small><b>{{tr('note')}} :</b>&nbsp;{{tr('profile_picture')}} - {{tr('image_square')}}, {{tr('cover_picture')}} - {{tr('rectangle_image')}}</small></p>
+						</div>
+
+						<div>
 							<span id="span_error"></span>
 						</div>
 

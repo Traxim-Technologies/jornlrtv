@@ -24,7 +24,10 @@
                                          <div class="history-image">
                                             <a href="{{route('user.single' , $video->admin_video_id)}}">
                                                 <img src="{{$video->default_image}}">
-                                            </a>                        
+                                            </a>        
+                                            <div class="video_duration">
+                                                {{$video->duration}}
+                                            </div>                 
                                         </div><!--history-image-->
 
                                         <div class="history-title">
@@ -32,7 +35,10 @@
                                                 <div class="cross-title">
                                                     <h5>
                                                         <a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
-                                                    <p class="duration">{{tr('duration')}}: {{$video->duration}}</p>
+                                                    <span class="video_views">
+                                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}}<b>.</b> 
+                                                        {{$video->created_at->diffForHumans()}}
+                                                    </span> 
                                                 </div> 
                                                                       
                                             </div> <!--end of history-head--> 

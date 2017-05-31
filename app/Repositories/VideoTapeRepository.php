@@ -317,7 +317,7 @@ class VideoTapeRepository {
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
-                    ->orderby('video_tapes.created_at' , 'asc');
+                    ->orderby('video_tapes.created_at' , 'desc');
         if (Auth::check()) {
             // Check any flagged videos are present
             $flagVideos = getFlagVideos(Auth::user()->id);
