@@ -30,11 +30,11 @@ hr {
         @include('notification.notify')
         <div class="col-lg-12">
             <div class="box box-primary">
-            <div class="box-header with-border">
+            <div class="box-header with-border btn-primary">
                 <div class='pull-left'>
-                    <h3 class="box-title"> <b>{{$video->title}}</b></h3>
+                    <h3 class="box-title" style="color: white"> <b>{{$video->title}}</b></h3>
                     <br>
-                    <span style="margin-left:0px" class="description">Created Time - {{$video->video_date}}</span>
+                    <span style="margin-left:0px;color: white" class="description">Created Time - {{$video->video_date}}</span>
                 </div>
                 <div class='pull-right'>
                     @if ($video->compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>
@@ -51,68 +51,65 @@ hr {
                   <div class="col-lg-12 row">
 
                     <div class="col-lg-4">
+
                         <div class="box-body box-profile">
-                        <h4>{{tr('details')}}</h4>
+
+                            <h4>{{tr('details')}}</h4>
+                            
                             <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
-                                  <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('channel')}}</b> <a class="pull-right">{{$video->channel_name}}</a>
+                                    <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('channel')}}</b> <a class="pull-right">{{$video->channel_name}}</a>
                                 </li>
                               
-                                <?php /*<li class="list-group-item">
-                                  <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('video_type')}}</b> <a class="pull-right">
-                                    @if($video->video_type == 1)
-                                        {{tr('video_upload_link')}}
-                                    @endif
-                                    @if($video->video_type == 2)
-                                        {{tr('youtube')}}
-                                    @endif
-                                    @if($video->video_type == 3)
-                                        {{tr('other_link')}}
-                                    @endif
-                                    </a>
-                                </li>
-                                @if ($video->video_upload_type == 1 || $video->video_upload_type == 2)
                                 <li class="list-group-item">
-                                  <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('video_upload_type')}}</b> <a class="pull-right"> 
-                                        @if($video->video_upload_type == 1)
-                                            {{tr('s3')}}
-                                        @endif
-                                        @if($video->video_upload_type == 2)
-                                            {{tr('direct')}}
-                                        @endif 
-                                    </a>
+                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a class="pull-right">{{$video->duration}}</a>
                                 </li>
-                                @endif */?>
+
                                 <li class="list-group-item">
-                                  <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a class="pull-right">{{$video->duration}}</a>
-                                </li>
-                                <li class="list-group-item">
-                                  <b><i class="fa fa-star margin-r-5"></i>{{tr('ratings')}}</b> <a class="pull-right">
-                                      <span class="starRating-view">
-                                        <input id="rating5" type="radio" name="ratings" value="5" @if($video->ratings == 5) checked @endif>
-                                        <label for="rating5">5</label>
+                                    <b><i class="fa fa-star margin-r-5"></i>{{tr('ratings')}}</b> <a class="pull-right">
+                                        <span class="starRating-view">
+                                            <input id="rating5" type="radio" name="ratings" value="5" @if($video->ratings == 5) checked @endif>
+                                            <label for="rating5">5</label>
 
-                                        <input id="rating4" type="radio" name="ratings" value="4" @if($video->ratings == 4) checked @endif>
-                                        <label for="rating4">4</label>
+                                            <input id="rating4" type="radio" name="ratings" value="4" @if($video->ratings == 4) checked @endif>
+                                            <label for="rating4">4</label>
 
-                                        <input id="rating3" type="radio" name="ratings" value="3" @if($video->ratings == 3) checked @endif>
-                                        <label for="rating3">3</label>
+                                            <input id="rating3" type="radio" name="ratings" value="3" @if($video->ratings == 3) checked @endif>
+                                            <label for="rating3">3</label>
 
-                                        <input id="rating2" type="radio" name="ratings" value="2" @if($video->ratings == 2) checked @endif>
-                                        <label for="rating2">2</label>
+                                            <input id="rating2" type="radio" name="ratings" value="2" @if($video->ratings == 2) checked @endif>
+                                            <label for="rating2">2</label>
 
-                                        <input id="rating1" type="radio" name="ratings" value="1" @if($video->ratings == 1) checked @endif>
-                                        <label for="rating1">1</label>
-                                    </span>
+                                            <input id="rating1" type="radio" name="ratings" value="1" @if($video->ratings == 1) checked @endif>
+                                            <label for="rating1">1</label>
+                                        </span>
                                   </a>
                                 </li>
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-eye margin-r-5"></i>{{tr('views')}}</b> <a class="pull-right">{{$video->watch_count}}</a>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('amount')}}</b> <a class="pull-right"> {{Setting::get('currency')}} {{$video->amount}}</a>
+                                </li>
+                            
                             </ul>
+
                         </div>
+
                     </div>
+
                     <div class="col-lg-8">
-                        
-                         <div class="row">
+
+                        <div class="box-body box-profile">
+                            <h4></h4>
+                        </div>
+
+                         <div class="row" style="overflow-x: hidden;overflow-y: scroll; height:20em">
+                         
                             <div class="col-lg-12">
+
                               <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('description')}}</strong>
 
                               <p style="margin-top: 10px;">{{$video->description}}.</p>

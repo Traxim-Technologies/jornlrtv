@@ -28,44 +28,62 @@
 	              	<table id="example1" class="table table-bordered table-striped">
 
 						<thead>
+
 						    <tr>
-						      <th>{{tr('id')}}</th>
-						      <th>{{tr('channel')}}</th>
-						      <th>{{tr('title')}}</th>
-						      @if(Setting::get('theme') == 'default')
-						      	<th>{{tr('slider_video')}}</th>
-						      @endif
-						      <th>{{tr('ad_status')}}</th>
-						      <th>{{tr('status')}}</th>
-						      <th>{{tr('action')}}</th>
+								<th>{{tr('id')}}</th>
+								<th>{{tr('channel')}}</th>
+								<th>{{tr('title')}}</th>
+
+								@if(Setting::get('theme') == 'default')
+									<th>{{tr('slider_video')}}</th>
+								@endif
+
+								<th>{{tr('ad_status')}}</th>
+								<th>{{tr('amount')}}</th>
+								<th>{{tr('status')}}</th>
+								<th>{{tr('action')}}</th>
 						    </tr>
+						    
 						</thead>
+
 						<tbody>
 
 							@foreach($videos as $i => $video)
+
 							    <tr>
-							      	<td>{{$i+1}}</td>
+							      	
+							      	<td><a href="{{route('admin.view.video' , array('id' => $video->admin_video_id))}}">{{$i+1}}</a></td>
+							      	
 							      	<td>{{$video->channel_name}}</td>
-							      	<td>{{substr($video->title , 0,25)}}...</td>
+							      	
+							      	<td><a href="{{route('admin.view.video' , array('id' => $video->admin_video_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
+							      	
 							      	@if(Setting::get('theme') == 'default')
-							      	<td>
-							      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
-							      			<a href="{{route('admin.slider.video' , $video['admin_video_id'])}}"><span class="label label-danger">{{tr('set_slider')}}</span></a>
-							      		@elseif($video['is_home_slider'])
-							      			<span class="label label-success">{{tr('slider')}}</span>
-							      		@else
-							      			-
-							      		@endif
-							      	</td>
+							      	
+								      	<td>
+								      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
+								      			<a href="{{route('admin.slider.video' , $video['admin_video_id'])}}"><span class="label label-danger">{{tr('set_slider')}}</span></a>
+								      		@elseif($video['is_home_slider'])
+								      			<span class="label label-success">{{tr('slider')}}</span>
+								      		@else
+								      			-
+								      		@endif
+								      	</td>
 
 							      	@endif
+
 							      	<td class="text-center">
+
 							      		@if($video->ad_status)
 							      			<span class="label label-success">{{tr('yes')}}</span>
 							      		@else
 							      			<span class="label label-danger">{{tr('no')}}</span>
 							      		@endif
+
 							      	</td>
+
+							      	<td><b>{{Setting::get('currency')}} {{$video->amount}}</b></td>
+
 							      	<td>
 							      		@if ($video->compress_status == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>
