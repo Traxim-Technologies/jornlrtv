@@ -1411,12 +1411,16 @@ class UserApiController extends Controller {
 
                     if (\Setting::get('streaming_url')) {
 
+                         \Log::info("Approved".print_r($video->is_approved));
+
                         if ($video->is_approved == 1) {
 
                             if ($video->video_resolutions) {
 
                                 $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
                             }
+
+                             \Log::info("Resoltion".print_r($$video->video_resolutions));
                         }
 
                         \Log::info("Video Stream Url".print_r($videoStreamUrl, true));
