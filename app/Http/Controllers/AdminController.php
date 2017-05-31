@@ -1703,6 +1703,8 @@ class AdminController extends Controller {
 
                 if($model) {
 
+                    $ads_type = [];
+
                     foreach ($request->ad_type as $key => $value) {
 
                         $exp_type = explode(',', $model->types_of_ad);
@@ -1768,7 +1770,7 @@ class AdminController extends Controller {
 
                     }
 
-                    $model->types_of_ad = $model->types_of_ad.','.implode(',', $ads_type);
+                    $model->types_of_ad = ($ads_type) ? $model->types_of_ad.','.implode(',', $ads_type) : $model->types_of_ad;
 
                     if ($model->save()) {
 
