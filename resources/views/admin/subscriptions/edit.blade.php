@@ -45,8 +45,12 @@
                             <label for="image" class="">{{tr('image')}}</label>
 
                             <!-- <div class="col-sm-10"> -->
-                                <input type="file" name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}" accept="image/png, image/jpeg">
+                                <input type="file" name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}" accept="image/png, image/jpeg" onchange="loadFile(this, 'image_preview')">
                             <!-- </div> -->
+
+                                <br>
+
+                             <img src="{{$data->picture}}" id="image_preview" style="width:100px;height:100px;">
                         </div>
 
                        
@@ -101,5 +105,19 @@
     <script src="http://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace( 'ckeditor' );
+        function loadFile(event, id){
+
+           $("#"+id).show();
+
+            // alert(event.files[0]);
+            var reader = new FileReader();
+            reader.onload = function(){
+              var output = document.getElementById(id);
+              // alert(output);
+              output.src = reader.result;
+               //$("#imagePreview").css("background-image", "url("+this.result+")");
+            };
+            reader.readAsDataURL(event.files[0]);
+        }
     </script>
 @endsection
