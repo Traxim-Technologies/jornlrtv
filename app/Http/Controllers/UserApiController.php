@@ -1417,7 +1417,9 @@ class UserApiController extends Controller {
 
                             \Log::info(Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil');
 
+
                             if ($video->video_resolutions) {
+
 
                                 $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
                             }
@@ -1430,7 +1432,7 @@ class UserApiController extends Controller {
                     } else {
 
 
-                        $videoPath = $video->video_resize_path ? $video->video.','.$video->video_resize_path : $video->video;
+                        $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
 
                         // dd($videoPath);
                         $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
