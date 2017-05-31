@@ -29,7 +29,7 @@ textarea[name=comments] {
 }
 
 #timings {
-    padding: 3px;
+    padding: 5px;
 }
 .ad_progress {
     position: absolute;
@@ -885,23 +885,40 @@ textarea[name=comments] {
 
                     function adsPage(adtimings){
 
+                        // $("#progress").html("");
+
+                        // $(".progress-bar-fill-div").css('width', '0%');
+
                          // adtimings = adtimings * 60;
 
                         $(".seconds").html(adtimings+" sec");
 
+                        $("#progress").html('<div class="progress-bar-div">'+
+                                '<span class="progress-bar-fill-div" style="width: 0%"></span>'+
+                                '</div>');
+
                         $(".progress-bar-fill-div").css('transition', 'width '+adtimings+'s ease-in-out');
 
                         $('.progress-bar-fill-div').delay(1000).queue(function () {
+
+                            console.log("playig");
+
                             $(this).css('width', '100%')
                         });
  
+                        // var width = (100/(adtimings));
+
                         intervalId = setInterval(function(){
 
                             adCount += 1;
 
                             $(".seconds").html((adtimings - adCount) +" sec");
 
+                            // console.log(width * adCount);
+
                             console.log("Ad Count " +adCount);
+
+                            // $(".progress-bar-fill-div").css('width', (width * adCount)+'%');
                             
                             if (adCount == adtimings) {
 

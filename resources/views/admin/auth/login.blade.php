@@ -51,9 +51,9 @@
                 </button>
             </div>
 
-            <div class="form-group">
+            <?php /*<div class="form-group">
                     <a style="margin-left:100px" class="btn btn-link" href="{{ url('/admin/password/reset') }}">{{tr('reset_password')}}</a>
-            </div>
+            </div> */?>
 
             
 
