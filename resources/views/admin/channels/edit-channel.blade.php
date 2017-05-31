@@ -31,6 +31,8 @@
 
                         <input type="hidden" name="id" value="{{$channel->id}}">
 
+                        <input type="hidden" name="user_id" value="{{$channel->user_id}}" >
+
                          <?php /*<div class="form-group">
                             <label for="name" class="col-sm-2 control-label">{{tr('user_name')}}</label>
                             <div class="col-sm-10">
