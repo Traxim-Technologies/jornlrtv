@@ -44,7 +44,7 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a href="">{{$channel->name}}</a></td>
+							      	<td><a href="{{route('admin.channel.videos', $channel->id)}}">{{$channel->name}}</a></td>
 							      	<td>{{$channel->getUser ? $channel->getUser->name : ''}}</td>
 							      	<td>
 	                                	<img style="height: 30px;" src="{{$channel->picture}}">
