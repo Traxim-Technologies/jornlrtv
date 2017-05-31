@@ -230,20 +230,27 @@ textarea[name=comments] {
 
                                                         <div class="share">
 
-                                                            @if($flaggedVideo == '')
-                                                                <button onclick="showReportForm();" type="button" class="report-button" title="{{tr('report')}}">
-                                                                <i class="fa fa-flag"></i> 
-                                                                <span class="report_class">
-                                                                {{tr('report')}}
-                                                                </span>
-                                                                </button>
-                                                            @else 
-                                                                <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning unmark" title="{{tr('remove_report')}}">
-                                                                    <i class="fa fa-flag"></i> 
-                                                                    <span class="report_class">
-                                                                    {{tr('remove_report')}}
-                                                                    </span>
-                                                                </a>
+                                                            @if(Auth::check())
+                                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_details->user_id)
+
+                                                                    @if($flaggedVideo == '')
+                                                                        <button onclick="showReportForm();" type="button" class="report-button" title="{{tr('report')}}">
+                                                                        <i class="fa fa-flag"></i> 
+                                                                        <span class="report_class">
+                                                                        {{tr('report')}}
+                                                                        </span>
+                                                                        </button>
+                                                                    @else 
+                                                                        <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning unmark" title="{{tr('remove_report')}}">
+                                                                            <i class="fa fa-flag"></i> 
+                                                                            <span class="report_class">
+                                                                            {{tr('remove_report')}}
+                                                                            </span>
+                                                                        </a>
+                                                                    @endif
+
+                                                                @endif
+
                                                             @endif
                                                         
                                                         </div>
@@ -282,7 +289,7 @@ textarea[name=comments] {
                                                                 <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
                                                                 <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
                                                                 <div class="pull-right">
-                                                                    <button class="btn btn-success btn-sm">Mark as Spam</button>
+                                                                    <button class="btn btn-success btn-sm">{{tr('submit')}}</button>
                                                                 </div>
                                                                 <div class="clearfix"></div>
                                                             </form>
