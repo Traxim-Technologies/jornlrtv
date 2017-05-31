@@ -25,6 +25,8 @@ class SocialAuthController extends Controller
 
 		$user = User::where('social_unique_id' , $social_user->id)->where('login_by' , $provider)->first();
 
+		print_r(count($user));
+
 		if(!count($user)) {
 
 			$user = new User;
@@ -59,9 +61,13 @@ class SocialAuthController extends Controller
 
             $user->is_verified = 1;
 
+            print_r($user);
+
 			$user->save();
 
 		}
+
+		dd($user);
 
 	    auth()->login($user);
 
