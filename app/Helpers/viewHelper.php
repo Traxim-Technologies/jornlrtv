@@ -30,6 +30,8 @@ use App\Channel;
 
 use App\Redeem;
 
+use App\Page;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -693,4 +695,11 @@ function getTypeOfAds($ad_type) {
         }
 
         return $types;
-    }
+}
+
+function pages() {
+
+    $all_pages = Page::all();
+
+    return $all_pages;
+}

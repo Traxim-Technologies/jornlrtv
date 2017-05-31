@@ -195,6 +195,8 @@ Route::get('admin/control', 'ApplicationController@admin_control')->name('contro
 
 Route::post('admin/control', 'ApplicationController@save_admin_control')->name('admin.save.control');
 
+Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
+
 
 Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 

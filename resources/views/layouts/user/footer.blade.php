@@ -13,9 +13,9 @@
         <div class="col-sm-10 foot-content">
 
             <ul class="term">
-                <li><a target="_blank" href="{{route('user.about')}}">{{tr('about')}}</a></li>
-                <li><a target="_blank" href="{{route('user.terms-condition')}}">{{tr('terms_conditions')}}</a></li>
-                <li><a target="_blank" href="{{route('user.privacy_policy')}}">{{tr('privacy')}}</a></li>
+                @foreach($pages = pages() as $page) 
+                <li><a target="_blank" href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->type}}</a></li>
+                @endforeach
                 <li><a target="_blank" href="http://streamhash.com/" target="_blank">&#169; 2017 @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
             </ul>
         </div>   

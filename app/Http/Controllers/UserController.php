@@ -53,7 +53,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view']]);
     }
 
     /**
@@ -841,6 +841,16 @@ class UserController extends Controller {
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
+
+    }
+
+    public function page_view($id) {
+
+        $page = Page::find($id);
+
+        return view('static.common')->with('model' , $page)
+                        ->with('page' , $page->type)
+                        ->with('subPage' , '');
 
     }
 
