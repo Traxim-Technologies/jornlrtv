@@ -1691,9 +1691,13 @@ class AdminController extends Controller {
 
         try {
 
-            //dd($request->all());
-
             DB::beginTransaction();
+
+            if(!$request->ad_type) {
+
+                throw new Exception(tr('select_ad_type_error'));
+                
+            }
 
             $video_tape_ids = explode(',', $request->video_tape_id);
 
