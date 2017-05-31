@@ -1378,9 +1378,9 @@ class AdminController extends Controller {
 
         $data = Subscription::orderBy('created_at','desc')->get();
 
-        return view('admin.subscriptions.index')->withPage('hotels')
+        return view('admin.subscriptions.index')->withPage('subscriptions')
                         ->with('data' , $data)
-                        ->with('sub_page','view-subscription');        
+                        ->with('sub_page','subscriptions-view');        
 
     }
 

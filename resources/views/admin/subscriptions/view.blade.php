@@ -10,6 +10,16 @@
     <li class="active"><i class="fa fa-eye"></i>&nbsp;{{tr('view_subscriptions')}}</li>
 @endsection
 
+@section('styles')
+
+<style type="text/css">
+    .user-block .username, .user-block .description, .user-block .comment {
+        margin-left: 0px;
+    }
+</style>
+
+@endsection
+
 @section('content')
 
 	@include('notification.notify')
@@ -109,7 +119,7 @@
 
                                             <h4><b>{{tr('total_subscription')}}</b></h4>
 
-                                            <a href="{{route('admin.user.subscription.payments' , $data->id)}}" class="btn btn-success btn-xs">{{$data->total_subscription}}</a>
+                                            <a href="{{route('admin.user.subscription.payments' , $data->id)}}" class="btn btn-success btn-xs">{{count($data->getUserPayments)}}</a>
 
                                         </div>
                                     
