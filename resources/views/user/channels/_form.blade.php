@@ -63,9 +63,11 @@
 						<h5>{{tr('description')}}</h5>
 
 						<textarea class="form-control description" id="description" name="description" required>{{$model->description}}</textarea>
-						<div class="btn-create">
-							<button type="reset" name="reset" class="btn btn-danger ">{{tr('reset')}}</button>
-							<button id="done-create" name="submit" class="btn btn-primary">{{tr('submit')}}</button>
+						<br>
+						<div>
+							<button type="reset" name="reset" class="btn btn-danger pull-left">{{tr('reset')}}</button>
+							<button id="done-create" name="submit" class="btn btn-primary pull-right">{{tr('submit')}}</button>
+							<div class="clearfix"></div>
 						</div>
 
 					</div>
