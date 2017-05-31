@@ -715,7 +715,7 @@ textarea[name=comments] {
                                 
                                 console.log('You are using a mobile device!');
 
-                                <?php $videoStreamUrl = $hls_video; ?>
+                                <?php // $videoStreamUrl = $hls_video; ?>
 
                                 jQuery.ajax({
                                         url: "{{route('test')}}",
