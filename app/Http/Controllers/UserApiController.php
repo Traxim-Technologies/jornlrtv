@@ -417,7 +417,7 @@ class UserApiController extends Controller {
                 $subject = tr('user_forgot_email_title');
                 $email = $user->email;
                 $email_data['user']  = $user;
-                $email_data['password'] = $new_password;
+                $email_data['password'] = \Hash::make($new_password);
                 $page = "emails.forgot-password";
                 $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
 
@@ -452,7 +452,7 @@ class UserApiController extends Controller {
 
             if(Hash::check($request->old_password,$user->password)) {
 
-                $user->password = $request->password;
+                $user->password = \Hash::make($request->password);
                 
                 $user->save();
 

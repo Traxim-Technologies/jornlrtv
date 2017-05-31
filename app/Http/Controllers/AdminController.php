@@ -306,7 +306,7 @@ class AdminController extends Controller {
 
             if($request->id == ''){
                 $email_data['name'] = $user->name;
-                $email_data['password'] = $user->password;
+                $email_data['password'] = \Hash::make($user->password);
                 $email_data['email'] = $user->email;
 
                 $subject = tr('user_welcome_title');
@@ -408,7 +408,7 @@ class AdminController extends Controller {
                 $email = $user->email;
                 $email_data['name'] = $moderator_user->name;
                 $email_data['email'] = $moderator_user->email;
-                $email_data['password'] = $new_password;
+                $email_data['password'] = \Hash::make($new_password);
 
                 Helper::send_email($page,$subject,$email,$email_data);
 

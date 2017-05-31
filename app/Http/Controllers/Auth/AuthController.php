@@ -92,7 +92,7 @@ class AuthController extends Controller
         $User = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => \Hash::make($data['password']),
             'timezone' => $data['timezone'],
             'picture' => asset('placeholder.png'),
             'login_by' => 'manual',
