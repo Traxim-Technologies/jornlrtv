@@ -7,6 +7,11 @@
 
 <div class="embed-responsive embed-responsive-16by9" id="main_video_ad" style="display: none">
     <img src="" class="error-image" alt="{{Setting::get('site_name')}} - Main Video Ad" id="ad_image">
+
+    <div class="click_here_ad" style="display: none">
+
+    </div>
+
     <div class="ad_progress">
    		<div id="timings">{{tr('ad') }} : <span class="seconds"></span></div>
     	<div class="clearfix"></div>

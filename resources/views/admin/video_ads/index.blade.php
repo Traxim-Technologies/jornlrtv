@@ -31,6 +31,7 @@
 						    <tr>
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('name')}}</th>
+						      <th>{{tr('url')}}</th>
 						      <th>{{tr('ad_time')}} ({{tr('in_sec')}})</th>
 						      <th>{{tr('image')}}</th>
 						      <th>{{tr('status')}}</th>
@@ -44,6 +45,7 @@
 							    <tr>
 							      	<td><a href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{$i+1}}</a></td>
 							      	<td><a href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{$data->name}}</a></td>
+							      	<td>{{$data->ad_url}}</td>
 							      	<td>{{$data->ad_time}}</td>
 							      	<td>
 							      		<img src="{{$data->file}}" style="width: 30px;height: 30px;" />

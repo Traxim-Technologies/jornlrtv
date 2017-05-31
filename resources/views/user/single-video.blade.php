@@ -936,6 +936,8 @@ textarea[name=comments] {
 
                                              $("#ad_image").attr("src","{{$obj->assigned_ad->file}}");
 
+                                             $('.click_here_ad').html("<a target='_blank' href='{{$obj->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+
 
                                              adsPage("{{$obj->ad_time}}");
 
@@ -960,6 +962,8 @@ textarea[name=comments] {
                                         $('#main_video_ad').show();
 
                                         $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
+
+                                        $('.click_here_ad').html("<a target='_blank' href='{{$ads->post_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
 
                                         stop();
 
@@ -991,6 +995,8 @@ textarea[name=comments] {
                          // adtimings = adtimings * 60;
 
                         $(".seconds").html(adtimings+" sec");
+
+                        $(".click_here_ad").show();
 
                         $("#progress").html('<div class="progress-bar-div">'+
                                 '<span class="progress-bar-fill-div" style="width: 0%"></span>'+
@@ -1026,6 +1032,8 @@ textarea[name=comments] {
                                 adCount = 0;
 
                                 stop();
+
+                                $(".click_here_ad").hide();
 
                                 $('#main_video_ad').hide();
 
@@ -1063,6 +1071,8 @@ textarea[name=comments] {
                                      $('#main_video_ad').show();
 
                                      $("#ad_image").attr("src","{{$ads->pre_ad->assigned_ad->file}}");
+
+                                     $('.click_here_ad').html("<a target='_blank' href='{{$ads->pre_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
 
                                      jwplayer().pause();
 

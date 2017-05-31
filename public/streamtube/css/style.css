@@ -1802,3 +1802,23 @@ margin: 0px auto 35px;
 		padding-top: 5px;
 	}
 }
+
+.click_here_ad {
+	background-color: #000;
+	opacity: 0.7;
+	bottom: 10%;
+	left: 0;
+	color: #fff;
+	position: absolute;
+	padding: 5px;
+	font-size: 11px;
+	border-radius: 5px;
+}
+
+.click_here_ad  a{
+
+	color: #fff;
+
+	text-decoration : none;
+
+}

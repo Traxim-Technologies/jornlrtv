@@ -23,6 +23,8 @@ return array(
 	'mobile_suggestion_heading' => 'Recommended',
 	'registration_success'=>'Registration completed successfully, please Login and Continue',
 	'compress'=>'Video Compressing...',
+	'click_here_url'=>'Click Here',
+	'url'=>'Url',
 	'images' => 'Images',
 	'details' => 'Details',
 	'assign_ad'=>'Assign Ad',

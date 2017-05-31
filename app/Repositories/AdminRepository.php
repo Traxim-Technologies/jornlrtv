@@ -320,7 +320,8 @@ class AdminRepository {
              $validator = Validator::make( $request->all(),array(
                     'name' => 'required',
                     'ad_time' => 'required|integer',
-                    'file' => 'mimes:jpeg,jpg,png'
+                    'file' => 'mimes:jpeg,jpg,png',
+                    'ad_url'=>'required|url|max:255'
                 )
             );
             
@@ -339,6 +340,8 @@ class AdminRepository {
                 $model->name = $request->has('name') ? $request->name : $model->name;
 
                 $model->ad_time = $request->has('ad_time') ? $request->ad_time : $model->ad_time;
+
+                $model->ad_url = $request->has('ad_url') ? $request->ad_url : $model->ad_url;
 
                 if ($request->file) {
 

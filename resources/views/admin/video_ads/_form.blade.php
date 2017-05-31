@@ -30,8 +30,16 @@
 
                             </div>
 
+                            <div class="col-md-5">
 
-                    		<div class="col-md-3">
+                                <label>{{tr('url')}}</label>
+
+                                <input type="text" name="ad_url" id="ad_url" class="form-control" value="{{$model->ad_url}}" required>
+
+                            </div>
+
+
+                    		<div class="col-md-2">
 
                     			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
@@ -48,11 +56,11 @@
                             </div> */?>
 
 
-                    		<div class="col-md-3">
+                    		<div class="col-md-2">
 
                     			<label>{{tr('image')}}</label>
 
-                    			<input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')">
+                    			<input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')" style="width: 100px;">
 
                                 <br>
 

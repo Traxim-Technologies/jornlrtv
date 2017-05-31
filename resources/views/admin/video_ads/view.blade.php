@@ -39,7 +39,7 @@ hr {
 
             <div class="col-lg-6">
 
-                <h4>{{$model->name}} {{tr('details')}}</h4>
+                <h4>{{$model->name}} {{tr('details')}} (<a href="{{$model->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h4>
 
 
                 <ul class="timeline timeline-inverse">
@@ -60,7 +60,7 @@ hr {
 
                       <div class="timeline-body">
                             
-                            <img src="{{$model->file}}" style="width: 100%">
+                            <img src="{{$model->file}}" style="width: 100%;">
 
                       </div>
                       <!-- <div class="timeline-footer">

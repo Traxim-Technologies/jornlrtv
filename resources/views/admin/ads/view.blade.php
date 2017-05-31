@@ -81,7 +81,7 @@ hr {
                       @endif
                         
 
-                      {{tr('details')}}</h3>
+                      {{tr('details')}} (<a href="{{$details->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
 
                       <div class="timeline-body">
                           
