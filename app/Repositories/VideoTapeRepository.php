@@ -242,7 +242,7 @@ class VideoTapeRepository {
 
 	public static function wishlist($user_id, $web = NULL , $skip = 0) {
 
-        $base_query = Wishlist::where('user_id' , $user_id)
+        $base_query = Wishlist::where('wishlists.user_id' , $user_id)
                         ->leftJoin('video_tapes', 'wishlists.video_tape_id', '=', 'video_tapes.id')
                         ->where('video_tapes.is_approved' , 1)
                         ->where('video_tapes.status' , 1)
@@ -279,7 +279,7 @@ class VideoTapeRepository {
 
     public static function watch_list($user_id, $web = NULL , $skip = 0) {
 
-        $base_query = UserHistory::where('user_id' , $user_id)
+        $base_query = UserHistory::where('user_histories.user_id' , $user_id)
                         ->leftJoin('video_tapes', 'video_tapes.id', '=', 'video_tape_id')
                         ->where('video_tapes.is_approved' , 1)
                         ->where('video_tapes.status' , 1)

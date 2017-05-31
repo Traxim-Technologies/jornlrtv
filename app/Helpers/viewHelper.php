@@ -234,7 +234,7 @@ function getReportVideoTypes() {
 function flag_videos($id) {
 
     // Load Flag videos based on logged in user id
-    $model = Flag::where('user_id', $id)
+    $model = Flag::where('flags.user_id', $id)
         ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
         ->where('video_tapes.is_approved' , 1)
         ->where('video_tapes.status' , 1)
@@ -254,7 +254,7 @@ function flag_videos($id) {
  */
 function getFlagVideosCnt($id) {
     // Load Flag videos based on logged in user id
-    $model = Flag::where('user_id', $id)
+    $model = Flag::where('flags.user_id', $id)
         ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
         ->where('video_tapes.is_approved' , 1)
         ->where('video_tapes.status' , 1)

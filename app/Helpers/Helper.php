@@ -640,7 +640,7 @@
 
         public static function check_wishlist_status($user_id,$video_id) {
 
-            $status = Wishlist::where('user_id' , $user_id)
+            $status = Wishlist::where('wishlists.user_id' , $user_id)
                                         ->where('video_tape_id' , $video_id)
                                         ->where('status' , 1)
                                         ->first();
@@ -649,7 +649,7 @@
 
 
         public static function history_status($video_id,$user_id) {
-            if(UserHistory::where('video_tape_id' , $video_id)->where('user_id' , $user_id)->count()) {
+            if(UserHistory::where('video_tape_id' , $video_id)->where('user_histories.user_id' , $user_id)->count()) {
                 return 1;
             } else {
                 return 0;
