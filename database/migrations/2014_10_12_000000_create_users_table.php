@@ -39,7 +39,7 @@ class CreateUsersTable extends Migration
             $table->integer('push_status')->comment="Mobile Purpose";
             $table->string('verification_code');
             $table->string('verification_code_expiry');
-            $table->integer('is_verified')->comment="1 - verified , 0 - No";
+            $table->integer('is_verified')->default(0)->comment('1 - verified , 0 - No');
             $table->integer('is_moderator');
             $table->integer('moderator_id');
             $table->string('timezone');

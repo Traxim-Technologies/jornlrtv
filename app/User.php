@@ -220,7 +220,7 @@ class User extends Authenticatable
 
         $this->attributes['verification_code_expiry'] = Helper::generate_email_expiry();
 
-        $this->attributes['is_verified'] = 0;
+        // $this->attributes['is_verified'] = 0;
 
         $this->attributes['status'] = DEFAULT_TRUE;
 
