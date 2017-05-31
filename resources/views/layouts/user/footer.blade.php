@@ -13,9 +13,12 @@
         <div class="col-sm-10 foot-content">
 
             <ul class="term">
-                @foreach($pages = pages() as $page) 
-                <li><a target="_blank" href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->type}}</a></li>
-                @endforeach
+                <?php $pages = pages();?>
+                @if (count($pages) > 0)
+                    @foreach($pages as $page) 
+                    <li><a target="_blank" href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->type}}</a></li>
+                    @endforeach
+                @endif
                 <li><a target="_blank" href="http://streamhash.com/" target="_blank">&#169; 2017 @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
             </ul>
         </div>   
