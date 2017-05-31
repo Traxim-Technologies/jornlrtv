@@ -1372,95 +1372,102 @@ class UserApiController extends Controller {
                     ->videoResponse()
                     ->first();
 
-        $comments = $video->getScopeUserRatings;
-
-        $ads = $video->getScopeVideoAds ? ($video->getScopeVideoAds->status ? $video->getScopeVideoAds  : '') : '';
-
-        $trendings = VideoRepo::trending(WEB);
-
-        $recent_videos = VideoRepo::recently_added(WEB);
-
-        $channels = [];
-
-        $suggestions = VideoRepo::suggestion_videos('', '', $id);
-
-        $wishlist_status = $history_status = WISHLIST_EMPTY;
-
-        $main_video = "";
-
-        $report_video = getReportVideoTypes();
-
-         // Load the user flag
-
-        $flaggedVideo = (Auth::check()) ? Flag::where('video_tape_id',$id)->where('user_id', Auth::user()->id)->first() : '';
-
-        $videoPath = $video_pixels = $videoStreamUrl = '';
-
-        $hls_video = "";
-
         if($video) {
 
-            $main_video = $video->video; 
+            $comments = $video->getScopeUserRatings;
 
-            if ($video->video_publish_type == 1) {
+            $ads = $video->getScopeVideoAds ? ($video->getScopeVideoAds->status ? $video->getScopeVideoAds  : '') : '';
 
-                $hls_video = (envfile('HLS_STREAMING_URL')) ? envfile('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
+            $trendings = VideoRepo::trending(WEB);
 
-                if (\Setting::get('streaming_url')) {
+            $recent_videos = VideoRepo::recently_added(WEB);
 
-                    if ($video->is_approved == 1) {
+            $channels = [];
 
-                        if ($video->video_resolutions) {
+            $suggestions = VideoRepo::suggestion_videos('', '', $id);
 
-                            $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+            $wishlist_status = $history_status = WISHLIST_EMPTY;
+
+            $main_video = "";
+
+            $report_video = getReportVideoTypes();
+
+             // Load the user flag
+
+            $flaggedVideo = (Auth::check()) ? Flag::where('video_tape_id',$id)->where('user_id', Auth::user()->id)->first() : '';
+
+            $videoPath = $video_pixels = $videoStreamUrl = '';
+
+            $hls_video = "";
+
+            if($video) {
+
+                $main_video = $video->video; 
+
+                if ($video->video_publish_type == 1) {
+
+                    $hls_video = (envfile('HLS_STREAMING_URL')) ? envfile('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
+
+                    if (\Setting::get('streaming_url')) {
+
+                        if ($video->is_approved == 1) {
+
+                            if ($video->video_resolutions) {
+
+                                $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+                            }
                         }
+
+                    } else {
+
+
+                        $videoPath = $video->video_resize_path ? $video->video.','.$video->video_resize_path : $video->video;
+
+                        // dd($videoPath);
+                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                        
                     }
 
                 } else {
+                    $videoStreamUrl = $video->video;
 
-
-                    $videoPath = $video->video_resize_path ? $video->video.','.$video->video_resize_path : $video->video;
-
-                    // dd($videoPath);
-                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
-                    
+                    $hls_video = $video->video;
                 }
-
+                
             } else {
-                $videoStreamUrl = $video->video;
 
-                $hls_video = $video->video;
+                $response_array = ['success' => false, 'error'=>tr('video_not_found')];
+
+                return response()->json($response_array, 200);
+
             }
-            
+
+            if(\Auth::check()) {
+
+                $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$id);
+
+                $history_status = Helper::history_status(\Auth::user()->id,$id);
+
+            }
+
+            $share_link = route('user.single' , $id);
+
+            \Log::info("HLS VIDEO".print_r($hls_video , true));
+
+            $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
+                'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
+                'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
+                'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
+                'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
+                'ads'=>$ads
+                ];
+
+            return response()->json(['success'=>true, 'response_array'=>$response_array], 200);
+
         } else {
 
-            $response_array = ['success' => false, 'error'=>tr('video_not_found')];
-
-            return response()->json($response_array, 200);
-
+            return response()->json(['success'=>false, 'message'=>tr('something_error')]);
         }
-
-        if(\Auth::check()) {
-
-            $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$id);
-
-            $history_status = Helper::history_status(\Auth::user()->id,$id);
-
-        }
-
-        $share_link = route('user.single' , $id);
-
-        \Log::info("HLS VIDEO".print_r($hls_video , true));
-
-        $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
-            'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
-            'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
-            'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
-            'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
-            'ads'=>$ads
-            ];
-
-        return response()->json($response_array, 200);
 
     }
 

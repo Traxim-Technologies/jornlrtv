@@ -111,28 +111,35 @@ class UserController extends Controller {
     public function single_video($id) {
 
 
-        $response = $this->UserAPI->getSingleVideo($id)->getData();
+        $data = $this->UserAPI->getSingleVideo($id)->getData();
+
+        if ($data->success) {
+
+            $response = $data->response_array;
         
-        return view('user.single-video')
-                    ->with('page' , '')
-                    ->with('subPage' , '')
-                    ->with('video' , $response->video)
-                    ->with('recent_videos' , $response->recent_videos)
-                    ->with('trendings' , $response->trendings)
-                    ->with('comments' , $response->comments)
-                    ->with('suggestions',$response->suggestions)
-                    ->with('wishlist_status' , $response->wishlist_status)
-                    ->with('history_status' , $response->history_status)
-                    ->with('main_video' , $response->main_video)
-                    ->with('url' , $response->main_video)
-                    ->with('channels' , $response->channels)
-                    ->with('report_video', $response->report_video)
-                    ->with('videoPath', $response->videoPath)
-                    ->with('video_pixels', $response->video_pixels)
-                    ->with('videoStreamUrl', $response->videoStreamUrl)
-                    ->with('hls_video' , $response->hls_video)
-                    ->with('flaggedVideo', $response->flaggedVideo)
-                    ->with('ads', $response->ads);
+            return view('user.single-video')
+                        ->with('page' , '')
+                        ->with('subPage' , '')
+                        ->with('video' , $response->video)
+                        ->with('recent_videos' , $response->recent_videos)
+                        ->with('trendings' , $response->trendings)
+                        ->with('comments' , $response->comments)
+                        ->with('suggestions',$response->suggestions)
+                        ->with('wishlist_status' , $response->wishlist_status)
+                        ->with('history_status' , $response->history_status)
+                        ->with('main_video' , $response->main_video)
+                        ->with('url' , $response->main_video)
+                        ->with('channels' , $response->channels)
+                        ->with('report_video', $response->report_video)
+                        ->with('videoPath', $response->videoPath)
+                        ->with('video_pixels', $response->video_pixels)
+                        ->with('videoStreamUrl', $response->videoStreamUrl)
+                        ->with('hls_video' , $response->hls_video)
+                        ->with('flaggedVideo', $response->flaggedVideo)
+                        ->with('ads', $response->ads);
+        } else {
+            return back()->with('flash_error', $data->message);
+        } 
     }
 
     /**
