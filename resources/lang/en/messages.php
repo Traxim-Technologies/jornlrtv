@@ -681,7 +681,7 @@ return array(
 
 	'mobile_note' => 'Note : The mobile must be between 6 and 13 digits.',
 
-	'email_verify_alert' => 'Check your inbox to verify your email',
+	'email_verify_alert' => 'Check your Inbox / Spam Folder to verify your email',
 	'admin_theme_control'=> 'Theme Control',
 	'admin_delete_control'=>'Delete/Update Control',
 	'admin_control'=>'Admin Control',

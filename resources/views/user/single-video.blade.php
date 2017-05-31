@@ -664,17 +664,40 @@ textarea[name=comments] {
 
 
 
-                        if(isOpera || isSafari) {
+                        // if(isOpera || isSafari) {
+
+                           /* alert("dd");
 
                             jQuery('#main_video_setup_error').show();
-                            jQuery('#trailer_video_setup_error').hide();
                             jQuery('#main-video-player').hide();
 
+                            var hasFlash = false;
+                            try {
+                                var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                                if (fo) {
+                                    hasFlash = true;
+                                }
+                            } catch (e) {
+                                if (navigator.mimeTypes
+                                        && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                        && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                                    hasFlash = true;
+                                }
+                            }
+
+                            alert(hasFlash);
+
+                            if (hasFlash == false) {
+                                jQuery('#flash_error_display').show();
+                                return false;
+                            }
+
+                                jQuery('#main_video_setup_error').css("display", "block");
 
 
-                            confirm('The video format is not supported in this browser. Please option some other browser.');
+                            confirm('The video format is not supported in this browser. Please option some other browser.');*/
 
-                        } else {
+                        // } else {
 
 
                             if(!jQuery.browser.mobile) {
@@ -837,7 +860,7 @@ textarea[name=comments] {
                                 confirm('The video format is not supported in this browser. Please option some other browser.');
                             
                             });
-                        }
+                        // }
                     
                     @else
                         jQuery('#main_video_error').show();
