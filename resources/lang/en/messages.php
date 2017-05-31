@@ -256,6 +256,8 @@ return array(
 
 	'image_square' => 'Upload Square images 2:2 Ratio Ex: 300 * 300',
 	'rectangle_image' => 'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
+	'profile_picture'=>'Profile Picture',
+	'cover_picture'=>'Cover Picture',
 	
 	// Web Register 
 	'registration_form'	=>	'Registration Form',
