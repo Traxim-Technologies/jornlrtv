@@ -211,6 +211,24 @@ class AdminController extends Controller {
         return $response;
     }
 
+    public function user_channels($user_id) {
+
+        if($user_id){
+
+            $user = User::find($user_id);
+
+            $channels = Channel::orderBy('channels.created_at', 'desc')
+                            ->where('user_id' , $user_id)
+                            ->distinct('channels.id')
+                            ->get();
+
+            return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels')->with('user' , $user);
+
+        } else {
+            return back()->with('flash_error' , tr('something_error'));
+        }
+    }
+
     public function users() {
 
         $users = User::orderBy('created_at','desc')->get();

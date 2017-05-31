@@ -227,6 +227,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // users
 
+    Route::get('/user/channels/{id}', 'AdminController@user_channels')->name('users.channels');
+
     Route::get('/users', 'AdminController@users')->name('users');
 
     Route::get('/add/user', 'AdminController@add_user')->name('add.user');
