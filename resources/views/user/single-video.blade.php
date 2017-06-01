@@ -667,8 +667,6 @@ textarea[name=comments] {
 
                     var playerInstance = jwplayer("main-video-player");  
 
-                    @if($videoStreamUrl)
-
 
 
                         // if(isOpera || isSafari) {
@@ -869,10 +867,9 @@ textarea[name=comments] {
                             });
                         // }
                     
-                    @else
-                        jQuery('#main_video_error').show();
+                    
+                       //  jQuery('#main_video_error').show();
                         
-                    @endif
 
                     jQuery("#main-video-player").show();
 
