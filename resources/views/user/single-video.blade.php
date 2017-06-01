@@ -733,6 +733,8 @@ textarea[name=comments] {
                                     // file: "{{$videoStreamUrl}}",
                                     sources: [{
                                         file: "{{$videoStreamUrl}}"
+                                      }, {
+                                        file : "{{$video->video}}"
                                       }],
                                     image: "{{$video->default_image}}",
                                     width: "100%",
