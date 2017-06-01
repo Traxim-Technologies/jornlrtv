@@ -1422,7 +1422,9 @@ class UserApiController extends Controller {
 
                         }
 
-                        if(!$videoStreamUrl || !file_exists($videoStreamUrl)) {
+                        \Log::info("video Stream url".$videoStreamUrl);
+
+                        if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
 
                             $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
 
