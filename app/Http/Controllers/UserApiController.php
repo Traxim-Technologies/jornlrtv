@@ -1422,6 +1422,16 @@ class UserApiController extends Controller {
 
                         }
 
+                        if(!$videoStreamUrl || !file_exists($videoStreamUrl)) {
+
+                            $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
+
+                            // dd($videoPath);
+                            $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+
+
+                        }
+
 
                     } else {
 
