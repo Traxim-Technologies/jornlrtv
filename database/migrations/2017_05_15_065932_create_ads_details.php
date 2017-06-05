@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -17,7 +16,7 @@ class CreateAdsDetails extends Migration
             $table->string('name')->nullable();
             $table->integer('ad_time')->default(0)->comment('In Seconds');
             $table->string('file')->nullable();
-            $table->integer('status')->default(0;
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
