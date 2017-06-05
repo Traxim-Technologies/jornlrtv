@@ -518,7 +518,7 @@ class CommonRepository {
 
             DB::rollBack();
 
-            $response_array = ['success'=>false, $e->getMessage()];
+            $response_array = ['success'=>false, 'message'=>$e->getMessage()];
 
         }
 
