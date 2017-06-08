@@ -24,6 +24,7 @@ return array(
 	'registration_success'=>'Registration completed successfully, please Login and Continue',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',
+	'abort'=>'Abort',
 	'url'=>'Url',
 	'images' => 'Images',
 	'details' => 'Details',

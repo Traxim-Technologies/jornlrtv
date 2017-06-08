@@ -114,7 +114,11 @@
                             </div>
                             <div class="wizard-footer">
                                 <div class="pull-right">
+
+                                      <input type='button' class='btn btn-abort btn-fill btn-warning btn-wd' name='abort' value="{{tr('abort')}}" id="abort_btn" onclick="abortVideo();"/>
+
                                       <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next' id="next_btn"/>
+
                                       <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Finish' onclick="redirect()" />
                                   </div>
                                   <div class="pull-left">
@@ -146,6 +150,23 @@
 <script src="{{asset('streamtube/js/jquery-form.js')}}"></script>
 
 <script>
+
+     $("#abort_btn").hide();
+
+    function abortVideo() {
+
+      var id = $("#main_id").val();
+
+      /*if (id != '' && id != undefined) {
+
+
+      } else {*/
+
+        window.location.reload(true);
+
+      //}
+
+    }
 
    function redirect() {
 
@@ -311,6 +332,7 @@
             $("#next_btn").val("Wait Progressing...");
             $("#next_btn").attr('disabled', true);
             $("#video_file").attr('disabled', true);
+            $("#abort_btn").show();
         },
         uploadProgress: function(event, position, total, percentComplete) {
             console.log(total);
@@ -334,6 +356,7 @@
             $("#next_btn").attr('disabled', false);
             $("#video_file").removeAttr('disabled');
             console.log(xhr);
+            $("#abort_btn").hide();
         },
         error : function(xhr) {
             console.log(xhr);
@@ -347,6 +370,8 @@
                 $("#select_image_div").html(xhr.path);
 
                 $("#main_id").val(xhr.data.id);
+
+                $("#abort_btn").hide();
 
                 $(".btn-next").click();
 

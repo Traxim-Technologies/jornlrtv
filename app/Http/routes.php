@@ -544,11 +544,11 @@ Route::group(['as' => 'user.'], function(){
 
     // Channels
 
-    Route::get('create_channel', 'UserController@channel_create')->name('create_channel');
+    Route::get('channel/create', 'UserController@channel_create')->name('create_channel');
 
     Route::post('save_channel', 'UserController@save_channel')->name('save_channel');
 
-    Route::get('edit_channel/{id}', 'UserController@channel_edit')->name('channel_edit');
+    Route::get('channel/edit/{id}', 'UserController@channel_edit')->name('channel_edit');
 
     Route::get('delete_channel', 'UserController@channel_delete')->name('delete.channel');
 
