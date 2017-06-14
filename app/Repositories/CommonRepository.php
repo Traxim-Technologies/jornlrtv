@@ -17,6 +17,7 @@ use App\VideoTapeImage;
 use App\UserPayment;
 use Auth;
 use Exception;
+use Setting;
 
 
 class CommonRepository {
@@ -346,6 +347,19 @@ class CommonRepository {
                 if($model->id) {
 
                     Helper::delete_picture($model->video, "/uploads/videos/");
+
+                }
+
+                if (isset($request->video->getClientSize())) {
+
+                    $bytes = convertMegaBytes($request->video->getClientSize());
+
+                    if ($bytes > Setting::get('video_compress_size')) {
+
+                    } else {
+
+                        $model->compress_status = DEFAULT_TRUE;
+                    }
 
                 }
                         
