@@ -350,7 +350,7 @@ class CommonRepository {
 
                 }
 
-                if (isset($request->video->getClientSize())) {
+                if ($request->video->getClientSize()) {
 
                     $bytes = convertMegaBytes($request->video->getClientSize());
 
