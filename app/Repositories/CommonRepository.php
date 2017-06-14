@@ -350,18 +350,7 @@ class CommonRepository {
 
                 }
 
-                /*if ($request->video->getClientSize()) {
 
-                    $bytes = convertMegaBytes($request->video->getClientSize());
-
-                    if ($bytes > Setting::get('video_compress_size')) {
-
-                    } else {
-
-                        $model->compress_status = DEFAULT_TRUE;
-                    }
-
-                }*/
                         
                 $main_video_duration = Helper::video_upload($request->video);
 
@@ -415,6 +404,20 @@ class CommonRepository {
                     } else {
                         $model->publish_status = DEFAULT_FALSE;
                     }
+                }
+
+                if ($request->video->getClientSize()) {
+
+                    $bytes = convertMegaBytes($request->video->getClientSize());
+
+                    if ($bytes > Setting::get('video_compress_size')) {
+
+                    } else {
+
+                        $model->compress_status = DEFAULT_TRUE;
+                        $model->status = DEFAULT_TRUE;
+                    }
+
                 }
 
                 $model->save();
