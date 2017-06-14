@@ -350,7 +350,7 @@ class CommonRepository {
 
                 }
 
-                if ($request->video->getClientSize()) {
+                /*if ($request->video->getClientSize()) {
 
                     $bytes = convertMegaBytes($request->video->getClientSize());
 
@@ -361,7 +361,7 @@ class CommonRepository {
                         $model->compress_status = DEFAULT_TRUE;
                     }
 
-                }
+                }*/
                         
                 $main_video_duration = Helper::video_upload($request->video);
 
