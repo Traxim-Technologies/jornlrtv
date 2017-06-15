@@ -620,7 +620,7 @@ return array(
 	'email_logo'	=>	'Email Logo',
 	'site_icon'	=>	'Site Favicon',
 	'paypal'	=>	'Paypal',
-	'no_of_days_expiry' => 'The Pack will Expiry within ',
+	'no_of_days_expiry' => 'The Subscription Pack will Expiry within ',
 
 	// S3 bucket 
 
