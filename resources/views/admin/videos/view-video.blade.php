@@ -215,7 +215,6 @@ hr {
         
         jQuery(document).ready(function(){
 
-
                 console.log('Inside Video');
                     
                 console.log('Inside Video Player');
@@ -283,54 +282,45 @@ hr {
                                 "sites": ["reddit","facebook","twitter"]
                               }
                         });
+
+                        playerInstance.on('setupError', function() {
+
+                                jQuery("#main-video-player").css("display", "none");
+                                
+                               
+
+                                var hasFlash = false;
+                                try {
+                                    var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                                    if (fo) {
+                                        hasFlash = true;
+                                    }
+                                } catch (e) {
+                                    if (navigator.mimeTypes
+                                            && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                            && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                                        hasFlash = true;
+                                    }
+                                }
+
+                                if (hasFlash == false) {
+                                    jQuery('#flash_error_display').show();
+                                    return false;
+                                }
+
+                                jQuery('#main_video_setup_error').css("display", "block");
+
+                                confirm('The video format is not supported in this browser. Please option some other browser.');
+                            
+                            });
+
+
                     
                     @endif
 
                 @endif
 
-                @if($trailer_url)
-
-                    var playerInstance = jwplayer("trailer-video-player");
-
-                    @if($trailerstreamUrl)
-
-                            playerInstance.setup({
-                                file : "{{$trailerstreamUrl}}",
-                                image: "{{$video->default_image}}",
-                                width: "100%",
-
-                                aspectratio: "16:9",
-                                primary: "flash",
-                            });
-
-                    @else
-
-                            var trailerVideoPath = "{{$trailer_video_path}}";
-                            var trailerVideoPixels = "{{$trailer_pixels}}";
-
-                            var trailerPath = [];
-
-                            var splitTrailer = trailerVideoPath.split(',');
-
-                            var splitTrailerPixel = trailerVideoPixels.split(',');
-
-
-                            for (var i = 0 ; i < splitTrailer.length; i++) {
-
-                                trailerPath.push({file : splitTrailer[i], label : splitTrailerPixel[i]});
-                            }
-
-                            playerInstance.setup({
-                                sources : trailerPath,
-                                image: "{{$video->default_image}}",
-                                width: "100%",
-
-                                aspectratio: "16:9",
-                                primary: "flash",
-                            });
-
-                    @endif
-                @endif
+               
         });
 
     </script>
