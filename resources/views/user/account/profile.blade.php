@@ -43,7 +43,7 @@
                                         
                                         @if(Auth::user()->user_type)
                                             <?php $subscription_details = get_expiry_days(Auth::user()->id);?>
-                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
+                                            <p style="color:#cc181e">{{tr('no_of_days_expiry')}} <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
                                         @endif
 
                                        
