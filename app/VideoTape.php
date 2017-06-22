@@ -104,11 +104,11 @@ class VideoTape extends Model
     {
         $array = parent::toArray();
 
-        $array['tape_images'] = $this->getVideoTapeImages;
+        /*$array['tape_images'] = $this->getVideoTapeImages;
 
         $array['channel_details'] = $this->getChannel;
 
-        $array['user_details'] = $this->getChannel->getUser;
+        $array['user_details'] = ($this->getChannel) ? $this->getChannel->getUser : [];*/
 
         return $array;
     }

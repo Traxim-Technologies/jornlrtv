@@ -716,3 +716,43 @@ function pages() {
 
     return $all_pages;
 }
+
+
+function get_history_count($id) {
+
+    $base_query = UserHistory::where('user_histories.user_id' , $id)
+                ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                ->where('video_tapes.is_approved' , 1)
+                ->where('video_tapes.status' , 1)
+                ->where('video_tapes.publish_status' , 1);
+        
+    if (Auth::check()) {
+
+        // Check any flagged videos are present
+
+        $flag_videos = flag_videos(Auth::user()->id);
+
+        if($flag_videos) {
+            $base_query->whereNotIn('video_tapes.id',$flag_videos);
+        }
+    
+    }
+
+    $data = $base_query->count();
+
+    return $data;
+
+}
+
+function get_wishlist_count($id) {
+    
+    $data = Wishlist::where('wishlists.user_id' , $id)
+                ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                ->where('video_tapes.is_approved' , 1)
+                ->where('video_tapes.status' , 1)
+                ->where('wishlists.status' , 1)
+                ->count();
+
+    return $data;
+
+}

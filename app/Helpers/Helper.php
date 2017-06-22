@@ -657,34 +657,6 @@
         }
 
 
-        public static function recently_added($web = NULL , $skip = 0) {
-
-            $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                            ->where('video_tapes.status' , 1)
-                            ->videoResponse()
-                            ->orderby('video_tapes.created_at' , 'desc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
-
-                if($flagVideos) {
-                    $videos_query->whereNotIn('video_tapes.id',$flagVideos);
-                }
-            }
-
-            if($web) {
-                $videos = $videos_query->paginate(16);
-
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))
-                            ->get();
-            }
-
-            return $videos;
-        }
-
-
         public static function upload_avatar($folder,$picture) {
 
             $file_name = Helper::file_name();
@@ -707,5 +679,23 @@
             File::delete( public_path() . "/".$folder."/". basename($picture));
             return true;
         }
+
+
+        public static function banner_videos() {
+
+            $videos = VideoTape::where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.is_banner' , 1)
+                            ->select(
+                                'video_tapes.id as admin_video_id' ,
+                                'video_tapes.title','video_tapes.ratings',
+                                'video_tapes.banner_image as default_image'
+                                )
+                            ->orderBy('created_at' , 'desc')
+                            ->get();
+
+            return $videos;
+        }
+
 
     }

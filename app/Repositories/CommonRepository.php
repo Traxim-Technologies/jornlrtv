@@ -350,7 +350,6 @@ class CommonRepository {
 
                 }
 
-
                         
                 $main_video_duration = Helper::video_upload($request->video);
 

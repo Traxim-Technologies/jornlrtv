@@ -90,9 +90,7 @@ if(!defined('NO_INSTALL')) define('NO_INSTALL' , 0);
 
 if(!defined('SYSTEM_CHECK')) define('SYSTEM_CHECK' , 1);
 
-if(!defined('THEME_CHECK')) define('THEME_CHECK' , 2);
-
-if(!defined('INSTALL_COMPLETE')) define('INSTALL_COMPLETE' , 3);
+if(!defined('INSTALL_COMPLETE')) define('INSTALL_COMPLETE' , 2);
 
 
 if(!defined('ADMIN')) define('ADMIN', 'admin');
@@ -175,7 +173,7 @@ Route::get('/payment/expiry', 'ApplicationController@user_payment_expiry')->name
 
 Route::get('/privacy', 'UserApiController@privacy')->name('user.privacy');
 
-Route::get('/terms', 'UserApiController@terms')->name('user.terms');
+Route::get('/terms_condition', 'UserApiController@terms')->name('user.terms');
 
 Route::get('/contact', 'UserController@contact')->name('user.contact');
 
@@ -596,19 +594,9 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/changePassword', 'UserApiController@change_password');
 
-    Route::get('/tokenRenew', 'UserApiController@token_renew');
-
     Route::post('/deleteAccount', 'UserApiController@delete_account');
 
     Route::post('/settings', 'UserApiController@settings');
-
-
-    // Categories And SubCategories
-
-    Route::post('/categories' , 'UserApiController@get_categories');
-
-    Route::post('/subCategories' , 'UserApiController@get_sub_categories');
-
 
     // Videos and home
 
@@ -616,15 +604,11 @@ Route::group(['prefix' => 'userApi'], function(){
     
     Route::post('/common' , 'UserApiController@common');
 
-    Route::post('/categoryVideos' , 'UserApiController@get_category_videos');
-
-    Route::post('/subCategoryVideos' , 'UserApiController@get_sub_category_videos');
-
-    Route::post('/singleVideo' , 'UserApiController@single_video');
+    Route::post('/singleVideo' , 'UserApiController@getSingleVideo');
 
     Route::post('/searchVideo' , 'UserApiController@search_video')->name('search-video');
 
-    Route::post('/test_search_video' , 'UserApiController@test_search_video');
+    Route::post('/channel_videos', 'UserApiController@get_channel_videos');
 
 
     // Rating and Reviews

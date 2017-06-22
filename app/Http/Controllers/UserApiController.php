@@ -42,6 +42,8 @@ use App\Redeem;
 
 use App\RedeemRequest;
 
+use App\Channel;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -703,7 +705,7 @@ class UserApiController extends Controller {
 
     public function get_wishlist(Request $request)  {
 
-        $wishlist = Helper::wishlist($request->id,NULL,$request->skip);
+        $wishlist = VideoRepo::wishlist($request->id,NULL,$request->skip);
 
         $total = get_wishlist_count($request->id);
 
@@ -751,41 +753,6 @@ class UserApiController extends Controller {
     }
 
 
-    public function wishlist($id, $count = null, $skip = 0) {
-
-        $query = Wishlist::where('wishlists.user_id', $id)->select('wishlists.*')
-                    ->where('wishlists.status', DEFAULT_TRUE)
-                    ->leftJoin('video_tapes', 'wishlists.video_tape_id', '=', 'video_tapes.id')
-                    ->where('video_tapes.is_approved' , 1)
-                    ->where('video_tapes.status' , 1)
-                    ->orderBy('wishlists.created_at', 'desc');
-
-        if($count) {
-
-            $paginate = $query->paginate($count);
-
-            $model = array('data' => $paginate->items(), 'pagination' => (string) $paginate->links());
-
-
-        } else if($skip) {
-
-            $paginate = $query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-            $model = array('data' => $paginate, 'pagination' => '');
-
-        } else {
-
-            $paginate = $query->get();
-
-            $model = array('data' => $paginate, 'pagination' => '');
-
-        }
-
-        return response()->json($model, 200);
-
-    }
-
-
     public function spam_videos($id, $count = null, $skip = 0) {
 
         $query = Flag::where('flags.user_id', $id)->select('flags.*')
@@ -820,41 +787,6 @@ class UserApiController extends Controller {
 
     }
 
-
-    public function history($id, $count = null, $skip = 0) {
-
-        $query = UserHistory::where('user_histories.user_id', $id)
-                    ->select('user_histories.*')
-                    ->where('user_histories.status', DEFAULT_TRUE)
-                    ->leftJoin('video_tapes', 'user_histories.video_tape_id', '=', 'video_tapes.id')
-                    ->where('video_tapes.is_approved' , 1)
-                    ->where('video_tapes.status' , 1)
-                    ->orderBy('user_histories.created_at', 'desc');
-
-        if($count) {
-
-            $paginate = $query->paginate($count);
-
-            $model = array('data' => $paginate->items(), 'pagination' => (string) $paginate->links());
-
-
-        } else if($skip) {
-
-            $paginate = $query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-            $model = array('data' => $paginate, 'pagination' => '');
-
-        } else {
-
-            $paginate = $query->get();
-
-            $model = array('data' => $paginate, 'pagination' => '');
-
-        }
-
-        return response()->json($model, 200);
-
-    }
 
 
     public function add_history(Request $request)  {
@@ -949,7 +881,7 @@ class UserApiController extends Controller {
 
 		//get wishlist
 
-        $history = Helper::watch_list($request->id,NULL,$request->skip)->toArray();
+        $history = VideoRepo::watch_list($request->id,NULL,$request->skip);
 
         $total = get_history_count($request->id);
 
@@ -1034,31 +966,31 @@ class UserApiController extends Controller {
 
         $wishlist['name'] = tr('mobile_wishlist_heading');
         $wishlist['key'] = WISHLIST;
-        $wishlist['list'] = Helper::wishlist($request->id);
+        $wishlist['list'] = VideoRepo::wishlist($request->id);
 
         array_push($videos , $wishlist);
 
         $recent['name'] = tr('mobile_recent_upload_heading');
         $recent['key'] = RECENTLY_ADDED;
-        $recent['list'] = Helper::recently_added();
+        $recent['list'] = VideoRepo::recently_added();
 
         array_push($videos , $recent);
 
         $trending['name'] = tr('mobile_trending_heading');
         $trending['key'] = TRENDING;
-        $trending['list'] = Helper::trending();
+        $trending['list'] = VideoRepo::trending(WEB);
 
         array_push($videos, $trending);
 
         $history['name'] = tr('mobile_watch_again_heading');
         $history['key'] = WATCHLIST;
-        $history['list'] = Helper::watch_list($request->id);
+        $history['list'] = VideoRepo::watch_list($request->id);
 
         array_push($videos , $history);
 
         $suggestion['name'] = tr('mobile_suggestion_heading');
         $suggestion['key'] = SUGGESTIONS;
-        $suggestion['list'] = Helper::suggestion_videos();
+        $suggestion['list'] = VideoRepo::suggestion_videos();
 
         array_push($videos , $suggestion);
 
@@ -1123,25 +1055,23 @@ class UserApiController extends Controller {
 
             $data = array();
 
-            $channels = getChannels($request->channel_id);
+            $channels = Channel::where('status', 1)->where('id', $request->channel_id)->first();
 
             if($channels) {
 
-                foreach ($channels as $key => $channels) {
+                $videos = VideoRepo::channel_videos($channels->id, '', $request->skip);
 
-                    $videos = VideoRepo::channel_videos($channels->id, WEB);
+                if(count($videos) > 0) {
 
-                    if(count($videos) > 0) {
+                    $results['channel_name'] = $channels->name;
+                    $results['key'] = $channels->id;
+                    $results['videos_count'] = count($channels);
+                    $results['videos'] = $videos;
 
-                        $results['channel_name'] = $channels->name;
-                        $results['key'] = $channels->id;
-                        $results['videos_count'] = count($channels);
-                        $results['videos'] = $channels->toArray();
+                    array_push($data, $results);
 
-                        array_push($data, $results);
-
-                    }
                 }
+                
             }
 
             $response_array = array('success' => true, 'data' => $data);
@@ -1263,7 +1193,10 @@ class UserApiController extends Controller {
 
         } else {
 
-            $results = AdminVideo::where('is_approved' , 1)->where('status' , 1)->select('id as admin_video_id' , 'title' , 'default_image')->orderBy('created_at' , 'desc')->get()->toArray();
+            $results = VideoTape::where('is_approved' , 1)
+                    ->where('status' , 1)
+                    ->where('title', 'like', '%' . $request->key . '%')
+                    ->select('id as admin_video_id' , 'title' , 'default_image')->orderBy('created_at' , 'desc')->get()->toArray();
 
             $response_array = array('success' => true, 'data' => $results);
         }
@@ -1368,9 +1301,9 @@ class UserApiController extends Controller {
 
     // Function Name : getSingleVideo()
 
-    public function getSingleVideo($id) {
+    public function getSingleVideo(Request $request) {
 
-        $video = VideoTape::where('video_tapes.id' , $id)
+        $video = VideoTape::where('video_tapes.id' , $request->admin_video_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
                     ->first();
@@ -1387,7 +1320,7 @@ class UserApiController extends Controller {
 
             $channels = [];
 
-            $suggestions = VideoRepo::suggestion_videos('', '', $id);
+            $suggestions = VideoRepo::suggestion_videos('', '', $request->admin_video_id);
 
             $wishlist_status = $history_status = WISHLIST_EMPTY;
 
@@ -1395,7 +1328,7 @@ class UserApiController extends Controller {
 
              // Load the user flag
 
-            $flaggedVideo = (Auth::check()) ? Flag::where('video_tape_id',$id)->where('user_id', Auth::user()->id)->first() : '';
+            $flaggedVideo = (Auth::check()) ? Flag::where('video_tape_id',$request->admin_video_id)->where('user_id', Auth::user()->id)->first() : '';
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
 
@@ -1473,7 +1406,7 @@ class UserApiController extends Controller {
 
             }
 
-            $share_link = route('user.single' , $id);
+            $share_link = route('user.single' , $request->admin_video_id);
             
             $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
                 'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,

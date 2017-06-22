@@ -19,6 +19,10 @@ use App\Wishlist;
 
 use App\UserHistory;
 
+use DB;
+
+use Setting;
+
 class VideoTapeRepository {
 
 
@@ -243,11 +247,18 @@ class VideoTapeRepository {
 	public static function wishlist($user_id, $web = NULL , $skip = 0) {
 
         $base_query = Wishlist::where('wishlists.user_id' , $user_id)
-                        ->leftJoin('video_tapes', 'wishlists.video_tape_id', '=', 'video_tapes.id')
-                        ->where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->where('wishlists.status' , 1)
-                        ->orderby('wishlists.created_at' , 'desc');
+                            ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('wishlists.status' , 1)
+                            ->select(
+                                    'wishlists.id as wishlist_id','video_tapes.id as admin_video_id' ,
+                                    'video_tapes.title','video_tapes.description' ,
+                                    'default_image','video_tapes.watch_count','video_tapes.ratings',
+                                    'video_tapes.duration','video_tapes.channel_id',
+                                    DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time') , 'channels.name as channel_name', 'wishlists.created_at')
+                            ->orderby('wishlists.created_at' , 'desc');
 
         if (Auth::check()) {
 
@@ -280,11 +291,15 @@ class VideoTapeRepository {
     public static function watch_list($user_id, $web = NULL , $skip = 0) {
 
         $base_query = UserHistory::where('user_histories.user_id' , $user_id)
-                        ->leftJoin('video_tapes', 'video_tapes.id', '=', 'video_tape_id')
-                        ->where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->where('video_tapes.publish_status' , 1)
-                        ->orderby('user_histories.created_at' , 'desc');
+                            ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->select('user_histories.id as history_id','video_tapes.id as admin_video_id' ,
+                                'video_tapes.title','video_tapes.description' , 'video_tapes.duration',
+                                'default_image','video_tapes.watch_count','video_tapes.ratings',
+                                DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 'video_tapes.channel_id','channels.name as channel_name', 'user_histories.created_at')
+                            ->orderby('user_histories.created_at' , 'desc');
         
         if (Auth::check()) {
 

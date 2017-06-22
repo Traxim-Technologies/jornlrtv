@@ -23,7 +23,7 @@
                             @foreach($wishlists as $wishlist)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $wishlist->video_tape_id)}}"><img src="{{$wishlist->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $wishlist->admin_video_id)}}"><img src="{{$wishlist->default_image}}" /></a>
 
                                     <div class="video_duration">
                                         {{$wishlist->duration}}
@@ -32,7 +32,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $wishlist->video_tape_id)}}">{{$wishlist->title}}</a>
+                                        <a href="{{route('user.single' , $wishlist->admin_video_id)}}">{{$wishlist->title}}</a>
                                     </div>
 
                                     <?php /* 

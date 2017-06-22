@@ -38,8 +38,7 @@
 				    			<div class="col-md-5 visible-md visible-lg">
 						            <div class="steps row animated slideInUp">
 						                <div class="col-sm-4 animated slideInup" id="system_check"><p>1</p></div>
-						                <div class="col-sm-4 animated slideInup" id="theme_install"><p>2</p></div>
-						                <div class="col-sm-4 animated slideInup" id="other_install"><p>3</p></div>
+						                <div class="col-sm-4 animated slideInup" id="other_install"><p>2</p></div>
 						            </div><!--end of steps-->
 				    			</div>
 							</div> <!--end of row-->               
