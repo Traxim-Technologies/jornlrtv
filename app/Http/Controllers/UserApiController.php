@@ -48,7 +48,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'getSingleVideo']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact']));
 
     }
 
