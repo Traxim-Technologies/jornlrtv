@@ -108,10 +108,13 @@ class UserController extends Controller {
         
     }
 
-    public function single_video($id) {
+    public function single_video(Request $request, $id) {
 
+        $request->request->add([ 
+            'admin_video_id' => $id,
+        ]);
 
-        $data = $this->UserAPI->getSingleVideo($id)->getData();
+        $data = $this->UserAPI->getSingleVideo($request)->getData();
 
         if ($data->success) {
 

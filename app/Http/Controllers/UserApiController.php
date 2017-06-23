@@ -1400,9 +1400,9 @@ class UserApiController extends Controller {
 
             if(\Auth::check()) {
 
-                $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$id);
+                $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$request->admin_video_id);
 
-                $history_status = Helper::history_status(\Auth::user()->id,$id);
+                $history_status = Helper::history_status(\Auth::user()->id,$request->admin_video_id);
 
             }
 

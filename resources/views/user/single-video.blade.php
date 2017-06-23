@@ -230,8 +230,9 @@ textarea[name=comments] {
 
                                                         <div class="share">
 
+
                                                             @if(Auth::check())
-                                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_details->user_id)
+                                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_created_by)
 
                                                                     @if($flaggedVideo == '')
                                                                         <button onclick="showReportForm();" type="button" class="report-button" title="{{tr('report')}}">

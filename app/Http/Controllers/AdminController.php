@@ -66,6 +66,8 @@ use App\Repositories\CommonRepository as CommonRepo;
 
 use App\Repositories\AdminRepository as AdminRepo;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
 use App\Jobs\NormalPushNotification;
 
 class AdminController extends Controller {
@@ -99,7 +101,7 @@ class AdminController extends Controller {
 
         $video_count = VideoTape::count();
  
-        $recent_videos = Helper::recently_added();
+        $recent_videos = VideoRepo::recently_added(WEB);
 
         $get_registers = get_register_count();
         $recent_users = get_recent_users();
