@@ -958,43 +958,35 @@ class UserApiController extends Controller {
 
     public function home(Request $request) {
 
-        $videos = $wishlist = $recent =  $banner = $trending = $history = $suggestion =array();
+        $videos = [];
 
-        $banner['name'] = tr('mobile_banner_heading');
-        $banner['key'] = BANNER;
-        $banner['list'] = Helper::banner_videos();
+        $videos['name'] = tr('all_videos');
+        $videos['key'] = ALL_VIDEOS;
 
-        $wishlist['name'] = tr('mobile_wishlist_heading');
-        $wishlist['key'] = WISHLIST;
-        $wishlist['list'] = VideoRepo::wishlist($request->id);
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->videoResponse()
+                            ->orderByRaw('created_at desc');
 
-        array_push($videos , $wishlist);
+        if (Auth::check()) {
 
-        $recent['name'] = tr('mobile_recent_upload_heading');
-        $recent['key'] = RECENTLY_ADDED;
-        $recent['list'] = VideoRepo::recently_added();
+            // Check any flagged videos are present
 
-        array_push($videos , $recent);
+            $flag_videos = flag_videos(Auth::user()->id);
 
-        $trending['name'] = tr('mobile_trending_heading');
-        $trending['key'] = TRENDING;
-        $trending['list'] = VideoRepo::trending(WEB);
+            if($flag_videos) {
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        }
 
-        array_push($videos, $trending);
 
-        $history['name'] = tr('mobile_watch_again_heading');
-        $history['key'] = WATCHLIST;
-        $history['list'] = VideoRepo::watch_list($request->id);
+        $videos['list'] = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
-        array_push($videos , $history);
 
-        $suggestion['name'] = tr('mobile_suggestion_heading');
-        $suggestion['key'] = SUGGESTIONS;
-        $suggestion['list'] = VideoRepo::suggestion_videos();
-
-        array_push($videos , $suggestion);
-
-        $response_array = array('success' => true , 'data' => $videos , 'banner' => $banner);
+        $response_array = array('success' => true , 'data' => $videos);
 
         return response()->json($response_array , 200);
 

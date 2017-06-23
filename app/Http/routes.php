@@ -121,6 +121,8 @@ if(!defined('SUGGESTIONS')) define('SUGGESTIONS' , 'suggestion');
 if(!defined('WISHLIST')) define('WISHLIST' , 'wishlist');
 if(!defined('WATCHLIST')) define('WATCHLIST' , 'watchlist');
 if(!defined('BANNER')) define('BANNER' , 'banner');
+if(!defined('ALL_VIDEOS')) define('ALL_VIDEOS', 'All Videos');
+
 
 if(!defined('WEB')) define('WEB' , 1);
 
