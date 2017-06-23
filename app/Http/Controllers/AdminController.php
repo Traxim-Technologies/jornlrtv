@@ -1652,7 +1652,7 @@ class AdminController extends Controller {
 
     public function ad_delete(Request $request) {
 
-        $model = AdDetail::find($request->id);
+        $model = AdsDetail::find($request->id);
 
         if($model) {
 
@@ -1663,6 +1663,21 @@ class AdminController extends Controller {
                 $model->getVideoTape->save();
 
             } */
+
+            if (count($model->getAssignedVideo) > 0) {
+
+                foreach ($model->getAssignedVideo as $key => $value) {
+
+                    if ($value->videoAd) {
+
+                        $value->videoAd->delete();
+                    }
+
+                   $value->delete();    
+
+                }               
+             
+            }
 
             if($model->delete()) {
 

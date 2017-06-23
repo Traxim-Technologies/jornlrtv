@@ -20,6 +20,12 @@ class AssignVideoAd extends Model
 
     }
 
+    public function videoAd() {
+
+         return $this->hasOne('App\VideoAd', 'id', 'video_ad_id');
+
+    }
+
 
     public function toArray()
     {
@@ -29,4 +35,5 @@ class AssignVideoAd extends Model
         
         return $array;
     }
+
 }
