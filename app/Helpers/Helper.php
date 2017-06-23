@@ -34,6 +34,8 @@
 
     use App\UserHistory;
 
+    use App\UserRating;
+
 
     class Helper
     {
@@ -697,5 +699,45 @@
             return $videos;
         }
 
+         public static function video_ratings($video_id) {
 
+            $ratings = UserRating::where('video_tape_id' , $video_id)
+                            ->leftJoin('users' , 'user_ratings.user_id' , '=' , 'users.id')
+                            ->select('users.id as user_id' , 'users.name as username',
+                                    'users.picture as picture' ,
+
+                                    'user_ratings.rating' , 'user_ratings.comment',
+                                    'user_ratings.created_at')
+                            ->get();
+            if(!$ratings) {
+                $ratings = array();
+            }
+
+            return $ratings;
+        }
+
+
+        public static function get_user_comments($user_id,$web = NULL) {
+
+            $videos_query = UserRating::where('user_id' , $user_id)
+                            ->leftJoin('video_tapes' ,'user_ratings.video_tape_id' , '=' , 'video_tapes.id')
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->select('video_tapes.id as admin_video_id' ,
+                                'video_tapes.title','video_tapes.description' ,
+                                'default_image','video_tapes.watch_count',
+                                'video_tapes.duration',
+                                DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'))
+                            ->orderby('user_ratings.created_at' , 'desc')
+                            ->groupBy('video_tapes.id');
+
+            if($web) {
+                $videos = $videos_query->paginate(16);
+            } else {
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            }
+
+            return $videos;
+
+        }
     }

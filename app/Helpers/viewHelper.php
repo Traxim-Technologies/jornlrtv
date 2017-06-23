@@ -756,3 +756,15 @@ function get_wishlist_count($id) {
     return $data;
 
 }
+
+function get_video_comment_count($video_id) {
+
+    $count = UserRating::where('video_tape_id' , $video_id)
+                ->leftJoin('video_tapes' ,'user_ratings.video_tape_id' , '=' , 'video_tapes.id')
+                ->where('video_tapes.is_approved' , 1)
+                ->where('video_tapes.status' , 1)
+                ->count();
+
+    return $count;
+
+}

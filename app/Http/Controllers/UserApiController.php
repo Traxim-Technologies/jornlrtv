@@ -637,7 +637,7 @@ class UserApiController extends Controller {
             //Save Rating
             $rating = new UserRating();
             $rating->user_id = $request->id;
-            $rating->admin_video_id = $request->admin_video_id;
+            $rating->video_tape_id = $request->admin_video_id;
             $rating->rating = $request->has('rating') ? $request->rating : 0;
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
@@ -1310,7 +1310,9 @@ class UserApiController extends Controller {
 
         if($video) {
 
-            $comments = $video->getScopeUserRatings;
+            if($comments = Helper::video_ratings($request->admin_video_id,0)) {
+                $comments = $comments->toArray();
+            }
 
             $ads = $video->getScopeVideoAds ? ($video->getScopeVideoAds->status ? $video->getScopeVideoAds  : '') : '';
 
