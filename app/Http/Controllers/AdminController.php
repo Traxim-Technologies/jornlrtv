@@ -54,6 +54,8 @@ use App\VideoAd;
 
 use App\AssignVideoAd;
 
+use App\VideoTapeImage;
+
 use App\AdsDetail;
 
 use App\Channel;
@@ -661,7 +663,9 @@ class AdminController extends Controller {
 
         if ($response->success) {
 
-            $view = \View::make('admin.videos.select_image')->with('model', $response)->render();
+            $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+
+            $view = \View::make('admin.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
 
             return response()->json(['path'=>$view, 'data'=>$response->data], 200);
 

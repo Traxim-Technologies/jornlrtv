@@ -36,6 +36,8 @@ use App\Channel;
 
 use App\VideoTape;
 
+use App\VideoTapeImage;
+
 use App\Repositories\CommonRepository as CommonRepo;
 
 class UserController extends Controller {
@@ -694,7 +696,9 @@ class UserController extends Controller {
 
         if ($response->success) {
 
-            $view = \View::make('user.videos.select_image')->with('model', $response)->render();
+            $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+
+            $view = \View::make('user.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
 
             return response()->json(['path'=>$view, 'data'=>$response->data], 200);
 
