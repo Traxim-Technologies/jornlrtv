@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RedeemSeeder::class);
         $this->call(ScriptSettingSeeder::class);
         $this->call(MultiChannelSeeder::class);
+        $this->call(AdminDemoLoginSeeder::class);
     }
 }
