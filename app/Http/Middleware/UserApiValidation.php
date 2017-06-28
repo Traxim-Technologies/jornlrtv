@@ -27,7 +27,6 @@ class UserApiValidation
      */
     public function handle($request, Closure $next)
     {
-
         $validator = Validator::make(
                 $request->all(),
                 array(

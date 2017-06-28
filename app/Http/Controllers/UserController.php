@@ -36,6 +36,8 @@ use App\Channel;
 
 use App\VideoTape;
 
+use App\VideoTapeImage;
+
 use App\Repositories\CommonRepository as CommonRepo;
 
 class UserController extends Controller {
@@ -68,7 +70,7 @@ class UserController extends Controller {
         
         $username = config('database.connections.mysql.username');
 
-        if($database && $username && Setting::get('installation_process') == 3) {
+        if($database && $username && Setting::get('installation_process') == 2) {
 
             counter('home');
 
@@ -108,10 +110,13 @@ class UserController extends Controller {
         
     }
 
-    public function single_video($id) {
+    public function single_video(Request $request, $id) {
 
+        $request->request->add([ 
+            'admin_video_id' => $id,
+        ]);
 
-        $data = $this->UserAPI->getSingleVideo($id)->getData();
+        $data = $this->UserAPI->getSingleVideo($request)->getData();
 
         if ($data->success) {
 
@@ -150,7 +155,7 @@ class UserController extends Controller {
     public function profile()
     {
 
-        $wishlist = $this->UserAPI->wishlist(Auth::user()->id, null, 0)->getData();
+        $wishlist = VideoRepo::wishlist(Auth::user()->id,WEB);
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
@@ -165,7 +170,7 @@ class UserController extends Controller {
     public function update_profile()
     {
 
-        $wishlist = $this->UserAPI->wishlist(Auth::user()->id)->getData();
+        $wishlist = VideoRepo::wishlist(Auth::user()->id,WEB);
 
         return view('user.account.edit-profile')->with('page' , 'profile')
                     ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
@@ -275,7 +280,7 @@ class UserController extends Controller {
 
     public function history(Request $request) {
 
-        $histories = $this->UserAPI->history(\Auth::user()->id, 12)->getData();
+        $histories = VideoRepo::watch_list(Auth::user()->id,WEB);
 
         return view('user.account.history')
                         ->with('page' , 'profile')
@@ -329,7 +334,7 @@ class UserController extends Controller {
 
     public function wishlist(Request $request) {
         
-        $videos = $this->UserAPI->wishlist(\Auth::user()->id, 12)->getData();
+        $videos = VideoRepo::wishlist(Auth::user()->id,WEB);
 
         return view('user.account.wishlist')
                     ->with('page' , 'profile')
@@ -368,24 +373,6 @@ class UserController extends Controller {
                     ->with('videos' , $videos);
     }
 
-    public function all_categories(Request $request) {
-
-        $categories = get_categories();
-
-        $recent_videos = Helper::recently_added(WEB);
-
-        $trendings = Helper::trending(WEB);
-
-        $suggestions = Helper::suggestion_videos(WEB);
-
-        return view('user.all-categories')
-                    ->with('page' , 'categories')
-                    ->with('subPage' , 'categories')
-                    ->with('categories' , $categories)
-                    ->with('trendings' , $trendings)
-                    ->with('suggestions' , $suggestions)
-                    ->with('recent_videos' , $recent_videos);
-    }
 
     public function channel_videos($id) {
 
@@ -413,7 +400,7 @@ class UserController extends Controller {
     }
 
     public function channel_create() {
-
+        
         $model = new Channel;
 
         $channels = getChannels(Auth::user()->id);
@@ -709,7 +696,9 @@ class UserController extends Controller {
 
         if ($response->success) {
 
-            $view = \View::make('user.videos.select_image')->with('model', $response)->render();
+            $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+
+            $view = \View::make('user.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
 
             return response()->json(['path'=>$view, 'data'=>$response->data], 200);
 

@@ -54,6 +54,8 @@ use App\VideoAd;
 
 use App\AssignVideoAd;
 
+use App\VideoTapeImage;
+
 use App\AdsDetail;
 
 use App\Channel;
@@ -65,6 +67,8 @@ use App\RedeemRequest;
 use App\Repositories\CommonRepository as CommonRepo;
 
 use App\Repositories\AdminRepository as AdminRepo;
+
+use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Jobs\NormalPushNotification;
 
@@ -99,7 +103,7 @@ class AdminController extends Controller {
 
         $video_count = VideoTape::count();
  
-        $recent_videos = Helper::recently_added();
+        $recent_videos = VideoRepo::recently_added(WEB);
 
         $get_registers = get_register_count();
         $recent_users = get_recent_users();
@@ -659,7 +663,9 @@ class AdminController extends Controller {
 
         if ($response->success) {
 
-            $view = \View::make('admin.videos.select_image')->with('model', $response)->render();
+            $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+
+            $view = \View::make('admin.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
 
             return response()->json(['path'=>$view, 'data'=>$response->data], 200);
 
@@ -1650,7 +1656,7 @@ class AdminController extends Controller {
 
     public function ad_delete(Request $request) {
 
-        $model = AdDetail::find($request->id);
+        $model = AdsDetail::find($request->id);
 
         if($model) {
 
@@ -1661,6 +1667,21 @@ class AdminController extends Controller {
                 $model->getVideoTape->save();
 
             } */
+
+            if (count($model->getAssignedVideo) > 0) {
+
+                foreach ($model->getAssignedVideo as $key => $value) {
+
+                    if ($value->videoAd) {
+
+                        $value->videoAd->delete();
+                    }
+
+                   $value->delete();    
+
+                }               
+             
+            }
 
             if($model->delete()) {
 

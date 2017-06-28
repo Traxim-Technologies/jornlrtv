@@ -16,43 +16,43 @@
                     <div><h4>{{tr('wishlist')}}</h4></div>              
                 </div><!--end of content-head-->
 
-                @if(count($videos->data) > 0)
+                @if(count($videos) > 0)
 
                     <ul class="history-list">
 
-                        @foreach($videos->data as $i => $video)
+                        @foreach($videos as $i => $video)
                         <li class="sub-list row">
                             <div class="main-history">
                                  <div class="history-image">
-                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_tape->default_image}}"></a>
+                                    <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>
                                     <div class="video_duration">
-                                        {{$video->video_tape->duration}}
+                                        {{$video->duration}}
                                     </div>                        
                                 </div><!--history-image-->
                                 <div class="history-title">
                                     <div class="history-head row">
                                         <div class="cross-title">
-                                            <h5><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->video_tape->title}}</a></h5>
+                                            <h5><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
                                             <span class="video_views">
-                                                <i class="fa fa-eye"></i> {{$video->video_tape->watch_count}} {{tr('views')}} <?php /*<b>.</b> 
-                                                {{$video->created_at->diffForHumans()}} */ ?>
+                                                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                                {{$video->created_at->diffForHumans()}}
                                             </span> 
                                         </div> 
                                         <div class="cross-mark">
-                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->wishlist_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                         </div><!--end of cross-mark-->                       
                                     </div> <!--end of history-head--> 
 
                                     <div class="description">
-                                        <p>{{$video->video_tape->description}}</p>
+                                        <p>{{$video->description}}</p>
                                     </div><!--end of description--> 
 
                                     <span class="stars">
-                                        <a href="#"><i @if($video->video_tape->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->video_tape->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->video_tape->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->video_tape->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($video->video_tape->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span>                                          
                                 </div><!--end of history-title--> 
                                 
@@ -67,12 +67,12 @@
                     <p>{{tr('no_wishlist_found')}}</p>
                 @endif
 
-                @if(count($videos->data) > 0)
+                @if(count($videos) > 0)
 
-                    @if($videos->pagination)
+                    @if($videos)
                     <div class="row">
                         <div class="col-md-12">
-                            <div align="center" id="paglink"><?php echo $videos->pagination; ?></div>
+                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
                         </div>
                     </div>
                     @endif

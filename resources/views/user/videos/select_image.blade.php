@@ -32,7 +32,7 @@
 
 <input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 
-<input type="hidden" name="other_image_id_{{$key}}" id="other_image_id_{{$key}}" value="{{$model->data->tape_images[$pos]->id}}">
+<input type="hidden" name="other_image_id_{{$key}}" id="other_image_id_{{$key}}" value="{{$tape_images[$pos]->id}}">
 
 
 @endif

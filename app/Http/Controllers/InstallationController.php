@@ -20,12 +20,8 @@ class InstallationController extends Controller {
             $title = "System Check";
             return view('install.system-check')->with('title' , $title)->with('page' , 'system_check');
         } 
-        if ($settings == SYSTEM_CHECK) {
-            $title = "Choose Theme";
-            return view('install.install-theme')->with('title' , $title)->with('page' , 'theme_install');
-        } 
 
-        if($settings == THEME_CHECK ) {
+        if($settings == SYSTEM_CHECK ) {
             $title = "Configure Site Settings";
 
             return view('install.install-others')->with('title' , $title)->with('page' , 'other_install');

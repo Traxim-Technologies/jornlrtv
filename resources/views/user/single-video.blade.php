@@ -230,8 +230,9 @@ textarea[name=comments] {
 
                                                         <div class="share">
 
+
                                                             @if(Auth::check())
-                                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_details->user_id)
+                                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_created_by)
 
                                                                     @if($flaggedVideo == '')
                                                                         <button onclick="showReportForm();" type="button" class="report-button" title="{{tr('report')}}">
@@ -255,19 +256,24 @@ textarea[name=comments] {
                                                         
                                                         </div>
 
-                                                         <div class="stars ratings">
+                                                         <div class="stars ratings text-center">
 
                                                             <div class="views">
                                                                 <i class="fa fa-eye" style="color: #b31217;font-size:13px;"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
                                                             </div>
                                                             <div class="clearfix"></div>
-                                                            <center>
+                                                           
                                                                 <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                             </center>
+                                                        
+                                                             <div>
+                                                                ( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} )
+                                                                
+                                                            </div>
                                                         </div><!--end of stars-->
 
                                                     </div><!--end of share-details-->                               
@@ -334,9 +340,9 @@ textarea[name=comments] {
                                     
                                     <!--end of more-content-->
 
-                                </div><!--end of video-content-->
+                                <!--end of video-content-->
 
-                                <?php /*
+                                
                                 
                                 @if(count($comments) > 0) <div class="v-comments"> @endif
 
@@ -389,7 +395,7 @@ textarea[name=comments] {
                                                         <div class="display-comhead">
                                                             <span class="sub-comhead">
                                                                 <a href="#"><h5 style="float:left">{{$comment->username}}</h5></a>
-                                                                <a href="#" class="text-none"><p>{{$comment->created_at->diffForHumans()}}</p></a>
+                                                                <a href="#" class="text-none"><p>{{$comment->diff_human_time}}</p></a>
                                                                 <p class="com-para">{{$comment->comment}}</p>
                                                             </span>             
                                                             
@@ -413,8 +419,9 @@ textarea[name=comments] {
 
                                 @if(count($comments) > 0) </div> @endif<!--end of v-comments-->
 
-                                */ ?>
-                                                                
+                                     
+
+                                     </div>            
                             </div>
 
                             <!--end of main-content-->
