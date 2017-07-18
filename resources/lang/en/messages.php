@@ -715,6 +715,9 @@ return array(
 	'subscription_approve_success' => 'Subscription Approved successfully',
 	'subscription_decline_success' => 'Subscription Declined successfully',
 
+	'user_verify_success' => 'User Verification is done!',
+	'user_unverify_success' => 'User UnVerification is done!',
+
 
 	'ad_create_success' => 'Ad has been added successfully',
 	'ad_update_success'	=>	'Ad has been updated Successfully',
@@ -797,4 +800,8 @@ return array(
 	'subscribe'=>'Subscribe',
 	// REDEEM MESSAGES END
 
+	'verify' => 'Verify',
+	'verified' => 'Verified',
+
+	'email_verification' => 'Email verification'
 );

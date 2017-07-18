@@ -161,7 +161,7 @@
         })(window,document);*/ 
     </script>
 
-    <?php echo Setting::get('body_bottom_scripts') ?>
+    <?php echo Setting::get('body_scripts') ?>
 
 </body>
 

@@ -35,6 +35,9 @@
 						      <th>{{tr('upgrade')}}</th>
 						      <th>{{tr('validity_days')}}</th>
 						      <th>{{tr('redeems')}}</th>
+						      @if(Setting::get('email_verify_control'))
+						      <th>{{tr('email_verification')}}</th>
+						      @endif
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -62,6 +65,24 @@
 							      </td>
 
 							      <td><b>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : 0}}</b></td>
+
+							      @if(Setting::get('email_verify_control'))
+
+							      <td>
+
+							      	@if(!$user->is_verified)
+
+							      		<a href="{{route('admin.users.verify' , $user->id)}}" class="btn btn-xs btn-success">{{tr('verify')}}</a>
+
+							      	@else
+
+							      		<span>{{tr('verified')}}</span>
+
+							      	@endif
+							      	
+							      </td>
+
+							      @endif
 							 
 							      <td>
             							<ul class="admin-action btn btn-default">
