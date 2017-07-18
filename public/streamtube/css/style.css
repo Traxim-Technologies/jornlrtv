@@ -44,6 +44,7 @@ body{
     padding-top: 15px;
     margin-top: 58px;
     min-height: 700px;
+    overflow: auto;
 }
 .home1{
 	padding-top: 10px;
@@ -1492,6 +1493,7 @@ changes
 .common-youtube {
 	min-height: 700px;
 }
+
 
 .slide-image{
 	width: 100%;

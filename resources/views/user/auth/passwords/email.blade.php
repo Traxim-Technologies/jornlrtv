@@ -11,6 +11,8 @@
                 </div><!--end  of signup-head-->        
             </div><!--end of socila-form-->
 
+            @include('notification.notify')
+
             <div class="sign-up login-page">
                 <form class="signup-form login-form" method="post" action="{{ url('/password/email') }}">
                      {!! csrf_field() !!}

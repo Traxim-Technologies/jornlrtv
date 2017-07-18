@@ -303,6 +303,8 @@ class AdminController extends Controller {
             $user->email = $request->has('email') ? $request->email: '';
             $user->mobile = $request->has('mobile') ? $request->mobile : '';
             $user->description = $request->has('description') ? $request->description : '';
+
+            $user->picture = asset('placeholder.png');
             
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
