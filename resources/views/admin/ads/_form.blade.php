@@ -171,7 +171,7 @@
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-<script>jwplayer.key="{{envfile('JWPLAYER_KEY')}}";</script>
+<script>jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";</script>
 
 <script type="text/javascript">
     

@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ScriptSettingSeeder::class);
         $this->call(MultiChannelSeeder::class);
         $this->call(AdminDemoLoginSeeder::class);
+        $this->call(VideoSettingsSeeder::class);
     }
 }
