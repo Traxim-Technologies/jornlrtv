@@ -380,6 +380,29 @@ class AdminController extends Controller {
         }
     }
 
+    /** 
+     * User status change
+     * 
+     *
+     */
+
+    public function user_verify_status($id) {
+
+        if($data = User::find($id)) {
+
+            $data->is_verified  = $data->is_verified ? 0 : 1;
+
+            $data->save();
+
+            return back()->with('flash_success' , $data->status ? tr('user_verify_success') : tr('user_unverify_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+            
+        }
+    }
+
     public function user_upgrade($id) {
 
         if($user = User::find($id)) {
@@ -2066,6 +2089,8 @@ class AdminController extends Controller {
         }
 
     }
+
+
 
     public function redeems(Request $request) {
 

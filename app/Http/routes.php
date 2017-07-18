@@ -249,6 +249,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/redeems/{id?}', 'AdminController@user_redeem_requests')->name('users.redeems');
 
+    Route::get('/user/verify/{id?}', 'AdminController@user_verify_status')->name('users.verify');
+
     Route::post('/redeems/pay', 'AdminController@user_redeem_pay')->name('users.redeem.pay');
 
     // User History - admin

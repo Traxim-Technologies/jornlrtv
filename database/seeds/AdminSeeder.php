@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
     	DB::table('admins')->insert([
     		[
 		        'name' => 'Admin',
-		        'email' => 'admin@streamhash.com',
+		        'email' => 'admin@streamtube.com',
 		        'password' => \Hash::make('123456'),
 		        'picture' =>"",
 		        'created_at' => date('Y-m-d H:i:s'),

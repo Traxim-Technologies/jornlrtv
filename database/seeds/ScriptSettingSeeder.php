@@ -17,7 +17,7 @@ class ScriptSettingSeeder extends Seeder
 		        'value' => ""
 		    ],
 		    [
-		        'key' => 'body_end_scripts',
+		        'key' => 'body_scripts',
 		        'value' => ""
 		    ]
 		]);
