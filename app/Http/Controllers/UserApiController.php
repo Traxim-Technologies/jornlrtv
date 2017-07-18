@@ -1111,8 +1111,8 @@ class UserApiController extends Controller {
                     if(Setting::get('streaming_url'))
                         $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);
 
-                    if(envfile('HLS_STREAMING_URL'))
-                        $ios_trailer_video = envfile('HLS_STREAMING_URL').get_video_end($data->trailer_video);
+                    if(Setting::get('HLS_STREAMING_URL'))
+                        $ios_trailer_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->trailer_video);
                 }
 
                 if(check_valid_url($data->video)) {
@@ -1120,8 +1120,8 @@ class UserApiController extends Controller {
                     if(Setting::get('streaming_url'))
                         $video = Setting::get('streaming_url').get_video_end($data->video);
 
-                    if(envfile('HLS_STREAMING_URL'))
-                        $ios_video = envfile('HLS_STREAMING_URL').get_video_end($data->video);
+                    if(Setting::get('HLS_STREAMING_URL'))
+                        $ios_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->video);
                 }
             }
 
@@ -1334,7 +1334,7 @@ class UserApiController extends Controller {
 
                 if ($video->publish_status == 1) {
 
-                    $hls_video = (envfile('HLS_STREAMING_URL')) ? envfile('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
+                    $hls_video = (Setting::get('HLS_STREAMING_URL')) ? Setting::get('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
 
                     if (\Setting::get('streaming_url')) {
 
