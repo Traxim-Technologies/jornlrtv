@@ -126,6 +126,16 @@ if(!defined('ALL_VIDEOS')) define('ALL_VIDEOS', 'All Videos');
 
 if(!defined('WEB')) define('WEB' , 1);
 
+
+Route::get('/clear-cache', function() {
+
+    $exitCode = Artisan::call('config:cache');
+
+    return back();
+
+})->name('clear-cache');
+
+
 // Route::get('/ui' , 'ApplicationController@ui')->name('ui');
 
 Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');

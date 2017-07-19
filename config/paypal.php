@@ -3,8 +3,8 @@
 return array(
     
     // set your paypal credential  //test
-    'client_id' => env('PAYPAL_ID'),
-    'secret' => env('PAYPAL_SECRET'),   
+    'client_id' => envfile('PAYPAL_ID'),
+    'secret' => envfile('PAYPAL_SECRET'),   
     
     /**
      * SDK configuration
@@ -14,7 +14,7 @@ return array(
          * Available option 'sandbox' or 'live'
          */
         // 'mode' => 'live',
-		'mode' => env('PAYPAL_MODE' , "sandbox"),
+		'mode' => envfile('PAYPAL_MODE' , "sandbox"),
         /**
          * Specify the max request time in seconds
          */

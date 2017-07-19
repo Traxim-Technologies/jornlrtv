@@ -655,7 +655,7 @@ class AdminController extends Controller {
 
     public function edit_video(Request $request) {
 
-        Log::info("Queue Driver ".env('QUEUE_DRIVER'));
+        Log::info("Queue Driver ".envfile('QUEUE_DRIVER'));
 
 
         $video = VideoTape::where('video_tapes.id' , $request->id)
@@ -960,13 +960,15 @@ class AdminController extends Controller {
             }
         }
 
-        \Artisan::call('config:cache');
+        /*\Artisan::call('config:cache');
 
         Auth::guard('admin')->loginUsingId($admin_id);
 
-        $result = EnvEditorHelper::getEnvValues();
+        $result = EnvEditorHelper::getEnvValues();*/
 
-        return back()->with('result' , $result)->with('flash_success' , tr('email_settings_success'));
+        // return back()->with('result' , $result)->with('flash_success' , tr('email_settings_success'));
+
+        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , tr('email_settings_success'));
 
     }
 
@@ -1291,7 +1293,7 @@ class AdminController extends Controller {
             }
         }
 
-        \Artisan::call('config:clear');
+        /*\Artisan::call('config:clear');
 
         \Artisan::call('config:cache');
 
@@ -1299,7 +1301,9 @@ class AdminController extends Controller {
 
         $result = EnvEditorHelper::getEnvValues();
 
-        return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
+        return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));*/
+
+        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 
     public function channels() {

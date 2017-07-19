@@ -159,9 +159,9 @@
 
         public static function send_email($page,$subject,$email,$email_data)
         {
-            \Log::info(env('MAIL_USERNAME'));
+            \Log::info(envfile('MAIL_USERNAME'));
 
-            \Log::info(env('MAIL_PASSWORD'));
+            \Log::info(envfile('MAIL_PASSWORD'));
 
             if( config('mail.username') &&  config('mail.password')) {
                 try {

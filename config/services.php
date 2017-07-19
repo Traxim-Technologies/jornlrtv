@@ -35,19 +35,19 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
     'facebook' => [
-        'client_id' => env('FB_CLIENT_ID'),
-        'client_secret' => env('FB_CLIENT_SECRET'),
-        'redirect' => env('FB_CALL_BACK'),
+        'client_id' => envfile('FB_CLIENT_ID'),
+        'client_secret' => envfile('FB_CLIENT_SECRET'),
+        'redirect' => envfile('FB_CALL_BACK'),
     ],
     'twitter' => [
-        'client_id' => env('TWITTER_CLIENT_ID'),
-        'client_secret' => env('TWITTER_CLIENT_SECRET'),
-        'redirect' => env('TWITTER_CALL_BACK'),
+        'client_id' => envfile('TWITTER_CLIENT_ID'),
+        'client_secret' => envfile('TWITTER_CLIENT_SECRET'),
+        'redirect' => envfile('TWITTER_CALL_BACK'),
     ],
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_CALL_BACK'),
+        'client_id' => envfile('GOOGLE_CLIENT_ID'),
+        'client_secret' => envfile('GOOGLE_CLIENT_SECRET'),
+        'redirect' => envfile('GOOGLE_CALL_BACK'),
     ],
 
 ];

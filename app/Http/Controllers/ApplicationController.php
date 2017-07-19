@@ -103,7 +103,23 @@ class ApplicationController extends Controller {
         
         Log::info('cron_publish_video');
 
-        $videos = VideoTape::where('publish_time' ,'<=' ,date('Y-m-d H:i:s'))
+        $admin = Admin::first();
+        
+        $timezone = 'Asia/Kolkata';
+
+        if($admin) {
+
+            if ($admin->timezone) {
+
+                $timezone = $admin->timezone;
+
+            } 
+
+        }
+
+        $date = convertTimeToUSERzone(date('Y-m-d H:i:s'), $timezone);
+
+        $videos = VideoTape::where('publish_time' ,'<=' ,$date)
                         ->where('publish_status' , 0)->get();
         foreach ($videos as $key => $video) {
             Log::info('Change the status');

@@ -439,9 +439,9 @@ class CommonRepository {
                     }
 
 
-                    if (env('QUEUE_DRIVER') != 'redis') {
+                    if (envfile('QUEUE_DRIVER') != 'redis') {
 
-                        \Log::info("Queue Driver : ".env('QUEUE_DRIVER'));
+                        \Log::info("Queue Driver : ".envfile('QUEUE_DRIVER'));
 
                         $model->status = DEFAULT_TRUE;
 
