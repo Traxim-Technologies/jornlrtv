@@ -288,7 +288,13 @@ hr {
                               }
                         });
 
-                        playerInstance.on('setupError', function() {
+                        
+
+
+                    
+                    @endif
+
+                    playerInstance.on('setupError', function() {
 
                                 jQuery("#main-video-player").css("display", "none");
                                 
@@ -318,10 +324,6 @@ hr {
                                 confirm('The video format is not supported in this browser. Please option some other browser.');
                             
                             });
-
-
-                    
-                    @endif
 
                 @endif
 
