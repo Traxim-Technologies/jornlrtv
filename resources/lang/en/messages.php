@@ -24,6 +24,8 @@ return array(
 	'registration_success'=>'Registration completed successfully, please Login and Continue',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',
+	'max_upload_size'=>'Your Max Upload Size : ',
+	'post_max_size'=>'Post Max Size : ',
 	'abort'=>'Abort',
 	'url'=>'Url',
 	'images' => 'Images',
