@@ -163,7 +163,7 @@ hr {
                                         </div>
                                     @endif
 
-                                @eendif
+                                @endif
                             </div>
                             <div class="embed-responsive embed-responsive-16by9" id="flash_error_display" style="display: none;">
                                    <div style="width: 100%;background: black; color:#fff;height: 100%;">
