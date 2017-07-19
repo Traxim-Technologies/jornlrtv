@@ -1303,6 +1303,8 @@ class AdminController extends Controller {
 
         return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));*/
 
+        $result = EnvEditorHelper::getEnvValues();
+
         return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
     }
 
