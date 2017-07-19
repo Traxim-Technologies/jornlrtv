@@ -24,6 +24,11 @@
 <div id="main-video-player">
 	
 </div>
+ <div class="embed-responsive embed-responsive-16by9" id="flash_error_display" style="display: none;">
+         <div style="width: 100%;background: black; color:#fff;height: 100%;">
+               <div style="text-align: center;align-items: center;">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+         </div>
+  </div>
 
 
 @if(!check_valid_url($video->video))
