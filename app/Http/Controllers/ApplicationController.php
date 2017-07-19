@@ -22,6 +22,8 @@ use Validator;
 
 use App\Page;
 
+use App\Admin;
+
 class ApplicationController extends Controller {
 
     public function channel_create() {
