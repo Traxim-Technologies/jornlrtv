@@ -768,3 +768,40 @@ function get_video_comment_count($video_id) {
     return $count;
 
 }
+
+function convertToBytes($from){
+    $number=substr($from,0,-2);
+    switch(strtoupper(substr($from,-2))){
+        case "KB":
+            return $number*1024;
+        case "MB":
+            return $number*pow(1024,2);
+        case "GB":
+            return $number*pow(1024,3);
+        case "TB":
+            return $number*pow(1024,4);
+        case "PB":
+            return $number*pow(1024,5);
+        default:
+            return $from;
+    }
+}
+
+function checkSize() {
+
+    $php_ini_upload_size = convertToBytes(ini_get('upload_max_filesize')."B");
+
+    $php_ini_post_size = convertToBytes(ini_get('post_max_size')."B");
+
+    $setting_upload_size = convertToBytes(Setting::get('upload_max_size')."B");
+
+    $setting_post_size = convertToBytes(Setting::get('post_max_size')."B");
+
+    if(($php_ini_upload_size < $setting_upload_size) || ($php_ini_post_size < $setting_post_size)) {
+
+        return true;
+
+    }
+
+    return false;
+}

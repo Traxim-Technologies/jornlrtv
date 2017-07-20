@@ -26,6 +26,8 @@ return array(
 	'click_here_url'=>'Click Here',
 	'max_upload_size'=>'Your Max Upload Size : ',
 	'post_max_size'=>'Post Max Size : ',
+	'post_max_size_label'=>'Post Max Size',
+	'max_upload_size_label'=>'Upload Max Size',
 	'abort'=>'Abort',
 	'url'=>'Url',
 	'images' => 'Images',

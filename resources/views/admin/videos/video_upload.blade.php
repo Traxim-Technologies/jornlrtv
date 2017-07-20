@@ -33,12 +33,14 @@
 </div>
 @endif
 
+@if(checkSize())
+
  <div class="alert alert-warning">
     <button type="button" class="close" data-dismiss="alert">×</button>
         {{tr('max_upload_size')}} <b>{{ini_get('upload_max_filesize')}}</b>&nbsp;&amp;&nbsp;{{tr('post_max_size')}} <b>{{ini_get('post_max_size')}}</b>
 </div>
 
-
+@endif
 
 <div class="row">
     <div class="col-lg-12">

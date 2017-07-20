@@ -136,6 +136,20 @@
                                     </div>   
                                 </div>
 
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="post_max_size">{{tr('post_max_size_label')}}</label>
+                                        <input type="text" class="form-control" name="post_max_size" value="{{ Setting::get('post_max_size')  }}" id="post_max_size" placeholder="{{tr('post_max_size_label')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="upload_max_size">{{tr('max_upload_size_label')}}</label>
+                                        <input type="text" class="form-control" name="upload_max_size" value="{{Setting::get('upload_max_size')  }}" id="upload_max_size" placeholder="{{tr('max_upload_size_label')}}">
+                                    </div>
+                                </div>
+
                                 
                                 <div class="col-lg-12">
                                     <div class="form-group">
