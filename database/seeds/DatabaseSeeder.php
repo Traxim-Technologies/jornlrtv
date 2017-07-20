@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MultiChannelSeeder::class);
         $this->call(AdminDemoLoginSeeder::class);
         $this->call(VideoSettingsSeeder::class);
+        $this->call(AddedMaxsizekeysInSettings::class);
     }
 }
