@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     	DB::table('users')->insert([
     		[
 		        'name' => 'User',
-		        'email' => 'user@streamhash.com',
+		        'email' => 'user@streamtube.com',
 		        'password' => \Hash::make('123456'),
 		        'picture' =>"",
                 'token'=>Helper::generate_token(),
