@@ -230,7 +230,7 @@
                         <ul class="list-inline">
                             <li class="pull-left"><button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button></li>
                             <li class="pull-right">
-                            <button type="button" class="btn btn-primary next-step"  id="btn-next" id="submit_btn">{{tr('save_continue')}}</button>
+                            <button type="button" class="btn btn-primary next-step"  id="btn-next">{{tr('save_continue')}}</button>
                             </li>
                             <div class="clearfix"></div>
                         </ul>
