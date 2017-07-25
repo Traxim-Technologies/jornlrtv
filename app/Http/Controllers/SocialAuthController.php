@@ -42,7 +42,7 @@ class SocialAuthController extends Controller
 			
 			// $user = User::where('social_unique_id' , $social_user->id)->where('login_by' , $provider)->first();
 
-			$check_user = User::where('social_unique_id' , $social_user->id)->first()
+			$check_user = User::where('social_unique_id' , $social_user->id)->first();
 
 			if($social_user->email && !User::where('email',$social_user->email)->first()) {
 
@@ -75,7 +75,7 @@ class SocialAuthController extends Controller
 			if($social_user->avatar_original) {
 				$user->picture = $social_user->avatar_original;
 			}
-			
+
 		}
 
 		$user->password = Hash::make($social_user->id);
