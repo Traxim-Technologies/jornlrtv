@@ -101,8 +101,8 @@ $('form').ajaxForm({
         var percentVal = '0%';
         bar.width(percentVal)
         percent.html(percentVal);
-        $("#next_btn").text("Wait Progressing...");
-        $("#next_btn").attr('disabled', true);
+        $("#btn-next").text("Wait Progressing...");
+        $("#btn-next").attr('disabled', true);
     },
     uploadProgress: function(event, position, total, percentComplete) {
         console.log(total);
@@ -112,17 +112,17 @@ $('form').ajaxForm({
         bar.width(percentVal)
         percent.html(percentVal);
         if (percentComplete == 100) {
-            $("#next_btn").text("Video Uploading...");
+            $("#btn-next").text("Video Uploading...");
             $(".overlay").show();
-            $("#next_btn").attr('disabled', true);
+            $("#btn-next").attr('disabled', true);
         }
     },
     complete: function(xhr) {
         bar.width("100%");
         percent.html("100%");
         $(".overlay").hide();
-        $("#next_btn").text("Redirecting...");
-        $("#next_btn").attr('disabled', false);
+        $("#btn-next").text("Redirecting...");
+        $("#btn-next").attr('disabled', false);
         console.log(xhr);
     },
     error : function(xhr) {
@@ -140,9 +140,9 @@ $('form').ajaxForm({
 
             $("#select_image_div").html(xhr.path);
 
-            $("#next_btn").val("Next");
+            $("#btn-next").val("Next");
 
-            $("#next_btn").attr('disabled', false);
+            $("#btn-next").attr('disabled', false);
 
             $("#main_id").val(xhr.data.id);
 
