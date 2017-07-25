@@ -267,7 +267,7 @@ class AdminController extends Controller {
         } else {
             $validator = Validator::make( $request->all(), array(
                     'name' => 'required|max:255',
-                    'email' => 'required|email|max:255|unique:users,email',
+                    'email' => 'required|email|max:255|unique:users',
                     'mobile' => 'required|digits_between:6,13',
                     'password' => 'required|min:6|confirmed',
                 )
@@ -275,22 +275,33 @@ class AdminController extends Controller {
         
         }
        
-        if($validator->fails())
-        {
+        if($validator->fails()) {
+
             $error_messages = implode(',', $validator->messages()->all());
+
             return back()->with('flash_errors', $error_messages);
+
         } else {
 
+            $check_user = $user = User::where('email' , $request->email)->first();
+
             if($request->id != '') {
-                $user = User::find($request->id);
+
+                if(!$check_user) {
+
+                    $user = User::find($request->id);
+                }
+
                 $message = tr('admin_not_user');
+
             } else {
+
                 //Add New User
-                $user = new User;
-                /* $new_password = time();
-                $new_password .= rand();
-                $new_password = sha1($new_password);
-                $new_password = substr($new_password, 0, 8);*/
+
+                if(!$check_user) {
+                    $user = new User;
+                }
+
                 $user->password = ($request->password) ? $request->password : null;
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
@@ -308,9 +319,9 @@ class AdminController extends Controller {
             
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
-            // $user->is_activated = 1;                   
 
-            if($request->id == ''){
+            if($request->id == '') {
+
                 $email_data['name'] = $user->name;
                 $email_data['password'] = \Hash::make($user->password);
                 $email_data['email'] = $user->email;
@@ -320,6 +331,8 @@ class AdminController extends Controller {
                 $email = $user->email;
                 Log::info("TEST EMAIL");
                 Helper::send_email($page,$subject,$email,$email_data);
+
+                register_mobile('web');
             }
 
             // Upload picture
@@ -337,7 +350,7 @@ class AdminController extends Controller {
             user_type_check($user->id);
 
             if($user) {
-                register_mobile('web');
+                
                 return redirect('/admin/view/user/'.$user->id)->with('flash_success', $message);
             } else {
                 return back()->with('flash_error', tr('admin_not_error'));

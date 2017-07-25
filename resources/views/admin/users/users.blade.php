@@ -32,7 +32,6 @@
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('email')}}</th>
 						      <th>{{tr('mobile')}}</th>
-						      <th>{{tr('upgrade')}}</th>
 						      <th>{{tr('validity_days')}}</th>
 						      <th>{{tr('redeems')}}</th>
 						      @if(Setting::get('email_verify_control'))
@@ -50,21 +49,16 @@
 							      	<td><a href="{{route('admin.view.user' , $user->id)}}"> {{$user->name}}</a></td>
 							      	<td>{{$user->email}}</td>
 							      	<td>{{$user->mobile}}</td>
+							      	
+									<td>
+										@if($user->user_type)
+											{{get_expiry_days($user->id)['days']}}
+										@endif
+									</td>
+
 							      	<td>
-							      		@if($user->is_moderator)
-							      			<a onclick="return confirm('Are you sure?');" href="{{route('user.upgrade.disable' , array('id' => $user->id, 'moderator_id' => $user->moderator_id))}}" class="label label-warning">{{tr('disable')}}</a>
-							      		@else
-							      			<a onclick="return confirm('Are you sure?');" href="{{route('admin.user.upgrade' , array('id' => $user->id ))}}" class="label label-danger">{{tr('upgrade')}}</a>
-							      		@endif
-
-							      </td>
-							      <td>
-							      	@if($user->user_type)
-                                        {{get_expiry_days($user->id)['days']}}
-                                    @endif
-							      </td>
-
-							      <td><b>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : 0}}</b></td>
+							      		<b>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : 0}}</b>
+							     	</td>
 
 							      @if(Setting::get('email_verify_control'))
 
