@@ -20,8 +20,16 @@
                         </div><!--end  of signup-head-->        
                     </div><!--end of socila-form-->
 
-                    <div class="sign-up login-page">            
+                    <div class="sign-up login-page"> 
+                        @if(Setting::get('admin_delete_control') == 1)
+
+                        <form class="signup-form login-form" method="post" action="#">
+
+                        @else
+
                         <form class="signup-form login-form" method="post" action="{{ route('user.profile.password') }}">
+
+                        @endif
 
                             <div class="form-group">
                                 <label for="old_password">{{tr('old_password')}}</label>
@@ -39,8 +47,15 @@
                             </div>
 
                             <div class="change-pwd">
-                                <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
-                            </div>              
+
+                                @if(Setting::get('admin_delete_control') == 1)
+                                    <button type="button" disabled class="btn btn-primary signup-submit">{{tr('submit')}}</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
+                                @endif
+
+                            </div>  
+                                        
                         </form>
                     </div><!--end of sign-up-->
 
