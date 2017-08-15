@@ -36,6 +36,10 @@ class SocialAuthController extends Controller
 
 			$check_user = User::where('email',$social_user->email)->first();
 
+			if(!$check_user) {
+				$user->email = $social_user->email;
+			}
+
 		} else {
 			
 			// Check social unique ID Already exists
