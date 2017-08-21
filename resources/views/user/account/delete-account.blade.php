@@ -60,7 +60,17 @@
                             </div>
 
                             <div class="change-pwd">
-                                <button type="submit" class="btn btn-primary signup-submit">{{tr('delete')}}</button>
+                            
+                                @if(Setting::get('admin_delete_control') == 1)
+
+                                    <button type="button" disabled class="btn btn-primary signup-submit">{{tr('delete')}}</button>
+
+                                @else
+
+                                    <button type="submit" class="btn btn-primary signup-submit">{{tr('delete')}}</button>
+
+                                @endif
+
                             </div>  
                 
                         </form>
