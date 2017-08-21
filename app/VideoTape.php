@@ -93,6 +93,12 @@ class VideoTape extends Model
 
     }
 
+     public function getUserFlags() {
+
+         return $this->hasMany('App\Flag', 'video_tape_id', 'id');
+
+    }
+
 
     public function getScopeUserFlags() {
 
@@ -145,6 +151,28 @@ class VideoTape extends Model
                     $model->getVideoAds->delete();   
 
                 }             
+
+            }
+
+             if (count($model->getUserFlags) > 0) {
+
+                foreach ($model->getUserFlags as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+            
+
+            }
+
+             if (count($model->getUserRatings) > 0) {
+
+                foreach ($model->getUserRatings as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+            
 
             }
 

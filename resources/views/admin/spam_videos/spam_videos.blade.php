@@ -35,18 +35,24 @@
 
 						<tbody>
 							@foreach($model as $i => $video)
-
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td>{{$video->videoTape->channel_name}}</td>
-							      	<td>{{substr($video->videoTape->title , 0,25)}}...</td>
-							      	<td>{{count($video->videoTape->getScopeUserFlags)}}</td>
+							      	<td>{{($video->videoTape) ? $video->videoTape->channel_name : ''}}</td>
+							      	<td>{{$video->videoTape ? substr($video->videoTape->title , 0,25) : ''}}...</td>
+							      	<td>{{$video->videoTape ? count($video->videoTape->getScopeUserFlags) : 0}}</td>
 							      	<td>
+							      		@if ($video->videoTape)
 							      		@if($video->videoTape->is_approved)
 							      			<span class="label label-success">{{tr('approved')}}</span>
 							       		@else
 							       			<span class="label label-warning">{{tr('pending')}}</span>
 							       		@endif
+							       		@else
+
+							       			-
+
+							       		@endif
+
 							      	</td>
 							      	<td>
             							<ul class="admin-action btn btn-default">
