@@ -100,27 +100,9 @@
 						
 						<div id="c4-header-bg-container" class="c4-visible-on-hover-container  has-custom-banner">
 							<div class="hd-banner">
-								<div class="hd-banner-image "></div>
+								<div class="hd-banner-image"></div>
 							</div>
-							<div id="header-links">
-								<!-- <ul class="about-secondary-links">
-									<li class="channel-links-item">
-										<a href="http://www.facebook.com/adele" rel="me nofollow" target="_blank" title="Facebook" class="about-channel-link yt-uix-redirect-link about-channel-link-with-icon">
-									        <img src="//s2.googleusercontent.com/s2/favicons?domain_url=http%3A%2F%2Fwww.facebook.com%2Fadele&amp;feature=youtube_channel" class="about-channel-link-favicon" alt="" width="16" height="16">
-									    </a>
-									</li>
-
-									<li class="channel-links-item">
-										<a href="http://twitter.com/adele" rel="me nofollow" target="_blank" title="Twitter" class="about-channel-link yt-uix-redirect-link about-channel-link-with-icon">
-									        <img src="//s2.googleusercontent.com/s2/favicons?domain_url=http%3A%2F%2Ftwitter.com%2Fadele&amp;feature=youtube_channel" class="about-channel-link-favicon" alt="" width="16" height="16">
-									    </a>
-									</li>
-
-								</ul> -->
-
-							</div>
-
-
+	
 							<a class="channel-header-profile-image spf-link" href="">
 						      <img class="channel-header-profile-image" src="{{$channel->picture}}" title="{{$channel->name}}" alt="{{$channel->name}}">
 						    </a>
@@ -138,6 +120,16 @@
 									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
 									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
 									<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
+
+									@if (!$subscribe_status)
+
+									<a class="st_video_upload_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}</a>
+
+									@else 
+
+										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
+
+									@endif
 								@endif
 							@endif
 						</div>

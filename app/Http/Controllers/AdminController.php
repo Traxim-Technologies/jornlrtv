@@ -72,6 +72,8 @@ use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Jobs\NormalPushNotification;
 
+use App\ChannelSubscription; 
+
 class AdminController extends Controller {
 
     /**
@@ -922,14 +924,17 @@ class AdminController extends Controller {
     public function user_ratings() {
             
             $user_reviews = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
+                ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
                 ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
                          'user_ratings.comment', 
-                         'users.first_name as user_first_name', 
-                         'users.last_name as user_last_name', 
+                         'users.name as name', 
+                         'video_tapes.title as title',
+                         'user_ratings.video_tape_id as video_id',
                          'users.id as user_id', 'user_ratings.created_at')
-                ->orderBy('user_ratings.id', 'ASC')
+                ->orderBy('user_ratings.created_at', 'desc')
                 ->get();
-            return view('admin.reviews')->with('name', 'User')->with('reviews', $user_reviews);
+            return view('admin.reviews.reviews')->with('page' ,'reviews')
+                ->with('sub_page' ,'reviews')->with('reviews', $user_reviews);
     }
 
     public function delete_user_ratings(Request $request) {
@@ -1357,6 +1362,21 @@ class AdminController extends Controller {
             return back()->with('flash_error', $response->error);
         }
         
+    }
+
+    public function subscribers(Request $request) {
+
+        if ($request->id) {
+
+            $subscribers = ChannelSubscription::where('channel_id', $request->id)->orderBy('created_at', 'desc')->get();
+
+        } else {
+
+            $subscribers = ChannelSubscription::orderBy('created_at', 'desc')->get();
+
+        }
+
+        return view('admin.channels.subscribers')->with('subscribers' , $subscribers)->withPage('channels')->with('sub_page','subscribers');
     }
 
     public function approve_channel(Request $request) {

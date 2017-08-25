@@ -399,4 +399,21 @@ class ApplicationController extends Controller {
         }
         return back()->with('flash_success' , tr('settings_success'));
     }
+
+
+    public function embed_video(Request $request) {
+
+        $model = VideoTape::where('unique_id', $request->u_id)->first();
+
+        if ($model) {
+
+            return view('embed_video')->with('model', $model);
+
+        } else {
+
+            return response()->view('errors.404', [], 404);
+
+        }
+
+    }
 }

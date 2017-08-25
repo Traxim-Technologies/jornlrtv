@@ -32,6 +32,8 @@ use App\Redeem;
 
 use App\Page;
 
+use App\ChannelSubscription;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -804,4 +806,36 @@ function checkSize() {
     }
 
     return false;
+}
+
+
+function videos_count($channel_id) {
+
+    $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.status' , 1)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->where('video_tapes.channel_id' , $channel_id)
+                        ->videoResponse()
+                        ->orderby('video_tapes.created_at' , 'asc');
+    if (Auth::check()) {
+        // Check any flagged videos are present
+        $flagVideos = getFlagVideos(Auth::user()->id);
+
+        if($flagVideos) {
+            $videos_query->whereNotIn('video_tapes.id', $flagVideos);
+        }
+    }
+
+    $cnt = $videos_query->count();
+
+    return $cnt ? $cnt : 0;
+}
+
+
+function check_channel_status($user_id, $id) {
+
+    $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $id)->first();
+
+    return $model ? $model->id : false;
+
 }

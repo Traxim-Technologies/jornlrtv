@@ -23,6 +23,8 @@ use DB;
 
 use Setting;
 
+use App\ChannelSubscription;
+
 class VideoTapeRepository {
 
 
@@ -381,7 +383,6 @@ class VideoTapeRepository {
 
             return $videos;
     }
-
 
 
 }

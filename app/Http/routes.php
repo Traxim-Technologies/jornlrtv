@@ -304,6 +304,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/videos', 'AdminController@videos')->name('videos');
 
+    Route::get('/reviews', 'AdminController@user_ratings')->name('reviews');
+
     Route::get('/ad_videos', 'AdminController@ad_videos')->name('ad_videos');
 
     Route::get('/add/video', 'AdminController@add_video')->name('add.video');
@@ -448,6 +450,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('subscriptions.status');
 
+    Route::get('/subscribers', 'AdminController@subscribers')->name('subscribers');
+
+    Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
+
+
 });
 
 Route::get('/', 'UserController@index')->name('user.dashboard');
@@ -474,8 +481,11 @@ Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthContro
 
 Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
+Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
+
 
 Route::group(['as' => 'user.'], function(){
+
 
     Route::get('login', 'Auth\AuthController@showLoginForm')->name('login.form');
 
@@ -495,6 +505,11 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('password/reset', 'Auth\PasswordController@reset');
 
+    // Subscribe
+
+    Route::get('/subscribe_channel', 'UserController@subscribe_channel')->name('subscribe.channel');
+
+    Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('unsubscribe.channel');
     
 
     Route::get('profile', 'UserController@profile')->name('profile');
@@ -564,6 +579,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('delete_channel', 'UserController@channel_delete')->name('delete.channel');
 
+    Route::get('channel_list', 'UserController@channel_list')->name('channel.list');
+
     // Video Upload
 
     Route::get('upload_video', 'UserController@video_upload')->name('video_upload');
@@ -581,6 +598,10 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/edit_video/{id}', 'UserController@video_edit')->name('edit.video');
 
     Route::get('get_images/{id}', 'UserController@get_images')->name('get_images');
+
+    Route::post('/like_video', 'UserController@likeVideo')->name('video.like');
+
+    Route::post('/dis_like_video', 'UserController@disLikeVideo')->name('video.disLike');
 
     // Redeems
 

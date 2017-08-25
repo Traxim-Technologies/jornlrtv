@@ -148,6 +148,10 @@ hr {
 
                             <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('full_video')}}</strong>
 
+                            <br>
+
+                             <b>{{tr('embed_link')}} : </b> <a href="{{route('embed_video', array('u_id'=>$video->unique_id))}}" target="_blank">{{route('embed_video', array('u_id'=>$video->unique_id))}}</a>
+
                             <div class="margin-t-10" style="margin-top:10px;">
                                 @if($video->video_upload_type == 1)
                                     <?php $url = $video->video; ?>
@@ -250,7 +254,13 @@ hr {
                             // autostart : true,
                             "sharing": {
                                 "sites": ["reddit","facebook","twitter"]
-                              }
+                              },
+
+                           tracks : [{
+                              file : "{{$video->subtitle}}",
+                              kind : "captions",
+                              default : true,
+                            }]
                         });
                     @else 
                         var videoPath = "{{$videoPath}}";
@@ -285,7 +295,13 @@ hr {
                             // autostart : true,
                             "sharing": {
                                 "sites": ["reddit","facebook","twitter"]
-                              }
+                              },
+
+                               tracks : [{
+                              file : "{{$video->subtitle}}",
+                              kind : "captions",
+                              default : true,
+                            }]
                         });
 
                         

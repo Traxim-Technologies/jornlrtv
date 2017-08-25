@@ -27,7 +27,9 @@ return array(
 	'max_upload_size'=>'Your Max Upload Size : ',
 	'post_max_size'=>'Post Max Size : ',
 	'post_max_size_label'=>'Post Max Size',
+	'embed_link'=>'Embedded Link',
 	'max_upload_size_label'=>'Upload Max Size',
+	'copy_embedded_link'=>'Copy Embedded Link',
 	'abort'=>'Abort',
 	'url'=>'Url',
 	'images' => 'Images',
@@ -63,6 +65,7 @@ return array(
 	'payment_managment'=>'Payment Management',
 	'payment_videos'=>'Payment Videos',
 	'no_videos_found'=>'No Videos Found',
+	'no_channel_found'=>'No Channel Found',
 	'preview_ad'=>'Preview Ad',
 	'in_min'=>'In Min',
 	'edit_ad'=>'Edit Ad',
@@ -742,6 +745,8 @@ return array(
 	'post_ad'=>'Post Ad',
 	'between_ad'=>'Between Ad',
 	'video_time'=>'Video Time',
+	'likes'=>'Likes',
+	'dislikes'=>'Dislikes',
 
 	'cover'=>'Cover',
 	'enabled'=>'Enabled',
@@ -790,6 +795,7 @@ return array(
 	'REDEEM_REQUEST_PAID' => 'Paid',
 
 	'REDEEM_REQUEST_CANCEL' => 'Cancelled',
+	'created_at'=>'Created at',
 
 	'send_redeem_request_success' => 'Redeem request sent to admin.',
 	'redeem_request_status_mismatch' => "You can't cancel the request now",
@@ -797,15 +803,31 @@ return array(
 	'redeem_wallet_empty' => "Redeem Wallet is empty",
 	'redeem_request_cancel' => 'Redeem Request Cancelled',
 
+	'subtitle_validate'=>'The video subtitle must be a file of type: srt.',
+	'sub_title'=>'Sub Title',
+
 	'action_success' => 'Successfully Done!!',
 
 	'redeem_pay_confirm' => 'Are You Sure ?',
 	'subscribe_note'=>'Subscribe to create your own channel and videos!',
 	'subscribe'=>'Subscribe',
+	'un_subscribe'=>'Un Subscribe',
 	// REDEEM MESSAGES END
 
 	'verify' => 'Verify',
 	'verified' => 'Verified',
 
-	'email_verification' => 'Email verification'
+	'email_verification' => 'Email verification',
+
+	'channel_subscribed'=>'Successfully subscribed the channel',
+
+	'already_channel_subscribed'=>'Already subscribed the channel',
+
+	'not_found'=>'No Records found',
+
+	'channel_unsubscribed'=>'Successfully Unsubscribed the channel',
+
+	'subscriber_name'=>'Subscriber Name',
+	'comment'=>'Comment',
+
 );

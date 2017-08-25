@@ -20,7 +20,24 @@
 
 @section('styles')
 
+
+<link rel="stylesheet" href="{{asset('assets/css/star-rating.css')}}">
+
+
 <style type="text/css">
+
+.sub-comhead .rating-md {
+
+    font-size: 11px;
+
+}
+
+.thumb-class {
+
+    cursor:pointer;
+    text-decoration:none;
+}
+
 .common-youtube {
     min-height: 0px !important;
 }
@@ -226,6 +243,15 @@ textarea[name=comments] {
                                                                 <i class="fa fa-twitter"></i><!-- {{tr('share_on_twitter')}} -->
                                                                 
                                                             </a> 
+
+                                                            <input name="embed_link" class="form-control" id="embed_link" type="hidden" value="{{route('embed_video', array('u_id'=>$video->unique_id))}}">
+
+                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" style="margin-left: 8px;" title="{{tr('copy_embedded_link')}}">
+
+                                                                <i class="fa fa-link"></i>
+
+                                                            </a>
+
                                                         </div><!--end of share-->
 
                                                         <div class="share">
@@ -270,8 +296,23 @@ textarea[name=comments] {
                                                                 <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                             </center>
                                                         
+
                                                              <div>
-                                                                ( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} )
+                                                                <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} ) */?>
+
+                                                                @if (Auth::check())
+                                                                <a class="thumb-class" onclick="likeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+
+                                                                <a class="thumb-class onclick="dislikeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+
+                                                                @else 
+
+
+                                                                 <a class="thumb-class<i class="fa fa-thumbs-up"></i>&nbsp;<span>{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+
+                                                                <a class="thumb-class<i class="fa fa-thumbs-down"></i>&nbsp;<span>{{$dislike_count}}</span></a>
+
+                                                                @endif
                                                                 
                                                             </div>
                                                         </div><!--end of stars-->
@@ -367,9 +408,13 @@ textarea[name=comments] {
 
                                                                 <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
 
+                                                                 <input id="rating_system" name="rating" type="number" class="rating comment_rating" min="1" max="5" step="1">
+
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
 
-                                                                <input style="float:right;margin-bottom:10px;display:none" type="submit" name="submit" value="send">
+                                                                <button class="btn pull-right btn-sm btn-success" type="submit">{{tr('comment')}}</button>
+
+                                                                <div class="clearfix"></div>
                                                             </form>
                                                         </div>                                      
                                                     </div>  <!--end of comment-form-->
@@ -396,6 +441,7 @@ textarea[name=comments] {
                                                             <span class="sub-comhead">
                                                                 <a href="#"><h5 style="float:left">{{$comment->username}}</h5></a>
                                                                 <a href="#" class="text-none"><p>{{$comment->diff_human_time}}</p></a>
+                                                                <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$comment->rating}}" style="font-size: 11px;"></p>
                                                                 <p class="com-para">{{$comment->comment}}</p>
                                                             </span>             
                                                             
@@ -508,6 +554,8 @@ textarea[name=comments] {
 
 @section('scripts')
 
+    <script type="text/javascript" src="{{asset('assets/js/star-rating.js')}}"></script>
+
     <script type="text/javascript">
         $(document).ready(function(){
             $('.video-y-menu').addClass('hidden');
@@ -520,6 +568,14 @@ textarea[name=comments] {
                 $('#report_video_form').hide(500);
             }
         }
+
+
+        // Reset the rating.
+        // $('#rating_system').rating('reset');
+
+        // $('#rating_system').rating('clear');
+
+         $('.view_rating').rating({disabled: true, showClear: false});
     </script>
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
@@ -652,6 +708,8 @@ textarea[name=comments] {
                                     jQuery('#comment_count').text(count);
                                     jQuery('#video_comment_count').text(count);
 
+                                    //$('').rating('clear');
+
                                     jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                                 @endif
                                } else {
@@ -759,6 +817,11 @@ textarea[name=comments] {
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
                                     },
+                                     tracks : [{
+                                      file : "{{$video->subtitle}}",
+                                      kind : "captions",
+                                      default : true,
+                                    }]
                                    /* advertising: {
                                         client: 'vast',
                                         schedule: {
@@ -836,7 +899,12 @@ textarea[name=comments] {
                                     // autostart : true,
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
-                                      }
+                                      },
+                                    tracks : [{
+                                      file : "{{$video->subtitle}}",
+                                      kind : "captions",
+                                      default : true,
+                                    }]
                                 
                                 });
 
@@ -1146,6 +1214,86 @@ textarea[name=comments] {
             // });
 
         });
+
+
+            function copyTextToClipboard() {
+
+               var textArea = document.createElement( "textarea" );
+               textArea.value = $("#embed_link").val();
+               document.body.appendChild( textArea );
+
+               textArea.select();
+
+               $("#embed_link").select();
+
+               try {
+                  var successful = document.execCommand( 'copy' );
+                  var msg = successful ? 'successful' : 'unsuccessful';
+                  console.log('Copying text command was ' + msg);
+                 // alert('Copied Embedded Link');
+               } catch (err) {
+                  console.log('Oops, unable to copy');
+               }
+
+               document.body.removeChild( textArea );
+            }
+
+        function likeVideo(video_id) {
+
+            $.ajax({
+                url : "{{route('user.video.like')}}",
+                data : {video_tape_id : video_id},
+                type: "post",
+                success : function(data) {
+
+                    if (data.success) {
+
+                        $("#like_count").html(data.like_count);
+
+                        $("#dislike_count").html(data.dislike_count);
+
+                    } else {
+
+                        console.log(data.error_messages);
+                    }
+
+                },
+
+                error : function(data) {
+
+
+                },
+            })
+        }
+
+          function dislikeVideo(video_id) {
+
+            $.ajax({
+                url : "{{route('user.video.disLike')}}",
+                type: "post",
+                data : {video_tape_id : video_id},
+                success : function(data) {
+
+                    if(data.success) {
+
+                        $("#like_count").html(data.like_count);
+
+                        $("#dislike_count").html(data.dislike_count);
+
+                    } else {
+
+                        console.log(data.error_messages);
+
+                    }
+
+                },
+
+                error : function(data) {
+
+
+                },
+            })
+        }
 
     </script>
 

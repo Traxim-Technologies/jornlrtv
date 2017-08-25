@@ -38,6 +38,11 @@ class Channel extends Model
         return $this->hasMany('App\VideoTape');
     }
 
+
+    public function getChannelSubscribers() {
+        return $this->hasMany('App\ChannelSubscription');
+    }
+
     /**
      * Boot function for using with User Events
      *

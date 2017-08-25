@@ -18,6 +18,7 @@ use App\UserPayment;
 use Auth;
 use Exception;
 use Setting;
+use ChannelSubscription;
 
 
 class CommonRepository {
@@ -350,6 +351,21 @@ class CommonRepository {
 
                 }
 
+                if($request->hasFile('subtitle')) {
+
+                    if ($model->id) {
+
+                        if ($model->subtitle) {
+
+                            Helper::delete_picture($model->subtitle, "/uploads/subtitles/");  
+
+                        }  
+                    }
+
+                    $model->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
+
+                }
+
                         
                 $main_video_duration = Helper::video_upload($request->video);
 
@@ -516,6 +532,11 @@ class CommonRepository {
                     }
 
                     $model->save();
+
+
+                    // Channel Subscription email
+
+                    dispatch(new SubscriptionMail($model->channel_id));
 
                     $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
                    
@@ -774,5 +795,6 @@ class CommonRepository {
 
         return response()->json(['success'=> false, 'message'=>tr('something_error')]);
     }
+
 
 }

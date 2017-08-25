@@ -40,6 +40,8 @@ use App\VideoTapeImage;
 
 use App\Repositories\CommonRepository as CommonRepo;
 
+use App\ChannelSubscription;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -55,7 +57,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list']]);
     }
 
     /**
@@ -141,7 +143,9 @@ class UserController extends Controller {
                         ->with('videoStreamUrl', $response->videoStreamUrl)
                         ->with('hls_video' , $response->hls_video)
                         ->with('flaggedVideo', $response->flaggedVideo)
-                        ->with('ads', $response->ads);
+                        ->with('ads', $response->ads)
+                        ->with('like_count',$response->like_count)
+                        ->with('dislike_count',$response->dislike_count);
         } else {
             return back()->with('flash_error', $data->message);
         } 
@@ -386,12 +390,22 @@ class UserController extends Controller {
 
             $payment_videos = VideoRepo::payment_videos($id, WEB, null);
 
+            $user_id = Auth::check() ? Auth::user()->id : '';
+
+            $subscribe_status = false;
+
+            if ($user_id) {
+
+                $subscribe_status = check_channel_status($user_id, $id);
+
+            }
+
             return view('user.channels.index')
                         ->with('page' , 'channels')
                         ->with('subPage' , 'channels')
                         ->with('channel' , $channel)
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
-                        ->with('payment_videos', $payment_videos);
+                        ->with('payment_videos', $payment_videos)->with('subscribe_status', $subscribe_status);
         } else {
 
             return back()->with('flash_error', tr('something_error'));
@@ -843,4 +857,114 @@ class UserController extends Controller {
 
     }
 
+    public function subscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'user_id'     => 'required|exists:users,id',
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_error', $error_messages);
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->user_id)->where('channel_id',$request->channel_id)->first();
+
+            if (!$model) {
+
+                $model = new ChannelSubscription;
+
+                $model->user_id = $request->user_id;
+
+                $model->channel_id = $request->channel_id;
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->save();
+
+                return back()->with('flash_success', tr('channel_subscribed'));
+
+            } else {
+
+                return back()->with('flash_error', tr('already_channel_subscribed'));
+
+            }
+        }
+   
+    }
+
+    public function unsubscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'subscribe_id'     => 'required|exists:channel_subscriptions,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_error', $error_messages);
+
+        } else {
+
+            $model = ChannelSubscription::find($request->subscribe_id);
+
+            if ($model) {
+
+                $model->delete();
+
+                return back()->with('flash_success', tr('channel_unsubscribed'));
+
+            } else {
+
+                return back()->with('flash_error', tr('not_found'));
+
+            }
+        }
+
+    }
+
+    public function channel_list(){
+
+        $response = $this->UserAPI->channel_list()->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+
+    }
+
+    public function likeVideo(Request $request)  {
+        $request->request->add([
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+
+        $response = $this->UserAPI->likevideo($request)->getData();
+
+        // dd($response);
+        return response()->json($response);
+
+    }
+
+    public function disLikeVideo(Request $request) {
+
+        $request->request->add([ 
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+
+        $response = $this->UserAPI->dislikevideo($request)->getData();
+
+        return response()->json($response);
+
+    }
 }

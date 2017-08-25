@@ -4,12 +4,17 @@
 
 <div class="form-background">
         <div class="common-form">
+        
+            <div class="signup-head">
+                <h3>{{tr('signup')}}</h3>
+            </div><!--end  of signup-head-->
+
+            @if((config('services.facebook.client_id') && config('services.facebook.client_secret'))
+            || (config('services.twitter.client_id') && config('services.twitter.client_secret'))
+            || (config('services.google.client_id') && config('services.google.client_secret')))
             
             <div class="social-form">
-                <div class="signup-head">
-                    <h3>{{tr('signup')}}</h3>
-                </div><!--end  of signup-head-->
-
+                
                 <div class="social-btn">
 
                     @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
@@ -60,6 +65,8 @@
             </div><!--end of socila-form-->
 
             <p class="col-xs-12 divider1">OR</p>
+
+            @endif
 
             <div class="sign-up">
 

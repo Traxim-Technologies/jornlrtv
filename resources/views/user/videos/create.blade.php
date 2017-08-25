@@ -45,11 +45,23 @@
 
                                         <input type="hidden" name="id" id="main_id">
                                     </div>
-                                    <div class="col-sm-7">
+                                    <div class="col-lg-4 col-md-3 col-sm-12">
                                         <label for="name" class="control-label">{{tr('title')}}</label>
                                         <div>
                                             <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}">
                                         </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
+                                       
+                                        <label for="video" class="control-label">{{tr('sub_title')}}</label>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                        <input type="file" id="subtitle" name="subtitle">
+                                        <p class="help-block">{{tr('subtitle_validate')}}</p>
+
+                                        </div>
+                                       
                                     </div>
                                     <div class="col-sm-2">
                                       <div class="form-group">
@@ -61,7 +73,7 @@
                                              </div>
                                        </div>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                       <div class="form-group" style="display: none;" id="publish_time_div">
                                           <label for="datepicker" class="">{{tr('publish_time')}} * </label>
                                           <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker">

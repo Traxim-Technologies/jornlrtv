@@ -444,6 +444,27 @@
             return $s3_url;
         }
 
+
+        public static function subtitle_upload($subtitle)
+        {
+            $s3_url = "";
+
+            $file_name = Helper::file_name();
+
+            $ext = $subtitle->getClientOriginalExtension();
+
+            $local_url = $file_name . "." . $ext;
+
+            $path = '/uploads/subtitles/';
+
+            $subtitle->move(public_path() . $path, $local_url);
+
+            $s3_url = Helper::web_url().$path.$local_url;
+
+            return $s3_url;
+        }
+
+
         public static function video_upload($picture)
         {
             
@@ -708,6 +729,7 @@
 
                                     'user_ratings.rating' , 'user_ratings.comment',
                                     'user_ratings.created_at')
+                            ->orderby('created_at', 'desc')
                             ->get();
             if(!$ratings) {
                 $ratings = array();

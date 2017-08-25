@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
 		        'name' => 'User',
 		        'email' => 'user@streamtube.com',
 		        'password' => \Hash::make('123456'),
-		        'picture' =>"",
+		        'picture' =>"http://streamtube.streamhash.com/placeholder.png",
                 'token'=>Helper::generate_token(),
                 'token_expiry'=>Helper::generate_token_expiry(),
                 'is_verified'=>1,

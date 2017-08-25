@@ -32,6 +32,7 @@ class VideoTape extends Model
             'video_tapes.is_approved',
             'video_tapes.status',
             'video_tapes.watch_count',
+            'video_tapes.unique_id',
             'video_tapes.duration',
             'video_tapes.video_publish_type',
             'video_tapes.publish_status',
@@ -46,8 +47,15 @@ class VideoTape extends Model
             'video_tapes.video_resolutions',
             'video_tapes.video_path',
             'video_tapes.created_at as video_created_time',
+            'video_tapes.subtitle',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date')
         );
+    }
+
+    public function setUniqueIdAttribute($value){
+
+        $this->attributes['unique_id'] = uniqid(str_replace(' ', '-', $value));
+
     }
 
 
@@ -90,6 +98,30 @@ class VideoTape extends Model
     public function getScopeVideoTapeImages() {
 
          return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'admin_video_id');
+
+    }
+
+    public function getScopeLikeCount() {
+
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'admin_video_id')->where('like_status', DEFAULT_TRUE);
+
+    }
+
+    public function getScopeDisLikeCount() {
+
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'admin_video_id')->where('dislike_status', DEFAULT_TRUE);
+
+    }
+
+    public function getLikeCount() {
+
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'id')->where('like_status', DEFAULT_TRUE);
+
+    }
+
+    public function getDisLikeCount() {
+
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'id')->where('dislike_status', DEFAULT_TRUE);
 
     }
 
