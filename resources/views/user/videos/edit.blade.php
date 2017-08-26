@@ -45,14 +45,16 @@
 
                                         <input type="hidden" name="id" id="main_id" value="{{$model->id}}">
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
                                         <label for="name" class="control-label">{{tr('title')}}</label>
                                         <div>
                                             <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}" value="{{$model->title}}">
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                   
+
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                        
                                         <label for="video" class="control-label">{{tr('sub_title')}}</label>
                                         <div class="clearfix"></div>
@@ -61,7 +63,16 @@
                                         <p class="help-block">{{tr('subtitle_validate')}}</p>
 
                                         </div>
-                                       
+                                    </div>
+
+                                     <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="datepicker" class="">{{tr('age_limit')}} * </label>
+
+                                            <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1" value="{{$model->age_limit}}">
+
+                                            <p class="help-block">{{tr('age_limit_note')}}</p>
+                                        </div>
                                     </div>
 
                                     <div class="col-sm-2">

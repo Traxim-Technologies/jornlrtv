@@ -8,7 +8,12 @@
     width: 65% !important;
 }
 </style>
+
+<link rel="stylesheet" href="{{asset('admin-css/plugins/datepicker/datepicker3.css')}}">
+
 @endsection
+
+
 @section('content')
 
 <div class="y-content">
@@ -68,6 +73,14 @@
                                             <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="Enter mobile" maxlength="13">
                                             <small style="color:brown">{{tr('mobile_note')}}</small>
                                         </div>
+
+                                        <?php $dob = date('d-m-Y', strtotime(Auth::user()->dob)) ;?>
+
+                                        <div class="form-group">
+                                            <label for="mobile">{{tr('dob')}}</label>
+                                            <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="Enter DoB" maxlength="13" id="dob">
+                                        </div>
+
                                               
                                         <div class="form-group">
                                             <label for="about">{{tr('about_me')}}</label>
@@ -159,7 +172,18 @@
 
 @section('scripts')
 
+<script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
+
 <script type="text/javascript">
+
+
+$('#dob').datepicker({
+    autoclose:true,
+    format : 'dd-mm-yyyy',
+    endDate: "dateToday"
+});
+
+
 function loadFile(event, id){
     // alert(event.files[0]);
     var reader = new FileReader();

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserRating extends Model
 {
     public function adminVideo() {
-        return $this->belongsTo('App\adminVideo');
+        return $this->belongsTo('App\VideoTape');
     }
 
      public function toArray()
@@ -18,4 +18,7 @@ class UserRating extends Model
 
         return $array;
     }
+
+
+
 }

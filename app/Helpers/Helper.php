@@ -762,4 +762,30 @@
             return $videos;
 
         }
+
+
+        public static function upload_language_file($folder,$picture) {
+
+            $ext = $picture->getClientOriginalExtension();
+
+            $local_url = "messages" . "." . $ext;
+            
+            $picture->move(base_path() . "/resources/lang/".$folder ."/", $local_url);
+
+        }
+
+        public static function delete_language_files($folder, $boolean) {
+            if ($boolean) {
+                $path = base_path() . "/resources/lang/" .$folder;
+                \File::cleanDirectory($path);
+                \Storage::deleteDirectory( $path );
+                rmdir( $path );
+            } else {
+                \File::delete( base_path() . "/resources/lang/" . $folder ."/messages.php");
+            }
+            return true;
+        }
     }
+
+
+

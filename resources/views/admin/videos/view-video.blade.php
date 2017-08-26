@@ -105,6 +105,10 @@ hr {
                                 <li class="list-group-item">
                                     <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('amount')}}</b> <a class="pull-right"> {{Setting::get('currency')}} {{$video->amount}}</a>
                                 </li>
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-stop margin-r-5"></i>{{tr('age_limit')}}</b> <a class="pull-right">{{$video->age_limit ? $video->age_limit : 0 }}&nbsp;+</a>
+                                </li>                                
                             
                             </ul>
 

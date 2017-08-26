@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,  initial-scale=1">
     <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('streamtube/css/jquery-ui.css')}}">
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{asset('streamtube/fonts/font-awesome/css/font-awesome.min.css')}}">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'> 
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/slick.css')}}"/>
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/slick-theme.css')}}"/>

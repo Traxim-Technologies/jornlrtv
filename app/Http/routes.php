@@ -173,6 +173,9 @@ Route::get('/addIndex', 'ApplicationController@addIndex')->name('addIndex');
 
 Route::get('/addAll', 'ApplicationController@addAllVideoToEs')->name('addAll');
 
+
+Route::get('/user_session_language/{lang}', 'ApplicationController@set_session_language')->name('user_session_language');
+
 // CRON
 
 Route::get('/publish/video', 'ApplicationController@cron_publish_video')->name('publish');
@@ -455,6 +458,25 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
 
 
+
+     // Languages
+    Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 
+
+    Route::get('/languages/download/{folder}', 'LanguageController@languages_download')->name('languages.download'); 
+
+    Route::get('/languages/create', 'LanguageController@languages_create')->name('languages.create');
+    
+    Route::get('/languages/edit/{id}', 'LanguageController@languages_edit')->name('languages.edit');
+
+    Route::get('/languages/status/{id}', 'LanguageController@languages_status')->name('languages.status');   
+
+    Route::post('/languages/save', 'LanguageController@languages_save')->name('languages.save');
+
+    Route::get('/languages/delete/{id}', 'LanguageController@languages_delete')->name('languages.delete');
+
+    Route::get('/languages/set_default_language/{name}', 'LanguageController@set_default_language')->name('languages.set_default_language');
+
+
 });
 
 Route::get('/', 'UserController@index')->name('user.dashboard');
@@ -510,6 +532,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/subscribe_channel', 'UserController@subscribe_channel')->name('subscribe.channel');
 
     Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('unsubscribe.channel');
+
+    Route::get('/subscribers', 'UserController@channel_subscribers')->name('channel.subscribers');
     
 
     Route::get('profile', 'UserController@profile')->name('profile');
@@ -610,6 +634,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('send/redeem', 'UserController@send_redeem_request')->name('redeems.send.request');
 
     Route::get('redeem/request/cancel/{id?}', 'UserController@redeem_request_cancel')->name('redeems.request.cancel');
+
+
 
 });
 

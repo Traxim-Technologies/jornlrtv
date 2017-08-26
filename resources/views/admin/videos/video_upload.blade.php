@@ -130,6 +130,16 @@
 
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="form-group">
+                                    <label for="datepicker" class="">{{tr('age_limit')}} * </label>
+
+                                    <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1">
+
+                                    <p class="help-block">{{tr('age_limit_note')}}</p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <div class="form-group">
 
                                     <label for="publish_type" class="">{{tr('publish_type')}}</label>
                                     <div class="clearfix"></div>
@@ -150,7 +160,7 @@
                             </div>
 
 
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <div class="form-group" style="display: none;" id="publish_time_div">
                                     <label for="datepicker" class="">{{tr('publish_time')}} * </label>
 
@@ -168,7 +178,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="reviews" class="">{{tr('reviews')}} * </label>
-                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews" name="reviews"></textarea>
+                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews_textarea" name="reviews"></textarea>
                                 </div>
                             </div>
                         </div>

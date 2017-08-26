@@ -303,14 +303,14 @@ textarea[name=comments] {
                                                                 @if (Auth::check())
                                                                 <a class="thumb-class" onclick="likeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                                <a class="thumb-class onclick="dislikeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+                                                                <a class="thumb-class" onclick="dislikeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
 
                                                                 @else 
 
 
-                                                                 <a class="thumb-class<i class="fa fa-thumbs-up"></i>&nbsp;<span>{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+                                                                 <a class="thumb-class"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                                <a class="thumb-class<i class="fa fa-thumbs-down"></i>&nbsp;<span>{{$dislike_count}}</span></a>
+                                                                <a class="thumb-class"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{$dislike_count}}</span></a>
 
                                                                 @endif
                                                                 
@@ -387,11 +387,36 @@ textarea[name=comments] {
                                 
                                 @if(count($comments) > 0) <div class="v-comments"> @endif
 
+                                    <div class="pull-left"> 
                                     @if(count($comments) > 0) 
                                         <h3>{{tr('comments')}}
                                             <span class="c-380" id="comment_count">{{count($comments)}}</span>
                                         </h3> 
                                     @endif
+                                    </div>
+
+                                    <div class="pull-right">
+
+                                        @if(Auth::check())
+                                          
+
+                                            @if (!$subscribe_status)
+
+                                            <a class="btn btn-sm btn-success" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}</a>
+
+                                            @else 
+
+                                                <a class="btn btn-sm btn-danger" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
+
+                                            @endif
+                                           
+                                        
+                                        
+                                        @endif
+
+                                    </div>
+
+                                    <div class="clearfix"></div>
                                     
                                     <div class="com-content">
                                         @if(Auth::check())
@@ -441,7 +466,7 @@ textarea[name=comments] {
                                                             <span class="sub-comhead">
                                                                 <a href="#"><h5 style="float:left">{{$comment->username}}</h5></a>
                                                                 <a href="#" class="text-none"><p>{{$comment->diff_human_time}}</p></a>
-                                                                <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$comment->rating}}" style="font-size: 11px;"></p>
+                                                                <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$comment->rating}}"></p>
                                                                 <p class="com-para">{{$comment->comment}}</p>
                                                             </span>             
                                                             
@@ -708,9 +733,23 @@ textarea[name=comments] {
                                     jQuery('#comment_count').text(count);
                                     jQuery('#video_comment_count').text(count);
 
+                                    var stars = 0;
+
+                                   /* var stars = '<span class="stars">'+
+                                    '<a href="#"><i "'+data.comment.rating > 1 ? 'style="color:gold" : '''+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i "'+data.comment.rating > 2 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i "'+data.comment.rating > 3 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i "'+data.comment.rating > 4 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i "'+data.comment.rating > 5 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
+                                                    +'</span>';  */   
+
+                                    /**
+                                    <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="'+data.comment.rating+'"></p>
+                                    **/
+
                                     //$('').rating('clear');
 
-                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
+                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                                 @endif
                                } else {
                                     console.log('Wrong...!');

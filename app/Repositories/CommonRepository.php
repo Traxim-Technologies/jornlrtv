@@ -20,6 +20,7 @@ use Exception;
 use Setting;
 use ChannelSubscription;
 
+use App\Jobs\SubscriptionMail;
 
 class CommonRepository {
 
@@ -303,7 +304,8 @@ class CommonRepository {
                         'description'   => 'required',
                         'channel_id'   => 'required|integer|exists:channels,id',
                         'video'     => 'required|mimes:mkv,mp4,qt',
-                        'video_publish_type'=>'required'
+                        'video_publish_type'=>'required',
+                        'age_limit'=>'required|numeric'
                         ));
 
             if($validator->fails()) {
@@ -344,6 +346,8 @@ class CommonRepository {
                 $model->ratings = $request->has('ratings') ? $request->ratings : 0;
 
                 $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
+
+                $model->age_limit = $request->age_limit;
 
                 if($model->id) {
 
@@ -675,7 +679,6 @@ class CommonRepository {
     }
 
     public static function upload_video_image($request) {
-
 
         $video = VideoTape::find($request->default_image_id);
 

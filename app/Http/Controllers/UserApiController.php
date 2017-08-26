@@ -477,6 +477,8 @@ class UserApiController extends Controller {
 
         $user = User::find($request->id);
 
+        $user->dob = date('d-m-Y', strtotime($user->dob));
+
         $response_array = array(
             'success' => true,
             'id' => $user->id,
@@ -488,7 +490,8 @@ class UserApiController extends Controller {
             'token' => $user->token,
             'token_expiry' => $user->token_expiry,
             'login_by' => $user->login_by,
-            'social_unique_id' => $user->social_unique_id
+            'social_unique_id' => $user->social_unique_id,
+            'dob'=>$user->dob,
         );
         $response = response()->json(Helper::null_safe($response_array), 200);
         return $response;
@@ -505,6 +508,7 @@ class UserApiController extends Controller {
                 'picture' => 'mimes:jpeg,bmp,png',
                 'gender' => 'in:male,female,others',
                 'device_token' => '',
+                'dob'=>'required',
             ));
 
         if ($validator->fails()) {
@@ -533,6 +537,17 @@ class UserApiController extends Controller {
                 $user->address = $request->address ? $request->address : $user->address;
                 $user->description = $request->description ? $request->description : $user->address;
 
+                $user->dob = date('Y-m-d', strtotime($request->dob));
+
+                if ($user->dob) {
+
+                    $from = new \DateTime($user->dob);
+                    $to   = new \DateTime('today');
+
+                    $user->age_limit = $from->diff($to)->y;
+
+                }
+
                 // Upload picture
                 if ($request->hasFile('picture') != "") {
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
@@ -556,6 +571,7 @@ class UserApiController extends Controller {
                 'token_expiry' => $user->token_expiry,
                 'login_by' => $user->login_by,
                 'social_unique_id' => $user->social_unique_id,
+                'dob'=>$request->dob,
             );
 
             $response_array = Helper::null_safe($response_array);
@@ -643,6 +659,19 @@ class UserApiController extends Controller {
             $rating->rating = $request->has('rating') ? $request->rating : 0;
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
+
+
+            $ratings = UserRating::select('rating', DB::raw('sum(rating) as total_rating'))
+                    ->where('video_tape_id', $rating->video_tape_id)->groupBy('rating')->avg('rating');
+
+
+            if ($rating->adminVideo) {
+
+                $rating->adminVideo->user_ratings = $ratings;
+
+                $rating->adminVideo->save();
+
+            }
 
 			$response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans(),'message' => tr('comment_success') );
         }
@@ -1394,11 +1423,15 @@ class UserApiController extends Controller {
 
             }
 
+            $subscribe_status = DEFAULT_FALSE;
+
             if(\Auth::check()) {
 
                 $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$request->admin_video_id);
 
                 $history_status = Helper::history_status(\Auth::user()->id,$request->admin_video_id);
+
+                $subscribe_status = check_channel_status(\Auth::user()->id, $video->channel_id);
 
             }
 
@@ -1411,6 +1444,8 @@ class UserApiController extends Controller {
             $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->admin_video_id)
                 ->where('dislike_status', DEFAULT_TRUE)
                 ->count();
+
+
             
             $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
                 'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
@@ -1418,7 +1453,7 @@ class UserApiController extends Controller {
                 'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
                 'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
                 'like_count'=>$like_count,'dislike_count'=>$dislike_count,
-                'ads'=>$ads
+                'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
                 ];
 
             return response()->json(['success'=>true, 'response_array'=>$response_array], 200);

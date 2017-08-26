@@ -48,6 +48,7 @@
 
                                        
                                         <p>{{Auth::user()->mobile}}</p>  
+                                        <p><?php echo $dob = date('d-m-Y', strtotime(Auth::user()->dob)) ;?></p>
                                         <p>{{Auth::user()->description}}</p>
                                     </div><!--end of profile-title-->
                                     <form>

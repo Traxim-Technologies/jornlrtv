@@ -36,7 +36,6 @@ class VideoTape extends Model
             'video_tapes.duration',
             'video_tapes.video_publish_type',
             'video_tapes.publish_status',
-            'video_tapes.ratings',
             'video_tapes.compress_status',
             'video_tapes.ad_status',
             'video_tapes.reviews',
@@ -48,7 +47,10 @@ class VideoTape extends Model
             'video_tapes.video_path',
             'video_tapes.created_at as video_created_time',
             'video_tapes.subtitle',
-            \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date')
+            'video_tapes.age_limit',
+            'video_tapes.user_ratings',
+            \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date'),
+            \DB::raw('(CASE WHEN (user_ratings = 0) THEN ratings ELSE user_ratings END) as ratings')
         );
     }
 

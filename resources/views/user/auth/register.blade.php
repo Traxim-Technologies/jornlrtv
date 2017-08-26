@@ -1,5 +1,11 @@
 @extends('layouts.user.focused')
 
+@section('styles')
+
+<link rel="stylesheet" href="{{asset('admin-css/plugins/datepicker/datepicker3.css')}}">
+
+@endsection
+
 @section('content')
 
 <div class="form-background">
@@ -110,6 +116,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="mobile">{{tr('dob')}}</label>
+                        <input type="text" name="dob" class="form-control" placeholder="Enter DoB" id="dob" required>
+                    </div>
+
+                    <div class="form-group">
                         <label for="password">{{tr('password')}}</label>
                         <input type="password" name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
                     </div>
@@ -136,7 +147,17 @@
 @section('scripts')
 
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
-<script>
+<script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
+
+<script type="text/javascript">
+
+
+    $('#dob').datepicker({
+        autoclose:true,
+        format : 'dd-mm-yyyy',
+        endDate: "dateToday"
+    });
+
     
     $(document).ready(function() {
 

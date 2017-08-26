@@ -34,6 +34,8 @@ use App\Page;
 
 use App\ChannelSubscription;
 
+use App\Language;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -838,4 +840,30 @@ function check_channel_status($user_id, $id) {
 
     return $model ? $model->id : false;
 
+}
+
+function getActiveLanguages() {
+    return Language::where('status', DEFAULT_TRUE)->get();
+}
+
+
+function readFileLength($file)  {
+
+    $variableLength = 0;
+    if (($handle = fopen($file, "r")) !== FALSE) {
+         $row = 1;
+         while (($data = fgetcsv($handle, 1000, "\n")) !== FALSE) {
+            $num = count($data);
+            $row++;
+            for ($c=0; $c < $num; $c++) {
+                $exp = explode("=>", $data[$c]);
+                if (count($exp) == 2) {
+                    $variableLength += 1; 
+                }
+            }
+        }
+        fclose($handle);
+    }
+
+    return $variableLength;
 }

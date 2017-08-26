@@ -43,6 +43,11 @@
                 </li>
             @endforeach  
 
+            <li>
+                <a href="{{route('user.channel.subscribers')}}"><i class="fa fa-users fa-1x" style="vertical-align: middle;"></i> {{tr('subscribers')}}</a>
+            </li>    
+
+
             @if(Auth::user()->user_type)  
 
                 @if(count($channels) == 0 || Setting::get('multi_channel_status'))  

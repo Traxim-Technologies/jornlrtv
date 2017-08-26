@@ -144,6 +144,7 @@ class UserController extends Controller {
                         ->with('hls_video' , $response->hls_video)
                         ->with('flaggedVideo', $response->flaggedVideo)
                         ->with('ads', $response->ads)
+                        ->with('subscribe_status', $response->subscribe_status)
                         ->with('like_count',$response->like_count)
                         ->with('dislike_count',$response->dislike_count);
         } else {
@@ -965,6 +966,31 @@ class UserController extends Controller {
         $response = $this->UserAPI->dislikevideo($request)->getData();
 
         return response()->json($response);
+
+    }
+
+    public function channel_subscribers(Request $request) {
+
+        $channels = getChannels(Auth::user()->id);
+
+        $list = [];
+
+        foreach ($channels as $key => $value) {
+            $list[] = $value->id;
+        }
+
+        $subscribers = ChannelSubscription::whereIn('channel_subscriptions.channel_id', $list)
+                        ->select('channel_subscriptions.channel_id as channel_id',
+                                'channels.name as channel_name',
+                                'users.id as user_id',
+                                'users.name as user_name',
+                                'channel_subscriptions.created_at as created_at')
+                        ->leftJoin('channels', 'channels.id', '=', 'channel_subscriptions.channel_id')
+                        ->leftJoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate();
+
+        return view('user.channels.subscribers')->with('page', 'channels')->with('subPage', 'subscribers')->with('subscribers', $subscribers);
 
     }
 }

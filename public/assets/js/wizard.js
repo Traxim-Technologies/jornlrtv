@@ -47,7 +47,9 @@ function saveVideoDetails(step) {
    var datepicker = $("#datepicker").val();
    var rating = $("#rating").val();
    var description = $("#description").val();
-   var reviews = $("#reviews").val();
+   var reviews = $("#reviews_textarea").val();
+
+
    var video_publish_type = $("#video_publish_type").val();
 
    if (title == '') {

@@ -1,4 +1,4 @@
-<?php
+logi<?php
 
 return array(
 
@@ -147,11 +147,11 @@ return array(
 
 	'register'	=>	'Register',
 	'signup'	=>	'Signup',
-	'login'	=>	'Login',
+	'login'	=>	'Logs',
 	'logout'	=>	'Logout',
 	'sign_out' => 'Sign out',
 
-	'profile'	=>	'Profile',
+	'profile'	=>	'Profiles',
 	'account'	=> 	'Account',
 	'edit_profile' => 'Edit Profile',
 	'update_profile'	=> 	'Update Profile',

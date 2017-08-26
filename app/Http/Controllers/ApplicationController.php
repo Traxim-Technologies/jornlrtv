@@ -416,4 +416,11 @@ class ApplicationController extends Controller {
         }
 
     }
+
+    public function set_session_language($lang) {
+
+        $locale = \Session::put('locale', $lang);
+
+        return back()->with('flash_success' , tr('session_success'));
+    }
 }

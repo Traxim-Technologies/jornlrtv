@@ -134,6 +134,14 @@
                 </a>
             </li>
 
+            @if(Setting::get('admin_language_control'))
+            <li id="languages">
+                <a href="{{route('admin.languages.index')}}">
+                    <i class="fa fa-globe"></i> <span>{{tr('languages')}}</span>
+                </a>
+            </li>
+            @endif
+
             <li class="treeview" id="viewpages">
                 <a href="{{route('admin.pages.index')}}">
                     <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
