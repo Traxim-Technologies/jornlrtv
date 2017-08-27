@@ -25,6 +25,7 @@ return array(
 	'registration_success'=>'Registration completed successfully, please Login and Continue',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',
+	'age_error'=>'Sorry, You are not eligible to see the video',
 	'max_upload_size'=>'Your Max Upload Size : ',
 	'payment_type'=>'Payment Type',
 	'post_max_size'=>'Post Max Size : ',

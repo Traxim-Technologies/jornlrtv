@@ -885,3 +885,19 @@ function checkAge($request) {
 
     return $age;
 }
+
+
+function subscriberscnt() {
+
+    $channels = getChannels(Auth::user()->id);
+
+    $list = [];
+
+    foreach ($channels as $key => $value) {
+        $list[] = $value->id;
+    }
+
+    $subscribers = ChannelSubscription::whereIn('channel_subscriptions.channel_id', $list)
+                    ->count();
+    return $subscribers;
+}

@@ -1343,7 +1343,7 @@ class UserApiController extends Controller {
 
                 if ($video->age_limit > $age) {
 
-                    $video = null;
+                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
 
                 }
 

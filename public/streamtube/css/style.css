@@ -214,7 +214,8 @@ footer{
 .tube-image{
 	width: 100px;
     /*height: 45px;*/
-    margin-top: 10PX;
+    /*margin-top: 10PX;*/
+    
 }
 .tube-image img{
 	max-width: 100px;
@@ -250,7 +251,7 @@ footer{
 }
 /*search bar css*/
 #custom-search-input{
- 	 width: 50%;
+ 	 width: 100%;
  	 float: left;
  	 margin-top: 1px;
  }
@@ -1828,4 +1829,8 @@ margin: 0px auto 35px;
 .callout {
 
 	color: #ca1e04 !important;
+}
+
+.term {
+	margin-top: 10px !important;
 }

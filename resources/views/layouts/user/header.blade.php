@@ -6,9 +6,9 @@
 
             <a href="{{route('user.dashboard')}}">
                 @if(Setting::get('site_logo'))
-                    <img src="{{Setting::get('site_logo')}}" style="width: 80%;height: 35px;vertical-align: bottom">
+                    <img src="{{Setting::get('site_logo')}}" style="width: 80%;height: 35px;vertical-align: middle;">
                 @else
-                    <img src="{{asset('logo.png')}}" style="width: 80%;height: 35px;vertical-align: bottom">
+                    <img src="{{asset('logo.png')}}" style="width: 80%;height: 35px;vertical-align: middle;">
                 @endif
             </a>
         
