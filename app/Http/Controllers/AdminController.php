@@ -304,7 +304,7 @@ class AdminController extends Controller {
                     $user = new User;
                 }
 
-                $user->password = ($request->password) ? $request->password : null;
+                $user->password = ($request->password) ? \Hash::make($request->password) : null;
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
                 $user->device_type = 'web';
@@ -325,7 +325,7 @@ class AdminController extends Controller {
             if($request->id == '') {
 
                 $email_data['name'] = $user->name;
-                $email_data['password'] = \Hash::make($user->password);
+                $email_data['password'] = $request->password;
                 $email_data['email'] = $user->email;
 
                 $subject = tr('user_welcome_title');
