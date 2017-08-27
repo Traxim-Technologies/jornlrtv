@@ -15,7 +15,10 @@
     @if(count($channels = loadChannels()) > 0)
         
         <ul class="y-home" style="margin-top: 10px;">
-            <h3>{{tr('channels')}}</h3>
+
+
+            <a href="route('user.channel.list')" title="Click Here To View Channels"><h3>{{tr('channels')}}</h3></a>
+
             @foreach($channels as $channel)
                 <li>
                     <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
