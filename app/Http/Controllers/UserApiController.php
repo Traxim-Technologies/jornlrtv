@@ -1646,8 +1646,28 @@ class UserApiController extends Controller {
 
     public function channel_list() {
 
-        $channels = Channel::where('is_approved', DEFAULT_TRUE)
+/*        $channels = Channel::where('is_approved', DEFAULT_TRUE)
                 ->where('status', DEFAULT_TRUE)
+                ->paginate(16);
+*/
+        $age = 0;
+
+        if(Auth::check()) {
+            $age = \Auth::user()->age_limit;
+
+            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+        }
+
+        $channels = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                ->where('channels.status', DEFAULT_TRUE)
+                ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                ->where('video_tapes.status', DEFAULT_TRUE)
+                ->where('video_tapes.age_limit','<=', $age)
+                ->groupBy('video_tapes.channel_id')
                 ->paginate(16);
 
         $items = $channels->items();
