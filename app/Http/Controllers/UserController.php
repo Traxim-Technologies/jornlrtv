@@ -76,6 +76,11 @@ class UserController extends Controller {
         
         $username = config('database.connections.mysql.username');
 
+         $request->request->add([ 
+            'id'=>\Auth::user()->id,
+            'age' => \Auth::user()->age_limit,
+        ]);   
+
         if($database && $username && Setting::get('installation_process') == 2) {
 
             counter('home');
@@ -86,18 +91,18 @@ class UserController extends Controller {
 
             if($id){
 
-                $wishlists  =  VideoRepo::wishlist($id,WEB);
+                $wishlists  =  VideoRepo::wishlist($request,WEB);
 
-                $watch_lists = VideoRepo::watch_list($id,WEB);  
+                $watch_lists = VideoRepo::watch_list($request,WEB);  
             }
 
             //dd($watch_lists);
             
-            $recent_videos = VideoRepo::recently_added(WEB);
+            $recent_videos = VideoRepo::recently_added($request, WEB);
 
-            $trendings = VideoRepo::trending(WEB);
+            $trendings = VideoRepo::trending($request, WEB);
             
-            $suggestions  = VideoRepo::suggestion_videos(WEB);
+            $suggestions  = VideoRepo::suggestion_videos($request, WEB);
 
             $channels = getChannels(WEB);
 
@@ -120,6 +125,7 @@ class UserController extends Controller {
 
         $request->request->add([ 
             'admin_video_id' => $id,
+            'age'=>Auth::user()->age_limit,
         ]);
 
         $data = $this->UserAPI->getSingleVideo($request)->getData();
@@ -161,10 +167,16 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function profile()
+    public function profile(Request $request)
     {
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
 
-        $wishlist = VideoRepo::wishlist(Auth::user()->id,WEB);
+        $wishlist = VideoRepo::wishlist($request,WEB);
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
@@ -176,10 +188,17 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function update_profile()
+    public function update_profile(Request $request)
     {
 
-        $wishlist = VideoRepo::wishlist(Auth::user()->id,WEB);
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
+
+        $wishlist = VideoRepo::wishlist($request,WEB);
 
         return view('user.account.edit-profile')->with('page' , 'profile')
                     ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
@@ -289,7 +308,14 @@ class UserController extends Controller {
 
     public function history(Request $request) {
 
-        $histories = VideoRepo::watch_list(Auth::user()->id,WEB);
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
+
+        $histories = VideoRepo::watch_list($request,WEB);
 
         return view('user.account.history')
                         ->with('page' , 'profile')
@@ -342,8 +368,15 @@ class UserController extends Controller {
     } 
 
     public function wishlist(Request $request) {
+
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
         
-        $videos = VideoRepo::wishlist(Auth::user()->id,WEB);
+        $videos = VideoRepo::wishlist($request,WEB);
 
         return view('user.account.wishlist')
                     ->with('page' , 'profile')
@@ -385,7 +418,25 @@ class UserController extends Controller {
 
     public function channel_videos($id) {
 
-        $channel = Channel::find($id);
+        $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                ->where('channels.status', DEFAULT_TRUE)
+                ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                ->where('video_tapes.status', DEFAULT_TRUE)
+                ->groupBy('video_tapes.channel_id')
+                ->first();
+
+        if ($channel) {
+
+            if ($channel->user_id != Auth::user()->id) {
+
+                $channel = null;
+
+            }
+
+        }
 
         if ($channel) {
 
@@ -503,7 +554,14 @@ class UserController extends Controller {
 
     public function trending(Request $request) {
 
-        $trending = VideoRepo::trending(WEB);
+        $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+                'age'=>\Auth::user()->age_limit,
+            ]);
+
+        $trending = VideoRepo::trending($request, WEB);
 
         return view('user.trending')->with('page', 'trending')
                                     ->with('videos',$trending);
@@ -632,10 +690,17 @@ class UserController extends Controller {
      *
      * @return spam videos
      */
-    public function spam_videos() {
+    public function spam_videos(Request $request) {
+
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
         // Get logged in user id
 
-        $model = $this->UserAPI->spam_videos(\Auth::user()->id, 12)->getData();
+        $model = $this->UserAPI->spam_videos($request, 12)->getData();
 
         // Return array of values
         return view('user.account.spam_videos')->with('model' , $model)

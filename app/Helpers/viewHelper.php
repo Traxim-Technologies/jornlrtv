@@ -587,6 +587,7 @@ function loadChannels() {
                 ->where('channels.status', DEFAULT_TRUE)
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
+                ->where('video_tapes.age_limit','<', \Auth::user()->age_limit)
                 ->groupBy('video_tapes.channel_id')
                 ->get();
     

@@ -786,13 +786,14 @@ class UserApiController extends Controller {
     }
 
 
-    public function spam_videos($id, $count = null, $skip = 0) {
+    public function spam_videos($request, $count = null, $skip = 0) {
 
-        $query = Flag::where('flags.user_id', $id)->select('flags.*')
+        $query = Flag::where('flags.user_id', $request->id)->select('flags.*')
                     ->where('flags.status', DEFAULT_TRUE)
                     ->leftJoin('video_tapes', 'flags.video_tape_id', '=', 'video_tapes.id')
                     ->where('video_tapes.is_approved' , 1)
                     ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.age_limit','<', $request->age)
                     ->orderBy('flags.created_at', 'desc');
 
         if($count) {
@@ -1326,12 +1327,23 @@ class UserApiController extends Controller {
 
     // Function Name : getSingleVideo()
 
-    public function getSingleVideo(Request $request) {
+    public function getSingleVideo($request) {
+
 
         $video = VideoTape::where('video_tapes.id' , $request->admin_video_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
                     ->first();
+
+        if ($video) {
+
+            if ($video->getChannel->user_id != Auth::user()->id) {
+
+                $video = null;
+
+            }
+
+        }
 
         if($video) {
 
@@ -1341,13 +1353,13 @@ class UserApiController extends Controller {
 
             $ads = $video->getScopeVideoAds ? ($video->getScopeVideoAds->status ? $video->getScopeVideoAds  : '') : '';
 
-            $trendings = VideoRepo::trending(WEB);
+            $trendings = VideoRepo::trending($request,WEB);
 
-            $recent_videos = VideoRepo::recently_added(WEB);
+            $recent_videos = VideoRepo::recently_added($request, WEB);
 
             $channels = [];
 
-            $suggestions = VideoRepo::suggestion_videos('', '', $request->admin_video_id);
+            $suggestions = VideoRepo::suggestion_videos($request,'', '', $request->admin_video_id);
 
             $wishlist_status = $history_status = WISHLIST_EMPTY;
 
