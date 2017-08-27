@@ -733,21 +733,30 @@ textarea[name=comments] {
                                     jQuery('#comment_count').text(count);
                                     jQuery('#video_comment_count').text(count);
 
-                                    var stars = 0;
+                                    // var stars = 0;
 
-                                   /* var stars = '<span class="stars">'+
-                                    '<a href="#"><i "'+data.comment.rating > 1 ? 'style="color:gold" : '''+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i "'+data.comment.rating > 2 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i "'+data.comment.rating > 3 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i "'+data.comment.rating > 4 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i "'+data.comment.rating > 5 ? 'style="color:gold" : '''+'"  class="fa fa-star" aria-hidden="true"></i></a>'+
-                                                    +'</span>';  */   
+                                    var first_star = data.comment.rating > 1 ? "color:#ff0000" : "";
+
+                                    var second_star = data.comment.rating > 2 ? "color:#ff0000" : "";
+
+                                    var third_star = data.comment.rating > 3 ? "color:#ff0000" : "";
+
+                                    var fourth_star = data.comment.rating > 4 ? "color:#ff0000" : "";
+
+                                    var fifth_star = data.comment.rating > 5 ? "color:#ff0000" : "";
+
+                                   var stars = '<span class="stars">'+
+                                    '<a href="#"><i style="'+first_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+second_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+third_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+fourth_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+fifth_star+'" class="fa fa-star" aria-hidden="true"></i></a></span>';   
 
                                     /**
                                     <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="'+data.comment.rating+'"></p>
                                     **/
 
-                                    //$('').rating('clear');
+                                    $('.comment_rating').rating('clear');
 
                                     jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                                 @endif
