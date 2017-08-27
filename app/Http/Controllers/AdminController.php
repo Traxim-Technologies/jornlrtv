@@ -105,7 +105,7 @@ class AdminController extends Controller {
 
         $video_count = VideoTape::count();
  
-        $recent_videos = VideoRepo::recently_added(WEB);
+        $recent_videos = VideoRepo::admin_recently_added();
 
         $get_registers = get_register_count();
         $recent_users = get_recent_users();

@@ -390,4 +390,18 @@ class VideoTapeRepository {
     }
 
 
+    public static function admin_recently_added() {
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)                                       
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->videoResponse()->paginate(16);
+
+
+        return $base_query;
+
+    }
+
 }
