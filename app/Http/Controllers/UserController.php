@@ -422,13 +422,13 @@ class UserController extends Controller {
     public function channel_videos($id) {
 
         $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                /*->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 ->where('channels.status', DEFAULT_TRUE)
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
-                ->groupBy('video_tapes.channel_id')
+                ->groupBy('video_tapes.channel_id')*/
                 ->first();
 
 
