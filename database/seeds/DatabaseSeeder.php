@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedMaxsizekeysInSettings::class);
         $this->call(AddedLanguageControlInSettings::class);
         $this->call(AddedStripeKeyInSettings::class);
+        $this->call(AddedAgeKeyInSettings::class);
     }
 }

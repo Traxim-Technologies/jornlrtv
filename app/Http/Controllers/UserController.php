@@ -76,10 +76,13 @@ class UserController extends Controller {
         
         $username = config('database.connections.mysql.username');
 
-         $request->request->add([ 
-            'id'=>\Auth::user()->id,
-            'age' => \Auth::user()->age_limit,
-        ]);   
+        if (Auth::check()) {
+            
+            $request->request->add([ 
+                'id'=>\Auth::user()->id,
+                'age' => \Auth::user()->age_limit,
+            ]);   
+        }
 
         if($database && $username && Setting::get('installation_process') == 2) {
 

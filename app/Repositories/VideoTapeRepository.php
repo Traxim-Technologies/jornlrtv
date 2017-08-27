@@ -62,7 +62,7 @@ class VideoTapeRepository {
                             ->where('video_tapes.publish_status' , 1)
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->orderby('video_tapes.created_at' , 'desc')
-                            ->where('video_tapes.age_limit','<', $request->age)
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->videoResponse();
 
         if (Auth::check()) {
@@ -74,6 +74,7 @@ class VideoTapeRepository {
             if($flag_videos) {
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
             }
+
         }
 
         if($web) {
@@ -101,7 +102,7 @@ class VideoTapeRepository {
                         ->where('video_tapes.status' , 1)
                         ->where('video_tapes.is_approved' , 1)
 	                    ->videoResponse()
-                        ->where('video_tapes.age_limit','<', $request->age)
+                        ->where('video_tapes.age_limit','<=', checkAge($request))
 	                    ->orderby('watch_count' , 'desc');
 
 	    if (Auth::check()) {
@@ -213,7 +214,7 @@ class VideoTapeRepository {
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->videoResponse()
-                            ->where('video_tapes.age_limit','<', $request->age)
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderByRaw('RAND()');
         if($id) {
 
@@ -263,7 +264,7 @@ class VideoTapeRepository {
                                     'default_image','video_tapes.watch_count','video_tapes.ratings',
                                     'video_tapes.duration','video_tapes.channel_id',
                                     DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time') , 'channels.name as channel_name', 'wishlists.created_at')
-                            ->where('video_tapes.age_limit','<', $request->age)
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderby('wishlists.created_at' , 'desc');
 
         if (Auth::check()) {
@@ -305,7 +306,7 @@ class VideoTapeRepository {
                                 'video_tapes.title','video_tapes.description' , 'video_tapes.duration',
                                 'default_image','video_tapes.watch_count','video_tapes.ratings',
                                 DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 'video_tapes.channel_id','channels.name as channel_name', 'user_histories.created_at')
-                            ->where('video_tapes.age_limit','<', $request->age)
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderby('user_histories.created_at' , 'desc');
         
         if (Auth::check()) {

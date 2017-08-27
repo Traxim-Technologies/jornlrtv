@@ -580,6 +580,17 @@ function total_subscription_revenue($id = "") {
 
 function loadChannels() {
 
+    $request = new \Illuminate\Http\Request();
+
+    if(Auth::check()) {
+
+        $request->request->add([ 
+            'id'=>\Auth::user()->id,
+            'age' => \Auth::user()->age_limit,
+        ]);  
+
+    }
+
     $model = Channel::where('channels.is_approved', DEFAULT_TRUE)
                 ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
@@ -587,7 +598,7 @@ function loadChannels() {
                 ->where('channels.status', DEFAULT_TRUE)
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
-                ->where('video_tapes.age_limit','<', \Auth::user()->age_limit)
+                ->where('video_tapes.age_limit','<=', checkAge($request))
                 ->groupBy('video_tapes.channel_id')
                 ->get();
     
@@ -867,4 +878,12 @@ function readFileLength($file)  {
     }
 
     return $variableLength;
+}
+
+
+function checkAge($request) {
+
+    $age = $request->age ? ($request->age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+    return $age;
 }

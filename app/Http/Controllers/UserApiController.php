@@ -793,7 +793,7 @@ class UserApiController extends Controller {
                     ->leftJoin('video_tapes', 'flags.video_tape_id', '=', 'video_tapes.id')
                     ->where('video_tapes.is_approved' , 1)
                     ->where('video_tapes.status' , 1)
-                    ->where('video_tapes.age_limit','<', $request->age)
+                    ->where('video_tapes.age_limit','<=', checkAge($request))
                     ->orderBy('flags.created_at', 'desc');
 
         if($count) {

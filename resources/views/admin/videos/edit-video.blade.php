@@ -135,9 +135,17 @@
 
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="datepicker" class="">{{tr('age_limit')}} * </label>
 
-                                    <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1" value="{{$video->age_limit}}">
+                                   <!--  <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1" value="{{$video->age_limit}}"> -->
+
+                                    <label for="datepicker" class="">{{tr('18_users')}} * </label>
+
+                                   <!--  <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1"> -->
+
+                                   <br>
+
+                                   <input type="checkbox" name="age_limit" value="1" required @if($video->age_limit) checked @endif> {{tr('yes')}}
+
 
                                     <p class="help-block">{{tr('age_limit_note')}}</p>
                                 </div>

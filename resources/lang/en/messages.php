@@ -752,6 +752,7 @@ return array(
 	'likes'=>'Likes',
 	'dislikes'=>'Dislikes',
 	'age_limit'=>'Age Limit',
+	'18_users'=>'18+ Users Only',
 	'age_limit_note'=>'Above this age users can view the video',
 
 	'cover'=>'Cover',
