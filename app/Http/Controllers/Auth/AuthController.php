@@ -97,7 +97,7 @@ class AuthController extends Controller
             'picture' => asset('placeholder.png'),
             'login_by' => 'manual',
             'device_type' => 'web',
-            // 'dob' = date('Y-m-d', strtotime($data['dob']))
+            'dob' => date('Y-m-d', strtotime($data['dob']))
         ]);
 
         // Check the default subscription and save the user type 
