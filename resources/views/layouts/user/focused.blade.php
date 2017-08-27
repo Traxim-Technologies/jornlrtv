@@ -31,11 +31,21 @@
 
 <body>
 
-    @include('layouts.user.focused-nav')
+    <div class="wrap">
 
-    @yield('content')
+        @include('layouts.user.focused-nav')
 
-    @include('layouts.user.footer')    
+        @yield('content')
+
+        <div style="height: 30px"></div>
+
+        <div class="footer_class">
+
+            @include('layouts.user.footer')   
+
+        </div>
+
+    </div> 
     
     <script src="{{asset('streamtube/js/jquery.min.js')}}"></script>
     <script src="{{asset('streamtube/js/bootstrap.min.js')}}"></script>
