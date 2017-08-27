@@ -429,6 +429,7 @@ class UserController extends Controller {
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
                 ->groupBy('video_tapes.channel_id')*/
+                ->where('id', $id)
                 ->first();
 
 
