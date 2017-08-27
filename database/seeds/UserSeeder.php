@@ -22,6 +22,8 @@ class UserSeeder extends Seeder
 		        'picture' =>"http://streamtube.streamhash.com/placeholder.png",
                 'token'=>Helper::generate_token(),
                 'token_expiry'=>Helper::generate_token_expiry(),
+                'dob'=>'1992-01-01',
+                'age'=>25,
                 'is_verified'=>1,
                 'status'=>1,
 		        'created_at' => date('Y-m-d H:i:s'),
