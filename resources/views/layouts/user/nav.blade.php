@@ -17,7 +17,7 @@
         <ul class="y-home" style="margin-top: 10px;">
 
 
-            <a href="route('user.channel.list')" title="Click Here To View Channels"><h3>{{tr('channels')}}</h3></a>
+            <a href="{{route('user.channel.list')}}" title="Click Here To View Channels"><h3>{{tr('channels')}}</h3></a>
 
             @foreach($channels as $channel)
                 <li>
