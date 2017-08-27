@@ -103,6 +103,7 @@ class VideoTape extends Model
 
     }
 
+
     public function getScopeLikeCount() {
 
         return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'admin_video_id')->where('like_status', DEFAULT_TRUE);
@@ -124,6 +125,13 @@ class VideoTape extends Model
     public function getDisLikeCount() {
 
         return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'id')->where('dislike_status', DEFAULT_TRUE);
+
+    }
+    
+     public function getUserFlags() {
+
+         return $this->hasMany('App\Flag', 'video_tape_id', 'id');
+
 
     }
 
@@ -179,6 +187,28 @@ class VideoTape extends Model
                     $model->getVideoAds->delete();   
 
                 }             
+
+            }
+
+             if (count($model->getUserFlags) > 0) {
+
+                foreach ($model->getUserFlags as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+            
+
+            }
+
+             if (count($model->getUserRatings) > 0) {
+
+                foreach ($model->getUserRatings as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+            
 
             }
 
