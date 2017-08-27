@@ -215,7 +215,7 @@ footer{
 	width: 100px;
     /*height: 45px;*/
     /*margin-top: 10PX;*/
-    
+
 }
 .tube-image img{
 	max-width: 100px;
@@ -1832,5 +1832,5 @@ margin: 0px auto 35px;
 }
 
 .term {
-	margin-top: 10px !important;
+	margin-top: 5px !important;
 }
