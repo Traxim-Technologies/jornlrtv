@@ -580,14 +580,12 @@ function total_subscription_revenue($id = "") {
 
 function loadChannels() {
 
-    $request = new \Illuminate\Http\Request();
+    $age = 0;
 
     if(Auth::check()) {
+        $age = \Auth::user()->age_limit;
 
-        $request->request->add([ 
-            'id'=>\Auth::user()->id,
-            'age' => \Auth::user()->age_limit,
-        ]);  
+        $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
     }
 
@@ -598,7 +596,7 @@ function loadChannels() {
                 ->where('channels.status', DEFAULT_TRUE)
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
-                ->where('video_tapes.age_limit','<=', checkAge($request))
+                ->where('video_tapes.age_limit','<=', $age)
                 ->groupBy('video_tapes.channel_id')
                 ->get();
     
