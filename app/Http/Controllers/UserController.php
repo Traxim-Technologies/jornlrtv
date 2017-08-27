@@ -431,15 +431,41 @@ class UserController extends Controller {
                 ->groupBy('video_tapes.channel_id')
                 ->first();
 
-        if ($channel) {
 
-            if ($channel->user_id != Auth::user()->id) {
+       /* if ($channel) {
 
-                $channel = null;
+            if(Auth::check()) {
+
+                if ($channel->user_id != Auth::user()->id) {
+
+                    $age = Auth::user()->age_limit ? (Auth::user()->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+                    if ($video->age_limit > $age) {
+
+                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                    }
+
+                } else {
+
+                    if ($video->age_limit != 0) {
+
+                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                    }
+                }
+            } else {
+
+                if ($video->age_limit != 0) {
+
+                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                }
 
             }
 
-        }
+        }*/
+
 
         if ($channel) {
 

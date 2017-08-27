@@ -1337,11 +1337,29 @@ class UserApiController extends Controller {
 
         if ($video) {
 
-            if ($video->getChannel->user_id != Auth::user()->id) {
+            if(Auth::check()) {
 
-                $age = $request->age ? ($request->age >= Setting::get('age_limit') ? 1 : 0) : 0;
+                if ($video->getChannel->user_id != Auth::user()->id) {
 
-                if ($video->age_limit > $age) {
+                    $age = Auth::user()->age_limit ? (Auth::user()->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+                    if ($video->age_limit > $age) {
+
+                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                    }
+
+                } else {
+
+                    if ($video->age_limit != 0) {
+
+                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                    }
+                }
+            } else {
+
+                if ($video->age_limit != 0) {
 
                     return response()->json(['success'=>false, 'message'=>tr('age_error')]);
 
