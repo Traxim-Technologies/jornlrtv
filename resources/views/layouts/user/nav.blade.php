@@ -44,9 +44,8 @@
             @endforeach  
 
             <li>
-                <a href="{{route('user.channel.subscribers')}}"><i class="fa fa-users fa-1x" style="vertical-align: middle;"></i> {{tr('subscribers')}}</a>
+                <a href="{{route('user.channel.subscribers')}}"><i class="fa fa-users fa-1x" style="vertical-align: middle;"></i>&nbsp;&nbsp;{{tr('subscribers')}}</a>
             </li>    
-
 
             @if(Auth::user()->user_type)  
 

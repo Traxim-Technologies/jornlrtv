@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(VideoSettingsSeeder::class);
         $this->call(AddedMaxsizekeysInSettings::class);
         $this->call(AddedLanguageControlInSettings::class);
+        $this->call(AddedStripeKeyInSettings::class);
     }
 }

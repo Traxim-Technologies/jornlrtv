@@ -636,6 +636,18 @@ Route::group(['as' => 'user.'], function(){
     Route::get('redeem/request/cancel/{id?}', 'UserController@redeem_request_cancel')->name('redeems.request.cancel');
 
 
+    Route::get('/card', 'UserController@card_details')->name('card.card_details');
+
+    Route::post('/add-card', 'UserController@payment_card_add')->name('card.add_card');
+
+
+    Route::post('/pay_tour','UserController@pay_tour')->name('card.card');
+
+    Route::patch('/payment', 'UserController@payment_card_default')->name('card.default');
+
+    Route::delete('/payment', 'UserController@payment_card_delete')->name('card.delete');
+
+    Route::get('/stripe_payment', 'UserController@stripe_payment')->name('card.stripe_payment');
 
 });
 

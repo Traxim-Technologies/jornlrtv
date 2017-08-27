@@ -46,6 +46,8 @@ use App\Channel;
 
 use App\LikeDislikeVideo;
 
+use App\Card;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -1790,6 +1792,102 @@ class UserApiController extends Controller {
 
         return response()->json($response_array);
 
+    }
+
+     public function default_card(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
+            )
+        );
+
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => $error_messages, 'error_code' => 101);
+
+        } else {
+
+            $user = User::find($request->id);
+            
+            $old_default = Card::where('user_id' , $request->id)->where('is_default', DEFAULT_TRUE)->update(array('is_default' => DEFAULT_FALSE));
+
+            $card = Card::where('id' , $request->card_id)->update(array('is_default' => DEFAULT_TRUE));
+
+            if($card) {
+                if($user) {
+                    // $user->payment_mode = CARD;
+                    $user->card_id = $request->card_id;
+                    $user->save();
+                }
+                $response_array = Helper::null_safe(array('success' => true));
+            } else {
+                $response_array = array('success' => false , 'error' => 'Something went wrong');
+            }
+        }
+        return response()->json($response_array , 200);
+    
+    }
+
+    public function delete_card(Request $request) {
+    
+        $card_id = $request->card_id;
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
+            )
+        );
+
+        if ($validator->fails()) {
+            
+            $error_messages = implode(',', $validator->messages()->all());
+            
+            $response_array = array('success' => false , 'error' => $error_messages , 'error_code' => 101);
+        
+        } else {
+
+            Card::where('id',$card_id)->delete();
+
+            $user = User::find($request->id);
+
+            if($user) {
+
+                // if($user->payment_mode = CARD) {
+
+                    // Check he added any other card
+                    
+                    if($check_card = Card::where('user_id' , $request->id)->first()) {
+
+                        $check_card->is_default =  DEFAULT_TRUE;
+
+                        $user->card_id = $check_card->id;
+
+                        $check_card->save();
+
+                    } else { 
+
+                        $user->payment_mode = COD;
+                        $user->card_id = DEFAULT_FALSE;
+                    }
+                // }
+                
+                $user->save();
+            }
+
+            $response_array = array('success' => true );
+        }
+    
+        return response()->json($response_array , 200);
     }
 
 }

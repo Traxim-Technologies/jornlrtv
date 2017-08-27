@@ -266,6 +266,15 @@
                 case 151:
                     $string = tr('redeem_not_found');
                     break;
+                 case 901:
+                    $string = "Default card is not available. Please add a card";
+                    break;
+                case 902:
+                    $string = "Something went wrong with Payment Configuration";
+                    break;
+                case 903:
+                    $string = "Payment is not completed. Please try to pay Again";
+                    break;
 
                 default:
                     $string = "Unknown error occurred.";

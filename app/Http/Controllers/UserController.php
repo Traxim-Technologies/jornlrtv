@@ -30,6 +30,8 @@ use Exception;
 
 use Log;
 
+use App\Card;
+
 use App\Subscription;
 
 use App\Channel;
@@ -41,6 +43,8 @@ use App\VideoTapeImage;
 use App\Repositories\CommonRepository as CommonRepo;
 
 use App\ChannelSubscription;
+
+use App\UserPayment;
 
 class UserController extends Controller {
 
@@ -991,6 +995,327 @@ class UserController extends Controller {
                         ->paginate();
 
         return view('user.channels.subscribers')->with('page', 'channels')->with('subPage', 'subscribers')->with('subscribers', $subscribers);
+
+    }
+
+    public function card_details(Request $request) {
+
+        $cards = Card::where('user_id', Auth::user()->id)->get();
+
+        return view('user.account.cards')->with('page', 'account')->with('subPage', 'cards')->with('cards', $cards);
+    }
+
+
+
+
+        /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_card_add(Request $request) {
+
+        $last_four = substr($request->number, -4);
+
+        $stripe_secret_key = \Setting::get('stripe_secret_key');
+
+        $response = json_decode('{}');
+
+        if($stripe_secret_key) {
+
+            \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+        } else {
+
+            $response->success = false;
+            $response->message = 'Adding cards is not enabled on this application. Please contact administrator';
+
+            return back()->with('flash_errors', $response);
+        }
+
+        try {
+
+            // Get the key from settings table
+            
+            $customer = \Stripe\Customer::create([
+                    "card" => $request->stripeToken,
+                    "email" => \Auth::user()->email
+                ]);
+
+            if($customer) {
+
+                $customer_id = $customer->id;
+
+
+                $cards = new Card;
+                $cards->user_id = \Auth::user()->id;
+                $cards->customer_id = $customer_id;
+                $cards->last_four = $last_four;
+                $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                // Check is any default is available
+                $check_card = Card::where('user_id', \Auth::user()->id)->first();
+
+                if($check_card)
+                    $cards->is_default = 0;
+                else
+                    $cards->is_default = 1;
+                
+                $cards->save();
+
+                $user = User::find(\Auth::user()->id);
+
+                if($user && $cards->is_default) {
+
+                    $user->payment_mode = 'card';
+                    $user->card_id = $cards->id;
+                    $user->save();
+
+                }
+
+                $response_array = array('success' => true);
+
+                $response_code = 200;
+
+            } else {
+                $response->message('Could not create client ID');
+            }
+        
+        } catch(Exception $e) {
+
+            return back()->with('flash_error' , $e->getMessage());
+
+        }
+        
+        return back()->with('flash_success', 'Successfully Created');
+    }
+
+
+
+    public function payment_card_default(Request $request)
+    {
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+        ]);
+
+        $response = $this->UserAPI->default_card($request)->getData();
+
+        if($response->success) {
+            $message = tr('card_default_success');
+            $type = "flash_success";
+        } else {
+            $message = tr('unkown_error');
+            $type = "flash_error";
+        }
+
+        return back()->with($type, $message);
+    }
+
+    /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_card_delete(Request $request)
+    {
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+        ]);
+
+        $response = $this->UserAPI->delete_card($request)->getData();
+        
+        if($response->success) {
+
+            $message = tr('card_deleted');
+
+            $type = "flash_success";
+
+        } else {
+            $message = tr('unkown_error');
+            $type = "flash_error";
+        }
+
+        return back()->with($type, $message);
+    }
+
+    /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_update_default(Request $request) {
+
+        $this->validate($request, [
+                'payment_mode' => 'required',
+            ]);
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+        ]);        
+
+        $response = $this->UserAPI->payment_mode_update($request)->getData();
+
+        if($response->success) {
+            $message = tr('card_default_success');
+            $type = "flash_success";
+        } else {
+            $message = tr('unkown_error');
+            $type = "flash_error";
+        }
+
+        return back()->with($type, $message);
+    }
+
+    public function stripe_payment(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'subscription_id' => $request->subscription_id
+        ]);        
+
+        /*$response = $this->UserAPI->pay_video($request)->getData();*/
+
+
+        $validator = Validator::make($request->all(), [
+           // 'tour_id' => 'required|exists:tours,id',
+
+            'subscription_id' => 'required|exists:subscriptions,id',
+            ]);
+
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            // $response_array = array('success' => false , 'error' => $error_messages , 'error_code' => 101);
+
+             return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $subscription = Subscription::find($request->subscription_id);
+
+            if($subscription) {
+
+                $total = $subscription->amount;
+
+                $user = User::find($request->id);
+
+                $check_card_exists = User::where('users.id' , $request->id)
+                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                    ->where('cards.id' , $user->card_id)
+                                    ->where('cards.is_default' , DEFAULT_TRUE);
+
+                if($check_card_exists->count() != 0) {
+
+                    $user_card = $check_card_exists->first();
+
+                    // Get the key from settings table
+                    $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                    $customer_id = $user_card->customer_id;
+                
+                    if($stripe_secret_key) {
+
+                        \Stripe\Stripe::setApiKey($stripe_secret_key);
+                    } else {
+
+                        // $response_array = array('success' => false, 'error' => Helper::error_message(902) , 'error_code' => 902);
+
+                       // return response()->json($response_array , 200);
+
+                        return back()->with('flash_error', Helper::get_error_message(902));
+                    }
+
+                    try {
+
+                       $user_charge =  \Stripe\Charge::create(array(
+                          "amount" => $total * 100,
+                          "currency" => "usd",
+                          "customer" => $customer_id,
+                        ));
+
+                       $payment_id = $user_charge->id;
+                       $amount = $user_charge->amount/100;
+                       $paid_status = $user_charge->paid;
+
+                       if($paid_status) {
+
+
+                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                            if($user_payment) {
+
+                                $expiry_date = $user_payment->expiry_date;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                            } else {
+                                $user_payment = new UserPayment;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                            }
+
+
+                            $user_payment->payment_id  = $payment_id;
+                            $user_payment->user_id = $request->id;
+                            $user_payment->subscription_id = $request->subscription_id;
+                            $user_payment->status = 1;
+                            $user_payment->amount = $amount;
+                            $user_payment->save();
+
+
+                            $user->user_type = 1;
+                            $user->save();
+                            
+
+                            // $response_array = ['success' => true, 'message'=>tr('payment_success')];
+
+                            return back()->with('flash_success',tr('payment_success'));
+
+                        } else {
+
+                            // $response_array = array('success' => false, 'error' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                            // return response()->json($response_array , 200);
+
+                            return back()->with('flash_error', Helper::get_error_message(903));
+
+                        }
+                    
+                    } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                        Log::info(print_r($e,true));
+
+                        /*$response_array = array('success' => false , 'error' => Helper::get_error_message(903) ,'error_code' => 903);*/
+
+                        return back()->with('flash_error', Helper::get_error_message(903));
+
+                       // return response()->json($response_array , 200);
+                    
+                    }
+
+                } else {
+
+                    // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
+
+                    return back()->with('flash_error', Helper::get_error_message(901));
+                    
+                    //return response()->json($response_array , 200);
+                }
+
+            } else {
+
+                // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
+                return back()->with('flash_error', Helper::get_error_message(901));
+                
+                // return response()->json($response_array , 200);
+            }
+
+
+
+        }
 
     }
 }

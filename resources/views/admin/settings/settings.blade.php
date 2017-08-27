@@ -150,6 +150,22 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="payment_type">{{tr('payment_type')}}</label>
+
+                                        <?php $type = Setting::get('payment_type') ;?>
+                                        <select id="payment_type" name="payment_type" class="form-control">
+                                            <option value="">{{tr('payment_type')}}</option>
+                                            
+                                            <option value="paypal" @if($type == 'paypal') selected @endif>Paypal</option>
+
+                                            <option value="stripe" @if($type == 'stripe') selected @endif >Stripe</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+
                                 
                                 <div class="col-lg-12">
                                     <div class="form-group">
