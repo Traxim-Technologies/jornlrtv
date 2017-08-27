@@ -21,6 +21,7 @@ return array(
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
+	'uploaded_new_video'=>'Uploaded New Video',
 	'registration_success'=>'Registration completed successfully, please Login and Continue',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',

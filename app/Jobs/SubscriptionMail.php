@@ -46,16 +46,20 @@ class SubscriptionMail extends Job implements ShouldQueue
     {
         Log::info("Inside Queue Videos : ". 'Success');
         
-        $subscribers = ChannelSubscription::where('channel_id', $model->channel_id)->get();
+        $subscribers = ChannelSubscription::where('channel_id', $channel_id)->get();
 
         foreach ($subscribers as $key => $subscriber) {
             
             if($subscriber->getUser) {
-                $subject = tr('user_welcome_title');
-                $email_data = $user;
-                $page = "emails.welcome";
+
+                $user = $subscriber->getUser;
+
+                $subject = tr('uploaded_new_video');
+                $email_data = $subscriber;
+                $page = "emails.subscription_mail";
                 $email = $user->email;
-                // Helper::send_email($page,$subject,$email,$email_data);
+                
+                Helper::send_email($page,$subject,$email,$email_data);
             }
         }
     }
