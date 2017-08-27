@@ -651,15 +651,15 @@
         /**
          *  Function Name : search_video()
          */
-        public static function search_video($key,$web = NULL,$skip = 0) {
+        public static function search_video($request,$key,$web = NULL,$skip = 0) {
 
             $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
                         ->videoResponse()
+                        ->where('video_tapes.age_limit','<=', checkAge($request))
                         ->orderBy('video_tapes.created_at' , 'desc');
-
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
