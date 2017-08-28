@@ -23,6 +23,7 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 	'enter_dob'=>'Enter DOB',
+	'no_subscription_found'=>'No SubScription Detaild Found',
 	'uploaded_new_video'=>'Uploaded New Video',
 	'user_reviews'=>'User Reviews',
 	'no_of_spam_videos'=>'No of Spam Videos',

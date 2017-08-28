@@ -1744,6 +1744,7 @@ margin: 0px auto 35px;
 	max-height: 100px;
 	overflow-y: auto;
 	margin-bottom: 10px !important;
+	min-height: 100px;
 }
 .video_views {
 	color: #777;

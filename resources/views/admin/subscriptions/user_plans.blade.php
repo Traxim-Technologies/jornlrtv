@@ -9,7 +9,7 @@
     <li class="active"><i class="fa fa-key"></i> {{tr('subscriptions')}}</li>
 @endsection
 
-@section('after-styles')
+@section('styles')
 
 <style>
 
@@ -24,11 +24,12 @@
 	width: 100%;
 }
 
+
 .subscription-desc {
-	min-height: 10em !important;
-	max-height: 10em !important;
-	overflow: scroll !important;
-	margin-bottom: 10px !important;
+    max-height: 100px;
+    overflow-y: auto;
+    margin-bottom: 10px !important;
+    min-height: 100px;
 }
 
 </style>
@@ -75,7 +76,7 @@
 								
 							</div>
 						@else
-							<h3 class="no-result">{{tr('no_result_found')}}</h3>
+							<h3 class="no-result">{{tr('no_subscription_found')}}</h3>
 						@endif
 
 		            </div>
@@ -102,7 +103,7 @@
 
 									<div class="thumbnail">
 
-										<!-- <img alt="{{$subscription->title}}" src="{{$subscription->picture ?  $subscription->picture : asset('common/img/landing-9.png')}}" class="subscription-image" /> -->
+										<img alt="{{$subscription->title}}" src="{{$subscription->picture ?  $subscription->picture : asset('common/img/landing-9.png')}}" class="subscription-image" />
 										<div class="caption">
 
 											<h3>
