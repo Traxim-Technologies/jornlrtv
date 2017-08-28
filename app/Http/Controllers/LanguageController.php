@@ -71,12 +71,37 @@ class LanguageController extends Controller
 
             $dir = base_path('resources/lang/'.$model->folder_name);
 
-            unlink($dir.'/auth.php');
-            unlink($dir.'/messages.php');
-            unlink($dir.'/pagination.php');
-            unlink($dir.'/passwords.php');
-            unlink($dir.'/validation.php');
+            if (file_exists($dir.'/auth.php')) {
 
+                unlink($dir.'/auth.php');
+
+            }
+
+            if (file_exists($dir.'/messages.php')) {
+
+                unlink($dir.'/messages.php');
+
+            }
+
+            if (file_exists($dir.'/pagination.php')) {
+
+                unlink($dir.'/pagination.php');
+
+            }
+
+            if (file_exists($dir.'/passwords.php')) {
+
+                unlink($dir.'/passwords.php');
+
+            }
+
+            if (file_exists($dir.'/validation.php')) {
+
+                unlink($dir.'/validation.php');
+
+            }
+
+            
             rmdir($dir);
 
             if ($model->delete()) {
