@@ -22,6 +22,7 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 	'uploaded_new_video'=>'Uploaded New Video',
+	'min_age_error'=>'Age should be minimum 16 Years Old',
 	'registration_success'=>'Registration completed successfully, please Login and Continue',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',

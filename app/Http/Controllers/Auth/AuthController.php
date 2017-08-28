@@ -78,6 +78,8 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'dob'=>'required',
+            'age_limit'=>'required'
         ]);
     }
 
@@ -89,6 +91,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {        
+
         $User = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -97,7 +100,8 @@ class AuthController extends Controller
             'picture' => asset('placeholder.png'),
             'login_by' => 'manual',
             'device_type' => 'web',
-            'dob' => date('Y-m-d', strtotime($data['dob']))
+            'dob' => date('Y-m-d', strtotime($data['dob'])),
+            'age_limit'=>$data['age_limit']
         ]);
 
         // Check the default subscription and save the user type 
@@ -125,18 +129,48 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+
+        $age_limit = 0;
+
+        if ($request->dob) {
+
+            $from = new \DateTime($request->dob);
+
+            $to   = new \DateTime('today');
+
+            $age_limit = $from->diff($to)->y;
+
+        }
+
+        $request->request->add([ 
+            'age_limit'=>$age_limit,
+        ]);
+
         $validator = $this->validator($request->all());
+
         if ($validator->fails()) {
             $this->throwValidationException(
               $request, $validator
             );
         }
 
+        if ($age_limit < 16) {
+
+
+           return back()->with('flash_error', tr('min_age_error'));
+
+        }
+
         $user = $this->create($request->all());
 
         if(Setting::get('email_verify_control')) {
+
             return redirect($this->redirectPath())->with('flash_error', tr('email_verify_alert'));
+
         } else {
+            //dd($validator->fails());
+            \Auth::loginUsingId($user->id);
+
             return redirect($this->redirectPath())->with('flash_success', tr('registration_success'));
         }
     }

@@ -10,6 +10,8 @@
 
 <div class="form-background">
         <div class="common-form">
+
+            @include('notification.notify')
         
             <div class="signup-head">
                 <h3>{{tr('signup')}}</h3>
@@ -80,7 +82,7 @@
 
                     {!! csrf_field() !!}
 
-                    @if($errors->has('email') || $errors->has('name') || $errors->has('password_confirmation') ||$errors->has('password'))
+                    @if($errors->has('email') || $errors->has('name') || $errors->has('password_confirmation') ||$errors->has('password') || $errors->has('age_limit'))
                         <div data-abide-error="" class="alert callout">
                             <p>
                                 <i class="fa fa-exclamation-triangle"></i> 
@@ -91,6 +93,10 @@
 
                                     @if($errors->has('name')) 
                                         {{ $errors->first('name') }}
+                                    @endif
+
+                                    @if($errors->has('age_limit')) 
+                                        {{$errors->first('age_limit')}}
                                     @endif
 
                                     @if($errors->has('password')) 
@@ -117,7 +123,7 @@
 
                     <div class="form-group">
                         <label for="mobile">{{tr('dob')}}</label>
-                        <input type="text" name="dob" class="form-control" placeholder="Enter DoB" id="dob" required>
+                        <input type="text" name="dob" class="form-control" placeholder="Enter DoB" id="dob" required autocomplete="off">
                     </div>
 
                     <div class="form-group">
