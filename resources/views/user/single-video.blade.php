@@ -406,7 +406,7 @@ textarea[name=comments] {
 
                                                 @if (!$subscribe_status)
 
-                                                <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} - {{$video->subscriberscnt}}</a>
+                                                <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} - {{$subscriberscnt}}</a>
 
                                                 @else 
 
