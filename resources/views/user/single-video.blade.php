@@ -333,7 +333,9 @@ textarea[name=comments] {
                                                                 <b>Report this Video ?</b>
                                                                 <br>
                                                                 @foreach($report_video as $report) 
-                                                                    <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
+                                                                    <div class="report_list">
+                                                                        <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
+                                                                    </div>
                                                                 @endforeach
                                                                 <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
                                                                 <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
@@ -400,18 +402,24 @@ textarea[name=comments] {
                                     <div class="pull-right">
 
                                         @if(Auth::check())
-                                          
+                                            @if($video->get_channel->user_id != Auth::user()->id)
 
-                                            @if (!$subscribe_status)
+                                                @if (!$subscribe_status)
 
-                                            <a class="btn btn-sm btn-success" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}</a>
+                                                <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} - {{$video->subscriberscnt}}</a>
 
-                                            @else 
+                                                @else 
 
-                                                <a class="btn btn-sm btn-danger" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
+                                                    <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} - {{$subscriberscnt}}</a>
 
-                                            @endif
+                                                @endif
                                            
+                                           @else
+
+                                                <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+
+
+                                           @endif
                                         
                                         
                                         @endif

@@ -163,7 +163,8 @@ class UserController extends Controller {
                         ->with('ads', $response->ads)
                         ->with('subscribe_status', $response->subscribe_status)
                         ->with('like_count',$response->like_count)
-                        ->with('dislike_count',$response->dislike_count);
+                        ->with('dislike_count',$response->dislike_count)
+                        ->with('subscriberscnt', $response->subscriberscnt);
         } else {
             return back()->with('flash_error', $data->message);
         } 

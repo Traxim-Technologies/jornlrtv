@@ -1476,7 +1476,7 @@ class UserApiController extends Controller {
                 ->where('dislike_status', DEFAULT_TRUE)
                 ->count();
 
-
+            $subscriberscnt = subscriberscnt($video->channel_id);
             
             $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
                 'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
@@ -1485,6 +1485,7 @@ class UserApiController extends Controller {
                 'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
                 'like_count'=>$like_count,'dislike_count'=>$dislike_count,
                 'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
+                'subscriberscnt'=>$subscriberscnt,
                 ];
 
             return response()->json(['success'=>true, 'response_array'=>$response_array], 200);
