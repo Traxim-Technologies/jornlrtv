@@ -872,6 +872,7 @@ class UserApiController extends Controller {
                 }
 
                 $response_array = array('success' => true);
+           
             }
 
             if($video = VideoTape::where('id',$request->admin_video_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
@@ -880,11 +881,17 @@ class UserApiController extends Controller {
 
                 if($video->getVideoAds) {
 
+                    \Log::info("getVideoAds Relation Checked");
+
                     if ($video->getVideoAds->status) {
+
+                        \Log::info("getVideoAds Status Checked");
 
                         // Check the video view count reached admin viewers count, to add amount for each view
 
                         if($video->redeem_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
+
+                            \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
                             $video_amount = Setting::get('amount_per_video');
 
