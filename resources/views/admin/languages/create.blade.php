@@ -43,8 +43,28 @@
 	                    </div>
 
 	                    <div class="form-group">
-	                        <label for="name">{{tr('file')}}</label>
-	                        <input type="file" id="file" name="file" placeholder="{{tr('picture')}}" required>
+	                        <label for="name">{{tr('auth_file')}}</label>
+	                        <input type="file" id="auth_file" name="auth_file" placeholder="{{tr('picture')}}" required>
+	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('messages_file')}}</label>
+	                        <input type="file" id="messages_file" name="messages_file" placeholder="{{tr('picture')}}" required>
+	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('pagination_file')}}</label>
+	                        <input type="file" id="pagination_file" name="pagination_file" placeholder="{{tr('picture')}}" required>
+	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('passwords_file')}}</label>
+	                        <input type="file" id="passwords_file" name="passwords_file" placeholder="{{tr('picture')}}" required>
+	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('validation_file')}}</label>
+	                        <input type="file" id="validation_file" name="validation_file" placeholder="{{tr('picture')}}" required>
 	                    </div>
 	                     
 	                </div>

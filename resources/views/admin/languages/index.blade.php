@@ -38,7 +38,11 @@
                                     <th>{{tr('id')}}</th>
                                     <th>{{tr('language') }}</th>
                                     <th>{{tr('short_name')}}</th>
-                                    <th>{{tr('file')}}</th>
+                                    <th>{{tr('auth_file')}}</th>
+                                    <th>{{tr('messages_file')}}</th>
+                                    <th>{{tr('pagination_file')}}</th>
+                                    <th>{{tr('passwords_file')}}</th>
+                                    <th>{{tr('validation_file')}}</th>
                                     <th>{{tr('status')}}</th>
                                     <th>{{tr('action')}}</th>
                                 </tr>
@@ -53,7 +57,31 @@
                                         <td>{{$value->language}}</td>
                                         <td>{{$value->folder_name}}</td>
                                         <td>
-                                            <a href="{{route('admin.languages.download', $value->folder_name)}}" target="_blank">
+                                            <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'auth'))}}" target="_blank">
+                                                {{tr('download_here')}}
+                                            </a>
+
+                                        </td>
+                                         <td>
+                                            <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'messages'))}}" target="_blank">
+                                                {{tr('download_here')}}
+                                            </a>
+
+                                        </td>
+                                         <td>
+                                            <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'pagination'))}}" target="_blank">
+                                                {{tr('download_here')}}
+                                            </a>
+
+                                        </td>
+                                         <td>
+                                            <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'passwords'))}}" target="_blank">
+                                                {{tr('download_here')}}
+                                            </a>
+
+                                        </td>
+                                         <td>
+                                            <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'validation'))}}" target="_blank">
                                                 {{tr('download_here')}}
                                             </a>
 

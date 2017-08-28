@@ -386,6 +386,11 @@ class AdminRepository {
         $validator = Validator::make($request->all(),[
                 'folder_name' => 'required|max:4',
                 'language'=>'required|max:64',
+                'auth_file'=> !($request->id) ? 'required' : '',
+                'messages_file'=>!($request->id) ? 'required' : '',
+                'pagination_file'=>!($request->id) ? 'required' : '',
+                'passwords_file'=>!($request->id) ? 'required' : '',
+                'validation_file'=>!($request->id) ? 'required' : '',
         ]);
         
         if($validator->fails()) {
@@ -395,6 +400,7 @@ class AdminRepository {
             return  ['success' => false , 'error' => $error_messages];
 
         } else {
+
 
             $model = ($request->id != '') ? Language::find($request->id) : new Language;
 
@@ -406,13 +412,109 @@ class AdminRepository {
 
             $model->status = DEFAULT_TRUE;
 
-            if($request->hasFile('file')) {
 
-                // Read File Length
+            if ($request->hasFile('auth_file')) {
+
+                 // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/auth.php');
+
+                $length = readFileLength($_FILES['auth_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean, 'auth.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->auth_file, 'auth.php');
+
+            }
+
+
+            if ($request->hasFile('messages_file')) {
+
+                 // Read File Length
 
                 $originallength = readFileLength(base_path().'/resources/lang/en/messages.php');
 
-                $length = readFileLength($_FILES['file']['tmp_name']);
+                $length = readFileLength($_FILES['messages_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean, 'messages.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->messages_file, 'messages.php');
+
+            }
+
+
+            if ($request->hasFile('pagination_file')) {
+
+                 // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/pagination.php');
+
+                $length = readFileLength($_FILES['pagination_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean, 'pagination.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->pagination_file, 'pagination.php');
+
+            }
+
+
+            if ($request->hasFile('passwords_file')) {
+
+                 // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/passwords.php');
+
+                $length = readFileLength($_FILES['passwords_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean , 'passwords.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->passwords_file, 'passwords.php');
+
+            }
+
+            if($request->hasFile('validation_file')) {
+
+                // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/validation.php');
+
+                $length = readFileLength($_FILES['validation_file']['tmp_name']);
 
                 if ($originallength != $length) {
                     return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
@@ -421,13 +523,14 @@ class AdminRepository {
                 if ($model->id != '') {
                     $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
 
-                    Helper::delete_language_files($lang, $boolean);
+                    Helper::delete_language_files($lang, $boolean, 'validation.php');
                 }
 
-                Helper::upload_language_file($model->folder_name, $request->file);
+                Helper::upload_language_file($model->folder_name, $request->validation_file, 'validation.php');
 
-            } else {
+            } 
 
+            if ($request->id) {
                 if($lang != $request->folder_name)  {
                     $current_path=base_path('resources/lang/'.$lang);
                     $new_path=base_path('resources/lang/'.$request->folder_name);

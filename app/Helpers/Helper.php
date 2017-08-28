@@ -777,24 +777,22 @@
         }
 
 
-        public static function upload_language_file($folder,$picture) {
+        public static function upload_language_file($folder,$picture,$filename) {
 
             $ext = $picture->getClientOriginalExtension();
-
-            $local_url = "messages" . "." . $ext;
             
-            $picture->move(base_path() . "/resources/lang/".$folder ."/", $local_url);
+            $picture->move(base_path() . "/resources/lang/".$folder ."/", $filename);
 
         }
 
-        public static function delete_language_files($folder, $boolean) {
+        public static function delete_language_files($folder, $boolean, $filename) {
             if ($boolean) {
                 $path = base_path() . "/resources/lang/" .$folder;
                 \File::cleanDirectory($path);
                 \Storage::deleteDirectory( $path );
                 rmdir( $path );
             } else {
-                \File::delete( base_path() . "/resources/lang/" . $folder ."/messages.php");
+                \File::delete( base_path() . "/resources/lang/" . $folder ."/".$filename);
             }
             return true;
         }

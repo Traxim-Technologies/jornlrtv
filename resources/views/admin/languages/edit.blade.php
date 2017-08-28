@@ -50,11 +50,11 @@
 	                        </div>
 	                    </div>
 
-	                    <div class="form-group col-lg-2">
+	                    <div class="form-group">
+	                        <label for="name">{{tr('auth_file')}}</label>
+	                        <input type="file" id="auth_file" name="auth_file" placeholder="{{tr('picture')}}">
 
-	                        <label for="name">{{tr('file')}}</label>
-	                        <input type="file" id="file" name="file" placeholder="{{tr('picture')}}">
-	                        <br>
+	                         <br>
 	                        <ul class="ace-thumbnails clearfix">
 	                            <li>
 	                                <div class="flip-container">
@@ -63,13 +63,95 @@
 	                                    </div>
 	                                </div>
 	                                <div class="tools tools-bottom">
-	                                    <a href="{{route('admin.languages.download', $model->folder_name)}}">
+	                                    <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'auth'))}}">
+	                                        <i class="fa fa-download"></i>
+	                                    </a>
+	                                </div>
+	                            </li>
+	                        </ul>
+
+	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('messages_file')}}</label>
+	                        <input type="file" id="messages_file" name="messages_file" placeholder="{{tr('picture')}}">
+	                         <br>
+	                        <ul class="ace-thumbnails clearfix">
+	                            <li>
+	                                <div class="flip-container">
+	                                    <div class="flipper">
+	                                           <img style="width:100px;height:90px" alt="Php" src="{{asset('common/img/php.png')}}">
+	                                    </div>
+	                                </div>
+	                                <div class="tools tools-bottom">
+	                                    <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'messages'))}}">
 	                                        <i class="fa fa-download"></i>
 	                                    </a>
 	                                </div>
 	                            </li>
 	                        </ul>
 	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('pagination_file')}}</label>
+	                        <input type="file" id="pagination_file" name="pagination_file" placeholder="{{tr('picture')}}">
+	                         <br>
+	                        <ul class="ace-thumbnails clearfix">
+	                            <li>
+	                                <div class="flip-container">
+	                                    <div class="flipper">
+	                                           <img style="width:100px;height:90px" alt="Php" src="{{asset('common/img/php.png')}}">
+	                                    </div>
+	                                </div>
+	                                <div class="tools tools-bottom">
+	                                    <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'pagination'))}}">
+	                                        <i class="fa fa-download"></i>
+	                                    </a>
+	                                </div>
+	                            </li>
+	                        </ul>
+	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('passwords_file')}}</label>
+	                        <input type="file" id="passwords_file" name="passwords_file" placeholder="{{tr('picture')}}">
+	                         <br>
+	                        <ul class="ace-thumbnails clearfix">
+	                            <li>
+	                                <div class="flip-container">
+	                                    <div class="flipper">
+	                                           <img style="width:100px;height:90px" alt="Php" src="{{asset('common/img/php.png')}}">
+	                                    </div>
+	                                </div>
+	                                <div class="tools tools-bottom">
+	                                    <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'passwords'))}}">
+	                                        <i class="fa fa-download"></i>
+	                                    </a>
+	                                </div>
+	                            </li>
+	                        </ul>
+	                    </div>
+
+	                    <div class="form-group">
+	                        <label for="name">{{tr('validation_file')}}</label>
+	                        <input type="file" id="validation_file" name="validation_file" placeholder="{{tr('picture')}}">
+	                         <br>
+	                        <ul class="ace-thumbnails clearfix">
+	                            <li>
+	                                <div class="flip-container">
+	                                    <div class="flipper">
+	                                           <img style="width:100px;height:90px" alt="Php" src="{{asset('common/img/php.png')}}">
+	                                    </div>
+	                                </div>
+	                                <div class="tools tools-bottom">
+	                                    <a href="{{route('admin.languages.download', array('f_n'=>$value->folder_name, 'file_name'=>'validation'))}}">
+	                                        <i class="fa fa-download"></i>
+	                                    </a>
+	                                </div>
+	                            </li>
+	                        </ul>
+	                    </div>
+
 
 	                </div>
 
