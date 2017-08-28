@@ -672,9 +672,13 @@ class UserApiController extends Controller {
             $rating->save();
 
 
-            $ratings = UserRating::select('rating', DB::raw('sum(rating) as total_rating'))
-                    ->where('video_tape_id', $rating->video_tape_id)->groupBy('rating')->avg('rating');
+            $ratings = UserRating::select(
+                    'rating', 'video_tape_id',DB::raw('sum(rating) as total_rating'))
+                    ->where('video_tape_id', $request->admin_video_id)
+                    ->groupBy('video_tape_id')
+                    ->avg('rating');
 
+    
 
             if ($rating->adminVideo) {
 
