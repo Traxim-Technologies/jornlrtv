@@ -887,7 +887,7 @@ class UserApiController extends Controller {
 
                         // Check the video view count reached admin viewers count, to add amount for each view
 
-                        if($video->redeem_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
+                        if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
                             \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
