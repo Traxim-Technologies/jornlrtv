@@ -68,7 +68,7 @@
                                         <div class="form-group">
                                             <label for="datepicker" class="">{{tr('age_limit')}} * </label>
 
-                                            <br>
+                                            <div class="clearfix"></div>
 
                                             <input type="checkbox" name="age_limit" value="1" required> {{tr('yes')}}
 

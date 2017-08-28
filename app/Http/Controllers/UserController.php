@@ -126,10 +126,14 @@ class UserController extends Controller {
 
     public function single_video(Request $request, $id) {
 
-        $request->request->add([ 
-            'admin_video_id' => $id,
-            'age'=>Auth::user()->age_limit,
-        ]);
+        if (Auth::check()) {
+
+            $request->request->add([ 
+                'admin_video_id' => $id,
+                'age'=>Auth::user()->age_limit,
+            ]);
+
+        }
 
         $data = $this->UserAPI->getSingleVideo($request)->getData();
 
@@ -584,12 +588,15 @@ class UserController extends Controller {
 
     public function trending(Request $request) {
 
-        $request->request->add([ 
+        if (Auth::check()) {
+
+            $request->request->add([ 
                 'id' => \Auth::user()->id,
                 'token' => \Auth::user()->token,
                 'device_token' => \Auth::user()->device_token,
                 'age'=>\Auth::user()->age_limit,
             ]);
+        }
 
         $trending = VideoRepo::trending($request, WEB);
 

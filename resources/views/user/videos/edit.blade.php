@@ -69,6 +69,8 @@
                                         <div class="form-group">
                                             <label for="datepicker" class="">{{tr('age_limit')}} * </label>
 
+                                            <div class="clearfix"></div>
+
                                             <input type="checkbox" name="age_limit" value="1" required @if($model->age_limit) checked @endif> {{tr('yes')}}
 
                                             <p class="help-block">{{tr('age_limit_note')}}</p>
