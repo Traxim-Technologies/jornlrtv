@@ -78,7 +78,7 @@
 
                                         <div class="form-group">
                                             <label for="mobile">{{tr('dob')}}</label>
-                                            <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="Enter DoB" maxlength="13" id="dob">
+                                            <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob">
                                         </div>
 
                                               
@@ -173,6 +173,7 @@
 @section('scripts')
 
 <script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
+
 
 <script type="text/javascript">
 

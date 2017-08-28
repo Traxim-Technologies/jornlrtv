@@ -63,6 +63,7 @@
               		<ul class="nav nav-stacked">
 		                <li><a href="#">{{tr('username')}} <span class="pull-right">{{$user->name}}</span></a></li>
 		                <li><a href="#">{{tr('email')}} <span class="pull-right">{{$user->email}}</span></a></li>
+		                <li><a href="#">{{tr('dob')}} <span class="pull-right">{{$user->dob}}</span></a></li>
 		                <li><a href="#">{{tr('mobile')}} <span class="pull-right">{{$user->mobile}}</span></a></li>
 		                <li><a href="#">{{tr('validity_days')}} <span class="pull-right"> 
 		                				@if($user->user_type)

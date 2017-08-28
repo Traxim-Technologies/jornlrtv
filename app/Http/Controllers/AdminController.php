@@ -251,6 +251,13 @@ class AdminController extends Controller {
     public function edit_user(Request $request) {
 
         $user = User::find($request->id);
+
+        if($user) {
+
+            $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
+
+        }
+
         return view('admin.users.edit-user')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
     }
 
@@ -322,6 +329,8 @@ class AdminController extends Controller {
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
 
+            $user->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user->dob;
+
             if($request->id == '') {
 
                 $email_data['name'] = $user->name;
@@ -384,6 +393,8 @@ class AdminController extends Controller {
     public function view_user($id) {
 
         if($user = User::find($id)) {
+
+            $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
 
             return view('admin.users.user-details')
                         ->with('user' , $user)

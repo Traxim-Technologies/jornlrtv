@@ -22,6 +22,7 @@ return array(
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
+	'enter_dob'=>'Enter DOB',
 	'uploaded_new_video'=>'Uploaded New Video',
 	'paypal_settings'=>'Paypal Settings',
 	'stripe_settings'=>'Stripe Settings',
