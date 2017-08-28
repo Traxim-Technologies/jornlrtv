@@ -67,6 +67,16 @@ class Channel extends Model
 
             }
 
+             if (count($model->getChannelSubscribers) > 0) {
+
+                foreach ($model->getChannelSubscribers as $key => $value) {
+
+                   $value->delete();    
+
+                }
+
+            }
+
         }); 
 
     }
