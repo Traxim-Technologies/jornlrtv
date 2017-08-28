@@ -462,7 +462,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
      // Languages
     Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 
 
-    Route::get('/languages/download/{folder}', 'LanguageController@languages_download')->name('languages.download'); 
+    Route::get('/languages/download', 'LanguageController@languages_download')->name('languages.download'); 
 
     Route::get('/languages/create', 'LanguageController@languages_create')->name('languages.create');
     

@@ -21,15 +21,20 @@ class LanguageController extends Controller
         return view('admin.languages.index')->withPage('languages')->with('data', $model)->with('sub_page','');
     }
 
-    public function languages_download($folder) {
+    public function languages_download(Request $request) {
+
+        $folder = $request->f_n;
+
+        $name = $request->file_name;
+
         //PDF file is stored under project/public/download/info.pdf
-        $file= base_path(). "/resources/lang/".$folder.'/messages.php';
+        $file= base_path(). "/resources/lang/".$folder.'/'.$name.'.php';
 
         $headers = array(
                   'Content-Type: application/x-php',
                 );
 
-        return response()->download($file, 'messages.php', $headers);
+        return response()->download($file, $name.'.php', $headers);
     }
 
 
@@ -63,6 +68,16 @@ class LanguageController extends Controller
         $model = Language::where('id', $id)->first();
 
         if($model) {
+
+            $dir = base_path('resources/lang/'.$model->folder_name);
+
+            unlink($dir.'/auth.php');
+            unlink($dir.'/messages.php');
+            unlink($dir.'/pagination.php');
+            unlink($dir.'/passwords.php');
+            unlink($dir.'/validation.php');
+
+            rmdir($dir);
 
             if ($model->delete()) {
 
