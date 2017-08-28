@@ -27,6 +27,7 @@ return array(
 	'user_reviews'=>'User Reviews',
 	'no_of_spam_videos'=>'No of Spam Videos',
 	'no_of_reviews'=>'No of Reviews',
+	'choose_plan'=>'Choose Plan',
 	'paypal_settings'=>'Paypal Settings',
 	'stripe_settings'=>'Stripe Settings',
 	'stripe_publishable_key'=>'Stripe Publishable Key',
