@@ -68,7 +68,7 @@
                             <label for="amount" class="">{{tr('amount')}}</label>
 
                             <!-- <div class="col-sm-10"> -->
-                                <input type="text" value="{{isset($data) ? $data->amount : old('amount')}}" name="amount" class="form-control" id="amount" placeholder="amount" pattern="[0-9]{1,}">
+                                <input type="text" value="{{isset($data) ? round($data->amount) : old('amount')}}" name="amount" class="form-control" id="amount" placeholder="amount" pattern="[0-9]{1,}">
                             <!-- </div> -->
                         </div>
 
