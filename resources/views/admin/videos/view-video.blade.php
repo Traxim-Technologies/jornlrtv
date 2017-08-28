@@ -107,7 +107,15 @@ hr {
                                 </li>
 
                                 <li class="list-group-item">
-                                    <b><i class="fa fa-stop margin-r-5"></i>{{tr('age_limit')}}</b> <a class="pull-right">{{$video->age_limit ? $video->age_limit : 0 }}&nbsp;+</a>
+                                    <b><i class="fa fa-stop margin-r-5"></i>{{tr('age_limit')}}</b> <a class="pull-right">{{$video->age_limit ? '18+' :  'All Users'}}&nbsp;</a>
+                                </li> 
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-thumbs-up margin-r-5"></i>{{tr('likes')}}</b> <a class="pull-right">{{$video->getScopeLikeCount->count()}}&nbsp;</a>
+                                </li> 
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-thumbs-down margin-r-5"></i>{{tr('dislikes')}}</b> <a class="pull-right">{{$video->getScopeDisLikeCount->count()}}&nbsp;</a>
                                 </li>                                
                             
                             </ul>
@@ -134,6 +142,13 @@ hr {
                                   <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('reviews')}}</strong>
 
                                   <p style="margin-top: 10px;">{{$video->reviews}}.</p>
+                            </div>
+
+
+                            <div class="col-lg-12">
+                                  <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('user_reviews')}}</strong>
+
+                                  <p style="margin-top: 10px;"><a href="{{route('admin.reviews', array('video_tape_id'=> $video->admin_video_id))}}"> {{tr('no_of_reviews')}} - {{$video->getScopeUserRatings()->count()}}.</a></p>
                             </div>
                            
                          </div>

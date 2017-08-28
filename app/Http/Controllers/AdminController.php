@@ -953,19 +953,26 @@ class AdminController extends Controller {
         return back()->with('flash_success', $message);
     }
 
-    public function user_ratings() {
+    public function user_ratings(Request $request) {
             
-            $user_reviews = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
-                ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
-                ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
-                         'user_ratings.comment', 
-                         'users.name as name', 
-                         'video_tapes.title as title',
-                         'user_ratings.video_tape_id as video_id',
-                         'users.id as user_id', 'user_ratings.created_at')
-                ->orderBy('user_ratings.created_at', 'desc')
-                ->get();
-            return view('admin.reviews.reviews')->with('page' ,'reviews')
+        $query = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
+            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
+            ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
+                     'user_ratings.comment', 
+                     'users.name as name', 
+                     'video_tapes.title as title',
+                     'user_ratings.video_tape_id as video_id',
+                     'users.id as user_id', 'user_ratings.created_at')
+            ->orderBy('user_ratings.created_at', 'desc');
+
+        if($request->video_tape_id) {
+
+            $query->where('user_ratings.video_tape_id',$request->video_tape_id);
+        }
+
+        $user_reviews = $query->get();
+
+        return view('admin.reviews.reviews')->with('page' ,'reviews')
                 ->with('sub_page' ,'reviews')->with('reviews', $user_reviews);
     }
 
@@ -1256,7 +1263,7 @@ class AdminController extends Controller {
      *
      * @return all the spam videos
      */
-    public function spam_videos() {
+    public function spam_videos(Request $request) {
         // Load all the videos from flag table
         $model = Flag::groupBy('video_tape_id')->get();
         // Return array of values
