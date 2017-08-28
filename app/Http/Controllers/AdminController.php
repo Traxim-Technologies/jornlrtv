@@ -315,6 +315,8 @@ class AdminController extends Controller {
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
                 $user->device_type = 'web';
+
+                $user->picture = asset('placeholder.png');
             }
 
             $user->timezone = $request->has('timezone') ? $request->timezone : '';
@@ -324,7 +326,7 @@ class AdminController extends Controller {
             $user->mobile = $request->has('mobile') ? $request->mobile : '';
             $user->description = $request->has('description') ? $request->description : '';
 
-            $user->picture = asset('placeholder.png');
+            
             
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
