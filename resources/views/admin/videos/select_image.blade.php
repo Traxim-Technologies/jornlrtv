@@ -62,11 +62,12 @@ if($model->data->is_banner) {
 
 @if($key > $default_img_status)
 
-<?php $pos = $key-$key_pos;  ?>
+<?php $pos = $key-$key_pos; 
+?>
 
 <input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 
-<input type="hidden" name="other_image_id_{{$key}}" id="other_image_id_{{$key}}" value="{{$tape_images[$pos]->id}}">
+<input type="hidden" name="other_image_id_{{$key}}" id="other_image_id_{{$key}}" value="{{$model->data->get_video_tape_images[$pos]->id}}">
 
 
 @endif
