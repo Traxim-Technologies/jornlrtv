@@ -32,6 +32,8 @@ use App\Wishlist;
 
 use App\UserHistory;
 
+use App\ChannelSubscription;
+
 use App\Page;
 
 use App\Jobs\NormalPushNotification;
@@ -1663,7 +1665,7 @@ class UserApiController extends Controller {
 
     }
 
-    public function channel_list() {
+    public function channel_list(Request $request) {
 
 /*        $channels = Channel::where('is_approved', DEFAULT_TRUE)
                 ->where('status', DEFAULT_TRUE)
@@ -1671,14 +1673,9 @@ class UserApiController extends Controller {
 */
         $age = 0;
 
-        if(Auth::check()) {
-            $age = \Auth::user()->age_limit;
+        $channel_id = [];
 
-            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
-
-        }
-
-        $channels = Channel::where('channels.is_approved', DEFAULT_TRUE)
+        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
                 ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
@@ -1686,8 +1683,28 @@ class UserApiController extends Controller {
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
                 ->where('video_tapes.age_limit','<=', $age)
-                ->groupBy('video_tapes.channel_id')
-                ->paginate(16);
+                ->groupBy('video_tapes.channel_id');
+
+        if(Auth::check()) {
+
+            $age = \Auth::user()->age_limit;
+
+            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+            if ($request->user_id) {
+
+                $channel_id = ChannelSubscription::where('user_id', $request->user_id)->pluck('channel_id')->toArray();
+            }
+
+        }
+
+        if ($channel_id) {
+            
+            $query->whereNotIn('channels.id', $channel_id);
+
+        }
+
+        $channels = $query->paginate(16);
 
         $items = $channels->items();
 
