@@ -96,6 +96,8 @@
 
                                                     </li>
 
+                                                    <li role="presentation"><a href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{tr('subscribers')}}</a></li>
+
 													<li class="divider" role="presentation"></li>
 
 								                  	<li role="presentation">

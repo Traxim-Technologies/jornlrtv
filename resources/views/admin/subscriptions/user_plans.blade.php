@@ -106,7 +106,7 @@
 										<div class="caption">
 
 											<h3>
-												{{$subscription->title}}
+												<a target="_blank" href="{{route('admin.subscriptions.view' , $subscription->unique_id)}}">{{$subscription->title}}</a>
 											</h3>
 
 											<div class="subscription-desc">
