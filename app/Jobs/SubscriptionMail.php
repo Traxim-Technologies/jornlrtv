@@ -31,7 +31,7 @@ class SubscriptionMail extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($channel_id)
+    public function __construct($channel_id,$video_id)
     {
         Log::info("Inside Construct");
        $this->channel_id = $channel_id;
