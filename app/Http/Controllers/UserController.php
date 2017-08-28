@@ -1042,9 +1042,9 @@ class UserController extends Controller {
 
     }
 
-    public function channel_list(){
+    public function channel_list(Request $request){
 
-        $response = $this->UserAPI->channel_list()->getData();
+        $response = $this->UserAPI->channel_list($request)->getData();
 
         // dd($response);
 
@@ -1437,6 +1437,22 @@ class UserController extends Controller {
 
 
         }
+
+    }
+
+    public function subscribed_channels(Request $request) {
+
+        $request->request->add([ 
+            'user_id' => \Auth::user()->id,
+        ]);        
+
+        $response = $this->UserAPI->channel_list($request)->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
 
     }
 }

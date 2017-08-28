@@ -22,6 +22,7 @@ return array(
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
+	'subscribed_channels'=>'Subscribed Channels',
 	'enter_dob'=>'Enter DOB',
 	'no_subscription_found'=>'No SubScription Detaild Found',
 	'uploaded_new_video'=>'Uploaded New Video',

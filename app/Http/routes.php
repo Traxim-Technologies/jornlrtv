@@ -649,6 +649,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/stripe_payment', 'UserController@stripe_payment')->name('card.stripe_payment');
 
+    Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
