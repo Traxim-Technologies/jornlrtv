@@ -541,11 +541,11 @@ textarea[name=comments] {
                                                     </span> 
                                                     <br>
                                                     <span class="stars">
-                                                        <a href="#"><i @if($suggestion->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     </span>                              
                                                 </div><!--end of sugg-head-->
                                     
@@ -747,15 +747,15 @@ textarea[name=comments] {
 
                                     // var stars = 0;
 
-                                    var first_star = data.comment.rating > 1 ? "color:#ff0000" : "";
+                                    var first_star = data.comment.rating >= 1 ? "color:#ff0000" : "";
 
-                                    var second_star = data.comment.rating > 2 ? "color:#ff0000" : "";
+                                    var second_star = data.comment.rating >= 2 ? "color:#ff0000" : "";
 
-                                    var third_star = data.comment.rating > 3 ? "color:#ff0000" : "";
+                                    var third_star = data.comment.rating >= 3 ? "color:#ff0000" : "";
 
-                                    var fourth_star = data.comment.rating > 4 ? "color:#ff0000" : "";
+                                    var fourth_star = data.comment.rating >= 4 ? "color:#ff0000" : "";
 
-                                    var fifth_star = data.comment.rating > 5 ? "color:#ff0000" : "";
+                                    var fifth_star = data.comment.rating >= 5 ? "color:#ff0000" : "";
 
                                    var stars = '<span class="stars">'+
                                     '<a href="#"><i style="'+first_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
