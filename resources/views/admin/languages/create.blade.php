@@ -44,7 +44,7 @@
 
 	                    <div class="form-group">
 	                        <label for="name">{{tr('auth_file')}}</label>
-	                        <input type="file" id="auth_file" name="auth_file" placeholder="{{tr('picture')}}" required accept="application/x-php">
+	                        <input type="file" id="auth_file" name="auth_file" placeholder="{{tr('picture')}}" required>
 	                    </div>
 
 	                    <div class="form-group">

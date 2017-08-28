@@ -386,11 +386,11 @@ class AdminRepository {
         $validator = Validator::make($request->all(),[
                 'folder_name' => 'required|max:4',
                 'language'=>'required|max:64',
-                /*'auth_file'=> !($request->id) ? 'required|mimes:x-php' : 'mimes:php',
-                'messages_file'=>!($request->id) ? 'required|mimes:x-php' : 'mimes:php',
-                'pagination_file'=>!($request->id) ? 'required|mimes:x-php' : 'mimes:php',
-                'passwords_file'=>!($request->id) ? 'required|mimes:x-php' : 'mimes:php',
-                'validation_file'=>!($request->id) ? 'required|mimes:x-php' : 'mimes:php',*/
+                'auth_file'=> !($request->id) ? 'required' : '',
+                'messages_file'=>!($request->id) ? 'required' : '',
+                'pagination_file'=>!($request->id) ? 'required' : '',
+                'passwords_file'=>!($request->id) ? 'required' : '',
+                'validation_file'=>!($request->id) ? 'required' : '',
         ]);
         
         if($validator->fails()) {
