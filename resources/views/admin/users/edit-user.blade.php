@@ -65,7 +65,7 @@
                             <label for="mobile" class="col-sm-2 control-label">{{tr('picture')}}</label>
 
                             <div class="col-sm-3">
-                                <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" />
+                                <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" accept="image/jpeg, image/png"/>
                                 <br>
                                 <img id="picture_preview" style="width: 150px;height: 150px;" src="{{$user->picture}}" />
                             </div>
