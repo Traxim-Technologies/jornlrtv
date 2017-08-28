@@ -540,7 +540,7 @@ class CommonRepository {
 
                     // Channel Subscription email
 
-                    dispatch(new SubscriptionMail($model->channel_id, $video->id));
+                    dispatch(new SubscriptionMail($model->channel_id, $model->id));
 
                     $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
                    
