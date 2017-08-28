@@ -46,13 +46,6 @@
                 </li>
             @endforeach  
 
-            @if(subscriberscnt() > 0)
-
-            <li>
-                <a href="{{route('user.channel.subscribers')}}"><i class="fa fa-users fa-1x" style="vertical-align: middle;"></i>&nbsp;&nbsp;{{tr('subscribers')}}</a>
-            </li>    
-
-            @endif
 
             @if(Auth::user()->user_type)  
 

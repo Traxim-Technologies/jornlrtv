@@ -821,7 +821,7 @@ return array(
 	'redeem_pay_confirm' => 'Are You Sure ?',
 	'subscribe_note'=>'Subscribe to create your own channel and videos!',
 	'subscribe'=>'Subscribe',
-	'un_subscribe'=>'Un Subscribe',
+	'un_subscribe'=>'Unsubscribe',
 	// REDEEM MESSAGES END
 
 	'verify' => 'Verify',

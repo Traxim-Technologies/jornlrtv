@@ -120,16 +120,27 @@
 									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
 									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
 									<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
+								@endif
+
+								@if($channel->user_id != Auth::user()->id)
 
 									@if (!$subscribe_status)
 
-									<a class="st_video_upload_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}</a>
+									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}({{$subscriberscnt}})</a>
 
 									@else 
 
-										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
+										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}({{$subscriberscnt}})</a>
 
 									@endif
+								@else
+								
+									@if($subscriberscnt > 0)
+
+									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}}({{$subscriberscnt}})</a>
+
+									@endif
+
 								@endif
 							@endif
 						</div>

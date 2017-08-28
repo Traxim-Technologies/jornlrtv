@@ -490,12 +490,16 @@ class UserController extends Controller {
 
             }
 
+            $subscriberscnt = subscriberscnt($channel->id);
+
             return view('user.channels.index')
                         ->with('page' , 'channels')
                         ->with('subPage' , 'channels')
                         ->with('channel' , $channel)
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
-                        ->with('payment_videos', $payment_videos)->with('subscribe_status', $subscribe_status);
+                        ->with('payment_videos', $payment_videos)
+                        ->with('subscribe_status', $subscribe_status)
+                        ->with('subscriberscnt', $subscriberscnt);
         } else {
 
             return back()->with('flash_error', tr('something_error'));
@@ -1077,12 +1081,25 @@ class UserController extends Controller {
 
     public function channel_subscribers(Request $request) {
 
-        $channels = getChannels(Auth::user()->id);
-
         $list = [];
 
-        foreach ($channels as $key => $value) {
-            $list[] = $value->id;
+        $channel_id = $request->channel_id ? $request->channel_id : '';
+
+        $channel = null;
+
+        if ($channel_id) {
+
+            $list[] = $request->channel_id;
+
+            $channel = Channel::find($channel_id);
+
+        } else {
+
+            $channels = getChannels(Auth::user()->id);
+
+            foreach ($channels as $key => $value) {
+                $list[] = $value->id;
+            }
         }
 
         $subscribers = ChannelSubscription::whereIn('channel_subscriptions.channel_id', $list)
@@ -1090,13 +1107,14 @@ class UserController extends Controller {
                                 'channels.name as channel_name',
                                 'users.id as user_id',
                                 'users.name as user_name',
+                                'channel_subscriptions.id as subscriber_id',
                                 'channel_subscriptions.created_at as created_at')
                         ->leftJoin('channels', 'channels.id', '=', 'channel_subscriptions.channel_id')
                         ->leftJoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
                         ->orderBy('created_at', 'desc')
                         ->paginate();
 
-        return view('user.channels.subscribers')->with('page', 'channels')->with('subPage', 'subscribers')->with('subscribers', $subscribers);
+        return view('user.channels.subscribers')->with('page', 'channels')->with('subPage', 'subscribers')->with('subscribers', $subscribers)->with('channel_id', $channel_id)->with('channel', $channel);
 
     }
 
