@@ -415,7 +415,7 @@ class AdminRepository {
                 $length = readFileLength($_FILES['file']['tmp_name']);
 
                 if ($originallength != $length) {
-                    return ['success' => false, 'error'=> Helper::error_message(162), 'error_code'=>162];
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
                 }
 
                 if ($model->id != '') {

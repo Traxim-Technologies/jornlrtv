@@ -276,6 +276,10 @@
                     $string = "Payment is not completed. Please try to pay Again";
                     break;
 
+                case 162:
+                    $string = tr('failed_to_upload');
+                    break;
+
                 default:
                     $string = "Unknown error occurred.";
             }
