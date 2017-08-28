@@ -269,7 +269,7 @@ class AdminController extends Controller {
                         'name' => 'required|max:255',
                         'email' => 'required|email|max:255',
                         'mobile' => 'required|digits_between:6,13',
-
+                        'dob'=>'required',
                     )
                 );
         
@@ -279,6 +279,7 @@ class AdminController extends Controller {
                     'email' => 'required|email|max:255|unique:users',
                     'mobile' => 'required|digits_between:6,13',
                     'password' => 'required|min:6|confirmed',
+                    'dob'=>'required',
                 )
             );
         
@@ -333,6 +334,22 @@ class AdminController extends Controller {
 
             $user->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user->dob;
 
+
+            if ($user->dob) {
+
+                $from = new \DateTime($user->dob);
+                $to   = new \DateTime('today');
+
+                $user->age_limit = $from->diff($to)->y;
+
+            }
+
+            if ($user->age_limit < 16) {
+
+               return back()->with('flash_error', tr('min_age_error'));
+
+            }
+
             if($request->id == '') {
 
                 $email_data['name'] = $user->name;
@@ -355,6 +372,8 @@ class AdminController extends Controller {
                 }
                 $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
             }
+
+            $user->is_verified = DEFAULT_TRUE;
 
             $user->save();
 

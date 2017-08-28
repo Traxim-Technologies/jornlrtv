@@ -134,7 +134,9 @@ class AuthController extends Controller
 
         if ($request->dob) {
 
-            $from = new \DateTime($request->dob);
+            $dob = date('Y-m-d', strtotime($request->dob))
+
+            $from = new \DateTime($dob);
 
             $to   = new \DateTime('today');
 

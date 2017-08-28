@@ -550,6 +550,13 @@ class UserApiController extends Controller {
 
                 }
 
+                if ($user->age_limit < 16) {
+
+                   return back()->with('flash_error', tr('min_age_error'));
+
+                }
+
+
                 // Upload picture
                 if ($request->hasFile('picture') != "") {
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic

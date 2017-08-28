@@ -66,9 +66,9 @@
 		                <li><a href="#">{{tr('dob')}} <span class="pull-right">{{$user->dob}}</span></a></li>
 		                <li><a href="#">{{tr('mobile')}} <span class="pull-right">{{$user->mobile}}</span></a></li>
 		                <li><a href="#">{{tr('validity_days')}} <span class="pull-right"> 
-		                				@if($user->user_type)
-                                            <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>
-                                        @endif</span></a></li>
+        				@if($user->user_type)
+                            <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>
+                        @endif</span></a></li>
 		                <li>
 		                	<a href="#">{{tr('status')}} 
 		                		<span class="pull-right">
