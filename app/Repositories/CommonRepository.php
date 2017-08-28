@@ -347,7 +347,7 @@ class CommonRepository {
 
                 $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
 
-                $model->age_limit = $request->age_limit;
+                $model->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
 
                 if($model->id) {
 

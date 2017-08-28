@@ -136,7 +136,7 @@
 
                                    <br>
 
-                                   <input type="checkbox" name="age_limit" value="1" required> {{tr('yes')}}
+                                   <input type="checkbox" name="age_limit" value="1"> {{tr('yes')}}
 
                                     <p class="help-block">{{tr('age_limit_note')}}</p>
                                 </div>

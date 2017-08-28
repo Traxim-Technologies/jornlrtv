@@ -144,7 +144,7 @@
 
                                    <br>
 
-                                   <input type="checkbox" name="age_limit" value="1" required @if($video->age_limit) checked @endif> {{tr('yes')}}
+                                   <input type="checkbox" name="age_limit" value="1" @if($video->age_limit) checked @endif> {{tr('yes')}}
 
 
                                     <p class="help-block">{{tr('age_limit_note')}}</p>
