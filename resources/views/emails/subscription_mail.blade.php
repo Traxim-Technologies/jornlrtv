@@ -162,7 +162,7 @@
                                         <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:25px;">
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
-                                                    <h2 >Hi {{$email_data->getUser->name}}! </h2>
+                                                    <h2 >Hi {{$email_data->subscriber->getUser->name}}! </h2>
                                                 </div>
                                             </div>
                                         </td>
@@ -175,7 +175,7 @@
                                                     <p >
                                                     	"Welcome to {{Setting::get('site_name' , tr('site_name'))}}",
                                                     </p>
-                                                    <p>In {{$email_data->getChannel->name}}, new Video has been Uploaded.</p>
+                                                    <p>In {{$email_data->subscriber->getChannel->name}}, new Video has been Uploaded.</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -194,7 +194,7 @@
                                                     <td bgcolor="#cf4545" align="center" style="border-radius:4px;cursor: pointer;" width="200" height="50">
                                                         <div class="contentEditableContainer contentTextEditable">
                                                             <div class="contentEditable" >
-                                                                <a target='_blank' href="{{$site_url}}" style="color: #FFF;text-orientation: none" class='link2'>Visit our Website</a>
+                                                                <a target='_blank' href="{{route('admin.view.video' , array('id' => $email_data->video_id))}}" style="color: #FFF;text-orientation: none" class='link2'>Click Here To View</a>
                                                             </div>
                                                         </div>
 

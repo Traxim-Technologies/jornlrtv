@@ -23,6 +23,7 @@ class SubscriptionMail extends Job implements ShouldQueue
     use InteractsWithQueue, SerializesModels;
 
     protected $channel_id;
+    protected $video_id;
 
 
     /**
@@ -34,6 +35,7 @@ class SubscriptionMail extends Job implements ShouldQueue
     {
         Log::info("Inside Construct");
        $this->channel_id = $channel_id;
+       $this->video_id = $video_id;
 
     }
 
@@ -54,8 +56,10 @@ class SubscriptionMail extends Job implements ShouldQueue
 
                 $user = $subscriber->getUser;
 
+
                 $subject = tr('uploaded_new_video');
-                $email_data = $subscriber;
+                $email_data['subscriber'] = $subscriber;
+                $email_data['video_id'] = $this->video_id;
                 $page = "emails.subscription_mail";
                 $email = $user->email;
 
