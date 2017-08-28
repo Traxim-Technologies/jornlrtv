@@ -1682,7 +1682,6 @@ class UserApiController extends Controller {
                 ->where('channels.status', DEFAULT_TRUE)
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
-                ->where('video_tapes.age_limit','<=', $age)
                 ->groupBy('video_tapes.channel_id');
 
         if(Auth::check()) {
@@ -1696,11 +1695,13 @@ class UserApiController extends Controller {
                 $channel_id = ChannelSubscription::where('user_id', $request->user_id)->pluck('channel_id')->toArray();
             }
 
+            $query->where('video_tapes.age_limit','<=', $age);
+
         }
 
         if ($channel_id) {
             
-            $query->whereNotIn('channels.id', $channel_id);
+            $query->whereIn('channels.id', $channel_id);
 
         }
 
