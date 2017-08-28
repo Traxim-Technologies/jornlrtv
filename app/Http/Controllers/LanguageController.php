@@ -101,8 +101,11 @@ class LanguageController extends Controller
 
             }
 
-            
-            rmdir($dir);
+            if (is_dir($dir)) {
+
+                rmdir($dir);
+                
+            }
 
             if ($model->delete()) {
 
