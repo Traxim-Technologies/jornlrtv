@@ -1494,9 +1494,9 @@ class AdminController extends Controller {
 
                 if($request->hasFile('image')) {
 
-                    $model->picture ? Helper::delete_picture('subscriptions' , $model->picture) : "";
+                    $model->picture ? Helper::delete_picture('uploads/subscriptions' , $model->picture) : "";
 
-                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
                     
                     $request->request->add(['picture' => $picture , 'image' => '']);
 
@@ -1508,7 +1508,7 @@ class AdminController extends Controller {
 
                 if($request->hasFile('image')) {
 
-                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
 
                     $request->request->add(['picture' => $picture , 'image'=> '']);
                 }

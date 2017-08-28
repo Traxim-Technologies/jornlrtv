@@ -23,6 +23,8 @@
 
 <link rel="stylesheet" href="{{asset('assets/css/star-rating.css')}}">
 
+<link rel="stylesheet" href="{{asset('assets/css/toast.style.css')}}">
+
 
 <style type="text/css">
 
@@ -581,6 +583,8 @@ textarea[name=comments] {
 
     <script type="text/javascript" src="{{asset('assets/js/star-rating.js')}}"></script>
 
+
+    <script type="text/javascript" src="{{asset('assets/js/toast.script.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('.video-y-menu').addClass('hidden');
@@ -1278,6 +1282,8 @@ textarea[name=comments] {
                   var successful = document.execCommand( 'copy' );
                   var msg = successful ? 'successful' : 'unsuccessful';
                   console.log('Copying text command was ' + msg);
+
+                  addToast();
                  // alert('Copied Embedded Link');
                } catch (err) {
                   console.log('Oops, unable to copy');
@@ -1343,6 +1349,18 @@ textarea[name=comments] {
             })
         }
 
+        function addToast(){
+                $.Toast("Embedded Link", "Link Cpoied Successfully.", "success", {
+                    has_icon:false,
+                    has_close_btn:true,
+                    stack: true,
+                    fullscreen:true,
+                    timeout:1000,
+                    sticky:false,
+                    has_progress:true,
+                    rtl:false,
+                });
+            }
     </script>
 
 @endsection
