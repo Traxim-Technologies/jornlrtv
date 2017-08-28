@@ -754,7 +754,9 @@ class AdminController extends Controller {
 
         $response = CommonRepo::get_video_tape_images($id)->getData();
 
-        $view = \View::make('admin.videos.select_image')->with('model', $response)->render();
+        $tape_images = VideoTapeImage::where('video_tape_id', $id)->get();
+
+        $view = \View::make('admin.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
 
         return response()->json(['path'=>$view, 'data'=>$response->data]);
 
