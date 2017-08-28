@@ -66,7 +66,7 @@
 
                                     <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            <label for="datepicker" class="">{{tr('age_limit')}} * </label>
+                                            <label for="datepicker" class="">{{tr('18_users')}} * </label>
 
                                             <div class="clearfix"></div>
 
