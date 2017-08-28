@@ -1304,10 +1304,44 @@ class AdminController extends Controller {
 
         $admin_id = \Auth::guard('admin')->user()->id;
 
+       // dd($request->all());
+
         foreach ($request->all() as $key => $data) {
 
+            print_r($key);
+
             if($request->has($key)) {
-                \Enveditor::set($key,$data);
+
+                if ($key == 'stripe_publishable_key') {
+
+                    $setting = Settings::where('key', $key)->first();
+
+                    if ($setting) {
+
+                        $setting->value = $data;
+
+                        $setting->save();
+
+                    }
+
+                } else if ($key == 'stripe_secret_key') {
+
+                    $setting = Settings::where('key', $key)->first();
+
+                    if ($setting) {
+
+                        $setting->value = $data;
+
+                        $setting->save();
+
+                    }
+
+                } else {
+
+                    \Enveditor::set($key,$data);
+
+                }      
+
             }
         }
 

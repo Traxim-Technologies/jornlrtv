@@ -332,7 +332,8 @@
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
-    
+                                <h4>{{tr('paypal_settings')}}</h4>
+                                <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="paypal_id">{{tr('PAYPAL_ID')}}</label>
@@ -349,6 +350,23 @@
                                     <div class="form-group">
                                         <label for="paypal_mode">{{tr('PAYPAL_MODE')}}</label>    
                                         <input type="text" class="form-control" name="PAYPAL_MODE" id="paypal_mode" placeholder="{{tr('PAYPAL_MODE')}}" value="{{$result['PAYPAL_MODE']}}">
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <h4>{{tr('stripe_settings')}}</h4>
+                                <hr>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="paypal_id">{{tr('stripe_publishable_key')}}</label>
+                                        <input type="text" class="form-control" name="stripe_publishable_key" id="stripe_publishable_key" placeholder="{{tr('stripe_publishable_key')}}" value="{{Setting::get('stripe_publishable_key')}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="paypal_secret">{{tr('stripe_secret_key')}}</label>
+                                        <input type="text" class="form-control" name="stripe_secret_key" id="stripe_secret_key" placeholder="{{tr('stripe_secret_key')}}" value="{{Setting::get('stripe_secret_key')}}">
                                     </div>
                                 </div>
                             </div>
