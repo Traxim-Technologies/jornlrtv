@@ -305,7 +305,7 @@ class CommonRepository {
                         'channel_id'   => 'required|integer|exists:channels,id',
                         'video'     => 'required|mimes:mkv,mp4,qt',
                         'video_publish_type'=>'required',
-                        'age_limit'=>'required|numeric'
+                        // 'age_limit'=>'required|numeric'
                         ));
 
             if($validator->fails()) {
