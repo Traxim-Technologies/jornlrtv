@@ -71,7 +71,7 @@ thead>tr>th {
                                                 <td>{{$subscriber->user_name}}</td>
                                                 <td>{{$subscriber->created_at->diffForHumans()}}</td>
 
-                                                <td><a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a></td>
+                                                <td><a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a></td>
                                             </tr>
 
                                         @endforeach

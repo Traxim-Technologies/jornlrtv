@@ -35,6 +35,7 @@
 
 				                        @foreach($response->channels as $i => $channel)
 
+
 				                        <li class="sub-list row">
 				                            <div class="main-history">
 				                                 <div class="history-image">
@@ -55,18 +56,31 @@
 						                                    </span>
 				                                        </div> 
 				                                        @if(Auth::check())
+
+				                                        	@if($channel->user_id != Auth::user()->id)
+
 															<div class="pull-right upload_a">
 
 					                                            @if (!$channel->subscribe_status)
 
-																<a class="st_video_upload_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}</a>
+																<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->channel_id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} ({{$channel->no_of_subscribers}})</a>
 
 																@else 
 
-																	<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
+																	<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} ({{$channel->no_of_subscribers}})</a>
 
 																@endif
 					                                        </div>
+
+					                                        @else
+
+																@if($channel->no_of_subscribers > 0)
+
+																<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->channel_id))}}" style="color: #fff !important;text-decoration: none"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}}({{$channel->no_of_subscribers}})</a>
+
+																@endif
+
+															@endif
 				                                        
 				                                        
 				                                        @endif

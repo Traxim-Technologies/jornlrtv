@@ -1687,6 +1687,7 @@ class UserApiController extends Controller {
 
         foreach ($channels as $key => $value) {
             $lists[] = ['channel_id'=>$value->id, 
+                    'user_id'=>$value->user_id,
                     'picture'=> $value->picture, 
                     'title'=>$value->name,
                     'description'=>$value->description, 

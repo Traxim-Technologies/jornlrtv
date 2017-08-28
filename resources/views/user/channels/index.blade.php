@@ -130,11 +130,11 @@
 
 									@else 
 
-										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}({{$subscriberscnt}})</a>
+										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}({{$subscriberscnt}})</a>
 
 									@endif
 								@else
-								
+
 									@if($subscriberscnt > 0)
 
 									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}}({{$subscriberscnt}})</a>
