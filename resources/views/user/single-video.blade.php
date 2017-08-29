@@ -389,7 +389,7 @@ textarea[name=comments] {
 
                                 
                                 
-                                @if(count($comments) > 0) <div class="v-comments"> @endif
+                                <div class="v-comments">
 
                                     <div class="pull-left"> 
                                     @if(count($comments) > 0) 
@@ -498,11 +498,9 @@ textarea[name=comments] {
                                             
                                     </div>
 
-                                @if(count($comments) > 0) </div> @endif<!--end of v-comments-->
+                                    </div>
 
-                                     
-
-                                     </div>            
+                                </div>            
                             </div>
 
                             <!--end of main-content-->
