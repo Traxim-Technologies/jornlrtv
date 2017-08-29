@@ -126,10 +126,13 @@ class UserController extends Controller {
 
     public function single_video(Request $request) {
 
+        $request->request->add([ 
+                'admin_video_id' => $request->id,
+        ]);
+
         if (Auth::check()) {
 
             $request->request->add([ 
-                'admin_video_id' => $request->id,
                 'age'=>Auth::user()->age_limit,
             ]);
 
