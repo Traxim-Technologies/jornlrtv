@@ -267,7 +267,7 @@ class AdminController extends Controller {
 
             $validator = Validator::make( $request->all(), array(
                         'name' => 'required|max:255',
-                        'email' => 'required|email|max:255',
+                        'email' => 'required|email|max:255|unique:users,email,'.$request->id.',id',
                         'mobile' => 'required|digits_between:6,13',
                         'dob'=>'required',
                     )
@@ -276,7 +276,7 @@ class AdminController extends Controller {
         } else {
             $validator = Validator::make( $request->all(), array(
                     'name' => 'required|max:255',
-                    'email' => 'required|email|max:255|unique:users',
+                    'email' => 'required|email|max:255|unique:users,email,NULL,id',
                     'mobile' => 'required|digits_between:6,13',
                     'password' => 'required|min:6|confirmed',
                     'dob'=>'required',
