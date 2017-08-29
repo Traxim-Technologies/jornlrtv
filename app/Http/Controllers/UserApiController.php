@@ -1370,15 +1370,15 @@ class UserApiController extends Controller {
                     }
 
                 } 
-            } else {
+            } /*else {
 
-                if ($video->age_limit != 0) {
+                if ($video->age_limit == 1) {
 
                     return response()->json(['success'=>false, 'message'=>tr('age_error')]);
 
                 }
 
-            }
+            }*/
 
         }
 
