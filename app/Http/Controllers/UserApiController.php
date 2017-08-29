@@ -1370,7 +1370,7 @@ class UserApiController extends Controller {
                     }
 
                 } 
-            } /*else {
+            } else {
 
                 if ($video->age_limit == 1) {
 
@@ -1378,7 +1378,7 @@ class UserApiController extends Controller {
 
                 }
 
-            }*/
+            }
 
         }
 
