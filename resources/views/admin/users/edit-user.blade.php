@@ -10,6 +10,12 @@
     <li class="active">{{tr('edit_user')}}</li>
 @endsection
 
+@section('styles')
+
+<link rel="stylesheet" href="{{asset('admin-css/plugins/datepicker/datepicker3.css')}}">
+
+@endsection
+
 @section('content')
 
 @include('notification.notify')
@@ -46,6 +52,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">{{tr('dob')}}</label>
+
+                            <div class="col-sm-10">
+                               <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off" value="{{$user->dob}}">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
                             <label for="mobile" class="col-sm-2 control-label">{{tr('mobile')}}</label>
 
                             <div class="col-sm-10">
@@ -65,7 +80,7 @@
                             <label for="mobile" class="col-sm-2 control-label">{{tr('picture')}}</label>
 
                             <div class="col-sm-3">
-                                <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" />
+                                <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" accept="image/jpeg, image/png"/>
                                 <br>
                                 <img id="picture_preview" style="width: 150px;height: 150px;" src="{{$user->picture}}" />
                             </div>
@@ -91,6 +106,8 @@
 @endsection
 
 @section('scripts')
+<script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
+
 
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
 <script>
@@ -101,6 +118,12 @@
         var dtz = -(dMin/60);
         // alert(dtz);
         $("#userTimezone").val(jstz.determine().name());
+    });
+
+    $('#dob').datepicker({
+        autoclose:true,
+        format : 'dd-mm-yyyy',
+        endDate: "dateToday"
     });
 
 function loadFile(event, id){

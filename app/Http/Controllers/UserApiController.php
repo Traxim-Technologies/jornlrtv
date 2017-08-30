@@ -32,6 +32,8 @@ use App\Wishlist;
 
 use App\UserHistory;
 
+use App\ChannelSubscription;
+
 use App\Page;
 
 use App\Jobs\NormalPushNotification;
@@ -43,6 +45,10 @@ use App\Redeem;
 use App\RedeemRequest;
 
 use App\Channel;
+
+use App\LikeDislikeVideo;
+
+use App\Card;
 
 class UserApiController extends Controller {
 
@@ -475,6 +481,8 @@ class UserApiController extends Controller {
 
         $user = User::find($request->id);
 
+        $user->dob = date('d-m-Y', strtotime($user->dob));
+
         $response_array = array(
             'success' => true,
             'id' => $user->id,
@@ -486,7 +494,8 @@ class UserApiController extends Controller {
             'token' => $user->token,
             'token_expiry' => $user->token_expiry,
             'login_by' => $user->login_by,
-            'social_unique_id' => $user->social_unique_id
+            'social_unique_id' => $user->social_unique_id,
+            'dob'=>$user->dob,
         );
         $response = response()->json(Helper::null_safe($response_array), 200);
         return $response;
@@ -503,6 +512,7 @@ class UserApiController extends Controller {
                 'picture' => 'mimes:jpeg,bmp,png',
                 'gender' => 'in:male,female,others',
                 'device_token' => '',
+                'dob'=>'required',
             ));
 
         if ($validator->fails()) {
@@ -531,6 +541,24 @@ class UserApiController extends Controller {
                 $user->address = $request->address ? $request->address : $user->address;
                 $user->description = $request->description ? $request->description : $user->address;
 
+                $user->dob = date('Y-m-d', strtotime($request->dob));
+
+                if ($user->dob) {
+
+                    $from = new \DateTime($user->dob);
+                    $to   = new \DateTime('today');
+
+                    $user->age_limit = $from->diff($to)->y;
+
+                }
+
+                if ($user->age_limit < 16) {
+
+                   return back()->with('flash_error', tr('min_age_error'));
+
+                }
+
+
                 // Upload picture
                 if ($request->hasFile('picture') != "") {
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
@@ -554,6 +582,7 @@ class UserApiController extends Controller {
                 'token_expiry' => $user->token_expiry,
                 'login_by' => $user->login_by,
                 'social_unique_id' => $user->social_unique_id,
+                'dob'=>$request->dob,
             );
 
             $response_array = Helper::null_safe($response_array);
@@ -641,6 +670,23 @@ class UserApiController extends Controller {
             $rating->rating = $request->has('rating') ? $request->rating : 0;
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
+
+
+            $ratings = UserRating::select(
+                    'rating', 'video_tape_id',DB::raw('sum(rating) as total_rating'))
+                    ->where('video_tape_id', $request->admin_video_id)
+                    ->groupBy('video_tape_id')
+                    ->avg('rating');
+
+    
+
+            if ($rating->adminVideo) {
+
+                $rating->adminVideo->user_ratings = $ratings;
+
+                $rating->adminVideo->save();
+
+            }
 
 			$response_array = array('success' => true , 'comment' => $rating->toArray() , 'date' => $rating->created_at->diffForHumans(),'message' => tr('comment_success') );
         }
@@ -753,13 +799,14 @@ class UserApiController extends Controller {
     }
 
 
-    public function spam_videos($id, $count = null, $skip = 0) {
+    public function spam_videos($request, $count = null, $skip = 0) {
 
-        $query = Flag::where('flags.user_id', $id)->select('flags.*')
+        $query = Flag::where('flags.user_id', $request->id)->select('flags.*')
                     ->where('flags.status', DEFAULT_TRUE)
                     ->leftJoin('video_tapes', 'flags.video_tape_id', '=', 'video_tapes.id')
                     ->where('video_tapes.is_approved' , 1)
                     ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.age_limit','<=', checkAge($request))
                     ->orderBy('flags.created_at', 'desc');
 
         if($count) {
@@ -829,6 +876,7 @@ class UserApiController extends Controller {
                 }
 
                 $response_array = array('success' => true);
+           
             }
 
             if($video = VideoTape::where('id',$request->admin_video_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
@@ -837,11 +885,17 @@ class UserApiController extends Controller {
 
                 if($video->getVideoAds) {
 
+                    \Log::info("getVideoAds Relation Checked");
+
                     if ($video->getVideoAds->status) {
+
+                        \Log::info("getVideoAds Status Checked");
 
                         // Check the video view count reached admin viewers count, to add amount for each view
 
-                        if($video->redeem_count == Setting::get('viewers_count_per_video') && $video->ad_status) {
+                        if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
+
+                            \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
                             $video_amount = Setting::get('amount_per_video');
 
@@ -1293,12 +1347,40 @@ class UserApiController extends Controller {
 
     // Function Name : getSingleVideo()
 
-    public function getSingleVideo(Request $request) {
+    public function getSingleVideo($request) {
+
 
         $video = VideoTape::where('video_tapes.id' , $request->admin_video_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
                     ->first();
+
+        if ($video) {
+
+            if(Auth::check()) {
+
+                if ($video->getChannel->user_id != Auth::user()->id) {
+
+                    $age = Auth::user()->age_limit ? (Auth::user()->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+                    if ($video->age_limit > $age) {
+
+                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                    }
+
+                } 
+            } else {
+
+                if ($video->age_limit == 1) {
+
+                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                }
+
+            }
+
+        }
 
         if($video) {
 
@@ -1308,13 +1390,13 @@ class UserApiController extends Controller {
 
             $ads = $video->getScopeVideoAds ? ($video->getScopeVideoAds->status ? $video->getScopeVideoAds  : '') : '';
 
-            $trendings = VideoRepo::trending(WEB);
+            $trendings = VideoRepo::trending($request,WEB);
 
-            $recent_videos = VideoRepo::recently_added(WEB);
+            $recent_videos = VideoRepo::recently_added($request, WEB);
 
             $channels = [];
 
-            $suggestions = VideoRepo::suggestion_videos('', '', $request->admin_video_id);
+            $suggestions = VideoRepo::suggestion_videos($request,'', '', $request->admin_video_id);
 
             $wishlist_status = $history_status = WISHLIST_EMPTY;
 
@@ -1392,22 +1474,38 @@ class UserApiController extends Controller {
 
             }
 
+            $subscribe_status = DEFAULT_FALSE;
+
             if(\Auth::check()) {
 
                 $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$request->admin_video_id);
 
                 $history_status = Helper::history_status(\Auth::user()->id,$request->admin_video_id);
 
+                $subscribe_status = check_channel_status(\Auth::user()->id, $video->channel_id);
+
             }
 
             $share_link = route('user.single' , $request->admin_video_id);
+
+            $like_count = LikeDislikeVideo::where('video_tape_id', $request->admin_video_id)
+                ->where('like_status', DEFAULT_TRUE)
+                ->count();
+
+            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->admin_video_id)
+                ->where('dislike_status', DEFAULT_TRUE)
+                ->count();
+
+            $subscriberscnt = subscriberscnt($video->channel_id);
             
             $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
                 'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
                 'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
                 'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
                 'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
-                'ads'=>$ads
+                'like_count'=>$like_count,'dislike_count'=>$dislike_count,
+                'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
+                'subscriberscnt'=>$subscriberscnt,
                 ];
 
             return response()->json(['success'=>true, 'response_array'=>$response_array], 200);
@@ -1578,5 +1676,305 @@ class UserApiController extends Controller {
 
     }
 
+    public function channel_list(Request $request) {
+
+/*        $channels = Channel::where('is_approved', DEFAULT_TRUE)
+                ->where('status', DEFAULT_TRUE)
+                ->paginate(16);
+*/
+        $age = 0;
+
+        $channel_id = [];
+
+        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                ->where('channels.status', DEFAULT_TRUE)
+                ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                ->where('video_tapes.status', DEFAULT_TRUE)
+                ->groupBy('video_tapes.channel_id');
+
+        if(Auth::check()) {
+
+            $age = \Auth::user()->age_limit;
+
+            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+            if ($request->user_id) {
+
+                $channel_id = ChannelSubscription::where('user_id', $request->user_id)->pluck('channel_id')->toArray();
+            }
+
+            $query->where('video_tapes.age_limit','<=', $age);
+
+        }
+
+        if ($channel_id) {
+            
+            $query->whereIn('channels.id', $channel_id);
+
+        }
+
+        $channels = $query->paginate(16);
+
+        $items = $channels->items();
+
+        $lists = [];
+
+        foreach ($channels as $key => $value) {
+            $lists[] = ['channel_id'=>$value->id, 
+                    'user_id'=>$value->user_id,
+                    'picture'=> $value->picture, 
+                    'title'=>$value->name,
+                    'description'=>$value->description, 
+                    'created_at'=>$value->created_at->diffForHumans(),
+                    'no_of_videos'=>videos_count($value->id),
+                    'subscribe_status'=>Auth::check() ? check_channel_status(Auth::user()->id, $value->id) : '',
+                    'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+            ];
+
+        }
+
+        $pagination = (string) $channels->links();
+
+        $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+        return response()->json($response_array);
+    }
+
+    public function likevideo(Request $request) {
+
+         $validator = Validator::make($request->all() , [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+            ]);
+
+         if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
+                    'error_code' => 101, 'error_messages'=>$error_messages);
+
+        } else {
+
+            $model = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                    ->where('user_id',$request->id)->first();
+
+            $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('like_status', DEFAULT_TRUE)
+                ->count();
+
+            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('dislike_status', DEFAULT_TRUE)
+                ->count();
+
+            if (!$model) {
+
+                $model = new LikeDislikeVideo;
+
+                $model->video_tape_id = $request->video_tape_id;
+
+                $model->user_id = $request->id;
+
+                $model->like_status = DEFAULT_TRUE;
+
+                $model->dislike_status = DEFAULT_FALSE;
+
+                $model->save();
+
+                $response_array = ['success'=>true, 'like_count'=>$like_count+1, 'dislike_count'=>$dislike_count];
+
+            } else {
+
+                if($model->dislike_status) {
+
+                    $model->like_status = DEFAULT_TRUE;
+
+                    $model->dislike_status = DEFAULT_FALSE;
+
+                    $model->save();
+
+                    $response_array = ['success'=>true, 'like_count'=>$like_count+1, 'dislike_count'=>$dislike_count-1];
+
+
+                } else {
+
+                    $model->delete();
+
+                    $response_array = ['success'=>true, 'like_count'=>$like_count-1, 'dislike_count'=>$dislike_count];
+
+                }
+
+            }
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+
+    public function dislikevideo(Request $request) {
+
+         $validator = Validator::make($request->all() , [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+            ]);
+
+         if ($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
+                    'error_code' => 101, 'error_messages'=>$error_messages);
+
+        } else {
+
+            $model = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                    ->where('user_id',$request->id)->first();
+
+            $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('like_status', DEFAULT_TRUE)
+                ->count();
+
+            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('dislike_status', DEFAULT_TRUE)
+                ->count();
+
+            if (!$model) {
+
+                $model = new LikeDislikeVideo;
+
+                $model->video_tape_id = $request->video_tape_id;
+
+                $model->user_id = $request->id;
+
+                $model->like_status = DEFAULT_FALSE;
+
+                $model->dislike_status = DEFAULT_TRUE;
+
+                $model->save();
+
+                $response_array = ['success'=>true, 'like_count'=>$like_count, 'dislike_count'=>$dislike_count+1];
+
+            } else {
+
+                if($model->like_status) {
+
+                    $model->like_status = DEFAULT_FALSE;
+
+                    $model->dislike_status = DEFAULT_TRUE;
+
+                    $model->save();
+
+                    $response_array = ['success'=>true, 'like_count'=>$like_count-1, 'dislike_count'=>$dislike_count+1];
+
+                } else {
+
+                    $model->delete();
+
+                    $response_array = ['success'=>true, 'like_count'=>$like_count, 'dislike_count'=>$dislike_count-1];
+
+                }
+
+            }
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+     public function default_card(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
+            )
+        );
+
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => $error_messages, 'error_code' => 101);
+
+        } else {
+
+            $user = User::find($request->id);
+            
+            $old_default = Card::where('user_id' , $request->id)->where('is_default', DEFAULT_TRUE)->update(array('is_default' => DEFAULT_FALSE));
+
+            $card = Card::where('id' , $request->card_id)->update(array('is_default' => DEFAULT_TRUE));
+
+            if($card) {
+                if($user) {
+                    // $user->payment_mode = CARD;
+                    $user->card_id = $request->card_id;
+                    $user->save();
+                }
+                $response_array = Helper::null_safe(array('success' => true));
+            } else {
+                $response_array = array('success' => false , 'error' => 'Something went wrong');
+            }
+        }
+        return response()->json($response_array , 200);
+    
+    }
+
+    public function delete_card(Request $request) {
+    
+        $card_id = $request->card_id;
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
+            )
+        );
+
+        if ($validator->fails()) {
+            
+            $error_messages = implode(',', $validator->messages()->all());
+            
+            $response_array = array('success' => false , 'error' => $error_messages , 'error_code' => 101);
+        
+        } else {
+
+            Card::where('id',$card_id)->delete();
+
+            $user = User::find($request->id);
+
+            if($user) {
+
+                // if($user->payment_mode = CARD) {
+
+                    // Check he added any other card
+                    
+                    if($check_card = Card::where('user_id' , $request->id)->first()) {
+
+                        $check_card->is_default =  DEFAULT_TRUE;
+
+                        $user->card_id = $check_card->id;
+
+                        $check_card->save();
+
+                    } else { 
+
+                        $user->payment_mode = COD;
+                        $user->card_id = DEFAULT_FALSE;
+                    }
+                // }
+                
+                $user->save();
+            }
+
+            $response_array = array('success' => true );
+        }
+    
+        return response()->json($response_array , 200);
+    }
 
 }

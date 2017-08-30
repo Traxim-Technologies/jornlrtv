@@ -24,6 +24,8 @@ use App\Page;
 
 use App\Admin;
 
+use Auth;
+
 class ApplicationController extends Controller {
 
     public function channel_create() {
@@ -226,6 +228,15 @@ class ApplicationController extends Controller {
 
     public function search_video(Request $request) {
 
+        if (Auth::check()) {
+            $request->request->add([ 
+                    'id' => \Auth::user()->id,
+                    'token' => \Auth::user()->token,
+                    'device_token' => \Auth::user()->device_token,
+                    'age'=>\Auth::user()->age_limit,
+                ]);
+        }
+
         $validator = Validator::make(
             $request->all(),
             array(
@@ -251,7 +262,7 @@ class ApplicationController extends Controller {
 
             $items = array();
             
-            $results = Helper::search_video($q);
+            $results = Helper::search_video($request, $q);
 
             if($results) {
 
@@ -277,6 +288,15 @@ class ApplicationController extends Controller {
     }
 
     public function search_all(Request $request) {
+
+         if (Auth::check()) {
+            $request->request->add([ 
+                    'id' => \Auth::user()->id,
+                    'token' => \Auth::user()->token,
+                    'device_token' => \Auth::user()->device_token,
+                    'age'=>\Auth::user()->age_limit,
+                ]);
+        }
 
         $validator = Validator::make(
             $request->all(),
@@ -305,7 +325,7 @@ class ApplicationController extends Controller {
                 $q = \Session::get('user_search_key');
             }
 
-            $videos = Helper::search_video($q,1);
+            $videos = Helper::search_video($request, $q,1);
 
             return view('user.search-result')->with('key' , $q)->with('videos' , $videos)->with('page' , "")->with('subPage' , "");
         }     
@@ -398,5 +418,29 @@ class ApplicationController extends Controller {
             $value->save();
         }
         return back()->with('flash_success' , tr('settings_success'));
+    }
+
+
+    public function embed_video(Request $request) {
+
+        $model = VideoTape::where('unique_id', $request->u_id)->first();
+
+        if ($model) {
+
+            return view('embed_video')->with('model', $model);
+
+        } else {
+
+            return response()->view('errors.404', [], 404);
+
+        }
+
+    }
+
+    public function set_session_language($lang) {
+
+        $locale = \Session::put('locale', $lang);
+
+        return back()->with('flash_success' , tr('session_success'));
     }
 }

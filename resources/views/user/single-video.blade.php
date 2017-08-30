@@ -20,7 +20,26 @@
 
 @section('styles')
 
+
+<link rel="stylesheet" href="{{asset('assets/css/star-rating.css')}}">
+
+<link rel="stylesheet" href="{{asset('assets/css/toast.style.css')}}">
+
+
 <style type="text/css">
+
+.sub-comhead .rating-md {
+
+    font-size: 11px;
+
+}
+
+.thumb-class {
+
+    cursor:pointer;
+    text-decoration:none;
+}
+
 .common-youtube {
     min-height: 0px !important;
 }
@@ -226,6 +245,15 @@ textarea[name=comments] {
                                                                 <i class="fa fa-twitter"></i><!-- {{tr('share_on_twitter')}} -->
                                                                 
                                                             </a> 
+
+                                                            <input name="embed_link" class="form-control" id="embed_link" type="hidden" value="{{route('embed_video', array('u_id'=>$video->unique_id))}}">
+
+                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" style="margin-left: 8px;" title="{{tr('copy_embedded_link')}}">
+
+                                                                <i class="fa fa-link"></i>
+
+                                                            </a>
+
                                                         </div><!--end of share-->
 
                                                         <div class="share">
@@ -270,8 +298,23 @@ textarea[name=comments] {
                                                                 <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                             </center>
                                                         
+
                                                              <div>
-                                                                ( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} )
+                                                                <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} ) */?>
+
+                                                                @if (Auth::check())
+                                                                <a class="thumb-class" onclick="likeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+
+                                                                <a class="thumb-class" onclick="dislikeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+
+                                                                @else 
+
+
+                                                                 <a class="thumb-class"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+
+                                                                <a class="thumb-class"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{$dislike_count}}</span></a>
+
+                                                                @endif
                                                                 
                                                             </div>
                                                         </div><!--end of stars-->
@@ -290,7 +333,9 @@ textarea[name=comments] {
                                                                 <b>Report this Video ?</b>
                                                                 <br>
                                                                 @foreach($report_video as $report) 
-                                                                    <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}<br>
+                                                                    <div class="report_list">
+                                                                        <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
+                                                                    </div>
                                                                 @endforeach
                                                                 <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
                                                                 <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
@@ -344,13 +389,44 @@ textarea[name=comments] {
 
                                 
                                 
-                                @if(count($comments) > 0) <div class="v-comments"> @endif
+                                <div class="v-comments">
 
+                                    <div class="pull-left"> 
                                     @if(count($comments) > 0) 
                                         <h3>{{tr('comments')}}
                                             <span class="c-380" id="comment_count">{{count($comments)}}</span>
                                         </h3> 
                                     @endif
+                                    </div>
+
+                                    <div class="pull-right">
+
+                                        @if(Auth::check())
+                                            @if($video->get_channel->user_id != Auth::user()->id)
+
+                                                @if (!$subscribe_status)
+
+                                                <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} - {{$subscriberscnt}}</a>
+
+                                                @else 
+
+                                                    <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} - {{$subscriberscnt}}</a>
+
+                                                @endif
+                                           
+                                           @else
+
+                                                <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+
+
+                                           @endif
+                                        
+                                        
+                                        @endif
+
+                                    </div>
+
+                                    <div class="clearfix"></div>
                                     
                                     <div class="com-content">
                                         @if(Auth::check())
@@ -367,9 +443,13 @@ textarea[name=comments] {
 
                                                                 <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
 
+                                                                 <input id="rating_system" name="rating" type="number" class="rating comment_rating" min="1" max="5" step="1">
+
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
 
-                                                                <input style="float:right;margin-bottom:10px;display:none" type="submit" name="submit" value="send">
+                                                                <button class="btn pull-right btn-sm btn-success" type="submit">{{tr('comment')}}</button>
+
+                                                                <div class="clearfix"></div>
                                                             </form>
                                                         </div>                                      
                                                     </div>  <!--end of comment-form-->
@@ -396,6 +476,7 @@ textarea[name=comments] {
                                                             <span class="sub-comhead">
                                                                 <a href="#"><h5 style="float:left">{{$comment->username}}</h5></a>
                                                                 <a href="#" class="text-none"><p>{{$comment->diff_human_time}}</p></a>
+                                                                <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$comment->rating}}"></p>
                                                                 <p class="com-para">{{$comment->comment}}</p>
                                                             </span>             
                                                             
@@ -417,11 +498,9 @@ textarea[name=comments] {
                                             
                                     </div>
 
-                                @if(count($comments) > 0) </div> @endif<!--end of v-comments-->
+                                    </div>
 
-                                     
-
-                                     </div>            
+                                </div>            
                             </div>
 
                             <!--end of main-content-->
@@ -460,11 +539,11 @@ textarea[name=comments] {
                                                     </span> 
                                                     <br>
                                                     <span class="stars">
-                                                        <a href="#"><i @if($suggestion->ratings > 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings > 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#"><i @if($suggestion->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     </span>                              
                                                 </div><!--end of sugg-head-->
                                     
@@ -508,6 +587,10 @@ textarea[name=comments] {
 
 @section('scripts')
 
+    <script type="text/javascript" src="{{asset('assets/js/star-rating.js')}}"></script>
+
+
+    <script type="text/javascript" src="{{asset('assets/js/toast.script.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('.video-y-menu').addClass('hidden');
@@ -520,6 +603,14 @@ textarea[name=comments] {
                 $('#report_video_form').hide(500);
             }
         }
+
+
+        // Reset the rating.
+        // $('#rating_system').rating('reset');
+
+        // $('#rating_system').rating('clear');
+
+         $('.view_rating').rating({disabled: true, showClear: false});
     </script>
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
@@ -652,7 +743,32 @@ textarea[name=comments] {
                                     jQuery('#comment_count').text(count);
                                     jQuery('#video_comment_count').text(count);
 
-                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
+                                    // var stars = 0;
+
+                                    var first_star = data.comment.rating >= 1 ? "color:#ff0000" : "";
+
+                                    var second_star = data.comment.rating >= 2 ? "color:#ff0000" : "";
+
+                                    var third_star = data.comment.rating >= 3 ? "color:#ff0000" : "";
+
+                                    var fourth_star = data.comment.rating >= 4 ? "color:#ff0000" : "";
+
+                                    var fifth_star = data.comment.rating >= 5 ? "color:#ff0000" : "";
+
+                                   var stars = '<span class="stars">'+
+                                    '<a href="#"><i style="'+first_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+second_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+third_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+fourth_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a href="#"><i style="'+fifth_star+'" class="fa fa-star" aria-hidden="true"></i></a></span>';   
+
+                                    /**
+                                    <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="'+data.comment.rating+'"></p>
+                                    **/
+
+                                    $('.comment_rating').rating('clear');
+
+                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                                 @endif
                                } else {
                                     console.log('Wrong...!');
@@ -759,6 +875,11 @@ textarea[name=comments] {
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
                                     },
+                                     tracks : [{
+                                      file : "{{$video->subtitle}}",
+                                      kind : "captions",
+                                      default : true,
+                                    }]
                                    /* advertising: {
                                         client: 'vast',
                                         schedule: {
@@ -836,7 +957,12 @@ textarea[name=comments] {
                                     // autostart : true,
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
-                                      }
+                                      },
+                                    tracks : [{
+                                      file : "{{$video->subtitle}}",
+                                      kind : "captions",
+                                      default : true,
+                                    }]
                                 
                                 });
 
@@ -1147,6 +1273,100 @@ textarea[name=comments] {
 
         });
 
+
+            function copyTextToClipboard() {
+
+               var textArea = document.createElement( "textarea" );
+               textArea.value = $("#embed_link").val();
+               document.body.appendChild( textArea );
+
+               textArea.select();
+
+               $("#embed_link").select();
+
+               try {
+                  var successful = document.execCommand( 'copy' );
+                  var msg = successful ? 'successful' : 'unsuccessful';
+                  console.log('Copying text command was ' + msg);
+
+                  addToast();
+                 // alert('Copied Embedded Link');
+               } catch (err) {
+                  console.log('Oops, unable to copy');
+               }
+
+               document.body.removeChild( textArea );
+            }
+
+        function likeVideo(video_id) {
+
+            $.ajax({
+                url : "{{route('user.video.like')}}",
+                data : {video_tape_id : video_id},
+                type: "post",
+                success : function(data) {
+
+                    if (data.success) {
+
+                        $("#like_count").html(data.like_count);
+
+                        $("#dislike_count").html(data.dislike_count);
+
+                    } else {
+
+                        console.log(data.error_messages);
+                    }
+
+                },
+
+                error : function(data) {
+
+
+                },
+            })
+        }
+
+          function dislikeVideo(video_id) {
+
+            $.ajax({
+                url : "{{route('user.video.disLike')}}",
+                type: "post",
+                data : {video_tape_id : video_id},
+                success : function(data) {
+
+                    if(data.success) {
+
+                        $("#like_count").html(data.like_count);
+
+                        $("#dislike_count").html(data.dislike_count);
+
+                    } else {
+
+                        console.log(data.error_messages);
+
+                    }
+
+                },
+
+                error : function(data) {
+
+
+                },
+            })
+        }
+
+        function addToast(){
+                $.Toast("Embedded Link", "Link Cpoied Successfully.", "success", {
+                    has_icon:false,
+                    has_close_btn:true,
+                    stack: true,
+                    fullscreen:true,
+                    timeout:1000,
+                    sticky:false,
+                    has_progress:true,
+                    rtl:false,
+                });
+            }
     </script>
 
 @endsection

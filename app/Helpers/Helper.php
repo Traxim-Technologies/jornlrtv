@@ -167,7 +167,7 @@
                 try {
 
                     $site_url=url('/');
-                    Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
+                    Mail::send($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
 
                             $message->to($email)->subject($subject);
                     });
@@ -265,6 +265,19 @@
                     break;
                 case 151:
                     $string = tr('redeem_not_found');
+                    break;
+                 case 901:
+                    $string = "Default card is not available. Please add a card";
+                    break;
+                case 902:
+                    $string = "Something went wrong with Payment Configuration";
+                    break;
+                case 903:
+                    $string = "Payment is not completed. Please try to pay Again";
+                    break;
+
+                case 162:
+                    $string = tr('failed_to_upload');
                     break;
 
                 default:
@@ -444,6 +457,27 @@
             return $s3_url;
         }
 
+
+        public static function subtitle_upload($subtitle)
+        {
+            $s3_url = "";
+
+            $file_name = Helper::file_name();
+
+            $ext = $subtitle->getClientOriginalExtension();
+
+            $local_url = $file_name . "." . $ext;
+
+            $path = '/uploads/subtitles/';
+
+            $subtitle->move(public_path() . $path, $local_url);
+
+            $s3_url = Helper::web_url().$path.$local_url;
+
+            return $s3_url;
+        }
+
+
         public static function video_upload($picture)
         {
             
@@ -621,15 +655,15 @@
         /**
          *  Function Name : search_video()
          */
-        public static function search_video($key,$web = NULL,$skip = 0) {
+        public static function search_video($request,$key,$web = NULL,$skip = 0) {
 
             $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
                         ->videoResponse()
+                        ->where('video_tapes.age_limit','<=', checkAge($request))
                         ->orderBy('video_tapes.created_at' , 'desc');
-
             if($web) {
                 $videos = $videos_query->paginate(16);
             } else {
@@ -708,6 +742,7 @@
 
                                     'user_ratings.rating' , 'user_ratings.comment',
                                     'user_ratings.created_at')
+                            ->orderby('created_at', 'desc')
                             ->get();
             if(!$ratings) {
                 $ratings = array();
@@ -740,4 +775,28 @@
             return $videos;
 
         }
+
+
+        public static function upload_language_file($folder,$picture,$filename) {
+
+            $ext = $picture->getClientOriginalExtension();
+            
+            $picture->move(base_path() . "/resources/lang/".$folder ."/", $filename);
+
+        }
+
+        public static function delete_language_files($folder, $boolean, $filename) {
+            if ($boolean) {
+                $path = base_path() . "/resources/lang/" .$folder;
+                \File::cleanDirectory($path);
+                \Storage::deleteDirectory( $path );
+                rmdir( $path );
+            } else {
+                \File::delete( base_path() . "/resources/lang/" . $folder ."/".$filename);
+            }
+            return true;
+        }
     }
+
+
+

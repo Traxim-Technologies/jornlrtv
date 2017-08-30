@@ -44,6 +44,8 @@
 
 								<th>{{tr('ad_status')}}</th>
 								<th>{{tr('amount')}}</th>
+								<th>{{tr('likes')}}</th>
+								<th>{{tr('dislikes')}}</th>
 								<th>{{tr('status')}}</th>
 								<th>{{tr('action')}}</th>
 						    </tr>
@@ -88,6 +90,10 @@
 
 							      	<td><b>{{Setting::get('currency')}} {{$video->amount}}</b></td>
 
+							      	<td>{{$video->getScopeLikeCount->count()}}</td>
+
+							      	<td>{{$video->getScopeDisLikeCount->count()}}</td>
+
 							      	<td>
 							      		@if ($video->compress_status == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>
@@ -111,7 +117,7 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video['admin_video_id']))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->admin_video_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     @endif

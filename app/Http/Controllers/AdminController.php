@@ -72,6 +72,8 @@ use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Jobs\NormalPushNotification;
 
+use App\ChannelSubscription; 
+
 class AdminController extends Controller {
 
     /**
@@ -103,7 +105,7 @@ class AdminController extends Controller {
 
         $video_count = VideoTape::count();
  
-        $recent_videos = VideoRepo::recently_added(WEB);
+        $recent_videos = VideoRepo::admin_recently_added();
 
         $get_registers = get_register_count();
         $recent_users = get_recent_users();
@@ -249,6 +251,13 @@ class AdminController extends Controller {
     public function edit_user(Request $request) {
 
         $user = User::find($request->id);
+
+        if($user) {
+
+            $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
+
+        }
+
         return view('admin.users.edit-user')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
     }
 
@@ -258,18 +267,19 @@ class AdminController extends Controller {
 
             $validator = Validator::make( $request->all(), array(
                         'name' => 'required|max:255',
-                        'email' => 'required|email|max:255',
+                        'email' => 'required|email|max:255|unique:users,email,'.$request->id.',id',
                         'mobile' => 'required|digits_between:6,13',
-
+                        'dob'=>'required',
                     )
                 );
         
         } else {
             $validator = Validator::make( $request->all(), array(
                     'name' => 'required|max:255',
-                    'email' => 'required|email|max:255|unique:users',
+                    'email' => 'required|email|max:255|unique:users,email,NULL,id',
                     'mobile' => 'required|digits_between:6,13',
                     'password' => 'required|min:6|confirmed',
+                    'dob'=>'required',
                 )
             );
         
@@ -302,10 +312,12 @@ class AdminController extends Controller {
                     $user = new User;
                 }
 
-                $user->password = ($request->password) ? $request->password : null;
+                $user->password = ($request->password) ? \Hash::make($request->password) : null;
                 $message = tr('admin_add_user');
                 $user->login_by = 'manual';
                 $user->device_type = 'web';
+
+                $user->picture = asset('placeholder.png');
             }
 
             $user->timezone = $request->has('timezone') ? $request->timezone : '';
@@ -315,15 +327,33 @@ class AdminController extends Controller {
             $user->mobile = $request->has('mobile') ? $request->mobile : '';
             $user->description = $request->has('description') ? $request->description : '';
 
-            $user->picture = asset('placeholder.png');
+            
             
             $user->token = Helper::generate_token();
             $user->token_expiry = Helper::generate_token_expiry();
 
+            $user->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user->dob;
+
+
+            if ($user->dob) {
+
+                $from = new \DateTime($user->dob);
+                $to   = new \DateTime('today');
+
+                $user->age_limit = $from->diff($to)->y;
+
+            }
+
+            if ($user->age_limit < 16) {
+
+               return back()->with('flash_error', tr('min_age_error'));
+
+            }
+
             if($request->id == '') {
 
                 $email_data['name'] = $user->name;
-                $email_data['password'] = \Hash::make($user->password);
+                $email_data['password'] = $request->password;
                 $email_data['email'] = $user->email;
 
                 $subject = tr('user_welcome_title');
@@ -342,6 +372,8 @@ class AdminController extends Controller {
                 }
                 $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
             }
+
+            $user->is_verified = DEFAULT_TRUE;
 
             $user->save();
 
@@ -382,6 +414,8 @@ class AdminController extends Controller {
     public function view_user($id) {
 
         if($user = User::find($id)) {
+
+            $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
 
             return view('admin.users.user-details')
                         ->with('user' , $user)
@@ -720,7 +754,9 @@ class AdminController extends Controller {
 
         $response = CommonRepo::get_video_tape_images($id)->getData();
 
-        $view = \View::make('admin.videos.select_image')->with('model', $response)->render();
+        $tape_images = VideoTapeImage::where('video_tape_id', $id)->get();
+
+        $view = \View::make('admin.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
 
         return response()->json(['path'=>$view, 'data'=>$response->data]);
 
@@ -919,17 +955,27 @@ class AdminController extends Controller {
         return back()->with('flash_success', $message);
     }
 
-    public function user_ratings() {
+    public function user_ratings(Request $request) {
             
-            $user_reviews = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
-                ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
-                         'user_ratings.comment', 
-                         'users.first_name as user_first_name', 
-                         'users.last_name as user_last_name', 
-                         'users.id as user_id', 'user_ratings.created_at')
-                ->orderBy('user_ratings.id', 'ASC')
-                ->get();
-            return view('admin.reviews')->with('name', 'User')->with('reviews', $user_reviews);
+        $query = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
+            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
+            ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
+                     'user_ratings.comment', 
+                     'users.name as name', 
+                     'video_tapes.title as title',
+                     'user_ratings.video_tape_id as video_id',
+                     'users.id as user_id', 'user_ratings.created_at')
+            ->orderBy('user_ratings.created_at', 'desc');
+
+        if($request->video_tape_id) {
+
+            $query->where('user_ratings.video_tape_id',$request->video_tape_id);
+        }
+
+        $user_reviews = $query->get();
+
+        return view('admin.reviews.reviews')->with('page' ,'reviews')
+                ->with('sub_page' ,'reviews')->with('reviews', $user_reviews);
     }
 
     public function delete_user_ratings(Request $request) {
@@ -1219,7 +1265,7 @@ class AdminController extends Controller {
      *
      * @return all the spam videos
      */
-    public function spam_videos() {
+    public function spam_videos(Request $request) {
         // Load all the videos from flag table
         $model = Flag::groupBy('video_tape_id')->get();
         // Return array of values
@@ -1299,10 +1345,44 @@ class AdminController extends Controller {
 
         $admin_id = \Auth::guard('admin')->user()->id;
 
+       // dd($request->all());
+
         foreach ($request->all() as $key => $data) {
 
+            print_r($key);
+
             if($request->has($key)) {
-                \Enveditor::set($key,$data);
+
+                if ($key == 'stripe_publishable_key') {
+
+                    $setting = Settings::where('key', $key)->first();
+
+                    if ($setting) {
+
+                        $setting->value = $data;
+
+                        $setting->save();
+
+                    }
+
+                } else if ($key == 'stripe_secret_key') {
+
+                    $setting = Settings::where('key', $key)->first();
+
+                    if ($setting) {
+
+                        $setting->value = $data;
+
+                        $setting->save();
+
+                    }
+
+                } else {
+
+                    \Enveditor::set($key,$data);
+
+                }      
+
             }
         }
 
@@ -1357,6 +1437,21 @@ class AdminController extends Controller {
             return back()->with('flash_error', $response->error);
         }
         
+    }
+
+    public function subscribers(Request $request) {
+
+        if ($request->id) {
+
+            $subscribers = ChannelSubscription::where('channel_id', $request->id)->orderBy('created_at', 'desc')->get();
+
+        } else {
+
+            $subscribers = ChannelSubscription::orderBy('created_at', 'desc')->get();
+
+        }
+
+        return view('admin.channels.subscribers')->with('subscribers' , $subscribers)->withPage('channels')->with('sub_page','subscribers');
     }
 
     public function approve_channel(Request $request) {
@@ -1474,9 +1569,9 @@ class AdminController extends Controller {
 
                 if($request->hasFile('image')) {
 
-                    $model->picture ? Helper::delete_picture('subscriptions' , $model->picture) : "";
+                    $model->picture ? Helper::delete_picture('uploads/subscriptions' , $model->picture) : "";
 
-                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
                     
                     $request->request->add(['picture' => $picture , 'image' => '']);
 
@@ -1488,7 +1583,7 @@ class AdminController extends Controller {
 
                 if($request->hasFile('image')) {
 
-                    $picture = Helper::upload_avatar('subscriptions' , $request->file('image'));
+                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
 
                     $request->request->add(['picture' => $picture , 'image'=> '']);
                 }

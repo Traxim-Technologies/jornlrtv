@@ -26,6 +26,7 @@
 						    <tr>
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('username')}}</th>
+						      <th>{{tr('subscription_details')}}</th>
 						      <th>{{tr('payment_id')}}</th>
 						      <th>{{tr('amount')}}</th>
 						      <th>{{tr('expiry_date')}}</th>
@@ -39,6 +40,12 @@
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td><a href="{{route('admin.view.user' , $payment->user_id)}}"> {{($payment->user) ? $payment->user->name : ''}} </a></td>
+							      	<td>
+							      	@if($payment->getSubscription)
+							      		<a target="_blank" href="{{route('admin.subscriptions.view' , $payment->getSubscription->unique_id)}}"">{{$payment->getSubscription->title}}</a>
+							      	@else 
+							      		-
+							      	@endif</td>
 							      	<td>{{$payment->payment_id}}</td>
 							      	<td>$ {{$payment->amount}}</td>
 							      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>

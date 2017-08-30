@@ -46,6 +46,7 @@
                 <ul class="treeview-menu">
                     <li id="add-channel"><a href="{{route('admin.add.channel')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
                     <li id="view-channels"><a href="{{route('admin.channels')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
+                     <li id="subscribers"><a href="{{route('admin.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('subscribers')}}</a></li>
                 </ul>
 
             </li>
@@ -133,6 +134,14 @@
                 </a>
             </li>
 
+            @if(Setting::get('admin_language_control'))
+            <li id="languages">
+                <a href="{{route('admin.languages.index')}}">
+                    <i class="fa fa-globe"></i> <span>{{tr('languages')}}</span>
+                </a>
+            </li>
+            @endif
+
             <li class="treeview" id="viewpages">
                 <a href="{{route('admin.pages.index')}}">
                     <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
@@ -146,6 +155,14 @@
             <li id="profile">
                 <a href="{{route('admin.profile')}}">
                     <i class="fa fa-diamond"></i> <span>{{tr('account')}}</span>
+                </a>
+            </li>
+
+
+
+            <li id="reviews">
+                <a href="{{route('admin.reviews')}}">
+                    <i class="fa fa-star"></i> <span>{{tr('reviews')}}</span>
                 </a>
             </li>
 

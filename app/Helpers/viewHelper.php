@@ -32,6 +32,10 @@ use App\Redeem;
 
 use App\Page;
 
+use App\ChannelSubscription;
+
+use App\Language;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -576,6 +580,15 @@ function total_subscription_revenue($id = "") {
 
 function loadChannels() {
 
+    $age = 0;
+
+    if(Auth::check()) {
+        $age = \Auth::user()->age_limit;
+
+        $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+    }
+
     $model = Channel::where('channels.is_approved', DEFAULT_TRUE)
                 ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
@@ -583,6 +596,7 @@ function loadChannels() {
                 ->where('channels.status', DEFAULT_TRUE)
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
+                ->where('video_tapes.age_limit','<=', $age)
                 ->groupBy('video_tapes.channel_id')
                 ->get();
     
@@ -805,3 +819,95 @@ function checkSize() {
 
     return false;
 }
+
+
+function videos_count($channel_id) {
+
+    $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.status' , 1)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->where('video_tapes.channel_id' , $channel_id)
+                        ->videoResponse()
+                        ->orderby('video_tapes.created_at' , 'asc');
+    if (Auth::check()) {
+        // Check any flagged videos are present
+        $flagVideos = getFlagVideos(Auth::user()->id);
+
+        if($flagVideos) {
+            $videos_query->whereNotIn('video_tapes.id', $flagVideos);
+        }
+    }
+
+    $cnt = $videos_query->count();
+
+    return $cnt ? $cnt : 0;
+}
+
+
+function check_channel_status($user_id, $id) {
+
+    $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $id)->first();
+
+    return $model ? $model->id : false;
+
+}
+
+function getActiveLanguages() {
+    return Language::where('status', DEFAULT_TRUE)->get();
+}
+
+
+function readFileLength($file)  {
+
+    $variableLength = 0;
+    if (($handle = fopen($file, "r")) !== FALSE) {
+         $row = 1;
+         while (($data = fgetcsv($handle, 1000, "\n")) !== FALSE) {
+            $num = count($data);
+            $row++;
+            for ($c=0; $c < $num; $c++) {
+                $exp = explode("=>", $data[$c]);
+                if (count($exp) == 2) {
+                    $variableLength += 1; 
+                }
+            }
+        }
+        fclose($handle);
+    }
+
+    return $variableLength;
+}
+
+
+function checkAge($request) {
+
+    $age = $request->age ? ($request->age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+    return $age;
+}
+
+
+function subscriberscnt($id = null) {
+
+    $list = [];
+
+    if (!$id) {
+
+        $channels = getChannels(Auth::user()->id);
+
+        foreach ($channels as $key => $value) {
+            $list[] = $value->id;
+        }
+
+    } else {
+
+        $list[] = $id;
+
+    }
+
+    $subscribers = ChannelSubscription::whereIn('channel_subscriptions.channel_id', $list)
+                    ->count();
+    return $subscribers;
+}
+
+

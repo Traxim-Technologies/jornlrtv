@@ -173,6 +173,9 @@ Route::get('/addIndex', 'ApplicationController@addIndex')->name('addIndex');
 
 Route::get('/addAll', 'ApplicationController@addAllVideoToEs')->name('addAll');
 
+
+Route::get('/user_session_language/{lang}', 'ApplicationController@set_session_language')->name('user_session_language');
+
 // CRON
 
 Route::get('/publish/video', 'ApplicationController@cron_publish_video')->name('publish');
@@ -303,6 +306,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     // Videos
 
     Route::get('/videos', 'AdminController@videos')->name('videos');
+
+    Route::get('/reviews', 'AdminController@user_ratings')->name('reviews');
 
     Route::get('/ad_videos', 'AdminController@ad_videos')->name('ad_videos');
 
@@ -448,6 +453,30 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('subscriptions.status');
 
+    Route::get('/subscribers', 'AdminController@subscribers')->name('subscribers');
+
+    Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
+
+
+
+     // Languages
+    Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 
+
+    Route::get('/languages/download', 'LanguageController@languages_download')->name('languages.download'); 
+
+    Route::get('/languages/create', 'LanguageController@languages_create')->name('languages.create');
+    
+    Route::get('/languages/edit/{id}', 'LanguageController@languages_edit')->name('languages.edit');
+
+    Route::get('/languages/status/{id}', 'LanguageController@languages_status')->name('languages.status');   
+
+    Route::post('/languages/save', 'LanguageController@languages_save')->name('languages.save');
+
+    Route::get('/languages/delete/{id}', 'LanguageController@languages_delete')->name('languages.delete');
+
+    Route::get('/languages/set_default_language/{name}', 'LanguageController@set_default_language')->name('languages.set_default_language');
+
+
 });
 
 Route::get('/', 'UserController@index')->name('user.dashboard');
@@ -474,8 +503,11 @@ Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthContro
 
 Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
+Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
+
 
 Route::group(['as' => 'user.'], function(){
+
 
     Route::get('login', 'Auth\AuthController@showLoginForm')->name('login.form');
 
@@ -495,6 +527,13 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('password/reset', 'Auth\PasswordController@reset');
 
+    // Subscribe
+
+    Route::get('/subscribe_channel', 'UserController@subscribe_channel')->name('subscribe.channel');
+
+    Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('unsubscribe.channel');
+
+    Route::get('/subscribers', 'UserController@channel_subscribers')->name('channel.subscribers');
     
 
     Route::get('profile', 'UserController@profile')->name('profile');
@@ -564,6 +603,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('delete_channel', 'UserController@channel_delete')->name('delete.channel');
 
+    Route::get('channel_list', 'UserController@channel_list')->name('channel.list');
+
     // Video Upload
 
     Route::get('upload_video', 'UserController@video_upload')->name('video_upload');
@@ -582,6 +623,10 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('get_images/{id}', 'UserController@get_images')->name('get_images');
 
+    Route::post('/like_video', 'UserController@likeVideo')->name('video.like');
+
+    Route::post('/dis_like_video', 'UserController@disLikeVideo')->name('video.disLike');
+
     // Redeems
 
     Route::get('redeems/', 'UserController@redeems')->name('redeems');
@@ -589,6 +634,22 @@ Route::group(['as' => 'user.'], function(){
     Route::get('send/redeem', 'UserController@send_redeem_request')->name('redeems.send.request');
 
     Route::get('redeem/request/cancel/{id?}', 'UserController@redeem_request_cancel')->name('redeems.request.cancel');
+
+
+    Route::get('/card', 'UserController@card_details')->name('card.card_details');
+
+    Route::post('/add-card', 'UserController@payment_card_add')->name('card.add_card');
+
+
+    Route::post('/pay_tour','UserController@pay_tour')->name('card.card');
+
+    Route::patch('/payment', 'UserController@payment_card_default')->name('card.default');
+
+    Route::delete('/payment', 'UserController@payment_card_delete')->name('card.delete');
+
+    Route::get('/stripe_payment', 'UserController@stripe_payment')->name('card.stripe_payment');
+
+    Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
 
 });
 

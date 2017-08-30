@@ -100,6 +100,8 @@
                                 </div>
                             </div>
 
+                            <input type="hidden" name="ratings" value="{{$video->ratings}}" id="rating">
+
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="ratings" class="">{{tr('ratings')}} *</label>
@@ -119,6 +121,33 @@
                                         <input id="rating1" type="radio" name="ratings" value="1" @if($video->ratings == 1) checked @endif>
                                         <label for="rating1">1</label>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="video" class="">{{tr('sub_title')}}</label>
+                                    <input type="file" id="subtitle" name="subtitle">
+                                    <p class="help-block">{{tr('subtitle_validate')}}</p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <div class="form-group">
+
+                                   <!--  <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1" value="{{$video->age_limit}}"> -->
+
+                                    <label for="datepicker" class="">{{tr('18_users')}} * </label>
+
+                                   <!--  <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1"> -->
+
+                                   <br>
+
+                                   <input type="checkbox" name="age_limit" value="1" @if($video->age_limit) checked @endif> {{tr('yes')}}
+
+
+                                    <p class="help-block">{{tr('age_limit_note')}}</p>
                                 </div>
                             </div>
 
@@ -144,7 +173,7 @@
                             </div>
 
 
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <div class="form-group" style="display: none;" id="publish_time_div">
                                     <label for="datepicker" class="">{{tr('publish_time')}} * </label>
 
@@ -162,7 +191,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="reviews" class="">{{tr('reviews')}} * </label>
-                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews" name="reviews">{{$video->reviews}}</textarea>
+                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews_textarea" name="reviews">{{$video->reviews}}</textarea>
                                 </div>
                             </div>
                         </div>

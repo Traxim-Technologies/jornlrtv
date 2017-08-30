@@ -62,7 +62,8 @@ if($model->data->is_banner) {
 
 @if($key > $default_img_status)
 
-<?php $pos = $key-$key_pos;  ?>
+<?php $pos = $key-$key_pos; 
+?>
 
 <input type="file"  style="display:none;" name="other_image_{{$key}}" id="img_{{$key}}" onchange="loadFile(this, 'preview_'+{{$key}}, {{$key}})" accept="image/png, image/jpeg">
 

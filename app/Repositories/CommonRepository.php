@@ -18,7 +18,9 @@ use App\UserPayment;
 use Auth;
 use Exception;
 use Setting;
+use ChannelSubscription;
 
+use App\Jobs\SubscriptionMail;
 
 class CommonRepository {
 
@@ -302,7 +304,8 @@ class CommonRepository {
                         'description'   => 'required',
                         'channel_id'   => 'required|integer|exists:channels,id',
                         'video'     => 'required|mimes:mkv,mp4,qt',
-                        'video_publish_type'=>'required'
+                        'video_publish_type'=>'required',
+                        // 'age_limit'=>'required|numeric'
                         ));
 
             if($validator->fails()) {
@@ -344,9 +347,26 @@ class CommonRepository {
 
                 $model->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $model->video_publish_type;
 
+                $model->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
+
                 if($model->id) {
 
                     Helper::delete_picture($model->video, "/uploads/videos/");
+
+                }
+
+                if($request->hasFile('subtitle')) {
+
+                    if ($model->id) {
+
+                        if ($model->subtitle) {
+
+                            Helper::delete_picture($model->subtitle, "/uploads/subtitles/");  
+
+                        }  
+                    }
+
+                    $model->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
 
                 }
 
@@ -517,6 +537,11 @@ class CommonRepository {
 
                     $model->save();
 
+
+                    // Channel Subscription email
+
+                    dispatch(new SubscriptionMail($model->channel_id, $model->id));
+
                     $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
                    
                 } else {
@@ -655,7 +680,6 @@ class CommonRepository {
 
     public static function upload_video_image($request) {
 
-
         $video = VideoTape::find($request->default_image_id);
 
         $video->title = $request->has('title') ? $request->title : $video->title;
@@ -774,5 +798,6 @@ class CommonRepository {
 
         return response()->json(['success'=> false, 'message'=>tr('something_error')]);
     }
+
 
 }

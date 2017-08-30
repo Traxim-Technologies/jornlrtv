@@ -1,15 +1,28 @@
 @extends('layouts.user.focused')
 
+@section('styles')
+
+<link rel="stylesheet" href="{{asset('admin-css/plugins/datepicker/datepicker3.css')}}">
+
+@endsection
+
 @section('content')
 
 <div class="form-background">
         <div class="common-form">
+
+            @include('notification.notify')
+        
+            <div class="signup-head">
+                <h3>{{tr('signup')}}</h3>
+            </div><!--end  of signup-head-->
+
+            @if((config('services.facebook.client_id') && config('services.facebook.client_secret'))
+            || (config('services.twitter.client_id') && config('services.twitter.client_secret'))
+            || (config('services.google.client_id') && config('services.google.client_secret')))
             
             <div class="social-form">
-                <div class="signup-head">
-                    <h3>{{tr('signup')}}</h3>
-                </div><!--end  of signup-head-->
-
+                
                 <div class="social-btn">
 
                     @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
@@ -61,13 +74,15 @@
 
             <p class="col-xs-12 divider1">OR</p>
 
+            @endif
+
             <div class="sign-up">
 
                 <form class="signup-form" role="form" method="POST" action="{{ url('/register') }}">
 
                     {!! csrf_field() !!}
 
-                    @if($errors->has('email') || $errors->has('name') || $errors->has('password_confirmation') ||$errors->has('password'))
+                    @if($errors->has('email') || $errors->has('name') || $errors->has('password_confirmation') ||$errors->has('password') || $errors->has('age_limit'))
                         <div data-abide-error="" class="alert callout">
                             <p>
                                 <i class="fa fa-exclamation-triangle"></i> 
@@ -78,6 +93,10 @@
 
                                     @if($errors->has('name')) 
                                         {{ $errors->first('name') }}
+                                    @endif
+
+                                    @if($errors->has('age_limit')) 
+                                        {{$errors->first('age_limit')}}
                                     @endif
 
                                     @if($errors->has('password')) 
@@ -100,6 +119,11 @@
                     <div class="form-group">
                         <label for="email">{{tr('email')}}</label>
                         <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobile">{{tr('dob')}}</label>
+                        <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off">
                     </div>
 
                     <div class="form-group">
@@ -129,7 +153,17 @@
 @section('scripts')
 
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
-<script>
+<script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
+
+<script type="text/javascript">
+
+
+    $('#dob').datepicker({
+        autoclose:true,
+        format : 'dd-mm-yyyy',
+        endDate: "dateToday"
+    });
+
     
     $(document).ready(function() {
 

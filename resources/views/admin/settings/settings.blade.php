@@ -95,20 +95,6 @@
 
                                 @if(Setting::get('is_subscription'))
 
-                                    <div class="col-lg-3">
-                                         <div class="form-group">
-                                            <label for="amount">{{tr('amount')}}</label>
-                                            <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label for="expiry_days">{{tr('expiry_days')}}</label>
-                                            <input type="text" class="form-control" value="{{Setting::get('expiry_days')  }}" name="expiry_days" id="expiry_days" placeholder="{{tr('expiry_days')}}" pattern="[0-9]{1,}">
-                                        </div>   
-                                    </div>
-
                                 @endif
 
                                  <div class="col-lg-3">
@@ -147,6 +133,22 @@
                                     <div class="form-group">
                                         <label for="upload_max_size">{{tr('max_upload_size_label')}}</label>
                                         <input type="text" class="form-control" name="upload_max_size" value="{{Setting::get('upload_max_size')  }}" id="upload_max_size" placeholder="{{tr('max_upload_size_label')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="payment_type">{{tr('payment_type')}}</label>
+
+                                        <?php $type = Setting::get('payment_type') ;?>
+                                        <select id="payment_type" name="payment_type" class="form-control">
+                                            <option value="">{{tr('payment_type')}}</option>
+                                            
+                                            <option value="paypal" @if($type == 'paypal') selected @endif>Paypal</option>
+
+                                            <option value="stripe" @if($type == 'stripe') selected @endif >Stripe</option>
+                                            
+                                        </select>
                                     </div>
                                 </div>
 
@@ -258,7 +260,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <h4>{{tr('twitter_settings')}}</h4>
+                                <!-- <h4>{{tr('twitter_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -278,7 +280,7 @@
                                         <input type="text" class="form-control" name="TWITTER_CALL_BACK" id="twitter_call_back" placeholder="{{tr('TWITTER_CALL_BACK')}}" value="{{$result['TWITTER_CALL_BACK']}}">
                                     </div>
                                 </div>
-                                <div class="clearfix"></div>
+                                <div class="clearfix"></div> -->
                                 <h4>{{tr('google_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">
@@ -316,7 +318,8 @@
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
-    
+                                <h4>{{tr('paypal_settings')}}</h4>
+                                <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="paypal_id">{{tr('PAYPAL_ID')}}</label>
@@ -333,6 +336,23 @@
                                     <div class="form-group">
                                         <label for="paypal_mode">{{tr('PAYPAL_MODE')}}</label>    
                                         <input type="text" class="form-control" name="PAYPAL_MODE" id="paypal_mode" placeholder="{{tr('PAYPAL_MODE')}}" value="{{$result['PAYPAL_MODE']}}">
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <h4>{{tr('stripe_settings')}}</h4>
+                                <hr>
+                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="paypal_id">{{tr('stripe_publishable_key')}}</label>
+                                        <input type="text" class="form-control" name="stripe_publishable_key" id="stripe_publishable_key" placeholder="{{tr('stripe_publishable_key')}}" value="{{Setting::get('stripe_publishable_key')}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="paypal_secret">{{tr('stripe_secret_key')}}</label>
+                                        <input type="text" class="form-control" name="stripe_secret_key" id="stripe_secret_key" placeholder="{{tr('stripe_secret_key')}}" value="{{Setting::get('stripe_secret_key')}}">
                                     </div>
                                 </div>
                             </div>

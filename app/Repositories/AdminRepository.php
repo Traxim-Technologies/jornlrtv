@@ -14,6 +14,7 @@ use App\VideoAd;
 use App\AdsDetail;
 use App\VideoTape;
 use App\AssignVideoAd;
+use App\Language;
 
 class AdminRepository {
 
@@ -378,4 +379,175 @@ class AdminRepository {
 
         return response()->json($response_array, 200);
     }
+
+
+    public static function languages_save($request) {
+
+        $validator = Validator::make($request->all(),[
+                'folder_name' => 'required|max:4',
+                'language'=>'required|max:64',
+                'auth_file'=> !($request->id) ? 'required' : '',
+                'messages_file'=>!($request->id) ? 'required' : '',
+                'pagination_file'=>!($request->id) ? 'required' : '',
+                'passwords_file'=>!($request->id) ? 'required' : '',
+                'validation_file'=>!($request->id) ? 'required' : '',
+        ]);
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return  ['success' => false , 'error' => $error_messages];
+
+        } else {
+
+
+            $model = ($request->id != '') ? Language::find($request->id) : new Language;
+
+            $lang = ($request->id != '') ? $model->folder_name : '';
+
+            $model->folder_name = $request->folder_name;
+
+            $model->language = $request->language;
+
+            $model->status = DEFAULT_TRUE;
+
+
+            if ($request->hasFile('auth_file')) {
+
+                 // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/auth.php');
+
+                $length = readFileLength($_FILES['auth_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean, 'auth.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->auth_file, 'auth.php');
+
+            }
+
+
+            if ($request->hasFile('messages_file')) {
+
+                 // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/messages.php');
+
+                $length = readFileLength($_FILES['messages_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean, 'messages.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->messages_file, 'messages.php');
+
+            }
+
+
+            if ($request->hasFile('pagination_file')) {
+
+                 // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/pagination.php');
+
+                $length = readFileLength($_FILES['pagination_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean, 'pagination.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->pagination_file, 'pagination.php');
+
+            }
+
+
+            if ($request->hasFile('passwords_file')) {
+
+                 // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/passwords.php');
+
+                $length = readFileLength($_FILES['passwords_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean , 'passwords.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->passwords_file, 'passwords.php');
+
+            }
+
+            if($request->hasFile('validation_file')) {
+
+                // Read File Length
+
+                $originallength = readFileLength(base_path().'/resources/lang/en/validation.php');
+
+                $length = readFileLength($_FILES['validation_file']['tmp_name']);
+
+                if ($originallength != $length) {
+                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                }
+
+                if ($model->id != '') {
+                    $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                    Helper::delete_language_files($lang, $boolean, 'validation.php');
+                }
+
+                Helper::upload_language_file($model->folder_name, $request->validation_file, 'validation.php');
+
+            } 
+
+            if ($request->id) {
+                if($lang != $request->folder_name)  {
+                    $current_path=base_path('resources/lang/'.$lang);
+                    $new_path=base_path('resources/lang/'.$request->folder_name);
+                    rename($current_path,$new_path);
+                }
+            }
+
+            $model->save();
+
+            if($model) {
+                $response_array = ['success' => true, 'message'=> $request->id != '' ? tr('language_update_success') : tr('language_create_success')];
+            } else {
+                $response_array = ['success' => false , 'error' => tr('something_error')];
+            }
+        }
+        return $response_array;
+    }
+
+    
 }

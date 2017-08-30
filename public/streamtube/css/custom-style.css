@@ -617,6 +617,7 @@ a:focus {
 .upload_a a {
 	text-decoration: none !important;
 	color: #333 !important;
+	text-transform: uppercase;
 }
 
 .st_photo_div {
@@ -646,3 +647,13 @@ a:focus {
 	text-transform: capitalize;
 }
 
+
+.subscribe_btn {
+	border-color: #ff0000 !important;
+	background: #ff0000 !important;
+	
+}
+
+.subscribe_btn a {
+	color: #fff !important;
+}

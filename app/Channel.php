@@ -38,6 +38,11 @@ class Channel extends Model
         return $this->hasMany('App\VideoTape');
     }
 
+
+    public function getChannelSubscribers() {
+        return $this->hasMany('App\ChannelSubscription');
+    }
+
     /**
      * Boot function for using with User Events
      *
@@ -55,6 +60,16 @@ class Channel extends Model
             if (count($model->getVideoTape) > 0) {
 
                 foreach ($model->getVideoTape as $key => $value) {
+
+                   $value->delete();    
+
+                }
+
+            }
+
+             if (count($model->getChannelSubscribers) > 0) {
+
+                foreach ($model->getChannelSubscribers as $key => $value) {
 
                    $value->delete();    
 

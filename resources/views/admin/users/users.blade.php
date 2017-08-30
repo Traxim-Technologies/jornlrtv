@@ -37,6 +37,7 @@
 						      @if(Setting::get('email_verify_control'))
 						      <th>{{tr('email_verification')}}</th>
 						      @endif
+						      <th>{{tr('status')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
@@ -77,6 +78,16 @@
 							      </td>
 
 							      @endif
+
+							      <td>
+							      		
+							      		@if($user->status)
+							      			<span class="label label-success">{{tr('approved')}}</span>
+							       		@else
+							       			<span class="label label-warning">{{tr('pending')}}</span>
+							       		@endif
+
+							      </td>
 							 
 							      <td>
             							<ul class="admin-action btn btn-default">

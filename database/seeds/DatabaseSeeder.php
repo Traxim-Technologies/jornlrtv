@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminDemoLoginSeeder::class);
         $this->call(VideoSettingsSeeder::class);
         $this->call(AddedMaxsizekeysInSettings::class);
+        $this->call(AddedLanguageControlInSettings::class);
+        $this->call(AddedStripeKeyInSettings::class);
+        $this->call(AddedAgeKeyInSettings::class);
     }
 }

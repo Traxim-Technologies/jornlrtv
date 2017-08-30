@@ -10,6 +10,12 @@
     <li class="active"><i class="fa fa-user-plus"></i> {{tr('add_user')}}</li>
 @endsection
 
+@section('styles')
+
+<link rel="stylesheet" href="{{asset('admin-css/plugins/datepicker/datepicker3.css')}}">
+
+@endsection
+
 @section('content')
 
 @include('notification.notify')
@@ -43,6 +49,15 @@
                                 <input type="text" required name="name" class="form-control" id="username" placeholder="{{tr('name')}}">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">{{tr('dob')}}</label>
+
+                            <div class="col-sm-10">
+                               <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off">
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                             <label for="password" class="col-sm-2 control-label">{{tr('password')}}</label>
@@ -84,9 +99,9 @@
                             <label for="mobile" class="col-sm-2 control-label">{{tr('picture')}}</label>
 
                             <div class="col-sm-3">
-                                <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" />
+                                <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" accept="image/jpeg, image/png" />
                                 <br>
-                                <img id="picture_preview" style="width: 150px;height: 150px;" src="{{asset('placeholder.png')}}" />
+                                <img id="picture_preview" style="width: 150px;height: 150px;" src="{{asset('placeholder.png')}}"/>
                             </div>
                         
                             
@@ -111,9 +126,21 @@
 
 @section('scripts')
 
+<script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
+
+
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
 <script>
     
+
+    $('#dob').datepicker({
+        autoclose:true,
+        format : 'dd-mm-yyyy',
+        endDate: "dateToday"
+    });
+
+
+
     $(document).ready(function() {
 
         var dMin = new Date().getTimezoneOffset();

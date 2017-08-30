@@ -30,6 +30,8 @@ use Exception;
 
 use Log;
 
+use App\Card;
+
 use App\Subscription;
 
 use App\Channel;
@@ -39,6 +41,10 @@ use App\VideoTape;
 use App\VideoTapeImage;
 
 use App\Repositories\CommonRepository as CommonRepo;
+
+use App\ChannelSubscription;
+
+use App\UserPayment;
 
 class UserController extends Controller {
 
@@ -55,7 +61,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list']]);
     }
 
     /**
@@ -70,6 +76,14 @@ class UserController extends Controller {
         
         $username = config('database.connections.mysql.username');
 
+        if (Auth::check()) {
+            
+            $request->request->add([ 
+                'id'=>\Auth::user()->id,
+                'age' => \Auth::user()->age_limit,
+            ]);   
+        }
+
         if($database && $username && Setting::get('installation_process') == 2) {
 
             counter('home');
@@ -80,18 +94,18 @@ class UserController extends Controller {
 
             if($id){
 
-                $wishlists  =  VideoRepo::wishlist($id,WEB);
+                $wishlists  =  VideoRepo::wishlist($request,WEB);
 
-                $watch_lists = VideoRepo::watch_list($id,WEB);  
+                $watch_lists = VideoRepo::watch_list($request,WEB);  
             }
 
             //dd($watch_lists);
             
-            $recent_videos = VideoRepo::recently_added(WEB);
+            $recent_videos = VideoRepo::recently_added($request, WEB);
 
-            $trendings = VideoRepo::trending(WEB);
+            $trendings = VideoRepo::trending($request, WEB);
             
-            $suggestions  = VideoRepo::suggestion_videos(WEB);
+            $suggestions  = VideoRepo::suggestion_videos($request, WEB);
 
             $channels = getChannels(WEB);
 
@@ -110,11 +124,19 @@ class UserController extends Controller {
         
     }
 
-    public function single_video(Request $request, $id) {
+    public function single_video(Request $request) {
 
         $request->request->add([ 
-            'admin_video_id' => $id,
+                'admin_video_id' => $request->id,
         ]);
+
+        if (Auth::check()) {
+
+            $request->request->add([ 
+                'age'=>Auth::user()->age_limit,
+            ]);
+
+        }
 
         $data = $this->UserAPI->getSingleVideo($request)->getData();
 
@@ -141,7 +163,11 @@ class UserController extends Controller {
                         ->with('videoStreamUrl', $response->videoStreamUrl)
                         ->with('hls_video' , $response->hls_video)
                         ->with('flaggedVideo', $response->flaggedVideo)
-                        ->with('ads', $response->ads);
+                        ->with('ads', $response->ads)
+                        ->with('subscribe_status', $response->subscribe_status)
+                        ->with('like_count',$response->like_count)
+                        ->with('dislike_count',$response->dislike_count)
+                        ->with('subscriberscnt', $response->subscriberscnt);
         } else {
             return back()->with('flash_error', $data->message);
         } 
@@ -152,10 +178,16 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function profile()
+    public function profile(Request $request)
     {
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
 
-        $wishlist = VideoRepo::wishlist(Auth::user()->id,WEB);
+        $wishlist = VideoRepo::wishlist($request,WEB);
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
@@ -167,10 +199,17 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function update_profile()
+    public function update_profile(Request $request)
     {
 
-        $wishlist = VideoRepo::wishlist(Auth::user()->id,WEB);
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
+
+        $wishlist = VideoRepo::wishlist($request,WEB);
 
         return view('user.account.edit-profile')->with('page' , 'profile')
                     ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
@@ -280,7 +319,14 @@ class UserController extends Controller {
 
     public function history(Request $request) {
 
-        $histories = VideoRepo::watch_list(Auth::user()->id,WEB);
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
+
+        $histories = VideoRepo::watch_list($request,WEB);
 
         return view('user.account.history')
                         ->with('page' , 'profile')
@@ -333,8 +379,15 @@ class UserController extends Controller {
     } 
 
     public function wishlist(Request $request) {
+
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
         
-        $videos = VideoRepo::wishlist(Auth::user()->id,WEB);
+        $videos = VideoRepo::wishlist($request,WEB);
 
         return view('user.account.wishlist')
                     ->with('page' , 'profile')
@@ -376,7 +429,52 @@ class UserController extends Controller {
 
     public function channel_videos($id) {
 
-        $channel = Channel::find($id);
+        $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                /*->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                ->where('channels.status', DEFAULT_TRUE)
+                ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                ->where('video_tapes.status', DEFAULT_TRUE)
+                ->groupBy('video_tapes.channel_id')*/
+                ->where('id', $id)
+                ->first();
+
+
+       /* if ($channel) {
+
+            if(Auth::check()) {
+
+                if ($channel->user_id != Auth::user()->id) {
+
+                    $age = Auth::user()->age_limit ? (Auth::user()->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+                    if ($video->age_limit > $age) {
+
+                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                    }
+
+                } else {
+
+                    if ($video->age_limit != 0) {
+
+                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                    }
+                }
+            } else {
+
+                if ($video->age_limit != 0) {
+
+                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+
+                }
+
+            }
+
+        }*/
+
 
         if ($channel) {
 
@@ -386,12 +484,26 @@ class UserController extends Controller {
 
             $payment_videos = VideoRepo::payment_videos($id, WEB, null);
 
+            $user_id = Auth::check() ? Auth::user()->id : '';
+
+            $subscribe_status = false;
+
+            if ($user_id) {
+
+                $subscribe_status = check_channel_status($user_id, $id);
+
+            }
+
+            $subscriberscnt = subscriberscnt($channel->id);
+
             return view('user.channels.index')
                         ->with('page' , 'channels')
                         ->with('subPage' , 'channels')
                         ->with('channel' , $channel)
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
-                        ->with('payment_videos', $payment_videos);
+                        ->with('payment_videos', $payment_videos)
+                        ->with('subscribe_status', $subscribe_status)
+                        ->with('subscriberscnt', $subscriberscnt);
         } else {
 
             return back()->with('flash_error', tr('something_error'));
@@ -484,7 +596,17 @@ class UserController extends Controller {
 
     public function trending(Request $request) {
 
-        $trending = VideoRepo::trending(WEB);
+        if (Auth::check()) {
+
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+                'age'=>\Auth::user()->age_limit,
+            ]);
+        }
+
+        $trending = VideoRepo::trending($request, WEB);
 
         return view('user.trending')->with('page', 'trending')
                                     ->with('videos',$trending);
@@ -613,10 +735,17 @@ class UserController extends Controller {
      *
      * @return spam videos
      */
-    public function spam_videos() {
+    public function spam_videos(Request $request) {
+
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
         // Get logged in user id
 
-        $model = $this->UserAPI->spam_videos(\Auth::user()->id, 12)->getData();
+        $model = $this->UserAPI->spam_videos($request, 12)->getData();
 
         // Return array of values
         return view('user.account.spam_videos')->with('model' , $model)
@@ -759,7 +888,10 @@ class UserController extends Controller {
 
         $response = CommonRepo::get_video_tape_images($id)->getData();
 
-        $view = \View::make('user.videos.select_image')->with('model', $response)->render();
+        $tape_images = VideoTapeImage::where('video_tape_id', $id)->get();
+
+        $view = \View::make('user.videos.select_image')->with('model', $response)
+            ->with('tape_images', $tape_images)->render();
 
         return response()->json(['path'=>$view, 'data'=>$response->data]);
 
@@ -843,4 +975,490 @@ class UserController extends Controller {
 
     }
 
+    public function subscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'user_id'     => 'required|exists:users,id',
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_error', $error_messages);
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->user_id)->where('channel_id',$request->channel_id)->first();
+
+            if (!$model) {
+
+                $model = new ChannelSubscription;
+
+                $model->user_id = $request->user_id;
+
+                $model->channel_id = $request->channel_id;
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->save();
+
+                return back()->with('flash_success', tr('channel_subscribed'));
+
+            } else {
+
+                return back()->with('flash_error', tr('already_channel_subscribed'));
+
+            }
+        }
+   
+    }
+
+    public function unsubscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'subscribe_id'     => 'required|exists:channel_subscriptions,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_error', $error_messages);
+
+        } else {
+
+            $model = ChannelSubscription::find($request->subscribe_id);
+
+            if ($model) {
+
+                $model->delete();
+
+                return back()->with('flash_success', tr('channel_unsubscribed'));
+
+            } else {
+
+                return back()->with('flash_error', tr('not_found'));
+
+            }
+        }
+
+    }
+
+    public function channel_list(Request $request){
+
+        $response = $this->UserAPI->channel_list($request)->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+
+    }
+
+    public function likeVideo(Request $request)  {
+        $request->request->add([
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+
+        $response = $this->UserAPI->likevideo($request)->getData();
+
+        // dd($response);
+        return response()->json($response);
+
+    }
+
+    public function disLikeVideo(Request $request) {
+
+        $request->request->add([ 
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+
+        $response = $this->UserAPI->dislikevideo($request)->getData();
+
+        return response()->json($response);
+
+    }
+
+    public function channel_subscribers(Request $request) {
+
+        $list = [];
+
+        $channel_id = $request->channel_id ? $request->channel_id : '';
+
+        $channel = null;
+
+        if ($channel_id) {
+
+            $list[] = $request->channel_id;
+
+            $channel = Channel::find($channel_id);
+
+        } else {
+
+            $channels = getChannels(Auth::user()->id);
+
+            foreach ($channels as $key => $value) {
+                $list[] = $value->id;
+            }
+        }
+
+        $subscribers = ChannelSubscription::whereIn('channel_subscriptions.channel_id', $list)
+                        ->select('channel_subscriptions.channel_id as channel_id',
+                                'channels.name as channel_name',
+                                'users.id as user_id',
+                                'users.name as user_name',
+                                'channel_subscriptions.id as subscriber_id',
+                                'channel_subscriptions.created_at as created_at')
+                        ->leftJoin('channels', 'channels.id', '=', 'channel_subscriptions.channel_id')
+                        ->leftJoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate();
+
+        return view('user.channels.subscribers')->with('page', 'channels')->with('subPage', 'subscribers')->with('subscribers', $subscribers)->with('channel_id', $channel_id)->with('channel', $channel);
+
+    }
+
+    public function card_details(Request $request) {
+
+        $cards = Card::where('user_id', Auth::user()->id)->get();
+
+        return view('user.account.cards')->with('page', 'account')->with('subPage', 'cards')->with('cards', $cards);
+    }
+
+
+
+
+        /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_card_add(Request $request) {
+
+        $last_four = substr($request->number, -4);
+
+        $stripe_secret_key = \Setting::get('stripe_secret_key');
+
+        $response = json_decode('{}');
+
+        if($stripe_secret_key) {
+
+            \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+        } else {
+
+            $response->success = false;
+            $response->message = 'Adding cards is not enabled on this application. Please contact administrator';
+
+            return back()->with('flash_errors', $response);
+        }
+
+        try {
+
+            // Get the key from settings table
+            
+            $customer = \Stripe\Customer::create([
+                    "card" => $request->stripeToken,
+                    "email" => \Auth::user()->email
+                ]);
+
+            if($customer) {
+
+                $customer_id = $customer->id;
+
+
+                $cards = new Card;
+                $cards->user_id = \Auth::user()->id;
+                $cards->customer_id = $customer_id;
+                $cards->last_four = $last_four;
+                $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                // Check is any default is available
+                $check_card = Card::where('user_id', \Auth::user()->id)->first();
+
+                if($check_card)
+                    $cards->is_default = 0;
+                else
+                    $cards->is_default = 1;
+                
+                $cards->save();
+
+                $user = User::find(\Auth::user()->id);
+
+                if($user && $cards->is_default) {
+
+                    $user->payment_mode = 'card';
+                    $user->card_id = $cards->id;
+                    $user->save();
+
+                }
+
+                $response_array = array('success' => true);
+
+                $response_code = 200;
+
+            } else {
+                $response->message('Could not create client ID');
+            }
+        
+        } catch(Exception $e) {
+
+            return back()->with('flash_error' , $e->getMessage());
+
+        }
+        
+        return back()->with('flash_success', 'Successfully Created');
+    }
+
+
+
+    public function payment_card_default(Request $request)
+    {
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+        ]);
+
+        $response = $this->UserAPI->default_card($request)->getData();
+
+        if($response->success) {
+            $message = tr('card_default_success');
+            $type = "flash_success";
+        } else {
+            $message = tr('unkown_error');
+            $type = "flash_error";
+        }
+
+        return back()->with($type, $message);
+    }
+
+    /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_card_delete(Request $request)
+    {
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+        ]);
+
+        $response = $this->UserAPI->delete_card($request)->getData();
+        
+        if($response->success) {
+
+            $message = tr('card_deleted');
+
+            $type = "flash_success";
+
+        } else {
+            $message = tr('unkown_error');
+            $type = "flash_error";
+        }
+
+        return back()->with($type, $message);
+    }
+
+    /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_update_default(Request $request) {
+
+        $this->validate($request, [
+                'payment_mode' => 'required',
+            ]);
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+        ]);        
+
+        $response = $this->UserAPI->payment_mode_update($request)->getData();
+
+        if($response->success) {
+            $message = tr('card_default_success');
+            $type = "flash_success";
+        } else {
+            $message = tr('unkown_error');
+            $type = "flash_error";
+        }
+
+        return back()->with($type, $message);
+    }
+
+    public function stripe_payment(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'subscription_id' => $request->subscription_id
+        ]);        
+
+        /*$response = $this->UserAPI->pay_video($request)->getData();*/
+
+
+        $validator = Validator::make($request->all(), [
+           // 'tour_id' => 'required|exists:tours,id',
+
+            'subscription_id' => 'required|exists:subscriptions,id',
+            ]);
+
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            // $response_array = array('success' => false , 'error' => $error_messages , 'error_code' => 101);
+
+             return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $subscription = Subscription::find($request->subscription_id);
+
+            if($subscription) {
+
+                $total = $subscription->amount;
+
+                $user = User::find($request->id);
+
+                $check_card_exists = User::where('users.id' , $request->id)
+                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                    ->where('cards.id' , $user->card_id)
+                                    ->where('cards.is_default' , DEFAULT_TRUE);
+
+                if($check_card_exists->count() != 0) {
+
+                    $user_card = $check_card_exists->first();
+
+                    // Get the key from settings table
+                    $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                    $customer_id = $user_card->customer_id;
+                
+                    if($stripe_secret_key) {
+
+                        \Stripe\Stripe::setApiKey($stripe_secret_key);
+                    } else {
+
+                        // $response_array = array('success' => false, 'error' => Helper::error_message(902) , 'error_code' => 902);
+
+                       // return response()->json($response_array , 200);
+
+                        return back()->with('flash_error', Helper::get_error_message(902));
+                    }
+
+                    try {
+
+                       $user_charge =  \Stripe\Charge::create(array(
+                          "amount" => $total * 100,
+                          "currency" => "usd",
+                          "customer" => $customer_id,
+                        ));
+
+                       $payment_id = $user_charge->id;
+                       $amount = $user_charge->amount/100;
+                       $paid_status = $user_charge->paid;
+
+                       if($paid_status) {
+
+
+                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                            if($user_payment) {
+
+                                $expiry_date = $user_payment->expiry_date;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                            } else {
+                                $user_payment = new UserPayment;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                            }
+
+
+                            $user_payment->payment_id  = $payment_id;
+                            $user_payment->user_id = $request->id;
+                            $user_payment->subscription_id = $request->subscription_id;
+                            $user_payment->status = 1;
+                            $user_payment->amount = $amount;
+                            $user_payment->save();
+
+
+                            $user->user_type = 1;
+                            $user->save();
+                            
+
+                            // $response_array = ['success' => true, 'message'=>tr('payment_success')];
+
+                            return back()->with('flash_success',tr('payment_success'));
+
+                        } else {
+
+                            // $response_array = array('success' => false, 'error' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                            // return response()->json($response_array , 200);
+
+                            return back()->with('flash_error', Helper::get_error_message(903));
+
+                        }
+                    
+                    } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                        Log::info(print_r($e,true));
+
+                        /*$response_array = array('success' => false , 'error' => Helper::get_error_message(903) ,'error_code' => 903);*/
+
+                        return back()->with('flash_error', Helper::get_error_message(903));
+
+                       // return response()->json($response_array , 200);
+                    
+                    }
+
+                } else {
+
+                    // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
+
+                    return back()->with('flash_error', Helper::get_error_message(901));
+                    
+                    //return response()->json($response_array , 200);
+                }
+
+            } else {
+
+                // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
+                return back()->with('flash_error', Helper::get_error_message(901));
+                
+                // return response()->json($response_array , 200);
+            }
+
+
+
+        }
+
+    }
+
+    public function subscribed_channels(Request $request) {
+
+        $request->request->add([ 
+            'user_id' => \Auth::user()->id,
+        ]);        
+
+        $response = $this->UserAPI->channel_list($request)->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+
+    }
 }

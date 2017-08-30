@@ -105,6 +105,18 @@ hr {
                                 <li class="list-group-item">
                                     <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('amount')}}</b> <a class="pull-right"> {{Setting::get('currency')}} {{$video->amount}}</a>
                                 </li>
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-stop margin-r-5"></i>{{tr('age_limit')}}</b> <a class="pull-right">{{$video->age_limit ? '18+' :  'All Users'}}&nbsp;</a>
+                                </li> 
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-thumbs-up margin-r-5"></i>{{tr('likes')}}</b> <a class="pull-right">{{$video->getScopeLikeCount->count()}}&nbsp;</a>
+                                </li> 
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-thumbs-down margin-r-5"></i>{{tr('dislikes')}}</b> <a class="pull-right">{{$video->getScopeDisLikeCount->count()}}&nbsp;</a>
+                                </li>                                
                             
                             </ul>
 
@@ -131,6 +143,13 @@ hr {
 
                                   <p style="margin-top: 10px;">{{$video->reviews}}.</p>
                             </div>
+
+
+                            <div class="col-lg-12">
+                                  <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('user_reviews')}}</strong>
+
+                                  <p style="margin-top: 10px;"><a href="{{route('admin.reviews', array('video_tape_id'=> $video->admin_video_id))}}"> {{tr('no_of_reviews')}} - {{$video->getScopeUserRatings()->count()}}.</a></p>
+                            </div>
                            
                          </div>
 
@@ -147,6 +166,10 @@ hr {
                         <div class="col-lg-6">
 
                             <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('full_video')}}</strong>
+
+                            <br>
+
+                             <b>{{tr('embed_link')}} : </b> <a href="{{route('embed_video', array('u_id'=>$video->unique_id))}}" target="_blank">{{route('embed_video', array('u_id'=>$video->unique_id))}}</a>
 
                             <div class="margin-t-10" style="margin-top:10px;">
                                 @if($video->video_upload_type == 1)
@@ -250,7 +273,13 @@ hr {
                             // autostart : true,
                             "sharing": {
                                 "sites": ["reddit","facebook","twitter"]
-                              }
+                              },
+
+                           tracks : [{
+                              file : "{{$video->subtitle}}",
+                              kind : "captions",
+                              default : true,
+                            }]
                         });
                     @else 
                         var videoPath = "{{$videoPath}}";
@@ -285,7 +314,13 @@ hr {
                             // autostart : true,
                             "sharing": {
                                 "sites": ["reddit","facebook","twitter"]
-                              }
+                              },
+
+                               tracks : [{
+                              file : "{{$video->subtitle}}",
+                              kind : "captions",
+                              default : true,
+                            }]
                         });
 
                         

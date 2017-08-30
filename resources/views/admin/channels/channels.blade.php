@@ -37,6 +37,7 @@
 						      <th>{{tr('user_name')}}</th>
 						      <th>{{tr('picture')}}</th>
 						      <th>{{tr('cover')}}</th>
+						      <th>{{tr('subscribers')}}</th>
 						      <th>{{tr('amount')}}</th>
 						      <th>{{tr('status')}}</th>
 						      <th>{{tr('action')}}</th>
@@ -57,6 +58,8 @@
 	                            	<td>
 	                                	<img style="height: 30px;" src="{{$channel->cover}}">
 	                            	</td>
+
+	                            	<td><a href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{$channel->getChannelSubscribers()->count()}}</a></td>
 
 	                            	<td>{{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}}</td>
 
@@ -92,6 +95,8 @@
                                                         <a role="menuitem" tabindex="-1" href="{{route('admin.channel.videos', $channel->id)}}">{{tr('videos')}}</a>
 
                                                     </li>
+
+                                                    <li role="presentation"><a href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{tr('subscribers')}}</a></li>
 
 													<li class="divider" role="presentation"></li>
 

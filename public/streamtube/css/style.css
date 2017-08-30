@@ -16,6 +16,29 @@
 	color: #cc181e;
 }
 
+html,body {
+
+	width: 100%;
+
+	height: 100%;
+
+	margin : 0;
+
+	padding: 0;
+
+}
+
+.wrap {
+
+position: relative;min-height: 100%
+
+}
+
+.footer_class {
+
+position: absolute; bottom: 0;width: 100%
+
+}
 
 body{
 	font-family: 'Roboto', sans-serif;
@@ -214,7 +237,8 @@ footer{
 .tube-image{
 	width: 100px;
     /*height: 45px;*/
-    margin-top: 10PX;
+    /*margin-top: 10PX;*/
+
 }
 .tube-image img{
 	max-width: 100px;
@@ -250,7 +274,7 @@ footer{
 }
 /*search bar css*/
 #custom-search-input{
- 	 width: 50%;
+ 	 width: 100%;
  	 float: left;
  	 margin-top: 1px;
  }
@@ -1720,6 +1744,7 @@ margin: 0px auto 35px;
 	max-height: 100px;
 	overflow-y: auto;
 	margin-bottom: 10px !important;
+	min-height: 100px;
 }
 .video_views {
 	color: #777;
@@ -1828,4 +1853,14 @@ margin: 0px auto 35px;
 .callout {
 
 	color: #ca1e04 !important;
+}
+
+.term {
+	margin-top: 5px !important;
+}
+
+
+
+.report_list{
+	padding: 5px 0px
 }
