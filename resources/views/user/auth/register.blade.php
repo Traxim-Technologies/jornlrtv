@@ -153,21 +153,27 @@
 @section('scripts')
 
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
+
 <script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
 
 <script type="text/javascript">
 
+    var date = new Date();
+    
+    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     $('#dob').datepicker({
         autoclose:true,
         format : 'dd-mm-yyyy',
-        endDate: "dateToday"
+        endDate: "dateToday",
+        startDate: today,
     });
 
     
     $(document).ready(function() {
 
         var dMin = new Date().getTimezoneOffset();
+
         var dtz = -(dMin/60);
         // alert(dtz);
         $("#userTimezone").val(jstz.determine().name());
