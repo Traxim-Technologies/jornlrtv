@@ -18,6 +18,7 @@ return array(
 	'mobile_banner_heading' => 'Special Collections',
 	'mobile_wishlist_heading' => 'Wishlist',
 	'mobile_trending_heading' => 'Trending',
+	'comment_note'=>'Note : Rating can give only one time to each User',
 	'subscription_details'=>'Subscription Details',
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'mobile_watch_again_heading' => 'Watch It Again',

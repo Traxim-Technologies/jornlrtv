@@ -427,6 +427,10 @@ textarea[name=comments] {
                                     </div>
 
                                     <div class="clearfix"></div>
+
+                                    <br>
+
+                                    <p class="small">{{tr('comment_note')}}</p>
                                     
                                     <div class="com-content">
                                         @if(Auth::check())
@@ -443,7 +447,9 @@ textarea[name=comments] {
 
                                                                 <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
 
+                                                                @if($comment_rating_status)
                                                                  <input id="rating_system" name="rating" type="number" class="rating comment_rating" min="1" max="5" step="1">
+                                                                 @endif
 
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
 
