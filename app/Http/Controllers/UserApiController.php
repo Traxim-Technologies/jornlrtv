@@ -1372,7 +1372,7 @@ class UserApiController extends Controller {
                 } 
             } else {
 
-                if ($video->age_limit != 0) {
+                if ($video->age_limit == 1) {
 
                     return response()->json(['success'=>false, 'message'=>tr('age_error')]);
 
@@ -1476,6 +1476,8 @@ class UserApiController extends Controller {
 
             $subscribe_status = DEFAULT_FALSE;
 
+            $comment_rating_status = DEFAULT_TRUE;
+
             if(\Auth::check()) {
 
                 $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$request->admin_video_id);
@@ -1483,6 +1485,13 @@ class UserApiController extends Controller {
                 $history_status = Helper::history_status(\Auth::user()->id,$request->admin_video_id);
 
                 $subscribe_status = check_channel_status(\Auth::user()->id, $video->channel_id);
+
+                $mycomment = UserRating::where('user_id', \Auth::user()->id)->where('video_tape_id', $request->admin_video_id)->first();
+
+                if ($mycomment) {
+
+                    $comment_rating_status = DEFAULT_FALSE;
+                }
 
             }
 
@@ -1505,7 +1514,7 @@ class UserApiController extends Controller {
                 'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
                 'like_count'=>$like_count,'dislike_count'=>$dislike_count,
                 'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
-                'subscriberscnt'=>$subscriberscnt,
+                'subscriberscnt'=>$subscriberscnt,'comment_rating_status'=>$comment_rating_status
                 ];
 
             return response()->json(['success'=>true, 'response_array'=>$response_array], 200);

@@ -267,7 +267,7 @@ class AdminController extends Controller {
 
             $validator = Validator::make( $request->all(), array(
                         'name' => 'required|max:255',
-                        'email' => 'required|email|max:255',
+                        'email' => 'required|email|max:255|unique:users,email,'.$request->id.',id',
                         'mobile' => 'required|digits_between:6,13',
                         'dob'=>'required',
                     )
@@ -276,7 +276,7 @@ class AdminController extends Controller {
         } else {
             $validator = Validator::make( $request->all(), array(
                     'name' => 'required|max:255',
-                    'email' => 'required|email|max:255|unique:users',
+                    'email' => 'required|email|max:255|unique:users,email,NULL,id',
                     'mobile' => 'required|digits_between:6,13',
                     'password' => 'required|min:6|confirmed',
                     'dob'=>'required',
@@ -754,7 +754,9 @@ class AdminController extends Controller {
 
         $response = CommonRepo::get_video_tape_images($id)->getData();
 
-        $view = \View::make('admin.videos.select_image')->with('model', $response)->render();
+        $tape_images = VideoTapeImage::where('video_tape_id', $id)->get();
+
+        $view = \View::make('admin.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
 
         return response()->json(['path'=>$view, 'data'=>$response->data]);
 

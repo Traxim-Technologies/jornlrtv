@@ -124,12 +124,15 @@ class UserController extends Controller {
         
     }
 
-    public function single_video(Request $request, $id) {
+    public function single_video(Request $request) {
+
+        $request->request->add([ 
+                'admin_video_id' => $request->id,
+        ]);
 
         if (Auth::check()) {
 
             $request->request->add([ 
-                'admin_video_id' => $id,
                 'age'=>Auth::user()->age_limit,
             ]);
 
@@ -164,7 +167,8 @@ class UserController extends Controller {
                         ->with('subscribe_status', $response->subscribe_status)
                         ->with('like_count',$response->like_count)
                         ->with('dislike_count',$response->dislike_count)
-                        ->with('subscriberscnt', $response->subscriberscnt);
+                        ->with('subscriberscnt', $response->subscriberscnt)
+                        ->with('comment_rating_status', $response->comment_rating_status);
         } else {
             return back()->with('flash_error', $data->message);
         } 
@@ -885,7 +889,10 @@ class UserController extends Controller {
 
         $response = CommonRepo::get_video_tape_images($id)->getData();
 
-        $view = \View::make('user.videos.select_image')->with('model', $response)->render();
+        $tape_images = VideoTapeImage::where('video_tape_id', $id)->get();
+
+        $view = \View::make('user.videos.select_image')->with('model', $response)
+            ->with('tape_images', $tape_images)->render();
 
         return response()->json(['path'=>$view, 'data'=>$response->data]);
 
