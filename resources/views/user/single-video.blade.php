@@ -427,6 +427,14 @@ textarea[name=comments] {
                                     </div>
 
                                     <div class="clearfix"></div>
+
+                                    <br>
+
+                                    @if(count($comments) > 0) 
+
+                                    <p class="small">{{tr('comment_note')}}</p>
+
+                                    @endif
                                     
                                     <div class="com-content">
                                         @if(Auth::check())
@@ -443,7 +451,9 @@ textarea[name=comments] {
 
                                                                 <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
 
+                                                                @if($comment_rating_status)
                                                                  <input id="rating_system" name="rating" type="number" class="rating comment_rating" min="1" max="5" step="1">
+                                                                 @endif
 
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
 
@@ -958,6 +968,46 @@ textarea[name=comments] {
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
                                       },
+                                       events : {
+
+                                        onComplete : function(event) {
+
+                                            console.log(jwplayer().getPosition());
+
+
+
+                                            if (playerInstance.getState() == 'complete') {
+
+                                               jQuery.ajax({
+                                                    url: "{{route('user.add.history')}}",
+                                                    type: 'post',
+                                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                                    success: function(data) {
+
+                                                       if(data.success == true) {
+
+                                                        console.log('Added to history');
+
+                                                        /*var watch_count = 0;
+                                                        var count = 0;
+                                                        watch_count = jQuery('#watch_count').text();
+                                                        var count = parseInt(watch_count) + 1;
+                                                        jQuery('#watch_count').text(count);
+
+                                                        console.log('Added to history');*/
+
+                                                       } else {
+                                                            console.log('Wrong...!');
+                                                       }
+                                                    }
+                                                });
+
+                                           }
+
+                                       }
+
+                                   },
+
                                     tracks : [{
                                       file : "{{$video->subtitle}}",
                                       kind : "captions",
@@ -1230,30 +1280,7 @@ textarea[name=comments] {
 
                            
                             
-                                jQuery.ajax({
-                                    url: "{{route('user.add.history')}}",
-                                    type: 'post',
-                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
-                                    success: function(data) {
-
-                                       if(data.success == true) {
-
-                                        console.log('Added to history');
-
-                                        /*var watch_count = 0;
-                                        var count = 0;
-                                        watch_count = jQuery('#watch_count').text();
-                                        var count = parseInt(watch_count) + 1;
-                                        jQuery('#watch_count').text(count);
-
-                                        console.log('Added to history');*/
-
-                                       } else {
-                                            console.log('Wrong...!');
-                                       }
-                                    }
-                                });
-                            
+                               
 
                         }
 

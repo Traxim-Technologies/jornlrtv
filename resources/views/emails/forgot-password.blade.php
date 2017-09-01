@@ -1,228 +1,769 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{{Setting::get('site_name')}}</title>
-    <style type="text/css">
 
-        body {
-            background-color: black;
-        }
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{Setting::get('site_name')}}</title>
+<style type="text/css">
+p {
+    margin: 10px 0;
+    padding: 0;
+}
+table {
+    border-collapse: collapse;
+}
+h1, h2, h3, h4, h5, h6 {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+img, a img {
+    border: 0;
+    height: auto;
+    outline: none;
+    text-decoration: none;
+}
+body, #bodyTable, #bodyCell {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.mcnPreviewText {
+    display: none !important;
+}
+#outlook a {
+    padding: 0;
+}
+img {
+    -ms-interpolation-mode: bicubic;
+}
+table {
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+}
+.ReadMsgBody {
+    width: 100%;
+}
+.ExternalClass {
+    width: 100%;
+}
+p, a, li, td, blockquote {
+    mso-line-height-rule: exactly;
+}
+a[href^=tel], a[href^=sms] {
+    color: inherit;
+    cursor: default;
+    text-decoration: none;
+}
+p, a, li, td, body, table, blockquote {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+.ExternalClass, .ExternalClass p, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass font {
+    line-height: 100%;
+}
+a[x-apple-data-detectors] {
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+.templateContainer {
+    max-width: 600px !important;
+}
+a.mcnButton {
+    display: block;
+}
+.mcnImage {
+    vertical-align: bottom;
+}
+.mcnTextContent {
+    word-break: break-word;
+}
+.mcnTextContent img {
+    height: auto !important;
+}
+.mcnDividerBlock {
+    table-layout: fixed !important;
+}
 
-        #outlook a {padding:0;}
-        body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
-        .ExternalClass {width:100%;}
-        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
-        #backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}
-        img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
-        a img {border:none;display:inline-block;}
-        .image_fix {display:block;}
+body, #bodyTable {
+    /*@editable*/background-color: #1F2934;
+}
 
-        h1, h2, h3, h4, h5, h6 {color: white !important;}
+#bodyCell {
+    /*@editable*/border-top: 0;
+}
 
-        h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: blue !important;}
+h1 {
+    /*@editable*/color: #202020;
+    /*@editable*/font-family: Georgia;
+    /*@editable*/font-size: 30px;
+    /*@editable*/font-style: normal;
+    /*@editable*/font-weight: normal;
+    /*@editable*/line-height: 125%;
+    /*@editable*/letter-spacing: normal;
+    /*@editable*/text-align: left;
+}
 
-        h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-            color: red !important;
-        }
+h2 {
+    /*@editable*/color: #202020;
+    /*@editable*/font-family: Helvetica;
+    /*@editable*/font-size: 24px;
+    /*@editable*/font-style: normal;
+    /*@editable*/font-weight: bold;
+    /*@editable*/line-height: 150%;
+    /*@editable*/letter-spacing: normal;
+    /*@editable*/text-align: center;
+}
 
-        h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-            color: purple !important;
-        }
+h3 {
+    /*@editable*/color: #989898;
+    /*@editable*/font-family: Helvetica;
+    /*@editable*/font-size: 24px;
+    /*@editable*/font-style: normal;
+    /*@editable*/font-weight: bold;
+    /*@editable*/line-height: 150%;
+    /*@editable*/letter-spacing: normal;
+    /*@editable*/text-align: center;
+}
 
-        table td {border-collapse: collapse;}
+h4 {
+    /*@editable*/color: #202020;
+    /*@editable*/font-family: Helvetica;
+    /*@editable*/font-size: 18px;
+    /*@editable*/font-style: normal;
+    /*@editable*/font-weight: bold;
+    /*@editable*/line-height: 200%;
+    /*@editable*/letter-spacing: normal;
+    /*@editable*/text-align: center;
+}
 
-        table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+#templatePreheader {
+    /*@editable*/background-color: #bf0b00;
+    /*@editable*/background-image: none;
+    /*@editable*/background-repeat: no-repeat;
+    /*@editable*/background-position: center;
+    /*@editable*/background-size: cover;
+    /*@editable*/border-top: 0;
+    /*@editable*/border-bottom: 0;
+    /*@editable*/padding-top: 0px;
+    /*@editable*/padding-bottom: 15px;
+}
 
-        a {color: #000;}
+#templatePreheader .mcnTextContent, #templatePreheader .mcnTextContent p {
+    /*@editable*/color: #656565;
+    /*@editable*/font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+    /*@editable*/font-size: 12px;
+    /*@editable*/line-height: 150%;
+    /*@editable*/text-align: left;
+}
 
-        @media only screen and (max-device-width: 480px) {
+#templatePreheader .mcnTextContent a, #templatePreheader .mcnTextContent p a {
+    /*@editable*/color: #656565;
+    /*@editable*/font-weight: normal;
+    /*@editable*/text-decoration: underline;
+}
 
-            a[href^="tel"], a[href^="sms"] {
-                text-decoration: none;
-                color: black; /* or whatever your want */
-                pointer-events: none;
-                cursor: default;
-            }
+#templateHeader {
+    /*@editable*/background-color: #373737;
+    /*@editable*/background-image: url("https://gallery.mailchimp.com/8d6214bae878ba445c5fcda7a/images/b933391a-6e44-4ef2-b16f-dd52fcdacac0.jpg");
+    /*@editable*/background-repeat: no-repeat;
+    /*@editable*/background-position: center;
+    /*@editable*/background-size: cover;
+    /*@editable*/border-top: 0;
+    /*@editable*/border-bottom: 0;
+    /*@editable*/padding-top: 60px;
+    /*@editable*/padding-bottom: 60px;
+}
 
-            .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-                text-decoration: default;
-                color: orange !important; /* or whatever your want */
-                pointer-events: auto;
-                cursor: default;
-            }
-        }
+#templateHeader .mcnTextContent, #templateHeader .mcnTextContent p {
+    /*@editable*/color: #202020;
+    /*@editable*/font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+    /*@editable*/font-size: 18px;
+    /*@editable*/line-height: 150%;
+    /*@editable*/text-align: left;
+}
 
+#templateHeader .mcnTextContent a, #templateHeader .mcnTextContent p a {
+    /*@editable*/color: #202020;
+    /*@editable*/font-weight: normal;
+    /*@editable*/text-decoration: underline;
+}
 
-        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-            a[href^="tel"], a[href^="sms"] {
-                text-decoration: none;
-                color: blue; /* or whatever your want */
-                pointer-events: none;
-                cursor: default;
-            }
+#templateBody {
+    /*@editable*/background-color: #373737;
+    /*@editable*/background-image: none;
+    /*@editable*/background-repeat: no-repeat;
+    /*@editable*/background-position: center;
+    /*@editable*/background-size: cover;
+    /*@editable*/border-top: 0;
+    /*@editable*/border-bottom: 0;
+    /*@editable*/padding-top: 20px;
+    /*@editable*/padding-bottom: 20px;
+}
 
-            .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-                text-decoration: default;
-                color: orange !important;
-                pointer-events: auto;
-                cursor: default;
-            }
-        }
+#templateBody .mcnTextContent, #templateBody .mcnTextContent p {
+    /*@editable*/color: #666666;
+    /*@editable*/font-family: Georgia;
+    /*@editable*/font-size: 16px;
+    /*@editable*/line-height: 150%;
+    /*@editable*/text-align: center;
+}
 
-        p {
-            margin:0;
-            color:#FFF;
-            font-family:Helvetica, Arial, sans-serif;
-            font-size:16px;
-            line-height:160%;
-        }
-        a.link2{
-            text-decoration:none;
-            font-family:Helvetica, Arial, sans-serif;
-            font-size:16px;
-            color:#fff;
-            border-radius:4px;
-        }
-        h2{
-            color:#FFF;
-            font-family:Helvetica, Arial, sans-serif;
-            font-size:22px;
-            font-weight: normal;
-        }
+#templateBody .mcnTextContent a, #templateBody .mcnTextContent p a {
+    /*@editable*/color: #999999;
+    /*@editable*/font-weight: normal;
+    /*@editable*/text-decoration: underline;
+}
 
-        .bgItem{
-            background:#cf4545;
-        }
-        .bgBody{
-            background:#ffffff;
-        }
+#templateColumns {
+    /*@editable*/background-color: #6d7d81;
+    /*@editable*/background-image: none;
+    /*@editable*/background-repeat: no-repeat;
+    /*@editable*/background-position: center;
+    /*@editable*/background-size: cover;
+    /*@editable*/border-top: 0;
+    /*@editable*/border-bottom: 0;
+    /*@editable*/padding-top: 0px;
+    /*@editable*/padding-bottom: 0px;
+}
 
-        .table-full{
-            height:100%;
-        }
+#templateColumns .columnContainer .mcnTextContent, #templateColumns .columnContainer .mcnTextContent p {
+    /*@editable*/color: #202020;
+    /*@editable*/font-family: Helvetica;
+    /*@editable*/font-size: 16px;
+    /*@editable*/line-height: 100%;
+    /*@editable*/text-align: center;
+}
 
-    </style>
+#templateColumns .columnContainer .mcnTextContent a, #templateColumns .columnContainer .mcnTextContent p a {
+    /*@editable*/color: #202020;
+    /*@editable*/font-weight: normal;
+    /*@editable*/text-decoration: underline;
+}
 
-<script type="colorScheme" class="swatch active">
-  {
-    "name":"Default",
-    "bgBody":"ffffff",
-    "link":"f2f2f2",
-    "color":"555555",
-    "bgItem":"F4A81C",
-    "title":"181818"
-  }
-</script>
+#templateFooter {
+    /*@editable*/background-color: #1F2934;
+    /*@editable*/background-image: none;
+    /*@editable*/background-repeat: no-repeat;
+    /*@editable*/background-position: center;
+    /*@editable*/background-size: cover;
+    /*@editable*/border-top: 0;
+    /*@editable*/border-bottom: 0;
+    /*@editable*/padding-top: 30px;
+    /*@editable*/padding-bottom: 20px;
+}
 
+#templateFooter .mcnTextContent, #templateFooter .mcnTextContent p {
+    /*@editable*/color: #FFFFFF;
+    /*@editable*/font-family: Helvetica;
+    /*@editable*/font-size: 12px;
+    /*@editable*/line-height: 150%;
+    /*@editable*/text-align: center;
+}
+
+#templateFooter .mcnTextContent a, #templateFooter .mcnTextContent p a {
+    /*@editable*/color: #FFFFFF;
+    /*@editable*/font-weight: normal;
+    /*@editable*/text-decoration: none;
+    /*@editable*/cursor:pointer;
+}
+.footer-menu li {
+    border-left: 1px solid #fff;
+    display: inline-block;
+    margin-right: 40px;
+    padding-left: 10px;
+    text-decoration: none;
+}
+@media only screen and (min-width:768px) {
+.templateContainer {
+    width: 600px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+body, table, td, p, a, li, blockquote {
+    -webkit-text-size-adjust: none !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+body {
+    width: 100% !important;
+    min-width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.columnWrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnImage {
+    width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnCartContainer, .mcnCaptionTopContent, .mcnRecContentContainer, .mcnCaptionBottomContent, .mcnTextContentContainer, .mcnBoxedTextContentContainer, .mcnImageGroupContentContainer, .mcnCaptionLeftTextContentContainer, .mcnCaptionRightTextContentContainer, .mcnCaptionLeftImageContentContainer, .mcnCaptionRightImageContentContainer, .mcnImageCardLeftTextContentContainer, .mcnImageCardRightTextContentContainer {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnBoxedTextContentContainer {
+    min-width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnImageGroupContent {
+    padding: 9px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnCaptionLeftContentOuter .mcnTextContent, .mcnCaptionRightContentOuter .mcnTextContent {
+    padding-top: 9px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnImageCardTopImageContent, .mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent {
+    padding-top: 18px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnImageCardBottomImageContent {
+    padding-bottom: 9px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnImageGroupBlockInner {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnImageGroupBlockOuter {
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnTextContent, .mcnBoxedTextContentColumn {
+    padding-right: 18px !important;
+    padding-left: 18px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcnImageCardLeftImageContent, .mcnImageCardRightImageContent {
+    padding-right: 18px !important;
+    padding-bottom: 0 !important;
+    padding-left: 18px !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+.mcpreview-image-uploader {
+    display: none !important;
+    width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+h1 {
+    /*@editable*/font-size: 22px !important;
+    /*@editable*/line-height: 125% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+h2 {
+    /*@editable*/font-size: 20px !important;
+    /*@editable*/line-height: 125% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+h3 {
+    /*@editable*/font-size: 18px !important;
+    /*@editable*/line-height: 125% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+h4 {
+    /*@editable*/font-size: 16px !important;
+    /*@editable*/line-height: 150% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+.mcnBoxedTextContentContainer .mcnTextContent, .mcnBoxedTextContentContainer .mcnTextContent p {
+    /*@editable*/font-size: 14px !important;
+    /*@editable*/line-height: 150% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+#templatePreheader {
+    /*@editable*/display: block !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+#templatePreheader .mcnTextContent, #templatePreheader .mcnTextContent p {
+    /*@editable*/font-size: 14px !important;
+    /*@editable*/line-height: 150% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+#templateHeader .mcnTextContent, #templateHeader .mcnTextContent p {
+    /*@editable*/font-size: 16px !important;
+    /*@editable*/line-height: 150% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+#templateBody .mcnTextContent, #templateBody .mcnTextContent p {
+    /*@editable*/font-size: 16px !important;
+    /*@editable*/line-height: 150% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+#templateColumns .columnContainer .mcnTextContent, #templateColumns .columnContainer .mcnTextContent p {
+    /*@editable*/font-size: 16px !important;
+    /*@editable*/line-height: 150% !important;
+}
+}
+
+@media only screen and (max-width: 480px) {
+
+#templateFooter .mcnTextContent, #templateFooter .mcnTextContent p {
+    /*@editable*/font-size: 14px !important;
+    /*@editable*/line-height: 150% !important;
+}
+}
+</style>
 </head>
-<body >
-    <!-- Wrapper/Container Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
-    <table style="background-color: black;" cellpadding="0" width="100%" cellspacing="0" border="0" id="backgroundTable" class='bgBody table-full'>
-        <tr>
-            <td>
-
-                <!-- Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. -->
-
-                <table cellpadding="0" class="table-full" cellspacing="0" border="0" align="center" width="100%" style="border-collapse:collapse;">
-                    <tr>
-                        <td class='movableContentContainer'>
-
-                            <div class='movableContent'>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="600">
-                                    <tr height="40">
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                    </tr>
+<body>
+<!--*|IF:MC_PREVIEW_TEXT|*--> 
+<!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;"></span><!--<![endif]--> 
+<!--*|END:IF|*-->
+<center>
+  <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+    <tr>
+      <td align="center" valign="top" id="bodyCell"><!-- BEGIN TEMPLATE // -->
+        
+        <table border="0" cellpadding="0" cellspacing="0" width="600px">
+          <tr>
+            <td align="center" valign="top" id="templatePreheader"><!--[if gte mso 9]>
+                                    <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
                                     <tr>
-                                        <td width="200" valign="top">&nbsp;</td>
-                                        <td width="200" valign="top" align="center">
-                                            <div class="contentEditableContainer contentTextEditable">
-                                                <div class="contentEditable" >
-                                                    <img src="@if(Setting::get('site_logo')) {{Setting::get('site_logo' )}} @else {{ asset('logo.png')}} @endif" width="155" height='155' alt='Logo'  data-default="placeholder" />
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td width="200" valign="top">&nbsp;</td>
-                                    </tr>
-                                    <tr height="25">
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class='movableContent'>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="600">
-                                    <tr>
-                                        <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:25px;">
-                                            <div class="contentEditableContainer contentTextEditable">
-                                                <div class="contentEditable" >
-                                                    <h2 >Hi @if(isset($email_data))
-                                                                @if(isset($email_data['user']) )
-                                                                    {{$email_data['user']->name}}!
-
-                                                                @endif
-                                                            @endif</h2>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="100">&nbsp;</td>
-                                        <td width="400" align="center" style="padding-bottom:5px;">
-                                            <div class="contentEditableContainer contentTextEditable">
-                                                <div class="contentEditable" >
-                                                    <p >
-                                                        You recently requested to reset password for your {{Setting::get('site_name' , tr('site_name'))}} account.
-                                                    </p>
-                                                    <br />
-
-                                                    <p>Your Email : @if(isset($email_data))  @if(isset($email_data['user'])) {{$email_data['user']->email}}@endif @endif</p>
-
-                                                    <p>Your Password : @if(isset($email_data))  @if(isset($email_data['user'])){{$email_data['password']}} @endif @endif</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td width="100">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class='movableContent'>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="600">
-                                    <tr>
-                                        <td width="100">&nbsp;</td>
-                                        <td width="400" align="center" style="padding-top:25px;padding-bottom:115px;">
-                                            <table cellpadding="0" cellspacing="0" border="0" align="center" width="200" height="50">
-                                                <tr>
-                                                    <td bgcolor="#cf4545" align="center" style="border-radius:4px;" width="200" height="50">
-                                                        <div class="contentEditableContainer contentTextEditable">
-                                                            <div class="contentEditable" >
-                                                                <a target='_blank' href="{{route('user.dashboard')}}" style="color: #FFF;text-decoration: none" class='link2'>Visit our Website</a>
-                                                            </div>
-                                                        </div>
-
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td width="100">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
+                                    <td align="center" valign="top" width="600" style="width:600px;">
+                                    <![endif]-->
+              
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                <tr>
+                  <td valign="top" class="preheaderContainer"><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tbody class="mcnTextBlockOuter">
+                        <tr>
+                          <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top"><!--[if mso]>
+                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+                <tr>
+                <![endif]--> 
+                            
+                            <!--[if mso]>
+                <td valign="top" width="600" style="width:600px;">
+                <![endif]-->
+                            
+                            <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody>
+                                <tr>
+                                  <td class="mcnTextContent" style="padding: 0px 18px 9px; text-align: center;" valign="top"></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            
+                            <!--[if mso]>
+                </td>
+                <![endif]--> 
+                            
+                            <!--[if mso]>
+                </tr>
                 </table>
-                    <!-- END BODY -->
+                <![endif]--></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tbody class="mcnImageBlockOuter">
+                        <tr>
+                          <td style="padding:0px" class="mcnImageBlockInner" valign="top"><table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody>
+                                <tr>
+                                  <td class="mcnImageContent" style="padding-right: 0px; padding-left: 0px; padding-top: 0; padding-bottom: 0; text-align:center;" valign="top">
+                                    <img alt="" src="{{Setting::get('site_logo', asset('logo.png'))}}" style="max-width:172px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage" width="172" align="middle"></td>
+                                </tr>
+                              </tbody>
+                            </table></td>
+                        </tr>
+                      </tbody>
+                    </table></td>
+                </tr>
+              </table>
+              
+              <!--[if gte mso 9]>
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    <![endif]--></td>
+          </tr>
+          <tr>
+            <td align="center" valign="top" id="templateHeader"><!--[if gte mso 9]>
+                                    <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+                                    <tr>
+                                    <td align="center" valign="top" width="600" style="width:600px;">
+                                    <![endif]-->
+              
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                <tr>
+                  <td valign="top" class="headerContainer"><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tbody class="mcnTextBlockOuter">
+                        <tr>
+                          <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top"><!--[if mso]>
+                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+                <tr>
+                <![endif]--> 
+                            
+                            <!--[if mso]>
+                <td valign="top" width="600" style="width:600px;">
+                <![endif]-->
+                            
+                            <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody>
+                                <tr>
+                                  <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top"><h1><span style="color:#FFFFFF"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif"><span style="font-size:52px"><strong>It's easy</strong></span><br>
+                                      <span style="font-size:32px">to start<br>
+                                      enjoying </span></span><span style="font-size:32px">{{Setting::get('site_name' , tr('site_name'))}}</span></span></h1>
+                                      <br>
+                                      </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            
+                            <!--[if mso]>
+                </td>
+                <![endif]--> 
+                            
+                            <!--[if mso]>
+                </tr>
+                </table>
+                <![endif]--></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tbody class="mcnButtonBlockOuter">
+                        <tr>
+                          <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:18px;" class="mcnButtonBlockInner" valign="top" align="left"><table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #BF0B00;" cellspacing="0" cellpadding="0" border="0">
+                              <tbody>
+                                <tr>
+                                  <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " title="JOIN FREE FOR MONTH"  target='_blank' href="{{route('user.dashboard')}}" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">
+                                      Visit our Website
+                                  </a></td>
+                                </tr>
+                              </tbody>
+                            </table></td>
+                        </tr>
+                      </tbody>
+                    </table></td>
+                </tr>
+              </table>
+              
+              <!--[if gte mso 9]>
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    <![endif]--></td>
+          </tr>
+          <tr>
+            <td align="center" valign="top" id="templateBody"><!--[if gte mso 9]>
+                                    <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+                                    <tr>
+                                    <td align="center" valign="top" width="600" style="width:600px;">
+                                    <![endif]-->
+              
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                <tr>
+                  <td valign="top" class="bodyContainer"><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tbody class="mcnTextBlockOuter">
+                        <tr>
+                          <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top"><!--[if mso]>
+                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+                <tr>
+                <![endif]--> 
+                            
+                            <!--[if mso]>
+                <td valign="top" width="600" style="width:600px;">
+                <![endif]-->
+                            
+                            <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody>
+                                <tr>
+                                  <td class="mcnTextContent" style="padding: 0px 18px 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-style: normal; font-weight: normal; line-height: 150%; text-align: center;" valign="top"><h2 class="null" style="text-align: center;"><span style="font-size:24px"><span style="color: #FFFFFF;"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif">"Welcome to {{Setting::get('site_name' , tr('site_name'))}} and thanks for signing up! and to let you know we're here to answer any questions."</span></span></span></h2>
+                                  <br>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            
+                            <!--[if mso]>
+                </td>
+                <![endif]--> 
+                            
+                            <!--[if mso]>
+                </tr>
+                </table>
+                <![endif]--></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                     
+                    <table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tbody class="mcnButtonBlockOuter">
+                        <tr>
+                          <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:18px;" class="mcnButtonBlockInner" valign="top" align="center"><table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #BF0B00;" cellspacing="0" cellpadding="0" border="0">
+                              <tbody>
+                                <tr>
+                                  <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center">
+                                       <p style="color: #fff">
+                                            You recently requested to reset password for your {{Setting::get('site_name' , tr('site_name'))}} account.
+                                        </p>
+                                        <br />
 
-            </td>
-        </tr>
-    </table>
-    <!-- End of wrapper table -->
+                                        <p style="color: #fff;">Your Email : @if(isset($email_data))  @if(isset($email_data['user'])) <span style="color: #fff !important;">{{$email_data['user']->email}}</span>@endif @endif</p>
+
+                                        <p style="color: #fff">Your Password : @if(isset($email_data))  @if(isset($email_data['user'])){{$email_data['password']}} @endif @endif</p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    
+                    </td>
+                </tr>
+              </table>
+              
+              <!--[if gte mso 9]>
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    <![endif]--></td>
+          </tr>
+          <tr>
+            <td align="center" valign="top" id="templateColumns"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                <tr>
+                  <td valign="top"><!--[if gte mso 9]>
+                                                <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+                                                <tr>
+                                                <td align="center" valign="top" width="200" style="width:200px;">
+                                                <![endif]-->
+                    
+                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="200" class="columnWrapper">
+                      <tr>
+                        <td valign="top" class="columnContainer"></td>
+                      </tr>
+                    </table>
+                    
+                    <!--[if gte mso 9]>
+                                                </td>
+                                                <td align="center" valign="top" width="200" style="width:200px;">
+                                                <![endif]--><!--[if gte mso 9]>
+                                                </td>
+                                                <td align="center" valign="top" width="200" style="width:200px;">
+                                                <![endif]-->
+                    
+                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="200" class="columnWrapper">
+                      <tr>
+                        <td valign="top" class="columnContainer"></td>
+                      </tr>
+                    </table>
+                    
+                    <!--[if gte mso 9]>
+                                                </td>
+                                                </tr>
+                                                </table>
+                                                <![endif]--></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td align="center" valign="top" id="templateFooter"><!--[if gte mso 9]>
+                                    <table align="center" border="0" cellspacing="0" cellp background="white"adding="0" width="600" style="width:600px;">
+                                    <tr>
+                                    <td align="center" valign="top" width="600" style="width:600px;">
+                                    <![endif]-->
+              
+                            <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                              <tbody>
+                                <tr>
+                                  <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">Copyright © All rights reserved.</td>
+                                  
+                                </tr>
+                                <tr>
+                                    <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
+                                    <!-- <ul class="footer-menu">
+                                        <li><a>My Account</a></li>
+                                        <li><a>Terms</a></li>
+                                    </ul> -->
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+              
+              <!--[if gte mso 9]>
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    <![endif]--></td>
+          </tr>
+        </table>
+        
+        <!-- // END TEMPLATE --></td>
+    </tr>
+  </table>
+</center>
 </body>
 </html>
+
