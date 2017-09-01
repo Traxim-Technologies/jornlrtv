@@ -163,9 +163,9 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <h2 >Hi 
-                                                    	@if(isset($email_data['name']))
-                                                    		{{$email_data['name']}}! 
-                                                    	@endif
+                                                        @if(isset($email_data['name']))
+                                                            {{$email_data['name']}}! 
+                                                        @endif
                                                     </h2>
                                                 </div>
                                             </div>
@@ -177,7 +177,7 @@
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
                                                     <p >
-                                                    	Your Premium pack will expiry on @if(isset($email_data['expiry_date'])) {{$email_data['expiry_date']}} @endif.
+                                                        Your Premium pack will expiry on @if(isset($email_data['expiry_date'])) {{$email_data['expiry_date']}} @endif.
                                                     </p>
                                                     <br />
                                                     <p> Please re-pay and emjoy the videos!!!</p>

@@ -41,7 +41,7 @@ return array(
 	'stripe_secret_key'=>'Stripe Secret Key',
 	'failed_to_upload'=>'Failed To Upload, Your File length is different from original File Length',
 	'min_age_error'=>'Age should be minimum 16 Years Old',
-	'registration_success'=>'Registration completed successfully, please Login and Continue',
+	'registration_success'=>'Registration completed successfully',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',
 	'age_error'=>'Sorry, You are not eligible to see the video',
