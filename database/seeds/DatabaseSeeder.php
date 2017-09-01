@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedLanguageControlInSettings::class);
         $this->call(AddedStripeKeyInSettings::class);
         $this->call(AddedAgeKeyInSettings::class);
+        $this->call(RegisterAgeLimitSeeder::class);
     }
 }

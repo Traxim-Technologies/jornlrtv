@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="mobile">{{tr('dob')}}</label>
+                        <label for="dob">{{tr('dob')}}</label>
                         <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off">
                     </div>
 
@@ -158,19 +158,19 @@
 
 <script type="text/javascript">
 
-    var date = new Date();
-    
-    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-    $('#dob').datepicker({
-        autoclose:true,
-        format : 'dd-mm-yyyy',
-        // endDate: "dateToday",
-        startDate: today
-    });
-
-    
     $(document).ready(function() {
+
+        var max_age_limit = "{{Setting::get('max_register_age_limit' , 18)}}";
+
+        max_age_limit = max_age_limit ? "-"+max_age_limit+"y" : "-15y"
+
+        $('#dob').datepicker({
+            autoclose:true,
+            format : 'dd-mm-yyyy',
+            endDate: max_age_limit
+        
+        });
+
 
         var dMin = new Date().getTimezoneOffset();
 
