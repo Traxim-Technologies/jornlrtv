@@ -663,7 +663,7 @@ h4 {
                           <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:18px;" class="mcnButtonBlockInner" valign="top" align="center"><table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #BF0B00;" cellspacing="0" cellpadding="0" border="0">
                               <tbody>
                                 <tr>
-                                  <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " href="{{ $link = url('password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}" target="_blank" style="font-weight: normal;letter-spacing: 2px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">>Reset Now</a>
+                                  <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " href="{{ $link = url('password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}" target="_blank" style="font-weight: normal;letter-spacing: 2px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Reset Now</a>
 
                                   </td>
                                 </tr>
