@@ -430,7 +430,11 @@ textarea[name=comments] {
 
                                     <br>
 
+                                    @if(count($comments) > 0) 
+
                                     <p class="small">{{tr('comment_note')}}</p>
+
+                                    @endif
                                     
                                     <div class="com-content">
                                         @if(Auth::check())
