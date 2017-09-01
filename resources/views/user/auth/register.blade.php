@@ -170,14 +170,6 @@
             endDate: max_age_limit,
         });
 
-        $('#dob').datepicker({
-            autoclose:true,
-            format : 'dd-mm-yyyy',
-            endDate: max_age_limit
-        
-        });
-
-
         var dMin = new Date().getTimezoneOffset();
 
         var dtz = -(dMin/60);
