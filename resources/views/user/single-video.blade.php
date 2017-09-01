@@ -968,6 +968,46 @@ textarea[name=comments] {
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
                                       },
+                                       events : {
+
+                                        onComplete : function(event) {
+
+                                            console.log(jwplayer().getPosition());
+
+
+
+                                            if (playerInstance.getState() == 'complete') {
+
+                                               jQuery.ajax({
+                                                    url: "{{route('user.add.history')}}",
+                                                    type: 'post',
+                                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                                    success: function(data) {
+
+                                                       if(data.success == true) {
+
+                                                        console.log('Added to history');
+
+                                                        /*var watch_count = 0;
+                                                        var count = 0;
+                                                        watch_count = jQuery('#watch_count').text();
+                                                        var count = parseInt(watch_count) + 1;
+                                                        jQuery('#watch_count').text(count);
+
+                                                        console.log('Added to history');*/
+
+                                                       } else {
+                                                            console.log('Wrong...!');
+                                                       }
+                                                    }
+                                                });
+
+                                           }
+
+                                       }
+
+                                   },
+
                                     tracks : [{
                                       file : "{{$video->subtitle}}",
                                       kind : "captions",
@@ -1240,30 +1280,7 @@ textarea[name=comments] {
 
                            
                             
-                                jQuery.ajax({
-                                    url: "{{route('user.add.history')}}",
-                                    type: 'post',
-                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
-                                    success: function(data) {
-
-                                       if(data.success == true) {
-
-                                        console.log('Added to history');
-
-                                        /*var watch_count = 0;
-                                        var count = 0;
-                                        watch_count = jQuery('#watch_count').text();
-                                        var count = parseInt(watch_count) + 1;
-                                        jQuery('#watch_count').text(count);
-
-                                        console.log('Added to history');*/
-
-                                       } else {
-                                            console.log('Wrong...!');
-                                       }
-                                    }
-                                });
-                            
+                               
 
                         }
 
