@@ -165,8 +165,8 @@
     $('#dob').datepicker({
         autoclose:true,
         format : 'dd-mm-yyyy',
-        endDate: "dateToday",
-        startDate: today,
+        // endDate: "dateToday",
+        startDate: today
     });
 
     
