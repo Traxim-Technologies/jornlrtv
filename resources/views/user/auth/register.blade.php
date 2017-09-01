@@ -162,7 +162,13 @@
 
         var max_age_limit = "{{Setting::get('max_register_age_limit' , 18)}}";
 
-        max_age_limit = max_age_limit ? "-"+max_age_limit+"y" : "-15y"
+        max_age_limit = max_age_limit ? "-"+max_age_limit+"y" : "-15y";
+
+        $('#dob').datepicker({
+            autoclose:true,
+            format : 'dd-mm-yyyy',
+            endDate: max_age_limit,
+        });
 
         $('#dob').datepicker({
             autoclose:true,
@@ -175,7 +181,6 @@
         var dMin = new Date().getTimezoneOffset();
 
         var dtz = -(dMin/60);
-        // alert(dtz);
         $("#userTimezone").val(jstz.determine().name());
     });
 
