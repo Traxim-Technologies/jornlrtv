@@ -120,11 +120,15 @@
         $("#userTimezone").val(jstz.determine().name());
     });
 
-    $('#dob').datepicker({
-        autoclose:true,
-        format : 'dd-mm-yyyy',
-        endDate: "dateToday"
-    });
+var max_age_limit = "{{Setting::get('max_register_age_limit' , 18)}}";
+
+max_age_limit = max_age_limit ? "-"+max_age_limit+"y" : "-15y";
+
+$('#dob').datepicker({
+    autoclose:true,
+    format : 'dd-mm-yyyy',
+    endDate: max_age_limit,
+});
 
 function loadFile(event, id){
     // alert(event.files[0]);

@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="mobile">{{tr('dob')}}</label>
+                        <label for="dob">{{tr('dob')}}</label>
                         <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off">
                     </div>
 
@@ -153,23 +153,26 @@
 @section('scripts')
 
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
+
 <script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
 
 <script type="text/javascript">
 
-
-    $('#dob').datepicker({
-        autoclose:true,
-        format : 'dd-mm-yyyy',
-        endDate: "dateToday"
-    });
-
-    
     $(document).ready(function() {
 
+        var max_age_limit = "{{Setting::get('max_register_age_limit' , 18)}}";
+
+        max_age_limit = max_age_limit ? "-"+max_age_limit+"y" : "-15y";
+
+        $('#dob').datepicker({
+            autoclose:true,
+            format : 'dd-mm-yyyy',
+            endDate: max_age_limit,
+        });
+
         var dMin = new Date().getTimezoneOffset();
+
         var dtz = -(dMin/60);
-        // alert(dtz);
         $("#userTimezone").val(jstz.determine().name());
     });
 
