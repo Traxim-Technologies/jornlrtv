@@ -40,7 +40,7 @@
 
 	<div class="row">
 
-		<div class="col-md-5 col-md-offset-1">
+		<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
 
     		<div class="box box-widget widget-user-2">
 
@@ -89,7 +89,7 @@
 
 		</div>
 
-		<div class="col-md-4 col-md-offset-1">
+		<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
 
 			<div class="box box-widget widget-user-2">
 
@@ -140,6 +140,62 @@
 		            </ul>
 		        </div>
 			</div>
+
+
+			<div class="box box-widget widget-user-2">
+
+            	<div class="widget-user-header bg-green">
+
+              	    <h3 class="widget-user-username" style="margin-left: 0">{{tr('checkout')}} </h3>
+              	    
+            	</div>
+
+            	<div class="box-footer no-padding">
+            		
+              		<ul class="nav nav-stacked">
+
+              			<li>
+		                	<a href="#"><b>{{tr('paypal_email')}}</b> <span class="pull-right">{{$user->paypal_email}}</span></a>
+		                </li>
+
+		                <li><a href="#">{{tr('total')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->total}}</span></a></li>
+
+		                <li><a href="#">{{tr('total_admin_amount')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->total_admin_amount}}</span></a></li>
+
+		                <li><a href="#">{{tr('total_user_amount')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->total_user_amount}}</span></a></li>
+
+		                <li><a href="#">{{tr('paid_amount')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->paid_amount}}</span></a></li>
+
+		                <li><a href="#">{{tr('remaining_amount')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->remaining_amount}}</span></a></li>
+
+		                <li style="padding: 10px;">
+		                	
+		                	<form class="" action="{{route('admin.users.payout')}}" method="POST">
+
+		                		<span>
+
+		                			<input type="hidden" name="user_id" value="{{$user->id}}">
+		                			
+		                			<input type="number" name="amount" class="form-control pull-left" style="width: 70%;margin-bottom: 10px" placeholder="Enter Amount to pay">
+
+		                			<button type="submit" class="btn btn-success pull-right" style="width: 20%" @if(!$user->remaining_amount) disabled @endif>
+
+		                				<i class="fa fa-thumbs-up"></i> {{tr('submit')}}
+
+		                			</button>	
+
+		                		</span>	                		
+		                	</form>
+
+		                </li>
+
+
+
+		               
+              		</ul>
+            	</div>
+          	
+          	</div>
 
 		</div>
 

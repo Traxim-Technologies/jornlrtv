@@ -36,6 +36,8 @@
 
     use App\UserRating;
 
+    use Intervention\Image\ImageManagerStatic as Image;
+
 
     class Helper
     {
@@ -419,7 +421,7 @@
             return $s3_url;
         }
 
-        public static function normal_upload_picture($picture, $path)
+        public static function normal_upload_picture($picture, $path, $user = null)
         {
             $s3_url = "";
 
@@ -450,6 +452,22 @@
 
                 $picture->move(public_path() . $path, $local_url);
 
+            }
+
+
+            if ($user) {
+
+                // open an image file
+                $img = Image::make(public_path().$path.$local_url);
+
+                // resize image instance
+                $img->resize(60, 60);
+
+                // save image in desired format
+                $img->save(public_path()."/uploads/user_chat_img/".$local_url);
+
+
+                $user->chat_picture = Helper::web_url()."/uploads/user_chat_img/".$local_url;
             }
 
             $s3_url = Helper::web_url().$path.$local_url;

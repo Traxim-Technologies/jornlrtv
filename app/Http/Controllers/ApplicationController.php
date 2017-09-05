@@ -26,6 +26,8 @@ use App\Admin;
 
 use Auth;
 
+use App\ChatMessage;
+
 class ApplicationController extends Controller {
 
     public function channel_create() {
@@ -442,5 +444,29 @@ class ApplicationController extends Controller {
         $locale = \Session::put('locale', $lang);
 
         return back()->with('flash_success' , tr('session_success'));
+    }
+
+
+    public function message_save(Request $request) {
+
+        \Log::info("message data".print_r($request->all() , true));
+
+        $validator = \Validator::make($request->all(), [
+                "live_video_id" => "required|integer",
+                "user_id" => "required|integer",
+                "live_video_viewer_id" => "",
+                "type" => "required|in:uv,vu",
+                "message" => "required",
+            ]);
+
+        if($validator->fails()) {
+            $error = implode(',', $validator->messages()->all());
+            return response()->json(['success' => false , 'error' => $error]);
+        }
+
+        ChatMessage::create($request->all());
+
+        return response()->json(['success' => 'true']);
+    
     }
 }

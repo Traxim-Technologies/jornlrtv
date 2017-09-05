@@ -6,6 +6,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Helpers\Helper;
 
+use App\Helpers\AppJwt;
+
 class User extends Authenticatable
 {
 
@@ -18,7 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password','user_type','device_type','login_by',
         'picture','is_activated', 'timezone', 'verification_code' , 
-        'verification_code_expiry','is_verified','age_limit', 'dob'
+        'verification_code_expiry','is_verified','age_limit', 'dob','chat_picture'
     ];
 
     /**
@@ -105,6 +107,18 @@ class User extends Authenticatable
         //execute the parent's boot method 
         parent::boot();
 
+        static::creating(function ($model) {
+           
+            $model->generateToken($model);
+
+            $model->generateEmailCode();
+        });
+        
+        static::updating(function ($model) {
+           
+            $model->generateToken($model);
+        });
+
         //delete your related models here, for example
         static::deleting(function($user)
         {
@@ -184,14 +198,6 @@ class User extends Authenticatable
 
             }
         }); 
-
-        static::creating(function ($model) {
-
-            $model->generateEmailCode();
-
-            $model->generateToken();
-
-        });
     }
 
 
@@ -220,9 +226,11 @@ class User extends Authenticatable
      * @return bool returns true if successful. false on failure.
      */
 
-    protected function generateToken() {
+    protected function generateToken($model) {
 
-        $this->attributes['token'] = Helper::generate_token();
+        // $this->attributes['token'] = Helper::generate_token();
+
+        $this->attributes['token'] = AppJwt::create(['id' => $model->id, 'email' => $model->email, 'role' => "model"]);
 
         $this->attributes['token_expiry'] = Helper::generate_token_expiry();
 

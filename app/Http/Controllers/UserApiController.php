@@ -14,6 +14,8 @@ use Hash;
 
 use Validator;
 
+use App\LiveVideo;
+
 use File;
 
 use DB;
@@ -562,7 +564,11 @@ class UserApiController extends Controller {
                 // Upload picture
                 if ($request->hasFile('picture') != "") {
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
-                    $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
+
+                    Helper::delete_picture($user->chat_picture, "/uploads/user_chat_img/"); // Delete the old pic
+
+                    $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/", $user);
+
                 }
 
                 $user->save();
@@ -1984,6 +1990,102 @@ class UserApiController extends Controller {
         }
     
         return response()->json($response_array , 200);
+    }
+
+
+    public function broadcast(Request $request) 
+    {
+        
+        $validator = Validator::make($request->all(),array(
+                'title' => 'required',
+                'amount' => 'numeric',
+                'payment_status'=>'required',
+                'type' => 'required',
+                'description'=>'required',
+                'channel_id'=>'required|exists:channels,id',
+                'user_id'=>'required|exists:users,id',
+            )
+        );
+        
+        if($validator->fails()) {
+            $errors = implode(',', $validator->messages()->all());
+            $response_array = ['success' => false , 'error' => $errors , 'error_code' => 001];
+        } else {
+
+            $last = LiveVideo::orderBy('port_no', 'desc')->first();
+
+            $model = new LiveVideo;
+            $model->title = $request->title;
+            $model->payment_status = $request->payment_status;
+            $model->type = $request->type;
+            $model->channel_id = $request->channel_id;
+            $model->amount = 0;
+
+            if($request->payment_status) {
+
+                $model->amount = ($request->amount > 0) ? $request->amount : 1;
+
+            }
+            $model->description = ($request->has('description')) ? $request->description : null;
+            $model->is_streaming = DEFAULT_TRUE;
+            $model->status = DEFAULT_FALSE;
+            $model->user_id = $request->user_id;
+            $model->virtual_id = md5(time());
+            $model->unique_id = $model->title;
+            $model->snapshot = asset('placeholder.png');
+
+            $destination_port = 44104;
+
+            if ($last) {
+
+                if ($last->port_no) {
+
+                    $destination_port = $last->port_no + 2;
+
+                }
+
+            }
+
+            $model->port_no = $destination_port;
+
+            $model->save();
+
+            /*// $usrModel
+
+            $userModel = User::find($request->id);
+
+
+            $appSettings = json_encode([
+                'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                'BASE_URL' => Setting::get('BASE_URL'),
+                'TURN_CONFIG' => [],
+                'TOKEN' => $request->token,
+                'USER_PICTURE'=>$userModel->chat_picture,
+                'NAME'=>$userModel->name,
+                'CLASS'=>'left',
+                'USER' => ['id' => $request->id, 'role' => "model"],
+                'VIDEO_PAYMENT'=>null,
+            ]);*/
+
+            if ($model) {
+                $response_array = [
+                    'success' => true , 
+
+                    'data' => $model, 
+
+                    /*'appSettings'=> $appSettings, */
+
+                    'port_no'=>$model->port_no, 
+
+                    'message'=>tr('video_broadcating_success')
+                ];
+            } else {
+                $response_array = ['success' => false , 'error' => Helper::error_message(003) , 'error_code' => 003];
+            }
+        }
+        return response()->json($response_array,200);
+
     }
 
 }

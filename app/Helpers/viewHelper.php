@@ -911,3 +911,18 @@ function subscriberscnt($id = null) {
 }
 
 
+
+
+function getUserTime($time, $timezone = "Asia/Kolkata", $format = "H:i:s") {
+
+    if ($timezone) {
+
+        $new_str = new DateTime($time, new DateTimeZone('UTC') );
+
+        $new_str->setTimeZone(new DateTimeZone( $timezone ));
+
+        return $new_str->format($format);
+
+    }
+
+}

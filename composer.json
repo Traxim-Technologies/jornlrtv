@@ -15,7 +15,10 @@
         "vidhyar2612/enveditor": "^1.1",
         "olaferlandsen/ffmpeg-php-class": "^0.1.4",
         "predis/predis": "^1.1",
-        "stripe/stripe-php": "^3.13"
+        "stripe/stripe-php": "^3.13",
+        "firebase/php-jwt": "^3.0",
+        "intervention/image": "^2.3",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -1864,3 +1864,117 @@ margin: 0px auto 35px;
 .report_list{
 	padding: 5px 0px
 }
+
+.start_brocadcast_form {
+
+	background: #ff0000;
+	color: #fff;
+
+}
+
+.chat_box {
+
+	width: 100%;
+
+	height: 360px;
+}
+
+.chat-header {
+
+	color: #fff;
+
+	background: #ff0000;
+
+	padding: 5px 5px 10px 5px;
+
+	text-transform: uppercase;
+
+	font-weight: bold;
+}
+
+
+.chat-content {
+
+	border: 1px solid #ddd;
+
+	height: 100%;
+
+	position: relative;
+}
+
+.live_img {
+	height: 400px;
+	position: relative;
+}
+
+.live_img img {
+
+	width: 100%;
+
+	height: 400px;
+}
+
+.live_video {
+
+	padding: 10px;
+}
+
+.chat_footer {
+
+	position: absolute;
+
+	bottom: 0;
+
+	width: 100%;
+
+}
+
+.chat_send_btn {
+
+	border-radius: 0 !important;
+
+	background: #ff0000 !important;
+
+	width: 100% !important;
+
+	height: 100% !important;
+
+}
+
+.chat_form_input {
+
+	width: 100% !important;
+
+	border-radius: 0 !important;
+
+	font-size: 12px;
+
+}
+.item {
+	padding: 5px;
+
+	border-bottom: 1px solid #ddd;
+}
+.chat_img {
+	width: 100%;height: 100%;border-radius: 50%
+}
+.message{
+	font-size: 12px;
+
+}
+.loader_img {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.loader_img img {
+
+	width: 70px;
+}

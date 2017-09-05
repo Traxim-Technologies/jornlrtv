@@ -24,7 +24,51 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
+
+	'start_broadcast'=>'Start BroadCast',
+	'comment_here'=>'Type message...',
+	'streaming_by'=>'Streaming By',
+	'live_videos'=>'Live Videos',
+	'no_live_videos'=>'No Live Videos Present',
+	'videos_list'=>'Videos List',
+	'streaming_status'=>'Streaming Status',
+	'streamed_at'=>'Streamed At',
+
+	'checkout' => 'CheckOut',
+
+		'total' => 'Total',
+	'total_user_amount' => 'User Amount',
+
+	'total_admin_amount' =>'Admin Amount',
+
+	'paid_amount' => 'Paid Amount',
+	
+	'remaining_amount' => 'Remaining Amount',
+
+	'user_payout_greater_error' => 'Please enter less than or equal to the remaining Amount',
+
+	'kurento_socket_url'=>'Kurento Socket Url',
+	'wowza_server_url'=>'Wowza Server Url',
+	'SOCKET_URL' => 'SOCKET URL',
+	'cross_platform_url'=>"Cross Platform Url",
+	'admin_commission' => 'Admin Commission',
+
+	'user_commission' => 'User Commission',
+
+	'in_percentage' => 'in %',	
+
+	'free'=>'Free',
+	'paid'=>'Paid',
+	'is_streaming'=>'Is Streaming',
+	'stop'=>'Stop',
+	'streaming_stopped_success'=>'Streaming has been Stopped Successfully',
+	'broadcast'=>'BroadCast',
+	'video_broadcating_success'=>'Your Video BroadCasting Successfully',
+	'id_not_matching'=>'Video Live Id Mismatching',
+	'no_live_video_found'=>'No Live Video Streaming found',
+	'group_chat'=>'Group Chat',
 	'admin_not_ur_del'=>'User Rating has been deleted Successfully',
+
 	'enter_dob'=>'Enter DOB',
 	'no_subscription_found'=>'No SubScription Detaild Found',
 	'uploaded_new_video'=>'Uploaded New Video',

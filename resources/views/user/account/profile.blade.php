@@ -27,30 +27,37 @@
                                     <h4 class="edit-head">{{tr('profile')}}</h4>
 
                                     <div class="image-profile">
-                                        @if(Auth::user()->picture)
-                                            <img src="{{Auth::user()->picture}}">
+                                        @if($user->picture)
+                                            <img src="{{$user->picture}}">
                                         @else
                                             <img src="{{asset('placeholder.png')}}">
                                         @endif                                
                                     </div><!--end of image-profile-->
 
                                     <div class="profile-title">
-                                        <h3>{{Auth::user()->name}}</h3>
+                                        <h3>{{$user->name}}</h3>
                                         
-                                        @if(Auth::user()->login_by == 'manual')
-                                            <h4>{{Auth::user()->email}}</h4>
+                                        @if($user->login_by == 'manual')
+                                            <h4>{{$user->email}}</h4>
                                         @endif
+
+                                        @if ($user->id == Auth::user()->id)
                                         
-                                        @if(Auth::user()->user_type)
-                                            <?php $subscription_details = get_expiry_days(Auth::user()->id);?>
+                                        @if($user->user_type)
+                                            <?php $subscription_details = get_expiry_days($user->id);?>
                                             <p style="color:#cc181e">{{tr('no_of_days_expiry')}} <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
                                         @endif
 
+                                        @endif
+
                                        
-                                        <p>{{Auth::user()->mobile}}</p>  
-                                        <p><?php echo $dob = date('d-m-Y', strtotime(Auth::user()->dob)) ;?></p>
-                                        <p>{{Auth::user()->description}}</p>
+                                        <p>{{$user->mobile}}</p>  
+                                        <p><?php echo $dob = date('d-m-Y', strtotime($user->dob)) ;?></p>
+                                        <p>{{$user->description}}</p>
                                     </div><!--end of profile-title-->
+
+                                    @if ($user->id == Auth::user()->id)
+
                                     <form>
                                     <br>
                                         <div class="change-pwd edit-pwd edit-pro-btn">
@@ -62,13 +69,15 @@
 
                                             <a href="{{route('user.update.profile')}}" class="btn btn-primary">{{tr('edit_profile')}}</a>
                                             
-                                            @if(Auth::user()->login_by == 'manual')
+                                            @if($user->login_by == 'manual')
                                                 <a href="{{route('user.change.password')}}"
                                             class="btn btn-danger">{{tr('change_password')}}</a>
 
                                             @endif
                                         </div> 
-                                    </form>                                
+                                    </form>  
+
+                                    @endif                              
                                 </div><!--end of sub-profile-->                            
                             </div><!--end of profile-details-->                           
                         </div><!--end of edit-profile-->
@@ -77,7 +86,9 @@
                     </div><!--profile-view end--> 
 
 
-                    <?php // $wishlist = wishlist(Auth::user()->id); ?>
+                    <?php // $wishlist = wishlist($user->id); ?>
+
+                    @if ($user->id == Auth::user()->id)
                     
                     @if(count($wishlist) > 0)
                         
@@ -135,6 +146,8 @@
                             </ul>                                
                         
                         </div><!--end of mylist-profile-->
+
+                    @endif
 
                     @endif
 

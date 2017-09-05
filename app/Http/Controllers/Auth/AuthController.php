@@ -98,6 +98,7 @@ class AuthController extends Controller
             'password' => \Hash::make($data['password']),
             'timezone' => $data['timezone'],
             'picture' => asset('placeholder.png'),
+            'chat_picture'=>asset('placeholder.png'),
             'login_by' => 'manual',
             'device_type' => 'web',
             'dob' => date('Y-m-d', strtotime($data['dob'])),
