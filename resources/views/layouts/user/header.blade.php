@@ -20,6 +20,7 @@
                 <div class="y-button profile-button">
                    <div class="dropdown">
                           <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          
                             @if(Auth::user()->picture != "")
                                 <img class="profile-image" src="{{Auth::user()->picture}}">
                             @else
@@ -27,6 +28,7 @@
                             @endif
                             
                           </button>
+
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
                             <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>

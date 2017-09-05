@@ -24,6 +24,7 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
+
 	'start_broadcast'=>'Start BroadCast',
 	'comment_here'=>'Type message...',
 	'streaming_by'=>'Streaming By',
@@ -66,6 +67,8 @@ return array(
 	'id_not_matching'=>'Video Live Id Mismatching',
 	'no_live_video_found'=>'No Live Video Streaming found',
 	'group_chat'=>'Group Chat',
+	'admin_not_ur_del'=>'User Rating has been deleted Successfully',
+
 	'enter_dob'=>'Enter DOB',
 	'no_subscription_found'=>'No SubScription Detaild Found',
 	'uploaded_new_video'=>'Uploaded New Video',

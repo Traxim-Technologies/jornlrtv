@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedLiveVideoKeysInSettings::class);
         $this->call(AddedKurentoUrlInSettings::class);
         $this->call(CommissionSplitSeeder::class);
+        $this->call(RegisterAgeLimitSeeder::class);
     }
 }
