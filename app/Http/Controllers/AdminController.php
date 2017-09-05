@@ -26,6 +26,8 @@ use App\Wishlist;
 
 use App\Flag;
 
+use App\LiveVideo;
+
 use App\UserRating;
 
 use App\Settings;
@@ -318,6 +320,8 @@ class AdminController extends Controller {
                 $user->device_type = 'web';
 
                 $user->picture = asset('placeholder.png');
+
+                $user->chat_picture = asset('placeholder.png');
             }
 
             $user->timezone = $request->has('timezone') ? $request->timezone : '';
@@ -369,8 +373,10 @@ class AdminController extends Controller {
             if ($request->hasFile('picture') != "") {
                 if ($request->id) {
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
+
+                    Helper::delete_picture($user->chat_picture, "/uploads/user_chat_img/");
                 }
-                $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
+                $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/", $user);
             }
 
             $user->is_verified = DEFAULT_TRUE;
@@ -2207,6 +2213,80 @@ class AdminController extends Controller {
 
 
     public function redeems(Request $request) {
+
+    }
+
+
+
+
+     /**
+     *
+     *
+     */
+
+    public function live_videos(Request $request) {
+
+        $live_videos = LiveVideo::where('status', DEFAULT_FALSE)->where('is_streaming', DEFAULT_TRUE)->orderBy('created_at' , 'desc')->get();
+
+        return view('admin.live_videos.index')->with('data' , $live_videos)
+            ->with('page','live_videos')->with('sub_page','live_videos_idx'); 
+    }
+
+
+    public function videos_list(Request $request) {
+
+        $live_videos = LiveVideo::orderBy('created_at' , 'desc')->get();
+
+        return view('admin.live_videos.index')->with('data' , $live_videos)->with('page','live_videos')->with('sub_page','list_videos'); 
+    }
+
+
+    public function videos_view($id,Request $request) {
+
+        $video = LiveVideo::find($id);
+
+        return view('admin.live_videos.view')->with('data' , $video)->with('page','live_videos')->with('sub_page','view_live_videos'); 
+    }
+
+
+
+    public function user_payout(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'user_id' => 'required|exists:users,id',
+            'amount' => 'required', 
+            ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , $validator->messages()->all())->withInput();
+
+        } else {
+
+            $model = User::find($request->user_id);
+
+            if($model) {
+
+                if($request->amount <= $model->remaining_amount) {
+
+                    $model->paid_amount = $model->paid_amount + $request->amount;
+
+                    $model->remaining_amount =$model->remaining_amount - $request->amount;
+
+                    $model->save();
+    
+                    return back()->with('flash_success' , tr('action_success'));
+
+                } else {
+                    return back()->with('flash_error' , tr('user_payout_greater_error'));
+                }
+
+            } else {
+
+                return back()->with('flash_error' , tr('something_error'));
+
+            }
+        }
 
     }
 }

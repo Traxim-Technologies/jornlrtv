@@ -152,6 +152,52 @@
                                     </div>
                                 </div>
 
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('SOCKET_URL')}}</label>
+                                        <input type="text" class="form-control" name="SOCKET_URL" value="{{ Setting::get('SOCKET_URL')  }}" id="SOCKET_URL" placeholder="{{tr('SOCKET_URL')}}">
+                                    </div>
+                                </div>
+
+
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('kurento_socket_url')}}</label>
+                                        <input type="text" class="form-control" name="kurento_socket_url" value="{{ Setting::get('kurento_socket_url')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('kurento_socket_url')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="wowza_server_url">{{tr('wowza_server_url')}}</label>
+                                        <input type="text" class="form-control" name="wowza_server_url" value="{{ Setting::get('wowza_server_url')  }}" id="wowza_server_url" placeholder="{{tr('wowza_server_url')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cross_platform_url">{{tr('cross_platform_url')}}</label>
+                                        <input type="text" class="form-control" name="cross_platform_url" value="{{ Setting::get('cross_platform_url')  }}" id="cross_platform_url" placeholder="{{tr('cross_platform_url')}}">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('admin_commission')}} {{tr('in_percentage')}}</label>
+                                        <input type="text" class="form-control" name="admin_commission" value="{{ Setting::get('admin_commission')  }}" id="admin_commission" placeholder="{{tr('admin_commission')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('user_commission')}} {{tr('in_percentage')}}</label>
+                                        <input type="text" class="form-control" name="user_commission" value="{{ Setting::get('user_commission')  }}" id="user_commission" placeholder="{{tr('user_commission')}}" disabled>
+                                    </div>
+                                </div>
+
+
                                 
                                 <div class="col-lg-12">
                                     <div class="form-group">

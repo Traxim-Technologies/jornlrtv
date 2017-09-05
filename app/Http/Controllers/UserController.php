@@ -28,6 +28,8 @@ use Setting;
 
 use Exception;
 
+use App\ChatMessage;
+
 use Log;
 
 use App\Card;
@@ -46,6 +48,12 @@ use App\ChannelSubscription;
 
 use App\UserPayment;
 
+use App\LiveVideo;
+
+use App\Viewer;
+
+use App\LiveVideoPayment;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -61,7 +69,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt']]);
     }
 
     /**
@@ -181,17 +189,32 @@ class UserController extends Controller {
      */
     public function profile(Request $request)
     {
-        $request->request->add([ 
-            'id' => \Auth::user()->id,
-            'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token,
-            'age'=>\Auth::user()->age_limit,
-        ]);
+
+        if ($request->id) {
+
+            $id = $request->id;
+           
+
+        } else {
+
+            $id = Auth::user()->id;
+            
+        }
+
+         $user = User::find($id);
+
+         $request->request->add([ 
+                'id' => $user->id,
+                'token' => $user->token,
+                'device_token' => $user->device_token,
+                'age'=>$user->age_limit,
+            ]);
 
         $wishlist = VideoRepo::wishlist($request,WEB);
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
+                    ->with('user', $user)
                     ->with('subPage' , 'user-profile')->with('wishlist', $wishlist);
     }
 
@@ -1460,6 +1483,308 @@ class UserController extends Controller {
         return view('user.channels.list')->with('page', 'channels')
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
+
+    }
+
+
+    public function broadcast(Request $request) 
+    {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+        ]);        
+
+        $response = $this->UserAPI->broadcast($request)->getData();
+
+
+        if ($response->success) {
+
+            return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $error);
+        }
+
+    }
+
+
+    public function broadcasting(Request $request) {
+
+
+        if ($request->id) {
+
+
+            $model = LiveVideo::where('unique_id', $request->id)
+                        ->where('status', '!=', DEFAULT_TRUE)
+                       // ->where('user_id', Auth::user()->id)
+                        ->first();
+    
+            if ($model) {
+
+                $videoPayment = null;
+
+
+                if (Auth::check()) {
+
+                    // $usrModel
+
+                    $userModel = User::find(Auth::user()->id);
+
+                    if ($model->user_id != $userModel->id) {
+
+                            // Load Viewers model
+
+                            $viewer = Viewer::where('video_id', $model->id)->where('user_id', Auth::user()->id)->first();
+
+                            if(!$viewer) {
+
+                                $viewer = new Viewer;
+
+                                $viewer->video_id = $model->id;
+
+                                $viewer->user_id = Auth::user()->id;
+
+                            }
+
+                            $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
+
+                            $viewer->save();
+
+                            if ($viewer) {
+
+                                $model->viewer_cnt += 1;
+
+                                $model->save();
+
+                            }
+                            // video payment 
+
+                            $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
+                                ->where('live_video_viewer_id', Auth::user()->id)
+                                ->where('status',DEFAULT_TRUE)->first();
+                        
+                    }
+
+                    $appSettings = json_encode([
+                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                        'BASE_URL' => Setting::get('BASE_URL'),
+                        'TURN_CONFIG' => [],
+                        'TOKEN' =>  ($model->user_id == $userModel->id) ? Auth::user()->token : null,
+                        'USER_PICTURE'=>$userModel->chat_picture,
+                        'NAME'=>$userModel->name,
+                        'CLASS'=>'left',
+                        'USER' => ($model->user_id == $userModel->id) ? ['id' => $userModel->id, 'role' => "model"] : null,
+                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
+                    ]);
+
+                    $comments = ChatMessage::where('live_video_id', $model->id)->get();
+
+                } else {
+
+                    $model->viewer_cnt += 1;
+
+                    $model->save();
+
+                    $appSettings = json_encode([
+                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                        'BASE_URL' => Setting::get('BASE_URL'),
+                        'TURN_CONFIG' => [],
+                        'TOKEN' =>  null,
+                        'USER_PICTURE'=>$model->user->chat_picture,
+                        'NAME'=>$model->user->name,
+                        'CLASS'=>'left',
+                        'USER' => null,
+                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
+                    ]);
+
+                    $comments = null;
+
+                }
+
+                
+
+                
+
+                // $messages = [];
+
+                /*foreach ($comments as $key => $value) {
+                    
+                    $messages[] = [
+                        'id' => $value->id, 
+                        'user_id' => ($value->getUser)? $value->user_id : $value->live_video_viewer_id, 
+                        'name' => ($value->getUser) ? $value->getUser->name : $value->getViewUser->name,
+                        'picture'=> ($value->getUser) ? $value->getUser->chat_picture : $value->getViewUser->chat_picture ,
+                        'live_video_id'=>$value->live_video_id, 
+                        'message'=>$value->message];
+
+                }*/
+
+                return view('user.videos.live-video')->with('page', 'live-video')
+                    ->with('subPage', 'broadcast')
+                    ->with('data', $model)->with('appSettings', $appSettings)->with('comments',$comments);
+
+
+            } else {
+
+                return redirect(route('user.channel', ['id'=>$request->c_id]))->with('flash_error', tr('no_live_video_found'));
+
+            }
+
+        } else {
+
+            if ($request->c_id) {
+
+                return redirect(route('user.channel', ['id'=>$request->c_id]))->with('flash_error', tr('id_not_matching'));
+
+            } else {
+
+                return redirect(route('user.dashboard'))->with('flash_error', tr('something_error'));
+
+            }
+
+
+        }
+
+    }
+
+
+    public function stop_streaming(Request $request) {
+
+        $model = LiveVideo::find($request->id);
+
+        $model->status = DEFAULT_TRUE;
+
+        $model->end_time = getUserTime(date('H:i:s'), ($model->user) ? $model->user->timezone : '', "H:i:s");
+
+        if ($model->save()) {
+
+            // $this->disConnectStream($model->user->id.'-'.$mid);
+
+        }
+
+        return redirect(route('user.channel', ['id'=>$model->channel_id]))
+            ->with('flash_success', tr('streaming_stopped_success'));
+    }
+
+
+    public function live_videos(Request $request) {
+
+        $videos = LiveVideo::where('is_streaming', DEFAULT_TRUE)
+                    ->where('status', 0)
+                    ->paginate(15);
+
+        return view('user.videos.live_videos_list')
+                ->with('videos', $videos);
+
+    }
+
+    public function setCaptureImage(Request $req, $roomId) {
+        //TODO - allow model of this room only
+
+        $data = explode(',', $req->get('base64'));
+
+        if ($data[1] != '') {
+            file_put_contents(join(DIRECTORY_SEPARATOR, [public_path(), 'uploads', 'rooms', $roomId . '.png']), base64_decode($data[1]));
+            $model = LiveVideo::find($roomId);
+            $model->snapshot = Helper::web_url()."/uploads/rooms/".$roomId . '.png';
+            $model->save();
+
+            if ($model->save()) {
+                return response()->json(true,200);
+            } else {
+                return response()->json(false,200);
+            }
+        }
+         
+    }
+
+
+    public function get_viewer_cnt(Request $request) {
+
+        $model = LiveVideo::find($request->id);
+
+        if ($model) {
+
+            $viewer_cnt = $model->viewer_cnt;
+
+        } else {
+
+            $viewer_cnt = 0;
+
+        }
+
+        return response()->json(['viewer_cnt'=>$viewer_cnt]);
+
+    }
+
+    public function connectStream($file = null)
+    {
+
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file/actions/connect?connectAppName=live&appInstance=_definst_&mediaCasterType=rtp";
+
+            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                     echo 'I completed! ' . $response->getBody();
+            });
+            $promise->wait();
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
+        }
+
+    }
+
+
+    // Disconnect Stream
+    public function disConnectStream($file = null) {
+
+
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $sdp = $file.".sdp";
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/applications/live/instances/_definst_/incomingstreams/$sdp/actions/disconnectStream";
+
+            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                     echo 'I completed! ' . $response->getBody();
+            });
+            $promise->wait();
+
+            $this->deleteStream($file);
+
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
+        }
+
+
+    }
+
+    // Delete Stream
+
+    public function deleteStream($file = null) {
+
+
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file";
+
+            $request = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                     echo 'I completed! ' . $response->getBody();
+            });
+            $promise->wait();
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
+        }
+
 
     }
 }

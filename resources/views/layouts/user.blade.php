@@ -24,6 +24,8 @@
         }
     </style>
 
+    @yield('header-scripts')
+
     @if(Setting::get('google_analytics'))
         <?php echo Setting::get('google_analytics'); ?>
     @endif

@@ -116,10 +116,118 @@
 						</div>
 						<div class="pull-right upload_a">
 							@if(Auth::check())
+
 								@if($channel->user_id == Auth::user()->id)
 									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
+									<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast"><i class="fa fa-video-camera"></i> {{tr('start_broadcast')}}</button>
 									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
 									<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
+
+
+
+									<div id="start_broadcast" class="modal fade" role="dialog">
+									  <div class="modal-dialog">
+
+									    <!-- Modal content-->
+									    <div class="modal-content">
+									      <div class="modal-header start_brocadcast_form">
+									       <!--  <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+									        <h4 class="modal-title text-uppercase text-center">{{tr('start_broadcast')}}</h4>
+									      </div>
+									      <div class="modal-body">
+
+									      	<form method="post" action="{{route('user.live_video.broadcast')}}">
+
+									      	<input type="hidden" name="channel_id" value="{{$channel->id}}">
+
+									      	<input type="hidden" name="user_id" value="{{$channel->user_id}}">
+
+
+												      	 <!-- Text input-->
+			                                  <div class="row">
+
+			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
+			                                    <div class="col-md-9">
+			                                      <input id="title" name="title" type="text" placeholder="Video Title" class="form-control" required="">
+			                                    </div>
+
+			                                    <div class="clearfix"></div>
+
+			                                  </div>
+
+			                                  <br>
+
+
+			                                  <!-- Multiple Radios (inline) -->
+			                                  <div class="row">
+			                                    <label class="col-md-3 control-label" for="reqType">{{tr('payment')}}</label>
+			                                    <div class="col-md-9">
+			                                      <label class="radio-inline" for="reqType-1">
+			                                        <input type="radio" name="payment_status" id="reqType-1" value="0" checked  onchange="return $('#price').hide();">
+			                                        Free </label>
+			                                      <label class="radio-inline" for="reqType-0">
+			                                        <input type="radio" name="payment_status" id="reqType-0" value="1" onchange="return $('#price').show()">
+			                                        Paid </label>
+			                                    </div>
+			                                  </div>
+
+			                                  
+			                                  <!-- Multiple Radios (inline) -->
+			                                  <div class="row" style="display: none">
+			                                    <label class="col-md-3 control-label" for="dataFormat">{{tr('type')}}</label>
+			                                    <div class="col-md-9">
+			                                      <label class="radio-inline" for="dataFormat-0">
+			                                        <input type="radio" name="type" value="public" checked onchange="return $('#price').hide();">
+			                                        Public </label>
+			                                      <label class="radio-inline" for="dataFormat-1">
+			                                        <input type="radio" name="type" id="dataFormat-1" value="private" onchange="return $('#price').show()">
+			                                        Private </label>
+			                                    </div>
+			                                  </div>
+			                                  
+			                                  <!-- Multiple Checkboxes (inline) -->
+			                                  <div class="row" style="display: none" id="price">
+			                                  	<br>
+			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('amount')}}</label>
+			                                    <div class="col-md-9">
+			                                      <input id="Amount" name="amount" type="number" placeholder="Amount" class="form-control" pattern="[0-9]{0,}">
+			                                    </div>
+			                                  </div>
+			                                  <br>
+			                                  <div class="row">
+			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('description')}}</label>
+			                                    <div class="col-md-9">
+			                                      <textarea id="description" name="description" placeholder="Decription.." class="form-control" ng-model="description" required></textarea>
+			                                    </div>
+			                                  </div>
+			                                  <br>
+			                                  <!-- Button (Double) -->
+			                                  <div class="row">
+			                                    <label class="col-md-3 control-label" for="submitButton"></label>
+			                                    <div class="col-md-9">
+			                                      <div class="button-form-f">
+			                                        <button type="submit" id="submitButton" name="submitButton" class="btn btn-danger" style="background: #ff0000">{{tr('broadcast')}}</button>
+			                                        <button type="reset" value="reset" id="reset" name="reset" class="btn btn-default" data-dismiss="modal">{{tr('cancel')}}</button>
+			                                      </div>
+			                                    </div>
+			                                  </div>
+
+
+
+									      <!-- <div class="modal-footer">
+									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									      </div> -->
+
+									      </form>
+
+									      </div>
+
+									      <div class="clearfix"></div>
+									    </div>
+
+									  </div>
+									</div>
+
 								@endif
 
 								@if($channel->user_id != Auth::user()->id)

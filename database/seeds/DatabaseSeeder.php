@@ -24,5 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedLanguageControlInSettings::class);
         $this->call(AddedStripeKeyInSettings::class);
         $this->call(AddedAgeKeyInSettings::class);
+        $this->call(AddedLiveVideoKeysInSettings::class);
+        $this->call(AddedKurentoUrlInSettings::class);
+        $this->call(CommissionSplitSeeder::class);
     }
 }

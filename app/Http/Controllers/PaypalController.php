@@ -27,6 +27,10 @@ use Auth;
 use App\VideoTape;
 use App\PayPerView;
 use App\Subscription;
+
+use App\LiveVideo;
+
+use App\LiveVideoPayment;
  
 class PaypalController extends Controller {
    
@@ -218,6 +222,226 @@ class PaypalController extends Controller {
 
             return redirect()->route('user.profile')->with('response', $response);
        
+        } else {
+
+            return back()->with('flash_error' , 'Payment is not approved. Please contact admin');
+        }
+            
+           
+    }
+
+
+
+     public function payPerVideo($id, $user_id) {
+
+        if (!Auth::check() || !$user_id) {
+
+            return redirect(route('user.login.form'));
+
+        }
+
+        // \Log::info("Auth Check".print_r(Auth::user() , true));
+
+        $subscription = LiveVideo::find($id);
+
+        $total =  $subscription ? $subscription->amount : "1.00" ;
+
+        $item = new Item();
+
+        $item->setName(Setting::get('site_name')) // item name
+                   ->setCurrency('USD')
+               ->setQuantity('1')
+               ->setPrice($total);
+     
+        $payer = new Payer();
+        
+        $payer->setPaymentMethod('paypal');
+
+        // add item to list
+        $item_list = new ItemList();
+        $item_list->setItems(array($item));
+        $total = $total;
+        $details = new Details();
+        $details->setShipping('0.00')
+            ->setTax('0.00')
+            ->setSubtotal($total);
+
+
+        $amount = new Amount();
+        $amount->setCurrency('USD')
+            ->setTotal($total)
+            ->setDetails($details);
+
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+            ->setItemList($item_list)
+            ->setDescription('Payment for the Request');
+
+        $redirect_urls = new RedirectUrls();
+        $redirect_urls->setReturnUrl(url('/user/payment_video'))
+                    ->setCancelUrl(url('/user/payment_video'));
+
+        $payment = new Payment();
+        $payment->setIntent('Sale')
+            ->setPayer($payer)
+            ->setRedirectUrls($redirect_urls)
+            ->setTransactions(array($transaction));
+
+        try {
+            $payment->create($this->_api_context);
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+            if (\Config::get('app.debug')) {
+                echo "Exception: " . $ex->getMessage() . PHP_EOL;
+                echo "Payment" . $payment."<br />";
+
+                $err_data = json_decode($ex->getData(), true);
+                echo "Error" . print_r($err_data);
+                exit;
+            } else {
+                die('Some error occur, sorry for inconvenient');
+            }
+        }
+
+        foreach($payment->getLinks() as $link) {
+            if($link->getRel() == 'approval_url') {
+                $redirect_url = $link->getHref();
+                break;
+            }
+        }
+
+        // add payment ID to session
+        Session::put('paypal_payment_id', $payment->getId());
+
+        if(isset($redirect_url)) {
+
+            $user_payment = new LiveVideoPayment;
+
+            $check_live_video_payment = LiveVideoPayment::where('live_video_viewer_id' , $user_id)->where('live_video_id' , $id)->first();
+
+            if($check_live_video_payment) {
+                $user_payment = $check_live_video_payment;
+            }
+
+            // $user_payment->expiry_date = date('Y-m-d H:i:s');
+            $user_payment->payment_id  = $payment->getId();
+            $user_payment->live_video_viewer_id = $user_id;
+            $user_payment->live_video_id = $id;
+            
+            $user_payment->user_id = $subscription->user_id;
+
+            Log::info("User Payment ".print_r($user_payment, true));
+
+            $user_payment->save();
+
+            Log::info("User Payment After saved ".print_r($user_payment, true));
+
+            $response_array = array('success' => true); 
+
+            return redirect()->away($redirect_url);
+        }
+
+        return response()->json(Helper::null_safe($response_array) , 200);
+                    
+    }
+    
+
+    public function getVideoPaymentStatus(Request $request) {
+
+        // Get the payment ID before session clear
+        $payment_id = Session::get('paypal_payment_id');
+        
+        // clear the session payment ID
+     
+        if (empty($request->PayerID) || empty($request->token)) {
+            
+          return back()->with('flash_error','Payment Failed!!');
+
+        } 
+        
+        $payment = Payment::get($payment_id, $this->_api_context);
+     
+        // PaymentExecution object includes information necessary
+        // to execute a PayPal account payment.
+        // The payer_id is added to the request query parameters
+        // when the user is redirected from paypal back to your site
+        
+        $execution = new PaymentExecution();
+        $execution->setPayerId($request->PayerID);
+     
+        //Execute the payment
+        $result = $payment->execute($execution, $this->_api_context);
+     
+       // echo '<pre>';print_r($result);echo '</pre>';exit; // DEBUG RESULT, remove it later
+     
+        if ($result->getState() == 'approved') { // payment made
+
+            if($live_video_payment = LiveVideoPayment::where('payment_id',$payment_id)->first()) {
+
+                // $video
+
+                $total =  $live_video_payment ? (($live_video_payment->getVideo) ? $live_video_payment->getVideo->amount : "1.00" ) : "1.00";
+
+                $live_video_payment->status = 1;
+
+                $live_video_payment->amount = $total;
+
+                // Commission Spilit 
+
+                $admin_commission = Setting::get('admin_commission')/100;
+
+                $admin_amount = $total * $admin_commission;
+
+                $user_amount = $total - $admin_amount;
+
+                $live_video_payment->admin_amount = $admin_amount;
+
+                $live_video_payment->user_amount = $user_amount;
+
+                $live_video_payment->save();
+
+                // Commission Spilit Completed
+
+                if($user = User::find($live_video_payment->user_id)) {
+
+                    $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
+
+                    $user->total_user_amount = $user->total_user_amount + $user_amount;
+
+                    $user->remaining_amount = $user->remaining_amount + $user_amount;
+
+                    $user->total = $user->total + $total;
+
+                    $user->save();
+                
+                }
+
+                Session::forget('paypal_payment_id');
+                
+                $response_array = array('success' => true , 'message' => "Payment Successful" ); 
+
+                $responses = response()->json($response_array);
+
+                $response = $responses->getData();
+
+                // return redirect()->away("http://localhost/live-streaming-base/#/live-video/".$live_video_payment->live_video_id);
+
+                // dd($live_video_payment->getVideo);
+
+                if ($live_video_payment->getVideo) {
+
+
+                    return redirect(route('user.live_video.start_broadcasting',array('id'=>$live_video_payment->getVideo->unique_id)));
+
+                } else {
+
+                    return redirect(route('user.live_videos'));
+
+                }
+       
+            } else {
+
+                return redirect(route('user.live_videos'));
+            }
         } else {
 
             return back()->with('flash_error' , 'Payment is not approved. Please contact admin');

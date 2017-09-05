@@ -10,6 +10,11 @@
                 <img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}
             </a>
         </li>
+        <li id="live_videos">
+            <a href="{{route('user.live_videos')}}">
+                <img src="{{asset('streamtube/images/video.png')}}">{{tr('live_videos')}}
+            </a>
+        </li>
     </ul>
                 
     @if(count($channels = loadChannels()) > 0)
