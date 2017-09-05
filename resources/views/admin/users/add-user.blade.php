@@ -132,12 +132,15 @@
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
 <script>
     
+ var max_age_limit = "{{Setting::get('max_register_age_limit' , 18)}}";
 
-    $('#dob').datepicker({
-        autoclose:true,
-        format : 'dd-mm-yyyy',
-        endDate: "dateToday"
-    });
+max_age_limit = max_age_limit ? "-"+max_age_limit+"y" : "-15y";
+
+$('#dob').datepicker({
+    autoclose:true,
+    format : 'dd-mm-yyyy',
+    endDate: max_age_limit,
+});
 
 
 

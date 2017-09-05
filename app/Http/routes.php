@@ -234,6 +234,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/', 'AdminController@dashboard')->name('dashboard');
 
+    Route::get('/delete_user_ratings', 'AdminController@delete_user_ratings')->name('delete_user_ratings');
+
     Route::get('/profile', 'AdminController@profile')->name('profile');
 
 	Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
