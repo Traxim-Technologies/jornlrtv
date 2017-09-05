@@ -24,6 +24,7 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
+	'admin_not_ur_del'=>'User Rating has been deleted Successfully',
 	'enter_dob'=>'Enter DOB',
 	'no_subscription_found'=>'No SubScription Detaild Found',
 	'uploaded_new_video'=>'Uploaded New Video',
