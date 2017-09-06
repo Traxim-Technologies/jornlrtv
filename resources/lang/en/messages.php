@@ -30,6 +30,7 @@ return array(
 	'uploaded_new_video'=>'Uploaded New Video',
 	'user_reviews'=>'User Reviews',
 	'no_of_spam_videos'=>'No of Spam Videos',
+	'unspam_video'=>'Unspam Video',
 	'no_of_reviews'=>'No of Reviews',
 	'auth_file'=>'Auth File',
 	'messages_file'=>'Messages File',
