@@ -2204,7 +2204,26 @@ class AdminController extends Controller {
 
     }
 
+    public function unspam_video($id) {
 
+        $model = Flag::find($id);
+
+        if ($model) {
+
+            if ($model->delete()) {
+
+                return back()->with('flash_success', tr('unmark_report_video_success_msg'));
+
+            } else {
+
+                return back()->with('flash_error', tr('something_error'));
+            }
+
+        } else {
+
+            return back()->with('flash_error', tr('something_error'));
+        }
+    }
 
     public function redeems(Request $request) {
 
