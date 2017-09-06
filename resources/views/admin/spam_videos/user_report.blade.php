@@ -28,6 +28,7 @@
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('reason')}}</th>
+						      <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
 
@@ -37,6 +38,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$reason->userVideos->name}}</td>
 							      	<td>{{$reason->reason}}</td>
+							      	<td><a class="btn btn-sm btn-danger" href="{{route('admin.unspam-video' , $reason->id)}}"><i class="fa fa-trash"></i></a></td>
 							    </tr>
 							@endforeach
 						</tbody>
