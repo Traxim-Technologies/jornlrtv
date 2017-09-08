@@ -183,15 +183,15 @@ video {
 						<div class="row slide-area recom-area">
 
 		                    <div class="box-head recom-head">
-		                        <h3 style="padding: 10px 0px;">{{tr('live_videos')}}</h3>
+		                        <h3 style="padding: 10px 0px !important;">{{tr('live_videos')}}</h3>
 		                    </div>
 
 		                    @if(count($videos) > 0)
 
-		                        <div class="recommend-list row" style="padding: 10px 0px;">
+		                        <div style="padding: 10px 0px !important;" class="recommend-list row">
 
 		                            @foreach($videos as $video)
-		                                <div class="slide-box recom-box" style="margin: 0.5% 0%;">
+		                                <div class="slide-box recom-box">
 		                                    <div class="slide-image recom-image">
 
 		                                        <?php 
@@ -239,8 +239,8 @@ video {
 
 		                    @else
 
-		                         <div class="recommend-list row">
-		                            <div class="slide-box recom-box"> {{tr('no_live_videos')}}</div>
+		                         <div style="padding: 10px 0px !important;" class="recommend-list row">
+		                            <div style="margin: 0.5% 0% !important;" class="slide-box recom-box"> {{tr('no_live_videos')}}</div>
 		                        </div>
 
 		                    @endif
