@@ -128,10 +128,17 @@
 
             @endif
 
-            <li id="payments">
+             <li class="treeview" id="payments">
                 <a href="{{route('admin.user.payments')}}">
-                    <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> 
+                    <i class="fa fa-money"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
+
+                <ul class="treeview-menu">
+
+                    <li id="subscription_payments"><a href="{{route('admin.user.payments')}}"><i class="fa fa-circle-o"></i>{{tr('user_payments')}}</a></li>
+
+                    <li id="video_payments"><a href="{{route('admin.videos.payments')}}"><i class="fa fa-circle-o"></i>{{tr('video_payments')}}</a></li>
+                </ul>
             </li>
 
 

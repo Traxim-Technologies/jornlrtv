@@ -76,6 +76,8 @@ use App\Jobs\NormalPushNotification;
 
 use App\ChannelSubscription; 
 
+use App\LiveVideoPayment;
+
 class AdminController extends Controller {
 
     /**
@@ -1304,7 +1306,8 @@ class AdminController extends Controller {
      * @return array of payments
      */
     public function video_payments() {
-        $payments = [];
+
+        $payments = LiveVideoPayment::orderBy('created_at' , 'desc')->get();
 
         return view('admin.payments.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
     }

@@ -36,6 +36,8 @@ use App\ChannelSubscription;
 
 use App\Language;
 
+use App\LiveVideoPayment;
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -925,4 +927,10 @@ function getUserTime($time, $timezone = "Asia/Kolkata", $format = "H:i:s") {
 
     }
 
+}
+
+function total_video_revenue() {
+    $model = LiveVideoPayment::sum('amount');
+
+    return $model;
 }

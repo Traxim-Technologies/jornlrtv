@@ -36,6 +36,8 @@
 
     use App\UserRating;
 
+    use App\LiveVideo;
+
     use Intervention\Image\ImageManagerStatic as Image;
 
 
@@ -691,6 +693,21 @@
             return $videos;
         }
 
+
+        public static function live_video_search($request,$key,$web = NULL,$skip = 0) {
+
+            $videos_query = LiveVideo::where('live_videos.is_streaming' ,DEFAULT_TRUE)
+                        ->where('title','like', '%'.$key.'%')
+                        ->where('live_videos.status' ,DEFAULT_FALSE)
+                        ->orderBy('live_videos.created_at' , 'desc');
+            if($web) {
+                $videos = $videos_query->paginate(16);
+            } else {
+                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            }
+
+            return $videos;
+        }
 
         public static function check_wishlist_status($user_id,$video_id) {
 

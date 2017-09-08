@@ -395,6 +395,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
 
+    Route::get('video/payments', 'AdminController@video_payments')->name('videos.payments');
+
 
     // Custom Push
 

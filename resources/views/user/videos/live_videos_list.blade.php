@@ -36,7 +36,7 @@
                                         ?>
                                         <a href="{{$url}}">
 
-                                            <img src="{{$video->snapshot}}" />
+                                            <div class="bg_img_video" style="background-image:url({{$video->snapshot}})"></div>
 
                                         </a>
 

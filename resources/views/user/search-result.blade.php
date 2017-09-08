@@ -15,7 +15,9 @@
 
                     <ul class="history-list">
 
-                        @if(count($videos))
+                        @if(count($videos) > 0)
+
+                            <div><h5 class="text-uppercase" style="font-weight: bold;">{{tr('uploaded_video')}} "{{$key}}"</h5></div>
 
                             @foreach($videos as $v => $video)
 
@@ -69,10 +71,95 @@
                        
                     </ul>
 
-                    @if(count($videos) > 0)
+                    @if(count($videos) > 16)
                         <div class="row">
                             <div class="col-md-12">
-                                <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+                                <div align="right" id="paglink"><?php // echo $videos->links(); ?>
+                                     <a href="{{route('user.trending')}}" class="btn btn-sm btn-danger text-uppercase">{{tr('see_all')}}</a>
+
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    @endif
+
+                    <hr>
+
+
+                    <ul class="history-list">
+
+                        @if(count($live_videos) > 0)
+
+                            <div><h5 class="text-uppercase" style="font-weight: bold;">{{tr('live_video_title')}} "{{$key}}"</h5></div>
+
+                            @foreach($live_videos as $v => $live_video)
+
+                                <?php 
+
+                                    $userId = Auth::check() ? Auth::user()->id : '';
+
+                                    $url = ($live_video->amount > 0) ? route('user.payment_url', array('id'=>$live_video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$live_video->unique_id,'c_id'=>$live_video->channel_id));
+
+                                    ?>
+
+                                <li class="sub-list search-list row">
+                                    <div class="main-history">
+                                         <div class="history-image">
+                                            <a href="{{$url}}">
+                                                <img src="{{$live_video->snapshot}}">
+                                            </a>        
+                                            <div class="video_duration text-uppercase">
+                                                @if($live_video->amount > 0) 
+
+                                                {{tr('paid')}} - ${{$live_video->amount}} 
+
+                                                @else {{tr('free')}} @endif
+                                            </div>                 
+                                        </div><!--history-image-->
+
+                                        <div class="history-title">
+                                            <div class="history-head row">
+                                                <div class="cross-title">
+                                                    <h5>
+                                                        <a href="{{$url}}">{{$live_video->title}}</a></h5>
+                                                    <span class="video_views">
+                                                        <i class="fa fa-eye"></i> {{$live_video->viewer_cnt}} {{tr('views')}}<b>.</b> 
+                                                        {{$live_video->created_at->diffForHumans()}}
+                                                    </span> 
+                                                </div> 
+                                                                      
+                                            </div> <!--end of history-head--> 
+
+                                            <div class="description">
+                                                <p>{{$live_video->description}}</p>
+                                            </div><!--end of description--> 
+
+                                                                                                  
+                                        </div><!--end of history-title--> 
+                                        
+                                    </div><!--end of main-history-->
+                                </li>
+
+                            @endforeach
+
+                        @else
+
+                            <p class="no-result">{{tr('no_search_result')}}</p>
+
+                        @endif
+                       
+                    </ul>
+
+                    @if(count($live_videos) > 16)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div align="right" id="paglink">
+
+                                    <?php //echo $live_videos->links(); ?>
+
+                                    <a href="{{route('user.live_videos')}}" class="btn btn-sm btn-danger text-uppercase">{{tr('see_all')}}</a>
+                                        
+                                </div>
                             </div>
                         </div>
                     @endif

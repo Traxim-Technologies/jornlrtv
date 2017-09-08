@@ -266,6 +266,8 @@ class ApplicationController extends Controller {
             
             $results = Helper::search_video($request, $q);
 
+            $live_videos = Helper::live_video_search($request, $q);
+
             if($results) {
 
                 foreach ($results as $i => $key) {
@@ -273,11 +275,37 @@ class ApplicationController extends Controller {
                     $check = $i+1;
 
                     if($check <=10) {
+
+                        //live_video_title
      
-                        array_push($items,$key->title);
+                        array_push($items,['label'=>$key->title,'category'=>tr('uploaded_video')]);
 
                     } if($check == 10 ) {
-                        array_push($items,"View All" );
+
+                        array_push($items,['label'=>"View All" ,'category'=>tr('uploaded_video')]);
+
+                    }
+                
+                }
+
+            }
+
+            if($live_videos) {
+
+                foreach ($live_videos as $idx => $value) {
+
+                    $check = $idx+1;
+
+                    if($check <=10) {
+
+                        //live_video_title
+     
+                        array_push($items,['label'=>$value->title,'category'=>tr('live_video_title')]);
+
+                    } if($check == 10 ) {
+
+                        array_push($items,['label'=>"View All" ,'category'=>tr('live_video_title')]);
+
                     }
                 
                 }
@@ -329,7 +357,13 @@ class ApplicationController extends Controller {
 
             $videos = Helper::search_video($request, $q,1);
 
-            return view('user.search-result')->with('key' , $q)->with('videos' , $videos)->with('page' , "")->with('subPage' , "");
+            $live_videos = Helper::live_video_search($request, $q,1);
+
+            return view('user.search-result')->with('key' , $q)
+                    ->with('videos' , $videos)
+                    ->with('live_videos', $live_videos)
+                    ->with('page' , "")
+                    ->with('subPage' , "");
         }     
     
     }

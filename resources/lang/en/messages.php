@@ -289,6 +289,11 @@ return array(
 	'finish' => 'Finish',
 	'video_details'=>'Video Details',
 	'publish_type'=>'Publish Type',
+
+	'uploaded_video'=>'Tube Videos',
+
+	'live_video_title'=>'Live Videos',
+
 	'publish_now'=>'Now',
 	'publish_later'=>'Later',
 

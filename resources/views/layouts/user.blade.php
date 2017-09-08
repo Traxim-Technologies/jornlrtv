@@ -108,6 +108,27 @@
             jQuery("#auto_complete_search").autocomplete({
                 source: "{{route('search')}}",
                 minLength: 1,
+                create: function () {
+                    $(this).data('ui-autocomplete')._renderMenu = function( ul, items ) {
+
+                        var that = this,
+                        currentCategory = "";
+
+                        if(items.length > 0) {
+                            $.each( items, function( index, item ) {
+                              var li;
+                              if ( item.category != currentCategory ) {
+                                ul.append( "<li class='ui-autocomplete-category'><b>" + item.category + "</b></li>" );
+                                currentCategory = item.category;
+                              }
+                              li = that._renderItemData( ul, item );
+                              if ( item.category ) {
+                                li.attr( "aria-label", item.category + " : " + item.label );
+                              }
+                            });
+                        }
+                    };
+                },
                 select: function(event, ui){
 
                     // set the value of the currently focused text box to the correct value
@@ -116,9 +137,9 @@
                         
                         // console.log( "logged correctly: " + ui.item.value );
 
-                        var username = ui.item.value;
+                        var username = ui.item.label;
 
-                        if(ui.item.value == 'View All') {
+                        if(ui.item.label == 'View All') {
 
                             // console.log('View AALLLLLLLLL');
 
@@ -127,7 +148,9 @@
                         } else {
                             // console.log("User Submit");
 
-                            jQuery('#auto_complete_search').val(ui.item.value);
+                            // window.location.href = "{{url('/')}}"+'/user/search?q='+ui.item.label+"&n=";
+
+                            jQuery('#auto_complete_search').val(ui.item.label);
 
                             jQuery('#userSearch').submit();
                         }
