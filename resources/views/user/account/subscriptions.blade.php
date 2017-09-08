@@ -47,9 +47,69 @@
 
 														<!-- <a href="#" class="btn btn-success pull-right">{{tr('choose')}}</a> -->
 
+
+
+			<div class="modal fade cus-mod" id="paypal" role="dialog">
+                <div class="modal-dialog">
+                
+                  <!-- Modal content-->
+                  <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title text-center text-uppercase">{{tr('payment_options')}}</h4>
+                        </div>
+
+
+                        <div class="modal-body">
+                            <!-- <p>Please Pay to see the full video</p>  -->
+                                <div class="col-lg-6">
+                                  <!-- small box -->
+                                  <div class="small-box bg-green">
+                                    <div class="inner">
+                                      <h3>{{ Setting::get('currency')}} {{$subscription->amount}}</h3>
+                                      <div class="clearfix"></div>
+                                      <p style="float: none;" class="text-left">{{tr('paypal_payment')}}</p>
+                                    </div>
+                                    <div class="icon">
+                                      <i class="fa fa-money"></i>
+                                    </div>
+                                     <div class="clearfix"></div>
+                                    <a href="{{route('user.paypal' , $subscription->id)}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                  </div>
+                                </div>
+                           
+                                <div class="col-lg-6">
+                                  <!-- small box -->
+                                  <div class="small-box bg-aqua">
+                                    <div class="inner">
+                                      <h3>{{ Setting::get('currency')}} {{$subscription->amount}}</h3>
+                                      <div class="clearfix"></div>
+                                      <p style="float: none;" class="text-left">{{tr('stripe_payment')}}</p>
+                                    </div>
+                                    <div class="icon">
+                                      <i class="fa fa-money"></i>
+                                    </div>
+                                     <div class="clearfix"></div>
+                                    <a onclick="return confirm('Are you sure want pay in stripe?')" href="{{route('user.card.stripe_payment' , ['subscription_id' => $subscription->id])}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                  </div>
+                                </div>
+                            
+                            
+                            <div class="clearfix"></div>
+                            
+                        </div>
+
+                        
+                  </div>
+                  
+                </div>
+            
+            </div>
+
 														@if($subscription->amount > 0)
 
-															@if(Setting::get('payment_type') == 'paypal')
+															<?php /* @if(Setting::get('payment_type') == 'paypal')
 
 															<a href="{{route('user.paypal' , $subscription->id)}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
 
@@ -57,7 +117,9 @@
 
 																<a href="{{route('user.card.stripe_payment' , ['subscription_id' => $subscription->id])}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
 
-															@endif
+															@endif */?>
+
+															 <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#paypal">{{tr('choose_plan')}}</button>
 
 														@else
 
