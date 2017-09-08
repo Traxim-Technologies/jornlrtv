@@ -773,18 +773,6 @@ liveAppCtrl
 		});
 
 		var appSettings = JSON.parse(memoryStorage.appSettings);*/
-
-		window.onbeforeunload = function() {
-
-			window.location.href = stop_streaming_url;
-
-
-
-
-			// return "Data will be lost if you leave the page, are you sure?";
-			
-
-        };
 		
 
 		//$scope.user_id = memoryStorage.user_id;
@@ -1328,6 +1316,10 @@ liveAppCtrl
 			  // alert('Warning', data.msg);
 			}
 			console.log("Broadcast Error");
+
+			window.location.href = stop_streaming_url;
+
+
 			/*var data = new FormData;
 			data.append('id', memoryStorage.user_id);
 			data.append('token', memoryStorage.access_token);
@@ -1393,6 +1385,13 @@ liveAppCtrl
 	    $scope.$on('destroy', function () {
 	      clearTimeout(viewerCount);
 	    });
+
+
+	    /*$scope.$on('stop_streaming', function () {
+
+	    	
+	      
+	    });*/
 		
 
 	}

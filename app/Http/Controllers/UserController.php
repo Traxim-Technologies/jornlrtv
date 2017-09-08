@@ -65,12 +65,69 @@ class UserController extends Controller {
      *
      * @return void
      */
-    public function __construct(UserApiController $API)
-    {
+    public function __construct(UserApiController $API, Request $request)
+    {   
+
+        // print_r(route('user.live_video.start_broadcasting'));
+
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming']]);
+
+
+        if (Auth::check()) {
+
+            if (strpos(url()->previous(),route('user.live_video.start_broadcasting')) === false) {
+
+            } else {
+
+                Log::info("starts ".Auth::user()->id);
+
+                $this->deleteStreaming();
+
+            }
+
+        }
+
     }
+
+
+    public function deleteStreaming() {
+
+        $model = LiveVideo::where('user_id',Auth::user()->id)->where('status', 0)->get();
+
+        if (count($model) > 0) {
+
+            Log::info("Logged In user id".Auth::user()->id);
+
+             // Log::info("Model".print_r($model, true));
+
+            foreach ($model as $key => $value) {
+
+                Log::info("Usr Id".print_r($value->user_id,true));
+
+
+                    
+                if ($value->is_streaming) { 
+
+                    Log::info("deleteStreaming");
+
+                    // $value->status = DEFAULT_TRUE;
+
+                    $value->save();
+
+                } else {
+
+                    $value->delete();
+
+                }
+
+            }
+
+        }
+
+    }
+
 
     /**
      * Show the user dashboard.
@@ -1604,10 +1661,6 @@ class UserController extends Controller {
 
                 }
 
-                
-
-                
-
                 // $messages = [];
 
                 /*foreach ($comments as $key => $value) {
@@ -1657,7 +1710,30 @@ class UserController extends Controller {
 
         $model->status = DEFAULT_TRUE;
 
-        $model->end_time = getUserTime(date('H:i:s'), ($model->user) ? $model->user->timezone : '', "H:i:s");
+        if(Auth::check()) {
+
+            if ($model->user_id == Auth::user()->id) {
+
+                $model->end_time = getUserTime(date('H:i:s'), ($model->user) ? $model->user->timezone : '', "H:i:s");
+
+                $message =  tr('streaming_stopped_success');
+
+                $route = route('user.channel', ['id'=>$model->channel_id]);
+
+            } else {
+
+                $message = tr('no_more_video_available');
+
+                $route = route('user.live_videos');
+            }
+
+        } else {
+
+            $message = tr('no_more_video_available');
+
+            $route = route('user.live_videos');
+
+        }
 
         if ($model->save()) {
 
@@ -1665,16 +1741,25 @@ class UserController extends Controller {
 
         }
 
-        return redirect(route('user.channel', ['id'=>$model->channel_id]))
-            ->with('flash_success', tr('streaming_stopped_success'));
+       
+
+        return redirect($route)
+            ->with('flash_success',$message);
     }
 
 
     public function live_videos(Request $request) {
 
-        $videos = LiveVideo::where('is_streaming', DEFAULT_TRUE)
-                    ->where('status', 0)
-                    ->paginate(15);
+        $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
+                    ->where('status', 0);
+
+        if (Auth::check()) {
+
+            $query->whereNotIn('user_id', [Auth::user()->id]);
+
+        }
+
+        $videos = $query->paginate(15);
 
         return view('user.videos.live_videos_list')
                 ->with('videos', $videos);

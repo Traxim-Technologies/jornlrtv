@@ -24,6 +24,7 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
+	'no_more_video_available'=>'No more Video Available',
 
 	'start_broadcast'=>'Start BroadCast',
 	'comment_here'=>'Type message...',

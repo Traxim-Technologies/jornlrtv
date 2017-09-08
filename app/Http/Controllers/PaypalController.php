@@ -240,6 +240,18 @@ class PaypalController extends Controller {
 
         }
 
+
+        $video_payment = LiveVideoPayment::where('live_video_viewer_id' , $user_id)->where('live_video_id' , $id)->first();
+
+        if ($video_payment) {
+
+
+            return redirect(route('user.live_video.start_broadcasting', array('id'=>$video_payment->getVideo->unique_id, 'c_id'=>$video_payment->getVideo->channel_id)));
+
+
+
+        }
+
         // \Log::info("Auth Check".print_r(Auth::user() , true));
 
         $subscription = LiveVideo::find($id);
@@ -430,7 +442,7 @@ class PaypalController extends Controller {
                 if ($live_video_payment->getVideo) {
 
 
-                    return redirect(route('user.live_video.start_broadcasting',array('id'=>$live_video_payment->getVideo->unique_id)));
+                    return redirect(route('user.live_video.start_broadcasting',array('id'=>$live_video_payment->getVideo->unique_id, 'c_id'=>$live_video_payment->getVideo->channel_id)));
 
                 } else {
 

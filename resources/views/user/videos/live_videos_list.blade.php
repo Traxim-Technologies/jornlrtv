@@ -11,6 +11,9 @@
             <div class="page-inner col-sm-9 col-md-10">
 
                 <div class="slide-area recom-area">
+
+                    @include('notification.notify')
+
                     <div class="box-head recom-head">
                         <h3>{{tr('live_videos')}}</h3>
                     </div>
@@ -38,7 +41,7 @@
                                         </a>
 
                                         <div class="video_duration text-uppercase">
-                                            @if($url) 
+                                            @if($video->amount > 0) 
 
                                                 {{tr('paid')}} - ${{$video->amount}} 
 
