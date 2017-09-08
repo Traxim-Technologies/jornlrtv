@@ -1864,3 +1864,65 @@ margin: 0px auto 35px;
 .report_list{
 	padding: 5px 0px
 }
+
+
+
+<style type="text/css">
+.small-box {
+    border-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+    color: #fff;    
+}
+
+.bg-green{
+    background-color: #00a65a !important;
+}
+
+.bg-aqua {
+    background-color: #00c0ef !important;
+}
+
+.small-box h3, .small-box p {
+    z-index: 5;
+    color: #fff!important;
+}
+.small-box h3 {
+    font-size: 38px;
+    font-weight: bold;
+    margin: 0 0 10px;
+    padding: 0;
+    white-space: nowrap;
+    color: #fff !important;
+}
+
+.small-box > .inner {
+    padding: 10px;
+}
+
+.small-box p {
+    font-size: 15px;
+}
+
+.small-box .icon {
+    color: rgba(0, 0, 0, 0.15);
+    font-size: 90px;
+    position: absolute;
+    right: 30px;
+    top: -10px;
+    transition: all 0.3s linear 0s;
+    z-index: 0;
+}
+
+.small-box > .small-box-footer {
+    background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    display: block;
+    padding: 3px 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    z-index: 10;
+}
