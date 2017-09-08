@@ -23,7 +23,7 @@ return array(
 	'subscription_details'=>'Subscription Details',
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'mobile_watch_again_heading' => 'Watch It Again',
-	'stripe_payment'=>'Stripe Payment',
+	'stripe_payment'=>'Card Payment',
 	'paypal_payment'=>'Paypal Payment',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
