@@ -593,6 +593,10 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('spamVideos', 'UserController@spam_videos')->name('spam-videos');
 
+    Route::get('payment-video', 'UserController@payment_url')->name('payment_url');
+
+    Route::get('stripe-payment-video', 'UserController@stripe_payment_video')->name('stripe_payment_video');
+
 
     // Wishlist
 

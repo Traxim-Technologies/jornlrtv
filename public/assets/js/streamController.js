@@ -1371,6 +1371,13 @@ liveAppCtrl
 	      		type : 'post',
 	      		url : url+'/get_viewer_cnt?id='+$scope.videoDetails.id,
 	      		success : function(data) {
+
+	      			if (data.model.status == 1) {
+
+	      				window.location.href = stop_streaming_url;
+
+	      			}
+
 	      			$("#viewers_cnt").html(data.viewer_cnt);
 	      		}
 
@@ -1386,6 +1393,12 @@ liveAppCtrl
 	      clearTimeout(viewerCount);
 	    });
 
+	   /* $scope.stopStreaming = function() {
+
+	    	//$rootScope.$emit('model_leave_room');
+
+	    	window.location.href = stop_streaming_url;
+	    };*/
 
 	    /*$scope.$on('stop_streaming', function () {
 

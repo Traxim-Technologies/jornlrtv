@@ -5184,6 +5184,9 @@
                 warn(session.userid, 'ejected you.');
             } else {
 				warn('Session has been closed.', session);
+
+                alert("Session has been closed");
+                
 				if($('#offline-image').length > 0){
 					$('#offline-image').show();
 					$('#videos-container').removeClass('loader');

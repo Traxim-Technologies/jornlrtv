@@ -25,6 +25,7 @@ return array(
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
 	'no_more_video_available'=>'No more Video Available',
+	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 
 	'start_broadcast'=>'Start BroadCast',
 	'comment_here'=>'Type message...',

@@ -30,7 +30,7 @@
 
                                         $userId = Auth::check() ? Auth::user()->id : '';
 
-                                        $url = ($video->amount > 0) ? route('user.live_video_paypal', array('id'=>$video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$video->unique_id,'c_id'=>$video->channel_id));
+                                        $url = ($video->amount > 0) ? route('user.payment_url', array('id'=>$video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$video->unique_id,'c_id'=>$video->channel_id));
 
 
                                         ?>

@@ -1801,7 +1801,7 @@ class UserController extends Controller {
 
         }
 
-        return response()->json(['viewer_cnt'=>$viewer_cnt]);
+        return response()->json(['viewer_cnt'=>$viewer_cnt, 'model'=>$model]);
 
     }
 
@@ -1870,6 +1870,167 @@ class UserController extends Controller {
             dd($e->getResponse()->getBody()->getContents());
         }
 
+
+    }
+
+    public function payment_url(Request $request) {
+
+        $id = $request->id;
+
+        $user_id = $request->user_id;
+
+        if (!Auth::check() || !$user_id) {
+
+            return redirect(route('user.login.form'));
+
+        } else {
+
+            $video_payment = LiveVideoPayment::where('live_video_viewer_id' , $user_id)->where('live_video_id' , $id)->first();
+
+            if ($video_payment) {
+
+
+                return redirect(route('user.live_video.start_broadcasting', array('id'=>$video_payment->getVideo->unique_id, 'c_id'=>$video_payment->getVideo->channel_id)));
+
+
+
+            }
+
+            if (Setting::get('payment_type') == 'stripe') {
+
+                return redirect(route('user.stripe_payment_video', array('id'=>$id, 'user_id'=>$user_id)));
+
+            } else {
+
+                return redirect(route('user.live_video_paypal', array('id'=>$id, 'user_id'=>$user_id)));
+            }
+        }
+
+    }
+
+    public function stripe_payment_video(Request $request) {
+
+        if (\Auth::user()->card_id) {
+
+            $user_card = Card::find(Auth::user()->card_id);
+
+            if ($user_card && $user_card->is_default) {
+
+                $video = LiveVideo::find($request->id);
+
+                if($video && !$video->status && $video->is_streaming) {
+
+                    $total = $video->amount;
+
+                    // Get the key from settings table
+                    $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                    $customer_id = $user_card->customer_id;
+                    
+                    if($stripe_secret_key) {
+
+                        \Stripe\Stripe::setApiKey($stripe_secret_key);
+                    } else {
+
+                        // $response_array = array('success' => false, 'error' => Helper::error_message(902) , 'error_code' => 902);
+
+                       // return response()->json($response_array , 200);
+
+                        return back()->with('flash_error', Helper::get_error_message(902));
+                    }
+
+                    try {
+
+                       $user_charge =  \Stripe\Charge::create(array(
+                          "amount" => $total * 100,
+                          "currency" => "usd",
+                          "customer" => $customer_id,
+                        ));
+
+                       $payment_id = $user_charge->id;
+                       $amount = $user_charge->amount/100;
+                       $paid_status = $user_charge->paid;
+
+                       if($paid_status) {
+                            $user_payment = new LiveVideoPayment;
+                            $user_payment->payment_id  = $payment_id;
+                            $user_payment->live_video_viewer_id = Auth::user()->id;
+                            $user_payment->user_id = $video->user_id;
+                            $user_payment->live_video_id = $video->id;
+                            $user_payment->status = 1;
+                            $user_payment->amount = $amount;
+                            // $user_payment->save();
+
+                            // Commission Spilit 
+
+                            $admin_commission = Setting::get('admin_commission')/100;
+
+                            $admin_amount = $amount * $admin_commission;
+
+                            $user_amount = $amount - $admin_amount;
+
+                            $user_payment->admin_amount = $admin_amount;
+
+                            $user_payment->user_amount = $user_amount;
+
+                            $user_payment->save();
+
+                            // Commission Spilit Completed
+
+                            if($user = User::find($user_payment->user_id)) {
+
+                                $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
+
+                                $user->total_user_amount = $user->total_user_amount + $user_amount;
+
+                                $user->remaining_amount = $user->remaining_amount + $user_amount;
+
+                                $user->total = $user->total + $total;
+
+                                $user->save();
+                            
+                            }
+
+                            return redirect(route('user.live_video.start_broadcasting',array('id'=>$video->unique_id, 'c_id'=>$video->channel_id)));
+
+                        } else {
+
+                            return back()->with('flash_error', Helper::get_error_message(903));
+
+                        }
+                    
+                    } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                        Log::info(print_r($e,true));
+
+                        /*$response_array = array('success' => false , 'error' => Helper::get_error_message(903) ,'error_code' => 903);*/
+
+                        return back()->with('flash_error', Helper::get_error_message(903));
+
+                       // return response()->json($response_array , 200);
+                    
+                    }
+
+                
+                } else {
+
+                    return back()->with('flash_error', tr('no_live_video_found'));
+                    
+                }
+
+
+            } else {
+
+                return back()->with('flash_error', tr('no_default_card_available'));
+
+            }
+
+        } else {
+
+            return back()->with('flash_error', tr('no_default_card_available'));
+
+        }
+        
 
     }
 }
