@@ -1661,23 +1661,22 @@ class UserController extends Controller {
 
                 }
 
-                // $messages = [];
 
-                /*foreach ($comments as $key => $value) {
-                    
-                    $messages[] = [
-                        'id' => $value->id, 
-                        'user_id' => ($value->getUser)? $value->user_id : $value->live_video_viewer_id, 
-                        'name' => ($value->getUser) ? $value->getUser->name : $value->getViewUser->name,
-                        'picture'=> ($value->getUser) ? $value->getUser->chat_picture : $value->getViewUser->chat_picture ,
-                        'live_video_id'=>$value->live_video_id, 
-                        'message'=>$value->message];
+                $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
+                    ->where('status', 0)->whereNotIn('id', [$model->id]);
 
-                }*/
+                if (Auth::check()) {
+
+                    $query->whereNotIn('user_id', [Auth::user()->id]);
+
+                }
+
+                $videos = $query->paginate(15);
+
 
                 return view('user.videos.live-video')->with('page', 'live-video')
                     ->with('subPage', 'broadcast')
-                    ->with('data', $model)->with('appSettings', $appSettings)->with('comments',$comments);
+                    ->with('data', $model)->with('appSettings', $appSettings)->with('comments',$comments)->with('videos', $videos);
 
 
             } else {
