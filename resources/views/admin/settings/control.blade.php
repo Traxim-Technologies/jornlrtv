@@ -45,7 +45,7 @@
                             <label>{{ tr('admin_delete_control') }}</label>
                             <br>
                             <label>
-                                <input required type="radio" name="admin_delete_control" value="1" class="flat-red" @if(Setting::get('admin_delete_control') == 0) checked @endif>
+                                <input required type="radio" name="admin_delete_control" value="1" class="flat-red" @if(Setting::get('admin_delete_control') == 1) checked @endif>
                                 {{tr('yes')}}
                             </label>
 
