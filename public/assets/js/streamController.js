@@ -773,18 +773,6 @@ liveAppCtrl
 		});
 
 		var appSettings = JSON.parse(memoryStorage.appSettings);*/
-
-		window.onbeforeunload = function() {
-
-			window.location.href = stop_streaming_url;
-
-
-
-
-			// return "Data will be lost if you leave the page, are you sure?";
-			
-
-        };
 		
 
 		//$scope.user_id = memoryStorage.user_id;
@@ -1328,6 +1316,10 @@ liveAppCtrl
 			  // alert('Warning', data.msg);
 			}
 			console.log("Broadcast Error");
+
+			window.location.href = stop_streaming_url;
+
+
 			/*var data = new FormData;
 			data.append('id', memoryStorage.user_id);
 			data.append('token', memoryStorage.access_token);
@@ -1379,6 +1371,13 @@ liveAppCtrl
 	      		type : 'post',
 	      		url : url+'/get_viewer_cnt?id='+$scope.videoDetails.id,
 	      		success : function(data) {
+
+	      			if (data.model.status == 1) {
+
+	      				window.location.href = stop_streaming_url;
+
+	      			}
+
 	      			$("#viewers_cnt").html(data.viewer_cnt);
 	      		}
 
@@ -1393,6 +1392,19 @@ liveAppCtrl
 	    $scope.$on('destroy', function () {
 	      clearTimeout(viewerCount);
 	    });
+
+	   /* $scope.stopStreaming = function() {
+
+	    	//$rootScope.$emit('model_leave_room');
+
+	    	window.location.href = stop_streaming_url;
+	    };*/
+
+	    /*$scope.$on('stop_streaming', function () {
+
+	    	
+	      
+	    });*/
 		
 
 	}

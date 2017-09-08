@@ -11,6 +11,9 @@
             <div class="page-inner col-sm-9 col-md-10">
 
                 <div class="slide-area recom-area">
+
+                    @include('notification.notify')
+
                     <div class="box-head recom-head">
                         <h3>{{tr('live_videos')}}</h3>
                     </div>
@@ -27,7 +30,7 @@
 
                                         $userId = Auth::check() ? Auth::user()->id : '';
 
-                                        $url = ($video->amount > 0) ? route('user.live_video_paypal', array('id'=>$video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$video->unique_id,'c_id'=>$video->channel_id));
+                                        $url = ($video->amount > 0) ? route('user.payment_url', array('id'=>$video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$video->unique_id,'c_id'=>$video->channel_id));
 
 
                                         ?>
@@ -38,7 +41,7 @@
                                         </a>
 
                                         <div class="video_duration text-uppercase">
-                                            @if($url) 
+                                            @if($video->amount > 0) 
 
                                                 {{tr('paid')}} - ${{$video->amount}} 
 
