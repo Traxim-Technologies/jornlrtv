@@ -249,6 +249,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
 	Route::post('/change/password', 'AdminController@change_password')->name('change.password');
 
+    Route::get('/unspam-video/{id}', 'AdminController@unspam_video')->name('unspam-video');
+
     // users
 
     Route::get('/user/channels/{id}', 'AdminController@user_channels')->name('users.channels');
