@@ -28,7 +28,7 @@
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('payment_id')}}</th>
 						      <th>{{tr('amount')}}</th>
-						      <th>{{tr('expiry_date')}}</th>
+						      <th>{{tr('paid_date')}}</th>
 						    </tr>
 						</thead>
 
@@ -42,7 +42,7 @@
 							      	<td><a target="_blank" href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->user->name}} </a></td>
 							      	<td>{{$payment->payment_id}}</td>
 							      	<td>$ {{$payment->amount}}</td>
-							      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>
+							      	<td>{{$payment->created_at->diffForHumans()}}</td>
 							    </tr>					
 
 							@endforeach
