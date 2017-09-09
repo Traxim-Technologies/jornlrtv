@@ -1579,6 +1579,8 @@ class UserController extends Controller {
     
             if ($model) {
 
+                // $delete_videos = LiveVideo::
+
                 $videoPayment = null;
 
 
