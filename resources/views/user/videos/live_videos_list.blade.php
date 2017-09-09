@@ -33,8 +33,75 @@
                                         $url = ($video->amount > 0) ? route('user.payment_url', array('id'=>$video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$video->unique_id,'c_id'=>$video->channel_id));
 
 
+
+
                                         ?>
+
+
+            <div class="modal fade cus-mod" id="paypal_{{$video->id}}" role="dialog">
+                <div class="modal-dialog">
+                
+                  <!-- Modal content-->
+                  <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title text-center text-uppercase">{{tr('payment_options')}}</h4>
+                        </div>
+
+
+                        <div class="modal-body">
+                            <!-- <p>Please Pay to see the full video</p>  -->
+                                <div class="col-lg-6">
+                                  <!-- small box -->
+                                  <div class="small-box bg-green">
+                                    <div class="inner">
+                                      <h3>{{ Setting::get('currency')}} {{$video->amount}}</h3>
+                                      <div class="clearfix"></div>
+                                      <p style="float: none;" class="text-left">{{tr('paypal_payment')}}</p>
+                                    </div>
+                                    <div class="icon">
+                                      <i class="fa fa-money"></i>
+                                    </div>
+                                     <div class="clearfix"></div>
+                                    <a href="{{route('user.live_video_paypal', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                  </div>
+                                </div>
+                           
+                                <div class="col-lg-6">
+                                  <!-- small box -->
+                                  <div class="small-box bg-aqua">
+                                    <div class="inner">
+                                      <h3>{{ Setting::get('currency')}} {{$video->amount}}</h3>
+                                      <div class="clearfix"></div>
+                                      <p style="float: none;" class="text-left">{{tr('stripe_payment')}}</p>
+                                    </div>
+                                    <div class="icon">
+                                      <i class="fa fa-money"></i>
+                                    </div>
+                                     <div class="clearfix"></div>
+                                    <a onclick="return confirm('Are you sure want pay in stripe?')" href="{{route('user.stripe_payment_video', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                  </div>
+                                </div>
+                            
+                            
+                            <div class="clearfix"></div>
+                            
+                        </div>
+
+                        
+                  </div>
+                  
+                </div>
+            
+            </div>  
+                                        @if($video->amount > 0) 
+                                        <a data-toggle="modal" data-target="#paypal_{{$video->id}}" style="cursor: pointer;">
+                                        @else
+                                    
                                         <a href="{{$url}}">
+
+                                        @endif
 
                                             <div class="bg_img_video" style="background-image:url({{$video->snapshot}})"></div>
 
@@ -51,7 +118,7 @@
 
                                     <div class="video-details recom-details">
                                         <div class="video-head">
-                                            <a href="{{$url}}">
+                                            <a>
 
                                             {{$video->title}}
 
@@ -66,12 +133,11 @@
                                 </div><!--end of slide-box-->
                             @endforeach
                             
-
                         </div>
 
                     @else
 
-                         <div class="recommend-list row">
+                        <div class="recommend-list row">
                             <div class="slide-box recom-box"> {{tr('no_live_videos')}}</div>
                         </div>
 
