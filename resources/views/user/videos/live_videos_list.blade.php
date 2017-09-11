@@ -80,7 +80,7 @@
                                       <i class="fa fa-money"></i>
                                     </div>
                                      <div class="clearfix"></div>
-                                    <a onclick="return confirm('Are you sure want pay in stripe?')" href="{{route('user.stripe_payment_video', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
                                   </div>
                                 </div>
                             

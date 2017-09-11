@@ -14,6 +14,26 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->delete();
+
+        DB::table('users')->insert([
+            [
+                'name' => 'Admin',
+                'email' => 'admin@streamtube.com',
+                'password' => \Hash::make('123456'),
+                'picture' =>"http://streamtube.streamhash.com/placeholder.png",
+                'chat_picture' =>"http://streamtube.streamhash.com/placeholder.png",
+                'token'=>Helper::generate_token(),
+                'token_expiry'=>Helper::generate_token_expiry(),
+                'dob'=>'1992-01-01',
+                'age_limit'=>25,
+                'is_verified'=>1,
+                'status'=>1,
+                'user_type'=>1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+        ]);
+
     	DB::table('users')->insert([
     		[
 		        'name' => 'User',

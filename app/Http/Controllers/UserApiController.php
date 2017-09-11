@@ -757,7 +757,7 @@ class UserApiController extends Controller {
 
     public function get_wishlist(Request $request)  {
 
-        $wishlist = VideoRepo::wishlist($request->id,NULL,$request->skip);
+        $wishlist = VideoRepo::wishlist($request,NULL,$request->skip);
 
         $total = get_wishlist_count($request->id);
 
@@ -941,7 +941,7 @@ class UserApiController extends Controller {
 
 		//get wishlist
 
-        $history = VideoRepo::watch_list($request->id,NULL,$request->skip);
+        $history = VideoRepo::watch_list($request,NULL,$request->skip);
 
         $total = get_history_count($request->id);
 
@@ -1353,7 +1353,7 @@ class UserApiController extends Controller {
 
     // Function Name : getSingleVideo()
 
-    public function getSingleVideo($request) {
+    public function getSingleVideo(Request $request) {
 
 
         $video = VideoTape::where('video_tapes.id' , $request->admin_video_id)
