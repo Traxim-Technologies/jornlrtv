@@ -23,10 +23,16 @@ Route::get('redis/test',function(){
     dd($views);
 });
 
+if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
+if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
+if(!defined('DEVICE_WEB')) define('DEVICE_WEB', 'web');
+
 // REDEEMS
 
 if(!defined('REDEEM_OPTION_ENABLED')) define('REDEEM_OPTION_ENABLED', 1);
 if(!defined('REDEEM_OPTION_DISABLED')) define('REDEEM_OPTION_DISABLED', 0);
+
+
 
 // Redeeem Request Status
 
@@ -761,5 +767,30 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/redeems', 'UserApiController@redeems');
 
     Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
+
+
+    Route::post('live_videos', 'UserApiController@live_videos');
+
+    Route::post('save_live_video', 'UserApiController@save_live_video');
+
+    Route::post('/live_video', 'UserApiController@live_video');
+
+    Route::post('save_chat', 'UserApiController@save_chat');
+
+    Route::post('subscription_plans', 'UserApiController@subscription_plans');
+
+    Route::post('pay_now', 'UserApiController@pay_now');
+
+    Route::post('video_subscription', 'UserApiController@video_subscription');
+
+    Route::post('get_viewers', 'UserApiController@get_viewers');
+
+    Route::post('subscribedPlans', 'UserApiController@subscribedPlans');
+
+    Route::post('peerProfile', 'UserApiController@peerProfile');
+
+    Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
+
+    Route::post('close_streaming', 'UserApiController@close_streaming');
 
 });

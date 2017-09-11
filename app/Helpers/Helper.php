@@ -282,7 +282,35 @@
 
                 case 162:
                     $string = tr('failed_to_upload');
+
                     break;
+
+                case 163 :
+                    $string = tr('streaming_stopped');
+
+                    break;
+                case 164:
+                    
+                    $string = tr('not_yet_started');
+
+                    break;
+                case 165 :
+
+                    $string = tr('no_video_found');
+
+                    break;
+
+                case 166 :
+
+                    $string = tr('no_user_found');
+
+                    break;
+                case 165 :
+
+                $string = tr('user_not_subscribed');
+
+                break;
+
 
                 default:
                     $string = "Unknown error occurred.";
