@@ -30,6 +30,12 @@ return array(
 	'no_more_video_available'=>'No more Video Available',
 	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 
+		'no_video_found'=>'No Live Video Present',
+
+	'not_yet_started'=>'Not yet started the video streaming',
+
+	'streaming_stopped'=>'The video streaming has been stopped',
+
 	'start_broadcast'=>'Start BroadCast',
 	'comment_here'=>'Type message...',
 	'streaming_by'=>'Streaming By',
@@ -571,6 +577,8 @@ return array(
 	'normal' => 'Normal',
 
 	'no_user_found' => 'No users found',
+
+	'user_not_subscribed'=>'The user not yet subscribed',
 	'no_history_found' => 'No History Found',
 	'no_wishlist_found' => 'No Wishlist Found',
 	'no_spam_found' => 'No Spam Videos Found',
@@ -960,4 +968,9 @@ return array(
 	'payment_success' => 'Payment completed!!',
 	'pay_now'=>'Pay Now',
 	'no_card_details_found'=>'No Card Details found. Please Add Card Details',
+
+	'no_live_video_present'=>'There is no live video present',
+	'no_streaming_video_present'=>'There is no steaming video found',
+
+	'video_streaming'=>'Video is Streaming',
 );

@@ -85,8 +85,11 @@ class LiveVideo extends Model
                  'users.name as name', 
                  'users.email as email',
                  'users.picture as user_picture',
+                 'users.chat_picture as chat_picture',
                  'live_videos.id as video_id',
                  'live_videos.title as title',
+                 'live_videos.unique_id as unique_id',
+                 'live_videos.channel_id as channel_id',
                  'live_videos.type as type',
                  'live_videos.description as description',
                  'live_videos.amount as amount',
@@ -94,6 +97,7 @@ class LiveVideo extends Model
                  'live_videos.viewer_cnt as viewers',
                  'live_videos.no_of_minutes as no_of_minutes',
                  'live_videos.payment_status as payment_status',
+                 'live_videos.status as video_stopped_status',
                 \DB::raw('DATE_FORMAT(live_videos.created_at , "%e %b %y") as date')
             );
     }

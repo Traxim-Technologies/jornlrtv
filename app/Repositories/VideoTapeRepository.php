@@ -405,4 +405,42 @@ class VideoTapeRepository {
 
     }
 
+
+
+    public static function getUrl($video, $request) {
+
+
+        $sdp = $video->user_id.'-'.$video->id.'.sdp';
+
+        $device_type = $request->device_type;
+
+        $browser = $request->browser;
+
+        if ($device_type == DEVICE_ANDROID) {
+
+            $url = "rtmp://".Setting::get('cross_platform_url')."/live/".$sdp;
+
+        } else if($device_type == DEVICE_IOS) {
+
+            $url = "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";
+
+        } else {
+
+            $browser = $browser ? $browser : get_browser();
+
+            if (strpos($browser, 'safari') !== false) {
+                
+                $url = "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";  
+
+            } else {
+
+                $url = "rtmp://".Setting::get('cross_platform_url')."/live/".$sdp;
+            }
+
+        }
+
+        return $url;
+    }
+
+
 }
