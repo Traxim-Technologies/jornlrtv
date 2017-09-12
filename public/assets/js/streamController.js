@@ -1117,8 +1117,8 @@ liveAppCtrl
 
                 // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
                 // $('#chat-box').scrollTop($('#chat-box').height());
-                // $('#panel-body').scrollTop($('#panel-body')[0].scrollHeight);
-                $('.panel-body').scrollTop($('.panel-body')[0].scrollHeight);
+                // $('#chat_box').scrollTop($('#chat_box')[0].scrollHeight);
+                $('.chat_box').scrollTop($('.chat_box')[0].scrollHeight);
             }
 
         });
@@ -1169,6 +1169,7 @@ liveAppCtrl
                 message.profile_id = (appSettings.USER == null) ? $scope.user_id : appSettings.USER.id;
                 message.room = room;
                 message.message = chatMessage;
+                // message.created_at = appSettings.created_at;
                 // message.username = $scope.videoDetails.name;
                 message.userpicture = appSettings.USER_PICTURE;
                 message.username = appSettings.NAME;
@@ -1187,7 +1188,7 @@ liveAppCtrl
 
                 chatInput.clear();
 
-                $('.panel-body').scrollTop($('.panel-body')[0].scrollHeight);
+                $('.chat_box').scrollTop($('.chat_box')[0].scrollHeight);
                 
                 /*$(chatBox).animate({
                     scrollTop: chatBox.scrollHeight,
@@ -1210,6 +1211,8 @@ liveAppCtrl
 
         function messageTemplate(data) {
 
+        	// <small class="text-muted pull-right">'+data.created_at+'</small>
+
             var messageTemplate = '';
 
             // if (data.class == 'left') {
@@ -1218,7 +1221,7 @@ liveAppCtrl
 	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'"><img class="chat_img" src="'+data.userpicture+'" alt="'+data.username+'"></a>';
 	            messageTemplate += '</div>';
 	            messageTemplate += '<div class="message col-lg-10 col-md-10 col-xs-10 col-sm-10">';
-	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small><small class="text-muted pull-right">'+data.created_at+'</small></a>';
+	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small></a>';
 	            messageTemplate += ' <div>'+data.message+'</div>';
 	            messageTemplate += '</div>';
 	            messageTemplate += '<div class="clearfix"></div>';

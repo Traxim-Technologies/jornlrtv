@@ -128,7 +128,7 @@ video {
 
 							                  <a href="{{route('user.profile', array('id'=>$uid))}}" class="name clearfix" style="text-decoration: none">
 							                    <small class="text-muted pull-left">{{$name}}</small>
-							                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{$comment->created_at->diffForHumans()}}</small>
+							                    <?php /*<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{$comment->created_at->diffForHumans()}}</small> */ ?>
 							                  </a>
 
 							                 	<div>{{$comment->message}}</div>
