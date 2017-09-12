@@ -1707,7 +1707,7 @@ class UserController extends Controller {
 
     public function stop_streaming(Request $request) {
 
-        $model = LiveVideo::find($request->id);
+        /*$model = LiveVideo::find($request->id);
 
         $model->status = DEFAULT_TRUE;
 
@@ -1745,7 +1745,7 @@ class UserController extends Controller {
        
 
         return redirect($route)
-            ->with('flash_success',$message);
+            ->with('flash_success',$message);*/
     }
 
 
