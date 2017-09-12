@@ -1092,7 +1092,7 @@ liveAppCtrl
 
         // set-up a connection between the client and the server
 
-        var socket = io('https://appswamy.com:3002/' ,  { secure: true , query: "room="+room});
+        var socket = io('https://tubenow.streamhash.com:3004/' ,  { secure: true , query: "room="+room});
 
         var socketState = false;
 
