@@ -1317,7 +1317,7 @@ liveAppCtrl
 			}
 			console.log("Broadcast Error");
 
-			window.location.href = stop_streaming_url;
+			// window.location.href = stop_streaming_url;
 
 
 			/*var data = new FormData;
@@ -1372,9 +1372,13 @@ liveAppCtrl
 	      		url : url+'/get_viewer_cnt?id='+$scope.videoDetails.id,
 	      		success : function(data) {
 
+	      			console.log(data.model.status);
+
 	      			if (data.model.status == 1) {
 
-	      				window.location.href = stop_streaming_url;
+	      				console.log("stop_streaming_url");
+
+	      				// window.location.href = stop_streaming_url;
 
 	      			}
 
