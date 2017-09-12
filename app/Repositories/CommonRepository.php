@@ -293,7 +293,7 @@ class CommonRepository {
 
 
 
-    public static function video_save($request) {
+    public static function video_save(Request $request) {
 
         try {
 

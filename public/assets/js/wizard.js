@@ -128,7 +128,7 @@ $('form').ajaxForm({
         console.log(xhr);
     },
     error : function(xhr) {
-        alert(xhr);
+        console.log(xhr);
     },
     success : function(xhr) {
         console.log(xhr);
