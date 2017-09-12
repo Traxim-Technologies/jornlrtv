@@ -198,7 +198,8 @@ class UserController extends Controller {
         if (Auth::check()) {
 
             $request->request->add([ 
-                'age'=>Auth::user()->age_limit,
+                'id'=>Auth::user()->id,
+                'age_limit'=>Auth::user()->age_limit,
             ]);
 
         }
