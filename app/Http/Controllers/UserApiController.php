@@ -54,7 +54,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'getSingleVideo', 'get_channel_videos']));
 
     }
 
@@ -1025,11 +1025,11 @@ class UserApiController extends Controller {
                             ->videoResponse()
                             ->orderByRaw('created_at desc');
 
-        if (Auth::check()) {
+        if ($request->id) {
 
             // Check any flagged videos are present
 
-            $flag_videos = flag_videos(Auth::user()->id);
+            $flag_videos = flag_videos($request->id);
 
             if($flag_videos) {
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
@@ -1105,7 +1105,7 @@ class UserApiController extends Controller {
 
             if($channels) {
 
-                $videos = VideoRepo::channel_videos($channels->id, '', $request->skip);
+                $videos = VideoRepo::channelVideos($request, $channels->id, '', $request->skip);
 
                 if(count($videos) > 0) {
 
@@ -1357,11 +1357,11 @@ class UserApiController extends Controller {
 
         if ($video) {
 
-            if(Auth::check()) {
+            if($request->id) {
 
-                if ($video->getChannel->user_id != Auth::user()->id) {
+                if ($video->getChannel->user_id != $request->id) {
 
-                    $age = Auth::user()->age_limit ? (Auth::user()->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
+                    $age = $request->age_limit ? $request->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
 
                     if ($video->age_limit > $age) {
 
@@ -1404,7 +1404,7 @@ class UserApiController extends Controller {
 
              // Load the user flag
 
-            $flaggedVideo = (Auth::check()) ? Flag::where('video_tape_id',$request->admin_video_id)->where('user_id', Auth::user()->id)->first() : '';
+            $flaggedVideo = ($request->id) ? Flag::where('video_tape_id',$request->admin_video_id)->where('user_id', $request->id)->first() : '';
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
 
@@ -1478,15 +1478,15 @@ class UserApiController extends Controller {
 
             $comment_rating_status = DEFAULT_TRUE;
 
-            if(\Auth::check()) {
+            if($request->id) {
 
-                $wishlist_status = Helper::check_wishlist_status(\Auth::user()->id,$request->admin_video_id);
+                $wishlist_status = Helper::check_wishlist_status($request->id,$request->admin_video_id);
 
-                $history_status = Helper::history_status(\Auth::user()->id,$request->admin_video_id);
+                $history_status = Helper::history_status($request->id,$request->admin_video_id);
 
-                $subscribe_status = check_channel_status(\Auth::user()->id, $video->channel_id);
+                $subscribe_status = check_channel_status($request->id, $video->channel_id);
 
-                $mycomment = UserRating::where('user_id', \Auth::user()->id)->where('video_tape_id', $request->admin_video_id)->first();
+                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->admin_video_id)->first();
 
                 if ($mycomment) {
 

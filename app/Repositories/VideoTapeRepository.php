@@ -362,6 +362,35 @@ class VideoTapeRepository {
         return $videos;
     }
 
+     public static function channelVideos($request, $channel_id, $web = NULL , $skip = 0) {
+
+        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.status' , 1)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('video_tapes.channel_id' , $channel_id)
+                    ->videoResponse()
+                    ->orderby('video_tapes.created_at' , 'desc');
+        if ($request->id) {
+            // Check any flagged videos are present
+            $flagVideos = getFlagVideos($request->id);
+
+            if($flagVideos) {
+
+                $videos_query->whereNotIn('video_tapes.id', $flagVideos);
+
+            }
+
+        }
+
+        if($web) {
+            $videos = $videos_query->paginate(16);
+        } else {
+            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+        }
+
+        return $videos;
+    }
+
 
     public static function all_videos($web = NULL , $skip = 0) {
 
