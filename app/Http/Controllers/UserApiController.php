@@ -1361,7 +1361,7 @@ class UserApiController extends Controller {
 
                 if ($video->getChannel->user_id != $request->id) {
 
-                    $age = $request->age_limit ? $request->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
+                    $age = $request->age_limit ? ($request->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
 
                     if ($video->age_limit > $age) {
 
