@@ -398,7 +398,7 @@ class PaypalController extends Controller {
 
                     $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
 
-                    $user->total_user_amount = $user->total_user_amount + $user_amount;
+                    $user->total_user_amount = $user->total_user _amount + $user_amount;
 
                     $user->remaining_amount = $user->remaining_amount + $user_amount;
 
