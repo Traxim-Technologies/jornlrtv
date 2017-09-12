@@ -260,7 +260,6 @@ class PaypalController extends Controller {
             ->setTax('0.00')
             ->setSubtotal($total);
 
-
         $amount = new Amount();
         $amount->setCurrency('USD')
             ->setTotal($total)
@@ -408,6 +407,8 @@ class PaypalController extends Controller {
                     $user->save();
                 
                 }
+
+                add_to_redeem($user->id , $user_amount);
 
                 Session::forget('paypal_payment_id');
                 
