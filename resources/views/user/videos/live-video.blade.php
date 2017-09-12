@@ -128,7 +128,7 @@ video {
 
 							                  <a href="{{route('user.profile', array('id'=>$uid))}}" class="name clearfix" style="text-decoration: none">
 							                    <small class="text-muted pull-left">{{$name}}</small>
-							                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{$comment->created_at->diffForHumans()}}</small>
+							                    <?php /*<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{$comment->created_at->diffForHumans()}}</small> */ ?>
 							                  </a>
 
 							                 	<div>{{$comment->message}}</div>
@@ -284,8 +284,6 @@ video {
 
 
 
-
-
 var appSettings = <?= $appSettings ?>;
 
 var port_no = <?= $data->port_no; ?>;
@@ -295,70 +293,6 @@ var video_details = <?= $data; ?>;
 var socket_url =  "<?= Setting::get('kurento_socket_url'); ?>";
 
 var stop_streaming_url ="<?= route('user.live_video.stop_streaming', array('id'=>$data->id)) ?>";
-
-
-/*$(window).on('beforeunload', function() {
-
-		$.ajax({
-
-			type : "get",
-
-			url : stop_streaming_url,
-
-			success : function (data) {
-
-				console.log("success");
-			}, 
-
-			error : function (data) {
-				console.log("success");
-
-
-			}
-		});
-
-	window.location.href = stop_streaming_url;
-
-      return 'Are you sure you want to leave?';
-});
-*/
-
-/*
-$(window).on('unload', function(){
-
-	console.log(stop_streaming_url);
-
-	$.ajax({
-
-		type : "get",
-
-		url : stop_streaming_url,
-
-		success : function (data) {
-
-			console.log("success");
-		}, 
-
-		error : function (data) {
-			console.log("success");
-
-
-		}
-	});
-
-});
-
- window.onbeforeunload = function(evt) {
-            var message = 'Are you sure you want to leave?';
-            if (typeof evt == 'undefined') {
-                evt = window.event;
-            }       
-            if (evt) {
-                evt.returnValue = message;
-            }
-            return message;
-        } 
-*/
 
 
 var url = "<?= url('/');?>";

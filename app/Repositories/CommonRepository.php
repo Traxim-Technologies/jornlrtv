@@ -293,7 +293,7 @@ class CommonRepository {
 
 
 
-    public static function video_save($request) {
+    public static function video_save(Request $request) {
 
         try {
 
@@ -696,6 +696,21 @@ class CommonRepository {
 
         $video->publish_time = $request->has('publish_time') 
                         ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : $video->publish_time;
+
+         if($request->hasFile('subtitle')) {
+
+            if ($video->id) {
+
+                if ($video->subtitle) {
+
+                    Helper::delete_picture($video->subtitle, "/uploads/subtitles/");  
+
+                }  
+            }
+
+            $video->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
+
+        }
 
         $video->save();
 

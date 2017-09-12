@@ -222,361 +222,6 @@ liveAppCtrl
 		$scope = $rootScope;
 
 
-		function getBrowser() {
-
-            // Opera 8.0+
-            var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-
-            // Firefox 1.0+
-            var isFirefox = typeof InstallTrigger !== 'undefined';
-
-            // Safari 3.0+ "[object HTMLElementConstructor]" 
-            var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
-
-            // Internet Explorer 6-11
-            var isIE = /*@cc_on!@*/false || !!document.documentMode;
-
-            // Edge 20+
-            var isEdge = !isIE && !!window.StyleMedia;
-
-            // Chrome 1+
-            var isChrome = !!window.chrome && !!window.chrome.webstore;
-
-            // Blink engine detection
-            var isBlink = (isChrome || isOpera) && !!window.CSS;
-
-            var b_n = '';
-
-            switch(true) {
-
-                case isFirefox :
-
-                        b_n = "Firefox";
-
-                        break;
-                case isChrome :
-
-                        b_n = "Chrome";
-
-                        break;
-
-                case isSafari :
-
-                        b_n = "Safari";
-
-                        break;
-                case isOpera :
-
-                        b_n = "Opera";
-
-                        break;
-
-                case isIE :
-
-                        b_n = "IE";
-
-                        break;
-
-                case isEdge : 
-
-                        b_n = "Edge";
-
-                        break;
-
-                case isBlink : 
-
-                        b_n = "Blink";
-
-                        break;
-
-                default :
-
-                        b_n = "Unknown";
-
-                        break;
-
-            }
-
-            return b_n;
-
-        }
-
-        var mobile_type = "";
-
-        function getMobileOperatingSystem() {
-		  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-		  if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) )
-		  {
-		    mobile_type =  'ios';
-
-		  }
-		  else if( userAgent.match( /Android/i ) )
-		  {
-
-		    mobile_type =  'andriod';
-		  }
-		  else
-		  {
-		    mobile_type =  'unknown'; 
-		  }
-
-		  return mobile_type;
-		}
-
-
-        var browser = getBrowser();
-
-        var m_type = getMobileOperatingSystem();
-
-        var mobile_ios_type = 0;
-
-        var rtsp_mobile_type = 0;
-
-        if ((browser == 'Safari' || browser == 'IE') || m_type == 'ios') {
-
-        		if (m_type == 'ios') {
-
-        			browser = 'Safari';
-        		}
-
-        		mobile_ios_type = 1;
-
-				jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
-
-				$("#videos-container").hide();
-
-				$("#rtsp_container").hide();
-
-				var playerInstance = jwplayer("rtsp_container");
-
-				$scope.url = "";
-
-				var data = new FormData;
-				data.append('video_id', $stateParams.id);
-				data.append('device_type', 'web');
-				data.append('browser', browser);
-
-				$.ajax({
-					type : 'post',
-					url : apiUrl+'get_live_url',
-					contentType : false,
-					processData: false,
-					
-					async : false,
-					data : data,
-					success : function(result) {
-
-						if (result.success) {
-
-							$scope.url = result.url;
-
-						} else {
-
-							console.log(result.message);
-
-						}
-						
-					}, 
-			    	error : function(result) {
-
-			    	}
-				});
-
-				console.log("Url "+$scope.url);
-
-
-				playerInstance.setup({
-
-				   file : $sce.trustAsResourceUrl($scope.url),
-
-				    width: "100%",
-				    aspectratio: "16:9",
-				    primary: "flash",
-				    controls : true,
-				    "controlbar.idlehide" : false,
-				    controlBarMode:'floating',
-				    "controls": {
-				      "enableFullscreen": false,
-				      "enablePlay": false,
-				      "enablePause": false,
-				      "enableMute": true,
-				      "enableVolume": true
-				    },
-				    autostart : true,
-				   /* "sharing": {
-				        "sites": ["reddit","facebook","twitter"]
-				      }*/
-				});
-
-
-        }
-
-		// $scope.route_url = route_url+$location.path();
-
-		$scope.port_no  = port_no;
-
-		console.log(port_no);
-
-		$scope.kurento_socket_url = socket_url;
-
-		var ws = new WebSocket('wss://'+$scope.kurento_socket_url+'/rtprelay');
-
-		console.log(ws);
-
-		var videoInput;
-		var videoOutput;
-		var webRtcPeer;
-		var state = null;
-		var destinationIp;
-		var destinationPort;
-		var rtpSdp;
-
-		console.log('Page loaded ...');
-		videoInput = document.getElementById('videoInput');
-		videoOutput = document.getElementById('videoOutput');
-		rtpSdp = document.getElementById('rtpSdp');
-
-		ws.onmessage = function(message) {
-			var parsedMessage = JSON.parse(message.data);
-			console.info('Received message: ' + message.data);
-
-			switch (parsedMessage.id) {
-			case 'startResponse':
-				startResponse(parsedMessage);
-				break;
-			case 'error':
-				onError('Error message from server: ' + parsedMessage.message);
-				break;
-			case 'iceCandidate':
-				webRtcPeer.addIceCandidate(parsedMessage.candidate)
-				break;
-			default:
-				onError('Unrecognized message', parsedMessage);
-			}
-		}
-
-		$scope.start = function() {
-			console.log('Starting video call ...')
-
-			// showSpinner(videoInput);
-
-			console.log('Creating WebRtcPeer and generating local sdp offer ...');
-
-		    var options = {
-		      localVideo: videoInput,
-		      onicecandidate : onIceCandidate
-		    }
-
-		    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
-		        if(error) return onError(error);
-		        this.generateOffer(onOffer);
-		    });
-		}
-
-		function onIceCandidate(candidate) {
-			   console.log('Local candidate' + JSON.stringify(candidate));
-
-			   var message = {
-			      id : 'onIceCandidate',
-			      candidate : candidate
-			   };
-			   sendMessage(message);
-		}
-
-		function onOffer(error, offerSdp) {
-			if(error) return onError(error);
-
-			console.info('Invoking SDP offer callback function ' + location.host);
-			var message = {
-				id : 'start',
-				sdpOffer : offerSdp,
-				rtpSdp : rtpSdp.value
-			}
-			console.log("This is the offer sdp:");
-			console.log(offerSdp);
-			sendMessage(message);
-		}
-
-		function onError(error) {
-			console.error(error);
-		}
-
-		function startResponse(message) {
-			console.log('SDP answer received from server. Processing ...');
-			webRtcPeer.processAnswer(message.sdpAnswer);
-		}
-
-		$scope.stop = function() {
-			console.log('Stopping video call ...');
-			if (webRtcPeer) {
-				webRtcPeer.dispose();
-				webRtcPeer = null;
-
-				var message = {
-					id : 'stop'
-				}
-				sendMessage(message);
-			}
-			// hideSpinner(videoInput, videoOutput);
-		}
-
-		function sendMessage(message) {
-			var jsonMessage = JSON.stringify(message);
-			console.log('Senging message: ' + jsonMessage);
-			ws.send(jsonMessage);
-		}
-
-		/*function showSpinner() {
-			for (var i = 0; i < arguments.length; i++) {
-				arguments[i].poster = './img/transparent-1px.png';
-				arguments[i].style.background = 'center transparent url("./img/spinner.gif") no-repeat';
-			}
-		}
-
-		function hideSpinner() {
-			for (var i = 0; i < arguments.length; i++) {
-				arguments[i].src = '';
-				arguments[i].poster = './img/webrtc.png';
-				arguments[i].style.background = '';
-			}
-		}*/
-
-		function forceEvenRtpPort(rtpPort) {
-			if ((rtpPort > 0) && (rtpPort % 2 != 0))
-				return rtpPort - 1;
-			else return rtpPort;
-		}
-
-		function updateRtpSdp() {
-			var destination_ip;
-			var destination_port;
-
-			if (!destinationIp.value)
-				destination_ip="104.236.1.170";
-			else
-				destination_ip = destinationIp.value.trim();
-
-			if (!destinationPort.value)
-				destination_port="33124";
-			else
-				destination_port = forceEvenRtpPort(destinationPort.value.trim());
-
-
-			destination_ip="104.236.1.170";
-
-				rtpSdp.value = 'v=0\n'
-				+ 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
-				+ 's=Kurento\n'
-				+ 'c=IN IP4 ' + destination_ip + '\n'
-				+ 't=0 0\n'
-				+ 'm=video ' + destination_port + ' RTP/AVP 100\n'
-				+ 'a=rtpmap:100 H264/90000\n';
-
-				console.log(rtpSdp.value);
-		}
-
-
 		
 
 		var socket = {};
@@ -1372,7 +1017,11 @@ liveAppCtrl
 	      		url : url+'/get_viewer_cnt?id='+$scope.videoDetails.id,
 	      		success : function(data) {
 
+	      			console.log(data.model.status);
+
 	      			if (data.model.status == 1) {
+
+	      				console.log("stop_streaming_url");
 
 	      				window.location.href = stop_streaming_url;
 
@@ -1443,7 +1092,7 @@ liveAppCtrl
 
         // set-up a connection between the client and the server
 
-        var socket = io('https://appswamy.com:3002/' ,  { secure: true , query: "room="+room});
+        var socket = io('https://tubenow.streamhash.com:3004/' ,  { secure: true , query: "room="+room});
 
         var socketState = false;
 
@@ -1468,8 +1117,8 @@ liveAppCtrl
 
                 // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
                 // $('#chat-box').scrollTop($('#chat-box').height());
-                // $('#panel-body').scrollTop($('#panel-body')[0].scrollHeight);
-                $('.panel-body').scrollTop($('.panel-body')[0].scrollHeight);
+                // $('#chat_box').scrollTop($('#chat_box')[0].scrollHeight);
+                $('.chat_box').scrollTop($('.chat_box')[0].scrollHeight);
             }
 
         });
@@ -1520,6 +1169,7 @@ liveAppCtrl
                 message.profile_id = (appSettings.USER == null) ? $scope.user_id : appSettings.USER.id;
                 message.room = room;
                 message.message = chatMessage;
+                // message.created_at = appSettings.created_at;
                 // message.username = $scope.videoDetails.name;
                 message.userpicture = appSettings.USER_PICTURE;
                 message.username = appSettings.NAME;
@@ -1538,7 +1188,7 @@ liveAppCtrl
 
                 chatInput.clear();
 
-                $('.panel-body').scrollTop($('.panel-body')[0].scrollHeight);
+                $('.chat_box').scrollTop($('.chat_box')[0].scrollHeight);
                 
                 /*$(chatBox).animate({
                     scrollTop: chatBox.scrollHeight,
@@ -1561,6 +1211,8 @@ liveAppCtrl
 
         function messageTemplate(data) {
 
+        	// <small class="text-muted pull-right">'+data.created_at+'</small>
+
             var messageTemplate = '';
 
             // if (data.class == 'left') {
@@ -1569,7 +1221,7 @@ liveAppCtrl
 	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'"><img class="chat_img" src="'+data.userpicture+'" alt="'+data.username+'"></a>';
 	            messageTemplate += '</div>';
 	            messageTemplate += '<div class="message col-lg-10 col-md-10 col-xs-10 col-sm-10">';
-	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small><small class="text-muted pull-right">'+data.created_at+'</small></a>';
+	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small></a>';
 	            messageTemplate += ' <div>'+data.message+'</div>';
 	            messageTemplate += '</div>';
 	            messageTemplate += '<div class="clearfix"></div>';
