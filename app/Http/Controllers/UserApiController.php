@@ -1075,6 +1075,60 @@ class UserApiController extends Controller {
             foreach ($videos as $key => $value) {
 
                 $value['watch_count'] = "10k";
+
+                $value['wishlist_status'] = 0;
+
+                $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                array_push($data, $value->toArray());
+            }
+        }
+
+        $response_array = array('success' => true , 'data' => $data);
+
+        return response()->json($response_array , 200);
+
+    }
+
+    /** 
+     * home()
+     *
+     * return list of videos 
+     */
+
+    public function trending(Request $request) {
+
+        $data = [];
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->orderby('video_tapes.watch_count' , 'desc')
+                            ->shortVideoResponse();
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+        $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['watch_count'] = "10k";
+                
                 $value['wishlist_status'] = 0;
 
                 $value['share_url'] = "http://streamtube.streamhash.com/";
