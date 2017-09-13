@@ -1037,20 +1037,22 @@ class UserApiController extends Controller {
         return $response;
     }
 
+    /** 
+     * home()
+     *
+     * return list of videos 
+     */
+
     public function home(Request $request) {
 
-        $videos = [];
-
-        $videos['name'] = tr('all_videos');
-        $videos['key'] = ALL_VIDEOS;
+        $data = [];
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
-                            ->orderby('video_tapes.created_at' , 'desc')
-                            ->videoResponse()
-                            ->orderByRaw('created_at desc');
+                            ->orderby('video_tapes.publish_time' , 'desc')
+                            ->shortVideoResponse();
 
         if ($request->id) {
 
@@ -1059,15 +1061,28 @@ class UserApiController extends Controller {
             $flag_videos = flag_videos($request->id);
 
             if($flag_videos) {
+
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+        $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['wishlist_status'] = 0;
+
+                $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                array_push($data, $value->toArray());
             }
         }
 
-
-        $videos['list'] = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-
-        $response_array = array('success' => true , 'data' => $videos);
+        $response_array = array('success' => true , 'data' => $data);
 
         return response()->json($response_array , 200);
 
