@@ -1091,7 +1091,7 @@ class UserApiController extends Controller {
     }
 
     /** 
-     * home()
+     * trending()
      *
      * return list of videos 
      */
@@ -1225,9 +1225,6 @@ class UserApiController extends Controller {
         return $response;
 
     }
-
-
-
 
     public function single_video(Request $request) {
 
@@ -1408,6 +1405,27 @@ class UserApiController extends Controller {
 
     }
 
+    public function help(Request $request) {
+
+        $page_data['type'] = $page_data['heading'] = $page_data['content'] = "";
+
+        $page = Page::where('type', 'help')->first();
+
+        if($page) {
+
+            $page_data['type'] = "Terms";
+
+            $page_data['heading'] = $page->heading;
+
+            $page_data ['content'] = $page->description;
+        }
+
+        $response_array = ['success' => true , 'page' => $page_data];
+
+        return response()->json($response_array,200);
+
+    }
+
     public function settings(Request $request) {
 
         $validator = Validator::make(
@@ -1439,8 +1457,8 @@ class UserApiController extends Controller {
 
         $response = response()->json($response_array, 200);
         return $response;
+   
     }
-
 
     // Function Name : getSingleVideo()
 
