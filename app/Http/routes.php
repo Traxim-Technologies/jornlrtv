@@ -680,6 +680,8 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/home' , 'UserApiController@home');
     
+    Route::post('/trending' , 'UserApiController@trending');
+    
     Route::post('/common' , 'UserApiController@common');
 
     Route::post('/singleVideo' , 'UserApiController@getSingleVideo');
