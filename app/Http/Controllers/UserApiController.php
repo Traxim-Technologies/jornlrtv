@@ -1074,6 +1074,7 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
+                $value['watch_count'] = "10k";
                 $value['wishlist_status'] = 0;
 
                 $value['share_url'] = "http://streamtube.streamhash.com/";
