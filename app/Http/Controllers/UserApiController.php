@@ -567,14 +567,19 @@ class UserApiController extends Controller {
 
                 if ($user->age_limit < 16) {
 
-                   return back()->with('flash_error', tr('min_age_error'));
+                    $response_array = ['success' => false , 'error' => tr('min_age_error')];
+
+                    return response()->json($response_array , 200);
 
                 }
 
 
                 // Upload picture
+
                 if ($request->hasFile('picture') != "") {
+
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
+
                     $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
                 }
 
@@ -587,23 +592,24 @@ class UserApiController extends Controller {
                 'success' => true,
                 'id' => $user->id,
                 'name' => $user->name,
+                'description' => $user->description,
                 'mobile' => $user->mobile,
                 'gender' => $user->gender,
                 'email' => $user->email,
                 'picture' => $user->picture,
+                'chat_picture' => $user->picture,
                 'token' => $user->token,
                 'token_expiry' => $user->token_expiry,
                 'login_by' => $user->login_by,
                 'social_unique_id' => $user->social_unique_id,
-                'dob'=>$request->dob,
+                'dob'=> $request->dob,
             );
 
             $response_array = Helper::null_safe($response_array);
         
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
     }
 
     public function delete_account(Request $request) {
