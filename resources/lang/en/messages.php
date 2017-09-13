@@ -28,6 +28,7 @@ return array(
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
 	'no_more_video_available'=>'No more Video Available',
+	'to_view_video'=>'Please click here to pay',
 	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 
 		'no_video_found'=>'No Live Video Present',
@@ -145,7 +146,7 @@ return array(
 	'terms'=>'Terms',
 	'total_channels'=>'Total Channels',
 	'about_video'=>'About',
-	'payment_managment'=>'Payment Management',
+	'payment_managment'=>'Billing',
 	'payment_videos'=>'Payment Videos',
 	'no_videos_found'=>'No Videos Found',
 	'no_channel_found'=>'No Channel Found',

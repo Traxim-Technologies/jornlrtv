@@ -1990,8 +1990,12 @@ class UserController extends Controller {
                                 $user->total = $user->total + $total;
 
                                 $user->save();
+
+                                add_to_redeem($user->id, $user_amount);
                             
                             }
+
+
 
                             return redirect(route('user.live_video.start_broadcasting',array('id'=>$video->unique_id, 'c_id'=>$video->channel_id)));
 

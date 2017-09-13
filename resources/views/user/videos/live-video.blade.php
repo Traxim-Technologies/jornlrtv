@@ -180,6 +180,8 @@ video {
 					<div class="clearfix"></div>
 
 
+					@if(count($videos) > 0)
+
 					<div class="col-lg-12">
 							
 						<div class="row slide-area recom-area">
@@ -204,11 +206,74 @@ video {
 
 
 		                                        ?>
-		                                        <a href="{{$url}}">
+		<div class="modal fade cus-mod" id="paypal_{{$video->id}}" role="dialog">
+                <div class="modal-dialog">
+                
+                  <!-- Modal content-->
+                  <div class="modal-content">
 
-		                                            <div class="bg_img_video" style="background-image:url({{$video->snapshot}})"></div>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title text-center text-uppercase">{{tr('payment_options')}}</h4>
+                        </div>
 
-		                                        </a>
+
+                        <div class="modal-body">
+                            <!-- <p>Please Pay to see the full video</p>  -->
+                                <div class="col-lg-6">
+                                  <!-- small box -->
+                                  <div class="small-box bg-green">
+                                    <div class="inner">
+                                      <h3>{{ Setting::get('currency')}} {{$video->amount}}</h3>
+                                      <div class="clearfix"></div>
+                                      <p style="float: none;" class="text-left">{{tr('paypal_payment')}}</p>
+                                    </div>
+                                    <div class="icon">
+                                      <i class="fa fa-money"></i>
+                                    </div>
+                                     <div class="clearfix"></div>
+                                    <a href="{{route('user.live_video_paypal', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                  </div>
+                                </div>
+                           
+                                <div class="col-lg-6">
+                                  <!-- small box -->
+                                  <div class="small-box bg-aqua">
+                                    <div class="inner">
+                                      <h3>{{ Setting::get('currency')}} {{$video->amount}}</h3>
+                                      <div class="clearfix"></div>
+                                      <p style="float: none;" class="text-left">{{tr('stripe_payment')}}</p>
+                                    </div>
+                                    <div class="icon">
+                                      <i class="fa fa-money"></i>
+                                    </div>
+                                     <div class="clearfix"></div>
+                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                  </div>
+                                </div>
+                            
+                            
+                            <div class="clearfix"></div>
+                            
+                        </div>
+
+                        
+                  </div>
+                  
+                </div>
+            
+            </div>  
+                                        @if($video->amount > 0) 
+                                        <a data-toggle="modal" data-target="#paypal_{{$video->id}}" style="cursor: pointer;">
+                                        @else
+                                    
+                                        <a href="{{$url}}">
+
+                                        @endif
+
+                                            <div class="bg_img_video" style="background-image:url({{$video->snapshot}})"></div>
+
+                                        </a>
 
 		                                        <div class="video_duration text-uppercase">
 		                                            @if($video->amount > 0) 
@@ -262,6 +327,7 @@ video {
 
 					</div>
 
+					@endif
 				</div>
 				 
 			</div>
@@ -282,20 +348,21 @@ video {
 <script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 <script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
 
+
+
 <script type="text/javascript">
 
 
 
-var appSettings = <?= $appSettings ?>;
+var appSettings = "<?= $appSettings ?>";
 
-var port_no = <?= $data->port_no; ?>;
+var port_no = "<?= $data->port_no; ?>";
 
-var video_details = <?= $data; ?>;
+var video_details = "<?= $data; ?>";
 
 var socket_url =  "<?= Setting::get('kurento_socket_url'); ?>";
 
-var stop_streaming_url ="<?= route('user.live_video.stop_streaming', array('id'=>$data->id)) ?>";
-
+var stop_streaming_url = "<?= route('user.live_video.stop_streaming', array('id'=>$data->id)) ?>";
 
 $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
 
