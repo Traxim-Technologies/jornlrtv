@@ -101,9 +101,11 @@ video {
 
 							<div class="chat-content">
 
-								<div id="chat-box">
+								<div id="chat-box" class="chat_box_scroll">
 
+							
 									@if(count($comments) > 0)
+
 
 									@foreach($comments as $comment)
 
@@ -295,6 +297,8 @@ var socket_url =  "<?= Setting::get('kurento_socket_url'); ?>";
 var stop_streaming_url ="<?= route('user.live_video.stop_streaming', array('id'=>$data->id)) ?>";
 
 
+$('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
+
 var url = "<?= url('/');?>";
 
 var liveAppCtrl = angular.module('liveApp', [
@@ -329,3 +333,5 @@ console.log(appSettings);
 <script src="{{asset('assets/js/streamController.js')}}"></script>
 
 @endsection
+
+

@@ -1880,6 +1880,15 @@ margin: 0px auto 35px;
 	height: 360px;
 }
 
+#chat-box  {
+
+	min-height: 325px;
+
+	max-height: 325px;
+
+	overflow-y: auto;
+}
+
 .chat-header {
 
 	color: #fff;
