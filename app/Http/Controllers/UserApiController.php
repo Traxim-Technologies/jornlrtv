@@ -393,12 +393,15 @@ class UserApiController extends Controller {
                     'email' => $user->email,
                     'gender' => $user->gender,
                     'picture' => $user->picture,
+                    'chat_picture' => $user->picture,
                     'token' => $user->token,
                     'token_expiry' => $user->token_expiry,
                     'login_by' => $user->login_by,
                     'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
                     'push_status' => $user->push_status,
+                    'dob'=> $user->dob,
+                    'description'=> $user->description,
                 );
 
                 $response_array = Helper::null_safe($response_array);
@@ -500,15 +503,18 @@ class UserApiController extends Controller {
             'success' => true,
             'id' => $user->id,
             'name' => $user->name,
+            'email' => $user->email,
+            'description'=>$user->description,
+            'dob'=>$user->dob,
+            'picture' => $user->picture,
+            'chat_picture' => $user->picture,
             'mobile' => $user->mobile,
             'gender' => $user->gender,
-            'email' => $user->email,
-            'picture' => $user->picture,
             'token' => $user->token,
             'token_expiry' => $user->token_expiry,
             'login_by' => $user->login_by,
             'social_unique_id' => $user->social_unique_id,
-            'dob'=>$user->dob,
+            'push_status' => $user->push_status,
         );
         $response = response()->json(Helper::null_safe($response_array), 200);
         return $response;
@@ -596,13 +602,15 @@ class UserApiController extends Controller {
                 'mobile' => $user->mobile,
                 'gender' => $user->gender,
                 'email' => $user->email,
+                'dob'=> $user->dob,
                 'picture' => $user->picture,
                 'chat_picture' => $user->picture,
                 'token' => $user->token,
                 'token_expiry' => $user->token_expiry,
                 'login_by' => $user->login_by,
                 'social_unique_id' => $user->social_unique_id,
-                'dob'=> $request->dob,
+                'push_status' => $user->push_status,
+                
             );
 
             $response_array = Helper::null_safe($response_array);
