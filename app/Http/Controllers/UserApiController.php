@@ -197,6 +197,19 @@ class UserApiController extends Controller {
                     $user->email = $request->email;
                 }
 
+                if($request->has('dob')) {
+                    $user->dob = date("Y-m-d" , strtotime($request->dob));;
+                }
+
+                 if ($user->dob) {
+
+                    $from = new \DateTime($user->dob);
+                    $to   = new \DateTime('today');
+
+                    $user->age_limit = $from->diff($to)->y;
+
+                }
+
                 if($request->has('mobile')) {
                     $user->mobile = $request->mobile;
                 }
