@@ -745,7 +745,7 @@ class UserApiController extends Controller {
         } else {
 
 
-            $wishlist = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->admin_video_id)->first();
+            $wishlist = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
 
             $status = 1;
 
@@ -764,11 +764,11 @@ class UserApiController extends Controller {
                 //Save Wishlist
                 $wishlist = new Wishlist();
                 $wishlist->user_id = $request->id;
-                $wishlist->video_tape_id = $request->admin_video_id;
+                $wishlist->video_tape_id = $request->video_tape_id;
                 $wishlist->status = $status;
                 $wishlist->save();
             }
-            
+
             if($status)
                 $message = "Added to wishlist";
             else
@@ -791,9 +791,7 @@ class UserApiController extends Controller {
 
         // Get wishlist 
 
-        $wishlist = Helper::wishlists($request->id);
-
-        $video_tape_ids = implode(',', $wishlist);
+        $video_tape_ids = Helper::wishlists($request->id);
 
         $total = get_wishlist_count($request->id);
 
@@ -801,11 +799,12 @@ class UserApiController extends Controller {
 
         if($video_tape_ids) {
 
-            $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+            $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
-                                ->where('video_tapes.id' , [$video_tape_ids])
+                                ->where('video_tapes.is_approved' , 1)
+                                ->orderby('video_tapes.publish_time' , 'desc')
                                 ->shortVideoResponse();
 
             if ($request->id) {
@@ -822,7 +821,7 @@ class UserApiController extends Controller {
             
             }
 
-            $videos = $base_query->orderby('video_tapes.publish_time' , 'desc')->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+            $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
             if(count($videos) > 0) {
 
@@ -830,7 +829,7 @@ class UserApiController extends Controller {
 
                     $value['watch_count'] = "10k";
 
-                    $value['wishlist_status'] = 0;
+                    $value['wishlist_status'] = 1;
 
                     $value['share_url'] = "http://streamtube.streamhash.com/";
 
