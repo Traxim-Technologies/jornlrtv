@@ -1401,16 +1401,37 @@ class UserApiController extends Controller {
 
         } else {
 
-            $results = VideoTape::where('is_approved' , 1)
-                    ->where('status' , 1)
-                    ->where('title', 'like', '%' . $request->key . '%')
-                    ->select('id as admin_video_id' , 'title' , 'default_image')->orderBy('created_at' , 'desc')->get()->toArray();
 
-            $response_array = array('success' => true, 'data' => $results);
+            $data = [];
+
+            $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->orderby('video_tapes.watch_count' , 'desc')
+                                ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get()->toArray();
+
+
+            $response_array = array('success' => true, 'data' => $data);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
 
     }
 
