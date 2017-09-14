@@ -851,7 +851,7 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id,
+                'video_tape_id' => 'integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to wishlists',
@@ -1396,8 +1396,8 @@ class UserApiController extends Controller {
 
         if ($validator->fails()) {
 
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+            $error = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
