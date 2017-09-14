@@ -152,13 +152,61 @@ video {
 
                                     </div>
 
-                                    <div class="col-sm-6">
+                                    @if($data->amount > 0)
+
+                                    <div class="col-lg-6">
 
                                         <div class="header">
 
                                             <h4><b>{{tr('amount')}}</b></h4>
 
                                             $ {{$data->amount}}
+
+                                        </div>
+                                    
+                                    </div>
+
+                                    @endif
+
+                                    <div class="clearfix"></div>
+
+
+                                     <div class="col-lg-6">
+
+                                        <div class="header">
+
+                                            <h4><b>{{tr('viewers_cnt')}}</b></h4>
+
+
+                                            <i class="fa fa-eye text-green"></i> {{$data->viewer_cnt}}
+
+                                        </div>
+                                    
+                                    </div>
+
+
+
+                                     <div class="col-lg-6">
+
+                                        <div class="header">
+
+                                            <h4><b>{{tr('admin_commission')}}</b></h4>
+
+
+                                            <i class="fa fa-money text-green"></i> $ {{admin_commission($data->id)}}
+
+                                        </div>
+                                    
+                                    </div>
+
+                                    <div class="col-lg-6">
+
+                                        <div class="header">
+
+                                            <h4><b>{{tr('user_commission')}}</b></h4>
+
+
+                                            <i class="fa fa-money text-green"></i> $ {{user_commission($data->id)}}
 
                                         </div>
                                     

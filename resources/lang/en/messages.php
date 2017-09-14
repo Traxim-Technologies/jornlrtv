@@ -28,6 +28,7 @@ return array(
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
 	'no_more_video_available'=>'No more Video Available',
+	'viewers_cnt'=>'Viewers',
 	'to_view_video'=>'Please click here to pay',
 	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 

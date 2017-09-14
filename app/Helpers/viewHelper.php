@@ -960,3 +960,17 @@ function isPaidAmount($id) {
     }
 
 }
+
+function admin_commission($id) {
+
+    $video = LiveVideoPayment::where('live_video_id', $id)->sum('admin_amount');
+
+    return $video ? $video : 0;
+}
+
+function user_commission($id) {
+
+    $video = LiveVideoPayment::where('live_video_id', $id)->sum('user_amount');
+
+    return $video ? $video : 0;
+}
