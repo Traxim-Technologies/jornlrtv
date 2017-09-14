@@ -33,8 +33,6 @@
                                         $url = ($video->amount > 0) ? route('user.payment_url', array('id'=>$video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$video->unique_id,'c_id'=>$video->channel_id));
 
 
-
-
                                         ?>
 
 
@@ -64,7 +62,7 @@
                                       <i class="fa fa-money"></i>
                                     </div>
                                      <div class="clearfix"></div>
-                                    <a href="{{route('user.live_video_paypal', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="{{route('user.live_video_paypal', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
                                   </div>
                                 </div>
                            
@@ -80,7 +78,7 @@
                                       <i class="fa fa-money"></i>
                                     </div>
                                      <div class="clearfix"></div>
-                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('for_subscription')}} <i class="fa fa-arrow-circle-right"></i></a>
+                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
                                   </div>
                                 </div>
                             

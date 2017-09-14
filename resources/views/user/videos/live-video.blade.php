@@ -342,23 +342,18 @@ video {
 
 @section('scripts')
 
-<!-- <script src="{{asset('common/js/jQuery.js')}}"></script> -->
 <script src="{{asset('lib/angular/angular.min.js')}}"></script>
 <script src="{{asset('lib/angular-socket-io/socket.min.js')}}"></script>
 <script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 <script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
 
-
-
 <script type="text/javascript">
 
-
-
-var appSettings = "<?= $appSettings ?>";
+var appSettings = <?= $appSettings ?>;
 
 var port_no = "<?= $data->port_no; ?>";
 
-var video_details = "<?= $data; ?>";
+var video_details = <?= $data; ?>;
 
 var socket_url =  "<?= Setting::get('kurento_socket_url'); ?>";
 
@@ -391,8 +386,8 @@ liveAppCtrl
 
             $rootScope.videoDetails = video_details;
         }
-    ]);
-
+]);
+    
 console.log(appSettings);
 
 </script>
@@ -400,5 +395,3 @@ console.log(appSettings);
 <script src="{{asset('assets/js/streamController.js')}}"></script>
 
 @endsection
-
-

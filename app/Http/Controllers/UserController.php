@@ -566,6 +566,8 @@ class UserController extends Controller {
 
             $payment_videos = VideoRepo::payment_videos($id, WEB, null);
 
+            $live_videos = VideoRepo::live_videos_list($id, WEB, null);
+
             $user_id = Auth::check() ? Auth::user()->id : '';
 
             $subscribe_status = false;
@@ -582,6 +584,7 @@ class UserController extends Controller {
                         ->with('page' , 'channels')
                         ->with('subPage' , 'channels')
                         ->with('channel' , $channel)
+                        ->with('live_videos', $live_videos)
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
@@ -2039,4 +2042,6 @@ class UserController extends Controller {
         
 
     }
+
+
 }
