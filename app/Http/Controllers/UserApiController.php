@@ -776,13 +776,67 @@ class UserApiController extends Controller {
     
     }
 
+    /**
+     *
+     * Get wishlists
+     *
+     */
+
     public function get_wishlist(Request $request)  {
 
-        $wishlist = VideoRepo::wishlist($request,NULL,$request->skip);
+        // Get wishlist 
+
+        $wishlist = Helper::wishlists($request->id);
+
+        $video_tape_ids = implode(',', $wishlist);
 
         $total = get_wishlist_count($request->id);
 
-		$response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
+        $data = [];
+
+        if($video_tape_ids) {
+
+            $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->where('video_tapes.id' , [$video_tape_ids])
+                                ->shortVideoResponse();
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $videos = $base_query->orderby('video_tapes.publish_time' , 'desc')->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            if(count($videos) > 0) {
+
+                foreach ($videos as $key => $value) {
+
+                    $value['watch_count'] = "10k";
+
+                    $value['wishlist_status'] = 0;
+
+                    $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                    array_push($data, $value->toArray());
+                }
+            
+            }
+
+        }
+
+        $response_array = array('success' => true, 'wishlist' => $data , 'total' => $total);
 
         return response()->json($response_array, 200);
     
@@ -820,8 +874,7 @@ class UserApiController extends Controller {
 			$response_array = array('success' => true);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return $response()->json($response_array, 200);
     
     }
 
