@@ -94,7 +94,13 @@
             
             </div>  
                                         @if($video->amount > 0) 
-                                        <a data-toggle="modal" data-target="#paypal_{{$video->id}}" style="cursor: pointer;">
+
+                                            @if (isPaidAmount($video->id))
+                                                            
+                                                <a href="{{$url}}">                                                     
+                                            @else
+                                                <a data-toggle="modal" data-target="#paypal_{{$video->id}}" style="cursor: pointer;">
+                                            @endif
                                         @else
                                     
                                         <a href="{{$url}}">
