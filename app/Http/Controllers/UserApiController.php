@@ -744,7 +744,6 @@ class UserApiController extends Controller {
 
         } else {
 
-
             $wishlist = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
 
             $status = 1;
@@ -840,7 +839,7 @@ class UserApiController extends Controller {
 
         }
 
-        $response_array = array('success' => true, 'wishlist' => $data , 'total' => $total);
+        $response_array = array('success' => true, 'data' => $data , 'total' => $total);
 
         return response()->json($response_array, 200);
     
@@ -852,6 +851,7 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
+                'video_tape_id' => 'integer|exists:video_tapes,id,
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to wishlists',
@@ -859,8 +859,10 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
@@ -872,10 +874,18 @@ class UserApiController extends Controller {
 
             } else {  /** Clear particularv wishlist of the loggedin user */
 
-                $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
+                if($request->has('video_tape_id')) {
+
+                    $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+   
+                } else {
+
+                    $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
+
+                }
             }
 
-			$response_array = array('success' => true);
+			$response_array = array('success' => true , );
         }
 
         return $response()->json($response_array, 200);
