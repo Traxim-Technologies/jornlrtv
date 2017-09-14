@@ -1028,13 +1028,63 @@ class UserApiController extends Controller {
 
     public function get_history(Request $request) {
 
-		//get wishlist
+        // Get wishlist 
 
-        $history = VideoRepo::watch_list($request,NULL,$request->skip);
+        $video_tape_ids = Helper::history($request->id);
 
         $total = get_history_count($request->id);
 
-		$response_array = array('success' => true, 'history' => $history , 'total' => $total);
+        $data = [];
+
+        if($video_tape_ids) {
+
+            $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->where('video_tapes.is_approved' , 1)
+                                ->orderby('video_tapes.publish_time' , 'desc')
+                                ->shortVideoResponse();
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            if(count($videos) > 0) {
+
+                foreach ($videos as $key => $value) {
+
+                    $value['watch_count'] = "10k";
+
+                    $value['wishlist_status'] = 1;
+
+                    $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                    array_push($data, $value->toArray());
+                }
+            
+            }
+
+        }
+
+		//get wishlist
+
+        // $history = VideoRepo::watch_list($request,NULL,$request->skip);
+
+
+		$response_array = array('success' => true, 'data' => $data , 'total' => $total);
 
         return response()->json($response_array, 200);
     
