@@ -883,9 +883,10 @@ class UserApiController extends Controller {
                     $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
 
                 }
+                
             }
 
-			$response_array = array('success' => true , );
+			$response_array = array('success' => true);
         }
 
         return $response()->json($response_array, 200);
