@@ -12,6 +12,25 @@ video {
 </style>
 @endsection
 
+
+@section('meta_tags')
+
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{$data->title}}" />
+<meta property="og:description" content="{{$data->description}}" />
+<meta property="og:url" content="" />
+<meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
+<meta property="og:image" content="{{$data->snapshot}}" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:description" content="{{$data->description}}"/>
+<meta name="twitter:title" content="{{$data->title}}"/>
+<meta name="twitter:image:src" content="{{$data->snapshot}}"/>
+
+@endsection
+
+
 @section('content')
 
 <div class="y-content">
@@ -59,6 +78,15 @@ video {
 							<button class="btn btn-sm btn-success text-uppercase">
 								<i class="fa fa-eye"></i>&nbsp;<span id='viewers_cnt'>{{$data->viewer_cnt}}</span> {{tr('views')}}
 							</button>
+	
+							<a href="http://www.facebook.com/sharer.php?u={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="Share On Facebook" style="background: #3b5998;border-color:#3b5998;">
+								<i class="fa fa-facebook"></i>
+							</a>
+
+							<a href="http://twitter.com/share?text={{$data->title}}...&url={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="Share On Twitter" style="background: #4099ff;border-color:#4099ff;">
+								<i class="fa fa-twitter"></i>
+							</a>
+
 
 						</div>
 
