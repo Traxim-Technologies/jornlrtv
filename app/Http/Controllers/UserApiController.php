@@ -728,7 +728,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'admin_video_id' => 'required|integer|exists:video_tapes,id',
+                'video_tape_id' => 'required|integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please provide correct video id',
@@ -737,8 +737,10 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
@@ -749,11 +751,14 @@ class UserApiController extends Controller {
 
             if(count($wishlist) > 0) {
 
-                if($wishlist->status == 1)
+                if($wishlist->status == 1) {
                     $status = 0;
+                }
 
                 $wishlist->status = $status;
+
                 $wishlist->save();
+
             } else {
 
                 //Save Wishlist
@@ -763,6 +768,7 @@ class UserApiController extends Controller {
                 $wishlist->status = $status;
                 $wishlist->save();
             }
+            
             if($status)
                 $message = "Added to wishlist";
             else
@@ -771,8 +777,7 @@ class UserApiController extends Controller {
             $response_array = array('success' => true ,'wishlist_id' => $wishlist->id , 'wishlist_status' => $wishlist->status,'message' => $message);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
     
     }
 
