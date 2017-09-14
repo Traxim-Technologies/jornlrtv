@@ -851,7 +851,7 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id,
+                'video_tape_id' => 'integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to wishlists',
@@ -1028,13 +1028,63 @@ class UserApiController extends Controller {
 
     public function get_history(Request $request) {
 
-		//get wishlist
+        // Get History 
 
-        $history = VideoRepo::watch_list($request,NULL,$request->skip);
+        $video_tape_ids = Helper::history($request->id);
 
         $total = get_history_count($request->id);
 
-		$response_array = array('success' => true, 'history' => $history , 'total' => $total);
+        $data = [];
+
+        if($video_tape_ids) {
+
+            $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->where('video_tapes.is_approved' , 1)
+                                ->orderby('video_tapes.publish_time' , 'desc')
+                                ->shortVideoResponse();
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            if(count($videos) > 0) {
+
+                foreach ($videos as $key => $value) {
+
+                    $value['watch_count'] = "10k";
+
+                    $value['wishlist_status'] = 1;
+
+                    $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                    array_push($data, $value->toArray());
+                }
+            
+            }
+
+        }
+
+		//get wishlist
+
+        // $history = VideoRepo::watch_list($request,NULL,$request->skip);
+
+
+		$response_array = array('success' => true, 'data' => $data , 'total' => $total);
 
         return response()->json($response_array, 200);
     
@@ -1396,21 +1446,42 @@ class UserApiController extends Controller {
 
         if ($validator->fails()) {
 
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+            $error = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
-            $results = VideoTape::where('is_approved' , 1)
-                    ->where('status' , 1)
-                    ->where('title', 'like', '%' . $request->key . '%')
-                    ->select('id as admin_video_id' , 'title' , 'default_image')->orderBy('created_at' , 'desc')->get()->toArray();
 
-            $response_array = array('success' => true, 'data' => $results);
+            $data = [];
+
+            $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->orderby('video_tapes.watch_count' , 'desc')
+                                ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get()->toArray();
+
+
+            $response_array = array('success' => true, 'data' => $data);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
 
     }
 
