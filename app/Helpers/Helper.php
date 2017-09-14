@@ -721,6 +721,29 @@
             return $videos;
         }
 
+        public static function wishlists($user_id ) {
+
+            $data = $ids = [];
+
+            if($user_id) {
+
+                $data = Wishlist::where('wishlists.user_id' , $user_id)->pluck('video_tape_id');
+
+                if(count($data) > 0) {
+
+                    foreach ($data as $key => $value) {
+
+                        $ids[] = $value;
+
+                    }
+                }
+
+
+            }
+
+            return $ids;
+        }
+
 
         public static function live_video_search($request,$key,$web = NULL,$skip = 0) {
 

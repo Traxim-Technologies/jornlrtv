@@ -10,11 +10,13 @@ class VideoTape extends Model
 {
 
     public $channel_details;
+    
     /**
      * Scope a query to only include active users.
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
+
     public function scopeVideoResponse($query) {
 
         return $query->select(
@@ -28,7 +30,6 @@ class VideoTape extends Model
             \DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'),
             'video_tapes.created_at',
             'video_tapes.video',
-            'video_tapes.channel_id',
             'video_tapes.is_approved',
             'video_tapes.status',
             'video_tapes.watch_count',
@@ -52,6 +53,31 @@ class VideoTape extends Model
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date'),
             \DB::raw('(CASE WHEN (user_ratings = 0) THEN ratings ELSE user_ratings END) as ratings')
         );
+    
+    }
+
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+
+    public function scopeShortVideoResponse($query) {
+
+        return $query->select(
+            'video_tapes.default_image as video_image',
+            'channels.picture as channel_image',
+            'video_tapes.title',
+            'channels.name as channel_name',
+            'video_tapes.watch_count',
+            'video_tapes.duration',
+            'video_tapes.id as video_tape_id' ,
+            'channels.id as channel_id' ,
+            \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as publish_time')
+            
+        );
+    
     }
 
     public function setUniqueIdAttribute($value){
