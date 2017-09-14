@@ -201,6 +201,8 @@ Route::get('/payment/expiry', 'ApplicationController@user_payment_expiry')->name
 
 Route::get('/privacy', 'UserApiController@privacy')->name('user.privacy');
 
+Route::get('/help', 'UserApiController@help')->name('user.help');
+
 Route::get('/terms_condition', 'UserApiController@terms')->name('user.terms');
 
 Route::get('/contact', 'UserController@contact')->name('user.contact');
@@ -728,6 +730,8 @@ Route::group(['prefix' => 'userApi'], function(){
     // Videos and home
 
     Route::post('/home' , 'UserApiController@home');
+
+    Route::post('/trending' , 'UserApiController@trending');
     
     Route::post('/common' , 'UserApiController@common');
 

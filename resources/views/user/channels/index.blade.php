@@ -263,6 +263,11 @@
 							<li role="presentation">
 								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
 							</li>
+
+							<li role="presentation">
+								<a href="#live_videos_section" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="live_videos_section" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('live_videos')}}</span> </a>
+							</li>
+
 							<li role="presentation">
 								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('about_video')}}</span> </a>
 							</li>
@@ -468,6 +473,189 @@
 					                                        <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 					                                        <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 					                                    </span>                                                      
+					                                </div><!--end of history-title--> 
+					                                
+					                            </div><!--end of main-history-->
+					                        </li>    
+
+					                        @endforeach
+					                       
+					                    </ul>
+
+					                @else
+
+					                   <p style="color: #000">{{tr('no_video_found')}}</p>
+
+					                @endif
+
+					                @if(count($videos) > 0)
+
+					                    @if($videos)
+					                    <div class="row">
+					                        <div class="col-md-12">
+					                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+					                        </div>
+					                    </div>
+					                    @endif
+					                @endif
+					                
+					            </div>
+
+						</div>
+					</div>
+
+
+				</li>
+
+
+				<li role="tabpanel" class="tab-pane" id="live_videos_section">
+
+					<div class="slide-area recom-area abt-sec">
+						<div class="abt-sec-head">
+							
+							 <div class="new-history">
+					                <div class="content-head">
+					                    <div><h4 style="color: #000;">{{tr('live_videos')}}&nbsp;&nbsp;
+					                   
+					                    </h4></div>              
+					                </div><!--end of content-head-->
+
+					                @if(count($live_videos) > 0)
+
+					                    <ul class="history-list">
+
+					                        @foreach($live_videos as $i => $live_video)
+
+					                         <?php 
+
+
+                                        $userId = Auth::check() ? Auth::user()->id : '';
+
+                                        $url = ($live_video->amount > 0) ? route('user.payment_url', array('id'=>$live_video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$live_video->unique_id,'c_id'=>$live_video->channel_id));
+
+
+                                        ?>
+
+                                        <div class="modal fade cus-mod" id="paypal_{{$live_video->id}}" role="dialog">
+							                <div class="modal-dialog">
+							                
+							                  <!-- Modal content-->
+							                  <div class="modal-content">
+
+							                        <div class="modal-header">
+							                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+							                            <h4 class="modal-title text-center text-uppercase" style="color: #000 !important">{{tr('payment_options')}}</h4>
+							                        </div>
+
+
+							                        <div class="modal-body">
+							                            <!-- <p>Please Pay to see the full video</p>  -->
+							                                <div class="col-lg-6">
+							                                  <!-- small box -->
+							                                  <div class="small-box bg-green">
+							                                    <div class="inner">
+							                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
+							                                      <div class="clearfix"></div>
+							                                      <p style="float: none;" class="text-left">{{tr('paypal_payment')}}</p>
+							                                    </div>
+							                                    <div class="icon">
+							                                      <i class="fa fa-money"></i>
+							                                    </div>
+							                                     <div class="clearfix"></div>
+							                                    <a href="{{route('user.live_video_paypal', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
+							                                  </div>
+							                                </div>
+							                           
+							                                <div class="col-lg-6">
+							                                  <!-- small box -->
+							                                  <div class="small-box bg-aqua">
+							                                    <div class="inner">
+							                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
+							                                      <div class="clearfix"></div>
+							                                      <p style="float: none;" class="text-left">{{tr('stripe_payment')}}</p>
+							                                    </div>
+							                                    <div class="icon">
+							                                      <i class="fa fa-money"></i>
+							                                    </div>
+							                                     <div class="clearfix"></div>
+							                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
+							                                  </div>
+							                                </div>
+							                            
+							                            
+							                            <div class="clearfix"></div>
+							                            
+							                        </div>
+
+							                        
+							                  </div>
+							                  
+							                </div>
+							            
+							            </div>  
+
+
+					                        <li class="sub-list row">
+					                            <div class="main-history">
+					                                 <div class="history-image">
+					                                 	@if($live_video->amount > 0) 
+
+					                                 		@if (isPaidAmount($live_video->id))
+					                                 		
+																<a href="{{$url}}">					                                 	
+					                                 		@else
+				                                        		<a data-toggle="modal" data-target="#paypal_{{$live_video->id}}" style="cursor: pointer;">
+				                                        	@endif
+				                                        @else
+				                                    
+				                                        <a href="{{$url}}">
+
+				                                        @endif
+
+				                                            <img src="{{$live_video->snapshot}}" /> 
+
+				                                        </a>
+
+					                                    <div class="video_duration text-uppercase">
+					                                         @if($live_video->amount > 0) 
+
+				                                                {{tr('paid')}} - ${{$live_video->amount}} 
+
+				                                            @else {{tr('free')}} @endif
+					                                    </div>                        
+					                                </div><!--history-image-->
+
+					                                <div class="history-title">
+					                                    <div class="history-head row">
+					                                        <div class="cross-title">
+					                                            <h5 class="payment_class">
+
+					                                            	@if($live_video->amount > 0) 
+							                                        	<a data-toggle="modal" data-target="#paypal_{{$live_video->id}}" style="cursor: pointer;">
+							                                        @else
+							                                    
+							                                        <a href="{{$url}}">
+
+							                                        @endif
+
+							                                            {{$live_video->title}}
+
+							                                        </a>
+
+
+					                                            </h5>
+					                                           
+					                                            <span class="video_views">
+							                                        <i class="fa fa-eye"></i> {{$live_video->viewers_cnt}} {{tr('views')}} <b>.</b> 
+							                                        {{$live_video->created_at->diffForHumans()}}
+							                                    </span>
+					                                        </div> 
+					                                        <!--end of cross-mark-->                       
+					                                    </div> <!--end of history-head--> 
+
+					                                    <div class="description">
+					                                        <p>{{$live_video->description}}</p>
+					                                    </div><!--end of description--> 
 					                                </div><!--end of history-title--> 
 					                                
 					                            </div><!--end of main-history-->

@@ -18,10 +18,10 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Admin',
-                'email' => 'admin@streamtube.com',
+                'email' => 'admin@tubenow.com',
                 'password' => \Hash::make('123456'),
-                'picture' =>"http://streamtube.streamhash.com/placeholder.png",
-                'chat_picture' =>"http://streamtube.streamhash.com/placeholder.png",
+                'picture' =>"https://tubenow.streamhash.com/placeholder.png",
+                'chat_picture' =>"https://tubenow.streamhash.com/placeholder.png",
                 'token'=>Helper::generate_token(),
                 'token_expiry'=>Helper::generate_token_expiry(),
                 'dob'=>'1992-01-01',
@@ -37,10 +37,10 @@ class UserSeeder extends Seeder
     	DB::table('users')->insert([
     		[
 		        'name' => 'User',
-		        'email' => 'user@streamtube.com',
+		        'email' => 'user@tubenow.com',
 		        'password' => \Hash::make('123456'),
-		        'picture' =>"http://streamtube.streamhash.com/placeholder.png",
-                'chat_picture' =>"http://streamtube.streamhash.com/placeholder.png",
+		        'picture' =>"https://tubenow.streamhash.com/placeholder.png",
+                'chat_picture' =>"https://tubenow.streamhash.com/placeholder.png",
                 'token'=>Helper::generate_token(),
                 'token_expiry'=>Helper::generate_token_expiry(),
                 'dob'=>'1992-01-01',

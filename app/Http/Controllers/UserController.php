@@ -421,7 +421,8 @@ class UserController extends Controller {
         $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token
+            'device_token' => \Auth::user()->device_token,
+            'video_tape_id' => $request->admin_video_id
         ]);
 
         if($request->status == 1) {
@@ -566,6 +567,8 @@ class UserController extends Controller {
 
             $payment_videos = VideoRepo::payment_videos($id, WEB, null);
 
+            $live_videos = VideoRepo::live_videos_list($id, WEB, null);
+
             $user_id = Auth::check() ? Auth::user()->id : '';
 
             $subscribe_status = false;
@@ -582,6 +585,7 @@ class UserController extends Controller {
                         ->with('page' , 'channels')
                         ->with('subPage' , 'channels')
                         ->with('channel' , $channel)
+                        ->with('live_videos', $live_videos)
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
@@ -1990,8 +1994,12 @@ class UserController extends Controller {
                                 $user->total = $user->total + $total;
 
                                 $user->save();
+
+                                add_to_redeem($user->id, $user_amount);
                             
                             }
+
+
 
                             return redirect(route('user.live_video.start_broadcasting',array('id'=>$video->unique_id, 'c_id'=>$video->channel_id)));
 
@@ -2035,4 +2043,6 @@ class UserController extends Controller {
         
 
     }
+
+
 }

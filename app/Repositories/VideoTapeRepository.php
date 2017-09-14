@@ -23,6 +23,8 @@ use DB;
 
 use Setting;
 
+use App\LiveVideo;
+
 use App\ChannelSubscription;
 
 class VideoTapeRepository {
@@ -471,5 +473,30 @@ class VideoTapeRepository {
         return $url;
     }
 
+    public static function live_videos_list($channel_id, $web,$skip) {
 
+        $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
+                    ->where('channel_id', $channel_id)
+                    ->where('status', 0);
+
+        if (Auth::check()) {
+
+            $query->whereNotIn('user_id', [Auth::user()->id]);
+
+        }
+
+        if ($web) {
+
+            $videos = $query->paginate(16);
+
+        } else {
+
+            $videos = $query->skip($skip)->take(Setting::get('admin_take_count'))->get();
+
+        }
+
+
+        return $videos;
+
+    }
 }

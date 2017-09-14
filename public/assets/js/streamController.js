@@ -1117,8 +1117,8 @@ liveAppCtrl
 
                 // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
                 // $('#chat-box').scrollTop($('#chat-box').height());
-                // $('#chat_box').scrollTop($('#chat_box')[0].scrollHeight);
-                $('.chat_box').scrollTop($('.chat_box')[0].scrollHeight);
+                // $('#chat_box_scroll').scrollTop($('#chat_box_scroll')[0].scrollHeight);
+                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
             }
 
         });
@@ -1188,7 +1188,7 @@ liveAppCtrl
 
                 chatInput.clear();
 
-                $('.chat_box').scrollTop($('.chat_box')[0].scrollHeight);
+                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
                 
                 /*$(chatBox).animate({
                     scrollTop: chatBox.scrollHeight,

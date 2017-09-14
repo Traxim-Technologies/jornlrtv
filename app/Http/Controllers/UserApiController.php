@@ -66,7 +66,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'getSingleVideo', 'get_channel_videos']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help']));
 
     }
 
@@ -207,6 +207,19 @@ class UserApiController extends Controller {
 
                 if($request->has('email')) {
                     $user->email = $request->email;
+                }
+
+                if($request->has('dob')) {
+                    $user->dob = date("Y-m-d" , strtotime($request->dob));;
+                }
+
+                 if ($user->dob) {
+
+                    $from = new \DateTime($user->dob);
+                    $to   = new \DateTime('today');
+
+                    $user->age_limit = $from->diff($to)->y;
+
                 }
 
                 if($request->has('mobile')) {
@@ -392,12 +405,15 @@ class UserApiController extends Controller {
                     'email' => $user->email,
                     'gender' => $user->gender,
                     'picture' => $user->picture,
+                    'chat_picture' => $user->picture,
                     'token' => $user->token,
                     'token_expiry' => $user->token_expiry,
                     'login_by' => $user->login_by,
                     'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
                     'push_status' => $user->push_status,
+                    'dob'=> $user->dob,
+                    'description'=> $user->description,
                 );
 
                 $response_array = Helper::null_safe($response_array);
@@ -499,15 +515,18 @@ class UserApiController extends Controller {
             'success' => true,
             'id' => $user->id,
             'name' => $user->name,
+            'email' => $user->email,
+            'description'=>$user->description,
+            'dob'=>$user->dob,
+            'picture' => $user->picture,
+            'chat_picture' => $user->picture,
             'mobile' => $user->mobile,
             'gender' => $user->gender,
-            'email' => $user->email,
-            'picture' => $user->picture,
             'token' => $user->token,
             'token_expiry' => $user->token_expiry,
             'login_by' => $user->login_by,
             'social_unique_id' => $user->social_unique_id,
-            'dob'=>$user->dob,
+            'push_status' => $user->push_status,
         );
         $response = response()->json(Helper::null_safe($response_array), 200);
         return $response;
@@ -566,13 +585,17 @@ class UserApiController extends Controller {
 
                 if ($user->age_limit < 16) {
 
-                   return back()->with('flash_error', tr('min_age_error'));
+                    $response_array = ['success' => false , 'error' => tr('min_age_error')];
+
+                    return response()->json($response_array , 200);
 
                 }
 
 
                 // Upload picture
+
                 if ($request->hasFile('picture') != "") {
+
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
 
                     Helper::delete_picture($user->chat_picture, "/uploads/user_chat_img/"); // Delete the old pic
@@ -590,23 +613,26 @@ class UserApiController extends Controller {
                 'success' => true,
                 'id' => $user->id,
                 'name' => $user->name,
+                'description' => $user->description,
                 'mobile' => $user->mobile,
                 'gender' => $user->gender,
                 'email' => $user->email,
+                'dob'=> $user->dob,
                 'picture' => $user->picture,
+                'chat_picture' => $user->picture,
                 'token' => $user->token,
                 'token_expiry' => $user->token_expiry,
                 'login_by' => $user->login_by,
                 'social_unique_id' => $user->social_unique_id,
-                'dob'=>$request->dob,
+                'push_status' => $user->push_status,
+                
             );
 
             $response_array = Helper::null_safe($response_array);
         
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
     }
 
     public function delete_account(Request $request) {
@@ -717,7 +743,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'admin_video_id' => 'required|integer|exists:video_tapes,id',
+                'video_tape_id' => 'required|integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please provide correct video id',
@@ -726,32 +752,37 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
-
-            $wishlist = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->admin_video_id)->first();
+            $wishlist = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
 
             $status = 1;
 
             if(count($wishlist) > 0) {
 
-                if($wishlist->status == 1)
+                if($wishlist->status == 1) {
                     $status = 0;
+                }
 
                 $wishlist->status = $status;
+
                 $wishlist->save();
+
             } else {
 
                 //Save Wishlist
                 $wishlist = new Wishlist();
                 $wishlist->user_id = $request->id;
-                $wishlist->video_tape_id = $request->admin_video_id;
+                $wishlist->video_tape_id = $request->video_tape_id;
                 $wishlist->status = $status;
                 $wishlist->save();
             }
+
             if($status)
                 $message = "Added to wishlist";
             else
@@ -760,18 +791,70 @@ class UserApiController extends Controller {
             $response_array = array('success' => true ,'wishlist_id' => $wishlist->id , 'wishlist_status' => $wishlist->status,'message' => $message);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
     
     }
 
+    /**
+     *
+     * Get wishlists
+     *
+     */
+
     public function get_wishlist(Request $request)  {
 
-        $wishlist = VideoRepo::wishlist($request,NULL,$request->skip);
+        // Get wishlist 
+
+        $video_tape_ids = Helper::wishlists($request->id);
 
         $total = get_wishlist_count($request->id);
 
-		$response_array = array('success' => true, 'wishlist' => $wishlist , 'total' => $total);
+        $data = [];
+
+        if($video_tape_ids) {
+
+            $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->where('video_tapes.is_approved' , 1)
+                                ->orderby('video_tapes.publish_time' , 'desc')
+                                ->shortVideoResponse();
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            if(count($videos) > 0) {
+
+                foreach ($videos as $key => $value) {
+
+                    $value['watch_count'] = "10k";
+
+                    $value['wishlist_status'] = 1;
+
+                    $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                    array_push($data, $value->toArray());
+                }
+            
+            }
+
+        }
+
+        $response_array = array('success' => true, 'data' => $data , 'total' => $total);
 
         return response()->json($response_array, 200);
     
@@ -783,6 +866,7 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
+                'video_tape_id' => 'integer|exists:video_tapes,id,
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to wishlists',
@@ -790,8 +874,10 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
@@ -803,14 +889,22 @@ class UserApiController extends Controller {
 
             } else {  /** Clear particularv wishlist of the loggedin user */
 
-                $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
+                if($request->has('video_tape_id')) {
+
+                    $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+   
+                } else {
+
+                    $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
+
+                }
+                
             }
 
 			$response_array = array('success' => true);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return $response()->json($response_array, 200);
     
     }
 
@@ -1026,20 +1120,22 @@ class UserApiController extends Controller {
         return $response;
     }
 
+    /** 
+     * home()
+     *
+     * return list of videos 
+     */
+
     public function home(Request $request) {
 
-        $videos = [];
-
-        $videos['name'] = tr('all_videos');
-        $videos['key'] = ALL_VIDEOS;
+        $data = [];
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
-                            ->orderby('video_tapes.created_at' , 'desc')
-                            ->videoResponse()
-                            ->orderByRaw('created_at desc');
+                            ->orderby('video_tapes.publish_time' , 'desc')
+                            ->shortVideoResponse();
 
         if ($request->id) {
 
@@ -1048,15 +1144,83 @@ class UserApiController extends Controller {
             $flag_videos = flag_videos($request->id);
 
             if($flag_videos) {
+
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+        $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['watch_count'] = "10k";
+
+                $value['wishlist_status'] = 0;
+
+                $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                array_push($data, $value->toArray());
             }
         }
 
+        $response_array = array('success' => true , 'data' => $data);
 
-        $videos['list'] = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+        return response()->json($response_array , 200);
 
+    }
 
-        $response_array = array('success' => true , 'data' => $videos);
+    /** 
+     * trending()
+     *
+     * return list of videos 
+     */
+
+    public function trending(Request $request) {
+
+        $data = [];
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->orderby('video_tapes.watch_count' , 'desc')
+                            ->shortVideoResponse();
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+        $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['watch_count'] = "10k";
+                
+                $value['wishlist_status'] = 0;
+
+                $value['share_url'] = "http://streamtube.streamhash.com/";
+
+                array_push($data, $value->toArray());
+            }
+        }
+
+        $response_array = array('success' => true , 'data' => $data);
 
         return response()->json($response_array , 200);
 
@@ -1144,9 +1308,6 @@ class UserApiController extends Controller {
         return $response;
 
     }
-
-
-
 
     public function single_video(Request $request) {
 
@@ -1327,6 +1488,27 @@ class UserApiController extends Controller {
 
     }
 
+    public function help(Request $request) {
+
+        $page_data['type'] = $page_data['heading'] = $page_data['content'] = "";
+
+        $page = Page::where('type', 'help')->first();
+
+        if($page) {
+
+            $page_data['type'] = "Terms";
+
+            $page_data['heading'] = $page->heading;
+
+            $page_data ['content'] = $page->description;
+        }
+
+        $response_array = ['success' => true , 'page' => $page_data];
+
+        return response()->json($response_array,200);
+
+    }
+
     public function settings(Request $request) {
 
         $validator = Validator::make(
@@ -1358,8 +1540,8 @@ class UserApiController extends Controller {
 
         $response = response()->json($response_array, 200);
         return $response;
+   
     }
-
 
     // Function Name : getSingleVideo()
 

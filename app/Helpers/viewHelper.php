@@ -934,3 +934,29 @@ function total_video_revenue() {
 
     return $model;
 }
+
+
+
+function isPaidAmount($id) {
+
+    if(Auth::check()) {
+
+        $video = LiveVideoPayment::where('live_video_id', $id)
+                    ->where('live_video_viewer_id', Auth::user()->id)->first();
+
+        if ($video) {
+
+            return true;
+
+        } else {
+
+            return false;  
+        }
+
+    } else {
+
+        return false;
+
+    }
+
+}
