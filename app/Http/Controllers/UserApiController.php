@@ -1028,7 +1028,7 @@ class UserApiController extends Controller {
 
     public function get_history(Request $request) {
 
-        // Get wishlist 
+        // Get History 
 
         $video_tape_ids = Helper::history($request->id);
 
