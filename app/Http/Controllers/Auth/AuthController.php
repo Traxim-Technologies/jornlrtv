@@ -116,6 +116,8 @@ class AuthController extends Controller
 
         Log::info("Timezone ".print_r(date('Y-m-d H:i:s'), true));
 
+        Log::info("Convert Timezone ".print_r(convertTimeToUSERzone(date('Y-m-d H:i:s'), 'Europe/London', 'Y-m-d H:i:s'), true));
+
         if(!Setting::get('email_verify_control')) {
 
             $User->is_verified = 1;
