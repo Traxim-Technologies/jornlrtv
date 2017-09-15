@@ -13,6 +13,8 @@ use App\Helpers\Helper;
 
 use Setting;
 
+use Log;
+
 use Auth;
 
 class AuthController extends Controller
@@ -110,6 +112,9 @@ class AuthController extends Controller
         user_type_check($User->id);
 
         register_mobile('web');
+
+
+        Log::info("Timezone ".print_r(date('Y-m-d H:i:s'), true));
 
         if(!Setting::get('email_verify_control')) {
 
