@@ -394,29 +394,45 @@ class VideoTapeRepository {
 
     public static function all_videos($web = NULL , $skip = 0) {
 
-            $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->where('video_tapes.channel_id' , $channel_id)
-                        ->videoResponse()
-                        ->rand()
-                        ->orderby('video_tapes.created_at' , 'asc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
+        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.status' , 1)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('video_tapes.channel_id' , $channel_id)
+                    ->videoResponse()
+                    ->rand()
+                    ->orderby('video_tapes.created_at' , 'asc');
+        if (Auth::check()) {
+            // Check any flagged videos are present
+            $flagVideos = getFlagVideos(Auth::user()->id);
 
-                if($flagVideos) {
-                    $videos_query->whereNotIn('video_tapes.id', $flagVideos);
-                }
+            if($flagVideos) {
+                $videos_query->whereNotIn('video_tapes.id', $flagVideos);
             }
+        }
 
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+        if($web) {
+            $videos = $videos_query->paginate(16);
+        } else {
+            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+        }
+
+        $data = [];
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['watch_count'] = "10k";
+
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+
+                $value['share_url'] = Helper::url('/');
+
+                array_push($data, $value->toArray());
             }
+        }
 
-            return $videos;
+        return $data;
     }
 
 
