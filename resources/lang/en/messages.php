@@ -971,8 +971,11 @@ return array(
 	'pay_now'=>'Pay Now',
 	'no_card_details_found'=>'No Card Details found. Please Add Card Details',
 
+
 	'no_live_video_present'=>'There is no live video present',
 	'no_streaming_video_present'=>'There is no steaming video found',
 
 	'video_streaming'=>'Video is Streaming',
+	'video_is_in_flag_list' => 'Sorry!!.The video is in block list.',
+	'video_not_found' => 'Sorry!!.The video not found',
 );

@@ -312,6 +312,13 @@
                 break;
 
 
+                case 1000:
+                    $string = tr('video_is_in_flag_list');
+                    break;
+                case 1001:
+                    $string = tr('video_not_found');
+                    break;
+
                 default:
                     $string = "Unknown error occurred.";
             }
@@ -744,6 +751,29 @@
             return $ids;
         }
 
+        public static function history($user_id ) {
+
+            $data = $ids = [];
+
+            if($user_id) {
+
+                $data = UserHistory::where('user_histories.user_id' , $user_id)->pluck('video_tape_id');
+
+                if(count($data) > 0) {
+
+                    foreach ($data as $key => $value) {
+
+                        $ids[] = $value;
+
+                    }
+                }
+
+
+            }
+
+            return $ids;
+        }
+
 
         public static function live_video_search($request,$key,$web = NULL,$skip = 0) {
 
@@ -825,7 +855,6 @@
                             ->leftJoin('users' , 'user_ratings.user_id' , '=' , 'users.id')
                             ->select('users.id as user_id' , 'users.name as username',
                                     'users.picture as picture' ,
-
                                     'user_ratings.rating' , 'user_ratings.comment',
                                     'user_ratings.created_at')
                             ->orderby('created_at', 'desc')
