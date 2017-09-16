@@ -66,7 +66,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video']));
 
     }
 
@@ -841,11 +841,11 @@ class UserApiController extends Controller {
 
                 foreach ($videos as $key => $value) {
 
-                    $value['watch_count'] = "10k";
+                    $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                    $value['wishlist_status'] = 1;
+                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                    $value['share_url'] = "http://streamtube.streamhash.com/";
+                    $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                     array_push($data, $value->toArray());
                 }
@@ -866,7 +866,8 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id,
+                'video_tape_id' => 'integer|exists:video_tapes,id'
+
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to wishlists',
@@ -953,7 +954,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'admin_video_id' => 'required|integer|exists:video_tapes,id',
+                'video_tape_id' => 'required|integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please provide correct video id',
@@ -962,12 +963,14 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
-            if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->admin_video_id)->first()) {
+            if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first()) {
 
                 $response_array = array('success' => true , 'error' => Helper::get_error_message(145) , 'error_code' => 145);
 
@@ -979,7 +982,7 @@ class UserApiController extends Controller {
 
                     $rev_user = new UserHistory();
                     $rev_user->user_id = $request->id;
-                    $rev_user->video_tape_id = $request->admin_video_id;
+                    $rev_user->video_tape_id = $request->video_tape_id;
                     $rev_user->status = DEFAULT_TRUE;
                     $rev_user->save();
 
@@ -989,7 +992,7 @@ class UserApiController extends Controller {
            
             }
 
-            if($video = VideoTape::where('id',$request->admin_video_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
+            if($video = VideoTape::where('id',$request->video_tape_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
 
                 \Log::info("ADD History - Watch Count Start");
 
@@ -1041,19 +1044,82 @@ class UserApiController extends Controller {
     
     }
 
+    /**
+     * Get History videos of the user
+     *
+     */
+
     public function get_history(Request $request) {
 
-		//get wishlist
+        // Get History 
 
-        $history = VideoRepo::watch_list($request,NULL,$request->skip);
+        $video_tape_ids = Helper::history($request->id);
 
         $total = get_history_count($request->id);
 
-		$response_array = array('success' => true, 'history' => $history , 'total' => $total);
+        $data = [];
+
+        if($video_tape_ids) {
+
+            $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->where('video_tapes.is_approved' , 1)
+                                ->orderby('video_tapes.publish_time' , 'desc')
+                                ->shortVideoResponse();
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            if(count($videos) > 0) {
+
+                foreach ($videos as $key => $value) {
+
+                    $value['watch_count'] = number_format_short($value->viewer_cnt);
+
+                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
+
+                    $value['history_status'] = $request->id ? Helper::history_status($value->id,$value->video_tape_id) : 0;
+
+                    $value['share_url'] = route('user.single' , $value->video_tape_id);
+
+                    array_push($data, $value->toArray());
+                }
+            
+            }
+
+        }
+
+		//get wishlist
+
+        // $history = VideoRepo::watch_list($request,NULL,$request->skip);
+
+
+		$response_array = array('success' => true, 'data' => $data , 'total' => $total);
 
         return response()->json($response_array, 200);
     
     }
+
+    /**
+     * Delete video from the history 
+     *
+     */
+
 
     public function delete_history(Request $request) {
 
@@ -1061,6 +1127,7 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
+                'video_tape_id' => 'integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to history',
@@ -1068,22 +1135,28 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+
         } else {
 
             if($request->has('status')) {
+
                 $history = UserHistory::where('user_id',$request->id)->delete();
+
             } else {
+
                 //delete history
+
                 $history = UserHistory::where('user_id',$request->id)->where('id' ,  $request->history_id )->delete();
             }
 
             $response_array = array('success' => true);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
     }
 
     public function get_channels(Request $request) {
@@ -1157,11 +1230,11 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                $value['wishlist_status'] = 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                $value['share_url'] = "http://streamtube.streamhash.com/";
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }
@@ -1210,11 +1283,11 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
                 
-                $value['wishlist_status'] = 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                $value['share_url'] = "http://streamtube.streamhash.com/";
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }
@@ -1289,18 +1362,21 @@ class UserApiController extends Controller {
 
                 if(count($videos) > 0) {
 
-                    $results['channel_name'] = $channels->name;
-                    $results['key'] = $channels->id;
-                    $results['videos_count'] = count($channels);
-                    $results['videos'] = $videos;
+                    /*$results['channel_name'] = $channels->name;
+                    $results['key'] = $channels->id;*/
+                    // $results['videos_count'] = count($channels);
+                   // $results['videos'] = $videos;
 
-                    array_push($data, $results);
+                    // array_push($data, $results);
 
+                    $data = $videos;
                 }
                 
             }
 
-            $response_array = array('success' => true, 'data' => $data);
+            $response_array = array('success' => true, 'channel_id'=>$channels->id, 
+                        'channel_name'=>$channels->name, 'channel_image'=>$channels->picture,
+                        'channel_cover'=>$channels->cover, 'data' => $data);
         }
 
         $response = response()->json($response_array, 200);
@@ -1309,12 +1385,19 @@ class UserApiController extends Controller {
 
     }
 
+    /**
+     * Function single_video()
+     *
+     * Return particular video details 
+     *
+     */
+
     public function single_video(Request $request) {
 
         $validator = Validator::make(
             $request->all(),
             array(
-                'admin_video_id' => 'required|integer|exists:video_tapes,id',
+                'video_tape_id' => 'required|integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists',
@@ -1322,74 +1405,52 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
+            $login_by = $request->login_by ? $request->login_by : 'android';
+
             $data = array();
 
-            $data = Helper::get_video_details($request->admin_video_id);
+            // Check the video is in flg lists
 
-            $trailer_video = $ios_trailer_video = $data->trailer_video;
+            $check_flag_video = Flag::where('video_tape_id' , $request->video_tape_id)->where('user_id' ,$request->id)->count();
 
-            $video = $ios_video = $data->video;
+            if(!$check_flag_video) {
 
-            if($data->video_type == VIDEO_TYPE_UPLOAD && $data->video_upload_type == VIDEO_UPLOAD_TYPE_DIRECT) {
+                $data = VideoRepo::single_response($request->video_tape_id , $request->id , $login_by);
+                
+                if(count($data) > 0) {
 
-                if(check_valid_url($data->tralier_video)) {
+                    // Comments Section
 
-                    if(Setting::get('streaming_url'))
-                        $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);
+                    $comments = [];
 
-                    if(Setting::get('HLS_STREAMING_URL'))
-                        $ios_trailer_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->trailer_video);
+                    if($comments = Helper::video_ratings($request->video_tape_id,0)) {
+
+                        $comments = $comments->toArray();
+
+                    }
+
+                    $data['comments'] = $comments;
+
+                    $data['suggestions'] = VideoRepo::suggestions($request);
+                    
+                    $response_array = ['success' => true , 'data' => $data ];
+
+                } else {
+                    $response_array = ['success' => false , 'error' => Helper::get_error_message(1001) , 'error_code' => 1001];
                 }
 
-                if(check_valid_url($data->video)) {
+            } else {
 
-                    if(Setting::get('streaming_url'))
-                        $video = Setting::get('streaming_url').get_video_end($data->video);
-
-                    if(Setting::get('HLS_STREAMING_URL'))
-                        $ios_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->video);
-                }
+                $response_array = ['success' => false , 'error' => Helper::get_error_message(1000) ,  'error_code' => 1000];
             }
 
-            if($data->video_type == VIDEO_TYPE_YOUTUBE) {
-
-                $video = $ios_video = get_api_youtube_link($data->video);
-                $trailer_video =  $ios_trailer_video = get_api_youtube_link($data->trailer_video);
-            }
-
-            $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->admin_video_id)
-                                ->orderBy('is_default' , 'desc')
-                                ->get();
-
-            if($ratings = Helper::video_ratings($request->admin_video_id,0)) {
-                $ratings = $ratings->toArray();
-            }
-
-            $wishlist_status = Helper::wishlist_status($request->admin_video_id,$request->id);
-            $history_status = Helper::history_status($request->id,$request->admin_video_id);
-            $share_link = route('user.single' , $request->admin_video_id);
-
-            $user = User::find($request->id);
-
-            $response_array = array(
-                        'success' => true,
-                        'user_type' => $user->user_type ? $user->user_type : 0,
-                        'wishlist_status' => $wishlist_status,
-                        'history_status' => $history_status,
-                        'share_link' => $share_link,
-                        'main_video' => $video,
-                        'tralier_video' => $trailer_video,
-                        'ios_video' => $ios_video,
-                        'ios_tralier_video' => $ios_trailer_video,
-                        'video' => $data ,
-                        'video_images' => $admin_video_images,
-                        'comments' => $ratings
-                        );
         }
 
         $response = response()->json($response_array, 200);
@@ -1411,21 +1472,42 @@ class UserApiController extends Controller {
 
         if ($validator->fails()) {
 
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+            $error = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
 
         } else {
 
-            $results = VideoTape::where('is_approved' , 1)
-                    ->where('status' , 1)
-                    ->where('title', 'like', '%' . $request->key . '%')
-                    ->select('id as admin_video_id' , 'title' , 'default_image')->orderBy('created_at' , 'desc')->get()->toArray();
 
-            $response_array = array('success' => true, 'data' => $results);
+            $data = [];
+
+            $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->orderby('video_tapes.watch_count' , 'desc')
+                                ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get()->toArray();
+
+
+            $response_array = array('success' => true, 'data' => $data);
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
 
     }
 

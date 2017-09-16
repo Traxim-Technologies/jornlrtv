@@ -28,6 +28,7 @@ return array(
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
 	'no_more_video_available'=>'No more Video Available',
+	'viewers_cnt'=>'Viewers',
 	'to_view_video'=>'Please click here to pay',
 	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 
@@ -970,8 +971,11 @@ return array(
 	'pay_now'=>'Pay Now',
 	'no_card_details_found'=>'No Card Details found. Please Add Card Details',
 
+
 	'no_live_video_present'=>'There is no live video present',
 	'no_streaming_video_present'=>'There is no steaming video found',
 
 	'video_streaming'=>'Video is Streaming',
+	'video_is_in_flag_list' => 'Sorry!!.The video is in block list.',
+	'video_not_found' => 'Sorry!!.The video not found',
 );

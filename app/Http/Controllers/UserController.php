@@ -137,6 +137,12 @@ class UserController extends Controller {
     
     public function index(Request $request) {
 
+
+        Log::info("Timezone ".print_r(date('Y-m-d H:i:s'), true));
+
+        Log::info("Convert Timezone ".print_r(convertTimeToUSERzone(date('Y-m-d H:i:s'), 'Europe/London', 'Y-m-d H:i:s'), true));
+
+
         $database = config('database.connections.mysql.database');
         
         $username = config('database.connections.mysql.username');
@@ -361,7 +367,8 @@ class UserController extends Controller {
             $request->request->add([ 
                 'id' => \Auth::user()->id,
                 'token' => \Auth::user()->token,
-                'device_token' => \Auth::user()->device_token
+                'device_token' => \Auth::user()->device_token,
+                'video_tape_id' => $request->video_tape_id
             ]);
         }
 

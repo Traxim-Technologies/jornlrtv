@@ -13,6 +13,8 @@ use App\Helpers\Helper;
 
 use Setting;
 
+use Log;
+
 use Auth;
 
 class AuthController extends Controller
