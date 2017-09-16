@@ -368,7 +368,7 @@ class VideoTapeRepository {
                     ->where('video_tapes.status' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.channel_id' , $channel_id)
-                    ->videoResponse()
+                    ->shortVideoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
         if ($request->id) {
             // Check any flagged videos are present
