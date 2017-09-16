@@ -889,7 +889,7 @@ class UserApiController extends Controller {
 			$response_array = array('success' => true);
         }
 
-        return $response()->json($response_array, 200);
+        return response()->json($response_array, 200);
     
     }
 
