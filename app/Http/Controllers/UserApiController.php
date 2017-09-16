@@ -1346,18 +1346,21 @@ class UserApiController extends Controller {
 
                 if(count($videos) > 0) {
 
-                    $results['channel_name'] = $channels->name;
-                    $results['key'] = $channels->id;
-                    $results['videos_count'] = count($channels);
-                    $results['videos'] = $videos;
+                    /*$results['channel_name'] = $channels->name;
+                    $results['key'] = $channels->id;*/
+                    // $results['videos_count'] = count($channels);
+                   // $results['videos'] = $videos;
 
-                    array_push($data, $results);
+                    // array_push($data, $results);
 
+                    $data = $videos;
                 }
                 
             }
 
-            $response_array = array('success' => true, 'data' => $data);
+            $response_array = array('success' => true, 'channel_id'=>$channels->id, 
+                        'channel_name'=>$channels->name, 'channel_image'=>$channels->picture,
+                        'channel_cover'=>$channels->cover, 'data' => $data);
         }
 
         $response = response()->json($response_array, 200);
