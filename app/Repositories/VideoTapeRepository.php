@@ -399,7 +399,7 @@ class VideoTapeRepository {
 
                 $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
 
-                $value['share_url'] = Helper::url('/');
+                $value['share_url'] = Helper::web_url('/');
 
                 array_push($data, $value->toArray());
             }
