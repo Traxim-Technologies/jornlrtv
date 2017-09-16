@@ -733,7 +733,7 @@
                                         ->where('video_tape_id' , $video_id)
                                         ->where('status' , 1)
                                         ->first();
-            return $status;
+            return $status ? 1 : 0;
         }
 
 
