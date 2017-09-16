@@ -826,11 +826,11 @@ class UserApiController extends Controller {
 
                 foreach ($videos as $key => $value) {
 
-                    $value['watch_count'] = "10k";
+                    $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                    $value['share_url'] = "http://streamtube.streamhash.com/";
+                    $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                     array_push($data, $value->toArray());
                 }
@@ -1073,13 +1073,13 @@ class UserApiController extends Controller {
 
                 foreach ($videos as $key => $value) {
 
-                    $value['watch_count'] = "10k";
+                    $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                    $value['history_status'] = $request->id ? Helper::history_status($request->id,$request->video_tape_id) : 0;
+                    $value['history_status'] = $request->id ? Helper::history_status($value->id,$value->video_tape_id) : 0;
 
-                    $value['share_url'] = route('user.single' , $request->video_tape_id);
+                    $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                     array_push($data, $value->toArray());
                 }
@@ -1214,11 +1214,11 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                $value['share_url'] = "http://streamtube.streamhash.com/";
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }
@@ -1267,11 +1267,11 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
                 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                $value['share_url'] = "http://streamtube.streamhash.com/";
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }

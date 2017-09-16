@@ -395,11 +395,11 @@ class VideoTapeRepository {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                $value['share_url'] = Helper::web_url('/');
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }
@@ -544,11 +544,11 @@ class VideoTapeRepository {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
                 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
 
-                $value['share_url'] = "http://streamtube.streamhash.com/";
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }
