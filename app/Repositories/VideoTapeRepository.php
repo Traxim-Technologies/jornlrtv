@@ -474,13 +474,13 @@ class VideoTapeRepository {
 
             if($login_by == DEVICE_ANDROID) {
 
-                $video_url = Setting::get('streaming_url') ? Setting::get('streaming_url').get_video_end($data->video) : $video_url;
+                $video_url = Setting::get('streaming_url') ? Setting::get('streaming_url').get_video_end($data['video']) : $video_url;
 
             }
 
             if($login_by == DEVICE_IOS) {
 
-                $video_url = Setting::get('HLS_STREAMING_URL') ? Setting::get('HLS_STREAMING_URL').get_video_end($data->video) : $video_url;
+                $video_url = Setting::get('HLS_STREAMING_URL') ? Setting::get('HLS_STREAMING_URL').get_video_end($data['video']) : $video_url;
 
             }
 
