@@ -388,7 +388,24 @@ class VideoTapeRepository {
             $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
         }
 
-        return $videos;
+
+        $data = [];
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['watch_count'] = "10k";
+
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+
+                $value['share_url'] = Helper::url('/');
+
+                array_push($data, $value->toArray());
+            }
+        }
+
+        return $data;
     }
 
 
@@ -416,23 +433,8 @@ class VideoTapeRepository {
             $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
         }
 
-        $data = [];
-
-        if(count($videos) > 0) {
-
-            foreach ($videos as $key => $value) {
-
-                $value['watch_count'] = "10k";
-
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
-
-                $value['share_url'] = Helper::url('/');
-
-                array_push($data, $value->toArray());
-            }
-        }
-
-        return $data;
+       
+        return $videos;
     }
 
 
