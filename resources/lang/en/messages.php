@@ -909,4 +909,7 @@ return array(
 	'payment_success' => 'Payment completed!!',
 	'pay_now'=>'Pay Now',
 	'no_card_details_found'=>'No Card Details found. Please Add Card Details',
+
+	'video_is_in_flag_list' => 'Sorry!!.The video is in block list.',
+	'video_not_found' => 'Sorry!!.The video not found',
 );

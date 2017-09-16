@@ -368,7 +368,7 @@ class VideoTapeRepository {
                     ->where('video_tapes.status' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.channel_id' , $channel_id)
-                    ->videoResponse()
+                    ->shortVideoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
         if ($request->id) {
             // Check any flagged videos are present
@@ -388,35 +388,53 @@ class VideoTapeRepository {
             $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
         }
 
-        return $videos;
+
+        $data = [];
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
+
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
+
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
+
+                array_push($data, $value->toArray());
+            }
+        }
+
+        return $data;
     }
 
 
     public static function all_videos($web = NULL , $skip = 0) {
 
-            $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->where('video_tapes.channel_id' , $channel_id)
-                        ->videoResponse()
-                        ->rand()
-                        ->orderby('video_tapes.created_at' , 'asc');
-            if (Auth::check()) {
-                // Check any flagged videos are present
-                $flagVideos = getFlagVideos(Auth::user()->id);
+        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.status' , 1)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('video_tapes.channel_id' , $channel_id)
+                    ->videoResponse()
+                    ->rand()
+                    ->orderby('video_tapes.created_at' , 'asc');
+        if (Auth::check()) {
+            // Check any flagged videos are present
+            $flagVideos = getFlagVideos(Auth::user()->id);
 
-                if($flagVideos) {
-                    $videos_query->whereNotIn('video_tapes.id', $flagVideos);
-                }
+            if($flagVideos) {
+                $videos_query->whereNotIn('video_tapes.id', $flagVideos);
             }
+        }
 
-            if($web) {
-                $videos = $videos_query->paginate(16);
-            } else {
-                $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            }
+        if($web) {
+            $videos = $videos_query->paginate(16);
+        } else {
+            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+        }
 
-            return $videos;
+       
+        return $videos;
     }
 
 
@@ -432,6 +450,113 @@ class VideoTapeRepository {
 
         return $base_query;
 
+    }
+
+    /**
+     *
+     * return the common response for single video
+     *
+     */
+
+    public static function single_response($video_tape_id , $user_id = "" , $login_by) {
+
+        // Initialize the empty array
+
+        $data = [];
+
+        $video_tape_details = VideoTape::where('video_tapes.id' , $video_tape_id)
+                                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                    ->where('video_tapes.status' , 1)
+                                    ->where('video_tapes.publish_status' , 1)
+                                    ->where('video_tapes.is_approved' , 1)
+                                    ->shortVideoResponse()
+                                    ->first();
+        if($video_tape_details) {
+
+            $data = $video_tape_details->toArray();
+
+            $data['wishlist_status'] = $data['history_status'] = 0;
+
+            if($user_id) {
+
+                $data['wishlist_status'] = count(Helper::check_wishlist_status($video_tape_id,$user_id)) > 0 ? 1 : 0;
+
+                $data['history_status'] = count(Helper::history_status($user_id,$video_tape_id)) > 0? 1 : 0;
+
+            }
+
+            
+            $data['share_url'] = route('user.single' , $video_tape_id);
+
+            $video_url = $video_tape_details->video;
+
+            if($login_by == DEVICE_ANDROID) {
+
+                $video_url = Setting::get('streaming_url') ? Setting::get('streaming_url').get_video_end($data['video']) : $video_url;
+
+            }
+
+            if($login_by == DEVICE_IOS) {
+
+                $video_url = Setting::get('HLS_STREAMING_URL') ? Setting::get('HLS_STREAMING_URL').get_video_end($data['video']) : $video_url;
+
+            }
+
+            $data['video'] = $video_url;
+
+            $data['user_type'] = 0;
+
+        }
+
+
+        return $data;
+
+    }
+
+    public static function suggestions($request) {
+
+         $data = [];
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->orderby('video_tapes.watch_count' , 'desc')
+                            ->shortVideoResponse();
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+        $videos = $base_query->skip($request->skip)->take(4)->get();
+
+        if(count($videos) > 0) {
+
+            foreach ($videos as $key => $value) {
+
+                $value['watch_count'] = number_format_short($value->viewer_cnt);
+                
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
+
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
+
+                array_push($data, $value->toArray());
+            }
+        }
+
+        return $data;
+
+        
     }
 
 }

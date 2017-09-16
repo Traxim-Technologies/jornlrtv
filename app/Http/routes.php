@@ -686,6 +686,8 @@ Route::group(['prefix' => 'userApi'], function(){
     
     Route::post('/common' , 'UserApiController@common');
 
+    Route::post('/single_video' , 'UserApiController@single_video');
+    
     Route::post('/singleVideo' , 'UserApiController@getSingleVideo');
 
     Route::post('/searchVideo' , 'UserApiController@search_video')->name('search-video');
