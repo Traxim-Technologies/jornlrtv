@@ -280,6 +280,13 @@
                     $string = tr('failed_to_upload');
                     break;
 
+                case 1000:
+                    $string = tr('video_is_in_flag_list');
+                    break;
+                case 1001:
+                    $string = tr('video_not_found');
+                    break;
+
                 default:
                     $string = "Unknown error occurred.";
             }
@@ -785,7 +792,6 @@
                             ->leftJoin('users' , 'user_ratings.user_id' , '=' , 'users.id')
                             ->select('users.id as user_id' , 'users.name as username',
                                     'users.picture as picture' ,
-
                                     'user_ratings.rating' , 'user_ratings.comment',
                                     'user_ratings.created_at')
                             ->orderby('created_at', 'desc')

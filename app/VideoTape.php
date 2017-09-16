@@ -72,6 +72,7 @@ class VideoTape extends Model
             'channels.name as channel_name',
             'video_tapes.watch_count',
             'video_tapes.duration',
+            'video_tapes.video',
             'video_tapes.id as video_tape_id' ,
             'channels.id as channel_id' ,
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as publish_time')

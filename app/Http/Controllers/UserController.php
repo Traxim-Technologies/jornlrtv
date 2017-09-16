@@ -281,7 +281,8 @@ class UserController extends Controller {
             $request->request->add([ 
                 'id' => \Auth::user()->id,
                 'token' => \Auth::user()->token,
-                'device_token' => \Auth::user()->device_token
+                'device_token' => \Auth::user()->device_token,
+                'video_tape_id' => $request->video_tape_id
             ]);
         }
 

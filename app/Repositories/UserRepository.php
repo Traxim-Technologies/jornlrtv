@@ -117,8 +117,6 @@ class UserRepository {
 		$user = new User;
 
         $user->name = $request->has('name') ? $request->name : "";
-
-        
 		$user->email = $request->has('email') ? $request->email : "";
 		$user->password = $request->has('password') ? \Hash::make($request->password) : "";
         
@@ -141,26 +139,32 @@ class UserRepository {
             $user->timezone = $request->timezone;
         }
 
-        // $user->device_token = $request->has('device_token') ? $request->device_token : "";
+        $user->device_token = $request->has('device_token') ? $request->device_token : "";
         $user->device_type = $request->has('device_type') ? $request->device_type : "";
         $user->login_by = $request->has('login_by') ? $request->login_by : "";
 		$user->social_unique_id = $request->has('social_unique_id') ? $request->social_unique_id : "";
 
-        $user->picture = Helper::web_url().'/uploads/users/default-profile.jpg';
+        $user->picture = asset('placeholde.png');
 
         $user->payment_mode = $request->payment_mode ? $request->payment_mode : 'cod';
 
         // Upload picture
         if($request->login_by == "manual") {
+
             if($request->hasFile('picture')) {
+
                 $user->picture = Helper::upload_avatar('uploads/users',$request->file('picture'));
+
             }
+
         } else {
+
             if($request->has('picture')) {
                 $user->picture = $request->picture;
             }
 
         }
+
         $user->login_by = $request->login_by ?  $request->login_by : "manual";
 
         $user->status = 1;
@@ -172,7 +176,6 @@ class UserRepository {
         
         $user->unique_id = uniqid($name);
 
-       // $user->login_status = "user";
         $user->register_type = "user";
 
         $user->save();
