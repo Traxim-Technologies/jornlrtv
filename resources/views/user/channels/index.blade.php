@@ -89,9 +89,11 @@
 
 		@include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10">
+		<div class="page-inner col-sm-9 col-md-10 p-t-5">
+
 
 			@include('notification.notify')
+
 
 			<div class="branded-page-v2-top-row">
 			
