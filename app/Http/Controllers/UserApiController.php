@@ -1609,7 +1609,7 @@ class UserApiController extends Controller {
                 $message = tr('push_notification_disable');
             }
 
-            $response_array = array('success' => true, 'message' => $message , 'push_status' => $user->push_status);
+            $response_array = array('success' => true, 'message' => $message , 'push_status' => $user->push_status, 'data'=>['id'=>$user->id, 'token'=>$user->token]);
         }
 
         $response = response()->json($response_array, 200);
