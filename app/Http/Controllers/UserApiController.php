@@ -843,7 +843,7 @@ class UserApiController extends Controller {
 
                     $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
+                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id,$value->video_tape_id) : 0;
 
                     $value['share_url'] = route('user.single' , $value->video_tape_id);
 
@@ -905,7 +905,7 @@ class UserApiController extends Controller {
 			$response_array = array('success' => true);
         }
 
-        return $response()->json($response_array, 200);
+        return response()->json($response_array, 200);
     
     }
 
@@ -1091,7 +1091,7 @@ class UserApiController extends Controller {
 
                     $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
+                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id,$value->video_tape_id) : 0;
 
                     $value['history_status'] = $request->id ? Helper::history_status($value->id,$value->video_tape_id) : 0;
 
@@ -1232,7 +1232,7 @@ class UserApiController extends Controller {
 
                 $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id, $value->video_tape_id) : 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 
@@ -1285,7 +1285,7 @@ class UserApiController extends Controller {
 
                 $value['watch_count'] = number_format_short($value->viewer_cnt);
                 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($value->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id, $value->video_tape_id) : 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 

@@ -794,9 +794,9 @@
 
             $status = Wishlist::where('wishlists.user_id' , $user_id)
                                         ->where('video_tape_id' , $video_id)
-                                        ->where('status' , 1)
                                         ->first();
-            return $status;
+
+            return $status ? 1 : 0;
         }
 
 
