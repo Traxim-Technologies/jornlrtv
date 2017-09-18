@@ -31,7 +31,7 @@
 @endif
 
 @if(Session::has('flash_error'))
-    <div class="alert alert-danger" 
+    <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">×</button>
         {{Session::get('flash_error')}}
     </div>

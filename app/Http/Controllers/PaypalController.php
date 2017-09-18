@@ -232,9 +232,18 @@ class PaypalController extends Controller {
 
 
 
-     public function payPerVideo($id, $user_id) {
+     public function payPerVideo(Request $request) {
 
         // \Log::info("Auth Check".print_r(Auth::user() , true));
+
+        $id = $request->id ? $request->id: '';
+
+        $user_id = $request->user_id ? $request->user_id: ''; 
+
+        if(!$user_id)  {
+
+            return redirect(route('user.login.form'));
+        }
 
         $subscription = LiveVideo::find($id);
 
