@@ -382,6 +382,8 @@ class VideoTapeRepository {
 
         }
 
+        $videos_query->where('video_tapes.age_limit','<=', checkAge($request));
+
         if($web) {
             $videos = $videos_query->paginate(16);
         } else {
@@ -543,6 +545,8 @@ class VideoTapeRepository {
             $base_query->whereNotIn('video_tapes.id', [$request->video_tape_id]);
 
         }
+
+        $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
         $videos = $base_query->skip($request->skip)->take(4)->get();
 
