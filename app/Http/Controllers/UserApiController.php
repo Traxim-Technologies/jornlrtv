@@ -1110,8 +1110,8 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id',
+                'video_tape_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
+               // 'video_tape_id' => 'integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to history',
@@ -1134,7 +1134,7 @@ class UserApiController extends Controller {
 
                 //delete history
 
-                $history = UserHistory::where('user_id',$request->id)->where('id' ,  $request->history_id )->delete();
+                $history = UserHistory::where('user_id',$request->id)->where('id' , $request->video_tape_id)->delete();
             }
 
             $response_array = array('success' => true);
