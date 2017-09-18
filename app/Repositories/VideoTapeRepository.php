@@ -397,7 +397,7 @@ class VideoTapeRepository {
 
                 $value['watch_count'] = number_format_short($value->viewer_cnt);
 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id, $value->video_tape_id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 
@@ -546,7 +546,7 @@ class VideoTapeRepository {
 
                 $value['watch_count'] = number_format_short($value->viewer_cnt);
                 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id,$value->video_tape_id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 

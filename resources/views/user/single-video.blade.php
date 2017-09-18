@@ -185,6 +185,7 @@ textarea[name=comments] {
 
                                                                     <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
 
+    
                                                                     @if(count($wishlist_status) == 1)
 
                                                                         <input type="hidden" id="status" value="0" name="status">
