@@ -142,7 +142,7 @@
 			</div>
 
 
-			<div class="box box-widget widget-user-2">
+			<?php /* <div class="box box-widget widget-user-2">
 
             	<div class="widget-user-header bg-green">
 
@@ -195,7 +195,7 @@
               		</ul>
             	</div>
           	
-          	</div>
+          	</div> */?>
 
 		</div>
 
