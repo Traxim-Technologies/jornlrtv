@@ -395,7 +395,7 @@ class VideoTapeRepository {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = number_format_short($value->viewer_cnt);
+                $value['watch_count'] = number_format_short($value->watch_count);
 
                 $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
@@ -544,7 +544,7 @@ class VideoTapeRepository {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = number_format_short($value->viewer_cnt);
+                $value['watch_count'] = number_format_short($value->watch_count);
                 
                 $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
