@@ -46,7 +46,7 @@ return array(
 	'stripe_publishable_key'=>'Stripe Publishable Key',
 	'stripe_secret_key'=>'Stripe Secret Key',
 	'failed_to_upload'=>'Failed To Upload, Your File length is different from original File Length',
-	'min_age_error'=>'Age should be minimum 16 Years Old',
+	'min_age_error'=>'Age should be minimum 10 Years Old',
 	'registration_success'=>'Registration completed successfully',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',
