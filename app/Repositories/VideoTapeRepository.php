@@ -538,6 +538,12 @@ class VideoTapeRepository {
         
         }
 
+        if ($request->video_tape_id) {
+
+            $base_query->whereNotIn('video_tapes.id', [$request->video_tape_id]);
+
+        }
+
         $videos = $base_query->skip($request->skip)->take(4)->get();
 
         if(count($videos) > 0) {
