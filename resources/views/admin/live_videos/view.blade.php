@@ -116,23 +116,7 @@ video {
 
                                     </div>
 
-                                    <div class="col-sm-6">
-
-                                        <div class="header">
-
-                                            <h4><b>{{tr('video_type')}}</b></h4>
-
-                                            @if($data->type == TYPE_PUBLIC)
-
-                                                <label class="text-green"><b>{{TYPE_PUBLIC}}</b></label>
-
-                                            @else
-                                                <label class="text-navyblue"><b>{{TYPE_PRIVATE}}</b></label>
-                                            @endif
-
-                                        </div>
-
-                                    </div>
+                                   
 
                                     <div class="col-sm-6">
 
@@ -168,7 +152,7 @@ video {
 
                                     @endif
 
-                                    <div class="clearfix"></div>
+                                    
 
 
                                      <div class="col-lg-6">

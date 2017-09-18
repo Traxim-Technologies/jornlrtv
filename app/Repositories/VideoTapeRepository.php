@@ -397,9 +397,9 @@ class VideoTapeRepository {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = number_format_short($value->viewer_cnt);
+                $value['watch_count'] = number_format_short($value->watch_count);
 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id, $value->video_tape_id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 
@@ -544,7 +544,7 @@ class VideoTapeRepository {
 
             if($user_id) {
 
-                $data['wishlist_status'] = count(Helper::check_wishlist_status($user_id,$video_tape_id)) > 0 ? 1 : 0;
+                $data['wishlist_status'] = Helper::check_wishlist_status($user_id,$video_tape_id) ? 1 : 0;
 
                 $data['history_status'] = count(Helper::history_status($user_id,$video_tape_id)) > 0? 1 : 0;
 
@@ -603,15 +603,21 @@ class VideoTapeRepository {
         
         }
 
+        if ($request->video_tape_id) {
+
+            $base_query->whereNotIn('video_tapes.id', [$request->video_tape_id]);
+
+        }
+
         $videos = $base_query->skip($request->skip)->take(4)->get();
 
         if(count($videos) > 0) {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = number_format_short($value->viewer_cnt);
+                $value['watch_count'] = number_format_short($value->watch_count);
                 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id,$value->video_tape_id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 
