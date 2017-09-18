@@ -156,7 +156,7 @@ class AuthController extends Controller
             );
         }
 
-        if ($age_limit < 16) {
+        if ($age_limit < 10) {
 
 
            return back()->with('flash_error', tr('min_age_error'));
