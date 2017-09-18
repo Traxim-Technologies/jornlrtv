@@ -1480,7 +1480,7 @@ class UserApiController extends Controller {
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
-                                ->where('title', 'like', "%".$key."%")
+                                ->where('title', 'like', "%".$request->key."%")
                                 ->orderby('video_tapes.watch_count' , 'desc')
                                 ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
 
