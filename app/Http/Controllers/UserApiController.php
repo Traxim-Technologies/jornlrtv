@@ -1500,6 +1500,8 @@ class UserApiController extends Controller {
             
             }
 
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
             $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get()->toArray();
 
 
