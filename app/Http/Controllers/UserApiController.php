@@ -826,9 +826,9 @@ class UserApiController extends Controller {
 
                 foreach ($videos as $key => $value) {
 
-                    $value['watch_count'] = number_format_short($value->viewer_cnt);
+                    $value['watch_count'] = number_format_short($value->watch_count);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id,$value->video_tape_id) : 0;
+                    $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                     $value['share_url'] = route('user.single' , $value->video_tape_id);
 
@@ -1073,9 +1073,9 @@ class UserApiController extends Controller {
 
                 foreach ($videos as $key => $value) {
 
-                    $value['watch_count'] = number_format_short($value->viewer_cnt);
+                    $value['watch_count'] = number_format_short($value->watch_count);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id,$value->video_tape_id) : 0;
+                    $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                     $value['history_status'] = $request->id ? Helper::history_status($value->id,$value->video_tape_id) : 0;
 
@@ -1110,8 +1110,8 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id',
+               'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
+                'video_tape_id' => 'integer|exists:video_tapes,id'
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to history',
@@ -1134,7 +1134,15 @@ class UserApiController extends Controller {
 
                 //delete history
 
-                $history = UserHistory::where('user_id',$request->id)->where('id' ,  $request->history_id )->delete();
+                if ($request->history_id) {
+
+                    $history = UserHistory::where('user_id',$request->id)->where('id' , $request->history_id)->delete();
+
+                } else{
+
+                     $history = UserHistory::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+
+                }
             }
 
             $response_array = array('success' => true);
@@ -1214,9 +1222,9 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = number_format_short($value->viewer_cnt);
+                $value['watch_count'] = number_format_short($value->watch_count);
 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id, $value->video_tape_id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 
@@ -1267,9 +1275,9 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = number_format_short($value->viewer_cnt);
+                $value['watch_count'] = number_format_short($value->watch_count);
                 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->id, $value->video_tape_id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
                 $value['share_url'] = route('user.single' , $value->video_tape_id);
 
@@ -1744,7 +1752,7 @@ class UserApiController extends Controller {
 
             if($request->id) {
 
-                $wishlist_status = Helper::check_wishlist_status($request->id,$request->admin_video_id);
+                $wishlist_status = $request->id ? Helper::check_wishlist_status($request->id,$request->admin_video_id): 0;
 
                 $history_status = Helper::history_status($request->id,$request->admin_video_id);
 
