@@ -479,7 +479,7 @@ class VideoTapeRepository {
 
             if($user_id) {
 
-                $data['wishlist_status'] = count(Helper::check_wishlist_status($user_id,$video_tape_id)) > 0 ? 1 : 0;
+                $data['wishlist_status'] = Helper::check_wishlist_status($user_id,$video_tape_id) ? 1 : 0;
 
                 $data['history_status'] = count(Helper::history_status($user_id,$video_tape_id)) > 0? 1 : 0;
 
