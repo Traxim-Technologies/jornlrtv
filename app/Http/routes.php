@@ -539,7 +539,7 @@ Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
 Route::group(['as' => 'user.'], function(){
 
 
-    Route::get('paypal_video/{id}/{user_id}','PaypalController@payPerVideo')->name('live_video_paypal');
+    Route::get('paypal_video','PaypalController@payPerVideo')->name('live_video_paypal');
 
     Route::get('user/payment_video','PaypalController@getVideoPaymentStatus')->name('paypalstatus');
 
