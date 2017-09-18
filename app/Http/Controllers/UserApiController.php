@@ -1134,7 +1134,7 @@ class UserApiController extends Controller {
 
                 //delete history
 
-                $history = UserHistory::where('user_id',$request->id)->where('id' , $request->video_tape_id)->delete();
+                $history = UserHistory::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
             }
 
             $response_array = array('success' => true);
