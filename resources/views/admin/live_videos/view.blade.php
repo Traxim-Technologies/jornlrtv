@@ -152,7 +152,7 @@ video {
 
                                     @endif
 
-                                    <div class="clearfix"></div>
+                                    
 
 
                                      <div class="col-lg-6">
