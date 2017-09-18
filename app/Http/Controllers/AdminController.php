@@ -350,7 +350,7 @@ class AdminController extends Controller {
 
             }
 
-            if ($user->age_limit < 16) {
+            if ($user->age_limit < 10) {
 
                return back()->with('flash_error', tr('min_age_error'));
 

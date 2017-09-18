@@ -368,14 +368,14 @@ class UserApiController extends Controller {
                             $operation = true;
 
                         } else {
-                            $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
+                            $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
                         }
                     /*} else {
                         $response_array = ['success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144];
                     }*/
 
                 } else {
-                    $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
+                    $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
                 }
             
             }
@@ -518,6 +518,7 @@ class UserApiController extends Controller {
             'email' => $user->email,
             'description'=>$user->description,
             'dob'=>$user->dob,
+            'age'=>$user->age_limit,
             'picture' => $user->picture,
             'chat_picture' => $user->picture,
             'mobile' => $user->mobile,
@@ -583,9 +584,9 @@ class UserApiController extends Controller {
 
                 }
 
-                if ($user->age_limit < 16) {
+                if ($user->age_limit < 10) {
 
-                    $response_array = ['success' => false , 'error' => tr('min_age_error')];
+                    $response_array = ['success' => false , 'error_messages' => tr('min_age_error')];
 
                     return response()->json($response_array , 200);
 
@@ -618,6 +619,7 @@ class UserApiController extends Controller {
                 'gender' => $user->gender,
                 'email' => $user->email,
                 'dob'=> $user->dob,
+                'age'=>$user->age_limit,
                 'picture' => $user->picture,
                 'chat_picture' => $user->picture,
                 'token' => $user->token,
@@ -660,7 +662,7 @@ class UserApiController extends Controller {
                 } else {
                     $allow = 0 ;
 
-                    $response_array = array('success' => false , 'error' => Helper::get_error_message(108) ,'error_code' => 108);
+                    $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(108) ,'error_code' => 108);
                 }
 
             }
@@ -673,7 +675,7 @@ class UserApiController extends Controller {
                     $user->delete();
                     $response_array = array('success' => true , 'message' => tr('user_account_delete_success'));
                 } else {
-                    $response_array = array('success' =>false , 'error' => Helper::get_error_message(146), 'error_code' => 146);
+                    $response_array = array('success' =>false , 'error_messages' => Helper::get_error_message(146), 'error_code' => 146);
                 }
 
             }
@@ -755,7 +757,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -835,6 +837,8 @@ class UserApiController extends Controller {
             
             }
 
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
             $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
             if(count($videos) > 0) {
@@ -878,7 +882,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -966,13 +970,13 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
             if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first()) {
 
-                $response_array = array('success' => true , 'error' => Helper::get_error_message(145) , 'error_code' => 145);
+                $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
 
             } else {
 
@@ -1083,6 +1087,8 @@ class UserApiController extends Controller {
             
             }
 
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
             $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
             if(count($videos) > 0) {
@@ -1138,7 +1144,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -1176,7 +1182,7 @@ class UserApiController extends Controller {
             $response_array = array('success' => true , 'categories' => $channels->toArray());
 
         } else {
-            $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
+            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
         }
 
         $response = response()->json($response_array, 200);
@@ -1193,7 +1199,7 @@ class UserApiController extends Controller {
             $response_array = array('success' => true , 'channels' => $channels->toArray());
 
         } else {
-            $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
+            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
         }
 
         $response = response()->json($response_array, 200);
@@ -1229,8 +1235,10 @@ class UserApiController extends Controller {
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
 
             }
-        
+
         }
+
+        $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
         $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
@@ -1284,6 +1292,8 @@ class UserApiController extends Controller {
             }
         
         }
+
+        $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
         $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
@@ -1416,7 +1426,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -1451,12 +1461,12 @@ class UserApiController extends Controller {
                     $response_array = ['success' => true , 'data' => $data ];
 
                 } else {
-                    $response_array = ['success' => false , 'error' => Helper::get_error_message(1001) , 'error_code' => 1001];
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(1001) , 'error_code' => 1001];
                 }
 
             } else {
 
-                $response_array = ['success' => false , 'error' => Helper::get_error_message(1000) ,  'error_code' => 1000];
+                $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(1000) ,  'error_code' => 1000];
             }
 
         }
@@ -1481,7 +1491,7 @@ class UserApiController extends Controller {
         if ($validator->fails()) {
 
             $error = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -1492,6 +1502,7 @@ class UserApiController extends Controller {
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
+                                ->where('title', 'like', "%".$request->key."%")
                                 ->orderby('video_tapes.watch_count' , 'desc')
                                 ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
 
@@ -1508,6 +1519,8 @@ class UserApiController extends Controller {
                 }
             
             }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get()->toArray();
 
@@ -1625,7 +1638,7 @@ class UserApiController extends Controller {
                 $message = tr('push_notification_disable');
             }
 
-            $response_array = array('success' => true, 'message' => $message , 'push_status' => $user->push_status);
+            $response_array = array('success' => true, 'message' => $message , 'push_status' => $user->push_status, 'data'=>['id'=>$user->id, 'token'=>$user->token]);
         }
 
         $response = response()->json($response_array, 200);
@@ -1653,7 +1666,7 @@ class UserApiController extends Controller {
 
                     if ($video->age_limit > $age) {
 
-                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+                        return response()->json(['success'=>false, 'error_messages'=>tr('age_error')]);
 
                     }
 
@@ -1662,7 +1675,7 @@ class UserApiController extends Controller {
 
                 if ($video->age_limit == 1) {
 
-                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+                    return response()->json(['success'=>false, 'error_messages'=>tr('age_error')]);
 
                 }
 
@@ -1756,7 +1769,7 @@ class UserApiController extends Controller {
                 
             } else {
 
-                $response_array = ['success' => false, 'error'=>tr('video_not_found')];
+                $response_array = ['success' => false, 'error_messages'=>tr('video_not_found')];
 
                 return response()->json($response_array, 200);
 
@@ -1809,7 +1822,7 @@ class UserApiController extends Controller {
 
         } else {
 
-            return response()->json(['success'=>false, 'message'=>tr('something_error')]);
+            return response()->json(['success'=>false, 'error_messages'=>tr('something_error')]);
         }
 
     }
@@ -1880,18 +1893,18 @@ class UserApiController extends Controller {
 
                     } else {
 
-                        $response_array = ['success' => false , 'error' => Helper::get_error_message(149) , 'error_code' => 149];
+                        $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(149) , 'error_code' => 149];
                     }
 
                 } else {
-                    $response_array = ['success' => false , 'error' => Helper::get_error_message(148) ,'error_code' => 148];
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(148) ,'error_code' => 148];
                 }
 
             } else {
-                $response_array = ['success' => false , 'error' => Helper::get_error_message(151) , 'error_code' => 151];
+                $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(151) , 'error_code' => 151];
             }
         } else {
-            $response_array = ['success' => false , 'error' => Helper::get_error_message(147) , 'error_code' => 147];
+            $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(147) , 'error_code' => 147];
         }
 
         return response()->json($response_array , 200);
@@ -1913,7 +1926,8 @@ class UserApiController extends Controller {
             $response_array = ['success' => true , 'data' => $data];
 
         } else {
-            $response_array = ['success' => false , 'error' => Helper::get_error_message(147) , 'error_code' => 147];
+
+            $response_array = ['success' => false , 'error_messages' => Helper::error_message(147) , 'error_code' => 147];
         }
 
         return response()->json($response_array , 200);
@@ -1955,16 +1969,16 @@ class UserApiController extends Controller {
 
 
                     } else {
-                        $response_array = ['success' => false ,  'error' => Helper::get_error_message(150) , 'error_code' => 150];
+                        $response_array = ['success' => false ,  'error_messages' => Helper::get_error_message(150) , 'error_code' => 150];
                     }
 
                 } else {
-                    $response_array = ['success' => false ,  'error' => Helper::get_error_message(151) , 'error_code' => 151];
+                    $response_array = ['success' => false ,  'error_messages' => Helper::get_error_message(151) , 'error_code' => 151];
                 }
 
             } else {
 
-                $response_array = ['success' => false ,  'error' => Helper::get_error_message(151) , 'error_code' =>151 ];
+                $response_array = ['success' => false ,  'error_messages' => Helper::get_error_message(151) , 'error_code' =>151 ];
             }
 
         }
@@ -2193,7 +2207,7 @@ class UserApiController extends Controller {
         if($validator->fails()) {
 
             $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => $error_messages, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error_messages, 'error_code' => 101);
 
         } else {
 
@@ -2211,7 +2225,7 @@ class UserApiController extends Controller {
                 }
                 $response_array = Helper::null_safe(array('success' => true));
             } else {
-                $response_array = array('success' => false , 'error' => 'Something went wrong');
+                $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
             }
         }
         return response()->json($response_array , 200);
@@ -2236,7 +2250,7 @@ class UserApiController extends Controller {
             
             $error_messages = implode(',', $validator->messages()->all());
             
-            $response_array = array('success' => false , 'error' => $error_messages , 'error_code' => 101);
+            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error_code' => 101);
         
         } else {
 
