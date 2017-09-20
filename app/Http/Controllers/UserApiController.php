@@ -691,7 +691,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'admin_video_id' => 'required|integer|exists:video_tapes,id',
+                'video_tape_id' => 'required|integer|exists:video_tapes,id',
                 'rating' => 'integer|in:'.RATINGS,
                 'comments' => '',
             ),
@@ -710,7 +710,7 @@ class UserApiController extends Controller {
             //Save Rating
             $rating = new UserRating();
             $rating->user_id = $request->id;
-            $rating->video_tape_id = $request->admin_video_id;
+            $rating->video_tape_id = $request->video_tape_id;
             $rating->rating = $request->has('rating') ? $request->rating : 0;
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
@@ -718,7 +718,7 @@ class UserApiController extends Controller {
 
             $ratings = UserRating::select(
                     'rating', 'video_tape_id',DB::raw('sum(rating) as total_rating'))
-                    ->where('video_tape_id', $request->admin_video_id)
+                    ->where('video_tape_id', $request->video_tape_id)
                     ->groupBy('video_tape_id')
                     ->avg('rating');
 
@@ -2546,7 +2546,6 @@ class UserApiController extends Controller {
 
 
     public function live_video(Request $request) {
-
         $validator = Validator::make(
             $request->all(),
             array(
@@ -2712,6 +2711,7 @@ class UserApiController extends Controller {
 
         return response()->json($response_array, 200);
     }
+
 
     public function subscription_plans(Request $request) {
 
@@ -3120,4 +3120,154 @@ class UserApiController extends Controller {
 
         }
     }
+
+    public function stripe_payment(Request $request) {
+
+        $validator = Validator::make($request->all(), 
+            array(
+                'subscription_id' => 'required|exists:subscriptions,id',
+            )
+            );
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+        } else {
+
+            $subscription = Subscription::find($request->subscription_id);
+
+
+            if ($subscription) {
+
+                $total = $subscription->amount;
+
+                $user = User::find($request->id);
+
+                $check_card_exists = User::where('users.id' , $request->id)
+                                ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                ->where('cards.id' , $user->card_id)
+                                ->where('cards.is_default' , DEFAULT_TRUE);
+
+                if($check_card_exists->count() != 0) {
+
+                    $user_card = $check_card_exists->first();
+
+                    $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                    $customer_id = $user_card->customer_id;
+
+                    if($stripe_secret_key) {
+                        \Stripe\Stripe::setApiKey($stripe_secret_key);
+                    } else {
+                        $response_array = array('success' => false, 'error_messages' =>Helper::get_error_message(902), 'error_code' => 902);
+                        return response()->json($response_array , 200);
+                    }
+
+                    try{
+
+                       $user_charge =  \Stripe\Charge::create(array(
+                          "amount" => $total * 100,
+                          "currency" => "usd",
+                          "customer" => $customer_id,
+                        ));
+
+                       $payment_id = $user_charge->id;
+                       $amount = $user_charge->amount/100;
+                       $paid_status = $user_charge->paid;
+
+                        if($paid_status) {
+
+                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                            if($user_payment) {
+
+                                $expiry_date = $user_payment->expiry_date;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                            } else {
+                                $user_payment = new UserPayment;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                            }
+
+
+                            $user_payment->payment_id  = $payment_id;
+                            $user_payment->user_id = $request->id;
+                            $user_payment->subscription_id = $request->subscription_id;
+                            $user_payment->status = 1;
+                            $user_payment->amount = $amount;
+                            $user_payment->save();
+
+
+                            $user->user_type = 1;
+                            $user->save();
+                            
+
+                            $response_array = ['success' => true, 'message'=>tr('payment_success')];
+
+                            return response()->json($response_array, 200);
+
+                        } else {
+
+                            $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                            // return response()->json($response_array , 200);
+
+                            // return back()->with('flash_error', Helper::get_error_message(903));
+
+                            return response()->json($response_array, 200);
+
+                        }
+
+                    
+                    } catch (\Stripe\StripeInvalidRequestError $e) {
+                        Log::info(print_r($e,true));
+                        $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+                        return response()->json($response_array , 200);
+                    
+                    }
+
+                } else {
+                    $response_array = array('success' => false, 'error' => Helper::get_error_message(140) , 'error_code' => 140);
+                    return response()->json($response_array , 200);
+                }
+
+                /*
+
+                $requests->save();
+                $request_payment->save();
+
+                // Send notification to the provider Start
+                if($user)
+                    $title =  "The"." ".$user->first_name.' '.$user->last_name." done the payment";
+                else
+                    $title = Helper::tr('request_completed_user_title');
+
+                $message = Helper::get_push_message(603);
+                $this->dispatch(new sendPushNotification($requests->confirmed_provider,PROVIDER,$requests->id,$title,$message,''));
+                // Send notification end
+
+                // Send invoice notification to the user, provider and admin
+                $subject = Helper::tr('request_completed_bill');
+                $email = Helper::get_emails(3,$request->id,$requests->confirmed_provider);
+                $page = "emails.user.invoice";
+                Helper::send_invoice($requests->id,$page,$subject,$email);*/
+
+                // $response_array = array('success' => true);
+
+            } else {
+
+                $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
+
+                
+            }         
+
+            
+        }
+
+        return response()->json($response_array , 200);
+    
+    }
+
+
+    
 }
