@@ -490,7 +490,8 @@ class UserController extends Controller {
         $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token
+            'device_token' => \Auth::user()->device_token,
+            'video_tape_id'=>$request->admin_video_id
         ]);
 
         $response = $this->UserAPI->user_rating($request)->getData();
@@ -1228,7 +1229,7 @@ class UserController extends Controller {
 
 
 
-        /**
+    /**
      * Show the payment methods.
      *
      * @return \Illuminate\Http\Response

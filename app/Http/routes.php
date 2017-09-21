@@ -774,7 +774,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
 
-
     Route::post('live_videos', 'UserApiController@live_videos');
 
     Route::post('save_live_video', 'UserApiController@save_live_video');
@@ -798,5 +797,17 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
 
     Route::post('close_streaming', 'UserApiController@close_streaming');
+
+    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+
+    Route::post('card_details', 'UserApiController@card_details');
+
+    Route::post('payment_card_add', 'UserApiController@payment_card_add');
+
+    Route::post('default_card', 'UserApiController@default_card');
+
+    Route::post('delete_card', 'UserApiController@delete_card');
+
+    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
 
 });
