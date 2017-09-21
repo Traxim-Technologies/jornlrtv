@@ -801,4 +801,12 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
 
+    Route::post('card_details', 'UserApiController@card_details');
+
+    Route::post('payment_card_add', 'UserApiController@payment_card_add');
+
+    Route::post('default_card', 'UserApiController@default_card');
+
+    Route::post('delete_card', 'UserApiController@delete_card');
+
 });

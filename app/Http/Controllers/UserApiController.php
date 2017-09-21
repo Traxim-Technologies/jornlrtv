@@ -2223,7 +2223,9 @@ class UserApiController extends Controller {
                     $user->card_id = $request->card_id;
                     $user->save();
                 }
-                $response_array = Helper::null_safe(array('success' => true));
+                $response_array = Helper::null_safe(array('success' => true, 'data'=>['id'=>$request->id,
+
+                    'token'=>$user->token]));
             } else {
                 $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
             }
@@ -2282,7 +2284,9 @@ class UserApiController extends Controller {
                 $user->save();
             }
 
-            $response_array = array('success' => true );
+            $response_array = array('success' => true,'data'=>['id'=>$request->id,
+
+                    'token'=>$user->token]);
         }
     
         return response()->json($response_array , 200);
@@ -3425,5 +3429,121 @@ class UserApiController extends Controller {
 
     }
 
+
+    public function card_details(Request $request) {
+
+        $cards = Card::select('user_id as id','id as card_id','customer_id',
+                'last_four', 'card_token', 'is_default', 
+            \DB::raw('DATE_FORMAT(created_at , "%e %b %y") as created_date'))->where('user_id', $request->id)->get();
+
+        return response()->json($cards);
+    }
+
+
+
+
+    /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_card_add(Request $request) {
+
+        $validator = Validator::make($request->all(), 
+            array(
+                'number' => 'required|numeric',
+            )
+            );
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+        } else {
+
+            $userModel = User::find($request->id);
+
+            $last_four = substr($request->number, -4);
+
+            $stripe_secret_key = \Setting::get('stripe_secret_key');
+
+            $response = json_decode('{}');
+
+            if($stripe_secret_key) {
+
+                \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+            } else {
+
+
+                $response_array = ['success'=>false, 'error_messages'=>tr('add_card_is_not_enabled')];
+
+                return response()->json($response_array);
+            }
+
+            try {
+
+                // Get the key from settings table
+                
+                $customer = \Stripe\Customer::create([
+                        "card" => $request->stripeToken,
+                        "email" => $userModel->email
+                    ]);
+
+                if($customer) {
+
+                    $customer_id = $customer->id;
+
+
+                    $cards = new Card;
+                    $cards->user_id = $userModel->id;
+                    $cards->customer_id = $customer_id;
+                    $cards->last_four = $last_four;
+                    $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    // Check is any default is available
+                    $check_card = Card::where('user_id', $userModel->id)->first();
+
+                    if($check_card)
+                        $cards->is_default = 0;
+                    else
+                        $cards->is_default = 1;
+                    
+                    $cards->save();
+
+                   // $user = User::find(\Auth::user()->id);
+
+                    if($userModel && $cards->is_default) {
+
+                        $userModel->payment_mode = 'card';
+                        $userModel->card_id = $cards->id;
+                        $userModel->save();
+
+                    }
+
+                    $response_array = array('success' => true,'message'=>tr('add_card_success'), 'data'=>['id'=>$request->id, 'token'=>$userModel->token]);
+
+                    return response()->json($response_array);
+
+                } else {
+
+                    $response_array = ['success'=>false, 'error_messages'=>tr('Could not create client ID')];
+
+                    return response()->json($response_array);
+
+                }
+            
+            } catch(Exception $e) {
+
+                // return back()->with('flash_error' , $e->getMessage());
+
+                $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+
+                return response()->json($response_array);
+
+            }
+
+        }
+
+    }    
     
 }

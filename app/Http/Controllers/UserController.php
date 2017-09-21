@@ -1229,7 +1229,7 @@ class UserController extends Controller {
 
 
 
-        /**
+    /**
      * Show the payment methods.
      *
      * @return \Illuminate\Http\Response
