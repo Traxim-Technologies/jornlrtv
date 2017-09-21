@@ -799,4 +799,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('close_streaming', 'UserApiController@close_streaming');
 
+    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+
 });
