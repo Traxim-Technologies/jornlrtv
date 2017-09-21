@@ -2271,55 +2271,6 @@ class UserApiController extends Controller {
         return response()->json($response_array , 200);
     }
 
-
-
-/*    public function video_chat(Request $request) {
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'video_tape_id'=>'required|exists:video_tapes,id',
-                'user_id'=>'required|exists:users,id',
-                'comment'=>'required',
-
-            ));
-
-        if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $errors = implode(',',$validator->messages()->all());
-
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
-
-        } else {
-
-            $model = new UserRating;
-
-            $model->live_video_id = $request->video_id;
-
-            $model->user_id = $request->id;
-
-            $model->live_video_viewer_id = $request->viewer_id;
-
-            $model->message = $request->message;
-
-            $model->type = $request->type;
-
-            $model->delivered = $request->delivered;
-
-            $model->save();
-
-            Log::info("saving Data");
-
-            Log::info(print_r("Data".$model, true));
-
-            $response_array = ['success'=>true, 'data'=>$model];
-        }
-
-        return response()->json($response_array, 200);
-    }
-*/
-
-
     public function stripe_payment(Request $request) {
 
         $validator = Validator::make($request->all(), 
