@@ -3436,7 +3436,9 @@ class UserApiController extends Controller {
                 'last_four', 'card_token', 'is_default', 
             \DB::raw('DATE_FORMAT(created_at , "%e %b %y") as created_date'))->where('user_id', $request->id)->get();
 
-        return response()->json($cards);
+        $response_array = ['success'=>true, 'data'=>$cards];
+
+        return response()->json($response_array, 200);
     }
 
 
@@ -3520,7 +3522,15 @@ class UserApiController extends Controller {
 
                     }
 
-                    $response_array = array('success' => true,'message'=>tr('add_card_success'), 'data'=>['id'=>$request->id, 'token'=>$userModel->token]);
+                    $response_array = array('success' => true,'message'=>tr('add_card_success'), 
+                        'data'=>['user_id'=>$request->id, 
+                                'token'=>$userModel->token,
+                                'card_id'=>$cards->id,
+                                'customer_id'=>$cards->customer_id,
+                                'last_four'=>$cards->last_four, 
+                                'card_token'=>$cards->card_token, 
+                                'is_default'=>$cards->is_default
+                                ]);
 
                     return response()->json($response_array);
 
