@@ -774,8 +774,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
 
-<<<<<<< HEAD
-
     Route::post('live_videos', 'UserApiController@live_videos');
 
     Route::post('save_live_video', 'UserApiController@save_live_video');
@@ -809,8 +807,7 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('default_card', 'UserApiController@default_card');
 
     Route::post('delete_card', 'UserApiController@delete_card');
-=======
+
     Route::post('/stripe_payment', 'UserApiController@stripe_payment');
->>>>>>> remotes/streamhash/streamtube-v1.2-package/master
 
 });
