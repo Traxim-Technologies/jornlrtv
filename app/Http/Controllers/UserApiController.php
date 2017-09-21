@@ -2394,6 +2394,8 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'skip'=>'required|numeric',
+                'browser'=>'required',
+                'device_type'=>'required|in:'.DEVICE_ANDROID.','.DEVICE_IOS.','.DEVICE_WEB,
             ));
 
         if ($validator->fails()) {
@@ -2408,6 +2410,7 @@ class UserApiController extends Controller {
                         ->where('live_videos.status', DEFAULT_FALSE)
                         ->videoResponse()
                         ->leftJoin('users' , 'users.id' ,'=' , 'live_videos.user_id')
+                        ->leftJoin('channels' , 'channels.id' ,'=' , 'live_videos.channel_id')
                         ->orderBy('live_videos.created_at', 'desc')
                         ->skip($request->skip)
                         ->take(Setting::get('admin_take_count' ,12))->get();
@@ -2426,21 +2429,22 @@ class UserApiController extends Controller {
                         // dd($value);
 
                     $null_safe_value = [
-                        "id"=> $value->id,
+                        "video_image"=> $value->snapshot,
+                        "channel_image"=> $value->channel_image ? $value->channel_image : '',
+                        "title"=> $value->title,
+                        "channel_name"=> $value->channel_name ? $value->channel_name : '',
+                        "watch_count"=> $value->viewers,
+                        "video"=> $value->video_url ? $value->video_url : VideoRepo::getUrl($value, $request),
+                        "video_tape_id"=>$value->video_id,
+                        "channel_id"=>$value->channel_id,
+                        "description"=> $value->description,
+                        "user_id"=>$value->id,
                         "name"=> $value->name,
                         "email"=> $value->email,
                         "user_picture"=> $value->chat_picture,
-                        "video_id"=> $value->video_id,
-                        'unique_id'=>$value->unique_id,
-                        "title"=> $value->title,
-                        "type"=> $value->type,
                         'payment_status' => $value->payment_status ? $value->payment_status : 0,
-                        "description"=> $value->description,
                         "amount"=> $value->amount,
-                        "snapshot"=> $value->snapshot,
-                        "viewers"=> $value->viewers,
-                        "no_of_minutes"=> $value->no_of_minutes,
-                        "date"=> $value->date,
+                        "publish_time"=> $value->date,
                         'currency'=> Setting::get('currency'),
                         "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$value->unique_id,'c_id'=>$value->channel_id)),
                         'video_stopped_status'=>$value->video_stopped_status,
@@ -2448,7 +2452,7 @@ class UserApiController extends Controller {
 
                     ];
 
-                    $values[] = Helper::null_safe($null_safe_value);
+                    $values[] = $null_safe_value;
                 }
 
                 $response_array = ['success'=>true, 'data'=>$values];
@@ -2467,6 +2471,7 @@ class UserApiController extends Controller {
                 'title' => 'required',
                 'amount' => 'required|numeric',
                 'payment_status'=>'required|numeric',
+                'channel_id'=>'required|exists:channels,id',
                // 'video_url'=>'required',
             )
         );
@@ -2484,6 +2489,7 @@ class UserApiController extends Controller {
 
                     $model = new LiveVideo;
                     $model->title = $request->title;
+                    $model->channel_id = $request->channel_id;
                     $model->payment_status = $request->payment_status;
                     $model->type = TYPE_PUBLIC;
                     $model->amount = ($request->payment_status) ? (($request->has('amount')) ? $request->amount : 0 ): 0;
@@ -2507,25 +2513,27 @@ class UserApiController extends Controller {
 
                         $model->save();
 
-                        $response_array = Helper::null_safe([
+                        $response_array = [
                             'success' => true , 
-                            'id'=>$request->id,
-                            'video_id' => $model->id,
-                            'unique_id' => $model->unique_id,
-                            'title'=>$model->title,
-                            'user_picture'=>$user->chat_picture,
-                            'user_name'=>$user->name,
-                            'email'=>$user->email,
-                            'payment_status'=>$model->payment_status ? $model->payment_status : 0, 
-                            'video_type'=>$model->type,
-                            'amount'=>$model->amount, 
-                            'description'=>$model->description, 
-                            'snapshot'=>$model->snapshot,
-                            'viewer_cnt'=>$model->viewer_cnt ? $model->viewer_cnt : 0,
+                            "video_image"=> $model->snapshot,
+                            "channel_image"=> $model->channel ? $model->channel->picture : '',
+                            "title"=> $model->title,
+                            "channel_name"=> $model->channel ? $model->channel->name : '',
+                            "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
+                            "video"=>$model->video_url,
+                            "video_tape_id"=>$model->id,
+                            "channel_id"=>$model->channel_id,
+                            "description"=> $model->description,
+                            "user_id"=>$model->user ? $model->user->id : '',
+                            "name"=> $model->user->name,
+                            "email"=> $model->user->email,
+                            "user_picture"=> $model->user->chat_picture,
+                            'payment_status' => $model->payment_status ? $model->payment_status : 0,
+                            "amount"=> $model->amount,
+                            'currency'=> Setting::get('currency'),
+                            "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
                             'is_streaming'=>$model->is_streaming,
-                            'video_url'=>$model->video_url,
-                            "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id))
-                        ]);
+                        ];
                     } else {
                         $response_array = ['success' => false , 'error' => Helper::get_error_message(003) , 'error_code' => 003];
                     }
@@ -2551,7 +2559,7 @@ class UserApiController extends Controller {
             array(
                 'browser'=>'required',
                 'device_type'=>'required|in:'.DEVICE_ANDROID.','.DEVICE_IOS.','.DEVICE_WEB,
-                'video_id'=>'required|exists:live_videos,unique_id',
+                'video_tape_id'=>'required|exists:live_videos,id',
             ));
 
         if ($validator->fails()) {
@@ -2564,7 +2572,7 @@ class UserApiController extends Controller {
 
         } else {
 
-            $model = LiveVideo::where('unique_id',$request->video_id)->first();
+            $model = LiveVideo::where('id',$request->video_tape_id)->first();
 
             if ($model) {
 
@@ -2586,52 +2594,50 @@ class UserApiController extends Controller {
                                 foreach ($chat as $key => $value) {
                                     
                                     $messages[] = Helper::null_safe([
-                                        'id' => $value->id, 
+                                        // 'id' => $value->id, 
                                         'user_id' => ($value->getUser)? $value->user_id : $value->live_video_viewer_id, 
-                                        'namespace' => ($value->getUser) ? $value->getUser->name : (($value->getViewUser) ? $value->getViewUser->name : ""),
+                                        'username' => ($value->getUser) ? $value->getUser->name : (($value->getViewUser) ? $value->getViewUser->name : ""),
 
                                         'picture'=> ($value->getUser) ? $value->getUser->chat_picture : (($value->getViewUser) ? $value->getViewUser->chat_picture : ""),
-                                        'live_video_id'=>$value->live_video_id, 
-                                        'message'=>$value->message]);
+                                       // 'live_video_id'=>$value->live_video_id, 
+                                        'comment'=>$value->message, 
+                                        'diff_human_time'=>$value->created_at->diffForHumans()]);
 
                                 }
                                 
                             }
 
-                           
-                            if ($model->video_url) {
+                            $videopayment = LiveVideoPayment::where('live_video_id', $model->id)
+                                ->where('live_video_viewer_id', $request->id)
+                                ->where('status',DEFAULT_TRUE)->first();
 
-                                $video_url = $model->video_url;
+                            $suggestions = [];
+    
 
-                            } else {
-
-                                $video_url = VideoRepo::getUrl($model, $request);
-
-                            }
-
-                            $data = Helper::null_safe([
-                                 'id'=>$request->id,
-                                 'user_id'=>$user->id,
-                                 'unique_id'=>$model->unique_id,
-                                 'name'=>$user->name,
-                                 'email'=>$user->email,
-                                 'user_picture'=>$user->chat_picture,
-                                 'video_id'=>$model->id,
-                                 'title'=>$model->title,
-                                 'type'=>$model->type,
-                                 'payment_status' => $model->payment_status ? $model->payment_status : 0,
-                                 'description'=>$model->description,
-                                 'amount'=>$model->amount,
-                                 'snapshot'=>$model->snapshot,
-                                 'viewers'=>$model->viewer_cnt ? $model->viewer_cnt : 0,
-                                 'viewer_cnt'=>$model->viewer_cnt ? $model->viewer_cnt : 0,
-                                 'no_of_minutes'=>$model->no_of_minutes,
-                                 'created_at'=>$model->created_at->diffForhumans(),
-                                 'share_link'=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
-                                 'video_url'=>$video_url,
-                                 'currency'=> Setting::get('currency'),
-                                 'comments'=>$messages,  
-                            ]);
+                            $data = [
+                                "video_image"=> $model->snapshot,
+                                "channel_image"=> $model->channel?$model->channel->picture: '',
+                                "title"=> $model->title,
+                                "channel_name"=> $model->channel ? $model->channel->name : '',
+                                "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
+                                "video"=> $model->video_url ? $model->video_url : VideoRepo::getUrl($model, $request),
+                                "video_tape_id"=>$model->id,
+                                "channel_id"=>$model->channel_id,
+                                "description"=> $model->description,
+                                "user_id"=>$model->user ? $model->user->id : '',
+                                "name"=> $model->user ? $model->user->name : '',
+                                "email"=> $model->user ? $model->user->email : '',
+                                "user_picture"=> $model->user ? $model->user->chat_picture : '',
+                                'payment_status' => $model->payment_status ? $model->payment_status : 0,
+                                "amount"=> $model->amount,
+                                "publish_time"=> $model->date,
+                                'currency'=> Setting::get('currency'),
+                                "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
+                                'video_stopped_status'=>$model->video_stopped_status,
+                                'video_payment_status'=> $videopayment ? DEFAULT_TRUE : DEFAULT_FALSE,
+                                'comments'=>$messages,  
+                                'suggestions'=>$suggestions,
+                            ];
 
                             $response_array = ['success'=>true, 'data'=>$data];
 
@@ -2671,7 +2677,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'video_id'=>'required|exists:live_videos,id',
+                'video_tape_id'=>'required|exists:live_videos,id',
                 'viewer_id'=>'required|exists:users,id',
                 'message'=>'required',
                 'type'=>'required|in:uv,vu',
@@ -2688,7 +2694,7 @@ class UserApiController extends Controller {
 
             $model = new ChatMessage;
 
-            $model->live_video_id = $request->video_id;
+            $model->live_video_id = $request->video_tape_id;
 
             $model->user_id = $request->id;
 
@@ -2807,7 +2813,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'video_id'=>'required|exists:live_videos,id',
+                'video_tape_id'=>'required|exists:live_videos,id',
                 'payment_id'=>'required',
 
             ));
@@ -2820,11 +2826,11 @@ class UserApiController extends Controller {
 
         } else {
 
-            $subscription = LiveVideo::find($request->video_id);
+            $subscription = LiveVideo::find($request->video_tape_id);
 
             $user_payment = new LiveVideoPayment;
 
-            $check_live_video_payment = LiveVideoPayment::where('live_video_viewer_id' , $request->id)->where('live_video_id' , $request->video_id)->first();
+            $check_live_video_payment = LiveVideoPayment::where('live_video_viewer_id' , $request->id)->where('live_video_id' , $request->video_tape_id)->first();
 
             if($check_live_video_payment) {
                 $user_payment = $check_live_video_payment;
@@ -2833,7 +2839,7 @@ class UserApiController extends Controller {
             // $user_payment->expiry_date = date('Y-m-d H:i:s');
             $user_payment->payment_id  = $request->payment_id;
             $user_payment->live_video_viewer_id = $request->id;
-            $user_payment->live_video_id = $request->video_id;
+            $user_payment->live_video_id = $request->video_tape_id;
             
             $user_payment->user_id = $subscription->user_id;
 
@@ -2898,7 +2904,7 @@ class UserApiController extends Controller {
          $validator = Validator::make(
             $request->all(),
             array(
-                'video_id'=>'required|exists:live_videos,id',
+                'video_tape_id'=>'required|exists:live_videos,id',
             ));
 
         if ($validator->fails()) {
@@ -2912,13 +2918,13 @@ class UserApiController extends Controller {
 
         // Load Viewers model
 
-            $model = Viewer::where('video_id', $request->video_id)->where('user_id', $request->id)->first();
+            $model = Viewer::where('video_id', $request->video_tape_id)->where('user_id', $request->id)->first();
 
             if(!$model) {
 
                 $model = new Viewer;
 
-                $model->video_id = $request->video_id;
+                $model->video_id = $request->video_tape_id;
 
                 $model->user_id = $request->id;
 
@@ -3041,7 +3047,7 @@ class UserApiController extends Controller {
 
         $validator = Validator::make(
             $request->all(), array(
-                'video_id'=>'required|exists:live_videos,id',
+                'video_tape_id'=>'required|exists:live_videos,id',
         ));
 
         if ($validator->fails()) {
@@ -3053,7 +3059,7 @@ class UserApiController extends Controller {
         } else {
 
             // Load Model
-            $model = LiveVideo::find($request->video_id);
+            $model = LiveVideo::find($request->video_tape_id);
 
             $model->status = DEFAULT_TRUE;
 
@@ -3075,7 +3081,7 @@ class UserApiController extends Controller {
 
          $validator = Validator::make(
             $request->all(), array(
-                'video_id'=>'required|exists:live_videos,id',
+                'video_tape_id'=>'required|exists:live_videos,id',
         ));
 
         if ($validator->fails()) {
@@ -3086,7 +3092,7 @@ class UserApiController extends Controller {
 
         } else {
 
-            $video = LiveVideo::find($request->video_id);
+            $video = LiveVideo::find($request->video_tape_id);
 
 
             if ($video) {
