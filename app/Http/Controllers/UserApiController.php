@@ -3175,6 +3175,9 @@ class UserApiController extends Controller {
                         return response()->json($response_array , 200);
                     }
 
+
+                    dd($user);
+
                     try{
 
                        $user_charge =  \Stripe\Charge::create(array(
