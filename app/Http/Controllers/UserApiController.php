@@ -3175,9 +3175,6 @@ class UserApiController extends Controller {
                         return response()->json($response_array , 200);
                     }
 
-
-                    dd($user);
-
                     try{
 
                        $user_charge =  \Stripe\Charge::create(array(
@@ -3235,9 +3232,12 @@ class UserApiController extends Controller {
 
                     
                     } catch (\Stripe\StripeInvalidRequestError $e) {
+
                         Log::info(print_r($e,true));
+
                         $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
                         return response()->json($response_array , 200);
+                        
                     
                     }
 
