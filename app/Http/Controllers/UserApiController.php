@@ -3166,6 +3166,8 @@ class UserApiController extends Controller {
 
                     $stripe_secret_key = Setting::get('stripe_secret_key');
 
+                    print_r("User Card Details ".print_r($user_card, true));
+
                     $customer_id = $user_card->customer_id;
 
                     if($stripe_secret_key) {
@@ -3237,7 +3239,7 @@ class UserApiController extends Controller {
 
                         $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
                         return response()->json($response_array , 200);
-                        
+
                     
                     }
 
