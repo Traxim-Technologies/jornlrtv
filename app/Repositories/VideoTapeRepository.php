@@ -634,4 +634,12 @@ class VideoTapeRepository {
         
     }
 
+
+    public function rtmpUrl($model) {
+
+        $url = RTMP_URL.$model->user_id.'_'.$model->id;
+
+        return $url;
+    }
+
 }

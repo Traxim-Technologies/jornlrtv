@@ -2624,7 +2624,7 @@ class UserApiController extends Controller {
                                 "title"=> $model->title,
                                 "channel_name"=> $model->channel ? $model->channel->name : '',
                                 "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                                "video"=> $model->video_url ? $model->video_url : VideoRepo::getUrl($model, $request),
+                                "video"=> $model->video_url ? VideoRepo::rtmpUrl($model) : VideoRepo::getUrl($model, $request),
                                 "video_tape_id"=>$model->id,
                                 "channel_id"=>$model->channel_id,
                                 "description"=> $model->description,
@@ -3166,6 +3166,8 @@ class UserApiController extends Controller {
 
                     $stripe_secret_key = Setting::get('stripe_secret_key');
 
+                    print_r("User Card Details ".print_r($user_card, true));
+
                     $customer_id = $user_card->customer_id;
 
                     if($stripe_secret_key) {
@@ -3232,9 +3234,12 @@ class UserApiController extends Controller {
 
                     
                     } catch (\Stripe\StripeInvalidRequestError $e) {
+
                         Log::info(print_r($e,true));
+
                         $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
                         return response()->json($response_array , 200);
+
                     
                     }
 
@@ -3454,12 +3459,15 @@ class UserApiController extends Controller {
         $validator = Validator::make($request->all(), 
             array(
                 'number' => 'required|numeric',
+                'card_token'=>'required',
             )
             );
 
         if($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+
+            return response()->json($response_array);
         } else {
 
             $userModel = User::find($request->id);
@@ -3487,7 +3495,7 @@ class UserApiController extends Controller {
                 // Get the key from settings table
                 
                 $customer = \Stripe\Customer::create([
-                        "card" => $request->stripeToken,
+                        "card" => $request->card_token,
                         "email" => $userModel->email
                     ]);
 
