@@ -3459,6 +3459,7 @@ class UserApiController extends Controller {
         $validator = Validator::make($request->all(), 
             array(
                 'number' => 'required|numeric',
+                'card_token'=>'required',
             )
             );
 
@@ -3492,7 +3493,7 @@ class UserApiController extends Controller {
                 // Get the key from settings table
                 
                 $customer = \Stripe\Customer::create([
-                        "card" => $request->stripeToken,
+                        "card" => $request->card_token,
                         "email" => $userModel->email
                     ]);
 
