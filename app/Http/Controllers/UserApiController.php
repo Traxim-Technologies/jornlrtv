@@ -2624,7 +2624,7 @@ class UserApiController extends Controller {
                                 "title"=> $model->title,
                                 "channel_name"=> $model->channel ? $model->channel->name : '',
                                 "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                                "video"=> $model->video_url ? $model->video_url : VideoRepo::getUrl($model, $request),
+                                "video"=> $model->video_url ? VideoRepo::rtmpUrl($model) : VideoRepo::getUrl($model, $request),
                                 "video_tape_id"=>$model->id,
                                 "channel_id"=>$model->channel_id,
                                 "description"=> $model->description,

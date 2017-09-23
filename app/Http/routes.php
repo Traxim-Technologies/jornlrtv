@@ -27,6 +27,8 @@ if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
 if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
 if(!defined('DEVICE_WEB')) define('DEVICE_WEB', 'web');
 
+if (!defined('RTMP_URL')) define('RTMP_URL', 'rtmp://'.Setting::get('cross_platform_url'));
+
 // REDEEMS
 
 if(!defined('REDEEM_OPTION_ENABLED')) define('REDEEM_OPTION_ENABLED', 1);
