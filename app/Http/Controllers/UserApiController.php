@@ -3466,6 +3466,8 @@ class UserApiController extends Controller {
         if($validator->fails()) {
             $error_messages = implode(',', $validator->messages()->all());
             $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+
+            return response()->json($response_array);
         } else {
 
             $userModel = User::find($request->id);
