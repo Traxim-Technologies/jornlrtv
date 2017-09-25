@@ -3567,5 +3567,23 @@ class UserApiController extends Controller {
         }
 
     }    
+
+
+    public function my_channels(Request $request) {
+
+       $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->where('user_id', $request->id)->get();
+
+        if($model) {
+
+            $response_array = array('success' => true , 'data' => $model);
+
+        } else {
+            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
+        }
+
+        $response = response()->json($response_array, 200);
+        
+        return $response;
+    }
     
 }
