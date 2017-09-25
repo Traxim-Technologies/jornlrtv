@@ -1782,7 +1782,7 @@ class UserController extends Controller {
 
         if ($model->save()) {
 
-            $this->disConnectStream($model->user->id.'-'.$mid);
+            $this->disConnectStream($model->user->id.'-'.$model->id);
 
         }
 
