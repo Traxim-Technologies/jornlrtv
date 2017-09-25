@@ -2380,6 +2380,8 @@ class UserApiController extends Controller {
 
                     'message'=>tr('video_broadcating_success')
                 ];
+
+                
             } else {
                 $response_array = ['success' => false , 'error' => Helper::get_error_message(003) , 'error_code' => 003];
             }

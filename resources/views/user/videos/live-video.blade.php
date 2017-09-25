@@ -49,6 +49,32 @@ video {
 
 					<div class="col-lg-8" ng-controller="streamCtrl" ng-cloak ng-init="initRoom({{$data->id}}, '{{$data->virtual_id}}')">
 
+						<div style="display: none">
+
+							<textarea id="rtpSdp">v=0
+	                              o=- 0 0 IN IP4 104.236.1.170
+	                              s=Kurento
+	                              c=IN IP4 104.236.1.170
+	                              t=0 0
+	                              m=video {{$data->port_no}} RTP/AVP 100
+	                              a=rtpmap:100 H264/90000
+	                            </textarea>
+
+	                        <video id="videoInput" autoplay></video>
+
+                        </div>
+
+
+                        <div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
+                          <img src="{{asset('error.jpg')}}" class="error-image" alt="Error">
+
+                          <div class="flash_display" id="flash_error_display" style="display: none;">
+                                 <div class="flash_error_div">
+                                       <div class="flash_error">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+                                 </div>
+                          </div>
+                        </div>
+
 						<div class="live_img" id="videos-container" room="{{$data->id}}">
 							<!-- <img src="{{asset('images/mobile-camera.jpg')}}" width="100%" height="400px"> -->
 
@@ -56,6 +82,8 @@ video {
 							
 
 							<div class="loader_img" id="loader_btn" style="display: none;"><img src="{{asset('images/loader.svg')}}"/></div>
+
+
 
 						</div>
 
@@ -188,10 +216,10 @@ video {
 
 						                @else
 
-						                	 <input class="form-control chat_form_input" placeholder="{{tr('comment_here')}}" required disabled>
+						                	 <input class="form-control chat_form_input" placeholder="{{tr('comment_here')}}" required disabled id="chat-input" >
 
 							                <div class="input-group-btn">
-							                  <button type="button" class="btn btn-danger chat_send_btn" disabled><i class="fa fa-send"></i></button>
+							                  <button type="button" class="btn btn-danger chat_send_btn" disabled id="chat-send"><i class="fa fa-send"></i></button>
 							                </div>
 
 						                @endif
@@ -380,6 +408,16 @@ video {
 <script src="{{asset('lib/angular-socket-io/socket.min.js')}}"></script>
 <script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 <script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
+
+<script src="{{asset('bower_components/adapter.js/adapter.js')}}"></script>
+<script src="{{asset('bower_components/demo-console/index.js')}}"></script>
+<script src="{{asset('bower_components/ekko-lightbox/dist/ekko-lightbox.min.js')}}"></script>
+<script src="{{asset('bower_components/kurento-utils/js/kurento-utils.js')}}"></script>
+
+
+<script src="{{asset('jwplayer/jwplayer.js')}}"></script>
+
+
 
 <script type="text/javascript">
 

@@ -1569,6 +1569,37 @@ class UserController extends Controller {
 
         if ($response->success) {
 
+
+            if (!file_exists(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp")) {
+
+                $myfile = fopen(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp", "w") or die("Unable to open file!");
+
+                $destination_ip = "104.236.1.170";
+
+                // $destination_port = time();
+
+                $destination_port = $response->data->port_no;
+
+                $data = "v=0\n"
+                        ."o=- 0 0 IN IP4 " . $destination_ip . "\n"
+                        . "s=Kurento\n"
+                        . "c=IN IP4 " . $destination_ip . "\n"
+                        . "t=0 0\n"
+                        . "m=video " . $destination_port . " RTP/AVP 100\n"
+                        . "a=rtpmap:100 H264/90000\n";
+
+                fwrite($myfile, $data);
+
+                fclose($myfile);
+
+                $filepath = public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp";
+
+                shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
+
+                $this->connectStream($response->data->user_id.'-'.$response->data->id);
+
+            }
+
             return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', $response->message);
 
         } else {
@@ -1751,7 +1782,7 @@ class UserController extends Controller {
 
         if ($model->save()) {
 
-            // $this->disConnectStream($model->user->id.'-'.$mid);
+            $this->disConnectStream($model->user->id.'-'.$mid);
 
         }
 
