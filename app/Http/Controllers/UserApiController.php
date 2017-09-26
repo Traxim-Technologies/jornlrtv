@@ -3124,7 +3124,7 @@ class UserApiController extends Controller {
 
                     if (!$video->status) {
 
-                        $response_array = ['success'=> true, 'message'=>tr('video_streaming'), 'viewer_cnt'=>$video->viewer_cnt];
+                        $response_array = ['success'=> true, 'message'=> tr('video_streaming'), 'viewer_cnt'=> $video->viewer_cnt ? $video->viewer_cnt : "0"];
 
                     } else {
 
@@ -3509,14 +3509,13 @@ class UserApiController extends Controller {
                     
                     $cards->save();
 
-                   // $user = User::find(\Auth::user()->id);
-
                     if($userModel && $cards->is_default) {
 
                         $userModel->payment_mode = 'card';
-                        $userModel->card_id = $cards->id;
-                        $userModel->save();
 
+                        $userModel->card_id = $cards->id;
+
+                        $userModel->save();
                     }
 
                     $data = [
