@@ -3246,10 +3246,6 @@ class UserApiController extends Controller {
 
                             $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
 
-                            // return response()->json($response_array , 200);
-
-                            // return back()->with('flash_error', Helper::get_error_message(903));
-
                             return response()->json($response_array, 200);
 
                         }
@@ -3260,6 +3256,7 @@ class UserApiController extends Controller {
                         Log::info(print_r($e,true));
 
                         $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+
                         return response()->json($response_array , 200);
 
                     
@@ -3270,34 +3267,10 @@ class UserApiController extends Controller {
                     return response()->json($response_array , 200);
                 }
 
-                /*
-
-                $requests->save();
-                $request_payment->save();
-
-                // Send notification to the provider Start
-                if($user)
-                    $title =  "The"." ".$user->first_name.' '.$user->last_name." done the payment";
-                else
-                    $title = Helper::tr('request_completed_user_title');
-
-                $message = Helper::get_push_message(603);
-                $this->dispatch(new sendPushNotification($requests->confirmed_provider,PROVIDER,$requests->id,$title,$message,''));
-                // Send notification end
-
-                // Send invoice notification to the user, provider and admin
-                $subject = Helper::tr('request_completed_bill');
-                $email = Helper::get_emails(3,$request->id,$requests->confirmed_provider);
-                $page = "emails.user.invoice";
-                Helper::send_invoice($requests->id,$page,$subject,$email);*/
-
-                // $response_array = array('success' => true);
-
             } else {
 
                 $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
 
-                
             }         
 
             
@@ -3548,6 +3521,7 @@ class UserApiController extends Controller {
 
                     $data = [
                             'user_id'=>$request->id, 
+                            'id'=>$request->id, 
                             'token'=>$userModel->token,
                             'card_id'=>$cards->id,
                             'customer_id'=>$cards->customer_id,
