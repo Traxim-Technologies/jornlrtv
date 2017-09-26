@@ -3354,7 +3354,7 @@ class UserApiController extends Controller {
                        $paid_status = $user_charge->paid;
 
                        if($paid_status) {
-                        
+
                             $user_payment = new LiveVideoPayment;
                             $user_payment->payment_id  = $payment_id;
                             $user_payment->live_video_viewer_id = $request->id;
@@ -3395,7 +3395,7 @@ class UserApiController extends Controller {
                             
                             }
 
-                            $data = ['id'=>$request->id, 'token'=> $user->token , 'payment_id' => $payment_id]
+                            $data = ['id'=>$request->id, 'token'=> $user->token , 'payment_id' => $payment_id];
 
                             $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
@@ -3545,15 +3545,18 @@ class UserApiController extends Controller {
 
                     }
 
+                    $data = [
+                            'user_id'=>$request->id, 
+                            'token'=>$userModel->token,
+                            'card_id'=>$cards->id,
+                            'customer_id'=>$cards->customer_id,
+                            'last_four'=>$cards->last_four, 
+                            'card_token'=>$cards->card_token, 
+                            'is_default'=>$cards->is_default
+                            ];
+
                     $response_array = array('success' => true,'message'=>tr('add_card_success'), 
-                        'data'=>['user_id'=>$request->id, 
-                                'token'=>$userModel->token,
-                                'card_id'=>$cards->id,
-                                'customer_id'=>$cards->customer_id,
-                                'last_four'=>$cards->last_four, 
-                                'card_token'=>$cards->card_token, 
-                                'is_default'=>$cards->is_default
-                                ]);
+                        'data'=> $data);
 
                     return response()->json($response_array);
 
@@ -3566,8 +3569,6 @@ class UserApiController extends Controller {
                 }
             
             } catch(Exception $e) {
-
-                // return back()->with('flash_error' , $e->getMessage());
 
                 $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
 
