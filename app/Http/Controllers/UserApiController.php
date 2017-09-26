@@ -97,13 +97,14 @@ class UserApiController extends Controller {
 
             $errors = implode(',', $basicValidator->messages()->all());
             
-            $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
 
             Log::info('Registration basic validation failed');
 
         } else {
 
             $login_by = $request->login_by;
+
             $allowedSocialLogin = array('facebook','google');
 
             // check login-by
@@ -126,8 +127,9 @@ class UserApiController extends Controller {
 
                 if($socialValidator->fails()) {
 
-                    $error_messages = implode(',', $socialValidator->messages()->all());
-                    $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+                    $errors = implode(',', $socialValidator->messages()->all());
+            
+                    $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
 
                     Log::info('Registration social validation failed');
 
@@ -140,6 +142,7 @@ class UserApiController extends Controller {
                     }
 
                     Log::info('Registration passed social validation');
+
                     $operation = true;
                
                 }
@@ -171,16 +174,16 @@ class UserApiController extends Controller {
                 if($manualValidator->fails()) {
 
                     $errors = implode(',', $manualValidator->messages()->all());
-                    
-                    $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+            
+                    $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
 
                     Log::info('Registration manual validation failed');
 
                 } elseif($emailValidator->fails()) {
 
                     $errors = implode(',', $emailValidator->messages()->all());
-
-                    $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+            
+                    $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
 
                     Log::info('Registration manual email validation failed');
 
@@ -331,10 +334,10 @@ class UserApiController extends Controller {
         );
 
         if($basicValidator->fails()){
+
+            $errors = implode(',', $basicValidator->messages()->all());
             
-            $errors = implode(',',$basicValidator->messages()->all());
-            
-            $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
         
         } else {
 
@@ -350,9 +353,9 @@ class UserApiController extends Controller {
 
             if ($manualValidator->fails()) {
 
-                $errors = implode(',',$manualValidator->messages()->all());
-
-                $response_array = ['success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $errors];
+                $errors = implode(',', $manualValidator->messages()->all());
+            
+                $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
             
             } else {
 
@@ -371,7 +374,7 @@ class UserApiController extends Controller {
                             $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
                         }
                     /*} else {
-                        $response_array = ['success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144];
+                        $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(144),'error_code' => 144];
                     }*/
 
                 } else {
@@ -435,10 +438,10 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
+
+            $errors = implode(',', $validator->messages()->all());
             
-            $error_messages = implode(',',$validator->messages()->all());
-            
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=> $error_messages);
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
         
         } else {
 
@@ -478,9 +481,9 @@ class UserApiController extends Controller {
 
         if($validator->fails()) {
             
-            $error_messages = implode(',',$validator->messages()->all());
-           
-            $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 401, 'error_messages' => $error_messages );
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
        
         } else {
 
@@ -495,7 +498,7 @@ class UserApiController extends Controller {
                 $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_message(102)));
 
             } else {
-                $response_array = array('success' => false , 'error' => Helper::get_error_message(131),'error_messages' => Helper::get_error_message(131) ,'error_code' => 131);
+                $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(131),'error_code' => 131);
             }
 
         }
@@ -548,14 +551,11 @@ class UserApiController extends Controller {
             ));
 
         if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $error_messages = implode(',',$validator->messages()->all());
-            $response_array = array(
-                    'success' => false,
-                    'error' => Helper::get_error_message(101),
-                    'error_code' => 101,
-                    'error_messages' => $error_messages
-            );
+
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
         } else {
 
             $user = User::find($request->id);
@@ -646,9 +646,11 @@ class UserApiController extends Controller {
             ));
 
         if ($validator->fails()) {
-            $error_messages = implode(',',$validator->messages()->all());
-            $response_array = array('success' => false,'error' => Helper::get_error_message(101),'error_code' => 101,'error_messages' => $error_messages
-            );
+
+            $errors = implode(',',$validator->messages()->all());
+
+            $response_array = array('success' => false,'error_messages' => $errors , 'error_code' => 101);
+
         } else {
 
             $user = User::find($request->id);
@@ -662,7 +664,7 @@ class UserApiController extends Controller {
                 } else {
                     $allow = 0 ;
 
-                    $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(108) ,'error_code' => 108);
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(108) ,'error_code' => 108];
                 }
 
             }
@@ -702,8 +704,10 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $errors = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages' => $errors , 'error_code' => 101);
 
         } else {
 
@@ -1365,8 +1369,10 @@ class UserApiController extends Controller {
         );
 
         if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $errors = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages' => $errors, 'error_code' => 101);
 
         } else {
 
@@ -1624,7 +1630,8 @@ class UserApiController extends Controller {
         if ($validator->fails()) {
 
             $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $response_array = array('success' => false, 'error_messages' => $error_messages , 'error_code' => 101 );
 
         } else {
 
@@ -1941,8 +1948,10 @@ class UserApiController extends Controller {
             ]);
 
          if ($validator->fails()) {
+
             $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $response_array = array('success' => false , 'error_messages'=>$error_messages , 'error_code' => 101);
 
         } else {
 
@@ -2061,9 +2070,10 @@ class UserApiController extends Controller {
             ]);
 
          if ($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
-                    'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $errors = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false , 'error_messages'=> $errors ,  'error_code' => 101);
 
         } else {
 
@@ -2131,9 +2141,10 @@ class UserApiController extends Controller {
             ]);
 
          if ($validator->fails()) {
+
             $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
-                    'error_code' => 101, 'error_messages'=>$error_messages);
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
 
         } else {
 
@@ -2308,8 +2319,10 @@ class UserApiController extends Controller {
         );
         
         if($validator->fails()) {
+
             $errors = implode(',', $validator->messages()->all());
-            $response_array = ['success' => false , 'error' => $errors , 'error_code' => 001];
+
+            $response_array = ['success' => false , 'error_messages' => $errors ,'error' => $error_messages , 'error_code' => 001];
         } else {
 
             $last = LiveVideo::orderBy('port_no', 'desc')->first();
@@ -2383,7 +2396,7 @@ class UserApiController extends Controller {
 
                 
             } else {
-                $response_array = ['success' => false , 'error' => Helper::get_error_message(003) , 'error_code' => 003];
+                $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
             }
         }
         return response()->json($response_array,200);
@@ -2408,7 +2421,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false, 'error_messages' => $errors , 'error' => $errors,'error_code' => 101];
 
         } else {
 
@@ -2483,8 +2496,10 @@ class UserApiController extends Controller {
         );
         
         if($validator->fails()) {
+
             $errors = implode(',', $validator->messages()->all());
-            $response_array = ['success' => false , 'error' => $errors , 'error_code' => 001];
+
+            $response_array = ['success' => false , 'error_messages' => $errors, 'error' => $errors , 'error_code' => 001];
         } else {
 
             $user = User::find($request->id);
@@ -2542,17 +2557,17 @@ class UserApiController extends Controller {
                             'is_streaming'=>$model->is_streaming,
                         ];
                     } else {
-                        $response_array = ['success' => false , 'error' => Helper::get_error_message(003) , 'error_code' => 003];
+                        $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
                     }
 
                 } else {
 
-                     $response_array = ['success'=>false, 'error'=>Helper::get_error_message(165), 'error_code'=>165];
+                     $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(165), 'error_code'=>165];
 
                 }
             } else {
 
-                $response_array = ['success'=>false, 'error'=>Helper::get_error_message(166), 'error_code'=>166];
+                $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(166), 'error_code'=>166];
             }
         }
         return response()->json($response_array,200);
@@ -2575,7 +2590,7 @@ class UserApiController extends Controller {
 
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -2696,7 +2711,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -2772,7 +2787,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -2830,7 +2845,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -2921,7 +2936,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -2979,7 +2994,7 @@ class UserApiController extends Controller {
             
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -3020,7 +3035,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -3064,7 +3079,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -3098,7 +3113,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -3146,8 +3161,10 @@ class UserApiController extends Controller {
             );
 
         if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
         } else {
 
             $subscription = Subscription::find($request->subscription_id);
@@ -3468,10 +3485,13 @@ class UserApiController extends Controller {
             );
 
         if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
 
             return response()->json($response_array);
+
         } else {
 
             $userModel = User::find($request->id);
