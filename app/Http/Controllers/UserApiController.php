@@ -2229,14 +2229,14 @@ class UserApiController extends Controller {
             $card = Card::where('id' , $request->card_id)->update(array('is_default' => DEFAULT_TRUE));
 
             if($card) {
+
                 if($user) {
-                    // $user->payment_mode = CARD;
                     $user->card_id = $request->card_id;
                     $user->save();
                 }
-                $response_array = Helper::null_safe(array('success' => true, 'data'=>['id'=>$request->id,
 
-                    'token'=>$user->token]));
+                $response_array = Helper::null_safe(array('success' => true, 'data'=>['id'=>$request->id,'token'=>$user->token]));
+
             } else {
                 $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
             }
@@ -2295,9 +2295,7 @@ class UserApiController extends Controller {
                 $user->save();
             }
 
-            $response_array = array('success' => true,'data'=>['id'=>$request->id,
-
-                    'token'=>$user->token]);
+            $response_array = array('success' => true,'data'=> ['id'=>$request->id,'token'=>$user->token]);
         }
     
         return response()->json($response_array , 200);
@@ -3234,10 +3232,13 @@ class UserApiController extends Controller {
 
 
                             $user->user_type = 1;
+
                             $user->save();
                             
 
-                            $response_array = ['success' => true, 'message'=>tr('payment_success')];
+                            $data = ['id' => $user->id , 'token' => $token];
+
+                            $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
 
                             return response()->json($response_array, 200);
 
