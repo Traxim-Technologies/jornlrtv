@@ -3354,6 +3354,7 @@ class UserApiController extends Controller {
                        $paid_status = $user_charge->paid;
 
                        if($paid_status) {
+                        
                             $user_payment = new LiveVideoPayment;
                             $user_payment->payment_id  = $payment_id;
                             $user_payment->live_video_viewer_id = $request->id;
@@ -3361,7 +3362,6 @@ class UserApiController extends Controller {
                             $user_payment->live_video_id = $video->id;
                             $user_payment->status = 1;
                             $user_payment->amount = $amount;
-                            // $user_payment->save();
 
                             // Commission Spilit 
 
@@ -3395,17 +3395,11 @@ class UserApiController extends Controller {
                             
                             }
 
+                            $data = ['id'=>$request->id, 'token'=> $user->token , 'payment_id' => $payment_id]
 
-
-                            /*return redirect(route('user.live_video.start_broadcasting',array('id'=>$video->unique_id, 'c_id'=>$video->channel_id)));*/
-
-                            $response_array = array('success' => true, 'message'=>tr('payment_success'),
-
-                                'data'=>['id'=>$request->id, 'token'=>$user->token]);
+                            $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
                         } else {
-
-                            // return back()->with('flash_error', Helper::get_error_message(903));
 
                             $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
 
@@ -3417,7 +3411,6 @@ class UserApiController extends Controller {
 
                         $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
 
-                        // return back()->with('flash_error', Helper::get_error_message(903));
 
                        return response()->json($response_array , 200);
                     
@@ -3425,8 +3418,6 @@ class UserApiController extends Controller {
 
                 
                 } else {
-
-                    // return back()->with('flash_error', tr('no_live_video_found'));
 
                     $response_array = array('success' => false , 'error_messages' => tr('no_live_video_found'));
                     
