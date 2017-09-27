@@ -114,10 +114,10 @@ class User extends Authenticatable
             $model->generateEmailCode();
         });
         
-        static::updating(function ($model) {
+        /*static::updating(function ($model) {
            
             $model->generateToken($model);
-        });
+        });*/
 
         //delete your related models here, for example
         static::deleting(function($user)

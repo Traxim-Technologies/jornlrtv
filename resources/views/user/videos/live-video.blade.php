@@ -435,6 +435,8 @@ $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
 
 var url = "<?= url('/');?>";
 
+var live_user_id = "<?= Auth::check() ? Auth::user()->id : '' ?>";
+
 var liveAppCtrl = angular.module('liveApp', [
   'btford.socket-io',
 
