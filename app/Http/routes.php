@@ -725,4 +725,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
 
+    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
+
 });

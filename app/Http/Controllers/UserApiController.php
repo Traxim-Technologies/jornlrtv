@@ -54,7 +54,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video']));
 
     }
 
@@ -356,14 +356,14 @@ class UserApiController extends Controller {
                             $operation = true;
 
                         } else {
-                            $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
+                            $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
                         }
                     /*} else {
                         $response_array = ['success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144];
                     }*/
 
                 } else {
-                    $response_array = [ 'success' => false, 'error' => Helper::get_error_message(105), 'error_code' => 105 ];
+                    $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
                 }
             
             }
@@ -506,6 +506,7 @@ class UserApiController extends Controller {
             'email' => $user->email,
             'description'=>$user->description,
             'dob'=> $user->dob != "0000-00-00" ? $user->dob : "",
+            'age'=>$user->age_limit,
             'picture' => $user->picture,
             'chat_picture' => $user->picture,
             'mobile' => $user->mobile,
@@ -571,9 +572,9 @@ class UserApiController extends Controller {
 
                 }
 
-                if ($user->age_limit < 16) {
+                if ($user->age_limit < 10) {
 
-                    $response_array = ['success' => false , 'error' => tr('min_age_error')];
+                    $response_array = ['success' => false , 'error_messages' => tr('min_age_error')];
 
                     return response()->json($response_array , 200);
 
@@ -603,6 +604,7 @@ class UserApiController extends Controller {
                 'gender' => $user->gender,
                 'email' => $user->email,
                 'dob'=> $user->dob,
+                'age'=>$user->age_limit,
                 'picture' => $user->picture,
                 'chat_picture' => $user->picture,
                 'token' => $user->token,
@@ -645,7 +647,7 @@ class UserApiController extends Controller {
                 } else {
                     $allow = 0 ;
 
-                    $response_array = array('success' => false , 'error' => Helper::get_error_message(108) ,'error_code' => 108);
+                    $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(108) ,'error_code' => 108);
                 }
 
             }
@@ -658,7 +660,7 @@ class UserApiController extends Controller {
                     $user->delete();
                     $response_array = array('success' => true , 'message' => tr('user_account_delete_success'));
                 } else {
-                    $response_array = array('success' =>false , 'error' => Helper::get_error_message(146), 'error_code' => 146);
+                    $response_array = array('success' =>false , 'error_messages' => Helper::get_error_message(146), 'error_code' => 146);
                 }
 
             }
@@ -674,7 +676,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'admin_video_id' => 'required|integer|exists:video_tapes,id',
+                'video_tape_id' => 'required|integer|exists:video_tapes,id',
                 'rating' => 'integer|in:'.RATINGS,
                 'comments' => '',
             ),
@@ -693,7 +695,7 @@ class UserApiController extends Controller {
             //Save Rating
             $rating = new UserRating();
             $rating->user_id = $request->id;
-            $rating->video_tape_id = $request->admin_video_id;
+            $rating->video_tape_id = $request->video_tape_id;
             $rating->rating = $request->has('rating') ? $request->rating : 0;
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
@@ -701,7 +703,7 @@ class UserApiController extends Controller {
 
             $ratings = UserRating::select(
                     'rating', 'video_tape_id',DB::raw('sum(rating) as total_rating'))
-                    ->where('video_tape_id', $request->admin_video_id)
+                    ->where('video_tape_id', $request->video_tape_id)
                     ->groupBy('video_tape_id')
                     ->avg('rating');
 
@@ -740,7 +742,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -820,17 +822,19 @@ class UserApiController extends Controller {
             
             }
 
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
             $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
             if(count($videos) > 0) {
 
                 foreach ($videos as $key => $value) {
 
-                    $value['watch_count'] = "10k";
+                    $value['watch_count'] = number_format_short($value->watch_count);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                    $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
-                    $value['share_url'] = "http://streamtube.streamhash.com/";
+                    $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                     array_push($data, $value->toArray());
                 }
@@ -862,7 +866,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -889,7 +893,7 @@ class UserApiController extends Controller {
 			$response_array = array('success' => true);
         }
 
-        return $response()->json($response_array, 200);
+        return response()->json($response_array, 200);
     
     }
 
@@ -950,13 +954,13 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
             if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first()) {
 
-                $response_array = array('success' => true , 'error' => Helper::get_error_message(145) , 'error_code' => 145);
+                $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
 
             } else {
 
@@ -1067,19 +1071,21 @@ class UserApiController extends Controller {
             
             }
 
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
             $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
             if(count($videos) > 0) {
 
                 foreach ($videos as $key => $value) {
 
-                    $value['watch_count'] = "10k";
+                    $value['watch_count'] = number_format_short($value->watch_count);
 
-                    $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                    $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
-                    $value['history_status'] = $request->id ? Helper::history_status($request->id,$request->video_tape_id) : 0;
+                    $value['history_status'] = $request->id ? Helper::history_status($value->id,$value->video_tape_id) : 0;
 
-                    $value['share_url'] = route('user.single' , $request->video_tape_id);
+                    $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                     array_push($data, $value->toArray());
                 }
@@ -1110,8 +1116,8 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id',
+               'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
+                'video_tape_id' => 'integer|exists:video_tapes,id'
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to history',
@@ -1122,7 +1128,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -1134,7 +1140,15 @@ class UserApiController extends Controller {
 
                 //delete history
 
-                $history = UserHistory::where('user_id',$request->id)->where('id' ,  $request->history_id )->delete();
+                if ($request->history_id) {
+
+                    $history = UserHistory::where('user_id',$request->id)->where('id' , $request->history_id)->delete();
+
+                } else{
+
+                     $history = UserHistory::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+
+                }
             }
 
             $response_array = array('success' => true);
@@ -1152,7 +1166,7 @@ class UserApiController extends Controller {
             $response_array = array('success' => true , 'categories' => $channels->toArray());
 
         } else {
-            $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
+            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
         }
 
         $response = response()->json($response_array, 200);
@@ -1169,7 +1183,7 @@ class UserApiController extends Controller {
             $response_array = array('success' => true , 'channels' => $channels->toArray());
 
         } else {
-            $response_array = array('success' => false,'error' => Helper::get_error_message(135),'error_code' => 135);
+            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
         }
 
         $response = response()->json($response_array, 200);
@@ -1205,8 +1219,10 @@ class UserApiController extends Controller {
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
 
             }
-        
+
         }
+
+        $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
         $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
@@ -1214,11 +1230,11 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->watch_count);
 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
-                $value['share_url'] = "http://streamtube.streamhash.com/";
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }
@@ -1261,17 +1277,19 @@ class UserApiController extends Controller {
         
         }
 
+        $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
         $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
 
         if(count($videos) > 0) {
 
             foreach ($videos as $key => $value) {
 
-                $value['watch_count'] = "10k";
+                $value['watch_count'] = number_format_short($value->watch_count);
                 
-                $value['wishlist_status'] = $request->id ? Helper::check_wishlist_status($request->video_tape_id,$request->id) : 0;
+                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
 
-                $value['share_url'] = "http://streamtube.streamhash.com/";
+                $value['share_url'] = route('user.single' , $value->video_tape_id);
 
                 array_push($data, $value->toArray());
             }
@@ -1346,18 +1364,21 @@ class UserApiController extends Controller {
 
                 if(count($videos) > 0) {
 
-                    $results['channel_name'] = $channels->name;
-                    $results['key'] = $channels->id;
-                    $results['videos_count'] = count($channels);
-                    $results['videos'] = $videos;
+                    /*$results['channel_name'] = $channels->name;
+                    $results['key'] = $channels->id;*/
+                    // $results['videos_count'] = count($channels);
+                   // $results['videos'] = $videos;
 
-                    array_push($data, $results);
+                    // array_push($data, $results);
 
+                    $data = $videos;
                 }
                 
             }
 
-            $response_array = array('success' => true, 'data' => $data);
+            $response_array = array('success' => true, 'channel_id'=>$channels->id, 
+                        'channel_name'=>$channels->name, 'channel_image'=>$channels->picture,
+                        'channel_cover'=>$channels->cover, 'data' => $data);
         }
 
         $response = response()->json($response_array, 200);
@@ -1389,7 +1410,7 @@ class UserApiController extends Controller {
 
             $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -1424,12 +1445,12 @@ class UserApiController extends Controller {
                     $response_array = ['success' => true , 'data' => $data ];
 
                 } else {
-                    $response_array = ['success' => false , 'error' => Helper::get_error_message(1001) , 'error_code' => 1001];
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(1001) , 'error_code' => 1001];
                 }
 
             } else {
 
-                $response_array = ['success' => false , 'error' => Helper::get_error_message(1000) ,  'error_code' => 1000];
+                $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(1000) ,  'error_code' => 1000];
             }
 
         }
@@ -1454,7 +1475,7 @@ class UserApiController extends Controller {
         if ($validator->fails()) {
 
             $error = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => $error, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
 
         } else {
 
@@ -1465,6 +1486,7 @@ class UserApiController extends Controller {
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
+                                ->where('title', 'like', "%".$request->key."%")
                                 ->orderby('video_tapes.watch_count' , 'desc')
                                 ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
 
@@ -1481,6 +1503,8 @@ class UserApiController extends Controller {
                 }
             
             }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get()->toArray();
 
@@ -1598,7 +1622,7 @@ class UserApiController extends Controller {
                 $message = tr('push_notification_disable');
             }
 
-            $response_array = array('success' => true, 'message' => $message , 'push_status' => $user->push_status);
+            $response_array = array('success' => true, 'message' => $message , 'push_status' => $user->push_status, 'data'=>['id'=>$user->id, 'token'=>$user->token]);
         }
 
         $response = response()->json($response_array, 200);
@@ -1626,7 +1650,7 @@ class UserApiController extends Controller {
 
                     if ($video->age_limit > $age) {
 
-                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+                        return response()->json(['success'=>false, 'error_messages'=>tr('age_error')]);
 
                     }
 
@@ -1635,7 +1659,7 @@ class UserApiController extends Controller {
 
                 if ($video->age_limit == 1) {
 
-                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
+                    return response()->json(['success'=>false, 'error_messages'=>tr('age_error')]);
 
                 }
 
@@ -1729,7 +1753,7 @@ class UserApiController extends Controller {
                 
             } else {
 
-                $response_array = ['success' => false, 'error'=>tr('video_not_found')];
+                $response_array = ['success' => false, 'error_messages'=>tr('video_not_found')];
 
                 return response()->json($response_array, 200);
 
@@ -1741,7 +1765,7 @@ class UserApiController extends Controller {
 
             if($request->id) {
 
-                $wishlist_status = Helper::check_wishlist_status($request->id,$request->admin_video_id);
+                $wishlist_status = $request->id ? Helper::check_wishlist_status($request->id,$request->admin_video_id): 0;
 
                 $history_status = Helper::history_status($request->id,$request->admin_video_id);
 
@@ -1782,7 +1806,7 @@ class UserApiController extends Controller {
 
         } else {
 
-            return response()->json(['success'=>false, 'message'=>tr('something_error')]);
+            return response()->json(['success'=>false, 'error_messages'=>tr('something_error')]);
         }
 
     }
@@ -1853,18 +1877,18 @@ class UserApiController extends Controller {
 
                     } else {
 
-                        $response_array = ['success' => false , 'error' => Helper::get_error_message(149) , 'error_code' => 149];
+                        $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(149) , 'error_code' => 149];
                     }
 
                 } else {
-                    $response_array = ['success' => false , 'error' => Helper::get_error_message(148) ,'error_code' => 148];
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(148) ,'error_code' => 148];
                 }
 
             } else {
-                $response_array = ['success' => false , 'error' => Helper::get_error_message(151) , 'error_code' => 151];
+                $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(151) , 'error_code' => 151];
             }
         } else {
-            $response_array = ['success' => false , 'error' => Helper::get_error_message(147) , 'error_code' => 147];
+            $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(147) , 'error_code' => 147];
         }
 
         return response()->json($response_array , 200);
@@ -1886,7 +1910,7 @@ class UserApiController extends Controller {
             $response_array = ['success' => true , 'data' => $data];
 
         } else {
-            $response_array = ['success' => false , 'error' => Helper::error_message(147) , 'error_code' => 147];
+            $response_array = ['success' => false , 'error_messages' => Helper::error_message(147) , 'error_code' => 147];
         }
 
         return response()->json($response_array , 200);
@@ -1928,16 +1952,16 @@ class UserApiController extends Controller {
 
 
                     } else {
-                        $response_array = ['success' => false ,  'error' => Helper::get_error_message(150) , 'error_code' => 150];
+                        $response_array = ['success' => false ,  'error_messages' => Helper::get_error_message(150) , 'error_code' => 150];
                     }
 
                 } else {
-                    $response_array = ['success' => false ,  'error' => Helper::get_error_message(151) , 'error_code' => 151];
+                    $response_array = ['success' => false ,  'error_messages' => Helper::get_error_message(151) , 'error_code' => 151];
                 }
 
             } else {
 
-                $response_array = ['success' => false ,  'error' => Helper::get_error_message(151) , 'error_code' =>151 ];
+                $response_array = ['success' => false ,  'error_messages' => Helper::get_error_message(151) , 'error_code' =>151 ];
             }
 
         }
@@ -2166,7 +2190,7 @@ class UserApiController extends Controller {
         if($validator->fails()) {
 
             $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error' => $error_messages, 'error_code' => 101);
+            $response_array = array('success' => false, 'error_messages' => $error_messages, 'error_code' => 101);
 
         } else {
 
@@ -2184,7 +2208,7 @@ class UserApiController extends Controller {
                 }
                 $response_array = Helper::null_safe(array('success' => true));
             } else {
-                $response_array = array('success' => false , 'error' => 'Something went wrong');
+                $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
             }
         }
         return response()->json($response_array , 200);
@@ -2209,7 +2233,7 @@ class UserApiController extends Controller {
             
             $error_messages = implode(',', $validator->messages()->all());
             
-            $response_array = array('success' => false , 'error' => $error_messages , 'error_code' => 101);
+            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error_code' => 101);
         
         } else {
 
@@ -2245,6 +2269,153 @@ class UserApiController extends Controller {
         }
     
         return response()->json($response_array , 200);
+    }
+
+    public function stripe_payment(Request $request) {
+
+        $validator = Validator::make($request->all(), 
+            array(
+                'subscription_id' => 'required|exists:subscriptions,id',
+            )
+            );
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+        } else {
+
+            $subscription = Subscription::find($request->subscription_id);
+
+
+            if ($subscription) {
+
+                $total = $subscription->amount;
+
+                $user = User::find($request->id);
+
+                $check_card_exists = User::where('users.id' , $request->id)
+                                ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                ->where('cards.id' , $user->card_id)
+                                ->where('cards.is_default' , DEFAULT_TRUE);
+
+                if($check_card_exists->count() != 0) {
+
+                    $user_card = $check_card_exists->first();
+
+                    $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                    $customer_id = $user_card->customer_id;
+
+                    if($stripe_secret_key) {
+                        \Stripe\Stripe::setApiKey($stripe_secret_key);
+                    } else {
+                        $response_array = array('success' => false, 'error_messages' =>Helper::get_error_message(902), 'error_code' => 902);
+                        return response()->json($response_array , 200);
+                    }
+
+                    try{
+
+                       $user_charge =  \Stripe\Charge::create(array(
+                          "amount" => $total * 100,
+                          "currency" => "usd",
+                          "customer" => $customer_id,
+                        ));
+
+                       $payment_id = $user_charge->id;
+                       $amount = $user_charge->amount/100;
+                       $paid_status = $user_charge->paid;
+
+                        if($paid_status) {
+
+                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                            if($user_payment) {
+
+                                $expiry_date = $user_payment->expiry_date;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                            } else {
+                                $user_payment = new UserPayment;
+                                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                            }
+
+
+                            $user_payment->payment_id  = $payment_id;
+                            $user_payment->user_id = $request->id;
+                            $user_payment->subscription_id = $request->subscription_id;
+                            $user_payment->status = 1;
+                            $user_payment->amount = $amount;
+                            $user_payment->save();
+
+
+                            $user->user_type = 1;
+                            $user->save();
+                            
+
+                            $response_array = ['success' => true, 'message'=>tr('payment_success')];
+
+                            return response()->json($response_array, 200);
+
+                        } else {
+
+                            $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                            // return response()->json($response_array , 200);
+
+                            // return back()->with('flash_error', Helper::get_error_message(903));
+
+                            return response()->json($response_array, 200);
+
+                        }
+
+                    
+                    } catch (\Stripe\StripeInvalidRequestError $e) {
+                        Log::info(print_r($e,true));
+                        $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+                        return response()->json($response_array , 200);
+                    
+                    }
+
+                } else {
+                    $response_array = array('success' => false, 'error' => Helper::get_error_message(140) , 'error_code' => 140);
+                    return response()->json($response_array , 200);
+                }
+
+                /*
+
+                $requests->save();
+                $request_payment->save();
+
+                // Send notification to the provider Start
+                if($user)
+                    $title =  "The"." ".$user->first_name.' '.$user->last_name." done the payment";
+                else
+                    $title = Helper::tr('request_completed_user_title');
+
+                $message = Helper::get_push_message(603);
+                $this->dispatch(new sendPushNotification($requests->confirmed_provider,PROVIDER,$requests->id,$title,$message,''));
+                // Send notification end
+
+                // Send invoice notification to the user, provider and admin
+                $subject = Helper::tr('request_completed_bill');
+                $email = Helper::get_emails(3,$request->id,$requests->confirmed_provider);
+                $page = "emails.user.invoice";
+                Helper::send_invoice($requests->id,$page,$subject,$email);*/
+
+                // $response_array = array('success' => true);
+
+            } else {
+
+                $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
+
+                
+            }         
+
+            
+        }
+
+        return response()->json($response_array , 200);
+    
     }
 
 }
