@@ -3235,7 +3235,9 @@ class UserApiController extends Controller {
 
                             $user->save();
                             
-                            $data = ['id' => $user->id , 'token' => $token];
+                            $data = ['id' => $user->id , 'token' => $user->token];
+
+                            Log::info("Stripe Payment".print_r($data, true));
 
                             $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
 
