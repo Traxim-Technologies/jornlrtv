@@ -1229,6 +1229,12 @@ liveAppCtrl
 
 							$("#videos-container").show();
 
+							$scope.user_id = live_user_id;
+
+							console.log($scope.user_id );
+
+							console.log($scope.videoDetails.user_id)
+
 							if ($scope.user_id != $scope.videoDetails.user_id) {
 								// $("#default_image").hide();
 								$("#loader_btn").show();
@@ -1241,6 +1247,7 @@ liveAppCtrl
 							if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
 
 							} else {
+								console.log($scope.videoDetails.video_url);
 
 								$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
 

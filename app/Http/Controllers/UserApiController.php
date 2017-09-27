@@ -3141,13 +3141,38 @@ class UserApiController extends Controller {
             $video = LiveVideo::find($request->video_tape_id);
 
 
+            $user = User::find($request->id);
+
+            $status = false;
+
+            if ($user) {
+
+                if ($user->token == $request->token) {
+
+                    $status = false;
+
+                    $token = $user->token;
+
+                } else {
+
+                    $status = true;
+
+                    $token = $user->token;
+
+                }
+            }
+
             if ($video) {
 
                 if($video->is_streaming) {
 
                     if (!$video->status) {
 
-                        $response_array = ['success'=> true, 'message'=> tr('video_streaming'), 'viewer_cnt'=> $video->viewer_cnt ? $video->viewer_cnt : "0"];
+                        $response_array = ['success'=> true, 
+                            'message'=>tr('video_streaming'), 
+                            'viewer_cnt'=>$video->viewer_cnt ? $video->viewer_cnt : 0,
+                            'data'=> ['status'=>$status, 'token'=>$token]];
+
 
                     } else {
 
