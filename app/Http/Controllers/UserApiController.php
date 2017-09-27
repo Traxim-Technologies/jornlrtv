@@ -805,7 +805,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
-                                ->orderby('video_tapes.publish_time' , 'desc')
+                               // ->orderby('video_tapes.publish_time' , 'desc')
                                 ->shortVideoResponse();
 
             if ($request->id) {
