@@ -505,7 +505,7 @@ class UserApiController extends Controller {
             'name' => $user->name,
             'email' => $user->email,
             'description'=>$user->description,
-            'dob'=> $user->dob != "0000-00-00" ? $user->dob : "",
+            'dob'=> $user->dob != "0000-00-00" ? $user->dob : "2007-10-10",
             'age'=>$user->age_limit,
             'picture' => $user->picture,
             'chat_picture' => $user->picture,
