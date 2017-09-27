@@ -512,7 +512,16 @@ class UserApiController extends Controller {
 
         $user = User::find($request->id);
 
-        $user->dob = date('d-m-Y', strtotime($user->dob));
+        if (!empty($user->dob) && $user->dob != "0000-00-00") {
+
+            $user->dob = date('d-m-Y', strtotime($user->dob));
+
+        } else {
+
+            $user->dob = "";
+        }
+
+        // $user->dob = date('d-m-Y', strtotime($user->dob));
 
         $response_array = array(
             'success' => true,
@@ -520,7 +529,7 @@ class UserApiController extends Controller {
             'name' => $user->name,
             'email' => $user->email,
             'description'=>$user->description,
-            'dob'=>$user->dob,
+            'dob'=> $user->dob,
             'age'=>$user->age_limit,
             'picture' => $user->picture,
             'chat_picture' => $user->picture,
@@ -573,7 +582,12 @@ class UserApiController extends Controller {
                 $user->address = $request->address ? $request->address : $user->address;
                 $user->description = $request->description ? $request->description : $user->address;
 
-                $user->dob = date('Y-m-d', strtotime($request->dob));
+
+                if ($request->dob) {
+
+                    $user->dob = date('Y-m-d', strtotime($request->dob));
+
+                }
 
                 if ($user->dob) {
 
@@ -609,6 +623,15 @@ class UserApiController extends Controller {
             }
 
             $payment_mode_status = $user->payment_mode ? $user->payment_mode : "";
+
+            if (!empty($user->dob) && $user->dob != "0000-00-00") {
+
+                $user->dob = date('d-m-Y', strtotime($user->dob));
+
+            } else {
+
+                $user->dob = "";
+            }
 
             $response_array = array(
                 'success' => true,
@@ -824,7 +847,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
-                                ->orderby('video_tapes.publish_time' , 'desc')
+                               // ->orderby('video_tapes.publish_time' , 'desc')
                                 ->shortVideoResponse();
 
             if ($request->id) {
