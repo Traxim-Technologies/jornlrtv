@@ -3185,7 +3185,7 @@ class UserApiController extends Controller {
 
                     $stripe_secret_key = Setting::get('stripe_secret_key');
 
-                    print_r("User Card Details ".print_r($user_card, true));
+                    // print_r("User Card Details ".print_r($user_card, true));
 
                     $customer_id = $user_card->customer_id;
 
@@ -3235,7 +3235,6 @@ class UserApiController extends Controller {
 
                             $user->save();
                             
-
                             $data = ['id' => $user->id , 'token' => $token];
 
                             $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
@@ -3369,7 +3368,7 @@ class UserApiController extends Controller {
                             
                             }
 
-                            $data = ['id'=>$request->id, 'token'=> $user->token , 'payment_id' => $payment_id];
+                            $data = ['id'=> $request->id, 'token'=> $user->token , 'payment_id' => $payment_id];
 
                             $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
