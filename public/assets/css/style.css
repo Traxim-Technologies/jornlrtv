@@ -373,3 +373,30 @@
   margin-bottom: 00px;
 }
 
+
+
+
+.flash_error_div {
+    background: black; color:#fff;padding: 10px;
+}
+
+.flash_display a {
+
+    color: #fff !important;
+}
+
+.flash_display {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    justify-content: center;
+}
+
+.main_video_error {
+    position: relative;
+}

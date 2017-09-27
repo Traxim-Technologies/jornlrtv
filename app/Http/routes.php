@@ -812,4 +812,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/stripe_payment', 'UserApiController@stripe_payment');
 
+    Route::post('/my_channels', 'UserApiController@my_channels');
+
 });
