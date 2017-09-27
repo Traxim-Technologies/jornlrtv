@@ -736,7 +736,7 @@
 
             if($user_id) {
 
-                $data = Wishlist::where('wishlists.user_id' , $user_id)->pluck('video_tape_id');
+                $data = Wishlist::where('wishlists.user_id' , $user_id)->orderby('wishlists.created_at', 'desc')->pluck('video_tape_id');
 
                 if(count($data) > 0) {
 
