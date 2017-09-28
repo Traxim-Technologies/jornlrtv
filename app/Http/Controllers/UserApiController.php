@@ -2260,35 +2260,44 @@ class UserApiController extends Controller {
         
         } else {
 
-            Card::where('id',$card_id)->delete();
-
             $user = User::find($request->id);
 
-            if($user) {
+            if ($user->card_id == $card_id) {
 
-                // if($user->payment_mode = CARD) {
+                $response_array = array('success' => false, 'error_messages'=> tr('card_default_error'));
 
-                    // Check he added any other card
+            } else {
+
+                Card::where('id',$card_id)->delete();
+
+                if($user) {
+
+                    // if($user->payment_mode = CARD) {
+
+                        // Check he added any other card
+                        
+                        if($check_card = Card::where('user_id' , $request->id)->first()) {
+
+                            $check_card->is_default =  DEFAULT_TRUE;
+
+                            $user->card_id = $check_card->id;
+
+                            $check_card->save();
+
+                        } else { 
+
+                            $user->payment_mode = COD;
+                            $user->card_id = DEFAULT_FALSE;
+                        }
+                    // }
                     
-                    if($check_card = Card::where('user_id' , $request->id)->first()) {
+                    $user->save();
+                }
 
-                        $check_card->is_default =  DEFAULT_TRUE;
+                $response_array = array('success' => true, 'message'=>tr('card_deleted'));
 
-                        $user->card_id = $check_card->id;
-
-                        $check_card->save();
-
-                    } else { 
-
-                        $user->payment_mode = COD;
-                        $user->card_id = DEFAULT_FALSE;
-                    }
-                // }
-                
-                $user->save();
             }
 
-            $response_array = array('success' => true );
         }
     
         return response()->json($response_array , 200);
