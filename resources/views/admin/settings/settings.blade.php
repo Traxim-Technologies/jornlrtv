@@ -183,6 +183,21 @@
                                 </div>
 
 
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="chat_url">{{tr('chat_url')}}</label>
+                                        <input type="text" class="form-control" name="chat_url" value="{{ Setting::get('chat_url')  }}" id="chat_url" placeholder="{{tr('chat_url')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="chat_socket_url">{{tr('chat_socket_url')}}</label>
+                                        <input type="text" class="form-control" name="chat_socket_url" value="{{ Setting::get('chat_socket_url')  }}" id="chat_socket_url" placeholder="{{tr('chat_socket_url')}}">
+                                    </div>
+                                </div>
+
+
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="sitename">{{tr('admin_commission')}} {{tr('in_percentage')}}</label>
