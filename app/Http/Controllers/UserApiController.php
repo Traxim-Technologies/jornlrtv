@@ -2375,7 +2375,7 @@ class UserApiController extends Controller {
             $model->user_id = $request->user_id;
             $model->virtual_id = md5(time());
             $model->unique_id = $model->title;
-            $model->snapshot = asset('placeholder.png');
+            $model->snapshot = asset('images/live_stream.jpg');
 
             $destination_port = 44104;
 
