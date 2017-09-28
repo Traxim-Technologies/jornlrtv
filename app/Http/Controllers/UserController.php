@@ -1349,12 +1349,12 @@ class UserController extends Controller {
         
         if($response->success) {
 
-            $message = tr('card_deleted');
+            $message = $response->message;
 
             $type = "flash_success";
 
         } else {
-            $message = tr('unkown_error');
+            $message = $response->error_messages;
             $type = "flash_error";
         }
 
