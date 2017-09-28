@@ -429,6 +429,8 @@ var video_details = <?= $data; ?>;
 
 var socket_url =  "<?= Setting::get('kurento_socket_url'); ?>";
 
+var chat_socket_url = "<?= Setting::get('chat_socket_url');?>"; 
+
 var stop_streaming_url = "<?= route('user.live_video.stop_streaming', array('id'=>$data->id)) ?>";
 
 $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
@@ -448,6 +450,7 @@ var liveAppCtrl = angular.module('liveApp', [
 .constant('port_no', port_no)
 .constant('socket_url', socket_url)
 .constant('stop_streaming_url',stop_streaming_url)
+.constant('chat_socket_url', chat_socket_url)
 .constant('url',url);
 
 liveAppCtrl

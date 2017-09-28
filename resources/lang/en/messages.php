@@ -18,6 +18,8 @@ return array(
 	'mobile_banner_heading' => 'Special Collections',
 	'mobile_wishlist_heading' => 'Wishlist',
 	'mobile_trending_heading' => 'Trending',
+	'chat_socket_url'=>'Chat Socket Url',
+	'chat_url'=>'Chat Url',
 	'payment_options'=>'Payment Options',
 	'comment_note'=>'Note : Rating can give only one time to each User',
 	'subscription_details'=>'Subscription Details',

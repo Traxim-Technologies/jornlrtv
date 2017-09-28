@@ -1558,6 +1558,8 @@ liveAppCtrl
 
 		console.log('chat');
 
+		console.log(chat_socket_url);
+
 
 		var appSettings = $scope.appSettings;
 
@@ -1586,7 +1588,7 @@ liveAppCtrl
 
         // set-up a connection between the client and the server
 
-        var socket = io('https://tubenow.streamhash.com:3004/' ,  { secure: true , query: "room="+room});
+        var socket = io(chat_socket_url ,  { secure: true , query: "room="+room});
 
         var socketState = false;
 

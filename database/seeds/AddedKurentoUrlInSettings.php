@@ -16,19 +16,19 @@ class AddedKurentoUrlInSettings extends Seeder
         DB::table('settings')->insert([
     		[
 		        'key' => 'cross_platform_url',
-		        'value' => "104.236.1.170:1935",
+		        'value' => "",
 		    ],
 		    [
 		        'key' => 'mobile_rtsp',
-		        'value' => "rtsp://104.236.1.170:1935/live/",
+		        'value' => "",
 		    ],
 		    [
 		        'key' => 'wowza_server_url',
-		        'value' => "https://104.236.1.170:8087",
+		        'value' => "",
 		    ],
 		    [
 		        'key' => 'kurento_socket_url',
-		        'value' => "livetest.streamhash.info:8443",
+		        'value' => "",
 		    ],
 		]);
     }

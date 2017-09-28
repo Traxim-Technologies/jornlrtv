@@ -16,7 +16,7 @@ class AddedLiveVideoKeysInSettings extends Seeder
         DB::table('settings')->insert([
     		[
 		        'key' => 'SOCKET_URL',
-		        'value' => 'https://appswamy.com:3000',
+		        'value' => '',
 		        'created_at' => date('Y-m-d H:i:s'),
 		        'updated_at' => date('Y-m-d H:i:s')
 		    ],
