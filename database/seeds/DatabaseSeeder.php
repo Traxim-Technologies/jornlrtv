@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedKurentoUrlInSettings::class);
         $this->call(CommissionSplitSeeder::class);
         $this->call(RegisterAgeLimitSeeder::class);
+        $this->call(AddedChatUrlInSettings::class);
     }
 }
