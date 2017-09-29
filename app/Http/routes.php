@@ -17,24 +17,19 @@ use Illuminate\Support\Facades\Redis;
 
 // Report Video type
 
-Route::get('redis/test',function(){
-    $redis = Redis::connection();    
-    $views=$redis->incr('view');
-    dd($views);
-});
-
 if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
+
 if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
+
 if(!defined('DEVICE_WEB')) define('DEVICE_WEB', 'web');
 
-if (!defined('RTMP_URL')) define('RTMP_URL', 'rtmp://'.Setting::get('cross_platform_url').'/live/');
+// if (!defined('RTMP_URL')) define('RTMP_URL', 'rtmp://'.Setting::get('cross_platform_url').'/live/');
 
 // REDEEMS
 
 if(!defined('REDEEM_OPTION_ENABLED')) define('REDEEM_OPTION_ENABLED', 1);
+
 if(!defined('REDEEM_OPTION_DISABLED')) define('REDEEM_OPTION_DISABLED', 0);
-
-
 
 // Redeeem Request Status
 
@@ -148,8 +143,6 @@ Route::get('/clear-cache', function() {
 })->name('clear-cache');
 
 
-// Route::get('/ui' , 'ApplicationController@ui')->name('ui');
-
 
 Route::get('/message/save' , 'ApplicationController@message_save');
 
@@ -158,12 +151,6 @@ Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subs
 Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
 
 Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
-
-// Route::get('/channels/create' , 'ApplicationController@channel_create')->name('channels.create');
-
-// Route::get('/channels/view' , 'ApplicationController@channel_view')->name('channels.view');
-
-// Route::get('/channels/index' , 'ApplicationController@channel_index')->name('channels.index');
 
 
 Route::get('/test' , 'ApplicationController@test')->name('test');

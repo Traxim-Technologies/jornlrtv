@@ -22,7 +22,7 @@ class AdminDemoLoginSeeder extends Seeder
 
 	         		[
 				        'key' => 'admin_login',
-				        'value' => 'admin@streamtube.com',
+				        'value' => 'admin@tubenow.com',
 				        'created_at' => date('Y-m-d H:i:s'),
 				        'updated_at' => date('Y-m-d H:i:s')
 				    ],
