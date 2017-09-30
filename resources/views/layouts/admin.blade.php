@@ -39,6 +39,14 @@
 
     <?php echo Setting::get('header_scripts') ?>
 
+    <style>
+        .example-note {
+            color: gray;
+            margin: 5px 0px;
+
+        }
+    </style>
+
 </head>
 
 

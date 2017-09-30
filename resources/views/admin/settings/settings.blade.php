@@ -20,14 +20,17 @@
 
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#site_settings" data-toggle="tab">{{tr('site_settings')}}</a></li>
-                    <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>
-                    <!-- <li><a href="#s3_settings" data-toggle="tab">{{tr('s3_settings')}}</a></li> -->
-                    <li><a href="#social_settings" data-toggle="tab">{{tr('social_settings')}}</a></li>
+                    <li><a href="#video_settings" data-toggle="tab">{{tr('video_settings')}}</a></li>
+                    <li><a href="#revenue_settings" data-toggle="tab">{{tr('revenue_settings')}}</a></li>
                     <li><a href="#paypal_settings" data-toggle="tab">{{tr('paypal_settings')}}</a></li>
+                    <li><a href="#social_settings" data-toggle="tab">{{tr('social_settings')}}</a></li>
+                    <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>
                 </ul>
                
                 <div class="tab-content">
                    
+                    <!-- SITE SETTINGS START -->
+
                     <div class="active tab-pane" id="site_settings">
 
                         <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
@@ -80,37 +83,166 @@
                             @endif
                           </div>
                         </form>
+                    
+                    </div>
+
+                    <!-- SITE SETTINGS END -->
+
+                    <!-- VIDEO SETTINGS START -->
+
+                    <div class="tab-pane" id="video_settings">
+
+                        <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            
+                            <div class="box-body">
+
+                                <div class="col-lg-6">
+
+                                    <div class="form-group">
+
+                                        <label for="streaming_url">{{tr('streaming_url')}}</label>
+
+                                        <p class="example-note">Ex : rtmp://IP_ADDRESS_OR_DOMAIN:1935/vod2/</p>
+
+                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="Enter Streaming URL">
+                                    </div> 
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('WEBRTC_SOCKET_URL')}}</label>
+                                        <p class="example-note">Ex : https://IP_ADDRESS_OR_DOMAIN:3000</p>
+                                        <input type="text" class="form-control" name="SOCKET_URL" value="{{ Setting::get('SOCKET_URL')  }}" id="SOCKET_URL" placeholder="{{tr('WEBRTC_SOCKET_URL')}}">
+                                    </div>
+                                </div>
+
+
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('kurento_socket_url')}}</label>
+                                        <p class="example-note">Ex : IP_ADDRESS_OR_DOMAIN:8443</p>
+                                        <input type="text" class="form-control" name="kurento_socket_url" value="{{ Setting::get('kurento_socket_url')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('kurento_socket_url')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        
+                                        <label for="wowza_server_url">{{tr('wowza_server_url')}}</label>
+
+                                        <p class="example-note">Ex : IP_ADDRESS_OR_DOMAIN:8087</p>
+
+                                        <input type="text" class="form-control" name="wowza_server_url" value="{{ Setting::get('wowza_server_url')  }}" id="wowza_server_url" placeholder="{{tr('wowza_server_url')}}">
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <label for="cross_platform_url">{{tr('cross_platform_url')}}</label>
+
+                                        <p class="example-note">Ex : IP_ADDRESS_OR_DOMAIN:1935</p>
+
+                                        <input type="text" class="form-control" name="cross_platform_url" value="{{ Setting::get('cross_platform_url')  }}" id="cross_platform_url" placeholder="{{tr('cross_platform_url')}}">
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="chat_socket_url">{{tr('chat_socket_url')}}</label>
+
+                                        <p class="example-note">Ex : http://IP_ADDRESS_OR_DOMAIN:3002</p>
+
+                                        <input type="text" class="form-control" name="chat_socket_url" value="{{ Setting::get('chat_socket_url')  }}" id="chat_socket_url" placeholder="{{tr('chat_socket_url')}}">
+                                    </div>
+                                </div>
+                                
+                          </div>
+                          <!-- /.box-body -->
+
+                          <div class="box-footer">
+                            @if(Setting::get('admin_delete_control') == 1) 
+                                <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                            @else
+                                <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                            @endif
+                          </div>
+                        
+                        </form>
+                    
+                    </div>
+
+                    <!-- VIDEO SETTINGS END -->
+
+                    <div class="tab-pane" id="revenue_settings">
+
+                        <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            
+                            <div class="box-body">
+
+                                 <div class="col-lg-12">
+
+                                     <div class="form-group">
+
+                                        <label for="viewers_count_per_video">{{tr('viewers_count_per_video')}}</label>
+
+                                        <p class="example-note">Usage : Set the viewer count limit. If the user enabled <i>ads option </i> for the video, after this view count reached. The user will get <i>AMOUNT</i> for each view of the video.</p>
+
+                                        <input type="number" step="any" min="1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('viewers_count_per_video')  }}" name="viewers_count_per_video" id="viewers_count_per_video" placeholder="{{tr('viewers_count_per_video')}}" pattern="[0-9]{1,}">
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="amount_per_video">{{tr('amount_per_video')}}</label>
+
+                                        <p class="example-note">Usage : Set the amount for each view . If the user enabled <i>ads option </i> for the video, after this view count reached. The user will get <i>AMOUNT</i> for each view of the video.</p>
+
+                                        <input type="number" step="any" min="0.1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="amount_per_video" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
+                                    </div>   
+                                </div>
+
+                                
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('admin_commission')}} {{tr('in_percentage')}}</label>
+                                        <input type="text" class="form-control" name="admin_commission" value="{{ Setting::get('admin_commission')  }}"  id="admin_commission" placeholder="{{tr('admin_commission')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('user_commission')}} {{tr('in_percentage')}}</label>
+                                        <input type="text" class="form-control" name="user_commission" value="{{ Setting::get('user_commission')  }}" id="user_commission" placeholder="{{tr('user_commission')}}" disabled>
+                                    </div>
+                                
+                                </div>                           
+
+                          </div>
+                          <!-- /.box-body -->
+
+                          <div class="box-footer">
+                            @if(Setting::get('admin_delete_control') == 1) 
+                                <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                            @else
+                                <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                            @endif
+                          </div>
+                        </form>
+                    
                     </div>
 
                     <div class="tab-pane" id="other_settings">
 
                         <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="streaming_url">{{tr('streaming_url')}}</label>
-                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="Enter Streaming URL">
-                                    </div> 
-                                </div>
-
-                                @if(Setting::get('is_subscription'))
-
-                                @endif
-
-                                 <div class="col-lg-3">
-                                     <div class="form-group">
-                                        <label for="viewers_count_per_video">{{tr('viewers_count_per_video')}}</label>
-                                        <input type="number" step="any" min="1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('viewers_count_per_video')  }}" name="viewers_count_per_video" id="viewers_count_per_video" placeholder="{{tr('viewers_count_per_video')}}" pattern="[0-9]{1,}">
-                                    </div>
-                                </div>
-                                
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="amount_per_video">{{tr('amount_per_video')}}</label>
-                                        <input type="number" step="any" min="0.1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="amount_per_video" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
-                                    </div>   
-                                </div>
-
+                               
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="multi_channel_status">{{tr('multi_channel_status')}}</label>
@@ -151,68 +283,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="sitename">{{tr('SOCKET_URL')}}</label>
-                                        <input type="text" class="form-control" name="SOCKET_URL" value="{{ Setting::get('SOCKET_URL')  }}" id="SOCKET_URL" placeholder="{{tr('SOCKET_URL')}}">
-                                    </div>
-                                </div>
-
-
-                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="sitename">{{tr('kurento_socket_url')}}</label>
-                                        <input type="text" class="form-control" name="kurento_socket_url" value="{{ Setting::get('kurento_socket_url')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('kurento_socket_url')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="wowza_server_url">{{tr('wowza_server_url')}}</label>
-                                        <input type="text" class="form-control" name="wowza_server_url" value="{{ Setting::get('wowza_server_url')  }}" id="wowza_server_url" placeholder="{{tr('wowza_server_url')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="cross_platform_url">{{tr('cross_platform_url')}}</label>
-                                        <input type="text" class="form-control" name="cross_platform_url" value="{{ Setting::get('cross_platform_url')  }}" id="cross_platform_url" placeholder="{{tr('cross_platform_url')}}">
-                                    </div>
-                                </div>
-
-
-                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="chat_url">{{tr('chat_url')}}</label>
-                                        <input type="text" class="form-control" name="chat_url" value="{{ Setting::get('chat_url')  }}" id="chat_url" placeholder="{{tr('chat_url')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="chat_socket_url">{{tr('chat_socket_url')}}</label>
-                                        <input type="text" class="form-control" name="chat_socket_url" value="{{ Setting::get('chat_socket_url')  }}" id="chat_socket_url" placeholder="{{tr('chat_socket_url')}}">
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="sitename">{{tr('admin_commission')}} {{tr('in_percentage')}}</label>
-                                        <input type="text" class="form-control" name="admin_commission" value="{{ Setting::get('admin_commission')  }}" id="admin_commission" placeholder="{{tr('admin_commission')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="sitename">{{tr('user_commission')}} {{tr('in_percentage')}}</label>
-                                        <input type="text" class="form-control" name="user_commission" value="{{ Setting::get('user_commission')  }}" id="user_commission" placeholder="{{tr('user_commission')}}" disabled>
-                                    </div>
-                                </div>
-
-
                                 
                                 <div class="col-lg-12">
                                     <div class="form-group">
@@ -238,14 +308,15 @@
                           </div>
                           <!-- /.box-body -->
 
-                          <div class="box-footer">
-                            @if(Setting::get('admin_delete_control') == 1) 
-                                <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
-                            @else
-                                <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
-                            @endif
-                          </div>
+                            <div class="box-footer">
+                                @if(Setting::get('admin_delete_control') == 1) 
+                                    <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                @endif
+                            </div>
                         </form>
+                    
                     </div>
 
                     <div class="tab-pane" id="s3_settings1">
@@ -434,6 +505,35 @@
         </div>
     
     </div>
+
+@endsection
+
+@section('scripts')
+
+<script>
+    
+    $('#admin_commission').on('keyup' , function() {
+
+        var admin_commission = $('#admin_commission').val();
+
+        if(admin_commission <=100) {
+
+            var user_commission = $('#user_commission');
+
+            var commission = 100 - admin_commission;
+
+            user_commission.val(commission);
+
+        } else {
+
+            $('#admin_commission').val(0);
+
+        }
+
+        
+
+    });
+</script>
 
 
 @endsection

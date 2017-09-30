@@ -15,7 +15,6 @@ class VideoSettingsSeeder extends Seeder
 
         	$data = DB::table('settings')->where('key' , "JWPLAYER_KEY")->delete();
 
-
          	DB::table('settings')->insert([
 	    		[
 			        'key' => 'JWPLAYER_KEY',
