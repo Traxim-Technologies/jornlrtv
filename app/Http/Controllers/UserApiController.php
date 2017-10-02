@@ -497,7 +497,16 @@ class UserApiController extends Controller {
 
         $user = User::find($request->id);
 
-        $user->dob = date('d-m-Y', strtotime($user->dob));
+        if (!empty($user->dob) && $user->dob != "0000-00-00") {
+
+            $user->dob = date('d-m-Y', strtotime($user->dob));
+
+        } else {
+
+            $user->dob = "";
+        }
+
+        // $user->dob = date('d-m-Y', strtotime($user->dob));
 
         $response_array = array(
             'success' => true,
@@ -505,7 +514,7 @@ class UserApiController extends Controller {
             'name' => $user->name,
             'email' => $user->email,
             'description'=>$user->description,
-            'dob'=> $user->dob != "0000-00-00" ? $user->dob : "2007-10-10",
+            'dob'=> $user->dob,
             'age'=>$user->age_limit,
             'picture' => $user->picture,
             'chat_picture' => $user->picture,
@@ -561,7 +570,12 @@ class UserApiController extends Controller {
                 $user->address = $request->address ? $request->address : $user->address;
                 $user->description = $request->description ? $request->description : $user->address;
 
-                $user->dob = date('Y-m-d', strtotime($request->dob));
+
+                if ($request->dob) {
+
+                    $user->dob = date('Y-m-d', strtotime($request->dob));
+
+                }
 
                 if ($user->dob) {
 
@@ -594,6 +608,15 @@ class UserApiController extends Controller {
             }
 
             $payment_mode_status = $user->payment_mode ? $user->payment_mode : "";
+
+            if (!empty($user->dob) && $user->dob != "0000-00-00") {
+
+                $user->dob = date('d-m-Y', strtotime($user->dob));
+
+            } else {
+
+                $user->dob = "";
+            }
 
             $response_array = array(
                 'success' => true,
@@ -805,7 +828,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
-                                ->orderby('video_tapes.publish_time' , 'desc')
+                               // ->orderby('video_tapes.publish_time' , 'desc')
                                 ->shortVideoResponse();
 
             if ($request->id) {
@@ -2237,35 +2260,44 @@ class UserApiController extends Controller {
         
         } else {
 
-            Card::where('id',$card_id)->delete();
-
             $user = User::find($request->id);
 
-            if($user) {
+            if ($user->card_id == $card_id) {
 
-                // if($user->payment_mode = CARD) {
+                $response_array = array('success' => false, 'error_messages'=> tr('card_default_error'));
 
-                    // Check he added any other card
+            } else {
+
+                Card::where('id',$card_id)->delete();
+
+                if($user) {
+
+                    // if($user->payment_mode = CARD) {
+
+                        // Check he added any other card
+                        
+                        if($check_card = Card::where('user_id' , $request->id)->first()) {
+
+                            $check_card->is_default =  DEFAULT_TRUE;
+
+                            $user->card_id = $check_card->id;
+
+                            $check_card->save();
+
+                        } else { 
+
+                            $user->payment_mode = COD;
+                            $user->card_id = DEFAULT_FALSE;
+                        }
+                    // }
                     
-                    if($check_card = Card::where('user_id' , $request->id)->first()) {
+                    $user->save();
+                }
 
-                        $check_card->is_default =  DEFAULT_TRUE;
+                $response_array = array('success' => true, 'message'=>tr('card_deleted'));
 
-                        $user->card_id = $check_card->id;
-
-                        $check_card->save();
-
-                    } else { 
-
-                        $user->payment_mode = COD;
-                        $user->card_id = DEFAULT_FALSE;
-                    }
-                // }
-                
-                $user->save();
             }
 
-            $response_array = array('success' => true );
         }
     
         return response()->json($response_array , 200);
