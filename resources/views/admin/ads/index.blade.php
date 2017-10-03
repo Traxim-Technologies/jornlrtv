@@ -48,11 +48,17 @@
 							      	substr($data->get_video_tape->title , 0,25) : '-'}}...</td>
 							      	
 							      	<td>
+
+
+							      		@if($data->ads_types)
+
 							      		@foreach($data->ads_types as $type)
 								      		
 								      		<span class="label label-success">{{$type}}</span>
 
 								       	@endforeach
+
+								       	@endif
 							      	</td>
 							      	<td>
 							      		
