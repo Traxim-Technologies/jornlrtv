@@ -108,7 +108,7 @@
                                     <div class="form-group">
                                         <!-- pattern="[0-9]+(.[0-9]{0,2})?%?"  -->
                                         <label for="amount_per_video">{{tr('amount_per_video')}}</label>
-                                        <input type="number" step="any" min="0.1" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="amount_per_video" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
+                                        <input type="number" step="any" min="0.1" title="Amount Per Video must be a number" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="amount_per_video" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
                                     </div>   
                                 </div>
 
