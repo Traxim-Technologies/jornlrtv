@@ -304,6 +304,7 @@ class CommonRepository {
                         'description'   => 'required',
                         'channel_id'   => 'required|integer|exists:channels,id',
                         'video'     => 'required|mimes:mkv,mp4,qt',
+                        //'subtitle'=>'mimes:text/str',
                         'video_publish_type'=>'required',
                         // 'age_limit'=>'required|numeric'
                         ));
