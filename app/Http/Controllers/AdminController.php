@@ -1868,6 +1868,7 @@ class AdminController extends Controller {
 
             $video_tape_ids = explode(',', $request->video_tape_id);
 
+
             foreach ($video_tape_ids as $key => $video_tape_id) {
                
                 $model = VideoAd::where('video_tape_id', $video_tape_id)->first();
@@ -1923,6 +1924,12 @@ class AdminController extends Controller {
                                  $assign->video_time = "00:".$expTime[0].":".$expTime[1];
 
                             }
+                        } else if($value == POST_AD){
+
+                            $assign->video_time = $model->getVideoTape ? $model->getVideoTape->duration : "00:00:00";
+
+
+
                         } else {
 
                             $assign->video_time = "00:00:00";
@@ -1994,6 +2001,10 @@ class AdminController extends Controller {
 
                                      $assign->video_time = "00:".$expTime[0].":".$expTime[1];
                                 }
+
+                            } else if($value == POST_AD){
+
+                                $assign->video_time = $model->getVideoTape ? $model->getVideoTape->duration : "00:00:00";
 
                             } else {
 

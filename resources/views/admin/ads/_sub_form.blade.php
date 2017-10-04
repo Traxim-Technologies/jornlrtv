@@ -6,11 +6,11 @@
 
                <label>{{tr('ad_type')}}</label>
 
-               <input type="hidden" name="between_ad_type_id[{{$index}}]" id="between_ad_type_id" value="{{$b_ad->id}}">
+               <input type="hidden" name="between_ad_type_id[{{$index}}]" id="between_ad_type_id_{{$index}}" value="{{$b_ad->id}}">
 
                <br>
 
-               <input type="checkbox" name="between_ad_type[{{$index}}]" id="between_ad_type" value="{{BETWEEN_AD}}" @if($b_ad->ad_type == BETWEEN_AD) checked @endif> {{tr('between_ad')}}
+               <input type="checkbox" name="between_ad_type[{{$index}}]" id="between_ad_type_{{$index}}" value="{{BETWEEN_AD}}" @if($b_ad->ad_type == BETWEEN_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value, {{$index}})"> {{tr('between_ad')}}
 
           </div>
 
@@ -19,7 +19,7 @@
 
                <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
-               <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time" class="form-control" value="{{$b_ad->ad_time}}">
+               <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time_{{$index}}" class="form-control" value="{{$b_ad->ad_time}}">
 
           </div>
 
@@ -27,7 +27,7 @@
 
                <label>{{tr('video_time')}}</label>
 
-               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time" value="{{$b_ad->video_time}}" placeholder="00:00:00" />
+               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time_{{$index}}" value="{{$b_ad->video_time}}" placeholder="00:00:00" />
 
           </div>
 
@@ -46,17 +46,19 @@
 
           <div class="col-md-1">
 
+               @if($index != 0)
+                
+                    <a href="javascript:void(0);" onclick="removeQuestion({{$index}})" style="color: #ff0000"><i class="fa fa-minus-circle" title="Remove Question"></i></a>
+
+               @endif
+
                @if($index == 0)
 
                     <a href="javascript:void(0);" onclick="addQuestion({{$index}})"><i class="fa fa-plus-circle" title="Add Question"></i></a>
 
                @endif
 
-               @if($index != 0)
-                
-                    <a href="javascript:void(0);" onclick="removeQuestion({{$index}})"><i class="fa fa-minus-circle" title="Remove Question"></i></a>
-
-               @endif
+              
 
 
           </div>

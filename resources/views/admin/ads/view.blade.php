@@ -17,7 +17,7 @@ hr {
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.ads_index')}}"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</a></li>
+    <li><a href="{{route('admin.ad_videos')}}"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</a></li>
     <li class="active">{{tr('view_ads')}}</li>
 @endsection 
 
@@ -49,11 +49,13 @@ hr {
 
                 <ul class="timeline timeline-inverse">
 
-                @foreach($ads->ad_details as $details)
+
+
+                @if($ads->pre_ad)
                   <!-- timeline time label -->
                   <li class="time-label" title="{{tr('video_time')}}">
                         <span class="bg-red">
-                          {{$details->video_time}}
+                          {{$ads->pre_ad->video_time}}
                         </span>
                   </li>
                   <!-- /.timeline-label -->
@@ -62,30 +64,20 @@ hr {
                     <i class="fa fa-bullhorn bg-blue"></i>
 
                     <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_sec')}})</span>
+                      <span class="time"><i class="fa fa-clock-o"></i> {{$ads->pre_ad->ad_time}} ({{tr('in_sec')}})</span>
 
                       <h3 class="timeline-header">
 
-                      @if($details->ad_type == 1)
+                     
 
                         <a>{{tr('pre_ad')}}</a> 
 
-                      @elseif($details->ad_type == 2) 
 
-                        <a>{{tr('post_ad')}}</a> 
-
-                      @else
-
-                        <a>{{tr('between_ad')}}</a> 
-
-                      @endif
-                        
-
-                      {{tr('details')}} (<a href="{{$details->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
+                      {{tr('details')}} (<a href="{{$ads->pre_ad->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
 
                       <div class="timeline-body">
                           
-                            <img src="{{$details->assigned_ad->file}}" style="width: 100%">
+                            <img src="{{$ads->pre_ad->assigned_ad->file}}" style="width: 100%">
 
                       </div>
                       <!-- <div class="timeline-footer">
@@ -94,7 +86,96 @@ hr {
                       </div> -->
                     </div>
                   </li>
-                 @endforeach
+                 @endif
+
+                 @if($ads->between_ad)
+                  @foreach($ads->between_ad as $details)
+                    <!-- timeline time label -->
+                    <li class="time-label" title="{{tr('video_time')}}">
+                          <span class="bg-red">
+                            {{$details->video_time}}
+                          </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                      <i class="fa fa-bullhorn bg-blue"></i>
+
+                      <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_sec')}})</span>
+
+                        <h3 class="timeline-header">
+
+                        @if($details->ad_type == 1)
+
+                          <a>{{tr('pre_ad')}}</a> 
+
+                        @elseif($details->ad_type == 2) 
+
+                          <a>{{tr('post_ad')}}</a> 
+
+                        @else
+
+                          <a>{{tr('between_ad')}}</a> 
+
+                        @endif
+
+
+                          
+
+                        {{tr('details')}} (<a href="{{$details->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
+
+                        <div class="timeline-body">
+                            
+                              <img src="{{$details->assigned_ad->file}}" style="width: 100%">
+
+                        </div>
+                        <!-- <div class="timeline-footer">
+                          <a class="btn btn-primary btn-xs">Read more</a>
+                          <a class="btn btn-danger btn-xs">Delete</a>
+                        </div> -->
+                      </div>
+                    </li>
+                   @endforeach
+
+                   @endif
+
+                 @if($ads->post_ad)
+                  <!-- timeline time label -->
+                  <li class="time-label" title="{{tr('video_time')}}">
+                        <span class="bg-red">
+                          {{$ads->post_ad->video_time}}
+                        </span>
+                  </li>
+                  <!-- /.timeline-label -->
+                  <!-- timeline item -->
+                  <li>
+                    <i class="fa fa-bullhorn bg-blue"></i>
+
+                    <div class="timeline-item">
+                      <span class="time"><i class="fa fa-clock-o"></i> {{$ads->post_ad->ad_time}} ({{tr('in_sec')}})</span>
+
+                      <h3 class="timeline-header">
+
+                     
+
+                        <a>{{tr('post_ad')}}</a> 
+
+
+                      {{tr('details')}} (<a href="{{$ads->post_ad->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
+
+                      <div class="timeline-body">
+                          
+                            <img src="{{$ads->post_ad->assigned_ad->file}}" style="width: 100%">
+
+                      </div>
+                      <!-- <div class="timeline-footer">
+                        <a class="btn btn-primary btn-xs">Read more</a>
+                        <a class="btn btn-danger btn-xs">Delete</a>
+                      </div> -->
+                    </div>
+                  </li>
+                 @endif
                 
                 </ul>
             </div>

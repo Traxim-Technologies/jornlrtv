@@ -57,7 +57,7 @@
                                         <label for="video" class="control-label">{{tr('sub_title')}}</label>
                                         <div class="clearfix"></div>
                                         <div>
-                                        <input type="file" id="subtitle" name="subtitle" style="width: 100%;overflow: hidden;">
+                                        <input type="file" id="subtitle" name="subtitle" style="width: 100%;overflow: hidden;" accept="text/plain">
                                         <p class="help-block">{{tr('subtitle_validate')}}</p>
 
                                         </div>

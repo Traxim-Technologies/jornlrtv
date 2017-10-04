@@ -22,6 +22,8 @@
         .ui-autocomplete{
           z-index: 99999;
         }
+
+       
     </style>
 
     @yield('header-scripts')
@@ -41,11 +43,30 @@
 
 <body>
 
+    <div class="wrapper_content">
+
+
+    <div id="preloader">
+
+       
+            <div class="cssload-container">
+                <ul class="cssload-flex-container">
+                    <li>
+                        <span class="cssload-loading"></span>
+                    </li>
+                </ul>
+            </div>  
+        
+
+    </div>
+
     @include('layouts.user.header')
 
     <div class="common-youtube">
 
         @yield('content')
+
+    </div>
 
     </div>
 
@@ -59,6 +80,11 @@
     <script type="text/javascript" src="{{asset('streamtube/js/script.js')}}"></script>
 
     <script>
+
+        $(window).load(function(){
+            $('#preloader').fadeOut(2000);
+        });
+
         $(document).ready(function(){
      
             $('.box').slick({
