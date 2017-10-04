@@ -142,6 +142,8 @@ Route::get('/clear-cache', function() {
 
 })->name('clear-cache');
 
+Route::get('/generate/index' , 'ApplicationController@generate_index');
+
 
 
 Route::get('/message/save' , 'ApplicationController@message_save');
