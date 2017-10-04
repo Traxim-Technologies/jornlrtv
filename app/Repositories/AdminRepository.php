@@ -34,6 +34,7 @@ class AdminRepository {
 
             $ad_types = [];
 
+
             if ($model->save()) {
 
                 if(!$request->has('pre_ad_type') && !empty($request->pre_ad_type_id)) {
@@ -135,7 +136,6 @@ class AdminRepository {
 
                             $post_ad_model->ad_time = $request->has('post_ad_time') ? $request->post_ad_time : $post_ad_model->post_ad_time;
 
-
                             if ($post_ad_model->save()) {
 
 
@@ -152,9 +152,25 @@ class AdminRepository {
 
                 }
 
+               
+                if(!$request->has('between_ad_type')) {
+
+                    if(count($model->getBetweenAdDetails) > 0) {
+
+                        foreach ($model->getBetweenAdDetails as $key => $value) {
+                          
+                              if(!in_array($value->id, $request->between_ad_type_id)) {
+
+                                    $value->delete();
+
+                              }
+
+                        }
+                    }
+                }
+
 
                 if($request->has('between_ad_type')) {
-
 
                     if(!$newOne) {
 

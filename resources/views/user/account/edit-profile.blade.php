@@ -74,7 +74,20 @@
                                             <small style="color:brown">{{tr('mobile_note')}}</small>
                                         </div>
 
-                                        <?php $dob = date('d-m-Y', strtotime(Auth::user()->dob)) ;?>
+                                        <?php
+
+                                        if (!empty(Auth::user()->dob) && Auth::user()->dob != "0000-00-00") {
+
+                                            $dob = date('d-m-Y', strtotime(Auth::user()->dob));
+
+                                        } else {
+
+                                            $dob = "00-00-0000";
+                                        }
+
+
+                                        ?>
+
 
                                         <div class="form-group">
                                             <label for="mobile">{{tr('dob')}}</label>

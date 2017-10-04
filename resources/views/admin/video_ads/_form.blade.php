@@ -30,7 +30,7 @@
 
                             </div>
 
-                            <div class="col-md-5">
+                            <div class="col-md-6">
 
                                 <label>{{tr('url')}}</label>
 
@@ -38,8 +38,11 @@
 
                             </div>
 
+                            <div class="clearfix"></div>
 
-                    		<div class="col-md-2">
+                            <br>
+
+                    		<div class="col-md-3">
 
                     			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
@@ -56,11 +59,11 @@
                             </div> */?>
 
 
-                    		<div class="col-md-2">
+                    		<div class="col-md-8">
 
                     			<label>{{tr('image')}}</label>
 
-                    			<input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')" style="width: 100px;">
+                    			<input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')">
 
                                 <br>
 

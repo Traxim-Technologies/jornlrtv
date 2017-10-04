@@ -47,7 +47,7 @@
 		                <a href="#" target="_blank"> <img class="wp-image-158 alignleft help-image" src="http://default.streamhash.com/helpsocial/skype.png" alt="skype" width="100" height="100" /></a>
 		                &nbsp;
 
-		                <a href="mailto:mail@aravinth.net" target="_blank"><img class="size-full wp-image-153 alignleft help-image" src="http://default.streamhash.com/helpsocial/mail.png" alt="Message-100" width="100" height="100" /></a>
+		                <a href="mailto:contact@streamhash.com" target="_blank"><img class="size-full wp-image-153 alignleft help-image" src="http://default.streamhash.com/helpsocial/mail.png" alt="Message-100" width="100" height="100" /></a>
 
 			             &nbsp;
 

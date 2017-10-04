@@ -48,7 +48,21 @@
 
                                        
                                         <p>{{Auth::user()->mobile}}</p>  
-                                        <p><?php echo $dob = date('d-m-Y', strtotime(Auth::user()->dob)) ;?></p>
+                                        <p>
+                                        <?php 
+
+                                        if (!empty(Auth::user()->dob) && Auth::user()->dob != "0000-00-00") {
+
+                                            $dob = date('d-m-Y', strtotime(Auth::user()->dob));
+
+                                        } else {
+
+                                            $dob = "00-00-0000";
+                                        }
+
+                                        echo $dob;
+
+                                        ?></p>
                                         <p>{{Auth::user()->description}}</p>
                                     </div><!--end of profile-title-->
                                     <form>

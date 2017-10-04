@@ -47,7 +47,7 @@
                                 <br>
 
                     			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{PRE_AD}}"
-                                @if($preAd->ad_type == PRE_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value)"> {{tr('pre_ad')}}
+                                @if($preAd->ad_type == PRE_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value, '')"> {{tr('pre_ad')}}
 
                     		</div>
 
@@ -93,7 +93,7 @@
 
                                 <br>
 
-                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}" @if($postAd->ad_type == POST_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value)"> {{tr('post_ad')}}
+                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}" @if($postAd->ad_type == POST_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value, '')"> {{tr('post_ad')}}
 
                     		</div>
 
@@ -282,8 +282,9 @@ function loadFile(event, id){
     reader.readAsDataURL(event.files[0]);
 }
 
-function getCheckBoxValue(id, ad_type) {
- 
+function getCheckBoxValue(id, ad_type,idx) {
+
+
     if(!($('#' + id).is(":checked"))) {
 
         if(ad_type == 1) {
@@ -299,6 +300,18 @@ function getCheckBoxValue(id, ad_type) {
             $('#post_ad_time').val('');
 
             $('#post_parent_ad_id option:selected').remove();
+
+        }
+
+         if(ad_type == 3) {
+
+            $('#between_ad_time_'+idx).val('');
+
+            $("#between_ad_video_time_"+idx).val("");
+
+            $("#between_ad_type_id_"+idx).val("");
+
+            $("#ad_id_"+idx+" option:selected").remove();
 
         }
 
