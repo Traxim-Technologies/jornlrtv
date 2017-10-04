@@ -39,6 +39,30 @@
 
     class Helper
     {
+
+        /**
+         * Used to generate index.php
+         *
+         * 
+         */
+
+        public static function generate_index_file($folder) {
+
+            $filename = public_path()."/".$folder."/index.php"; 
+
+            if(!file_exists($filename)) {
+
+                $index_file = fopen($filename,'w');
+
+                $sitename = Setting::get("site_name");
+
+                fwrite($index_file, '<?php echo "You Are trying to access wrong path!!!!--|E"; ?>');       
+
+                fclose($index_file);
+            }
+        
+        }
+
         public static function clean($string)
         {
             $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
