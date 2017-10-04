@@ -30,6 +30,24 @@ use App\ChatMessage;
 
 class ApplicationController extends Controller {
 
+    /**
+     * Used to generate index.php file to avoid uploads folder access
+     *
+     */
+
+    public function generate_index(Request $request) {
+
+        if($request->has('folder')) {
+
+            Helper::generate_index_file($request->folder);
+
+        }
+
+        return response()->json(['success' => true , "message" => 'successfully']);
+
+    }
+
+
     public function channel_create() {
         return view('ui.channels.create');
     }
