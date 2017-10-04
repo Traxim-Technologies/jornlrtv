@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use Auth;
 
+use App\Helpers\Helper;
+
 class VideoTape extends Model
 {
 
@@ -204,6 +206,12 @@ class VideoTape extends Model
             if (count($model->getVideoTapeImages) > 0) {
 
                 foreach ($model->getVideoTapeImages as $key => $value) {
+
+                    if ($value->image) {
+
+                        Helper::delete_picture($value->image, "/uploads/images/");
+
+                    }
 
                    $value->delete();    
 
