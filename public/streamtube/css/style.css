@@ -1938,7 +1938,9 @@ margin: 0px auto 35px;
 
     position: absolute;
 
-    background: #fff;
+    background: #000;
+
+    opacity: 0.9;
 
     height: 100%;
 
