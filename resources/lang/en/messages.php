@@ -69,6 +69,7 @@ return array(
 	'kurento_socket_url'=>'Kurento Socket Url',
 	'wowza_server_url'=>'Wowza Server Url',
 	'SOCKET_URL' => 'SOCKET URL',
+	'WEBRTC_SOCKET_URL' => 'WEBRTC SOCKET URL',
 	'cross_platform_url'=>"Cross Platform Url",
 	'admin_commission' => 'Admin Commission',
 
@@ -200,6 +201,8 @@ return array(
 	'google_settings' => 'Google Settings',
 	'social_settings' => 'Social Settings',
 	'paypal_settings' => 'Payment Settings',
+	'video_settings' => 'Video Settings',
+	'revenue_settings' => 'Revenue Settings',
 
 	'S3_KEY'=>'S3 Key',
 	'S3_SECRET'=>'S3 Secret Key',
@@ -733,7 +736,7 @@ return array(
 	's3_secret' => 'S3 Secret',
 	's3_region' => 'S3 Region',
 	's3_bucket' => 'S3 Bucket',
-	'streaming_url' => 'Streaming URL',
+	'streaming_url' => 'RTMP Streaming URL',
 
 	// Payment Settings
 
@@ -855,8 +858,8 @@ return array(
 	'ad_status'=>'Ad Status',
 	'disable_ad'=>'Disable Ad',
 	'enable_ad'=>'Enable Ad',
-	'viewers_count_per_video'=> 'Viewers Count Per Video',
-	'amount_per_video'=>'Amount Per Video',
+	'viewers_count_per_video'=> 'Set Viewer Count Limit',
+	'amount_per_video'=>'Amount Per View',
 	'about_tab'=>'About',
 	'no_channel_description_found'=> 'Channel Description Not Found',
 	'ago'=>'ago',

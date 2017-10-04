@@ -637,7 +637,9 @@ class VideoTapeRepository {
 
     public static function rtmpUrl($model) {
 
-        $url = RTMP_URL.$model->user_id.'_'.$model->id;
+        $rtmpUrl = 'rtmp://'.Setting::get('cross_platform_url').'/live/';
+
+        $url = $rtmpUrl.$model->user_id.'_'.$model->id;
 
         return $url;
     }
