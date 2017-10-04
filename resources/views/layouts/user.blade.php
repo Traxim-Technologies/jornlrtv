@@ -49,13 +49,15 @@
     <div id="preloader">
 
        
-            <div class="cssload-container">
+            <!-- <div class="cssload-container">
                 <ul class="cssload-flex-container">
                     <li>
                         <span class="cssload-loading"></span>
                     </li>
                 </ul>
-            </div>  
+            </div> --> 
+
+             <div class="loader3"></div>
         
 
     </div>
