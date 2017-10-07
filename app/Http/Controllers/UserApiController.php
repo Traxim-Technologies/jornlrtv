@@ -1443,7 +1443,6 @@ class UserApiController extends Controller {
 
             // Check the video is in flg lists
 
-<<<<<<< HEAD
             $check_flag_video = Flag::where('video_tape_id' , $request->video_tape_id)->where('user_id' ,$request->id)->count();
 
             if(!$check_flag_video) {
@@ -1471,51 +1470,15 @@ class UserApiController extends Controller {
                 } else {
                     $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(1001) , 'error_code' => 1001];
                 }
-=======
-            $video = $ios_video = $data->video;
-
-            if(check_valid_url($data->video)) {
-
-                if(Setting::get('streaming_url'))
-                    $video = Setting::get('streaming_url').get_video_end($data->video);
-
-                if(Setting::get('HLS_STREAMING_URL'))
-                    $ios_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->video);
-            }
->>>>>>> remotes/codegama/streamtube-v1.0/master
 
             } else {
 
                 $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(1000) ,  'error_code' => 1000];
             }
 
-<<<<<<< HEAD
-=======
-            $wishlist_status = Helper::wishlist_status($request->admin_video_id,$request->id);
-
-            $history_status = Helper::history_status($request->id,$request->admin_video_id);
-
-            $share_link = route('user.single' , $request->admin_video_id);
-
-            $user = User::find($request->id);
-
-            $response_array = array(
-                        'success' => true,
-                        'user_type' => $user->user_type ? $user->user_type : 0,
-                        'wishlist_status' => $wishlist_status,
-                        'history_status' => $history_status,
-                        'share_link' => $share_link,
-                        'main_video' => $video,
-                        'ios_video' => $ios_video,
-                        'video' => $data ,
-                        'video_images' => $admin_video_images,
-                        'comments' => $ratings
-                        );
->>>>>>> remotes/codegama/streamtube-v1.0/master
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
 
     }
 
