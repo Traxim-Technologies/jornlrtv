@@ -172,7 +172,11 @@ class UserController extends Controller {
                         ->with('comment_rating_status', $response->comment_rating_status);
        
         } else {
-            return back()->with('flash_error', isset($data->message) ? $data->message : tr('something_error')) ;
+
+            $error_message = isset($data->message) ? $data->message : tr('something_error');
+
+            return back()->with('flash_error', $error_message);
+            
         } 
     }
 
