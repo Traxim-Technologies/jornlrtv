@@ -95,21 +95,21 @@
 
                     <div class="form-group">
                         <label for="name">{{tr('name')}}</label>
-                        <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}">
+                        <input type="text" required name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}">
                     </div>
                     <div class="form-group">
                         <label for="email">{{tr('email')}}</label>
-                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}">
+                        <input type="email" required name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="password">{{tr('password')}}</label>
-                        <input type="password" name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
+                        <input type="password" required name="password" min="6" class="form-control" id="password" placeholder="{{tr('password')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="confirm_password">{{tr('confirm_password')}}</label>
-                        <input type="password" name="password_confirmation" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}">
+                        <input type="password" required name="password_confirmation" min="6" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}">
                     </div>
 
                     <input type="hidden" name="timezone" value="" id="userTimezone">

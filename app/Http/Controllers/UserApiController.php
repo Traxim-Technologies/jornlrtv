@@ -1076,8 +1076,6 @@ class UserApiController extends Controller {
     }
 
 
-
-
     public function single_video(Request $request) {
 
         $validator = Validator::make(
@@ -1100,35 +1098,15 @@ class UserApiController extends Controller {
 
             $data = Helper::get_video_details($request->admin_video_id);
 
-            $trailer_video = $ios_trailer_video = $data->trailer_video;
-
             $video = $ios_video = $data->video;
 
-            if($data->video_type == VIDEO_TYPE_UPLOAD && $data->video_upload_type == VIDEO_UPLOAD_TYPE_DIRECT) {
+            if(check_valid_url($data->video)) {
 
-                if(check_valid_url($data->tralier_video)) {
+                if(Setting::get('streaming_url'))
+                    $video = Setting::get('streaming_url').get_video_end($data->video);
 
-                    if(Setting::get('streaming_url'))
-                        $trailer_video = Setting::get('streaming_url').get_video_end($data->trailer_video);
-
-                    if(Setting::get('HLS_STREAMING_URL'))
-                        $ios_trailer_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->trailer_video);
-                }
-
-                if(check_valid_url($data->video)) {
-
-                    if(Setting::get('streaming_url'))
-                        $video = Setting::get('streaming_url').get_video_end($data->video);
-
-                    if(Setting::get('HLS_STREAMING_URL'))
-                        $ios_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->video);
-                }
-            }
-
-            if($data->video_type == VIDEO_TYPE_YOUTUBE) {
-
-                $video = $ios_video = get_api_youtube_link($data->video);
-                $trailer_video =  $ios_trailer_video = get_api_youtube_link($data->trailer_video);
+                if(Setting::get('HLS_STREAMING_URL'))
+                    $ios_video = Setting::get('HLS_STREAMING_URL').get_video_end($data->video);
             }
 
             $admin_video_images = AdminVideoImage::where('admin_video_id' , $request->admin_video_id)
@@ -1140,7 +1118,9 @@ class UserApiController extends Controller {
             }
 
             $wishlist_status = Helper::wishlist_status($request->admin_video_id,$request->id);
+
             $history_status = Helper::history_status($request->id,$request->admin_video_id);
+
             $share_link = route('user.single' , $request->admin_video_id);
 
             $user = User::find($request->id);
@@ -1152,9 +1132,7 @@ class UserApiController extends Controller {
                         'history_status' => $history_status,
                         'share_link' => $share_link,
                         'main_video' => $video,
-                        'tralier_video' => $trailer_video,
                         'ios_video' => $ios_video,
-                        'ios_tralier_video' => $ios_trailer_video,
                         'video' => $data ,
                         'video_images' => $admin_video_images,
                         'comments' => $ratings
