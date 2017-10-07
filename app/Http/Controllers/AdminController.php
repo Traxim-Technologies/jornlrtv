@@ -1262,6 +1262,8 @@ class AdminController extends Controller {
             return back()->with('flash_error',tr('something_error'));
         }
     }
+
+
     public function custom_push() {
 
         return view('admin.static.push')->with('title' , "Custom Push")->with('page' , "custom-push");
@@ -1558,7 +1560,7 @@ class AdminController extends Controller {
     }
 
 
-     public function subscriptions() {
+    public function subscriptions() {
 
         $data = Subscription::orderBy('created_at','desc')->get();
 
