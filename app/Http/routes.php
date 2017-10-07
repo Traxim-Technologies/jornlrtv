@@ -803,4 +803,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/my_channels', 'UserApiController@my_channels');
 
+    Route::post('get_live_url', 'UserApiController@get_live_url');
+
 });
