@@ -357,7 +357,7 @@ liveAppCtrl
 
 				$.ajax({
 					type : 'post',
-					url : url+'get_live_url',
+					url : url+'/get_live_url',
 					contentType : false,
 					processData: false,
 					
