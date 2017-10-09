@@ -1023,53 +1023,6 @@ class UserApiController extends Controller {
            
             }
 
-            if($video = VideoTape::where('id',$request->video_tape_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
-
-                \Log::info("ADD History - Watch Count Start");
-
-                if($video->getVideoAds) {
-
-                    \Log::info("getVideoAds Relation Checked");
-
-                    if ($video->getVideoAds->status) {
-
-                        \Log::info("getVideoAds Status Checked");
-
-                        // Check the video view count reached admin viewers count, to add amount for each view
-
-                        if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
-
-                            \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
-
-                            $video_amount = Setting::get('amount_per_video');
-
-                            $video->redeem_count = 1;
-
-                            $video->amount += $video_amount;
-
-                            add_to_redeem($video->user_id , $video_amount);
-
-                            \Log::info("ADD History - add_to_redeem");
-
-
-                        } else {
-
-                            \Log::info("ADD History - NO REDEEM");
-
-                            $video->redeem_count += 1;
-
-                        }
-
-                    }
-                }
-
-                $video->watch_count += 1;
-
-                $video->save();
-
-                \Log::info("ADD History - Watch Count Start");
-
-            }
         }
         return response()->json($response_array, 200);
     
@@ -1500,8 +1453,7 @@ class UserApiController extends Controller {
 
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
 
     }
 
