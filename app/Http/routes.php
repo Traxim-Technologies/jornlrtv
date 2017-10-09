@@ -658,6 +658,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
 
+    Route::post('add/watch_count', 'UserController@watch_count')->name('add.watch_count');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
