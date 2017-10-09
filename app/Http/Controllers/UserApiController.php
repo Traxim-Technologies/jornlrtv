@@ -1431,8 +1431,7 @@ class UserApiController extends Controller {
 
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
 
     }
 
