@@ -685,6 +685,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
 
+
     // Live videos
 
     Route::post('broadcast', 'UserController@broadcast')->name('live_video.broadcast');
@@ -694,6 +695,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('stop-streaming', 'UserController@stop_streaming')->name('live_video.stop_streaming');
 
     Route::post('get_viewer_cnt','UserController@get_viewer_cnt')->name('live_video.get_viewer_cnt');
+
+    Route::post('add/watch_count', 'UserController@watch_count')->name('add.watch_count');
 
 
 });

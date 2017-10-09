@@ -1251,6 +1251,32 @@ textarea[name=comments] {
                         console.log("state pos "+jwplayer().getState());
 
 
+                        jQuery.ajax({
+                            url: "{{route('user.add.watch_count')}}",
+                            type: 'post',
+                            data: {'video_tape_id' : "{{$video->admin_video_id}}"},
+                            success: function(data) {
+
+                               if(data.success == true) {
+
+                                console.log('Watch count Incremented');
+
+                                /*var watch_count = 0;
+                                var count = 0;
+                                watch_count = jQuery('#watch_count').text();
+                                var count = parseInt(watch_count) + 1;
+                                jQuery('#watch_count').text(count);
+
+                                console.log('Added to history');*/
+
+                               } else {
+                                    console.log('Wrong...!');
+                               }
+                            }
+                        });
+
+
+
                         if (jwplayer().getState() == 'idle') {
 
                             @if($ads)
