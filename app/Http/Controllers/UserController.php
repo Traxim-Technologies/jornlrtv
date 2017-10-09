@@ -350,11 +350,11 @@ class UserController extends Controller {
 
             \Log::info("ADD History - Watch Count Start");
 
-            return true;
+            return response()->json(true);
 
         } else {
 
-            return false;
+            return response()->json(false);
         }
 
     }
