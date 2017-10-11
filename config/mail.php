@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => envfile('MAIL_USERNAME'), 'name' => Setting::get('site_name')],
+    'from' => ['address' => envfile('MAIL_USERNAME'), 'name' => envfile('SITENAME')],
 
     /*
     |--------------------------------------------------------------------------
