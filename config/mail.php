@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => envfile('MAIL_USERNAME'), 'name' => "Stream Hash"],
+    'from' => ['address' => envfile('MAIL_USERNAME'), 'name' => Setting::get('site_name')],
 
     /*
     |--------------------------------------------------------------------------
