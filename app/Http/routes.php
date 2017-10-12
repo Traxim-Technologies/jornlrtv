@@ -426,6 +426,24 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
 
 
+    // Banner Ads
+
+    Route::get('create_banner','AdminController@create_banner')->name('banner-ads.create');
+
+    Route::get('edit_banner','AdminController@edit_banner')->name('banner-ads.edit');
+
+    Route::post('save_banner','AdminController@save_banner')->name('banner-ads.save-banner-ad');
+
+    Route::get('banner_ads','AdminController@banner_ads')->name('banner-ads.index');
+
+    Route::get('banner_ad_status','AdminController@banner_ad_status')->name('banner-ads.status');
+
+    Route::get('delete_banner','AdminController@delete_banner')->name('banner-ads.delete');
+
+    Route::get('view_banner_ad','AdminController@view_banner_ad')->name('banner-ads.view');
+
+    Route::post('banner-position','AdminController@banner_position')->name('banner-ads.position');
+
 
     Route::get('ads_create/{video_tape_id}','AdminController@ads_create')->name('ads_create');
 

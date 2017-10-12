@@ -90,8 +90,23 @@
                 </ul>
 
             </li>
- 
-            <li class="treeview" id="banner-videos">
+
+            <li class="treeview" id="banner-ads">
+                <a href="{{route('admin.banner-ads.index')}}">
+                    <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+                <ul class="treeview-menu">
+                   
+                    <li id="create-banner"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
+                
+                    <li id="banner-ads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+
+                </ul>
+
+            </li>
+
+            <?php /*<li class="treeview" id="banner-videos">
                 <a href="{{route('admin.banner.videos')}}">
                     <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -103,7 +118,7 @@
                     <li id="view-banner-videos"><a href="{{route('admin.banner.videos')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
                 </ul>
 
-            </li>
+            </li> */?>
 
             <li class="treeview" id="subscriptions">
 
