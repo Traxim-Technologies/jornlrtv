@@ -388,6 +388,7 @@ function readFileName($inputFile) {
 
     $mime_type = finfo_file($finfo, $inputFile); // check mime type
 
+
     finfo_close($finfo);
 
     $video_attributes = [];

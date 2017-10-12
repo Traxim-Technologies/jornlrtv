@@ -929,6 +929,8 @@ return array(
 	'banner_approve_success'=>'Banner Ad has been approved successfully',
 	'banner_decline_success'=>'Banner Ad has been declined successfully',
 	'current_position_banner_ad_not_available'=>'Current Position Banner Ad Is Not Available',
-	'banner_position_success'=>'Banner Ad position has been changed successfully'
-
+	'banner_position_success'=>'Banner Ad position has been changed successfully',
+	'enter_link'=>'Enter Link',
+	'link'=>'Link',
+	'banner_notes'=>'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
 );

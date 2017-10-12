@@ -2309,6 +2309,7 @@ class AdminController extends Controller {
                 'title' => 'required|max:255',
                 'description' => 'required',
                 'position'=>'required|unique',
+                'link'=>'required|url',
                 'file' => $request->id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
         ]);
         
@@ -2327,6 +2328,8 @@ class AdminController extends Controller {
             $model->description = $request->description;
 
             $model->position = $request->position;
+
+            $model->link = $request->link;
 
             if($request->hasFile('file')) {
 
