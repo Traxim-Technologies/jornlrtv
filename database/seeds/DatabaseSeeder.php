@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedStripeKeyInSettings::class);
         $this->call(AddedAgeKeyInSettings::class);
         $this->call(RegisterAgeLimitSeeder::class);
+        $this->call(AddedSliderKeys::class);
     }
 }

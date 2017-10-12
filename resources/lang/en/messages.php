@@ -26,6 +26,8 @@ return array(
 	'mobile_watch_again_heading' => 'Watch It Again',
 	'stripe_payment'=>'Card Payment',
 	'paypal_payment'=>'Paypal Payment',
+	'is_banner_video'=>'Need Banner Video Visible ? ',
+	'is_banner_ad'=>'Need Banner Ad Visible ? ',
 	'card_default_error'=>'This is your default card, change your default card and delete',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
