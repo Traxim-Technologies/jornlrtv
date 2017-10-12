@@ -1006,4 +1006,7 @@ return array(
 	'current_position_banner_ad_not_available'=>'Current Position Banner Ad Is Not Available',
 	'banner_position_success'=>'Banner Ad position has been changed successfully',
 	'is_vod'=>'Need to enable VOD Option ?',
+	'enter_link'=>'Enter Link',
+	'link'=>'Link',
+	'banner_notes'=>'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
 );

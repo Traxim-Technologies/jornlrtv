@@ -21,12 +21,21 @@
 
                     <div class="form-group">
                         <label for="title">{{tr('title')}}</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{$model->title}}">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{$model->title}}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="heading">{{tr('image')}}</label>
-                        <input type="file" name="file" id="file" accept="image/jpeg,image/png">
+                        <input type="file" name="file" id="file" accept="image/jpeg,image/png" @if(!$model->id) required @endif>
+
+
+
+                        <p><small>{{tr('banner_notes')}}</small></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">{{tr('link')}}</label>
+                        <input type="url" class="form-control" name="link" id="link" placeholder="{{tr('enter_link')}}" value="{{$model->url}}" required>
                     </div>
 
                     <div class="form-group">
