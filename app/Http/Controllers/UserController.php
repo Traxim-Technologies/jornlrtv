@@ -32,6 +32,8 @@ use Log;
 
 use App\Card;
 
+use App\BannerAd;
+
 use App\Subscription;
 
 use App\Channel;
@@ -109,6 +111,26 @@ class UserController extends Controller {
 
             $channels = getChannels(WEB);
 
+            $banner_videos = [];
+
+            if (Setting::get('is_banner_video')) {
+
+                $banner_videos = VideoTape::select('id as video_tape_id', 'banner_image as image', 'title as video_title', 'description as content')
+                                ->where('video_tapes.is_banner' , 1 )
+                                ->where('video_tapes.status', DEFAULT_TRUE)
+                                ->orderBy('video_tapes.created_at' , 'desc')
+                                ->get();
+            }
+
+            $banner_ads = [];
+
+            if(Setting::get('is_banner_ad')) {
+
+                $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')->where('banner_ads.status', DEFAULT_TRUE)->orderBy('banner_ads.created_at' , 'desc')
+                                ->get();
+
+            }
+
             return view('user.index')
                         ->with('page' , 'home')
                         ->with('subPage' , 'home')
@@ -117,7 +139,9 @@ class UserController extends Controller {
                         ->with('trendings' , $trendings)
                         ->with('watch_lists' , $watch_lists)
                         ->with('suggestions' , $suggestions)
-                        ->with('channels' , $channels);
+                        ->with('channels' , $channels)
+                        ->with('banner_videos', $banner_videos)
+                        ->with('banner_ads', $banner_ads);
         } else {
             return redirect()->route('installTheme');
         }
