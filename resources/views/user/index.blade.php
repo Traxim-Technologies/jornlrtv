@@ -1,13 +1,130 @@
 @extends('layouts.user')
 
+@section('styles')
+
+<style type="text/css">
+    
+    .list-inline {
+  text-align: center;
+}
+.list-inline > li {
+  margin: 10px 5px;
+  padding: 0;
+}
+.list-inline > li:hover {
+  cursor: pointer;
+}
+.list-inline .selected img {
+  opacity: 1;
+  border-radius: 15px;
+}
+.list-inline img {
+  opacity: 0.5;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
+}
+.list-inline img:hover {
+  opacity: 1;
+}
+
+.item > img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+</style>
+@endsection
+
 @section('content')
 
     <div class="y-content">
+
+   
         <div class="row content-row">
 
             @include('layouts.user.nav')
 
             <div class="page-inner col-sm-9 col-md-10">
+
+                @if(Setting::get('is_banner_video'))
+
+
+                @if(count($banner_videos) > 0)
+
+                <div class="row" id="slider">
+                    <div class="col-md-12">
+                        <div id="myCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                @foreach($banner_videos as $key => $banner_video)
+                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}">
+                                    <a href="{{route('user.single' , $banner_video->video_tape_id)}}"><img src="{{$banner_video->image}}" style="height:350px;width: 100%;">
+                                    <div class="carousel-caption">
+                                        <h3>{{$banner_video->video_title}}</h3>
+                                        <p>{{substr($banner_video->content , 0 , 200)}}...</p>
+                                    </div>
+                                    </a>
+                                </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Controls-->
+                            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                @endif
+
+                @endif
+
+                @if(Setting::get('is_banner_ad'))
+
+                @if(count($banner_ads) > 0)
+
+                <div class="row" id="slider">
+                    <div class="col-md-12">
+                        <div id="myCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                @foreach($banner_ads as $key => $banner_ad)
+                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}">
+                                    <a href="{{$banner_ad->link}}" target="_blank"><img src="{{$banner_ad->image}}" style="height:350px;width: 100%;">
+                                    <div class="carousel-caption">
+                                        <h3>{{$banner_ad->video_title}}</h3>
+                                        <p><?= substr($banner_ad->content , 0 , 200)?>...</p>
+                                    </div>
+                                    </a>
+                                </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Controls-->
+                            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                @endif
+
+                @endif
+
+
+
+
 
                 @include('notification.notify')
 
@@ -262,4 +379,40 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+
+<script type="text/javascript">
+$('#myCarousel').carousel({
+    interval: 3500
+});
+
+// This event fires immediately when the slide instance method is invoked.
+$('#myCarousel').on('slide.bs.carousel', function (e) {
+    var id = $('.item.active').data('slide-number');
+        
+    // Added a statement to make sure the carousel loops correct
+        if(e.direction == 'right'){
+        id = parseInt(id) - 1;  
+      if(id == -1) id = 7;
+    } else{
+        id = parseInt(id) + 1;
+        if(id == $('[id^=carousel-thumb-]').length) id = 0;
+    }
+  
+    $('[id^=carousel-thumb-]').removeClass('selected');
+    $('[id=carousel-thumb-' + id + ']').addClass('selected');
+});
+
+// Thumb control
+$('[id^=carousel-thumb-]').click( function(){
+  var id_selector = $(this).attr("id");
+  var id = id_selector.substr(id_selector.length -1);
+  id = parseInt(id);
+  $('#myCarousel').carousel(id);
+  $('[id^=carousel-thumb-]').removeClass('selected');
+  $(this).addClass('selected');
+});
+</script>
 @endsection

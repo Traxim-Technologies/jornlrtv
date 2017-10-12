@@ -380,6 +380,8 @@ class CommonRepository {
 
                 $getDuration = readFileName($main_video_duration['baseUrl']);
 
+                $seconds = 10;
+
                 if ($getDuration) {
 
                     // dd($getDuration);

@@ -38,9 +38,9 @@
 								<th>{{tr('channel')}}</th>
 								<th>{{tr('title')}}</th>
 
-								@if(Setting::get('is_banner_video'))
+								<?php /*@if(Setting::get('is_banner_video'))
 									<th>{{tr('slider_video')}}</th>
-								@endif
+								@endif */?>
 
 								<th>{{tr('ad_status')}}</th>
 								<th>{{tr('amount')}}</th>
@@ -67,7 +67,8 @@
 							      	
 							      	<td><a href="{{route('admin.view.video' , array('id' => $video->admin_video_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
-							      	@if(Setting::get('is_banner_video'))
+
+							      	<?php /*@if(Setting::get('theme') == 'default')
 							      	
 								      	<td>
 								      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
@@ -79,7 +80,7 @@
 								      		@endif
 								      	</td>
 
-							      	@endif
+							      	@endif */?>
 
 							      	<td class="text-center">
 

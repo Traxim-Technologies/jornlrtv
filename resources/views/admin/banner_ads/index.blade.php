@@ -46,7 +46,7 @@
                 
                             <tr>
                                 <td>{{$i+1}}</td>
-                                <td>{{$result->title}}</td>
+                                <td><a href="{{$result->link}}" target="_blank">{{$result->title}}</a></td>
                                 <td><img src="{{$result->file}}" style="height: 60px" /></td>
                                 <td>{{$result->position}}</td>
                                 <td>

@@ -36,10 +36,10 @@
                         
                         <div class="user-block">
 
-                           <!--  <img class="img-circle img-bordered-sm" src="{{$model->user ?  $model->user->picture : asset('placeholder.png') }}" alt="User Image"> -->
+                           <img class="img-circle img-bordered-sm" src="{{$model->file ?  $model->file : asset('placeholder.png') }}" alt="User Image">
 
                             <span class="username">
-                                <a href="">{{$model->title}}</a>
+                                <a href="{{$model->link}}" target="_blank">{{$model->title}}</a>
                             </span>
 
                             <span class="description">{{$model->created_at->diffForHumans()}}</span>
