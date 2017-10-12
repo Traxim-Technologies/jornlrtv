@@ -33,6 +33,7 @@ video {
 
 @section('content')
 
+
 <div class="y-content">
 
 	<div class="row content-row">
@@ -442,6 +443,8 @@ var url = "<?= url('/');?>";
 var live_user_id = "<?= Auth::check() ? Auth::user()->id : '' ?>";
 
 var user_token = "<?= Auth::check() ? Auth::user()->token : '' ?>";
+
+var is_vod = "<?= Setting::get('is_vod')?>";
 
 var liveAppCtrl = angular.module('liveApp', [
   'btford.socket-io',
