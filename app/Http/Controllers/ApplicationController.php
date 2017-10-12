@@ -469,6 +469,8 @@ class ApplicationController extends Controller {
                 $value->value = $request->is_banner_video;
             } else if ($value->key == 'is_banner_ad') {
                 $value->value = $request->is_banner_ad;
+            } else if ($value->key == 'is_vod') {
+                $value->value = $request->is_vod;
             }
             
             $value->save();

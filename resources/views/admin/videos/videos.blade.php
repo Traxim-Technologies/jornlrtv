@@ -46,7 +46,9 @@
 								<th>{{tr('amount')}}</th>
 								<th>{{tr('likes')}}</th>
 								<th>{{tr('dislikes')}}</th>
+								@if(Setting::get('is_vod'))
 								<th>{{tr('video_type')}}</th>
+								@endif
 								<th>{{tr('status')}}</th>
 								<th>{{tr('action')}}</th>
 						    </tr>
@@ -65,7 +67,7 @@
 							      	
 							      	<td><a href="{{route('admin.view.video' , array('id' => $video->admin_video_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
-							      	@if(Setting::get('theme') == 'default')
+							      	@if(Setting::get('is_banner_video'))
 							      	
 								      	<td>
 								      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
@@ -95,6 +97,7 @@
 
 							      	<td>{{$video->getScopeDisLikeCount->count()}}</td>
 
+							      	@if(Setting::get('is_vod'))
 							      	<td>@if($video->video_type == 1) 
 
 							      			{{tr('manual_upload')}}
@@ -105,7 +108,7 @@
 
 							      		@endif
 							      	</td>
-
+							      	@endif
 							      	<td>
 							      		@if ($video->compress_status == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>

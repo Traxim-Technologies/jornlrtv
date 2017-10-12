@@ -1045,11 +1045,16 @@ liveAppCtrl
 
 		  if (event.type == 'local') {
 
+		  	if(is_vod == 1) {
 
-		  	connection.streams[event.streamid].startRecording({ 
+		  		alert(is_vod);
+
+		  		connection.streams[event.streamid].startRecording({ 
 			        video: true ,
 			        audio:true,
 			    });
+
+		  	}
 
 		    var initNumber = 1;
 
@@ -1608,68 +1613,76 @@ liveAppCtrl
 
 	    	// alert("streamid"+e.streamid);
 
-	    	connection.streams[e.streamid].stopRecording(function (blob) {
-			   // var mediaElement = document.createElement('audio'); 
+	    	if (is_vod == 1) {
 
-			   	var blob_url = URL.createObjectURL(blob.video);
+		    	connection.streams[e.streamid].stopRecording(function (blob) {
+				   // var mediaElement = document.createElement('audio'); 
 
-			   // alert(URL.createObjectURL(blob.video)); 
+				   	var blob_url = URL.createObjectURL(blob.video);
 
-			    console.log(blob.video);
+				   // alert(URL.createObjectURL(blob.video)); 
 
-				/*var myFile = new File(blob.video);
+				    console.log(blob.video);
 
-				console.log(myFile);*/
+					/*var myFile = new File(blob.video);
 
-				var xhr = new XMLHttpRequest;
-				xhr.responseType = 'blob';
+					console.log(myFile);*/
 
-				xhr.onload = function() {
-				   var recoveredBlob = xhr.response;
+					var xhr = new XMLHttpRequest;
+					xhr.responseType = 'blob';
 
-				   var reader = new FileReader;
+					xhr.onload = function() {
+					   var recoveredBlob = xhr.response;
 
-				   reader.onload = function() {
+					   var reader = new FileReader;
 
-				     	var blobAsDataUrl = reader.result;
-				     // window.location = blobAsDataUrl;
+					   reader.onload = function() {
 
-				     	// console.log(blobAsDataUrl);
+					     	var blobAsDataUrl = reader.result;
+					     // window.location = blobAsDataUrl;
 
-					    var data = new FormData();
-						//data.append('blob_url', myFile);
-						data.append('id', live_user_id);
-						data.append('video_blob', blobAsDataUrl);
-						data.append('token', user_token);
-						data.append('video_id', $scope.videoDetails.id);
+					     	// console.log(blobAsDataUrl);
 
-						$.ajax({
-							type : 'post',
-							url : url+'/userApi/save_vod',
-							contentType : false,
-							processData: false,
-							
-							async : false,
-							data : data,
-							success : function(result) {
+						    var data = new FormData();
+							//data.append('blob_url', myFile);
+							data.append('id', live_user_id);
+							data.append('video_blob', blobAsDataUrl);
+							data.append('token', user_token);
+							data.append('video_id', $scope.videoDetails.id);
 
-								console.log(result);
-
-								window.location.href = stop_streaming_url;
+							$.ajax({
+								type : 'post',
+								url : url+'/userApi/save_vod',
+								contentType : false,
+								processData: false,
 								
-							}, 
-					    	error : function(result) {
+								async : false,
+								data : data,
+								success : function(result) {
 
-					    	}
-						});
+									console.log(result);
+
+									window.location.href = stop_streaming_url;
+									
+								}, 
+						    	error : function(result) {
+
+						    	}
+							});
+						};
+
+					   reader.readAsDataURL(recoveredBlob);
 					};
+					xhr.open('GET', blob_url);
+					xhr.send();
+				    
+				});
 
-				   reader.readAsDataURL(recoveredBlob);
-				};
-				xhr.open('GET', blob_url);
-				xhr.send();
-			    
-			});
+	    	} else {
+
+	    		window.location.href = stop_streaming_url;
+	    		
+	    	}
 
 	    }
 

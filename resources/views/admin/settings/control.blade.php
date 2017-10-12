@@ -125,6 +125,20 @@
                             </label>
                         </div>
 
+                        <div class="form-group">
+                            <label>{{tr('is_vod')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_vod" value="1" class="flat-red" @if(Setting::get('is_vod')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_vod" class="flat-red"  value="0" @if(!Setting::get('is_vod')) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
 
                   </div>
                   <!-- /.box-body -->

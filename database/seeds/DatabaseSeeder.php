@@ -30,5 +30,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RegisterAgeLimitSeeder::class);
         $this->call(AddedChatUrlInSettings::class);
         $this->call(AddedSliderKeys::class);
+        $this->call(VODKeyInSettings::class);
     }
 }
