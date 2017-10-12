@@ -1973,10 +1973,6 @@ class UserApiController extends Controller {
 
     public function channel_list(Request $request) {
 
-/*        $channels = Channel::where('is_approved', DEFAULT_TRUE)
-                ->where('status', DEFAULT_TRUE)
-                ->paginate(16);
-*/
         $age = 0;
 
         $channel_id = [];
@@ -3669,5 +3665,63 @@ class UserApiController extends Controller {
  
     }
 
+
+    public function save_vod(Request $request) {
+
+
+        $data = explode(',', $request->video_blob);
+
+        if ($data[1] != '') {
+
+            $fileName = $request->id.'_'.$request->video_id.'.webm';
+
+            file_put_contents(join(DIRECTORY_SEPARATOR, [public_path(), 'uploads', 'vod',$fileName]), base64_decode($data[1]));
+
+            $live = LiveVideo::find($request->video_id);
+
+            if ($live) {
+
+                $model = new VideoTape;
+
+                $model->channel_id = $live->channel_id;
+
+                $model->unique_id = $live->title;
+
+                $model->title = $live->title;
+
+                $model->description = $live->description;
+
+                $model->default_image = $live->snapshot;
+
+                $model->video = asset('uploads/vod/'.$fileName);
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->compress_status = DEFAULT_TRUE;
+
+                $model->video_type = VIDEO_TYPE_LIVE;
+
+                $model->save();
+
+                $response_array = ['success'=>true, 'model'=>$model];
+
+                return response()->json($response_array);
+
+            } else{
+
+                $response_array = ['success'=>false, 'error_message'=>tr('no_live_video_found')];
+
+                return response()->json($response_array);
+
+            }
+
+            
+        }
+
+        $response_array = ['success'=>false, 'error_message'=>tr('no_live_video_found')];
+
+        return response()->json(response_array);
+
+    }
     
 }

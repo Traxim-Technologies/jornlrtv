@@ -20,6 +20,8 @@ return array(
 	'mobile_trending_heading' => 'Trending',
 	'chat_socket_url'=>'Chat Socket Url',
 	'chat_url'=>'Chat Url',
+	'manual_upload'=>'Manual Upload',
+	'live_video'=>'Live Video',
 	'payment_options'=>'Payment Options',
 	'comment_note'=>'Note : Rating can give only one time to each User',
 	'subscription_details'=>'Subscription Details',
@@ -959,6 +961,12 @@ return array(
 
 	'default'	=>	'Default',
 	'default_lang'	=>	'Default Language',
+	'create_banner_ad'=>'Create Banner Ad',
+	'banner_ads'=>'Banner Ads',
+	'edit_banner_ad'=>'Edit Banner Ad',
+	'view_banner_ad'=>'View Banner Ad',
+	'change_position'=>'Change Position',
+	'position'=>'Position',
 
 	'mm'=>'MM',
 	'yy'=>'YY',
@@ -987,4 +995,13 @@ return array(
 	'video_streaming'=>'Video is Streaming',
 	'video_is_in_flag_list' => 'Sorry!!.The video is in block list.',
 	'video_not_found' => 'Sorry!!.The video not found',
+
+	'banner_delete_success'=>'Banner Ad has been deleted successfully',
+	'banner_create_success'=>'Banner Ad has been created successfully',
+	'banner_update_success'=>'Banner Ad has been updated successfully',
+	'banner_approve_success'=>'Banner Ad has been approved successfully',
+	'banner_decline_success'=>'Banner Ad has been declined successfully',
+	'current_position_banner_ad_not_available'=>'Current Position Banner Ad Is Not Available',
+	'banner_position_success'=>'Banner Ad position has been changed successfully'
+
 );

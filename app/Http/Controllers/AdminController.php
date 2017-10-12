@@ -40,6 +40,8 @@ use App\Helpers\EnvEditorHelper;
 
 use Validator;
 
+use App\BannerAd;
+
 use Auth;
 
 use Setting;
@@ -880,6 +882,7 @@ class AdminController extends Controller {
         // Check the video present or not
         if ($video) {
             $video->status = DEFAULT_TRUE;
+            $video->publish_status = DEFAULT_TRUE;
             $video->publish_time = date('Y-m-d H:i:s');
             // Save the values in DB
             if ($video->save()) {
@@ -2282,9 +2285,211 @@ class AdminController extends Controller {
     }
 
 
+    public function create_banner() {
+
+        $model = new BannerAd;
+
+        $banner = BannerAd::orderBy('position', 'desc')->first();
+
+        $model->position = $banner ? $banner->position + DEFAULT_TRUE : DEFAULT_TRUE;
+
+        return view('admin.banner_ads.create')->with('model', $model)
+            ->with('page', 'banner-ads')->with('sub_page', 'create-banner');
+    }
+
+    public function edit_banner(Request $request) {
+
+        $model = BannerAd::find($request->id);
+
+        if (!$model) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        }
+
+        return view('admin.banner_ads.edit')->with('model', $model)
+            ->with('page', 'banner-ads')->with('sub_page', 'banner-ads-index');
+    }
 
 
-     /**
+    public function save_banner(Request $request) {
+
+        $validator = Validator::make($request->all(),[
+                'title' => 'required|max:255',
+                'description' => 'required',
+                'position'=>'required|unique',
+                'file' => $request->id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
+        ]);
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $model = $request->id ? BannerAd::find($request->id) : new BannerAd;
+
+            $model->title = $request->title;
+
+            $model->description = $request->description;
+
+            $model->position = $request->position;
+
+            if($request->hasFile('file')) {
+
+                if ($request->id) {
+
+                    Helper::delete_picture($model->file, '/uploads/images/');
+
+                } 
+
+                $model->file = Helper::normal_upload_picture($request->file('file'), '/uploads/images/');
+
+            }
+
+            $model->status = DEFAULT_TRUE;
+
+            $model->save();
+
+            if ($model) {
+
+                return redirect(route('admin.banner-ads.view', array('id'=>$model->id)));
+
+            } else {
+
+                return back()->with('flash_error', tr('something_error'));
+            }
+
+        }
+
+    }
+
+    public function view_banner_ad(Request $request) {
+
+
+        $model = BannerAd::find($request->id);
+
+        if (!$model) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        } else {
+
+            return view('admin.banner_ads.view')->with('model', $model)->with('page', 'banner-ads')->with('sub_page', 'banner-ads-index');
+
+        }
+
+    }
+
+
+    public function banner_ads(Request $request) {
+
+        $model = BannerAd::get();
+
+        return view('admin.banner_ads.index')->with('model', $model)
+            ->with('page', 'banner-ads')->with('sub_page', 'banner-ads-index');
+    }
+
+
+    public function delete_banner(Request $request) {
+
+        $model = BannerAd::find($request->id);
+
+        if (!$model) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        } else {
+
+            $model->delete();
+
+            return with('flash_success', tr('banner_delete_success'));
+
+        }
+
+    }
+
+
+    public function banner_ad_status(Request $request) {
+
+        $model = BannerAd::find($request->id);
+
+        if (!$model) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        } else {
+
+            $model->status = $model->status ? DEFAULT_FALSE : DEFAULT_TRUE;
+
+            $model->save();
+
+            return back()->with('flash_success', $model->status ? tr('banner_approve_success') : tr('banner_decline_success'));
+
+        }
+
+    }
+
+
+    public function banner_position(Request $request) {
+
+        $model = BannerAd::find($request->id);
+
+        if (!$model) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        } else {
+
+            $position = $model->position;
+
+            $current_position = $request->position;
+
+            // Load Current Position Banner
+
+            $banner = BannerAd::where('position', $current_position)->first();
+
+            if (!$banner) {
+
+                return back()->with('flash_error', tr('current_position_banner_ad_not_available'));
+
+            } else {
+
+                $banner->position = $model->position;
+
+                $banner->save();
+
+                if ($banner) {
+
+                    $model->position = $current_position;
+
+                    $model->save();
+
+                    if ($model) {
+
+
+                    } else {
+
+                        return back()->with('flash_error', tr('something_error'));
+
+                    }
+
+                } else {
+
+                    return back()->with('flash_error', tr('something_error'));
+                }
+
+            }
+
+            return back()->with('flash_success', tr('banner_position_success'));
+
+        }
+    }
+
+
+         /**
      *
      *
      */
@@ -2354,4 +2559,6 @@ class AdminController extends Controller {
         }
 
     }
+
+
 }
