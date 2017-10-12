@@ -20,6 +20,8 @@ return array(
 	'mobile_trending_heading' => 'Trending',
 	'chat_socket_url'=>'Chat Socket Url',
 	'chat_url'=>'Chat Url',
+	'manual_upload'=>'Manual Upload',
+	'live_video'=>'Live Video',
 	'payment_options'=>'Payment Options',
 	'comment_note'=>'Note : Rating can give only one time to each User',
 	'subscription_details'=>'Subscription Details',

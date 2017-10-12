@@ -397,7 +397,8 @@ class UserController extends Controller {
 
     public function watch_count(Request $request) {
 
-        if($video = VideoTape::where('id',$request->video_tape_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
+        if($video = VideoTape::where('id',$request->video_tape_id)
+                ->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
 
             \Log::info("ADD History - Watch Count Start");
 
@@ -1883,8 +1884,7 @@ class UserController extends Controller {
 
        
 
-        return redirect($route)
-            ->with('flash_success',$message);
+        return redirect($route)->with('flash_success',$message);
     }
 
 

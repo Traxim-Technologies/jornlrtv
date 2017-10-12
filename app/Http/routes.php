@@ -85,8 +85,7 @@ if(!defined('ADMIN')) define('ADMIN', 'admin');
 if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
 
 if(!defined('VIDEO_TYPE_UPLOAD')) define('VIDEO_TYPE_UPLOAD', 1);
-if(!defined('VIDEO_TYPE_YOUTUBE')) define('VIDEO_TYPE_YOUTUBE', 2);
-if(!defined('VIDEO_TYPE_OTHER')) define('VIDEO_TYPE_OTHER', 3);
+if(!defined('VIDEO_TYPE_LIVE')) define('VIDEO_TYPE_LIVE', 2);
 
 
 if(!defined('VIDEO_UPLOAD_TYPE_s3')) define('VIDEO_UPLOAD_TYPE_s3', 1);
@@ -129,6 +128,8 @@ if(!defined('WATCHLIST')) define('WATCHLIST' , 'watchlist');
 if(!defined('BANNER')) define('BANNER' , 'banner');
 if(!defined('ALL_VIDEOS')) define('ALL_VIDEOS', 'All Videos');
 if(!defined('JWT_SECRET')) define('JWT_SECRET', '12345');
+
+
 
 
 if(!defined('WEB')) define('WEB' , 1);
@@ -807,5 +808,7 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/my_channels', 'UserApiController@my_channels');
 
     Route::post('get_live_url', 'UserApiController@get_live_url');
+
+    Route::post('save_vod', 'UserApiController@save_vod');
 
 });

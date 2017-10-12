@@ -46,6 +46,7 @@
 								<th>{{tr('amount')}}</th>
 								<th>{{tr('likes')}}</th>
 								<th>{{tr('dislikes')}}</th>
+								<th>{{tr('video_type')}}</th>
 								<th>{{tr('status')}}</th>
 								<th>{{tr('action')}}</th>
 						    </tr>
@@ -93,6 +94,17 @@
 							      	<td>{{$video->getScopeLikeCount->count()}}</td>
 
 							      	<td>{{$video->getScopeDisLikeCount->count()}}</td>
+
+							      	<td>@if($video->video_type == 1) 
+
+							      			{{tr('manual_upload')}}
+
+							      		@else
+
+							      			{{tr('live_video')}}
+
+							      		@endif
+							      	</td>
 
 							      	<td>
 							      		@if ($video->compress_status == 0)

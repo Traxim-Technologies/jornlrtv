@@ -440,6 +440,8 @@ class CommonRepository {
 
                 }
 
+                $model->video_type = VIDEO_TYPE_UPLOAD;
+
                 $model->save();
 
                 Log::info("saved Video Object : ".'Success');
