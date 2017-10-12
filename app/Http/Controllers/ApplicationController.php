@@ -452,7 +452,7 @@ class ApplicationController extends Controller {
     public function save_admin_control(Request $request) {
 
         $model = Settings::get();
-
+        
         foreach ($model as $key => $value) {
 
             if($value->key == 'admin_theme_control') {
@@ -463,10 +463,12 @@ class ApplicationController extends Controller {
                 $value->value = $request->is_spam;
             } else if ($value->key == 'is_subscription') {
                 $value->value = $request->is_subscription;
-            }
-
-            else if ($value->key == 'redeem_control') {
+            } else if ($value->key == 'redeem_control') {
                 $value->value = $request->redeem_control;
+            } else if ($value->key == 'is_banner_video') {
+                $value->value = $request->is_banner_video;
+            } else if ($value->key == 'is_banner_ad') {
+                $value->value = $request->is_banner_ad;
             }
             
             $value->save();

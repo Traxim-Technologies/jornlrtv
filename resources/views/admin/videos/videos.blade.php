@@ -38,7 +38,7 @@
 								<th>{{tr('channel')}}</th>
 								<th>{{tr('title')}}</th>
 
-								@if(Setting::get('theme') == 'default')
+								@if(Setting::get('is_banner_video'))
 									<th>{{tr('slider_video')}}</th>
 								@endif
 

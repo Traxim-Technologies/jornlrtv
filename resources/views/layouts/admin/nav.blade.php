@@ -91,6 +91,8 @@
 
             </li>
 
+            @if(Setting::get('is_banner_ad'))
+
             <li class="treeview" id="banner-ads">
                 <a href="{{route('admin.banner-ads.index')}}">
                     <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
@@ -106,7 +108,11 @@
 
             </li>
 
-            <?php /*<li class="treeview" id="banner-videos">
+            @endif
+
+            @if(Setting::get('is_banner_video'))
+
+            <li class="treeview" id="banner-videos">
                 <a href="{{route('admin.banner.videos')}}">
                     <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -118,7 +124,9 @@
                     <li id="view-banner-videos"><a href="{{route('admin.banner.videos')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
                 </ul>
 
-            </li> */?>
+            </li>
+
+            @endif
 
             <li class="treeview" id="subscriptions">
 
