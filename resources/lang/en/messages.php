@@ -32,6 +32,8 @@ return array(
 	'stripe_payment'=>'Card Payment',
 	'paypal_payment'=>'Paypal Payment',
 	'add_card_is_not_enabled'=>'Adding cards is not enabled on this application. Please contact administrator',
+	'is_banner_video'=>'Need Banner Video Visible ? ',
+	'is_banner_ad'=>'Need Banner Ad Visible ? ',
 	'card_default_error'=>'This is your default card, change your default card and delete',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',

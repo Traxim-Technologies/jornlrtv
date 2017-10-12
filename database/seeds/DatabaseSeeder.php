@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CommissionSplitSeeder::class);
         $this->call(RegisterAgeLimitSeeder::class);
         $this->call(AddedChatUrlInSettings::class);
+        $this->call(AddedSliderKeys::class);
     }
 }
