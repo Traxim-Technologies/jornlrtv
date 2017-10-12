@@ -1947,10 +1947,6 @@ class UserApiController extends Controller {
 
     public function channel_list(Request $request) {
 
-/*        $channels = Channel::where('is_approved', DEFAULT_TRUE)
-                ->where('status', DEFAULT_TRUE)
-                ->paginate(16);
-*/
         $age = 0;
 
         $channel_id = [];
