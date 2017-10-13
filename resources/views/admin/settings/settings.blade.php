@@ -43,12 +43,12 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                               <!--  <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tagname">{{tr('tag_name')}}</label>
                                         <input type="text" class="form-control" name="tag_name" value="{{Setting::get('tag_name')  }}" id="tagname" placeholder="Tag Name">
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -120,10 +120,12 @@
 
                                  <div class="col-md-6">
                                     <div class="form-group">
+
                                         <label for="sitename">{{tr('kurento_socket_url')}}</label>
                                         <p class="example-note">Ex : IP_ADDRESS_OR_DOMAIN:8443</p>
                                         <input type="text" class="form-control" name="kurento_socket_url" value="{{ Setting::get('kurento_socket_url')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('kurento_socket_url')}}">
                                     </div>
+
                                 </div>
 
                                 <div class="col-md-6">

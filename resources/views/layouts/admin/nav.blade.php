@@ -79,18 +79,39 @@
              <li class="treeview" id="videos_ads">
 
                 <a href="{{route('admin.ads_index')}}">
-                    <i class="fa fa-bullhorn"></i> <span>{{tr('video_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-bullhorn"></i> <span>{{tr('ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
                     <li id="create-ad-videos"><a href="{{route('admin.ad_create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
                     <li id="view-ads"><a href="{{route('admin.ad_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li>
-                    <li id="ad-videos"><a href="{{route('admin.ad_videos')}}"><i class="fa fa-circle-o"></i>{{tr('ad_videos')}}</a></li>
+                    <li id="ad-videos"><a href="{{route('admin.ad_videos')}}"><i class="fa fa-circle-o"></i>{{tr('ads')}}</a></li>
                    <!--  <li id="view-ads"><a href="{{route('admin.ads_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li> -->
                 </ul>
 
             </li>
- 
+
+            @if(Setting::get('is_banner_ad'))
+
+            <li class="treeview" id="banner-ads">
+                <a href="{{route('admin.banner-ads.index')}}">
+                    <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+                <ul class="treeview-menu">
+                   
+                    <li id="create-banner"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
+                
+                    <li id="banner-ads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+
+                </ul>
+
+            </li>
+
+            @endif
+
+            @if(Setting::get('is_banner_video'))
+
             <li class="treeview" id="banner-videos">
                 <a href="{{route('admin.banner.videos')}}">
                     <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
@@ -104,6 +125,8 @@
                 </ul>
 
             </li>
+
+            @endif
 
             <li class="treeview" id="subscriptions">
 

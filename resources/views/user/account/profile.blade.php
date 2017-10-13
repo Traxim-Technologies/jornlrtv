@@ -51,9 +51,30 @@
                                         @endif
 
                                        
+
                                         <p>{{$user->mobile}}</p>  
-                                        <p><?php echo $dob = date('d-m-Y', strtotime($user->dob)) ;?></p>
+
+                                        <p>
+                                        <?php 
+
+                                        if (!empty($user->dob) && $user->dob != "0000-00-00") {
+
+                                            $dob = date('d-m-Y', strtotime($user->dob));
+
+                                        } else {
+
+                                            $dob = "00-00-0000";
+                                        }
+
+                                        echo $dob;
+
+                                        ?></p>
+
+                                       
                                         <p>{{$user->description}}</p>
+
+                                        
+
                                     </div><!--end of profile-title-->
 
                                     @if ($user->id == Auth::user()->id)

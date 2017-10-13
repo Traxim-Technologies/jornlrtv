@@ -38,14 +38,17 @@
 								<th>{{tr('channel')}}</th>
 								<th>{{tr('title')}}</th>
 
-								@if(Setting::get('theme') == 'default')
+								<?php /*@if(Setting::get('is_banner_video'))
 									<th>{{tr('slider_video')}}</th>
-								@endif
+								@endif */?>
 
 								<th>{{tr('ad_status')}}</th>
 								<th>{{tr('amount')}}</th>
 								<th>{{tr('likes')}}</th>
 								<th>{{tr('dislikes')}}</th>
+								@if(Setting::get('is_vod'))
+								<th>{{tr('video_type')}}</th>
+								@endif
 								<th>{{tr('status')}}</th>
 								<th>{{tr('action')}}</th>
 						    </tr>
@@ -64,7 +67,8 @@
 							      	
 							      	<td><a href="{{route('admin.view.video' , array('id' => $video->admin_video_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
-							      	@if(Setting::get('theme') == 'default')
+
+							      	<?php /*@if(Setting::get('theme') == 'default')
 							      	
 								      	<td>
 								      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
@@ -76,7 +80,7 @@
 								      		@endif
 								      	</td>
 
-							      	@endif
+							      	@endif */?>
 
 							      	<td class="text-center">
 
@@ -94,6 +98,18 @@
 
 							      	<td>{{$video->getScopeDisLikeCount->count()}}</td>
 
+							      	@if(Setting::get('is_vod'))
+							      	<td>@if($video->video_type == 1) 
+
+							      			{{tr('manual_upload')}}
+
+							      		@else
+
+							      			{{tr('live_video')}}
+
+							      		@endif
+							      	</td>
+							      	@endif
 							      	<td>
 							      		@if ($video->compress_status == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>

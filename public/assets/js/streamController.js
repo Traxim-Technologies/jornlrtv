@@ -357,7 +357,7 @@ liveAppCtrl
 
 				$.ajax({
 					type : 'post',
-					url : url+'get_live_url',
+					url : url+'/userApi/get_live_url',
 					contentType : false,
 					processData: false,
 					
@@ -894,8 +894,28 @@ liveAppCtrl
 
 		$scope.isShowPrivateMessage = false;
 
+		$scope.connectionNow = null;
+
 		socket.on('disconnect', function (data) {
 			// console.log("disconect");
+
+			// alert(data);
+
+
+			/*alert($scope.connectionNow.session);
+
+			return false;*/
+
+			/*connection.streams[e.streamid].stopRecording(function (blob) { 
+	            // var mediaElement = document.createElement('video'); 
+	           //  mediaElement.src = URL.createObjectURL(blob.video); 
+	           
+
+
+	        }); */
+
+
+
 		});
 
 		socket.on('disconnectAll', function (data) {
@@ -906,13 +926,14 @@ liveAppCtrl
 		}
 		});
 
-		$scope.connectionNow = null;
+		
 		// initializing RTCMultiConnection constructor.
 		$scope.isStreaming = null;
 
 		function initRTCMultiConnection(userid) {
 
 			var connection = new RTCMultiConnection();
+
 			$scope.connectionNow = connection;
 
 			// memoryStorage.connectionNow = $scope.connectionNow;
@@ -963,8 +984,35 @@ liveAppCtrl
 			  if (event.type === 'local') {
 			    video.muted = true;
 			  }
+
 			  video.src = URL.createObjectURL(event.stream);
+
+			  console.log("Video Src "+video.src);
+
 			  connection.videosContainer.appendChild(video);
+
+			  console.log("StreamId "+event.streamid);
+
+			  console.log(event);
+
+			      // e.type == 'remote' || 'local' 
+			    /*connection.streams[e.streamid].startRecording({ 
+			        video: true 
+			    }); */
+
+			   /* // record 10 sec audio/video 
+			    var recordingInterval = 10 * 10000; 
+
+			    setTimeout(function () { 
+			        connection.streams[e.streamid].stopRecording(function (blob) { 
+			            var mediaElement = document.createElement('video'); 
+			            mediaElement.src = URL.createObjectURL(blob.video); 
+			           //  document.documentElement.appendChild(h2); 
+			        }); 
+			    }, recordingInterval)*/
+
+
+
 			};
 
 			//disable log
@@ -986,9 +1034,28 @@ liveAppCtrl
 
 		connection.onstream = function (event) {
 
+			console.log("Stream Id "+event.streamid);
+
+			console.log(URL.createObjectURL(event.stream));
+
+			console.log(event);
+
+
+
 
 		  if (event.type == 'local') {
-		    
+
+		  	if(is_vod == 1) {
+
+		  		alert(is_vod);
+
+		  		connection.streams[event.streamid].startRecording({ 
+			        video: true ,
+			        audio:true,
+			    });
+
+		  	}
+
 		    var initNumber = 1;
 
 
@@ -1446,6 +1513,8 @@ liveAppCtrl
 			//close connect if model live
 			connection.close();
 			connection.broadcastingConnection = null;
+
+			alert("diconn model");
 		});
 
 		socket.on('broadcast-error', function (data) {
@@ -1533,15 +1602,105 @@ liveAppCtrl
 		getViewerCnt();
 
 	    $scope.$on('destroy', function () {
+
+	    alert("diconn destroy");
+
 	      clearTimeout(viewerCount);
+
 	    });
 
-	   /* $scope.stopStreaming = function() {
+	    connection.onstreamended = function (e) {
 
-	    	//$rootScope.$emit('model_leave_room');
+	    	// alert("streamid"+e.streamid);
 
-	    	window.location.href = stop_streaming_url;
-	    };*/
+	    	if (is_vod == 1) {
+
+		    	connection.streams[e.streamid].stopRecording(function (blob) {
+				   // var mediaElement = document.createElement('audio'); 
+
+				   	var blob_url = URL.createObjectURL(blob.video);
+
+				   // alert(URL.createObjectURL(blob.video)); 
+
+				    console.log(blob.video);
+
+					/*var myFile = new File(blob.video);
+
+					console.log(myFile);*/
+
+					var xhr = new XMLHttpRequest;
+					xhr.responseType = 'blob';
+
+					xhr.onload = function() {
+					   var recoveredBlob = xhr.response;
+
+					   var reader = new FileReader;
+
+					   reader.onload = function() {
+
+					     	var blobAsDataUrl = reader.result;
+					     // window.location = blobAsDataUrl;
+
+					     	// console.log(blobAsDataUrl);
+
+						    var data = new FormData();
+							//data.append('blob_url', myFile);
+							data.append('id', live_user_id);
+							data.append('video_blob', blobAsDataUrl);
+							data.append('token', user_token);
+							data.append('video_id', $scope.videoDetails.id);
+
+							$.ajax({
+								type : 'post',
+								url : url+'/userApi/save_vod',
+								contentType : false,
+								processData: false,
+								
+								async : false,
+								data : data,
+								success : function(result) {
+
+									console.log(result);
+
+									window.location.href = stop_streaming_url;
+									
+								}, 
+						    	error : function(result) {
+
+						    	}
+							});
+						};
+
+					   reader.readAsDataURL(recoveredBlob);
+					};
+					xhr.open('GET', blob_url);
+					xhr.send();
+				    
+				});
+
+	    	} else {
+
+	    		window.location.href = stop_streaming_url;
+	    		
+	    	}
+
+	    }
+
+	    $scope.stopStreaming = function() {
+
+	    	$rootScope.$emit('model_leave_room');
+
+	    	// stop all local media streams
+			connection.streams.stop('local');
+
+			// stop all remote media streams
+			connection.streams.stop('remote');
+
+			// stop all media streams
+			connection.streams.stop();
+
+	    	
+	    };
 
 	    /*$scope.$on('stop_streaming', function () {
 

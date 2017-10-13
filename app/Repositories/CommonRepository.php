@@ -304,6 +304,7 @@ class CommonRepository {
                         'description'   => 'required',
                         'channel_id'   => 'required|integer|exists:channels,id',
                         'video'     => 'required|mimes:mkv,mp4,qt',
+                        //'subtitle'=>'mimes:text/str',
                         'video_publish_type'=>'required',
                         // 'age_limit'=>'required|numeric'
                         ));
@@ -379,6 +380,8 @@ class CommonRepository {
 
                 $getDuration = readFileName($main_video_duration['baseUrl']);
 
+                $seconds = 10;
+
                 if ($getDuration) {
 
                     // dd($getDuration);
@@ -438,6 +441,8 @@ class CommonRepository {
                     }
 
                 }
+
+                $model->video_type = VIDEO_TYPE_UPLOAD;
 
                 $model->save();
 

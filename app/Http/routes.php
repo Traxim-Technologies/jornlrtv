@@ -85,8 +85,7 @@ if(!defined('ADMIN')) define('ADMIN', 'admin');
 if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
 
 if(!defined('VIDEO_TYPE_UPLOAD')) define('VIDEO_TYPE_UPLOAD', 1);
-if(!defined('VIDEO_TYPE_YOUTUBE')) define('VIDEO_TYPE_YOUTUBE', 2);
-if(!defined('VIDEO_TYPE_OTHER')) define('VIDEO_TYPE_OTHER', 3);
+if(!defined('VIDEO_TYPE_LIVE')) define('VIDEO_TYPE_LIVE', 2);
 
 
 if(!defined('VIDEO_UPLOAD_TYPE_s3')) define('VIDEO_UPLOAD_TYPE_s3', 1);
@@ -131,6 +130,8 @@ if(!defined('ALL_VIDEOS')) define('ALL_VIDEOS', 'All Videos');
 if(!defined('JWT_SECRET')) define('JWT_SECRET', '12345');
 
 
+
+
 if(!defined('WEB')) define('WEB' , 1);
 
 
@@ -141,6 +142,8 @@ Route::get('/clear-cache', function() {
     return back();
 
 })->name('clear-cache');
+
+Route::get('/generate/index' , 'ApplicationController@generate_index');
 
 
 
@@ -423,6 +426,24 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
 
 
+    // Banner Ads
+
+    Route::get('create_banner','AdminController@create_banner')->name('banner-ads.create');
+
+    Route::get('edit_banner','AdminController@edit_banner')->name('banner-ads.edit');
+
+    Route::post('save_banner','AdminController@save_banner')->name('banner-ads.save-banner-ad');
+
+    Route::get('banner_ads','AdminController@banner_ads')->name('banner-ads.index');
+
+    Route::get('banner_ad_status','AdminController@banner_ad_status')->name('banner-ads.status');
+
+    Route::get('delete_banner','AdminController@delete_banner')->name('banner-ads.delete');
+
+    Route::get('view_banner_ad','AdminController@view_banner_ad')->name('banner-ads.view');
+
+    Route::post('banner-position','AdminController@banner_position')->name('banner-ads.position');
+
 
     Route::get('ads_create/{video_tape_id}','AdminController@ads_create')->name('ads_create');
 
@@ -683,6 +704,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
 
+
     // Live videos
 
     Route::post('broadcast', 'UserController@broadcast')->name('live_video.broadcast');
@@ -692,6 +714,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('stop-streaming', 'UserController@stop_streaming')->name('live_video.stop_streaming');
 
     Route::post('get_viewer_cnt','UserController@get_viewer_cnt')->name('live_video.get_viewer_cnt');
+
+    Route::post('add/watch_count', 'UserController@watch_count')->name('add.watch_count');
 
 
 });
@@ -800,5 +824,9 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/stripe_payment', 'UserApiController@stripe_payment');
 
     Route::post('/my_channels', 'UserApiController@my_channels');
+
+    Route::post('get_live_url', 'UserApiController@get_live_url');
+
+    Route::post('save_vod', 'UserApiController@save_vod');
 
 });

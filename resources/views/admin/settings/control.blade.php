@@ -97,6 +97,48 @@
                             </label>
                         </div>
 
+                         <div class="form-group">
+                            <label>{{tr('is_banner_video')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_banner_video" value="1" class="flat-red" @if(Setting::get('is_banner_video')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_banner_video" class="flat-red"  value="0" @if(!Setting::get('is_banner_video')) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
+                         <div class="form-group">
+                            <label>{{tr('is_banner_ad')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_banner_ad" value="1" class="flat-red" @if(Setting::get('is_banner_ad')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_banner_ad" class="flat-red"  value="0" @if(!Setting::get('is_banner_ad')) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{tr('is_vod')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_vod" value="1" class="flat-red" @if(Setting::get('is_vod')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_vod" class="flat-red"  value="0" @if(!Setting::get('is_vod')) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
 
                   </div>
                   <!-- /.box-body -->

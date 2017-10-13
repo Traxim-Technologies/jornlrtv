@@ -127,7 +127,7 @@
                             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="video" class="">{{tr('sub_title')}}</label>
-                                    <input type="file" id="subtitle" name="subtitle">
+                                    <input type="file" id="subtitle" name="subtitle" accept="text/plain">
                                     <p class="help-block">{{tr('subtitle_validate')}}</p>
                                 </div>
                             </div>

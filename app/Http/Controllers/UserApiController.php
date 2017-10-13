@@ -66,7 +66,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'get_live_url']));
 
     }
 
@@ -1023,53 +1023,6 @@ class UserApiController extends Controller {
            
             }
 
-            if($video = VideoTape::where('id',$request->video_tape_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
-
-                \Log::info("ADD History - Watch Count Start");
-
-                if($video->getVideoAds) {
-
-                    \Log::info("getVideoAds Relation Checked");
-
-                    if ($video->getVideoAds->status) {
-
-                        \Log::info("getVideoAds Status Checked");
-
-                        // Check the video view count reached admin viewers count, to add amount for each view
-
-                        if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
-
-                            \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
-
-                            $video_amount = Setting::get('amount_per_video');
-
-                            $video->redeem_count = 1;
-
-                            $video->amount += $video_amount;
-
-                            add_to_redeem($video->user_id , $video_amount);
-
-                            \Log::info("ADD History - add_to_redeem");
-
-
-                        } else {
-
-                            \Log::info("ADD History - NO REDEEM");
-
-                            $video->redeem_count += 1;
-
-                        }
-
-                    }
-                }
-
-                $video->watch_count += 1;
-
-                $video->save();
-
-                \Log::info("ADD History - Watch Count Start");
-
-            }
         }
         return response()->json($response_array, 200);
     
@@ -1500,8 +1453,7 @@ class UserApiController extends Controller {
 
         }
 
-        $response = response()->json($response_array, 200);
-        return $response;
+        return response()->json($response_array, 200);
 
     }
 
@@ -2021,10 +1973,6 @@ class UserApiController extends Controller {
 
     public function channel_list(Request $request) {
 
-/*        $channels = Channel::where('is_approved', DEFAULT_TRUE)
-                ->where('status', DEFAULT_TRUE)
-                ->paginate(16);
-*/
         $age = 0;
 
         $channel_id = [];
@@ -3628,6 +3576,152 @@ class UserApiController extends Controller {
         $response = response()->json($response_array, 200);
         
         return $response;
+    }
+
+
+    public function get_live_url(Request $request) {
+
+        $id = $request->video_id;
+
+        $device_type = $request->device_type;
+
+        $browser = $request->browser;
+
+        \Log::info("Live Video Id ".$id);
+
+        $video = LiveVideo::where('id', $id)->first(); 
+
+        if ($video) {
+
+            if($video->is_streaming) {
+
+                if (!$video->status) {
+
+
+                    if ($video->video_url) {
+
+                        $sdp = $video->user_id.'_'.$video->id;
+
+                        $browser = $browser ? strtolower($browser) : get_browser();
+
+                        if (strpos($browser, 'safari') !== false) {
+                            
+                            $url = "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";  
+
+                        } else {
+
+                            $url = "rtmp://".Setting::get('cross_platform_url')."/live/".$sdp;
+                        }
+
+                    } else {
+
+                        $sdp = $video->user_id.'-'.$video->id.'.sdp';
+
+                        if ($device_type == DEVICE_ANDROID) {
+
+                            $url = "rtsp://".Setting::get('cross_platform_url')."/live/".$sdp;
+
+                        } else if($device_type == DEVICE_IOS) {
+
+                            $url = "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";
+
+                        } else {
+
+                            $browser = $browser ? strtolower($browser) : get_browser();
+
+                            if (strpos($browser, 'safari') !== false) {
+                                
+                                $url = "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";  
+
+                            } else {
+
+                                $url = "rtmp://".Setting::get('cross_platform_url')."/live/".$sdp;
+                            }
+
+                        }
+                    }
+
+                    $response_array = ['success'=> true, 'url'=>$url];
+
+                } else {
+
+                    $response_array = ['success'=> false, 'message'=>tr('stream_stopped')];
+
+                }
+
+            } else {
+
+                $response_array = ['success'=> false, 'message'=>tr('no_streaming_video_present')];
+
+            }
+
+        } else {
+
+            $response_array = ['success'=> false, 'message'=>tr('no_live_video_present')];
+
+        }
+
+        return response()->json($response_array);
+ 
+    }
+
+
+    public function save_vod(Request $request) {
+
+
+        $data = explode(',', $request->video_blob);
+
+        if ($data[1] != '') {
+
+            $fileName = $request->id.'_'.$request->video_id.'.webm';
+
+            file_put_contents(join(DIRECTORY_SEPARATOR, [public_path(), 'uploads', 'vod',$fileName]), base64_decode($data[1]));
+
+            $live = LiveVideo::find($request->video_id);
+
+            if ($live) {
+
+                $model = new VideoTape;
+
+                $model->channel_id = $live->channel_id;
+
+                $model->unique_id = $live->title;
+
+                $model->title = $live->title;
+
+                $model->description = $live->description;
+
+                $model->default_image = $live->snapshot;
+
+                $model->video = asset('uploads/vod/'.$fileName);
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->compress_status = DEFAULT_TRUE;
+
+                $model->video_type = VIDEO_TYPE_LIVE;
+
+                $model->save();
+
+                $response_array = ['success'=>true, 'model'=>$model];
+
+                return response()->json($response_array);
+
+            } else{
+
+                $response_array = ['success'=>false, 'error_message'=>tr('no_live_video_found')];
+
+                return response()->json($response_array);
+
+            }
+
+            
+        }
+
+        $response_array = ['success'=>false, 'error_message'=>tr('no_live_video_found')];
+
+        return response()->json(response_array);
+
     }
     
 }

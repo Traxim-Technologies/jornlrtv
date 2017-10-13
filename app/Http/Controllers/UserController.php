@@ -34,6 +34,8 @@ use Log;
 
 use App\Card;
 
+use App\BannerAd;
+
 use App\Subscription;
 
 use App\Channel;
@@ -72,7 +74,8 @@ class UserController extends Controller {
 
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming']]);
+
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count']]);
 
 
         if (Auth::check()) {
@@ -125,6 +128,7 @@ class UserController extends Controller {
             }
 
         }
+
 
     }
 
@@ -180,6 +184,26 @@ class UserController extends Controller {
 
             $channels = getChannels(WEB);
 
+            $banner_videos = [];
+
+            if (Setting::get('is_banner_video')) {
+
+                $banner_videos = VideoTape::select('id as video_tape_id', 'banner_image as image', 'title as video_title', 'description as content')
+                                ->where('video_tapes.is_banner' , 1 )
+                                ->where('video_tapes.status', DEFAULT_TRUE)
+                                ->orderBy('video_tapes.created_at' , 'desc')
+                                ->get();
+            }
+
+            $banner_ads = [];
+
+            if(Setting::get('is_banner_ad')) {
+
+                $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')->where('banner_ads.status', DEFAULT_TRUE)->orderBy('banner_ads.created_at' , 'desc')
+                                ->get();
+
+            }
+
             return view('user.index')
                         ->with('page' , 'home')
                         ->with('subPage' , 'home')
@@ -188,7 +212,9 @@ class UserController extends Controller {
                         ->with('trendings' , $trendings)
                         ->with('watch_lists' , $watch_lists)
                         ->with('suggestions' , $suggestions)
-                        ->with('channels' , $channels);
+                        ->with('channels' , $channels)
+                        ->with('banner_videos', $banner_videos)
+                        ->with('banner_ads', $banner_ads);
         } else {
             return redirect()->route('installTheme');
         }
@@ -241,8 +267,13 @@ class UserController extends Controller {
                         ->with('dislike_count',$response->dislike_count)
                         ->with('subscriberscnt', $response->subscriberscnt)
                         ->with('comment_rating_status', $response->comment_rating_status);
+       
         } else {
-            return back()->with('flash_error', $data->message);
+
+            $error_message = isset($data->message) ? $data->message : tr('something_error');
+
+            return back()->with('flash_error', $error_message);
+            
         } 
     }
 
@@ -386,6 +417,64 @@ class UserController extends Controller {
 
         return response()->json($response);
     
+    }
+
+    public function watch_count(Request $request) {
+
+        if($video = VideoTape::where('id',$request->video_tape_id)
+                ->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
+
+            \Log::info("ADD History - Watch Count Start");
+
+            if($video->getVideoAds) {
+
+                \Log::info("getVideoAds Relation Checked");
+
+                if ($video->getVideoAds->status) {
+
+                    \Log::info("getVideoAds Status Checked");
+
+                    // Check the video view count reached admin viewers count, to add amount for each view
+
+                    if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
+
+                        \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
+
+                        $video_amount = Setting::get('amount_per_video');
+
+                        $video->redeem_count = 1;
+
+                        $video->amount += $video_amount;
+
+                        add_to_redeem($video->user_id , $video_amount);
+
+                        \Log::info("ADD History - add_to_redeem");
+
+
+                    } else {
+
+                        \Log::info("ADD History - NO REDEEM");
+
+                        $video->redeem_count += 1;
+
+                    }
+
+                }
+            }
+
+            $video->watch_count += 1;
+
+            $video->save();
+
+            \Log::info("ADD History - Watch Count Start");
+
+            return response()->json(true);
+
+        } else {
+
+            return response()->json(false);
+        }
+
     }
 
     public function delete_history(Request $request) {
@@ -936,6 +1025,37 @@ class UserController extends Controller {
     public function video_delete($id) {
 
         if($video = VideoTape::where('id' , $id)->first())  {
+
+            Helper::delete_picture($video->video, "/uploads/videos/");
+
+            Helper::delete_picture($video->subtitle, "/uploads/subtitles/"); 
+
+            if ($video->banner_image) {
+
+                Helper::delete_picture($video->banner_image, "/uploads/images/");
+            }
+
+            Helper::delete_picture($video->default_image, "/uploads/images/");
+
+            if ($video->video_path) {
+
+                $explode = explode(',', $video->video_path);
+
+                if (count($explode) > 0) {
+
+
+                    foreach ($explode as $key => $exp) {
+
+
+                        Helper::delete_picture($exp, "/uploads/videos/");
+
+                    }
+
+                }
+
+                
+
+            }
 
             $video->delete();
         }
@@ -1788,8 +1908,7 @@ class UserController extends Controller {
 
        
 
-        return redirect($route)
-            ->with('flash_success',$message);
+        return redirect($route)->with('flash_success',$message);
     }
 
 

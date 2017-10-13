@@ -33,6 +33,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+
         parent::report($e);
     }
 
@@ -45,7 +46,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        // return response()->view('errors.404', [], 404);
-        return parent::render($request, $e);
+
+        if ($e instanceof ValidationException)
+        {
+
+            return parent::render($request, $e);
+        }
+
+        // return parent::render($request, $e);
+
+        return response()->view('errors.404', [], 404);
+        
     }
 }

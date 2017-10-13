@@ -33,6 +33,7 @@ video {
 
 @section('content')
 
+
 <div class="y-content">
 
 	<div class="row content-row">
@@ -123,7 +124,9 @@ video {
 							@if($data->user_id == Auth::user()->id)
 							<div class="pull-right">
 
-								<a href="{{route('user.live_video.stop_streaming',array('id'=>$data->id))}}" class="btn btn-sm btn-danger">{{tr('stop')}}</a>
+								<?php /*<a href="{{route('user.live_video.stop_streaming',array('id'=>$data->id))}}" class="btn btn-sm btn-danger">{{tr('stop')}}</a> */?>
+
+								<a ng-click="stopStreaming()" class="btn btn-sm btn-danger">{{tr('stop')}}</a>
 
 							</div>
 
@@ -439,6 +442,10 @@ var url = "<?= url('/');?>";
 
 var live_user_id = "<?= Auth::check() ? Auth::user()->id : '' ?>";
 
+var user_token = "<?= Auth::check() ? Auth::user()->token : '' ?>";
+
+var is_vod = "<?= Setting::get('is_vod')?>";
+
 var liveAppCtrl = angular.module('liveApp', [
   'btford.socket-io',
 
@@ -451,7 +458,9 @@ var liveAppCtrl = angular.module('liveApp', [
 .constant('socket_url', socket_url)
 .constant('stop_streaming_url',stop_streaming_url)
 .constant('chat_socket_url', chat_socket_url)
-.constant('url',url);
+.constant('url',url)
+.constant('live_user_id',live_user_id)
+.constant('user_token',user_token);
 
 liveAppCtrl
     .run(['$rootScope',
