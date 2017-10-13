@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddedChatUrlInSettings::class);
         $this->call(AddedSliderKeys::class);
         $this->call(VODKeyInSettings::class);
+        $this->call(WowzwIPaddress::class);
     }
 }

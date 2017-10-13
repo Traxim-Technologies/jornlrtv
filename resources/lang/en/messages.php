@@ -76,8 +76,10 @@ return array(
 	'WEBRTC_SOCKET_URL' => 'WEBRTC SOCKET URL',
 	'cross_platform_url'=>"Cross Platform Url",
 	'admin_commission' => 'Admin Commission',
+	'wowza_ip_address'=>'Wowza Ip Address',
 
 	'user_commission' => 'User Commission',
+	'short_notes_banner'=>'For Banner, Upload Rectangle images 4:3 Ratio Ex: 400 * 300, For Thumbanil, Upload Rectangle images 1:1 Ratio Ex: 200 * 200',
 
 	'in_percentage' => 'in %',	
 

@@ -224,6 +224,9 @@
                         <!-- <h3>{{tr('upload_video_image')}}</h3> -->
                         <div style="margin-left: 15px"><small>Note : {{tr('select_image_short_notes')}}</small></div> 
                         <hr>
+                        <br>
+
+                        <div style="margin-left: 15px"><small>Note : {{tr('short_notes_banner')}}</small></div>
                         <div class="row">
                            <!--  <h4 class="info-text">{{tr('select_image_short_notes')}}</h4> -->
                             <div class="col-sm-12" id="select_image_div">

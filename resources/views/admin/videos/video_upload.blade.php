@@ -256,6 +256,9 @@
                     <div class="tab-pane" role="tabpanel" id="complete">
                         <!-- <h3>{{tr('upload_video_image')}}</h3> -->
                         <div style="margin-left: 15px"><small>Note : {{tr('select_image_short_notes')}}</small></div> 
+                        <br>
+
+                        <div style="margin-left: 15px"><small>Note : {{tr('short_notes_banner')}}</small></div>
                         <hr>
                         <div class="row">
                            <!--  <h4 class="info-text">{{tr('select_image_short_notes')}}</h4> -->
