@@ -53,9 +53,9 @@ video {
 						<div style="display: none">
 
 							<textarea id="rtpSdp">v=0
-	                              o=- 0 0 IN IP4 104.236.1.170
+	                              o=- 0 0 IN IP4 {{Setting::get('wowza_ip_address')}}
 	                              s=Kurento
-	                              c=IN IP4 104.236.1.170
+	                              c=IN IP4 {{Setting::get('wowza_ip_address')}}
 	                              t=0 0
 	                              m=video {{$data->port_no}} RTP/AVP 100
 	                              a=rtpmap:100 H264/90000
@@ -445,6 +445,8 @@ var live_user_id = "<?= Auth::check() ? Auth::user()->id : '' ?>";
 var user_token = "<?= Auth::check() ? Auth::user()->token : '' ?>";
 
 var is_vod = "<?= Setting::get('is_vod')?>";
+
+var wowza_ip_address = "<? = Setting::get('wowza_ip_address') ?>";
 
 var liveAppCtrl = angular.module('liveApp', [
   'btford.socket-io',

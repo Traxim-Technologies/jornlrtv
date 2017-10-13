@@ -1694,7 +1694,7 @@ class UserController extends Controller {
 
                 $myfile = fopen(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp", "w") or die("Unable to open file!");
 
-                $destination_ip = "104.236.1.170";
+                $destination_ip = Setting::get('wowza_ip_address');
 
                 // $destination_port = time();
 

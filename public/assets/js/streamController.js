@@ -625,7 +625,7 @@ liveAppCtrl
 			var destination_port;
 
 			if (!destinationIp.value)
-				destination_ip="104.236.1.170";
+				destination_ip= wowza_ip_address;
 			else
 				destination_ip = destinationIp.value.trim();
 
@@ -635,7 +635,7 @@ liveAppCtrl
 				destination_port = forceEvenRtpPort(destinationPort.value.trim());
 
 
-			destination_ip="104.236.1.170";
+			destination_ip = wowza_ip_address;
 
 				rtpSdp.value = 'v=0\n'
 				+ 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
