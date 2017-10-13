@@ -79,6 +79,7 @@ return array(
 	'wowza_ip_address'=>'Wowza Ip Address',
 
 	'user_commission' => 'User Commission',
+	'short_notes_banner'=>'For Banner, Upload Rectangle images 4:3 Ratio Ex: 400 * 300, For Thumbanil, Upload Rectangle images 1:1 Ratio Ex: 200 * 200',
 
 	'in_percentage' => 'in %',	
 
