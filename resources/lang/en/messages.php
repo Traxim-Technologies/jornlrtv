@@ -76,6 +76,7 @@ return array(
 	'WEBRTC_SOCKET_URL' => 'WEBRTC SOCKET URL',
 	'cross_platform_url'=>"Cross Platform Url",
 	'admin_commission' => 'Admin Commission',
+	'wowza_ip_address'=>'Wowza Ip Address',
 
 	'user_commission' => 'User Commission',
 

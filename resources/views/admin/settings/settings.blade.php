@@ -162,6 +162,16 @@
                                         <input type="text" class="form-control" name="chat_socket_url" value="{{ Setting::get('chat_socket_url')  }}" id="chat_socket_url" placeholder="{{tr('chat_socket_url')}}">
                                     </div>
                                 </div>
+
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <label for="sitename">{{tr('wowza_ip_address')}}</label>
+                                        <p class="example-note">Ex : IP_ADDRESS</p>
+                                        <input type="text" class="form-control" name="wowza_ip_address" value="{{ Setting::get('wowza_ip_address')  }}" id="wowza_ip_address" placeholder="{{tr('wowza_ip_address')}}">
+                                    </div>
+
+                                </div>
                                 
                           </div>
                           <!-- /.box-body -->
