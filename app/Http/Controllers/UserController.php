@@ -1716,7 +1716,7 @@ class UserController extends Controller {
 
                 shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
 
-               // $this->connectStream($response->data->user_id.'-'.$response->data->id);
+                $this->connectStream($response->data->user_id.'-'.$response->data->id);
 
             }
 
@@ -1902,7 +1902,11 @@ class UserController extends Controller {
 
         if ($model->save()) {
 
-            // $this->disConnectStream($model->user->id.'-'.$model->id);
+            if ($model->user->id == Auth::user()->id) {            
+
+                $this->disConnectStream($model->user->id.'-'.$model->id);
+
+            }
 
         }
 
