@@ -1902,7 +1902,11 @@ class UserController extends Controller {
 
         if ($model->save()) {
 
-            $this->disConnectStream($model->user->id.'-'.$model->id);
+            if ($model->user->id == Auth::user()->id) {            
+
+                $this->disConnectStream($model->user->id.'-'.$model->id);
+
+            }
 
         }
 
