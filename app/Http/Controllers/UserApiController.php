@@ -3082,7 +3082,7 @@ class UserApiController extends Controller {
 
     public function checkVideoStreaming(Request $request) {
 
-         $validator = Validator::make(
+        $validator = Validator::make(
             $request->all(), array(
                 'video_tape_id'=>'required|exists:live_videos,id',
         ));
