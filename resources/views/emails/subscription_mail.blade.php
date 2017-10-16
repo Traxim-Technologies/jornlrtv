@@ -165,7 +165,7 @@
 
                                                     <?php 
 
-                                                    $username = $email_data->subscriber ? ($email_data->subscriber->getUser ? $email_data->subscriber->getUser->name : '') : '';?>
+                                                    $username = isset($email_data->subscriber) ? (isset($email_data->subscriber->getUser) ? $email_data->subscriber->getUser->name : '') : '';?>
 
 
                                                     <h2 >Hi {{$username}}! </h2>
