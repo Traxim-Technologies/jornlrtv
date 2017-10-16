@@ -63,7 +63,7 @@ class SubscriptionMail extends Job implements ShouldQueue
                 $page = "emails.subscription_mail";
                 $email = $user->email;
 
-                if ($email_data->subscriber) {
+                if ($user) {
 
                     Helper::send_email($page,$subject,$email,$email_data);
 
