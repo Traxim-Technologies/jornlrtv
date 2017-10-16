@@ -162,7 +162,13 @@
                                         <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:25px;">
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
-                                                    <h2 >Hi {{$email_data->subscriber->getUser->name}}! </h2>
+
+                                                    <?php 
+
+                                                    $username = $email_data->subscriber ? ($email_data->subscriber->getUser ? $email_data->subscriber->getUser->name : '') : '';?>
+
+
+                                                    <h2 >Hi {{$username}}! </h2>
                                                 </div>
                                             </div>
                                         </td>
