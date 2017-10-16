@@ -200,7 +200,9 @@
                                                     <td bgcolor="#cf4545" align="center" style="border-radius:4px;cursor: pointer;" width="200" height="50">
                                                         <div class="contentEditableContainer contentTextEditable">
                                                             <div class="contentEditable" >
+                                                                @if(isset($email_data))
                                                                 <a target='_blank' href="{{route('admin.view.video' , array('id' => $email_data->video_id))}}" style="color: #FFF;text-orientation: none" class='link2'>Click Here To View</a>
+                                                                @endif
                                                             </div>
                                                         </div>
 
