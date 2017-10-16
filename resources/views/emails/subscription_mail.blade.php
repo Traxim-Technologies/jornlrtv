@@ -181,7 +181,7 @@
                                                     <p >
                                                     	"Welcome to {{Setting::get('site_name' , tr('site_name'))}}",
                                                     </p>
-                                                    <p>In {{$email_data->subscriber->getChannel->name}}, new Video has been Uploaded.</p>
+                                                    <p>In {{$email_data->subscriber ? ($email_data->subscriber->getChannel ? $email_data->subscriber->getChannel->name : '') : ''}}, new Video has been Uploaded.</p>
                                                 </div>
                                             </div>
                                         </td>
