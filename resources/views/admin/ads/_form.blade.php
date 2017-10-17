@@ -10,7 +10,7 @@
 
             <div class="box-header label-primary">
                 <b style="font-size:18px;">@yield('title')</b>
-                <a href="{{route('admin.ads_index')}}" class="btn btn-default pull-right">{{tr('video_ads')}}</a>
+                <a href="{{route('admin.ad_index')}}" class="btn btn-default pull-right">{{tr('video_ads')}}</a>
             </div>
 
             <form  action="{{route('admin.save_ads')}}" method="POST" enctype="multipart/form-data" role="form">
