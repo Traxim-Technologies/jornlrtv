@@ -448,7 +448,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('ads_delete','AdminController@ads_delete')->name('ads_delete');
 
-    Route::get('ads_index','AdminController@ads_index')->name('ads_index');
+    // Route::get('ads_index','AdminController@ads_index')->name('ads_index');
 
     Route::get('ads_view','AdminController@ads_view')->name('ads_view');
 

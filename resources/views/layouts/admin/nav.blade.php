@@ -65,7 +65,7 @@
 
              <li class="treeview" id="videos_ads">
 
-                <a href="{{route('admin.ads_index')}}">
+                <a href="{{route('admin.ad_index')}}">
                     <i class="fa fa-bullhorn"></i> <span>{{tr('ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
