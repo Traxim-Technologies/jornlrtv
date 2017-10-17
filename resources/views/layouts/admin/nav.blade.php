@@ -73,7 +73,7 @@
                     <li id="create-ad-videos"><a href="{{route('admin.ad_create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
                     <li id="view-ads"><a href="{{route('admin.ad_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li>
                     <li id="ad-videos"><a href="{{route('admin.ad_videos')}}"><i class="fa fa-circle-o"></i>{{tr('ads')}}</a></li>
-                   <!--  <li id="view-ads"><a href="{{route('admin.ads_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li> -->
+                   <?php /*<li id="view-ads"><a href="{{route('admin.ads_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li> */?>
                 </ul>
 
             </li>
