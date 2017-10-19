@@ -199,7 +199,7 @@
 			                                  <div class="row">
 			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('description')}}</label>
 			                                    <div class="col-md-9">
-			                                      <textarea id="description" name="description" placeholder="Decription.." class="form-control" ng-model="description" required></textarea>
+			                                      <textarea id="description" name="description" placeholder="{{tr('description')}}" class="form-control" ng-model="description" required></textarea>
 			                                    </div>
 			                                  </div>
 			                                  <br>
