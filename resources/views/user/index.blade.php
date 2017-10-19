@@ -33,6 +33,16 @@
   display: block;
 }
 
+.carousel-inner .active {
+
+    background-color: none;
+}
+
+.carousel-inner .item {
+
+    padding: 0px;
+
+}
 </style>
 @endsection
 
@@ -53,16 +63,16 @@
                 @if(count($banner_videos) > 0)
 
                 <div class="row" id="slider">
-                    <div class="col-md-12">
+                    <div class="col-md-10 col-md-offset-1">
                         <div id="myCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 @foreach($banner_videos as $key => $banner_video)
                                 <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}">
-                                    <a href="{{route('user.single' , $banner_video->video_tape_id)}}"><img src="{{$banner_video->image}}" style="height:350px;width: 100%;">
-                                    <div class="carousel-caption">
+                                    <a href="{{route('user.single' , $banner_video->video_tape_id)}}"><img src="{{$banner_video->image}}" style="height:250px;width: 100%;">
+                                    <?php /*<div class="carousel-caption">
                                         <h3>{{$banner_video->video_title}}</h3>
                                         <p>{{substr($banner_video->content , 0 , 200)}}...</p>
-                                    </div>
+                                    </div> */?>
                                     </a>
                                 </div>
                                 @endforeach
@@ -90,16 +100,16 @@
                 @if(count($banner_ads) > 0)
 
                 <div class="row" id="slider">
-                    <div class="col-md-12">
+                    <div class="col-md-10 col-md-offset-1">
                         <div id="myCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 @foreach($banner_ads as $key => $banner_ad)
                                 <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}">
-                                    <a href="{{$banner_ad->link}}" target="_blank"><img src="{{$banner_ad->image}}" style="height:350px;width: 100%;">
-                                    <div class="carousel-caption">
+                                    <a href="{{$banner_ad->link}}" target="_blank"><img src="{{$banner_ad->image}}" style="height:250px;width: 100%;">
+                                    <?php /*<div class="carousel-caption">
                                         <h3>{{$banner_ad->video_title}}</h3>
                                         <p><?= substr($banner_ad->content , 0 , 200)?>...</p>
-                                    </div>
+                                    </div>*/?>
                                     </a>
                                 </div>
                                 @endforeach
