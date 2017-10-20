@@ -1593,10 +1593,11 @@ class UserController extends Controller {
 
         $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip
 
-        $channel = Channnel::find($request->channel_id);
+        $channel = Channel::find($request->channel_id);
 
         $view = View::make('user.videos.partial_videos')
-                    ->with('videos', $videos)->with('channel', $channel)->render();
+                    ->with('videos', $videos)
+                    ->with('channel', $channel)->render();
 
         return response()->json(['view'=>$view, 'length'=>count($videos)]);
     }
