@@ -779,7 +779,7 @@
 					                    <p style="color: #000">{{tr('no_videos_found')}}</p>
 					                @endif
 
-					                @if(count($payment_videos) > 0)
+					                <?php /* @if(count($payment_videos) > 0)
 
 					                    @if($payment_videos)
 					                    <div class="row">
@@ -788,7 +788,7 @@
 					                        </div>
 					                    </div>
 					                    @endif
-					                @endif
+					                @endif */?>
 					                
 					            </div>
 
