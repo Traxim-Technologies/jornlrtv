@@ -402,7 +402,7 @@
 					</div>
 				</li>
 
-				<li role="tabpanel" class="tab-pane" id="videos">
+				<li role="tabpanel" class="tab-pane" id="videos_sec">
 
 					<div class="slide-area recom-area abt-sec">
 						<div class="abt-sec-head">
@@ -708,7 +708,7 @@
 				</li>
 
 
-				<li role="tabpanel" class="tab-pane" id="payment_managment">
+				<li role="tabpanel" class="tab-pane" id="payment_managment_sec">
 
 					<div class="slide-area recom-area abt-sec">
 						<div class="abt-sec-head">
@@ -779,7 +779,7 @@
 					                    <p style="color: #000">{{tr('no_videos_found')}}</p>
 					                @endif
 
-					                @if(count($payment_videos) > 0)
+					                <?php /* @if(count($payment_videos) > 0)
 
 					                    @if($payment_videos)
 					                    <div class="row">
@@ -788,7 +788,7 @@
 					                        </div>
 					                    </div>
 					                    @endif
-					                @endif
+					                @endif */?>
 					                
 					            </div>
 
@@ -850,7 +850,7 @@
 
 	    	//alert(value);
 
-	    	if (value == 'videos') {
+	    	if (value == 'videos_sec') {
 
 		    	if (!stopScroll) {
 
@@ -865,7 +865,7 @@
 				}
 			}
 
-			if (value == 'payment_managment') {
+			if (value == 'payment_managment_sec') {
 
 				if (!stopPaymentScroll) {
 
