@@ -678,12 +678,12 @@
 
 					                @endif
 
-					                @if(count($videos) > 0)
+					                @if(count($live_videos) > 0)
 
-					                    @if($videos)
+					                    @if($live_videos)
 					                    <div class="row">
 					                        <div class="col-md-12">
-					                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+					                            <div align="center" id="paglink"><?php echo $live_videos->links(); ?></div>
 					                        </div>
 					                    </div>
 					                    @endif
