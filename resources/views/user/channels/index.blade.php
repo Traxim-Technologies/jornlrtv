@@ -262,7 +262,7 @@
 							<li role="presentation" class="active">
 								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('home')}}</span></a>
 							</li>
-							<li role="presentation" id="videos">
+							<li role="presentation" id="videos_sec">
 								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
 							</li>
 
@@ -275,7 +275,7 @@
 							</li>
 							@if(Auth::check())
 								@if($channel->user_id == Auth::user()->id)
-									<li role="presentation" id="payment_managment">
+									<li role="presentation" id="payment_managment_sec">
 										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> </a>
 									</li>
 								@endif
@@ -402,7 +402,7 @@
 					</div>
 				</li>
 
-				<li role="tabpanel" class="tab-pane" id="videos_sec">
+				<li role="tabpanel" class="tab-pane" id="videos">
 
 					<div class="slide-area recom-area abt-sec">
 						<div class="abt-sec-head">
@@ -708,7 +708,7 @@
 				</li>
 
 
-				<li role="tabpanel" class="tab-pane" id="payment_managment_sec">
+				<li role="tabpanel" class="tab-pane" id="payment_managment">
 
 					<div class="slide-area recom-area abt-sec">
 						<div class="abt-sec-head">
