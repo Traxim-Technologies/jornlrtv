@@ -24,6 +24,8 @@ use Auth;
 
 use Validator;
 
+use View;
+
 use Setting;
 
 use Exception;
@@ -63,7 +65,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'watch_count']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'watch_count', 'partialVideos']]);
     }
 
     /**
@@ -569,7 +571,7 @@ class UserController extends Controller {
 
         if ($channel) {
 
-            $videos = VideoRepo::channel_videos($id, WEB);
+            $videos = VideoRepo::channel_videos($id);
 
             $trending_videos = VideoRepo::channel_trending($id, WEB, null, 5);
 
@@ -1582,5 +1584,33 @@ class UserController extends Controller {
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
 
+    }
+
+
+    public function partialVideos(Request $request) {
+
+        // Get Videos
+
+        $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+
+        $view = View::make('user.videos.partial_videos')
+                    ->with('videos', $videos)->render();
+
+        return response()->json(['view'=>$view, 'length'=>count($videos)]);
+    }
+
+
+    public function payment_mgmt_videos(Request $request) {
+
+        // Get Videos
+
+        // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+
+        $payment_videos = VideoRepo::payment_videos($request->channel_id, null, $request->skip);
+
+        $view = View::make('user.videos.partial_payment_videos')
+                    ->with('payment_videos', $payment_videos)->render();
+
+        return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
     }
 }
