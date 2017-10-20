@@ -718,6 +718,10 @@ Route::group(['as' => 'user.'], function(){
     Route::post('add/watch_count', 'UserController@watch_count')->name('add.watch_count');
 
 
+    Route::post('/partialVideos', 'UserController@partialVideos')->name('video.get_videos');
+
+    Route::post('/payment_mgmt_videos', 'UserController@payment_mgmt_videos')->name('video.payment_mgmt_videos');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){

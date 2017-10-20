@@ -262,7 +262,7 @@
 							<li role="presentation" class="active">
 								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('home')}}</span></a>
 							</li>
-							<li role="presentation">
+							<li role="presentation" id="videos">
 								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
 							</li>
 
@@ -275,7 +275,7 @@
 							</li>
 							@if(Auth::check())
 								@if($channel->user_id == Auth::user()->id)
-									<li role="presentation">
+									<li role="presentation" id="payment_managment">
 										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> </a>
 									</li>
 								@endif
@@ -481,6 +481,11 @@
 					                        </li>    
 
 					                        @endforeach
+
+
+					                        <span id="videos_list"></span>
+
+					                        <div id="video_loader"></div>
 					                       
 					                    </ul>
 
@@ -490,7 +495,7 @@
 
 					                @endif
 
-					                @if(count($videos) > 0)
+					                <?php /* @if(count($videos) > 0)
 
 					                    @if($videos)
 					                    <div class="row">
@@ -498,8 +503,8 @@
 					                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
 					                        </div>
 					                    </div>
-					                    @endif
-					                @endif
+					                    @endif 
+					                @endif*/ ?>
 					                
 					            </div>
 
@@ -763,6 +768,10 @@
 					                        </li>    
 
 					                        @endforeach
+
+					                        <span id="payment_videos_list"></span>
+
+					                        <div id="payment_video_loader"></div>
 					                       
 					                    </ul>
 
@@ -820,6 +829,181 @@
             }
 
         });
+
+    }
+
+
+    var stopScroll = false;
+
+	var searchLength = "{{count($videos)}}";
+
+	var stopPaymentScroll = false;
+
+	var searchPaymentLength = "{{count($payment_videos)}}";
+
+    
+    $(window).scroll(function() {
+
+	    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+
+	    	var value = $('ul#channel-navigation-menu').find('li.active').attr('id');
+
+	    	//alert(value);
+
+	    	if (value == 'videos') {
+
+		    	if (!stopScroll) {
+
+					// console.log("New Length " +searchLength);
+
+					if (searchLength > 0) {
+
+						videos(searchLength);
+
+					}
+
+				}
+			}
+
+			if (value == 'payment_managment') {
+
+				if (!stopPaymentScroll) {
+
+					// console.log("New Length " +searchLength);
+
+					if (searchPaymentLength > 0) {
+
+						payment_videos(searchPaymentLength);
+
+					}
+
+				}
+			}
+
+		}
+
+	});
+
+
+	function videos(cnt) {
+
+    	channel_id = "{{$channel->id}}";
+
+    	$.ajax({
+
+    		type : "post",
+
+    		url : "{{route('user.video.get_videos')}}",
+
+    		beforeSend : function () {
+
+				$("#video_loader").html('<h1 class="text-center"><i class="fa fa-spinner fa-spin"></i></h1>');
+			},
+
+			data : {skip : cnt, channel_id : channel_id},
+
+			async : false,
+
+			success : function (data) {
+
+				$("#videos_list").append(data.view);
+
+				if (data.length == 0) {
+
+					stopScroll = true;
+
+				} else {
+
+					stopScroll = false;
+
+					// console.log(searchLength);
+
+					// console.log(data.length);
+
+					searchLength = parseInt(searchLength) + data.length;
+
+					// console.log("searchLength" +searchLength);
+
+				}
+
+			}, 
+
+			complete : function() {
+
+				$("#video_loader").html('');
+
+			},
+
+			error : function (data) {
+
+
+			},
+
+    	});
+
+    }
+
+
+
+
+
+
+
+	function payment_videos(cnt) {
+
+    	channel_id = "{{$channel->id}}";
+
+    	$.ajax({
+
+    		type : "post",
+
+    		url : "{{route('user.video.payment_mgmt_videos')}}",
+
+    		beforeSend : function () {
+
+				$("#payment_video_loader").html('<h1 class="text-center"><i class="fa fa-spinner fa-spin"></i></h1>');
+			},
+
+			data : {skip : cnt, channel_id : channel_id},
+
+			async : false,
+
+			success : function (data) {
+
+				$("#payment_videos_list").append(data.view);
+
+				if (data.length == 0) {
+
+					stopPaymentScroll = true;
+
+				} else {
+
+					stopPaymentScroll = false;
+
+					// console.log(searchLength);
+
+					// console.log(data.length);
+
+					searchPaymentLength = parseInt(searchPaymentLength) + data.length;
+
+					// console.log("searchLength" +searchLength);
+
+				}
+
+			}, 
+
+			complete : function() {
+
+				$("#payment_video_loader").html('');
+
+			},
+
+			error : function (data) {
+
+
+			},
+
+    	});
 
     }
 </script>
