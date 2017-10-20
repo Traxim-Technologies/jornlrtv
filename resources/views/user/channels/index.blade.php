@@ -402,7 +402,7 @@
 					</div>
 				</li>
 
-				<li role="tabpanel" class="tab-pane" id="videos">
+				<li role="tabpanel" class="tab-pane" id="videos_sec">
 
 					<div class="slide-area recom-area abt-sec">
 						<div class="abt-sec-head">
@@ -708,7 +708,7 @@
 				</li>
 
 
-				<li role="tabpanel" class="tab-pane" id="payment_managment">
+				<li role="tabpanel" class="tab-pane" id="payment_managment_sec">
 
 					<div class="slide-area recom-area abt-sec">
 						<div class="abt-sec-head">
@@ -850,7 +850,7 @@
 
 	    	//alert(value);
 
-	    	if (value == 'videos') {
+	    	if (value == 'videos_sec') {
 
 		    	if (!stopScroll) {
 
@@ -865,7 +865,7 @@
 				}
 			}
 
-			if (value == 'payment_managment') {
+			if (value == 'payment_managment_sec') {
 
 				if (!stopPaymentScroll) {
 
