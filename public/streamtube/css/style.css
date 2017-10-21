@@ -48,26 +48,8 @@ body{
 .no-margin{
 	margin: 0;
 }
-.youtube-nav{
-	padding:10px 20px;
-	border-bottom: 1px solid #e8e8e8;
-	background-color: #fff;
-	position: fixed;
-	z-index: 2;
-	width: 100%;
-	z-index: 999;
-}
 .youtube-nav .row{
 	margin: 0;
-}
-.y-menu{
-	border-right: 1px solid #e8e8e8;
-    background-color: #fff;
-    padding-bottom: 15px;
-    padding-top: 15px;
-    margin-top: 58px;
-    min-height: 700px;
-    overflow: auto;
 }
 .home1{
 	padding-top: 10px;
@@ -173,9 +155,6 @@ body{
 	margin: 0;
 	/*margin-bottom: 15px;*/
 }
-.page-inner{
-	margin-top: 68px;
-}
 .slide-area{
 	background-color: #fff;
 	padding: 10px 30px;
@@ -232,15 +211,14 @@ footer{
 .footer1{
 	padding: 10px;	
 	margin: 0;
-	padding-top: 20px;
 }
 .tube-image{
-	width: 100px;
-    height: 45px;
+	width: 130px;
+    height: 30px;
     /*margin-top: 10PX;*/
 }
 .tube-image img{
-	max-width: 100px;
+	max-width: 130px;
 	width: 100%;
     min-height: 100%;
 }
@@ -263,13 +241,12 @@ footer{
 .term li{
 	list-style-type: none;
 	display: inline-block;
-	margin-right: 18px;
 
 }
 .term li a{
 	text-decoration:  none;
 	color: rgb(51, 51, 51);
-	font-size: 11px;
+	font-size: 14px;
 }
 /*search bar css*/
 #custom-search-input{
@@ -829,7 +806,7 @@ history (single page) css
 */
 
 .history-content{
-	margin-top: 77px;	
+	margin-top: 75px !important;	
 }
 .new-history{
 	padding: 15px;
@@ -897,19 +874,10 @@ history (single page) css
 .history-head h5:hover{
 	color: #167ac6;
 }
-.cross-mark {
-    width: 20%;
-    float: left;
-    text-align: right;
-}
+
 .cross-mark i{
 	color: #AAA6A6;
     font-size: 15px;
-}
-.cross-title {
-    width: 80%;
-    float: left;
-    text-transform: capitalize;
 }
 .cross-title a:hover{
 	color: #337ab7;
@@ -946,11 +914,11 @@ history (single page) css
     display: block;
   	display: -webkit-box;
   /* Fallback for non-webkit */
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 33px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 27px;
 
 }
 .duration{
@@ -1192,10 +1160,7 @@ profile.html css
 	width: 100%;
     min-height: 100%;
 }
-.mylist-profile{
-	background-color: #fff;
-	padding: 15px;
-}
+
 .edit-button button{
 	padding: 5px 7px;
 	background-color: #e52d27;
@@ -1508,15 +1473,14 @@ changes
 	min-height: 700px;
 }
 .profile-content {
-    margin-top: 75px !important;
-}
-.profile-view{
-	padding-left: 0;
+    margin-top:10px !important;
 }
 .common-youtube {
 	min-height: 700px;
 }
-
+.right-zero{
+	margin-right:0 !important;
+}
 
 .slide-image{
 	width: 100%;
@@ -1524,7 +1488,9 @@ changes
 	overflow: hidden;
 	position: relative;
 }
-
+.btn-group-sm > .btn, .btn-sm{
+	border-radius: 0;
+}
 .slide-image img{
 	width: 100%;
 	min-height: 100%;
@@ -1598,8 +1564,8 @@ margin: 0px auto 35px;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 38px;
-  line-height: 19px;
+  max-height:50px;
+  line-height:23px;
 }
 .edit-pro-btn a{
 	display: block;
@@ -1615,14 +1581,23 @@ margin: 0px auto 35px;
 	margin-bottom: 10px;
 	margin-top: 5px;
 }
-
+.cross-mark1{
+    width:20%;
+    float: left;
+    text-align: right;
+}
+.cross-title1 {
+    width: 80%;
+    float: left;
+    text-transform: capitalize;
+}
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
+@media only screen and (max-width : 991px) {
 	.slide-image {
 	    width: 100%;
 	    height: 90px;
@@ -1667,7 +1642,7 @@ margin: 0px auto 35px;
 }
 
 .close:hover {
-	padding: 5px 10px;
+	padding:0;
 	color: rgb(255, 255, 255);
 	border-radius: 4px;
 }
@@ -1855,7 +1830,7 @@ margin: 0px auto 35px;
 }
 
 .term {
-	margin-top: 5px !important;
+	margin-top: 10px !important;
 }
 
 
@@ -2136,7 +2111,6 @@ margin: 0px auto 35px;
 		-webkit-animation: cssload-animate 0.58s linear infinite;
 		-moz-animation: cssload-animate 0.58s linear infinite;
 }
-
 
 
 @keyframes cssload-animate {

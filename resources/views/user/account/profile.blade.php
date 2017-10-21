@@ -21,7 +21,7 @@
             <div class="profile-content">
                 <div class="row no-margin">
                     <div class="col-sm-7 profile-view">
-                        <div class="edit-profile profile-view">
+                        <div class="edit-profile ">
                             <div class="profile-details">
                                 <div class="sub-profile">
                                     <h4 class="edit-head">{{tr('profile')}}</h4>
@@ -133,7 +133,7 @@
 
                                             <div class="history-title">
                                                 <div class="history-head row">
-                                                    <div class="cross-title">
+                                                    <div class="cross-title1">
                                                         <h5><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
                                                          <span class="video_views">
                                                             <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} 
@@ -141,7 +141,7 @@
                                                             {{$video->created_at->diffForHumans()}}
                                                         </span>
                                                     </div> 
-                                                    <div class="cross-mark">
+                                                    <div class="cross-mark1">
                                                         <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('wishlist_id' => $video->wishlist_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                     </div><!--end of cross-mark-->                       
                                                 </div> <!--end of history-head--> 

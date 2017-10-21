@@ -1,14 +1,14 @@
 <div class="youtube-nav">
     <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
             <a href="#"><i class="fa fa-align-justify toggle-icon" aria-hidden="true"></i></a>
 
             <a href="{{route('user.dashboard')}}">
                 @if(Setting::get('site_logo'))
-                    <img src="{{Setting::get('site_logo')}}" style="width: 70%;height: 35px;vertical-align: middle;">
+                    <img src="{{Setting::get('site_logo')}}" class="logo-img">
                 @else
-                    <img src="{{asset('logo.png')}}" style="width: 70%;height: 35px;vertical-align: middle;">
+                    <img src="{{asset('logo.png')}}" class="logo-img">
                 @endif
             </a>
         
@@ -189,59 +189,12 @@
                     </div>
             </div><!--y-button end-->
         @else
-            <div class="y-button">
-                <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
-            </div><!--y-button end-->
-<?php /*=======
-            @if(Auth::check())
-                <div class="y-button profile-button">
-                   <div class="dropdown">
-                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            @if(Auth::user()->picture != "")
-                                <img class="profile-image" src="{{Auth::user()->picture}}">
-                            @else
-                                <img class="profile-image" src="{{asset('placeholder.png')}}">
-                            @endif
-                            
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
-                            
-                            <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
-                            
-                            <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
-                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
-                             @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
-                                <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
-                            @endif
-                            @if(Setting::get('is_spam')) 
-                            <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
-                            @endif
+        <div class="y-button">
+            <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
+        </div><!--y-button end-->
+        
 
-                            @if(Setting::get('is_payper_view')) 
-                             <li><a href="{{route('user.pay-per-videos')}}">{{tr('pay_per_videos')}}</a></li>
-
-                             @endif
-                            @if (Auth::user()->login_by == 'manual') 
-                                <li role="separator" class="divider"></li>
-                                <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
-                            @endif
-
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
-                          </ul>
-                        </div>
-                </div><!--y-button end-->
-            @else
-                <div class="y-button">
-                    <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
-                </div><!--y-button end-->
->>>>>>> remotes/codegama/streamtube-v1.2-package/master */?>
-
-            @endif
+        @endif
 
 
             <ul class="nav navbar-nav pull-right" style="margin: 3.5px 0px">
