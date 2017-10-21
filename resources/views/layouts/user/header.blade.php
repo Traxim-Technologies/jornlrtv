@@ -1,14 +1,14 @@
 <div class="youtube-nav">
     <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
             <a href="#"><i class="fa fa-align-justify toggle-icon" aria-hidden="true"></i></a>
 
             <a href="{{route('user.dashboard')}}">
                 @if(Setting::get('site_logo'))
-                    <img src="{{Setting::get('site_logo')}}" style="width: 70%;height: 35px;vertical-align: middle;">
+                    <img src="{{Setting::get('site_logo')}}" class="logo-img">
                 @else
-                    <img src="{{asset('logo.png')}}" style="width: 70%;height: 35px;vertical-align: middle;">
+                    <img src="{{asset('logo.png')}}" class="logo-img">
                 @endif
             </a>
         
@@ -131,7 +131,7 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
+        <div class="col-lg-3 col-md-2 col-sm-2 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
             @if(Auth::check())
                 <div class="y-button profile-button">
                    <div class="dropdown">
