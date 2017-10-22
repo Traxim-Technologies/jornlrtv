@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- #66da49d Social login - cancel button error fixed
+- 66da49d Social login - cancel button error fixed
 
 
 2017-04-07 : Email Features Added for user
