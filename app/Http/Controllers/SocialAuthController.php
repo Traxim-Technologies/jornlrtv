@@ -20,6 +20,10 @@ class SocialAuthController extends Controller
 
     public function callback(Request $request ,$provider) {
 
+    	if (!$request->has('code') || $request->has('denied')) {
+		    return redirect('/');
+		}
+
 		$social_user = \Socialite::driver($provider)->user();
 
 		$user = new User;

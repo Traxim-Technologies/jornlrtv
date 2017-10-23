@@ -43,7 +43,7 @@
 
                                     <div class="history-title">
                                         <div class="history-head row">
-                                            <div class="cross-title">
+                                            <div class="cross-title1">
                                                 <h5><a href="{{route('user.single' , $history->admin_video_id)}}">{{$history->title}}</a></h5>
                                                 <span class="video_views">
                                                     <i class="fa fa-eye"></i> {{$history->watch_count}} {{tr('views')}} 
@@ -51,7 +51,7 @@
                                                     {{$history->created_at->diffForHumans()}}*/?>
                                                 </span>
                                             </div> 
-                                            <div class="cross-mark">
+                                            <div class="cross-mark1">
                                                 <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.history' , array('history_id' => $history->history_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                             </div><!--end of cross-mark-->                       
                                         </div> <!--end of history-head--> 

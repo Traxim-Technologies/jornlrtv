@@ -37,7 +37,7 @@
 
         @yield('content')
 
-        <div style="height: 30px"></div>
+        <div class="bottom"></div>
 
         <div class="footer_class">
 
