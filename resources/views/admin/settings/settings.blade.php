@@ -261,7 +261,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <!-- <h4>{{tr('twitter_settings')}}</h4>
+                                <h4>{{tr('twitter_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -281,7 +281,7 @@
                                         <input type="text" class="form-control" name="TWITTER_CALL_BACK" id="twitter_call_back" placeholder="{{tr('TWITTER_CALL_BACK')}}" value="{{$result['TWITTER_CALL_BACK']}}">
                                     </div>
                                 </div>
-                                <div class="clearfix"></div> -->
+                                <div class="clearfix"></div>
                                 <h4>{{tr('google_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">

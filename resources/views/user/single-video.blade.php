@@ -249,7 +249,7 @@ textarea[name=comments] {
 
                                                             <input name="embed_link" class="form-control" id="embed_link" type="hidden" value="{{route('embed_video', array('u_id'=>$video->unique_id))}}">
 
-                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" style="margin-left: 8px;" title="{{tr('copy_embedded_link')}}">
+                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" style="margin-left: 8px; margin-top: -1px;" title="{{tr('copy_embedded_link')}}">
 
                                                                 <i class="fa fa-link"></i>
 

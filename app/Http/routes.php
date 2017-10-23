@@ -448,7 +448,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('ads_delete','AdminController@ads_delete')->name('ads_delete');
 
-    Route::get('ads_index','AdminController@ads_index')->name('ads_index');
+    // Route::get('ads_index','AdminController@ads_index')->name('ads_index');
 
     Route::get('ads_view','AdminController@ads_view')->name('ads_view');
 
@@ -680,6 +680,10 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
 
     Route::post('add/watch_count', 'UserController@watch_count')->name('add.watch_count');
+
+    Route::post('/partialVideos', 'UserController@partialVideos')->name('video.get_videos');
+
+    Route::post('/payment_mgmt_videos', 'UserController@payment_mgmt_videos')->name('video.payment_mgmt_videos');
 
 });
 

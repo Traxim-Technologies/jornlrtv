@@ -12,7 +12,7 @@
 
         <div class="y-button">
 
-            <ul class="nav navbar-nav pull-right">
+            <ul class="nav navbar-nav pull-right" style="margin: 3.5px 0px">
 
                 @if(Setting::get('admin_language_control'))
 
@@ -20,7 +20,7 @@
 
                     <li  class="dropdown">
                 
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 5px 15px; margin-top: 3px; margin-right: 5px;color: #cc181e"><i class="fa fa-globe"></i> <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 5px 15px; margin-right: 5px;color: #cc181e"><i class="fa fa-globe"></i> <b class="caret"></b></a>
 
                         <ul class="dropdown-menu" style="min-width: 70px;overflow: hidden;position: absolute;background: #fff;">
 
