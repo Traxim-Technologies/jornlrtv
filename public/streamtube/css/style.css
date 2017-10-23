@@ -336,9 +336,6 @@ videos (single page) css
 .watch-video .row{
 	margin: 0;
 }
-.play-video {
-    /*padding: 0;*/
-}
 .video-y-menu{
 	position: absolute;
 	z-index: 999;
@@ -370,6 +367,9 @@ videos (single page) css
     width: 100%;
     margin-bottom: 0;
     text-transform: capitalize;
+}
+.nospace-left{
+	margin-left: 0;
 }
 .watch-duration{
 	width: 45%;
@@ -1482,7 +1482,9 @@ changes
 .right-zero{
 	margin-right:0 !important;
 }
-
+.bottom-space{
+	margin-bottom: 15px;
+}
 .slide-image{
 	width: 100%;
 	height: 110px !important;
