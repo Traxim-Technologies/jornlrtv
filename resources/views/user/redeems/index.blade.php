@@ -98,7 +98,7 @@ thead>tr>th {
 
                     <div class="row">
 
-                        <div class="col-lg-2 col-md-3 col-sm-5 col-xs-5 ">
+                        <div class="col-lg-2 col-md-3 col-sm-5 col-xs-12 ">
 
                             <div class="circle">
                                 <div class="circle__inner">
@@ -110,7 +110,7 @@ thead>tr>th {
                             </div>
                         </div>
 
-                        <div class="col-lg-10 col-md-9 col-sm-7 col-xs-7">
+                        <div class="col-lg-10 col-md-9 col-sm-7 col-xs-12 bottom-space">
 
                             <p class="redeem-content">{{tr('redeem_content')}}
                             </p>
@@ -138,61 +138,61 @@ thead>tr>th {
                     @if(count($redeem_requests = Auth::user()->userRedeemRequests) > 0)
 
                         <div class="row">
-
                             <div class="col-md-12">
+                                <div class="table-responsive" >
 
-                                <table class="table">
+                                    <table class="table">
 
-                                    <thead>
-                                        <tr>
-                                            <th>{{tr('redeem_amount')}}</th>
-                                            <th>{{tr('sent_date')}}</th>
-                                            <th>{{tr('paid_amount')}}</th>
-                                            <th>{{tr('paid_date')}}</th>
-                                            <th>{{tr('status')}}</th>
-                                            <th>{{tr('action')}}</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-
-                                        @foreach($redeem_requests as $rr => $redeem_request)
-
+                                        <thead>
                                             <tr>
-
-                                                <td><b>{{Setting::get('currency')}} {{$redeem_request->request_amount}}</b></td>
-
-                                                <td>{{$redeem_request->created_at->diffForHumans()}}</td>
-                                                <td><b>{{Setting::get('currency')}} {{$redeem_request->paid_amount}}</b></td>
-                                                <td>{{$redeem_request->created_at->diffForHumans()}}</td>
-
-                                                <td>
-                                                    <span class="btn btn-primary btn-xs"> <b>
-
-                                                        {{redeem_request_status($redeem_request->status)}}
-
-                                                        </b>
-
-                                                    </span>
-                                                </td>
-
-                                                <td>
-                                                    @if(in_array($redeem_request->status, [REDEEM_REQUEST_SENT , REDEEM_REQUEST_PROCESSING]))
-                                                        <a href="{{route('user.redeems.request.cancel' , ['redeem_request_id' => $redeem_request->id])}}" class="btn btn-danger btn-sm">{{tr('cancel')}}</a>
-                                                    @else
-                                                        <span class="text-center">-</span>
-                                                    @endif
-                                                </td>
+                                                <th>{{tr('redeem_amount')}}</th>
+                                                <th>{{tr('sent_date')}}</th>
+                                                <th>{{tr('paid_amount')}}</th>
+                                                <th>{{tr('paid_date')}}</th>
+                                                <th>{{tr('status')}}</th>
+                                                <th>{{tr('action')}}</th>
                                             </tr>
+                                        </thead>
 
-                                        @endforeach
+                                        <tbody>
+
+                                            @foreach($redeem_requests as $rr => $redeem_request)
+
+                                                <tr>
+
+                                                    <td><b>{{Setting::get('currency')}} {{$redeem_request->request_amount}}</b></td>
+
+                                                    <td>{{$redeem_request->created_at->diffForHumans()}}</td>
+                                                    <td><b>{{Setting::get('currency')}} {{$redeem_request->paid_amount}}</b></td>
+                                                    <td>{{$redeem_request->created_at->diffForHumans()}}</td>
+
+                                                    <td>
+                                                        <span class="btn btn-primary btn-xs"> <b>
+
+                                                            {{redeem_request_status($redeem_request->status)}}
+
+                                                            </b>
+
+                                                        </span>
+                                                    </td>
+
+                                                    <td>
+                                                        @if(in_array($redeem_request->status, [REDEEM_REQUEST_SENT , REDEEM_REQUEST_PROCESSING]))
+                                                            <a href="{{route('user.redeems.request.cancel' , ['redeem_request_id' => $redeem_request->id])}}" class="btn btn-danger btn-sm">{{tr('cancel')}}</a>
+                                                        @else
+                                                            <span class="text-center">-</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+
+                                            @endforeach
+                                        
+                                        </tbody>
                                     
-                                    </tbody>
-                                
-                                </table>
+                                    </table>
 
-                            </div>
-
+                                </div>
+                            <div class="table-responsive">
                         </div>
 
                     @endif
