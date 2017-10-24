@@ -919,7 +919,7 @@ history (single page) css
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 27px;
+    max-height:33px;
 
 }
 .duration{
@@ -1831,12 +1831,33 @@ margin: 0px auto 35px;
 	margin-top: 10px !important;
 }
 
-
-
+.demo-container {
+	width: 100%;
+    max-width: 350px;
+    margin: 0px auto;
+    padding-top: 25px;
+}
+.add-card{
+    margin: 30px 0;
+}
+.add-card input {
+    margin: 10px 0 auto;
+    display: block;
+    border:2px solid #e0e0e0;
+    box-shadow: none;
+   	background-color: transparent;
+    border-radius: 5px;
+    height:40px;
+    padding: 10px; 
+    color: #999;
+}
+.submit-btn{
+    margin-top: 15px;
+    height: 40px; 
+}
 .report_list{
 	padding: 5px 0px
 }
-
 .small-box {
     border-radius: 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);

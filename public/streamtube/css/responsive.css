@@ -85,6 +85,9 @@
 	background-repeat: no-repeat;
 	height: 200px;
 }
+.add-card input {
+    width:100%;
+}
 }
 
 /*small devices*/
@@ -176,6 +179,9 @@
 	background-repeat: no-repeat;
 	height: 200px;
 }
+.add-card input {
+    width: 330px;
+}
 }
 
 /* Tablets */
@@ -263,6 +269,9 @@
 	background-repeat: no-repeat;
 	height: 350px;
 }
+.add-card input {
+    width: 330px;
+}
 }
 
 /* Medium Devices, */
@@ -349,6 +358,9 @@
 	background-repeat: no-repeat;
 	height: 350px;
 }
+.add-card input {
+    width: 330px;
+}
 }
 
 /* Desktops */
@@ -434,6 +446,9 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 350px;
+}
+.add-card input {
+    width: 330px;
 }
 }
 /*index.html responsive*/
