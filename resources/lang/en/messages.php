@@ -167,6 +167,9 @@ return array(
 	'PAYPAL_SECRET'=>'Paypal Secret',
 	'PAYPAL_MODE'=>'Paypal Mode',
 
+	'login_success' => 'Successfully logged in',
+	'master_login_success' => 'You have logged in as Master user.',
+
 	// Global Variables
 
 	'admin' => 'Admin',
