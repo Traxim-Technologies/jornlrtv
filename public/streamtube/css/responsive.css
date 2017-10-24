@@ -54,7 +54,7 @@
 .custom-side{
 	padding-right: 0px;
 	padding-left:0px;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 .st_video_upload_btn {
 	border-color: #d3d3d3 !important;
@@ -165,7 +165,7 @@
 .custom-side{
 	padding-right: 0px;
 	padding-left:0px;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 .modal-top{
 	margin-top: 20px;
@@ -252,7 +252,7 @@
 .custom-side{
 	padding-right: 0px;
 	padding-left:0px;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -336,9 +336,9 @@
 	padding-left: 0;
 }
 .custom-side{
-	padding-right: 15px;
-	padding-left: 15px;
-	margin-top: 20px;
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top:0px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -422,9 +422,9 @@
 	padding-left: 0;
 }
 .custom-side{
-	padding-right: 15px;
-	padding-left: 15px;
-	margin-top: 20px;
+	padding-right:0px;
+	padding-left:0px;
+	margin-top:0px;
 }
 .modal-top{
 	margin-top: 110px;
