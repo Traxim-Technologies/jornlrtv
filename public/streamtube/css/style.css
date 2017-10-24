@@ -1607,11 +1607,6 @@ margin: 0px auto 35px;
 	}
 	.recom-image{
 	}
-	.custom-side{
-		padding-right: 15px;
-		padding-left: 15px;
-		margin-top: 20px;
-	}
 
 }
 
@@ -1853,9 +1848,7 @@ margin: 0px auto 35px;
 
 	width: 100%;
 
-	height: 360px;
 }
-
 #chat-box  {
 
 	min-height: 325px;
@@ -1871,19 +1864,19 @@ margin: 0px auto 35px;
 
 	background: #E62118;
 
-	padding: 5px 5px 10px 5px;
+	padding:10px;
 
 	text-transform: uppercase;
 
 	font-weight: bold;
 }
-
+.chat-header i{
+	vertical-align:-15%;
+}
 
 .chat-content {
 
 	border: 1px solid #ddd;
-
-	height: 100%;
 
 	position: relative;
 }
@@ -1903,7 +1896,7 @@ margin: 0px auto 35px;
 
 .live_video {
 
-	padding: 10px;
+	padding: 15px;
 }
 
 .chat_footer {
@@ -1922,9 +1915,10 @@ margin: 0px auto 35px;
 
 	background: #E62118 !important;
 
-	width: 100% !important;
+	width: 45px !important;
 
-	height: 100% !important;
+/*	height: 100% !important;*/
+	height: 45px !important;;
 
 }
 
@@ -1934,7 +1928,8 @@ margin: 0px auto 35px;
 
 	border-radius: 0 !important;
 
-	font-size: 12px;
+	font-size: 16px;;
+	height: 45px;
 
 }
 .item {
@@ -2083,7 +2078,171 @@ margin: 0px auto 35px;
 	font-size: 20px !important;
 	color: white;
 	font-weight: normal;
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
+}
+.modal{
+    overflow: hidden;
+}
+.modal-header{
+  	background-color:#E62118;
+  	color: white; 
+  	border-radius: 5px 5px 0 0;
+  	border: 0;
+    /*padding: 15px 15px 0 0;*/
+}
+.signup-form{
+  	border:2px solid #e0e0e0;
+  	box-shadow: none;
+  	height: 45px;
+  	color:#a59f9f;
+  	margin-top:0px;
+}
+.signup-form:focus{
+  	box-shadow: none;
+  	border-color:  #e0e0e0;
+}
+.signup-form::-webkit-input-placeholder { 
+    color:#a59f9f;
+}
+.signup-form::-moz-placeholder {
+	  color:#a59f9f;
+}
+.signup-form:-ms-input-placeholder { 
+	  color:#a59f9f;
+} 
+.signup-form:-o-input-placeholder { 
+	  color:#a59f9f;
+} 
+.signup-btn{
+  	background-color: #E62118;
+  	color:white;
+  	padding: 0px 40px;
+  	height: 45px;
+  	border: 2px solid #E62118;
+  	border-radius: 5px;
+	-webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    transition: all .5s;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 0px;
+}
+.signup-btn:hover, .signup-btn:focus , .signup-btn:active{
+  	background-color:transparent;
+  	color: #E62118;
+}
+.submit{
+	  margin-top: 10px;
+}
+.top1{
+	  margin-top: 25px;
+}
+.radio-inline{
+    padding-left: 0;
+}
+.option-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    position: relative;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top:-1px;
+    height: 15px;
+    width: 15px;
+    transition: all 0.15s ease-out 0s;
+    background:#9faab7;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 0.5rem;
+    outline: none;
+    position: relative;
+    z-index: 1000;
+}
+.option-input:hover {
+    background: #9faab7;
+}
+.option-input:checked {
+    background:#E62118;
+}
+.option-input:checked::before {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: 2px;
+    margin-left: 4.5px; 
+}
+.option-input.radio {
+    border-radius: 50%;
+}
+.option-input.radio::after {
+    border-radius: 50%;
+}
+.zero-padding{
+    padding: 0;
+}
+.radio-btn label{
+    font-weight: normal;
+    color:#a59f9f;
+    margin-bottom: 25px;
+    margin-top: 0;
+}
+.width-100{
+    width: 100px;
+}
+.form-group1{
+    margin-bottom: 20px;
+}
+.top2{
+    margin-top: 50px;
+}
+.no-margin{
+  margin: 0;
+}
+
+
+/* Extra Small Devices, Phones */ 
+@media screen and (max-width: 479px) {
+.body-modal{
+    padding: 45px 15px 30px 15px;
+}
+}
+
+/*small devices*/
+@media (min-width: 480px) and (max-width: 767px) {
+.body-modal{
+    padding:45px 75px 30px 75px;
+}
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 991px) {
+.body-modal{
+    padding:45px 75px 30px 75px;
+}
+}
+
+/* Medium Devices, */
+@media (min-width : 992px) and (max-width: 1199px){
+.body-modal{
+    padding:45px 75px 30px 75px;
+}
+}
+
+
+/* Desktops */
+@media only screen and (min-width : 1200px) {
+.body-modal{
+    padding:45px 75px 30px 75px;
+}
 }
 .wrapper_content {
 

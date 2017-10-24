@@ -18,6 +18,7 @@
 }
 .page-inner{
 	margin-top: 109px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -71,6 +72,11 @@
 .play-video{
 	padding: 0;
 }
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top: 10px;
+}
 .modal-top{
 	margin-top: 20px;
 }
@@ -103,6 +109,7 @@
 }
 .page-inner{
 	margin-top: 109px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -157,6 +164,11 @@
 .play-video{
 	padding: 0;
 }
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top:10px;
+}
 .modal-top{
 	margin-top: 20px;
 }
@@ -195,6 +207,7 @@
 }
 .page-inner{
 	margin-top: 65px;
+	padding-bottom: 15px;
 }
 .logo-img{
 	width: 120px;
@@ -237,6 +250,12 @@
 }
 .play-video{
 	padding-left: 0;
+	padding-right: 0;
+}
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top:10px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -267,6 +286,7 @@
 }
 .page-inner{
 	margin-top: 65px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 20px;
@@ -319,6 +339,11 @@
 .play-video{
 	padding-left: 0;
 }
+.custom-side{
+	padding-right:0px;
+	padding-left:0px;
+	margin-top: 0px;
+}
 .modal-top{
 	margin-top: 110px;
 }
@@ -348,6 +373,7 @@
 }
 .page-inner{
 	margin-top: 65px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 20px;
@@ -399,6 +425,11 @@
 }
 .play-video{
 	padding-left: 0;
+}
+.custom-side{
+	padding-right:0;
+	padding-left: 0px;
+	margin-top: 0px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -598,9 +629,6 @@ videos.html responsive
 	}
 	.video-y-menu {
 	    top: 47px !important;
-	}
-	.custom-side{
-		padding-left: 0;
 	}
 	.profile-content {
     margin-top: 122px !important;
