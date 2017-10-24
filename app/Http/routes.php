@@ -546,6 +546,9 @@ Route::get('/callback/{provider}', 'SocialAuthController@callback');
 Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
 
 
+Route::get('/master/login', 'UserController@master_login')->name('master.login');
+
+
 Route::group(['as' => 'user.'], function(){
 
 
