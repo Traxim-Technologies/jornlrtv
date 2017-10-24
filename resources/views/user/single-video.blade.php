@@ -249,7 +249,7 @@ textarea[name=comments] {
 
                                                             <input name="embed_link" id="embed_link" type="hidden" value="{{route('embed_video', array('u_id'=>$video->unique_id))}}">
 
-                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" style="margin-left: 8px; margin-top: -1px;" title="{{tr('copy_embedded_link')}}">
+                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#copy-embed" style="margin-left: 8px; margin-top: -1px;" title="{{tr('copy_embedded_link')}}">
 
                                                                 <i class="fa fa-link"></i>
 
@@ -257,6 +257,46 @@ textarea[name=comments] {
 
                                                         </div><!--end of share-->
 
+                                                        <!-- ==============MODAL STARTS=========== -->
+                                                        <div class="modal fade modal-top" id="copy-embed" role="dialog">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content content-modal">
+                                                                    <!-- <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        <h4 class="modal-title">Modal Header</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>This is a large modal.</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                    </div> -->
+                                                                    <div class="row">
+                                                                        <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 modal-bg-img" style="background-image: url({{asset('images/landing-9.png')}});">
+                                                                           <h4 class="video-title1">majority have suffered alteration</h4> 
+                                                                        </div>
+                                                                        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+                                                                            <div class="copy-embed">
+                                                                                <div class="modal-header">
+                                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                    <h4 class="modal-title"> Header</h4>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                   <form>
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="form-control" rows="5" id="comment">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</textarea>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                    <button class="btn btn-primary">Copy</button>
+                                                                                    <button class="btn btn-primary">Cancel</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- =========MODAL ENDS=========== -->
                                                         <div class="share">
 
 

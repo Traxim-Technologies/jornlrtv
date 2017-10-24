@@ -76,7 +76,8 @@ class UserController extends Controller {
 
         $this->UserAPI = $API;
 
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos']]);
+
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos','master_login']]);
 
 
         if (Auth::check()) {
@@ -133,6 +134,74 @@ class UserController extends Controller {
 
     }
 
+    }
+
+
+    /** 
+     * Used to do login activity for master login
+     * 
+     *
+     */
+
+    public function master_login(Request $request) {
+
+        // Get current login admin details
+
+        $master_user_id = Auth::guard('admin')->user()->user_id;
+
+        // Check the admin has logged in
+
+        if(!$master_user_id) {
+
+            // Check already record exists
+
+            $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
+
+            if($check_admin_user_details) {
+
+                $check_admin_user_details->is_master_user = 1;
+
+                $check_admin_user_details->save();
+
+            } else {
+
+                $check_admin_user_details = new User;
+
+                $check_admin_user_details->name = "Master User";
+
+                $check_admin_user_details->email = Auth::guard('admin')->user()->email;
+
+                $check_admin_user_details->password = \Hash::make("123456");
+
+                $check_admin_user_details->user_type = $check_admin_user_details->is_master_user = $check_admin_user_details->is_verified = $check_admin_user_details->status = 1;
+
+                $check_admin_user_details->device_type = WEB;
+
+                $check_admin_user_details->save();
+
+            }
+
+            $master_user_id = $check_admin_user_details->id;
+
+        }
+
+        $master_user_details = User::find($master_user_id);
+
+        // If master user details is not empty -> Login the admin as user
+
+        if($master_user_details) {
+
+            Auth::loginUsingId($master_user_id, true);
+
+            return redirect()->to('/')->with('flash_success' , tr('master_login_success'));
+
+        } else {
+
+            return back()->with("flash_error" , tr('something_error'));
+
+        }
+
+    }
 
     /**
      * Show the user dashboard.

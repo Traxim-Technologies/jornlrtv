@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - 2015-12-03
 
+### Added 
+
+- 29cf350 Master user login added 
+
 ### Fixed
 
 - 66da49d Social login - cancel button error fixed
