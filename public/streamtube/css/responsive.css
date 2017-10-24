@@ -48,8 +48,13 @@
 	padding: 15px;
 	margin-top: 15px;
 }
-.profile-view{
+.play-video{
 	padding: 0;
+}
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top: 20px;
 }
 .st_video_upload_btn {
 	border-color: #d3d3d3 !important;
@@ -157,6 +162,11 @@
 .play-video{
 	padding: 0;
 }
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top: 20px;
+}
 .modal-top{
 	margin-top: 20px;
 }
@@ -237,6 +247,12 @@
 }
 .play-video{
 	padding-left: 0;
+	padding-right: 0;
+}
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top: 20px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -319,6 +335,11 @@
 .play-video{
 	padding-left: 0;
 }
+.custom-side{
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-top: 20px;
+}
 .modal-top{
 	margin-top: 110px;
 }
@@ -399,6 +420,11 @@
 }
 .play-video{
 	padding-left: 0;
+}
+.custom-side{
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-top: 20px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -598,9 +624,6 @@ videos.html responsive
 	}
 	.video-y-menu {
 	    top: 47px !important;
-	}
-	.custom-side{
-		padding-left: 0;
 	}
 	.profile-content {
     margin-top: 122px !important;
