@@ -247,7 +247,7 @@ textarea[name=comments] {
                                                                 
                                                             </a> 
 
-                                                            <input name="embed_link" class="form-control" id="embed_link" type="hidden" value="{{route('embed_video', array('u_id'=>$video->unique_id))}}">
+                                                            <input name="embed_link" id="embed_link" type="hidden" value="{{route('embed_video', array('u_id'=>$video->unique_id))}}">
 
                                                             <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#copy-embed" style="margin-left: 8px; margin-top: -1px;" title="{{tr('copy_embedded_link')}}">
 
@@ -1371,7 +1371,7 @@ textarea[name=comments] {
             function copyTextToClipboard() {
 
                var textArea = document.createElement( "textarea" );
-               textArea.value = $("#embed_link").val();
+               textArea.value = '<iframe width="450" height="250" src="'+$("#embed_link").val()+'" frameborder="0" allowfullscreen></iframe>';
                document.body.appendChild( textArea );
 
                textArea.select();
