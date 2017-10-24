@@ -11,6 +11,8 @@
     min-height: 700px;
     /*height: calc(100% - 105px) !important;*/
     overflow: auto;
+    position: absolute;
+    top: 0;
 	z-index:10;
 	width: 50%;
 }
@@ -69,6 +71,15 @@
 .play-video{
 	padding: 0;
 }
+.modal-top{
+	margin-top: 20px;
+}
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 200px;
+}
 }
 
 /*small devices*/
@@ -83,7 +94,8 @@
     padding-top: 15px;
     margin-top: 105px;
     min-height: 700px;
-    top:0;
+    position: absolute;
+    top: 0;
     /*height: calc(100% - 105px) !important;*/
     overflow: auto;
 	z-index: 10;
@@ -145,6 +157,15 @@
 .play-video{
 	padding: 0;
 }
+.modal-top{
+	margin-top: 20px;
+}
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 200px;
+}
 }
 
 /* Tablets */
@@ -155,7 +176,6 @@
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
-    top: 0;
     /*height: calc(100% - 60px)  !important;*/
     min-height: 700px;
     overflow: auto;
@@ -218,6 +238,15 @@
 .play-video{
 	padding-left: 0;
 }
+.modal-top{
+	margin-top: 110px;
+}
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 350px;
+}
 }
 
 /* Medium Devices, */
@@ -228,7 +257,6 @@
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
-    top:0;
    /* height: calc(100% - 60px) !important;*/
    	min-height: 700px;
     overflow: auto;
@@ -291,6 +319,15 @@
 .play-video{
 	padding-left: 0;
 }
+.modal-top{
+	margin-top: 110px;
+}
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 350px;
+}
 }
 
 /* Desktops */
@@ -300,7 +337,6 @@
     background-color: #fff;
     padding-bottom: 15px;
     padding-top: 15px;
-    top: 0px;
     margin-top: 60px;
     min-height: 700px;
     /*height: calc(100% - 60px) !important;*/
@@ -363,6 +399,15 @@
 }
 .play-video{
 	padding-left: 0;
+}
+.modal-top{
+	margin-top: 110px;
+}
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 350px;
 }
 }
 /*index.html responsive*/

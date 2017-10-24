@@ -1900,7 +1900,49 @@ margin: 0px auto 35px;
     text-decoration: none;
     z-index: 10;
 }
-
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 350px;
+}
+.content-modal{
+	border-radius: 0;
+}
+.copy-embed .modal-header{
+	padding: 15px 0
+}
+.copy-embed .modal-title{
+	font-size: 20px;
+	font-weight: normal;
+}
+.copy-embed .modal-body{
+	padding: 15px 0;
+	text-align: left;
+}
+.copy-embed .modal-body p{
+	margin: 0;
+	font-size: 16px;
+	font-weight: normal;
+	color: #999;
+	text-align: left;
+}
+.copy-embed .close:hover{
+	background-color: transparent !important;
+	color: black;
+}
+.copy-embed textarea{
+	resize: none;
+}
+.copy-embed .btn-primary:hover {
+    color: #fff;
+    background-color: #286090 !important;
+}
+.video-title1{
+	font-size: 20px !important;
+	color: white;
+	font-weight: normal;
+}
 .wrapper_content {
 
 	position: relative;
