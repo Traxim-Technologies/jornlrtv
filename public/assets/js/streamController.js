@@ -1520,7 +1520,9 @@ liveAppCtrl
 			connection.close();
 			connection.broadcastingConnection = null;
 
-			alert("diconn model");
+			console.log("connection close");
+
+			// alert("diconn model");
 		});
 
 		socket.on('broadcast-error', function (data) {
