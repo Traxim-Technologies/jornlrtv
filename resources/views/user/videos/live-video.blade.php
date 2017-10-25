@@ -219,10 +219,10 @@ video {
 
 						                @else
 
-						                	 <input class="form-control chat_form_input" placeholder="{{tr('comment_here')}}" required disabled id="chat-input" >
+						                	 <input class="form-control chat_form_input" placeholder="{{tr('comment_here')}}" required readonly>
 
 							                <div class="input-group-btn">
-							                  <button type="button" class="btn btn-danger chat_send_btn" disabled id="chat-send"><i class="fa fa-send"></i></button>
+							                  <button type="button" class="btn btn-danger chat_send_btn" disabled><i class="fa fa-send"></i></button>
 							                </div>
 
 						                @endif
