@@ -180,10 +180,10 @@
 													<label class="control-label col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
 													<div class="col-sm-8">
 													    <label class="radio-inline width-100" for="reqType-1">
-															<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();">Free
+															<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free
 														</label>
 														<label class="radio-inline">
-															<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()">Paid
+															<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">Paid
 													    </label>
 											      	</div>
 												</div>
