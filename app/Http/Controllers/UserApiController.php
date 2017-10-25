@@ -2298,7 +2298,7 @@ class UserApiController extends Controller {
         
         if($validator->fails()) {
 
-            $errors = implode(',', $validator->messages()->all());
+            $error_messages = implode(',', $validator->messages()->all());
 
             $response_array = ['success' => false , 'error_messages' => $errors ,'error' => $error_messages , 'error_code' => 001];
         } else {
@@ -3720,7 +3720,7 @@ class UserApiController extends Controller {
 
         $response_array = ['success'=>false, 'error_message'=>tr('no_live_video_found')];
 
-        return response()->json(response_array);
+        return response()->json($response_array);
 
     }
     
