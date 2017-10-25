@@ -2300,7 +2300,7 @@ class UserApiController extends Controller {
 
             $error_messages = implode(',', $validator->messages()->all());
 
-            $response_array = ['success' => false , 'error_messages' => $errors ,'error' => $error_messages , 'error_code' => 001];
+            $response_array = ['success' => false , 'error_messages' => $error_messages , 'error_code' => 001];
         } else {
 
             $last = LiveVideo::orderBy('port_no', 'desc')->first();
