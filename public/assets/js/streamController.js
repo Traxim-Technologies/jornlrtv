@@ -332,323 +332,325 @@ liveAppCtrl
 
         var rtsp_mobile_type = 0;
 
-        if ((browser == 'Safari' || browser == 'IE') || m_type == 'ios') {
+        if (wowza_ip_address != '' && wowza_ip_address != undefined && socket_url != '' && socket_url != undefined) {
 
-        		if (m_type == 'ios') {
+	        if ((browser == 'Safari' || browser == 'IE') || m_type == 'ios') {
 
-        			browser = 'Safari';
-        		}
+	        		if (m_type == 'ios') {
 
-        		mobile_ios_type = 1;
+	        			browser = 'Safari';
+	        		}
 
-				jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
+	        		mobile_ios_type = 1;
 
-				$("#videos-container").html("");
+					jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
+
+					$("#videos-container").html("");
 
 
-				var playerInstance = jwplayer("videos-container");
+					var playerInstance = jwplayer("videos-container");
 
-				$scope.url = "";
+					$scope.url = "";
 
-				var data = new FormData;
-				data.append('video_id', $scope.videoDetails.id);
-				data.append('device_type', 'web');
-				data.append('browser', browser);
+					var data = new FormData;
+					data.append('video_id', $scope.videoDetails.id);
+					data.append('device_type', 'web');
+					data.append('browser', browser);
 
-				$.ajax({
-					type : 'post',
-					url : url+'/userApi/get_live_url',
-					contentType : false,
-					processData: false,
-					
-					async : false,
-					data : data,
-					success : function(result) {
-
-						if (result.success) {
-
-							$scope.url = result.url;
-
-						} else {
-
-							console.log(result.message);
-
-						}
+					$.ajax({
+						type : 'post',
+						url : url+'/userApi/get_live_url',
+						contentType : false,
+						processData: false,
 						
-					}, 
-			    	error : function(result) {
+						async : false,
+						data : data,
+						success : function(result) {
 
-			    	}
-				});
+							if (result.success) {
 
-				console.log("Url "+$scope.url);
+								$scope.url = result.url;
 
+							} else {
 
-				playerInstance.setup({
+								console.log(result.message);
 
-				   file : $sce.trustAsResourceUrl($scope.url),
+							}
+							
+						}, 
+				    	error : function(result) {
 
-				    width: "100%",
-				    aspectratio: "16:9",
-				    primary: "flash",
-				    controls : true,
-				    "controlbar.idlehide" : false,
-				    controlBarMode:'floating',
-				    "controls": {
-				      "enableFullscreen": false,
-				      "enablePlay": false,
-				      "enablePause": false,
-				      "enableMute": true,
-				      "enableVolume": true
-				    },
-				    autostart : true,
-				   /* "sharing": {
-				        "sites": ["reddit","facebook","twitter"]
-				      }*/
-				});
+				    	}
+					});
+
+					console.log("Url "+$scope.url);
 
 
-				playerInstance.on('error', function() {
+					playerInstance.setup({
 
-					console.log("setupError");
+					   file : $sce.trustAsResourceUrl($scope.url),
 
-                    $("#videos-container").hide();
-
-                    var hasFlash = false;
-                    
-                   try {
-                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-                        if (fo) {
-                            hasFlash = true;
-                        }
-                    } catch (e) {
-                        if (navigator.mimeTypes
-                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-                            hasFlash = true;
-                        }
-                    }
-
-                    console.log(hasFlash == false);
-
-                    $('#main_video_setup_error').css('display', 'block');
-
-                    if (hasFlash == false) {
-                        $('#flash_error_display').show();
-
-                        confirm('Download Flash Player. Flash Player Fail to Load.');
-
-                        return false;
-                    }
-
-                   
-                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-
-				});
+					    width: "100%",
+					    aspectratio: "16:9",
+					    primary: "flash",
+					    controls : true,
+					    "controlbar.idlehide" : false,
+					    controlBarMode:'floating',
+					    "controls": {
+					      "enableFullscreen": false,
+					      "enablePlay": false,
+					      "enablePause": false,
+					      "enableMute": true,
+					      "enableVolume": true
+					    },
+					    autostart : true,
+					   /* "sharing": {
+					        "sites": ["reddit","facebook","twitter"]
+					      }*/
+					});
 
 
-				playerInstance.on('setupError', function() {
+					playerInstance.on('error', function() {
 
-				 	console.log("setupError");
+						console.log("setupError");
 
-                    $("#videos-container").hide();
+	                    $("#videos-container").hide();
 
-                    var hasFlash = false;
-                   try {
-                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-                        if (fo) {
-                            hasFlash = true;
-                        }
-                    } catch (e) {
-                        if (navigator.mimeTypes
-                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-                            hasFlash = true;
-                        }
-                    }
+	                    var hasFlash = false;
+	                    
+	                   try {
+	                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+	                        if (fo) {
+	                            hasFlash = true;
+	                        }
+	                    } catch (e) {
+	                        if (navigator.mimeTypes
+	                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+	                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+	                            hasFlash = true;
+	                        }
+	                    }
 
-                    $('#main_video_setup_error').show();
+	                    console.log(hasFlash == false);
 
-                    if (hasFlash == false) {
-                        $('#flash_error_display').show();
+	                    $('#main_video_setup_error').css('display', 'block');
 
-                        confirm('Download Flash Player. Flash Player Fail to Load.');
+	                    if (hasFlash == false) {
+	                        $('#flash_error_display').show();
 
-                        return false;
-                    }
+	                        confirm('Download Flash Player. Flash Player Fail to Load.');
 
-                    
+	                        return false;
+	                    }
 
-                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-                
-                });
+	                   
+	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
 
-
-				 $("#loader_btn").hide();
-
-
-        }
+					});
 
 
-		var ws = new WebSocket('wss://'+socket_url+'/rtprelay');
+					playerInstance.on('setupError', function() {
 
-		console.log(ws);
+					 	console.log("setupError");
 
-		var videoInput;
-		var videoOutput;
-		var webRtcPeer;
-		var state = null;
-		var destinationIp;
-		var destinationPort;
-		var rtpSdp;
+	                    $("#videos-container").hide();
 
-		console.log('Page loaded ...');
-		videoInput = document.getElementById('videoInput');
-		videoOutput = document.getElementById('videoOutput');
-		rtpSdp = document.getElementById('rtpSdp');
+	                    var hasFlash = false;
+	                   try {
+	                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+	                        if (fo) {
+	                            hasFlash = true;
+	                        }
+	                    } catch (e) {
+	                        if (navigator.mimeTypes
+	                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+	                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+	                            hasFlash = true;
+	                        }
+	                    }
 
-		ws.onmessage = function(message) {
+	                    $('#main_video_setup_error').show();
+
+	                    if (hasFlash == false) {
+	                        $('#flash_error_display').show();
+
+	                        confirm('Download Flash Player. Flash Player Fail to Load.');
+
+	                        return false;
+	                    }
+
+	                    
+
+	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
+	                
+	                });
 
 
-			var parsedMessage = JSON.parse(message.data);
-			console.info('Received message: ' + message.data);
+					 $("#loader_btn").hide();
 
-			switch (parsedMessage.id) {
-			case 'startResponse':
-				startResponse(parsedMessage);
-				break;
-			case 'error':
-				onError('Error message from server: ' + parsedMessage.message);
-				break;
-			case 'iceCandidate':
-				webRtcPeer.addIceCandidate(parsedMessage.candidate)
-				break;
-			default:
-				onError('Unrecognized message', parsedMessage);
-			}
-		}
 
-		$scope.start = function() {
-			console.log('Starting video call ...')
+	        }
 
-			// showSpinner(videoInput);
 
-			console.log('Creating WebRtcPeer and generating local sdp offer ...');
+			var ws = new WebSocket('wss://'+socket_url+'/rtprelay');
 
-		    var options = {
-		      localVideo: videoInput,
-		      onicecandidate : onIceCandidate
-		    }
+			console.log(ws);
 
-		    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
-		        if(error) return onError(error);
-		        this.generateOffer(onOffer);
-		    });
-		}
+			var videoInput;
+			var videoOutput;
+			var webRtcPeer;
+			var state = null;
+			var destinationIp;
+			var destinationPort;
+			var rtpSdp;
 
-		function onIceCandidate(candidate) {
-			   console.log('Local candidate' + JSON.stringify(candidate));
+			console.log('Page loaded ...');
+			videoInput = document.getElementById('videoInput');
+			videoOutput = document.getElementById('videoOutput');
+			rtpSdp = document.getElementById('rtpSdp');
 
-			   var message = {
-			      id : 'onIceCandidate',
-			      candidate : candidate
-			   };
-			   sendMessage(message);
-		}
+			ws.onmessage = function(message) {
 
-		function onOffer(error, offerSdp) {
-			if(error) return onError(error);
 
-			console.info('Invoking SDP offer callback function ' + location.host);
-			var message = {
-				id : 'start',
-				sdpOffer : offerSdp,
-				rtpSdp : rtpSdp.value
-			}
-			console.log("This is the offer sdp:");
-			console.log(offerSdp);
-			sendMessage(message);
-		}
+				var parsedMessage = JSON.parse(message.data);
+				console.info('Received message: ' + message.data);
 
-		function onError(error) {
-			console.error(error);
-		}
-
-		function startResponse(message) {
-			console.log('SDP answer received from server. Processing ...');
-			webRtcPeer.processAnswer(message.sdpAnswer);
-		}
-
-		$scope.stop = function() {
-			console.log('Stopping video call ...');
-			if (webRtcPeer) {
-				webRtcPeer.dispose();
-				webRtcPeer = null;
-
-				var message = {
-					id : 'stop'
+				switch (parsedMessage.id) {
+				case 'startResponse':
+					startResponse(parsedMessage);
+					break;
+				case 'error':
+					onError('Error message from server: ' + parsedMessage.message);
+					break;
+				case 'iceCandidate':
+					webRtcPeer.addIceCandidate(parsedMessage.candidate)
+					break;
+				default:
+					onError('Unrecognized message', parsedMessage);
 				}
+			}
+
+			$scope.start = function() {
+				console.log('Starting video call ...')
+
+				// showSpinner(videoInput);
+
+				console.log('Creating WebRtcPeer and generating local sdp offer ...');
+
+			    var options = {
+			      localVideo: videoInput,
+			      onicecandidate : onIceCandidate
+			    }
+
+			    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+			        if(error) return onError(error);
+			        this.generateOffer(onOffer);
+			    });
+			}
+
+			function onIceCandidate(candidate) {
+				   console.log('Local candidate' + JSON.stringify(candidate));
+
+				   var message = {
+				      id : 'onIceCandidate',
+				      candidate : candidate
+				   };
+				   sendMessage(message);
+			}
+
+			function onOffer(error, offerSdp) {
+				if(error) return onError(error);
+
+				console.info('Invoking SDP offer callback function ' + location.host);
+				var message = {
+					id : 'start',
+					sdpOffer : offerSdp,
+					rtpSdp : rtpSdp.value
+				}
+				console.log("This is the offer sdp:");
+				console.log(offerSdp);
 				sendMessage(message);
 			}
-			// hideSpinner(videoInput, videoOutput);
-		}
 
-		function sendMessage(message) {
-			var jsonMessage = JSON.stringify(message);
-			console.log('Senging message: ' + jsonMessage);
-			ws.send(jsonMessage);
-		}
-
-		/*function showSpinner() {
-			for (var i = 0; i < arguments.length; i++) {
-				arguments[i].poster = './img/transparent-1px.png';
-				arguments[i].style.background = 'center transparent url("./img/spinner.gif") no-repeat';
+			function onError(error) {
+				console.error(error);
 			}
-		}
 
-		function hideSpinner() {
-			for (var i = 0; i < arguments.length; i++) {
-				arguments[i].src = '';
-				arguments[i].poster = './img/webrtc.png';
-				arguments[i].style.background = '';
+			function startResponse(message) {
+				console.log('SDP answer received from server. Processing ...');
+				webRtcPeer.processAnswer(message.sdpAnswer);
 			}
-		}*/
 
-		function forceEvenRtpPort(rtpPort) {
-			if ((rtpPort > 0) && (rtpPort % 2 != 0))
-				return rtpPort - 1;
-			else return rtpPort;
+			$scope.stop = function() {
+				console.log('Stopping video call ...');
+				if (webRtcPeer) {
+					webRtcPeer.dispose();
+					webRtcPeer = null;
+
+					var message = {
+						id : 'stop'
+					}
+					sendMessage(message);
+				}
+				// hideSpinner(videoInput, videoOutput);
+			}
+
+			function sendMessage(message) {
+				var jsonMessage = JSON.stringify(message);
+				console.log('Senging message: ' + jsonMessage);
+				ws.send(jsonMessage);
+			}
+
+			/*function showSpinner() {
+				for (var i = 0; i < arguments.length; i++) {
+					arguments[i].poster = './img/transparent-1px.png';
+					arguments[i].style.background = 'center transparent url("./img/spinner.gif") no-repeat';
+				}
+			}
+
+			function hideSpinner() {
+				for (var i = 0; i < arguments.length; i++) {
+					arguments[i].src = '';
+					arguments[i].poster = './img/webrtc.png';
+					arguments[i].style.background = '';
+				}
+			}*/
+
+			function forceEvenRtpPort(rtpPort) {
+				if ((rtpPort > 0) && (rtpPort % 2 != 0))
+					return rtpPort - 1;
+				else return rtpPort;
+			}
+
+			function updateRtpSdp() {
+				var destination_ip;
+				var destination_port;
+
+				if (!destinationIp.value)
+					destination_ip= wowza_ip_address;
+				else
+					destination_ip = destinationIp.value.trim();
+
+				if (!destinationPort.value)
+					destination_port="33124";
+				else
+					destination_port = forceEvenRtpPort(destinationPort.value.trim());
+
+
+				destination_ip = wowza_ip_address;
+
+					rtpSdp.value = 'v=0\n'
+					+ 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
+					+ 's=Kurento\n'
+					+ 'c=IN IP4 ' + destination_ip + '\n'
+					+ 't=0 0\n'
+					+ 'm=video ' + destination_port + ' RTP/AVP 100\n'
+					+ 'a=rtpmap:100 H264/90000\n';
+
+					console.log(rtpSdp.value);
+			}
+
 		}
-
-		function updateRtpSdp() {
-			var destination_ip;
-			var destination_port;
-
-			if (!destinationIp.value)
-				destination_ip= wowza_ip_address;
-			else
-				destination_ip = destinationIp.value.trim();
-
-			if (!destinationPort.value)
-				destination_port="33124";
-			else
-				destination_port = forceEvenRtpPort(destinationPort.value.trim());
-
-
-			destination_ip = wowza_ip_address;
-
-				rtpSdp.value = 'v=0\n'
-				+ 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
-				+ 's=Kurento\n'
-				+ 'c=IN IP4 ' + destination_ip + '\n'
-				+ 't=0 0\n'
-				+ 'm=video ' + destination_port + ' RTP/AVP 100\n'
-				+ 'a=rtpmap:100 H264/90000\n';
-
-				console.log(rtpSdp.value);
-		}
-
-		
 
 		var socket = {};
 
@@ -1245,8 +1247,9 @@ liveAppCtrl
 
 	          // window.btn_clicked = true;
 
-
-	           $scope.start();
+	       	if (wowza_ip_address != '' && wowza_ip_address != undefined && socket_url != '' && socket_url != undefined) {
+	           	$scope.start();
+	       	}
 	          // $window.sessionStorage.reload = 0;
 			
 		}
@@ -1304,34 +1307,37 @@ liveAppCtrl
 
 							if ($scope.user_id != $scope.videoDetails.user_id) {
 								// $("#default_image").hide();
-								$("#loader_btn").show();
+								$("#loader_btn").hide();
+
 							} else {
 
 								$scope.openBroadcast($scope.videoDetails.id, $scope.videoDetails.virtual_id);
 
 							}
 
-							if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
+							/*if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
 
 							} else {
 								console.log($scope.videoDetails.video_url);
 
 								$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
 
-							}
+							}*/
 
 
 							// $scope.start();
 
-							/*if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
+							if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
 
 								jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
 
 								var playerInstance = jwplayer("rtsp_container");
 
-								console.log("data Url "+data.video_url);
+								console.log("data Url "+$scope.videoDetails.video_url);
 
 								$("#videos-container").hide();
+
+								$("#loader_btn").hide();
 
 								$("#rtsp_container").show();
 
@@ -1339,7 +1345,7 @@ liveAppCtrl
 
 								playerInstance.setup({
 
-								   file : $sce.trustAsResourceUrl(data.video_url),
+								   file : $sce.trustAsResourceUrl($scope.videoDetails.video_url),
 									width: "100%",
 									aspectratio: "16:9",
 									primary: "flash",
@@ -1361,7 +1367,7 @@ liveAppCtrl
 
 								$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
 
-							}*/
+							}
 
 
 							// if ($window.sessionStorage.reload == 1) {
@@ -1514,7 +1520,9 @@ liveAppCtrl
 			connection.close();
 			connection.broadcastingConnection = null;
 
-			alert("diconn model");
+			console.log("connection close");
+
+			// alert("diconn model");
 		});
 
 		socket.on('broadcast-error', function (data) {
@@ -1715,191 +1723,195 @@ liveAppCtrl
 .controller('chatBarCtrl', ['$scope', '$http', '$rootScope', '$window',
 	function ($scope, $http, $rootScope, $window) {
 
-		console.log('chat');
+		if (live_user_id != '' && live_user_id != undefined) {
 
-		console.log(chat_socket_url);
+			console.log('chat');
 
-
-		var appSettings = $scope.appSettings;
-
-        var defaultImage = "";
-
-        var chatBox = document.getElementById('chat-box'); // Chat Box container
-
-        var chatInput = document.getElementById('chat-input'); // User Typed text in input
- 
-        var chatSend = document.getElementById('chat-send'); // Send Box 
+			console.log(chat_socket_url);
 
 
-        var liveVideoID = $scope.videoDetails.id;
+			var appSettings = $scope.appSettings;
 
-        var liveVideoViewerID = (appSettings.USER == null) ? $scope.user_id : 0;
+	        var defaultImage = "";
 
-        var userID = (appSettings.USER != null) ?  appSettings.USER.id : 0;
+	        var chatBox = document.getElementById('chat-box'); // Chat Box container
 
-        var userToViewer ="uv";
-
-        var viewerToUser ="vu";
-
-        // let's assume that the client page, once rendered, knows what room it wants to join
-
-        var room = $scope.videoDetails.unique_id; // Room will be video ID
-
-        // set-up a connection between the client and the server
-
-        var socket = io(chat_socket_url ,  { secure: true , query: "room="+room});
-
-        var socketState = false;
-
-        // The socket state will be enable, once the socket is connected
-
-        socket.on('connected', function (data) {
-
-            socketState = true;
-
-            // Enable chat input box
-
-            chatInput.enable();
-
-        });
-
-        socket.on('message', function(data) {
+	        var chatInput = document.getElementById('chat-input'); // User Typed text in input
+	 
+	        var chatSend = document.getElementById('chat-send'); // Send Box 
 
 
-           if(data.message){
+	        var liveVideoID = $scope.videoDetails.id;
 
-                $('#chat-box').append(messageTemplate(data));
+	        var liveVideoViewerID = (appSettings.USER == null) ? $scope.user_id : 0;
 
-                // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
-                // $('#chat-box').scrollTop($('#chat-box').height());
-                // $('#chat_box_scroll').scrollTop($('#chat_box_scroll')[0].scrollHeight);
-                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
-            }
+	        var userID = (appSettings.USER != null) ?  appSettings.USER.id : 0;
 
-        });
+	        var userToViewer ="uv";
 
-        socket.on('disconnect', function (data) {
-            socketState = false;
-            chatInput.disable();
-           //  console.log('Disconnected from server');
-        });
+	        var viewerToUser ="vu";
 
-        chatInput.enable = function() {
-            this.disabled = false;
-        };
+	        // let's assume that the client page, once rendered, knows what room it wants to join
 
-        chatInput.clear = function() {
-            this.value = "";
-        };
+	        var room = $scope.videoDetails.unique_id; // Room will be video ID
 
-        chatInput.disable = function() {
-            this.disabled = true;
-        };
+	        // set-up a connection between the client and the server
 
-        chatInput.addEventListener("keyup", function (e) {
+	        var socket = io(chat_socket_url ,  { secure: true , query: "room="+room});
 
-            if (e.which == 13) {
-                sendMessage(chatInput);
-                return false;
-            }
-        });
+	        var socketState = false;
 
-        // User Click send message , this function will trigger
+	        // The socket state will be enable, once the socket is connected
 
-        chatSend.addEventListener('click', function() {
-            sendMessage(chatInput);
-        });
+	        socket.on('connected', function (data) {
 
-        function sendMessage(input) {
+	            socketState = true;
 
-            chatMessage = input.value.trim();
+	            // Enable chat input box
 
-            if(socketState && chatMessage != '') {
+	            chatInput.enable();
 
-                message = {};
-                message.type = userToViewer;
-                message.live_video_viewer_id = liveVideoViewerID;
-                message.live_video_id = liveVideoID;
-                message.user_id = userID;
-                message.profile_id = (appSettings.USER == null) ? $scope.user_id : appSettings.USER.id;
-                message.room = room;
-                message.message = chatMessage;
-                // message.created_at = appSettings.created_at;
-                // message.username = $scope.videoDetails.name;
-                message.userpicture = appSettings.USER_PICTURE;
-                message.username = appSettings.NAME;
-                message.class = appSettings.CLASS;
+	        });
 
-                // The user send message display to other users
-
-                updateMessageToOthers(message);
-
-                // socketClient.sendMessage(text);
-
-                $('#chat-box').append(messageTemplate(message));
+	        socket.on('message', function(data) {
 
 
-                // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
+	           if(data.message){
 
-                chatInput.clear();
+	                $('#chat-box').append(messageTemplate(data));
 
-                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
-                
-                /*$(chatBox).animate({
-                    scrollTop: chatBox.scrollHeight,
-                }, 500);*/
-            
-            }
-        
-        }
+	                // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
+	                // $('#chat-box').scrollTop($('#chat-box').height());
+	                // $('#chat_box_scroll').scrollTop($('#chat_box_scroll')[0].scrollHeight);
+	                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
+	            }
 
-        // The user send message display to other users
+	        });
 
-        function updateMessageToOthers(data) {
+	        socket.on('disconnect', function (data) {
+	            socketState = false;
+	            chatInput.disable();
+	           //  console.log('Disconnected from server');
+	        });
 
-            socket.emit('message', data); 
-        }
+	        chatInput.enable = function() {
+	            this.disabled = false;
+	        };
 
-        // Message Template
+	        chatInput.clear = function() {
+	            this.value = "";
+	        };
 
-        // <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+	        chatInput.disable = function() {
+	            this.disabled = true;
+	        };
 
-        function messageTemplate(data) {
+	        chatInput.addEventListener("keyup", function (e) {
 
-        	// <small class="text-muted pull-right">'+data.created_at+'</small>
+	            if (e.which == 13) {
+	                sendMessage(chatInput);
+	                return false;
+	            }
+	        });
 
-            var messageTemplate = '';
+	        // User Click send message , this function will trigger
 
-            // if (data.class == 'left') {
-	            messageTemplate = '<div class="item">';
-	            messageTemplate += '<div class="col-lg-2 col-md-2 col-xs-2 col-sm-2" style="padding: 0">';
-	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'"><img class="chat_img" src="'+data.userpicture+'" alt="'+data.username+'"></a>';
-	            messageTemplate += '</div>';
-	            messageTemplate += '<div class="message col-lg-10 col-md-10 col-xs-10 col-sm-10">';
-	            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small></a>';
-	            messageTemplate += ' <div>'+data.message+'</div>';
-	            messageTemplate += '</div>';
-	            messageTemplate += '<div class="clearfix"></div>';
-	            messageTemplate += '</div>';
-	        // }
+	        chatSend.addEventListener('click', function() {
+	            sendMessage(chatInput);
+	        });
 
-	         /*else {
-	        	messageTemplate = '<li class="'+data.class+' clearfix">';
-	            messageTemplate += '<span class="chat-img pull-right">';
-	            messageTemplate += '<img style="width: 60px;height: 60px;" src="'+data.userpicture+'" alt="'+data.username+'" class="img-circle">';
-	            messageTemplate += '</span>';
-	            messageTemplate += '<div class="chat-body clearfix">';
-	            messageTemplate += ' <div class="header"> ';
-	            messageTemplate += ' <strong class="pull-right primary-font">'+data.username+'</strong>';
-	            messageTemplate += '</div>';
-	            messageTemplate += ' <p>'+data.message+'</p>';
-	            messageTemplate += '</div>';
-	            messageTemplate += '</li>';
+	        function sendMessage(input) {
+
+	            chatMessage = input.value.trim();
+
+	            if(socketState && chatMessage != '') {
+
+	                message = {};
+	                message.type = userToViewer;
+	                message.live_video_viewer_id = liveVideoViewerID;
+	                message.live_video_id = liveVideoID;
+	                message.user_id = userID;
+	                message.profile_id = (appSettings.USER == null) ? $scope.user_id : appSettings.USER.id;
+	                message.room = room;
+	                message.message = chatMessage;
+	                // message.created_at = appSettings.created_at;
+	                // message.username = $scope.videoDetails.name;
+	                message.userpicture = appSettings.USER_PICTURE;
+	                message.username = appSettings.NAME;
+	                message.class = appSettings.CLASS;
+
+	                // The user send message display to other users
+
+	                updateMessageToOthers(message);
+
+	                // socketClient.sendMessage(text);
+
+	                $('#chat-box').append(messageTemplate(message));
+
+
+	                // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
+
+	                chatInput.clear();
+
+	                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
+	                
+	                /*$(chatBox).animate({
+	                    scrollTop: chatBox.scrollHeight,
+	                }, 500);*/
+	            
+	            }
+	        
 	        }
-*/
-            return messageTemplate;
 
-        }
+	        // The user send message display to other users
+
+	        function updateMessageToOthers(data) {
+
+	            socket.emit('message', data); 
+	        }
+
+	        // Message Template
+
+	        // <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+
+	        function messageTemplate(data) {
+
+	        	// <small class="text-muted pull-right">'+data.created_at+'</small>
+
+	            var messageTemplate = '';
+
+	            // if (data.class == 'left') {
+		            messageTemplate = '<div class="item">';
+		            messageTemplate += '<div class="col-lg-2 col-md-2 col-xs-2 col-sm-2" style="padding: 0">';
+		            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'"><img class="chat_img" src="'+data.userpicture+'" alt="'+data.username+'"></a>';
+		            messageTemplate += '</div>';
+		            messageTemplate += '<div class="message col-lg-10 col-md-10 col-xs-10 col-sm-10">';
+		            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small></a>';
+		            messageTemplate += ' <div>'+data.message+'</div>';
+		            messageTemplate += '</div>';
+		            messageTemplate += '<div class="clearfix"></div>';
+		            messageTemplate += '</div>';
+		        // }
+
+		         /*else {
+		        	messageTemplate = '<li class="'+data.class+' clearfix">';
+		            messageTemplate += '<span class="chat-img pull-right">';
+		            messageTemplate += '<img style="width: 60px;height: 60px;" src="'+data.userpicture+'" alt="'+data.username+'" class="img-circle">';
+		            messageTemplate += '</span>';
+		            messageTemplate += '<div class="chat-body clearfix">';
+		            messageTemplate += ' <div class="header"> ';
+		            messageTemplate += ' <strong class="pull-right primary-font">'+data.username+'</strong>';
+		            messageTemplate += '</div>';
+		            messageTemplate += ' <p>'+data.message+'</p>';
+		            messageTemplate += '</div>';
+		            messageTemplate += '</li>';
+		        }
+	*/
+	            return messageTemplate;
+
+	        }
+
+	    }
     
 
     }

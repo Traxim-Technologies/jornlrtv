@@ -173,6 +173,15 @@
 
                                 </div>
                                 
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('delete_video_hour')}}</label>
+                                        <br>
+                                        <p>{{tr('short_notes_video_hour')}}</p>
+                                        <input type="text" class="form-control" name="delete_video_hour" value="{{ Setting::get('delete_video_hour')  }}" id="delete_video_hour" placeholder="{{tr('delete_video_hour')}}" pattern="[0-9]{0,}">
+                                    </div>
+                                </div>
+
                           </div>
                           <!-- /.box-body -->
 
