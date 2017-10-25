@@ -332,323 +332,325 @@ liveAppCtrl
 
         var rtsp_mobile_type = 0;
 
-        if ((browser == 'Safari' || browser == 'IE') || m_type == 'ios') {
+        if (wowza_ip_address != '' && wowza_ip_address != undefined && socket_url != '' && socket_url != undefined) {
 
-        		if (m_type == 'ios') {
+	        if ((browser == 'Safari' || browser == 'IE') || m_type == 'ios') {
 
-        			browser = 'Safari';
-        		}
+	        		if (m_type == 'ios') {
 
-        		mobile_ios_type = 1;
+	        			browser = 'Safari';
+	        		}
 
-				jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
+	        		mobile_ios_type = 1;
 
-				$("#videos-container").html("");
+					jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
+
+					$("#videos-container").html("");
 
 
-				var playerInstance = jwplayer("videos-container");
+					var playerInstance = jwplayer("videos-container");
 
-				$scope.url = "";
+					$scope.url = "";
 
-				var data = new FormData;
-				data.append('video_id', $scope.videoDetails.id);
-				data.append('device_type', 'web');
-				data.append('browser', browser);
+					var data = new FormData;
+					data.append('video_id', $scope.videoDetails.id);
+					data.append('device_type', 'web');
+					data.append('browser', browser);
 
-				$.ajax({
-					type : 'post',
-					url : url+'/userApi/get_live_url',
-					contentType : false,
-					processData: false,
-					
-					async : false,
-					data : data,
-					success : function(result) {
-
-						if (result.success) {
-
-							$scope.url = result.url;
-
-						} else {
-
-							console.log(result.message);
-
-						}
+					$.ajax({
+						type : 'post',
+						url : url+'/userApi/get_live_url',
+						contentType : false,
+						processData: false,
 						
-					}, 
-			    	error : function(result) {
+						async : false,
+						data : data,
+						success : function(result) {
 
-			    	}
-				});
+							if (result.success) {
 
-				console.log("Url "+$scope.url);
+								$scope.url = result.url;
 
+							} else {
 
-				playerInstance.setup({
+								console.log(result.message);
 
-				   file : $sce.trustAsResourceUrl($scope.url),
+							}
+							
+						}, 
+				    	error : function(result) {
 
-				    width: "100%",
-				    aspectratio: "16:9",
-				    primary: "flash",
-				    controls : true,
-				    "controlbar.idlehide" : false,
-				    controlBarMode:'floating',
-				    "controls": {
-				      "enableFullscreen": false,
-				      "enablePlay": false,
-				      "enablePause": false,
-				      "enableMute": true,
-				      "enableVolume": true
-				    },
-				    autostart : true,
-				   /* "sharing": {
-				        "sites": ["reddit","facebook","twitter"]
-				      }*/
-				});
+				    	}
+					});
+
+					console.log("Url "+$scope.url);
 
 
-				playerInstance.on('error', function() {
+					playerInstance.setup({
 
-					console.log("setupError");
+					   file : $sce.trustAsResourceUrl($scope.url),
 
-                    $("#videos-container").hide();
-
-                    var hasFlash = false;
-                    
-                   try {
-                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-                        if (fo) {
-                            hasFlash = true;
-                        }
-                    } catch (e) {
-                        if (navigator.mimeTypes
-                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-                            hasFlash = true;
-                        }
-                    }
-
-                    console.log(hasFlash == false);
-
-                    $('#main_video_setup_error').css('display', 'block');
-
-                    if (hasFlash == false) {
-                        $('#flash_error_display').show();
-
-                        confirm('Download Flash Player. Flash Player Fail to Load.');
-
-                        return false;
-                    }
-
-                   
-                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-
-				});
+					    width: "100%",
+					    aspectratio: "16:9",
+					    primary: "flash",
+					    controls : true,
+					    "controlbar.idlehide" : false,
+					    controlBarMode:'floating',
+					    "controls": {
+					      "enableFullscreen": false,
+					      "enablePlay": false,
+					      "enablePause": false,
+					      "enableMute": true,
+					      "enableVolume": true
+					    },
+					    autostart : true,
+					   /* "sharing": {
+					        "sites": ["reddit","facebook","twitter"]
+					      }*/
+					});
 
 
-				playerInstance.on('setupError', function() {
+					playerInstance.on('error', function() {
 
-				 	console.log("setupError");
+						console.log("setupError");
 
-                    $("#videos-container").hide();
+	                    $("#videos-container").hide();
 
-                    var hasFlash = false;
-                   try {
-                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-                        if (fo) {
-                            hasFlash = true;
-                        }
-                    } catch (e) {
-                        if (navigator.mimeTypes
-                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-                            hasFlash = true;
-                        }
-                    }
+	                    var hasFlash = false;
+	                    
+	                   try {
+	                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+	                        if (fo) {
+	                            hasFlash = true;
+	                        }
+	                    } catch (e) {
+	                        if (navigator.mimeTypes
+	                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+	                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+	                            hasFlash = true;
+	                        }
+	                    }
 
-                    $('#main_video_setup_error').show();
+	                    console.log(hasFlash == false);
 
-                    if (hasFlash == false) {
-                        $('#flash_error_display').show();
+	                    $('#main_video_setup_error').css('display', 'block');
 
-                        confirm('Download Flash Player. Flash Player Fail to Load.');
+	                    if (hasFlash == false) {
+	                        $('#flash_error_display').show();
 
-                        return false;
-                    }
+	                        confirm('Download Flash Player. Flash Player Fail to Load.');
 
-                    
+	                        return false;
+	                    }
 
-                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-                
-                });
+	                   
+	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
 
-
-				 $("#loader_btn").hide();
-
-
-        }
+					});
 
 
-		var ws = new WebSocket('wss://'+socket_url+'/rtprelay');
+					playerInstance.on('setupError', function() {
 
-		console.log(ws);
+					 	console.log("setupError");
 
-		var videoInput;
-		var videoOutput;
-		var webRtcPeer;
-		var state = null;
-		var destinationIp;
-		var destinationPort;
-		var rtpSdp;
+	                    $("#videos-container").hide();
 
-		console.log('Page loaded ...');
-		videoInput = document.getElementById('videoInput');
-		videoOutput = document.getElementById('videoOutput');
-		rtpSdp = document.getElementById('rtpSdp');
+	                    var hasFlash = false;
+	                   try {
+	                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+	                        if (fo) {
+	                            hasFlash = true;
+	                        }
+	                    } catch (e) {
+	                        if (navigator.mimeTypes
+	                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+	                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+	                            hasFlash = true;
+	                        }
+	                    }
 
-		ws.onmessage = function(message) {
+	                    $('#main_video_setup_error').show();
+
+	                    if (hasFlash == false) {
+	                        $('#flash_error_display').show();
+
+	                        confirm('Download Flash Player. Flash Player Fail to Load.');
+
+	                        return false;
+	                    }
+
+	                    
+
+	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
+	                
+	                });
 
 
-			var parsedMessage = JSON.parse(message.data);
-			console.info('Received message: ' + message.data);
+					 $("#loader_btn").hide();
 
-			switch (parsedMessage.id) {
-			case 'startResponse':
-				startResponse(parsedMessage);
-				break;
-			case 'error':
-				onError('Error message from server: ' + parsedMessage.message);
-				break;
-			case 'iceCandidate':
-				webRtcPeer.addIceCandidate(parsedMessage.candidate)
-				break;
-			default:
-				onError('Unrecognized message', parsedMessage);
-			}
-		}
 
-		$scope.start = function() {
-			console.log('Starting video call ...')
+	        }
 
-			// showSpinner(videoInput);
 
-			console.log('Creating WebRtcPeer and generating local sdp offer ...');
+			var ws = new WebSocket('wss://'+socket_url+'/rtprelay');
 
-		    var options = {
-		      localVideo: videoInput,
-		      onicecandidate : onIceCandidate
-		    }
+			console.log(ws);
 
-		    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
-		        if(error) return onError(error);
-		        this.generateOffer(onOffer);
-		    });
-		}
+			var videoInput;
+			var videoOutput;
+			var webRtcPeer;
+			var state = null;
+			var destinationIp;
+			var destinationPort;
+			var rtpSdp;
 
-		function onIceCandidate(candidate) {
-			   console.log('Local candidate' + JSON.stringify(candidate));
+			console.log('Page loaded ...');
+			videoInput = document.getElementById('videoInput');
+			videoOutput = document.getElementById('videoOutput');
+			rtpSdp = document.getElementById('rtpSdp');
 
-			   var message = {
-			      id : 'onIceCandidate',
-			      candidate : candidate
-			   };
-			   sendMessage(message);
-		}
+			ws.onmessage = function(message) {
 
-		function onOffer(error, offerSdp) {
-			if(error) return onError(error);
 
-			console.info('Invoking SDP offer callback function ' + location.host);
-			var message = {
-				id : 'start',
-				sdpOffer : offerSdp,
-				rtpSdp : rtpSdp.value
-			}
-			console.log("This is the offer sdp:");
-			console.log(offerSdp);
-			sendMessage(message);
-		}
+				var parsedMessage = JSON.parse(message.data);
+				console.info('Received message: ' + message.data);
 
-		function onError(error) {
-			console.error(error);
-		}
-
-		function startResponse(message) {
-			console.log('SDP answer received from server. Processing ...');
-			webRtcPeer.processAnswer(message.sdpAnswer);
-		}
-
-		$scope.stop = function() {
-			console.log('Stopping video call ...');
-			if (webRtcPeer) {
-				webRtcPeer.dispose();
-				webRtcPeer = null;
-
-				var message = {
-					id : 'stop'
+				switch (parsedMessage.id) {
+				case 'startResponse':
+					startResponse(parsedMessage);
+					break;
+				case 'error':
+					onError('Error message from server: ' + parsedMessage.message);
+					break;
+				case 'iceCandidate':
+					webRtcPeer.addIceCandidate(parsedMessage.candidate)
+					break;
+				default:
+					onError('Unrecognized message', parsedMessage);
 				}
+			}
+
+			$scope.start = function() {
+				console.log('Starting video call ...')
+
+				// showSpinner(videoInput);
+
+				console.log('Creating WebRtcPeer and generating local sdp offer ...');
+
+			    var options = {
+			      localVideo: videoInput,
+			      onicecandidate : onIceCandidate
+			    }
+
+			    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+			        if(error) return onError(error);
+			        this.generateOffer(onOffer);
+			    });
+			}
+
+			function onIceCandidate(candidate) {
+				   console.log('Local candidate' + JSON.stringify(candidate));
+
+				   var message = {
+				      id : 'onIceCandidate',
+				      candidate : candidate
+				   };
+				   sendMessage(message);
+			}
+
+			function onOffer(error, offerSdp) {
+				if(error) return onError(error);
+
+				console.info('Invoking SDP offer callback function ' + location.host);
+				var message = {
+					id : 'start',
+					sdpOffer : offerSdp,
+					rtpSdp : rtpSdp.value
+				}
+				console.log("This is the offer sdp:");
+				console.log(offerSdp);
 				sendMessage(message);
 			}
-			// hideSpinner(videoInput, videoOutput);
-		}
 
-		function sendMessage(message) {
-			var jsonMessage = JSON.stringify(message);
-			console.log('Senging message: ' + jsonMessage);
-			ws.send(jsonMessage);
-		}
-
-		/*function showSpinner() {
-			for (var i = 0; i < arguments.length; i++) {
-				arguments[i].poster = './img/transparent-1px.png';
-				arguments[i].style.background = 'center transparent url("./img/spinner.gif") no-repeat';
+			function onError(error) {
+				console.error(error);
 			}
-		}
 
-		function hideSpinner() {
-			for (var i = 0; i < arguments.length; i++) {
-				arguments[i].src = '';
-				arguments[i].poster = './img/webrtc.png';
-				arguments[i].style.background = '';
+			function startResponse(message) {
+				console.log('SDP answer received from server. Processing ...');
+				webRtcPeer.processAnswer(message.sdpAnswer);
 			}
-		}*/
 
-		function forceEvenRtpPort(rtpPort) {
-			if ((rtpPort > 0) && (rtpPort % 2 != 0))
-				return rtpPort - 1;
-			else return rtpPort;
+			$scope.stop = function() {
+				console.log('Stopping video call ...');
+				if (webRtcPeer) {
+					webRtcPeer.dispose();
+					webRtcPeer = null;
+
+					var message = {
+						id : 'stop'
+					}
+					sendMessage(message);
+				}
+				// hideSpinner(videoInput, videoOutput);
+			}
+
+			function sendMessage(message) {
+				var jsonMessage = JSON.stringify(message);
+				console.log('Senging message: ' + jsonMessage);
+				ws.send(jsonMessage);
+			}
+
+			/*function showSpinner() {
+				for (var i = 0; i < arguments.length; i++) {
+					arguments[i].poster = './img/transparent-1px.png';
+					arguments[i].style.background = 'center transparent url("./img/spinner.gif") no-repeat';
+				}
+			}
+
+			function hideSpinner() {
+				for (var i = 0; i < arguments.length; i++) {
+					arguments[i].src = '';
+					arguments[i].poster = './img/webrtc.png';
+					arguments[i].style.background = '';
+				}
+			}*/
+
+			function forceEvenRtpPort(rtpPort) {
+				if ((rtpPort > 0) && (rtpPort % 2 != 0))
+					return rtpPort - 1;
+				else return rtpPort;
+			}
+
+			function updateRtpSdp() {
+				var destination_ip;
+				var destination_port;
+
+				if (!destinationIp.value)
+					destination_ip= wowza_ip_address;
+				else
+					destination_ip = destinationIp.value.trim();
+
+				if (!destinationPort.value)
+					destination_port="33124";
+				else
+					destination_port = forceEvenRtpPort(destinationPort.value.trim());
+
+
+				destination_ip = wowza_ip_address;
+
+					rtpSdp.value = 'v=0\n'
+					+ 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
+					+ 's=Kurento\n'
+					+ 'c=IN IP4 ' + destination_ip + '\n'
+					+ 't=0 0\n'
+					+ 'm=video ' + destination_port + ' RTP/AVP 100\n'
+					+ 'a=rtpmap:100 H264/90000\n';
+
+					console.log(rtpSdp.value);
+			}
+
 		}
-
-		function updateRtpSdp() {
-			var destination_ip;
-			var destination_port;
-
-			if (!destinationIp.value)
-				destination_ip= wowza_ip_address;
-			else
-				destination_ip = destinationIp.value.trim();
-
-			if (!destinationPort.value)
-				destination_port="33124";
-			else
-				destination_port = forceEvenRtpPort(destinationPort.value.trim());
-
-
-			destination_ip = wowza_ip_address;
-
-				rtpSdp.value = 'v=0\n'
-				+ 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
-				+ 's=Kurento\n'
-				+ 'c=IN IP4 ' + destination_ip + '\n'
-				+ 't=0 0\n'
-				+ 'm=video ' + destination_port + ' RTP/AVP 100\n'
-				+ 'a=rtpmap:100 H264/90000\n';
-
-				console.log(rtpSdp.value);
-		}
-
-		
 
 		var socket = {};
 
@@ -1245,8 +1247,9 @@ liveAppCtrl
 
 	          // window.btn_clicked = true;
 
-
-	           $scope.start();
+	       	if (wowza_ip_address != '' && wowza_ip_address != undefined && socket_url != '' && socket_url != undefined) {
+	           	$scope.start();
+	       	}
 	          // $window.sessionStorage.reload = 0;
 			
 		}
@@ -1304,34 +1307,37 @@ liveAppCtrl
 
 							if ($scope.user_id != $scope.videoDetails.user_id) {
 								// $("#default_image").hide();
-								$("#loader_btn").show();
+								$("#loader_btn").hide();
+
 							} else {
 
 								$scope.openBroadcast($scope.videoDetails.id, $scope.videoDetails.virtual_id);
 
 							}
 
-							if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
+							/*if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
 
 							} else {
 								console.log($scope.videoDetails.video_url);
 
 								$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
 
-							}
+							}*/
 
 
 							// $scope.start();
 
-							/*if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
+							if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
 
 								jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
 
 								var playerInstance = jwplayer("rtsp_container");
 
-								console.log("data Url "+data.video_url);
+								console.log("data Url "+$scope.videoDetails.video_url);
 
 								$("#videos-container").hide();
+
+								$("#loader_btn").hide();
 
 								$("#rtsp_container").show();
 
@@ -1339,7 +1345,7 @@ liveAppCtrl
 
 								playerInstance.setup({
 
-								   file : $sce.trustAsResourceUrl(data.video_url),
+								   file : $sce.trustAsResourceUrl($scope.videoDetails.video_url),
 									width: "100%",
 									aspectratio: "16:9",
 									primary: "flash",
@@ -1361,7 +1367,7 @@ liveAppCtrl
 
 								$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
 
-							}*/
+							}
 
 
 							// if ($window.sessionStorage.reload == 1) {
