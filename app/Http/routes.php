@@ -548,8 +548,12 @@ Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
 
 Route::get('/master/login', 'UserController@master_login')->name('master.login');
 
+Route::get('cron_delete_video', 'ApplicationController@cron_delete_video');
+
 
 Route::group(['as' => 'user.'], function(){
+
+    Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
 
 
     Route::get('paypal_video','PaypalController@payPerVideo')->name('live_video_paypal');

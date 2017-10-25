@@ -28,6 +28,10 @@ use Auth;
 
 use App\ChatMessage;
 
+use App\LiveVideo;
+
+use Setting;
+
 class ApplicationController extends Controller {
 
     /**
@@ -523,6 +527,44 @@ class ApplicationController extends Controller {
         ChatMessage::create($request->all());
 
         return response()->json(['success' => 'true']);
+    
+    }
+
+
+    public function cron_delete_video() {
+        
+        Log::info('cron_delete_video');
+
+        $admin = Admin::first();
+        
+        $timezone = 'Asia/Kolkata';
+
+        if($admin) {
+
+            if ($admin->timezone) {
+
+                $timezone = $admin->timezone;
+
+            } 
+
+        }
+
+        $date = convertTimeToUSERzone(date('Y-m-d H:i:s'), $timezone);
+
+        $delete_hour = Setting::get('delete_video_hour');
+
+        $less_than_date = date('Y-m-d H:i:s', strtotime($date." -{$delete_hour} hour"));
+
+        $videos = LiveVideo::where('is_streaming' ,'=' ,DEFAULT_TRUE)
+                        ->where('status' , 0)
+                        ->where('created_at', '<=', $less_than_date)
+                        ->get();
+
+        foreach ($videos as $key => $video) {
+            Log::info('Change the status');
+            $video->status = 1;
+            $video->save();
+        }
     
     }
 }
