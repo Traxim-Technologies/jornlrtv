@@ -2089,27 +2089,27 @@ margin: 0px auto 35px;
   	border: 0;
     /*padding: 15px 15px 0 0;*/
 }
-.signup-form{
+.signup-form1{
   	border:2px solid #e0e0e0;
   	box-shadow: none;
   	height: 45px;
   	color:#a59f9f;
   	margin-top:0px;
 }
-.signup-form:focus{
+.signup-form1:focus{
   	box-shadow: none;
   	border-color:  #e0e0e0;
 }
-.signup-form::-webkit-input-placeholder { 
+.signup-form1::-webkit-input-placeholder { 
     color:#a59f9f;
 }
-.signup-form::-moz-placeholder {
+.signup-form1::-moz-placeholder {
 	  color:#a59f9f;
 }
-.signup-form:-ms-input-placeholder { 
+.signup-form1:-ms-input-placeholder { 
 	  color:#a59f9f;
 } 
-.signup-form:-o-input-placeholder { 
+.signup-form1:-o-input-placeholder { 
 	  color:#a59f9f;
 } 
 .signup-btn{

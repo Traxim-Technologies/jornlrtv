@@ -147,7 +147,7 @@
 
 												      	 <!-- Text input-->
 			                                    <div class="form-group form-group1">
-			                                    	<input type="text" class="form-control signup-form" placeholder="Enter Title" id="title" name="title" required="">
+			                                    	<input type="text" class="form-control signup-form1" placeholder="Enter Title" id="title" name="title" required="">
 			                                   	</div>
 			                                    <!-- <div class="row">
 				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
@@ -213,7 +213,7 @@
 
 			                                 	<!-- ======amount===== -->
 				                                <div class="form-group form-group1" style="display: none" id="price">
-				                                    <input id="Amount" name="amount" type="number" placeholder="Amount" pattern="[0-9]{0,}" class="form-control signup-form">
+				                                    <input id="Amount" name="amount" type="number" placeholder="Amount" pattern="[0-9]{0,}" class="form-control signup-form1">
 				                                </div>
 			                                  
 
@@ -227,7 +227,7 @@
 			                                  <br> -->
 
 			                                    <div class="form-group form-group1">
-												    <textarea id="description" name="description" class="form-control signup-form" rows="5" id="comment" placeholder="{{tr('description')}}"></textarea>
+												    <textarea id="description" name="description" class="form-control signup-form1" rows="5" id="comment" placeholder="{{tr('description')}}"></textarea>
 												</div>
 
 
