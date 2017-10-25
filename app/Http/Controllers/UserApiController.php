@@ -2289,7 +2289,7 @@ class UserApiController extends Controller {
                 'title' => 'required',
                 'amount' => 'numeric',
                 'payment_status'=>'required',
-                'type' => 'required',
+               // 'type' => 'required',
                 'description'=>'required',
                 'channel_id'=>'required|exists:channels,id',
                 'user_id'=>'required|exists:users,id',
@@ -2308,7 +2308,7 @@ class UserApiController extends Controller {
             $model = new LiveVideo;
             $model->title = $request->title;
             $model->payment_status = $request->payment_status;
-            $model->type = $request->type;
+            $model->type = $request->type ? $request->type : TYPE_PUBLIC;
             $model->channel_id = $request->channel_id;
             $model->amount = 0;
 
