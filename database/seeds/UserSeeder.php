@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 
 use App\Helpers\Helper;
 
+use App\Helpers\AppJwt;
+
 class UserSeeder extends Seeder
 {
     /**
@@ -22,7 +24,7 @@ class UserSeeder extends Seeder
                 'password' => \Hash::make('123456'),
                 'picture' =>"https://tubenow.streamhash.com/placeholder.png",
                 'chat_picture' =>"https://tubenow.streamhash.com/placeholder.png",
-                'token'=>Helper::generate_token(),
+                'token'=>AppJwt::create(['id' => 1, 'email' => 'admin@tubenow.com', 'role' => "model"]),
                 'token_expiry'=>Helper::generate_token_expiry(),
                 'dob'=>'1992-01-01',
                 'age_limit'=>25,
@@ -41,7 +43,7 @@ class UserSeeder extends Seeder
 		        'password' => \Hash::make('123456'),
 		        'picture' =>"https://tubenow.streamhash.com/placeholder.png",
                 'chat_picture' =>"https://tubenow.streamhash.com/placeholder.png",
-                'token'=>Helper::generate_token(),
+                'token'=>AppJwt::create(['id' => 2, 'email' => 'user@tubenow.com', 'role' => "model"]),
                 'token_expiry'=>Helper::generate_token_expiry(),
                 'dob'=>'1992-01-01',
                 'age_limit'=>25,
