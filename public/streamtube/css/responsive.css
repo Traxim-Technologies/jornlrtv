@@ -88,6 +88,13 @@
 .add-card input {
     width:100%;
 }
+.sub-btn{
+	margin-top:0px;
+}
+.foot-btn{
+	margin-top: 0;
+	margin-bottom: 15px;
+}
 }
 
 /*small devices*/
@@ -182,6 +189,13 @@
 .add-card input {
     width: 330px;
 }
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 0;
+	margin-bottom: 15px;
+}
 }
 
 /* Tablets */
@@ -272,6 +286,12 @@
 .add-card input {
     width: 330px;
 }
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 95px;
+}
 }
 
 /* Medium Devices, */
@@ -361,6 +381,12 @@
 .add-card input {
     width: 330px;
 }
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 95px;
+}
 }
 
 /* Desktops */
@@ -449,6 +475,12 @@
 }
 .add-card input {
     width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 95px;
 }
 }
 /*index.html responsive*/
@@ -587,7 +619,7 @@ videos.html responsive
 		font-size: 11px !important;
 	}
 	.stars i {
-	    font-size: 8px !important;
+	    font-size: 14px !important;
 	}
 }
 @media screen and (max-width: 789px){
@@ -611,7 +643,7 @@ videos.html responsive
 		font-size: 10px;
 	}
 	.stars i {
-	    font-size: 11px;
+	    font-size: 14px;
 	}
 	.more-content a{
 		/*padding: 0;*/
@@ -738,7 +770,7 @@ videos.html responsive
 	    font-size: 9px;
 	}
 	.stars i {
-	    font-size: 8px;
+	    font-size: 14px;
 	}
 }
 @media screen and (max-width: 328px){

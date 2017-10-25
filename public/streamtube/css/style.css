@@ -450,6 +450,7 @@ videos (single page) css
 .channels-head i:hover{
 	background-color: #62B2E5;
 }
+
 .subs{
 	background-color: #E62117;
 	border-color: transparent;
@@ -481,7 +482,7 @@ videos (single page) css
 }
 .ratings{
 	float: right;
-	margin-top: 5px;
+	margin-top: 10px;
 }
 
 .views {
@@ -538,7 +539,7 @@ videos (single page) css
 	padding: 0;
 }
 .stars i{
-	font-size: 12px;
+	font-size: 14px;
 	color: #b8b8b8;
 }
 .stars i:active{
@@ -799,13 +800,14 @@ videos (single page) css
     outline-color: transparent;
     outline-offset: 0;
 }
-
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------
 history (single page) css
 --------------------------------------------------------------------------------------------------------------------------------------------
 */
-
+.top{
+	margin-top:10px !important;
+}
 .history-content{
 	margin-top: 75px !important;	
 }
@@ -1798,7 +1800,7 @@ margin: 0px auto 35px;
 	}
 
 	.ratings {
-		padding-top: 5px;
+		padding-top:10px;
 	}
 }
 
@@ -1865,6 +1867,22 @@ margin: 0px auto 35px;
     margin-bottom: 20px;
     position: relative;
     color: #fff;    
+}
+.channel-img{
+	margin-right: 10px;
+    width: 60px;
+    float: left
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.rating1{
+	color: #999;
 }
 
 .bg-green{
@@ -1958,6 +1976,12 @@ margin: 0px auto 35px;
 	font-size: 20px !important;
 	color: white;
 	font-weight: normal;
+	background-color: rgba(0,0,0,.5);
+	padding: 15px;
+	margin: 0;
+}
+.zero-padding{
+	padding: 0;
 }
 .wrapper_content {
 
