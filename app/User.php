@@ -114,12 +114,9 @@ class User extends Authenticatable
             $model->generateToken($model);
 
             $model->generateEmailCode();
+
+            $model->defaultPaidCheck();
         });
-        
-        /*static::updating(function ($model) {
-           
-            $model->generateToken($model);
-        });*/
 
         //delete your related models here, for example
         static::deleting(function($user)
@@ -199,18 +196,8 @@ class User extends Authenticatable
                 $user->userRedeemRequests()->delete();
 
             }
+        
         }); 
-
-
-        static::creating(function ($model) {
-
-            $model->generateEmailCode();
-
-            $model->generateToken();
-
-            $model->defaultPaidCheck();
-
-        });
     }
 
 
