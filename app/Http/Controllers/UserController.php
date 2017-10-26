@@ -76,13 +76,7 @@ class UserController extends Controller {
 
         $this->UserAPI = $API;
 
-<<<<<<< HEAD
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos' , 'master_login']]);
-=======
-
         $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos','master_login']]);
->>>>>>> a6fd5d37123fa2ab7a6b3285c513fe1279377d5f
-
 
         if (Auth::check()) {
 
@@ -133,11 +127,6 @@ class UserController extends Controller {
             }
 
         }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> a6fd5d37123fa2ab7a6b3285c513fe1279377d5f
     }
 
 
