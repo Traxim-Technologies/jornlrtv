@@ -8,6 +8,8 @@ use App\Helpers\Helper;
 
 use App\Helpers\AppJwt;
 
+use Setting;
+
 class User extends Authenticatable
 {
 
@@ -198,6 +200,27 @@ class User extends Authenticatable
 
             }
         }); 
+
+
+        static::creating(function ($model) {
+
+            $model->generateEmailCode();
+
+            $model->generateToken();
+
+            $model->defaultPaidCheck();
+
+        });
+    }
+
+
+    protected function defaultPaidCheck() {
+
+        if(Setting::get('is_default_paid_user') == 1) {
+
+            $this->attributes['user_type'] = 1;
+
+        }
     }
 
 

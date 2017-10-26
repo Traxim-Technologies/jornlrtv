@@ -35,38 +35,47 @@
 
     @if(Auth::check())
 
-        <?php $channels = getChannels(Auth::user()->id);?>
+        <!-- Check the create channel options are enabled by admin -->
 
-        @if(count($channels) > 0 || Auth::user()->user_type)
+        @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
 
-        <ul class="y-home" style="margin-top: 10px;">
-           
+            <?php $channels = getChannels(Auth::user()->id);?>
 
-            <h3>{{tr('my_channels')}}</h3>
+            @if(count($channels) > 0 || Auth::user()->user_type)
 
+                <ul class="y-home" style="margin-top: 10px;">
+                   
 
-            @foreach($channels as $channel)
-                <li>
-                    <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
-                </li>
-            @endforeach  
+                    <h3>{{tr('my_channels')}}</h3>
 
 
-            @if(Auth::user()->user_type)  
-
-                @if(count($channels) == 0 || Setting::get('multi_channel_status'))  
-
-                <li>
-                    <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
-                </li>    
-
-                @endif
-
-            @endif     
-        </ul>
+                    @foreach($channels as $channel)
+                        <li>
+                            <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
+                        </li>
+                    @endforeach  
 
 
-        @elseif(!Auth::user()->user_type)
+                    @if(Auth::user()->user_type)  
+
+                        @if(count($channels) == 0 || Setting::get('multi_channel_status'))  
+
+                        <li>
+                            <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
+                        </li>    
+
+                        @endif
+
+                    @endif     
+                
+                </ul>
+
+            @endif
+            
+        @endif
+
+
+        @if(!Auth::user()->user_type)
 
             <div class="menu4">
                 <p>{{tr('subscribe_note')}}</p>

@@ -479,15 +479,23 @@ function user_type_check($user) {
 
     if($user) {
 
-        // User need subscripe the plan
+        if(Setting::get('is_default_paid_user') == 1) {
 
-        if(Setting::get('is_subscription')) {
-
-            $user->user_type = 0;
+            $user->user_type = 1;
 
         } else {
-            // Enable the user as paid user
-            $user->user_type = 1;
+
+            // User need subscripe the plan
+
+            if(Setting::get('is_subscription')) {
+
+                $user->user_type = 0;
+
+            } else {
+                // Enable the user as paid user
+                $user->user_type = 1;
+            }
+
         }
 
         $user->save();
