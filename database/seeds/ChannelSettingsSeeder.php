@@ -13,7 +13,7 @@ class ChannelSettingsSeeder extends Seeder
     {
     	DB::table('settings')->insert([
     		[
-		        'key' => 'channel_create_by_user',
+		        'key' => 'create_channel_by_user',
 		        'value' => 1
 		    ],
 		    [
@@ -22,6 +22,10 @@ class ChannelSettingsSeeder extends Seeder
 		    ],
 		    [
 		        'key' => 'master_user_login',
+		        'value' => 1
+		    ],
+		    [
+		        'key' => 'is_default_paid_user',
 		        'value' => 1
 		    ]
 		]);

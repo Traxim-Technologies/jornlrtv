@@ -939,6 +939,9 @@ return array(
 
 	'enabled' => 'Enabled',
 	'disabled' => 'Disabled',
+	
 	'create_channel_by_user' => 'Create Channel By User',
+
+	'is_default_paid_user' => "Default setting for register user as paid user",
 	
 );

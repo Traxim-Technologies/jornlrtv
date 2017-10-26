@@ -437,6 +437,8 @@ class ApplicationController extends Controller {
                 $value->value = $request->is_banner_ad;
             } else if ($value->key == 'create_channel_by_user') {
                 $value->value = $request->create_channel_by_user;
+            } else if ($value->key == 'is_default_paid_user') {
+                $value->value = $request->is_default_paid_user;
             } 
             
             $value->save();

@@ -140,6 +140,21 @@
                             </label>
                         </div>
 
+                        <div class="form-group">
+                            
+                            <label>{{tr('is_default_paid_user')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_default_paid_user" value="1" class="flat-red" @if(Setting::get('is_default_paid_user')) checked @endif>
+                                {{tr('enabled')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_default_paid_user" class="flat-red"  value="0" @if(!Setting::get('is_default_paid_user')) checked @endif>
+                                {{tr('disabled')}}
+                            </label>
+                        </div>
+
 
                   </div>
                   <!-- /.box-body -->
