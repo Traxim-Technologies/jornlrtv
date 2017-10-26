@@ -1454,9 +1454,25 @@ class AdminController extends Controller {
         return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels');
     }
 
+
+
     public function add_channel() {
 
-        $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->get();
+        // Check the create channel option is enabled from admin settings
+
+        if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED) {
+
+            $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->get();
+
+        } else {
+
+            // Load master user
+
+            $users = User::where('is_verified', DEFAULT_TRUE)->where('is_master_user' , 1)
+                            ->where('status', DEFAULT_TRUE)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+        }
 
         return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
     }

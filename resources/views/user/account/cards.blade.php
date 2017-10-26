@@ -1,6 +1,5 @@
 @extends('layouts.user')
 
-
 @section('content')
 
 <div class="y-content">
@@ -18,6 +17,20 @@
 						<div class="col-lg-12">
 
                     		<h4>{{tr('cards')}}</h4>
+
+		            		<!-- <div class="demo-container">
+						        <div class="card-wrapper"></div>
+
+						        <div class="form-container">
+						            <form class="add-card">
+						                <input placeholder="Card number" type="tel" name="number">
+						                <input placeholder="Full name" type="text" name="name">
+						                <input placeholder="MM/YY" type="tel" name="expiry">
+						                <input placeholder="CVC" type="number" name="cvc">
+						                <button class="btn btn-success submit-btn">Submit</button>
+						            </form>
+						        </div>
+						    </div> -->
 
 					        <form action="{{ route('user.card.add_card') }}" method="POST" id="payment-form" class="form-horizontal card">
 
@@ -110,10 +123,10 @@
 					            {{tr('no_card_details_found')}}
 
 
-					          @endif
+					        @endif
 
-					          <br>
-					          <br>
+					        <br>
+					        <br>
 					     </div>
 					</div>
 				</div>
@@ -129,6 +142,16 @@
 
 
 @section('scripts')
+
+
+<!-- <script type="text/javascript" src="{{ asset('assets/js/card1.js') }}"></script>
+    
+<script>
+    new Card({
+    form: document.querySelector('form'),
+    container: '.card-wrapper'
+});
+</script> -->
 
 <script type="text/javascript" src="{{ asset('assets/js/card.js') }}"></script>
 
