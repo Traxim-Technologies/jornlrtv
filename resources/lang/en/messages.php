@@ -936,4 +936,9 @@ return array(
 	'enter_link'=>'Enter Link',
 	'link'=>'Link',
 	'banner_notes'=>'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
+
+	'enabled' => 'Enabled',
+	'disabled' => 'Disabled',
+	'create_channel_by_user' => 'Create Channel By User',
+	
 );

@@ -410,7 +410,9 @@ class ApplicationController extends Controller {
     }
 
     public function admin_control() {
+
         return view('admin.settings.control')->with('page', tr('admin_control'));
+        
     }
 
     public function save_admin_control(Request $request) {
@@ -433,7 +435,9 @@ class ApplicationController extends Controller {
                 $value->value = $request->is_banner_video;
             } else if ($value->key == 'is_banner_ad') {
                 $value->value = $request->is_banner_ad;
-            }
+            } else if ($value->key == 'create_channel_by_user') {
+                $value->value = $request->create_channel_by_user;
+            } 
             
             $value->save();
         }
