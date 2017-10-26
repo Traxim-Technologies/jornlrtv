@@ -450,6 +450,7 @@ videos (single page) css
 .channels-head i:hover{
 	background-color: #62B2E5;
 }
+
 .subs{
 	background-color: #E62117;
 	border-color: transparent;
@@ -481,7 +482,7 @@ videos (single page) css
 }
 .ratings{
 	float: right;
-	margin-top: 5px;
+	margin-top: 10px;
 }
 
 .views {
@@ -538,7 +539,7 @@ videos (single page) css
 	padding: 0;
 }
 .stars i{
-	font-size: 12px;
+	font-size: 14px;
 	color: #b8b8b8;
 }
 .stars i:active{
@@ -799,13 +800,14 @@ videos (single page) css
     outline-color: transparent;
     outline-offset: 0;
 }
-
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------
 history (single page) css
 --------------------------------------------------------------------------------------------------------------------------------------------
 */
-
+.top{
+	margin-top:10px !important;
+}
 .history-content{
 	margin-top: 75px !important;	
 }
@@ -919,7 +921,7 @@ history (single page) css
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 27px;
+    max-height:33px;
 
 }
 .duration{
@@ -1608,11 +1610,6 @@ margin: 0px auto 35px;
 	}
 	.recom-image{
 	}
-	.custom-side{
-		padding-right: 15px;
-		padding-left: 15px;
-		margin-top: 20px;
-	}
 
 }
 
@@ -1803,7 +1800,7 @@ margin: 0px auto 35px;
 	}
 
 	.ratings {
-		padding-top: 5px;
+		padding-top:10px;
 	}
 }
 
@@ -1836,12 +1833,33 @@ margin: 0px auto 35px;
 	margin-top: 10px !important;
 }
 
-
-
+.demo-container {
+	width: 100%;
+    max-width: 350px;
+    margin: 0px auto;
+    padding-top: 25px;
+}
+.add-card{
+    margin: 30px 0;
+}
+.add-card input {
+    margin: 10px 0 auto;
+    display: block;
+    border:2px solid #e0e0e0;
+    box-shadow: none;
+   	background-color: transparent;
+    border-radius: 5px;
+    height:40px;
+    padding: 10px; 
+    color: #999;
+}
+.submit-btn{
+    margin-top: 15px;
+    height: 40px; 
+}
 .report_list{
 	padding: 5px 0px
 }
-
 .small-box {
     border-radius: 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -1849,6 +1867,22 @@ margin: 0px auto 35px;
     margin-bottom: 20px;
     position: relative;
     color: #fff;    
+}
+.channel-img{
+	margin-right: 10px;
+    width: 60px;
+    float: left
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.rating1{
+	color: #999;
 }
 
 .bg-green{
@@ -1900,7 +1934,55 @@ margin: 0px auto 35px;
     text-decoration: none;
     z-index: 10;
 }
-
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 350px;
+}
+.content-modal{
+	border-radius: 0;
+}
+.copy-embed .modal-header{
+	padding: 15px 0
+}
+.copy-embed .modal-title{
+	font-size: 20px;
+	font-weight: normal;
+}
+.copy-embed .modal-body{
+	padding: 15px 0;
+	text-align: left;
+}
+.copy-embed .modal-body p{
+	margin: 0;
+	font-size: 16px;
+	font-weight: normal;
+	color: #999;
+	text-align: left;
+}
+.copy-embed .close:hover{
+	background-color: transparent !important;
+	color: black;
+}
+.copy-embed textarea{
+	resize: none;
+}
+.copy-embed .btn-primary:hover {
+    color: #fff;
+    background-color: #286090 !important;
+}
+.video-title1{
+	font-size: 20px !important;
+	color: white;
+	font-weight: normal;
+	background-color: rgba(0,0,0,.5);
+	padding: 15px;
+	margin: 0;
+}
+.zero-padding{
+	padding: 0;
+}
 .wrapper_content {
 
 	position: relative;

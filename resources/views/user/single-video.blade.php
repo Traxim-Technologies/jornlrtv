@@ -165,12 +165,54 @@ textarea[name=comments] {
                                     <div class="details">
                                         <div class="video-title">
                                             <div class="title row">
-                                                <div class="col-lg-12">
-                                                    <h3>{{$video->title}}</h3>
-
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12">
+                                                    <!-- <h3>{{$video->title}}</h3> -->
+                                                    <h3>Channel Name</h3>
                                                     <div class="clearfix"></div>
                                                 </div>
 
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top">
+                                                    <div class="channel-img">
+                                                        <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
+                                                    </div>
+                                                    <span class="username"><a href="#">{{$video->title}}</a></span>
+                                                    <h5 class="rating no-margin top">
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    </h5>
+                                                    <div class="pull-right sub-btn">
+
+                                                        @if(Auth::check())
+                                                            @if($video->get_channel->user_id != Auth::user()->id)
+
+                                                                @if (!$subscribe_status)
+
+                                                                <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} - {{$subscriberscnt}}</a>
+
+                                                                @else 
+
+                                                                    <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} - {{$subscriberscnt}}</a>
+
+                                                                @endif
+                                                           
+                                                           @else
+
+                                                                <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+
+
+                                                           @endif
+                                                        
+                                                        
+                                                        @endif
+
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                <hr>
+                                                </div>
+                                                
                                                 <div class="clearfix"></div>
 
                                                 <div class="col-lg-12">
@@ -249,7 +291,7 @@ textarea[name=comments] {
 
                                                             <input name="embed_link" class="form-control" id="embed_link" type="hidden" value="{{route('embed_video', array('u_id'=>$video->unique_id))}}">
 
-                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" style="margin-left: 8px; margin-top: -1px;" title="{{tr('copy_embedded_link')}}">
+                                                            <a onclick="copyTextToClipboard();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#copy-embed" style="margin-left: 8px; margin-top: -1px;" title="{{tr('copy_embedded_link')}}">
 
                                                                 <i class="fa fa-link"></i>
 
@@ -257,6 +299,35 @@ textarea[name=comments] {
 
                                                         </div><!--end of share-->
 
+                                                        <!-- ==============MODAL STARTS=========== -->
+                                                        <div class="modal fade modal-top" id="copy-embed" role="dialog">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content content-modal">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 modal-bg-img zero-padding" style="background-image: url({{asset('images/landing-9.png')}});">
+                                                                           <h4 class="video-title1">majority have suffered alteration</h4> 
+                                                                        </div>
+                                                                        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
+                                                                            <div class="copy-embed">
+                                                                                <div class="modal-header">
+                                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                    <h4 class="modal-title"> Header</h4>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                   <form>
+                                                                                        <div class="form-group">
+                                                                                            <textarea class="form-control" rows="5" id="comment">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</textarea>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                    <button class="btn btn-danger pull-right foot-btn">Copy</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- =========MODAL ENDS=========== -->
                                                         <div class="share">
 
 
@@ -285,18 +356,18 @@ textarea[name=comments] {
                                                         
                                                         </div>
 
-                                                         <div class="stars ratings text-center">
+                                                        <div class="stars ratings text-center">
 
                                                             <div class="views">
                                                                 <i class="fa fa-eye" style="color: #b31217;font-size:13px;"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
                                                             </div>
                                                             <div class="clearfix"></div>
                                                            
-                                                                <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <!-- <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a> -->
                                                             </center>
                                                         
 
@@ -400,7 +471,7 @@ textarea[name=comments] {
                                     @endif
                                     </div>
 
-                                    <div class="pull-right">
+<!--                                     <div class="pull-right">
 
                                         @if(Auth::check())
                                             @if($video->get_channel->user_id != Auth::user()->id)
@@ -425,7 +496,7 @@ textarea[name=comments] {
                                         
                                         @endif
 
-                                    </div>
+                                    </div> -->
 
                                     <div class="clearfix"></div>
 
