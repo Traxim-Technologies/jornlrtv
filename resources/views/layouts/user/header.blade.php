@@ -135,7 +135,7 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
+        <div class="col-lg-3 col-md-2 col-sm-2 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
         @if(Auth::check())
             <div class="y-button profile-button">
                <div class="dropdown">

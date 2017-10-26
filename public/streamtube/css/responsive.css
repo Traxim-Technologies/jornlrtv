@@ -18,6 +18,7 @@
 }
 .page-inner{
 	margin-top: 109px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -76,6 +77,11 @@
 .play-video{
 	padding: 0;
 }
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top: 10px;
+}
 .modal-top{
 	margin-top: 20px;
 }
@@ -118,6 +124,7 @@
 }
 .page-inner{
 	margin-top: 109px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -176,6 +183,7 @@
 	padding-right: 0px;
 	padding-left:0px;
 	margin-top: 10px;
+
 }
 .modal-top{
 	margin-top: 20px;
@@ -225,6 +233,7 @@
 }
 .page-inner{
 	margin-top: 65px;
+	padding-bottom: 15px;
 }
 .logo-img{
 	width: 120px;
@@ -272,7 +281,7 @@
 .custom-side{
 	padding-right: 0px;
 	padding-left:0px;
-	margin-top: 10px;
+	margin-top:10px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -312,6 +321,7 @@
 }
 .page-inner{
 	margin-top: 65px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 20px;
@@ -407,6 +417,7 @@
 }
 .page-inner{
 	margin-top: 65px;
+	padding-bottom: 15px;
 }
 .youtube-nav{
 	padding:10px 20px;
@@ -463,6 +474,7 @@
 	padding-right:0px;
 	padding-left:0px;
 	margin-top:0px;
+
 }
 .modal-top{
 	margin-top: 110px;
@@ -839,6 +851,7 @@ videos.html responsive
 signup.html css
 ----------------------------------------------------------------------------------------------------------------------------------------*/
 @media screen and (max-width: 593px){
+	
 	.signup-nav .you-image a {
     	float: left !important;
 	}

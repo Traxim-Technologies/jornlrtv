@@ -76,7 +76,12 @@ class UserController extends Controller {
 
         $this->UserAPI = $API;
 
+<<<<<<< HEAD
         $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos' , 'master_login']]);
+=======
+
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos','master_login']]);
+>>>>>>> a6fd5d37123fa2ab7a6b3285c513fe1279377d5f
 
 
         if (Auth::check()) {
@@ -87,7 +92,7 @@ class UserController extends Controller {
 
                 Log::info("starts ".Auth::user()->id);
 
-                $this->deleteStreaming();
+               // $this->deleteStreaming();
 
             }
 
@@ -110,7 +115,6 @@ class UserController extends Controller {
 
                 Log::info("Usr Id".print_r($value->user_id,true));
 
-
                     
                 if ($value->is_streaming) { 
 
@@ -130,7 +134,10 @@ class UserController extends Controller {
 
         }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6fd5d37123fa2ab7a6b3285c513fe1279377d5f
     }
 
 
@@ -1756,34 +1763,38 @@ class UserController extends Controller {
 
         if ($response->success) {
 
+            if (Setting::get('wowza_server_url')) {
 
-            if (!file_exists(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp")) {
 
-                $myfile = fopen(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp", "w") or die("Unable to open file!");
+                if (!file_exists(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp")) {
 
-                $destination_ip = Setting::get('wowza_ip_address');
+                    $myfile = fopen(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp", "w") or die("Unable to open file!");
 
-                // $destination_port = time();
+                    $destination_ip = Setting::get('wowza_ip_address');
 
-                $destination_port = $response->data->port_no;
+                    // $destination_port = time();
 
-                $data = "v=0\n"
-                        ."o=- 0 0 IN IP4 " . $destination_ip . "\n"
-                        . "s=Kurento\n"
-                        . "c=IN IP4 " . $destination_ip . "\n"
-                        . "t=0 0\n"
-                        . "m=video " . $destination_port . " RTP/AVP 100\n"
-                        . "a=rtpmap:100 H264/90000\n";
+                    $destination_port = $response->data->port_no;
 
-                fwrite($myfile, $data);
+                    $data = "v=0\n"
+                            ."o=- 0 0 IN IP4 " . $destination_ip . "\n"
+                            . "s=Kurento\n"
+                            . "c=IN IP4 " . $destination_ip . "\n"
+                            . "t=0 0\n"
+                            . "m=video " . $destination_port . " RTP/AVP 100\n"
+                            . "a=rtpmap:100 H264/90000\n";
 
-                fclose($myfile);
+                    fwrite($myfile, $data);
 
-                $filepath = public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp";
+                    fclose($myfile);
 
-                shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
+                    $filepath = public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp";
 
-                $this->connectStream($response->data->user_id.'-'.$response->data->id);
+                    shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
+
+                    $this->connectStream($response->data->user_id.'-'.$response->data->id);
+
+                }
 
             }
 
@@ -1791,7 +1802,7 @@ class UserController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', $error);
+            return back()->with('flash_error', $response->error_messages);
         }
 
     }
@@ -1969,15 +1980,21 @@ class UserController extends Controller {
 
         if ($model->save()) {
 
-            if ($model->user->id == Auth::user()->id) {            
+            if ( Auth::check()) {
 
-                $this->disConnectStream($model->user->id.'-'.$model->id);
+                if ($model->user_id == Auth::user()->id) {  
+
+                    if (Setting::get('wowza_server_url')) {
+
+                        $this->disConnectStream($model->user->id.'-'.$model->id);
+
+                    }
+
+                }
 
             }
 
         }
-
-       
 
         return redirect($route)->with('flash_success',$message);
     }
@@ -2304,5 +2321,57 @@ class UserController extends Controller {
                     ->with('payment_videos', $payment_videos)->render();
 
         return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
+    }
+
+
+    public function delete_video($id, $user_id) {
+
+        // Load Model
+        $model = LiveVideo::find($id);
+
+        if ($model) {
+
+            if ($model->user_id == $user_id) {
+
+                if ($model->is_streaming) {
+
+                    $model->status = DEFAULT_TRUE;
+
+                    $model->end_time = getUserTime(date('H:i:s'), ($model->user) ? $model->user->timezone : '', "H:i:s");
+
+                    // $model->no_of_
+
+                    if ($model->save()) {
+
+                        if (Setting::get('wowza_server_url')) {
+
+                            $this->disConnectStream($model->user->id.'-'.$mid);
+
+                        }
+
+                    } else {
+
+                        $response_array = ['success'=>false, 'error_messages'=>tr('went_wrong')];
+
+                    }
+
+                    $response_array = ['success'=>true];
+
+                }
+
+            } else {
+
+                $response_array = ['success'=>false, 'error_messages'=> tr('not_authorized_person')];
+
+            }
+            
+        } else {
+
+            $response_array = ['success'=>false, 'error_messages'=> tr('no_live_video_present')];
+
+        }
+
+        return response()->json($response_array);
+
     }
 }

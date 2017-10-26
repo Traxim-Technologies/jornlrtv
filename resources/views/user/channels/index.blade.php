@@ -128,15 +128,15 @@
 
 
 									<div id="start_broadcast" class="modal fade" role="dialog">
-									  <div class="modal-dialog">
+									    <div class="modal-dialog">
 
 									    <!-- Modal content-->
 									    <div class="modal-content">
-									      <div class="modal-header start_brocadcast_form">
-									       <!--  <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-									        <h4 class="modal-title text-uppercase text-center">{{tr('start_broadcast')}}</h4>
-									      </div>
-									      <div class="modal-body">
+									        <div class="modal-header start_brocadcast_form">
+									            <button type="button" class="close" data-dismiss="modal">&times;</button>
+									        	<h4 class="modal-title text-uppercase text-center">{{tr('start_broadcast')}}</h4>
+									        </div>
+									        <div class="modal-body body-modal">
 
 									      	<form method="post" action="{{route('user.live_video.broadcast')}}">
 
@@ -146,22 +146,24 @@
 
 
 												      	 <!-- Text input-->
-			                                  <div class="row">
+			                                    <div class="form-group form-group1">
+			                                    	<input type="text" class="form-control signup-form1" placeholder="Enter Title" id="title" name="title" required="">
+			                                   	</div>
+			                                    <!-- <div class="row">
+				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
+				                                    <div class="col-md-9">
+				                                      <input id="title" name="title" type="text" placeholder="Video Title" class="form-control" required="">
+				                                    </div>
 
-			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
-			                                    <div class="col-md-9">
-			                                      <input id="title" name="title" type="text" placeholder="Video Title" class="form-control" required="">
-			                                    </div>
+				                                    <div class="clearfix"></div>
+			                                    </div> -->
+			                                  
 
-			                                    <div class="clearfix"></div>
-
-			                                  </div>
-
-			                                  <br>
+			                                 <!--  <br> -->
 
 
 			                                  <!-- Multiple Radios (inline) -->
-			                                  <div class="row">
+<!-- 			                                  <div class="row">
 			                                    <label class="col-md-3 control-label" for="reqType">{{tr('payment')}}</label>
 			                                    <div class="col-md-9">
 			                                      <label class="radio-inline" for="reqType-1">
@@ -171,11 +173,24 @@
 			                                        <input type="radio" name="payment_status" id="reqType-0" value="1" onchange="return $('#price').show()">
 			                                        Paid </label>
 			                                    </div>
-			                                  </div>
+			                                  </div> -->
 
-			                                  
+			                                 	 <!-- payment -->
+												<div class="form-group radio-btn">
+													<label class="control-label col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
+													<div class="col-sm-8">
+													    <label class="radio-inline width-100" for="reqType-1">
+															<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free
+														</label>
+														<label class="radio-inline">
+															<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">Paid
+													    </label>
+											      	</div>
+												</div>
+			                                  	<div class="clearfix"></div>
+
 			                                  <!-- Multiple Radios (inline) -->
-			                                  <div class="row" style="display: none">
+			                                  <!-- <div class="row" style="display: none">
 			                                    <label class="col-md-3 control-label" for="dataFormat">{{tr('type')}}</label>
 			                                    <div class="col-md-9">
 			                                      <label class="radio-inline" for="dataFormat-0">
@@ -185,26 +200,39 @@
 			                                        <input type="radio" name="type" id="dataFormat-1" value="private" onchange="return $('#price').show()">
 			                                        Private </label>
 			                                    </div>
-			                                  </div>
+			                                  </div> -->
 			                                  
+
 			                                  <!-- Multiple Checkboxes (inline) -->
-			                                  <div class="row" style="display: none" id="price">
-			                                  	<br>
+			                                 <!--  <div class="row" style="display: none" id="price">
 			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('amount')}}</label>
 			                                    <div class="col-md-9">
 			                                      <input id="Amount" name="amount" type="number" placeholder="Amount" class="form-control" pattern="[0-9]{0,}">
 			                                    </div>
-			                                  </div>
-			                                  <br>
-			                                  <div class="row">
+			                                  </div> -->
+
+			                                 	<!-- ======amount===== -->
+				                                <div class="form-group form-group1" style="display: none" id="price">
+				                                    <input id="Amount" name="amount" type="number" placeholder="Amount" pattern="[0-9]{0,}" class="form-control signup-form1">
+				                                </div>
+			                                  
+
+				                                <!-- ===========description======= -->
+			                                  <!-- <div class="row">
 			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('description')}}</label>
 			                                    <div class="col-md-9">
 			                                      <textarea id="description" name="description" placeholder="{{tr('description')}}" class="form-control" ng-model="description" required></textarea>
 			                                    </div>
 			                                  </div>
-			                                  <br>
+			                                  <br> -->
+
+			                                    <div class="form-group form-group1">
+												    <textarea id="description" name="description" class="form-control signup-form1" rows="5" id="comment" placeholder="{{tr('description')}}"></textarea>
+												</div>
+
+
 			                                  <!-- Button (Double) -->
-			                                  <div class="row">
+<!-- 			                                  <div class="row">
 			                                    <label class="col-md-3 control-label" for="submitButton"></label>
 			                                    <div class="col-md-9">
 			                                      <div class="button-form-f">
@@ -212,8 +240,8 @@
 			                                        <button type="reset" value="reset" id="reset" name="reset" class="btn btn-default" data-dismiss="modal">{{tr('cancel')}}</button>
 			                                      </div>
 			                                    </div>
-			                                  </div>
-
+			                                  </div> -->
+			                                  <button class="signup-btn submit" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
 
 
 									      <!-- <div class="modal-footer">

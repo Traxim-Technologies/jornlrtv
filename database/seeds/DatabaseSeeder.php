@@ -33,5 +33,6 @@ class DatabaseSeeder extends Seeder
         $this->call(VODKeyInSettings::class);
         $this->call(WowzwIPaddress::class);
         $this->call(ChannelSettingsSeeder::class);
+        $this->call(DeleteVideoHourSettings::class);
     }
 }

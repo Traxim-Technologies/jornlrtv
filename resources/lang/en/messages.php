@@ -1021,5 +1021,7 @@ return array(
 	'create_channel_by_user' => 'Create Channel By User',
 
 	'is_default_paid_user' => "Default setting for register user as paid user",
-	
+	'delete_video_hour'=>'Video streaming Close Hour',
+	'short_notes_video_hour'=>'The text in the field represents, the videos which are deleted beyond the limit in hours. Ex: 2017-06-10 00:00 AM - 2 hrs = 2017-06-09 22:00 PM',
+	'not_authorized_person'=>'You are not authrized person',
 );
