@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - 2015-12-03
 
+### Changed 
+
+- c3f6bdb , Embed Link UI Changes
+
 ### Added
 
 - ee34518 , 4f57bb5 -BroadCast By User control added for admin. Now admin can control whether user can "Start BroadCast" or "Not".

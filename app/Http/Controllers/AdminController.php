@@ -2424,7 +2424,7 @@ class AdminController extends Controller {
 
             $model->delete();
 
-            return with('flash_success', tr('banner_delete_success'));
+            return back()->with('flash_success', tr('banner_delete_success'));
 
         }
 
