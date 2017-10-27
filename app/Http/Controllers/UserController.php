@@ -329,7 +329,8 @@ class UserController extends Controller {
                         ->with('like_count',$response->like_count)
                         ->with('dislike_count',$response->dislike_count)
                         ->with('subscriberscnt', $response->subscriberscnt)
-                        ->with('comment_rating_status', $response->comment_rating_status);
+                        ->with('comment_rating_status', $response->comment_rating_status)
+                        ->with('embed_link', $response->embed_link);
        
         } else {
 

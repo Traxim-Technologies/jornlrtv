@@ -172,6 +172,22 @@
                         </div>
 
 
+                        <div class="form-group">
+                            
+                            <label>{{tr('broadcast_by_user')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="broadcast_by_user" value="1" class="flat-red" @if(Setting::get('broadcast_by_user')) checked @endif>
+                                {{tr('enabled')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="broadcast_by_user" class="flat-red"  value="0" @if(!Setting::get('broadcast_by_user')) checked @endif>
+                                {{tr('disabled')}}
+                            </label>
+                        </div>
+
+
                   </div>
                   <!-- /.box-body -->
 
