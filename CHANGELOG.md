@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- ee34518 , 4f57bb5 -BroadCast By User control added for admin. Now admin can control whether user can "Start BroadCast" or "Not".
+
+### Added
+
 - d3edc30 , c1d99a3 , 18fa994 - Channel create by user settings and is user as default paid user 
 
 ### Added 
