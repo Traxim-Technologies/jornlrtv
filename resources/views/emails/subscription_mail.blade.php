@@ -201,7 +201,12 @@
                                                         <div class="contentEditableContainer contentTextEditable">
                                                             <div class="contentEditable" >
                                                                 @if(isset($email_data))
+
+                                                                @if (isset($email_data->video_id))
                                                                 <a target='_blank' href="{{route('admin.view.video' , array('id' => $email_data->video_id))}}" style="color: #FFF;text-orientation: none" class='link2'>Click Here To View</a>
+
+                                                                @endif
+                                                                
                                                                 @endif
                                                             </div>
                                                         </div>
