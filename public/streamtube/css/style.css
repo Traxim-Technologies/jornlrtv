@@ -2081,7 +2081,10 @@ margin: 0px auto 35px;
 	border-radius: 0;
 }
 .copy-embed .modal-header{
-	padding: 15px 0
+	padding: 15px 0;
+	color: black !important;
+    background: transparent !important;
+    border-bottom: 1px solid #cccccc;
 }
 .copy-embed .modal-title{
 	font-size: 20px;
