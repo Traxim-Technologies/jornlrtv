@@ -264,7 +264,7 @@
 				                                    </div>
 				                                  </div> -->
 
-				                                @if(Setting::get('broadcast_by_user') == 1) 
+				                                @if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1) 
 				                                  	<button class="signup-btn submit" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
 				                                @else
 
