@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - 2015-12-03
 
+### Changed 
+
+- c3f6bdb , Embed Link UI Changes
+
 ### Added
 
 - d3edc30 , c1d99a3 , 18fa994 - Channel create by user settings and is user as default paid user 
