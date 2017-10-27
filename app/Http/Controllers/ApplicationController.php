@@ -51,7 +51,6 @@ class ApplicationController extends Controller {
 
     }
 
-
     public function channel_create() {
         return view('ui.channels.create');
     }
