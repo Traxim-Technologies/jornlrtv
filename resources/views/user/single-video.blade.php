@@ -174,7 +174,7 @@ textarea[name=comments] {
                                                     <div class="channel-img">
                                                         <img src="{{$video->channel_picture ? $video->channel_picture : asset('images/default.png')}}" class="img-responsive img-circle">
                                                     </div>
-                                                    <span class="username"><a href="{{route('user.channel' , $video->channel_id)}}">{$video->channel_name}}</a></span>
+                                                    <span class="username"><a href="{{route('user.channel' , $video->channel_id)}}">{{$video->channel_name}}</a></span>
                                                     <h5 class="rating no-margin top">
                                                         <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
