@@ -73,13 +73,13 @@
 					                                        </div>
 
 					                                        @else
-
+					                                        <div class="pull-right upload_a">
 																@if($channel->no_of_subscribers > 0)
 
 																<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->channel_id))}}" style="color: #fff !important;text-decoration: none"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}}({{$channel->no_of_subscribers}})</a>
 
 																@endif
-
+															</div>
 															@endif
 				                                        
 				                                        

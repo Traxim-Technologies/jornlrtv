@@ -33,7 +33,7 @@
 
                                 <div class="history-title">
                                     <div class="history-head row">
-                                        <div class="cross-title">
+                                        <div class="cross-title1">
                                             <h5><a href="{{route('user.single' , $spamvideo->video_tape_id)}}">{{$spamvideo->video_tape->title}}</a></h5>
                                             <!-- <p class="duration">{{tr('duration')}}: {{$spamvideo->video_tape->duration}}</p> -->
                                             <span class="video_views">
@@ -42,7 +42,7 @@
                                                 {{$history->video_tape->created_at->diffForHumans()}}*/?>
                                             </span>
                                         </div> 
-                                        <div class="cross-mark">
+                                        <div class="cross-mark1">
                                             <a onclick="return confirm('Are you sure?');" href="{{route('user.remove.report_video',$spamvideo->id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                         </div><!--end of cross-mark-->                       
                                     </div> <!--end of history-head--> 

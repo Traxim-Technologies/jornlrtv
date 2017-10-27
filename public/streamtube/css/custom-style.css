@@ -596,23 +596,6 @@ a:focus {
 	vertical-align: bottom;
 }
 
-.st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
-	border: solid 1px transparent;
-	box-sizing: content-box;
-	color: #333;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 13px;
-	font-weight: normal;
-	height: 29px;
-	line-height: 29px;
-	padding: 3px 10px;
-	vertical-align: bottom;
-	margin : 15px 10px 0px 0px;
-}
 
 .upload_a a {
 	text-decoration: none !important;

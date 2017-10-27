@@ -55,7 +55,7 @@
 
             @include('layouts.user.nav')
 
-            <div class="page-inner col-sm-9 col-md-10">
+            <div class="page-inner col-xs-12 col-sm-9 col-md-10">
 
                 @if(Setting::get('is_banner_video'))
 

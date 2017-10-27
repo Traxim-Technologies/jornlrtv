@@ -48,26 +48,8 @@ body{
 .no-margin{
 	margin: 0;
 }
-.youtube-nav{
-	padding:10px 20px;
-	border-bottom: 1px solid #e8e8e8;
-	background-color: #fff;
-	position: fixed;
-	z-index: 2;
-	width: 100%;
-	z-index: 999;
-}
 .youtube-nav .row{
 	margin: 0;
-}
-.y-menu{
-	border-right: 1px solid #e8e8e8;
-    background-color: #fff;
-    padding-bottom: 15px;
-    padding-top: 15px;
-    margin-top: 58px;
-    min-height: 700px;
-    overflow: auto;
 }
 .home1{
 	padding-top: 10px;
@@ -173,9 +155,6 @@ body{
 	margin: 0;
 	margin-bottom: 15px;
 }
-.page-inner{
-	margin-top: 68px;
-}
 .slide-area{
 	background-color: #fff;
 	padding: 10px 30px;
@@ -232,16 +211,15 @@ footer{
 .footer1{
 	padding: 10px;	
 	margin: 0;
-	padding-top: 20px;
 }
 .tube-image{
-	width: 100px;
-    height: 45px;
+	width: 130px;
+    height: 30px;
     /*margin-top: 10PX;*/
 
 }
 .tube-image img{
-	max-width: 100px;
+	max-width: 130px;
 	width: 100%;
     min-height: 100%;
 }
@@ -264,13 +242,12 @@ footer{
 .term li{
 	list-style-type: none;
 	display: inline-block;
-	margin-right: 18px;
 
 }
 .term li a{
 	text-decoration:  none;
 	color: rgb(51, 51, 51);
-	font-size: 11px;
+	font-size: 14px;
 }
 /*search bar css*/
 #custom-search-input{
@@ -359,9 +336,6 @@ videos (single page) css
 .watch-video .row{
 	margin: 0;
 }
-.play-video {
-    /*padding: 0;*/
-}
 .video-y-menu{
 	position: absolute;
 	z-index: 999;
@@ -393,6 +367,9 @@ videos (single page) css
     width: 100%;
     margin-bottom: 0;
     text-transform: capitalize;
+}
+.nospace-left{
+	margin-left: 0;
 }
 .watch-duration{
 	width: 45%;
@@ -473,6 +450,7 @@ videos (single page) css
 .channels-head i:hover{
 	background-color: #62B2E5;
 }
+
 .subs{
 	background-color: #E62117;
 	border-color: transparent;
@@ -504,7 +482,7 @@ videos (single page) css
 }
 .ratings{
 	float: right;
-	margin-top: 5px;
+	margin-top: 10px;
 }
 
 .views {
@@ -561,7 +539,7 @@ videos (single page) css
 	padding: 0;
 }
 .stars i{
-	font-size: 12px;
+	font-size: 14px;
 	color: #b8b8b8;
 }
 .stars i:active{
@@ -822,15 +800,16 @@ videos (single page) css
     outline-color: transparent;
     outline-offset: 0;
 }
-
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------
 history (single page) css
 --------------------------------------------------------------------------------------------------------------------------------------------
 */
-
+.top{
+	margin-top:10px !important;
+}
 .history-content{
-	margin-top: 77px;	
+	margin-top: 75px !important;	
 }
 .new-history{
 	padding: 15px;
@@ -898,19 +877,10 @@ history (single page) css
 .history-head h5:hover{
 	color: #167ac6;
 }
-.cross-mark {
-    width: 20%;
-    float: left;
-    text-align: right;
-}
+
 .cross-mark i{
 	color: #AAA6A6;
     font-size: 15px;
-}
-.cross-title {
-    width: 80%;
-    float: left;
-    text-transform: capitalize;
 }
 .cross-title a:hover{
 	color: #337ab7;
@@ -947,11 +917,11 @@ history (single page) css
     display: block;
   	display: -webkit-box;
   /* Fallback for non-webkit */
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 33px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height:33px;
 
 }
 .duration{
@@ -1193,10 +1163,7 @@ profile.html css
 	width: 100%;
     min-height: 100%;
 }
-.mylist-profile{
-	background-color: #fff;
-	padding: 15px;
-}
+
 .edit-button button{
 	padding: 5px 7px;
 	background-color: #e52d27;
@@ -1509,23 +1476,26 @@ changes
 	min-height: 700px;
 }
 .profile-content {
-    margin-top: 75px !important;
-}
-.profile-view{
-	padding-left: 0;
+    margin-top:10px !important;
 }
 .common-youtube {
 	min-height: 700px;
 }
-
-
+.right-zero{
+	margin-right:0 !important;
+}
+.bottom-space{
+	margin-bottom: 15px;
+}
 .slide-image{
 	width: 100%;
 	height: 110px !important;
 	overflow: hidden;
 	position: relative;
 }
-
+.btn-group-sm > .btn, .btn-sm{
+	border-radius: 0;
+}
 .slide-image img{
 	width: 100%;
 	min-height: 100%;
@@ -1599,8 +1569,8 @@ margin: 0px auto 35px;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 38px;
-  line-height: 19px;
+  max-height:50px;
+  line-height:23px;
 }
 .edit-pro-btn a{
 	display: block;
@@ -1616,25 +1586,29 @@ margin: 0px auto 35px;
 	margin-bottom: 10px;
 	margin-top: 5px;
 }
-
+.cross-mark1{
+    width:20%;
+    float: left;
+    text-align: right;
+}
+.cross-title1 {
+    width: 80%;
+    float: left;
+    text-transform: capitalize;
+}
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
+@media only screen and (max-width : 991px) {
 	.slide-image {
 	    width: 100%;
 	    height: 90px;
 	    overflow: hidden;
 	}
 	.recom-image{
-	}
-	.custom-side{
-		padding-right: 15px;
-		padding-left: 15px;
-		margin-top: 20px;
 	}
 
 }
@@ -1668,7 +1642,7 @@ margin: 0px auto 35px;
 }
 
 .close:hover {
-	padding: 5px 10px;
+	padding:0;
 	color: rgb(255, 255, 255);
 	border-radius: 4px;
 }
@@ -1826,7 +1800,7 @@ margin: 0px auto 35px;
 	}
 
 	.ratings {
-		padding-top: 5px;
+		padding-top:10px;
 	}
 }
 
@@ -1856,15 +1830,36 @@ margin: 0px auto 35px;
 }
 
 .term {
-	margin-top: 5px !important;
+	margin-top: 10px !important;
 }
 
-
-
+.demo-container {
+	width: 100%;
+    max-width: 350px;
+    margin: 0px auto;
+    padding-top: 25px;
+}
+.add-card{
+    margin: 30px 0;
+}
+.add-card input {
+    margin: 10px 0 auto;
+    display: block;
+    border:2px solid #e0e0e0;
+    box-shadow: none;
+   	background-color: transparent;
+    border-radius: 5px;
+    height:40px;
+    padding: 10px; 
+    color: #999;
+}
+.submit-btn{
+    margin-top: 15px;
+    height: 40px; 
+}
 .report_list{
 	padding: 5px 0px
 }
-
 .small-box {
     border-radius: 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -1872,6 +1867,22 @@ margin: 0px auto 35px;
     margin-bottom: 20px;
     position: relative;
     color: #fff;    
+}
+.channel-img{
+	margin-right: 10px;
+    width: 60px;
+    float: left
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.rating1{
+	color: #999;
 }
 
 .bg-green{
@@ -1923,7 +1934,55 @@ margin: 0px auto 35px;
     text-decoration: none;
     z-index: 10;
 }
-
+.modal-bg-img{
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	height: 350px;
+}
+.content-modal{
+	border-radius: 0;
+}
+.copy-embed .modal-header{
+	padding: 15px 0
+}
+.copy-embed .modal-title{
+	font-size: 20px;
+	font-weight: normal;
+}
+.copy-embed .modal-body{
+	padding: 15px 0;
+	text-align: left;
+}
+.copy-embed .modal-body p{
+	margin: 0;
+	font-size: 16px;
+	font-weight: normal;
+	color: #999;
+	text-align: left;
+}
+.copy-embed .close:hover{
+	background-color: transparent !important;
+	color: black;
+}
+.copy-embed textarea{
+	resize: none;
+}
+.copy-embed .btn-primary:hover {
+    color: #fff;
+    background-color: #286090 !important;
+}
+.video-title1{
+	font-size: 20px !important;
+	color: white;
+	font-weight: normal;
+	background-color: rgba(0,0,0,.5);
+	padding: 15px;
+	margin: 0;
+}
+.zero-padding{
+	padding: 0;
+}
 .wrapper_content {
 
 	position: relative;
