@@ -166,16 +166,15 @@ textarea[name=comments] {
                                         <div class="video-title">
                                             <div class="title row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12">
-                                                    <!-- <h3>{{$video->title}}</h3> -->
-                                                    <h3>Channel Name</h3>
+                                                    <h3>{{$video->title}}</h3>
                                                     <div class="clearfix"></div>
                                                 </div>
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top">
                                                     <div class="channel-img">
-                                                        <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
+                                                        <img src="{{$video->channel_picture ? $video->channel_picture : asset('images/default.png')}}" class="img-responsive img-circle">
                                                     </div>
-                                                    <span class="username"><a href="#">{{$video->title}}</a></span>
+                                                    <span class="username"><a href="{{route('user.channel' , $video->channel_id)}}">{$video->channel_name}}</a></span>
                                                     <h5 class="rating no-margin top">
                                                         <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
@@ -183,6 +182,7 @@ textarea[name=comments] {
                                                         <a href="#" class="rating1"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                         <a href="#" class="rating1"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     </h5>
+
                                                     <div class="pull-right sub-btn">
 
                                                         @if(Auth::check())
