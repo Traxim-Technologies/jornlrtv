@@ -7,7 +7,7 @@
 
             @include('layouts.user.nav')
     
-            <div class="history-content page-inner col-sm-9 col-md-10">
+            <div class=" page-inner col-sm-9 col-md-10">
                 <div class="new-history">
                     <div class="content-head search-head">
                         <div><h4>{{tr('search_result')}} "{{$key}}"</h4></div>               

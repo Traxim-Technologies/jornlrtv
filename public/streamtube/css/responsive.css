@@ -8,10 +8,10 @@
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 105px;
-    min-height: 700px;
-    /*height: calc(100% - 105px) !important;*/
+    /*min-height: 700px;*/
+    height: calc(100% - 105px) !important;
     overflow: auto;
-    position: absolute;
+    position:fixed;
     top: 0;
 	z-index:10;
 	width: 50%;
@@ -95,6 +95,12 @@
 	margin-top: 0;
 	margin-bottom: 15px;
 }
+#custom-search-input {
+	width: 100% !important;
+    float: none !important;
+	margin-bottom: 5px;
+    margin-top: 10px !important;
+}
 }
 
 /*small devices*/
@@ -107,17 +113,17 @@
     background-color: #fff;
     padding-bottom: 15px;
     padding-top: 15px;
-    margin-top: 105px;
-    min-height: 700px;
-    position: absolute;
+    margin-top: 109px;
+   /* min-height: 700px;*/
+    position: fixed;
     top: 0;
-    /*height: calc(100% - 105px) !important;*/
+    height: calc(100% - 109px) !important;
     overflow: auto;
 	z-index: 10;
 	width: 50%;
 }
 .page-inner{
-	margin-top: 109px;
+	margin-top: 120px;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -196,6 +202,13 @@
 	margin-top: 0;
 	margin-bottom: 15px;
 }
+#custom-search-input {
+	width: 100% !important;
+    float: none !important;
+	margin-bottom: 5px;
+    margin-top: 10px !important;
+}
+
 }
 
 /* Tablets */
@@ -292,6 +305,11 @@
 .foot-btn{
 	margin-top: 95px;
 }
+#custom-search-input{
+ 	 width: 100%;
+ 	 float: left;
+ 	 margin-top: 1px;
+}
 }
 
 /* Medium Devices, */
@@ -386,6 +404,11 @@
 }
 .foot-btn{
 	margin-top: 95px;
+}
+#custom-search-input{
+ 	 width: 100%;
+ 	 float: left;
+ 	 margin-top: 1px;
 }
 }
 
@@ -482,6 +505,11 @@
 .foot-btn{
 	margin-top: 95px;
 }
+#custom-search-input{
+ 	 width: 100%;
+ 	 float: left;
+ 	 margin-top: 1px;
+}
 }
 /*index.html responsive*/
 @media screen and (max-width: 771px){
@@ -514,11 +542,6 @@
 	    margin-right: 10px !important;
 	}
 }
-@media screen and (max-width: 643px){
-	#custom-search-input {
-	    width: 45% !important;
-	}
-}
 @media screen and (max-width: 593px){
 	.y-button{
 		position: absolute;
@@ -528,15 +551,15 @@
 	.profile-edit{
 		margin-top: 80px !important;
 	}
-	#custom-search-input {
+	/*#custom-search-input {
 	    width: 100% !important;
 	    float: none !important;
 	    margin-bottom: 5px;
 	    margin-top: 10px !important;
 	}
 	#custom-search-input input{
-		width: 105%;
-	}
+		width: 100%;
+	}*/
 	.you-image a{
 		float: none  !important;
 		margin-bottom: 5px;
@@ -866,6 +889,7 @@ category.html css
 	.tube-image{
 		height: 36px !important;
 		padding: 0 !important;
+		margin:0 auto;
 	}
 	.about li a{
 		font-size: 11px;
