@@ -1972,6 +1972,13 @@ margin: 0px auto 35px;
     color: #fff;
     background-color: #286090 !important;
 }
+.copy-embed .modal-body{
+	height: 235px;
+	overflow: auto;
+}
+.copy-embed .modal-footer{
+	padding: 10px 0 ;
+}
 .video-title1{
 	font-size: 20px !important;
 	color: white;

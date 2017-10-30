@@ -319,7 +319,9 @@ textarea[name=comments] {
                                                                                             <textarea class="form-control" rows="5" id="comment">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</textarea>
                                                                                         </div>
                                                                                     </form>
-                                                                                    <button class="btn btn-danger pull-right foot-btn">Copy</button>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn btn-danger pull-right">Copy</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
