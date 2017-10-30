@@ -1766,6 +1766,8 @@ class UserApiController extends Controller {
                 ->count();
 
             $subscriberscnt = subscriberscnt($video->channel_id);
+
+            $embed_link  = "<iframe width='560' height='315' src='".route('embed_video', array('u_id'=>$video->unique_id))."' frameborder='0' allowfullscreen></iframe>";
             
             $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
                 'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
@@ -1774,8 +1776,8 @@ class UserApiController extends Controller {
                 'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
                 'like_count'=>$like_count,'dislike_count'=>$dislike_count,
                 'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
-                'subscriberscnt'=>$subscriberscnt,'comment_rating_status'=>$comment_rating_status
-                ];
+                'subscriberscnt'=>$subscriberscnt,'comment_rating_status'=>$comment_rating_status,
+                'embed_link' => $embed_link];
 
             return response()->json(['success'=>true, 'response_array'=>$response_array], 200);
 

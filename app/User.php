@@ -6,6 +6,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Helpers\Helper;
 
+use Setting;
+
 class User extends Authenticatable
 {
 
@@ -191,7 +193,19 @@ class User extends Authenticatable
 
             $model->generateToken();
 
+            $model->defaultPaidCheck();
+
         });
+    }
+
+
+    protected function defaultPaidCheck() {
+
+        if(Setting::get('is_default_paid_user') == 1) {
+
+            $this->attributes['user_type'] = 1;
+
+        }
     }
 
 
