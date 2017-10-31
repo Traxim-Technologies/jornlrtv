@@ -1,6 +1,6 @@
 liveAppCtrl
-.controller('streamCtrl', ['$rootScope', 'socketFactory', 
-	function ($rootScope, socketFactory) {
+.controller('streamCtrl', ['$rootScope', 'socketFactory',  '$sce',
+	function ($rootScope, socketFactory, $sce) {
 
 		$scope = $rootScope;
 
