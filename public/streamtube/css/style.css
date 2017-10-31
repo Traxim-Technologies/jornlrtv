@@ -1467,6 +1467,7 @@ changes
 	margin-top: 0;
 }
 .y-content{
+	z-index: 8;
 	/*min-height: 700px;*/
 }
 .watch-video{

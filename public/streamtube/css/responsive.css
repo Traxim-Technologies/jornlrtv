@@ -18,6 +18,7 @@
 }
 .page-inner{
 	margin-top: 109px;
+	z-index:0;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -101,6 +102,14 @@
 	margin-bottom: 5px;
     margin-top: 10px !important;
 }
+/*.overlay1 {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9;
+}*/
 }
 
 /*small devices*/
@@ -124,6 +133,7 @@
 }
 .page-inner{
 	margin-top: 120px;
+	z-index: 0;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -204,7 +214,15 @@
 	margin-bottom: 5px;
     margin-top: 10px !important;
 }
-
+/*.overlay1{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9;
+    top:0;
+    display: block;
+}*/
 }
 
 /* Tablets */
