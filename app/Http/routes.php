@@ -761,8 +761,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
 
-    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
-
 
     Route::post('/like_video', 'UserApiController@likeVideo');
 
@@ -778,8 +776,18 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('delete_card', 'UserApiController@delete_card');
 
-    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
+    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
 
+    // SubScriptions 
 
+    Route::post('subscription_plans', 'UserApiController@subscription_plans');
+
+    Route::post('subscribedPlans', 'UserApiController@subscribedPlans');
+
+    // Suscription payments
+
+    Route::post('paypal_subscription_payment', 'UserApiController@paypal_subscription_payment');
+
+    Route::post('/card_subscription_payment', 'UserApiController@stripe_subscription_payment');
 
 });
