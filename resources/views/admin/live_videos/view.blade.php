@@ -66,14 +66,24 @@ video {
                                     <!-- <p class="text-red">Click On Image to See the streaming Video</p> -->
 
                                         <div class="show-model">
-                                          <!--<img src="/images/img1.jpg" class="img-response" ng-hide="isStreaming">-->
-                                          <div id="videos-container" room="{{$data->id}}">
-                                            
-                                            <div id="loader_btn" style="margin-left: 30%">
-                                                <p>Video Loading....</p>
+
+                                            <div id="videos-container" room="{{$data->id}}">
+
+                                                <div id="loader_btn" style="margin-left: 30%">
+                                                    <p>Video Loading....</p>
+                                                </div>
+
                                             </div>
 
-                                          </div>
+                                            <div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
+                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="Error">
+
+                                                <div class="flash_display" id="flash_error_display" style="display: none;">
+                                                    <div class="flash_error_div">
+                                                        <div class="flash_error">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
 
@@ -238,6 +248,8 @@ var url = "<?= url('/');?>";
 
 var video_details = <?= $data; ?>;
 
+var routeUrl = "<?= route('admin.videos.index') ?>";
+
 var appSettings = <?= json_encode([
                 'SOCKET_URL' => Setting::get('SOCKET_URL'),
                 'CHAT_ROOM_ID' => isset($data) ? $data->id : null,
@@ -254,7 +266,8 @@ var liveAppCtrl = angular.module('liveApp', [
   $interpolateProvider.endSymbol('%>');
 })
 .constant('appSettings', appSettings)
-.constant('url',url);
+.constant('url',url)
+.constant('routeUrl', routeUrl);
 liveAppCtrl
     .run(['$rootScope',
         '$window',

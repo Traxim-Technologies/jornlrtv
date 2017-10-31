@@ -310,7 +310,6 @@ liveAppCtrl
 			console.log("disconectAll");
 		if (appSettings.CHAT_ROOM_ID != data.id && data.ownerId == appSettings.USER.id) {
 			console.log("disconect");
-		  
 		}
 		});
 
@@ -670,6 +669,10 @@ liveAppCtrl
 
                         return false;
                     }
+
+                    alert("There is not live video available, Redirecting into main page");
+
+                    window.location.href = routeUrl;
 
                    
                    // confirm('The video format is not supported in this browser. Please option some other browser.');
