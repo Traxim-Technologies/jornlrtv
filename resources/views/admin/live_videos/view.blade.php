@@ -229,7 +229,7 @@ video {
 <script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 <script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
 
-
+<script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
 <script type="text/javascript">
 
