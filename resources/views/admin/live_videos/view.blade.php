@@ -234,6 +234,8 @@ video {
 <script type="text/javascript">
 
 
+var url = "<?= url('/');?>";
+
 var video_details = <?= $data; ?>;
 
 var appSettings = <?= json_encode([
@@ -251,8 +253,8 @@ var liveAppCtrl = angular.module('liveApp', [
   $interpolateProvider.startSymbol('<%');
   $interpolateProvider.endSymbol('%>');
 })
-.constant('appSettings', appSettings);
-
+.constant('appSettings', appSettings)
+.constant('url',url);
 liveAppCtrl
     .run(['$rootScope',
         '$window',
