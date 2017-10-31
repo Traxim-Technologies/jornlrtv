@@ -120,143 +120,175 @@
 							@if(Auth::check())
 
 								@if($channel->user_id == Auth::user()->id)
-									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
-									<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast"><i class="fa fa-video-camera"></i> {{tr('start_broadcast')}}</button>
-									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
-									<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
+
+									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}">
+										<i class="fa fa-plus-circle"></i> 
+										{{tr('upload_video')}}
+									</a>
+
+									@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
+
+										<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast">
+											<i class="fa fa-video-camera"></i> 
+											{{tr('start_broadcast')}}
+										</button>
+
+									@endif
+
+									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}">
+										<i class="fa fa-pencil"></i> 
+										{{tr('edit_channel')}}
+									</a>
+
+									<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}">
+										<i class="fa fa-trash"></i> {{tr('delete_channel')}}
+									</a>
 
 
+									@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
 
-									<div id="start_broadcast" class="modal fade" role="dialog">
-									    <div class="modal-dialog">
+										<div id="start_broadcast" class="modal fade" role="dialog">
+										    <div class="modal-dialog">
 
-									    <!-- Modal content-->
-									    <div class="modal-content">
-									        <div class="modal-header start_brocadcast_form">
-									            <button type="button" class="close" data-dismiss="modal">&times;</button>
-									        	<h4 class="modal-title text-uppercase text-center">{{tr('start_broadcast')}}</h4>
-									        </div>
-									        <div class="modal-body body-modal">
+										    <!-- Modal content-->
+										    <div class="modal-content">
+										        <div class="modal-header start_brocadcast_form">
+										            <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        	<h4 class="modal-title text-uppercase text-center">{{tr('start_broadcast')}}</h4>
+										        </div>
 
-									      	<form method="post" action="{{route('user.live_video.broadcast')}}">
+										        <div class="modal-body body-modal">
 
-									      	<input type="hidden" name="channel_id" value="{{$channel->id}}">
+										      	<form method="post" action="{{route('user.live_video.broadcast')}}">
 
-									      	<input type="hidden" name="user_id" value="{{$channel->user_id}}">
+											      	<input type="hidden" name="channel_id" value="{{$channel->id}}">
+
+											      	<input type="hidden" name="user_id" value="{{$channel->user_id}}">
+
+													<!-- Text input-->
+
+				                                    <div class="form-group form-group1">
+				                                    	<input type="text" class="form-control signup-form1" placeholder="Enter Title" id="title" name="title" required="">
+				                                   	</div>
+
+				                                    <!-- <div class="row">
+					                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
+					                                    <div class="col-md-9">
+					                                      <input id="title" name="title" type="text" placeholder="Video Title" class="form-control" required="">
+					                                    </div>
+
+					                                    <div class="clearfix"></div>
+				                                    </div> -->
+				                                  
+
+				                                 <!--  <br> -->
 
 
-												      	 <!-- Text input-->
-			                                    <div class="form-group form-group1">
-			                                    	<input type="text" class="form-control signup-form" placeholder="Enter Title" id="title" name="title" required="">
-			                                   	</div>
-			                                    <!-- <div class="row">
-				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
+				                                  <!-- Multiple Radios (inline) -->
+	 			                                  <!--<div class="row">
+				                                    <label class="col-md-3 control-label" for="reqType">{{tr('payment')}}</label>
 				                                    <div class="col-md-9">
-				                                      <input id="title" name="title" type="text" placeholder="Video Title" class="form-control" required="">
+				                                      <label class="radio-inline" for="reqType-1">
+				                                        <input type="radio" name="payment_status" id="reqType-1" value="0" checked  onchange="return $('#price').hide();">
+				                                        Free </label>
+				                                      <label class="radio-inline" for="reqType-0">
+				                                        <input type="radio" name="payment_status" id="reqType-0" value="1" onchange="return $('#price').show()">
+				                                        Paid </label>
 				                                    </div>
+				                                  </div> -->
 
-				                                    <div class="clearfix"></div>
-			                                    </div> -->
-			                                  
+				                                 	 <!-- payment -->
+													<div class="form-group radio-btn">
+														<label class="control-label col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
+														<div class="col-sm-8">
+														    <label class="radio-inline width-100" for="reqType-1">
+																<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free
+															</label>
+															<label class="radio-inline">
+																<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">Paid
+														    </label>
+												      	</div>
+													</div>
+				                                  	<div class="clearfix"></div>
 
-			                                 <!--  <br> -->
+				                                  <!-- Multiple Radios (inline) -->
+				                                  <!-- <div class="row" style="display: none">
+				                                    <label class="col-md-3 control-label" for="dataFormat">{{tr('type')}}</label>
+				                                    <div class="col-md-9">
+				                                      <label class="radio-inline" for="dataFormat-0">
+				                                        <input type="radio" name="type" value="public" checked onchange="return $('#price').hide();">
+				                                        Public </label>
+				                                      <label class="radio-inline" for="dataFormat-1">
+				                                        <input type="radio" name="type" id="dataFormat-1" value="private" onchange="return $('#price').show()">
+				                                        Private </label>
+				                                    </div>
+				                                  </div> -->
+				                                  
 
+				                                  <!-- Multiple Checkboxes (inline) -->
+				                                 <!--  <div class="row" style="display: none" id="price">
+				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('amount')}}</label>
+				                                    <div class="col-md-9">
+				                                      <input id="Amount" name="amount" type="number" placeholder="Amount" class="form-control" pattern="[0-9]{0,}">
+				                                    </div>
+				                                  </div> -->
 
-			                                  <!-- Multiple Radios (inline) -->
-<!-- 			                                  <div class="row">
-			                                    <label class="col-md-3 control-label" for="reqType">{{tr('payment')}}</label>
-			                                    <div class="col-md-9">
-			                                      <label class="radio-inline" for="reqType-1">
-			                                        <input type="radio" name="payment_status" id="reqType-1" value="0" checked  onchange="return $('#price').hide();">
-			                                        Free </label>
-			                                      <label class="radio-inline" for="reqType-0">
-			                                        <input type="radio" name="payment_status" id="reqType-0" value="1" onchange="return $('#price').show()">
-			                                        Paid </label>
-			                                    </div>
-			                                  </div> -->
+				                                 	<!-- ======amount===== -->
+					                                <div class="form-group form-group1" style="display: none" id="price">
+					                                    <input id="Amount" name="amount" type="number" placeholder="Amount" pattern="[0-9]{0,}" class="form-control signup-form1">
+					                                </div>
+				                                  
 
-			                                 	 <!-- payment -->
-												<div class="form-group radio-btn">
-													<label class="control-label col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
-													<div class="col-sm-8">
-													    <label class="radio-inline width-100" for="reqType-1">
-															<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free
-														</label>
-														<label class="radio-inline">
-															<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">Paid
-													    </label>
-											      	</div>
-												</div>
-			                                  	<div class="clearfix"></div>
+					                                <!-- ===========description======= -->
+				                                  <!-- <div class="row">
+				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('description')}}</label>
+				                                    <div class="col-md-9">
+				                                      <textarea id="description" name="description" placeholder="{{tr('description')}}" class="form-control" ng-model="description" required></textarea>
+				                                    </div>
+				                                  </div>
+				                                  <br> -->
 
-			                                  <!-- Multiple Radios (inline) -->
-			                                  <!-- <div class="row" style="display: none">
-			                                    <label class="col-md-3 control-label" for="dataFormat">{{tr('type')}}</label>
-			                                    <div class="col-md-9">
-			                                      <label class="radio-inline" for="dataFormat-0">
-			                                        <input type="radio" name="type" value="public" checked onchange="return $('#price').hide();">
-			                                        Public </label>
-			                                      <label class="radio-inline" for="dataFormat-1">
-			                                        <input type="radio" name="type" id="dataFormat-1" value="private" onchange="return $('#price').show()">
-			                                        Private </label>
-			                                    </div>
-			                                  </div> -->
-			                                  
-
-			                                  <!-- Multiple Checkboxes (inline) -->
-			                                 <!--  <div class="row" style="display: none" id="price">
-			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('amount')}}</label>
-			                                    <div class="col-md-9">
-			                                      <input id="Amount" name="amount" type="number" placeholder="Amount" class="form-control" pattern="[0-9]{0,}">
-			                                    </div>
-			                                  </div> -->
-
-			                                 	<!-- ======amount===== -->
-				                                <div class="form-group form-group1" style="display: none" id="price">
-				                                    <input id="Amount" name="amount" type="number" placeholder="Amount" pattern="[0-9]{0,}" class="form-control signup-form">
-				                                </div>
-			                                  
-
-				                                <!-- ===========description======= -->
-			                                  <!-- <div class="row">
-			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('description')}}</label>
-			                                    <div class="col-md-9">
-			                                      <textarea id="description" name="description" placeholder="{{tr('description')}}" class="form-control" ng-model="description" required></textarea>
-			                                    </div>
-			                                  </div>
-			                                  <br> -->
-
-			                                    <div class="form-group form-group1">
-												    <textarea id="description" name="description" class="form-control signup-form" rows="5" id="comment" placeholder="{{tr('description')}}"></textarea>
-												</div>
+				                                    <div class="form-group form-group1">
+													    <textarea id="description" name="description" class="form-control signup-form1" rows="5" id="comment" placeholder="{{tr('description')}}"></textarea>
+													</div>
 
 
-			                                  <!-- Button (Double) -->
-<!-- 			                                  <div class="row">
-			                                    <label class="col-md-3 control-label" for="submitButton"></label>
-			                                    <div class="col-md-9">
-			                                      <div class="button-form-f">
-			                                        <button type="submit" id="submitButton" name="submitButton" class="btn btn-danger" style="background: #ff0000">{{tr('broadcast')}}</button>
-			                                        <button type="reset" value="reset" id="reset" name="reset" class="btn btn-default" data-dismiss="modal">{{tr('cancel')}}</button>
-			                                      </div>
-			                                    </div>
-			                                  </div> -->
-			                                  <button class="signup-btn submit" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
+				                                  <!-- Button (Double) -->
+	 			                                  <!-- <div class="row">
+				                                    <label class="col-md-3 control-label" for="submitButton"></label>
+				                                    <div class="col-md-9">
+				                                      <div class="button-form-f">
+				                                        <button type="submit" id="submitButton" name="submitButton" class="btn btn-danger" style="background: #ff0000">{{tr('broadcast')}}</button>
+				                                        <button type="reset" value="reset" id="reset" name="reset" class="btn btn-default" data-dismiss="modal">{{tr('cancel')}}</button>
+				                                      </div>
+				                                    </div>
+				                                  </div> -->
+
+				                                @if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1) 
+				                                  	<button class="signup-btn submit" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
+				                                @else
+
+				                                  	<button class="signup-btn submit" type="button" onclick="return alert('Broadcast option is disabled by admin.');">{{tr('broadcast')}}</button>
+
+				                                @endif
 
 
-									      <!-- <div class="modal-footer">
-									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									      </div> -->
+										      <!-- <div class="modal-footer">
+										        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										      </div> -->
 
-									      </form>
+										      </form>
 
-									      </div>
+										      </div>
 
-									      <div class="clearfix"></div>
-									    </div>
+										      <div class="clearfix"></div>
+										    </div>
 
-									  </div>
-									</div>
+										  </div>
+										
+										</div>
+
+									@endif
 
 								@endif
 
@@ -271,6 +303,7 @@
 										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}({{$subscriberscnt}})</a>
 
 									@endif
+								
 								@else
 
 									@if($subscriberscnt > 0)
@@ -280,33 +313,47 @@
 									@endif
 
 								@endif
+
 							@endif
+							
 						</div>
 						<div class="clearfix"></div>
 					</div>
 
 					<div id="channel-subheader" class="clearfix branded-page-gutter-padding appbar-content-trigger">
 						<ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
+							
 							<li role="presentation" class="active">
 								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('home')}}</span></a>
 							</li>
+
 							<li role="presentation" id="videos_sec">
 								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
 							</li>
 
-							<li role="presentation">
-								<a href="#live_videos_section" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="live_videos_section" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('live_videos')}}</span> </a>
-							</li>
+							@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
+
+								<li role="presentation">
+
+									<a href="#live_videos_section" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="live_videos_section" role="tab" data-toggle="tab">
+										<span class="yt-uix-button-content">{{tr('live_videos')}}</span> 
+									</a>
+
+								</li>
+
+							@endif
 
 							<li role="presentation">
 								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('about_video')}}</span> </a>
 							</li>
 							@if(Auth::check())
+
 								@if($channel->user_id == Auth::user()->id)
 									<li role="presentation" id="payment_managment_sec">
 										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> </a>
 									</li>
 								@endif
+								
 							@endif
 						</ul>
 					</div>
@@ -542,6 +589,8 @@
 
 				</li>
 
+				@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user)
+
 
 				<li role="tabpanel" class="tab-pane" id="live_videos_section">
 
@@ -724,6 +773,10 @@
 
 
 				</li>
+
+				@endif
+
+
 				<li role="tabpanel" class="tab-pane" id="about">
 
 					<div class="slide-area recom-area abt-sec">

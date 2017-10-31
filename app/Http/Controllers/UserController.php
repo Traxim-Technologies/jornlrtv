@@ -76,9 +76,7 @@ class UserController extends Controller {
 
         $this->UserAPI = $API;
 
-
         $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos','master_login']]);
-
 
         if (Auth::check()) {
 
@@ -129,7 +127,6 @@ class UserController extends Controller {
             }
 
         }
-
     }
 
 
@@ -332,7 +329,8 @@ class UserController extends Controller {
                         ->with('like_count',$response->like_count)
                         ->with('dislike_count',$response->dislike_count)
                         ->with('subscriberscnt', $response->subscriberscnt)
-                        ->with('comment_rating_status', $response->comment_rating_status);
+                        ->with('comment_rating_status', $response->comment_rating_status)
+                        ->with('embed_link', $response->embed_link);
        
         } else {
 

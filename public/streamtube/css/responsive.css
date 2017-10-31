@@ -49,8 +49,13 @@
 	padding: 15px;
 	margin-top: 15px;
 }
-.profile-view{
+.play-video{
 	padding: 0;
+}
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top: 10px;
 }
 .st_video_upload_btn {
 	border-color: #d3d3d3 !important;
@@ -85,6 +90,16 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 200px;
+}
+.add-card input {
+    width:100%;
+}
+.sub-btn{
+	margin-top:0px;
+}
+.foot-btn{
+	margin-top: 0;
+	margin-bottom: 15px;
 }
 }
 
@@ -167,7 +182,8 @@
 .custom-side{
 	padding-right: 0px;
 	padding-left:0px;
-	margin-top:10px;
+	margin-top: 10px;
+
 }
 .modal-top{
 	margin-top: 20px;
@@ -177,6 +193,16 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 200px;
+}
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 0;
+	margin-bottom: 15px;
 }
 }
 
@@ -266,6 +292,15 @@
 	background-repeat: no-repeat;
 	height: 350px;
 }
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 95px;
+}
 }
 
 /* Medium Devices, */
@@ -340,9 +375,9 @@
 	padding-left: 0;
 }
 .custom-side{
-	padding-right:0px;
+	padding-right: 0px;
 	padding-left:0px;
-	margin-top: 0px;
+	margin-top:0px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -352,6 +387,15 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 350px;
+}
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 95px;
 }
 }
 
@@ -427,9 +471,10 @@
 	padding-left: 0;
 }
 .custom-side{
-	padding-right:0;
-	padding-left: 0px;
-	margin-top: 0px;
+	padding-right:0px;
+	padding-left:0px;
+	margin-top:0px;
+
 }
 .modal-top{
 	margin-top: 110px;
@@ -439,6 +484,15 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 350px;
+}
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+.foot-btn{
+	margin-top: 95px;
 }
 }
 /*index.html responsive*/
@@ -577,7 +631,7 @@ videos.html responsive
 		font-size: 11px !important;
 	}
 	.stars i {
-	    font-size: 8px !important;
+	    font-size: 14px !important;
 	}
 }
 @media screen and (max-width: 789px){
@@ -601,7 +655,7 @@ videos.html responsive
 		font-size: 10px;
 	}
 	.stars i {
-	    font-size: 11px;
+	    font-size: 14px;
 	}
 	.more-content a{
 		/*padding: 0;*/
@@ -728,7 +782,7 @@ videos.html responsive
 	    font-size: 9px;
 	}
 	.stars i {
-	    font-size: 8px;
+	    font-size: 14px;
 	}
 }
 @media screen and (max-width: 328px){
@@ -797,6 +851,7 @@ videos.html responsive
 signup.html css
 ----------------------------------------------------------------------------------------------------------------------------------------*/
 @media screen and (max-width: 593px){
+	
 	.signup-nav .you-image a {
     	float: left !important;
 	}

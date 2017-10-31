@@ -26,6 +26,7 @@ class VideoTape extends Model
             'channels.id as channel_id' ,
             'channels.user_id as channel_created_by',
             'channels.name as channel_name',
+            'channels.picture as channel_picture',
             'video_tapes.title',
             'video_tapes.description',
             'video_tapes.default_image',
