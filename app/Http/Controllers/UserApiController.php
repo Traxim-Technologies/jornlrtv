@@ -2501,7 +2501,8 @@ class UserApiController extends Controller {
                     $model->user_id = $request->id;
                     $model->virtual_id = md5(time());
                     $model->unique_id = $model->title;
-                    $model->snapshot = asset("/images/default-image.jpg");
+                    $model->snapshot = asset("/images/live_stream.jpg");
+                    $model->start_time = getUserTime(date('H:i:s'), ($user) ? $user->timezone : '', "H:i:s");
 
                     // $model->video_url = 'rtsp://104.236.1.170:1935/live/'.$user->id.'_'.$model->id;
                     // $model->video_url = $request->video_url;
@@ -3070,7 +3071,7 @@ class UserApiController extends Controller {
 
             $model->end_time = getUserTime(date('H:i:s'), ($model->user) ? $model->user->timezone : '', "H:i:s");
 
-            // $model->no_of_
+            $model->no_of_minutes = getMinutesBetweenTime($model->start_time, $model->end_time);
 
             if ($model->save()) {
 

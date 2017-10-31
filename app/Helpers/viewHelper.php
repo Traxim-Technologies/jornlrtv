@@ -1014,3 +1014,25 @@ function number_format_short( $n, $precision = 1 ) {
     }
     return $n_format . $suffix;
 }
+
+function getMinutesBetweenTime($startTime, $endTime) {
+
+    $to_time = strtotime($endTime);
+
+    $from_time = strtotime($startTime);
+
+    $diff = abs($to_time - $from_time);
+
+    if ($diff <= 0) {
+
+        $diff = 0;
+
+    } else {
+
+        $diff = round($diff/60);
+
+    }
+
+    return $diff;
+
+}
