@@ -3282,53 +3282,42 @@ class UserApiController extends Controller {
 
                 } else {
 
-                    $validator = Validator::make($request->all(), 
-                        array(
-                            'payment_id'=> 'required'
-                        )
-                    );
+                   
 
-                    if($validator->fails()) {
+                    $user_payment = UserPayment::where('user_id' , $request->id)->first();
 
-                        $errors = implode(',', $validator->messages()->all());
-                        
-                        return $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+                    if($user_payment) {
+
+                        $expiry_date = $user_payment->expiry_date;
+                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
                     } else {
-
-                        $user_payment = UserPayment::where('user_id' , $request->id)->first();
-
-                        if($user_payment) {
-
-                            $expiry_date = $user_payment->expiry_date;
-                            $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
-
-                        } else {
-                            $user_payment = new UserPayment;
-                            $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
-                        }
-
-
-                        $user_payment->payment_id  = $request->payment_id;
-                        $user_payment->user_id = $request->id;
-                        $user_payment->subscription_id = $request->subscription_id;
-                        $user_payment->status = 1;
-                        $user_payment->amount = $subscription->amount;
-                        $user_payment->save();
-
-
-                        $user->user_type = 1;
-
-                        $user->save();
-                        
-                        $data = ['id' => $user->id , 'token' => $user->token];
-
-                        Log::info("Stripe Payment".print_r($data, true));
-
-                        $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
-
-                        return response()->json($response_array, 200);
-
+                        $user_payment = new UserPayment;
+                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
                     }
+
+
+                    $user_payment->payment_id  = "free_plan";
+                    $user_payment->user_id = $request->id;
+                    $user_payment->subscription_id = $request->subscription_id;
+                    $user_payment->status = 1;
+                    $user_payment->amount = $subscription->amount;
+                    $user_payment->save();
+
+
+                    $user->user_type = 1;
+
+                    $user->save();
+                    
+                    $data = ['id' => $user->id , 'token' => $user->token];
+
+                    Log::info("Stripe Payment".print_r($data, true));
+
+                    $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+
+                    return response()->json($response_array, 200);
+
+                    
                 }
 
             } else {
