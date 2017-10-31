@@ -65,6 +65,7 @@ video {
 
                         </div>
 
+                        <div id="rtsp_container"></div>
 
                         <div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
                           <img src="{{asset('error.jpg')}}" class="error-image" alt="Error">
