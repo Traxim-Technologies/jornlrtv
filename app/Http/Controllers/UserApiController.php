@@ -3312,7 +3312,7 @@ class UserApiController extends Controller {
                         $user_payment->user_id = $request->id;
                         $user_payment->subscription_id = $request->subscription_id;
                         $user_payment->status = 1;
-                        $user_payment->amount = $amount;
+                        $user_payment->amount = $subscription->amount;
                         $user_payment->save();
 
 
