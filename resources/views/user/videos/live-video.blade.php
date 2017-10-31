@@ -449,7 +449,7 @@ var is_vod = "<?= Setting::get('is_vod')?>";
 
 var wowza_ip_address = "<? = Setting::get('wowza_ip_address') ?>";
 
-var routeUrl = "<?= {{route('user.live_videos')}} ?>";
+var routeUrl = "<?= route('user.live_videos') ?>";
 
 var liveAppCtrl = angular.module('liveApp', [
   'btford.socket-io',
