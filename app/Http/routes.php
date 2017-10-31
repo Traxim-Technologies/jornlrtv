@@ -763,4 +763,23 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/stripe_payment', 'UserApiController@stripe_payment');
 
+
+    Route::post('/like_video', 'UserApiController@likeVideo');
+
+    Route::post('/dis_like_video', 'UserApiController@disLikeVideo');
+
+    // Cards 
+
+    Route::post('card_details', 'UserApiController@card_details');
+
+    Route::post('payment_card_add', 'UserApiController@payment_card_add');
+
+    Route::post('default_card', 'UserApiController@default_card');
+
+    Route::post('delete_card', 'UserApiController@delete_card');
+
+    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
+
+
+
 });

@@ -2010,14 +2010,22 @@ class UserApiController extends Controller {
         return response()->json($response_array);
     }
 
+    /**
+     * Like Videos
+     *
+     * @return JSON Response
+     */
+
     public function likevideo(Request $request) {
 
-         $validator = Validator::make($request->all() , [
+        $validator = Validator::make($request->all() , [
             'video_tape_id' => 'required|exists:video_tapes,id',
-            ]);
+        ]);
 
-         if ($validator->fails()) {
+        if ($validator->fails()) {
+            
             $error_messages = implode(',', $validator->messages()->all());
+            
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
                     'error_code' => 101, 'error_messages'=>$error_messages);
 
@@ -2079,15 +2087,22 @@ class UserApiController extends Controller {
 
     }
 
+    /**
+     * Dis Like Videos
+     *
+     * @return JSON Response
+     */
 
     public function dislikevideo(Request $request) {
 
-         $validator = Validator::make($request->all() , [
+        $validator = Validator::make($request->all() , [
             'video_tape_id' => 'required|exists:video_tapes,id',
-            ]);
+        ]);
 
-         if ($validator->fails()) {
+        if ($validator->fails()) {
+            
             $error_messages = implode(',', $validator->messages()->all());
+            
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
                     'error_code' => 101, 'error_messages'=>$error_messages);
 
@@ -2148,7 +2163,7 @@ class UserApiController extends Controller {
 
     }
 
-     public function default_card(Request $request) {
+    public function default_card(Request $request) {
 
         $validator = Validator::make(
             $request->all(),
@@ -2251,7 +2266,148 @@ class UserApiController extends Controller {
         }
     
         return response()->json($response_array , 200);
+    
     }
+
+    public function card_details(Request $request) {
+
+        $cards = Card::select('user_id as id','id as card_id','customer_id',
+                'last_four', 'card_token', 'is_default', 
+            \DB::raw('DATE_FORMAT(created_at , "%e %b %y") as created_date'))->where('user_id', $request->id)->get();
+
+        $response_array = ['success'=>true, 'data'=>$cards];
+
+        return response()->json($response_array, 200);
+    }
+
+    /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_card_add(Request $request) {
+
+        $validator = Validator::make($request->all(), 
+            array(
+                'number' => 'required|numeric',
+                'card_token'=>'required',
+            )
+            );
+
+        if($validator->fails()) {
+
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
+            return response()->json($response_array);
+
+        } else {
+
+            $userModel = User::find($request->id);
+
+            $last_four = substr($request->number, -4);
+
+            $stripe_secret_key = \Setting::get('stripe_secret_key');
+
+            $response = json_decode('{}');
+
+            if($stripe_secret_key) {
+
+                \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+            } else {
+
+
+                $response_array = ['success'=>false, 'error_messages'=>tr('add_card_is_not_enabled')];
+
+                return response()->json($response_array);
+            }
+
+            try {
+
+                // Get the key from settings table
+                
+                $customer = \Stripe\Customer::create([
+                        "card" => $request->card_token,
+                        "email" => $userModel->email
+                    ]);
+
+                if($customer) {
+
+                    $customer_id = $customer->id;
+
+
+                    $cards = new Card;
+                    $cards->user_id = $userModel->id;
+                    $cards->customer_id = $customer_id;
+                    $cards->last_four = $last_four;
+                    $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    // Check is any default is available
+                    $check_card = Card::where('user_id', $userModel->id)->first();
+
+                    if($check_card)
+                        $cards->is_default = 0;
+                    else
+                        $cards->is_default = 1;
+                    
+                    $cards->save();
+
+                    if($userModel && $cards->is_default) {
+
+                        $userModel->payment_mode = 'card';
+
+                        $userModel->card_id = $cards->id;
+
+                        $userModel->save();
+                    }
+
+                    $data = [
+                            'user_id'=>$request->id, 
+                            'id'=>$request->id, 
+                            'token'=>$userModel->token,
+                            'card_id'=>$cards->id,
+                            'customer_id'=>$cards->customer_id,
+                            'last_four'=>$cards->last_four, 
+                            'card_token'=>$cards->card_token, 
+                            'is_default'=>$cards->is_default
+                            ];
+
+                    $response_array = array('success' => true,'message'=>tr('add_card_success'), 
+                        'data'=> $data);
+
+                    return response()->json($response_array);
+
+                } else {
+
+                    $response_array = ['success'=>false, 'error_messages'=>tr('Could not create client ID')];
+
+                    return response()->json($response_array);
+
+                }
+            
+            } catch(Exception $e) {
+
+                $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+
+                return response()->json($response_array);
+
+            }
+
+        }
+
+    }
+
+
+
+    /** 
+     *
+     * stripe_payment()
+     *
+     * used to detect payment for subscription plans
+     *
+     */
 
     public function stripe_payment(Request $request) {
 
