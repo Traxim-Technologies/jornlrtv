@@ -443,6 +443,10 @@ liveAppCtrl
 	                        return false;
 	                    }
 
+	                    alert("There is not live video available, Redirecting into main page");
+
+                    	window.location.href = routeUrl;
+
 	                   
 	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
 
@@ -479,6 +483,9 @@ liveAppCtrl
 	                        return false;
 	                    }
 
+	                    alert("There is not live video available, Redirecting into main page");
+
+                    	window.location.href = routeUrl;
 	                    
 
 	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
@@ -1362,6 +1369,91 @@ liveAppCtrl
 									autostart : true,
 
 								});
+
+
+								playerInstance.on('error', function() {
+
+									console.log("setupError");
+
+				                    $("#videos-container").hide();
+
+				                    var hasFlash = false;
+				                    
+				                   try {
+				                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+				                        if (fo) {
+				                            hasFlash = true;
+				                        }
+				                    } catch (e) {
+				                        if (navigator.mimeTypes
+				                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+				                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+				                            hasFlash = true;
+				                        }
+				                    }
+
+				                    console.log(hasFlash == false);
+
+				                    $('#main_video_setup_error').css('display', 'block');
+
+				                    if (hasFlash == false) {
+				                        $('#flash_error_display').show();
+
+				                        confirm('Download Flash Player. Flash Player Fail to Load.');
+
+				                        return false;
+				                    }
+
+				                    alert("There is not live video available, Redirecting into main page");
+
+                    				window.location.href = routeUrl;
+
+				                   
+				                   // confirm('The video format is not supported in this browser. Please option some other browser.');
+
+								});
+
+
+								playerInstance.on('setupError', function() {
+
+								 	console.log("setupError");
+
+				                    $("#videos-container").hide();
+
+				                    var hasFlash = false;
+				                   try {
+				                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+				                        if (fo) {
+				                            hasFlash = true;
+				                        }
+				                    } catch (e) {
+				                        if (navigator.mimeTypes
+				                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+				                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+				                            hasFlash = true;
+				                        }
+				                    }
+
+				                    $('#main_video_setup_error').show();
+
+				                    if (hasFlash == false) {
+				                        $('#flash_error_display').show();
+
+				                        confirm('Download Flash Player. Flash Player Fail to Load.');
+
+				                        return false;
+				                    }
+
+				                    
+				                    alert("There is not live video available, Redirecting into main page");
+
+                    				window.location.href = routeUrl;
+				                   // confirm('The video format is not supported in this browser. Please option some other browser.');
+				                
+				                });
+
+
+
 
 							} else {
 

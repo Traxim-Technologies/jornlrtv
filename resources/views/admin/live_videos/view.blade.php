@@ -76,7 +76,7 @@ video {
                                             </div>
 
                                             <div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
-                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="Error">
+                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="Error" style="width: 100%;height: 250px;">
 
                                                 <div class="flash_display" id="flash_error_display" style="display: none;">
                                                     <div class="flash_error_div">

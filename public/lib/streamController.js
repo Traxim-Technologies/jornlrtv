@@ -710,7 +710,9 @@ liveAppCtrl
                         return false;
                     }
 
-                    
+                    alert("There is not live video available, Redirecting into main page");
+
+                    window.location.href = routeUrl;
 
                    // confirm('The video format is not supported in this browser. Please option some other browser.');
                 
