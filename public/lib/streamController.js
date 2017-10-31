@@ -450,7 +450,7 @@ liveAppCtrl
 			}
 			console.log("Broadcast Error");
 
-			window.location.reload(true);
+			// window.location.reload(true);
 			
 		});
 
