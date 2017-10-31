@@ -324,8 +324,9 @@ textarea[name=comments] {
                                                                                         </div>
 
                                                                                     </form>
-
-                                                                                    <button class="btn btn-danger pull-right foot-btn" onclick="copyTextToClipboard();" style="border-radius: 0">Copy</button>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" style="border-radius: 0">Copy</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

@@ -1,7 +1,7 @@
 <footer>
     <div class="footer1 row">
-        <div class="col-sm-2 foot-div">
-            <div class="tube-image">
+        <div class="col-sm-2 ">
+            <div class="tube-image text-center">
                 @if(Setting::get('site_logo'))
                     <img src="{{Setting::get('site_logo')}}">
                 @else
@@ -16,7 +16,7 @@
                 <?php $pages = pages();?>
                 @if (count($pages) > 0)
                     @foreach($pages as $page) 
-                    <!-- <li><a target="_blank" href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->title}}</a></li> -->
+                        <li><a target="_blank" href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->title}}</a></li> | 
                     @endforeach
                 @endif
                 <li><a target="_blank" href="{{url('/')}}" target="_blank">&#169; 2017 @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
