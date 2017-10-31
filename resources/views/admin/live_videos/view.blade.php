@@ -229,7 +229,12 @@ video {
 <script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 <script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
 
+
+
 <script type="text/javascript">
+
+
+var video_details = <?= $data; ?>;
 
 var appSettings = <?= json_encode([
                 'SOCKET_URL' => Setting::get('SOCKET_URL'),
@@ -247,16 +252,21 @@ var liveAppCtrl = angular.module('liveApp', [
   $interpolateProvider.endSymbol('%>');
 })
 .constant('appSettings', appSettings);
-/*
+
 liveAppCtrl
-    .run(['$rootScope', function ($rootScope) {
+    .run(['$rootScope',
+        '$window',
+        '$timeout',
+        function ($rootScope,$window, $timeout) {
+            
             $rootScope.appSettings = appSettings;
-            console.log($rootScope.appSettings);
+
+            $rootScope.videoDetails = video_details;
+
+            console.log($rootScope.videoDetails);
         }
-    ]);*/
-
-console.log(appSettings);
-
+]);
+    
 </script>
 <!-- <script src="{{asset('common/js/factory.js')}}"></script> -->
 <script src="{{asset('lib/streamController.js')}}"></script>
