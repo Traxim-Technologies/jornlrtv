@@ -490,6 +490,8 @@ class VideoTapeRepository {
             
             $data['share_url'] = route('user.single' , $video_tape_id);
 
+            $data['embed_link'] = route('embed_video', array('u_id'=>$video_tape_details->unique_id));
+
             $video_url = $video_tape_details->video;
 
             if($login_by == DEVICE_ANDROID) {

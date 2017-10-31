@@ -81,6 +81,7 @@ class VideoTape extends Model
             'video_tapes.age_limit',
             'video_tapes.is_approved',
             'video_tapes.status',
+            'video_tapes.subtitle',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as publish_time')
             
         );
