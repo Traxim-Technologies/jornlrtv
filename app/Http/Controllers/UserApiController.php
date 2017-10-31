@@ -3184,8 +3184,6 @@ class UserApiController extends Controller {
 
                 if ($total > 0) {
 
-                    
-
                     $check_card_exists = User::where('users.id' , $request->id)
                                     ->leftJoin('cards' , 'users.id','=','cards.user_id')
                                     ->where('cards.id' , $user->card_id)
@@ -3285,9 +3283,9 @@ class UserApiController extends Controller {
                 } else {
 
                     $validator = Validator::make($request->all(), 
-                    array(
-                        'payment_id'=> () 'required'
-                    )
+                        array(
+                            'payment_id'=> 'required'
+                        )
                     );
 
                     if($validator->fails()) {
