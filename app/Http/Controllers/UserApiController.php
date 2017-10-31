@@ -3247,7 +3247,7 @@ class UserApiController extends Controller {
 
                                 $user->save();
                                 
-                                $data = ['id' => $user->id , 'token' => $user->token];
+                                $data = ['id' => $user->id , 'token' => $user->token,'paymentid'=>$payment_id];
 
                                 Log::info("Stripe Payment".print_r($data, true));
 
@@ -3309,7 +3309,7 @@ class UserApiController extends Controller {
 
                     $user->save();
                     
-                    $data = ['id' => $user->id , 'token' => $user->token];
+                    $data = ['id' => $user->id , 'token' => $user->token, 'paymentid'=>$user_payment->payment_id];
 
                     Log::info("Stripe Payment".print_r($data, true));
 
