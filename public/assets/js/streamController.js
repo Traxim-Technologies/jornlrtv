@@ -1533,7 +1533,7 @@ liveAppCtrl
 			}
 			console.log("Broadcast Error");
 
-			window.location.href = stop_streaming_url;
+			// window.location.href = stop_streaming_url;
 
 
 			/*var data = new FormData;
@@ -1594,7 +1594,7 @@ liveAppCtrl
 
 	      				console.log("stop_streaming_url");
 
-	      				window.location.href = stop_streaming_url;
+	      				// window.location.href = stop_streaming_url;
 
 	      			}
 
@@ -1670,7 +1670,7 @@ liveAppCtrl
 
 									console.log(result);
 
-									window.location.href = stop_streaming_url;
+									// window.location.href = stop_streaming_url;
 									
 								}, 
 						    	error : function(result) {
@@ -1688,7 +1688,9 @@ liveAppCtrl
 
 	    	} else {
 
-	    		window.location.href = stop_streaming_url;
+	    		console.log("Else Portion");
+
+	    		// window.location.href = stop_streaming_url;
 	    		
 	    	}
 
