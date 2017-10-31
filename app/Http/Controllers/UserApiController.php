@@ -3182,98 +3182,155 @@ class UserApiController extends Controller {
 
                 $user = User::find($request->id);
 
-                $check_card_exists = User::where('users.id' , $request->id)
-                                ->leftJoin('cards' , 'users.id','=','cards.user_id')
-                                ->where('cards.id' , $user->card_id)
-                                ->where('cards.is_default' , DEFAULT_TRUE);
+                if ($total > 0) {
 
-                if($check_card_exists->count() != 0) {
+                    
 
-                    $user_card = $check_card_exists->first();
+                    $check_card_exists = User::where('users.id' , $request->id)
+                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                    ->where('cards.id' , $user->card_id)
+                                    ->where('cards.is_default' , DEFAULT_TRUE);
 
-                    $stripe_secret_key = Setting::get('stripe_secret_key');
+                    if($check_card_exists->count() != 0) {
 
-                    // print_r("User Card Details ".print_r($user_card, true));
+                        $user_card = $check_card_exists->first();
 
-                    $customer_id = $user_card->customer_id;
+                        $stripe_secret_key = Setting::get('stripe_secret_key');
 
-                    if($stripe_secret_key) {
-                        \Stripe\Stripe::setApiKey($stripe_secret_key);
-                    } else {
-                        $response_array = array('success' => false, 'error_messages' =>Helper::get_error_message(902), 'error_code' => 902);
-                        return response()->json($response_array , 200);
-                    }
+                        // print_r("User Card Details ".print_r($user_card, true));
 
-                    try{
+                        $customer_id = $user_card->customer_id;
 
-                       $user_charge =  \Stripe\Charge::create(array(
-                          "amount" => $total * 100,
-                          "currency" => "usd",
-                          "customer" => $customer_id,
-                        ));
-
-                       $payment_id = $user_charge->id;
-                       $amount = $user_charge->amount/100;
-                       $paid_status = $user_charge->paid;
-
-                        if($paid_status) {
-
-                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
-
-                            if($user_payment) {
-
-                                $expiry_date = $user_payment->expiry_date;
-                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
-
-                            } else {
-                                $user_payment = new UserPayment;
-                                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
-                            }
-
-
-                            $user_payment->payment_id  = $payment_id;
-                            $user_payment->user_id = $request->id;
-                            $user_payment->subscription_id = $request->subscription_id;
-                            $user_payment->status = 1;
-                            $user_payment->amount = $amount;
-                            $user_payment->save();
-
-
-                            $user->user_type = 1;
-
-                            $user->save();
-                            
-                            $data = ['id' => $user->id , 'token' => $user->token];
-
-                            Log::info("Stripe Payment".print_r($data, true));
-
-                            $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
-
-                            return response()->json($response_array, 200);
-
+                        if($stripe_secret_key) {
+                            \Stripe\Stripe::setApiKey($stripe_secret_key);
                         } else {
 
-                            $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+                            $response_array = array('success' => false, 'error_messages' =>Helper::get_error_message(902), 'error_code' => 902);
 
-                            return response()->json($response_array, 200);
-
+                            return response()->json($response_array , 200);
                         }
 
-                    
-                    } catch (\Stripe\StripeInvalidRequestError $e) {
+                        try{
 
-                        Log::info(print_r($e,true));
+                           $user_charge =  \Stripe\Charge::create(array(
+                              "amount" => $total * 100,
+                              "currency" => "usd",
+                              "customer" => $customer_id,
+                            ));
 
-                        $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+                           $payment_id = $user_charge->id;
+                           $amount = $user_charge->amount/100;
+                           $paid_status = $user_charge->paid;
 
+                            if($paid_status) {
+
+                                $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                                if($user_payment) {
+
+                                    $expiry_date = $user_payment->expiry_date;
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                                } else {
+                                    $user_payment = new UserPayment;
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                                }
+
+
+                                $user_payment->payment_id  = $payment_id;
+                                $user_payment->user_id = $request->id;
+                                $user_payment->subscription_id = $request->subscription_id;
+                                $user_payment->status = 1;
+                                $user_payment->amount = $amount;
+                                $user_payment->save();
+
+
+                                $user->user_type = 1;
+
+                                $user->save();
+                                
+                                $data = ['id' => $user->id , 'token' => $user->token];
+
+                                Log::info("Stripe Payment".print_r($data, true));
+
+                                $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+
+                                return response()->json($response_array, 200);
+
+                            } else {
+
+                                $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                                return response()->json($response_array, 200);
+
+                            }
+
+                        
+                        } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                            Log::info(print_r($e,true));
+
+                            $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+
+                            return response()->json($response_array , 200);
+
+                        
+                        }
+
+                    } else {
+                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(140) , 'error_code' => 140);
                         return response()->json($response_array , 200);
-
-                    
                     }
 
                 } else {
-                    $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(140) , 'error_code' => 140);
-                    return response()->json($response_array , 200);
+
+                    $validator = Validator::make($request->all(), 
+                    array(
+                        'payment_id'=> () 'required'
+                    )
+                    );
+
+                    if($validator->fails()) {
+
+                        $errors = implode(',', $validator->messages()->all());
+                        
+                        return $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+                    } else {
+
+                        $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                        if($user_payment) {
+
+                            $expiry_date = $user_payment->expiry_date;
+                            $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                        } else {
+                            $user_payment = new UserPayment;
+                            $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                        }
+
+
+                        $user_payment->payment_id  = $request->payment_id;
+                        $user_payment->user_id = $request->id;
+                        $user_payment->subscription_id = $request->subscription_id;
+                        $user_payment->status = 1;
+                        $user_payment->amount = $amount;
+                        $user_payment->save();
+
+
+                        $user->user_type = 1;
+
+                        $user->save();
+                        
+                        $data = ['id' => $user->id , 'token' => $user->token];
+
+                        Log::info("Stripe Payment".print_r($data, true));
+
+                        $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+
+                        return response()->json($response_array, 200);
+
+                    }
                 }
 
             } else {
