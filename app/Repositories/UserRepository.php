@@ -125,7 +125,7 @@ class UserRepository {
         $user->address = $request->has('address') ? $request->address : "";
         $user->description = $request->has('description') ? $request->description : "";
 
-		$user->token = Helper::generate_token();
+		// $user->token = Helper::generate_token();
         $user->token_expiry = Helper::generate_token_expiry();
 
         $check_device_exist = User::where('device_token', $request->device_token)->first();

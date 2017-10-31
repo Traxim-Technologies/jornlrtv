@@ -386,7 +386,7 @@ class UserApiController extends Controller {
             if($operation) {
 
                 // Generate new tokens
-                $user->token = Helper::generate_token();
+                // $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 // Save device details
