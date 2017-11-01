@@ -1,16 +1,117 @@
 liveAppCtrl
-.controller('streamCtrl', ['$rootScope', 'socketFactory', 
-	function ($rootScope, socketFactory) {
+.controller('streamCtrl', ['$rootScope', 'socketFactory',  '$sce',
+	function ($rootScope, socketFactory, $sce) {
 
 		$scope = $rootScope;
-
-		console.log(commonHelper);
 
 		var socket = {};
 
 		var commonHelper = {};
 
 		console.log("Before "+socket);
+
+		function getBrowser() {
+
+            // Opera 8.0+
+            var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+            // Firefox 1.0+
+            var isFirefox = typeof InstallTrigger !== 'undefined';
+
+            // Safari 3.0+ "[object HTMLElementConstructor]" 
+            var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+
+            // Internet Explorer 6-11
+            var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+            // Edge 20+
+            var isEdge = !isIE && !!window.StyleMedia;
+
+            // Chrome 1+
+            var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+            // Blink engine detection
+            var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+            var b_n = '';
+
+            switch(true) {
+
+                case isFirefox :
+
+                        b_n = "Firefox";
+
+                        break;
+                case isChrome :
+
+                        b_n = "Chrome";
+
+                        break;
+
+                case isSafari :
+
+                        b_n = "Safari";
+
+                        break;
+                case isOpera :
+
+                        b_n = "Opera";
+
+                        break;
+
+                case isIE :
+
+                        b_n = "IE";
+
+                        break;
+
+                case isEdge : 
+
+                        b_n = "Edge";
+
+                        break;
+
+                case isBlink : 
+
+                        b_n = "Blink";
+
+                        break;
+
+                default :
+
+                        b_n = "Unknown";
+
+                        break;
+
+            }
+
+            return b_n;
+
+        }
+
+        var mobile_type = "";
+
+        function getMobileOperatingSystem() {
+		  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+		  if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) )
+		  {
+		    mobile_type =  'ios';
+
+		  }
+		  else if( userAgent.match( /Android/i ) )
+		  {
+
+		    mobile_type =  'andriod';
+		  }
+		  else
+		  {
+		    mobile_type =  'unknown'; 
+		  }
+
+		  return mobile_type;
+		}
+
 
 		$scope.common_helper = function() {
 
@@ -209,7 +310,6 @@ liveAppCtrl
 			console.log("disconectAll");
 		if (appSettings.CHAT_ROOM_ID != data.id && data.ownerId == appSettings.USER.id) {
 			console.log("disconect");
-		  
 		}
 		});
 
@@ -445,12 +545,188 @@ liveAppCtrl
 		socket.on('broadcast-error', function (data) {
 
 			console.log(data);
+
 			if (!appSettings.USER || appSettings.USER.role != 'model') {
 			  // alert('Warning', data.msg);
 			}
 			console.log("Broadcast Error");
 
-			window.location.reload(true);
+			var browser = getBrowser();
+
+	        var m_type = getMobileOperatingSystem();
+
+	        var mobile_ios_type = 0;
+
+	        var rtsp_mobile_type = 0;
+
+	        // if (wowza_ip_address != '' && wowza_ip_address != undefined && socket_url != '' && socket_url != undefined) {
+
+        	if ((browser == 'Safari' || browser == 'IE') || m_type == 'ios' || ($scope.videoDetails.video_url != '' && $scope.videoDetails.video_url != undefined)) {
+
+        		if (m_type == 'ios') {
+
+        			browser = 'Safari';
+        		}
+
+        		mobile_ios_type = 1;
+
+				jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
+
+				$("#videos-container").html("");
+
+
+				var playerInstance = jwplayer("videos-container");
+
+				$scope.url = "";
+
+				var data = new FormData;
+				data.append('video_id', $scope.videoDetails.id);
+				data.append('device_type', 'web');
+				data.append('browser', browser);
+
+				$.ajax({
+					type : 'post',
+					url : url+'/userApi/get_live_url',
+					contentType : false,
+					processData: false,
+					
+					async : false,
+					data : data,
+					success : function(result) {
+
+						if (result.success) {
+
+							$scope.url = result.url;
+
+						} else {
+
+							console.log(result.message);
+
+						}
+						
+					}, 
+			    	error : function(result) {
+
+			    	}
+				});
+
+				console.log("Url "+$scope.url);
+
+
+				playerInstance.setup({
+
+				   file : $sce.trustAsResourceUrl($scope.url),
+
+				    width: "100%",
+				    aspectratio: "16:9",
+				    primary: "flash",
+				    controls : true,
+				    "controlbar.idlehide" : false,
+				    controlBarMode:'floating',
+				    "controls": {
+				      "enableFullscreen": false,
+				      "enablePlay": false,
+				      "enablePause": false,
+				      "enableMute": true,
+				      "enableVolume": true
+				    },
+				    autostart : true,
+				   /* "sharing": {
+				        "sites": ["reddit","facebook","twitter"]
+				      }*/
+				});
+
+
+				playerInstance.on('error', function() {
+
+					console.log("setupError");
+
+                    $("#videos-container").hide();
+
+                    var hasFlash = false;
+                    
+                   try {
+                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                        if (fo) {
+                            hasFlash = true;
+                        }
+                    } catch (e) {
+                        if (navigator.mimeTypes
+                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                            hasFlash = true;
+                        }
+                    }
+
+                    console.log(hasFlash == false);
+
+                    $('#main_video_setup_error').css('display', 'block');
+
+                    if (hasFlash == false) {
+                        $('#flash_error_display').show();
+
+                        confirm('Download Flash Player. Flash Player Fail to Load.');
+
+                        return false;
+                    }
+
+                    alert("There is not live video available, Redirecting into main page");
+
+                    window.location.href = routeUrl;
+
+                   
+                   // confirm('The video format is not supported in this browser. Please option some other browser.');
+
+				});
+
+
+				playerInstance.on('setupError', function() {
+
+				 	console.log("setupError");
+
+                    $("#videos-container").hide();
+
+                    var hasFlash = false;
+                   try {
+                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                        if (fo) {
+                            hasFlash = true;
+                        }
+                    } catch (e) {
+                        if (navigator.mimeTypes
+                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                            hasFlash = true;
+                        }
+                    }
+
+                    $('#main_video_setup_error').show();
+
+                    if (hasFlash == false) {
+                        $('#flash_error_display').show();
+
+                        confirm('Download Flash Player. Flash Player Fail to Load.');
+
+                        return false;
+                    }
+
+                    alert("There is not live video available, Redirecting into main page");
+
+                    window.location.href = routeUrl;
+
+                   // confirm('The video format is not supported in this browser. Please option some other browser.');
+                
+                });
+
+
+				$("#loader_btn").hide();
+
+
+        	}
+
+			// }
+
+			// window.location.reload(true);
 			
 		});
 

@@ -11,6 +11,9 @@ use App\User;
 use Hash;
 use App\Helpers\Helper;
 
+use App\Helpers\AppJwt;
+
+
 class SocialAuthController extends Controller
 {
     public function redirect(Request $request)
@@ -21,7 +24,7 @@ class SocialAuthController extends Controller
     public function callback(Request $request ,$provider) {
 
     	if (!$request->has('code') || $request->has('denied')) {
-		    return redirect('/');
+		    return redirect('/')->with('flash_error' , 'Permission Denied');
 		}
 
 		$social_user = \Socialite::driver($provider)->user();
@@ -88,7 +91,7 @@ class SocialAuthController extends Controller
 
 		$user->password = Hash::make($social_user->id);
 
-        $user->token = Helper::generate_token();
+        // $user->token = Helper::generate_token();
         $user->token_expiry = Helper::generate_token_expiry();
 
         $user->is_verified = 1;
@@ -97,6 +100,10 @@ class SocialAuthController extends Controller
 
 
 		if($user) {
+
+
+        	$user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
+
 	    	auth()->login($user);
 		}
 

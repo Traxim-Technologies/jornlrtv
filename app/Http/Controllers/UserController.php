@@ -1949,6 +1949,8 @@ class UserController extends Controller {
 
                 $model->end_time = getUserTime(date('H:i:s'), ($model->user) ? $model->user->timezone : '', "H:i:s");
 
+                $model->no_of_minutes = getMinutesBetweenTime($model->start_time, $model->end_time);
+
                 $message =  tr('streaming_stopped_success');
 
                 $route = route('user.channel', ['id'=>$model->channel_id]);

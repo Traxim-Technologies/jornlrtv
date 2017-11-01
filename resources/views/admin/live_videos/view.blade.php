@@ -66,14 +66,24 @@ video {
                                     <!-- <p class="text-red">Click On Image to See the streaming Video</p> -->
 
                                         <div class="show-model">
-                                          <!--<img src="/images/img1.jpg" class="img-response" ng-hide="isStreaming">-->
-                                          <div id="videos-container" room="{{$data->id}}">
-                                            
-                                            <div id="loader_btn" style="margin-left: 30%">
-                                                <p>Video Loading....</p>
+
+                                            <div id="videos-container" room="{{$data->id}}">
+
+                                                <div id="loader_btn" style="margin-left: 30%">
+                                                    <p>Video Loading....</p>
+                                                </div>
+
                                             </div>
 
-                                          </div>
+                                            <div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
+                                                <img src="{{asset('error.jpg')}}" class="error-image" alt="Error" style="width: 100%;height: 250px;">
+
+                                                <div class="flash_display" id="flash_error_display" style="display: none;">
+                                                    <div class="flash_error_div">
+                                                        <div class="flash_error">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
 
@@ -229,7 +239,16 @@ video {
 <script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 <script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
 
+<script src="{{asset('jwplayer/jwplayer.js')}}"></script>
+
 <script type="text/javascript">
+
+
+var url = "<?= url('/');?>";
+
+var video_details = <?= $data; ?>;
+
+var routeUrl = "<?= route('admin.videos.index') ?>";
 
 var appSettings = <?= json_encode([
                 'SOCKET_URL' => Setting::get('SOCKET_URL'),
@@ -246,17 +265,23 @@ var liveAppCtrl = angular.module('liveApp', [
   $interpolateProvider.startSymbol('<%');
   $interpolateProvider.endSymbol('%>');
 })
-.constant('appSettings', appSettings);
-/*
+.constant('appSettings', appSettings)
+.constant('url',url)
+.constant('routeUrl', routeUrl);
 liveAppCtrl
-    .run(['$rootScope', function ($rootScope) {
+    .run(['$rootScope',
+        '$window',
+        '$timeout',
+        function ($rootScope,$window, $timeout) {
+            
             $rootScope.appSettings = appSettings;
-            console.log($rootScope.appSettings);
+
+            $rootScope.videoDetails = video_details;
+
+            console.log($rootScope.videoDetails);
         }
-    ]);*/
-
-console.log(appSettings);
-
+]);
+    
 </script>
 <!-- <script src="{{asset('common/js/factory.js')}}"></script> -->
 <script src="{{asset('lib/streamController.js')}}"></script>
