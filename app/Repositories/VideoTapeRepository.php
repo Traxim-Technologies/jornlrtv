@@ -401,7 +401,7 @@ class VideoTapeRepository {
 
                     if($user_details = User::find($request->id)) {
 
-                        $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value)
+                        $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
                         
                         $value['user_type'] = $user_details->user_type;
 
