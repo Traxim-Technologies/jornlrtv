@@ -451,12 +451,27 @@ button.ui-button::-moz-focus-inner {
 	-ms-touch-action: none;
 	touch-action: none;
 }
+@media only screen and (min-width : 768px) {
 .ui-menu {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 	display: block;
 	outline: none;
+	width: calc(58.33% - 53px) !important;
+	position: fixed;
+}
+}
+@media screen and (max-width: 767px) {
+.ui-menu {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: block;
+	outline: none;
+	width: calc(100% - 30px) !important;
+	position: fixed;
+}	
 }
 .ui-menu .ui-menu {
 	position: absolute;
@@ -829,10 +844,29 @@ body .ui-tooltip {
 
 /* Component containers
 ----------------------------------*/
+@media only screen and (min-width : 480px) {
 .ui-widget {
 	font-family: Helvetica,Arial,sans-serif;
-	font-size: 1.1em;
+	font-size: 16px;
 }
+}
+@media screen and (max-width: 359px) {
+.ui-widget {
+	font-family: Helvetica,Arial,sans-serif;
+	font-size: 12px;
+}
+}
+
+@media (min-width: 360px) and (max-width: 479px) {
+.ui-widget {
+	font-family: Helvetica,Arial,sans-serif;
+	font-size:14px;
+}
+}
+/*.ui-widget {
+	font-family: Helvetica,Arial,sans-serif;
+	font-size: 1.1em;
+}*/
 .ui-widget .ui-widget {
 	font-size: 1em;
 }
@@ -885,7 +919,7 @@ body .ui-tooltip {
 .ui-widget-header .ui-state-focus {
 	border: 1px solid #e96969;
 	background: #e96969 url("images/ui-bg_highlight-soft_25_0073ea_1x100.png") 50% 50% repeat-x;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	color: #ffffff;
 }
 .ui-state-hover a,
