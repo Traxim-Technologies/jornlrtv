@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Twitter login issue fixed.
+
+### Fixed
+
 - Commission Spilit Issue fixed.
 
 ### Changed 
