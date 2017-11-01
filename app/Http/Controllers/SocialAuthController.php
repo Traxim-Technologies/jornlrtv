@@ -21,7 +21,7 @@ class SocialAuthController extends Controller
     public function callback(Request $request ,$provider) {
 
     	if (!$request->has('code') || $request->has('denied')) {
-		    return redirect('/');
+		    return redirect('/')->with('flash_error' , 'Permission Denied');
 		}
 
 		$social_user = \Socialite::driver($provider)->user();
