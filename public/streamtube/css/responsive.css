@@ -8,13 +8,16 @@
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 105px;
-    /*min-height: 700px;*/
-    height: calc(100% - 105px) !important;
+    min-height: 700px;
+   /* height: calc(100% - 105px) !important;*/
     overflow: auto;
     position:fixed;
     top: 0;
 	z-index:10;
 	width: 50%;
+}
+.right-space{
+	padding:0 30px;
 }
 .page-inner{
 	margin-top: 109px;
@@ -131,6 +134,9 @@
 	z-index: 10;
 	width: 50%;
 }
+.right-space{
+	padding:0 30px;
+}
 .page-inner{
 	margin-top: 120px;
 	z-index: 0;
@@ -241,6 +247,9 @@
 .bottom{
 	height: 60px;
 }
+.right-space{
+	padding-right:30px;
+}
 .youtube-nav{
 	padding:10px 20px;
 	border-bottom: 1px solid #e8e8e8;
@@ -339,6 +348,9 @@
 .bottom{
 	height: 60px;
 }
+.right-space{
+	padding-right:30px;
+}
 .page-inner{
 	margin-top: 65px;
 }
@@ -435,6 +447,9 @@
 }
 .bottom{
 	height: 60px;
+}
+.right-space{
+	padding-right:30px;
 }
 .page-inner{
 	margin-top: 65px;
@@ -931,6 +946,7 @@ recommend.html css
 	}
 	.profile-view{
 		padding-right: 0;
+		padding-left: 0;
 	}
 }
 
