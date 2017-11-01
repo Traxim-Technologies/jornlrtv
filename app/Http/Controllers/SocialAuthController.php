@@ -20,8 +20,20 @@ class SocialAuthController extends Controller
 
     public function callback(Request $request ,$provider) {
 
-    	if (!$request->has('code') || $request->has('denied')) {
-		    return redirect('/');
+    	if($provider == "twitter") {
+    		
+    		if($request->has('denied')) {
+		    	
+		    	return redirect('/')->with('flash_error' , 'Permission Denied');
+
+    		}
+
+    	} else {
+
+	    	if(!$request->has('code') || $request->has('denied')) {
+			    return redirect('/')->with('flash_error' , 'Permission Denied');
+			}
+
 		}
 
 		$social_user = \Socialite::driver($provider)->user();

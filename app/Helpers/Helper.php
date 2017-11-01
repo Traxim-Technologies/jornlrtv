@@ -36,6 +36,10 @@
 
     use App\UserRating;
 
+    use App\LikeDislikeVideo;
+    
+    use App\PayPerView;
+
 
     class Helper
     {
@@ -875,6 +879,79 @@
                 \File::delete( base_path() . "/resources/lang/" . $folder ."/".$filename);
             }
             return true;
+        }
+
+        public static function like_status($user_id,$video_id) {
+
+            if(LikeDislikeVideo::where('admin_video_id' , $video_id)->where('user_id' , $user_id)->where('like_status' , DEFAULT_TRUE)->count()) {
+
+                return 1;
+
+            } else {
+
+                return 0;
+            }
+        }
+
+        /**
+         * Function Name : watchFullVideo()
+         * To check whether the user has to pay the amount or not
+         * 
+         * @param integer $user_id User id
+         * @param integer $user_type User Type
+         * @param integer $video_id Video Id
+         * 
+         * @return true or not
+         */
+
+
+        public static function watchFullVideo($user_id, $user_type, $video) {
+            
+            if ($user_type == 1) {
+
+                if ($video->amount == 0) {
+                    return true;
+                }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
+                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)
+                        ->orderBy('created_at', 'desc')->first();
+                    if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                        // Load Payment view
+                        if ($paymentView) {
+                            return true;
+                        }
+                    } else {
+                        if ($paymentView) {
+                            if ($paymentView->status == DEFAULT_FALSE) {
+                                return true;
+                            }
+                        }   
+                    }
+                } else if($video->amount > 0 && $video->type_of_user == NORMAL_USER){
+                    return true;
+                }
+            
+            } else {
+                if ($video->amount == 0) {
+                    return true;
+                }else if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
+                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->orderBy('created_at', 'desc')->first();
+                    if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                        // Load Payment view
+                        if ($paymentView) {
+                            return true;
+                        }
+                    } else {
+
+                        if ($paymentView) {
+                            if ($paymentView->status == DEFAULT_FALSE) {
+                                return true;
+                            }
+                        }  
+                    }
+                } 
+            
+            }
+            return false;
         }
     }
 

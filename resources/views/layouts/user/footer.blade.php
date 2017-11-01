@@ -1,7 +1,7 @@
 <footer>
     <div class="footer1 row">
-        <div class="col-sm-2 foot-div">
-            <div class="tube-image">
+        <div class="col-sm-2 ">
+            <div class="tube-image text-center">
                 @if(Setting::get('site_logo'))
                     <img src="{{Setting::get('site_logo')}}">
                 @else
