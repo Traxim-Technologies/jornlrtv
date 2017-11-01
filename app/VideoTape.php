@@ -43,6 +43,8 @@ class VideoTape extends Model
             'video_tapes.ad_status',
             'video_tapes.reviews',
             'video_tapes.amount',
+            'video_tapes.type_of_user',
+            'video_tapes.type_of_subscription',
             'video_tapes.is_banner',
             'video_tapes.banner_image',
             'video_tapes.redeem_count',

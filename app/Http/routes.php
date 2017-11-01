@@ -777,6 +777,8 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('delete_card', 'UserApiController@delete_card');
 
     Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+    
+    Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
 
     // SubScriptions 
 
@@ -788,6 +790,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('paypal_subscription_payment', 'UserApiController@paypal_subscription_payment');
 
-    Route::post('/card_subscription_payment', 'UserApiController@stripe_subscription_payment');
+    Route::post('card_subscription_payment', 'UserApiController@stripe_subscription_payment');
 
 });

@@ -857,6 +857,17 @@ class UserApiController extends Controller {
 
                 foreach ($videos as $key => $value) {
 
+                    if($request->id) {
+
+                        if($user_details = User::find($request->id)) {
+
+                            $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value)
+                            
+                            $value['user_type'] = $user_details->user_type;
+
+                        }
+                    }
+
                     $value['watch_count'] = number_format_short($value->watch_count);
 
                     $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
@@ -1059,6 +1070,17 @@ class UserApiController extends Controller {
 
                 foreach ($videos as $key => $value) {
 
+                    if($request->id) {
+
+                        if($user_details = User::find($request->id)) {
+
+                            $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value)
+                            
+                            $value['user_type'] = $user_details->user_type;
+
+                        }
+                    }
+
                     $value['watch_count'] = number_format_short($value->watch_count);
 
                     $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
@@ -1210,6 +1232,17 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
+                if($request->id) {
+
+                    if($user_details = User::find($request->id)) {
+
+                        $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value)
+                        
+                        $value['user_type'] = $user_details->user_type;
+
+                    }
+                }
+
                 $value['watch_count'] = number_format_short($value->watch_count);
 
                 $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
@@ -1264,6 +1297,17 @@ class UserApiController extends Controller {
         if(count($videos) > 0) {
 
             foreach ($videos as $key => $value) {
+
+                if($request->id) {
+
+                    if($user_details = User::find($request->id)) {
+
+                        $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value)
+                        
+                        $value['user_type'] = $user_details->user_type;
+
+                    }
+                }
 
                 $value['watch_count'] = number_format_short($value->watch_count);
                 
@@ -2571,7 +2615,129 @@ class UserApiController extends Controller {
 
     }
 
-    
+    /** 
+     *
+     *
+     */
+
+    public function ppv_paypal(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'admin_video_id'=>'required|exists:admin_videos,id',
+                'payment_id'=>'required',
+
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $errors = implode(',',$validator->messages()->all());
+
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
+
+        } else {
+
+            $video = AdminVideo::find($request->admin_video_id);
+
+            $user_payment = new PayPerView;
+            /*
+            $check_live_video_payment = Payperview::where('user_id' , $request->id)->where('video_id' , $request->admin_video_id)->first();
+
+            if($check_live_video_payment) {
+                $user_payment = $check_live_video_payment;
+            }*/
+
+            // $user_payment->expiry_date = date('Y-m-d H:i:s');
+            $user_payment->payment_id  = $request->payment_id;
+            $user_payment->user_id = $request->id;
+            $user_payment->video_id = $request->admin_video_id;
+
+            $user_payment->status = DEFAULT_FALSE;
+
+            $user_payment->amount = $video->amount;
+
+            $user_payment->save();
+
+            if($user_payment) {
+
+                 // Commission Spilit 
+                if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
+
+                    $video_amount = Setting::get('amount_per_video');
+
+                    $video->watch_count = $video->watch_count + 1;
+
+                    $video->redeem_amount += $video_amount;
+
+                    if($video->amount > 0) { 
+
+                        $total = $video_amount;
+
+                        // Commission Spilit 
+
+                        $admin_commission = Setting::get('admin_commission')/100;
+
+                        $admin_amount = $total * $admin_commission;
+
+                        $moderator_amount = $total - $admin_amount;
+
+                        $video->admin_amount = $admin_amount;
+
+                        $video->user_amount = $moderator_amount;
+
+                        $video->save();
+
+                        // Commission Spilit Completed
+
+                        if($moderator = Moderator::find($video->uploaded_by)) {
+
+                            $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
+
+                            $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
+
+                            $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
+
+                            $moderator->total = $moderator->total + $total;
+
+                            $moderator->save();
+
+                            // add_to_redeem($user->id, $user_amount);
+
+                            $video_amount = $moderator_amount;
+
+                        }
+                        
+                    }
+
+                    add_to_redeem($video->uploaded_by , $video_amount);
+
+                    \Log::info("ADD History - add_to_redeem");
+
+                } else {
+
+                    \Log::info("ADD History - NO REDEEM");
+
+                    $video->watch_count = $video->watch_count + 1;
+
+                }
+
+                $video->save();
+
+            }
+
+            $viewerModel = User::find($request->id);
+         
+
+            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
+                        'data'=>['id'=>$request->id,
+                                 'token'=>$viewerModel ? $viewerModel->token : '']];
+
+        }
+
+        return response()->json($response_array, 200);
+
+    }
 
     /** 
      *
