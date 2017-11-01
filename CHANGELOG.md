@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+2016-11-02 - smtp confiure error page redirection fixed 
+
+### Fixed
+
 - Twitter login issue fixed.
 
 ### Changed 

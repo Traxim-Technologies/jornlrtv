@@ -192,13 +192,31 @@
             \Log::info(envfile('MAIL_PASSWORD'));
 
             if( config('mail.username') &&  config('mail.password')) {
+
                 try {
 
                     $site_url=url('/');
-                    Mail::send($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
 
-                            $message->to($email)->subject($subject);
+                    $mail_status = Mail::send($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
+
+                        $message->to($email)->subject($subject);
+                        
                     });
+
+                    //If error from Mail::send
+
+                    // if($mail_status->failures() > 0) {
+
+                    //     //Fail for which email address...
+
+                    //     foreach(Mail::failures as $address) {
+                           
+                    //         print $address . ', ';
+
+                    //     }
+
+                    //     exit;
+                    // }  
                 } catch(Exception $e) {
                     \Log::info($e);
                     return Helper::get_error_message(123);
