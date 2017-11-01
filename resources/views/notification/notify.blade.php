@@ -11,30 +11,39 @@
         <div class="alert alert-danger" >
             <button type="button" class="close" data-dismiss="alert">×</button>
             <ul>
-@foreach(Session::get('flash_errors') as $errors)
-    @if(is_array($errors))
-    @foreach($errors as $error)
-                            <li> {{$error}} </li>
-@endforeach
-                    @else
-                        <li> {{$errors}} </li>
-@endif
-                @endforeach
+            @foreach(Session::get('flash_errors') as $errors)
+                @if(is_array($errors))
+                    @foreach($errors as $error)
+                        <li> {{$error}} </li>
+                    @endforeach
+                @else
+                    <li> {{$errors}} </li>
+                @endif
+            @endforeach
             </ul>
         </div>
-@else
+    @else
         <div class="alert alert-danger" >
             <button type="button" class="close" data-dismiss="alert">×</button>
             {{Session::get('flash_errors')}}
         </div>
-@endif
+    @endif
 @endif
 
 @if(Session::has('flash_error'))
-    <div class="alert alert-danger" 
+    <div class="alert alert-danger"> 
         <button type="button" class="close" data-dismiss="alert">×</button>
         {{Session::get('flash_error')}}
     </div>
+@endif
+
+@if(Session::has('flash_error_mail'))
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        {{Session::get('flash_error_mail')}}
+    </div>
+
+    <?php \Session::forget('flash_error_mail'); ?>
 @endif
 
 
