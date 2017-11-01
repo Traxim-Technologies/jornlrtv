@@ -495,7 +495,7 @@ class VideoTapeRepository {
             if($user_id) {
 
 
-                $data['flaggedVideo'] = Flag::where('video_tape_id',$video_tape_id)->where('user_id', $user_id)->first() : '';
+                $data['flaggedVideo'] = Flag::where('video_tape_id',$video_tape_id)->where('user_id', $user_id)->first();
 
                 $data['wishlist_status'] = Helper::check_wishlist_status($user_id,$video_tape_id) ? 1 : 0;
 
@@ -514,7 +514,7 @@ class VideoTapeRepository {
 
                 if($user_details = User::find($user_id)) {
 
-                    $data['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details)
+                    $data['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
                     
                     $data['user_type'] = $user_details->user_type;
 
