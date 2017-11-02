@@ -110,14 +110,14 @@ class SocialAuthController extends Controller
 
 		$user->save();
 
-
 		if($user) {
-
 
         	$user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
 
 	    	auth()->login($user);
 		}
+
+		$user->save();
 
 
 	    return redirect()->route('user.dashboard');

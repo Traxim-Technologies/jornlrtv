@@ -6,11 +6,17 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+
 2016-11-02 - smtp confiure error page redirection fixed 
 
 ### Fixed
 
 - Twitter login issue fixed.
+
+### Fixed
+
+- Commission Spilit Issue fixed.
+>>>>>>> dfcbf4cfde8c6eca09a116fe138f258fcae2eac2
 
 ### Changed 
 

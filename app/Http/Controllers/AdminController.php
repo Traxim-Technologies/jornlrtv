@@ -1141,6 +1141,21 @@ class AdminController extends Controller {
 
                     $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
 
+                }  else if($setting->key == "admin_commission") {
+
+                    $setting->value = $request->admin_commission < 100 ? $request->admin_commission : 100;
+
+                    $user_commission = $request->admin_commission < 100 ? 100 - $request->admin_commission : 0;
+
+                    $user_commission_details = Settings::where('key' , 'user_commission')->first();
+
+                    if(count($user_commission_details) > 0) {
+                        $user_commission_details->value = $user_commission;
+
+                        $user_commission_details->save();
+                    }
+
+
                 } else if($request->$key!='') {
 
                     $setting->value = $request->$key;
