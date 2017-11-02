@@ -259,7 +259,7 @@ class VideoTapeRepository {
                             ->where('video_tapes.status' , 1)
                             ->where('wishlists.status' , 1)
                             ->select(
-                                    'wishlists.id as wishlist_id','video_tapes.id as admin_video_id' ,
+                                    'wishlists.id as wishlist_id','video_tapes.id as video_tape_id' ,
                                     'video_tapes.title','video_tapes.description' ,
                                     'default_image','video_tapes.watch_count','video_tapes.ratings',
                                     'video_tapes.duration','video_tapes.channel_id',
@@ -302,7 +302,7 @@ class VideoTapeRepository {
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
-                            ->select('user_histories.id as history_id','video_tapes.id as admin_video_id' ,
+                            ->select('user_histories.id as history_id','video_tapes.id as video_tape_id' ,
                                 'video_tapes.title','video_tapes.description' , 'video_tapes.duration',
                                 'default_image','video_tapes.watch_count','video_tapes.ratings',
                                 DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 'video_tapes.channel_id','channels.name as channel_name', 'user_histories.created_at')

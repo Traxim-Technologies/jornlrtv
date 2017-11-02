@@ -599,7 +599,7 @@ function loadChannels() {
     }
 
     $model = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 ->where('channels.status', DEFAULT_TRUE)

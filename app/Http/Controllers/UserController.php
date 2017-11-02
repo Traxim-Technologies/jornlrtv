@@ -221,7 +221,7 @@ class UserController extends Controller {
     public function single_video(Request $request) {
 
         $request->request->add([ 
-                'admin_video_id' => $request->id,
+                'video_tape_id' => $request->id,
         ]);
 
         if (Auth::check()) {
@@ -500,7 +500,7 @@ class UserController extends Controller {
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token,
-            'video_tape_id' => $request->admin_video_id
+            'video_tape_id' => $request->video_tape_id
         ]);
 
         if($request->status == 1) {
@@ -562,7 +562,7 @@ class UserController extends Controller {
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token,
-            'video_tape_id'=>$request->admin_video_id
+            'video_tape_id'=>$request->video_tape_id
         ]);
 
         $response = $this->UserAPI->user_rating($request)->getData();
@@ -592,7 +592,7 @@ class UserController extends Controller {
     public function channel_videos($id) {
 
         $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                /*->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                /*->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 ->where('channels.status', DEFAULT_TRUE)

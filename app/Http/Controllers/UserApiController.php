@@ -1658,7 +1658,7 @@ class UserApiController extends Controller {
     public function getSingleVideo(Request $request) {
 
 
-        $video = VideoTape::where('video_tapes.id' , $request->admin_video_id)
+        $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
                     ->first();
@@ -1692,7 +1692,7 @@ class UserApiController extends Controller {
 
         if($video) {
 
-            if($comments = Helper::video_ratings($request->admin_video_id,0)) {
+            if($comments = Helper::video_ratings($request->video_tape_id,0)) {
                 $comments = $comments->toArray();
             }
 
@@ -1704,7 +1704,7 @@ class UserApiController extends Controller {
 
             $channels = [];
 
-            $suggestions = VideoRepo::suggestion_videos($request,'', '', $request->admin_video_id);
+            $suggestions = VideoRepo::suggestion_videos($request,'', '', $request->video_tape_id);
 
             $wishlist_status = $history_status = WISHLIST_EMPTY;
 
@@ -1712,7 +1712,7 @@ class UserApiController extends Controller {
 
              // Load the user flag
 
-            $flaggedVideo = ($request->id) ? Flag::where('video_tape_id',$request->admin_video_id)->where('user_id', $request->id)->first() : '';
+            $flaggedVideo = ($request->id) ? Flag::where('video_tape_id',$request->video_tape_id)->where('user_id', $request->id)->first() : '';
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
 
@@ -1788,13 +1788,13 @@ class UserApiController extends Controller {
 
             if($request->id) {
 
-                $wishlist_status = $request->id ? Helper::check_wishlist_status($request->id,$request->admin_video_id): 0;
+                $wishlist_status = $request->id ? Helper::check_wishlist_status($request->id,$request->video_tape_id): 0;
 
-                $history_status = Helper::history_status($request->id,$request->admin_video_id);
+                $history_status = Helper::history_status($request->id,$request->video_tape_id);
 
                 $subscribe_status = check_channel_status($request->id, $video->channel_id);
 
-                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->admin_video_id)->first();
+                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->video_tape_id)->first();
 
                 if ($mycomment) {
 
@@ -1803,13 +1803,13 @@ class UserApiController extends Controller {
 
             }
 
-            $share_link = route('user.single' , $request->admin_video_id);
+            $share_link = route('user.single' , $request->video_tape_id);
 
-            $like_count = LikeDislikeVideo::where('video_tape_id', $request->admin_video_id)
+            $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
                 ->where('like_status', DEFAULT_TRUE)
                 ->count();
 
-            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->admin_video_id)
+            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
                 ->where('dislike_status', DEFAULT_TRUE)
                 ->count();
 
@@ -2002,7 +2002,7 @@ class UserApiController extends Controller {
         $channel_id = [];
 
         $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 ->where('channels.status', DEFAULT_TRUE)
@@ -2625,7 +2625,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'admin_video_id'=>'required|exists:admin_videos,id',
+                'video_tape_id'=>'required|exists:admin_videos,id',
                 'payment_id'=>'required',
 
             ));
@@ -2638,11 +2638,11 @@ class UserApiController extends Controller {
 
         } else {
 
-            $video = AdminVideo::find($request->admin_video_id);
+            $video = AdminVideo::find($request->video_tape_id);
 
             $user_payment = new PayPerView;
             /*
-            $check_live_video_payment = Payperview::where('user_id' , $request->id)->where('video_id' , $request->admin_video_id)->first();
+            $check_live_video_payment = Payperview::where('user_id' , $request->id)->where('video_id' , $request->video_tape_id)->first();
 
             if($check_live_video_payment) {
                 $user_payment = $check_live_video_payment;
@@ -2651,7 +2651,7 @@ class UserApiController extends Controller {
             // $user_payment->expiry_date = date('Y-m-d H:i:s');
             $user_payment->payment_id  = $request->payment_id;
             $user_payment->user_id = $request->id;
-            $user_payment->video_id = $request->admin_video_id;
+            $user_payment->video_id = $request->video_tape_id;
 
             $user_payment->status = DEFAULT_FALSE;
 

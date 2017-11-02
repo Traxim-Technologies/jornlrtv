@@ -57,7 +57,7 @@
 							      	@if(Setting::get('theme') == 'default')
 							      	<td>
 							      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
-							      			<a href="{{route('admin.slider.video' , $video->admin_video_id)}}"><span class="label label-danger">{{tr('set_slider')}}</span></a>
+							      			<a href="{{route('admin.slider.video' , $video->video_tape_id)}}"><span class="label label-danger">{{tr('set_slider')}}</span></a>
 							      		@elseif($video->is_home_slider)
 							      			<span class="label label-success">{{tr('slider')}}</span>
 							      		@else
@@ -77,7 +77,7 @@
 							      		@if(Setting::get('admin_delete_control') == 1) 
 							      			<button class="btn btn-primary btn-xs" disabled>{{tr('remove_banner')}}</button>
 							      		@else
-							      			<a class="btn btn-primary btn-xs" href="{{route('admin.change.video' ,$video->admin_video_id )}}">{{tr('remove_banner')}}</a>
+							      			<a class="btn btn-primary btn-xs" href="{{route('admin.change.video' ,$video->video_tape_id )}}">{{tr('remove_banner')}}</a>
 							      		@endif
 							      	</td>
 								    <td>
@@ -92,18 +92,18 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->admin_video_id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->admin_video_id))}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 								                  	
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@if($video->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video->admin_video_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
 								                	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->admin_video_id)}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
 								                  	<li class="divider" role="presentation"></li>
@@ -112,7 +112,7 @@
 									                  	@if(Setting::get('admin_delete_control'))
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 									                  	 @else
-									                  		<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->admin_video_id))}}">{{tr('delete')}}</a>
+									                  		<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
 									                  	@endif
 								                  	</li>
 								                </ul>

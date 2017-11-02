@@ -4,7 +4,7 @@
     <li class="sub-list row">
         <div class="main-history">
              <div class="history-image">
-                <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a> 
+                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a> 
                 <div class="video_duration">
                     {{$video->duration}}
                 </div>                          
@@ -13,7 +13,7 @@
             <div class="history-title">
                 <div class="history-head row">
                     <div class="cross-title">
-                        <h5 class="payment_class"><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
+                        <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
                         <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 
                         <span class="video_views">
@@ -23,7 +23,7 @@
 
                     </div> 
                     <div class="cross-mark">
-                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->admin_video_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                     </div><!--end of cross-mark-->                       
                 </div> <!--end of history-head--> 
 

@@ -171,12 +171,12 @@ textarea[name=comments] {
                                                         {{$video->watch_count}} {{tr('views')}}
                                                     </div>
                                                     <div class="pull-right">
-                                                       <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} ) */?>
+                                                       <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
 
                                                             @if (Auth::check())
-                                                            <a class="thumb-class" onclick="likeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-up fa"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+                                                            <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up fa"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                            <a class="thumb-class" onclick="dislikeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+                                                            <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
 
                                                             @else 
                                                             
@@ -203,7 +203,7 @@ textarea[name=comments] {
                                                             <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
                                                                 @if(Auth::check())
 
-                                                                    <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
+                                                                    <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
 
                                                                     @if(count($wishlist_status) == 1 && $wishlist_status)
 
@@ -255,13 +255,13 @@ textarea[name=comments] {
                                                         </div>
 
                                                         <div class="share">
-                                                            <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->admin_video_id)}}">
+                                                            <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->video_tape_id)}}">
                                                                 
                                                                 <i class="fa fa-facebook"></i><!-- {{tr('share_on_fb')}} -->
                                                                 
                                                             </a>
 
-                                                            <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->admin_video_id)}}">
+                                                            <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->video_tape_id)}}">
                                                                
                                                                 <i class="fa fa-twitter"></i><!-- {{tr('share_on_twitter')}} -->
                                                                 
@@ -326,12 +326,12 @@ textarea[name=comments] {
                                                         
 
                                                              <!-- <div>
-                                                                <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} ) */?>
+                                                                <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
 
                                                                 @if (Auth::check())
-                                                                <a class="thumb-class" onclick="likeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+                                                                <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                                <a class="thumb-class" onclick="dislikeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+                                                                <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
 
                                                                 @else 
 
@@ -409,7 +409,7 @@ textarea[name=comments] {
                                                                         <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
                                                                     </div>
                                                                 @endforeach
-                                                                <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
+                                                                <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
                                                                 <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
                                                                 <div class="pull-right">
                                                                     <button class="btn btn-success btn-sm">{{tr('submit')}}</button>
@@ -521,7 +521,7 @@ textarea[name=comments] {
                                                         <div>
                                                             <form method="post" id="comment_sent" name="comment_sent" action="{{route('user.add.comment')}}">
 
-                                                                <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
+                                                                <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
 
                                                                 @if($comment_rating_status)
                                                                  <input id="rating_system" name="rating" type="number" class="rating comment_rating" min="1" max="5" step="1">
@@ -603,7 +603,7 @@ textarea[name=comments] {
                                             <div class="main-video">
                                                  <div class="video-image">
                                                     <div class="video-image-outer">
-                                                        <a href="{{route('user.single' , $suggestion->admin_video_id)}}"><img src="{{$suggestion->default_image}}"></a>
+                                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->default_image}}"></a>
                                                     </div>  
                                                     <div class="video_duration">
                                                         {{$suggestion->duration}}
@@ -612,7 +612,7 @@ textarea[name=comments] {
 
                                                 <div class="sugg-head">
                                                     <div class="suggn-title">                                          
-                                                        <h5><a href="{{route('user.single' , $suggestion->admin_video_id)}}">{{$suggestion->title}}</a></h5>
+                                                        <h5><a href="{{route('user.single' , $suggestion->video_tape_id)}}">{{$suggestion->title}}</a></h5>
                                                     </div><!--end of sugg-title-->
 
                                                     <span class="video_views">
@@ -1086,7 +1086,7 @@ textarea[name=comments] {
                                                jQuery.ajax({
                                                     url: "{{route('user.add.history')}}",
                                                     type: 'post',
-                                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                                    data: {'video_tape_id' : "{{$video->video_tape_id}}"},
                                                     success: function(data) {
 
                                                        if(data.success == true) {
@@ -1358,7 +1358,7 @@ textarea[name=comments] {
                         jQuery.ajax({
                             url: "{{route('user.add.watch_count')}}",
                             type: 'post',
-                            data: {'video_tape_id' : "{{$video->admin_video_id}}"},
+                            data: {'video_tape_id' : "{{$video->video_tape_id}}"},
                             success: function(data) {
 
                                if(data.success == true) {
