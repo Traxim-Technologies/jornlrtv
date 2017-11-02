@@ -28,8 +28,6 @@ use Setting;
 
 use App\Flag;
 
-use App\Subscription;
-
 use App\UserPayment;
 
 use App\User;
@@ -59,7 +57,6 @@ use App\Channel;
 use App\LikeDislikeVideo;
 
 use App\Card;
-
 
 use App\LiveVideoPayment;
 
