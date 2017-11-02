@@ -2010,9 +2010,11 @@ class UserApiController extends Controller {
                 ->where('video_tapes.status', DEFAULT_TRUE)
                 ->groupBy('video_tapes.channel_id');
 
-        if(Auth::check()) {
+        if($request->id) {
 
-            $age = \Auth::user()->age_limit;
+            $user = User::find($request->id);
+
+            $age = $user->age_limit;
 
             $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
@@ -2045,7 +2047,7 @@ class UserApiController extends Controller {
                     'description'=>$value->description, 
                     'created_at'=>$value->created_at->diffForHumans(),
                     'no_of_videos'=>videos_count($value->id),
-                    'subscribe_status'=>Auth::check() ? check_channel_status(Auth::user()->id, $value->id) : '',
+                    'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
                     'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
             ];
 
