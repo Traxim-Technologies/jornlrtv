@@ -222,7 +222,7 @@
 				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 				                                        </span> */?>
 				                                         <span class="video_views">
-					                                        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
+					                                        <i class="fa fa-eye"></i> {{number_format_short($trending_videos[0]->watch_count)}} {{tr('views')}} <b>.</b> 
 					                                        {{$trending_videos[0]->created_at->diffForHumans()}}
 					                                    </span>
 													</div>
@@ -265,7 +265,7 @@
 					                                           <a href="#"><i @if($trending_video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 					                                        </span> */?>
 					                                        <span class="video_views">
-						                                        <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
+						                                        <i class="fa fa-eye"></i> {{number_format_short($trending_video->watch_count)}} {{tr('views')}} <b>.</b> 
 						                                        {{$trending_video->created_at->diffForHumans()}}
 						                                    </span>
 														</div>
@@ -329,7 +329,7 @@
 					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
 							                                        {{$video->created_at->diffForHumans()}}
 							                                    </span>
 					                                        </div> 
@@ -444,7 +444,7 @@
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
 							                                        {{$video->created_at->diffForHumans()}}
 							                                    </span> 
 

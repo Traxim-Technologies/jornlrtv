@@ -99,7 +99,7 @@ hr {
                                 </li>
 
                                 <li class="list-group-item">
-                                    <b><i class="fa fa-eye margin-r-5"></i>{{tr('views')}}</b> <a class="pull-right">{{$video->watch_count}}</a>
+                                    <b><i class="fa fa-eye margin-r-5"></i>{{tr('views')}}</b> <a class="pull-right">{{number_format_short($video->watch_count)}}</a>
                                 </li>
 
                                 <li class="list-group-item">

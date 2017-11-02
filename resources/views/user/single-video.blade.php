@@ -168,7 +168,7 @@ textarea[name=comments] {
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12">
                                                     <h3>{{$video->title}}</h3>
                                                     <div class="views pull-left">
-                                                        {{$video->watch_count}} {{tr('views')}}
+                                                        {{number_format_short($video->watch_count)}} {{tr('views')}}
                                                     </div>
                                                     <div class="pull-right">
                                                        <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
@@ -616,7 +616,7 @@ textarea[name=comments] {
                                                     </div><!--end of sugg-title-->
 
                                                     <span class="video_views">
-                                                        <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <?php /*<b>.</b> 
+                                                        <i class="fa fa-eye"></i> {{number_format_short($suggestion->watch_count)}} {{tr('views')}} <?php /*<b>.</b> 
                                                         {{$suggestion->created_at->diffForHumans()}} */?>
                                                     </span> 
                                                     <br>
