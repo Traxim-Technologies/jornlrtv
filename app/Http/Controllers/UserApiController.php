@@ -2661,8 +2661,8 @@ class UserApiController extends Controller {
 
             if($user_payment) {
 
-                 // Commission Spilit 
-               /* if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
+               /*  // Commission Spilit 
+                if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
 
                     $video_amount = Setting::get('amount_per_video');
 

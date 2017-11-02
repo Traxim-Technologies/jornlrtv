@@ -404,7 +404,11 @@ class UserController extends Controller {
 
     public function watch_count(Request $request) {
 
-        if($video = VideoTape::where('id',$request->video_tape_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
+        if($video = VideoTape::where('id',$request->video_tape_id)
+                ->where('status',1)
+                ->where('publish_status' , 1)
+                ->where('video_tapes.is_approved' , 1)
+                ->first()) {
 
             \Log::info("ADD History - Watch Count Start");
 
@@ -430,47 +434,6 @@ class UserController extends Controller {
 
                         $video->amount += $video_amount;
 
-
-                        if($video->amount > 0) { 
-
-                            $total = $video_amount;
-
-                            // Commission Spilit 
-
-                            $admin_commission = Setting::get('admin_commission')/100;
-
-                            $admin_amount = $total * $admin_commission;
-
-                            $moderator_amount = $total - $admin_amount;
-
-                            $video->admin_amount = $admin_amount;
-
-                            $video->user_amount = $moderator_amount;
-
-                            $video->save();
-
-                            // Commission Spilit Completed
-
-                            if($moderator = Moderator::find($video->uploaded_by)) {
-
-                                $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                                $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                                $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                                $moderator->total = $moderator->total + $total;
-
-                                $moderator->save();
-
-                                // add_to_redeem($user->id, $user_amount);
-
-                                $video_amount = $moderator_amount;
-
-                            }
-                            
-                        }
-
                         add_to_redeem($video->user_id , $video_amount);
 
                         \Log::info("ADD History - add_to_redeem");
@@ -494,11 +457,12 @@ class UserController extends Controller {
 
             \Log::info("ADD History - Watch Count Start");
 
-            return response()->json(true);
+            return response()->json(['success'=>true, 
+                    'data'=>['watch_count'=>number_format_short($video->watch_count)]]);
 
         } else {
 
-            return response()->json(false);
+            return response()->json(['success'=>false]);
         }
 
     }
