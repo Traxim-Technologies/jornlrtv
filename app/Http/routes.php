@@ -837,6 +837,17 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/my_channels', 'UserApiController@my_channels');
 
 
+    Route::post('subscribe_channel', 'UserApiController@subscribe_channel');
 
+    Route::post('unsubscribe_channel', 'UserApiController@unsubscribe_channel');
 
+    Route::post('subscribed_channels', 'UserApiController@channel_list');
+
+    Route::post('/add_spam', 'UserApiController@add_spam');
+
+    Route::get('/spam-reasons', 'UserApiController@reasons');
+
+    Route::post('remove_spam', 'UserApiController@remove_spam');
+
+    Route::post('spam_videos', 'UserApiController@spam_videos_list');
 });

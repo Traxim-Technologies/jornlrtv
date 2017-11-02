@@ -58,7 +58,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons']));
 
     }
 
@@ -1794,7 +1794,7 @@ class UserApiController extends Controller {
 
                 $subscribe_status = check_channel_status($request->id, $video->channel_id);
 
-                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->video_tape_id)->first();
+                $mycomment = UserRating::where('user_id', $request->id)->where('rating', '>', 0)->where('video_tape_id', $request->video_tape_id)->first();
 
                 if ($mycomment) {
 
@@ -2010,24 +2010,23 @@ class UserApiController extends Controller {
                 ->where('video_tapes.status', DEFAULT_TRUE)
                 ->groupBy('video_tapes.channel_id');
 
-        if(Auth::check()) {
+        if($request->id) {
 
-            $age = \Auth::user()->age_limit;
+            $user = User::find($request->id);
+
+            $age = $user->age_limit;
 
             $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
-            if ($request->user_id) {
+            if ($request->id) {
 
-                $channel_id = ChannelSubscription::where('user_id', $request->user_id)->pluck('channel_id')->toArray();
+                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+                $query->whereIn('channels.id', $channel_id);
             }
 
+
             $query->where('video_tapes.age_limit','<=', $age);
-
-        }
-
-        if ($channel_id) {
-            
-            $query->whereIn('channels.id', $channel_id);
 
         }
 
@@ -2045,7 +2044,7 @@ class UserApiController extends Controller {
                     'description'=>$value->description, 
                     'created_at'=>$value->created_at->diffForHumans(),
                     'no_of_videos'=>videos_count($value->id),
-                    'subscribe_status'=>Auth::check() ? check_channel_status(Auth::user()->id, $value->id) : '',
+                    'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
                     'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
             ];
 
@@ -2769,4 +2768,271 @@ class UserApiController extends Controller {
         return response()->json($response_array , 200);
     
     }
+
+    public function subscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->id)->where('channel_id',$request->channel_id)->first();
+
+            if (!$model) {
+
+                $model = new ChannelSubscription;
+
+                $model->user_id = $request->id;
+
+                $model->channel_id = $request->channel_id;
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->save();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_subscribed')];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('already_channel_subscribed')];
+
+            }
+        }
+
+        return response()->json($response_array);
+   
+    }
+
+    public function unsubscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->id)->where('channel_id',$request->channel_id)->first();
+
+            if ($model) {
+
+                $model->delete();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_unsubscribed')];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('not_found')];
+
+            }
+        }
+
+        return response()->json($response_array);
+
+    }
+
+
+    public function singleVideoResponse($request) {
+
+        $data = [];
+
+        $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
+                                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                    ->where('video_tapes.status' , 1)
+                                    ->where('video_tapes.publish_status' , 1)
+                                    ->where('video_tapes.is_approved' , 1)
+                                    ->videoResponse()
+                                    ->first();
+        if($video_tape_details) {
+
+            $data = $video_tape_details->toArray();
+
+            $data['wishlist_status'] = $data['history_status'] = $data['is_subscribed'] = $data['is_liked'] = $data['pay_per_view_status'] = $data['user_type'] = $data['flaggedVideo'] = 0;
+
+            $data['comment_rating_status'] = 1;
+
+            if($request->id) {
+
+                $data['wishlist_status'] = Helper::check_wishlist_status($request->id,$request->video_tape_id) ? 1 : 0;
+
+                $data['history_status'] = count(Helper::history_status($request->id,$request->video_tape_id)) > 0? 1 : 0;
+
+                $data['is_subscribed'] = check_channel_status($request->id, $video_tape_details->channel_id);
+
+                $data['is_liked'] = Helper::like_status($request->id,$request->video_tape_id);
+
+                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->video_tape_id)->first();
+
+                if ($mycomment) {
+
+                    $data['comment_rating_status'] = DEFAULT_FALSE;
+                }
+
+                if($user_details = User::find($request->id)) {
+
+                    $data['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
+                    
+                    $data['user_type'] = $user_details->user_type;
+
+                }
+
+            }
+
+            $data['subscriberscnt'] = subscriberscnt($video_tape_details->channel_id);
+
+            $data['share_url'] = route('user.single' , $request->video_tape_id);
+
+            $data['embed_link'] = route('embed_video', array('u_id'=>$video_tape_details->unique_id));
+
+            $video_url = $video_tape_details->video;
+
+            if($request->login_by == DEVICE_ANDROID) {
+
+                $video_url = Setting::get('streaming_url') ? Setting::get('streaming_url').get_video_end($data['video']) : $video_url;
+
+            }
+
+            if($request->login_by == DEVICE_IOS) {
+
+                $video_url = Setting::get('HLS_STREAMING_URL') ? Setting::get('HLS_STREAMING_URL').get_video_end($data['video']) : $video_url;
+
+            }
+
+            $data['video'] = $video_url;
+
+
+        }
+
+        // Comments Section
+
+        $comments = [];
+
+        if($comments = Helper::video_ratings($request->video_tape_id,0)) {
+
+            $comments = $comments->toArray();
+
+        }
+
+        $data['comments'] = $comments;
+
+        // $data['suggestions'] = VideoRepo::suggestions($request);
+        
+        return $data;
+    }
+
+    public function spam_videos_list(Request $request) {
+
+        // Load Flag videos based on logged in user id
+        $model = Flag::where('flags.user_id', $request->id)
+            ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
+            ->where('video_tapes.is_approved' , 1)
+            ->where('video_tapes.status' , 1)
+            ->get();
+
+        $flag_video = [];
+
+        foreach ($model as $key => $value) {
+
+            $request->request->add(['video_tape_id'=>$value->video_tape_id, 'login_by'=>DEVICE_ANDROID]);
+            
+            $flag_video[] = $this->singleVideoResponse($request);
+
+        }
+
+        $response_array = ['success'=>true, 'data'=>$flag_video];
+        
+
+        return response()->json($response_array);
+
+    }
+
+    public function add_spam(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+            'reason' => 'required',
+        ]);
+        // If validator Fails, redirect same with error values
+        if ($validator->fails()) {
+             //throw new Exception("error", tr('admin_published_video_failure'));
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json(['success'=>false , 'message'=>$error_messages]);
+        }
+        // Assign Post request values into Data variable
+        $data = $request->all();
+
+        // include user_id index into the data varaible  "Auth::user()->id" -> Logged In user id
+        $data['user_id'] = $request->id;
+        $data['video_id'] =$request->video_tape_id;
+
+        $data['status'] = DEFAULT_TRUE;
+
+        // Save the values in DB
+        if (Flag::create($data)) {
+            return response()->json(['success'=>true, 'message'=>tr('report_video_success_msg')]);
+        } else {
+            //throw new Exception("error", tr('admin_published_video_failure'));
+            return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+        }
+    }
+
+    public function reasons() {
+
+        $reasons = getReportVideoTypes();
+
+        return response()->json(['success'=>true, 'data'=>$reasons]);
+    }
+
+
+    public function remove_spam(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+        ]);
+        // If validator Fails, redirect same with error values
+        if ($validator->fails()) {
+             //throw new Exception("error", tr('admin_published_video_failure'));
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json(['success'=>false , 'message'=>$error_messages]);
+        }
+        // Load Spam Video from flag section
+        $model = Flag::where('user_id', $request->id)
+            ->where('video_tape_id', $request->video_tape_id)
+            ->first();
+
+        if ($model) {
+
+            $model->delete();
+
+            return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
+        } else {
+            // throw new Exception("error", tr('admin_published_video_failure'));
+            return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+        }
+    }
+
+
+
 }
