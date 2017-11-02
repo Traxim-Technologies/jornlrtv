@@ -51,9 +51,9 @@
                     @endforeach  
 
 
-                    @if(Auth::user()->user_type)  
+                    @if(Auth::user()->user_type || Auth::user()->is_master_user == 1)  
 
-                        @if(count($channels) == 0 || Setting::get('multi_channel_status'))  
+                        @if(count($channels) == 0 || Setting::get('multi_channel_status') || Auth::user()->is_master_user == 1)  
 
                         <li>
                             <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
