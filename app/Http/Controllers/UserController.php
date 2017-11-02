@@ -1735,7 +1735,7 @@ class UserController extends Controller {
     public function subscribed_channels(Request $request) {
 
         $request->request->add([ 
-            'user_id' => \Auth::user()->id,
+            'id' => \Auth::user()->id,
         ]);        
 
         $response = $this->UserAPI->channel_list($request)->getData();

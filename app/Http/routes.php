@@ -740,6 +740,36 @@ Route::group(['as' => 'user.'], function(){
 
 Route::group(['prefix' => 'userApi'], function(){
 
+        // Live Urls
+    
+    Route::post('get_live_url', 'UserApiController@get_live_url');
+
+    Route::post('save_vod', 'UserApiController@save_vod');
+
+    Route::post('live_videos', 'UserApiController@live_videos');
+
+    Route::post('save_live_video', 'UserApiController@save_live_video');
+
+    Route::post('/live_video', 'UserApiController@live_video');
+
+    Route::post('save_chat', 'UserApiController@save_chat');
+
+    Route::post('video_subscription', 'UserApiController@video_subscription');
+
+    Route::post('get_viewers', 'UserApiController@get_viewers');
+
+    Route::post('peerProfile', 'UserApiController@peerProfile');
+
+    Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
+
+    Route::post('close_streaming', 'UserApiController@close_streaming');
+
+    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+
+    Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
+
+    
+
     Route::post('/watch_count', 'UserController@watch_count');
 
     Route::post('/register','UserApiController@register');
@@ -837,33 +867,20 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/my_channels', 'UserApiController@my_channels');
 
 
-    // Live Urls
-    
-    Route::post('get_live_url', 'UserApiController@get_live_url');
+    Route::post('subscribe_channel', 'UserApiController@subscribe_channel');
 
-    Route::post('save_vod', 'UserApiController@save_vod');
+    Route::post('unsubscribe_channel', 'UserApiController@unsubscribe_channel');
 
-    Route::post('live_videos', 'UserApiController@live_videos');
+    Route::post('subscribed_channels', 'UserApiController@channel_list');
 
-    Route::post('save_live_video', 'UserApiController@save_live_video');
+    Route::post('/add_spam', 'UserApiController@add_spam');
 
-    Route::post('/live_video', 'UserApiController@live_video');
+    Route::get('/spam-reasons', 'UserApiController@reasons');
 
-    Route::post('save_chat', 'UserApiController@save_chat');
+    Route::post('remove_spam', 'UserApiController@remove_spam');
 
-    Route::post('video_subscription', 'UserApiController@video_subscription');
+    Route::post('spam_videos', 'UserApiController@spam_videos_list');
 
-    Route::post('get_viewers', 'UserApiController@get_viewers');
-
-    Route::post('peerProfile', 'UserApiController@peerProfile');
-
-    Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
-
-    Route::post('close_streaming', 'UserApiController@close_streaming');
-
-    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
-
-    Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
 
 
 });
