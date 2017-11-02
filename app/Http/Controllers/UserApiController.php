@@ -2769,4 +2769,80 @@ class UserApiController extends Controller {
         return response()->json($response_array , 200);
     
     }
+
+    public function subscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->id)->where('channel_id',$request->channel_id)->first();
+
+            if (!$model) {
+
+                $model = new ChannelSubscription;
+
+                $model->user_id = $request->id;
+
+                $model->channel_id = $request->channel_id;
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->save();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_subscribed')];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('already_channel_subscribed')];
+
+            }
+        }
+
+        return response()->json($response_array);
+   
+    }
+
+    public function unsubscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->id)->where('channel_id',$request->channel_id)->first();
+
+            if ($model) {
+
+                $model->delete();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_unsubscribed')];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('not_found')];
+
+            }
+        }
+
+        return response()->json($response_array);
+
+    }
 }
