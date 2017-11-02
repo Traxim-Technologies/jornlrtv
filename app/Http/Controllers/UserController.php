@@ -406,7 +406,7 @@ class UserController extends Controller {
 
         if($video = VideoTape::where('id',$request->video_tape_id)
                 ->where('status',1)
-                ->where('publish_status' , 1)
+               // ->where('publish_status' , 1)
                 ->where('video_tapes.is_approved' , 1)
                 ->first()) {
 
@@ -430,7 +430,7 @@ class UserController extends Controller {
 
                         // $video->redeem_count = 1;
 
-                        $video->watch_count = $video->watch_count + 1;
+                        // $video->watch_count = $video->watch_count + 1;
 
                         $video->amount += $video_amount;
 
@@ -445,13 +445,13 @@ class UserController extends Controller {
 
                         // $video->redeem_count += 1;
 
-                        $video->watch_count = $video->watch_count + 1;
+                        // $video->watch_count = $video->watch_count + 1;
                     }
 
                 }
             }
 
-            // $video->watch_count += 1;
+            $video->watch_count += 1;
 
             $video->save();
 
