@@ -58,7 +58,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons']));
 
     }
 
@@ -1794,7 +1794,7 @@ class UserApiController extends Controller {
 
                 $subscribe_status = check_channel_status($request->id, $video->channel_id);
 
-                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->video_tape_id)->first();
+                $mycomment = UserRating::where('user_id', $request->id)->where('rating', '>', 0)->where('video_tape_id', $request->video_tape_id)->first();
 
                 if ($mycomment) {
 
@@ -2010,24 +2010,23 @@ class UserApiController extends Controller {
                 ->where('video_tapes.status', DEFAULT_TRUE)
                 ->groupBy('video_tapes.channel_id');
 
-        if(Auth::check()) {
+        if($request->id) {
 
-            $age = \Auth::user()->age_limit;
+            $user = User::find($request->id);
+
+            $age = $user->age_limit;
 
             $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
-            if ($request->user_id) {
+            if ($request->id) {
 
-                $channel_id = ChannelSubscription::where('user_id', $request->user_id)->pluck('channel_id')->toArray();
+                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+                $query->whereIn('channels.id', $channel_id);
             }
 
+
             $query->where('video_tapes.age_limit','<=', $age);
-
-        }
-
-        if ($channel_id) {
-            
-            $query->whereIn('channels.id', $channel_id);
 
         }
 
@@ -2045,7 +2044,7 @@ class UserApiController extends Controller {
                     'description'=>$value->description, 
                     'created_at'=>$value->created_at->diffForHumans(),
                     'no_of_videos'=>videos_count($value->id),
-                    'subscribe_status'=>Auth::check() ? check_channel_status(Auth::user()->id, $value->id) : '',
+                    'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
                     'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
             ];
 
@@ -2211,12 +2210,241 @@ class UserApiController extends Controller {
 
     }
 
-    /** 
-     * card_details()
-     *
-     * Used to list of cards added by user 
-     *
-     */
+    public function default_card(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
+            )
+        );
+
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+            $response_array = array('success' => false, 'error_messages' => $error_messages, 'error_code' => 101);
+
+        } else {
+
+            $user = User::find($request->id);
+            
+            $old_default = Card::where('user_id' , $request->id)->where('is_default', DEFAULT_TRUE)->update(array('is_default' => DEFAULT_FALSE));
+
+            $card = Card::where('id' , $request->card_id)->update(array('is_default' => DEFAULT_TRUE));
+
+            if($card) {
+
+                if($user) {
+                    $user->card_id = $request->card_id;
+                    $user->save();
+                }
+
+                $response_array = Helper::null_safe(array('success' => true, 'data'=>['id'=>$request->id,'token'=>$user->token]));
+
+            } else {
+                $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
+            }
+        }
+        return response()->json($response_array , 200);
+    
+    }
+
+    public function delete_card(Request $request) {
+    
+        $card_id = $request->card_id;
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
+            )
+        );
+
+        if ($validator->fails()) {
+            
+            $error_messages = implode(',', $validator->messages()->all());
+            
+            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error_code' => 101);
+        
+        } else {
+
+            $user = User::find($request->id);
+
+            if ($user->card_id == $card_id) {
+
+                $response_array = array('success' => false, 'error_messages'=> tr('card_default_error'));
+
+            } else {
+
+                Card::where('id',$card_id)->delete();
+
+                if($user) {
+
+                    // if($user->payment_mode = CARD) {
+
+                        // Check he added any other card
+                        
+                        if($check_card = Card::where('user_id' , $request->id)->first()) {
+
+                            $check_card->is_default =  DEFAULT_TRUE;
+
+                            $user->card_id = $check_card->id;
+
+                            $check_card->save();
+
+                        } else { 
+
+                            $user->payment_mode = COD;
+                            $user->card_id = DEFAULT_FALSE;
+                        }
+                    // }
+                    
+                    $user->save();
+                }
+
+                $response_array = array('success' => true, 'message'=>tr('card_deleted'), 'data'=> ['id'=>$request->id,'token'=>$user->token]);
+
+            }
+            
+        }
+    
+        return response()->json($response_array , 200);
+    }
+
+    public function subscription_plans(Request $request) {
+
+        $query = Subscription::select('id as subscription_id',
+                'title', 'description', 'plan','amount', 'status', 'created_at' , DB::raw("'$' as currency"))
+                ->where('status' , DEFAULT_TRUE);
+
+        if ($request->id) {
+
+            $user = User::find($request->id);
+
+            if ($user) {
+
+               if ($user->one_time_subscription == DEFAULT_TRUE) {
+
+                   $query->where('amount','>', 0);
+
+               }
+
+            } 
+
+        }
+
+        $model = $query->orderBy('amount' , 'asc')->get();
+
+        $response_array = ['success'=>true, 'data'=>$model];
+
+        return response()->json($response_array, 200);
+
+    }
+
+    public function pay_now(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'subscription_id'=>'required|exists:subscriptions,id',
+                'payment_id'=>'required',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $errors = implode(',',$validator->messages()->all());
+
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
+
+        } else {
+
+            $model = UserPayment::where('user_id' , $request->id)
+                        ->orderBy('id', 'desc')->first();
+
+            $subscription = Subscription::find($request->subscription_id);
+
+            $user_payment = new UserPayment();
+
+            if ($model) {
+                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+            } else {
+                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+            }
+
+            $user_payment->payment_id  = $request->payment_id;
+            $user_payment->user_id = $request->id;
+            $user_payment->amount = $subscription->amount;
+            $user_payment->subscription_id = $request->subscription_id;
+            $user_payment->save();
+
+            if($user_payment) {
+
+                $user_payment->user->user_type = DEFAULT_TRUE;
+
+                $user_payment->user->save();
+            }
+
+            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
+                    'data'=>[
+                        'id'=>$request->id,
+                        'token'=>$user_payment->user ? $user_payment->user->token : '',
+                        ]];
+
+        }
+
+        return response()->json($response_array, 200);
+
+    }
+
+    public function subscribedPlans(Request $request){
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'skip'=>'required|numeric',
+            ));
+
+        if ($validator->fails()) {
+
+            // Error messages added in response for debugging
+            
+            $errors = implode(',',$validator->messages()->all());
+
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
+
+        } else {
+
+            $model = UserPayment::where('user_id' , $request->id)
+                        ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_id')
+                        ->select('user_id as id',
+                                'subscription_id',
+                                'user_payments.id as user_subscription_id',
+                                'subscriptions.title as title',
+                                'subscriptions.description as description',
+                                'subscriptions.plan',
+                                'user_payments.amount as amount',
+                                // 'user_payments.expiry_date as expiry_date',
+                                \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
+                                'user_payments.created_at as created_at',
+                                DB::raw("'$' as currency"))
+                        ->orderBy('user_payments.updated_at', 'desc')
+                        ->skip($request->skip)
+                        ->take(Setting::get('admin_take_count' ,12))
+                        ->get();
+            $response_array = ['success'=>true, 'data'=>$model];
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
 
     public function card_details(Request $request) {
 
@@ -2234,7 +2462,6 @@ class UserApiController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    
     public function payment_card_add(Request $request) {
 
         $validator = Validator::make($request->all(), 
@@ -2347,555 +2574,27 @@ class UserApiController extends Controller {
 
         }
 
-    }
+    }    
 
-    /** 
-     * default_card()
-     *
-     * Used to list of cards added by user 
-     *
-     */
 
-    public function default_card(Request $request) {
+    public function my_channels(Request $request) {
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
-            )
-        );
+       $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->where('user_id', $request->id)->get();
 
-        if($validator->fails()) {
+        if($model) {
 
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false, 'error_messages' => $error_messages, 'error_code' => 101);
+            $response_array = array('success' => true , 'data' => $model);
 
         } else {
-
-            $user = User::find($request->id);
-            
-            $old_default = Card::where('user_id' , $request->id)->where('is_default', DEFAULT_TRUE)->update(array('is_default' => DEFAULT_FALSE));
-
-            $card = Card::where('id' , $request->card_id)->update(array('is_default' => DEFAULT_TRUE));
-
-            if($card) {
-                if($user) {
-                    // $user->payment_mode = CARD;
-                    $user->card_id = $request->card_id;
-                    $user->save();
-                }
-                $response_array = Helper::null_safe(array('success' => true));
-            } else {
-                $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
-            }
+            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
         }
-        return response()->json($response_array , 200);
-    
-    }
 
-    /** 
-     * delete_card()
-     *
-     * Used to list of cards added by user 
-     *
-     */
-
-    public function delete_card(Request $request) {
-    
-        $card_id = $request->card_id;
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t belong to user:'.$request->id
-            )
-        );
-
-        if ($validator->fails()) {
-            
-            $error_messages = implode(',', $validator->messages()->all());
-            
-            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error_code' => 101);
+        $response = response()->json($response_array, 200);
         
-        } else {
-
-            $user = User::find($request->id);
-
-            if ($user->card_id == $card_id) {
-
-                $response_array = array('success' => false, 'error_messages'=> tr('card_default_error'));
-
-            } else {
-
-                Card::where('id',$card_id)->delete();
-
-                if($user) {
-
-                    // if($user->payment_mode = CARD) {
-
-                        // Check he added any other card
-                        
-                        if($check_card = Card::where('user_id' , $request->id)->first()) {
-
-                            $check_card->is_default =  DEFAULT_TRUE;
-
-                            $user->card_id = $check_card->id;
-
-                            $check_card->save();
-
-                        } else { 
-
-                            $user->payment_mode = COD;
-                            $user->card_id = DEFAULT_FALSE;
-                        }
-                    // }
-                    
-                    $user->save();
-                }
-
-                $response_array = array('success' => true, 'message'=>tr('card_deleted'));
-
-            }
-
-        }
-    
-        return response()->json($response_array , 200);
-    
+        return $response;
     }
 
-    /** 
-     *
-     * stripe_payment_video()
-     *
-     * used to detect payment for PayPerVide 
-     *
-     */
-
-    public function stripe_payment_video(Request $request) {
-
-        $userModel = User::find($request->id);
-
-        if ($userModel->card_id) {
-
-            $user_card = Card::find($userModel->card_id);
-
-            if ($user_card && $user_card->is_default) {
-
-                $video = LiveVideo::find($request->video_tape_id);
-
-                if($video && !$video->status && $video->is_streaming) {
-
-                    $total = $video->amount;
-
-                    // Get the key from settings table
-                    $stripe_secret_key = Setting::get('stripe_secret_key');
-
-                    $customer_id = $user_card->customer_id;
-                    
-                    if($stripe_secret_key) {
-
-                        \Stripe\Stripe::setApiKey($stripe_secret_key);
-                    } else {
-
-                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
-
-                        return response()->json($response_array , 200);
-
-                        // return back()->with('flash_error', Helper::get_error_message(902));
-                    }
-
-                    try {
-
-                       $user_charge =  \Stripe\Charge::create(array(
-                          "amount" => $total * 100,
-                          "currency" => "usd",
-                          "customer" => $customer_id,
-                        ));
-
-                       $payment_id = $user_charge->id;
-                       $amount = $user_charge->amount/100;
-                       $paid_status = $user_charge->paid;
-
-                       if($paid_status) {
-
-                            $user_payment = new LiveVideoPayment;
-                            $user_payment->payment_id  = $payment_id;
-                            $user_payment->live_video_viewer_id = $request->id;
-                            $user_payment->user_id = $video->user_id;
-                            $user_payment->live_video_id = $video->id;
-                            $user_payment->status = 1;
-                            $user_payment->amount = $amount;
-
-                            // Commission Spilit 
-
-                            $admin_commission = Setting::get('admin_commission')/100;
-
-                            $admin_amount = $amount * $admin_commission;
-
-                            $user_amount = $amount - $admin_amount;
-
-                            $user_payment->admin_amount = $admin_amount;
-
-                            $user_payment->user_amount = $user_amount;
-
-                            $user_payment->save();
-
-                            // Commission Spilit Completed
-
-                            if($user = User::find($user_payment->user_id)) {
-
-                                $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
-
-                                $user->total_user_amount = $user->total_user_amount + $user_amount;
-
-                                $user->remaining_amount = $user->remaining_amount + $user_amount;
-
-                                $user->total = $user->total + $total;
-
-                                $user->save();
-
-                                add_to_redeem($user->id, $user_amount);
-                            
-                            }
-
-                            $data = ['id'=> $request->id, 'token'=> $user->token , 'payment_id' => $payment_id];
-
-                            $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
-
-                        } else {
-
-                            $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
-
-                        }
-                    
-                    } catch (\Stripe\StripeInvalidRequestError $e) {
-
-                        Log::info(print_r($e,true));
-
-                        $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
-
-
-                       return response()->json($response_array , 200);
-                    
-                    }
-
-                
-                } else {
-
-                    $response_array = array('success' => false , 'error_messages' => tr('no_live_video_found'));
-                    
-                }
-
-
-            } else {
-
-                // return back()->with('flash_error', tr('no_default_card_available'));
-
-                $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
-
-            }
-
-        } else {
-
-            // return back()->with('flash_error', tr('no_default_card_available'));
-
-            $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
-
-        }
-
-
-        return response()->json($response_array,200);
-        
-
-    }
-
-    /** 
-     *
-     *
-     */
-
-    public function ppv_paypal(Request $request) {
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'video_tape_id'=>'required|exists:admin_videos,id',
-                'payment_id'=>'required',
-
-            ));
-
-        if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $errors = implode(',',$validator->messages()->all());
-
-            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
-
-        } else {
-
-            $video = AdminVideo::find($request->video_tape_id);
-
-            $user_payment = new PayPerView;
-            /*
-            $check_live_video_payment = Payperview::where('user_id' , $request->id)->where('video_id' , $request->video_tape_id)->first();
-
-            if($check_live_video_payment) {
-                $user_payment = $check_live_video_payment;
-            }*/
-
-            // $user_payment->expiry_date = date('Y-m-d H:i:s');
-            $user_payment->payment_id  = $request->payment_id;
-            $user_payment->user_id = $request->id;
-            $user_payment->video_id = $request->video_tape_id;
-
-            $user_payment->status = DEFAULT_FALSE;
-
-            $user_payment->amount = $video->amount;
-
-            $user_payment->save();
-
-            if($user_payment) {
-
-               /*  // Commission Spilit 
-                if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
-
-                    $video_amount = Setting::get('amount_per_video');
-
-                    $video->watch_count = $video->watch_count + 1;
-
-                    $video->redeem_amount += $video_amount;
-
-                    if($video->amount > 0) { 
-
-                        $total = $video_amount;
-
-                        // Commission Spilit 
-
-                        $admin_commission = Setting::get('admin_commission')/100;
-
-                        $admin_amount = $total * $admin_commission;
-
-                        $moderator_amount = $total - $admin_amount;
-
-                        $video->admin_amount = $admin_amount;
-
-                        $video->user_amount = $moderator_amount;
-
-                        $video->save();
-
-                        // Commission Spilit Completed
-
-                        if($moderator = Moderator::find($video->uploaded_by)) {
-
-                            $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                            $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                            $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                            $moderator->total = $moderator->total + $total;
-
-                            $moderator->save();
-
-                            // add_to_redeem($user->id, $user_amount);
-
-                            $video_amount = $moderator_amount;
-
-                        }
-                        
-                    }
-
-                    add_to_redeem($video->uploaded_by , $video_amount);
-
-                    \Log::info("ADD History - add_to_redeem");
-
-                } else {
-
-                    \Log::info("ADD History - NO REDEEM");
-
-                    $video->watch_count = $video->watch_count + 1;
-
-                }
-
-                $video->save();*/
-
-            }
-
-            $viewerModel = User::find($request->id);
-         
-
-            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
-                        'data'=>['id'=>$request->id,
-                                 'token'=>$viewerModel ? $viewerModel->token : '']];
-
-        }
-
-        return response()->json($response_array, 200);
-
-    }
-
-    /** 
-     *
-     *
-     *
-     */
-
-    public function subscription_plans(Request $request) {
-
-        $query = Subscription::select('id as subscription_id',
-                'title', 'description', 'plan','amount', 'status', 'created_at' , DB::raw("'$' as currency"))
-                ->where('status' , DEFAULT_TRUE);
-
-        if ($request->id) {
-
-            $user = User::find($request->id);
-
-            if ($user) {
-
-               if ($user->one_time_subscription == DEFAULT_TRUE) {
-
-                   $query->where('amount','>', 0);
-
-               }
-
-            } 
-
-        }
-
-        $model = $query->orderBy('amount' , 'asc')->get();
-
-        $response_array = ['success'=>true, 'data'=>$model];
-
-        return response()->json($response_array, 200);
-
-    }
-
-    /** 
-     *
-     *
-     *
-     */
-
-    public function subscribedPlans(Request $request){
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'skip'=>'required|numeric',
-            ));
-
-        if ($validator->fails()) {
-
-            // Error messages added in response for debugging
-            
-            $errors = implode(',',$validator->messages()->all());
-
-            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
-
-        } else {
-
-            $model = UserPayment::where('user_id' , $request->id)
-                        ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_id')
-                        ->select('user_id as id',
-                                'subscription_id',
-                                'user_payments.id as user_subscription_id',
-                                'subscriptions.title as title',
-                                'subscriptions.description as description',
-                                'subscriptions.plan',
-                                'user_payments.amount as amount',
-                                // 'user_payments.expiry_date as expiry_date',
-                                \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
-                                'user_payments.created_at as created_at',
-                                DB::raw("'$' as currency"))
-                        ->orderBy('user_payments.updated_at', 'desc')
-                        ->skip($request->skip)
-                        ->take(Setting::get('admin_take_count' ,12))
-                        ->get();
-            $response_array = ['success'=>true, 'data'=>$model];
-
-        }
-
-        return response()->json($response_array);
-
-    }
-
-    /** 
-     * subscription_pay_now()
-     * 
-     * used to subscription payment using paypal;
-     *
-     * @return JSON Respons
-     */
-
-    public function paypal_subscription_payment(Request $request) {
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'subscription_id'=>'required|exists:subscriptions,id',
-                'payment_id'=>'required',
-            ));
-
-        if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $errors = implode(',',$validator->messages()->all());
-
-            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
-
-        } else {
-
-            $model = UserPayment::where('user_id' , $request->id)
-                        ->orderBy('id', 'desc')->first();
-
-            $subscription = Subscription::find($request->subscription_id);
-
-            $user_payment = new UserPayment();
-
-            if ($model) {
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
-            } else {
-                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
-            }
-
-            $user_payment->payment_id  = $request->payment_id;
-            $user_payment->user_id = $request->id;
-            $user_payment->amount = $subscription->amount;
-            $user_payment->subscription_id = $request->subscription_id;
-            $user_payment->save();
-
-            if($user_payment) {
-
-                $user_payment->user->user_type = DEFAULT_TRUE;
-
-                $user_payment->user->save();
-            }
-
-            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
-                    'data'=>[
-                        'id'=>$request->id,
-                        'token'=>$user_payment->user ? $user_payment->user->token : '',
-                        ]];
-
-        }
-
-        return response()->json($response_array, 200);
-
-    }
-
-    /** 
-     *
-     * stripe_payment()
-     *
-     * used to detect payment for subscription plans
-     *
-     */
-
-    public function stripe_subscription_payment(Request $request) {
+    public function stripe_payment(Request $request) {
 
         $validator = Validator::make($request->all(), 
             array(
@@ -2904,8 +2603,10 @@ class UserApiController extends Controller {
             );
 
         if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            $response_array = array('success' => false , 'error_messages' => $error_messages , 'error' => Helper::get_error_message(101));
+
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
         } else {
 
             $subscription = Subscription::find($request->subscription_id);
@@ -2917,99 +2618,148 @@ class UserApiController extends Controller {
 
                 $user = User::find($request->id);
 
-                $check_card_exists = User::where('users.id' , $request->id)
-                                ->leftJoin('cards' , 'users.id','=','cards.user_id')
-                                ->where('cards.id' , $user->card_id)
-                                ->where('cards.is_default' , DEFAULT_TRUE);
+                if ($total > 0) {
 
-                if($check_card_exists->count() != 0) {
+                    $check_card_exists = User::where('users.id' , $request->id)
+                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                    ->where('cards.id' , $user->card_id)
+                                    ->where('cards.is_default' , DEFAULT_TRUE);
 
-                    $user_card = $check_card_exists->first();
+                    if($check_card_exists->count() != 0) {
 
-                    $stripe_secret_key = Setting::get('stripe_secret_key');
+                        $user_card = $check_card_exists->first();
 
-                    $customer_id = $user_card->customer_id;
+                        $stripe_secret_key = Setting::get('stripe_secret_key');
 
-                    if($stripe_secret_key) {
-                        \Stripe\Stripe::setApiKey($stripe_secret_key);
-                    } else {
-                        $response_array = array('success' => false, 'error_messages' =>Helper::get_error_message(902), 'error_code' => 902);
-                        return response()->json($response_array , 200);
-                    }
+                        // print_r("User Card Details ".print_r($user_card, true));
 
-                    try{
+                        $customer_id = $user_card->customer_id;
 
-                       $user_charge =  \Stripe\Charge::create(array(
-                          "amount" => $total * 100,
-                          "currency" => "usd",
-                          "customer" => $customer_id,
-                        ));
-
-                       $payment_id = $user_charge->id;
-                       $amount = $user_charge->amount/100;
-                       $paid_status = $user_charge->paid;
-
-                        if($paid_status) {
-
-                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
-
-                            if($user_payment) {
-
-                                $expiry_date = $user_payment->expiry_date;
-                                
-                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
-
-                            } else {
-                                $user_payment = new UserPayment;
-                                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
-                            }
-
-                            $user_payment->payment_id  = $payment_id;
-                            $user_payment->user_id = $request->id;
-                            $user_payment->subscription_id = $request->subscription_id;
-                            $user_payment->status = 1;
-                            $user_payment->amount = $amount;
-                            $user_payment->save();
-
-                            $user->user_type = 1;
-                            $user->save();
-                            
-                            $response_array = ['success' => true, 'message'=>tr('payment_success')];
-
-                            return response()->json($response_array, 200);
-
+                        if($stripe_secret_key) {
+                            \Stripe\Stripe::setApiKey($stripe_secret_key);
                         } else {
 
-                            $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+                            $response_array = array('success' => false, 'error_messages' =>Helper::get_error_message(902), 'error_code' => 902);
 
-                            // return response()->json($response_array , 200);
-
-                            // return back()->with('flash_error', Helper::get_error_message(903));
-
-                            return response()->json($response_array, 200);
-
+                            return response()->json($response_array , 200);
                         }
 
-                    
-                    } catch (\Stripe\StripeInvalidRequestError $e) {
+                        try{
 
-                        Log::info(print_r($e,true));
+                           $user_charge =  \Stripe\Charge::create(array(
+                              "amount" => $total * 100,
+                              "currency" => "usd",
+                              "customer" => $customer_id,
+                            ));
 
-                        $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+                           $payment_id = $user_charge->id;
+                           $amount = $user_charge->amount/100;
+                           $paid_status = $user_charge->paid;
+
+                            if($paid_status) {
+
+                                $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                                if($user_payment) {
+
+                                    $expiry_date = $user_payment->expiry_date;
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                                } else {
+                                    $user_payment = new UserPayment;
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                                }
+
+
+                                $user_payment->payment_id  = $payment_id;
+                                $user_payment->user_id = $request->id;
+                                $user_payment->subscription_id = $request->subscription_id;
+                                $user_payment->status = 1;
+                                $user_payment->amount = $amount;
+                                $user_payment->save();
+
+
+                                $user->user_type = 1;
+
+                                $user->save();
+                                
+                                $data = ['id' => $user->id , 'token' => $user->token,'paymentid'=>$payment_id];
+
+                                Log::info("Stripe Payment".print_r($data, true));
+
+                                $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+
+                                return response()->json($response_array, 200);
+
+                            } else {
+
+                                $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                                return response()->json($response_array, 200);
+
+                            }
+
+                        
+                        } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                            Log::info(print_r($e,true));
+
+                            $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+
+                            return response()->json($response_array , 200);
+
+                        
+                        }
+
+                    } else {
+                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(140) , 'error_code' => 140);
                         return response()->json($response_array , 200);
-                    
                     }
 
                 } else {
-                    $response_array = array('success' => false, 'error' => Helper::get_error_message(140) , 'error_code' => 140);
-                    return response()->json($response_array , 200);
+
+                   
+
+                    $user_payment = UserPayment::where('user_id' , $request->id)->first();
+
+                    if($user_payment) {
+
+                        $expiry_date = $user_payment->expiry_date;
+                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                    } else {
+                        $user_payment = new UserPayment;
+                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                    }
+
+
+                    $user_payment->payment_id  = "free_plan";
+                    $user_payment->user_id = $request->id;
+                    $user_payment->subscription_id = $request->subscription_id;
+                    $user_payment->status = 1;
+                    $user_payment->amount = $subscription->amount;
+                    $user_payment->save();
+
+
+                    $user->user_type = 1;
+
+                    $user->save();
+                    
+                    $data = ['id' => $user->id , 'token' => $user->token, 'paymentid'=>$user_payment->payment_id];
+
+                    Log::info("Stripe Payment".print_r($data, true));
+
+                    $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+
+                    return response()->json($response_array, 200);
+
+                    
                 }
 
             } else {
 
                 $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
 
-                
             }         
 
             
@@ -3018,5 +2768,271 @@ class UserApiController extends Controller {
         return response()->json($response_array , 200);
     
     }
+
+    public function subscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->id)->where('channel_id',$request->channel_id)->first();
+
+            if (!$model) {
+
+                $model = new ChannelSubscription;
+
+                $model->user_id = $request->id;
+
+                $model->channel_id = $request->channel_id;
+
+                $model->status = DEFAULT_TRUE;
+
+                $model->save();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_subscribed')];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('already_channel_subscribed')];
+
+            }
+        }
+
+        return response()->json($response_array);
+   
+    }
+
+    public function unsubscribe_channel(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                'channel_id'     => 'required|exists:channels,id',
+                ));
+
+
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $model = ChannelSubscription::where('user_id', $request->id)->where('channel_id',$request->channel_id)->first();
+
+            if ($model) {
+
+                $model->delete();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_unsubscribed')];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('not_found')];
+
+            }
+        }
+
+        return response()->json($response_array);
+
+    }
+
+
+    public function singleVideoResponse($request) {
+
+        $data = [];
+
+        $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
+                                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                    ->where('video_tapes.status' , 1)
+                                    ->where('video_tapes.publish_status' , 1)
+                                    ->where('video_tapes.is_approved' , 1)
+                                    ->videoResponse()
+                                    ->first();
+        if($video_tape_details) {
+
+            $data = $video_tape_details->toArray();
+
+            $data['wishlist_status'] = $data['history_status'] = $data['is_subscribed'] = $data['is_liked'] = $data['pay_per_view_status'] = $data['user_type'] = $data['flaggedVideo'] = 0;
+
+            $data['comment_rating_status'] = 1;
+
+            if($request->id) {
+
+                $data['wishlist_status'] = Helper::check_wishlist_status($request->id,$request->video_tape_id) ? 1 : 0;
+
+                $data['history_status'] = count(Helper::history_status($request->id,$request->video_tape_id)) > 0? 1 : 0;
+
+                $data['is_subscribed'] = check_channel_status($request->id, $video_tape_details->channel_id);
+
+                $data['is_liked'] = Helper::like_status($request->id,$request->video_tape_id);
+
+                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->video_tape_id)->first();
+
+                if ($mycomment) {
+
+                    $data['comment_rating_status'] = DEFAULT_FALSE;
+                }
+
+                if($user_details = User::find($request->id)) {
+
+                    $data['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
+                    
+                    $data['user_type'] = $user_details->user_type;
+
+                }
+
+            }
+
+            $data['subscriberscnt'] = subscriberscnt($video_tape_details->channel_id);
+
+            $data['share_url'] = route('user.single' , $request->video_tape_id);
+
+            $data['embed_link'] = route('embed_video', array('u_id'=>$video_tape_details->unique_id));
+
+            $video_url = $video_tape_details->video;
+
+            if($request->login_by == DEVICE_ANDROID) {
+
+                $video_url = Setting::get('streaming_url') ? Setting::get('streaming_url').get_video_end($data['video']) : $video_url;
+
+            }
+
+            if($request->login_by == DEVICE_IOS) {
+
+                $video_url = Setting::get('HLS_STREAMING_URL') ? Setting::get('HLS_STREAMING_URL').get_video_end($data['video']) : $video_url;
+
+            }
+
+            $data['video'] = $video_url;
+
+
+        }
+
+        // Comments Section
+
+        $comments = [];
+
+        if($comments = Helper::video_ratings($request->video_tape_id,0)) {
+
+            $comments = $comments->toArray();
+
+        }
+
+        $data['comments'] = $comments;
+
+        // $data['suggestions'] = VideoRepo::suggestions($request);
+        
+        return $data;
+    }
+
+    public function spam_videos_list(Request $request) {
+
+        // Load Flag videos based on logged in user id
+        $model = Flag::where('flags.user_id', $request->id)
+            ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
+            ->where('video_tapes.is_approved' , 1)
+            ->where('video_tapes.status' , 1)
+            ->get();
+
+        $flag_video = [];
+
+        foreach ($model as $key => $value) {
+
+            $request->request->add(['video_tape_id'=>$value->video_tape_id, 'login_by'=>DEVICE_ANDROID]);
+            
+            $flag_video[] = $this->singleVideoResponse($request);
+
+        }
+
+        $response_array = ['success'=>true, 'data'=>$flag_video];
+        
+
+        return response()->json($response_array);
+
+    }
+
+    public function add_spam(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+            'reason' => 'required',
+        ]);
+        // If validator Fails, redirect same with error values
+        if ($validator->fails()) {
+             //throw new Exception("error", tr('admin_published_video_failure'));
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json(['success'=>false , 'message'=>$error_messages]);
+        }
+        // Assign Post request values into Data variable
+        $data = $request->all();
+
+        // include user_id index into the data varaible  "Auth::user()->id" -> Logged In user id
+        $data['user_id'] = $request->id;
+        $data['video_id'] =$request->video_tape_id;
+
+        $data['status'] = DEFAULT_TRUE;
+
+        // Save the values in DB
+        if (Flag::create($data)) {
+            return response()->json(['success'=>true, 'message'=>tr('report_video_success_msg')]);
+        } else {
+            //throw new Exception("error", tr('admin_published_video_failure'));
+            return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+        }
+    }
+
+    public function reasons() {
+
+        $reasons = getReportVideoTypes();
+
+        return response()->json(['success'=>true, 'data'=>$reasons]);
+    }
+
+
+    public function remove_spam(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+        ]);
+        // If validator Fails, redirect same with error values
+        if ($validator->fails()) {
+             //throw new Exception("error", tr('admin_published_video_failure'));
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json(['success'=>false , 'message'=>$error_messages]);
+        }
+        // Load Spam Video from flag section
+        $model = Flag::where('user_id', $request->id)
+            ->where('video_tape_id', $request->video_tape_id)
+            ->first();
+
+        if ($model) {
+
+            $model->delete();
+
+            return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
+        } else {
+            // throw new Exception("error", tr('admin_published_video_failure'));
+            return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+        }
+    }
+
+
 
 }

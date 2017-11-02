@@ -17,11 +17,13 @@ use Illuminate\Support\Facades\Redis;
 
 // Report Video type
 
-Route::get('redis/test',function(){
-    $redis = Redis::connection();    
-    $views=$redis->incr('view');
-    dd($views);
-});
+if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
+
+if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
+
+if(!defined('DEVICE_WEB')) define('DEVICE_WEB', 'web');
+
+// if (!defined('RTMP_URL')) define('RTMP_URL', 'rtmp://'.Setting::get('cross_platform_url').'/live/');
 
 // Channel settings 
 
@@ -32,6 +34,7 @@ if(!defined('CREATE_CHANNEL_BY_USER_DISENABLED')) define('CREATE_CHANNEL_BY_USER
 // REDEEMS
 
 if(!defined('REDEEM_OPTION_ENABLED')) define('REDEEM_OPTION_ENABLED', 1);
+
 if(!defined('REDEEM_OPTION_DISABLED')) define('REDEEM_OPTION_DISABLED', 0);
 
 // Redeeem Request Status
@@ -40,6 +43,9 @@ if(!defined('REDEEM_REQUEST_SENT')) define('REDEEM_REQUEST_SENT', 0);
 if(!defined('REDEEM_REQUEST_PROCESSING')) define('REDEEM_REQUEST_PROCESSING', 1);
 if(!defined('REDEEM_REQUEST_PAID')) define('REDEEM_REQUEST_PAID', 2);
 if(!defined('REDEEM_REQUEST_CANCEL')) define('REDEEM_REQUEST_CANCEL', 3);
+
+if(!defined('TYPE_PUBLIC')) define('TYPE_PUBLIC', 'public');
+if(!defined('TYPE_PRIVATE')) define('TYPE_PRIVATE', 'private');
 
 // Ad Types
 
@@ -85,8 +91,7 @@ if(!defined('ADMIN')) define('ADMIN', 'admin');
 if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
 
 if(!defined('VIDEO_TYPE_UPLOAD')) define('VIDEO_TYPE_UPLOAD', 1);
-if(!defined('VIDEO_TYPE_YOUTUBE')) define('VIDEO_TYPE_YOUTUBE', 2);
-if(!defined('VIDEO_TYPE_OTHER')) define('VIDEO_TYPE_OTHER', 3);
+if(!defined('VIDEO_TYPE_LIVE')) define('VIDEO_TYPE_LIVE', 2);
 
 
 if(!defined('VIDEO_UPLOAD_TYPE_s3')) define('VIDEO_UPLOAD_TYPE_s3', 1);
@@ -128,6 +133,9 @@ if(!defined('WISHLIST')) define('WISHLIST' , 'wishlist');
 if(!defined('WATCHLIST')) define('WATCHLIST' , 'watchlist');
 if(!defined('BANNER')) define('BANNER' , 'banner');
 if(!defined('ALL_VIDEOS')) define('ALL_VIDEOS', 'All Videos');
+if(!defined('JWT_SECRET')) define('JWT_SECRET', '12345');
+
+
 
 
 if(!defined('WEB')) define('WEB' , 1);
@@ -144,19 +152,14 @@ Route::get('/clear-cache', function() {
 Route::get('/generate/index' , 'ApplicationController@generate_index');
 
 
-// Route::get('/ui' , 'ApplicationController@ui')->name('ui');
+
+Route::get('/message/save' , 'ApplicationController@message_save');
 
 Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
 
 Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
 
 Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
-
-// Route::get('/channels/create' , 'ApplicationController@channel_create')->name('channels.create');
-
-// Route::get('/channels/view' , 'ApplicationController@channel_view')->name('channels.view');
-
-// Route::get('/channels/index' , 'ApplicationController@channel_index')->name('channels.index');
 
 
 Route::get('/test' , 'ApplicationController@test')->name('test');
@@ -248,9 +251,9 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/profile', 'AdminController@profile')->name('profile');
 
-	Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
+    Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
 
-	Route::post('/change/password', 'AdminController@change_password')->name('change.password');
+    Route::post('/change/password', 'AdminController@change_password')->name('change.password');
 
     Route::get('/unspam-video/{id}', 'AdminController@unspam_video')->name('unspam-video');
 
@@ -398,6 +401,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
 
+    Route::get('video/payments', 'AdminController@video_payments')->name('videos.payments');
+
 
     // Custom Push
 
@@ -489,6 +494,16 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
 
+    Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
+
+
+    // Videos
+
+    Route::get('/live_videos', 'AdminController@live_videos')->name('videos.index');
+
+    Route::get('/videos_list', 'AdminController@videos_list')->name('videos.videos_list');
+
+    Route::get('/videos/view/{id}', 'AdminController@videos_view')->name('videos.view');
 
 
      // Languages
@@ -540,8 +555,17 @@ Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
 
 Route::get('/master/login', 'UserController@master_login')->name('master.login');
 
+Route::get('cron_delete_video', 'ApplicationController@cron_delete_video');
+
 
 Route::group(['as' => 'user.'], function(){
+
+    Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
+
+
+    Route::get('paypal_video','PaypalController@payPerVideo')->name('live_video_paypal');
+
+    Route::get('user/payment_video','PaypalController@getVideoPaymentStatus')->name('paypalstatus');
 
 
     Route::get('login', 'Auth\AuthController@showLoginForm')->name('login.form');
@@ -569,6 +593,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('unsubscribe.channel');
 
     Route::get('/subscribers', 'UserController@channel_subscribers')->name('channel.subscribers');
+
+    Route::post('take_snapshot/{rid}', 'UserController@setCaptureImage')->name('setCaptureImage');
     
 
     Route::get('profile', 'UserController@profile')->name('profile');
@@ -602,6 +628,10 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('spamVideos', 'UserController@spam_videos')->name('spam-videos');
 
+    Route::get('payment-video', 'UserController@payment_url')->name('payment_url');
+
+    Route::get('stripe-payment-video', 'UserController@stripe_payment_video')->name('stripe_payment_video');
+
 
     // Wishlist
 
@@ -623,6 +653,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/user/payment/status','PaypalController@getPaymentStatus')->name('paypalstatus');
 
     Route::get('/trending', 'UserController@trending')->name('trending');
+
+    Route::get('/live_videos', 'UserController@live_videos')->name('live_videos');
 
     Route::get('/user_subscriptions', 'UserController@subscriptions')->name('subscriptions');
 
@@ -686,7 +718,19 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
 
+
+    // Live videos
+
+    Route::post('broadcast', 'UserController@broadcast')->name('live_video.broadcast');
+
+    Route::get('broadcasting', 'UserController@broadcasting')->name('live_video.start_broadcasting');
+
+    Route::get('stop-streaming', 'UserController@stop_streaming')->name('live_video.stop_streaming');
+
+    Route::post('get_viewer_cnt','UserController@get_viewer_cnt')->name('live_video.get_viewer_cnt');
+
     Route::post('add/watch_count', 'UserController@watch_count')->name('add.watch_count');
+
 
     Route::post('/partialVideos', 'UserController@partialVideos')->name('video.get_videos');
 
@@ -764,6 +808,7 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
 
 
+
     Route::post('/like_video', 'UserApiController@likeVideo');
 
     Route::post('/dis_like_video', 'UserApiController@disLikeVideo');
@@ -778,9 +823,8 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('delete_card', 'UserApiController@delete_card');
 
-    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
     
-    Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
 
     // SubScriptions 
 
@@ -788,10 +832,22 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('subscribedPlans', 'UserApiController@subscribedPlans');
 
-    // Suscription payments
+    Route::post('pay_now', 'UserApiController@pay_now');
 
-    Route::post('paypal_subscription_payment', 'UserApiController@paypal_subscription_payment');
+    Route::post('/my_channels', 'UserApiController@my_channels');
 
-    Route::post('card_subscription_payment', 'UserApiController@stripe_subscription_payment');
 
+    Route::post('subscribe_channel', 'UserApiController@subscribe_channel');
+
+    Route::post('unsubscribe_channel', 'UserApiController@unsubscribe_channel');
+
+    Route::post('subscribed_channels', 'UserApiController@channel_list');
+
+    Route::post('/add_spam', 'UserApiController@add_spam');
+
+    Route::get('/spam-reasons', 'UserApiController@reasons');
+
+    Route::post('remove_spam', 'UserApiController@remove_spam');
+
+    Route::post('spam_videos', 'UserApiController@spam_videos_list');
 });
