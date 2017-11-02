@@ -108,6 +108,22 @@
 .modal-top1{
 	margin-top: 50px;
 }
+
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size:13px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	font-size: 11px;
+}
+.username{
+	font-size: 13px;
+	font-weight: 600;
+}
 }
 
 /*small devices*/
@@ -218,7 +234,22 @@
 .modal-top1{
 	margin-top: 50px;
 }
-
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 13px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size:12px;
+}
+.username{
+	font-size: 14px;
+	font-weight: 600;
+}
 }
 
 /* Tablets */
@@ -323,6 +354,21 @@
 .modal-top1{
 	margin-top: 250px;
 }
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
 }
 
 /* Medium Devices, */
@@ -426,6 +472,22 @@
 .modal-top1{
 	margin-top: 250px;
 }
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
 }
 
 /* Desktops */
@@ -528,6 +590,22 @@
 }
 .modal-top1{
 	margin-top: 250px;
+}
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
 }
 }
 /*index.html responsive*/
