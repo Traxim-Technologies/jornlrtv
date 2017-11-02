@@ -2103,7 +2103,7 @@ class UserApiController extends Controller {
 
                 $model->save();
 
-                $response_array = ['success'=>true, 'like_count'=>$like_count+1, 'dislike_count'=>$dislike_count];
+                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count)];
 
             } else {
 
@@ -2115,14 +2115,14 @@ class UserApiController extends Controller {
 
                     $model->save();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count+1, 'dislike_count'=>$dislike_count-1];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count-1)];
 
 
                 } else {
 
                     $model->delete();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count-1, 'dislike_count'=>$dislike_count];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count)];
 
                 }
 
@@ -2180,7 +2180,7 @@ class UserApiController extends Controller {
 
                 $model->save();
 
-                $response_array = ['success'=>true, 'like_count'=>$like_count, 'dislike_count'=>$dislike_count+1];
+                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count+1)];
 
             } else {
 
@@ -2192,13 +2192,13 @@ class UserApiController extends Controller {
 
                     $model->save();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count-1, 'dislike_count'=>$dislike_count+1];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count+1)];
 
                 } else {
 
                     $model->delete();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count, 'dislike_count'=>$dislike_count-1];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count-1)];
 
                 }
 

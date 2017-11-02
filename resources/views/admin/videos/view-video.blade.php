@@ -111,11 +111,11 @@ hr {
                                 </li> 
 
                                 <li class="list-group-item">
-                                    <b><i class="fa fa-thumbs-up margin-r-5"></i>{{tr('likes')}}</b> <a class="pull-right">{{$video->getScopeLikeCount->count()}}&nbsp;</a>
+                                    <b><i class="fa fa-thumbs-up margin-r-5"></i>{{tr('likes')}}</b> <a class="pull-right">{{number_format_short($video->getScopeLikeCount->count())}}&nbsp;</a>
                                 </li> 
 
                                 <li class="list-group-item">
-                                    <b><i class="fa fa-thumbs-down margin-r-5"></i>{{tr('dislikes')}}</b> <a class="pull-right">{{$video->getScopeDisLikeCount->count()}}&nbsp;</a>
+                                    <b><i class="fa fa-thumbs-down margin-r-5"></i>{{tr('dislikes')}}</b> <a class="pull-right">{{number_format_short($video->getScopeDisLikeCount->count())}}&nbsp;</a>
                                 </li>                                
                             
                             </ul>

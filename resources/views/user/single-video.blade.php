@@ -174,15 +174,15 @@ textarea[name=comments] {
                                                        <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
 
                                                         @if (Auth::check())
-                                                            <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up fa"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+                                                            <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up fa"></i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                            <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+                                                            <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
 
                                                             @else 
                                                             
-                                                            <a class="thumb-class"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+                                                            <a class="thumb-class"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                            <a class="thumb-class"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{$dislike_count}}</span></a>
+                                                            <a class="thumb-class"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
 
                                                             @endif
 
