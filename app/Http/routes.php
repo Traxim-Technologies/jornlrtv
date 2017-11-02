@@ -837,6 +837,33 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/my_channels', 'UserApiController@my_channels');
 
 
+    // Live Urls
+    
+    Route::post('get_live_url', 'UserApiController@get_live_url');
+
+    Route::post('save_vod', 'UserApiController@save_vod');
+
+    Route::post('live_videos', 'UserApiController@live_videos');
+
+    Route::post('save_live_video', 'UserApiController@save_live_video');
+
+    Route::post('/live_video', 'UserApiController@live_video');
+
+    Route::post('save_chat', 'UserApiController@save_chat');
+
+    Route::post('video_subscription', 'UserApiController@video_subscription');
+
+    Route::post('get_viewers', 'UserApiController@get_viewers');
+
+    Route::post('peerProfile', 'UserApiController@peerProfile');
+
+    Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
+
+    Route::post('close_streaming', 'UserApiController@close_streaming');
+
+    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+
+    Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
 
 
 });
