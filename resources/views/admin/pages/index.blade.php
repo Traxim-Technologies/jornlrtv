@@ -44,7 +44,7 @@
                             <tr>
                                 <td>{{$i+1}}</td>
                                 <td>{{$result->heading}}</td>
-                                <td>{{$result->description}}</td>
+                                <td><?= $result->description ?></td>
                                 <td>{{$result->type}}</td>
                                 
                                 <td>
