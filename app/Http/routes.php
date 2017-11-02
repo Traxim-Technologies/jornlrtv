@@ -841,4 +841,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('unsubscribe_channel', 'UserApiController@unsubscribe_channel');
 
+    Route::post('subscribed_channels', 'UserApiController@channel_list');
+
 });

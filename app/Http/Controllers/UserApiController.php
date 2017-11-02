@@ -2016,9 +2016,9 @@ class UserApiController extends Controller {
 
             $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
-            if ($request->user_id) {
+            if ($request->id) {
 
-                $channel_id = ChannelSubscription::where('user_id', $request->user_id)->pluck('channel_id')->toArray();
+                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
             }
 
             $query->where('video_tapes.age_limit','<=', $age);
