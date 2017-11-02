@@ -2038,7 +2038,7 @@ class UserApiController extends Controller {
 
     public function likevideo(Request $request) {
 
-         $validator = Validator::make($request->all() , [
+        $validator = Validator::make($request->all() , [
             'video_tape_id' => 'required|exists:video_tapes,id',
             ]);
 
@@ -2109,7 +2109,7 @@ class UserApiController extends Controller {
 
     public function dislikevideo(Request $request) {
 
-         $validator = Validator::make($request->all() , [
+        $validator = Validator::make($request->all() , [
             'video_tape_id' => 'required|exists:video_tapes,id',
             ]);
 
@@ -2176,7 +2176,7 @@ class UserApiController extends Controller {
 
     }
 
-     public function default_card(Request $request) {
+    public function default_card(Request $request) {
 
         $validator = Validator::make(
             $request->all(),
@@ -2283,9 +2283,284 @@ class UserApiController extends Controller {
         return response()->json($response_array , 200);
     }
 
+    public function subscription_plans(Request $request) {
 
-    public function broadcast(Request $request) 
-    {
+        $query = Subscription::select('id as subscription_id',
+                'title', 'description', 'plan','amount', 'status', 'created_at' , DB::raw("'$' as currency"))
+                ->where('status' , DEFAULT_TRUE);
+
+        if ($request->id) {
+
+            $user = User::find($request->id);
+
+            if ($user) {
+
+               if ($user->one_time_subscription == DEFAULT_TRUE) {
+
+                   $query->where('amount','>', 0);
+
+               }
+
+            } 
+
+        }
+
+        $model = $query->orderBy('amount' , 'asc')->get();
+
+        $response_array = ['success'=>true, 'data'=>$model];
+
+        return response()->json($response_array, 200);
+
+    }
+
+    public function pay_now(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'subscription_id'=>'required|exists:subscriptions,id',
+                'payment_id'=>'required',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $errors = implode(',',$validator->messages()->all());
+
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
+
+        } else {
+
+            $model = UserPayment::where('user_id' , $request->id)
+                        ->orderBy('id', 'desc')->first();
+
+            $subscription = Subscription::find($request->subscription_id);
+
+            $user_payment = new UserPayment();
+
+            if ($model) {
+                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+            } else {
+                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+            }
+
+            $user_payment->payment_id  = $request->payment_id;
+            $user_payment->user_id = $request->id;
+            $user_payment->amount = $subscription->amount;
+            $user_payment->subscription_id = $request->subscription_id;
+            $user_payment->save();
+
+            if($user_payment) {
+
+                $user_payment->user->user_type = DEFAULT_TRUE;
+
+                $user_payment->user->save();
+            }
+
+            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
+                    'data'=>[
+                        'id'=>$request->id,
+                        'token'=>$user_payment->user ? $user_payment->user->token : '',
+                        ]];
+
+        }
+
+        return response()->json($response_array, 200);
+
+    }
+
+    public function subscribedPlans(Request $request){
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'skip'=>'required|numeric',
+            ));
+
+        if ($validator->fails()) {
+
+            // Error messages added in response for debugging
+            
+            $errors = implode(',',$validator->messages()->all());
+
+            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
+
+        } else {
+
+            $model = UserPayment::where('user_id' , $request->id)
+                        ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_id')
+                        ->select('user_id as id',
+                                'subscription_id',
+                                'user_payments.id as user_subscription_id',
+                                'subscriptions.title as title',
+                                'subscriptions.description as description',
+                                'subscriptions.plan',
+                                'user_payments.amount as amount',
+                                // 'user_payments.expiry_date as expiry_date',
+                                \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
+                                'user_payments.created_at as created_at',
+                                DB::raw("'$' as currency"))
+                        ->orderBy('user_payments.updated_at', 'desc')
+                        ->skip($request->skip)
+                        ->take(Setting::get('admin_take_count' ,12))
+                        ->get();
+            $response_array = ['success'=>true, 'data'=>$model];
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+
+    public function card_details(Request $request) {
+
+        $cards = Card::select('user_id as id','id as card_id','customer_id',
+                'last_four', 'card_token', 'is_default', 
+            \DB::raw('DATE_FORMAT(created_at , "%e %b %y") as created_date'))->where('user_id', $request->id)->get();
+
+        $response_array = ['success'=>true, 'data'=>$cards];
+
+        return response()->json($response_array, 200);
+    }
+
+    /**
+     * Show the payment methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payment_card_add(Request $request) {
+
+        $validator = Validator::make($request->all(), 
+            array(
+                'number' => 'required|numeric',
+                'card_token'=>'required',
+            )
+            );
+
+        if($validator->fails()) {
+
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
+            return response()->json($response_array);
+
+        } else {
+
+            $userModel = User::find($request->id);
+
+            $last_four = substr($request->number, -4);
+
+            $stripe_secret_key = \Setting::get('stripe_secret_key');
+
+            $response = json_decode('{}');
+
+            if($stripe_secret_key) {
+
+                \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+            } else {
+
+
+                $response_array = ['success'=>false, 'error_messages'=>tr('add_card_is_not_enabled')];
+
+                return response()->json($response_array);
+            }
+
+            try {
+
+                // Get the key from settings table
+                
+                $customer = \Stripe\Customer::create([
+                        "card" => $request->card_token,
+                        "email" => $userModel->email
+                    ]);
+
+                if($customer) {
+
+                    $customer_id = $customer->id;
+
+
+                    $cards = new Card;
+                    $cards->user_id = $userModel->id;
+                    $cards->customer_id = $customer_id;
+                    $cards->last_four = $last_four;
+                    $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    // Check is any default is available
+                    $check_card = Card::where('user_id', $userModel->id)->first();
+
+                    if($check_card)
+                        $cards->is_default = 0;
+                    else
+                        $cards->is_default = 1;
+                    
+                    $cards->save();
+
+                    if($userModel && $cards->is_default) {
+
+                        $userModel->payment_mode = 'card';
+
+                        $userModel->card_id = $cards->id;
+
+                        $userModel->save();
+                    }
+
+                    $data = [
+                            'user_id'=>$request->id, 
+                            'id'=>$request->id, 
+                            'token'=>$userModel->token,
+                            'card_id'=>$cards->id,
+                            'customer_id'=>$cards->customer_id,
+                            'last_four'=>$cards->last_four, 
+                            'card_token'=>$cards->card_token, 
+                            'is_default'=>$cards->is_default
+                            ];
+
+                    $response_array = array('success' => true,'message'=>tr('add_card_success'), 
+                        'data'=> $data);
+
+                    return response()->json($response_array);
+
+                } else {
+
+                    $response_array = ['success'=>false, 'error_messages'=>tr('Could not create client ID')];
+
+                    return response()->json($response_array);
+
+                }
+            
+            } catch(Exception $e) {
+
+                $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+
+                return response()->json($response_array);
+
+            }
+
+        }
+
+    }    
+
+
+    public function my_channels(Request $request) {
+
+       $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->where('user_id', $request->id)->get();
+
+        if($model) {
+
+            $response_array = array('success' => true , 'data' => $model);
+
+        } else {
+            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
+        }
+
+        $response = response()->json($response_array, 200);
+        
+        return $response;
+    }
+
+    public function broadcast(Request $request) {
         
         $validator = Validator::make($request->all(),array(
                 'title' => 'required',
@@ -2383,13 +2658,11 @@ class UserApiController extends Controller {
 
     }
 
-
     /**** Live Videos Api *************/
-
 
     public function live_videos(Request $request) {
 
-         $validator = Validator::make(
+        $validator = Validator::make(
             $request->all(),
             array(
                 'skip'=>'required|numeric',
@@ -2463,10 +2736,9 @@ class UserApiController extends Controller {
 
     }   
 
-
     public function save_live_video(Request $request) {
 
-         $validator = Validator::make($request->all(),array(
+        $validator = Validator::make($request->all(),array(
                 'title' => 'required',
                 'amount' => 'required|numeric',
                 'payment_status'=>'required|numeric',
@@ -2675,7 +2947,6 @@ class UserApiController extends Controller {
     }
 
 
-
     public function save_chat(Request $request) {
 
         $validator = Validator::make(
@@ -2721,95 +2992,6 @@ class UserApiController extends Controller {
 
         return response()->json($response_array, 200);
     }
-
-
-    public function subscription_plans(Request $request) {
-
-        $query = Subscription::select('id as subscription_id',
-                'title', 'description', 'plan','amount', 'status', 'created_at' , DB::raw("'$' as currency"))
-                ->where('status' , DEFAULT_TRUE);
-
-        if ($request->id) {
-
-            $user = User::find($request->id);
-
-            if ($user) {
-
-               if ($user->one_time_subscription == DEFAULT_TRUE) {
-
-                   $query->where('amount','>', 0);
-
-               }
-
-            } 
-
-        }
-
-        $model = $query->orderBy('amount' , 'asc')->get();
-
-        $response_array = ['success'=>true, 'data'=>$model];
-
-        return response()->json($response_array, 200);
-
-    }
-
-
-
-    public function pay_now(Request $request) {
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'subscription_id'=>'required|exists:subscriptions,id',
-                'payment_id'=>'required',
-            ));
-
-        if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $errors = implode(',',$validator->messages()->all());
-
-            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
-
-        } else {
-
-            $model = UserPayment::where('user_id' , $request->id)
-                        ->orderBy('id', 'desc')->first();
-
-            $subscription = Subscription::find($request->subscription_id);
-
-            $user_payment = new UserPayment();
-
-            if ($model) {
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
-            } else {
-                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
-            }
-
-            $user_payment->payment_id  = $request->payment_id;
-            $user_payment->user_id = $request->id;
-            $user_payment->amount = $subscription->amount;
-            $user_payment->subscription_id = $request->subscription_id;
-            $user_payment->save();
-
-            if($user_payment) {
-
-                $user_payment->user->user_type = DEFAULT_TRUE;
-
-                $user_payment->user->save();
-            }
-
-            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
-                    'data'=>[
-                        'id'=>$request->id,
-                        'token'=>$user_payment->user ? $user_payment->user->token : '',
-                        ]];
-
-        }
-
-        return response()->json($response_array, 200);
-
-    }
-
 
 
     public function video_subscription(Request $request) {
@@ -2904,10 +3086,9 @@ class UserApiController extends Controller {
 
     }
 
-
     public function get_viewers(Request $request) {
 
-         $validator = Validator::make(
+        $validator = Validator::make(
             $request->all(),
             array(
                 'video_tape_id'=>'required|exists:live_videos,id',
@@ -2961,49 +3142,6 @@ class UserApiController extends Controller {
         return response()->json($response_array);
     }
 
-    public function subscribedPlans(Request $request){
-
-         $validator = Validator::make(
-            $request->all(),
-            array(
-                'skip'=>'required|numeric',
-            ));
-
-        if ($validator->fails()) {
-
-            // Error messages added in response for debugging
-            
-            $errors = implode(',',$validator->messages()->all());
-
-            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
-
-        } else {
-
-            $model = UserPayment::where('user_id' , $request->id)
-                        ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_id')
-                        ->select('user_id as id',
-                                'subscription_id',
-                                'user_payments.id as user_subscription_id',
-                                'subscriptions.title as title',
-                                'subscriptions.description as description',
-                                'subscriptions.plan',
-                                'user_payments.amount as amount',
-                                // 'user_payments.expiry_date as expiry_date',
-                                \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
-                                'user_payments.created_at as created_at',
-                                DB::raw("'$' as currency"))
-                        ->orderBy('user_payments.updated_at', 'desc')
-                        ->skip($request->skip)
-                        ->take(Setting::get('admin_take_count' ,12))
-                        ->get();
-            $response_array = ['success'=>true, 'data'=>$model];
-
-        }
-
-        return response()->json($response_array);
-
-    }
-
     public function peerProfile(Request $request) {
 
         $validator = Validator::make(
@@ -3047,7 +3185,6 @@ class UserApiController extends Controller {
         return $response_array;
 
     }
-
 
     public function close_streaming(Request $request) {
 
@@ -3333,8 +3470,6 @@ class UserApiController extends Controller {
     
     }
 
-
-
     public function stripe_payment_video(Request $request) {
 
         $userModel = User::find($request->id);
@@ -3472,159 +3607,6 @@ class UserApiController extends Controller {
         
 
     }
-
-
-    public function card_details(Request $request) {
-
-        $cards = Card::select('user_id as id','id as card_id','customer_id',
-                'last_four', 'card_token', 'is_default', 
-            \DB::raw('DATE_FORMAT(created_at , "%e %b %y") as created_date'))->where('user_id', $request->id)->get();
-
-        $response_array = ['success'=>true, 'data'=>$cards];
-
-        return response()->json($response_array, 200);
-    }
-
-
-
-
-    /**
-     * Show the payment methods.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function payment_card_add(Request $request) {
-
-        $validator = Validator::make($request->all(), 
-            array(
-                'number' => 'required|numeric',
-                'card_token'=>'required',
-            )
-            );
-
-        if($validator->fails()) {
-
-            $errors = implode(',', $validator->messages()->all());
-            
-            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
-
-            return response()->json($response_array);
-
-        } else {
-
-            $userModel = User::find($request->id);
-
-            $last_four = substr($request->number, -4);
-
-            $stripe_secret_key = \Setting::get('stripe_secret_key');
-
-            $response = json_decode('{}');
-
-            if($stripe_secret_key) {
-
-                \Stripe\Stripe::setApiKey($stripe_secret_key);
-
-            } else {
-
-
-                $response_array = ['success'=>false, 'error_messages'=>tr('add_card_is_not_enabled')];
-
-                return response()->json($response_array);
-            }
-
-            try {
-
-                // Get the key from settings table
-                
-                $customer = \Stripe\Customer::create([
-                        "card" => $request->card_token,
-                        "email" => $userModel->email
-                    ]);
-
-                if($customer) {
-
-                    $customer_id = $customer->id;
-
-
-                    $cards = new Card;
-                    $cards->user_id = $userModel->id;
-                    $cards->customer_id = $customer_id;
-                    $cards->last_four = $last_four;
-                    $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
-
-                    // Check is any default is available
-                    $check_card = Card::where('user_id', $userModel->id)->first();
-
-                    if($check_card)
-                        $cards->is_default = 0;
-                    else
-                        $cards->is_default = 1;
-                    
-                    $cards->save();
-
-                    if($userModel && $cards->is_default) {
-
-                        $userModel->payment_mode = 'card';
-
-                        $userModel->card_id = $cards->id;
-
-                        $userModel->save();
-                    }
-
-                    $data = [
-                            'user_id'=>$request->id, 
-                            'id'=>$request->id, 
-                            'token'=>$userModel->token,
-                            'card_id'=>$cards->id,
-                            'customer_id'=>$cards->customer_id,
-                            'last_four'=>$cards->last_four, 
-                            'card_token'=>$cards->card_token, 
-                            'is_default'=>$cards->is_default
-                            ];
-
-                    $response_array = array('success' => true,'message'=>tr('add_card_success'), 
-                        'data'=> $data);
-
-                    return response()->json($response_array);
-
-                } else {
-
-                    $response_array = ['success'=>false, 'error_messages'=>tr('Could not create client ID')];
-
-                    return response()->json($response_array);
-
-                }
-            
-            } catch(Exception $e) {
-
-                $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
-
-                return response()->json($response_array);
-
-            }
-
-        }
-
-    }    
-
-
-    public function my_channels(Request $request) {
-
-       $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->where('user_id', $request->id)->get();
-
-        if($model) {
-
-            $response_array = array('success' => true , 'data' => $model);
-
-        } else {
-            $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
-        }
-
-        $response = response()->json($response_array, 200);
-        
-        return $response;
-    }
-
 
     public function get_live_url(Request $request) {
 
