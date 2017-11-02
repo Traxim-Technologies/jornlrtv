@@ -826,7 +826,7 @@
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.is_banner' , 1)
                             ->select(
-                                'video_tapes.id as admin_video_id' ,
+                                'video_tapes.id as video_tape_id' ,
                                 'video_tapes.title','video_tapes.ratings',
                                 'video_tapes.banner_image as default_image'
                                 )
@@ -860,7 +860,7 @@
                             ->leftJoin('video_tapes' ,'user_ratings.video_tape_id' , '=' , 'video_tapes.id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
-                            ->select('video_tapes.id as admin_video_id' ,
+                            ->select('video_tapes.id as video_tape_id' ,
                                 'video_tapes.title','video_tapes.description' ,
                                 'default_image','video_tapes.watch_count',
                                 'video_tapes.duration',
@@ -901,7 +901,7 @@
 
         public static function like_status($user_id,$video_id) {
 
-            if(LikeDislikeVideo::where('admin_video_id' , $video_id)->where('user_id' , $user_id)->where('like_status' , DEFAULT_TRUE)->count()) {
+            if(LikeDislikeVideo::where('video_tape_id' , $video_id)->where('user_id' , $user_id)->where('like_status' , DEFAULT_TRUE)->count()) {
 
                 return 1;
 
@@ -930,7 +930,7 @@
                 if ($video->amount == 0) {
                     return true;
                 }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
-                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)
+                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
                         ->orderBy('created_at', 'desc')->first();
                     if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                         // Load Payment view
@@ -952,7 +952,7 @@
                 if ($video->amount == 0) {
                     return true;
                 }else if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->orderBy('created_at', 'desc')->first();
+                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)->orderBy('created_at', 'desc')->first();
                     if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                         // Load Payment view
                         if ($paymentView) {

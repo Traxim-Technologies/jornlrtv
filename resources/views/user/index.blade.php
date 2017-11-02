@@ -150,7 +150,7 @@
                             @foreach($wishlists as $wishlist)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $wishlist->admin_video_id)}}"><img src="{{$wishlist->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $wishlist->video_tape_id)}}"><img src="{{$wishlist->default_image}}" /></a>
 
                                     <div class="video_duration">
                                         {{$wishlist->duration}}
@@ -159,7 +159,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $wishlist->admin_video_id)}}">{{$wishlist->title}}</a>
+                                        <a href="{{route('user.single' , $wishlist->video_tape_id)}}">{{$wishlist->title}}</a>
                                     </div>
 
                                     <?php /* 
@@ -203,7 +203,7 @@
                             @foreach($recent_videos as $recent_video)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $recent_video->admin_video_id)}}"><img src="{{$recent_video->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $recent_video->video_tape_id)}}"><img src="{{$recent_video->default_image}}" /></a>
                                     <div class="video_duration">
                                         {{$recent_video->duration}}
                                     </div>
@@ -211,7 +211,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $recent_video->admin_video_id)}}">{{$recent_video->title}}</a>
+                                        <a href="{{route('user.single' , $recent_video->video_tape_id)}}">{{$recent_video->title}}</a>
                                     </div>
 
                                     <?php /*
@@ -252,7 +252,7 @@
                             @foreach($trendings as $trending)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $trending->admin_video_id)}}"><img src="{{$trending->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $trending->video_tape_id)}}"><img src="{{$trending->default_image}}" /></a>
                                     <div class="video_duration">
                                         {{$trending->duration}}
                                     </div>
@@ -260,7 +260,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $trending->admin_video_id)}}">{{$trending->title}}</a>
+                                        <a href="{{route('user.single' , $trending->video_tape_id)}}">{{$trending->title}}</a>
                                     </div>
                                     <?php /*<div class="sugg-description">
                                         <p>{{tr('duration')}}: {{$trending->duration}}</p>
@@ -300,7 +300,7 @@
                             @foreach($suggestions as $suggestion)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $suggestion->admin_video_id)}}"><img src="{{$suggestion->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->default_image}}" /></a>
                                     <div class="video_duration">
                                         {{$suggestion->duration}}
                                     </div>
@@ -308,7 +308,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $suggestion->admin_video_id)}}">{{$suggestion->title}}</a>
+                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}">{{$suggestion->title}}</a>
                                     </div>
                                     <?php /*<div class="sugg-description">
                                         <p>{{tr('duration')}}: {{$suggestion->duration}}</p>
@@ -348,7 +348,7 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $watch_list->admin_video_id)}}"><img src="{{$watch_list->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $watch_list->video_tape_id)}}"><img src="{{$watch_list->default_image}}" /></a>
                                     <div class="video_duration">
                                         {{$watch_list->duration}}
                                     </div>
@@ -356,7 +356,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $watch_list->admin_video_id)}}">{{$watch_list->title}}</a>
+                                        <a href="{{route('user.single' , $watch_list->video_tape_id)}}">{{$watch_list->title}}</a>
                                     </div>
                                     <?php /*<div class="sugg-description">
                                         <p>{{tr('duration')}}: {{$watch_list->duration}}</p>

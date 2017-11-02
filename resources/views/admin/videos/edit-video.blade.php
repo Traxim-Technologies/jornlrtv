@@ -90,7 +90,7 @@
                         <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span> fields are mandatory. Please fill and click next.</small></div> 
                         <hr>
                         <div class="">
-                            <input type="hidden" name="id" id="main_id" value="{{$video->admin_video_id}}">
+                            <input type="hidden" name="id" id="main_id" value="{{$video->video_tape_id}}">
                             <input type="hidden" name="is_banner" id="is_banner" value="{{$video->is_banner}}">
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -374,7 +374,7 @@
 
          $.ajax({
               method : 'get',
-              url : "{{route('admin.get_images', $video->admin_video_id)}}",
+              url : "{{route('admin.get_images', $video->video_tape_id)}}",
               success : function(data) {
                 $("#select_image_div").html(data.path);
               }

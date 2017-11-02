@@ -22,7 +22,7 @@ class VideoTape extends Model
     public function scopeVideoResponse($query) {
 
         return $query->select(
-            'video_tapes.id as admin_video_id' ,
+            'video_tapes.id as video_tape_id' ,
             'channels.id as channel_id' ,
             'channels.user_id as channel_created_by',
             'channels.name as channel_name',
@@ -105,13 +105,13 @@ class VideoTape extends Model
 
     public function getScopeUserRatings() {
 
-         return $this->hasMany('App\UserRating', 'video_tape_id', 'admin_video_id');
+         return $this->hasMany('App\UserRating', 'video_tape_id', 'video_tape_id');
 
     }
 
     public function getScopeVideoAds() {
 
-         return $this->hasOne('App\VideoAd', 'video_tape_id', 'admin_video_id');
+         return $this->hasOne('App\VideoAd', 'video_tape_id', 'video_tape_id');
 
     }
 
@@ -135,20 +135,20 @@ class VideoTape extends Model
 
     public function getScopeVideoTapeImages() {
 
-         return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'admin_video_id');
+         return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'video_tape_id');
 
     }
 
 
     public function getScopeLikeCount() {
 
-        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'admin_video_id')->where('like_status', DEFAULT_TRUE);
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('like_status', DEFAULT_TRUE);
 
     }
 
     public function getScopeDisLikeCount() {
 
-        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'admin_video_id')->where('dislike_status', DEFAULT_TRUE);
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('dislike_status', DEFAULT_TRUE);
 
     }
 
@@ -174,7 +174,7 @@ class VideoTape extends Model
 
     public function getScopeUserFlags() {
 
-         return $this->hasMany('App\Flag', 'video_tape_id', 'admin_video_id');
+         return $this->hasMany('App\Flag', 'video_tape_id', 'video_tape_id');
 
     }
 
