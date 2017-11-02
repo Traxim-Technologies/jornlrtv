@@ -25,6 +25,12 @@ use Setting;
 
 use App\ChannelSubscription;
 
+use App\Flag;
+
+use App\UserRating;
+
+use App\User;
+
 class VideoTapeRepository {
 
 
