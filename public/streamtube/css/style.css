@@ -467,14 +467,37 @@ videos (single page) css
 .share-details i{
 	margin-right: 0px;
 }
+.share-new{
+	color: #999;
+	font-size: 16px;
+	cursor: pointer;
+}
+.share-new:hover, .share-new:focus,  .share-new:active{
+	color: #999;
+}
+.share-new p{
+	font-size: 16px !important;
+	margin-top: 7px;
+	margin-left: 5px;
+	font-weight: normal !important;
+}
+.share-new i{
+	margin-left: 10px;
+}
+.modal-top1 .modal-content{
+	border-radius: 0;
+}
+.modal-top1 .close:hover{
+	color: #000;
+}
 .more-content a{
 	/*color: #767676;*/
 	/*padding: 10px;*/
 }
 .mylist{
 	line-height: 2em;
-	float: left;
-	padding: 20px 0;
+	float:right;
+	/*padding: 20px 0;*/
 }
 .share{
 	float: left;
@@ -488,8 +511,7 @@ videos (single page) css
 .views {
 	/*border-bottom: 1px solid #b8b8b8;
     font-family: arial;*/
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
     padding-bottom: 5px;
     color:#999;
     padding-top: 10px;
@@ -559,8 +581,13 @@ videos (single page) css
 	background-color: #fff;
 	padding: 15px;
 }
+.row1{
+	margin-left: -15px !important;
+	margin-right: -15px !important;
+}
 .v-comments h3{
-	font-size:24px;
+	font-size:18px;
+	font-weight: bold;
 	margin-top: 0;
 	margin-bottom:0px;
 }
@@ -942,9 +969,10 @@ history (single page) css
 }
 .video-desc{
 	color:#999;
-	font-size: 14px;
+	font-size: 15px !important;
 	font-weight:normal !important;
-	margin-top: 5px;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 .duration{
 	font-size: 11px;
@@ -1433,7 +1461,7 @@ changes
 .mylist button{
 	font-size: 13px;
     border: none;
-    padding: 1px 15px;
+    padding: 1px 10px;
     background-color: gray;
     color: #fff;
 }
@@ -1883,6 +1911,15 @@ margin: 0px auto 35px;
     height:40px;
     padding: 10px; 
     color: #999;
+}
+.add-wishlist{
+	float: right;
+	margin-left: 5px;
+	margin-top: 5px;
+
+}
+.report_list input{
+	vertical-align: -22%;
 }
 .submit-btn{
     margin-top: 15px;
