@@ -418,15 +418,58 @@ class UserController extends Controller {
 
                     // Check the video view count reached admin viewers count, to add amount for each view
 
-                    if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
+                    if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
                         \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
                         $video_amount = Setting::get('amount_per_video');
 
-                        $video->redeem_count = 1;
+                        // $video->redeem_count = 1;
+
+                        $video->watch_count = $video->watch_count + 1;
 
                         $video->amount += $video_amount;
+
+
+                        if($video->amount > 0) { 
+
+                            $total = $video_amount;
+
+                            // Commission Spilit 
+
+                            $admin_commission = Setting::get('admin_commission')/100;
+
+                            $admin_amount = $total * $admin_commission;
+
+                            $moderator_amount = $total - $admin_amount;
+
+                            $video->admin_amount = $admin_amount;
+
+                            $video->user_amount = $moderator_amount;
+
+                            $video->save();
+
+                            // Commission Spilit Completed
+
+                            if($moderator = Moderator::find($video->uploaded_by)) {
+
+                                $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
+
+                                $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
+
+                                $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
+
+                                $moderator->total = $moderator->total + $total;
+
+                                $moderator->save();
+
+                                // add_to_redeem($user->id, $user_amount);
+
+                                $video_amount = $moderator_amount;
+
+                            }
+                            
+                        }
 
                         add_to_redeem($video->user_id , $video_amount);
 
@@ -437,14 +480,15 @@ class UserController extends Controller {
 
                         \Log::info("ADD History - NO REDEEM");
 
-                        $video->redeem_count += 1;
+                        // $video->redeem_count += 1;
 
+                        $video->watch_count = $video->watch_count + 1;
                     }
 
                 }
             }
 
-            $video->watch_count += 1;
+            // $video->watch_count += 1;
 
             $video->save();
 
@@ -458,6 +502,7 @@ class UserController extends Controller {
         }
 
     }
+
 
     public function delete_history(Request $request) {
 
