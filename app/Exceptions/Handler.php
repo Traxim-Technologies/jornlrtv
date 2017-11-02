@@ -44,6 +44,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
+
     public function render($request, Exception $e)
     {
 
@@ -53,9 +54,17 @@ class Handler extends ExceptionHandler
             return parent::render($request, $e);
         }
 
+        if ($e instanceof \Swift_TransportException) {
+            
+            \Session::set('flash_error_mail', $e->getMessage());
+
+            return response()->view('user.auth.passwords.email');
+        }
+
         // return parent::render($request, $e);
 
         return response()->view('errors.404', [], 404);
         
     }
+
 }

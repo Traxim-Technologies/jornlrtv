@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - 2015-12-03
 
+### Fixed
+
+2016-11-02 - smtp confiure error page redirection fixed 
+
+### Fixed
+
+- Twitter login issue fixed.
+
 ### Changed 
 
 - c3f6bdb , Embed Link UI Changes

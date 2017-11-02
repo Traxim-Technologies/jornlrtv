@@ -261,7 +261,7 @@ class VideoTapeRepository {
                             ->where('video_tapes.status' , 1)
                             ->where('wishlists.status' , 1)
                             ->select(
-                                    'wishlists.id as wishlist_id','video_tapes.id as admin_video_id' ,
+                                    'wishlists.id as wishlist_id','video_tapes.id as video_tape_id' ,
                                     'video_tapes.title','video_tapes.description' ,
                                     'default_image','video_tapes.watch_count','video_tapes.ratings',
                                     'video_tapes.duration','video_tapes.channel_id',
@@ -304,7 +304,7 @@ class VideoTapeRepository {
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
-                            ->select('user_histories.id as history_id','video_tapes.id as admin_video_id' ,
+                            ->select('user_histories.id as history_id','video_tapes.id as video_tape_id' ,
                                 'video_tapes.title','video_tapes.description' , 'video_tapes.duration',
                                 'default_image','video_tapes.watch_count','video_tapes.ratings',
                                 DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 'video_tapes.channel_id','channels.name as channel_name', 'user_histories.created_at')
@@ -398,6 +398,17 @@ class VideoTapeRepository {
         if(count($videos) > 0) {
 
             foreach ($videos as $key => $value) {
+
+                if($request->id) {
+
+                    if($user_details = User::find($request->id)) {
+
+                        $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
+                        
+                        $value['user_type'] = $user_details->user_type;
+
+                    }
+                }
 
                 $value['watch_count'] = number_format_short($value->watch_count);
 
@@ -536,24 +547,51 @@ class VideoTapeRepository {
                                     ->where('video_tapes.status' , 1)
                                     ->where('video_tapes.publish_status' , 1)
                                     ->where('video_tapes.is_approved' , 1)
-                                    ->shortVideoResponse()
+                                    ->videoResponse()
                                     ->first();
         if($video_tape_details) {
 
             $data = $video_tape_details->toArray();
 
-            $data['wishlist_status'] = $data['history_status'] = 0;
+            $data['wishlist_status'] = $data['history_status'] = $data['is_subscribed'] = $data['is_liked'] = $data['pay_per_view_status'] = $data['user_type'] = $data['flaggedVideo'] = 0;
+
+            $data['comment_rating_status'] = 1;
 
             if($user_id) {
+
+
+                $data['flaggedVideo'] = Flag::where('video_tape_id',$video_tape_id)->where('user_id', $user_id)->first();
 
                 $data['wishlist_status'] = Helper::check_wishlist_status($user_id,$video_tape_id) ? 1 : 0;
 
                 $data['history_status'] = count(Helper::history_status($user_id,$video_tape_id)) > 0? 1 : 0;
 
+                $data['is_subscribed'] = check_channel_status($user_id, $video_tape_details->channel_id);
+
+                $data['is_liked'] = Helper::like_status($user_id,$video_tape_id);
+
+                $mycomment = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->first();
+
+                if ($mycomment) {
+
+                    $data['comment_rating_status'] = DEFAULT_FALSE;
+                }
+
+                if($user_details = User::find($user_id)) {
+
+                    $data['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
+                    
+                    $data['user_type'] = $user_details->user_type;
+
+                }
+
             }
 
-            
+            $data['subscriberscnt'] = subscriberscnt($video_tape_details->channel_id);
+
             $data['share_url'] = route('user.single' , $video_tape_id);
+
+            $data['embed_link'] = route('embed_video', array('u_id'=>$video_tape_details->unique_id));
 
             $video_url = $video_tape_details->video;
 
@@ -571,7 +609,6 @@ class VideoTapeRepository {
 
             $data['video'] = $video_url;
 
-            $data['user_type'] = 0;
 
         }
 

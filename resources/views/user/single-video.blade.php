@@ -167,53 +167,33 @@ textarea[name=comments] {
                                             <div class="title row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12">
                                                     <h3>{{$video->title}}</h3>
-                                                    <div class="clearfix"></div>
-                                                </div>
 
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top">
-                                                    <div class="channel-img">
-                                                        <img src="{{$video->channel_picture ? $video->channel_picture : asset('images/default.png')}}" class="img-responsive img-circle">
+                                                    <div class="views pull-left">
+                                                        {{$video->watch_count}} {{tr('views')}}
                                                     </div>
-                                                    <span class="username"><a href="{{route('user.channel' , $video->channel_id)}}">{{$video->channel_name}}</a></span>
-                                                    <h5 class="rating no-margin top">
-                                                        <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#" class="rating1"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#" class="rating1"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#" class="rating1"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                    </h5>
-
-                                                    <div class="pull-right sub-btn">
-
-                                                        @if(Auth::check())
-                                                            @if($video->get_channel->user_id != Auth::user()->id)
-
-                                                                @if (!$subscribe_status)
-
-                                                                <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} - {{$subscriberscnt}}</a>
-
-                                                                @else 
-
-                                                                    <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} - {{$subscriberscnt}}</a>
-
-                                                                @endif
-                                                           
-                                                           @else
-
-                                                                <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+                                                    <div class="pull-right">
+                                                       <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
 
 
-                                                           @endif
-                                                        
-                                                        
-                                                        @endif
+                                                            @if (Auth::check())
+                                                            <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up fa"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
 
+                                                            <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+
+                                                            @else 
+                                                            
+                                                            <a class="thumb-class"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+
+                                                            <a class="thumb-class"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{$dislike_count}}</span></a>
+
+                                                            @endif
+                                                                
                                                     </div>
+                                                   <!--  <h3>Channel Name</h3> -->
                                                     <div class="clearfix"></div>
-                                                <hr>
+                                                    <h4 class="video-desc">{{$video->description}}</h4>
+                                                    <hr>
                                                 </div>
-                                                
-                                                <div class="clearfix"></div>
 
                                                 <div class="col-lg-12">
 
@@ -225,7 +205,7 @@ textarea[name=comments] {
                                                             <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
                                                                 @if(Auth::check())
 
-                                                                    <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
+                                                                    <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
 
                                                                     @if(count($wishlist_status) == 1 && $wishlist_status)
 
@@ -277,13 +257,13 @@ textarea[name=comments] {
                                                         </div>
 
                                                         <div class="share">
-                                                            <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->admin_video_id)}}">
+                                                            <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->video_tape_id)}}">
                                                                 
                                                                 <i class="fa fa-facebook"></i><!-- {{tr('share_on_fb')}} -->
                                                                 
                                                             </a>
 
-                                                            <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->admin_video_id)}}">
+                                                            <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->video_tape_id)}}">
                                                                
                                                                 <i class="fa fa-twitter"></i><!-- {{tr('share_on_twitter')}} -->
                                                                 
@@ -301,44 +281,14 @@ textarea[name=comments] {
 
                                                         <!-- ==============MODAL STARTS=========== -->
 
-                                                        <div class="modal fade modal-top" id="copy-embed" role="dialog">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content content-modal">
-                                                                    <div class="row">
-                                                                        <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 modal-bg-img zero-padding" style="background-image: url({{$video->default_image ? $video->default_image : asset('images/landing-9.png')}});">
-                                                                           <h4 class="video-title1">{{$video->title}}</h4> 
-                                                                        </div>
-                                                                        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5">
-                                                                            <div class="copy-embed">
-                                                                                <div class="modal-header">
-                                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                    <h4 class="modal-title">Embed Video</h4>
-                                                                                </div>
-
-                                                                                <div class="modal-body">
-
-                                                                                   <form onsubmit="return false;">
-
-                                                                                        <div class="form-group">
-                                                                                            <textarea class="form-control" rows="5" id="comment">{{$embed_link}}</textarea>
-                                                                                        </div>
-
-                                                                                    </form>
-
-                                                                                    <button class="btn btn-danger pull-right foot-btn" onclick="copyTextToClipboard();" style="border-radius: 0">Copy</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        
                                                         <!-- =========MODAL ENDS=========== -->
                                                         <div class="share">
 
 
                                                             @if(Auth::check())
-                                                                @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_created_by)
+                                                                @if(Setting::get('is_spam')
+                                                                 && Auth::user()->id != $video->channel_created_by)
 
                                                                     @if($flaggedVideo == '')
                                                                         <button onclick="showReportForm();" type="button" class="report-button" title="{{tr('report')}}">
@@ -364,9 +314,9 @@ textarea[name=comments] {
 
                                                         <div class="stars ratings text-center">
 
-                                                            <div class="views">
+                                                            <!-- <div class="views">
                                                                 <i class="fa fa-eye" style="color: #b31217;font-size:13px;"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
-                                                            </div>
+                                                            </div> -->
                                                             <div class="clearfix"></div>
                                                            
                                                                 <!-- <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
@@ -377,13 +327,13 @@ textarea[name=comments] {
                                                             </center>
                                                         
 
-                                                             <div>
-                                                                <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->admin_video_id)}}</span></i> {{tr('comments')}} ) */?>
+                                                             <!-- <div>
+                                                                <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
 
                                                                 @if (Auth::check())
-                                                                <a class="thumb-class" onclick="likeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
+                                                                <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                                <a class="thumb-class" onclick="dislikeVideo({{$video->admin_video_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
+                                                                <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
 
                                                                 @else 
 
@@ -394,13 +344,59 @@ textarea[name=comments] {
 
                                                                 @endif
                                                                 
-                                                            </div>
+                                                            </div> -->
                                                         </div><!--end of stars-->
 
                                                     </div><!--end of share-details-->                               
                                                 </div>
 
                                                 <div class="clearfix"></div>
+
+                                                <hr>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top zero-padding bottom">
+                                                    <div class="channel-img">
+                                                        <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
+                                                    </div>
+                                                    <span class="username"><a href="#">{{$video->title}}</a></span>
+                                                    <h5 class="rating no-margin top">
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a href="#" class="rating1"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    </h5>
+                                                    <div class="pull-right sub-btn">
+
+                                                        @if(Auth::check())
+                                                            @if($video->get_channel->user_id != Auth::user()->id)
+
+                                                                @if (!$subscribe_status)
+
+                                                                <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+
+                                                                @else 
+
+                                                                    <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+
+                                                                @endif
+                                                           
+                                                           @else
+
+                                                                <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+
+
+                                                           @endif
+                                                        
+                                                        
+                                                        @endif
+
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                
+                                                </div>
+                                                
+                                                <div class="clearfix"></div>
+
 
                                                 @if(Setting::get('is_spam'))
 
@@ -415,7 +411,7 @@ textarea[name=comments] {
                                                                         <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
                                                                     </div>
                                                                 @endforeach
-                                                                <input type="hidden" name="video_tape_id" value="{{$video->admin_video_id}}" />
+                                                                <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
                                                                 <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
                                                                 <div class="pull-right">
                                                                     <button class="btn btn-success btn-sm">{{tr('submit')}}</button>
@@ -447,12 +443,12 @@ textarea[name=comments] {
 
                                             <hr>
 
-                                            <div class="col-lg-12">
+                                            <!-- <div class="col-lg-12">
                                                 <div class="video-description">
                                                     <h4>{{tr('description')}}</h4>
                                                     <p>{{$video->description}}</p>
-                                                </div><!--end of video-description-->
-                                            </div>
+                                                </div>
+                                            </div> --><!--end of video-description-->
 
                                             <div class="clearfix"></div>                                       
                                         </div><!--end of video-title-->                                                             
@@ -520,14 +516,14 @@ textarea[name=comments] {
                                             <div class="image-form">
                                                 <div class="comment-box1">
                                                     <div class="com-image">
-                                                        <img style="width:48px;height:48px" src="{{Auth::user()->picture}}">                                    
+                                                        <img style="width:48px;height:48px; border-radius:24px;" src="{{Auth::user()->picture}}">                                    
                                                     </div><!--end od com-image-->
                                                     
                                                     <div id="comment_form">
                                                         <div>
                                                             <form method="post" id="comment_sent" name="comment_sent" action="{{route('user.add.comment')}}">
 
-                                                                <input type="hidden" value="{{$video->admin_video_id}}" name="admin_video_id">
+                                                                <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
 
                                                                 @if($comment_rating_status)
                                                                  <input id="rating_system" name="rating" type="number" class="rating comment_rating" min="1" max="5" step="1">
@@ -535,7 +531,7 @@ textarea[name=comments] {
 
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
 
-                                                                <button class="btn pull-right btn-sm btn-success" type="submit">{{tr('comment')}}</button>
+                                                                <button class="btn pull-right btn-sm btn-success top-btn-space" type="submit">{{tr('comment')}}</button>
 
                                                                 <div class="clearfix"></div>
                                                             </form>
@@ -557,7 +553,7 @@ textarea[name=comments] {
 
                                                     <div class="display-com">
                                                         <div class="com-image">
-                                                            <img style="width:48px;height:48px" src="{{$comment->picture}}">                                    
+                                                            <img style="width:48px;height:48px; border-radius: 24px !important;" src="{{$comment->picture}}">                                    
                                                         </div><!--end od com-image-->
 
                                                         <div class="display-comhead">
@@ -609,7 +605,7 @@ textarea[name=comments] {
                                             <div class="main-video">
                                                  <div class="video-image">
                                                     <div class="video-image-outer">
-                                                        <a href="{{route('user.single' , $suggestion->admin_video_id)}}"><img src="{{$suggestion->default_image}}"></a>
+                                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->default_image}}"></a>
                                                     </div>  
                                                     <div class="video_duration">
                                                         {{$suggestion->duration}}
@@ -618,7 +614,7 @@ textarea[name=comments] {
 
                                                 <div class="sugg-head">
                                                     <div class="suggn-title">                                          
-                                                        <h5><a href="{{route('user.single' , $suggestion->admin_video_id)}}">{{$suggestion->title}}</a></h5>
+                                                        <h5><a href="{{route('user.single' , $suggestion->video_tape_id)}}">{{$suggestion->title}}</a></h5>
                                                     </div><!--end of sugg-title-->
 
                                                     <span class="video_views">
@@ -669,7 +665,40 @@ textarea[name=comments] {
     }
 
 ?>
+<div class="modal fade modal-top" id="copy-embed" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content content-modal">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 modal-bg-img zero-padding hidden-xs" style="background-image: url({{$video->default_image ? $video->default_image : asset('images/landing-9.png')}});">
+                   <h4 class="video-title1">{{$video->title}}</h4> 
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 right-space">
+                    <div class="copy-embed">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title hidden-xs">Embed Video</h4>
+                            <h4 class="modal-title visible-xs">{{$video->title}}</h4>
+                        </div>
 
+                        <div class="modal-body">
+
+                           <form onsubmit="return false;">
+
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="5" id="comment">{{$embed_link}}</textarea>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" style="border-radius: 0">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -1059,7 +1088,7 @@ textarea[name=comments] {
                                                jQuery.ajax({
                                                     url: "{{route('user.add.history')}}",
                                                     type: 'post',
-                                                    data: {'admin_video_id' : "{{$video->admin_video_id}}"},
+                                                    data: {'video_tape_id' : "{{$video->video_tape_id}}"},
                                                     success: function(data) {
 
                                                        if(data.success == true) {
@@ -1331,7 +1360,7 @@ textarea[name=comments] {
                         jQuery.ajax({
                             url: "{{route('user.add.watch_count')}}",
                             type: 'post',
-                            data: {'video_tape_id' : "{{$video->admin_video_id}}"},
+                            data: {'video_tape_id' : "{{$video->video_tape_id}}"},
                             success: function(data) {
 
                                if(data.success == true) {

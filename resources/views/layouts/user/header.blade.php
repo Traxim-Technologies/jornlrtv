@@ -120,14 +120,14 @@
 
             <div id="custom-search-input" class="">
                 <form method="post" action="{{route('search-all')}}" id="userSearch">
-                <div class="input-group">
+                <div class="input-group search-input">
                     
                         <input type="text" id="auto_complete_search" name="key" class="search-query form-control" required placeholder="Search" />
-                        <span class="input-group-btn">
+                        <div class="input-group-btn">
                             <button class="btn btn-danger" type="submit">
-                            <span class=" glyphicon glyphicon-search"></span>
+                            <i class=" glyphicon glyphicon-search"></i>
                             </button>
-                        </span>
+                        </div>
                     
                 </div>
                 </form>

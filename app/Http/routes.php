@@ -740,6 +740,8 @@ Route::group(['as' => 'user.'], function(){
 
 Route::group(['prefix' => 'userApi'], function(){
 
+    Route::post('/watch_count', 'UserController@watch_count');
+
     Route::post('/register','UserApiController@register');
     
     Route::post('/login','UserApiController@login');
@@ -840,6 +842,36 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('delete_card', 'UserApiController@delete_card');
 
     Route::post('/stripe_payment', 'UserApiController@stripe_payment');
+
+    Route::post('/like_video', 'UserApiController@likeVideo');
+
+    Route::post('/dis_like_video', 'UserApiController@disLikeVideo');
+
+    // Cards 
+
+    Route::post('card_details', 'UserApiController@card_details');
+
+    Route::post('payment_card_add', 'UserApiController@payment_card_add');
+
+    Route::post('default_card', 'UserApiController@default_card');
+
+    Route::post('delete_card', 'UserApiController@delete_card');
+
+    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+    
+    Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
+
+    // SubScriptions 
+
+    Route::post('subscription_plans', 'UserApiController@subscription_plans');
+
+    Route::post('subscribedPlans', 'UserApiController@subscribedPlans');
+
+    // Suscription payments
+
+    Route::post('paypal_subscription_payment', 'UserApiController@paypal_subscription_payment');
+
+    Route::post('card_subscription_payment', 'UserApiController@stripe_subscription_payment');
 
     Route::post('/my_channels', 'UserApiController@my_channels');
 

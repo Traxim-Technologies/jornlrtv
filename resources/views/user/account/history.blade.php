@@ -35,7 +35,7 @@
                             <li class="sub-list row">
                                 <div class="main-history">
                                      <div class="history-image">
-                                        <a href="{{route('user.single' , $history->admin_video_id)}}"><img src="{{$history->default_image}}"></a>
+                                        <a href="{{route('user.single' , $history->video_tape_id)}}"><img src="{{$history->default_image}}"></a>
                                         <div class="video_duration">
                                             {{$history->duration}}
                                         </div>
@@ -44,7 +44,7 @@
                                     <div class="history-title">
                                         <div class="history-head row">
                                             <div class="cross-title1">
-                                                <h5><a href="{{route('user.single' , $history->admin_video_id)}}">{{$history->title}}</a></h5>
+                                                <h5><a href="{{route('user.single' , $history->video_tape_id)}}">{{$history->title}}</a></h5>
                                                 <span class="video_views">
                                                     <i class="fa fa-eye"></i> {{$history->watch_count}} {{tr('views')}} 
                                                     <?php /*<b>.</b> 

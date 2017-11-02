@@ -1,4 +1,4 @@
-<div class="y-menu video-y-menu hidden col-xs-6">
+    <div class="y-menu video-y-menu hidden col-xs-6">
     <ul class="y-home menu1">
 
         <li><a href="{{route('user.dashboard')}}">
