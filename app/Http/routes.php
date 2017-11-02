@@ -696,6 +696,8 @@ Route::group(['as' => 'user.'], function(){
 
 Route::group(['prefix' => 'userApi'], function(){
 
+    Route::post('/watch_count', 'UserController@watch_count');
+
     Route::post('/register','UserApiController@register');
     
     Route::post('/login','UserApiController@login');
