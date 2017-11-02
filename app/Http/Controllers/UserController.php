@@ -404,7 +404,11 @@ class UserController extends Controller {
 
     public function watch_count(Request $request) {
 
-        if($video = VideoTape::where('id',$request->video_tape_id)->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
+        if($video = VideoTape::where('id',$request->video_tape_id)
+                ->where('status',1)
+                ->where('publish_status' , 1)
+                ->where('video_tapes.is_approved' , 1)
+                ->first()) {
 
             \Log::info("ADD History - Watch Count Start");
 
@@ -418,13 +422,15 @@ class UserController extends Controller {
 
                     // Check the video view count reached admin viewers count, to add amount for each view
 
-                    if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
+                    if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
                         \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
                         $video_amount = Setting::get('amount_per_video');
 
-                        $video->redeem_count = 1;
+                        // $video->redeem_count = 1;
+
+                        $video->watch_count = $video->watch_count + 1;
 
                         $video->amount += $video_amount;
 
@@ -437,27 +443,30 @@ class UserController extends Controller {
 
                         \Log::info("ADD History - NO REDEEM");
 
-                        $video->redeem_count += 1;
+                        // $video->redeem_count += 1;
 
+                        $video->watch_count = $video->watch_count + 1;
                     }
 
                 }
             }
 
-            $video->watch_count += 1;
+            // $video->watch_count += 1;
 
             $video->save();
 
             \Log::info("ADD History - Watch Count Start");
 
-            return response()->json(true);
+            return response()->json(['success'=>true, 
+                    'data'=>['watch_count'=>number_format_short($video->watch_count)]]);
 
         } else {
 
-            return response()->json(false);
+            return response()->json(['success'=>false]);
         }
 
     }
+
 
     public function delete_history(Request $request) {
 
