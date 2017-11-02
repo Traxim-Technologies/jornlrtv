@@ -922,53 +922,8 @@
          * @return true or not
          */
 
-
         public static function watchFullVideo($user_id, $user_type, $video) {
             
-            if ($user_type == 1) {
-
-                if ($video->amount == 0) {
-                    return true;
-                }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
-                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
-                        ->orderBy('created_at', 'desc')->first();
-                    if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
-                        // Load Payment view
-                        if ($paymentView) {
-                            return true;
-                        }
-                    } else {
-                        if ($paymentView) {
-                            if ($paymentView->status == DEFAULT_FALSE) {
-                                return true;
-                            }
-                        }   
-                    }
-                } else if($video->amount > 0 && $video->type_of_user == NORMAL_USER){
-                    return true;
-                }
-            
-            } else {
-                if ($video->amount == 0) {
-                    return true;
-                }else if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-                    $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)->orderBy('created_at', 'desc')->first();
-                    if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
-                        // Load Payment view
-                        if ($paymentView) {
-                            return true;
-                        }
-                    } else {
-
-                        if ($paymentView) {
-                            if ($paymentView->status == DEFAULT_FALSE) {
-                                return true;
-                            }
-                        }  
-                    }
-                } 
-            
-            }
             return false;
         }
     }
