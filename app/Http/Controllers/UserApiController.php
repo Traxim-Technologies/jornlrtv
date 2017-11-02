@@ -2021,15 +2021,12 @@ class UserApiController extends Controller {
             if ($request->id) {
 
                 $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+                $query->whereIn('channels.id', $channel_id);
             }
 
+
             $query->where('video_tapes.age_limit','<=', $age);
-
-        }
-
-        if ($channel_id) {
-            
-            $query->whereIn('channels.id', $channel_id);
 
         }
 
