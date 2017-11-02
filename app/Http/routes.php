@@ -251,9 +251,9 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/profile', 'AdminController@profile')->name('profile');
 
-	Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
+    Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
 
-	Route::post('/change/password', 'AdminController@change_password')->name('change.password');
+    Route::post('/change/password', 'AdminController@change_password')->name('change.password');
 
     Route::get('/unspam-video/{id}', 'AdminController@unspam_video')->name('unspam-video');
 
