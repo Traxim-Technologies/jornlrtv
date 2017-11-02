@@ -1794,7 +1794,7 @@ class UserApiController extends Controller {
 
                 $subscribe_status = check_channel_status($request->id, $video->channel_id);
 
-                $mycomment = UserRating::where('user_id', $request->id)->where('video_tape_id', $request->video_tape_id)->first();
+                $mycomment = UserRating::where('user_id', $request->id)->where('rating', '>', 0)->where('video_tape_id', $request->video_tape_id)->first();
 
                 if ($mycomment) {
 
@@ -3032,5 +3032,7 @@ class UserApiController extends Controller {
             return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
         }
     }
+
+
 
 }
