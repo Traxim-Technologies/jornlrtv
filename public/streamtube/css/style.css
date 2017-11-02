@@ -112,6 +112,10 @@ body{
 	text-decoration: none;
 	color: #584d4d;
 	font-size: 13px;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 .toggle-icon{
 	margin-top: 10px;
