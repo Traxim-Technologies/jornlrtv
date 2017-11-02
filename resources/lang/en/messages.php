@@ -42,7 +42,7 @@ return array(
 	'to_view_video'=>'Please click here to pay',
 	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 
-		'no_video_found'=>'No Live Video Present',
+	'no_video_found'=>'No Live Video Present',
 
 	'not_yet_started'=>'Not yet started the video streaming',
 
@@ -59,7 +59,8 @@ return array(
 
 	'checkout' => 'CheckOut',
 
-		'total' => 'Total',
+	'total' => 'Total',
+	
 	'total_user_amount' => 'User Amount',
 
 	'total_admin_amount' =>'Admin Amount',

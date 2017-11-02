@@ -1810,7 +1810,7 @@ class AdminController extends Controller {
 
     public function ad_videos() {
 
-        $videos = VideoAd::select('channels.id as channel_id', 'channels.name', 'video_tapes.id as admin_video_id', 'video_tapes.title', 'video_tapes.default_image', 'video_tapes.ad_status',
+        $videos = VideoAd::select('channels.id as channel_id', 'channels.name', 'video_tapes.id as video_tape_id', 'video_tapes.title', 'video_tapes.default_image', 'video_tapes.ad_status',
             'video_ads.*','video_tapes.channel_id')
                     ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
                     ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')

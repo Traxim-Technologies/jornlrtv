@@ -115,6 +115,7 @@
 					<div>
 						<div class="pull-left">
 							<h1 class="st_channel_heading">{{$channel->name}}</h1>
+							<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p>
 						</div>
 						<div class="pull-right upload_a">
 							@if(Auth::check())
@@ -309,11 +310,11 @@
 
 									@if (!$subscribe_status)
 
-									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}({{$subscriberscnt}})</a>
+									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}} </a>
 
 									@else 
 
-										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}({{$subscriberscnt}})</a>
+										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
 
 									@endif
 								
@@ -321,7 +322,7 @@
 
 									@if($subscriberscnt > 0)
 
-									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}}({{$subscriberscnt}})</a>
+									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$subscriberscnt}}</a>
 
 									@endif
 
@@ -401,14 +402,14 @@
 
 												<div class="slide-box recom-box big-box-slide">
 													<div class="slide-image recom-image hbb">
-														<a href="{{route('user.single', $trending_videos[0]->admin_video_id)}}"><img src="{{$trending_videos[0]->default_image}}"></a>
+														<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"><img src="{{$trending_videos[0]->default_image}}"></a>
 														<div class="video_duration">
 					                                        {{$trending_videos[0]->duration}}
 					                                    </div>
 													</div>
 													<div class="video-details recom-details">
 														<div class="video-head">
-															<a href="{{route('user.single', $trending_videos[0]->admin_video_id)}}"> {{$trending_videos[0]->title}}</a>
+															<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"> {{$trending_videos[0]->title}}</a>
 														</div>
 														<?php /*<div class="sugg-description">
 															<p>{{tr('duration')}}: {{$trending_videos[0]->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{$trending_videos[0]->created_at ? $trending_videos[0]->created_at->diffForHumans() : 0}} </span>
@@ -442,7 +443,7 @@
 
 													<div class="slide-box recom-box big-box-slide">
 														<div class="slide-image recom-image hbbb">
-															<a href="{{route('user.single', $trending_video->admin_video_id)}}"><img src="{{$trending_video->default_image}}"></a>
+															<a href="{{route('user.single', $trending_video->video_tape_id)}}"><img src="{{$trending_video->default_image}}"></a>
 															<div class="video_duration">
 						                                        {{$trending_video->duration}}
 						                                    </div>
@@ -451,7 +452,7 @@
 
 														<div class="video-details recom-details">
 															<div class="video-head">
-																<a href="{{route('user.single', $trending_video->admin_video_id)}}">{{$trending_video->title}}</a>
+																<a href="{{route('user.single', $trending_video->video_tape_id)}}">{{$trending_video->title}}</a>
 															</div>
 															<?php /*<div class="sugg-description">
 																<p>{{tr('duration')}}: {{$trending_video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($trending_video->created_at) ? $trending_video->created_at->diffForHumans() : 0}}</span>
@@ -519,7 +520,7 @@
 					                        <li class="sub-list row">
 					                            <div class="main-history">
 					                                 <div class="history-image">
-					                                    <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>
+					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a>
 					                                    <div class="video_duration">
 					                                        {{$video->duration}}
 					                                    </div>                        
@@ -528,7 +529,7 @@
 					                                <div class="history-title">
 					                                    <div class="history-head row">
 					                                        <div class="cross-title">
-					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 					                                            <span class="video_views">
 							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
@@ -538,11 +539,11 @@
 					                                        @if(Auth::check())
 															@if($channel->user_id == Auth::user()->id)
 					                                        <div class="cross-mark">
-					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->admin_video_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
-					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->admin_video_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
+					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
+					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->video_tape_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
 
 					                                            <label style="float:none" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
-					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->admin_video_id}})">
+					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
 					                                                <div class="slider round"></div>
 					                                            </label>
 					                                        </div>
@@ -822,7 +823,7 @@
 					                        <li class="sub-list row">
 					                            <div class="main-history">
 					                                 <div class="history-image">
-					                                    <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a> 
+					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a> 
 					                                    <div class="video_duration">
 					                                        {{$video->duration}}
 					                                    </div>                          
@@ -831,7 +832,7 @@
 					                                <div class="history-title">
 					                                    <div class="history-head row">
 					                                        <div class="cross-title">
-					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
+					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 
 					                                            <span class="video_views">
@@ -841,7 +842,7 @@
 
 					                                        </div> 
 					                                        <div class="cross-mark">
-					                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->admin_video_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+					                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
 					                                        </div><!--end of cross-mark-->                       
 					                                    </div> <!--end of history-head--> 
 

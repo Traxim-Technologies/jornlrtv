@@ -39,7 +39,7 @@ hr {
                 <div class='pull-right'>
                     @if ($video->compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>
                     @else
-                    <a href="{{route('admin.edit.video' , array('id' => $video->admin_video_id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+                    <a href="{{route('admin.edit.video' , array('id' => $video->video_tape_id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
                     @endif
                 </div>
                 <div class="clearfix"></div>
@@ -148,7 +148,7 @@ hr {
                             <div class="col-lg-12">
                                   <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('user_reviews')}}</strong>
 
-                                  <p style="margin-top: 10px;"><a href="{{route('admin.reviews', array('video_tape_id'=> $video->admin_video_id))}}"> {{tr('no_of_reviews')}} - {{$video->getScopeUserRatings()->count()}}.</a></p>
+                                  <p style="margin-top: 10px;"><a href="{{route('admin.reviews', array('video_tape_id'=> $video->video_tape_id))}}"> {{tr('no_of_reviews')}} - {{$video->getScopeUserRatings()->count()}}.</a></p>
                             </div>
                            
                          </div>
