@@ -807,41 +807,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
 
-    Route::post('live_videos', 'UserApiController@live_videos');
 
-    Route::post('save_live_video', 'UserApiController@save_live_video');
-
-    Route::post('/live_video', 'UserApiController@live_video');
-
-    Route::post('save_chat', 'UserApiController@save_chat');
-
-    Route::post('subscription_plans', 'UserApiController@subscription_plans');
-
-    Route::post('pay_now', 'UserApiController@pay_now');
-
-    Route::post('video_subscription', 'UserApiController@video_subscription');
-
-    Route::post('get_viewers', 'UserApiController@get_viewers');
-
-    Route::post('subscribedPlans', 'UserApiController@subscribedPlans');
-
-    Route::post('peerProfile', 'UserApiController@peerProfile');
-
-    Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
-
-    Route::post('close_streaming', 'UserApiController@close_streaming');
-
-    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
-
-    Route::post('card_details', 'UserApiController@card_details');
-
-    Route::post('payment_card_add', 'UserApiController@payment_card_add');
-
-    Route::post('default_card', 'UserApiController@default_card');
-
-    Route::post('delete_card', 'UserApiController@delete_card');
-
-    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
 
     Route::post('/like_video', 'UserApiController@likeVideo');
 
@@ -857,9 +823,8 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('delete_card', 'UserApiController@delete_card');
 
-    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+    Route::post('/stripe_payment', 'UserApiController@stripe_payment');
     
-    Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
 
     // SubScriptions 
 
@@ -867,16 +832,11 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('subscribedPlans', 'UserApiController@subscribedPlans');
 
-    // Suscription payments
-
-    Route::post('paypal_subscription_payment', 'UserApiController@paypal_subscription_payment');
-
-    Route::post('card_subscription_payment', 'UserApiController@stripe_subscription_payment');
+    Route::post('pay_now', 'UserApiController@pay_now');
 
     Route::post('/my_channels', 'UserApiController@my_channels');
 
-    Route::post('get_live_url', 'UserApiController@get_live_url');
 
-    Route::post('save_vod', 'UserApiController@save_vod');
+
 
 });
