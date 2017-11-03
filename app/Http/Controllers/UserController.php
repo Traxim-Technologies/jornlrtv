@@ -1695,4 +1695,9 @@ class UserController extends Controller {
 
         return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
     }
+
+    public function invoice() {
+
+        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice');
+    }
 }
