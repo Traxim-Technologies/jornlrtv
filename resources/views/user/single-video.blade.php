@@ -412,7 +412,7 @@ textarea[name=comments] {
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top zero-padding ">
                                                     <div class="row1"> 
-                                                        <div class="col-xs-12 col-md-7 col-sm-7 col-lg-7" >
+                                                        <div class="col-xs-7 col-md-7 col-sm-7 col-lg-7" >
                                                             <div class="channel-img">
                                                                 <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
                                                             </div>
@@ -425,7 +425,7 @@ textarea[name=comments] {
                                                                 <a href="#" class="rating1"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                             </h5>
                                                         </div>
-                                                        <div class="col-xs-12 col-md-5 col-sm-5 col-lg-5" >
+                                                        <div class="col-xs-5 col-md-5 col-sm-5 col-lg-5" >
                                                             <div class="pull-right ">
                                                                 @if(Auth::check())
                                                                     @if(Setting::get('is_spam')
@@ -452,11 +452,15 @@ textarea[name=comments] {
 
                                                                         @if (!$subscribe_status)
 
-                                                                        <a class="btn btn-sm btn-success text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+                                                                        <a class="btn btn-sm btn-success text-uppercase hidden-xs" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+
+                                                                        <a class="btn btn-sm btn-success text-uppercase visible-xs" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}"><i class="fa fa-key"></i> &nbsp; {{$subscriberscnt}}</a>
 
                                                                         @else 
 
-                                                                            <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+                                                                            <a class="btn btn-sm btn-danger hidden-xs text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+
+                                                                             <a class="btn btn-sm btn-danger visible-xs text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important"><i class="fa fa-key"></i> &nbsp; {{$subscriberscnt}}</a>
 
                                                                         @endif
                                                                    

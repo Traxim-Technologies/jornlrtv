@@ -511,15 +511,6 @@ videos (single page) css
 	float: right;
 	margin-top: 10px;
 }
-
-.views {
-	/*border-bottom: 1px solid #b8b8b8;
-    font-family: arial;*/
-    font-size: 16px;
-    padding-bottom: 5px;
-    color:#999;
-    padding-top: 10px;
-}
 .top-btn-space{
 	margin-top: 5px;
 }
@@ -1945,14 +1936,7 @@ margin: 0px auto 35px;
     width: 60px;
     float: left
 }
-.username{
-	font-size: 16px;
-	font-weight: 600;
-}
-.rating{
-	/*color: #999;*/
-	font-size: 13px;
-}
+
 .rating1{
 	color: #999;
 }
@@ -2083,6 +2067,41 @@ margin: 0px auto 35px;
 .menu4{
 	margin-bottom: 15px;
 }
+.bg-img{
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	border-radius: 6px !important;
+}
+.earning-content{
+	background-color: rgba(255,255,255,.8);
+}
+.earning-content .modal-header{
+	border: 0;
+}
+.earning-content .modal-header h3{
+	margin-top: -6px;
+}
+.earning-content .modal-body p{
+	margin-top: 20px;
+}
+.earning-content .amount-circle{
+	height: 120px;
+	width: 120px;
+	border-radius: 50%;
+	border:4px solid #cc181e;
+	margin: 0 auto;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+.earning-content .amount-circle h3{
+ 	color: #cc181e;
+}
+.earning-content .close{
+	color: #333;
+	margin-top: 0;
+}
  #preloader {
 
     position: absolute;
@@ -2097,7 +2116,7 @@ margin: 0px auto 35px;
 }
 .loader3 {
 
-    top:0;
+  top:0;
   bottom: 0;
   right: 0;
   left: 0;
