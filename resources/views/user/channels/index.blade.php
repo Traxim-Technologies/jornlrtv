@@ -82,7 +82,26 @@
 @endsection 
 
 @section('content')
-
+<div class="modal fade modal-top" id="earning" role="dialog">
+    <div class="modal-dialog bg-img modal-sm" style="background-image: url({{asset('images/popup-back.jpg')}});">
+        <!-- Modal content-->
+        <div class="modal-content earning-content">
+        	<div class="modal-header text-center">
+	          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          	<h3 class="modal-title no-margin">Total Earnings of this video</h3>
+	        </div>
+	        <div class="modal-body text-center">
+	        	<div class="amount-circle">
+	        		<h3 class="no-margin">$100.00</h3>
+	       		</div>
+	          	<p>Total views of this video - 15150</p>
+	          	<a href="#">
+	          		<button class="btn btn-danger top">View Reedems</button>
+	          	</a>
+	        </div>
+        </div>
+    </div>
+</div>
 <div class="y-content">
 
 	<div class="row content-row">
@@ -336,10 +355,13 @@
 					                                        @if(Auth::check())
 															@if($channel->user_id == Auth::user()->id)
 					                                        <div class="cross-mark">
+
+					                                        	<a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#earning"><i class="fa fa-eye" style="color:#fff" aria-hidden="true"></i></a>
+
 					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
 					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->video_tape_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
 
-					                                            <label style="float:none" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
+					                                            <label style="float:none; margin-top: 6px;" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
 					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
 					                                                <div class="slider round"></div>
 					                                            </label>
