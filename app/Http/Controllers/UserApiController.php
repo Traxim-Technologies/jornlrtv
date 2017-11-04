@@ -54,6 +54,8 @@ use App\Subscription;
 
 use App\UserPayment;
 
+use App\LiveVideo;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
