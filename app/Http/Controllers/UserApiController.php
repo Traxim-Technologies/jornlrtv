@@ -1397,12 +1397,26 @@ class UserApiController extends Controller {
 
                     $data = $videos;
                 }
+
+                $channel_status = DEFAULT_FALSE;
+
+                if($request->id) {
+
+                    $channel_status = check_channel_status($request->id, $channels->id);
+
+                }
+
+                $subscriberscnt = subscriberscnt($channels->id);
                 
             }
 
             $response_array = array('success' => true, 'channel_id'=>$channels->id, 
                         'channel_name'=>$channels->name, 'channel_image'=>$channels->picture,
-                        'channel_cover'=>$channels->cover, 'data' => $data);
+                        'channel_cover'=>$channels->cover, 
+                        'channel_description'=>$channels->description,
+                        'is_subscribed'=>$channel_status,
+                        'subscribers_count'=>$subscriberscnt,
+                        'data' => $data);
         }
 
         $response = response()->json($response_array, 200);
@@ -2495,7 +2509,6 @@ class UserApiController extends Controller {
 
             } else {
 
-
                 $response_array = ['success'=>false, 'error_messages'=>tr('add_card_is_not_enabled')];
 
                 return response()->json($response_array);
@@ -2712,7 +2725,7 @@ class UserApiController extends Controller {
                         }
 
                     } else {
-                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(140) , 'error_code' => 140);
+                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(901) , 'error_code' => 901);
                         return response()->json($response_array , 200);
                     }
 
