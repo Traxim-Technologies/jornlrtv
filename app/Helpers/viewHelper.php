@@ -857,7 +857,7 @@ function check_channel_status($user_id, $id) {
 
     $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $id)->first();
 
-    return $model ? $model->id : false;
+    return $model ? $model->id : 0;
 
 }
 

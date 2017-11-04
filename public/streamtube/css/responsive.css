@@ -108,6 +108,31 @@
 .modal-top1{
 	margin-top: 50px;
 }
+
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size:13px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	font-size: 11px;
+}
+.username{
+	font-size: 13px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
 }
 
 /*small devices*/
@@ -203,6 +228,7 @@
 	background-repeat: no-repeat;
 	height: 200px;
 }
+
 .add-card input {
     width: 330px;
 }
@@ -218,7 +244,31 @@
 .modal-top1{
 	margin-top: 50px;
 }
-
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 13px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size:12px;
+}
+.username{
+	font-size: 14px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
 }
 
 /* Tablets */
@@ -323,6 +373,35 @@
 .modal-top1{
 	margin-top: 250px;
 }
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 330px;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 330px;
+}
 }
 
 /* Medium Devices, */
@@ -426,6 +505,36 @@
 .modal-top1{
 	margin-top: 250px;
 }
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 330px;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 330px;
+}
 }
 
 /* Desktops */
@@ -528,6 +637,36 @@
 }
 .modal-top1{
 	margin-top: 250px;
+}
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 330px;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 330px;
 }
 }
 /*index.html responsive*/

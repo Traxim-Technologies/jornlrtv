@@ -736,6 +736,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('/payment_mgmt_videos', 'UserController@payment_mgmt_videos')->name('video.payment_mgmt_videos');
 
+    Route::get('invoice', 'UserController@invoice')->name('subscription.invoice');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){

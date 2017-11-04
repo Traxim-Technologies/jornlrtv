@@ -406,7 +406,7 @@ class UserController extends Controller {
 
         if($video = VideoTape::where('id',$request->video_tape_id)
                 ->where('status',1)
-                ->where('publish_status' , 1)
+               // ->where('publish_status' , 1)
                 ->where('video_tapes.is_approved' , 1)
                 ->first()) {
 
@@ -430,7 +430,7 @@ class UserController extends Controller {
 
                         // $video->redeem_count = 1;
 
-                        $video->watch_count = $video->watch_count + 1;
+                        // $video->watch_count = $video->watch_count + 1;
 
                         $video->amount += $video_amount;
 
@@ -445,13 +445,13 @@ class UserController extends Controller {
 
                         // $video->redeem_count += 1;
 
-                        $video->watch_count = $video->watch_count + 1;
+                        // $video->watch_count = $video->watch_count + 1;
                     }
 
                 }
             }
 
-            // $video->watch_count += 1;
+            $video->watch_count += 1;
 
             $video->save();
 
@@ -1357,6 +1357,7 @@ class UserController extends Controller {
         } else {
 
             $response->success = false;
+            
             $response->message = 'Adding cards is not enabled on this application. Please contact administrator';
 
             return back()->with('flash_errors', $response);
@@ -1694,5 +1695,10 @@ class UserController extends Controller {
                     ->with('payment_videos', $payment_videos)->render();
 
         return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
+    }
+
+    public function invoice() {
+
+        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice');
     }
 }

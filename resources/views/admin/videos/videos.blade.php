@@ -90,9 +90,9 @@
 
 							      	<td><b>{{Setting::get('currency')}} {{$video->amount}}</b></td>
 
-							      	<td>{{$video->getScopeLikeCount->count()}}</td>
+							      	<td>{{number_format_short($video->getScopeLikeCount->count())}}</td>
 
-							      	<td>{{$video->getScopeDisLikeCount->count()}}</td>
+							      	<td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td>
 
 							      	<td>
 							      		@if ($video->compress_status == 0)

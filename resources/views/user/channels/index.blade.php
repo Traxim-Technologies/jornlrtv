@@ -82,7 +82,26 @@
 @endsection 
 
 @section('content')
-
+<div class="modal fade modal-top" id="earning" role="dialog">
+    <div class="modal-dialog bg-img modal-sm" style="background-image: url({{asset('images/popup-back.jpg')}});">
+        <!-- Modal content-->
+        <div class="modal-content earning-content">
+        	<div class="modal-header text-center">
+	          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          	<h3 class="modal-title no-margin">Total Earnings of this video</h3>
+	        </div>
+	        <div class="modal-body text-center">
+	        	<div class="amount-circle">
+	        		<h3 class="no-margin">$100.00</h3>
+	       		</div>
+	          	<p>Total views of this video - 15150</p>
+	          	<a href="#">
+	          		<button class="btn btn-danger top">View Reedems</button>
+	          	</a>
+	        </div>
+        </div>
+    </div>
+</div>
 <div class="y-content">
 
 	<div class="row content-row">
@@ -222,7 +241,7 @@
 				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 				                                        </span> */?>
 				                                         <span class="video_views">
-					                                        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
+					                                        <i class="fa fa-eye"></i> {{number_format_short($trending_videos[0]->watch_count)}} {{tr('views')}} <b>.</b> 
 					                                        {{$trending_videos[0]->created_at->diffForHumans()}}
 					                                    </span>
 													</div>
@@ -265,7 +284,7 @@
 					                                           <a href="#"><i @if($trending_video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 					                                        </span> */?>
 					                                        <span class="video_views">
-						                                        <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
+						                                        <i class="fa fa-eye"></i> {{number_format_short($trending_video->watch_count)}} {{tr('views')}} <b>.</b> 
 						                                        {{$trending_video->created_at->diffForHumans()}}
 						                                    </span>
 														</div>
@@ -329,17 +348,20 @@
 					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
 							                                        {{$video->created_at->diffForHumans()}}
 							                                    </span>
 					                                        </div> 
 					                                        @if(Auth::check())
 															@if($channel->user_id == Auth::user()->id)
 					                                        <div class="cross-mark">
+
+					                                        	<a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#earning"><i class="fa fa-eye" style="color:#fff" aria-hidden="true"></i></a>
+
 					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
 					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->video_tape_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
 
-					                                            <label style="float:none" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
+					                                            <label style="float:none; margin-top: 6px;" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
 					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
 					                                                <div class="slider round"></div>
 					                                            </label>
@@ -444,7 +466,7 @@
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
 							                                        {{$video->created_at->diffForHumans()}}
 							                                    </span> 
 
