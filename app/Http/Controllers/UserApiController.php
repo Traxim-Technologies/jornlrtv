@@ -3018,7 +3018,7 @@ class UserApiController extends Controller {
     public function remove_spam(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'video_tape_id' => 'required|exists:video_tapes,id',
+            'video_tape_id' => $request->status ? '' : 'required|exists:video_tapes,id',
         ]);
         // If validator Fails, redirect same with error values
         if ($validator->fails()) {
@@ -3030,19 +3030,29 @@ class UserApiController extends Controller {
 
             return response()->json(['success'=>false , 'message'=>$error_messages]);
         }
-        // Load Spam Video from flag section
-        $model = Flag::where('user_id', $request->id)
-            ->where('video_tape_id', $request->video_tape_id)
-            ->first();
 
-        if ($model) {
+        if ($request->status) {
 
-            $model->delete();
+            Flag::where('user_id', $request->id)->delete();
 
             return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
+
         } else {
-            // throw new Exception("error", tr('admin_published_video_failure'));
-            return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+            // Load Spam Video from flag section
+            $model = Flag::where('user_id', $request->id)
+                ->where('video_tape_id', $request->video_tape_id)
+                ->first();
+
+            if ($model) {
+
+                $model->delete();
+
+                return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
+            } else {
+                // throw new Exception("error", tr('admin_published_video_failure'));
+                return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+            }
+
         }
     }
 
