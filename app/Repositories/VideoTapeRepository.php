@@ -492,6 +492,8 @@ class VideoTapeRepository {
                                     ->first();
         if($video_tape_details) {
 
+            $video_tape_details->publish_time = $video_tape_details->publish_time ? $video_tape_details->publish_time : '';
+
             $data = $video_tape_details->toArray();
 
             $data['wishlist_status'] = $data['history_status'] = $data['is_subscribed'] = $data['is_liked'] = $data['pay_per_view_status'] = $data['user_type'] = $data['flaggedVideo'] = 0;
