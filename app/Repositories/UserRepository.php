@@ -125,7 +125,7 @@ class UserRepository {
         $user->address = $request->has('address') ? $request->address : "";
         $user->description = $request->has('description') ? $request->description : "";
 
-		$user->token = Helper::generate_token();
+		// $user->token = Helper::generate_token();
         $user->token_expiry = Helper::generate_token_expiry();
 
         $check_device_exist = User::where('device_token', $request->device_token)->first();
@@ -149,6 +149,7 @@ class UserRepository {
         $user->payment_mode = $request->payment_mode ? $request->payment_mode : 'cod';
 
         // Upload picture
+
         if($request->login_by == "manual") {
 
             if($request->hasFile('picture')) {
@@ -168,7 +169,15 @@ class UserRepository {
         $user->login_by = $request->login_by ?  $request->login_by : "manual";
 
         $user->status = 1;
+
         $user->payment_mode = 'cod';
+
+        // CHeck admin enabled register user as paid user
+
+        if(Setting::get('is_default_paid_user') == 1) {
+
+            $user->user_type = 1;
+        }
 
         $user->save();
 

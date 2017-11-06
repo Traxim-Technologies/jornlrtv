@@ -7,7 +7,7 @@
 
             @include('layouts.user.nav')
     
-            <div class="history-content page-inner col-sm-9 col-md-10">
+            <div class=" page-inner col-sm-9 col-md-10">
                 <div class="new-history">
                     <div class="content-head search-head">
                         <div><h4>{{tr('search_result')}} "{{$key}}"</h4></div>               
@@ -24,7 +24,7 @@
                                 <li class="sub-list search-list row">
                                     <div class="main-history">
                                          <div class="history-image">
-                                            <a href="{{route('user.single' , $video->admin_video_id)}}">
+                                            <a href="{{route('user.single' , $video->video_tape_id)}}">
                                                 <img src="{{$video->default_image}}">
                                             </a>        
                                             <div class="video_duration">
@@ -36,9 +36,9 @@
                                             <div class="history-head row">
                                                 <div class="cross-title">
                                                     <h5>
-                                                        <a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+                                                        <a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
                                                     <span class="video_views">
-                                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}}<b>.</b> 
+                                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}}<b>.</b> 
                                                         {{$video->created_at->diffForHumans()}}
                                                     </span> 
                                                 </div> 
@@ -65,7 +65,8 @@
 
                         @else
 
-                            <p class="no-result">{{tr('no_search_result')}}</p>
+                            <!-- <p class="no-result">{{tr('no_search_result')}}</p> -->
+                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
                         @endif
                        

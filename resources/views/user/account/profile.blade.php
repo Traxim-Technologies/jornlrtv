@@ -125,7 +125,7 @@
                                     <li class="sub-list row no-margin">
                                         <div class="main-history">
                                             <div class="history-image">
-                                                <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>  
+                                                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a>  
                                                  <div class="video_duration">
                                                     {{$video->duration}}
                                                 </div>                      
@@ -134,9 +134,9 @@
                                             <div class="history-title">
                                                 <div class="history-head row">
                                                     <div class="cross-title1">
-                                                        <h5><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+                                                        <h5><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
                                                          <span class="video_views">
-                                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} 
+                                                            <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} 
                                                             <b>.</b> 
                                                             {{$video->created_at->diffForHumans()}}
                                                         </span>

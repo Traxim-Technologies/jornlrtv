@@ -479,15 +479,23 @@ function user_type_check($user) {
 
     if($user) {
 
-        // User need subscripe the plan
+        if(Setting::get('is_default_paid_user') == 1) {
 
-        if(Setting::get('is_subscription')) {
-
-            $user->user_type = 0;
+            $user->user_type = 1;
 
         } else {
-            // Enable the user as paid user
-            $user->user_type = 1;
+
+            // User need subscripe the plan
+
+            if(Setting::get('is_subscription')) {
+
+                $user->user_type = 0;
+
+            } else {
+                // Enable the user as paid user
+                $user->user_type = 1;
+            }
+
         }
 
         $user->save();
@@ -593,7 +601,7 @@ function loadChannels() {
     }
 
     $model = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 ->where('channels.status', DEFAULT_TRUE)
@@ -851,7 +859,7 @@ function check_channel_status($user_id, $id) {
 
     $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $id)->first();
 
-    return $model ? $model->id : false;
+    return $model ? $model->id : 0;
 
 }
 
@@ -1005,4 +1013,26 @@ function number_format_short( $n, $precision = 1 ) {
         $n_format = str_replace( $dotzero, '', $n_format );
     }
     return $n_format . $suffix;
+}
+
+function getMinutesBetweenTime($startTime, $endTime) {
+
+    $to_time = strtotime($endTime);
+
+    $from_time = strtotime($startTime);
+
+    $diff = abs($to_time - $from_time);
+
+    if ($diff <= 0) {
+
+        $diff = 0;
+
+    } else {
+
+        $diff = round($diff/60);
+
+    }
+
+    return $diff;
+
 }

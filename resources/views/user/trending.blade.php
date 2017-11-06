@@ -22,7 +22,7 @@
                             @foreach($videos as $video)
                                 <div class="slide-box recom-box">
                                     <div class="slide-image recom-image">
-                                        <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}" /></a>
+                                        <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}" /></a>
 
                                         <div class="video_duration">
                                             {{$video->duration}}
@@ -31,7 +31,7 @@
 
                                     <div class="video-details recom-details">
                                         <div class="video-head">
-                                            <a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a>
+                                            <a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a>
                                         </div>
                                         <?php /*<div class="sugg-description">
                                             <p>{{tr('duration')}}: {{$video->duration}}</p>
@@ -46,7 +46,7 @@
                                         </span>   */?>
 
                                         <span class="video_views">
-                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                            <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
                                             {{$video->created_at->diffForHumans()}}
                                         </span> 
                                     </div><!--end of video-details-->

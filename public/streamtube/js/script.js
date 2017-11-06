@@ -2,6 +2,7 @@
       
             $('.toggle-icon').click(function () {
             $('.y-menu').toggleClass('hidden');
+            $('.y-menu').toggleClass('overlay1');
             });
         });
 

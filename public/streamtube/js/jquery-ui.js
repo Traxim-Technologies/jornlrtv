@@ -148,9 +148,9 @@ if ( !$( "<a>" ).outerWidth( 1 ).jquery ) {
 		var side = name === "Width" ? [ "Left", "Right" ] : [ "Top", "Bottom" ],
 			type = name.toLowerCase(),
 			orig = {
-				innerWidth: $.fn.innerWidth,
+				innerWidth: $.fn.innerWidth - 15,
 				innerHeight: $.fn.innerHeight,
-				outerWidth: $.fn.outerWidth,
+				outerWidth: $.fn.outerWidth - 15,
 				outerHeight: $.fn.outerHeight
 			};
 

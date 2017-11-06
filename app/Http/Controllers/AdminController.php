@@ -1141,6 +1141,21 @@ class AdminController extends Controller {
 
                     $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
 
+                }  else if($setting->key == "admin_commission") {
+
+                    $setting->value = $request->admin_commission < 100 ? $request->admin_commission : 100;
+
+                    $user_commission = $request->admin_commission < 100 ? 100 - $request->admin_commission : 0;
+
+                    $user_commission_details = Settings::where('key' , 'user_commission')->first();
+
+                    if(count($user_commission_details) > 0) {
+                        $user_commission_details->value = $user_commission;
+
+                        $user_commission_details->save();
+                    }
+
+
                 } else if($request->$key!='') {
 
                     $setting->value = $request->$key;
@@ -1454,9 +1469,25 @@ class AdminController extends Controller {
         return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels');
     }
 
+
+
     public function add_channel() {
 
-        $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->get();
+        // Check the create channel option is enabled from admin settings
+
+        if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED) {
+
+            $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->get();
+
+        } else {
+
+            // Load master user
+
+            $users = User::where('is_verified', DEFAULT_TRUE)->where('is_master_user' , 1)
+                            ->where('status', DEFAULT_TRUE)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+        }
 
         return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
     }
@@ -1779,7 +1810,7 @@ class AdminController extends Controller {
 
     public function ad_videos() {
 
-        $videos = VideoAd::select('channels.id as channel_id', 'channels.name', 'video_tapes.id as admin_video_id', 'video_tapes.title', 'video_tapes.default_image', 'video_tapes.ad_status',
+        $videos = VideoAd::select('channels.id as channel_id', 'channels.name', 'video_tapes.id as video_tape_id', 'video_tapes.title', 'video_tapes.default_image', 'video_tapes.ad_status',
             'video_ads.*','video_tapes.channel_id')
                     ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
                     ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
@@ -2408,7 +2439,7 @@ class AdminController extends Controller {
 
             $model->delete();
 
-            return with('flash_success', tr('banner_delete_success'));
+            return back()->with('flash_success', tr('banner_delete_success'));
 
         }
 

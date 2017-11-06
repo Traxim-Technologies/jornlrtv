@@ -65,6 +65,7 @@ video {
 
                         </div>
 
+                        <div id="rtsp_container"></div>
 
                         <div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
                           <img src="{{asset('error.jpg')}}" class="error-image" alt="Error">
@@ -448,6 +449,8 @@ var is_vod = "<?= Setting::get('is_vod')?>";
 
 var wowza_ip_address = "<? = Setting::get('wowza_ip_address') ?>";
 
+var routeUrl = "<?= route('user.live_videos') ?>";
+
 var liveAppCtrl = angular.module('liveApp', [
   'btford.socket-io',
 
@@ -462,6 +465,7 @@ var liveAppCtrl = angular.module('liveApp', [
 .constant('chat_socket_url', chat_socket_url)
 .constant('url',url)
 .constant('live_user_id',live_user_id)
+.constant('routeUrl', routeUrl)
 .constant('user_token',user_token);
 
 liveAppCtrl

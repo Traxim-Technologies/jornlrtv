@@ -82,7 +82,26 @@
 @endsection 
 
 @section('content')
-
+<div class="modal fade modal-top" id="earning" role="dialog">
+    <div class="modal-dialog bg-img modal-sm" style="background-image: url({{asset('images/popup-back.jpg')}});">
+        <!-- Modal content-->
+        <div class="modal-content earning-content">
+        	<div class="modal-header text-center">
+	          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          	<h3 class="modal-title no-margin">Total Earnings of this video</h3>
+	        </div>
+	        <div class="modal-body text-center">
+	        	<div class="amount-circle">
+	        		<h3 class="no-margin">$100.00</h3>
+	       		</div>
+	          	<p>Total views of this video - 15150</p>
+	          	<a href="#">
+	          		<button class="btn btn-danger top">View Reedems</button>
+	          	</a>
+	        </div>
+        </div>
+    </div>
+</div>
 <div class="y-content">
 
 	<div class="row content-row">
@@ -115,148 +134,194 @@
 					<div>
 						<div class="pull-left">
 							<h1 class="st_channel_heading">{{$channel->name}}</h1>
+							<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p>
 						</div>
 						<div class="pull-right upload_a">
 							@if(Auth::check())
 
 								@if($channel->user_id == Auth::user()->id)
-									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
-									<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast"><i class="fa fa-video-camera"></i> {{tr('start_broadcast')}}</button>
-									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
-									<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
+
+									<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}">
+										<i class="fa fa-plus-circle"></i> 
+										{{tr('upload_video')}}
+									</a>
+
+									@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
+
+										<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast">
+											<i class="fa fa-video-camera"></i> 
+											{{tr('start_broadcast')}}
+										</button>
+
+									@endif
+
+									<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}">
+										<i class="fa fa-pencil"></i> 
+										{{tr('edit_channel')}}
+									</a>
+
+									<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}">
+										<i class="fa fa-trash"></i> {{tr('delete_channel')}}
+									</a>
 
 
+									@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
 
-									<div id="start_broadcast" class="modal fade" role="dialog">
-									    <div class="modal-dialog">
+										<div id="start_broadcast" class="modal fade" role="dialog">
+										    <div class="modal-dialog">
 
-									    <!-- Modal content-->
-									    <div class="modal-content">
-									        <div class="modal-header start_brocadcast_form">
-									            <button type="button" class="close" data-dismiss="modal">&times;</button>
-									        	<h4 class="modal-title text-uppercase text-center">{{tr('start_broadcast')}}</h4>
-									        </div>
-									        <div class="modal-body body-modal">
+										    <!-- Modal content-->
+										    <div class="modal-content">
+										        <div class="modal-header start_brocadcast_form">
+										            <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        	<h4 class="modal-title text-uppercase text-center">{{tr('start_broadcast')}}</h4>
+										        </div>
 
-									      	<form method="post" action="{{route('user.live_video.broadcast')}}">
+										        <div class="modal-body body-modal">
 
-									      	<input type="hidden" name="channel_id" value="{{$channel->id}}">
+										      	<form method="post" action="{{route('user.live_video.broadcast')}}">
 
-									      	<input type="hidden" name="user_id" value="{{$channel->user_id}}">
+											      	<input type="hidden" name="channel_id" value="{{$channel->id}}">
+
+											      	<input type="hidden" name="user_id" value="{{$channel->user_id}}">
+
+													<!-- Text input-->
+
+				                                    <div class="form-group form-group1">
+				                                    	<input type="text" class="form-control signup-form1" placeholder="Enter Title" id="title" name="title" required="">
+				                                   	</div>
+
+				                                    <!-- <div class="row">
+					                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
+					                                    <div class="col-md-9">
+					                                      <input id="title" name="title" type="text" placeholder="Video Title" class="form-control" required="">
+					                                    </div>
+
+					                                    <div class="clearfix"></div>
+				                                    </div> -->
+				                                  
+
+				                                 <!--  <br> -->
 
 
-												      	 <!-- Text input-->
-			                                    <div class="form-group form-group1">
-			                                    	<input type="text" class="form-control signup-form1" placeholder="Enter Title" id="title" name="title" required="">
-			                                   	</div>
-			                                    <!-- <div class="row">
-				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('title')}}</label>
+				                                  <!-- Multiple Radios (inline) -->
+	 			                                  <!--<div class="row">
+				                                    <label class="col-md-3 control-label" for="reqType">{{tr('payment')}}</label>
 				                                    <div class="col-md-9">
-				                                      <input id="title" name="title" type="text" placeholder="Video Title" class="form-control" required="">
+				                                      <label class="radio-inline" for="reqType-1">
+				                                        <input type="radio" name="payment_status" id="reqType-1" value="0" checked  onchange="return $('#price').hide();">
+				                                        Free </label>
+				                                      <label class="radio-inline" for="reqType-0">
+				                                        <input type="radio" name="payment_status" id="reqType-0" value="1" onchange="return $('#price').show()">
+				                                        Paid </label>
 				                                    </div>
+				                                  </div> -->
 
-				                                    <div class="clearfix"></div>
-			                                    </div> -->
-			                                  
+				                                 	<!-- payment -->
+				                                 	@if(!Setting::get('is_subscription') || Setting::get('is_default_paid_user'))
 
-			                                 <!--  <br> -->
+				                                 		<input type="hidden"  name="payment_status" value="0">
 
+				                                 	@else
 
-			                                  <!-- Multiple Radios (inline) -->
-<!-- 			                                  <div class="row">
-			                                    <label class="col-md-3 control-label" for="reqType">{{tr('payment')}}</label>
-			                                    <div class="col-md-9">
-			                                      <label class="radio-inline" for="reqType-1">
-			                                        <input type="radio" name="payment_status" id="reqType-1" value="0" checked  onchange="return $('#price').hide();">
-			                                        Free </label>
-			                                      <label class="radio-inline" for="reqType-0">
-			                                        <input type="radio" name="payment_status" id="reqType-0" value="1" onchange="return $('#price').show()">
-			                                        Paid </label>
-			                                    </div>
-			                                  </div> -->
+														<div class="form-group radio-btn">
 
-			                                 	 <!-- payment -->
-												<div class="form-group radio-btn">
-													<label class="control-label col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
-													<div class="col-sm-8">
-													    <label class="radio-inline width-100" for="reqType-1">
-															<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free
-														</label>
-														<label class="radio-inline">
-															<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">Paid
-													    </label>
-											      	</div>
-												</div>
-			                                  	<div class="clearfix"></div>
+															<label class="control-label col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
 
-			                                  <!-- Multiple Radios (inline) -->
-			                                  <!-- <div class="row" style="display: none">
-			                                    <label class="col-md-3 control-label" for="dataFormat">{{tr('type')}}</label>
-			                                    <div class="col-md-9">
-			                                      <label class="radio-inline" for="dataFormat-0">
-			                                        <input type="radio" name="type" value="public" checked onchange="return $('#price').hide();">
-			                                        Public </label>
-			                                      <label class="radio-inline" for="dataFormat-1">
-			                                        <input type="radio" name="type" id="dataFormat-1" value="private" onchange="return $('#price').show()">
-			                                        Private </label>
-			                                    </div>
-			                                  </div> -->
-			                                  
+															<div class="col-sm-8">
 
-			                                  <!-- Multiple Checkboxes (inline) -->
-			                                 <!--  <div class="row" style="display: none" id="price">
-			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('amount')}}</label>
-			                                    <div class="col-md-9">
-			                                      <input id="Amount" name="amount" type="number" placeholder="Amount" class="form-control" pattern="[0-9]{0,}">
-			                                    </div>
-			                                  </div> -->
+															    <label class="radio-inline width-100" for="reqType-1">
+																	<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free
+																</label>
+																<label class="radio-inline">
+																	<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">Paid
+															    </label>
+													      	</div>
+														
+														</div>
 
-			                                 	<!-- ======amount===== -->
-				                                <div class="form-group form-group1" style="display: none" id="price">
-				                                    <input id="Amount" name="amount" type="number" placeholder="Amount" pattern="[0-9]{0,}" class="form-control signup-form1">
-				                                </div>
-			                                  
+					                                  	<div class="clearfix"></div>
 
-				                                <!-- ===========description======= -->
-			                                  <!-- <div class="row">
-			                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('description')}}</label>
-			                                    <div class="col-md-9">
-			                                      <textarea id="description" name="description" placeholder="{{tr('description')}}" class="form-control" ng-model="description" required></textarea>
-			                                    </div>
-			                                  </div>
-			                                  <br> -->
+				                                  	@endif
 
-			                                    <div class="form-group form-group1">
-												    <textarea id="description" name="description" class="form-control signup-form1" rows="5" id="comment" placeholder="{{tr('description')}}"></textarea>
-												</div>
+				                                  <!-- Multiple Radios (inline) -->
+				                                  <!-- <div class="row" style="display: none">
+				                                    <label class="col-md-3 control-label" for="dataFormat">{{tr('type')}}</label>
+				                                    <div class="col-md-9">
+				                                      <label class="radio-inline" for="dataFormat-0">
+				                                        <input type="radio" name="type" value="public" checked onchange="return $('#price').hide();">
+				                                        Public </label>
+				                                      <label class="radio-inline" for="dataFormat-1">
+				                                        <input type="radio" name="type" id="dataFormat-1" value="private" onchange="return $('#price').show()">
+				                                        Private </label>
+				                                    </div>
+				                                  </div> -->
+				                                  
+
+				                                  <!-- Multiple Checkboxes (inline) -->
+				                                 <!--  <div class="row" style="display: none" id="price">
+				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('amount')}}</label>
+				                                    <div class="col-md-9">
+				                                      <input id="Amount" name="amount" type="number" placeholder="Amount" class="form-control" pattern="[0-9]{0,}">
+				                                    </div>
+				                                  </div> -->
+
+				                                 	<!-- ======amount===== -->
+					                                <div class="form-group form-group1" style="display: none" id="price">
+					                                    <input id="Amount" name="amount" type="number" placeholder="Amount" pattern="[0-9]{0,}" class="form-control signup-form1">
+					                                </div>
+				                                  
+
+					                                <!-- ===========description======= -->
+				                                  <!-- <div class="row">
+				                                    <label class="col-md-3 control-label title-form" for="sms">{{tr('description')}}</label>
+				                                    <div class="col-md-9">
+				                                      <textarea id="description" name="description" placeholder="{{tr('description')}}" class="form-control" ng-model="description" required></textarea>
+				                                    </div>
+				                                  </div>
+				                                  <br> -->
+
+				                                    <div class="form-group form-group1">
+													    <textarea id="description" name="description" class="form-control signup-form1" rows="5" id="comment" placeholder="{{tr('description')}}"></textarea>
+													</div>
 
 
-			                                  <!-- Button (Double) -->
-<!-- 			                                  <div class="row">
-			                                    <label class="col-md-3 control-label" for="submitButton"></label>
-			                                    <div class="col-md-9">
-			                                      <div class="button-form-f">
-			                                        <button type="submit" id="submitButton" name="submitButton" class="btn btn-danger" style="background: #ff0000">{{tr('broadcast')}}</button>
-			                                        <button type="reset" value="reset" id="reset" name="reset" class="btn btn-default" data-dismiss="modal">{{tr('cancel')}}</button>
-			                                      </div>
-			                                    </div>
-			                                  </div> -->
-			                                  <button class="signup-btn submit" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
+				                                  <!-- Button (Double) -->
+	 			                                  <!-- <div class="row">
+				                                    <label class="col-md-3 control-label" for="submitButton"></label>
+				                                    <div class="col-md-9">
+				                                      <div class="button-form-f">
+				                                        <button type="submit" id="submitButton" name="submitButton" class="btn btn-danger" style="background: #ff0000">{{tr('broadcast')}}</button>
+				                                        <button type="reset" value="reset" id="reset" name="reset" class="btn btn-default" data-dismiss="modal">{{tr('cancel')}}</button>
+				                                      </div>
+				                                    </div>
+				                                  </div> -->
+
+				                                @if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1) 
+				                                  	<button class="signup-btn submit" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
+				                                @else
+
+				                                  	<button class="signup-btn submit" type="button" onclick="return alert('Broadcast option is disabled by admin.');">{{tr('broadcast')}}</button>
+
+				                                @endif
 
 
-									      <!-- <div class="modal-footer">
-									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									      </div> -->
+										      <!-- <div class="modal-footer">
+										        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										      </div> -->
 
-									      </form>
+										      </form>
 
-									      </div>
+										      </div>
 
-									      <div class="clearfix"></div>
-									    </div>
+										      <div class="clearfix"></div>
+										    </div>
 
-									  </div>
-									</div>
+										  </div>
+										
+										</div>
+
+									@endif
 
 								@endif
 
@@ -264,49 +329,64 @@
 
 									@if (!$subscribe_status)
 
-									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}}({{$subscriberscnt}})</a>
+									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}} </a>
 
 									@else 
 
-										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}({{$subscriberscnt}})</a>
+										<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
 
 									@endif
+								
 								@else
 
 									@if($subscriberscnt > 0)
 
-									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}}({{$subscriberscnt}})</a>
+									<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$subscriberscnt}}</a>
 
 									@endif
 
 								@endif
+
 							@endif
+							
 						</div>
 						<div class="clearfix"></div>
 					</div>
 
 					<div id="channel-subheader" class="clearfix branded-page-gutter-padding appbar-content-trigger">
 						<ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
+							
 							<li role="presentation" class="active">
 								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('home')}}</span></a>
 							</li>
+
 							<li role="presentation" id="videos_sec">
 								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
 							</li>
 
-							<li role="presentation">
-								<a href="#live_videos_section" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="live_videos_section" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('live_videos')}}</span> </a>
-							</li>
+							@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
+
+								<li role="presentation">
+
+									<a href="#live_videos_section" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="live_videos_section" role="tab" data-toggle="tab">
+										<span class="yt-uix-button-content">{{tr('live_videos')}}</span> 
+									</a>
+
+								</li>
+
+							@endif
 
 							<li role="presentation">
 								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('about_video')}}</span> </a>
 							</li>
 							@if(Auth::check())
+
 								@if($channel->user_id == Auth::user()->id)
 									<li role="presentation" id="payment_managment_sec">
 										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> </a>
 									</li>
 								@endif
+								
 							@endif
 						</ul>
 					</div>
@@ -341,14 +421,14 @@
 
 												<div class="slide-box recom-box big-box-slide">
 													<div class="slide-image recom-image hbb">
-														<a href="{{route('user.single', $trending_videos[0]->admin_video_id)}}"><img src="{{$trending_videos[0]->default_image}}"></a>
+														<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"><img src="{{$trending_videos[0]->default_image}}"></a>
 														<div class="video_duration">
 					                                        {{$trending_videos[0]->duration}}
 					                                    </div>
 													</div>
 													<div class="video-details recom-details">
 														<div class="video-head">
-															<a href="{{route('user.single', $trending_videos[0]->admin_video_id)}}"> {{$trending_videos[0]->title}}</a>
+															<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"> {{$trending_videos[0]->title}}</a>
 														</div>
 														<?php /*<div class="sugg-description">
 															<p>{{tr('duration')}}: {{$trending_videos[0]->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{$trending_videos[0]->created_at ? $trending_videos[0]->created_at->diffForHumans() : 0}} </span>
@@ -364,7 +444,7 @@
 				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 				                                        </span> */?>
 				                                         <span class="video_views">
-					                                        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
+					                                        <i class="fa fa-eye"></i> {{number_format_short($trending_videos[0]->watch_count)}} {{tr('views')}} <b>.</b> 
 					                                        {{$trending_videos[0]->created_at->diffForHumans()}}
 					                                    </span>
 													</div>
@@ -382,7 +462,7 @@
 
 													<div class="slide-box recom-box big-box-slide">
 														<div class="slide-image recom-image hbbb">
-															<a href="{{route('user.single', $trending_video->admin_video_id)}}"><img src="{{$trending_video->default_image}}"></a>
+															<a href="{{route('user.single', $trending_video->video_tape_id)}}"><img src="{{$trending_video->default_image}}"></a>
 															<div class="video_duration">
 						                                        {{$trending_video->duration}}
 						                                    </div>
@@ -391,7 +471,7 @@
 
 														<div class="video-details recom-details">
 															<div class="video-head">
-																<a href="{{route('user.single', $trending_video->admin_video_id)}}">{{$trending_video->title}}</a>
+																<a href="{{route('user.single', $trending_video->video_tape_id)}}">{{$trending_video->title}}</a>
 															</div>
 															<?php /*<div class="sugg-description">
 																<p>{{tr('duration')}}: {{$trending_video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($trending_video->created_at) ? $trending_video->created_at->diffForHumans() : 0}}</span>
@@ -407,7 +487,7 @@
 					                                           <a href="#"><i @if($trending_video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 					                                        </span> */?>
 					                                        <span class="video_views">
-						                                        <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
+						                                        <i class="fa fa-eye"></i> {{number_format_short($trending_video->watch_count)}} {{tr('views')}} <b>.</b> 
 						                                        {{$trending_video->created_at->diffForHumans()}}
 						                                    </span>
 														</div>
@@ -459,7 +539,7 @@
 					                        <li class="sub-list row">
 					                            <div class="main-history">
 					                                 <div class="history-image">
-					                                    <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a>
+					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a>
 					                                    <div class="video_duration">
 					                                        {{$video->duration}}
 					                                    </div>                        
@@ -468,21 +548,24 @@
 					                                <div class="history-title">
 					                                    <div class="history-head row">
 					                                        <div class="cross-title">
-					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}}</a></h5>
+					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
 							                                        {{$video->created_at->diffForHumans()}}
 							                                    </span>
 					                                        </div> 
 					                                        @if(Auth::check())
 															@if($channel->user_id == Auth::user()->id)
 					                                        <div class="cross-mark">
-					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->admin_video_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
-					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->admin_video_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
 
-					                                            <label style="float:none" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
-					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->admin_video_id}})">
+					                                        	<a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#earning"><i class="fa fa-eye" style="color:#fff" aria-hidden="true"></i></a>
+
+					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
+					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->video_tape_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
+
+					                                            <label style="float:none; margin-top: 6px;" class="switch" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
+					                                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
 					                                                <div class="slider round"></div>
 					                                            </label>
 					                                        </div>
@@ -541,6 +624,8 @@
 
 
 				</li>
+
+				@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user)
 
 
 				<li role="tabpanel" class="tab-pane" id="live_videos_section">
@@ -724,6 +809,10 @@
 
 
 				</li>
+
+				@endif
+
+
 				<li role="tabpanel" class="tab-pane" id="about">
 
 					<div class="slide-area recom-area abt-sec">
@@ -756,7 +845,7 @@
 					                        <li class="sub-list row">
 					                            <div class="main-history">
 					                                 <div class="history-image">
-					                                    <a href="{{route('user.single' , $video->admin_video_id)}}"><img src="{{$video->default_image}}"></a> 
+					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a> 
 					                                    <div class="video_duration">
 					                                        {{$video->duration}}
 					                                    </div>                          
@@ -765,17 +854,17 @@
 					                                <div class="history-title">
 					                                    <div class="history-head row">
 					                                        <div class="cross-title">
-					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->admin_video_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
+					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
 							                                        {{$video->created_at->diffForHumans()}}
 							                                    </span> 
 
 					                                        </div> 
 					                                        <div class="cross-mark">
-					                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->admin_video_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+					                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
 					                                        </div><!--end of cross-mark-->                       
 					                                    </div> <!--end of history-head--> 
 

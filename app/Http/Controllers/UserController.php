@@ -76,9 +76,7 @@ class UserController extends Controller {
 
         $this->UserAPI = $API;
 
-
         $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos','master_login']]);
-
 
         if (Auth::check()) {
 
@@ -129,7 +127,6 @@ class UserController extends Controller {
             }
 
         }
-
     }
 
 
@@ -290,7 +287,7 @@ class UserController extends Controller {
     public function single_video(Request $request) {
 
         $request->request->add([ 
-                'admin_video_id' => $request->id,
+                'video_tape_id' => $request->id,
         ]);
 
         if (Auth::check()) {
@@ -332,7 +329,8 @@ class UserController extends Controller {
                         ->with('like_count',$response->like_count)
                         ->with('dislike_count',$response->dislike_count)
                         ->with('subscriberscnt', $response->subscriberscnt)
-                        ->with('comment_rating_status', $response->comment_rating_status);
+                        ->with('comment_rating_status', $response->comment_rating_status)
+                        ->with('embed_link', $response->embed_link);
        
         } else {
 
@@ -488,7 +486,10 @@ class UserController extends Controller {
     public function watch_count(Request $request) {
 
         if($video = VideoTape::where('id',$request->video_tape_id)
-                ->where('status',1)->where('publish_status' , 1)->where('video_tapes.is_approved' , 1)->first()) {
+                ->where('status',1)
+               // ->where('publish_status' , 1)
+                ->where('video_tapes.is_approved' , 1)
+                ->first()) {
 
             \Log::info("ADD History - Watch Count Start");
 
@@ -502,13 +503,15 @@ class UserController extends Controller {
 
                     // Check the video view count reached admin viewers count, to add amount for each view
 
-                    if($video->redeem_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
+                    if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
                         \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
                         $video_amount = Setting::get('amount_per_video');
 
-                        $video->redeem_count = 1;
+                        // $video->redeem_count = 1;
+
+                        // $video->watch_count = $video->watch_count + 1;
 
                         $video->amount += $video_amount;
 
@@ -521,8 +524,9 @@ class UserController extends Controller {
 
                         \Log::info("ADD History - NO REDEEM");
 
-                        $video->redeem_count += 1;
+                        // $video->redeem_count += 1;
 
+                        // $video->watch_count = $video->watch_count + 1;
                     }
 
                 }
@@ -534,14 +538,16 @@ class UserController extends Controller {
 
             \Log::info("ADD History - Watch Count Start");
 
-            return response()->json(true);
+            return response()->json(['success'=>true, 
+                    'data'=>['watch_count'=>number_format_short($video->watch_count)]]);
 
         } else {
 
-            return response()->json(false);
+            return response()->json(['success'=>false]);
         }
 
     }
+
 
     public function delete_history(Request $request) {
 
@@ -584,7 +590,7 @@ class UserController extends Controller {
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token,
-            'video_tape_id' => $request->admin_video_id
+            'video_tape_id' => $request->video_tape_id
         ]);
 
         if($request->status == 1) {
@@ -646,7 +652,7 @@ class UserController extends Controller {
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token,
-            'video_tape_id'=>$request->admin_video_id
+            'video_tape_id'=>$request->video_tape_id
         ]);
 
         $response = $this->UserAPI->user_rating($request)->getData();
@@ -676,7 +682,7 @@ class UserController extends Controller {
     public function channel_videos($id) {
 
         $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                /*->select('channels.*', 'video_tapes.id as admin_video_id', 'video_tapes.is_approved',
+                /*->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 ->where('channels.status', DEFAULT_TRUE)
@@ -1435,6 +1441,7 @@ class UserController extends Controller {
         } else {
 
             $response->success = false;
+            
             $response->message = 'Adding cards is not enabled on this application. Please contact administrator';
 
             return back()->with('flash_errors', $response);
@@ -1729,7 +1736,7 @@ class UserController extends Controller {
     public function subscribed_channels(Request $request) {
 
         $request->request->add([ 
-            'user_id' => \Auth::user()->id,
+            'id' => \Auth::user()->id,
         ]);        
 
         $response = $this->UserAPI->channel_list($request)->getData();
@@ -1950,6 +1957,8 @@ class UserController extends Controller {
             if ($model->user_id == Auth::user()->id) {
 
                 $model->end_time = getUserTime(date('H:i:s'), ($model->user) ? $model->user->timezone : '', "H:i:s");
+
+                $model->no_of_minutes = getMinutesBetweenTime($model->start_time, $model->end_time);
 
                 $message =  tr('streaming_stopped_success');
 
@@ -2315,6 +2324,12 @@ class UserController extends Controller {
         return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
     }
 
+
+    public function invoice() {
+
+        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice');
+
+    }
 
     public function delete_video($id, $user_id) {
 

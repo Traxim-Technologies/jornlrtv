@@ -112,6 +112,10 @@ body{
 	text-decoration: none;
 	color: #584d4d;
 	font-size: 13px;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 .toggle-icon{
 	margin-top: 10px;
@@ -215,6 +219,7 @@ footer{
 .tube-image{
 	width: 130px;
     height: 30px;
+    margin: 0 auto;
     /*margin-top: 10PX;*/
 }
 .tube-image img{
@@ -249,18 +254,17 @@ footer{
 	color: rgb(51, 51, 51);
 	font-size: 14px;
 }
+.search-input{
+	margin-right: -23px;
+}
 /*search bar css*/
-#custom-search-input{
- 	 width: 100%;
- 	 float: left;
- 	 margin-top: 1px;
- }
+
  #custom-search-input .search-query {
         padding-right: 3px;
         padding-right: 4px \9;
         padding-left: 3px;
         padding-left: 4px \9;
-        padding: 10px;
+        padding: 9px 10px;
        
         /* IE7-8 doesn't have border-radius, so don't indent the padding */
  
@@ -450,6 +454,7 @@ videos (single page) css
 .channels-head i:hover{
 	background-color: #62B2E5;
 }
+
 .subs{
 	background-color: #E62117;
 	border-color: transparent;
@@ -466,30 +471,48 @@ videos (single page) css
 .share-details i{
 	margin-right: 0px;
 }
+.share-new{
+	color: #999;
+	font-size: 16px;
+	cursor: pointer;
+}
+.share-new:hover, .share-new:focus,  .share-new:active{
+	color: #999;
+}
+.share-new p{
+	font-size: 16px !important;
+	margin-top: 7px;
+	margin-left: 5px;
+	font-weight: normal !important;
+}
+.share-new i{
+	margin-left: 10px;
+}
+.modal-top1 .modal-content{
+	border-radius: 0;
+}
+.modal-top1 .close:hover{
+	color: #000;
+}
 .more-content a{
 	/*color: #767676;*/
 	/*padding: 10px;*/
 }
 .mylist{
 	line-height: 2em;
-	float: left;
-	padding: 20px 0;
+	float:right;
+	/*padding: 20px 0;*/
 }
 .share{
 	float: left;
-	padding: 20px 0;
+	padding:20px 0;
 }
 .ratings{
 	float: right;
-	margin-top: 5px;
+	margin-top: 10px;
 }
-
-.views {
-	border-bottom: 1px solid #b8b8b8;
-    font-family: arial;
-    font-size: 14px;
-    font-weight: bold;
-    padding-bottom: 5px;
+.top-btn-space{
+	margin-top: 5px;
 }
 .share-fb{
 	background-color: #3b5998;
@@ -538,7 +561,7 @@ videos (single page) css
 	padding: 0;
 }
 .stars i{
-	font-size: 12px;
+	font-size: 14px;
 	color: #b8b8b8;
 }
 .stars i:active{
@@ -552,12 +575,16 @@ videos (single page) css
 .v-comments{
 	background-color: #fff;
 	padding: 15px;
-	margin-top: 10px;
+}
+.row1{
+	margin-left: -15px !important;
+	margin-right: -15px !important;
 }
 .v-comments h3{
-	font-size: 15px;
+	font-size:18px;
+	font-weight: bold;
 	margin-top: 0;
-	margin-bottom: 10px;
+	margin-bottom:0px;
 }
 .com-image{
 	float: left;
@@ -583,6 +610,8 @@ videos (single page) css
 	width: 90%;
     height: 100px !important;
     padding: 8px;
+    border: 1px solid #999;
+    border-radius: 4px;
 }
 
 #comment_form input[type="submit"] {
@@ -799,13 +828,14 @@ videos (single page) css
     outline-color: transparent;
     outline-offset: 0;
 }
-
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------
 history (single page) css
 --------------------------------------------------------------------------------------------------------------------------------------------
 */
-
+.top{
+	margin-top:10px !important;
+}
 .history-content{
 	margin-top: 75px !important;	
 }
@@ -919,8 +949,25 @@ history (single page) css
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 27px;
+    max-height:33px;
 
+}
+.thumb-class{
+	color: #999;
+	font-size:16px;
+}
+.thumb-class:hover{
+	color: #999;
+}
+.thumb-class i {
+	margin-top: 10px;
+}
+.video-desc{
+	color:#999;
+	font-size: 15px !important;
+	font-weight:normal !important;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 .duration{
 	font-size: 11px;
@@ -1403,16 +1450,13 @@ recommended.html css
 .recom-show a:hover{
 	color: #337ab7;
 }
-.foot-div{
-	width: 15%;
-}
 /*--------------
 changes
 ---------------*/
 .mylist button{
 	font-size: 13px;
     border: none;
-    padding: 1px 15px;
+    padding: 1px 10px;
     background-color: gray;
     color: #fff;
 }
@@ -1468,11 +1512,19 @@ changes
 	margin-top: 0;
 }
 .y-content{
+	z-index: 8;
 	/*min-height: 700px;*/
 }
 .watch-video{
 	min-height: 700px;
 }
+.foot-div{
+	text-align: center;
+}
+.foot-content{
+	text-align: center;
+}
+
 .profile-content {
     margin-top:10px !important;
 }
@@ -1484,6 +1536,9 @@ changes
 }
 .bottom-space{
 	margin-bottom: 15px;
+}
+.bottom{
+	margin-bottom: 10px;
 }
 .slide-image{
 	width: 100%;
@@ -1615,7 +1670,8 @@ margin: 0px auto 35px;
 @media only screen and (max-width : 768px) {
 
 	.tube-image{
-		margin-bottom: 15px;
+		/*margin-bottom: 15px;*/
+		margin: 0 auto;
 	}
 	
 }
@@ -1798,7 +1854,7 @@ margin: 0px auto 35px;
 	}
 
 	.ratings {
-		padding-top: 5px;
+		padding-top:10px;
 	}
 }
 
@@ -1831,12 +1887,42 @@ margin: 0px auto 35px;
 	margin-top: 10px !important;
 }
 
+.demo-container {
+	width: 100%;
+    max-width: 350px;
+    margin: 0px auto;
+    padding-top: 25px;
+}
+.add-card{
+    margin: 30px 0;
+}
+.add-card input {
+    margin: 10px 0 auto;
+    display: block;
+    border:2px solid #e0e0e0;
+    box-shadow: none;
+   	background-color: transparent;
+    border-radius: 5px;
+    height:40px;
+    padding: 10px; 
+    color: #999;
+}
+.add-wishlist{
+	float: right;
+	margin-left: 5px;
+	margin-top: 5px;
 
-
+}
+.report_list input{
+	vertical-align: -22%;
+}
+.submit-btn{
+    margin-top: 15px;
+    height: 40px; 
+}
 .report_list{
 	padding: 5px 0px
 }
-
 
 .start_brocadcast_form {
 
@@ -1980,6 +2066,18 @@ margin: 0px auto 35px;
     position: relative;
     color: #fff;    
 }
+.channel-img{
+	margin-right: 10px;
+    width: 60px;
+    float: left
+}
+
+.rating1{
+	color: #999;
+}
+.rating1:hover{
+	color: #999;
+}
 
 .bg-green{
     background-color: #00a65a !important;
@@ -2043,7 +2141,10 @@ margin: 0px auto 35px;
 	border-radius: 0;
 }
 .copy-embed .modal-header{
-	padding: 15px 0
+	padding: 15px 0;
+	color: black !important;
+    background: transparent !important;
+    border-bottom: 1px solid #cccccc;
 }
 .copy-embed .modal-title{
 	font-size: 20px;
@@ -2067,14 +2168,34 @@ margin: 0px auto 35px;
 .copy-embed textarea{
 	resize: none;
 }
+.copy-embed textarea:focus{
+	box-shadow: none;
+}
 .copy-embed .btn-primary:hover {
     color: #fff;
     background-color: #286090 !important;
+}
+.copy-embed .modal-body{
+	height: 235px;
+	overflow: auto;
+}
+.copy-embed .modal-footer{
+	padding: 10px 0 ;
+}
+.modal-footer .btn-danger{
+	border-radius: 4px !important;
 }
 .video-title1{
 	font-size: 20px !important;
 	color: white;
 	font-weight: normal;
+	background-color: rgba(0,0,0,.5);
+	padding: 15px;
+	margin: 0;
+}
+.zero-padding{
+	padding: 0;
+
 }
 .modal{
     overflow: hidden;
@@ -2240,6 +2361,7 @@ margin: 0px auto 35px;
 .body-modal{
     padding:45px 75px 30px 75px;
 }
+>>>>>>> a6fd5d37123fa2ab7a6b3285c513fe1279377d5f
 }
 .wrapper_content {
 
@@ -2250,7 +2372,154 @@ margin: 0px auto 35px;
 	margin: 0 auto;
 
 }
+.menu4{
+	margin-bottom: 15px;
+}
+.bg-img{
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	border-radius: 6px !important;
+}
+.earning-content{
+	background-color: rgba(255,255,255,.8);
+}
+.earning-content .modal-header{
+	border: 0;
+}
+.earning-content .modal-header h3{
+	margin-top: -6px;
+}
+.earning-content .modal-body p{
+	margin-top: 20px;
+}
+.earning-content .amount-circle{
+	height: 120px;
+	width: 120px;
+	border-radius: 50%;
+	border:4px solid #cc181e;
+	margin: 0 auto;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+.earning-content .amount-circle h3{
+ 	color: #cc181e;
+}
+.earning-content .close{
+	color: #333;
+	margin-top: 0;
+}
+.auto-margin{
+	margin:0 auto;
+}
+.white-bg{
+	background-color: white;
+}
+.invoice-head{
+	background-color: #26a69a;
+	padding:25px 15px;
+}
+.invoice-head h1{
+	font-size: 36px;
+	margin: 0;
+	text-align: center;
+}
+.invoice{
+	padding:50px 0px;
+	border-radius: 5px;
+}
+.spacing1{
+	padding: 15px;
+}
+.clear-fix{
+	clear: both;
+}
+.black-clr{
+	color: #333 !important;
+}
+.invoice-desc .table > tbody > tr > td{
+	border-bottom: 1px solid #ddd;
+}
+.invoice-desc{
+	font-size: 16px;
+	margin-top: 15px;
+}
+.invoice1{
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+.invoice1 form{
+	margin-top: 25px;
+}
+.radio1 {
+	display: inline-block;
+	padding-right: 20px;
+	font-size: 16px;
+	/*line-height: 49px;*/
+	cursor: pointer;
+	font-weight: normal;
+}
 
+.radio1:hover .inner {
+	-webkit-transform: scale(0.5);
+	-ms-transform: scale(0.5);
+	transform: scale(0.5);
+	opacity: .5;
+}
+
+.radio1 input {
+	width: 1px;
+	height: 1px;
+	/*opacity: 0;*/
+	display: none;
+}
+
+.radio1 input:checked + .outer .inner {
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+
+.radio1 input:checked + .outer { 
+	border: 3px solid #cc181e; 
+}
+
+.radio1 input:focus + .outer .inner {
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+	background-color: #cc181e;
+}
+
+.radio1 .outer {
+	width: 20px;
+	height: 20px;
+	display: block;
+	float: left;
+	margin: 1px 9px 10px 10px;
+	border: 3px solid #cc181e;
+	border-radius: 50%;
+	background-color: #fff;
+}
+
+.radio1 .inner {
+	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
+	width: 10px;
+	height: 10px;
+	-webkit-transform: scale(0);
+	-ms-transform: scale(0);
+	transform: scale(0);
+	display: block;
+	margin: 2px;
+	border-radius: 50%;
+	background-color: #cc181e;
+	opacity: 0;
+}
  #preloader {
 
     position: absolute;
@@ -2265,7 +2534,6 @@ margin: 0px auto 35px;
 
 
 }
-
 
 .cssload-box-loading {
 	width: 49px;
@@ -2312,6 +2580,7 @@ margin: 0px auto 35px;
 		-ms-animation: cssload-animate 0.58s linear infinite;
 		-webkit-animation: cssload-animate 0.58s linear infinite;
 		-moz-animation: cssload-animate 0.58s linear infinite;
+
 }
 
 

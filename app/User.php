@@ -8,6 +8,8 @@ use App\Helpers\Helper;
 
 use App\Helpers\AppJwt;
 
+use Setting;
+
 class User extends Authenticatable
 {
 
@@ -112,12 +114,9 @@ class User extends Authenticatable
             $model->generateToken($model);
 
             $model->generateEmailCode();
+
+            $model->defaultPaidCheck();
         });
-        
-        /*static::updating(function ($model) {
-           
-            $model->generateToken($model);
-        });*/
 
         //delete your related models here, for example
         static::deleting(function($user)
@@ -197,7 +196,18 @@ class User extends Authenticatable
                 $user->userRedeemRequests()->delete();
 
             }
+        
         }); 
+    }
+
+
+    protected function defaultPaidCheck() {
+
+        if(Setting::get('is_default_paid_user') == 1) {
+
+            $this->attributes['user_type'] = 1;
+
+        }
     }
 
 

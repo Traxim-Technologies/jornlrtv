@@ -9,16 +9,19 @@
     padding-top: 15px;
     margin-top: 105px;
     min-height: 700px;
-    /*height: calc(100% - 105px) !important;*/
+   /* height: calc(100% - 105px) !important;*/
     overflow: auto;
-    position: absolute;
+    position:fixed;
     top: 0;
 	z-index:10;
 	width: 50%;
 }
+.right-space{
+	padding:0 30px;
+}
 .page-inner{
 	margin-top: 109px;
-	padding-bottom: 15px;
+	z-index:0;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -49,8 +52,13 @@
 	padding: 15px;
 	margin-top: 15px;
 }
-.profile-view{
+.play-video{
 	padding: 0;
+}
+.custom-side{
+	padding-right: 0px;
+	padding-left:0px;
+	margin-top: 10px;
 }
 .st_video_upload_btn {
 	border-color: #d3d3d3 !important;
@@ -86,6 +94,50 @@
 	background-repeat: no-repeat;
 	height: 200px;
 }
+.add-card input {
+    width:100%;
+}
+.sub-btn{
+	margin-top:5px;
+}
+.foot-btn{
+	margin-top: 0;
+	margin-bottom: 15px;
+}
+#custom-search-input {
+	width: 100% !important;
+    float: none !important;
+	margin-bottom: 5px;
+    margin-top: 10px !important;
+}
+.modal-top1{
+	margin-top: 50px;
+}
+
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size:13px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	font-size: 11px;
+}
+.username{
+	font-size: 13px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
 }
 
 /*small devices*/
@@ -98,18 +150,26 @@
     background-color: #fff;
     padding-bottom: 15px;
     padding-top: 15px;
-    margin-top: 105px;
-    min-height: 700px;
-    position: absolute;
+    margin-top: 109px;
+   /* min-height: 700px;*/
+    position: fixed;
     top: 0;
-    /*height: calc(100% - 105px) !important;*/
+    height: calc(100% - 109px) !important;
     overflow: auto;
 	z-index: 10;
 	width: 50%;
 }
+.right-space{
+	padding:0 30px;
+}
 .page-inner{
+<<<<<<< HEAD
 	margin-top: 109px;
 	padding-bottom: 15px;
+=======
+	margin-top: 120px;
+	z-index: 0;
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -167,7 +227,8 @@
 .custom-side{
 	padding-right: 0px;
 	padding-left:0px;
-	margin-top:10px;
+	margin-top: 10px;
+
 }
 .modal-top{
 	margin-top: 20px;
@@ -177,6 +238,47 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 200px;
+}
+
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+#custom-search-input {
+	width: 100% !important;
+    float: none !important;
+	margin-bottom: 5px;
+    margin-top: 10px !important;
+}
+.modal-top1{
+	margin-top: 50px;
+}
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 13px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size:12px;
+}
+.username{
+	font-size: 14px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 }
 
@@ -195,6 +297,9 @@
 }
 .bottom{
 	height: 60px;
+}
+.right-space{
+	padding-right:30px;
 }
 .youtube-nav{
 	padding:10px 20px;
@@ -266,6 +371,49 @@
 	background-repeat: no-repeat;
 	height: 350px;
 }
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+#custom-search-input{
+ 	 width: 100%;
+ 	 float: left;
+ 	 margin-top: 1px;
+}
+.modal-top1{
+	margin-top: 250px;
+}
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 330px;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 330px;
+}
 }
 
 /* Medium Devices, */
@@ -283,6 +431,9 @@
 }
 .bottom{
 	height: 60px;
+}
+.right-space{
+	padding-right:30px;
 }
 .page-inner{
 	margin-top: 65px;
@@ -340,9 +491,9 @@
 	padding-left: 0;
 }
 .custom-side{
-	padding-right:0px;
+	padding-right: 0px;
 	padding-left:0px;
-	margin-top: 0px;
+	margin-top:0px;
 }
 .modal-top{
 	margin-top: 110px;
@@ -352,6 +503,50 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 350px;
+}
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+#custom-search-input{
+ 	 width: 100%;
+ 	 float: left;
+ 	 margin-top: 1px;
+}
+.modal-top1{
+	margin-top: 250px;
+}
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 330px;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 330px;
 }
 }
 
@@ -370,6 +565,9 @@
 }
 .bottom{
 	height: 60px;
+}
+.right-space{
+	padding-right:30px;
 }
 .page-inner{
 	margin-top: 65px;
@@ -427,9 +625,10 @@
 	padding-left: 0;
 }
 .custom-side{
-	padding-right:0;
-	padding-left: 0px;
-	margin-top: 0px;
+	padding-right:0px;
+	padding-left:0px;
+	margin-top:0px;
+
 }
 .modal-top{
 	margin-top: 110px;
@@ -439,6 +638,50 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 350px;
+}
+.add-card input {
+    width: 330px;
+}
+.sub-btn{
+	margin-top: -25px;
+}
+#custom-search-input{
+ 	 width: 100%;
+ 	 float: left;
+ 	 margin-top: 1px;
+}
+.modal-top1{
+	margin-top: 250px;
+}
+.views {
+	/*border-bottom: 1px solid #b8b8b8;
+    font-family: arial;*/
+    font-size: 16px;
+    padding-bottom: 5px;
+    color:#999;
+    padding-top: 10px;
+}
+.rating{
+	/*color: #999;*/
+	font-size: 13px;
+}
+.username{
+	font-size: 16px;
+	font-weight: 600;
+}
+.invoice-overlay{
+	background-color: rgba(255,255,255,.8);
+	padding: 15px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 330px;
+}
+.invoice-img{
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 330px;
 }
 }
 /*index.html responsive*/
@@ -472,11 +715,6 @@
 	    margin-right: 10px !important;
 	}
 }
-@media screen and (max-width: 643px){
-	#custom-search-input {
-	    width: 45% !important;
-	}
-}
 @media screen and (max-width: 593px){
 	.y-button{
 		position: absolute;
@@ -486,15 +724,15 @@
 	.profile-edit{
 		margin-top: 80px !important;
 	}
-	#custom-search-input {
+	/*#custom-search-input {
 	    width: 100% !important;
 	    float: none !important;
 	    margin-bottom: 5px;
 	    margin-top: 10px !important;
 	}
 	#custom-search-input input{
-		width: 105%;
-	}
+		width: 100%;
+	}*/
 	.you-image a{
 		float: none  !important;
 		margin-bottom: 5px;
@@ -577,7 +815,7 @@ videos.html responsive
 		font-size: 11px !important;
 	}
 	.stars i {
-	    font-size: 8px !important;
+	    font-size: 14px !important;
 	}
 }
 @media screen and (max-width: 789px){
@@ -601,7 +839,7 @@ videos.html responsive
 		font-size: 10px;
 	}
 	.stars i {
-	    font-size: 11px;
+	    font-size: 14px;
 	}
 	.more-content a{
 		/*padding: 0;*/
@@ -728,7 +966,7 @@ videos.html responsive
 	    font-size: 9px;
 	}
 	.stars i {
-	    font-size: 8px;
+	    font-size: 14px;
 	}
 }
 @media screen and (max-width: 328px){
@@ -825,6 +1063,7 @@ category.html css
 	.tube-image{
 		height: 36px !important;
 		padding: 0 !important;
+		margin:0 auto;
 	}
 	.about li a{
 		font-size: 11px;
@@ -861,6 +1100,7 @@ recommend.html css
 	}
 	.profile-view{
 		padding-right: 0;
+		padding-left: 0;
 	}
 }
 
