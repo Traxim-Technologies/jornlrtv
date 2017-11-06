@@ -219,8 +219,9 @@ footer{
 }
 .tube-image img{
 	max-width: 130px;
+	height: 33px;
 	width: 100%;
-    min-height: 100%;
+	margin-top: 5px;
 }
 .about li{
 	list-style-type: none;
@@ -1864,7 +1865,7 @@ margin: 0px auto 35px;
 
 	background: #E62118;
 
-	padding:10px;
+	padding:7px 12px 12px 12px;
 
 	text-transform: uppercase;
 
@@ -1901,9 +1902,9 @@ margin: 0px auto 35px;
 
 .chat_footer {
 
-	position: absolute;
+	/*position: absolute;
 
-	bottom: 0;
+	bottom: 0;*/
 
 	width: 100%;
 
