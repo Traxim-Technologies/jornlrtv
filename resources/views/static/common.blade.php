@@ -26,9 +26,9 @@
 
     <div class="row">
 
-        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-            <div class="col-lg-7 col-lg-offset-2">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
 
             <div class="box box-primary" style="margin-top: 10px">
 
@@ -36,7 +36,7 @@
 
                     <h2 class="pull-left">@if($model) {{$model->heading}} @else {{tr('model')}} @endif</h2>
 
-                    <img class="adm-log-logo pull-right" style="width:20%;height:auto" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif"/></a>
+                    <img class="adm-log-logo pull-right" style="width: 120px;height: 32px;" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif"/></a>
                 
                 </div>
 

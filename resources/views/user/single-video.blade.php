@@ -416,7 +416,7 @@ textarea[name=comments] {
                                                             <div class="channel-img">
                                                                 <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
                                                             </div>
-                                                            <span class="username"><a href="#">{{$video->title}}</a></span>
+                                                            <div class="username"><a href="#">{{$video->title}}</a></div>
                                                             <h5 class="rating no-margin top">
                                                                 <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
@@ -466,7 +466,9 @@ textarea[name=comments] {
                                                                    
                                                                    @else
 
-                                                                        <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+                                                                        <a class="btn btn-sm btn-danger text-uppercase hidden-xs" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+
+                                                                        <a class="btn btn-sm btn-danger text-uppercase visible-xs" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{$subscriberscnt}}</a>
 
 
                                                                    @endif
