@@ -112,6 +112,10 @@ body{
 	text-decoration: none;
 	color: #584d4d;
 	font-size: 13px;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 .toggle-icon{
 	margin-top: 10px;
@@ -220,8 +224,9 @@ footer{
 }
 .tube-image img{
 	max-width: 130px;
+	height: 33px;
 	width: 100%;
-    min-height: 100%;
+	margin-top: 5px;
 }
 .about li{
 	list-style-type: none;
@@ -466,14 +471,37 @@ videos (single page) css
 .share-details i{
 	margin-right: 0px;
 }
+.share-new{
+	color: #999;
+	font-size: 16px;
+	cursor: pointer;
+}
+.share-new:hover, .share-new:focus,  .share-new:active{
+	color: #999;
+}
+.share-new p{
+	font-size: 16px !important;
+	margin-top: 7px;
+	margin-left: 5px;
+	font-weight: normal !important;
+}
+.share-new i{
+	margin-left: 10px;
+}
+.modal-top1 .modal-content{
+	border-radius: 0;
+}
+.modal-top1 .close:hover{
+	color: #000;
+}
 .more-content a{
 	/*color: #767676;*/
 	/*padding: 10px;*/
 }
 .mylist{
 	line-height: 2em;
-	float: left;
-	padding: 20px 0;
+	float:right;
+	/*padding: 20px 0;*/
 }
 .share{
 	float: left;
@@ -482,16 +510,6 @@ videos (single page) css
 .ratings{
 	float: right;
 	margin-top: 10px;
-}
-
-.views {
-	/*border-bottom: 1px solid #b8b8b8;
-    font-family: arial;*/
-    font-size: 14px;
-    font-weight: bold;
-    padding-bottom: 5px;
-    color:#999;
-    padding-top: 10px;
 }
 .top-btn-space{
 	margin-top: 5px;
@@ -558,8 +576,13 @@ videos (single page) css
 	background-color: #fff;
 	padding: 15px;
 }
+.row1{
+	margin-left: -15px !important;
+	margin-right: -15px !important;
+}
 .v-comments h3{
-	font-size:24px;
+	font-size:18px;
+	font-weight: bold;
 	margin-top: 0;
 	margin-bottom:0px;
 }
@@ -941,9 +964,10 @@ history (single page) css
 }
 .video-desc{
 	color:#999;
-	font-size: 14px;
+	font-size: 15px !important;
 	font-weight:normal !important;
-	margin-top: 5px;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 .duration{
 	font-size: 11px;
@@ -1432,7 +1456,7 @@ changes
 .mylist button{
 	font-size: 13px;
     border: none;
-    padding: 1px 15px;
+    padding: 1px 10px;
     background-color: gray;
     color: #fff;
 }
@@ -1883,6 +1907,15 @@ margin: 0px auto 35px;
     padding: 10px; 
     color: #999;
 }
+.add-wishlist{
+	float: right;
+	margin-left: 5px;
+	margin-top: 5px;
+
+}
+.report_list input{
+	vertical-align: -22%;
+}
 .submit-btn{
     margin-top: 15px;
     height: 40px; 
@@ -1918,7 +1951,7 @@ margin: 0px auto 35px;
 
 	background: #E62118;
 
-	padding:10px;
+	padding:7px 12px 12px 12px;
 
 	text-transform: uppercase;
 
@@ -1955,9 +1988,9 @@ margin: 0px auto 35px;
 
 .chat_footer {
 
-	position: absolute;
+	/*position: absolute;
 
-	bottom: 0;
+	bottom: 0;*/
 
 	width: 100%;
 
@@ -2038,14 +2071,7 @@ margin: 0px auto 35px;
     width: 60px;
     float: left
 }
-.username{
-	font-size: 16px;
-	font-weight: 600;
-}
-.rating{
-	/*color: #999;*/
-	font-size: 13px;
-}
+
 .rating1{
 	color: #999;
 }
@@ -2349,6 +2375,151 @@ margin: 0px auto 35px;
 .menu4{
 	margin-bottom: 15px;
 }
+.bg-img{
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	border-radius: 6px !important;
+}
+.earning-content{
+	background-color: rgba(255,255,255,.8);
+}
+.earning-content .modal-header{
+	border: 0;
+}
+.earning-content .modal-header h3{
+	margin-top: -6px;
+}
+.earning-content .modal-body p{
+	margin-top: 20px;
+}
+.earning-content .amount-circle{
+	height: 120px;
+	width: 120px;
+	border-radius: 50%;
+	border:4px solid #cc181e;
+	margin: 0 auto;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+.earning-content .amount-circle h3{
+ 	color: #cc181e;
+}
+.earning-content .close{
+	color: #333;
+	margin-top: 0;
+}
+.auto-margin{
+	margin:0 auto;
+}
+.white-bg{
+	background-color: white;
+}
+.invoice-head{
+	background-color: #26a69a;
+	padding:25px 15px;
+}
+.invoice-head h1{
+	font-size: 36px;
+	margin: 0;
+	text-align: center;
+}
+.invoice{
+	padding:50px 0px;
+	border-radius: 5px;
+}
+.spacing1{
+	padding: 15px;
+}
+.clear-fix{
+	clear: both;
+}
+.black-clr{
+	color: #333 !important;
+}
+.invoice-desc .table > tbody > tr > td{
+	border-bottom: 1px solid #ddd;
+}
+.invoice-desc{
+	font-size: 16px;
+	margin-top: 15px;
+}
+.invoice1{
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+.invoice1 form{
+	margin-top: 25px;
+}
+.radio1 {
+	display: inline-block;
+	padding-right: 20px;
+	font-size: 16px;
+	/*line-height: 49px;*/
+	cursor: pointer;
+	font-weight: normal;
+}
+
+.radio1:hover .inner {
+	-webkit-transform: scale(0.5);
+	-ms-transform: scale(0.5);
+	transform: scale(0.5);
+	opacity: .5;
+}
+
+.radio1 input {
+	width: 1px;
+	height: 1px;
+	/*opacity: 0;*/
+	display: none;
+}
+
+.radio1 input:checked + .outer .inner {
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+
+.radio1 input:checked + .outer { 
+	border: 3px solid #cc181e; 
+}
+
+.radio1 input:focus + .outer .inner {
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+	background-color: #cc181e;
+}
+
+.radio1 .outer {
+	width: 20px;
+	height: 20px;
+	display: block;
+	float: left;
+	margin: 1px 9px 10px 10px;
+	border: 3px solid #cc181e;
+	border-radius: 50%;
+	background-color: #fff;
+}
+
+.radio1 .inner {
+	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
+	width: 10px;
+	height: 10px;
+	-webkit-transform: scale(0);
+	-ms-transform: scale(0);
+	transform: scale(0);
+	display: block;
+	margin: 2px;
+	border-radius: 50%;
+	background-color: #cc181e;
+	opacity: 0;
+}
  #preloader {
 
     position: absolute;
@@ -2363,7 +2534,6 @@ margin: 0px auto 35px;
 
 
 }
-
 
 .cssload-box-loading {
 	width: 49px;
@@ -2410,6 +2580,7 @@ margin: 0px auto 35px;
 		-ms-animation: cssload-animate 0.58s linear infinite;
 		-webkit-animation: cssload-animate 0.58s linear infinite;
 		-moz-animation: cssload-animate 0.58s linear infinite;
+
 }
 
 

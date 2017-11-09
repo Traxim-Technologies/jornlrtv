@@ -94,9 +94,9 @@
 
 							      	<td><b>{{Setting::get('currency')}} {{$video->amount}}</b></td>
 
-							      	<td>{{$video->getScopeLikeCount->count()}}</td>
+							      	<td>{{number_format_short($video->getScopeLikeCount->count())}}</td>
 
-							      	<td>{{$video->getScopeDisLikeCount->count()}}</td>
+							      	<td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td>
 
 							      	@if(Setting::get('is_vod'))
 							      	<td>@if($video->video_type == 1) 
