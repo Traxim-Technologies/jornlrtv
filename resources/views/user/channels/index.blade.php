@@ -344,7 +344,7 @@
 
 					                                <div class="history-title">
 					                                    <div class="history-head row">
-					                                        <div class="cross-title">
+					                                        <div class="cross-title2">
 					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
 					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 					                                            <span class="video_views">
@@ -354,7 +354,7 @@
 					                                        </div> 
 					                                        @if(Auth::check())
 															@if($channel->user_id == Auth::user()->id)
-					                                        <div class="cross-mark">
+					                                        <div class="cross-mark2">
 
 					                                        	<a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#earning"><i class="fa fa-eye" style="color:#fff" aria-hidden="true"></i></a>
 

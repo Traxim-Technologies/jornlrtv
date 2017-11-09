@@ -74,6 +74,7 @@
   -webkit-font-smoothing: subpixel-antialiased;
   background-color: #9c27b0;
   top: -4px;
+  /*bottom: -2px;*/
   left: 0px;
   border-radius: 4px;
   color: #FFFFFF;
@@ -214,12 +215,13 @@
   position: absolute;
   text-align: center;
   padding: 12px;
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
   -webkit-font-smoothing: subpixel-antialiased;
   background-color: #cc181e;
-  top: -4px;
-  left: 0px;
+  top: -2px;
+  bottom: -2px;
+  left:0px;
   border-radius: 4px;
   color: #FFFFFF;
   cursor: pointer;
@@ -282,10 +284,20 @@
 .wizard-card .nav-pills > li {
   text-align: center;
 }
+@media screen and (max-width: 479px) {
+.wizard-card .btn {
+  text-transform: uppercase;
+  padding: 10px 10px;
+  font-size: 12px;
+}
+}
+
+@media only screen and (min-width : 1200px) {
 .wizard-card .btn {
   text-transform: uppercase;
   padding: 10px 50px;
   font-size: 12px;
+}
 }
 .wizard-card .info-text {
   text-align: center;

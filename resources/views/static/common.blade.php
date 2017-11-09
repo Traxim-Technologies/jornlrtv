@@ -34,10 +34,10 @@
 
                 <div class="box-header with-border">
 
-                    <h2 class="pull-left">@if($model) {{$model->heading}} @else {{tr('model')}} @endif</h2>
+                    <img class="adm-log-logo pull-right" style="width: 120px;height: 32px;" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif"/>
 
-                    <img class="adm-log-logo pull-right" style="width: 120px;height: 32px;" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif"/></a>
-                
+                    <h2 class="pull-left">@if($model) {{$model->heading}} @else {{tr('model')}} @endif</h2>
+                   
                 </div>
 
                 <div class="box-body">
