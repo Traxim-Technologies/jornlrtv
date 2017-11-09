@@ -208,7 +208,8 @@ thead>tr>th {
                     @endif
             
                 </div>
-            
+                
+                <div class="sidebar-back"></div> 
             </div>
     
         </div>

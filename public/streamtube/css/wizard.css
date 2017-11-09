@@ -215,7 +215,7 @@
   position: absolute;
   text-align: center;
   padding: 12px;
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
   -webkit-font-smoothing: subpixel-antialiased;
   background-color: #cc181e;
@@ -227,6 +227,11 @@
   cursor: pointer;
   font-weight: 500;
   box-shadow: 0 16px 26px -10px rgba(244, 67, 54, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(244, 67, 54, 0.2);
+}
+@media (min-width :350px) and (max-width: 370px){
+.wizard-card[data-color="red"] .moving-tab {
+  height:60px !important;
+}
 }
 .wizard-card[data-color="red"] .picture:hover {
   border-color: #cc181e;
@@ -284,7 +289,7 @@
 .wizard-card .nav-pills > li {
   text-align: center;
 }
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 480px){
 .wizard-card .btn {
   text-transform: uppercase;
   padding: 10px 10px;
@@ -292,7 +297,7 @@
 }
 }
 
-@media only screen and (min-width : 1200px) {
+@media screen and (min-width: 480px){
 .wizard-card .btn {
   text-transform: uppercase;
   padding: 10px 50px;

@@ -735,9 +735,9 @@ textarea[name=comments] {
 
                     </div>
                 </div>
-            
+                <div class="sidebar-back"></div> 
             </div>
-
+           
         </div><!--y-content-row-->
     </div>
 
