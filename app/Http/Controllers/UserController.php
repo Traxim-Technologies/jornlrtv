@@ -1357,6 +1357,7 @@ class UserController extends Controller {
         } else {
 
             $response->success = false;
+            
             $response->message = 'Adding cards is not enabled on this application. Please contact administrator';
 
             return back()->with('flash_errors', $response);
