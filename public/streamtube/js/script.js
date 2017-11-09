@@ -13,11 +13,11 @@
           $( ".page-inner").toggleClass('col-md-10');
           $( ".page-inner").toggleClass('col-md-12');
 
-          if ($(window).width() <= 767){  
-              $("body").toggleClass("sidebar-open");
-              $(".sidebar-back").toggleClass("sidebar-backdrop");
-              console.log("open");
-          }
+          // if ($(window).width() <= 767){  
+          //     $("body").toggleClass("sidebar-open");
+          //     $(".sidebar-back").toggleClass("sidebar-backdrop");
+          //     console.log("open");
+          // }
         });
 
 
