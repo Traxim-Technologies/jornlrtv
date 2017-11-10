@@ -383,7 +383,8 @@
                     </div><!--end of slide-area-->
 
                 @endif
-               
+             
+                <div class="sidebar-back"></div>  
             </div>
 
         </div>

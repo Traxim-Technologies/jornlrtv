@@ -9,31 +9,41 @@
  */
 
 .circle {
-  position: relative;
+ /* position: relative;*/
   display: block;
   margin: 1em 0;
   background-color: transparent;
   color: #222;
   text-align: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  box-shadow: 2px 5px 10px grey;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.circle:after {
+/*.circle:after {
   display: block;
-  padding-bottom: 100%;
-  width: 100%;
-  height: 0;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   background-color: #f1f1f1;
   content: "";
   box-shadow: 2px 5px 10px grey;
-}
+  margin: 0 auto;
+}*/
 
 .circle__inner {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width:150px;
+    margin: 0 auto;
     height: 100%;
 }
 
@@ -101,11 +111,11 @@ thead>tr>th {
                         <div class="col-lg-2 col-md-3 col-sm-5 col-xs-12 ">
 
                             <div class="circle">
-                                <div class="circle__inner">
-                                    <div class="circle__wrapper">
+                               <!--  <div class="circle__inner">
+                                    <div class="circle__wrapper"> -->
                                         <div class="circle__content"><b>{{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining : "0.00"}}</b></div>
-                                    </div>
-                                </div>
+                                    <!-- </div>
+                                </div> -->
                             
                             </div>
                         </div>
@@ -198,7 +208,8 @@ thead>tr>th {
                     @endif
             
                 </div>
-            
+                
+                <div class="sidebar-back"></div> 
             </div>
     
         </div>

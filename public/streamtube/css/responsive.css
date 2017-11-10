@@ -8,8 +8,8 @@
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 105px;
-    min-height: 700px;
-   /* height: calc(100% - 105px) !important;*/
+   /* min-height: 700px;*/
+    height: calc(100% - 105px) !important;
     overflow: auto;
     position:fixed;
     top: 0;
@@ -22,6 +22,7 @@
 .page-inner{
 	margin-top: 109px;
 	z-index:0;
+	position: relative;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -37,12 +38,23 @@
 	vertical-align: middle;
 }
 .cross-mark {
-    width:100%;
-    float: left;
-    text-align:left;
+    width:15%;
+    float: right;
+    text-align:right;
     margin-top: 5px;
 }
 .cross-title {
+    width:85%;
+    float: left;
+    text-transform: capitalize;
+}
+.cross-mark2 {
+    width:100%;
+    float:left;
+    text-align: left;
+    margin-top: 5px;
+}
+.cross-title2 {
     width:100%;
     float: left;
     text-transform: capitalize;
@@ -75,7 +87,7 @@
 	line-height: 29px;
 	padding: 3px 7px;
 	vertical-align: bottom;
-	margin : 15px 7px 0px 8px;
+	margin : 10px 7px 5px 8px;
 }
 .play-video{
 	padding: 0;
@@ -123,6 +135,8 @@
 .username{
 	font-size: 13px;
 	font-weight: 600;
+	max-height: 33px;
+	overflow: hidden;
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
@@ -132,6 +146,14 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+.video-desc{
+	margin-top:5px;
+	color:#999;
+	font-size: 12px !important;
+	font-weight:normal !important;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 }
 
@@ -160,6 +182,7 @@
 .page-inner{
 	margin-top: 120px;
 	z-index: 0;
+	position: relative;
 }
 .youtube-nav{
 	padding:10px 0px;
@@ -176,13 +199,24 @@
 	vertical-align: middle;
 }
 .cross-mark {
-    width:100%;
-    float: left;
+    width:10%;
+    float:right;
     text-align: right;
     margin-top: 5px;
 }
 .cross-title {
-    width:100%;
+    width:90%;
+    float: left;
+    text-transform: capitalize;
+}
+.cross-mark2 {
+    width:40%;
+    float:left;
+    text-align: left;
+    margin-top: 5px;
+}
+.cross-title2 {
+    width:60%;
     float: left;
     text-transform: capitalize;
 }
@@ -209,7 +243,7 @@
 	line-height: 29px;
 	padding: 3px 10px;
 	vertical-align: bottom;
-	margin : 15px 7px 0px 8px;
+	margin : 15px 7px 5px 8px;
 }
 .play-video{
 	padding: 0;
@@ -259,6 +293,8 @@
 .username{
 	font-size: 14px;
 	font-weight: 600;
+	max-height: 34px;
+	overflow: hidden;
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
@@ -268,6 +304,14 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+.video-desc{
+	margin-top:5px;
+	color:#999;
+	font-size: 14px !important;
+	font-weight:normal !important;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 }
 
@@ -314,6 +358,17 @@
 }
 .cross-title {
     width: 65%;
+    float: left;
+    text-transform: capitalize;
+}
+.cross-mark2 {
+    width:35%;
+    float:right;
+    text-align: right;
+    margin-top: 5px;
+}
+.cross-title2 {
+    width:65%;
     float: left;
     text-transform: capitalize;
 }
@@ -385,8 +440,10 @@
 	font-size: 13px;
 }
 .username{
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 600;
+	max-height: 41px;
+	overflow: hidden;
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
@@ -401,6 +458,14 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 330px;
+}
+.video-desc{
+	margin-top:5px;
+	color:#999;
+	font-size: 15px !important;
+	font-weight:normal !important;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 }
 
@@ -447,6 +512,17 @@
 }
 .cross-title {
     width: 65%;
+    float: left;
+    text-transform: capitalize;
+}
+.cross-mark2 {
+    width:35%;
+    float:right;
+    text-align: right;
+    margin-top: 5px;
+}
+.cross-title2 {
+    width:65%;
     float: left;
     text-transform: capitalize;
 }
@@ -518,8 +594,10 @@
 	font-size: 13px;
 }
 .username{
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 600;
+	max-height: 41px;
+	overflow: hidden;
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
@@ -534,6 +612,14 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 330px;
+}
+.video-desc{
+	margin-top:5px;
+	color:#999;
+	font-size: 15px !important;
+	font-weight:normal !important;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 }
 
@@ -580,6 +666,17 @@
 }
 .cross-title {
     width: 65%;
+    float: left;
+    text-transform: capitalize;
+}
+.cross-mark2 {
+    width:35%;
+    float:right;
+    text-align: right;
+    margin-top: 5px;
+}
+.cross-title2 {
+    width:65%;
     float: left;
     text-transform: capitalize;
 }
@@ -651,8 +748,10 @@
 	font-size: 13px;
 }
 .username{
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 600;
+	max-height: 41px;
+	overflow: hidden;
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
@@ -667,6 +766,14 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	height: 330px;
+}
+.video-desc{
+	margin-top:5px;
+	color:#999;
+	font-size: 15px !important;
+	font-weight:normal !important;
+	margin-top: 0px;
+	margin-left: 70px;
 }
 }
 /*index.html responsive*/
@@ -981,8 +1088,8 @@ history.html responsive
 		font-size: 12px !important;
 	}
 	.description p{
-		font-size: 10px !important;
-		line-height: 13px !important;
+		font-size: 12px !important;
+		line-height: 16px !important;
 	}
 	.cross-mark i {
 		font-size: 13px !important;
@@ -1000,7 +1107,7 @@ history.html responsive
 	}
 	.description p{
 		font-size: 10px !important;
-		line-height: 13px !important;
+		line-height: 16px !important;
 	}
 	.cross-mark i {
 		font-size: 12px !important;

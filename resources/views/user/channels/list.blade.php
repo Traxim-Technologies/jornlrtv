@@ -63,11 +63,14 @@
 
 					                                            @if (!$channel->subscribe_status)
 
-																<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->channel_id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} ({{$channel->no_of_subscribers}})</a>
+																<a class="st_video_upload_btn subscribe_btn " href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->channel_id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
+
 
 																@else 
 
-																	<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} ({{$channel->no_of_subscribers}})</a>
+																	<a class="st_video_upload_btn " href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
+
+
 
 																@endif
 					                                        </div>
@@ -76,7 +79,7 @@
 					                                        <div class="pull-right upload_a">
 																@if($channel->no_of_subscribers > 0)
 
-																<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->channel_id))}}" style="color: #fff !important;text-decoration: none"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}}({{$channel->no_of_subscribers}})</a>
+																<a class="st_video_upload_btn subscribe_btn " href="{{route('user.channel.subscribers', array('channel_id'=>$channel->channel_id))}}" style="color: #fff !important;text-decoration: none"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$channel->no_of_subscribers}} </a>
 
 																@endif
 															</div>
@@ -125,6 +128,8 @@
 
 					</div>
 				</div>
+
+			<div class="sidebar-back"></div> 
 		</div>
 
 	</div>
