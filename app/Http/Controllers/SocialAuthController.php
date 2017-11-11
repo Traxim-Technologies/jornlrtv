@@ -39,7 +39,7 @@ class SocialAuthController extends Controller
 
 		}
 
-		$social_user = \Socialite::driver($provider)->user();
+		$social_user = \Socialite::driver($provider)->stateless()->user();
 
 		$user = new User;
 
