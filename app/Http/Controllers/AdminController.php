@@ -22,6 +22,8 @@ use App\UserPayment;
 
 use App\UserHistory;
 
+use App\Helpers\AppJwt;
+
 use App\Wishlist;
 
 use App\Flag;
@@ -337,7 +339,7 @@ class AdminController extends Controller {
 
             
             
-            $user->token = Helper::generate_token();
+            
             $user->token_expiry = Helper::generate_token_expiry();
 
             $user->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user->dob;
@@ -392,6 +394,10 @@ class AdminController extends Controller {
             user_type_check($user->id);
 
             if($user) {
+
+               // $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
+
+                // $user->save();
                 
                 return redirect('/admin/view/user/'.$user->id)->with('flash_success', $message);
             } else {
