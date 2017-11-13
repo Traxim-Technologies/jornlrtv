@@ -1,4 +1,4 @@
-<div class="youtube-nav signup-nav">
+<div class="streamtube-nav signup-nav">
     <div class="row">
         <div class="test you-image col-lg-2 col-md-2 col-sm-2 col-xs-8">
             <a href="{{route('user.dashboard')}}" class="">
@@ -50,4 +50,4 @@
         </div><!--y-button end-->
 
     </div><!--end of row-->
-</div><!--end of youtube-nav-->
+</div><!--end of streamtube-nav-->

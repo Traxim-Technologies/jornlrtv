@@ -154,6 +154,7 @@
                     </div>
                 </div> <!-- wizard container -->
             </div>
+      <div class="sidebar-back"></div> 
     </div>
     </div>
     		

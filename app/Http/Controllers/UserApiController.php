@@ -3526,7 +3526,7 @@ class UserApiController extends Controller {
 
             $last_four = substr($request->number, -4);
 
-            $stripe_secret_key = \Setting::get('stripe_secret_key');
+            $stripe_secret_key = Setting::get('stripe_secret_key');
 
             $response = json_decode('{}');
 

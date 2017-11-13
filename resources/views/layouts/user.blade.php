@@ -57,7 +57,7 @@
 
     @include('layouts.user.header')
 
-    <div class="common-youtube">
+    <div class="common-streamtube">
 
         @yield('content')
 
