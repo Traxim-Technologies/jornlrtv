@@ -1250,7 +1250,6 @@ class UserApiController extends Controller {
 
                 $user->gender = $request->has('gender') ? $request->gender : "male";
 
-                $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 $check_device_exist = User::where('device_token', $request->device_token)->first();
@@ -1292,6 +1291,7 @@ class UserApiController extends Controller {
 
                 // Send welcome email to the new user:
                 if($new_user) {
+
                     $subject = tr('user_welcome_title');
                     $email_data = $user;
                     $page = "emails.welcome";
@@ -1402,7 +1402,7 @@ class UserApiController extends Controller {
             if($operation) {
 
                 // Generate new tokens
-                $user->token = Helper::generate_token();
+               // $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 // Save device details
