@@ -34,7 +34,7 @@
                                         <div class="cross-title1">
                                             <h5><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
                                             <span class="video_views">
-                                                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                                <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
                                                 {{$video->created_at->diffForHumans()}}
                                             </span> 
                                         </div> 
@@ -79,7 +79,7 @@
                 @endif
                 
             </div>
-        
+            <div class="sidebar-back"></div> 
         </div>
 
     </div>

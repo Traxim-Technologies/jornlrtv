@@ -17,7 +17,7 @@
                         <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
 
                         <span class="video_views">
-                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                            <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
                             {{$video->created_at->diffForHumans()}}
                         </span> 
 

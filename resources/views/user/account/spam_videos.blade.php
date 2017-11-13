@@ -37,7 +37,7 @@
                                             <h5><a href="{{route('user.single' , $spamvideo->video_tape_id)}}">{{$spamvideo->video_tape->title}}</a></h5>
                                             <!-- <p class="duration">{{tr('duration')}}: {{$spamvideo->video_tape->duration}}</p> -->
                                             <span class="video_views">
-                                                <i class="fa fa-eye"></i> {{$spamvideo->video_tape->watch_count}} {{tr('views')}} 
+                                                <i class="fa fa-eye"></i> {{number_format_short($spamvideo->video_tape->watch_count)}} {{tr('views')}} 
                                                 <?php /*<b>.</b> 
                                                 {{$history->video_tape->created_at->diffForHumans()}}*/?>
                                             </span>
@@ -84,6 +84,7 @@
                 
             </div>
         
+            <div class="sidebar-back"></div> 
         </div>
 
     </div>

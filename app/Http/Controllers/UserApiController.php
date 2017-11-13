@@ -1397,12 +1397,26 @@ class UserApiController extends Controller {
 
                     $data = $videos;
                 }
+
+                $channel_status = DEFAULT_FALSE;
+
+                if($request->id) {
+
+                    $channel_status = check_channel_status($request->id, $channels->id);
+
+                }
+
+                $subscriberscnt = subscriberscnt($channels->id);
                 
             }
 
             $response_array = array('success' => true, 'channel_id'=>$channels->id, 
                         'channel_name'=>$channels->name, 'channel_image'=>$channels->picture,
-                        'channel_cover'=>$channels->cover, 'data' => $data);
+                        'channel_cover'=>$channels->cover, 
+                        'channel_description'=>$channels->description,
+                        'is_subscribed'=>$channel_status,
+                        'subscribers_count'=>$subscriberscnt,
+                        'data' => $data);
         }
 
         $response = response()->json($response_array, 200);
@@ -2103,7 +2117,7 @@ class UserApiController extends Controller {
 
                 $model->save();
 
-                $response_array = ['success'=>true, 'like_count'=>$like_count+1, 'dislike_count'=>$dislike_count];
+                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count)];
 
             } else {
 
@@ -2115,14 +2129,14 @@ class UserApiController extends Controller {
 
                     $model->save();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count+1, 'dislike_count'=>$dislike_count-1];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count-1)];
 
 
                 } else {
 
                     $model->delete();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count-1, 'dislike_count'=>$dislike_count];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count)];
 
                 }
 
@@ -2180,7 +2194,7 @@ class UserApiController extends Controller {
 
                 $model->save();
 
-                $response_array = ['success'=>true, 'like_count'=>$like_count, 'dislike_count'=>$dislike_count+1];
+                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count+1)];
 
             } else {
 
@@ -2192,13 +2206,13 @@ class UserApiController extends Controller {
 
                     $model->save();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count-1, 'dislike_count'=>$dislike_count+1];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count+1)];
 
                 } else {
 
                     $model->delete();
 
-                    $response_array = ['success'=>true, 'like_count'=>$like_count, 'dislike_count'=>$dislike_count-1];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count-1)];
 
                 }
 
@@ -2485,7 +2499,7 @@ class UserApiController extends Controller {
 
             $last_four = substr($request->number, -4);
 
-            $stripe_secret_key = \Setting::get('stripe_secret_key');
+            $stripe_secret_key = Setting::get('stripe_secret_key');
 
             $response = json_decode('{}');
 
@@ -2494,7 +2508,6 @@ class UserApiController extends Controller {
                 \Stripe\Stripe::setApiKey($stripe_secret_key);
 
             } else {
-
 
                 $response_array = ['success'=>false, 'error_messages'=>tr('add_card_is_not_enabled')];
 
@@ -2712,7 +2725,7 @@ class UserApiController extends Controller {
                         }
 
                     } else {
-                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(140) , 'error_code' => 140);
+                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(901) , 'error_code' => 901);
                         return response()->json($response_array , 200);
                     }
 
@@ -3005,7 +3018,7 @@ class UserApiController extends Controller {
     public function remove_spam(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'video_tape_id' => 'required|exists:video_tapes,id',
+            'video_tape_id' => $request->status ? '' : 'required|exists:video_tapes,id',
         ]);
         // If validator Fails, redirect same with error values
         if ($validator->fails()) {
@@ -3017,19 +3030,29 @@ class UserApiController extends Controller {
 
             return response()->json(['success'=>false , 'message'=>$error_messages]);
         }
-        // Load Spam Video from flag section
-        $model = Flag::where('user_id', $request->id)
-            ->where('video_tape_id', $request->video_tape_id)
-            ->first();
 
-        if ($model) {
+        if ($request->status) {
 
-            $model->delete();
+            Flag::where('user_id', $request->id)->delete();
 
             return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
+
         } else {
-            // throw new Exception("error", tr('admin_published_video_failure'));
-            return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+            // Load Spam Video from flag section
+            $model = Flag::where('user_id', $request->id)
+                ->where('video_tape_id', $request->video_tape_id)
+                ->first();
+
+            if ($model) {
+
+                $model->delete();
+
+                return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
+            } else {
+                // throw new Exception("error", tr('admin_published_video_failure'));
+                return response()->json(['success'=>true, 'message'=>tr('admin_published_video_failure')]);
+            }
+
         }
     }
 

@@ -46,7 +46,7 @@
                                             <div class="cross-title1">
                                                 <h5><a href="{{route('user.single' , $history->video_tape_id)}}">{{$history->title}}</a></h5>
                                                 <span class="video_views">
-                                                    <i class="fa fa-eye"></i> {{$history->watch_count}} {{tr('views')}} 
+                                                    <i class="fa fa-eye"></i> {{number_format_short($history->watch_count)}} {{tr('views')}} 
                                                     <?php /*<b>.</b> 
                                                     {{$history->created_at->diffForHumans()}}*/?>
                                                 </span>
@@ -95,6 +95,7 @@
                 
             </div>
         
+            <div class="sidebar-back"></div> 
         </div>
 
     </div>

@@ -177,7 +177,7 @@
                                        <a href="#"><i @if($wishlist->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span>  */?>
                                     <span class="video_views">
-                                        <i class="fa fa-eye"></i> {{$wishlist->watch_count}} {{tr('views')}} <b>.</b> 
+                                        <i class="fa fa-eye"></i> {{number_format_short($wishlist->watch_count)}} {{tr('views')}} <b>.</b> 
                                         {{$wishlist->created_at->diffForHumans()}}
                                     </span>
                                 </div><!--end of video-details-->
@@ -227,7 +227,7 @@
                                        <a href="#"><i @if($recent_video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span>  */?>
                                     <span class="video_views">
-                                        <i class="fa fa-eye"></i> {{$recent_video->watch_count}} {{tr('views')}} <b>.</b> 
+                                        <i class="fa fa-eye"></i> {{number_format_short($recent_video->watch_count)}} {{tr('views')}} <b>.</b> 
                                         {{$recent_video->created_at->diffForHumans()}}
                                     </span>
                                 </div><!--end of video-details-->
@@ -275,7 +275,7 @@
                                     </span> */?>
 
                                     <span class="video_views">
-                                        <i class="fa fa-eye"></i> {{$trending->watch_count}} {{tr('views')}} <b>.</b> 
+                                        <i class="fa fa-eye"></i> {{number_format_short($trending->watch_count)}} {{tr('views')}} <b>.</b> 
                                         {{$trending->created_at->diffForHumans()}}
                                     </span>
                                 </div><!--end of video-details-->
@@ -322,7 +322,7 @@
                                        <a href="#"><i @if($suggestion->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span> */?>
                                     <span class="video_views">
-                                        <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
+                                        <i class="fa fa-eye"></i> {{number_format_short($suggestion->watch_count)}} {{tr('views')}} <b>.</b> 
                                         {{$suggestion->created_at->diffForHumans()}}
                                     </span>
                                 </div><!--end of video-details-->
@@ -371,7 +371,7 @@
                                     </span>*/?>
 
                                     <span class="video_views">
-                                        <i class="fa fa-eye"></i> {{$watch_list->watch_count}} {{tr('views')}} <b>.</b> 
+                                        <i class="fa fa-eye"></i> {{number_format_short($watch_list->watch_count)}} {{tr('views')}} <b>.</b> 
                                         {{$watch_list->created_at->diffForHumans()}}
                                     </span> 
                                 </div><!--end of video-details-->
@@ -383,7 +383,8 @@
                     </div><!--end of slide-area-->
 
                 @endif
-               
+             
+                <div class="sidebar-back"></div>  
             </div>
 
         </div>
