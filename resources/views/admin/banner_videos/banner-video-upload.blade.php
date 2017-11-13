@@ -307,7 +307,7 @@
             $("#resolution").show();
         });
 
-        $("#youtube").click(function(){
+        $("#streamtube").click(function(){
             $("#others").show();
             $("#upload").hide();
             $("#compress").hide();

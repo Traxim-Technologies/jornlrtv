@@ -392,6 +392,12 @@ class CommonRepository {
 
                 }
 
+                if ($seconds <= 0) {
+
+                    $seconds = 10;
+
+                }
+
                 $model->unique_id = $model->title;
 
                 $img = time();

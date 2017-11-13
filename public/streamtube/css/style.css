@@ -48,7 +48,7 @@ body{
 .no-margin{
 	margin: 0;
 }
-.youtube-nav .row{
+.streamtube-nav .row{
 	margin: 0;
 }
 .home1{
@@ -1521,7 +1521,7 @@ changes
 .profile-content {
     margin-top:10px !important;
 }
-.common-youtube {
+.common-streamtube {
 	min-height: 700px;
 }
 .right-zero{
