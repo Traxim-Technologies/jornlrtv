@@ -40,7 +40,7 @@
     text-decoration:none;
 }
 
-.common-youtube {
+.common-streamtube {
     min-height: 0px !important;
 }
 textarea[name=comments] {
@@ -343,7 +343,7 @@ textarea[name=comments] {
 
                                                         
                                                         <!-- =========MODAL ENDS=========== -->
-<!--                                                         <div class="share">
+                                                        <!--<div class="share">
 
 
                                                             @if(Auth::check())
@@ -417,7 +417,7 @@ textarea[name=comments] {
                                                             <div class="channel-img">
                                                                 <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
                                                             </div>
-                                                            <span class="username"><a href="#">{{$video->title}}</a></span>
+                                                            <div class="username"><a href="#">{{$video->title}}</a></div>
                                                             <h5 class="rating no-margin top">
                                                                 <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
@@ -467,7 +467,9 @@ textarea[name=comments] {
                                                                    
                                                                    @else
 
-                                                                        <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+                                                                        <a class="btn btn-sm btn-danger text-uppercase hidden-xs" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
+
+                                                                        <a class="btn btn-sm btn-danger text-uppercase visible-xs" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{$subscriberscnt}}</a>
 
 
                                                                    @endif
@@ -734,9 +736,9 @@ textarea[name=comments] {
 
                     </div>
                 </div>
-            
+                <div class="sidebar-back"></div> 
             </div>
-
+           
         </div><!--y-content-row-->
     </div>
 
@@ -1013,7 +1015,7 @@ textarea[name=comments] {
 
                                     $('.comment_rating').rating('clear');
 
-                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
+                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                                 @endif
                                } else {
                                     console.log('Wrong...!');

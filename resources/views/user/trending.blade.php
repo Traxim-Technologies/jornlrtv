@@ -79,7 +79,7 @@
 
                 <!--end of slide-area-->
 
-                
+                <div class="sidebar-back"></div> 
             </div>
 
         </div>

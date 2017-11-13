@@ -1,4 +1,4 @@
-<div class="youtube-nav">
+<div class="streamtube-nav">
     <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
@@ -232,4 +232,4 @@
         </div>
 
     </div><!--end of row-->
-</div><!--end of youtube-nav-->
+</div><!--end of streamtube-nav-->

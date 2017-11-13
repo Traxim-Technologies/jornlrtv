@@ -78,6 +78,8 @@
 
                 </div><!--end of common-form-->     
             </div><!--end of form-background-->
+
+            <div class="sidebar-back"></div> 
         </div>
     </div>
 </div>
