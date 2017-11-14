@@ -19,51 +19,6 @@
 
 			@include('notification.notify')
 
-			<!-- ==============INVOICE TEMPLATE STARTS=========== -->
-			<!-- <div class="invoice">
-				<div class="row" > 
-					<div class="col-xs-12 col-sm-8 col-md-8 col-lg-6 col-sm-offset-2 col-md-offset-2 col-lg-offset-3 invoice-img" style="background-image: url({{asset('images/invoice-bg.jpg')}});">
-						<div class="invoice-overlay spacing1 text-center invoice1">
-						 	<div class="row">
-						 		<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-								 	<h3 class="no-margin black-clr">Plan tilte</h3>
-								 	<p class="invoice-desc"> When viewing on anything larger than 768px wide, there is no difference:</p>
-								 	<table  class="table text-right top-space table-sripped">
-								 		<tbody>
-										    <tr class="warning">
-											    <td>Amount</td>
-											    <td> $199.00</td>
-										    </tr>
-										    <tr>
-										        <td>Tax</td>
-										        <td> $9.99</td>
-										    </tr>
-										    <tr class="danger">
-										        <td>Total</td>
-										        <td> 208.99</td>
-										    </tr> 
-									    </tbody>
-									</table>
-									<h3 class="no-margin black-clr top">Payment Options</h3>
-								    <form>
-										<label class="radio1">
-										    <input id="radio1" type="radio" name="radios" checked>
-											<span class="outer"><span class="inner"></span></span>Robert Baratheon
-										</label>
-									    <label class="radio1">
-										    <input id="radio2" type="radio" name="radios">
-										    <span class="outer"><span class="inner"></span></span>Rhaegar Targaryen
-										</label>
-										<button class="btn btn-danger">
-											<i class="fa fa-credit-card"></i> &nbsp; Pay Now
-										</button>
-			 						</form>
-								</div>
-							 </div>
-						</div>
-					</div>
-				</div>
-			</div> -->
 			<div class="invoice">
 				<div class="row" > 
 					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 " >
@@ -125,6 +80,7 @@
 				</div>
 			</div>
 			<!-- =========INVOICE TEMPLATE ENDS========= -->
+			<div class="sidebar-back"></div>  
 		</div>
 
 	</div>

@@ -48,7 +48,7 @@ body{
 .no-margin{
 	margin: 0;
 }
-.youtube-nav .row{
+.streamtube-nav .row{
 	margin: 0;
 }
 .home1{
@@ -264,7 +264,7 @@ footer{
         padding-right: 4px \9;
         padding-left: 3px;
         padding-left: 4px \9;
-        padding: 9px 10px;
+        padding: 8px 10px;
        
         /* IE7-8 doesn't have border-radius, so don't indent the padding */
  
@@ -816,7 +816,7 @@ videos (single page) css
 	box-shadow: none;
 }
 .profile-button .dropdown-menu{
-	left: -75px;
+	left: -105px;
 	font-size: 12px;
 	min-width: 120px;
 }
@@ -961,13 +961,6 @@ history (single page) css
 }
 .thumb-class i {
 	margin-top: 10px;
-}
-.video-desc{
-	color:#999;
-	font-size: 15px !important;
-	font-weight:normal !important;
-	margin-top: 0px;
-	margin-left: 70px;
 }
 .duration{
 	font-size: 11px;
@@ -1485,7 +1478,7 @@ changes
 }
 .feed-comment{
 	clear: both;
-    border-top: 1px solid #F1F1F1;
+   /* border-top: 1px solid #F1F1F1;*/
 }
 .comment-submit{
 	float: right;
@@ -1528,7 +1521,7 @@ changes
 .profile-content {
     margin-top:10px !important;
 }
-.common-youtube {
+.common-streamtube {
 	min-height: 700px;
 }
 .right-zero{
@@ -2519,6 +2512,18 @@ margin: 0px auto 35px;
 	border-radius: 50%;
 	background-color: #cc181e;
 	opacity: 0;
+}
+.sidebar-open{
+	overflow: hidden;
+}
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color:rgba(0,0,0,.5);
 }
  #preloader {
 

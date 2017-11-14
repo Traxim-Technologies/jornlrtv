@@ -16,10 +16,10 @@
                 <?php $pages = pages();?>
                 @if (count($pages) > 0)
                     @foreach($pages as $page) 
-                        <li><a target="_blank" href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->title}}</a></li> | 
+                        <li><a  href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->title}}</a></li> | 
                     @endforeach
                 @endif
-                <li><a target="_blank" href="{{url('/')}}" target="_blank">&#169; 2017 @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
+                <li><a href="{{url('/')}}" >&#169; 2017 @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
             </ul>
         </div>   
     </div><!--end of footer1-->

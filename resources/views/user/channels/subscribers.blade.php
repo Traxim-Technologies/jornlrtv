@@ -42,44 +42,44 @@ thead>tr>th {
 
                         <div class="row">
 
-                            <div class="col-md-12">
+                            <div class="col-md-12" >
+                                <div class="table-responsive">
+                                    <table class="table">
 
-                                <table class="table">
-
-                                    <thead>
-                                        <tr>
-                                            <th>{{tr('s_no')}}</th>
-                                            @if(!$channel_id)
-                                                <th>{{tr('channel_name')}}</th>
-                                            @endif
-                                            <th>{{tr('user_name')}}</th>
-                                            <th>{{tr('created_at')}}</th>
-                                            <th>{{tr('action')}}</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-
-                                        @foreach($subscribers as $i => $subscriber)
-
+                                        <thead>
                                             <tr>
-
-                                                <td>{{++$i}}</td>
+                                                <th>{{tr('s_no')}}</th>
                                                 @if(!$channel_id)
-                                                    <td><a href="{{route('user.channel',$subscriber->channel_id)}}">{{$subscriber->channel_name}}</a></td>
+                                                    <th>{{tr('channel_name')}}</th>
                                                 @endif
-                                                <td>{{$subscriber->user_name}}</td>
-                                                <td>{{$subscriber->created_at->diffForHumans()}}</td>
-
-                                                <td><a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a></td>
+                                                <th>{{tr('user_name')}}</th>
+                                                <th>{{tr('created_at')}}</th>
+                                                <th>{{tr('action')}}</th>
                                             </tr>
+                                        </thead>
 
-                                        @endforeach
+                                        <tbody>
+
+                                            @foreach($subscribers as $i => $subscriber)
+
+                                                <tr>
+
+                                                    <td>{{++$i}}</td>
+                                                    @if(!$channel_id)
+                                                        <td><a href="{{route('user.channel',$subscriber->channel_id)}}">{{$subscriber->channel_name}}</a></td>
+                                                    @endif
+                                                    <td>{{$subscriber->user_name}}</td>
+                                                    <td>{{$subscriber->created_at->diffForHumans()}}</td>
+
+                                                    <td><a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a></td>
+                                                </tr>
+
+                                            @endforeach
+                                        
+                                        </tbody>
                                     
-                                    </tbody>
-                                
-                                </table>
-
+                                    </table>
+                                </div>
                                  @if($subscribers)
                                     <div class="row">
                                         <div class="col-md-12">
@@ -96,6 +96,7 @@ thead>tr>th {
             
                 </div>
             
+                <div class="sidebar-back"></div> 
             </div>
     
         </div>
