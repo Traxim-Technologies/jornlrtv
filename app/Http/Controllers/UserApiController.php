@@ -56,6 +56,12 @@ use App\UserPayment;
 
 use App\LiveVideo;
 
+use App\LiveVideoPayment;
+
+use App\ChatMessage;
+
+use App\Viewer;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
