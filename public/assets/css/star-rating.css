@@ -31,6 +31,7 @@
 }
 .star-rating-active s, .star-rating-rtl-active s {
     cursor: default;
+    font-size: 15px;
 }
 
 .star-rating-active s:hover:before, .star-rating s.rated:before {

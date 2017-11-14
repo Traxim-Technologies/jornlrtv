@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
-            <a href="#"><i class="fa fa-align-justify toggle-icon" aria-hidden="true"></i></a>
+            <a href="#" class="hidden-xs"><i class="fa fa-align-justify toggle-icon" aria-hidden="true"></i></a>
 
             <a href="{{route('user.dashboard')}}">
                 @if(Setting::get('site_logo'))
@@ -19,7 +19,7 @@
             @if(Auth::check())
                 <div class="y-button profile-button" style="position: unset;">
                    <div class="dropdown">
-                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: transparent;">
                           
                             @if(Auth::user()->picture != "")
                                 <img class="profile-image" src="{{Auth::user()->picture}}">
@@ -116,7 +116,7 @@
         </div>
 
 
-        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 hidden-xs">
 
             <div id="custom-search-input" class="">
                 <form method="post" action="{{route('search-all')}}" id="userSearch">
@@ -133,6 +133,29 @@
                 </form>
             </div><!--custom-search-input end-->
 
+        </div>
+
+        <!-- ========RESPONSIVE SEARCH BAR VISIBLE IN MOBAILE VIEW====== -->
+        <div class="col-xs-12 visible-xs">
+            <ul class="mobile-header">
+                <li><a href="#" class="mobile-menu">
+                    <i class="material-icons">home</i> 
+                    <span class="hidden-xxs">Home</span>
+                </a></li>
+                <li><a href="#" class="mobile-menu">
+                    <i class="material-icons">whatshot</i>
+                    <span class="hidden-xxs">Trending</span>
+                </a></li>
+                <li><a href="#" class="mobile-menu">
+                    <i class="material-icons">live_tv</i>
+                    <span class="hidden-xxs">Channels</span>
+                </a></li>
+                <li><a href="#" class="mobile-menu">
+                    <i class="material-icons">subscriptions</i>
+                    <span class="hidden-xxs">My Channels</span>
+                </a></li>
+
+            </ul>
         </div>
 
         <div class="col-lg-3 col-md-2 col-sm-2 col-xs-12 hidden-xs visible-sm visible-md visible-lg">

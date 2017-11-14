@@ -187,9 +187,8 @@ textarea[name=comments] {
                                                             @endif
 
                                                             <a  class="share-new" data-toggle="modal" data-target="#popup1">
-                                                                <i class="fa fa-share"></i>
+                                                                <i class="material-icons">share</i>
                                                                <!--  <p class="hidden-xs">share</p> -->
-                                                               share
                                                             </a>
 
 
@@ -210,7 +209,7 @@ textarea[name=comments] {
                                                                         <div class="mylist">
                                                                             <button style="background-color:rgb(229, 45, 39);" type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
                                                                                 <div class="added_to_wishlist" id="check_id">
-                                                                                    <i class="fa fa-times-circle"></i>
+                                                                                    <i class="fa fa-heart"></i>
                                                                                     <!-- <span>{{tr('wishlist')}}</span> -->
                                                                                 </div>
 
@@ -229,7 +228,7 @@ textarea[name=comments] {
                                                                             <div class="mylist">
                                                                                 <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
                                                                                     <div class="add_to_wishlist" id="check_id">
-                                                                                        <i class="fa fa-plus-circle"></i>
+                                                                                        <i class="fa fa-heart"></i>
                                                                                         <!-- <span>{{tr('wishlist')}}</span> -->
                                                                                     </div>
 
@@ -533,7 +532,7 @@ textarea[name=comments] {
 
 
 
-                                            <hr>
+                                            <div class="hr-class"><hr></div>
 
                                             <!-- <div class="col-lg-12">
                                                 <div class="video-description">
@@ -594,7 +593,6 @@ textarea[name=comments] {
 
                                     <div class="clearfix"></div>
 
-                                    <br>
 
                                     @if(count($comments) > 0) 
 
@@ -622,7 +620,7 @@ textarea[name=comments] {
                                                                  @endif
 
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
-
+                                                                <p class="underline"></p>
                                                                 <button class="btn pull-right btn-sm btn-success top-btn-space" type="submit">{{tr('comment')}}</button>
 
                                                                 <div class="clearfix"></div>
@@ -807,6 +805,7 @@ textarea[name=comments] {
 
                                 <div class="form-group">
                                     <textarea class="form-control" rows="5" id="comment">{{$embed_link}}</textarea>
+                                    <p class="underline1"></p>
                                 </div>
 
                             </form>
@@ -909,10 +908,10 @@ textarea[name=comments] {
                                 jQuery('#status').val("0");
 
                                 jQuery('#wishlist_id').val(data.wishlist_id); 
-                                jQuery("#added_wishlist").css({'font-family':'arial','background-color':'#b31217','color' : '#FFFFFF'});
+                                jQuery("#added_wishlist").css({'font-family':'arial','background-color':'transparent','color' : '#b31217'});
 
                                 if (jQuery(window).width() > 640) {
-                                    var append = '<i class="fa fa-times-circle">';
+                                    var append = '<i class="fa fa-heart">';
                                     // var append = '<i class="fa fa-times-circle">&nbsp;&nbsp;{{tr('wishlist')}}';
                                 } else {
                                     var append = '<i class="fa fa-heart">';
@@ -924,7 +923,7 @@ textarea[name=comments] {
                                 jQuery('#wishlist_id').val("");
                                 jQuery("#added_wishlist").css({'font-family':'arial','background':'','color' : ''});
                                 if (jQuery(window).width() > 640) {
-                                    var append = '<i class="fa fa-plus-circle">';
+                                    var append = '<i class="fa fa-heart">';
                                     // var append = '<i class="fa fa-plus-circle">&nbsp;&nbsp;{{tr('wishlist')}}';
                                 } else {
                                     var append = '<i class="fa fa-heart">';
