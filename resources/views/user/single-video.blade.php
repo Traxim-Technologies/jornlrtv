@@ -40,7 +40,7 @@
     text-decoration:none;
 }
 
-.common-youtube {
+.common-streamtube {
     min-height: 0px !important;
 }
 textarea[name=comments] {
@@ -341,7 +341,7 @@ textarea[name=comments] {
 
                                                         
                                                         <!-- =========MODAL ENDS=========== -->
-<!--                                                         <div class="share">
+                                                        <!--<div class="share">
 
 
                                                             @if(Auth::check())

@@ -33,7 +33,7 @@
 	z-index:0;
 	position: relative;
 }
-.youtube-nav{
+.streamtube-nav{
 	padding:10px 0px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color:#e61b1b;
@@ -220,7 +220,7 @@
 	z-index: 0;
 	position: relative;
 }
-.youtube-nav{
+.streamtube-nav{
 	padding:10px 0px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color:#e61b1b;
@@ -383,7 +383,7 @@
 .right-space{
 	padding-right:30px;
 }
-.youtube-nav{
+.streamtube-nav{
 	padding:10px 20px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
@@ -539,7 +539,7 @@
 .page-inner{
 	margin-top: 65px;
 }
-.youtube-nav{
+.streamtube-nav{
 	padding:10px 20px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
@@ -692,7 +692,7 @@
 .page-inner{
 	margin-top: 65px;
 }
-.youtube-nav{
+.streamtube-nav{
 	padding:10px 20px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
