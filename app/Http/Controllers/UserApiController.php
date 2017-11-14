@@ -60,7 +60,7 @@ use App\LiveVideoPayment;
 
 use App\ChatMessage;
 
-use app\Viewer;
+use App\Viewer;
 
 class UserApiController extends Controller {
 
