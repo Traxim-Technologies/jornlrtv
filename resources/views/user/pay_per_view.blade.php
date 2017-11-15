@@ -19,9 +19,12 @@
 
 			@include('notification.notify')
 
-
+			
+			
+			  
 		</div>
 
 	</div>
 
 </div>
+@endsection
