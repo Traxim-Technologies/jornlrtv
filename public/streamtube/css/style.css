@@ -48,7 +48,7 @@ body{
 .no-margin{
 	margin: 0;
 }
-.youtube-nav .row{
+.streamtube-nav .row{
 	margin: 0;
 }
 .home1{
@@ -130,11 +130,6 @@ body{
 	font-size: 12px;
 	padding: 3px 15px;
 }
-.y-signin:hover,.y-signin:active,.y-signin:focus{
-	background-color: #155586;
-	color: #fff;
-	text-decoration: none;
-}
 .y-button1:hover,.y-button1:active,.y-button1:focus{
 	background-color: #a09c9c;
 	color: #fff;
@@ -149,6 +144,11 @@ body{
     padding: 4px 15px;
     display: inline-block;
     border-radius: 3px;
+}
+.y-signin:hover,.y-signin:active,.y-signin:focus{
+	background-color: #155586;
+	color: #fff;
+	text-decoration: none;
 }
 .video-head{
 	margin-top: 6px;
@@ -487,6 +487,8 @@ videos (single page) css
 }
 .share-new i{
 	margin-left: 10px;
+	vertical-align: -24%;
+	font-size:18px;
 }
 .modal-top1 .modal-content{
 	border-radius: 0;
@@ -568,10 +570,10 @@ videos (single page) css
 	color: #f5ba0e;
 }
 
-.c-380:before{
+/*.c-380:before{
 	content: '\002022';
     margin: 0 5px;
-}
+}*/
 .v-comments{
 	background-color: #fff;
 	padding: 15px;
@@ -584,7 +586,7 @@ videos (single page) css
 	font-size:18px;
 	font-weight: bold;
 	margin-top: 0;
-	margin-bottom:0px;
+	margin-bottom:10px;
 }
 .com-image{
 	float: left;
@@ -609,11 +611,35 @@ videos (single page) css
 #comment_form textarea {
 	width: 90%;
     height: 100px !important;
-    padding: 8px;
-    border: 1px solid #999;
-    border-radius: 4px;
+    padding: 8px 0;
+    border:0;
+    height:65px !important;
+    border-bottom: 1px solid #999;
+    position: relative;
+    margin-bottom: -6px;
 }
-
+#comment_form textarea:focus+.underline {
+  transform: scale(1);
+}
+.underline {
+	background-color:#333;
+	display: inline-block;
+	height: 2px;
+	margin-top: -4px;
+	-webkit-transform: scale(0, 1);
+	transform: scale(0, 1);
+	-webkit-transition: all 0.2s linear;
+	transition: all 0.2s linear;
+	width: 90%;
+	margin-left:10%; 
+}
+/*#comment_form textarea:focus{
+	border-bottom:2px solid #333;
+	-webkit-transform: translate3d(100%, 0, 0);
+	transform: translate3d(100%, 0, 0);
+	-webkit-transition: -webkit-transform 0.3s;
+	transition: transform 0.3s;
+}*/
 #comment_form input[type="submit"] {
 	cursor: pointer;
 	background: -webkit-linear-gradient(top, #efefef, #ddd);
@@ -645,7 +671,7 @@ videos (single page) css
 }
 
 #comment_form div {
-	margin-bottom: 8px;
+	margin-bottom: 5px;
 }
 /*comment box css end*/
 .top-comment .btn{
@@ -960,7 +986,8 @@ history (single page) css
 	color: #999;
 }
 .thumb-class i {
-	margin-top: 10px;
+	margin-top:9px;
+	font-size: 17px;
 }
 .duration{
 	font-size: 11px;
@@ -1447,15 +1474,15 @@ recommended.html css
 changes
 ---------------*/
 .mylist button{
-	font-size: 13px;
+	font-size: 17px;
     border: none;
     padding: 1px 10px;
-    background-color: gray;
-    color: #fff;
+    background-color:transparent;
+    color: #999;
 }
 .mylist button:hover, .mylist button:active, .mylist button:focus{
-	background-color: #676565;
-    color: #fff;
+	background-color: transparent;
+    color:#999;
     border-color: transparent;
     outline: transparent;
 }
@@ -1521,7 +1548,7 @@ changes
 .profile-content {
     margin-top:10px !important;
 }
-.common-youtube {
+.common-streamtube {
 	min-height: 700px;
 }
 .right-zero{
@@ -2019,9 +2046,32 @@ margin: 0px auto 35px;
 }
 .copy-embed textarea{
 	resize: none;
+	border:0;
+	border-radius: 0;
+	border-bottom: 1px solid #999;
+	box-shadow: none;
+	height: 110px;
+	margin-bottom: -14px;
 }
 .copy-embed textarea:focus{
 	box-shadow: none;
+}
+.copy-embed textarea:focus+.underline1 {
+  transform: scale(1);
+}
+.underline1 {
+	background-color:#333;
+	display: inline-block;
+	height: 2px;
+	margin-top: -4px;
+	-webkit-transform: scale(0, 1);
+	transform: scale(0, 1);
+	-webkit-transition: all 0.2s linear;
+	transition: all 0.2s linear;
+	width: 100%;
+}
+.hr-class{
+	padding: 0 15px;
 }
 .copy-embed .btn-primary:hover {
     color: #fff;
@@ -2205,17 +2255,26 @@ margin: 0px auto 35px;
 	background-color: #cc181e;
 	opacity: 0;
 }
-.sidebar-open{
-	overflow: hidden;
+.mobile-header{
+	padding:0;
 }
-.sidebar-backdrop {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1040;
-    background-color:rgba(0,0,0,.5);
+.mobile-header li{
+	display: inline-block !important;
+	padding-top: 10px;
+	width: 24%;
+	text-align: center;
+}
+.mobile-header li i{
+	font-size: 20px;
+	color: white;
+	vertical-align: -14%;
+}
+.mobile-header li span{
+	color: white;
+	font-weight: bold;
+}
+.mobile-header li a:hover{
+	text-decoration: none;
 }
  #preloader {
 

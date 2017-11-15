@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/jquery-ui.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/fonts/font-awesome/css/font-awesome.min.css')}}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'> 
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/slick.css')}}"/>
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/slick-theme.css')}}"/>
@@ -62,7 +64,7 @@
 
     @include('layouts.user.header')
 
-    <div class="common-youtube">
+    <div class="common-streamtube">
 
         @yield('content')
 
