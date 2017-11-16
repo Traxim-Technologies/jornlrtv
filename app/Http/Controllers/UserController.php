@@ -1841,8 +1841,8 @@ class UserController extends Controller {
         // Get post attribute values and save the values
         if ($model) {
 
-             $request->request->add([ 
-                'ppv_created_by'=> 0 ,
+            $request->request->add([ 
+                'ppv_created_by'=> Auth::user()->id ,
             ]); 
 
             if ($data = $request->all()) {

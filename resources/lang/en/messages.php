@@ -949,6 +949,7 @@ return array(
 	'pay'=>'PAY',
 	'browse_channels'=>'Browse Channels',
 	'total_earnings'=>'Total Earnings of this video',
+	'total_earning'=>'Total Earning',
 	'total_views'=>'Total views of this video',
 	'view_redeem'=>'View Redeems',
 	'video_not_found'=>'Video Not found, Please try again later',

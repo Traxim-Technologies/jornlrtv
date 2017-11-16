@@ -381,7 +381,7 @@
 					          <ul class="dropdown-menu dropdown-menu-right" role="menu">
 					            <li><a data-toggle="modal" data-target="#pay-perview_{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a></li>
 					            @if($video->amount > 0) 
-					            <li><a data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}">{{tr('total_earnings')}}</a></li>
+					            <li><a data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}">{{tr('total_earning')}}</a></li>
 					            @endif
 					            <li class="divider"></li>
 					            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
