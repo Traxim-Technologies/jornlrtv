@@ -995,7 +995,6 @@ function watchFullVideo($user_id, $user_type, $video) {
         }
     } else {
 
-
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
