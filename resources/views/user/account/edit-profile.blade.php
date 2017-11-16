@@ -130,7 +130,7 @@
                                     <li class="sub-list row no-margin">
                                         <div class="main-history">
                                             <div class="history-image">
-                                                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_image}}"></a>      
+                                                <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>      
                                                 @if($video->ppv_amount > 0)
                                                     @if(!$video->ppv_status)
                                                         <div class="video_amount">
@@ -148,7 +148,7 @@
                                             <div class="history-title">
                                                 <div class="history-head row">
                                                     <div class="cross-title1">
-                                                        <h5><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
+                                                        <h5><a href="{{$video->url}}">{{$video->title}}</a></h5>
                                                          <span class="video_views">
                                                             <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
                                                             <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} 

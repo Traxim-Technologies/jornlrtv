@@ -54,11 +54,13 @@ use App\Subscription;
 
 use App\UserPayment;
 
+use Exception;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons' ,'search_video']));
 
     }
 
@@ -3094,7 +3096,7 @@ class UserApiController extends Controller {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 
@@ -3153,7 +3155,7 @@ class UserApiController extends Controller {
 
             foreach ($model['data'] as $key => $value) {
                 
-                $items[] = displayVideoDetails($value);
+                $items[] = displayVideoDetails($value, $request->id);
 
             }
 
@@ -3204,7 +3206,7 @@ class UserApiController extends Controller {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 
@@ -3263,7 +3265,7 @@ class UserApiController extends Controller {
 
         foreach ($model['data'] as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 
@@ -3318,7 +3320,7 @@ class UserApiController extends Controller {
 
         foreach ($model['data'] as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 
@@ -3360,7 +3362,7 @@ class UserApiController extends Controller {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 
@@ -3407,7 +3409,7 @@ class UserApiController extends Controller {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 
@@ -3442,13 +3444,49 @@ class UserApiController extends Controller {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 
         return response()->json($items);
 
     
+    }
+
+    public function search_list($request,$key,$web = NULL,$skip = 0) {
+
+        $base_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('title','like', '%'.$key.'%')
+                    ->where('video_tapes.status' , 1)
+                    ->videoResponse()
+                    ->where('video_tapes.age_limit','<=', checkAge($request))
+                    ->orderBy('video_tapes.created_at' , 'desc');
+        if($web) {
+
+            $videos = $base_query->paginate(16);
+
+            $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
+
+
+        } else {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            $model = ['data'=>$videos];
+
+        }
+
+        $items = [];
+
+        foreach ($model['data'] as $key => $value) {
+            
+            $items[] = displayVideoDetails($value, $request->id);
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
+
     }
 
 
@@ -3631,4 +3669,291 @@ class UserApiController extends Controller {
 
     }
 
+
+    /**
+     * Function Name : stripe_ppv()
+     * 
+     * Pay the payment for Pay per view through stripe
+     *
+     * @param object $request - Admin video id
+     * 
+     * @return response of success/failure message
+     */
+    public function stripe_ppv(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(), 
+                array(
+                    'video_tape_id' => 'required|exists:video_tapes,id',
+                ),  array(
+                    'exists' => 'The :attribute doesn\'t exists',
+                ));
+
+            if($validator->fails()) {
+
+                $errors = implode(',', $validator->messages()->all());
+                
+                $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
+                throw new Exception($errors);
+
+            } else {
+
+                $userModel = User::find($request->id);
+
+                if ($userModel) {
+
+                    if ($userModel->card_id) {
+
+                        $user_card = Card::find($userModel->card_id);
+
+                        if ($user_card && $user_card->is_default) {
+
+                            $video = VideoTape::find($request->video_tape_id);
+
+                            if($video) {
+
+                                $total = $video->amount;
+
+                                if ($total <= 0) {
+
+                                    $user_payment = new PayPerView;
+                                    $user_payment->payment_id  = "free plan";
+                                    $user_payment->user_id = $request->id;
+                                    $user_payment->video_id = $request->video_tape_id;
+                                    $user_payment->status = DEFAULT_FALSE;
+                                    $user_payment->amount = $total;
+
+                                    $user_payment->save();
+
+                                    // Commission Spilit 
+                                    if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
+
+                                        $video_amount = Setting::get('amount_per_video');
+
+                                        $video->redeem_amount += $video_amount;
+
+                                        if($video->amount > 0) { 
+
+                                            $total = $video_amount;
+
+                                            // Commission Spilit 
+
+                                            $admin_commission = Setting::get('admin_commission')/100;
+
+                                            $admin_amount = $total * $admin_commission;
+
+                                            $moderator_amount = $total - $admin_amount;
+
+                                            $video->admin_amount = $admin_amount;
+
+                                            $video->user_amount = $moderator_amount;
+
+                                            $video->save();
+
+                                            // Commission Spilit Completed
+
+                                            if($moderator = Moderator::find($video->uploaded_by)) {
+
+                                                $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
+
+                                                $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
+
+                                                $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
+
+                                                $moderator->total = $moderator->total + $total;
+
+                                                $moderator->save();
+
+                                                $video_amount = $moderator_amount;
+
+                                            }
+                                            
+                                        }
+
+                                        add_to_redeem($video->uploaded_by , $video_amount);
+
+                                        \Log::info("ADD History - add_to_redeem");
+
+                                    } 
+
+                                    $video->save();
+
+                                    $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
+
+                                    $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
+
+                                } else {
+
+                                    // Get the key from settings table
+                                    $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                                    $customer_id = $user_card->customer_id;
+                                    
+                                    if($stripe_secret_key) {
+
+                                        \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+                                    } else {
+
+                                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
+
+                                        throw new Exception(Helper::get_error_message(902));
+                                        
+                                    }
+
+                                    try {
+
+                                       $user_charge =  \Stripe\Charge::create(array(
+                                          "amount" => $total * 100,
+                                          "currency" => "usd",
+                                          "customer" => $customer_id,
+                                        ));
+
+                                       $payment_id = $user_charge->id;
+                                       $amount = $user_charge->amount/100;
+                                       $paid_status = $user_charge->paid;
+
+                                       if($paid_status) {
+
+                                            $user_payment = new PayPerView;
+                                            $user_payment->payment_id  = $payment_id;
+                                            $user_payment->user_id = $request->id;
+                                            $user_payment->video_id = $request->admin_video_id;
+                                            $user_payment->status = DEFAULT_FALSE;
+                                            $user_payment->amount = $amount;
+
+                                            $user_payment->save();
+
+                                            // Commission Spilit 
+                                           /* if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
+
+                                                $video_amount = Setting::get('amount_per_video');
+
+                                                $video->redeem_amount += $video_amount;
+
+                                                if($video->amount > 0) { 
+
+                                                    $total = $video_amount;
+
+                                                    // Commission Spilit 
+
+                                                    $admin_commission = Setting::get('admin_commission')/100;
+
+                                                    $admin_amount = $total * $admin_commission;
+
+                                                    $moderator_amount = $total - $admin_amount;
+
+                                                    $video->admin_amount = $admin_amount;
+
+                                                    $video->user_amount = $moderator_amount;
+
+                                                    $video->save();
+
+                                                    // Commission Spilit Completed
+
+                                                    if($moderator = Moderator::find($video->uploaded_by)) {
+
+                                                        $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
+
+                                                        $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
+
+                                                        $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
+
+                                                        $moderator->total = $moderator->total + $total;
+
+                                                        $moderator->save();
+
+                                                        $video_amount = $moderator_amount;
+
+                                                    }
+                                                    
+                                                }
+
+                                                add_to_redeem($video->uploaded_by , $video_amount);
+
+                                                \Log::info("ADD History - add_to_redeem");
+
+                                            } */
+
+                                            $video->save();
+
+                                            $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
+
+                                            $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
+
+                                        } else {
+
+                                            $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
+
+                                            throw new Exception(tr('no_video_found'));
+
+                                        }
+                                    
+                                    } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                                        Log::info(print_r($e,true));
+
+                                        $response_array = array('success' => false , 'error_messages' => $e->getMessage() ,'error_code' => 903);
+
+                                       return response()->json($response_array , 200);
+                                    
+                                    }
+
+                                }
+
+                            
+                            } else {
+
+                                $response_array = array('success' => false , 'error_messages' => tr('no_video_found'));
+
+                                throw new Exception(tr('no_video_found'));
+                                
+                            }
+
+                        } else {
+
+                            $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
+
+                            throw new Exception(tr('no_default_card_available'));
+
+                        }
+
+                    } else {
+
+                        $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
+
+                        throw new Exception(tr('no_default_card_available'));
+
+                    }
+
+                } else {
+
+                    throw new Exception(tr('no_user_detail_found'));
+                    
+
+                }
+
+            }
+
+            DB::commit();
+
+            return response()->json($response_array,200);
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $e = $e->getMessage();
+
+            $response_array = ['success'=>false, 'error_messages'=>$e];
+
+            return response()->json($response_array);
+
+        }
+        
+    }
 }

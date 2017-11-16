@@ -97,7 +97,7 @@ class VideoTapeRepository {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value);
+            $items[] = displayVideoDetails($value, $request->id);
 
         }
 

@@ -696,7 +696,7 @@ textarea[name=comments] {
                                             <div class="main-video">
                                                  <div class="video-image">
                                                     <div class="video-image-outer">
-                                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->video_image}}"></a>
+                                                        <a href="{{$suggestion->url}}"><img src="{{$suggestion->video_image}}"></a>
                                                     </div>  
                                                     @if($suggestion->ppv_amount > 0)
                                                         @if(!$suggestion->ppv_status)
@@ -714,7 +714,7 @@ textarea[name=comments] {
 
                                                 <div class="sugg-head">
                                                     <div class="suggn-title">                                          
-                                                        <h5><a href="{{route('user.single' , $suggestion->video_tape_id)}}">{{$suggestion->title}}</a></h5>
+                                                        <h5><a href="{{$suggestion->url}}">{{$suggestion->title}}</a></h5>
                                                     </div><!--end of sugg-title-->
 
                                                     <span class="video_views">

@@ -67,7 +67,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'watch_count', 'partialVideos', 'payment_mgmt_videos' , 'master_login','invoice','pay_per_view']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'watch_count', 'partialVideos', 'payment_mgmt_videos' , 'master_login']]);
     }
 
 
@@ -1696,15 +1696,51 @@ class UserController extends Controller {
         return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
     }
 
-    public function invoice() {
+    public function invoice(Request $request) {
 
-        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice');
+        $model = $request->all();
+
+        if (!$request->s_id) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        }
+
+        $subscription = Subscription::find($request->s_id);
+
+        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)->with('model',$model);
     }
 
-    public function pay_per_view() {
+    public function ppv_invoice($id) {
+
+        $video = VideoTape::find($id);
+
+        if ($video) {
+
+            return view('user.ppv_invoice')
+                ->with('page', 'ppv-invoice')
+                ->with('video',$video)
+                ->with('subPage', 'ppv-invoice');
+                
+        } else {
+
+            return back()->with('flash_error', tr('video_not_found'));
+        }
+    }
+
+    public function pay_per_view($id) {
+
+        $video = VideoTape::find($id);
+
+        if(!$video) {
+
+
+            return back()->with('flash_error', tr('video_not_found'));
+
+        }
         return view('user.pay_per_view')
                 ->with('page', 'pay_per_view')
-                ->with('subPage', 'pay_per_view');
+                ->with('subPage', 'pay_per_view')->with('video', $video);
 
     }
 
@@ -1726,4 +1762,57 @@ class UserController extends Controller {
                         ->with('subPage' , 'Payper Videos');
     }
 
+
+    public function payment_type($id, Request $request) {
+
+        if($request->payment_type == 1) {
+
+            return redirect(route('user.ppv-video-payment', ['id'=>$id]));
+
+        } else {
+
+            return redirect(route('user.card.ppv-stripe-payment', ['video_tape_id'=>$id]));
+        }
+    }
+
+    public function subscription_payment(Request $request) {
+
+        if($request->payment_type == 1) {
+
+            return redirect(route('user.paypal' , $request->s_id));
+
+        } else {
+
+            return redirect(route('user.card.stripe_payment' , ['subscription_id' => $request->s_id]));
+        }
+    }
+
+    public function ppv_stripe_payment(Request $request) {
+
+        $request->request->add([
+            'id'=>Auth::user()->id,
+            ]);
+
+        $payment = $this->UserAPI->stripe_ppv($request)->getData();
+
+
+        if ($payment->success) {
+
+            return back()->with('flash_success', $payment->message);
+
+        } else {
+
+            return back()->with('flash_error', $payment->error_messages);
+        }
+    }
+
+    public function payment_success() {
+
+        return view('user.subscription');
+    }
+
+    public function video_success() {
+
+        return view('user.video_subscription');
+    }
 }

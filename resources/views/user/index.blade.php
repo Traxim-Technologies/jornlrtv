@@ -147,7 +147,7 @@
                             @foreach($wishlists->items as $wishlist)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $wishlist->video_tape_id)}}"><img src="{{$wishlist->video_image}}" /></a>
+                                    <a href="{{$wishlist->url}}"><img src="{{$wishlist->video_image}}" /></a>
 
                                     @if($wishlist->ppv_amount > 0)
                                         @if(!$wishlist->ppv_status)
@@ -165,7 +165,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $wishlist->video_tape_id)}}">{{$wishlist->title}}</a>
+                                        <a href="{{$wishlist->url}}">{{$wishlist->title}}</a>
                                     </div>
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$wishlist->channel_id)}}">{{$wishlist->channel_name}}</a></div>
@@ -195,7 +195,7 @@
                             @foreach($recent_videos as $recent_video)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $recent_video->video_tape_id)}}"><img src="{{$recent_video->video_image}}" /></a>
+                                    <a href="{{$recent_video->url}}"><img src="{{$recent_video->video_image}}" /></a>
                                     @if($recent_video->ppv_amount > 0)
                                         @if(!$recent_video->ppv_status)
                                             <div class="video_amount">
@@ -212,7 +212,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $recent_video->video_tape_id)}}">{{$recent_video->title}}</a>
+                                        <a href="{{$recent_video->url}}">{{$recent_video->title}}</a>
                                     </div>
 
                                     <span class="video_views">
@@ -247,7 +247,7 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $trending->video_tape_id)}}"><img src="{{$trending->video_image}}" /></a>
+                                    <a href="{{$trending->url}}"><img src="{{$trending->video_image}}" /></a>
                                     @if($trending->ppv_amount > 0)
                                         @if(!$trending->ppv_status)
                                             <div class="video_amount">
@@ -264,7 +264,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $trending->video_tape_id)}}">{{$trending->title}}</a>
+                                        <a href="{{$trending->url}}">{{$trending->title}}</a>
                                     </div>
                                     
                                     <span class="video_views">
@@ -296,7 +296,7 @@
                             @foreach($suggestions as $suggestion)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->video_image}}" /></a>
+                                    <a href="{{$suggestion->url}}"><img src="{{$suggestion->video_image}}" /></a>
 
                                     @if($suggestion->ppv_amount > 0)
                                         @if(!$suggestion->ppv_status)
@@ -314,7 +314,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}">{{$suggestion->title}}</a>
+                                        <a href="{{$suggestion->url}}">{{$suggestion->title}}</a>
                                     </div>
                                    
                                     <span class="video_views">
@@ -347,7 +347,7 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $watch_list->video_tape_id)}}"><img src="{{$watch_list->video_image}}" /></a>
+                                    <a href="{{$watch_list->url}}"><img src="{{$watch_list->video_image}}" /></a>
                                     @if($watch_list->ppv_amount > 0)
                                         @if(!$watch_list->ppv_status)
                                             <div class="video_amount">
@@ -364,7 +364,7 @@
 
                                 <div class="video-details">
                                     <div class="video-head">
-                                        <a href="{{route('user.single' , $watch_list->video_tape_id)}}">{{$watch_list->title}}</a>
+                                        <a href="{{$watch_list->url}}">{{$watch_list->title}}</a>
                                     </div>
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$watch_list->channel_id)}}">{{$watch_list->channel_name}}</a></div>

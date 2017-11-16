@@ -970,11 +970,11 @@ function number_format_short( $n, $precision = 1 ) {
  */
 function watchFullVideo($user_id, $user_type, $video) {
 
-    if ($user_type == 1) {
 
-        if ($video->amount == 0) {
+    if ($user_type == 1) {
+        if ($video->ppv_amount == 0) {
             return true;
-        }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
+        }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)
                 ->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
@@ -989,13 +989,13 @@ function watchFullVideo($user_id, $user_type, $video) {
                     }
                 }   
             }
-        } else if($video->amount > 0 && $video->type_of_user == NORMAL_USER){
+        } else if($video->ppv_amount > 0 && $video->type_of_user == NORMAL_USER){
             return true;
         }
     } else {
-        if ($video->amount == 0) {
+        if ($video->ppv_amount == 0) {
             return true;
-        }else if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
+        }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
@@ -1015,7 +1015,36 @@ function watchFullVideo($user_id, $user_type, $video) {
     return false;
 }
 
-function displayVideoDetails($data,$user = null) {
+function displayVideoDetails($data,$userId) {
+
+    $user = User::find($userId);
+
+    $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+
+    if ($ppv_status) {
+
+        $url = route('user.single', $data->video_tape_id);
+
+    } else {
+
+        if ($userId) {
+
+            if ($user->user_type) {        
+
+                $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+
+            } else {
+
+                $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+            }
+
+        } else {
+
+            $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+
+        }
+
+    }
 
     $model = [
         'video_tape_id'=>$data->video_tape_id,
@@ -1023,7 +1052,7 @@ function displayVideoDetails($data,$user = null) {
         'video_image'=>$data->default_image,
         'watch_count'=>number_format_short($data->watch_count),
         'duration'=>$data->duration,
-        'ppv_status'=>$user ? watchFullVideo($user->id, $user->user_type, $data->video_tape_id) : false,
+        'ppv_status'=>$ppv_status,
         'ppv_amount'=>$data->ppv_amount,
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
@@ -1032,6 +1061,7 @@ function displayVideoDetails($data,$user = null) {
         'description'=>$data->description,
         'ratings'=>$data->ratings,
         'amount'=>$data->amount,
+        'url'=>$url,
     ];
 
     return $model;
