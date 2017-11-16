@@ -2423,6 +2423,19 @@ changes
 .drop-top{
 	margin-top: -25px;
 }
+.payment-success{
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	margin-top: 50px;
+	padding: 15px;
+}
+.payment-success img{
+	height: 120px;
+	width: 120px;
+}
+.red-clr{
+	color: red;
+}
  #preloader {
 
     position: absolute;
