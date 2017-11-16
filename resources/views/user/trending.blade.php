@@ -15,15 +15,24 @@
                         <h3>{{tr('trending')}}</h3>
                     </div>
 
-                    @if(count($videos) > 0)
+
+                    @if(count($videos->items) > 0)
 
                         <div class="recommend-list row">
 
-                            @foreach($videos as $video)
+                            @foreach($videos->items as $video)
                                 <div class="slide-box recom-box">
                                     <div class="slide-image recom-image">
-                                        <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}" /></a>
+                                        <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_image}}" /></a>
+                                        @if($video->ppv_amount > 0)
+                                            @if(!$video->ppv_status)
+                                                <div class="video_amount">
 
+                                                {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+
+                                                </div>
+                                            @endif
+                                        @endif
                                         <div class="video_duration">
                                             {{$video->duration}}
                                         </div>
@@ -33,21 +42,12 @@
                                         <div class="video-head">
                                             <a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a>
                                         </div>
-                                        <?php /*<div class="sugg-description">
-                                            <p>{{tr('duration')}}: {{$video->duration}}</p>
-                                        </div><!--end of sugg-description--> 
-
-                                        <span class="stars">
-                                            <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        </span>   */?>
+                                       
 
                                         <span class="video_views">
-                                            <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
-                                            {{$video->created_at->diffForHumans()}}
+                                            <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
+                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                            {{$video->created_at}}
                                         </span> 
                                     </div><!--end of video-details-->
                                 </div><!--end of slide-box-->
@@ -66,11 +66,11 @@
 
                     <!--end of recommend-list-->
 
-                     @if(count($videos) > 0)
-                        
+                     @if(count($videos->items) > 0)
+
                         <div class="row">
                             <div class="col-md-12">
-                                <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+                                <div align="center" id="paglink"><?php echo $videos->pagination; ?></div>
                             </div>
                         </div>
 

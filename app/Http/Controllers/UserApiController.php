@@ -3128,27 +3128,38 @@ class UserApiController extends Controller {
 
        if($skip) {
 
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,15))->get();
+
+            $model = ['data'=>$videos];
 
         } else if($count > 0){
 
             $videos = $base_query->skip(0)->take($count)->get();
 
+            $model = ['data'=>$videos];
+
         } else {
 
             $videos = $base_query->paginate(16);
+
+            $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
             
         }
+
 
         $items = [];
 
-        foreach ($videos as $key => $value) {
-            
-            $items[] = displayVideoDetails($value);
+        if ($videos->items() > 0) {
+
+            foreach ($model['data'] as $key => $value) {
+                
+                $items[] = displayVideoDetails($value);
+
+            }
 
         }
 
-        return response()->json($items);
+        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
     
     }
 
@@ -3200,6 +3211,109 @@ class UserApiController extends Controller {
         return response()->json($items);
     
     
+    }
+
+    public function wishlist_list($request, $web = NULL , $skip = 0) {
+
+        $base_query = Wishlist::where('wishlists.user_id' , $request->id)
+                            ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('wishlists.status' , 1)
+                            ->select(
+                                    'wishlists.id as wishlist_id','video_tapes.id as video_tape_id' ,
+                                    'video_tapes.title','video_tapes.description' ,
+                                    'default_image','video_tapes.watch_count','video_tapes.ratings',
+                                    'video_tapes.duration','video_tapes.channel_id',
+                                    DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time') , 'channels.name as channel_name', 'wishlists.created_at')
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderby('wishlists.created_at' , 'desc');
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+        if($web) {
+
+            $videos = $base_query->paginate(16);
+
+        } else {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        }
+
+        $items = [];
+
+        foreach ($videos as $key => $value) {
+            
+            $items[] = displayVideoDetails($value);
+
+        }
+
+        return response()->json($items);
+    
+    }
+
+
+    public function watch_list($request, $web = NULL , $skip = 0) {
+
+        $base_query = UserHistory::where('user_histories.user_id' , $request->id)
+                            ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->select('user_histories.id as history_id','video_tapes.id as video_tape_id' ,
+                                'video_tapes.title','video_tapes.description' , 'video_tapes.duration',
+                                'default_image','video_tapes.watch_count','video_tapes.ratings',
+                                DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 'video_tapes.channel_id','channels.name as channel_name', 'user_histories.created_at')
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderby('user_histories.created_at' , 'desc');
+        
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        
+        }
+
+        if($web) {
+
+            $videos = $base_query->paginate(16);
+
+        } else {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        }
+
+        $items = [];
+
+        foreach ($videos as $key => $value) {
+            
+            $items[] = displayVideoDetails($value);
+
+        }
+
+        return response()->json($items);
+
+
     }
 
 
