@@ -47,9 +47,9 @@
                                 <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
                             @endif
 
-                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
+                            <?php /*<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
 
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
+                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li> */?>
 
                             @if(Setting::get('is_spam')) 
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
@@ -176,8 +176,8 @@
                             <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
                             
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
-                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
+                            <?php /*<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
+                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li> */?>
                              @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
                                 <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
                             @endif

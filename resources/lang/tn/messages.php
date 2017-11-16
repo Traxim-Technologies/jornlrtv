@@ -24,16 +24,13 @@ return array(
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'ads'=>'ADS',
 	'mobile_watch_again_heading' => 'Watch It Again',
-	'add_card_success'=>'The card has been created successfully',
 	'stripe_payment'=>'Card Payment',
 	'paypal_payment'=>'Paypal Payment',
-	'add_card_is_not_enabled'=>'Adding cards is not enabled on this application. Please contact administrator',
 	'is_banner_video'=>'Need Banner Video Visible ? ',
 	'is_banner_ad'=>'Need Banner Ad Visible ? ',
 	'card_default_error'=>'This is your default card, change your default card and delete',
 	'mobile_suggestion_heading' => 'Recommended',
 	'subscribed_channels'=>'Subscribed Channels',
-	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 	'admin_not_ur_del'=>'User Rating has been deleted Successfully',
 	'enter_dob'=>'Enter DOB',
 	'no_subscription_found'=>'No SubScription Detaild Found',
@@ -169,9 +166,6 @@ return array(
 	'PAYPAL_ID'=>'Paypal Id',
 	'PAYPAL_SECRET'=>'Paypal Secret',
 	'PAYPAL_MODE'=>'Paypal Mode',
-
-	'login_success' => 'Successfully logged in',
-	'master_login_success' => 'You have logged in as Master user.',
 
 	// Global Variables
 
@@ -939,16 +933,4 @@ return array(
 	'enter_link'=>'Enter Link',
 	'link'=>'Link',
 	'banner_notes'=>'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
-
-	'enabled' => 'Enabled',
-	'disabled' => 'Disabled',
-	
-	'create_channel_by_user' => 'Create Channel By User',
-
-	'is_default_paid_user' => "Default setting for register user as paid user",
-	'pay'=>'PAY',
-	'browse_channels'=>'Browse Channels',
-	'total_earnings'=>'Total Earnings of this video',
-	'total_views'=>'Total views of this video',
-	'view_redeem'=>'View Redeems',
 );

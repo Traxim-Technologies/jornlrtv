@@ -82,26 +82,7 @@
 @endsection 
 
 @section('content')
-<div class="modal fade modal-top" id="earning" role="dialog">
-    <div class="modal-dialog bg-img modal-sm" style="background-image: url({{asset('images/popup-back.jpg')}});">
-        <!-- Modal content-->
-        <div class="modal-content earning-content">
-        	<div class="modal-header text-center">
-	          	<button type="button" class="close" data-dismiss="modal">&times;</button>
-	          	<h3 class="modal-title no-margin">Total Earnings of this video</h3>
-	        </div>
-	        <div class="modal-body text-center">
-	        	<div class="amount-circle">
-	        		<h3 class="no-margin">$100.00</h3>
-	       		</div>
-	          	<p>Total views of this video - 15150</p>
-	          	<a href="#">
-	          		<button class="btn btn-danger top">View Reedems</button>
-	          	</a>
-	        </div>
-        </div>
-    </div>
-</div>
+
 <div class="y-content">
 
 	<div class="row content-row">
@@ -131,8 +112,8 @@
 
 					<div>
 						<div class="pull-left">
-							<h1 class="st_channel_heading">{{$channel->name}}</h1>
-							<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p>
+							<h1 class="st_channel_heading text-uppercase">{{$channel->name}}</h1>
+							<?php /*<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p> */?>
 						</div>
 						<div class="pull-right upload_a">
 							@if(Auth::check())
@@ -218,7 +199,16 @@
 
 												<div class="slide-box recom-box big-box-slide">
 													<div class="slide-image recom-image hbb">
-														<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"><img src="{{$trending_videos[0]->default_image}}"></a>
+														<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"><img src="{{$trending_videos[0]->video_image}}"></a>
+														@if($trending_videos[0]->ppv_amount > 0)
+					                                        @if(!$trending_videos[0]->ppv_status)
+					                                            <div class="video_amount">
+
+					                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_videos[0]->ppv_amount}}
+
+					                                            </div>
+					                                        @endif
+					                                    @endif
 														<div class="video_duration">
 					                                        {{$trending_videos[0]->duration}}
 					                                    </div>
@@ -227,22 +217,10 @@
 														<div class="video-head">
 															<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"> {{$trending_videos[0]->title}}</a>
 														</div>
-														<?php /*<div class="sugg-description">
-															<p>{{tr('duration')}}: {{$trending_videos[0]->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{$trending_videos[0]->created_at ? $trending_videos[0]->created_at->diffForHumans() : 0}} </span>
-															</p>
-														</div>
-														<!--end of sugg-description-->
-
-														<span class="stars">
-				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-				                                           <a href="#"><i @if($trending_videos[0]->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-				                                        </span> */?>
+														
 				                                         <span class="video_views">
-					                                        <i class="fa fa-eye"></i> {{number_format_short($trending_videos[0]->watch_count)}} {{tr('views')}} <b>.</b> 
-					                                        {{$trending_videos[0]->created_at->diffForHumans()}}
+					                                        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
+					                                        {{$trending_videos[0]->created_at}}
 					                                    </span>
 													</div>
 												</div>
@@ -259,7 +237,16 @@
 
 													<div class="slide-box recom-box big-box-slide">
 														<div class="slide-image recom-image hbbb">
-															<a href="{{route('user.single', $trending_video->video_tape_id)}}"><img src="{{$trending_video->default_image}}"></a>
+															<a href="{{route('user.single', $trending_video->video_tape_id)}}"><img src="{{$trending_video->video_image}}"></a>
+															@if($trending_video->ppv_amount > 0)
+						                                        @if(!$trending_video->ppv_status)
+						                                            <div class="video_amount">
+
+						                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_video->ppv_amount}}
+
+						                                            </div>
+						                                        @endif
+						                                    @endif
 															<div class="video_duration">
 						                                        {{$trending_video->duration}}
 						                                    </div>
@@ -270,22 +257,10 @@
 															<div class="video-head">
 																<a href="{{route('user.single', $trending_video->video_tape_id)}}">{{$trending_video->title}}</a>
 															</div>
-															<?php /*<div class="sugg-description">
-																<p>{{tr('duration')}}: {{$trending_video->duration}}<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($trending_video->created_at) ? $trending_video->created_at->diffForHumans() : 0}}</span>
-																</p>
-															</div>
-															<!--end of sugg-description-->
-
-															 <span class="stars">
-					                                           <a href="#"><i @if($trending_video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                           <a href="#"><i @if($trending_video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                           <a href="#"><i @if($trending_video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                           <a href="#"><i @if($trending_video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                           <a href="#"><i @if($trending_video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        </span> */?>
+															
 					                                        <span class="video_views">
-						                                        <i class="fa fa-eye"></i> {{number_format_short($trending_video->watch_count)}} {{tr('views')}} <b>.</b> 
-						                                        {{$trending_video->created_at->diffForHumans()}}
+						                                        <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
+						                                        {{$trending_video->created_at}}
 						                                    </span>
 														</div>
 														<!--end of video-details-->
@@ -336,7 +311,16 @@
 					                        <li class="sub-list row">
 					                            <div class="main-history">
 					                                 <div class="history-image">
-					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a>
+					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_image}}"></a>
+					                                    @if($video->ppv_amount > 0)
+					                                        @if(!$video->ppv_status)
+					                                            <div class="video_amount">
+
+					                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+
+					                                            </div>
+					                                        @endif
+					                                    @endif
 					                                    <div class="video_duration">
 					                                        {{$video->duration}}
 					                                    </div>                        
@@ -346,17 +330,41 @@
 					                                    <div class="history-head row">
 					                                        <div class="cross-title2">
 					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
-					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
+					                                           
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
-							                                        {{$video->created_at->diffForHumans()}}
+							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        {{$video->created_at}}
 							                                    </span>
 					                                        </div> 
 					                                        @if(Auth::check())
 															@if($channel->user_id == Auth::user()->id)
 					                                        <div class="cross-mark2">
 
-					                                        	<a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#earning"><i class="fa fa-eye" style="color:#fff" aria-hidden="true"></i></a>
+					                                       		@if($video->amount > 0) 
+					                                        	<a href="#" class="btn btn-info btn-sm" data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}"><i class="fa fa-eye" style="color:#fff" aria-hidden="true"></i></a>
+
+					                                        	<div class="modal fade modal-top" id="earning_{{$video->video_tape_id}}" role="dialog">
+																    <div class="modal-dialog bg-img modal-sm" style="background-image: url({{asset('images/popup-back.jpg')}});">
+																        <!-- Modal content-->
+																        <div class="modal-content earning-content">
+																        	<div class="modal-header text-center">
+																	          	<button type="button" class="close" data-dismiss="modal">&times;</button>
+																	          	<h3 class="modal-title no-margin">{{tr('total_earnings')}}</h3>
+																	        </div>
+																	        <div class="modal-body text-center">
+																	        	<div class="amount-circle">
+																	        		<h3 class="no-margin">${{$video->amount}}.00</h3>
+																	       		</div>
+																	          	<p>{{tr('total_views')}} - {{$video->watch_count}}</p>
+																	          	<a href="{{route('user.redeems')}}">
+																	          		<button class="btn btn-danger top">{{tr('view_redeem')}}</button>
+																	          	</a>
+																	        </div>
+																        </div>
+																    </div>
+																</div>
+
+																@endif
 
 					                                            <a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}" class="btn btn-danger btn-sm"><i class="fa fa-times" style="color:#fff" aria-hidden="true"></i></a>
 					                                            <a title="edit" style="display:inline-block;" href="{{route('user.edit.video', $video->video_tape_id)}}"  class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true" style="color:#fff"></i></a>
@@ -453,7 +461,16 @@
 					                        <li class="sub-list row">
 					                            <div class="main-history">
 					                                 <div class="history-image">
-					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a> 
+					                                    <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_image}}"></a> 
+					                                    @if($video->ppv_amount > 0)
+					                                        @if(!$video->ppv_status)
+					                                            <div class="video_amount">
+
+					                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+
+					                                            </div>
+					                                        @endif
+					                                    @endif
 					                                    <div class="video_duration">
 					                                        {{$video->duration}}
 					                                    </div>                          
@@ -463,11 +480,11 @@
 					                                    <div class="history-head row">
 					                                        <div class="cross-title">
 					                                            <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
-					                                            <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
+					                                            
 
 					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
-							                                        {{$video->created_at->diffForHumans()}}
+							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+							                                        {{$video->created_at}}
 							                                    </span> 
 
 					                                        </div> 

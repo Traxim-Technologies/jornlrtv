@@ -415,7 +415,7 @@ textarea[name=comments] {
                                                             <div class="channel-img">
                                                                 <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
                                                             </div>
-                                                            <div class="username"><a href="#">{{$video->title}}</a></div>
+                                                            <div class="username"><a href="#">{{$video->channel_name}}</a></div>
                                                             <h5 class="rating no-margin top">
                                                                 <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
@@ -689,14 +689,24 @@ textarea[name=comments] {
 
                                 <ul class="video-sugg"> 
 
-                                    @foreach($suggestions->data as $suggestion)
+           
+                                    @foreach($suggestions as $suggestion)
                                     
                                         <li class="sugg-list row">
                                             <div class="main-video">
                                                  <div class="video-image">
                                                     <div class="video-image-outer">
-                                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->default_image}}"></a>
+                                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->video_image}}"></a>
                                                     </div>  
+                                                    @if($suggestion->ppv_amount > 0)
+                                                        @if(!$suggestion->ppv_status)
+                                                            <div class="video_amount">
+
+                                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$suggestion->ppv_amount}}
+
+                                                            </div>
+                                                        @endif
+                                                    @endif
                                                     <div class="video_duration">
                                                         {{$suggestion->duration}}
                                                     </div> 
@@ -708,8 +718,9 @@ textarea[name=comments] {
                                                     </div><!--end of sugg-title-->
 
                                                     <span class="video_views">
-                                                        <i class="fa fa-eye"></i> {{number_format_short($suggestion->watch_count)}} {{tr('views')}} <?php /*<b>.</b> 
-                                                        {{$suggestion->created_at->diffForHumans()}} */?>
+                                                        <div><a href="{{route('user.channel',$suggestion->channel_id)}}">{{$suggestion->channel_name}}</a></div>
+                                                        <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
+                                                        {{$suggestion->created_at}} 
                                                     </span> 
                                                     <br>
                                                     <span class="stars">

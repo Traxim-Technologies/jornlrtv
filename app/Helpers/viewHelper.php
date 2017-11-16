@@ -1027,7 +1027,11 @@ function displayVideoDetails($data,$user = null) {
         'ppv_amount'=>$data->ppv_amount,
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
-        'created_at'=>$data->created_at->diffForHumans(),    
+        'created_at'=>$data->created_at->diffForHumans(),   
+        'ad_status'=>$data->ad_status,
+        'description'=>$data->description,
+        'ratings'=>$data->ratings,
+        'amount'=>$data->amount,
     ];
 
     return $model;
