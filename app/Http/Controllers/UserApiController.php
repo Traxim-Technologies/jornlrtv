@@ -3779,76 +3779,9 @@ class UserApiController extends Controller {
 
                                 $total = $video->amount;
 
-                                if ($total <= 0) {
+                                if ($total > 0) {
 
-                                    $user_payment = new PayPerView;
-                                    $user_payment->payment_id  = "free plan";
-                                    $user_payment->user_id = $request->id;
-                                    $user_payment->video_id = $request->video_tape_id;
-                                    $user_payment->status = DEFAULT_FALSE;
-                                    $user_payment->amount = $total;
-
-                                    $user_payment->save();
-
-                                    // Commission Spilit 
-                                    if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
-
-                                        $video_amount = Setting::get('amount_per_video');
-
-                                        $video->redeem_amount += $video_amount;
-
-                                        if($video->amount > 0) { 
-
-                                            $total = $video_amount;
-
-                                            // Commission Spilit 
-
-                                            $admin_commission = Setting::get('admin_commission')/100;
-
-                                            $admin_amount = $total * $admin_commission;
-
-                                            $moderator_amount = $total - $admin_amount;
-
-                                            $video->admin_amount = $admin_amount;
-
-                                            $video->user_amount = $moderator_amount;
-
-                                            $video->save();
-
-                                            // Commission Spilit Completed
-
-                                            if($moderator = Moderator::find($video->uploaded_by)) {
-
-                                                $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                                                $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                                                $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                                                $moderator->total = $moderator->total + $total;
-
-                                                $moderator->save();
-
-                                                $video_amount = $moderator_amount;
-
-                                            }
-                                            
-                                        }
-
-                                        add_to_redeem($video->uploaded_by , $video_amount);
-
-                                        \Log::info("ADD History - add_to_redeem");
-
-                                    } 
-
-                                    $video->save();
-
-                                    $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
-
-                                    $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
-
-                                } else {
-
+                                    
                                     // Get the key from settings table
                                     $stripe_secret_key = Setting::get('stripe_secret_key');
 
@@ -3888,6 +3821,46 @@ class UserApiController extends Controller {
                                             $user_payment->amount = $amount;
 
                                             $user_payment->save();
+
+                                            if($user_payment->amount > 0) {
+
+                                                    $total = $payment->amount;
+
+                                                    // Commission Spilit 
+
+                                                    $admin_commission = Setting::get('admin_ppv_commission')/100;
+
+                                                    $admin_amount = $total * $admin_commission;
+
+                                                    $moderator_amount = $total - $admin_amount;
+
+                                                    $video->admin_ppv_amount = $admin_amount;
+
+                                                    $video->user_ppv_amount = $moderator_amount;
+
+                                                    $video->save();
+
+                                                    // Commission Spilit Completed
+
+                                                    if($moderator = User::find($video->user_id)) {
+
+                                                        $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
+
+                                                        $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
+
+                                                        $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
+
+                                                        $moderator->total_amount = $moderator->total_amount + $total;
+
+                                                        $moderator->save();
+
+                                                       // $video_amount = $moderator_amount;
+
+                                                    }
+
+                                                    add_to_redeem($video->user_id , $moderator_amount);
+                                                        
+                                            }
 
                                             // Commission Spilit 
                                            /* if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
