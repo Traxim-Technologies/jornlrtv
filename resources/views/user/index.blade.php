@@ -104,12 +104,13 @@
                         <div id="myCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 @foreach($banner_ads as $key => $banner_ad)
-                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}">
-                                    <a href="{{$banner_ad->link}}" target="_blank"><img src="{{$banner_ad->image}}" style="height:250px;width: 100%;">
-                                    <?php /*<div class="carousel-caption">
+                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}" style="width: 100%;height:250px;background-image: url({{$banner_ad->image}});background-size: cover;background-position: center;">
+                                    <a href="{{$banner_ad->link}}" target="_blank">
+                                    <?php /*<img src="{{$banner_ad->image}}" style="height:250px;width: 100%;"> */?>
+                                    <div class="carousel-caption">
                                         <h3>{{$banner_ad->video_title}}</h3>
                                         <p><?= substr($banner_ad->content , 0 , 200)?>...</p>
-                                    </div>*/?>
+                                    </div>
                                     </a>
                                 </div>
                                 @endforeach

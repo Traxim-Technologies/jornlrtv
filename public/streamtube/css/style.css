@@ -2602,3 +2602,9 @@ margin: 0px auto 35px;
     -moz-transform: translateY(0px);
   }
 }*/
+
+
+.carousel-caption {
+
+	bottom: 0%;
+}
