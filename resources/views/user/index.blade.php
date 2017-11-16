@@ -135,6 +135,8 @@
 
                 @include('notification.notify')
 
+                @if($wishlists)
+
                 @if(count($wishlists->items) > 0)
 
                     <div class="slide-area">
@@ -179,6 +181,8 @@
                               
                         </div><!--end of box--> 
                     </div><!--end of slide-area-->
+
+                @endif
 
                 @endif
 
@@ -332,9 +336,11 @@
 
                 @endif
 
+                @if($watch_lists)
+
                 @if(count($watch_lists->items) > 0)
 
-                <hr>
+                  <hr>
 
                     <div class="slide-area">
                         <div class="box-head">
@@ -378,6 +384,8 @@
                               
                         </div><!--end of box--> 
                     </div><!--end of slide-area-->
+
+                @endif
 
                 @endif
              

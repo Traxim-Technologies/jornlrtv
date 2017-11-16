@@ -1031,7 +1031,7 @@ class UserApiController extends Controller {
 
 
             $payperview = PayPerView::where('user_id', $request->id)
-                            ->where('video_id',$request->admin_video_id)
+                            ->where('video_id',$request->video_tape_id)
                             ->where('status',0)->first();
 
             if ($payperview) {
@@ -3502,8 +3502,10 @@ class UserApiController extends Controller {
         $items = [];
 
         foreach ($videos as $key => $value) {
+
+            $id = Auth::check() ? Auth::user()->id : '';
             
-            $items[] = displayVideoDetails($value, $request->id);
+            $items[] = displayVideoDetails($value, $id);
 
         }
 

@@ -1024,28 +1024,38 @@ function displayVideoDetails($data,$userId) {
 
     if (Setting::get('is_payper_view')) {
 
-        $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+        if ($userId == $data->channel_created_by) {
 
-        if ($ppv_status) {
+            $ppv_status = true;
 
             $url = route('user.single', $data->video_tape_id);
 
         } else {
 
-            if ($userId) {
+            $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
 
-                if ($user->user_type) {        
+            if ($ppv_status) {
 
-                    $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+                $url = route('user.single', $data->video_tape_id);
+
+            } else {
+
+                if ($userId) {
+
+                    if ($user->user_type) {        
+
+                        $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+
+                    } else {
+
+                        $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+                    }
 
                 } else {
 
                     $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+
                 }
-
-            } else {
-
-                $url = route('user.subscription.pay_per_view', $data->video_tape_id);
 
             }
 
