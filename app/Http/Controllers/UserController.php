@@ -32,6 +32,8 @@ use Exception;
 
 use Log;
 
+use App\PayPerView;
+
 use App\Card;
 
 use App\BannerAd;
@@ -164,9 +166,9 @@ class UserController extends Controller {
 
             if($request->has('id')){
 
-                $wishlists  =  VideoRepo::wishlist($request,WEB);
+                $wishlists  =  $this->UserAPI->wishlist_list($request,WEB)->getData();
 
-                $watch_lists = VideoRepo::watch_list($request,WEB);  
+                $watch_lists = $this->UserAPI->watch_list($request,WEB)->getData();  
             }
 
 
@@ -193,8 +195,10 @@ class UserController extends Controller {
 
             if(Setting::get('is_banner_ad')) {
 
-                $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')->where('banner_ads.status', DEFAULT_TRUE)->orderBy('banner_ads.created_at' , 'desc')
-                                ->get();
+                $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')
+                            ->where('banner_ads.status', DEFAULT_TRUE)
+                            ->orderBy('banner_ads.created_at' , 'desc')
+                            ->get();
 
             }
 
@@ -774,7 +778,7 @@ class UserController extends Controller {
             ]);
         }
 
-        $trending = VideoRepo::trending($request, WEB);
+        $trending = $this->UserAPI->trending_list($request, WEB)->getData();
 
         return view('user.trending')->with('page', 'trending')
                                     ->with('videos',$trending);
@@ -1705,4 +1709,23 @@ class UserController extends Controller {
                 ->with('subPage', 'pay_per_view');
 
     }
+
+
+    /**
+     * Function Name: payper_videos()
+     * To load all the paper views
+     *
+     * @return view page
+     */
+    public function payper_videos() {
+        // Get Logged in user id
+        $id = Auth::user()->id;
+        // Load all the paper view videos based on logged in user id
+        $model = PayPerView::where('user_id', $id)->paginate(16);
+        // Return the view page
+        return view('user.payperview')->with('model' , $model)
+                        ->with('page' , 'Profile')
+                        ->with('subPage' , 'Payper Videos');
+    }
+
 }

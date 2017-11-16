@@ -147,12 +147,16 @@
                             @foreach($wishlists as $wishlist)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $wishlist->video_tape_id)}}"><img src="{{$wishlist->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $wishlist->video_tape_id)}}"><img src="{{$wishlist->video_image}}" /></a>
 
                                     @if($wishlist->ppv_amount > 0)
-                                    <div class="video_amount">
-                                        {{$wishlist->ppv_amount}}
-                                    </div>
+                                        @if(!$wishlist->ppv_status)
+                                            <div class="video_amount">
+
+                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$wishlist->ppv_amount}}
+
+                                            </div>
+                                        @endif
                                     @endif
                                     <div class="video_duration">
                                         {{$wishlist->duration}}
@@ -164,8 +168,9 @@
                                         <a href="{{route('user.single' , $wishlist->video_tape_id)}}">{{$wishlist->title}}</a>
                                     </div>
                                     <span class="video_views">
-                                        <i class="fa fa-eye"></i> {{number_format_short($wishlist->watch_count)}} {{tr('views')}} <b>.</b> 
-                                        {{$wishlist->created_at->diffForHumans()}}
+                                        <div><a href="{{route('user.channel',$wishlist->channel_id)}}">{{$wishlist->channel_name}}</a></div>
+                                        <i class="fa fa-eye"></i> {{$wishlist->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$wishlist->created_at}}
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -227,7 +232,7 @@
 
 
 
-                @if(count($trendings) > 0)
+                @if(count($trendings->items) > 0)
 
                 <hr>
 
@@ -238,7 +243,7 @@
 
                         <div class="box">
 
-                            @foreach($trendings as $trending)
+                            @foreach($trendings->items as $trending)
 
                             <div class="slide-box">
                                 <div class="slide-image">
@@ -342,7 +347,16 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{route('user.single' , $watch_list->video_tape_id)}}"><img src="{{$watch_list->default_image}}" /></a>
+                                    <a href="{{route('user.single' , $watch_list->video_tape_id)}}"><img src="{{$watch_list->video_image}}" /></a>
+                                    @if($watch_list->ppv_amount > 0)
+                                        @if(!$watch_list->ppv_status)
+                                            <div class="video_amount">
+
+                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$watch_list->ppv_amount}}
+
+                                            </div>
+                                        @endif
+                                    @endif
                                     <div class="video_duration">
                                         {{$watch_list->duration}}
                                     </div>
@@ -353,8 +367,9 @@
                                         <a href="{{route('user.single' , $watch_list->video_tape_id)}}">{{$watch_list->title}}</a>
                                     </div>
                                     <span class="video_views">
-                                        <i class="fa fa-eye"></i> {{number_format_short($watch_list->watch_count)}} {{tr('views')}} <b>.</b> 
-                                        {{$watch_list->created_at->diffForHumans()}}
+                                        <div><a href="{{route('user.channel',$watch_list->channel_id)}}">{{$watch_list->channel_name}}</a></div>
+                                        <i class="fa fa-eye"></i> {{$watch_list->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$watch_list->created_at}}
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->

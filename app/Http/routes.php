@@ -756,6 +756,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('subscription-type', 'UserController@pay_per_view')->name('subscription.pay_per_view');
 
+    Route::get('pay-per-videos', 'UserController@payper_videos')->name('pay-per-videos');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
