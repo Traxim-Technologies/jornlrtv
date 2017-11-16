@@ -1195,7 +1195,7 @@ function displayVideoDetails($data,$userId) {
  *
  * @return amount
  */
-function total_video_revenue() {
+function total_ppv_video_revenue() {
     return PayPerView::sum('amount');
 }
 
