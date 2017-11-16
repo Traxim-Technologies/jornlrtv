@@ -151,7 +151,23 @@ Route::get('/clear-cache', function() {
 
 Route::get('/generate/index' , 'ApplicationController@generate_index');
 
+Route::get('/welcome-email', function() {
 
+    return view('emails.ui.welcome');
+
+});
+
+Route::get('/forgot-password', function() {
+
+    return view('emails.ui.forgot');
+ 
+});
+
+Route::get('/notification', function() {
+
+   return view('emails.ui.notification');
+
+});
 
 Route::get('/message/save' , 'ApplicationController@message_save');
 
@@ -563,9 +579,9 @@ Route::group(['as' => 'user.'], function(){
     Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
 
 
-    Route::get('paypal_video','PaypalController@payPerVideo')->name('live_video_paypal');
+    Route::get('ppv-video','PaypalController@videoSubscriptionPay')->name('ppv-video-payment');
 
-    Route::get('user/payment_video','PaypalController@getVideoPaymentStatus')->name('paypalstatus');
+    Route::get('user/payment/video-status','PaypalController@getVideoPaymentStatus')->name('paypalstatus');
 
 
     Route::get('login', 'Auth\AuthController@showLoginForm')->name('login.form');
@@ -647,6 +663,12 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('comments', 'UserController@comments')->name('comments');
     
+
+    Route::post('/save_video_payment/{id}', 'UserController@save_video_payment')->name('save.video-payment');
+
+    Route::get('/remove_payper_view/{id}', 'UserController@remove_payper_view')->name('remove_pay_per_view');
+
+
     // Paypal Payment
     Route::get('/paypal/{id}','PaypalController@pay')->name('paypal');
 
@@ -716,6 +738,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/stripe_payment', 'UserController@stripe_payment')->name('card.stripe_payment');
 
+    Route::get('/ppv-stripe-payment', 'UserController@ppv_stripe_payment')->name('card.ppv-stripe-payment');
+
     Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
 
 
@@ -737,6 +761,20 @@ Route::group(['as' => 'user.'], function(){
     Route::post('/payment_mgmt_videos', 'UserController@payment_mgmt_videos')->name('video.payment_mgmt_videos');
 
     Route::get('invoice', 'UserController@invoice')->name('subscription.invoice');
+
+    Route::get('ppv-invoice/{id}', 'UserController@ppv_invoice')->name('subscription.ppv_invoice');
+
+    Route::get('subscription-type/{id}', 'UserController@pay_per_view')->name('subscription.pay_per_view');
+
+    Route::get('pay-per-videos', 'UserController@payper_videos')->name('pay-per-videos');
+
+    Route::post('payment-type/{id}', 'UserController@payment_type')->name('payment-type');
+
+    Route::post('subscription/payment', 'UserController@subscription_payment')->name('subscription.payment');
+
+    Route::get('subscription-success', 'UserController@payment_success')->name('subscription.success');
+
+    Route::get('video-success', 'UserController@video_success')->name('video.success');
 
 });
 

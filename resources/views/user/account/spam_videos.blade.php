@@ -16,47 +16,58 @@
                     <div><h4>{{tr('spam_videos')}}</h4></div>              
                 </div><!--end of content-head-->
 
-                @if(count($model->data) > 0)
+                @if(count($model->items) > 0)
 
                     <ul class="history-list">
                     
-                        @foreach($model->data as $i => $spamvideo)
+                        @foreach($model->items as $i => $spamvideo)
 
                         <li class="sub-list row">
                             <div class="main-history">
                                  <div class="history-image">
-                                    <a href="{{route('user.single' , $spamvideo->video_tape_id)}}"><img src="{{$spamvideo->video_tape->default_image}}"></a>
+                                    <a href="{{$spamvideo->url}}"><img src="{{$spamvideo->video_image}}"></a>
+
+                                    @if($spamvideo->ppv_amount > 0)
+                                        @if(!$spamvideo->ppv_status)
+                                            <div class="video_amount">
+
+                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$spamvideo->ppv_amount}}
+
+                                            </div>
+                                        @endif
+                                    @endif
                                     <div class="video_duration">
-                                        {{$spamvideo->video_tape->duration}}
+                                        {{$spamvideo->duration}}
                                     </div>                        
                                 </div><!--history-image-->
 
                                 <div class="history-title">
                                     <div class="history-head row">
                                         <div class="cross-title1">
-                                            <h5><a href="{{route('user.single' , $spamvideo->video_tape_id)}}">{{$spamvideo->video_tape->title}}</a></h5>
-                                            <!-- <p class="duration">{{tr('duration')}}: {{$spamvideo->video_tape->duration}}</p> -->
+                                            <h5><a href="{{$spamvideo->url}}">{{$spamvideo->title}}</a></h5>
+                                            <!-- <p class="duration">{{tr('duration')}}: {{$spamvideo->duration}}</p> -->
                                             <span class="video_views">
-                                                <i class="fa fa-eye"></i> {{number_format_short($spamvideo->video_tape->watch_count)}} {{tr('views')}} 
-                                                <?php /*<b>.</b> 
-                                                {{$history->video_tape->created_at->diffForHumans()}}*/?>
+                                                <div><a href="{{route('user.channel',$spamvideo->channel_id)}}">{{$spamvideo->channel_name}}</a></div>
+                                                <i class="fa fa-eye"></i> {{$spamvideo->watch_count}} {{tr('views')}} 
+                                                <b>.</b> 
+                                                {{$spamvideo->created_at}}
                                             </span>
                                         </div> 
                                         <div class="cross-mark1">
-                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.remove.report_video',$spamvideo->id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.remove.report_video',$spamvideo->video_tape_id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                         </div><!--end of cross-mark-->                       
                                     </div> <!--end of history-head--> 
 
                                     <div class="description">
-                                        <p>{{$spamvideo->video_tape->description}}</p>
+                                        <p>{{$spamvideo->description}}</p>
                                     </div><!--end of description--> 
 
                                     <span class="stars">
-                                        <a href="#"><i @if($spamvideo->video_tape->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($spamvideo->video_tape->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($spamvideo->video_tape->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($spamvideo->video_tape->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                        <a href="#"><i @if($spamvideo->video_tape->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                        <a href="#"><i @if($spamvideo->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                     </span>                                               
                                 </div><!--end of history-title--> 
                                 
@@ -71,9 +82,9 @@
                     <p>{{tr('no_spam_found')}}</p>
                 @endif
 
-                @if(count($model->data) > 0)
+                @if(count($model->items) > 0)
 
-                    @if($model->pagination)
+                    @if($model->items)
                     <div class="row">
                         <div class="col-md-12">
                             <div align="center" id="paglink"><?php echo $model->pagination; ?></div>

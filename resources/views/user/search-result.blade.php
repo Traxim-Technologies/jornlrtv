@@ -15,16 +15,25 @@
 
                     <ul class="history-list">
 
-                        @if(count($videos))
+                        @if(count($videos->items) > 0)
 
-                            @foreach($videos as $v => $video)
+                            @foreach($videos->items as $v => $video)
 
                                 <li class="sub-list search-list row">
                                     <div class="main-history">
                                          <div class="history-image">
-                                            <a href="{{route('user.single' , $video->video_tape_id)}}">
-                                                <img src="{{$video->default_image}}">
+                                            <a href="{{$video->url}}">
+                                                <img src="{{$video->video_image}}">
                                             </a>        
+                                            @if($video->ppv_amount > 0)
+                                                @if(!$video->ppv_status)
+                                                    <div class="video_amount">
+
+                                                    {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+
+                                                    </div>
+                                                @endif
+                                            @endif
                                             <div class="video_duration">
                                                 {{$video->duration}}
                                             </div>                 
@@ -34,10 +43,11 @@
                                             <div class="history-head row">
                                                 <div class="cross-title">
                                                     <h5>
-                                                        <a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
+                                                        <a href="{{$video->url}}">{{$video->title}}</a></h5>
                                                     <span class="video_views">
-                                                        <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}}<b>.</b> 
-                                                        {{$video->created_at->diffForHumans()}}
+                                                         <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
+                                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}}<b>.</b> 
+                                                        {{$video->created_at}}
                                                     </span> 
                                                 </div> 
                                                                       
@@ -70,10 +80,10 @@
                        
                     </ul>
 
-                    @if(count($videos) > 0)
+                    @if(count($videos->items) > 0)
                         <div class="row">
                             <div class="col-md-12">
-                                <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+                                <div align="center" id="paglink"><?php echo $videos->pagination; ?></div>
                             </div>
                         </div>
                     @endif

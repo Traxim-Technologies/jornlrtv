@@ -1354,6 +1354,10 @@ class AdminController extends Controller {
         // Get post attribute values and save the values
         if ($model) {
 
+             $request->request->add([ 
+                'ppv_created_by'=> 0 ,
+            ]); 
+
             if ($data = $request->all()) {
 
                 // Update the post
@@ -1382,8 +1386,6 @@ class AdminController extends Controller {
        // dd($request->all());
 
         foreach ($request->all() as $key => $data) {
-
-            print_r($key);
 
             if($request->has($key)) {
 
@@ -2324,7 +2326,7 @@ class AdminController extends Controller {
         $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
                 'description' => 'required',
-                'position'=>'required|unique',
+                'position'=>'required|unique:banner_ads',
                 'link'=>'required|url',
                 'file' => $request->id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
         ]);
@@ -2496,6 +2498,28 @@ class AdminController extends Controller {
             return back()->with('flash_success', tr('banner_position_success'));
 
         }
+    }
+
+    /**
+     * Function Name : remove_payper_view()
+     * To remove pay per view
+     * 
+     * @return falsh success
+     */
+    public function remove_payper_view($id) {
+        
+        // Load video model using auto increment id of the table
+        $model = VideoTape::find($id);
+        if ($model) {
+            $model->ppv_amount = 0;
+            $model->type_of_subscription = 0;
+            $model->type_of_user = 0;
+            $model->save();
+            if ($model) {
+                return back()->with('flash_success' , tr('removed_pay_per_view'));
+            }
+        }
+        return back()->with('flash_error' , tr('admin_published_video_failure'));
     }
 
 }

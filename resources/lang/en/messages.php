@@ -946,5 +946,20 @@ return array(
 	'create_channel_by_user' => 'Create Channel By User',
 
 	'is_default_paid_user' => "Default setting for register user as paid user",
-	
+	'pay'=>'PAY',
+	'browse_channels'=>'Browse Channels',
+	'total_earnings'=>'Total Earnings of this video',
+	'total_earning'=>'Total Earning',
+	'total_views'=>'Total views of this video',
+	'view_redeem'=>'View Redeems',
+	'video_not_found'=>'Video Not found, Please try again later',
+	'only_for_normal_users'=>'Only for normal users',
+	'only_for_paid_users'=>'Only for Paid Users',
+	'all_users'=>'For all users',
+	'card_payment'=>'Card Payment',
+	'select_payment'=>'Select Payment',
+	'subscription_plan'=>'SubScription Plan',
+	'click_here_for_subscription'=>'Click here to see subscription plan',
+	'pay_per_video'=>'Pay Per Video',
+	'click_here_subscription'=>'Click Here',	
 );

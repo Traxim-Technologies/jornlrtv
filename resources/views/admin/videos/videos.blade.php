@@ -46,6 +46,9 @@
 								<th>{{tr('amount')}}</th>
 								<th>{{tr('likes')}}</th>
 								<th>{{tr('dislikes')}}</th>
+								@if(Setting::get('is_payper_view'))
+									<th>{{tr('pay_per_view')}}</th>
+								@endif
 								<th>{{tr('status')}}</th>
 								<th>{{tr('action')}}</th>
 						    </tr>
@@ -94,6 +97,16 @@
 
 							      	<td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td>
 
+							      	@if(Setting::get('is_payper_view'))
+							      	<td class="text-center">
+							      		@if($video->ppv_amount > 0)
+							      			<span class="label label-success">{{tr('yes')}}</span>
+							      		@else
+							      			<span class="label label-danger">{{tr('no')}}</span>
+							      		@endif
+							      	</td>
+							      	@endif
+
 							      	<td>
 							      		@if ($video->compress_status == 0)
 							      			<span class="label label-danger">{{tr('compress')}}</span>
@@ -123,7 +136,13 @@
                                                     @endif
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 
-								               
+								               		@if(Setting::get('is_payper_view'))
+
+								                  		<li role="presentation">
+								                  			<a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a>
+								                  		</li>
+
+								                  	@endif
 
 								                  	<li class="divider" role="presentation"></li>
 
@@ -173,6 +192,72 @@
             							</ul>
 								    </td>
 							    </tr>
+
+							    <div id="{{$video->video_tape_id}}" class="modal fade" role="dialog">
+								  <div class="modal-dialog">
+								  <form action="{{route('admin.save.video-payment', $video->video_tape_id)}}" method="POST">
+									    <!-- Modal content-->
+									   	<div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal">&times;</button>
+									        <h4 class="modal-title">{{tr('pay_per_view')}}</h4>
+									      </div>
+									      <div class="modal-body">
+									        <div class="row">
+
+									        	<input type="hidden" name="ppv_created_by" id="ppv_created_by" value="{{Auth::guard('admin')->user()->id}}">
+									        	<div class="col-lg-3">
+									        		<label>{{tr('type_of_user')}}</label>
+									        	</div>
+								                <div class="col-lg-9">
+								                  <div class="input-group">
+								                        <input type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}}>&nbsp;<label>{{tr('normal_user')}}</label>&nbsp;
+								                        <input type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}}>&nbsp;<label>{{tr('paid_user')}}</label>&nbsp;
+								                        <input type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}}>&nbsp;<label>{{tr('both_user')}}</label>
+								                  </div>
+								                  <!-- /input-group -->
+								                </div>
+								            </div>
+								            <br>
+								            <div class="row">
+									        	<div class="col-lg-3">
+									        		<label>{{tr('type_of_subscription')}}</label>
+									        	</div>
+								                <div class="col-lg-9">
+								                  <div class="input-group">
+								                        <input type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}}>&nbsp;<label>{{tr('one_time_payment')}}</label>&nbsp;
+								                        <input type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}}>&nbsp;<label>{{tr('recurring_payment')}}</label>
+								                  </div>
+								                  <!-- /input-group -->
+								                </div>
+								            </div>
+								            <br>
+								            <div class="row">
+									        	<div class="col-lg-3">
+									        		<label>{{tr('amount')}}</label>
+									        	</div>
+								                <div class="col-lg-9">
+								                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+								                  <!-- /input-group -->
+								                </div>
+								            </div>
+									      </div>
+									      <div class="modal-footer">
+									      	<div class="pull-left">
+									      		@if($video->ppv_amount > 0)
+									       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
+									       		@endif
+									       	</div>
+									        <div class="pull-right">
+										        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										        <button type="submit" class="btn btn-primary">Submit</button>
+										    </div>
+										    <div class="clearfix"></div>
+									      </div>
+									    </div>
+									</form>
+								  </div>
+								</div>
 								<!-- Modal -->
 								
 							@endforeach

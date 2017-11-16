@@ -2,14 +2,35 @@
     <ul class="y-home menu1">
         <li id="home">
             <a href="{{route('user.dashboard')}}">
-                <img src="{{asset('streamtube/images/y1.jpg')}}">{{tr('home')}}
+                <img src="{{asset('images/home.png')}}">{{tr('home')}}
             </a>
         </li>
         <li id="trending">
             <a href="{{route('user.trending')}}">
-                <img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}
+                <img src="{{asset('images/trending.png')}}">{{tr('trending')}}
             </a>
         </li>
+
+        <li id="channels">
+            <a href="{{route('user.channel.list')}}">
+                <img src="{{asset('images/search.png')}}">{{tr('browse_channels')}}
+            </a>
+        </li>
+
+        @if(Auth::check())
+
+        <li id="history">
+            <a href="{{route('user.history')}}">
+                <img src="{{asset('images/history.png')}}">{{tr('history')}}
+            </a>
+        </li>
+         <li id="wishlist">
+            <a href="{{route('user.wishlist')}}">
+                <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
+            </a>
+        </li>
+
+        @endif
     </ul>
                 
     @if(count($channels = loadChannels()) > 0)
@@ -17,7 +38,7 @@
         <ul class="y-home" style="margin-top: 10px;">
 
 
-            <a href="{{route('user.channel.list')}}" title="Click Here To View Channels"><h3>{{tr('channels')}}</h3></a>
+            <h3>{{tr('channels')}}</h3>
 
             @foreach($channels as $channel)
                 <li>
