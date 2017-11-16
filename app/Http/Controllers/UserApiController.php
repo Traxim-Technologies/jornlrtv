@@ -969,8 +969,15 @@ class UserApiController extends Controller {
 
         }
 
-        return response()->json($model, 200);
+        $items = [];
 
+        foreach ($model['data'] as $key => $value) {
+            
+            $items[] = displayVideoDetails($value->videoTape, $request->id);
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
     }
 
 
@@ -3343,7 +3350,7 @@ class UserApiController extends Controller {
         if (Auth::check()) {
 
             $u_id = Auth::user()->id;
-            
+
             // Check any flagged videos are present
             $flagVideos = getFlagVideos(Auth::user()->id);
 

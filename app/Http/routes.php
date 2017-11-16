@@ -581,7 +581,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('ppv-video','PaypalController@videoSubscriptionPay')->name('ppv-video-payment');
 
-    Route::get('user/ppv_video','PaypalController@getVideoPaymentStatus')->name('paypalstatus');
+    Route::get('user/payment/video-status','PaypalController@getVideoPaymentStatus')->name('paypalstatus');
 
 
     Route::get('login', 'Auth\AuthController@showLoginForm')->name('login.form');

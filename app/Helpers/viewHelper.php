@@ -1077,3 +1077,24 @@ function displayVideoDetails($data,$userId) {
     return $model;
 
 }
+
+/**
+ * Function Name : total_video_revenue
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function total_video_revenue() {
+    return PayPerView::sum('amount');
+}
+
+
+/**
+ * Function Name : user_total_amount
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function user_total_amount() {
+    return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
+}
