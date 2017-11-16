@@ -663,6 +663,12 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('comments', 'UserController@comments')->name('comments');
     
+
+    Route::post('/save_video_payment/{id}', 'UserController@save_video_payment')->name('save.video-payment');
+
+    Route::get('/remove_payper_view/{id}', 'UserController@remove_payper_view')->name('remove_pay_per_view');
+
+
     // Paypal Payment
     Route::get('/paypal/{id}','PaypalController@pay')->name('paypal');
 
