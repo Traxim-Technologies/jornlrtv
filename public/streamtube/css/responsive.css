@@ -181,6 +181,10 @@
 	color:#e61b1b;
 	text-decoration: none;
 }
+.payment-section{
+	margin-top: 15px;
+	margin-bottom: 20px;
+}
 }
 
 /*small devices*/
@@ -363,6 +367,14 @@
 	color:#e61b1b;
 	text-decoration: none;
 }
+.payment-section{
+	margin-top: 75px;
+	margin-bottom: 20px;
+}
+.payment-section{
+	margin-top: 15px;
+	margin-bottom: 20px;
+}
 }
 
 /* Tablets */
@@ -514,6 +526,10 @@
 	font-size: 15px !important;
 	font-weight:normal !important;
 	margin-left: 70px;
+}
+.payment-section{
+	margin-top: 75px;
+	margin-bottom: 20px;
 }
 }
 
@@ -668,6 +684,10 @@
 	font-weight:normal !important;
 	margin-left: 70px;
 }
+.payment-section{
+	margin-top: 75px;
+	margin-bottom: 20px;
+}
 }
 
 /* Desktops */
@@ -821,6 +841,10 @@
 	font-size: 15px !important;
 	font-weight:normal !important;
 	margin-left: 70px;
+}
+.payment-section{
+	margin-top: 75px;
+	margin-bottom: 20px;
 }
 }
 /*index.html responsive*/
