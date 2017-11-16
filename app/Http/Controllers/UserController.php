@@ -234,7 +234,7 @@ class UserController extends Controller {
 
         }
 
-        $data = $this->UserAPI->getSingleVideo($request)->getData();
+        $data = $this->UserAPI->video_detail($request)->getData();
 
         if ($data->success) {
 
@@ -244,8 +244,6 @@ class UserController extends Controller {
                         ->with('page' , '')
                         ->with('subPage' , '')
                         ->with('video' , $response->video)
-                        ->with('recent_videos' , $response->recent_videos)
-                        ->with('trendings' , $response->trendings)
                         ->with('comments' , $response->comments)
                         ->with('suggestions',$response->suggestions)
                         ->with('wishlist_status' , $response->wishlist_status)
@@ -290,7 +288,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
 
-        $wishlist = VideoRepo::wishlist($request,WEB);
+        $wishlist = $this->UserAPI->wishlist_list($request,WEB)->getData();
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
@@ -312,7 +310,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
 
-        $wishlist = VideoRepo::wishlist($request,WEB);
+        $wishlist = $this->UserAPI->wishlist_list($request,WEB)->getData();
 
         return view('user.account.edit-profile')->with('page' , 'profile')
                     ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
@@ -496,7 +494,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
 
-        $histories = VideoRepo::watch_list($request,WEB);
+        $histories = $this->UserAPI->watch_list($request,WEB)->getData();
 
         return view('user.account.history')
                         ->with('page' , 'profile')
@@ -558,7 +556,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
         
-        $videos = VideoRepo::wishlist($request,WEB);
+        $videos = $this->UserAPI->wishlist_list($request,WEB)->getData();
 
         return view('user.account.wishlist')
                     ->with('page' , 'profile')
@@ -650,11 +648,11 @@ class UserController extends Controller {
 
         if ($channel) {
 
-            $videos = VideoRepo::channel_videos($id);
+            $videos = $this->UserAPI->channel_videos($id)->getData();
 
-            $trending_videos = VideoRepo::channel_trending($id, WEB, null, 5);
+            $trending_videos = $this->UserAPI->channel_trending($id, WEB, null, 5)->getData();
 
-            $payment_videos = VideoRepo::payment_videos($id, WEB, null);
+            $payment_videos = $this->UserAPI->payment_videos($id, WEB, null)->getData();
 
             $user_id = Auth::check() ? Auth::user()->id : '';
 

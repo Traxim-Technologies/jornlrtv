@@ -135,7 +135,7 @@
 
                 @include('notification.notify')
 
-                @if(count($wishlists) > 0)
+                @if(count($wishlists->items) > 0)
 
                     <div class="slide-area">
                         <div class="box-head">
@@ -144,7 +144,7 @@
 
                         <div class="box">
 
-                            @foreach($wishlists as $wishlist)
+                            @foreach($wishlists->items as $wishlist)
                             <div class="slide-box">
                                 <div class="slide-image">
                                     <a href="{{route('user.single' , $wishlist->video_tape_id)}}"><img src="{{$wishlist->video_image}}" /></a>
@@ -332,7 +332,7 @@
 
                 @endif
 
-                @if(count($watch_lists) > 0)
+                @if(count($watch_lists->items) > 0)
 
                 <hr>
 
@@ -343,7 +343,7 @@
 
                         <div class="box">
 
-                            @foreach($watch_lists as $watch_list)
+                            @foreach($watch_lists->items as $watch_list)
 
                             <div class="slide-box">
                                 <div class="slide-image">

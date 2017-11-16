@@ -11,9 +11,20 @@
             </a>
         </li>
 
-         <li id="channels">
+        <li id="channels">
             <a href="{{route('user.channel.list')}}">
                 <img src="{{asset('streamtube/images/search.png')}}">{{tr('browse_channels')}}
+            </a>
+        </li>
+
+        <li id="history">
+            <a href="{{route('user.history')}}">
+                <img src="{{asset('streamtube/images/y10.png')}}">{{tr('history')}}
+            </a>
+        </li>
+         <li id="wishlist">
+            <a href="{{route('user.wishlist')}}">
+                <img src="{{asset('streamtube/images/y10.png')}}">{{tr('wishlist')}}
             </a>
         </li>
     </ul>
