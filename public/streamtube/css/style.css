@@ -234,6 +234,7 @@ body{
 }
 footer{
 	background-color: #fff;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
 }
 .footer1{
 	padding: 10px;	
@@ -1076,6 +1077,7 @@ signup.html css
 	padding: 15px;
 	border: 1px solid transparent;
 	border-radius: 5px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
 }
 .sign-up{
 	margin-top: 15px;
@@ -2302,6 +2304,29 @@ margin: 0px auto 35px;
 }
 .mobile-header li a:hover{
 	text-decoration: none;
+}
+.payment-card{
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
+	padding: 15px;
+	border-radius: 5px;
+	height: 295px;
+	margin-top: 10px;
+	-webkit-transition: all 0.2s linear;
+	transition: all 0.2s linear;
+}
+.payment-card:hover{
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
+}
+.payment-section{
+	margin-top: 75px;
+	margin-bottom: 20px;
+}
+.payment-card img{
+	height: 100px;
+	width: 100px;
+	border-radius: 50px;
+	margin-top: 15px;
+	margin-bottom: 15px;
 }
  #preloader {
 
