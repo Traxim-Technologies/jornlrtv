@@ -41,8 +41,10 @@ position: absolute; bottom: 0;width: 100%
 }
 
 body{
-	font-family: 'Roboto', sans-serif;
-	background-color: #F1F1F1;
+	/*font-family: 'Roboto', sans-serif;*/
+	font-family: Roboto, Arial, sans-serif;
+	/*background-color: #F1F1F1;*/
+	background-color: #fff;
 }
 
 .no-margin{
@@ -107,6 +109,7 @@ body{
 	width: 22px;
 	height: 22px;
 	margin: 0 10px 0px 0;
+	border-radius: 50%;
 }
 .y-home a{
 	text-decoration: none;
@@ -161,8 +164,8 @@ body{
 }
 .slide-area{
 	background-color: #fff;
-	padding: 10px 30px;
-	margin: 10px 0;
+	padding: 0px 30px;
+	/*margin: 10px 0;*/
 }
 .slide-image img{
 	width: 95%;
@@ -174,9 +177,28 @@ body{
     font-weight: bold;
 }
 .video-head a{
-	font-size: 13px;
-	color: #167ac6;
+	font-size: 1em;
+	color: #000;
+	display: block;
+	font-weight: 600;
+	display: -webkit-box;
+	/* Fallback for non-webkit */
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-decoration: none;
+	max-height: 20px;
+	line-height: 19px;
+	margin-bottom: 5px;
+	font-family: arial;
 }
+
+.video_views a {
+	color: #777;
+	text-decoration: none;
+}
+
 .publish a{
 	text-decoration: none;
 	color: #767676;
@@ -1439,19 +1461,6 @@ recommended.html css
 .recom-details{
 	height: 80px;
 }
-.video-head a{
-	display: block;
-	font-weight: bolder;
-  display: -webkit-box;
-  /* Fallback for non-webkit */
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-decoration: none;
-  max-height: 20px;
-  line-height: 19px;
-}
 
 .suggn-title h5 {
 	display: block;
@@ -1583,10 +1592,15 @@ changes
 	font-weight: bold;
     padding: 0;
     display: inline-block;
-    width: 30px;
-    height: 38px;
-    background-color: #eee;
+    width: 42px;
+    height: 40px;
+    /*background-color: #eee;*/
+    background-color: #fff;
     line-height: 7px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
+    top:30%;
+    border-radius: 50%;
+    z-index: 800;
  }
 
 .slick-prev {
@@ -1769,7 +1783,8 @@ margin: 0px auto 35px;
 }
 
 .slick-prev.slick-disabled:before, .slick-next.slick-disabled:before {
-	margin-left: -5px;
+	/*margin-left: -5px;*/
+	margin: 0;
 }
 
 .ui-menu-item:hover ,.ui-menu-item:active , .ui-menu-item:focus {
@@ -1804,6 +1819,17 @@ margin: 0px auto 35px;
 	background-color: #000;
 	opacity: 0.7;
 	right: 0;
+	bottom: 0;
+	position: absolute;
+	color: #fff;
+	font-size: 11px;
+	padding: 4px;
+}
+
+.video_amount {
+	background-color: #000;
+	opacity: 0.7;
+	left: 0;
 	bottom: 0;
 	position: absolute;
 	color: #fff;

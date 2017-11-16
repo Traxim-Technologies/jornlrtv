@@ -17,7 +17,7 @@
 }*/
 .y-menu{
 	border-right: 1px solid #e8e8e8;
-    background-color: #fff;
+    /*background-color: #fff;*/
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
@@ -204,7 +204,7 @@
 }*/
 .y-menu{
 	border-right: 1px solid #e8e8e8;
-    background-color: #fff;
+    /*background-color: #fff;*/
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
@@ -369,7 +369,7 @@
 @media (min-width: 768px) and (max-width: 991px) {
 .y-menu{
 	border-right: 1px solid #e8e8e8;
-    background-color: #fff;
+    /*background-color: #fff;*/
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
@@ -521,7 +521,7 @@
 @media (min-width : 992px) and (max-width: 1199px){
 .y-menu{
 	border-right: 1px solid #e8e8e8;
-    background-color: #fff;
+    /*background-color: #fff;*/
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
@@ -674,10 +674,10 @@
 @media only screen and (min-width : 1200px) {
 .y-menu{
 	border-right: 1px solid #e8e8e8;
-    background-color: #fff;
+    background-color: #F1F1F1;
     padding-bottom: 15px;
     padding-top: 15px;
-    margin-top: 60px;
+    margin-top: 58px;
     min-height: 700px;
     /*height: calc(100% - 60px) !important;*/
     overflow: auto;
@@ -690,7 +690,8 @@
 	padding-right:30px;
 }
 .page-inner{
-	margin-top: 65px;
+	margin: 65px 0 0 0;
+
 }
 .streamtube-nav{
 	padding:10px 20px;

@@ -36,6 +36,9 @@ use App\ChannelSubscription;
 
 use App\Language;
 
+use App\PayPerView;
+
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -951,4 +954,82 @@ function number_format_short( $n, $precision = 1 ) {
         $n_format = str_replace( $dotzero, '', $n_format );
     }
     return $n_format . $suffix;
+}
+
+
+
+/**
+ * Function Name : watchFullVideo()
+ * To check whether the user has to pay the amount or not
+ * 
+ * @param integer $user_id User id
+ * @param integer $user_type User Type
+ * @param integer $video_id Video Id
+ * 
+ * @return true or not
+ */
+function watchFullVideo($user_id, $user_type, $video) {
+
+    if ($user_type == 1) {
+
+        if ($video->amount == 0) {
+            return true;
+        }else if($video->amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)
+                ->orderBy('created_at', 'desc')->first();
+            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                // Load Payment view
+                if ($paymentView) {
+                    return true;
+                }
+            } else {
+                if ($paymentView) {
+                    if ($paymentView->status == DEFAULT_FALSE) {
+                        return true;
+                    }
+                }   
+            }
+        } else if($video->amount > 0 && $video->type_of_user == NORMAL_USER){
+            return true;
+        }
+    } else {
+        if ($video->amount == 0) {
+            return true;
+        }else if($video->amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->orderBy('created_at', 'desc')->first();
+            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                // Load Payment view
+                if ($paymentView) {
+                    return true;
+                }
+            } else {
+
+                if ($paymentView) {
+                    if ($paymentView->status == DEFAULT_FALSE) {
+                        return true;
+                    }
+                }  
+            }
+        } 
+    }
+    return false;
+}
+
+function displayVideoDetails($data,$user = null) {
+
+    $model = [
+        'video_tape_id'=>$data->video_tape_id,
+        'title'=>$data->title,
+        'video_image'=>$data->default_image,
+        'watch_count'=>number_format_short($data->watch_count),
+        'duration'=>$data->duration,
+        'ppv_status'=>$user ? watchFullVideo($user->id, $user->user_type, $data->video_tape_id) : false,
+        'ppv_amount'=>$data->ppv_amount,
+        'channel_id'=>$data->channel_id,
+        'channel_name'=>$data->channel_name,
+        'created_at'=>$data->created_at->diffForHumans(),    
+    ];
+
+    return $model;
+
 }

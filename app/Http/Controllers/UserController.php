@@ -65,7 +65,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'watch_count', 'partialVideos', 'payment_mgmt_videos' , 'master_login']]);
+        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'watch_count', 'partialVideos', 'payment_mgmt_videos' , 'master_login','invoice','pay_per_view']]);
     }
 
 
@@ -160,24 +160,21 @@ class UserController extends Controller {
 
             counter('home');
 
-            $id = Auth::check() ? Auth::user()->id : null;
-
             $watch_lists = $wishlists = array();
 
-            if($id){
+            if($request->has('id')){
 
                 $wishlists  =  VideoRepo::wishlist($request,WEB);
 
                 $watch_lists = VideoRepo::watch_list($request,WEB);  
             }
 
-            //dd($watch_lists);
-            
-            $recent_videos = VideoRepo::recently_added($request, WEB);
 
-            $trendings = VideoRepo::trending($request, WEB);
+            $recent_videos = $this->UserAPI->recently_added($request, WEB)->getData();
+
+            $trendings = $this->UserAPI->trending_list($request, WEB)->getData();
             
-            $suggestions  = VideoRepo::suggestion_videos($request, WEB);
+            $suggestions  = $this->UserAPI->suggestion_videos($request, WEB)->getData();
 
             $channels = getChannels(WEB);
 
@@ -1700,5 +1697,12 @@ class UserController extends Controller {
     public function invoice() {
 
         return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice');
+    }
+
+    public function pay_per_view() {
+        return view('user.pay_per_view')
+                ->with('page', 'pay_per_view')
+                ->with('subPage', 'pay_per_view');
+
     }
 }

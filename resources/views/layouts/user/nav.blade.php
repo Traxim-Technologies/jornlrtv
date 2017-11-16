@@ -10,6 +10,12 @@
                 <img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}
             </a>
         </li>
+
+         <li id="channels">
+            <a href="{{route('user.channel.list')}}">
+                <img src="{{asset('streamtube/images/search.png')}}">{{tr('browse_channels')}}
+            </a>
+        </li>
     </ul>
                 
     @if(count($channels = loadChannels()) > 0)
@@ -17,7 +23,7 @@
         <ul class="y-home" style="margin-top: 10px;">
 
 
-            <a href="{{route('user.channel.list')}}" title="Click Here To View Channels"><h3>{{tr('channels')}}</h3></a>
+            <h3>{{tr('channels')}}</h3>
 
             @foreach($channels as $channel)
                 <li>

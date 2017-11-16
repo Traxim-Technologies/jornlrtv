@@ -3057,5 +3057,150 @@ class UserApiController extends Controller {
     }
 
 
+    /******************************** API's ******************************/
+
+    public function recently_added($request, $web = 1) {
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)                                                   ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->videoResponse();
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+
+        }
+
+        if($web) {
+
+            $videos = $base_query->paginate(16);
+
+        } else {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        }
+
+        $items = [];
+
+        foreach ($videos as $key => $value) {
+            
+            $items[] = displayVideoDetails($value);
+
+        }
+
+        return response()->json($items);
+    
+    }
+
+
+    public function trending_list($request, $web, $skip = null, $count = 0) {
+
+        $base_query = VideoTape::where('watch_count' , '>' , 0)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->where('video_tapes.publish_status' , 1)
+                        ->where('video_tapes.status' , 1)
+                        ->where('video_tapes.is_approved' , 1)
+                        ->videoResponse()
+                        ->where('video_tapes.age_limit','<=', checkAge($request))
+                        ->orderby('watch_count' , 'desc');
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+                
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        }
+
+       if($skip) {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        } else if($count > 0){
+
+            $videos = $base_query->skip(0)->take($count)->get();
+
+        } else {
+
+            $videos = $base_query->paginate(16);
+            
+        }
+
+        $items = [];
+
+        foreach ($videos as $key => $value) {
+            
+            $items[] = displayVideoDetails($value);
+
+        }
+
+        return response()->json($items);
+    
+    }
+
+
+    public function suggestion_videos($request, $web = 1, $skip = null) {
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->videoResponse()
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderByRaw('RAND()');
+        if($request->video_tape_id) {
+
+            $base_query->whereNotIn('video_tapes.id', [$request->video_tape_id]);
+        }
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        }
+
+        if($skip) {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+            
+        } else {
+
+            $videos = $base_query->paginate(16);
+        }
+
+        $items = [];
+
+        foreach ($videos as $key => $value) {
+            
+            $items[] = displayVideoDetails($value);
+
+        }
+
+        return response()->json($items);
+    
+    
+    }
+
 
 }
