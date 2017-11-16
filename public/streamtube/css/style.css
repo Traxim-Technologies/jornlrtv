@@ -2317,9 +2317,8 @@ margin: 0px auto 35px;
 .payment-card:hover{
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
 }
-.payment-section{
-	margin-top: 75px;
-	margin-bottom: 20px;
+.banner-slider{
+	padding: 0 50px;
 }
 .payment-card img{
 	height: 100px;

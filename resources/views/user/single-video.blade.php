@@ -207,7 +207,7 @@ textarea[name=comments] {
 
                                                                         @if($flaggedVideo == '')
                                                                         <div class="mylist">
-                                                                            <button style="background-color:rgb(229, 45, 39);" type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
+                                                                            <button  type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
                                                                                 <div class="added_to_wishlist" id="check_id">
                                                                                     <i class="fa fa-heart"></i>
                                                                                     <!-- <span>{{tr('wishlist')}}</span> -->

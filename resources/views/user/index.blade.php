@@ -63,7 +63,7 @@
                 @if(count($banner_videos) > 0)
 
                 <div class="row" id="slider">
-                    <div class="col-md-10 col-md-offset-1">
+                    <div class="col-md-12 banner-slider">
                         <div id="myCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 @foreach($banner_videos as $key => $banner_video)
@@ -100,7 +100,7 @@
                 @if(count($banner_ads) > 0)
 
                 <div class="row" id="slider">
-                    <div class="col-md-10 col-md-offset-1">
+                    <div class="col-md-12 banner-slider">
                         <div id="myCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 @foreach($banner_ads as $key => $banner_ad)
