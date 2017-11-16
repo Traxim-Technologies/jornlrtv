@@ -38,6 +38,9 @@ use App\Language;
 
 use App\LiveVideoPayment;
 
+use App\PayPerView;
+
+
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -1035,4 +1038,174 @@ function getMinutesBetweenTime($startTime, $endTime) {
 
     return $diff;
 
+}
+
+
+/**
+ * Function Name : watchFullVideo()
+ * To check whether the user has to pay the amount or not
+ * 
+ * @param integer $user_id User id
+ * @param integer $user_type User Type
+ * @param integer $video_id Video Id
+ * 
+ * @return true or not
+ */
+function watchFullVideo($user_id, $user_type, $video) {
+
+    if ($user_type == 1) {
+
+        if ($video->ppv_amount == 0) {
+            return true;
+        }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
+
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
+                ->orderBy('created_at', 'desc')->first();
+            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                // Load Payment view
+                if ($paymentView) {
+                    return true;
+                }
+            } else {
+                if ($paymentView) {
+                    if ($paymentView->status == DEFAULT_FALSE) {
+                        return true;
+                    }
+                }   
+            }
+        } else if($video->ppv_amount > 0 && $video->type_of_user == NORMAL_USER){
+            return true;
+        }
+    } else {
+
+
+        if ($video->ppv_amount == 0) {
+            return true;
+        }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)->orderBy('created_at', 'desc')->first();
+
+            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+                // Load Payment view
+                if ($paymentView) {
+                    return true;
+                }
+            } else {
+
+                if ($paymentView) {
+                    if ($paymentView->status == DEFAULT_FALSE) {
+                        return true;
+                    }
+                }  
+            }
+        } 
+    }
+    return false;
+}
+
+function displayVideoDetails($data,$userId) {
+
+    $user = User::find($userId);
+
+    if (Setting::get('is_payper_view')) {
+
+        if ($userId == $data->channel_created_by) {
+
+            $ppv_status = true;
+
+            $url = route('user.single', $data->video_tape_id);
+
+        } else {
+
+            if ($data->ppv_amount > 0) {
+
+                $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+
+                if ($ppv_status) {
+
+                    $url = route('user.single', $data->video_tape_id);
+
+                } else {
+
+                
+                    if ($userId) {
+
+                        if ($user->user_type) {        
+
+                            $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+
+                        } else {
+
+                            $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+                        }
+
+                    } else {
+
+                        $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+
+                    }
+
+              
+                }
+
+            } else {
+
+                $ppv_status = true;
+
+                $url = route('user.single', $data->video_tape_id);
+
+            }
+
+        }
+
+    } else {
+
+        $ppv_status = true;
+
+        $url = route('user.single', $data->video_tape_id);
+
+    }
+
+    $model = [
+        'video_tape_id'=>$data->video_tape_id,
+        'title'=>$data->title,
+        'video_image'=>$data->default_image,
+        'watch_count'=>number_format_short($data->watch_count),
+        'duration'=>$data->duration,
+        'ppv_status'=>$ppv_status,
+        'ppv_amount'=>$data->ppv_amount,
+        'channel_id'=>$data->channel_id,
+        'channel_name'=>$data->channel_name,
+        'created_at'=>$data->created_at->diffForHumans(),   
+        'ad_status'=>$data->ad_status,
+        'description'=>$data->description,
+        'ratings'=>$data->ratings,
+        'amount'=>$data->amount,
+        'url'=>$url,
+        'type_of_user'=>$data->type_of_user,
+        'type_of_subscription'=>$data->type_of_subscription,
+    ];
+
+    return $model;
+
+}
+
+/**
+ * Function Name : total_video_revenue
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function total_ppv_video_revenue() {
+    return PayPerView::sum('amount');
+}
+
+
+/**
+ * Function Name : user_total_amount
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function user_total_amount() {
+    return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
 }

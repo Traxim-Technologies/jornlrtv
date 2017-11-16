@@ -3,7 +3,16 @@
     <li class="sub-list row">
         <div class="main-history">
              <div class="history-image">
-                <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->default_image}}"></a>
+                <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>
+                 @if($video->ppv_amount > 0)
+                    @if(!$video->ppv_status)
+                        <div class="video_amount">
+
+                        {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+
+                        </div>
+                    @endif
+                @endif
                 <div class="video_duration">
                     {{$video->duration}}
                 </div>                        
@@ -12,11 +21,11 @@
             <div class="history-title">
                 <div class="history-head row">
                     <div class="cross-title">
-                        <h5 class="payment_class"><a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a></h5>
+                        <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
                         <?php /*<p style="color: #000" class="duration">{{tr('duration')}}: {{$video->duration}} (<span class="content-item-time-created lohp-video-metadata-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{($video->created_at) ? $video->created_at->diffForHumans() : 0}}</span> ) </p> */?>
                         <span class="video_views">
-                            <i class="fa fa-eye"></i> {{number_format_short($video->watch_count)}} {{tr('views')}} <b>.</b> 
-                            {{$video->created_at->diffForHumans()}}
+                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                            {{$video->created_at}}
                         </span>
                     </div> 
                     @if(Auth::check())
