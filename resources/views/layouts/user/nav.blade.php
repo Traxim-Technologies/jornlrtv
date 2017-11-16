@@ -17,6 +17,8 @@
             </a>
         </li>
 
+        @if(Auth::check())
+
         <li id="history">
             <a href="{{route('user.history')}}">
                 <img src="{{asset('images/history.png')}}">{{tr('history')}}
@@ -27,6 +29,8 @@
                 <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
             </a>
         </li>
+
+        @endif
     </ul>
                 
     @if(count($channels = loadChannels()) > 0)
