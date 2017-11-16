@@ -28,6 +28,19 @@ use Auth;
 
 class ApplicationController extends Controller {
 
+    protected $UserAPI;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(UserApiController $API)
+    {
+        $this->UserAPI = $API;
+        
+    }
+
     /**
      * Used to generate index.php file to avoid uploads folder access
      *
@@ -343,7 +356,7 @@ class ApplicationController extends Controller {
                 $q = \Session::get('user_search_key');
             }
 
-            $videos = Helper::search_video($request, $q,1);
+            $videos = $this->UserAPI->search_list($request, $q,1)->getData();
 
             return view('user.search-result')->with('key' , $q)->with('videos' , $videos)->with('page' , "")->with('subPage' , "");
         }     

@@ -27,8 +27,8 @@
 						 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 invoice-img" style="background-image: url({{asset('images/invoice-bg.jpg')}});">
 							 		<div class="invoice-overlay">
 							 			<div>
-										 	<h3 class="no-margin black-clr">{{$subscription->title}}</h3>
-										 	<p class="invoice-desc"><?= $subscription->description ?></p>
+										 	<h3 class="no-margin black-clr">{{$video->title}}</h3>
+										 	<p class="invoice-desc"> {{$video->description}}</p>
 									 	</div>
 									</div>
 								</div>
@@ -36,27 +36,57 @@
 									<div class="spacing1">
 									 	<table  class="table text-right top-space table-sripped">
 									 		<tbody>
-											    <tr class="danger">
-												    <td>{{tr('amount')}}</td>
-												    <td> {{Setting::get('currency')}} {{$subscription->amount}}</td>
+									 			<tr  class="danger">
+												    <td>{{tr('type_of_subscription')}}</td>
+												    <td>
+												    	@if($video->type_of_subscription == 1)
+
+												    		{{tr('one_time_payment')}}
+
+												    	@else
+
+												    		{{tr('recurring_payment')}}
+
+												    	@endif
+
+												    </td>
 											    </tr>
-											   <!--  <tr>
+
+											    <tr>
+												    <td>{{tr('type_of_user')}}</td>
+												    <td>
+												    	@if($video->type_of_user == 1)	
+
+												    		{{tr('only_for_normal_users')}}
+
+												    	@elseif($video->type_of_user == 2) 
+
+												    		{{tr('only_for_paid_users')}}
+
+												    	@else
+
+												    		{{tr('all_users')}}
+
+												    	@endif
+												    </td>
+											    </tr>
+
+											    <tr  class="danger">
+												    <td>Amount</td>
+												    <td> {{Setting::get('currency')}} {{$video->ppv_amount}}</td>
+											    </tr>
+											    <!-- <tr>
 											        <td>Tax</td>
 											        <td> $9.99</td>
 											    </tr> -->
 											    <tr>
 											        <td>{{tr('total')}}</td>
-											        <td>{{Setting::get('currency')}} {{$subscription->amount}}</td>
+											        <td> {{Setting::get('currency')}} {{$video->ppv_amount}}</td>
 											    </tr> 
 										    </tbody>
 										</table>
 										<h3 class="no-margin black-clr top">{{tr('payment_options')}}</h3>
-									    <form method="post" action="{{route('user.subscription.payment')}}">
-
-
-									    	<input type="hidden" name="u_id" value="{{$model['u_id']}}">
-
-									    	<input type="hidden" name="s_id" value="{{$subscription->id}}">
+									    <form action="{{route('user.payment-type', $video->id)}}" method="post">
 									    	<div>
 												<label class="radio1">
 												    <input id="radio1" type="radio" name="payment_type" checked value="1">
@@ -73,7 +103,7 @@
 											<div class="clear-fix"></div>
 											<div class="text-right top">
 												<button class="btn btn-danger">
-													<i class="fa fa-credit-card"></i> &nbsp; Pay Now
+													<i class="fa fa-credit-card"></i> &nbsp; {{tr('pay_now')}}
 												</button>
 											</div>
 				 						</form>

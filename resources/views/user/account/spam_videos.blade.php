@@ -25,7 +25,8 @@
                         <li class="sub-list row">
                             <div class="main-history">
                                  <div class="history-image">
-                                    <a href="{{route('user.single' , $spamvideo->video_tape_id)}}"><img src="{{$spamvideo->video_tape->default_image}}"></a>
+                                    <a href="{{$spamvideo->url}}"><img src="{{$spamvideo->video_tape->video_image}}"></a>
+
                                     <div class="video_duration">
                                         {{$spamvideo->video_tape->duration}}
                                     </div>                        
@@ -34,12 +35,12 @@
                                 <div class="history-title">
                                     <div class="history-head row">
                                         <div class="cross-title1">
-                                            <h5><a href="{{route('user.single' , $spamvideo->video_tape_id)}}">{{$spamvideo->video_tape->title}}</a></h5>
+                                            <h5><a href="{{$spamvideo->url}}">{{$spamvideo->video_tape->title}}</a></h5>
                                             <!-- <p class="duration">{{tr('duration')}}: {{$spamvideo->video_tape->duration}}</p> -->
                                             <span class="video_views">
-                                                <i class="fa fa-eye"></i> {{number_format_short($spamvideo->video_tape->watch_count)}} {{tr('views')}} 
-                                                <?php /*<b>.</b> 
-                                                {{$history->video_tape->created_at->diffForHumans()}}*/?>
+                                                <i class="fa fa-eye"></i> {{$spamvideo->video_tape->watch_count}} {{tr('views')}} 
+                                                <b>.</b> 
+                                                {{$spamvideo->video_tape->created_at}}
                                             </span>
                                         </div> 
                                         <div class="cross-mark1">

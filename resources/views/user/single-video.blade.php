@@ -192,59 +192,59 @@ textarea[name=comments] {
                                                             </a>
 
 
-                                                        <!-- <div class="wishlist_form">  -->
-                                                            <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
-                                                                @if(Auth::check())
+                                                        <!-- <div class="wishlist_form"> 'color' : '#b31217' -->
+                    <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
+                        @if(Auth::check())
 
-                                                                    <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
+                            <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
 
-                                                                    @if(count($wishlist_status) == 1 && $wishlist_status)
+                            @if(count($wishlist_status) == 1 && $wishlist_status)
 
 
-                                                                        <input type="hidden" id="status" value="0" name="status">
+                                <input type="hidden" id="status" value="0" name="status">
 
-                                                                        <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
+                                <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
 
-                                                                        @if($flaggedVideo == '')
-                                                                        <div class="mylist">
-                                                                            <button  type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
-                                                                                <div class="added_to_wishlist" id="check_id">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                    <!-- <span>{{tr('wishlist')}}</span> -->
-                                                                                </div>
+                                @if($flaggedVideo == '')
+                                <div class="mylist">
+                                    <button  type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
+                                        <div class="added_to_wishlist" id="check_id">
+                                            <i class="fa fa-heart" style="color: #b31217"></i>
+                                            <!-- <span>{{tr('wishlist')}}</span> -->
+                                        </div>
 
-                                                                                <span class="wishlist_heart_remove">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </span>
-                                                                            </button> 
-                                                                        </div>
-                                                                        @endif
-                                                                    @else
+                                        <span class="wishlist_heart_remove">
+                                            <i class="fa fa-heart"></i>
+                                        </span>
+                                    </button> 
+                                </div>
+                                @endif
+                            @else
 
-                                                                        <input type="hidden" id="status" value="1" name="status">
+                                <input type="hidden" id="status" value="1" name="status">
 
-                                                                        <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
-                                                                        @if($flaggedVideo == '')
-                                                                            <div class="mylist">
-                                                                                <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
-                                                                                    <div class="add_to_wishlist" id="check_id">
-                                                                                        <i class="fa fa-heart"></i>
-                                                                                        <!-- <span>{{tr('wishlist')}}</span> -->
-                                                                                    </div>
+                                <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
+                                @if($flaggedVideo == '')
+                                    <div class="mylist">
+                                        <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
+                                            <div class="add_to_wishlist" id="check_id">
+                                                <i class="fa fa-heart"></i>
+                                                <!-- <span>{{tr('wishlist')}}</span> -->
+                                            </div>
 
-                                                                                    <span class="wishlist_heart">
-                                                                                        <i class="fa fa-heart"></i>
-                                                                                    </span>
-                                                                                </button> 
-                                                                            </div>
-                                                                        @endif
-                                                                    @endif
-                                                                
-                                                                @else
-                                                                    
-                                                                @endif
+                                            <span class="wishlist_heart">
+                                                <i class="fa fa-heart"></i>
+                                            </span>
+                                        </button> 
+                                    </div>
+                                @endif
+                            @endif
+                        
+                        
+                        
+                        @endif
 
-                                                            </form>
+                    </form>
                                                         <!-- </div>    -->
                                                     </div>
                                                    <!--  <h3>Channel Name</h3> -->
@@ -253,161 +253,11 @@ textarea[name=comments] {
                                                     <hr>
                                                 </div>
 
-                                                <div class="col-lg-12">
+                                                
 
-                                                   <!--  <div class="more-content"> -->
-                                        
-                                                    <!-- <div class="share-details"> -->
+                                                  
 
-                                                        <!-- <div class="wishlist_form"> 
-                                                            <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}">
-                                                                @if(Auth::check())
-
-                                                                    <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
-
-                                                                    @if(count($wishlist_status) == 1 && $wishlist_status)
-
-
-                                                                        <input type="hidden" id="status" value="0" name="status">
-
-                                                                        <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
-
-                                                                        @if($flaggedVideo == '')
-                                                                        <div class="mylist">
-                                                                            <button style="background-color:rgb(229, 45, 39);" type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
-                                                                                <div class="added_to_wishlist" id="check_id">
-                                                                                    <i class="fa fa-times-circle"></i>
-                                                                                    <span>{{tr('wishlist')}}</span>
-                                                                                </div>
-
-                                                                                <span class="wishlist_heart_remove">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </span>
-                                                                            </button> 
-                                                                        </div>
-                                                                        @endif
-                                                                    @else
-
-                                                                        <input type="hidden" id="status" value="1" name="status">
-
-                                                                        <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
-                                                                        @if($flaggedVideo == '')
-                                                                            <div class="mylist">
-                                                                                <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
-                                                                                    <div class="add_to_wishlist" id="check_id">
-                                                                                        <i class="fa fa-plus-circle"></i>
-                                                                                        <span>{{tr('wishlist')}}</span>
-                                                                                    </div>
-
-                                                                                    <span class="wishlist_heart">
-                                                                                        <i class="fa fa-heart"></i>
-                                                                                    </span>
-                                                                                </button> 
-                                                                            </div>
-                                                                        @endif
-                                                                    @endif
-                                                                
-                                                                @else
-                                                                    
-                                                                @endif
-
-                                                            </form>
-                                                        </div> -->
-
-                                                        <!-- <div class="share">
-                                                            <a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->video_tape_id)}}">
-                                                                
-                                                                <i class="fa fa-facebook"></i>
-                                                                
-                                                            </a>
-
-                                                            <a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->video_tape_id)}}">
-                                                               
-                                                                <i class="fa fa-twitter"></i>
-                                                                
-                                                            </a> 
-
-                                                            <input name="embed_link" class="form-control" id="embed_link" type="hidden" value="{{$embed_link}}">
-
-                                                            <a class="btn btn-sm btn-success" data-toggle="modal" data-target="#copy-embed" style="margin-left: 8px; margin-top: -1px;" title="{{tr('copy_embedded_link')}}">
-
-                                                                <i class="fa fa-link"></i>
-
-                                                            </a>
-
-                                                        </div> --><!--end of share-->
-
-                                                        <!-- ==============MODAL STARTS=========== -->
-
-                                                        
-                                                        <!-- =========MODAL ENDS=========== -->
-                                                        <!--<div class="share">
-
-
-                                                            @if(Auth::check())
-                                                                @if(Setting::get('is_spam')
-                                                                 && Auth::user()->id != $video->channel_created_by)
-
-                                                                    @if($flaggedVideo == '')
-                                                                        <button onclick="showReportForm();" type="button" class="report-button" title="{{tr('report')}}">
-                                                                        <i class="fa fa-flag"></i> 
-                                                                        <span class="report_class">
-                                                                        {{tr('report')}}
-                                                                        </span>
-                                                                        </button>
-                                                                    @else 
-                                                                        <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning unmark" title="{{tr('remove_report')}}">
-                                                                            <i class="fa fa-flag"></i> 
-                                                                            <span class="report_class">
-                                                                            {{tr('remove_report')}}
-                                                                            </span>
-                                                                        </a>
-                                                                    @endif
-
-                                                                @endif
-
-                                                            @endif
-                                                        
-                                                        </div> -->
-
-                                                        <!-- <div class="stars ratings text-center"> -->
-
-                                                            <!-- <div class="views">
-                                                                <i class="fa fa-eye" style="color: #b31217;font-size:13px;"></i>&nbsp;{{$video->watch_count}} {{tr('views')}}
-                                                            </div> -->
-                                                           
-                                                                <!-- <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a> -->
-                                                           <!--  </center> -->
-                                                        
-
-                                                             <!-- <div>
-                                                                <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
-
-                                                                @if (Auth::check())
-                                                                <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up"></i>&nbsp;<span id="like_count">{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
-
-                                                                <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{$dislike_count}}</span></a>
-
-                                                                @else 
-
-
-                                                                 <a class="thumb-class"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{$like_count}}</span></a>&nbsp;&nbsp;&nbsp;
-
-                                                                <a class="thumb-class"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{$dislike_count}}</span></a>
-
-                                                                @endif
-                                                                
-                                                            </div> -->
-                                                       <!--  </div> --><!--end of stars-->
-
-                                                   <!--  </div> --><!--end of share-details-->                               
-                                                <!-- </div> -->
-
-                                                <div class="clearfix"></div>
+                                           
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top zero-padding ">
                                                     <div class="row1"> 
@@ -485,6 +335,11 @@ textarea[name=comments] {
                                                 
                                                 <div class="clearfix"></div>
 
+                                                <div>
+                                                    <h4 class="video-desc">{{$video->description}}</h4>
+                                                </div>
+                                                <div class="clearfix"></div>
+
 
                                                 @if(Setting::get('is_spam'))
 
@@ -511,12 +366,9 @@ textarea[name=comments] {
                                                     @endif
 
                                                 @endif
-                                                    <div>
-                                                        <h4 class="video-desc">{{$video->description}}</h4>
-                                                    </div>
-                                                    <div class="clearfix"></div>
+                                                    
 
-                                                </div>
+                                            
 
                                                 
                                                <?php /* @if(Auth::check())
@@ -696,7 +548,7 @@ textarea[name=comments] {
                                             <div class="main-video">
                                                  <div class="video-image">
                                                     <div class="video-image-outer">
-                                                        <a href="{{route('user.single' , $suggestion->video_tape_id)}}"><img src="{{$suggestion->video_image}}"></a>
+                                                        <a href="{{$suggestion->url}}"><img src="{{$suggestion->video_image}}"></a>
                                                     </div>  
                                                     @if($suggestion->ppv_amount > 0)
                                                         @if(!$suggestion->ppv_status)
@@ -714,7 +566,7 @@ textarea[name=comments] {
 
                                                 <div class="sugg-head">
                                                     <div class="suggn-title">                                          
-                                                        <h5><a href="{{route('user.single' , $suggestion->video_tape_id)}}">{{$suggestion->title}}</a></h5>
+                                                        <h5><a href="{{$suggestion->url}}">{{$suggestion->title}}</a></h5>
                                                     </div><!--end of sugg-title-->
 
                                                     <span class="video_views">

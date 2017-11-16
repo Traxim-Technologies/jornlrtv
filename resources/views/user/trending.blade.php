@@ -23,7 +23,7 @@
                             @foreach($videos->items as $video)
                                 <div class="slide-box recom-box">
                                     <div class="slide-image recom-image">
-                                        <a href="{{route('user.single' , $video->video_tape_id)}}"><img src="{{$video->video_image}}" /></a>
+                                        <a href="{{$video->url}}"><img src="{{$video->video_image}}" /></a>
                                         @if($video->ppv_amount > 0)
                                             @if(!$video->ppv_status)
                                                 <div class="video_amount">
@@ -40,7 +40,7 @@
 
                                     <div class="video-details recom-details">
                                         <div class="video-head">
-                                            <a href="{{route('user.single' , $video->video_tape_id)}}">{{$video->title}}</a>
+                                            <a href="{{$video->url}}">{{$video->title}}</a>
                                         </div>
                                        
 
