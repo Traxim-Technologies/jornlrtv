@@ -188,7 +188,8 @@ body{
 	overflow: hidden;
 	text-overflow: ellipsis;
 	text-decoration: none;
-	max-height: 20px;
+	max-height: 40px;
+	min-height: 40px;
 	line-height: 19px;
 	margin-bottom: 5px;
 	font-family: arial;
