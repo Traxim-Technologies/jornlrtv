@@ -56,6 +56,8 @@ use App\UserPayment;
 
 use Exception;
 
+use App\PayPerView;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -1026,6 +1028,20 @@ class UserApiController extends Controller {
                 $response_array = array('success' => true);
            
             }
+
+
+            $payperview = PayPerView::where('user_id', $request->id)
+                            ->where('video_id',$request->admin_video_id)
+                            ->where('status',0)->first();
+
+            if ($payperview) {
+
+                $payperview->status = DEFAULT_TRUE;
+
+                $payperview->save();
+
+            }
+
 
         }
         return response()->json($response_array, 200);
@@ -3333,6 +3349,33 @@ class UserApiController extends Controller {
 
         return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
 
+    }
+
+
+    public function pay_per_videos(Request $request) {
+
+                // Load all the paper view videos based on logged in user id
+        $model = PayPerView::where('pay_per_views.user_id', $request->id)
+             ->leftJoin('video_tapes' ,'pay_per_views.video_id' , '=' , 'video_tapes.id')
+            ->where('video_tapes.is_approved' , 1)
+            ->where('video_tapes.status' , 1)
+            ->where('video_tapes.age_limit','<=', checkAge($request))
+            ->orderby('pay_per_views.created_at' , 'desc')
+            ->paginate(16);
+
+        $video = array('data' => $model->items(), 'pagination' => (string) $model->links());
+
+
+      
+        $items = [];
+
+        foreach ($video['data'] as $key => $value) {
+            
+            $items[] = displayVideoDetails($value->videoTapeResponse, $request->id);
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
     }
 
 
