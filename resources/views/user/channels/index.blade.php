@@ -625,7 +625,7 @@
 
 				</li>
 
-				@if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user)
+				@if(Setting::get('broadcast_by_user') == 1 || Auth::check() ? Auth::user()->is_master_user == 1 : 0)
 
 
 				<li role="tabpanel" class="tab-pane" id="live_videos_section">
