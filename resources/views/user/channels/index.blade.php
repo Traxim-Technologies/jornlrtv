@@ -199,7 +199,7 @@
 
 												<div class="slide-box recom-box big-box-slide">
 													<div class="slide-image recom-image hbb">
-														<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"><img src="{{$trending_videos[0]->video_image}}"></a>
+														<a href="{{$trending_videos[0]->url}}"><img src="{{$trending_videos[0]->video_image}}"></a>
 														@if($trending_videos[0]->ppv_amount > 0)
 					                                        @if(!$trending_videos[0]->ppv_status)
 					                                            <div class="video_amount">
@@ -215,7 +215,7 @@
 													</div>
 													<div class="video-details recom-details">
 														<div class="video-head">
-															<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"> {{$trending_videos[0]->title}}</a>
+															<a href="{{$trending_videos[0]->url}}"> {{$trending_videos[0]->title}}</a>
 														</div>
 														
 				                                         <span class="video_views">
