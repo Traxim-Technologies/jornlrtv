@@ -3577,9 +3577,7 @@ class UserApiController extends Controller {
 
                         $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $video) : false;
 
-
                         if ($ppv_status) {
-
                             
 
                         } else {
@@ -3587,17 +3585,17 @@ class UserApiController extends Controller {
                             if ($request->id) {
 
                                 if ($user->user_type) {        
-
-                                    return redirect(route('user.subscription.ppv_invoice', $video->video_tape_id));
+                                    
+                                    return response()->json(['url'=>route('user.subscription.ppv_invoice', $video->video_tape_id)]);
 
                                 } else {
 
-                                    return redirect(route('user.subscription.pay_per_view', $video->video_tape_id));
+                                    return response()->json(['url'=>route('user.subscription.pay_per_view', $video->video_tape_id)]);
                                 }
 
                             } else {
 
-                                return redirect(route('user.subscription.pay_per_view', $video->video_tape_id));
+                                return response()->json(['url'=>route('user.subscription.pay_per_view', $video->video_tape_id)]);
 
                             }
 
