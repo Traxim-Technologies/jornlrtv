@@ -365,6 +365,8 @@ class PaypalController extends Controller {
 
             if($payment->amount > 0) {
 
+                $video = $payment->videoTape;
+
                 $total = $payment->amount;
 
                 // Commission Spilit 
