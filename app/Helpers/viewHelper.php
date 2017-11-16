@@ -1019,30 +1019,40 @@ function displayVideoDetails($data,$userId) {
 
     $user = User::find($userId);
 
-    $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+    if (Setting::get('is_payper_view')) {
 
-    if ($ppv_status) {
+        $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
 
-        $url = route('user.single', $data->video_tape_id);
+        if ($ppv_status) {
 
-    } else {
+            $url = route('user.single', $data->video_tape_id);
 
-        if ($userId) {
+        } else {
 
-            if ($user->user_type) {        
+            if ($userId) {
 
-                $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+                if ($user->user_type) {        
+
+                    $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+
+                } else {
+
+                    $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+                }
 
             } else {
 
                 $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+
             }
 
-        } else {
-
-            $url = route('user.subscription.pay_per_view', $data->video_tape_id);
-
         }
+
+    } else {
+
+        $ppv_status = true;
+
+        $url = route('user.single', $data->video_tape_id);
 
     }
 

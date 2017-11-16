@@ -3338,8 +3338,12 @@ class UserApiController extends Controller {
                     ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
 
+        $u_id = '';
 
         if (Auth::check()) {
+
+            $u_id = Auth::user()->id;
+            
             // Check any flagged videos are present
             $flagVideos = getFlagVideos(Auth::user()->id);
 
@@ -3362,7 +3366,7 @@ class UserApiController extends Controller {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value, $request->id);
+            $items[] = displayVideoDetails($value, $u_id);
 
         }
 
@@ -3379,9 +3383,14 @@ class UserApiController extends Controller {
                         ->where('channel_id', $id)
                         ->orderby('watch_count' , 'desc');
 
+        $u_id = "";
+
         if (Auth::check()) {
 
             // Check any flagged videos are present
+
+
+            $u_id = Auth::user()->id;
 
             $flag_videos = flag_videos(Auth::user()->id);
 
@@ -3409,7 +3418,7 @@ class UserApiController extends Controller {
 
         foreach ($videos as $key => $value) {
             
-            $items[] = displayVideoDetails($value, $request->id);
+            $items[] = displayVideoDetails($value, $u_id);
 
         }
 
