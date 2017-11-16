@@ -131,8 +131,8 @@
 
 					<div>
 						<div class="pull-left">
-							<h1 class="st_channel_heading">{{$channel->name}}</h1>
-							<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p>
+							<h1 class="st_channel_heading text-uppercase">{{$channel->name}}</h1>
+							<?php /*<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p> */?>
 						</div>
 						<div class="pull-right upload_a">
 							@if(Auth::check())
