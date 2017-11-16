@@ -22,6 +22,8 @@ use App\Flag;
 
 use Auth;
 
+use DB;
+
 use Validator;
 
 use View;
@@ -885,7 +887,7 @@ class UserController extends Controller {
      */
     public function remove_report_video($id) {
         // Load Spam Video from flag section
-        $model = Flag::where('id', $id)->first();
+        $model = Flag::where('video_tape_id', $id)->where('user_id', Auth::user()->id)->first();
         Log::info("Loaded Values : ".print_r($model, true));
         // If the flag model exists then delete the row
         if ($model) {
@@ -1751,11 +1753,17 @@ class UserController extends Controller {
      *
      * @return view page
      */
-    public function payper_videos() {
+    public function payper_videos(Request $request) {
         // Get Logged in user id
         $id = Auth::user()->id;
-        // Load all the paper view videos based on logged in user id
-        $model = PayPerView::where('user_id', $id)->paginate(16);
+
+        $request->request->add([ 
+            'id'=>\Auth::user()->id,
+            'age' => \Auth::user()->age_limit,
+        ]);  
+
+        $model = $this->UserAPI->pay_per_videos($request)->getData();
+
         // Return the view page
         return view('user.payperview')->with('model' , $model)
                         ->with('page' , 'Profile')

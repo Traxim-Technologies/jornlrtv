@@ -233,7 +233,7 @@ class PaypalController extends Controller {
         // Load Video id
         $video = VideoTape::where('id', $request->id)->first();
 
-        $total = $video->amount;
+        $total = $video->ppv_amount;
 
         $item = new Item();
 
@@ -303,14 +303,14 @@ class PaypalController extends Controller {
 
         if(isset($redirect_url)) {
 
-            $user_payment = PayPerView::where('user_id' , $request->user_id)->where('amount',0)->first();
+            $user_payment = PayPerView::where('user_id' , Auth::user()->id)->where('amount',0)->first();
 
             if(empty($user_payment)) {
                 $user_payment = new PayPerView;
             }
             $user_payment->expiry_date = date('Y-m-d H:i:s');
             $user_payment->payment_id  = $payment->getId();
-            $user_payment->user_id = $request->user_id;
+            $user_payment->user_id = Auth::user()->id;
             $user_payment->video_id = $request->id;
             $user_payment->save();
 
@@ -359,7 +359,7 @@ class PaypalController extends Controller {
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
             // $payment->status = 1;
-            $payment->amount = $payment->adminVideo->amount;
+            $payment->amount = $payment->videoTape->ppv_amount;
 
             $payment->save();
 
@@ -374,9 +374,8 @@ class PaypalController extends Controller {
             // return back()->with('response', $response);
             // ->with('flash_success' , 'Payment Successful');
 
-            // return redirect()->route('user.single' , $payment->video_id)->with('flash_success', $response);
+            return redirect()->route('user.single' , $payment->video_id)->with('flash_success', tr('payment_successful'));
 
-            return redirect()->away(Setting::get('ANGULAR_SITE_URL')."pay-per-view-success/".$payment->adminVideo->id);
        
         } else {
 

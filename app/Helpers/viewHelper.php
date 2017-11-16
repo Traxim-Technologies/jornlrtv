@@ -975,7 +975,7 @@ function watchFullVideo($user_id, $user_type, $video) {
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
                 ->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
@@ -993,10 +993,13 @@ function watchFullVideo($user_id, $user_type, $video) {
             return true;
         }
     } else {
+
+
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->admin_video_id)->orderBy('created_at', 'desc')->first();
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)->orderBy('created_at', 'desc')->first();
+
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
                 if ($paymentView) {
@@ -1021,28 +1024,38 @@ function displayVideoDetails($data,$userId) {
 
     if (Setting::get('is_payper_view')) {
 
-        $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+        if ($userId == $data->channel_created_by) {
 
-        if ($ppv_status) {
+            $ppv_status = true;
 
             $url = route('user.single', $data->video_tape_id);
 
         } else {
 
-            if ($userId) {
+            $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
 
-                if ($user->user_type) {        
+            if ($ppv_status) {
 
-                    $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+                $url = route('user.single', $data->video_tape_id);
+
+            } else {
+
+                if ($userId) {
+
+                    if ($user->user_type) {        
+
+                        $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+
+                    } else {
+
+                        $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+                    }
 
                 } else {
 
                     $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+
                 }
-
-            } else {
-
-                $url = route('user.subscription.pay_per_view', $data->video_tape_id);
 
             }
 
@@ -1076,4 +1089,25 @@ function displayVideoDetails($data,$userId) {
 
     return $model;
 
+}
+
+/**
+ * Function Name : total_video_revenue
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function total_video_revenue() {
+    return PayPerView::sum('amount');
+}
+
+
+/**
+ * Function Name : user_total_amount
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function user_total_amount() {
+    return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
 }

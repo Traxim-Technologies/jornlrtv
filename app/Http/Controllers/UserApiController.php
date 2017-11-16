@@ -56,6 +56,8 @@ use App\UserPayment;
 
 use Exception;
 
+use App\PayPerView;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -969,8 +971,15 @@ class UserApiController extends Controller {
 
         }
 
-        return response()->json($model, 200);
+        $items = [];
 
+        foreach ($model['data'] as $key => $value) {
+            
+            $items[] = displayVideoDetails($value->videoTape, $request->id);
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
     }
 
 
@@ -1019,6 +1028,20 @@ class UserApiController extends Controller {
                 $response_array = array('success' => true);
            
             }
+
+
+            $payperview = PayPerView::where('user_id', $request->id)
+                            ->where('video_id',$request->video_tape_id)
+                            ->where('status',0)->first();
+
+            if ($payperview) {
+
+                $payperview->status = DEFAULT_TRUE;
+
+                $payperview->save();
+
+            }
+
 
         }
         return response()->json($response_array, 200);
@@ -3329,6 +3352,33 @@ class UserApiController extends Controller {
     }
 
 
+    public function pay_per_videos(Request $request) {
+
+                // Load all the paper view videos based on logged in user id
+        $model = PayPerView::where('pay_per_views.user_id', $request->id)
+             ->leftJoin('video_tapes' ,'pay_per_views.video_id' , '=' , 'video_tapes.id')
+            ->where('video_tapes.is_approved' , 1)
+            ->where('video_tapes.status' , 1)
+            ->where('video_tapes.age_limit','<=', checkAge($request))
+            ->orderby('pay_per_views.created_at' , 'desc')
+            ->paginate(16);
+
+        $video = array('data' => $model->items(), 'pagination' => (string) $model->links());
+
+
+      
+        $items = [];
+
+        foreach ($video['data'] as $key => $value) {
+            
+            $items[] = displayVideoDetails($value->videoTapeResponse, $request->id);
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
+    }
+
+
     public function channel_videos($channel_id, $web = NULL , $skip = 0) {
 
         $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
@@ -3343,7 +3393,7 @@ class UserApiController extends Controller {
         if (Auth::check()) {
 
             $u_id = Auth::user()->id;
-            
+
             // Check any flagged videos are present
             $flagVideos = getFlagVideos(Auth::user()->id);
 
@@ -3452,8 +3502,10 @@ class UserApiController extends Controller {
         $items = [];
 
         foreach ($videos as $key => $value) {
+
+            $id = Auth::check() ? Auth::user()->id : '';
             
-            $items[] = displayVideoDetails($value, $request->id);
+            $items[] = displayVideoDetails($value, $id);
 
         }
 
