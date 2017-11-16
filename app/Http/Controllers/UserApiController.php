@@ -3567,6 +3567,49 @@ class UserApiController extends Controller {
 
         if ($video) {
 
+            if (Setting::get('is_payper_view')) {
+
+                if ($request->id != $video->channel_created_by) {
+
+                    $user = User::find($request->id);
+
+                    if ($video->ppv_amount > 0) {
+
+                        $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $video) : false;
+
+
+                        if ($ppv_status) {
+
+                            
+
+                        } else {
+
+                            if ($request->id) {
+
+                                if ($user->user_type) {        
+
+                                    return redirect(route('user.subscription.ppv_invoice', $video->video_tape_id));
+
+                                } else {
+
+                                    return redirect(route('user.subscription.pay_per_view', $video->video_tape_id));
+                                }
+
+                            } else {
+
+                                return redirect(route('user.subscription.pay_per_view', $video->video_tape_id));
+
+                            }
+
+                      
+                        }
+
+                    }
+
+                }
+
+            } 
+
             if($request->id) {
 
                 if ($video->getChannel->user_id != $request->id) {
@@ -3589,10 +3632,6 @@ class UserApiController extends Controller {
                 }
 
             }
-
-        }
-
-        if($video) {
 
             if($comments = Helper::video_ratings($request->video_tape_id,0)) {
                 $comments = $comments->toArray();

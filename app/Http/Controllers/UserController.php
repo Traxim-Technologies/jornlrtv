@@ -234,6 +234,10 @@ class UserController extends Controller {
                 'age_limit'=>Auth::user()->age_limit,
             ]);
 
+        } else {
+             $request->request->add([ 
+                'id'=> '',
+            ]);
         }
 
         $data = $this->UserAPI->video_detail($request)->getData();
