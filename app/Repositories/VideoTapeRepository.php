@@ -73,7 +73,7 @@ class VideoTapeRepository {
                             ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->videoResponse();
 
-        if (Auth::check()) {
+        if ($request->id) {
 
             // Check any flagged videos are present
 
@@ -90,10 +90,20 @@ class VideoTapeRepository {
             $videos = $base_query->paginate(16);
 
         } else {
+
             $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
         }
 
-        return $videos;
+        $items = [];
+
+        foreach ($videos as $key => $value) {
+            
+            $items[] = displayVideoDetails($value, $request->id);
+
+        }
+
+        return $items;
 	
 	}
 
@@ -282,16 +292,21 @@ class VideoTapeRepository {
 	       	$flag_videos = flag_videos(Auth::user()->id);
 
             if($flag_videos) {
+
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
             }
         
         }
 
         if($web) {
+
             $videos = $base_query->paginate(16);
 
         } else {
+
             $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
         }
 
         return $videos;

@@ -2,11 +2,11 @@
     <ul class="y-home menu1">
 
         <li><a href="{{route('user.dashboard')}}">
-            <img src="{{asset('streamtube/images/y1.jpg')}}">{{tr('home')}}</a>
+            <img src="{{asset('images/home.png')}}">{{tr('home')}}</a>
         </li>
 
         <li><a href="{{route('user.trending')}}">
-            <img src="{{asset('streamtube/images/y10.png')}}">{{tr('trending')}}</a>
+            <img src="{{asset('images/trending.png')}}">{{tr('trending')}}</a>
         </li>
         
     </ul>

@@ -20,7 +20,12 @@
           // }
         });
 
-
+  $("#video-side").click(function(){
+    $("#video-dropdown").fadeIn();
+  }); 
+  $("#menu-close").click(function(){
+    $("#video-dropdown").fadeOut();
+  }); 
 
 
 

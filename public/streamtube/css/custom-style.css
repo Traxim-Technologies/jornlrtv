@@ -309,7 +309,7 @@ a:focus {
 	background-color: #fff;
 }
 .active a {
-	color: #167ac6;
+	/*color: #167ac6;*/
 }
 .lohp-video-link {
 	color: #167ac6;
@@ -320,7 +320,12 @@ a:focus {
 	overflow: hidden;
 }
 .video-head a {
-	color: #167ac6;
+	color: #333;
+
+	font-size: 1.2em;
+
+	font-family: arial;
+
 }
 .video-time {
 	background-color: #000;
@@ -625,10 +630,10 @@ a:focus {
 }
 .st_channel_heading {
 	color: #333;
-	font-size:30px;
-	font-weight: normal;
-	text-shadow: none;padding: 0 15px;
-	text-transform: capitalize;
+	font-size:1.5em;
+	font-weight: bold;
+	text-shadow: none;
+	padding:15px;
 	margin:10px 0 5px 0;
 }
 .subscriber-count{
@@ -644,4 +649,16 @@ a:focus {
 
 .subscribe_btn a {
 	color: #fff !important;
+}
+
+
+.payment_class a{
+
+	color: #333;
+
+	text-decoration: none;
+
+	font-weight: bold;
+	font-size: 1.2em;
+font-family: arial;
 }
