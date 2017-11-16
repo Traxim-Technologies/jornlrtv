@@ -32,6 +32,8 @@ use Exception;
 
 use Log;
 
+use App\PayPerView;
+
 use App\Card;
 
 use App\BannerAd;
@@ -1705,4 +1707,23 @@ class UserController extends Controller {
                 ->with('subPage', 'pay_per_view');
 
     }
+
+
+    /**
+     * Function Name: payper_videos()
+     * To load all the paper views
+     *
+     * @return view page
+     */
+    public function payper_videos() {
+        // Get Logged in user id
+        $id = Auth::user()->id;
+        // Load all the paper view videos based on logged in user id
+        $model = PayPerView::where('user_id', $id)->paginate(16);
+        // Return the view page
+        return view('user.payperview')->with('model' , $model)
+                        ->with('page' , 'Profile')
+                        ->with('subPage' , 'Payper Videos');
+    }
+
 }
