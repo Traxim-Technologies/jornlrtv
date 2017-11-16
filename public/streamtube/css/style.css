@@ -943,6 +943,7 @@ history (single page) css
 }
 .history-head{
 	margin: 0;
+	position: relative;
 }
 .history-head h5{
 	margin: 0;
@@ -1590,13 +1591,19 @@ changes
     display: block;
     padding: 5px;
 }
-
+.slick-next::before{
+	margin-left: 2px;
+}
+.slick-prev::before{
+	margin-left: -2px;
+}
 .slick-prev, .slick-next{
 	font-weight: bold;
     padding: 0;
     display: inline-block;
     width: 42px;
-    height: 40px;
+    height: 42px;
+    transition: all .3s linear;
     /*background-color: #eee;*/
     background-color: #fff;
     line-height: 7px;
@@ -1615,13 +1622,14 @@ changes
 }
 
 .slick-prev:hover,.slick-prev:active,.slick-prev:focus{
-	background-color: #bbb;
+	background-color: #eee;
+	/*box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);*/
 }
 
 .slick-next:hover,.slick-next:active,.slick-next:focus{
 	background-color: #bbb;
 }
-    .video-image {
+.video-image {
   position: relative;
 }
 .video-image:before {
@@ -2243,6 +2251,7 @@ changes
 	/*line-height: 49px;*/
 	cursor: pointer;
 	font-weight: normal;
+	color: #999;
 }
 
 .radio1:hover .inner {
@@ -2267,7 +2276,7 @@ changes
 }
 
 .radio1 input:checked + .outer { 
-	border: 3px solid #cc181e; 
+	border: 2px solid #cc181e; 
 }
 
 .radio1 input:focus + .outer .inner {
@@ -2279,12 +2288,12 @@ changes
 }
 
 .radio1 .outer {
-	width: 20px;
-	height: 20px;
+	width: 18px;
+	height:18px;
 	display: block;
 	float: left;
 	margin: 1px 9px 10px 10px;
-	border: 3px solid #cc181e;
+	border: 2px solid #cc181e;
 	border-radius: 50%;
 	background-color: #fff;
 }
@@ -2345,6 +2354,74 @@ changes
 	border-radius: 50px;
 	margin-top: 15px;
 	margin-bottom: 15px;
+}
+.cross-mark2 {
+    width:20%;
+    float:right;
+    text-align: right;
+    margin-top: 5px;
+}
+.cross-title2 {
+    width:80%;
+    float: left;
+    text-transform: capitalize;
+}
+.ellipsis-icon{
+	color: #bbb;
+	font-size: 24px;
+	vertical-align: middle;
+	margin-left: 15px;
+	cursor: pointer;
+}
+.video-sidemenu{
+	position: relative;
+}
+.video-dropdown{
+	position: absolute;
+	right: 15px;
+	top:8px;
+	width: 175px;
+	padding:10px;
+	background-color: white;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	display: none;
+	z-index: 100;
+}
+.video-dropdown li{
+	list-style: none;
+	padding: 7px 5px;
+	text-align: left
+}
+.video-dropdown li:hover{
+	background-color:#eee; 
+}
+.video-dropdown li a{
+	color: #333;
+	text-align: left;
+}
+.video-dropdown li a:hover, .video-dropdown li a:focus, .video-dropdown li a:active{
+	color: #333;
+	text-decoration: none;
+}
+.video-dropdown .close-icon{
+	color: #999;
+	text-align: right;
+	cursor: pointer;
+}
+#pay-perview .modal-title{
+	color: #333;
+	text-align: center;
+}
+#pay-perview {
+	text-align: center;
+	color: #333;
+}
+#pay-perview .close:hover{
+	color: #333;
+}
+.drop-top{
+	margin-top: -25px;
 }
  #preloader {
 
