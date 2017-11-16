@@ -970,11 +970,12 @@ function number_format_short( $n, $precision = 1 ) {
  */
 function watchFullVideo($user_id, $user_type, $video) {
 
-
     if ($user_type == 1) {
+
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
+
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
                 ->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {

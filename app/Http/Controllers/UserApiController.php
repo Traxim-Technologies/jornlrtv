@@ -3252,6 +3252,7 @@ class UserApiController extends Controller {
                                     'video_tapes.ppv_amount','video_tapes.amount',
                                     'default_image','video_tapes.watch_count','video_tapes.ratings',
                                     'video_tapes.duration','video_tapes.channel_id',
+                                    'video_tapes.type_of_user',
                                     DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time') , 'channels.name as channel_name', 'wishlists.created_at')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderby('wishlists.created_at' , 'desc');
