@@ -242,7 +242,7 @@ class UserController extends Controller {
 
         $data = $this->UserAPI->video_detail($request)->getData();
 
-        if ($data->url) {
+        if (isset($data->url)) {
 
             return redirect($data->url);
         }
