@@ -150,10 +150,13 @@
                     <i class="material-icons">live_tv</i>
                     <span class="hidden-xxs">Channels</span>
                 </a></li>
-                <li><a href="#" class="mobile-menu">
+                @if(Auth::check())
+                <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
                     <i class="material-icons">subscriptions</i>
                     <span class="hidden-xxs">My Channels</span>
                 </a></li>
+
+                @endif
 
             </ul>
         </div>

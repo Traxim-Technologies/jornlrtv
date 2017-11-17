@@ -776,6 +776,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('video-success/{id}', 'UserController@video_success')->name('video.success');
 
+    Route::get('mychannels/list', 'UserController@my_channels')->name('channel.mychannel');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){

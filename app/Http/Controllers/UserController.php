@@ -1887,4 +1887,20 @@ class UserController extends Controller {
         }
         return back()->with('flash_error' , tr('admin_published_video_failure'));
     }
+
+    public function my_channels(Request $request) {
+
+        $request->request->add([
+            'id'=>Auth::user()->id,
+        ]);
+
+        $response = $this->UserAPI->user_channel_list($request)->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+    }
+
 }
