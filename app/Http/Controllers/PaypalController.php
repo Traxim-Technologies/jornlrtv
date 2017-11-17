@@ -216,7 +216,7 @@ class PaypalController extends Controller {
 
             // return back()->with('flash_success' , 'Payment Successful');
 
-            return redirect()->route('subscription.success')->with('response', $response);
+            return redirect()->route('user.subscription.success')->with('response', $response);
        
         } else {
 
@@ -416,7 +416,7 @@ class PaypalController extends Controller {
             // return back()->with('response', $response);
             // ->with('flash_success' , 'Payment Successful');
 
-            return redirect()->route('video.success' , $payment->video_id)->with('flash_success', tr('payment_successful'));
+            return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('payment_successful'));
 
        
         } else {
