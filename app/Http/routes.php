@@ -151,7 +151,6 @@ Route::get('/clear-cache', function() {
 
 Route::get('/generate/index' , 'ApplicationController@generate_index');
 
-Route::get('/welcome-email', function() {
 
 Route::get('/welcome_email' , 'ApplicationController@welcome_email');
 
