@@ -774,7 +774,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('subscription-success', 'UserController@payment_success')->name('subscription.success');
 
-    Route::get('video-success', 'UserController@video_success')->name('video.success');
+    Route::get('video-success/{id}', 'UserController@video_success')->name('video.success');
+
+    Route::get('mychannels/list', 'UserController@my_channels')->name('channel.mychannel');
 
 });
 
