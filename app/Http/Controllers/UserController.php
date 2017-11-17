@@ -22,6 +22,8 @@ use App\Flag;
 
 use Auth;
 
+use DB;
+
 use Validator;
 
 use View;
@@ -33,6 +35,8 @@ use Exception;
 use App\ChatMessage;
 
 use Log;
+
+use App\PayPerView;
 
 use App\Card;
 
@@ -226,24 +230,21 @@ class UserController extends Controller {
 
             counter('home');
 
-            $id = Auth::check() ? Auth::user()->id : null;
-
             $watch_lists = $wishlists = array();
 
-            if($id){
+            if($request->has('id')){
 
-                $wishlists  =  VideoRepo::wishlist($request,WEB);
+                $wishlists  =  $this->UserAPI->wishlist_list($request,WEB)->getData();
 
-                $watch_lists = VideoRepo::watch_list($request,WEB);  
+                $watch_lists = $this->UserAPI->watch_list($request,WEB)->getData();  
             }
 
-            //dd($watch_lists);
-            
-            $recent_videos = VideoRepo::recently_added($request, WEB);
 
-            $trendings = VideoRepo::trending($request, WEB);
+            $recent_videos = $this->UserAPI->recently_added($request, WEB)->getData();
+
+            $trendings = $this->UserAPI->trending_list($request, WEB)->getData();
             
-            $suggestions  = VideoRepo::suggestion_videos($request, WEB);
+            $suggestions  = $this->UserAPI->suggestion_videos($request, WEB)->getData();
 
             $channels = getChannels(WEB);
 
@@ -262,8 +263,10 @@ class UserController extends Controller {
 
             if(Setting::get('is_banner_ad')) {
 
-                $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')->where('banner_ads.status', DEFAULT_TRUE)->orderBy('banner_ads.created_at' , 'desc')
-                                ->get();
+                $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')
+                            ->where('banner_ads.status', DEFAULT_TRUE)
+                            ->orderBy('banner_ads.created_at' , 'desc')
+                            ->get();
 
             }
 
@@ -297,9 +300,18 @@ class UserController extends Controller {
                 'age_limit'=>Auth::user()->age_limit,
             ]);
 
+        } else {
+             $request->request->add([ 
+                'id'=> '',
+            ]);
         }
 
-        $data = $this->UserAPI->getSingleVideo($request)->getData();
+        $data = $this->UserAPI->video_detail($request)->getData();
+
+        if (isset($data->url)) {
+
+            return redirect($data->url);
+        }
 
         if ($data->success) {
 
@@ -309,8 +321,6 @@ class UserController extends Controller {
                         ->with('page' , '')
                         ->with('subPage' , '')
                         ->with('video' , $response->video)
-                        ->with('recent_videos' , $response->recent_videos)
-                        ->with('trendings' , $response->trendings)
                         ->with('comments' , $response->comments)
                         ->with('suggestions',$response->suggestions)
                         ->with('wishlist_status' , $response->wishlist_status)
@@ -369,7 +379,7 @@ class UserController extends Controller {
                 'age'=>$user->age_limit,
             ]);
 
-        $wishlist = VideoRepo::wishlist($request,WEB);
+        $wishlist = $this->UserAPI->wishlist_list($request,WEB)->getData();
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
@@ -392,7 +402,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
 
-        $wishlist = VideoRepo::wishlist($request,WEB);
+        $wishlist = $this->UserAPI->wishlist_list($request,WEB)->getData();
 
         return view('user.account.edit-profile')->with('page' , 'profile')
                     ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
@@ -576,7 +586,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
 
-        $histories = VideoRepo::watch_list($request,WEB);
+        $histories = $this->UserAPI->watch_list($request,WEB)->getData();
 
         return view('user.account.history')
                         ->with('page' , 'profile')
@@ -638,7 +648,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
         
-        $videos = VideoRepo::wishlist($request,WEB);
+        $videos = $this->UserAPI->wishlist_list($request,WEB)->getData();
 
         return view('user.account.wishlist')
                     ->with('page' , 'profile')
@@ -730,11 +740,11 @@ class UserController extends Controller {
 
         if ($channel) {
 
-            $videos = VideoRepo::channel_videos($id);
+            $videos = $this->UserAPI->channel_videos($id)->getData();
 
-            $trending_videos = VideoRepo::channel_trending($id, WEB, null, 5);
+            $trending_videos = $this->UserAPI->channel_trending($id, WEB, null, 5)->getData();
 
-            $payment_videos = VideoRepo::payment_videos($id, WEB, null);
+            $payment_videos = $this->UserAPI->payment_videos($id, WEB, null)->getData();
 
             $live_videos = VideoRepo::live_videos_list($id, WEB, null);
 
@@ -861,7 +871,7 @@ class UserController extends Controller {
             ]);
         }
 
-        $trending = VideoRepo::trending($request, WEB);
+        $trending = $this->UserAPI->trending_list($request, WEB)->getData();
 
         return view('user.trending')->with('page', 'trending')
                                     ->with('videos',$trending);
@@ -970,7 +980,7 @@ class UserController extends Controller {
      */
     public function remove_report_video($id) {
         // Load Spam Video from flag section
-        $model = Flag::where('id', $id)->first();
+        $model = Flag::where('video_tape_id', $id)->where('user_id', Auth::user()->id)->first();
         Log::info("Loaded Values : ".print_r($model, true));
         // If the flag model exists then delete the row
         if ($model) {
@@ -2325,12 +2335,6 @@ class UserController extends Controller {
     }
 
 
-    public function invoice() {
-
-        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice');
-
-    }
-
     public function delete_video($id, $user_id) {
 
         // Load Model
@@ -2381,4 +2385,204 @@ class UserController extends Controller {
         return response()->json($response_array);
 
     }
+
+    public function invoice(Request $request) {
+
+        $model = $request->all();
+
+        if (!$request->s_id) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        }
+
+        $subscription = Subscription::find($request->s_id);
+
+        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)->with('model',$model);
+   
+    }
+
+    public function ppv_invoice($id) {
+
+        $video = VideoTape::find($id);
+
+        if ($video) {
+
+            return view('user.ppv_invoice')
+                ->with('page', 'ppv-invoice')
+                ->with('video',$video)
+                ->with('subPage', 'ppv-invoice');
+                
+        } else {
+
+            return back()->with('flash_error', tr('video_not_found'));
+        }
+    }
+
+    public function pay_per_view($id) {
+
+        $video = VideoTape::find($id);
+
+        if(!$video) {
+
+
+            return back()->with('flash_error', tr('video_not_found'));
+
+        }
+        return view('user.pay_per_view')
+                ->with('page', 'pay_per_view')
+                ->with('subPage', 'pay_per_view')->with('video', $video);
+
+    }
+
+
+    /**
+     * Function Name: payper_videos()
+     * To load all the paper views
+     *
+     * @return view page
+     */
+    public function payper_videos(Request $request) {
+        // Get Logged in user id
+        $id = Auth::user()->id;
+
+        $request->request->add([ 
+            'id'=>\Auth::user()->id,
+            'age' => \Auth::user()->age_limit,
+        ]);  
+
+        $model = $this->UserAPI->pay_per_videos($request)->getData();
+
+        // Return the view page
+        return view('user.payperview')->with('model' , $model)
+                        ->with('page' , 'Profile')
+                        ->with('subPage' , 'Payper Videos');
+    }
+
+
+    public function payment_type($id, Request $request) {
+
+        if($request->payment_type == 1) {
+
+            return redirect(route('user.ppv-video-payment', ['id'=>$id]));
+
+        } else {
+
+            return redirect(route('user.card.ppv-stripe-payment', ['video_tape_id'=>$id]));
+        }
+    }
+
+    public function subscription_payment(Request $request) {
+
+        if($request->payment_type == 1) {
+
+            return redirect(route('user.paypal' , $request->s_id));
+
+        } else {
+
+            return redirect(route('user.card.stripe_payment' , ['subscription_id' => $request->s_id]));
+        }
+    }
+
+    public function ppv_stripe_payment(Request $request) {
+
+        $request->request->add([
+            'id'=>Auth::user()->id,
+            ]);
+
+        $payment = $this->UserAPI->stripe_ppv($request)->getData();
+
+
+        if ($payment->success) {
+
+            return back()->with('flash_success', $payment->message);
+
+        } else {
+
+            return back()->with('flash_error', $payment->error_messages);
+        }
+    }
+
+    public function payment_success() {
+
+        return view('user.subscription');
+    }
+
+    public function video_success($id) {
+
+        return view('user.video_subscription')->with('id', $id);
+    }
+
+    /**
+     * Function Name : save_video_payment
+     * Brief : To save the payment details
+     *
+     * @param integer $id Video Id
+     * @param object  $request Object (Post Attributes)
+     *
+     * @return flash message
+     */
+    public function save_video_payment($id, Request $request) {
+
+        // Load Video Model
+        $model = VideoTape::find($id);
+
+        // Get post attribute values and save the values
+        if ($model) {
+
+            $request->request->add([ 
+                'ppv_created_by'=> Auth::user()->id ,
+            ]); 
+
+            if ($data = $request->all()) {
+
+                // Update the post
+                if (VideoTape::where('id', $id)->update($data)) {
+                    // Redirect into particular value
+                    return back()->with('flash_success', tr('payment_added'));       
+                } 
+            }
+        }
+        return back()->with('flash_error', tr('admin_published_video_failure'));
+   
+    }
+
+    /**
+     * Function Name : remove_payper_view()
+     * To remove pay per view
+     * 
+     * @return falsh success
+     */
+    public function remove_payper_view($id) {
+        
+        // Load video model using auto increment id of the table
+        $model = VideoTape::find($id);
+        if ($model) {
+            $model->ppv_amount = 0;
+            $model->type_of_subscription = 0;
+            $model->type_of_user = 0;
+            $model->save();
+            if ($model) {
+                return back()->with('flash_success' , tr('removed_pay_per_view'));
+            }
+        }
+        return back()->with('flash_error' , tr('admin_published_video_failure'));
+    
+    }
+
+    public function my_channels(Request $request) {
+
+        $request->request->add([
+            'id'=>Auth::user()->id,
+        ]);
+
+        $response = $this->UserAPI->user_channel_list($request)->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+    }
+
 }

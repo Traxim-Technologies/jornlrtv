@@ -49,7 +49,7 @@
 
 
 
-			<div class="modal fade cus-mod" id="paypal" role="dialog">
+			<?php /*<div class="modal fade cus-mod" id="paypal" role="dialog">
                 <div class="modal-dialog">
                 
                   <!-- Modal content-->
@@ -105,7 +105,7 @@
                   
                 </div>
             
-            </div>
+            </div> */?>
 
 														@if($subscription->amount > 0)
 
@@ -119,7 +119,9 @@
 
 															@endif */?>
 
-															 <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#paypal">{{tr('choose_plan')}}</button>
+															<?php /*<button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#paypal">{{tr('choose_plan')}}</button> */?>
+
+															<a href="{{route('user.subscription.invoice' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
 
 														@else
 
@@ -144,7 +146,7 @@
 						</div>
 					</div>
 				</div>
-
+			<div class="sidebar-back"></div> 
 		</div>
 
 	</div>

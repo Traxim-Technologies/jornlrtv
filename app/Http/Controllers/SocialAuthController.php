@@ -39,7 +39,7 @@ class SocialAuthController extends Controller
 
 		}
 
-		$social_user = \Socialite::driver($provider)->user();
+		$social_user = \Socialite::driver($provider)->stateless()->user();
 
 		$user = new User;
 
@@ -112,7 +112,7 @@ class SocialAuthController extends Controller
 
 		if($user) {
 
-        	$user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
+        	// $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
 
 	    	auth()->login($user);
 		}

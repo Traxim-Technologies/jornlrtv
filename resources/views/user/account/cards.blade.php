@@ -1,5 +1,12 @@
 @extends('layouts.user')
 
+@section('styles')
+
+
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/card.css')}}" />
+
+@endsection
+
 @section('content')
 
 <div class="y-content">
@@ -18,19 +25,59 @@
 
                     		<h4>{{tr('cards')}}</h4>
 
-		            		<!-- <div class="demo-container">
-						        <div class="card-wrapper"></div>
+		            		<div class="card-wrapper row">
 
-						        <div class="form-container">
-						            <form class="add-card">
-						                <input placeholder="Card number" type="tel" name="number">
-						                <input placeholder="Full name" type="text" name="name">
-						                <input placeholder="MM/YY" type="tel" name="expiry">
-						                <input placeholder="CVC" type="number" name="cvc">
-						                <button class="btn btn-success submit-btn">Submit</button>
-						            </form>
-						        </div>
-						    </div> -->
+		            			<div class="jp-card-container">
+
+			            			<div class="jp-card jp-card-visa jp-card-identified col-lg-4 col-md-offset-1">
+
+				            			<div class="jp-card-front">
+
+					            			<div class="jp-card-logo jp-card-visa">
+
+					            				Visa
+
+					            			</div>
+
+				            				<div class="jp-card-lower">
+
+				            					<div class="jp-card-shiny"></div>
+
+					            				<div class="jp-card-cvc jp-card-display">•••</div>
+
+					            				<div class="jp-card-number jp-card-display jp-card-invalid">XXXX XXXX XXXX XXXX</div>
+
+					            				<div class="jp-card-name jp-card-display">{{Auth::user()->name}}</div>
+
+					            				<div class="jp-card-expiry jp-card-display" data-before="month/year" data-after="validthru"><span id="jp-month">••</span>/<span id="jp-year">••</span></div>
+
+											</div>
+
+										</div>
+
+
+									</div>
+
+									<div class="jp-card jp-card-visa jp-card-identified jp-card-flipped col-lg-4 col-md-offset-1">
+
+										<div class="jp-card-back">
+
+											<div class="jp-card-bar"></div>
+
+											<div class="jp-card-cvc jp-card-display">•••</div>
+
+											<div class="jp-card-shiny"></div>
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+							<br>
+
 
 					        <form action="{{ route('user.card.add_card') }}" method="POST" id="payment-form" class="form-horizontal card">
 
@@ -40,18 +87,19 @@
 					                <input id="id" name="id" type="hidden" required>
 
 					                <div class="input-group-signup col-lg-3">
-					                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number">
+					                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number" 
+					                    onkeyup="card_number_onkey(this.value)" maxlength="16">
 					                </div>
 					                <div class="input-group-signup col-lg-3">
-					                    <input id="email" name="cvc" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc">
+					                    <input id="email" name="cvc" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)">
 					                </div>
 
 					                <div class="input-group-signup col-lg-2">
-					                    <input id="nationality" name="month" type="text" placeholder="{{tr('mm')}}" class="form-control" autocomplete="cc-exp" data-stripe="exp-month">
+					                    <input id="nationality" name="month" type="text" placeholder="{{tr('mm')}}" class="form-control" autocomplete="cc-exp" data-stripe="exp-month" onkeyup="$('#jp-month').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
 					                </div>
 					                <div class="input-group-signup col-lg-2">
 					                    <input id="language" name="year" data-stripe="exp-year"
-					                    autocomplete="cc-exp" type="text" placeholder="{{tr('yy')}}" class="form-control">
+					                    autocomplete="cc-exp" type="text" placeholder="{{tr('yy')}}" class="form-control" onkeyup="$('#jp-year').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
 					                </div>
 
 					                <div class="input-group-signup col-lg-2">
@@ -130,7 +178,8 @@
 					     </div>
 					</div>
 				</div>
-
+				
+			<div class="sidebar-back"></div> 
 		</div>
 
 	</div>
@@ -156,7 +205,15 @@
 <script type="text/javascript" src="{{ asset('assets/js/card.js') }}"></script>
 
 <script>
-    $('#card-payment form').card({ container: $('.card-wrapper')})
+    $('#card-payment form').card({ container: $('.card-wrapper')});
+
+    function card_number_onkey(value) {
+
+
+    	$('.jp-card-number').html(value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 '));
+
+    	
+    }
 </script>
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>

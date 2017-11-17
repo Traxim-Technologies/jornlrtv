@@ -13,7 +13,7 @@
 		<meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Forgot Email</title>
+		<title>Forgot Password</title>
         
         <!--[if gte mso 6]>
         <style>
@@ -110,7 +110,7 @@
 	#tip Set the background color and top border for your email. You may want to choose colors that match your company's branding.
 	*/
 		body,#bodyTable,#templateFooter{
-			/*#editable*/background-color:#eee;
+			/*#editable*/background-color:#d2d6de;
 		}
 	/*
 	#tab Page
@@ -222,7 +222,7 @@
 	#tip Set the background color and borders for your email's header area.
 	*/
 		#templateHeader{
-			/*#editable*/
+			/*#editable*/background-color:#d2d6de;
 			/*#editable*/border-top:0;
 			/*#editable*/border-bottom:0;
 		}
@@ -308,7 +308,7 @@
 	#tip Set the background color and borders for your email's body area.
 	*/
 		#templateBody,.backgroundColor{
-			/*#editable*/background-color:#eee;
+			/*#editable*/background-color:#d2d6de;
 		}
 	/*
 	#tab Body
@@ -507,7 +507,7 @@
 			/*#editable*/line-height:125% !important;
 		}
 
-}	@media only screen and (max-width: 480px){
+}@media only screen and (max-width: 480px){
 	/*
 	#tab Mobile Styles
 	#section heading 4
@@ -616,10 +616,7 @@
                     <td align="center" valign="top" id="bodyCell">
                         <!-- BEGIN TEMPLATE // -->
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                            <tr>
-                                <td align="center" valign="top">
-                                </td>
-                            </tr>
+                     
                             <tr>
                                 <td align="center" valign="top">
                                     <!-- BEGIN HEADER // -->
@@ -637,8 +634,8 @@
                             <td class="mcnImageContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;" valign="top">
                                 
                                     
-                                        <img alt="" src="https://gallery.mailchimp.com/56e7d21923a490b7f86615d02/images/7aa0f540-023e-4524-84df-aeebba359be0.png" style="max-width:100%;
-                                        height:45px;width: auto; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage" width="375.5" align="middle">
+                                        <img alt="" src="https://gallery.mailchimp.com/56e7d21923a490b7f86615d02/images/7aa0f540-023e-4524-84df-aeebba359be0.png" style="width:auto;max-width: 100%;
+                                        height: 45px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage" width="375.5" align="middle">
                                     
                                 
                             </td>
@@ -665,16 +662,13 @@
                                                 	<tr>
                                                     	<td align="center" valign="top">
                                                         	<table border="0" cellpadding="0" cellspacing="0" width="100%" id="bodyBackground">
-                                                                <tr>
-                                                                    <td align="center" valign="top">
-                                                                    </td>
-                                                                </tr>
+                                                              
                                                                 <tr>
                                                                     <td align="center" valign="top">
                                                                         <!-- BEGIN BODY // -->
                                                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" id="">
                                                                             <tr>
-                                                                                <td valign="top" class="bodyContainer" style="padding-top:10px; padding-bottom:10px;border-top: 4px solid red;"><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                                                <td valign="top" class="bodyContainer" style="padding-top:10px; padding-bottom:10px;border-top: 5px solid red; "><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top">
@@ -689,9 +683,9 @@
                 <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
                         
-                        <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;text-align: center;" valign="top">
+                        <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
                         
-                            <h1 style="text-align: center">Welcome to TubeNow!!!</h1>
+                            <h1 style="text-align: center;">Welcome to TubeNow!!!</h1>
 
                         </td>
                     </tr>
@@ -724,7 +718,7 @@
                         
                         <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;text-align: center;" valign="top">
                         
-                            No? Well, we have. A lot. Which is why we're hosting the first annual Frothy Pub Run, a for-charity foot race that begins at FHP with 5 pints of our beers, winds through the city, and ends back at FHP with another 5 pints. Crazy? Maybe a bit.
+                            No? Well, we have. A lot. Which is why we're hosting the first annual Frothy Pub Run, a for-charity foot race that begins at FHP with 5 pints of our beers, winds through the city, and ends back at FHP with another 5 pints. Crazy? Maybe a bit.<br>
                         </td>
                     </tr>
                 </tbody></table>
@@ -739,7 +733,6 @@
             </td>
         </tr>
     </tbody>
-</table>
 </table><table class="mcnBoxedTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
     <!--[if gte mso 9]>
 	<table align="center" border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -756,10 +749,10 @@
                         
                         <td style="padding-top:9px; padding-left:18px; padding-bottom:9px; padding-right:18px;">
                         
-                            <table class="mcnTextContentContainer" style="min-width: 100% !important;background-color: #fe9a9a;" width="100%" cellspacing="0" border="0">
+                            <table class="mcnTextContentContainer" style="min-width: 100% !important;background-color: #feb9b9;" width="100%" cellspacing="0" border="0">
                                 <tbody><tr>
-                                    <td class="mcnTextContent" style="padding: 18px;color: #FFFFFF;font-family: Helvetica;font-size:22px;font-weight: normal;text-align: center;" valign="top">
-                                        Your Password : 123456
+                                    <td class="mcnTextContent" style="padding: 18px;color: #333;font-family: Helvetica;font-size:20px;font-weight: normal;text-align: center;" valign="top">
+                                        Your Password : 123456.
                                     </td>
                                 </tr>
                             </tbody></table>
@@ -781,10 +774,10 @@
     <tbody class="mcnButtonBlockOuter">
         <tr>
             <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:18px;" class="mcnButtonBlockInner" valign="top" align="center">
-                <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius:5px;background-color: #e80707;" cellspacing="0" cellpadding="0" border="0">
+                <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #cf000f;" cellspacing="0" cellpadding="0" border="0">
                     <tbody>
                         <tr>
-                            <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding:10px 25px;" valign="middle" align="center">
+                            <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px 25px;" valign="middle" align="center">
                                 <a class="mcnButton " title="Verify Now" href="http://" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Verify Now</a>
                             </td>
                         </tr>
