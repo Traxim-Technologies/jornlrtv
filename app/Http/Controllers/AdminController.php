@@ -2292,8 +2292,6 @@ class AdminController extends Controller {
 
     }
 
-
-
     public function create_banner() {
 
         $model = new BannerAd;

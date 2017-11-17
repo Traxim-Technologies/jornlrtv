@@ -14,7 +14,6 @@
             <form  action="{{Setting::get('admin_delete_control') ? '' : route('admin.banner-ads.save-banner-ad')}}" method="POST" enctype="multipart/form-data" role="form">
 
                 <div class="box-body">
-
                     <input type="hidden" name="id" value="{{$model->id}}">
 
                     <input type="hidden" name="position" value="{{$model->position}}">
