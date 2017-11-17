@@ -1828,9 +1828,9 @@ class UserController extends Controller {
         return view('user.subscription');
     }
 
-    public function video_success() {
+    public function video_success($id) {
 
-        return view('user.video_subscription');
+        return view('user.video_subscription')->with('id', $id);
     }
 
     /**
