@@ -401,10 +401,9 @@
 											<div class="lohp-large-shelf-container col-md-6">
 
 												@if(count($trending_videos) > 0)
-
 												<div class="slide-box recom-box big-box-slide">
 													<div class="slide-image recom-image hbb">
-														<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"><img src="{{$trending_videos[0]->video_image}}"></a>
+														<a href="{{$trending_videos[0]->url}}"><img src="{{$trending_videos[0]->video_image}}"></a>
 														@if($trending_videos[0]->ppv_amount > 0)
 					                                        @if(!$trending_videos[0]->ppv_status)
 					                                            <div class="video_amount">
@@ -420,7 +419,7 @@
 													</div>
 													<div class="video-details recom-details">
 														<div class="video-head">
-															<a href="{{route('user.single', $trending_videos[0]->video_tape_id)}}"> {{$trending_videos[0]->title}}</a>
+															<a href="{{$trending_videos[0]->url}}"> {{$trending_videos[0]->title}}</a>
 														</div>
 														
 				                                         <span class="video_views">
@@ -442,7 +441,7 @@
 
 													<div class="slide-box recom-box big-box-slide">
 														<div class="slide-image recom-image hbbb">
-															<a href="{{route('user.single', $trending_video->video_tape_id)}}"><img src="{{$trending_video->video_image}}"></a>
+															<a href="{{$trending_video->url}}"><img src="{{$trending_video->video_image}}"></a>
 															@if($trending_video->ppv_amount > 0)
 						                                        @if(!$trending_video->ppv_status)
 						                                            <div class="video_amount">
@@ -460,7 +459,7 @@
 
 														<div class="video-details recom-details">
 															<div class="video-head">
-																<a href="{{route('user.single', $trending_video->video_tape_id)}}">{{$trending_video->title}}</a>
+																<a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
 															</div>
 															
 					                                        <span class="video_views">
@@ -583,12 +582,20 @@
 					          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 					            Action <span class="caret"></span>
 					          </button>
+
 					          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+
+					          	@if(Setting::get('is_payper_view') == 1)
+
 					            <li><a data-toggle="modal" data-target="#pay-perview_{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a></li>
+
+					            @endif
+
 					            @if($video->amount > 0) 
 					            <li><a data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}">{{tr('total_earning')}}</a></li>
-					            @endif
 					            <li class="divider"></li>
+					            @endif
+					            
 					            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
 					            <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
 					            <li class="visible-xs">
@@ -596,7 +603,7 @@
 	                    		</li>
 					          </ul>
 					        </div>                   
-				                                            	<!-- ========modal pay per view======= -->
+				                           <!-- ========modal pay per view======= -->
                         	<div id="pay-perview_{{$video->video_tape_id}}" class="modal fade" role="dialog">
 								<div class="modal-dialog">
 									<div class="modal-content">
@@ -673,7 +680,7 @@
 									</div>
 								</div>
 							</div>	
-			<!-- ========modal ends======= -->
+					<!-- ========modal ends======= -->
                         </div>
                         @endif
                         @endif

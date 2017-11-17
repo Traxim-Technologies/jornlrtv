@@ -1042,5 +1042,8 @@ return array(
 	'subscription_plan'=>'SubScription Plan',
 	'click_here_for_subscription'=>'Click here to see subscription plan',
 	'pay_per_video'=>'Pay Per Video',
-	'click_here_subscription'=>'Click Here',	
+	'click_here_subscription'=>'Click Here',
+	'watch_now'=>'Now you can watch video',
+	'payment_received'=>'Your payment is received Successfully !!!',
+	'thank_you'=>'Thank You!',	
 );
