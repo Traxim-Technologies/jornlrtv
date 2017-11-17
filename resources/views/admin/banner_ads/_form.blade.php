@@ -35,7 +35,7 @@
 
                     <div class="form-group">
                         <label for="url">{{tr('link')}}</label>
-                        <input type="url" class="form-control" name="link" id="link" placeholder="{{tr('enter_link')}}" value="{{$model->url}}" required>
+                        <input type="url" class="form-control" name="link" id="link" placeholder="{{tr('enter_link')}}" value="{{$model->link}}" required>
                     </div>
 
                     <div class="form-group">
