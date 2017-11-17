@@ -2292,8 +2292,6 @@ class AdminController extends Controller {
 
     }
 
-
-
     public function create_banner() {
 
         $model = new BannerAd;
@@ -2326,7 +2324,7 @@ class AdminController extends Controller {
         $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
                 'description' => 'required',
-                'position'=>'required|unique:banner_ads',
+                'position'=>$request->id ? 'required|unique:banner_ads' : 'required',
                 'link'=>'required|url',
                 'file' => $request->id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
         ]);
