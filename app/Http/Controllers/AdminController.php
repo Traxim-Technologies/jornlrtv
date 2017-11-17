@@ -2324,7 +2324,7 @@ class AdminController extends Controller {
         $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
                 'description' => 'required',
-                'position'=>$request->id ? 'required|unique:banner_ads' : 'required',
+                'position'=>$request->id ? 'required' :'required|unique:banner_ads',
                 'link'=>'required|url',
                 'file' => $request->id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
         ]);
