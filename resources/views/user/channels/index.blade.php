@@ -377,6 +377,7 @@
 					          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 					            Action <span class="caret"></span>
 					          </button>
+
 					          <ul class="dropdown-menu dropdown-menu-right" role="menu">
 
 					          	@if(Setting::get('is_payper_view') == 1)
@@ -387,9 +388,9 @@
 
 					            @if($video->amount > 0) 
 					            <li><a data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}">{{tr('total_earning')}}</a></li>
-					            @endif
-
 					            <li class="divider"></li>
+					            @endif
+					            
 					            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
 					            <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
 					            <li class="visible-xs">
