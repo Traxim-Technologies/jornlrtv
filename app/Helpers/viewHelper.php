@@ -970,11 +970,12 @@ function number_format_short( $n, $precision = 1 ) {
  */
 function watchFullVideo($user_id, $user_type, $video) {
 
-
     if ($user_type == 1) {
+
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
+
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
                 ->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
@@ -993,7 +994,6 @@ function watchFullVideo($user_id, $user_type, $video) {
             return true;
         }
     } else {
-
 
         if ($video->ppv_amount == 0) {
             return true;
@@ -1032,30 +1032,42 @@ function displayVideoDetails($data,$userId) {
 
         } else {
 
-            $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+            if ($data->ppv_amount > 0) {
 
-            if ($ppv_status) {
+                $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
 
-                $url = route('user.single', $data->video_tape_id);
+                if ($ppv_status) {
 
-            } else {
+                    $url = route('user.single', $data->video_tape_id);
 
-                if ($userId) {
+                } else {
 
-                    if ($user->user_type) {        
+                
+                    if ($userId) {
 
-                        $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+                        if ($user->user_type) {        
+
+                            $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+
+                        } else {
+
+                            $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+                        }
 
                     } else {
 
                         $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+
                     }
 
-                } else {
-
-                    $url = route('user.subscription.pay_per_view', $data->video_tape_id);
-
+              
                 }
+
+            } else {
+
+                $ppv_status = true;
+
+                $url = route('user.single', $data->video_tape_id);
 
             }
 
@@ -1085,6 +1097,8 @@ function displayVideoDetails($data,$userId) {
         'ratings'=>$data->ratings,
         'amount'=>$data->amount,
         'url'=>$url,
+        'type_of_user'=>$data->type_of_user,
+        'type_of_subscription'=>$data->type_of_subscription,
     ];
 
     return $model;

@@ -216,7 +216,7 @@ class PaypalController extends Controller {
 
             // return back()->with('flash_success' , 'Payment Successful');
 
-            return redirect()->route('user.profile')->with('response', $response);
+            return redirect()->route('user.subscription.success')->with('response', $response);
        
         } else {
 
@@ -363,6 +363,48 @@ class PaypalController extends Controller {
 
             $payment->save();
 
+            if($payment->amount > 0) {
+
+                $video = $payment->videoTape;
+
+                $total = $payment->amount;
+
+                // Commission Spilit 
+
+                $admin_commission = Setting::get('admin_ppv_commission')/100;
+
+                $admin_amount = $total * $admin_commission;
+
+                $moderator_amount = $total - $admin_amount;
+
+                $video->admin_ppv_amount = $admin_amount;
+
+                $video->user_ppv_amount = $moderator_amount;
+
+                $video->save();
+
+                // Commission Spilit Completed
+
+                if($moderator = User::find($video->user_id)) {
+
+                    $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
+
+                    $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
+
+                    $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
+
+                    $moderator->total_amount = $moderator->total_amount + $total;
+
+                    $moderator->save();
+
+                   // $video_amount = $moderator_amount;
+
+                }
+
+                add_to_redeem($video->user_id , $moderator_amount);
+                    
+            }
+
             Session::forget('paypal_payment_id');
             
             $response_array = array('success' => true , 'message' => "Payment Successful" ); 
@@ -374,7 +416,7 @@ class PaypalController extends Controller {
             // return back()->with('response', $response);
             // ->with('flash_success' , 'Payment Successful');
 
-            return redirect()->route('user.single' , $payment->video_id)->with('flash_success', tr('payment_successful'));
+            return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('payment_successful'));
 
        
         } else {

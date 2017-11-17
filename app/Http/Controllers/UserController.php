@@ -234,9 +234,18 @@ class UserController extends Controller {
                 'age_limit'=>Auth::user()->age_limit,
             ]);
 
+        } else {
+             $request->request->add([ 
+                'id'=> '',
+            ]);
         }
 
         $data = $this->UserAPI->video_detail($request)->getData();
+
+        if (isset($data->url)) {
+
+            return redirect($data->url);
+        }
 
         if ($data->success) {
 
@@ -1819,8 +1828,79 @@ class UserController extends Controller {
         return view('user.subscription');
     }
 
-    public function video_success() {
+    public function video_success($id) {
 
-        return view('user.video_subscription');
+        return view('user.video_subscription')->with('id', $id);
     }
+
+    /**
+     * Function Name : save_video_payment
+     * Brief : To save the payment details
+     *
+     * @param integer $id Video Id
+     * @param object  $request Object (Post Attributes)
+     *
+     * @return flash message
+     */
+    public function save_video_payment($id, Request $request) {
+
+        // Load Video Model
+        $model = VideoTape::find($id);
+
+        // Get post attribute values and save the values
+        if ($model) {
+
+            $request->request->add([ 
+                'ppv_created_by'=> Auth::user()->id ,
+            ]); 
+
+            if ($data = $request->all()) {
+
+                // Update the post
+                if (VideoTape::where('id', $id)->update($data)) {
+                    // Redirect into particular value
+                    return back()->with('flash_success', tr('payment_added'));       
+                } 
+            }
+        }
+        return back()->with('flash_error', tr('admin_published_video_failure'));
+    }
+
+    /**
+     * Function Name : remove_payper_view()
+     * To remove pay per view
+     * 
+     * @return falsh success
+     */
+    public function remove_payper_view($id) {
+        
+        // Load video model using auto increment id of the table
+        $model = VideoTape::find($id);
+        if ($model) {
+            $model->ppv_amount = 0;
+            $model->type_of_subscription = 0;
+            $model->type_of_user = 0;
+            $model->save();
+            if ($model) {
+                return back()->with('flash_success' , tr('removed_pay_per_view'));
+            }
+        }
+        return back()->with('flash_error' , tr('admin_published_video_failure'));
+    }
+
+    public function my_channels(Request $request) {
+
+        $request->request->add([
+            'id'=>Auth::user()->id,
+        ]);
+
+        $response = $this->UserAPI->user_channel_list($request)->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+    }
+
 }

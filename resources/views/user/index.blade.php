@@ -147,6 +147,7 @@
                         <div class="box">
 
                             @foreach($wishlists->items as $wishlist)
+
                             <div class="slide-box">
                                 <div class="slide-image">
                                     <a href="{{$wishlist->url}}"><img src="{{$wishlist->video_image}}" /></a>

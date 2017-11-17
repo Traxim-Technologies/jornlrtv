@@ -663,6 +663,12 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('comments', 'UserController@comments')->name('comments');
     
+
+    Route::post('/save_video_payment/{id}', 'UserController@save_video_payment')->name('save.video-payment');
+
+    Route::get('/remove_payper_view/{id}', 'UserController@remove_payper_view')->name('remove_pay_per_view');
+
+
     // Paypal Payment
     Route::get('/paypal/{id}','PaypalController@pay')->name('paypal');
 
@@ -768,7 +774,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('subscription-success', 'UserController@payment_success')->name('subscription.success');
 
-    Route::get('video-success', 'UserController@video_success')->name('video.success');
+    Route::get('video-success/{id}', 'UserController@video_success')->name('video.success');
+
+    Route::get('mychannels/list', 'UserController@my_channels')->name('channel.mychannel');
 
 });
 
