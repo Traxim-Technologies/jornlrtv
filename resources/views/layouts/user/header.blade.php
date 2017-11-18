@@ -138,22 +138,25 @@
         <!-- ========RESPONSIVE SEARCH BAR VISIBLE IN MOBAILE VIEW====== -->
         <div class="col-xs-12 visible-xs">
             <ul class="mobile-header">
-                <li><a href="#" class="mobile-menu">
+                <li><a href="{{route('user.dashboard')}}" class="mobile-menu">
                     <i class="material-icons">home</i> 
                     <span class="hidden-xxs">Home</span>
                 </a></li>
-                <li><a href="#" class="mobile-menu">
+                <li><a href="{{route('user.trending')}}" class="mobile-menu">
                     <i class="material-icons">whatshot</i>
                     <span class="hidden-xxs">Trending</span>
                 </a></li>
-                <li><a href="#" class="mobile-menu">
+                <li><a href="{{route('user.channel.list')}}" class="mobile-menu">
                     <i class="material-icons">live_tv</i>
                     <span class="hidden-xxs">Channels</span>
                 </a></li>
-                <li><a href="#" class="mobile-menu">
+                @if(Auth::check())
+                <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
                     <i class="material-icons">subscriptions</i>
                     <span class="hidden-xxs">My Channels</span>
                 </a></li>
+
+                @endif
 
             </ul>
         </div>
@@ -176,8 +179,8 @@
                             <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
                             
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
-                            <?php /*<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li> */?>
+                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
+                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
                              @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
                                 <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
                             @endif

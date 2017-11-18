@@ -22,11 +22,11 @@
 			<div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-sm-offset-1 col-md-offset-2 col-lg-offset-3">
 				<div class="payment-success text-center">
 					<img src="{{asset('images/payment-success.png')}}">
-					<h1 class="red-clr">Thank You!</h1>
-					<h3>Your payment is received Successfully !!!</h3>
-					<p>Now you can watch video</p>
-					<a href="#" class="top">
-						<button class="btn btn-danger"><i class="fa fa-video-camera"></i> &nbsp;Watch Video</button>
+					<h1 class="red-clr">{{tr('thank_you')}}</h1>
+					<h3>{{tr('payment_received')}}</h3>
+					<p>{{tr('watch_now')}}</p>
+					<a href="{{route('user.single', $id)}}" class="top">
+						<button class="btn btn-danger"><i class="fa fa-video-camera"></i> &nbsp;{{tr('watch_video')}}</button>
 					</a>
 				</div>
 			</div>
