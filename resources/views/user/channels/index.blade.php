@@ -346,7 +346,9 @@
 								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
 							</li>
 
-							@if(Setting::get('broadcast_by_user') == 1 || Auth::check() ? Auth::user()->is_master_user : 0)
+
+							@if(Setting::get('broadcast_by_user') == 1 || (Auth::check() ? Auth::user()->is_master_user == 1 : 0))
+
 
 								<li role="presentation">
 
@@ -644,7 +646,7 @@
 
 				</li>
 
-				@if(Setting::get('broadcast_by_user') == 1 || Auth::check() ? Auth::user()->is_master_user : 0)
+				@if(Setting::get('broadcast_by_user') == 1 || (Auth::check() ? Auth::user()->is_master_user == 1 : 0))
 
 
 				<li role="tabpanel" class="tab-pane" id="live_videos_section">

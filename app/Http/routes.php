@@ -151,23 +151,13 @@ Route::get('/clear-cache', function() {
 
 Route::get('/generate/index' , 'ApplicationController@generate_index');
 
-Route::get('/welcome-email', function() {
 
-    return view('emails.ui.welcome');
+Route::get('/welcome_email' , 'ApplicationController@welcome_email');
 
-});
+Route::get('/forgot_email' , 'ApplicationController@forgot_email');
 
-Route::get('/forgot-password', function() {
+Route::get('/notification_email' , 'ApplicationController@notification_email');
 
-    return view('emails.ui.forgot');
- 
-});
-
-Route::get('/notification', function() {
-
-   return view('emails.ui.notification');
-
-});
 
 Route::get('/message/save' , 'ApplicationController@message_save');
 
