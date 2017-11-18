@@ -179,7 +179,7 @@
                         
 
                         <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
-                        
+
                         <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
                         <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
                         <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>

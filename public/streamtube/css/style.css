@@ -1242,6 +1242,7 @@ profile.html css
 	padding: 15px;
 	margin: 0 auto;
 	max-width: 500px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
 }
 .image-profile{
 	width: 150px;
@@ -1299,6 +1300,7 @@ edit profile.html css
 	padding: 15px;
 	margin: 0 auto;
 	max-width: 400px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
 }
 .editform-content {
 	margin: 0 auto;
@@ -2742,6 +2744,20 @@ changes
 }
 .red-clr{
 	color: red;
+}
+.input-group-signup input{
+	height: 40px;
+	margin-bottom:20px;
+	box-shadow: none;
+}
+.input-group-signup input:focus{
+	box-shadow: none;
+}
+#payment-form{
+	max-width: 100%;
+	width: 450px;
+	margin:0 auto;
+	padding-top: 15px;
 }
  #preloader {
 
