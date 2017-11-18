@@ -29,7 +29,7 @@
 
 		            			<div class="jp-card-container">
 
-			            			<div class="jp-card jp-card-visa jp-card-identified col-lg-4 col-md-offset-1">
+			            			<div class="jp-card jp-card-visa jp-card-identified col-lg-4 col-lg-offset-2 col-md-offset-1  col-md-5 col-sm-6 col-xs-12 top">
 
 				            			<div class="jp-card-front">
 
@@ -58,7 +58,7 @@
 
 									</div>
 
-									<div class="jp-card jp-card-visa jp-card-identified jp-card-flipped col-lg-4 col-md-offset-1">
+									<div class="jp-card jp-card-visa jp-card-identified jp-card-flipped col-lg-4 col-md-5 col-sm-6 col-xs-12 top">
 
 										<div class="jp-card-back">
 
@@ -86,25 +86,25 @@
 
 					                <input id="id" name="id" type="hidden" required>
 
-					                <div class="input-group-signup col-lg-3">
+					                <div class="input-group-signup">
 					                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number" 
 					                    onkeyup="card_number_onkey(this.value)" maxlength="16">
 					                </div>
-					                <div class="input-group-signup col-lg-3">
+					                <div class="input-group-signup ">
 					                    <input id="email" name="cvc" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)">
 					                </div>
 
-					                <div class="input-group-signup col-lg-2">
+					                <div class="input-group-signup">
 					                    <input id="nationality" name="month" type="text" placeholder="{{tr('mm')}}" class="form-control" autocomplete="cc-exp" data-stripe="exp-month" onkeyup="$('#jp-month').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
 					                </div>
-					                <div class="input-group-signup col-lg-2">
+					                <div class="input-group-signup ">
 					                    <input id="language" name="year" data-stripe="exp-year"
 					                    autocomplete="cc-exp" type="text" placeholder="{{tr('yy')}}" class="form-control" onkeyup="$('#jp-year').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
 					                </div>
 
-					                <div class="input-group-signup col-lg-2">
+					                <div class="input-group-signup">
 
-					                  <button class="btn btn-sm btn-success" type="submit">{{tr('submit')}}</button>
+					                  <button class="btn btn-success" type="submit">{{tr('submit')}}</button>
 
 					                </div>
 
