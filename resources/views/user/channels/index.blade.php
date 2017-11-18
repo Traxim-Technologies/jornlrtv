@@ -358,7 +358,15 @@
 
 						          	@if(Setting::get('is_payper_view') == 1)
 
+
 						            <li><a data-toggle="modal" data-target="#pay-perview_{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a></li>
+										<h4 class="black-clr text-left">{{tr('amount')}}</h4>
+										<div>
+					                       <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
+					                  	<!-- /input-group -->
+					                
+							            </div>
+
 
 						            @endif
 
