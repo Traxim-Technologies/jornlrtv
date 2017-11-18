@@ -49,7 +49,7 @@ class SocialAuthController extends Controller
 
 		}
 
-		if(count($social_user) > 0)
+		if(count($social_user) > 0) {
 
 			$user = new User;
 
