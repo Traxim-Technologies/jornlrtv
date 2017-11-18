@@ -3127,6 +3127,67 @@ class UserApiController extends Controller {
         return response()->json($response_array);
     }
 
+    public function user_channel_list(Request $request) {
+
+        $age = 0;
+
+        $channel_id = [];
+
+        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                // ->where('channels.status', DEFAULT_TRUE)
+                ->groupBy('channels.id')
+                ->where('channels.user_id',$request->id);
+
+        /*if($request->id) {
+
+            $user = User::find($request->id);
+
+            $age = $user->age_limit;
+
+            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+            if ($request->id) {
+
+                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+                $query->whereIn('channels.id', $channel_id);
+            }
+
+
+            $query->where('video_tapes.age_limit','<=', $age);
+
+        }*/
+
+        $channels = $query->paginate(16);
+
+        $items = $channels->items();
+
+        $lists = [];
+
+        foreach ($channels as $key => $value) {
+            $lists[] = ['channel_id'=>$value->id, 
+                    'user_id'=>$value->user_id,
+                    'picture'=> $value->picture, 
+                    'title'=>$value->name,
+                    'description'=>$value->description, 
+                    'created_at'=>$value->created_at->diffForHumans(),
+                    'no_of_videos'=>videos_count($value->id),
+                    'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
+                    'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+            ];
+
+        }
+
+        $pagination = (string) $channels->links();
+
+        $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+        return response()->json($response_array);
+    }
+
     /**
      * Like Videos
      *
@@ -4285,6 +4346,7 @@ class UserApiController extends Controller {
                                     'default_image','video_tapes.watch_count','video_tapes.ratings',
                                     'video_tapes.duration','video_tapes.channel_id',
                                     'video_tapes.type_of_user',
+                                    'channels.user_id as channel_created_by',
                                     DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time') , 'channels.name as channel_name', 'wishlists.created_at')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderby('wishlists.created_at' , 'desc');
@@ -4342,6 +4404,7 @@ class UserApiController extends Controller {
                                 'default_image','video_tapes.watch_count','video_tapes.ratings',
                                 'video_tapes.ppv_amount', 'video_tapes.amount',
                                 'video_tapes.type_of_user',
+                                'channels.user_id as channel_created_by',
                                 DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 'video_tapes.channel_id','channels.name as channel_name', 'user_histories.created_at')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderby('user_histories.created_at' , 'desc');
@@ -4597,6 +4660,47 @@ class UserApiController extends Controller {
 
         if ($video) {
 
+            if (Setting::get('is_payper_view')) {
+
+                if ($request->id != $video->channel_created_by) {
+
+                    $user = User::find($request->id);
+
+                    if ($video->ppv_amount > 0) {
+
+                        $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $video) : false;
+
+                        if ($ppv_status) {
+                            
+
+                        } else {
+
+                            if ($request->id) {
+
+                                if ($user->user_type) {        
+                                    
+                                    return response()->json(['url'=>route('user.subscription.ppv_invoice', $video->video_tape_id)]);
+
+                                } else {
+
+                                    return response()->json(['url'=>route('user.subscription.pay_per_view', $video->video_tape_id)]);
+                                }
+
+                            } else {
+
+                                return response()->json(['url'=>route('user.subscription.pay_per_view', $video->video_tape_id)]);
+
+                            }
+
+                      
+                        }
+
+                    }
+
+                }
+
+            } 
+
             if($request->id) {
 
                 if ($video->getChannel->user_id != $request->id) {
@@ -4619,10 +4723,6 @@ class UserApiController extends Controller {
                 }
 
             }
-
-        }
-
-        if($video) {
 
             if($comments = Helper::video_ratings($request->video_tape_id,0)) {
                 $comments = $comments->toArray();

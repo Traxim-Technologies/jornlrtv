@@ -254,7 +254,7 @@
 									        		<label>{{tr('amount')}}</label>
 									        	</div>
 								                <div class="col-lg-9">
-								                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+								                       <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
 								                  <!-- /input-group -->
 								                </div>
 								            </div>

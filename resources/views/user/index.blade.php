@@ -71,7 +71,7 @@
                                     <a href="{{route('user.single' , $banner_video->video_tape_id)}}"><img src="{{$banner_video->image}}" style="height:250px;width: 100%;">
                                     <?php /*<div class="carousel-caption">
                                         <h3>{{$banner_video->video_title}}</h3>
-                                        <p>{{substr($banner_video->content , 0 , 200)}}...</p>
+                                        <p class="hidden-xs">{{substr($banner_video->content , 0 , 200)}}...</p>
                                     </div> */?>
                                     </a>
                                 </div>
@@ -109,7 +109,7 @@
                                     <?php /*<img src="{{$banner_ad->image}}" style="height:250px;width: 100%;"> */?>
                                     <div class="carousel-caption">
                                         <h3>{{$banner_ad->video_title}}</h3>
-                                        <p><?= substr($banner_ad->content , 0 , 200)?>...</p>
+                                        <p class="hidden-xs"><?= substr($banner_ad->content , 0 , 200) ?>...</p>
                                     </div>
                                     </a>
                                 </div>

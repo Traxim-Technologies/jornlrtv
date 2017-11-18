@@ -300,9 +300,18 @@ class UserController extends Controller {
                 'age_limit'=>Auth::user()->age_limit,
             ]);
 
+        } else {
+             $request->request->add([ 
+                'id'=> '',
+            ]);
         }
 
         $data = $this->UserAPI->video_detail($request)->getData();
+
+        if (isset($data->url)) {
+
+            return redirect($data->url);
+        }
 
         if ($data->success) {
 
@@ -2499,9 +2508,9 @@ class UserController extends Controller {
         return view('user.subscription');
     }
 
-    public function video_success() {
+    public function video_success($id) {
 
-        return view('user.video_subscription');
+        return view('user.video_subscription')->with('id', $id);
     }
 
     /**
@@ -2560,4 +2569,20 @@ class UserController extends Controller {
         return back()->with('flash_error' , tr('admin_published_video_failure'));
     
     }
+
+    public function my_channels(Request $request) {
+
+        $request->request->add([
+            'id'=>Auth::user()->id,
+        ]);
+
+        $response = $this->UserAPI->user_channel_list($request)->getData();
+
+        // dd($response);
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+    }
+
 }

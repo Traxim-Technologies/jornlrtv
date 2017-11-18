@@ -179,6 +179,12 @@
 	margin-top: 15px;
 	margin-bottom: 20px;
 }
+.banner-slider{
+	padding: 0 15px;
+}
+.carousel-caption p{
+	display:none !important;
+}
 }
 
 /*small devices*/
@@ -359,6 +365,9 @@
 	margin-top: 15px;
 	margin-bottom: 20px;
 }
+.banner-slider{
+	padding: 0 50px;
+}
 }
 
 /* Tablets */
@@ -504,6 +513,9 @@
 .payment-section{
 	margin-top: 75px;
 	margin-bottom: 20px;
+}
+.banner-slider{
+	padding: 0 50px;
 }
 }
 
@@ -652,6 +664,9 @@
 	margin-top: 75px;
 	margin-bottom: 20px;
 }
+.banner-slider{
+	padding: 0 50px;
+}
 }
 
 /* Desktops */
@@ -799,6 +814,9 @@
 	margin-top: 75px;
 	margin-bottom: 20px;
 }
+.banner-slider{
+	padding: 0 50px;
+}
 }
 /*index.html responsive*/
 @media screen and (max-width: 771px){
@@ -852,9 +870,6 @@
 	.you-image a{
 		float: none  !important;
 		margin-bottom: 5px;
-	}
-	.page-inner {
-	    margin-top: 123px !important;
 	}
 	.recom-image{
 			height: 120px!important;

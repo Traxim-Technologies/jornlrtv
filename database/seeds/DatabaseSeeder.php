@@ -35,5 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ChannelSettingsSeeder::class);
         $this->call(DeleteVideoHourSettings::class);
         $this->call(PayperviewCommissionSplit::class);
+        $this->call(PayperViewInSetings::class);
     }
 }
