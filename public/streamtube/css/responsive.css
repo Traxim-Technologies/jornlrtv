@@ -179,6 +179,9 @@
 	margin-top: 15px;
 	margin-bottom: 20px;
 }
+.banner-slider{
+	padding: 0 15px;
+}
 }
 
 /*small devices*/
@@ -359,6 +362,9 @@
 	margin-top: 15px;
 	margin-bottom: 20px;
 }
+.banner-slider{
+	padding: 0 50px;
+}
 }
 
 /* Tablets */
@@ -504,6 +510,9 @@
 .payment-section{
 	margin-top: 75px;
 	margin-bottom: 20px;
+}
+.banner-slider{
+	padding: 0 50px;
 }
 }
 
@@ -652,6 +661,9 @@
 	margin-top: 75px;
 	margin-bottom: 20px;
 }
+.banner-slider{
+	padding: 0 50px;
+}
 }
 
 /* Desktops */
@@ -798,6 +810,9 @@
 .payment-section{
 	margin-top: 75px;
 	margin-bottom: 20px;
+}
+.banner-slider{
+	padding: 0 50px;
 }
 }
 /*index.html responsive*/
