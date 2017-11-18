@@ -106,45 +106,26 @@ class SocialAuthController extends Controller
 
 			if(in_array($provider, array('facebook','twitter'))) {
 
-<<<<<<< HEAD
-        // $user->token = Helper::generate_token();
-        $user->token_expiry = Helper::generate_token_expiry();
-=======
 				if($social_user->avatar_original) {
 					$user->picture = $social_user->avatar_original;
 				}
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
 
 			}
-
-			$user->password = Hash::make($social_user->id);
-
-<<<<<<< HEAD
-		if($user) {
-
-        	// $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
-
-	    	auth()->login($user);
-		}
-
-		$user->save();
-
-=======
-	        $user->token = Helper::generate_token();
 	        
-	        $user->token_expiry = Helper::generate_token_expiry();
-
 	        $user->is_verified = 1;
 
+	        $user->token = Helper::generate_token_expiry();
+
+			$user->password = Hash::make($social_user->id);
+			
 			$user->save();
 
-
 			if($user) {
+
 		    	auth()->login($user);
 			}
 
 	    	return redirect()->route('user.dashboard');
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
 
 	    } else {
 	    	return back()->with('flash_error' , tr('something_error'));
