@@ -66,6 +66,7 @@ body{
 }
 .y-home li{
 	list-style-type: none;
+	transition: all .25s linear;
 }
 .y-home li:hover{
 	background-color: #444;
@@ -1627,7 +1628,7 @@ changes
 }
 
 .slick-next:hover,.slick-next:active,.slick-next:focus{
-	background-color: #bbb;
+	background-color: #eee;
 }
 .video-image {
   position: relative;
@@ -2653,9 +2654,6 @@ changes
 }
 .payment-card:hover{
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
-}
-.banner-slider{
-	padding: 0 50px;
 }
 .payment-card img{
 	height: 100px;
