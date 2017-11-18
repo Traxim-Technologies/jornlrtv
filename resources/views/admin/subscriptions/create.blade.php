@@ -69,7 +69,7 @@
                             <label for="amount" class="">{{tr('amount')}}</label>
 
                             <!-- <div class="col-sm-10"> -->
-                                <input type="text" required name="amount" class="form-control" id="amount" placeholder="amount" pattern="[0-9]{1,}" >
+                                <input type="number" required name="amount" class="form-control" id="amount" placeholder="amount" step="any">
                             <!-- </div> -->
                         </div>
 
