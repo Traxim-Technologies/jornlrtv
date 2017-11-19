@@ -147,7 +147,7 @@
 									</a>
 
 
-									@if(Setting::get('broadcast_by_user') == 1 || Auth::check() ? Auth::user()->is_master_user == 1 : 0)
+									@if(Setting::get('broadcast_by_user') == 1 || (Auth::check() ? Auth::user()->is_master_user == 1 : 0))
 
 										<div id="start_broadcast" class="modal fade" role="dialog">
 										    <div class="modal-dialog">
