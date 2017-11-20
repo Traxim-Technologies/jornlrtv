@@ -62,7 +62,7 @@
                                                 </span>
                                             </div> 
                                             <div class="cross-mark1">
-                                                <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.history' , array('history_id' => $history->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.history' , array('video_tape_id' => $history->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                             </div><!--end of cross-mark-->                       
                                         </div> <!--end of history-head--> 
 

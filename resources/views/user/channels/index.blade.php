@@ -369,17 +369,7 @@
 					          	<ul class="dropdown-menu dropdown-menu-right" role="menu">
 
 						          	@if(Setting::get('is_payper_view') == 1)
-
-
 						            <li><a data-toggle="modal" data-target="#pay-perview_{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a></li>
-										<h4 class="black-clr text-left">{{tr('amount')}}</h4>
-										<div>
-					                       <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
-					                  	<!-- /input-group -->
-					                
-							            </div>
-
-
 						            @endif
 
 						            @if($video->amount > 0) 
@@ -391,7 +381,8 @@
 						            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
 						            <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
 						            <li class="visible-xs">
-		                    			<a href="#">Disable Ad</a>
+		                    			<a onclick="change_adstatus({{$video->ad_status}}, {{$video->video_tape_id}})" style="cursor: pointer;" id="ad_status_{{$video->video_tape_id}}">@if($video->ad_status) {{tr('disable_ad')}} @else {{tr('enable_ad')}} @endif</a>
+		 
 		                    		</li>
 					          	</ul>
 
@@ -683,21 +674,29 @@
 @section('scripts')
 
 <script>
-    
+
     function change_adstatus(val, id) {
 
         var url = "{{route('user.ad_request')}}";
-
 
         $.ajax({
             url : url,
             method : "POST",
             data : {id : id , status : val},
             success : function(result) {
-                console.log(result);
+  
+                if (result.success == true) {
 
-                if (result == true) {
-                    // window.location.reload();
+                	if (result.status == 1) {
+
+                		$("#ad_status_"+id).html("{{tr('disable_ad')}}");
+
+                	} else {
+
+                		$("#ad_status_"+id).html("{{tr('enable_ad')}}");
+                	}
+                    
+                    alert("Ad Status Changed Successfully");
                 }
             }
 
