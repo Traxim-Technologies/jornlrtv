@@ -432,7 +432,16 @@ class UserController extends Controller {
         }
     }
 
-    public function single_video(eRquest $request) {
+    /**
+     * Function Name : single_video()
+     * 
+     * To view single video based on video id
+     *
+     * @param integer $request - Video id
+     *
+     * @return based on video displayed all the details'
+     */
+    public function single_video(Request $request) {
 
         $request->request->add([ 
                 'video_tape_id' => $request->id,
@@ -496,13 +505,17 @@ class UserController extends Controller {
         } 
     }
 
+
     /**
+     * Function Name : profile()
+     *
      * Show the profile list.
+     *
+     * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
      */
-    public function profile(Request $request)
-    {
+    public function profile(Request $request) {
         $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
@@ -518,14 +531,17 @@ class UserController extends Controller {
     }
 
     /**
-     * Show the profile list.
+     * Function Name : update_profile() 
+     *
+     * Edit profile user details
+     * 
+     * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
      */
-    public function update_profile(Request $request)
-    {
+    public function update_profile(Request $request){
 
-         $request->request->add([ 
+        $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token,
@@ -535,16 +551,22 @@ class UserController extends Controller {
         $wishlist = $this->UserAPI->wishlist_list($request)->getData();
 
         return view('user.account.edit-profile')->with('page' , 'profile')
-                    ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
+                    ->with('subPage' , 'user-update-profile')
+                    ->with('wishlist', $wishlist);
+    
     }
 
     /**
+     * Function Name : update_profile() 
+     *
      * Save any changes to the users profile.
+     * 
+     * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
      */
-    public function profile_save(Request $request)
-    {
+    public function profile_save(Request $request) {
+
         $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
@@ -560,17 +582,22 @@ class UserController extends Controller {
         } else {
 
             $message = $response->error." ".$response->error_messages;
+
             return back()->with('flash_error' , $message);
         }
+    
     }
 
     /**
+     * Function Name : profile_save_password() 
+     * 
      * Save changed password.
+     * 
+     * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
      */
-    public function profile_save_password(Request $request)
-    {
+    public function profile_save_password(Request $request) {
         $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
@@ -580,15 +607,28 @@ class UserController extends Controller {
         $response = $this->UserAPI->change_password($request)->getData();
 
         if($response->success) {
+
             return back()->with('flash_success' , tr('password_success'));
+
         } else {
+
             $message = $response->error." ".$response->error_messages;
+
             return back()->with('flash_error' , $message);
         }
-
-        return back()->with('response', $response);
+    
     }
 
+
+    /**
+     * Function Name : profile_change_password() 
+     * 
+     * Display only password change form
+     * 
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function profile_change_password(Request $request) {
 
         return view('user.account.change-password')->with('page' , 'profile')
@@ -596,6 +636,15 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * Function Name : add_history()
+     *
+     * To Add in history based on user, once he complete the video , the video will save
+     *
+     * @param Integer $request - Video Id
+     *
+     * @return response of Boolean with message
+     */
     public function add_history(Request $request) {
 
         if(Auth::check()) {
@@ -610,24 +659,36 @@ class UserController extends Controller {
         $response = $this->UserAPI->add_history($request)->getData();
 
         if($response->success) {
+
             $response->message = Helper::get_message(118);
+
         } else {
+
             $response->success = false;
-            $response->message = "Something Went Wrong";
+
+            $response->message = tr('something_error');
+
         }
 
         $response->status = $request->status;
 
-
         return response()->json($response);
     
     }
-
+ 
+    /**
+     * Function Name : watch_count()
+     *
+     * To save watch count when ever user see the video
+     *
+     * @param Integer $request - Video Tape Id
+     *
+     * @return response of boolean
+     */
     public function watch_count(Request $request) {
 
         if($video = VideoTape::where('id',$request->video_tape_id)
                 ->where('status',1)
-               // ->where('publish_status' , 1)
                 ->where('video_tapes.is_approved' , 1)
                 ->first()) {
 
@@ -688,7 +749,15 @@ class UserController extends Controller {
 
     }
 
-
+    /**
+     * Function Name : delete_history()
+     *
+     * To delete a history based on logged in user id
+     *
+     * @param integer $request - Video Tape Id
+     *
+     * @return response of success/falure message
+     */
     public function delete_history(Request $request) {
 
         $request->request->add([ 
@@ -700,15 +769,27 @@ class UserController extends Controller {
         $response = $this->UserAPI->delete_history($request)->getData();
 
         if($response->success) {
+
             return back()->with('flash_success' , Helper::get_message(121));
 
         } else {
+
             return back()->with('flash_error' , tr('admin_not_error'));
+
         }
+    
     }
 
 
-
+    /**
+     * Function Name : add_wishlist()
+     *
+     * Add a wishlist based on logged in user id
+     *
+     * @param integer $request - Video Tape Id
+     *
+     * @return response of success/falure message
+     */
     public function add_wishlist(Request $request) {
 
         $request->request->add([ 
@@ -718,17 +799,17 @@ class UserController extends Controller {
             'video_tape_id' => $request->video_tape_id
         ]);
 
-        if($request->status == 1) {
-            $response = $this->UserAPI->add_wishlist($request)->getData();
-        } else {
-            $response = $this->UserAPI->delete_wishlist($request)->getData();
-        }
+        $response = $this->UserAPI->add_wishlist($request)->getData();
 
         if($response->success) {
+
             $response->message = Helper::get_message(118);
+
         } else {
+
             $response->success = false;
-            $response->message = "Something Went Wrong";
+
+            $response->message = tr('something_error');
         }
 
         $response->status = $request->status;
@@ -736,8 +817,16 @@ class UserController extends Controller {
         return response()->json($response);
     }
 
+    /**
+     * Function Name : delete_wishlist()
+     *
+     * To delete wishlist based on user id
+     * 
+     * @param intger $request - Video tape id
+     *
+     * @return response of success/failure message
+     */
     public function delete_wishlist(Request $request) {
-
 
         $request->request->add([ 
             'id' => \Auth::user()->id,
@@ -748,13 +837,24 @@ class UserController extends Controller {
         $response = $this->UserAPI->delete_wishlist($request)->getData();
 
         if($response->success) {
+
             return back()->with('flash_success',tr('wishlist_removed'));
+
         } else {
-            return back()->with('flash_error', "Something Went Wrong");
+
+            return back()->with('flash_error', tr('something_error'));
         }
     } 
 
-
+    /**
+     * Function Name : add_comment()
+     * 
+     * To Add comment based on single video
+     *
+     * @param integer $video_tape_id - Video Tape ID
+     *
+     * @return response of success/failure message
+     */
     public function add_comment(Request $request) {
 
         $request->request->add([ 
@@ -767,29 +867,28 @@ class UserController extends Controller {
         $response = $this->UserAPI->user_rating($request)->getData();
 
         if($response->success) {
+
             $response->message = Helper::get_message(118);
+
         } else {
+
             $response->success = false;
-            $response->message = "Something Went Wrong";
+
+            $response->message = tr('something_error');
         }
 
         return response()->json($response);
     
     }
 
-    public function comments(Request $request) {
 
-        $videos = Helper::get_user_comments(\Auth::user()->id,WEB);
-
-        return view('user.comments')
-                    ->with('page' , 'profile')
-                    ->with('subPage' , 'user-comments')
-                    ->with('videos' , $videos);
-    }
-
-
-
-
+    /**
+     * Function Name : channel_create()
+     *
+     * To create a channel based on logged in user id  (Form Rendering)
+     *
+     * @return respnse with flash message
+     */
     public function channel_create() {
         
         $model = new Channel;
@@ -816,6 +915,15 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * Function Name : save_channel()
+     *
+     * To create a channel based on logged in user id
+     *
+     * @param Object $request - Channel Details
+     *
+     * @return respnse with flash message
+     */
     public function save_channel(Request $request) {
 
         $response = CommonRepo::channel_save($request)->getData();
@@ -831,6 +939,16 @@ class UserController extends Controller {
 
     }
 
+
+    /**
+     * Function Name : channel_edit()
+     *
+     * To edit a channel based on logged in user id (Form Rendering)
+     *
+     * @param integer $id - Channel Id
+     *
+     * @return respnse with Html Page
+     */
     public function channel_edit($id) {
 
         $model = Channel::find($id);
@@ -840,6 +958,15 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * Function Name : channel_delete()
+     *
+     * To delete a channel based on logged in user id & channel id (Form Rendering)
+     *
+     * @param integer $request - Channel Id
+     *
+     * @return response with flash message
+     */
     public function channel_delete(Request $request) {
 
         $channel = Channel::where('id' , $request->id)->first();
@@ -858,17 +985,15 @@ class UserController extends Controller {
 
     }
 
-    public function contact(Request $request) {
-
-        $contact = Page::where('type', 'contact')->first();
-
-        return view('contact')->with('contact' , $contact)
-                        ->with('page' , 'contact')
-                        ->with('subPage' , '');
-
-    }
-
-
+    /**
+     * Function Name : delete_account()
+     *
+     * To delete account , based on the user (Form Rendering)
+     *
+     * @param object $request - User Details
+     *
+     * @return response of success/failure message
+     */
     public function delete_account(Request $request) {
 
         if(\Auth::user()->login_by == 'manual') {
@@ -878,29 +1003,21 @@ class UserController extends Controller {
                     ->with('subPage' , 'delete-account');
         } else {
 
-            $request->request->add([ 
-                'id' => \Auth::user()->id,
-                'token' => \Auth::user()->token,
-                'device_token' => \Auth::user()->device_token
-            ]);
-
-            $response = $this->UserAPI->delete_account($request)->getData();
-
-            if($response->success) {
-                return back()->with('flash_success', tr('user_account_delete_success'));
-            } else {
-                if($response->error == 101)
-                    return back()->with('flash_error', $response->error_messages);
-                else
-                    return back()->with('flash_error', $response->error);
-            }
-
-            return back()->with('flash_error', Helper::get_error_message(146));
+            return $this->delete_account_process($request);
 
         }
         
     }
 
+    /**
+     * Function Name : delete_account()
+     *
+     * To delete account , based on the user
+     *
+     * @param object $request - User Details
+     *
+     * @return response of success/failure message
+     */
     public function delete_account_process(Request $request) {
 
         $request->request->add([ 
@@ -923,6 +1040,7 @@ class UserController extends Controller {
         return back()->with('flash_error', Helper::get_error_message(146));
 
     }
+
 
     /**
      * Function Name : save_report_videos

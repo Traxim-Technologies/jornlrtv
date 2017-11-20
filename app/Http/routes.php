@@ -219,8 +219,6 @@ Route::get('/help', 'UserApiController@help')->name('user.help');
 
 Route::get('/terms_condition', 'UserApiController@terms')->name('user.terms');
 
-Route::get('/contact', 'UserController@contact')->name('user.contact');
-
 Route::get('/privacy_policy', 'ApplicationController@privacy')->name('user.privacy_policy');
 
 Route::get('/terms', 'ApplicationController@terms')->name('user.terms-condition');
@@ -543,15 +541,9 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 });
 
 
-Route::get('/single', 'UserController@single_video');
-
 Route::get('/user/searchall' , 'ApplicationController@search_video')->name('search');
 
 Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
-
-
-
-Route::get('video/{id}', 'UserController@single_video')->name('user.single');
 
 
 // Social Login
@@ -581,6 +573,26 @@ Route::group(['as' => 'user.'], function(){
     Route::get('wishlist', 'UserController@wishlist')->name('wishlist');
 
     Route::get('channel/{id}', 'UserController@channel_videos')->name('channel');
+
+    Route::get('video/{id}', 'UserController@single_video')->name('single');
+
+    // Wishlist
+
+    Route::post('addWishlist', 'UserController@add_wishlist')->name('add.wishlist');
+
+    Route::get('deleteWishlist', 'UserController@delete_wishlist')->name('delete.wishlist');
+
+
+    // Comments
+
+    Route::post('addComment', 'UserController@add_comment')->name('add.comment');
+
+
+    Route::get('deleteHistory', 'UserController@delete_history')->name('delete.history');
+
+    Route::post('addHistory', 'UserController@add_history')->name('add.history');
+
+
 
 
     Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
@@ -636,11 +648,17 @@ Route::group(['as' => 'user.'], function(){
     Route::post('/delete/account', 'UserController@delete_account_process')->name('delete.account.process');
 
 
-    
+    // Channels
 
-    Route::get('deleteHistory', 'UserController@delete_history')->name('delete.history');
+    Route::get('channel_create', 'UserController@channel_create')->name('create_channel');
 
-    Route::post('addHistory', 'UserController@add_history')->name('add.history');
+    Route::post('save_channel', 'UserController@save_channel')->name('save_channel');
+
+    Route::get('channel_edit/{id}', 'UserController@channel_edit')->name('channel_edit');
+
+    Route::get('delete_channel', 'UserController@channel_delete')->name('delete.channel');
+
+
 
     // Report Spam Video
 
@@ -655,19 +673,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('stripe-payment-video', 'UserController@stripe_payment_video')->name('stripe_payment_video');
 
 
-    // Wishlist
-
-    Route::post('addWishlist', 'UserController@add_wishlist')->name('add.wishlist');
-
-    Route::get('deleteWishlist', 'UserController@delete_wishlist')->name('delete.wishlist');
 
 
-    // Comments
-
-    Route::post('addComment', 'UserController@add_comment')->name('add.comment');
-
-    Route::get('comments', 'UserController@comments')->name('comments');
-    
 
     Route::post('/save_video_payment/{id}', 'UserController@save_video_payment')->name('save.video-payment');
 
@@ -685,15 +692,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'UserController@user_subscription_save')->name('subscription.save');
 
-    // Channels
-
-    Route::get('channel_create', 'UserController@channel_create')->name('create_channel');
-
-    Route::post('save_channel', 'UserController@save_channel')->name('save_channel');
-
-    Route::get('channel_edit/{id}', 'UserController@channel_edit')->name('channel_edit');
-
-    Route::get('delete_channel', 'UserController@channel_delete')->name('delete.channel');
+    
 
     // Video Upload
 

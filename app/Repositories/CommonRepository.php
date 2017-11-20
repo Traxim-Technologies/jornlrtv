@@ -166,7 +166,6 @@ class CommonRepository {
 
 	public static function channel_save($request) {
 
-
         $validator = [];
 
         if($request->id != '') {
