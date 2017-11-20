@@ -896,8 +896,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id',
+                'video_tape_id' => 'required|integer|exists:video_tapes,id',
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to wishlists',
@@ -920,15 +919,10 @@ class UserApiController extends Controller {
 
             } else {  /** Clear particularv wishlist of the loggedin user */
 
-                if($request->has('video_tape_id')) {
 
-                    $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+                $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
    
-                } else {
-
-                    $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
-
-                }
+                
                 
             }
 
@@ -1143,8 +1137,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-               'history_id' => 'integer|exists:user_histories,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id'
+                'video_tape_id' => 'required|integer|exists:video_tapes,id'
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to history',
@@ -1159,23 +1152,15 @@ class UserApiController extends Controller {
 
         } else {
 
+
             if($request->has('status')) {
 
                 $history = UserHistory::where('user_id',$request->id)->delete();
 
             } else {
 
-                //delete history
+                $history = UserHistory::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
 
-                if ($request->history_id) {
-
-                    $history = UserHistory::where('user_id',$request->id)->where('id' , $request->history_id)->delete();
-
-                } else{
-
-                     $history = UserHistory::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
-
-                }
             }
 
             $response_array = array('success' => true);
