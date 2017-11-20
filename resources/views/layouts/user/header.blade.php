@@ -75,9 +75,9 @@
                        
                         <li  class="dropdown">
                     
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 5px 10px;margin-right: 5px;color: #cc181e;"><i class="fa fa-globe"></i> <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle language-icon" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i> <b class="caret"></b></a>
 
-                            <ul class="dropdown-menu" style="min-width: 70px;overflow: hidden;position: absolute;background: #fff;">
+                            <ul class="dropdown-menu languages1">
 
                                 @foreach($languages as $h => $language)
 
@@ -107,7 +107,7 @@
         </div>
 
 
-        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 hidden-xs">
+        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 hidden-xs">
 
             <div id="custom-search-input" class="">
                 <form method="post" action="{{route('search-all')}}" id="userSearch">
@@ -126,7 +126,7 @@
 
         </div>
 
-        <!-- ========RESPONSIVE SEARCH BAR VISIBLE IN MOBAILE VIEW====== -->
+        <!-- ========RESPONSIVE  HEADER VISIBLE IN MOBAILE VIEW====== -->
         <div class="col-xs-12 visible-xs">
             <ul class="mobile-header">
                 <li><a href="{{route('user.dashboard')}}" class="mobile-menu">
@@ -151,7 +151,7 @@
             </ul>
         </div>
 
-        <div class="col-lg-3 col-md-2 col-sm-2 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
+        <div class="col-lg-3 col-md-2 col-sm-3 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
             @if(Auth::check())
                 <div class="y-button profile-button">
                    <div class="dropdown">
@@ -209,9 +209,9 @@
                        
                         <li  class="dropdown">
                     
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 5px 15px; margin-right: 5px;color: #cc181e"><i class="fa fa-globe"></i> <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle language-icon" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i> <b class="caret"></b></a>
 
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu languages">
 
                                 @foreach($languages as $h => $language)
 

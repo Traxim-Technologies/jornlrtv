@@ -153,18 +153,30 @@
 					<div id="channel-subheader" class="clearfix branded-page-gutter-padding appbar-content-trigger">
 						<ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
-								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('home')}}</span></a>
+								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab">
+								<span class="yt-uix-button-content hidden-xs">{{tr('home')}}</span>
+								<span class="visible-xs"><i class="fa fa-home channel-tab-icon"></i></span>
+								</a>
 							</li>
 							<li role="presentation" id="videos_sec">
-								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
+								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab">
+								<span class="yt-uix-button-content hidden-xs">{{tr('videos')}}</span> 
+								<span class="visible-xs"><i class="fa fa-video-camera channel-tab-icon"></i></span>
+								</a>
 							</li>
 							<li role="presentation">
-								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('about_video')}}</span> </a>
+								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab">
+								<span class="yt-uix-button-content hidden-xs">{{tr('about_video')}}</span> 
+								<span class="visible-xs"><i class="fa fa-info channel-tab-icon"></i></span>
+							</a>
 							</li>
 							@if(Auth::check())
 								@if($channel->user_id == Auth::user()->id)
 									<li role="presentation" id="payment_managment_sec">
-										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> </a>
+										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
+										<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> 
+										<span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;($ {{getAmountBasedChannel($channel->id)}})</span>
+										</a>
 									</li>
 								@endif
 							@endif

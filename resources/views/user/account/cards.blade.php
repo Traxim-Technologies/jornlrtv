@@ -25,99 +25,109 @@
 
                     		<h4>{{tr('cards')}}</h4>
 
-		            		<div class="card-wrapper row">
+                    		<div class="row">
+                    			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1 col-lg-4">
+                    				
+                    				<div class="card-wrapper row">
 
-		            			<div class="jp-card-container">
+				            			<div class="jp-card-container">
 
-			            			<div class="jp-card jp-card-visa jp-card-identified col-lg-4 col-lg-offset-2 col-md-offset-1  col-md-5 col-sm-6 col-xs-12 top">
+					            			<div class="jp-card jp-card-visa jp-card-identified  top">
 
-				            			<div class="jp-card-front">
+						            			<div class="jp-card-front">
 
-					            			<div class="jp-card-logo jp-card-visa">
+							            			<div class="jp-card-logo jp-card-visa">
 
-					            				Visa
+							            				Visa
 
-					            			</div>
+							            			</div>
 
-				            				<div class="jp-card-lower">
+						            				<div class="jp-card-lower">
 
-				            					<div class="jp-card-shiny"></div>
+						            					<div class="jp-card-shiny"></div>
 
-					            				<div class="jp-card-cvc jp-card-display">•••</div>
+							            				<div class="jp-card-cvc jp-card-display">•••</div>
 
-					            				<div class="jp-card-number jp-card-display jp-card-invalid">XXXX XXXX XXXX XXXX</div>
+							            				<div class="jp-card-number jp-card-display jp-card-invalid">XXXX XXXX XXXX XXXX</div>
 
-					            				<div class="jp-card-name jp-card-display">{{Auth::user()->name}}</div>
+							            				<div class="jp-card-name jp-card-display">{{Auth::user()->name}}</div>
 
-					            				<div class="jp-card-expiry jp-card-display" data-before="month/year" data-after="validthru"><span id="jp-month">••</span>/<span id="jp-year">••</span></div>
+							            				<div class="jp-card-expiry jp-card-display" data-before="month/year" data-after="validthru"><span id="jp-month">••</span>/<span id="jp-year">••</span></div>
+
+													</div>
+
+												</div>
+
+
+											</div>
+
+											<div class="jp-card jp-card-visa jp-card-identified jp-card-flipped col-lg-12 col-md-12 col-sm-12 col-xs-12 top">
+
+												<div class="jp-card-back">
+
+													<div class="jp-card-bar"></div>
+
+													<div class="jp-card-cvc jp-card-display">•••</div>
+
+													<div class="jp-card-shiny"></div>
+
+												</div>
 
 											</div>
 
 										</div>
 
-
 									</div>
 
-									<div class="jp-card jp-card-visa jp-card-identified jp-card-flipped col-lg-4 col-md-5 col-sm-6 col-xs-12 top">
+                    			</div>
+                    			
+                    			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-1 col-md-5 col-lg-5">
+                    				
+                    				<form action="{{ route('user.card.add_card') }}" method="POST" id="payment-form" class="form-horizontal card">
 
-										<div class="jp-card-back">
+								        <div class="row" id="card-payment">
+								            <div>
 
-											<div class="jp-card-bar"></div>
+								                <input id="id" name="id" type="hidden" required>
 
-											<div class="jp-card-cvc jp-card-display">•••</div>
+								                <div class="input-group-signup">
+								                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number" 
+								                    onkeyup="card_number_onkey(this.value)" maxlength="16">
+								                </div>
+								                <div class="input-group-signup ">
+								                    <input id="email" name="cvc" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)">
+								                </div>
 
-											<div class="jp-card-shiny"></div>
+								                <div class="input-group-signup">
+								                    <input id="nationality" name="month" type="text" placeholder="{{tr('mm')}}" class="form-control" autocomplete="cc-exp" data-stripe="exp-month" onkeyup="$('#jp-month').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
+								                </div>
+								                <div class="input-group-signup ">
+								                    <input id="language" name="year" data-stripe="exp-year"
+								                    autocomplete="cc-exp" type="text" placeholder="{{tr('yy')}}" class="form-control" onkeyup="$('#jp-year').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
+								                </div>
 
-										</div>
+								                <div class="input-group-signup">
 
-									</div>
+								                  <button class="btn btn-success" type="submit">{{tr('submit')}}</button>
 
-								</div>
+								                </div>
 
-							</div>
+								                <div class="clearfix"></div>
 
-							<br>
+								                <div class="payment-errors text-danger col-lg-12"></div>
 
+								                <br>
 
-					        <form action="{{ route('user.card.add_card') }}" method="POST" id="payment-form" class="form-horizontal card">
+								            </div>
+								        </div>
 
-					        <div class="row" id="card-payment">
-					            <div>
+							        </form>
+                    			
+                    			</div>
 
-					                <input id="id" name="id" type="hidden" required>
-
-					                <div class="input-group-signup">
-					                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number" 
-					                    onkeyup="card_number_onkey(this.value)" maxlength="16">
-					                </div>
-					                <div class="input-group-signup ">
-					                    <input id="email" name="cvc" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)">
-					                </div>
-
-					                <div class="input-group-signup">
-					                    <input id="nationality" name="month" type="text" placeholder="{{tr('mm')}}" class="form-control" autocomplete="cc-exp" data-stripe="exp-month" onkeyup="$('#jp-month').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
-					                </div>
-					                <div class="input-group-signup ">
-					                    <input id="language" name="year" data-stripe="exp-year"
-					                    autocomplete="cc-exp" type="text" placeholder="{{tr('yy')}}" class="form-control" onkeyup="$('#jp-year').html(this.value)" maxlength="2" pattern="[0-9]{2,}">
-					                </div>
-
-					                <div class="input-group-signup">
-
-					                  <button class="btn btn-success" type="submit">{{tr('submit')}}</button>
-
-					                </div>
-
-					                <div class="clearfix"></div>
-
-					                <div class="payment-errors text-danger col-lg-12"></div>
-
-					                <br>
-
-					            </div>
-					        </div>
-
-					        </form>
+                    		</div>
+		            		
+ 							<p class="top1"></p>
 
 					        <hr>
 
@@ -125,10 +135,10 @@
 
 					            @foreach($cards as $card)
 
-					            <div class="row">
-						              <div class="col-lg-1">
-						                <img src="/images/visa-card.png" alt="">
-						              </div>
+					            <div class="row top text-center">
+						            <div class="col-lg-1">
+						                <img src="{{asset('images/visa-card.png')}}" alt="">
+						            </div>
 
 						              <div class="col-lg-3">PERSONAL*********{{$card->last_four}}</div>
 
@@ -163,9 +173,26 @@
 					            <br>
 
 					            @endforeach
-
-					            
-
+					           	<div class="table-responsive">
+						            <table class="table table-bordered">
+						            	<tbody>
+						            		<tr>
+						            			<td>
+						            				<img src="{{asset('images/visa-card.png')}}" alt="">
+						            			</td>
+						            			<td>
+						            				PERSONAL*********{{$card->last_four}}
+						            			</td>
+						            			<td>
+						            				<button class="btn btn-primary btn-sm" type="submit" class="bk-nw-ct text-white"><i class="fa fa-check"></i> {{tr('set_as_default')}}</button>
+						            			</td>
+						            			<td>
+						            				<button class="btn btn-danger btn-sm" type="submit" class="bk-nw-ct text-white"><i class="fa fa-times"></i> {{tr('delete_card')}}</button>
+						            			</td>
+						            		</tr>
+						            	</tbody>
+						            </table>
+					            </div>
 					          @else
 
 					            {{tr('no_card_details_found')}}
