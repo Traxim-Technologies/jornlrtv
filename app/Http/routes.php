@@ -542,7 +542,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
 });
 
-Route::get('/', 'UserController@index')->name('user.dashboard');
 
 Route::get('/single', 'UserController@single_video');
 
@@ -550,11 +549,6 @@ Route::get('/user/searchall' , 'ApplicationController@search_video')->name('sear
 
 Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
 
-// Categories and single video 
-
-Route::get('categories', 'UserController@all_categories')->name('user.categories');
-
-Route::get('channel/{id}', 'UserController@channel_videos')->name('user.channel');
 
 
 Route::get('video/{id}', 'UserController@single_video')->name('user.single');
@@ -576,8 +570,20 @@ Route::get('cron_delete_video', 'ApplicationController@cron_delete_video');
 
 Route::group(['as' => 'user.'], function(){
 
-    Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
+    Route::get('/', 'UserController@index')->name('dashboard');
 
+    Route::get('/trending', 'UserController@trending')->name('trending');
+
+    Route::get('channel_list', 'UserController@channel_list')->name('channel.list');
+
+    Route::get('history', 'UserController@history')->name('history');
+
+    Route::get('wishlist', 'UserController@wishlist')->name('wishlist');
+
+    Route::get('channel/{id}', 'UserController@channel_videos')->name('channel');
+
+
+    Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
 
     Route::get('ppv-video','PaypalController@videoSubscriptionPay')->name('ppv-video-payment');
 
@@ -630,7 +636,7 @@ Route::group(['as' => 'user.'], function(){
     Route::post('/delete/account', 'UserController@delete_account_process')->name('delete.account.process');
 
 
-    Route::get('history', 'UserController@history')->name('history');
+    
 
     Route::get('deleteHistory', 'UserController@delete_history')->name('delete.history');
 
@@ -655,7 +661,6 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('deleteWishlist', 'UserController@delete_wishlist')->name('delete.wishlist');
 
-    Route::get('wishlist', 'UserController@wishlist')->name('wishlist');
 
     // Comments
 
@@ -674,8 +679,6 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/user/payment/status','PaypalController@getPaymentStatus')->name('paypalstatus');
 
-    Route::get('/trending', 'UserController@trending')->name('trending');
-
     Route::get('/live_videos', 'UserController@live_videos')->name('live_videos');
 
     Route::get('/user_subscriptions', 'UserController@subscriptions')->name('subscriptions');
@@ -691,8 +694,6 @@ Route::group(['as' => 'user.'], function(){
     Route::get('channel_edit/{id}', 'UserController@channel_edit')->name('channel_edit');
 
     Route::get('delete_channel', 'UserController@channel_delete')->name('delete.channel');
-
-    Route::get('channel_list', 'UserController@channel_list')->name('channel.list');
 
     // Video Upload
 
@@ -808,11 +809,11 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/trending' , 'UserApiController@trending');
     
-    Route::post('/common' , 'UserApiController@common');
+   // Route::post('/common' , 'UserApiController@common');
 
     Route::post('/single_video' , 'UserApiController@single_video');
     
-    Route::post('/singleVideo' , 'UserApiController@getSingleVideo');
+   // Route::post('/singleVideo' , 'UserApiController@getSingleVideo');
 
     Route::post('/searchVideo' , 'UserApiController@search_video')->name('search-video');
 

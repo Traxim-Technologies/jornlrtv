@@ -478,8 +478,9 @@ textarea[name=comments] {
 
                                 <ul class="video-sugg"> 
 
+                                    @if(count($suggestions->items) > 0)
            
-                                    @foreach($suggestions as $suggestion)
+                                    @foreach($suggestions->items as $suggestion)
                                     
                                         <li class="sugg-list row">
                                             <div class="main-video">
@@ -524,7 +525,8 @@ textarea[name=comments] {
                                             </div><!--end of main-video-->
                                         </li><!--end of sugg-list-->
                                     @endforeach
-                                   
+                                    
+                                    @endif
                                     
                                 </ul>
                             </div><!--end of up-next-->

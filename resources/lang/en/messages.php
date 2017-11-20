@@ -965,4 +965,8 @@ return array(
 	'watch_now'=>'Now you can watch video',
 	'payment_received'=>'Your payment is received Successfully !!!',
 	'thank_you'=>'Thank You!',	
+	'admin_not_logged_in'=>'Admin not logged in , Please check with credentials',
+	'user_not_found'=>'User not found',
+	'user_details_not_saved'=>'User Details not saved, please try again later',
+	'channel_not_found'=>'Channel not found, Please try again later',
 );

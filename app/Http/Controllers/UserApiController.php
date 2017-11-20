@@ -702,6 +702,84 @@ class UserApiController extends Controller {
 
 	}
 
+    /**
+     *
+     * Get wishlists
+     *
+     */
+    public function get_wishlist(Request $request)  {
+
+        // Get wishlist 
+
+        $video_tape_ids = Helper::wishlists($request->id);
+
+        $total = get_wishlist_count($request->id);
+
+        $data = [];
+
+        if($video_tape_ids) {
+
+            $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->where('video_tapes.status' , 1)
+                                ->where('video_tapes.publish_status' , 1)
+                                ->where('video_tapes.is_approved' , 1)
+                               // ->orderby('video_tapes.publish_time' , 'desc')
+                                ->shortVideoResponse();
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+                }
+            
+            }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+            $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            if(count($videos) > 0) {
+
+                foreach ($videos as $key => $value) {
+
+                    if($request->id) {
+
+                        if($user_details = User::find($request->id)) {
+
+                            $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
+                            
+                            $value['user_type'] = $user_details->user_type;
+
+                        }
+                    }
+
+                    $value['watch_count'] = number_format_short($value->watch_count);
+
+                    $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
+
+                    $value['share_url'] = route('user.single' , $value->video_tape_id);
+
+                    array_push($data, $value->toArray());
+                }
+            
+            }
+
+        }
+
+        $response_array = array('success' => true, 'data' => $data , 'total' => $total);
+
+        return response()->json($response_array, 200);
+    
+    }
+
+
 	public function user_rating(Request $request) {
 
         $validator = Validator::make(
@@ -813,83 +891,6 @@ class UserApiController extends Controller {
     
     }
 
-    /**
-     *
-     * Get wishlists
-     *
-     */
-
-    public function get_wishlist(Request $request)  {
-
-        // Get wishlist 
-
-        $video_tape_ids = Helper::wishlists($request->id);
-
-        $total = get_wishlist_count($request->id);
-
-        $data = [];
-
-        if($video_tape_ids) {
-
-            $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
-                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
-                                ->where('video_tapes.status' , 1)
-                                ->where('video_tapes.publish_status' , 1)
-                                ->where('video_tapes.is_approved' , 1)
-                               // ->orderby('video_tapes.publish_time' , 'desc')
-                                ->shortVideoResponse();
-
-            if ($request->id) {
-
-                // Check any flagged videos are present
-
-                $flag_videos = flag_videos($request->id);
-
-                if($flag_videos) {
-
-                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
-
-                }
-            
-            }
-
-            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
-
-            $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-            if(count($videos) > 0) {
-
-                foreach ($videos as $key => $value) {
-
-                    if($request->id) {
-
-                        if($user_details = User::find($request->id)) {
-
-                            $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
-                            
-                            $value['user_type'] = $user_details->user_type;
-
-                        }
-                    }
-
-                    $value['watch_count'] = number_format_short($value->watch_count);
-
-                    $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
-
-                    $value['share_url'] = route('user.single' , $value->video_tape_id);
-
-                    array_push($data, $value->toArray());
-                }
-            
-            }
-
-        }
-
-        $response_array = array('success' => true, 'data' => $data , 'total' => $total);
-
-        return response()->json($response_array, 200);
-    
-    }
 
     public function delete_wishlist(Request $request) {
 
@@ -1217,7 +1218,7 @@ class UserApiController extends Controller {
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
-                            ->orderby('video_tapes.publish_time' , 'desc')
+                            ->orderby('video_tapes.created_at' , 'desc')
                             ->shortVideoResponse();
 
         if ($request->id) {
@@ -1335,40 +1336,6 @@ class UserApiController extends Controller {
 
     }
 
-    public function common(Request $request) {
-
-        $key = $request->key;
-
-        $total = 18;
-
-        switch($key) {
-            case TRENDING:
-                $videos = Helper::trending(NULL,$request->skip);
-                break;
-            case WISHLIST:
-                $videos = Helper::wishlist($request->id,NULL,$request->skip);
-                $total = get_wishlist_count($request->id);
-                break;
-            case SUGGESTIONS:
-                $videos = Helper::suggestion_videos(NULL,$request->skip);
-                break;
-            case RECENTLY_ADDED:
-                $videos = Helper::recently_added(NULL,$request->skip);
-                break;
-            case WATCHLIST:
-                $videos = Helper::watch_list($request->id,NULL,$request->skip);
-                $total = get_history_count($request->id);
-                break;
-            default:
-                $videos = Helper::recently_added(NULL,$request->skip);
-        }
-
-
-        $response_array = array('success' => true , 'data' => $videos , 'total' => $total);
-
-        return response()->json($response_array , 200);
-
-    }
 
     public function get_channel_videos(Request $request) {
 
@@ -1397,13 +1364,6 @@ class UserApiController extends Controller {
                 $videos = VideoRepo::channelVideos($request, $channels->id, '', $request->skip);
 
                 if(count($videos) > 0) {
-
-                    /*$results['channel_name'] = $channels->name;
-                    $results['key'] = $channels->id;*/
-                    // $results['videos_count'] = count($channels);
-                   // $results['videos'] = $videos;
-
-                    // array_push($data, $results);
 
                     $data = $videos;
                 }
@@ -1677,188 +1637,6 @@ class UserApiController extends Controller {
    
     }
 
-    // Function Name : getSingleVideo()
-
-    public function getSingleVideo(Request $request) {
-
-
-        $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
-                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                    ->videoResponse()
-                    ->first();
-
-        if ($video) {
-
-            if($request->id) {
-
-                if ($video->getChannel->user_id != $request->id) {
-
-                    $age = $request->age_limit ? ($request->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
-
-                    if ($video->age_limit > $age) {
-
-                        return response()->json(['success'=>false, 'error_messages'=>tr('age_error')]);
-
-                    }
-
-                } 
-            } else {
-
-                if ($video->age_limit == 1) {
-
-                    return response()->json(['success'=>false, 'error_messages'=>tr('age_error')]);
-
-                }
-
-            }
-
-        }
-
-        if($video) {
-
-            if($comments = Helper::video_ratings($request->video_tape_id,0)) {
-                $comments = $comments->toArray();
-            }
-
-            $ads = $video->getScopeVideoAds ? ($video->getScopeVideoAds->status ? $video->getScopeVideoAds  : '') : '';
-
-            $trendings = VideoRepo::trending($request,WEB);
-
-            $recent_videos = VideoRepo::recently_added($request, WEB);
-
-            $channels = [];
-
-            $suggestions = VideoRepo::suggestion_videos($request,'', '', $request->video_tape_id);
-
-            $wishlist_status = $history_status = WISHLIST_EMPTY;
-
-            $report_video = getReportVideoTypes();
-
-             // Load the user flag
-
-            $flaggedVideo = ($request->id) ? Flag::where('video_tape_id',$request->video_tape_id)->where('user_id', $request->id)->first() : '';
-
-            $videoPath = $video_pixels = $videoStreamUrl = '';
-
-            $hls_video = "";
-
-            if($video) {
-
-                $main_video = $video->video; 
-
-                if ($video->publish_status == 1) {
-
-                    $hls_video = (Setting::get('HLS_STREAMING_URL')) ? Setting::get('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
-
-                    if (\Setting::get('streaming_url')) {
-
-                        if ($video->is_approved == 1) {
-
-
-                            if ($video->video_resolutions) {
-
-
-                                $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
-                            }
-
-                        }
-
-                        \Log::info("video Stream url".$videoStreamUrl);
-
-                        \Log::info("Empty Stream url".empty($videoStreamUrl));
-
-                        \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
-
-
-                        if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
-
-                            $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
-
-                            // dd($videoPath);
-                            $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
-
-
-                        }
-
-
-                    } else {
-
-
-                        $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
-
-                        // dd($videoPath);
-                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
-                        
-                    }
-
-                } else {
-
-                    $videoStreamUrl = $video->video;
-
-                    $hls_video = $video->video;
-                }
-                
-            } else {
-
-                $response_array = ['success' => false, 'error_messages'=>tr('video_not_found')];
-
-                return response()->json($response_array, 200);
-
-            }
-
-            $subscribe_status = DEFAULT_FALSE;
-
-            $comment_rating_status = DEFAULT_TRUE;
-
-            if($request->id) {
-
-                $wishlist_status = $request->id ? Helper::check_wishlist_status($request->id,$request->video_tape_id): 0;
-
-                $history_status = Helper::history_status($request->id,$request->video_tape_id);
-
-                $subscribe_status = check_channel_status($request->id, $video->channel_id);
-
-                $mycomment = UserRating::where('user_id', $request->id)->where('rating', '>', 0)->where('video_tape_id', $request->video_tape_id)->first();
-
-                if ($mycomment) {
-
-                    $comment_rating_status = DEFAULT_FALSE;
-                }
-
-            }
-
-            $share_link = route('user.single' , $request->video_tape_id);
-
-            $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
-                ->where('like_status', DEFAULT_TRUE)
-                ->count();
-
-            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
-                ->where('dislike_status', DEFAULT_TRUE)
-                ->count();
-
-            $subscriberscnt = subscriberscnt($video->channel_id);
-
-            $embed_link  = "<iframe width='560' height='315' src='".route('embed_video', array('u_id'=>$video->unique_id))."' frameborder='0' allowfullscreen></iframe>";
-            
-            $response_array = ['video'=>$video, 'comments'=>$comments, 'trendings' =>$trendings, 
-                'recent_videos'=>$recent_videos, 'channels' => $channels, 'suggestions'=>$suggestions,
-                'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
-                'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
-                'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
-                'like_count'=>$like_count,'dislike_count'=>$dislike_count,
-                'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
-                'subscriberscnt'=>$subscriberscnt,'comment_rating_status'=>$comment_rating_status,
-                'embed_link' => $embed_link];
-
-            return response()->json(['success'=>true, 'response_array'=>$response_array], 200);
-
-        } else {
-
-            return response()->json(['success'=>false, 'error_messages'=>tr('something_error')]);
-        }
-
-    }
 
     /** 
      *  Provider Send Redeem request to Admin
@@ -2019,67 +1797,6 @@ class UserApiController extends Controller {
 
     }
 
-    public function channel_list(Request $request) {
-
-        $age = 0;
-
-        $channel_id = [];
-
-        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
-                    'video_tapes.status', 'video_tapes.channel_id')
-                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
-                ->where('channels.status', DEFAULT_TRUE)
-                ->where('video_tapes.is_approved', DEFAULT_TRUE)
-                ->where('video_tapes.status', DEFAULT_TRUE)
-                ->groupBy('video_tapes.channel_id');
-
-        if($request->id) {
-
-            $user = User::find($request->id);
-
-            $age = $user->age_limit;
-
-            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
-
-            if ($request->id) {
-
-                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
-
-                $query->whereIn('channels.id', $channel_id);
-            }
-
-
-            $query->where('video_tapes.age_limit','<=', $age);
-
-        }
-
-        $channels = $query->paginate(16);
-
-        $items = $channels->items();
-
-        $lists = [];
-
-        foreach ($channels as $key => $value) {
-            $lists[] = ['channel_id'=>$value->id, 
-                    'user_id'=>$value->user_id,
-                    'picture'=> $value->picture, 
-                    'title'=>$value->name,
-                    'description'=>$value->description, 
-                    'created_at'=>$value->created_at->diffForHumans(),
-                    'no_of_videos'=>videos_count($value->id),
-                    'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
-                    'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
-            ];
-
-        }
-
-        $pagination = (string) $channels->links();
-
-        $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
-
-        return response()->json($response_array);
-    }
 
     public function user_channel_list(Request $request) {
 
@@ -3130,277 +2847,6 @@ class UserApiController extends Controller {
 
     /******************************** API's ******************************/
 
-    public function recently_added($request, $web = 1) {
-
-        $base_query = VideoTape::where('video_tapes.is_approved' , 1)                                                   ->where('video_tapes.status' , 1)
-                            ->where('video_tapes.publish_status' , 1)
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                            ->orderby('video_tapes.created_at' , 'desc')
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
-                            ->videoResponse();
-
-        if ($request->id) {
-
-            // Check any flagged videos are present
-
-            $flag_videos = flag_videos($request->id);
-
-            if($flag_videos) {
-                $base_query->whereNotIn('video_tapes.id',$flag_videos);
-            }
-
-        }
-
-        if($web) {
-
-            $videos = $base_query->paginate(16);
-
-        } else {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-        }
-
-        $items = [];
-
-        foreach ($videos as $key => $value) {
-            
-            $items[] = displayVideoDetails($value, $request->id);
-
-        }
-
-        return response()->json($items);
-    
-    }
-
-
-    public function trending_list($request, $web, $skip = null, $count = 0) {
-
-        $base_query = VideoTape::where('watch_count' , '>' , 0)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->where('video_tapes.publish_status' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->where('video_tapes.is_approved' , 1)
-                        ->videoResponse()
-                        ->where('video_tapes.age_limit','<=', checkAge($request))
-                        ->orderby('watch_count' , 'desc');
-
-        if ($request->id) {
-
-            // Check any flagged videos are present
-
-            $flag_videos = flag_videos($request->id);
-
-            if($flag_videos) {
-                
-                $base_query->whereNotIn('video_tapes.id',$flag_videos);
-            }
-        }
-
-       if($skip) {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,15))->get();
-
-            $model = ['data'=>$videos];
-
-        } else if($count > 0){
-
-            $videos = $base_query->skip(0)->take($count)->get();
-
-            $model = ['data'=>$videos];
-
-        } else {
-
-            $videos = $base_query->paginate(16);
-
-            $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
-            
-        }
-
-
-        $items = [];
-
-        if ($videos->items() > 0) {
-
-            foreach ($model['data'] as $key => $value) {
-                
-                $items[] = displayVideoDetails($value, $request->id);
-
-            }
-
-        }
-
-        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
-    
-    }
-
-
-    public function suggestion_videos($request, $web = 1, $skip = null) {
-
-        $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
-                            ->where('video_tapes.status' , 1)
-                            ->where('video_tapes.publish_status' , 1)
-                            ->orderby('video_tapes.created_at' , 'desc')
-                            ->videoResponse()
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
-                            ->orderByRaw('RAND()');
-        if($request->video_tape_id) {
-
-            $base_query->whereNotIn('video_tapes.id', [$request->video_tape_id]);
-        }
-
-        if ($request->id) {
-
-            // Check any flagged videos are present
-
-            $flag_videos = flag_videos($request->id);
-
-            if($flag_videos) {
-
-                $base_query->whereNotIn('video_tapes.id',$flag_videos);
-            }
-        }
-
-        if($skip) {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-            
-        } else {
-
-            $videos = $base_query->paginate(16);
-        }
-
-        $items = [];
-
-        foreach ($videos as $key => $value) {
-            
-            $items[] = displayVideoDetails($value, $request->id);
-
-        }
-
-        return response()->json($items);
-    
-    
-    }
-
-    public function wishlist_list($request, $web = NULL , $skip = 0) {
-
-        $base_query = Wishlist::where('wishlists.user_id' , $request->id)
-                            ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
-                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
-                            ->where('video_tapes.is_approved' , 1)
-                            ->where('video_tapes.status' , 1)
-                            ->where('wishlists.status' , 1)
-                            ->select(
-                                    'wishlists.id as wishlist_id','video_tapes.id as video_tape_id' ,
-                                    'video_tapes.title','video_tapes.description' ,
-                                    'video_tapes.ppv_amount','video_tapes.amount',
-                                    'default_image','video_tapes.watch_count','video_tapes.ratings',
-                                    'video_tapes.duration','video_tapes.channel_id',
-                                    'video_tapes.type_of_user',
-                                    'channels.user_id as channel_created_by',
-                                    DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time') , 'channels.name as channel_name', 'wishlists.created_at')
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
-                            ->orderby('wishlists.created_at' , 'desc');
-
-        if ($request->id) {
-
-            // Check any flagged videos are present
-
-            $flag_videos = flag_videos($request->id);
-
-            if($flag_videos) {
-
-                $base_query->whereNotIn('video_tapes.id',$flag_videos);
-
-            }
-        
-        }
-
-        if($web) {
-
-            $videos = $base_query->paginate(16);
-
-            $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
-
-        } else {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-            $model = ['data'=>$videos];
-
-        }
-
-        $items = [];
-
-        foreach ($model['data'] as $key => $value) {
-            
-            $items[] = displayVideoDetails($value, $request->id);
-
-        }
-
-        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
-    
-    }
-
-
-    public function watch_list($request, $web = NULL , $skip = 0) {
-
-        $base_query = UserHistory::where('user_histories.user_id' , $request->id)
-                            ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
-                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
-                            ->where('video_tapes.is_approved' , 1)
-                            ->where('video_tapes.status' , 1)
-                            ->select('user_histories.id as history_id','video_tapes.id as video_tape_id' ,
-                                'video_tapes.title','video_tapes.description' , 'video_tapes.duration',
-                                'default_image','video_tapes.watch_count','video_tapes.ratings',
-                                'video_tapes.ppv_amount', 'video_tapes.amount',
-                                'video_tapes.type_of_user',
-                                'channels.user_id as channel_created_by',
-                                DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 'video_tapes.channel_id','channels.name as channel_name', 'user_histories.created_at')
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
-                            ->orderby('user_histories.created_at' , 'desc');
-        
-        if ($request->id) {
-
-            // Check any flagged videos are present
-
-            $flag_videos = flag_videos($request->id);
-
-            if($flag_videos) {
-                $base_query->whereNotIn('video_tapes.id',$flag_videos);
-            }
-        
-        }
-
-        if($web) {
-
-            $videos = $base_query->paginate(16);
-
-            $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
-
-
-        } else {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-            $model = ['data'=>$videos];
-
-        }
-
-        $items = [];
-
-        foreach ($model['data'] as $key => $value) {
-            
-            $items[] = displayVideoDetails($value, $request->id);
-
-        }
-
-        return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
-
-    }
-
 
     public function pay_per_videos(Request $request) {
 
@@ -3426,142 +2872,6 @@ class UserApiController extends Controller {
         }
 
         return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
-    }
-
-
-    public function channel_videos($channel_id, $web = NULL , $skip = 0) {
-
-        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                    ->where('video_tapes.status' , 1)
-                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                    ->where('video_tapes.channel_id' , $channel_id)
-                    ->videoResponse()
-                    ->orderby('video_tapes.created_at' , 'desc');
-
-        $u_id = '';
-
-        if (Auth::check()) {
-
-            $u_id = Auth::user()->id;
-
-            // Check any flagged videos are present
-            $flagVideos = getFlagVideos(Auth::user()->id);
-
-            if($flagVideos) {
-
-                $videos_query->whereNotIn('video_tapes.id', $flagVideos);
-
-            }
-
-        }
-
-        if($web) {
-            $videos = $videos_query->paginate(16);
-        } else {
-            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-        }
-
-        
-        $items = [];
-
-        foreach ($videos as $key => $value) {
-            
-            $items[] = displayVideoDetails($value, $u_id);
-
-        }
-
-        return response()->json($items);
-
-    }
-
-
-    public function channel_trending($id, $web, $skip = null, $count = 0) {
-
-        $base_query = VideoTape::where('watch_count' , '>' , 0)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->videoResponse()
-                        ->where('channel_id', $id)
-                        ->orderby('watch_count' , 'desc');
-
-        $u_id = "";
-
-        if (Auth::check()) {
-
-            // Check any flagged videos are present
-
-
-            $u_id = Auth::user()->id;
-
-            $flag_videos = flag_videos(Auth::user()->id);
-
-            if($flag_videos) {
-                
-                $base_query->whereNotIn('video_tapes.id',$flag_videos);
-            }
-        }
-
-       if($skip) {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-        } else if($count > 0){
-
-            $videos = $base_query->skip(0)->take($count)->get();
-
-        } else {
-
-            $videos = $base_query->paginate(16);
-            
-        }
-
-        $items = [];
-
-        foreach ($videos as $key => $value) {
-            
-            $items[] = displayVideoDetails($value, $u_id);
-
-        }
-
-        return response()->json($items);
-
-    
-    }
-
-    public function payment_videos($id, $web, $skip = null, $count = 0) {
-
-        $base_query = VideoTape::where('amount' , '>' , 0)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->videoResponse()
-                        ->where('channel_id', $id)
-                        ->orderby('amount' , 'desc');
-
-       if($skip) {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-        } else if($count > 0){
-
-            $videos = $base_query->skip(0)->take($count)->get();
-
-        } else {
-
-            $videos = $base_query->paginate(16);
-            
-        }
-
-        $items = [];
-
-        foreach ($videos as $key => $value) {
-
-            $id = Auth::check() ? Auth::user()->id : '';
-            
-            $items[] = displayVideoDetails($value, $id);
-
-        }
-
-        return response()->json($items);
-
-    
     }
 
     public function search_list($request,$key,$web = NULL,$skip = 0) {
@@ -3601,7 +2911,7 @@ class UserApiController extends Controller {
     }
 
 
-        // Function Name : getSingleVideo()
+    // Function Name : getSingleVideo()
 
     public function video_detail(Request $request) {
 
@@ -4076,5 +3386,579 @@ class UserApiController extends Controller {
 
         }
         
+    }
+
+
+    /**
+     * Function Name :  wishlist_list()
+     * 
+     * @usage_place : WEB
+     * 
+     * List of wishlist based on the logged in user
+     *
+     * @param object $request - User Details
+     * 
+     * @return response of wishlist
+     */
+    public function wishlist_list($request) {
+
+        $base_query = Wishlist::where('wishlists.user_id' , $request->id)
+                            ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('wishlists.status' , 1)
+                            ->select(
+                                    'wishlists.id as wishlist_id',
+                                    'video_tapes.id as video_tape_id' ,
+                                    'video_tapes.title',
+                                    'video_tapes.description' ,
+                                    'video_tapes.ppv_amount',
+                                    'video_tapes.amount',
+                                    'default_image',
+                                    'video_tapes.watch_count',
+                                    'video_tapes.ratings',
+                                    'video_tapes.duration',
+                                    'video_tapes.channel_id',
+                                    'video_tapes.type_of_user',
+                                    'channels.user_id as channel_created_by',
+                                    'video_tapes.ad_status',
+                                    DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time') , 
+                                    'channels.name as channel_name', 
+                                    'video_tapes.type_of_subscription',
+                                    'wishlists.created_at')
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderby('wishlists.created_at' , 'desc');
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+        $videos = $base_query->paginate(16);
+
+        $items = [];
+
+        $pagination = 0;
+
+        if (count($videos) > 0) {
+
+            foreach ($videos->items() as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $request->id);
+
+            }
+
+            $pagination = (string) $videos->links();
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>$pagination]);
+    
+    }
+
+
+    /**
+     * Function Name : watch_list()
+     * 
+     * @usage_place : WEB
+     *
+     * User History - User watched videos display here
+     *
+     * @param Object $request - User Details
+     *
+     * @return response of videos list
+     */
+    public function watch_list($request) {
+
+        $base_query = UserHistory::where('user_histories.user_id' , $request->id)
+                            ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->select('user_histories.id as history_id',
+                                    'video_tapes.id as video_tape_id' ,
+                                    'video_tapes.title',
+                                    'video_tapes.description' , 
+                                    'video_tapes.duration',
+                                    'default_image',
+                                    'video_tapes.watch_count',
+                                    'video_tapes.ratings',
+                                    'video_tapes.ppv_amount', 
+                                    'video_tapes.amount',
+                                    'video_tapes.type_of_user',
+                                    'video_tapes.type_of_subscription',
+                                    'channels.user_id as channel_created_by',
+                                    DB::raw('DATE_FORMAT(video_tapes.publish_time , "%e %b %y") as publish_time'), 
+                                    'video_tapes.channel_id',
+                                    'channels.name as channel_name', 
+                                    'user_histories.created_at')
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderby('user_histories.created_at' , 'desc');
+        
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+        
+        }
+
+
+        $videos = $base_query->paginate(16);
+
+        $items = [];
+
+        $pagination = 0;
+
+        if (count($videos) > 0) {
+
+            foreach ($videos->items() as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $request->id);
+
+            }
+
+            $pagination = (string) $videos->links();
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>$pagination]);
+
+    }
+
+    /**
+     * Function Name : recently_added()
+     *
+     * @usage_place : WEB
+     *
+     * Displayed recently added videos by user/admin , the video displayed based on created date
+     *
+     * @param object $request - User Details
+     *
+     * @return list of videos
+     */
+    public function recently_added($request) {
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->videoResponse();
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+
+            }
+
+        }
+
+    
+        $videos = $base_query->paginate(16);
+
+        $items = [];
+
+        $pagination = 0;
+
+        if (count($videos)) {
+
+            foreach ($videos->items() as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $request->id);
+
+            }
+
+            $pagination  = (string) $videos->links();
+
+        }
+
+
+        return response()->json(['items'=>$items, 'pagination'=>$pagination]);
+    
+    }
+
+
+    /**
+     * Function Name : trending_list()
+     *
+     * @usage_place : WEB
+     *
+     * To display based on watch count, no of users seen videos
+     *
+     * @param object $request - User Details
+     *
+     * @return Response of videos list
+     */
+    public function trending_list($request) {
+
+        $base_query = VideoTape::where('watch_count' , '>' , 0)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->where('video_tapes.publish_status' , 1)
+                        ->where('video_tapes.status' , 1)
+                        ->where('video_tapes.is_approved' , 1)
+                        ->videoResponse()
+                        ->where('video_tapes.age_limit','<=', checkAge($request))
+                        ->orderby('watch_count' , 'desc');
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+                
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        }
+
+        $videos = $base_query->paginate(16);
+
+        $items = [];
+
+        $pagination = 0;
+
+        if (count($videos) > 0) {
+
+            foreach ($videos->items() as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $request->id);
+
+            }
+
+            $pagination = (string) $videos->links();
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>$pagination]);
+    
+    }
+
+
+    /**
+     * Function Name : suggestion_videos()
+     *
+     * @usage_place : WEB
+     *
+     * To get suggestion video to see the user
+     *
+     * @param object $request - User Details
+     *
+     * @return response of array videos
+     */ 
+    public function suggestion_videos($request) {
+
+        $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.publish_status' , 1)
+                            ->orderby('video_tapes.created_at' , 'desc')
+                            ->videoResponse()
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderByRaw('RAND()');
+
+        if($request->video_tape_id) {
+
+            $base_query->whereNotIn('video_tapes.id', [$request->video_tape_id]);
+        }
+
+        if ($request->id) {
+
+            // Check any flagged videos are present
+
+            $flag_videos = flag_videos($request->id);
+
+            if($flag_videos) {
+
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        }
+
+    
+        $videos = $base_query->paginate(16);
+        
+        $items = [];
+
+        $pagination = 0;
+
+        if (count($videos) > 0) {
+
+            foreach ($videos->items() as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $request->id);
+
+            }
+
+            $pagination = (string) $videos->links();
+
+        }
+
+        return response()->json(['items'=>$items, 'pagination'=>$pagination]);
+    
+    }
+
+
+    /**
+     * Function Name : channel_list
+     *
+     * @usage_place : WEB
+     *
+     * To list out all the channels which is in active status
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list
+     */
+    public function channel_list(Request $request) {
+
+        $age = 0;
+
+        $channel_id = [];
+
+        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                ->where('channels.status', DEFAULT_TRUE)
+                ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                ->where('video_tapes.status', DEFAULT_TRUE)
+                ->groupBy('video_tapes.channel_id');
+
+        if($request->id) {
+
+            $user = User::find($request->id);
+
+            $age = $user->age_limit;
+
+            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+            if ($request->id) {
+
+                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+                $query->whereIn('channels.id', $channel_id);
+            }
+
+
+            $query->where('video_tapes.age_limit','<=', $age);
+
+        }
+
+        $channels = $query->paginate(16);
+
+        $lists = [];
+
+        $pagination = 0;
+
+        if(count($channels) > 0) {
+
+            foreach ($channels as $key => $value) {
+                $lists[] = ['channel_id'=>$value->id, 
+                        'user_id'=>$value->user_id,
+                        'picture'=> $value->picture, 
+                        'title'=>$value->name,
+                        'description'=>$value->description, 
+                        'created_at'=>$value->created_at->diffForHumans(),
+                        'no_of_videos'=>videos_count($value->id),
+                        'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
+                        'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+                ];
+
+            }
+
+            $pagination = (string) $channels->links();
+
+        }
+
+        $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+        return response()->json($response_array);
+    }
+
+    /**
+     * Function Name : channel_videos()
+     *
+     * @usage_place : WEB
+     *
+     * To list out all the videos based on the channel id
+     *
+     * @param integer $channel_id - Channel Id
+     * 
+     * @return list out all the videos, and status of the subscribers
+     */
+    public function channel_videos($channel_id, $skip) {
+
+        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.status' , 1)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('video_tapes.channel_id' , $channel_id)
+                    ->videoResponse()
+                    ->orderby('video_tapes.created_at' , 'desc');
+
+        $u_id = '';
+
+        if (Auth::check()) {
+
+            $u_id = Auth::user()->id;
+
+            // Check any flagged videos are present
+            $flagVideos = getFlagVideos($u_id);
+
+            if($flagVideos) {
+
+                $videos_query->whereNotIn('video_tapes.id', $flagVideos);
+
+            }
+
+        }
+
+        if ($skip >= 0) {
+
+            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count', 12));
+
+        } else {
+
+            $videos = $videos_query->paginate(16);
+        }
+
+        $items = [];
+
+        if (count($videos) > 0) { 
+
+            foreach ($videos as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $u_id);
+
+            }
+
+        }
+
+        return response()->json($items);
+
+    }
+
+    /**
+     * Function Name : channel_trending()
+     *
+     * To list out channel trending videos 
+     *
+     * @param integer $id - Channel Id
+     *
+     * @return channel videos
+     */
+    public function channel_trending($id, $count) {
+
+        $base_query = VideoTape::where('watch_count' , '>' , 0)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->where('channel_id', $id)
+                        ->orderby('watch_count' , 'desc');
+
+        $u_id = "";
+
+        if (Auth::check()) {
+
+            // Check any flagged videos are present
+
+            $u_id = Auth::user()->id;
+
+            $flag_videos = flag_videos($u_id);
+
+            if($flag_videos) {
+                
+                $base_query->whereNotIn('video_tapes.id',$flag_videos);
+            }
+        }
+
+        if($count > 0){
+
+            $videos = $base_query->skip(0)->take($count)->get();
+
+        } else {
+
+            $videos = $base_query->paginate(16);
+            
+        }
+
+        $items = [];
+
+        if (count($videos) > 0) { 
+
+            foreach ($videos as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $u_id);
+
+            }
+
+        }
+
+        return response()->json($items);
+
+    }
+
+    /**
+     * Function Name : payment_videos()
+     *
+     * To list out payment videos 
+     *
+     * @param integer $id - Channel Id
+     *
+     * @return channel videos
+     */
+    public function payment_videos($id, $skip) {
+
+        $base_query = VideoTape::where('amount' , '>' , 0)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->where('channel_id', $id)
+                        ->orderby('amount' , 'desc');
+
+        if($skip >= 0) {
+
+            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+        } else {
+
+            $videos = $base_query->paginate(16);
+            
+        }
+
+        $u_id = Auth::check() ? Auth::user()->id : '';    
+
+        $items = [];
+
+        foreach ($videos as $key => $value) {
+
+            $items[] = displayVideoDetails($value, $u_id);
+
+        }
+
+        return response()->json($items);
+
+    
     }
 }

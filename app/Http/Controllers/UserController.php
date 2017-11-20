@@ -69,71 +69,123 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'watch_count', 'partialVideos', 'payment_mgmt_videos' , 'master_login']]);
+        $this->middleware('auth', ['except' => [
+                'master_login',
+                'index',
+                'single_video',
+                'contact',
+                'trending', 
+                'channel_videos', 
+                'add_history', 
+                'page_view', 
+                'channel_list', 
+                'watch_count', 
+                'partialVideos', 
+                'payment_mgmt_videos',  
+        ]]);
     }
 
 
-    /** 
-     * Used to do login activity for master login
-     * 
+    /**
+     * Function Name : master_login()
      *
+     * To Activate Super user by admin
+     *
+     * @param Object $request - User Details
+     *
+     * @return with Success/Failure Message
      */
-
     public function master_login(Request $request) {
 
-        // Get current login admin details
+        try {
 
-        $master_user_id = Auth::guard('admin')->user()->user_id;
+            DB::beginTransaction();
 
-        // Check the admin has logged in
+            if (Auth::guard('admin')->check()) {
 
-        if(!$master_user_id) {
+                // Get current login admin details
 
-            // Check already record exists
+                $master_user_id = Auth::guard('admin')->user()->user_id;
 
-            $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
+                // Check the admin has logged in
 
-            if($check_admin_user_details) {
+                if(!$master_user_id) {
 
-                $check_admin_user_details->is_master_user = 1;
+                    // Check already record exists
 
-                $check_admin_user_details->save();
+                    $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
+
+                    if($check_admin_user_details) {
+
+                        $check_admin_user_details->is_master_user = 1;
+
+                        if ($check_admin_user_details->save()) {
+
+
+                        } else {
+
+                            throw new Exception(tr('user_details_not_saved'));
+                            
+                        }
+
+                    } else {
+
+                        $check_admin_user_details = new User;
+
+                        $check_admin_user_details->name = "Master User";
+
+                        $check_admin_user_details->email = Auth::guard('admin')->user()->email;
+
+                        $check_admin_user_details->password = \Hash::make("123456");
+
+                        $check_admin_user_details->user_type = $check_admin_user_details->is_master_user = $check_admin_user_details->is_verified = $check_admin_user_details->status = 1;
+
+                        $check_admin_user_details->device_type = WEB;
+
+                        if ($check_admin_user_details->save()) {
+
+                        } else {
+
+                            throw new Exception(tr('user_details_not_saved'));
+                        }
+
+                    }
+
+                    $master_user_id = $check_admin_user_details->id;
+
+                }
+
+                $master_user_details = User::find($master_user_id);
+
+                // If master user details is not empty -> Login the admin as user
+
+                if($master_user_details) {
+
+                    Auth::loginUsingId($master_user_id, true);
+
+                } else {
+
+                    throw new Exception(tr('user_not_found'));
+
+                }
 
             } else {
 
-                $check_admin_user_details = new User;
-
-                $check_admin_user_details->name = "Master User";
-
-                $check_admin_user_details->email = Auth::guard('admin')->user()->email;
-
-                $check_admin_user_details->password = \Hash::make("123456");
-
-                $check_admin_user_details->user_type = $check_admin_user_details->is_master_user = $check_admin_user_details->is_verified = $check_admin_user_details->status = 1;
-
-                $check_admin_user_details->device_type = WEB;
-
-                $check_admin_user_details->save();
+                throw new Exception(tr('admin_not_logged_in'));
 
             }
 
-            $master_user_id = $check_admin_user_details->id;
+            DB::commit();
 
-        }
+            return redirect()->to('/')->with('flash_success', tr('master_login_success'));
 
-        $master_user_details = User::find($master_user_id);
+        } catch(Exception $e) {
 
-        // If master user details is not empty -> Login the admin as user
+            DB::rollback();
 
-        if($master_user_details) {
+            $e = $e->getMessage();
 
-            Auth::loginUsingId($master_user_id, true);
-
-            return redirect()->to('/')->with('flash_success' , tr('master_login_success'));
-
-        } else {
-
-            return back()->with("flash_error" , tr('something_error'));
+            return back()->with('falsh_error', $e);
 
         }
 
@@ -141,7 +193,11 @@ class UserController extends Controller {
 
 
     /**
+     * Function Name : index()
+     *
      * Show the user dashboard.
+     * 
+     * @param Object $request - User Details
      *
      * @return \Illuminate\Http\Response
      */
@@ -152,33 +208,33 @@ class UserController extends Controller {
         
         $username = config('database.connections.mysql.username');
 
-        if (Auth::check()) {
-            
-            $request->request->add([ 
-                'id'=>\Auth::user()->id,
-                'age' => \Auth::user()->age_limit,
-            ]);   
-        }
-
         if($database && $username && Setting::get('installation_process') == 2) {
 
             counter('home');
 
             $watch_lists = $wishlists = array();
 
+            if (Auth::check()) {
+                
+                $request->request->add([ 
+                    'id'=>\Auth::user()->id,
+                    'age' => \Auth::user()->age_limit,
+                ]);   
+            }
+
             if($request->has('id')){
 
-                $wishlists  =  $this->UserAPI->wishlist_list($request,WEB)->getData();
+                $wishlists = $this->UserAPI->wishlist_list($request)->getData();
 
-                $watch_lists = $this->UserAPI->watch_list($request,WEB)->getData();  
+                $watch_lists = $this->UserAPI->watch_list($request)->getData();  
             }
 
 
-            $recent_videos = $this->UserAPI->recently_added($request, WEB)->getData();
+            $recent_videos = $this->UserAPI->recently_added($request)->getData();
 
-            $trendings = $this->UserAPI->trending_list($request, WEB)->getData();
+            $trendings = $this->UserAPI->trending_list($request)->getData();
             
-            $suggestions  = $this->UserAPI->suggestion_videos($request, WEB)->getData();
+            $suggestions  = $this->UserAPI->suggestion_videos($request)->getData();
 
             $channels = getChannels(WEB);
 
@@ -216,12 +272,167 @@ class UserController extends Controller {
                         ->with('banner_videos', $banner_videos)
                         ->with('banner_ads', $banner_ads);
         } else {
+
             return redirect()->route('installTheme');
+
         }
         
     }
 
-    public function single_video(Request $request) {
+
+    /**
+     * Function Name : trending()
+     *
+     * To list out videos based on the watching count
+     *
+     * @param object $request - User Details
+     *
+     * @return video details
+     */
+    public function trending(Request $request) {
+
+        if (Auth::check()) {
+
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+                'age'=>\Auth::user()->age_limit,
+            ]);
+        }
+
+        $trending = $this->UserAPI->trending_list($request)->getData();
+
+        return view('user.trending')->with('page', 'trending')
+                                    ->with('videos',$trending);
+    }
+
+    /**
+     * Function Name : channel_list()
+     *
+     * To list out channels which is created by all the users
+     *
+     * @param object $request - User Details
+     *
+     * @return channel details details
+     */
+    public function channel_list(Request $request){
+
+        $response = $this->UserAPI->channel_list($request)->getData();
+
+
+        return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+
+    }
+
+    /**
+     * Function Name : history()
+     *
+     * To list out history of user based
+     *
+     * @param object $request - User Details
+     *
+     * @return array of history 
+     */
+    public function history(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
+
+        $histories = $this->UserAPI->watch_list($request)->getData();
+
+        return view('user.account.history')
+                        ->with('page' , 'history')
+                        ->with('subPage' , 'user-history')
+                        ->with('histories' , $histories);
+    
+    }
+
+
+    /**
+     * Function Name : wishlist()
+     *
+     * To list out wishlist of user based
+     *
+     * @param object $request - User Details
+     *
+     * @return array of wishlist 
+     */
+    public function wishlist(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
+        
+        $videos = $this->UserAPI->wishlist_list($request)->getData();
+
+        return view('user.account.wishlist')
+                    ->with('page' , 'wishlist')
+                    ->with('subPage' , 'user-wishlist')
+                    ->with('videos' , $videos);
+    
+    }
+
+    /**
+     * Function Name : channel_videos()
+     *
+     * Based on the channel id , channel related videos will display
+     *
+     * @param integer $id : Channel Id
+     *
+     * @return channel videos list
+     */
+    public function channel_videos($id) {
+
+        $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->where('id', $id)
+                ->first();
+
+        if ($channel) {
+
+            $videos = $this->UserAPI->channel_videos($id, 0)->getData();
+
+            $trending_videos = $this->UserAPI->channel_trending($id, 5)->getData();
+
+            $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
+
+            $user_id = Auth::check() ? Auth::user()->id : '';
+
+            $subscribe_status = false;
+
+            if ($user_id) {
+
+                $subscribe_status = check_channel_status($user_id, $id);
+
+            }
+
+            $subscriberscnt = subscriberscnt($channel->id);
+
+            return view('user.channels.index')
+                        ->with('page' , 'channels_'.$id)
+                        ->with('subPage' , 'channels')
+                        ->with('channel' , $channel)
+                        ->with('videos' , $videos)->with('trending_videos', $trending_videos)
+                        ->with('payment_videos', $payment_videos)
+                        ->with('subscribe_status', $subscribe_status)
+                        ->with('subscriberscnt', $subscriberscnt);
+        } else {
+
+            return back()->with('flash_error', tr('channel_not_found'));
+
+        }
+    }
+
+    public function single_video(eRquest $request) {
 
         $request->request->add([ 
                 'video_tape_id' => $request->id,
@@ -299,7 +510,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
 
-        $wishlist = $this->UserAPI->wishlist_list($request,WEB)->getData();
+        $wishlist = $this->UserAPI->wishlist_list($request)->getData();
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
@@ -321,7 +532,7 @@ class UserController extends Controller {
             'age'=>\Auth::user()->age_limit,
         ]);
 
-        $wishlist = $this->UserAPI->wishlist_list($request,WEB)->getData();
+        $wishlist = $this->UserAPI->wishlist_list($request)->getData();
 
         return view('user.account.edit-profile')->with('page' , 'profile')
                     ->with('subPage' , 'user-update-profile')->with('wishlist', $wishlist);
@@ -496,22 +707,7 @@ class UserController extends Controller {
         }
     }
 
-    public function history(Request $request) {
 
-         $request->request->add([ 
-            'id' => \Auth::user()->id,
-            'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token,
-            'age'=>\Auth::user()->age_limit,
-        ]);
-
-        $histories = $this->UserAPI->watch_list($request,WEB)->getData();
-
-        return view('user.account.history')
-                        ->with('page' , 'profile')
-                        ->with('subPage' , 'user-history')
-                        ->with('histories' , $histories);
-    }
 
     public function add_wishlist(Request $request) {
 
@@ -558,22 +754,6 @@ class UserController extends Controller {
         }
     } 
 
-    public function wishlist(Request $request) {
-
-         $request->request->add([ 
-            'id' => \Auth::user()->id,
-            'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token,
-            'age'=>\Auth::user()->age_limit,
-        ]);
-        
-        $videos = $this->UserAPI->wishlist_list($request,WEB)->getData();
-
-        return view('user.account.wishlist')
-                    ->with('page' , 'profile')
-                    ->with('subPage' , 'user-wishlist')
-                    ->with('videos' , $videos);
-    }
 
     public function add_comment(Request $request) {
 
@@ -608,89 +788,7 @@ class UserController extends Controller {
     }
 
 
-    public function channel_videos($id) {
 
-        $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                /*->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
-                    'video_tapes.status', 'video_tapes.channel_id')
-                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
-                ->where('channels.status', DEFAULT_TRUE)
-                ->where('video_tapes.is_approved', DEFAULT_TRUE)
-                ->where('video_tapes.status', DEFAULT_TRUE)
-                ->groupBy('video_tapes.channel_id')*/
-                ->where('id', $id)
-                ->first();
-
-
-       /* if ($channel) {
-
-            if(Auth::check()) {
-
-                if ($channel->user_id != Auth::user()->id) {
-
-                    $age = Auth::user()->age_limit ? (Auth::user()->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
-
-                    if ($video->age_limit > $age) {
-
-                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
-
-                    }
-
-                } else {
-
-                    if ($video->age_limit != 0) {
-
-                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
-
-                    }
-                }
-            } else {
-
-                if ($video->age_limit != 0) {
-
-                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
-
-                }
-
-            }
-
-        }*/
-
-
-        if ($channel) {
-
-            $videos = $this->UserAPI->channel_videos($id)->getData();
-
-            $trending_videos = $this->UserAPI->channel_trending($id, WEB, null, 5)->getData();
-
-            $payment_videos = $this->UserAPI->payment_videos($id, WEB, null)->getData();
-
-            $user_id = Auth::check() ? Auth::user()->id : '';
-
-            $subscribe_status = false;
-
-            if ($user_id) {
-
-                $subscribe_status = check_channel_status($user_id, $id);
-
-            }
-
-            $subscriberscnt = subscriberscnt($channel->id);
-
-            return view('user.channels.index')
-                        ->with('page' , 'channels')
-                        ->with('subPage' , 'channels')
-                        ->with('channel' , $channel)
-                        ->with('videos' , $videos)->with('trending_videos', $trending_videos)
-                        ->with('payment_videos', $payment_videos)
-                        ->with('subscribe_status', $subscribe_status)
-                        ->with('subscriberscnt', $subscriberscnt);
-        } else {
-
-            return back()->with('flash_error', tr('something_error'));
-
-        }
-    }
 
     public function channel_create() {
         
@@ -770,28 +868,6 @@ class UserController extends Controller {
 
     }
 
-    /**
-     * Trending Videos
-     *
-     */
-
-    public function trending(Request $request) {
-
-        if (Auth::check()) {
-
-            $request->request->add([ 
-                'id' => \Auth::user()->id,
-                'token' => \Auth::user()->token,
-                'device_token' => \Auth::user()->device_token,
-                'age'=>\Auth::user()->age_limit,
-            ]);
-        }
-
-        $trending = $this->UserAPI->trending_list($request, WEB)->getData();
-
-        return view('user.trending')->with('page', 'trending')
-                                    ->with('videos',$trending);
-    }
 
     public function delete_account(Request $request) {
 
@@ -1260,17 +1336,6 @@ class UserController extends Controller {
 
     }
 
-    public function channel_list(Request $request){
-
-        $response = $this->UserAPI->channel_list($request)->getData();
-
-        // dd($response);
-
-        return view('user.channels.list')->with('page', 'channels')
-                ->with('subPage', 'channel_list')
-                ->with('response', $response);
-
-    }
 
     public function likeVideo(Request $request)  {
         $request->request->add([
