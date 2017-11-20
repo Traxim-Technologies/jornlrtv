@@ -369,7 +369,8 @@
 						            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
 						            <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
 						            <li class="visible-xs">
-		                    			<a href="#">Disable Ad</a>
+		                    			<a onclick="change_adstatus({{$video->ad_status}}, {{$video->video_tape_id}})" style="cursor: pointer;" id="ad_status_{{$video->video_tape_id}}">@if($video->ad_status) {{tr('disable_ad')}} @else {{tr('enable_ad')}} @endif</a>
+		 
 		                    		</li>
 					          	</ul>
 
@@ -661,21 +662,29 @@
 @section('scripts')
 
 <script>
-    
+
     function change_adstatus(val, id) {
 
         var url = "{{route('user.ad_request')}}";
-
 
         $.ajax({
             url : url,
             method : "POST",
             data : {id : id , status : val},
             success : function(result) {
-                console.log(result);
+  
+                if (result.success == true) {
 
-                if (result == true) {
-                    // window.location.reload();
+                	if (result.status == 1) {
+
+                		$("#ad_status_"+id).html("{{tr('disable_ad')}}");
+
+                	} else {
+
+                		$("#ad_status_"+id).html("{{tr('enable_ad')}}");
+                	}
+                    
+                    alert("Ad Status Changed Successfully");
                 }
             }
 

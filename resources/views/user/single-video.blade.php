@@ -27,15 +27,12 @@
 
 
 <style type="text/css">
-
 .sub-comhead .rating-md {
 
     font-size: 11px;
 
 }
-
 .thumb-class {
-
     cursor:pointer;
     text-decoration:none;
 }
@@ -59,7 +56,6 @@ textarea[name=comments] {
     color: #fff;
     font-size: 12px;
 }
-
 .progress-bar-div {
     width: 100%;
     height: 5px;
@@ -69,7 +65,6 @@ textarea[name=comments] {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
     
 }
-
 .progress-bar-fill-div {
     display: block;
     height: 5px;
@@ -78,63 +73,6 @@ textarea[name=comments] {
     /*transition: width 250ms ease-in-out;*/
     /*transition : width 10s ease-in-out;*/
 
-}
-
-.small-box {
-    border-radius: 2px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    display: block;
-    margin-bottom: 20px;
-    position: relative;
-    color: #fff;    
-}
-
-.bg-green{
-    background-color: #00a65a !important;
-}
-
-.bg-aqua {
-    background-color: #00c0ef !important;
-}
-
-.small-box h3, .small-box p {
-    z-index: 5;
-}
-.small-box h3 {
-    font-size: 38px;
-    font-weight: bold;
-    margin: 0 0 10px;
-    padding: 0;
-    white-space: nowrap;
-}
-
-.small-box > .inner {
-    padding: 10px;
-}
-
-.small-box p {
-    font-size: 15px;
-}
-
-.small-box .icon {
-    color: rgba(0, 0, 0, 0.15);
-    font-size: 90px;
-    position: absolute;
-    right: 10px;
-    top: -10px;
-    transition: all 0.3s linear 0s;
-    z-index: 0;
-}
-
-.small-box > .small-box-footer {
-    background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
-    color: rgba(255, 255, 255, 0.8);
-    display: block;
-    padding: 3px 0;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    z-index: 10;
 }
 </style>
 
@@ -171,7 +109,6 @@ textarea[name=comments] {
                                                         {{number_format_short($video->watch_count)}} {{tr('views')}}
                                                     </div>
                                                     <div class="pull-right">
-                                                       <?php /*( <i class="fa fa-commenting"> <span id="video_comment_count">{{get_video_comment_count($video->video_tape_id)}}</span></i> {{tr('comments')}} ) */?>
 
                                                         @if (Auth::check())
                                                             <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up fa"></i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
@@ -263,15 +200,15 @@ textarea[name=comments] {
                                                     <div class="row1"> 
                                                         <div class="col-xs-7 col-md-7 col-sm-7 col-lg-7" >
                                                             <div class="channel-img">
-                                                                <img src="{{asset('images/default.png')}}" class="img-responsive img-circle">
+                                                                <img src="{{$video->channel_picture}}" class="img-responsive img-circle">
                                                             </div>
-                                                            <div class="username"><a href="#">{{$video->channel_name}}</a></div>
+                                                            <div class="username"><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
                                                             <h5 class="rating no-margin top">
-                                                                <a href="#" class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#" class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#" class="rating1"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#" class="rating1"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                                <a href="#" class="rating1"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <span class="rating1"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></span>
+                                                                <span class="rating1"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></span>
+                                                                <span class="rating1"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></span>
+                                                                <span class="rating1"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></span>
+                                                                <span class="rating1"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                             </h5>
                                                         </div>
                                                         <div class="col-xs-5 col-md-5 col-sm-5 col-lg-5" >
@@ -667,7 +604,7 @@ textarea[name=comments] {
                            <form onsubmit="return false;">
 
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="5" id="comment">{{$embed_link}}</textarea>
+                                    <textarea class="form-control" rows="5" id="embed_link_url">{{$embed_link}}</textarea>
                                     <p class="underline1"></p>
                                 </div>
 
@@ -1086,14 +1023,6 @@ textarea[name=comments] {
 
                                                         console.log('Added to history');
 
-                                                        /*var watch_count = 0;
-                                                        var count = 0;
-                                                        watch_count = jQuery('#watch_count').text();
-                                                        var count = parseInt(watch_count) + 1;
-                                                        jQuery('#watch_count').text(count);
-
-                                                        console.log('Added to history');*/
-
                                                        } else {
                                                             console.log('Wrong...!');
                                                        }
@@ -1237,10 +1166,6 @@ textarea[name=comments] {
 
                                     if (playerInstance.getState() == "complete") {
 
-                                        // $('#main-video-player').hide();
-
-                                        // jQuery("#main-video-player").css("display", "none");
-
                                         $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
 
                                         $('#main_video_ad').show();
@@ -1278,11 +1203,6 @@ textarea[name=comments] {
 
                     function adsPage(adtimings){
 
-                        // $("#progress").html("");
-
-                        // $(".progress-bar-fill-div").css('width', '0%');
-
-                         // adtimings = adtimings * 60;
 
                         $(".seconds").html(adtimings+" sec");
 
@@ -1299,7 +1219,6 @@ textarea[name=comments] {
                             $(this).css('width', '100%')
                         });
  
-                        // var width = (100/(adtimings));
 
                         intervalId = setInterval(function(){
 
@@ -1307,11 +1226,7 @@ textarea[name=comments] {
 
                             $(".seconds").html((adtimings - adCount) +" sec");
 
-                            // console.log(width * adCount);
-
                             console.log("Ad Count " +adCount);
-
-                            // $(".progress-bar-fill-div").css('width', (width * adCount)+'%');
                             
                             if (adCount == adtimings) {
 
@@ -1358,13 +1273,6 @@ textarea[name=comments] {
 
                                 console.log('Watch count Incremented');
 
-                                /*var watch_count = 0;
-                                var count = 0;
-                                watch_count = jQuery('#watch_count').text();
-                                var count = parseInt(watch_count) + 1;
-                                jQuery('#watch_count').text(count);
-
-                                console.log('Added to history');*/
 
                                } else {
                                     console.log('Wrong...!');
@@ -1402,10 +1310,6 @@ textarea[name=comments] {
 
                             @endif
 
-                           
-                            
-                               
-
                         }
 
                         @if($ads)
@@ -1416,28 +1320,19 @@ textarea[name=comments] {
 
                     })
 
-
-
-                    
-
-            // });
-
         });
 
 
             function copyTextToClipboard() {
 
-               var textArea = document.createElement( "textarea" );
-               textArea.value = $("#embed_link").val();
-               document.body.appendChild( textArea );
-
-               textArea.select();
-
-               $("#embed_link").select();
+               $("#embed_link_url").select();
 
                try {
+
                   var successful = document.execCommand( 'copy' );
+
                   var msg = successful ? 'successful' : 'unsuccessful';
+
                   console.log('Copying text command was ' + msg);
 
                   addToast();
@@ -1446,7 +1341,6 @@ textarea[name=comments] {
                   console.log('Oops, unable to copy');
                }
 
-               document.body.removeChild( textArea );
             }
 
         function likeVideo(video_id) {
