@@ -11,7 +11,6 @@
                     <img src="{{asset('logo.png')}}" class="logo-img">
                 @endif
             </a>
-        
 
         </div>
 
@@ -27,29 +26,21 @@
                                 <img class="profile-image" src="{{asset('placeholder.png')}}">
                             @endif
 
-
-                            
                           </button>
 
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
                             <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
 
-                           <?php /* @if(Setting::get('payment_type') == 'stripe') */?>
-                                <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
-                            <?php /* @endif */?>
+                            <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
 
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
 
+                            <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
 
+                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
 
-                            @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
-                                <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
-                            @endif
-
-                            <?php /*<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
-
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li> */?>
+                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
 
                             @if(Setting::get('is_spam')) 
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
@@ -140,22 +131,21 @@
             <ul class="mobile-header">
                 <li><a href="{{route('user.dashboard')}}" class="mobile-menu">
                     <i class="material-icons">home</i> 
-                    <span class="hidden-xxs">Home</span>
+                    <span class="hidden-xxs">{{tr('home')}}</span>
                 </a></li>
                 <li><a href="{{route('user.trending')}}" class="mobile-menu">
                     <i class="material-icons">whatshot</i>
-                    <span class="hidden-xxs">Trending</span>
+                    <span class="hidden-xxs">{{tr('trending')}}</span>
                 </a></li>
                 <li><a href="{{route('user.channel.list')}}" class="mobile-menu">
                     <i class="material-icons">live_tv</i>
-                    <span class="hidden-xxs">Channels</span>
+                    <span class="hidden-xxs">{{tr('channels')}}</span>
                 </a></li>
                 @if(Auth::check())
                 <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
                     <i class="material-icons">subscriptions</i>
-                    <span class="hidden-xxs">My Channels</span>
+                    <span class="hidden-xxs">{{tr('my_channels')}}</span>
                 </a></li>
-
                 @endif
 
             </ul>
@@ -179,11 +169,8 @@
                             <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
                             
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
-                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
-                             @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
-                                <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
-                            @endif
+                            
+                            <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
                             @if(Setting::get('is_spam')) 
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
