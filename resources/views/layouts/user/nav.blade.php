@@ -24,7 +24,7 @@
                 <img src="{{asset('images/history.png')}}">{{tr('history')}}
             </a>
         </li>
-         <li id="wishlist">
+        <li id="wishlist">
             <a href="{{route('user.wishlist')}}">
                 <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
             </a>
