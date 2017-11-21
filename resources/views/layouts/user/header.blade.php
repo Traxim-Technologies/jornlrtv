@@ -11,7 +11,6 @@
                     <img src="{{asset('logo.png')}}" class="logo-img">
                 @endif
             </a>
-        
 
         </div>
 
@@ -27,29 +26,21 @@
                                 <img class="profile-image" src="{{asset('placeholder.png')}}">
                             @endif
 
-
-                            
                           </button>
 
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
                             <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
 
-                           <?php /* @if(Setting::get('payment_type') == 'stripe') */?>
-                                <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
-                            <?php /* @endif */?>
+                            <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
 
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
 
+                            <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
 
+                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
 
-                            @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
-                                <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
-                            @endif
-
-                            <?php /*<li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
-
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li> */?>
+                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
 
                             @if(Setting::get('is_spam')) 
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
@@ -84,9 +75,9 @@
                        
                         <li  class="dropdown">
                     
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 5px 10px;margin-right: 5px;color: #cc181e;"><i class="fa fa-globe"></i> <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle language-icon" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i> <b class="caret"></b></a>
 
-                            <ul class="dropdown-menu" style="min-width: 70px;overflow: hidden;position: absolute;background: #fff;">
+                            <ul class="dropdown-menu languages1">
 
                                 @foreach($languages as $h => $language)
 
@@ -116,7 +107,7 @@
         </div>
 
 
-        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 hidden-xs">
+        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 hidden-xs">
 
             <div id="custom-search-input" class="">
                 <form method="post" action="{{route('search-all')}}" id="userSearch">
@@ -135,33 +126,32 @@
 
         </div>
 
-        <!-- ========RESPONSIVE SEARCH BAR VISIBLE IN MOBAILE VIEW====== -->
+        <!-- ========RESPONSIVE  HEADER VISIBLE IN MOBAILE VIEW====== -->
         <div class="col-xs-12 visible-xs">
             <ul class="mobile-header">
                 <li><a href="{{route('user.dashboard')}}" class="mobile-menu">
                     <i class="material-icons">home</i> 
-                    <span class="hidden-xxs">Home</span>
+                    <span class="hidden-xxs">{{tr('home')}}</span>
                 </a></li>
                 <li><a href="{{route('user.trending')}}" class="mobile-menu">
                     <i class="material-icons">whatshot</i>
-                    <span class="hidden-xxs">Trending</span>
+                    <span class="hidden-xxs">{{tr('trending')}}</span>
                 </a></li>
                 <li><a href="{{route('user.channel.list')}}" class="mobile-menu">
                     <i class="material-icons">live_tv</i>
-                    <span class="hidden-xxs">Channels</span>
+                    <span class="hidden-xxs">{{tr('channels')}}</span>
                 </a></li>
                 @if(Auth::check())
                 <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
                     <i class="material-icons">subscriptions</i>
-                    <span class="hidden-xxs">My Channels</span>
+                    <span class="hidden-xxs">{{tr('my_channels')}}</span>
                 </a></li>
-
                 @endif
 
             </ul>
         </div>
 
-        <div class="col-lg-3 col-md-2 col-sm-2 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
+        <div class="col-lg-3 col-md-2 col-sm-3 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
             @if(Auth::check())
                 <div class="y-button profile-button">
                    <div class="dropdown">
@@ -179,11 +169,8 @@
                             <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
                             
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
-                            <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
-                            <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
-                             @if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) 
-                                <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
-                            @endif
+                            
+                            <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
                             @if(Setting::get('is_spam')) 
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
@@ -222,9 +209,9 @@
                        
                         <li  class="dropdown">
                     
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 5px 15px; margin-right: 5px;color: #cc181e"><i class="fa fa-globe"></i> <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle language-icon" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i> <b class="caret"></b></a>
 
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu languages">
 
                                 @foreach($languages as $h => $language)
 

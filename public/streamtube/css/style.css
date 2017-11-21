@@ -126,6 +126,9 @@ body{
 	padding: 0px 7px;
 	color: #333;
 }
+.top5{
+	margin-top: 5px;
+}
 .y-button{
 	float: right;
 }
@@ -515,6 +518,9 @@ videos (single page) css
 	vertical-align: -24%;
 	font-size:18px;
 }
+{
+	margin-top: 30px;
+}
 .modal-top1 .modal-content{
 	border-radius: 0;
 }
@@ -594,7 +600,31 @@ videos (single page) css
 .stars i:active{
 	color: #f5ba0e;
 }
-
+.btn{
+	border-radius: 0px !important;
+}
+input{
+	border-radius: 0px !important;
+	box-shadow: none !important;
+	border-color:#b8b8b8 !important;
+}
+textarea{
+	border-radius: 0px !important;
+	box-shadow: none !important;
+	border-color:#b8b8b8 !important;
+	resize: none;
+}
+input:focus, textarea:focus{
+	box-shadow: none !important;
+	border-color:#fc8888 !important;
+}
+input[type="checkbox"], input[type="radio"]{
+	vertical-align: -17%;
+}
+.channel-tab-icon{
+	color: #999;
+	font-size: 20px;
+}
 /*.c-380:before{
 	content: '\002022';
     margin: 0 5px;
@@ -1078,7 +1108,7 @@ signup.html css
 	background-color: #fff;
 	padding: 15px;
 	border: 1px solid transparent;
-	border-radius: 5px;
+	border-radius:0px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
 }
 .sign-up{
@@ -1492,7 +1522,7 @@ changes
 .mylist button{
 	font-size: 17px;
     border: none;
-    padding: 1px 10px;
+    padding: 1px 0 1px 10px;
     background-color:transparent;
     color: #999;
 }
@@ -1671,7 +1701,7 @@ changes
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-height:40px;
+	max-height:38px;
 	line-height:17px;
 	font-family: arial;
 	font-size: 1em;
@@ -2156,6 +2186,44 @@ changes
 .zero-padding{
 	padding: 0;
 }
+@media screen and (max-width: 767px) {
+.language-icon{
+	padding: 5px 10px !important;
+	margin-right: 5px;
+	color: white;
+	font-size: 20px;
+}
+.language-icon:hover, .language-icon:active, .language-icon:focus{
+	background-color: transparent !important;
+	color: white;
+}
+}
+@media screen and (min-width:768px) {
+.language-icon{
+	padding: 5px 10px !important;
+	margin-right: 5px;
+	color: #cc181e;
+	font-size: 20px;
+}
+.language-icon:hover, .language-icon:active, .language-icon:focus{
+	background-color: transparent !important;
+	color: #cc181e;
+}
+}
+.languages{
+	left: -90px !important;
+	min-width: 140px;
+	border-radius: 4px !important;
+}
+.languages1{
+	left: -90px !important;
+	min-width: 140px;
+	border-radius: 4px !important;
+	overflow: hidden !important;
+	position: absolute !important;
+	background: #fff !important;
+	border:1px solid #eee !important;
+}
 .wrapper_content {
 
 	position: relative;
@@ -2563,196 +2631,13 @@ changes
   }
 }
 
-/*.cssload-container {
-  max-width: 100%;
-  top:0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  align-items: center;
-  display: flex;
-  justify-content:center;
-  position: fixed;
-}
-
-.cssload-flex-container {
-  display: flex;
-    display: -o-flex;
-    display: -ms-flex;
-    display: -webkit-flex;
-    display: -moz-flex;
-  flex-direction: row;
-    -o-flex-direction: row;
-    -ms-flex-direction: row;
-    -webkit-flex-direction: row;
-    -moz-flex-direction: row;
-  flex-wrap: wrap;
-    -o-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    -moz-flex-wrap: wrap;
-  justify-content: space-around;
-    -o-justify-content: space-around;
-    -ms-justify-content: space-around;
-    -webkit-justify-content: space-around;
-    -moz-justify-content: space-around;
-}
-.cssload-flex-container li {
-  padding: 10px;
-  height: 97px;
-  width: 97px;
-  margin: 29px 19px;
-  position: relative;
-  text-align: center;
-  list-style: none;
-}
-
-.cssload-loading {
-  display: inline-block;
-  position: relative;
-  width: 73px;
-  height: 73px;
-  border-radius: 4px;
-  border-bottom: 5px solid rgb(255,0,0);
-  overflow: hidden;
-}
-.cssload-loading:after, .cssload-loading:before {
-  position: absolute;
-  content: '';
-  background: rgb(255,0,0);
-  border-radius: 100%;
-}
-.cssload-loading:before {
-  height: 34px;
-  width: 34px;
-  left: 26.5%;
-  animation: cssload-bounce1 1.55s ease-in infinite;
-    -o-animation: cssload-bounce1 1.55s ease-in infinite;
-    -ms-animation: cssload-bounce1 1.55s ease-in infinite;
-    -webkit-animation: cssload-bounce1 1.55s ease-in infinite;
-    -moz-animation: cssload-bounce1 1.55s ease-in infinite;
-  animation-direction: alternate;
-    -o-animation-direction: alternate;
-    -ms-animation-direction: alternate;
-    -webkit-animation-direction: alternate;
-    -moz-animation-direction: alternate;
-}
-.cssload-loading:after {
-  height: 15px;
-  width: 15px;
-  left: 39.5%;
-  animation: cssload-bounce2 1.55s ease-out infinite;
-    -o-animation: cssload-bounce2 1.55s ease-out infinite;
-    -ms-animation: cssload-bounce2 1.55s ease-out infinite;
-    -webkit-animation: cssload-bounce2 1.55s ease-out infinite;
-    -moz-animation: cssload-bounce2 1.55s ease-out infinite;
-  animation-direction: alternate;
-    -o-animation-direction: alternate;
-    -ms-animation-direction: alternate;
-    -webkit-animation-direction: alternate;
-    -moz-animation-direction: alternate;
-  transform: translateY(219px);
-    -o-transform: translateY(219px);
-    -ms-transform: translateY(219px);
-    -webkit-transform: translateY(219px);
-    -moz-transform: translateY(219px);
-}
-
-
-
-
-@keyframes cssload-bounce1 {
-  from {
-    transform: translateY(0px);
-  }
-  to {
-    transform: translateY(249px);
-  }
-}
-
-@-o-keyframes cssload-bounce1 {
-  from {
-    -o-transform: translateY(0px);
-  }
-  to {
-    -o-transform: translateY(249px);
-  }
-}
-
-@-ms-keyframes cssload-bounce1 {
-  from {
-    -ms-transform: translateY(0px);
-  }
-  to {
-    -ms-transform: translateY(249px);
-  }
-}
-
-@-webkit-keyframes cssload-bounce1 {
-  from {
-    -webkit-transform: translateY(0px);
-  }
-  to {
-    -webkit-transform: translateY(249px);
-  }
-}
-
-@-moz-keyframes cssload-bounce1 {
-  from {
-    -moz-transform: translateY(0px);
-  }
-  to {
-    -moz-transform: translateY(249px);
-  }
-}
-
-@keyframes cssload-bounce2 {
-  from {
-    transform: translateY(219px);
-  }
-  to {
-    transform: translateY(0px);
-  }
-}
-
-@-o-keyframes cssload-bounce2 {
-  from {
-    -o-transform: translateY(219px);
-  }
-  to {
-    -o-transform: translateY(0px);
-  }
-}
-
-@-ms-keyframes cssload-bounce2 {
-  from {
-    -ms-transform: translateY(219px);
-  }
-  to {
-    -ms-transform: translateY(0px);
-  }
-}
-
-@-webkit-keyframes cssload-bounce2 {
-  from {
-    -webkit-transform: translateY(219px);
-  }
-  to {
-    -webkit-transform: translateY(0px);
-  }
-}
-
-@-moz-keyframes cssload-bounce2 {
-  from {
-    -moz-transform: translateY(219px);
-  }
-  to {
-    -moz-transform: translateY(0px);
-  }
-}*/
 
 
 .carousel-caption {
 
 	bottom: 0%;
+}
+
+.username a {
+	text-decoration : none;
 }
