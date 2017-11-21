@@ -3694,12 +3694,13 @@ class UserApiController extends Controller {
 
         if ($skip >= 0) {
 
-            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count', 12));
+            $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count', 12))->get();
 
         } else {
 
             $videos = $videos_query->paginate(16);
         }
+
 
         $items = [];
 
