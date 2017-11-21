@@ -4406,20 +4406,10 @@ class UserApiController extends Controller {
         
         }
 
-        if($web) {
 
-            $videos = $base_query->paginate(16);
+        $videos = $base_query->paginate(16);
 
-            $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
-
-
-        } else {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-            $model = ['data'=>$videos];
-
-        }
+        $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
 
         $items = [];
 
