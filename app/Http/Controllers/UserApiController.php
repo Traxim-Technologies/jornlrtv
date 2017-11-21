@@ -2187,67 +2187,6 @@ class UserApiController extends Controller {
         return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
     }
 
-    public function add_history(Request $request)  {
-
-        \Log::info("ADD History Start");
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'video_tape_id' => 'required|integer|exists:video_tapes,id',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists please provide correct video id',
-                'unique' => 'The :attribute already added in history.'
-            )
-        );
-
-        if ($validator->fails()) {
-
-            $error = implode(',', $validator->messages()->all());
-
-            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
-
-        } else {
-
-            if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first()) {
-
-                $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
-
-            } else {
-
-                // Save Wishlist
-
-                if($request->id) {
-
-                    $rev_user = new UserHistory();
-                    $rev_user->user_id = $request->id;
-                    $rev_user->video_tape_id = $request->video_tape_id;
-                    $rev_user->status = DEFAULT_TRUE;
-                    $rev_user->save();
-
-                }
-
-                $response_array = array('success' => true);
-           
-            }
-
-
-            $payperview = PayPerView::where('user_id', $request->id)
-                            ->where('video_id',$request->video_tape_id)
-                            ->where('status',0)->first();
-
-            if ($payperview) {
-
-                $payperview->status = DEFAULT_TRUE;
-
-                $payperview->save();
-
-            }
-        }
-
-    }
-
 
     /**
      * Get History videos of the user
