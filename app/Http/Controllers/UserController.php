@@ -460,6 +460,8 @@ class UserController extends Controller {
 
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
+            $live_videos = VideoRepo::live_videos_list($id, WEB, null);
+
             $user_id = Auth::check() ? Auth::user()->id : '';
 
             $subscribe_status = false;
@@ -476,6 +478,7 @@ class UserController extends Controller {
                         ->with('page' , 'channels_'.$id)
                         ->with('subPage' , 'channels')
                         ->with('channel' , $channel)
+                        ->with('live_videos', $live_videos)
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
@@ -960,94 +963,6 @@ class UserController extends Controller {
                     ->with('page' , 'profile')
                     ->with('subPage' , 'user-comments')
                     ->with('videos' , $videos);
-    }
-
-
-    public function channel_videos($id) {
-
-        $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                /*->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
-                    'video_tapes.status', 'video_tapes.channel_id')
-                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
-                ->where('channels.status', DEFAULT_TRUE)
-                ->where('video_tapes.is_approved', DEFAULT_TRUE)
-                ->where('video_tapes.status', DEFAULT_TRUE)
-                ->groupBy('video_tapes.channel_id')*/
-                ->where('id', $id)
-                ->first();
-
-
-       /* if ($channel) {
-
-            if(Auth::check()) {
-
-                if ($channel->user_id != Auth::user()->id) {
-
-                    $age = Auth::user()->age_limit ? (Auth::user()->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
-
-                    if ($video->age_limit > $age) {
-
-                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
-
-                    }
-
-                } else {
-
-                    if ($video->age_limit != 0) {
-
-                        return response()->json(['success'=>false, 'message'=>tr('age_error')]);
-
-                    }
-                }
-            } else {
-
-                if ($video->age_limit != 0) {
-
-                    return response()->json(['success'=>false, 'message'=>tr('age_error')]);
-
-                }
-
-            }
-
-        }*/
-
-
-        if ($channel) {
-
-            $videos = $this->UserAPI->channel_videos($id)->getData();
-
-            $trending_videos = $this->UserAPI->channel_trending($id, WEB, null, 5)->getData();
-
-            $payment_videos = $this->UserAPI->payment_videos($id, WEB, null)->getData();
-
-            $live_videos = VideoRepo::live_videos_list($id, WEB, null);
-
-            $user_id = Auth::check() ? Auth::user()->id : '';
-
-            $subscribe_status = false;
-
-            if ($user_id) {
-
-                $subscribe_status = check_channel_status($user_id, $id);
-
-            }
-
-            $subscriberscnt = subscriberscnt($channel->id);
-
-            return view('user.channels.index')
-                        ->with('page' , 'channels')
-                        ->with('subPage' , 'channels')
-                        ->with('channel' , $channel)
-                        ->with('live_videos', $live_videos)
-                        ->with('videos' , $videos)->with('trending_videos', $trending_videos)
-                        ->with('payment_videos', $payment_videos)
-                        ->with('subscribe_status', $subscribe_status)
-                        ->with('subscriberscnt', $subscriberscnt);
-        } else {
-
-            return back()->with('flash_error', tr('something_error'));
-
-        }
     }
 
     /**
