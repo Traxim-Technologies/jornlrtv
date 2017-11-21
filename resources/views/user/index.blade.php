@@ -188,7 +188,7 @@
                 @endif
 
 
-                @if(count($recent_videos) > 0)
+                @if(count($recent_videos->items) > 0)
 
                     <div class="slide-area">
                         <div class="box-head">
@@ -197,7 +197,7 @@
 
                         <div class="box">
 
-                            @foreach($recent_videos as $recent_video)
+                            @foreach($recent_videos->items as $recent_video)
                             <div class="slide-box">
                                 <div class="slide-image">
                                     <a href="{{$recent_video->url}}"><img src="{{$recent_video->video_image}}" /></a>
@@ -287,7 +287,7 @@
 
                 @endif
 
-                @if(count($suggestions) > 0)
+                @if(count($suggestions->items) > 0)
 
                 <hr>
 
@@ -298,7 +298,7 @@
 
                         <div class="box">
 
-                            @foreach($suggestions as $suggestion)
+                            @foreach($suggestions->items as $suggestion)
                             <div class="slide-box">
                                 <div class="slide-image">
                                     <a href="{{$suggestion->url}}"><img src="{{$suggestion->video_image}}" /></a>

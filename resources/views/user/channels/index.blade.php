@@ -147,7 +147,7 @@
 									</a>
 
 
-									@if(Setting::get('broadcast_by_user') == 1 || Auth::check() ? Auth::user()->is_master_user == 1 : 0)
+									@if(Setting::get('broadcast_by_user') == 1 || (Auth::check() ? Auth::user()->is_master_user == 1 : 0))
 
 										<div id="start_broadcast" class="modal fade" role="dialog">
 										    <div class="modal-dialog">
@@ -339,11 +339,17 @@
 						<ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
 							
 							<li role="presentation" class="active">
-								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('home')}}</span></a>
+								<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab">
+								<span class="yt-uix-button-content hidden-xs">{{tr('home')}}</span>
+								<span class="visible-xs"><i class="fa fa-home channel-tab-icon"></i></span>
+								</a>
 							</li>
 
 							<li role="presentation" id="videos_sec">
-								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('videos')}}</span> </a>
+								<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab">
+								<span class="yt-uix-button-content hidden-xs">{{tr('videos')}}</span> 
+								<span class="visible-xs"><i class="fa fa-video-camera channel-tab-icon"></i></span>
+								</a>
 							</li>
 
 
@@ -361,13 +367,19 @@
 							@endif
 
 							<li role="presentation">
-								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('about_video')}}</span> </a>
+								<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab">
+								<span class="yt-uix-button-content hidden-xs">{{tr('about_video')}}</span> 
+								<span class="visible-xs"><i class="fa fa-info channel-tab-icon"></i></span>
+							</a>
 							</li>
 							@if(Auth::check())
 
 								@if($channel->user_id == Auth::user()->id)
 									<li role="presentation" id="payment_managment_sec">
-										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab"><span class="yt-uix-button-content">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> </a>
+										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
+										<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> 
+										<span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;($ {{getAmountBasedChannel($channel->id)}})</span>
+										</a>
 									</li>
 								@endif
 								
@@ -380,7 +392,9 @@
 			<ul class="tab-content">
 
 				<li role="tabpanel" class="tab-pane active" id="home1">
+
 					<div class="feed-item-dismissable">
+
 						<div class="feed-item-main feed-item-no-author">
 							<div class="feed-item-main-content">
 								<div class="shelf-wrapper clearfix">
@@ -512,106 +526,207 @@
 
 					                        @foreach($videos as $i => $video)
 
+						                        <li class="sub-list row">
+						                            <div class="main-history">
+						                                 <div class="history-image">
+						                                    <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>
+						                                    @if($video->ppv_amount > 0)
+						                                        @if(!$video->ppv_status)
+						                                            <div class="video_amount">
 
-					                        <li class="sub-list row">
-					                            <div class="main-history">
-					                                 <div class="history-image">
-					                                    <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>
-					                                    @if($video->ppv_amount > 0)
-					                                        @if(!$video->ppv_status)
-					                                            <div class="video_amount">
+						                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
 
-					                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+						                                            </div>
+						                                        @endif
+						                                    @endif
+						                                    <div class="video_duration">
+						                                        {{$video->duration}}
+						                                    </div>                        
+						                                </div><!--history-image-->
 
-					                                            </div>
-					                                        @endif
-					                                    @endif
-					                                    <div class="video_duration">
-					                                        {{$video->duration}}
-					                                    </div>                        
-					                                </div><!--history-image-->
+											            <div class="history-title">
+											                <div class="history-head row">
+											                    <div class="cross-title2">
+											                        <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
+											                       
+											                        <span class="video_views">
+											                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+											                            {{$video->created_at}}
+											                        </span>
+											                    </div> 
+																										
+																@if(Auth::check())
+																@if($channel->user_id == Auth::user()->id)
+																<div class="cross-mark2">
+															        
+										                            <label style="float:none; margin-top: 6px;" class="switch hidden-xs" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
+										                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
+										                                <div class="slider round"></div>
+										                            </label>
 
-					                                <div class="history-title">
-					                                    <div class="history-head row">
-					                                        <div class="cross-title2">
-					                                            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
-					                                           
-					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-							                                        {{$video->created_at}}
-							                                    </span>
-					                                        </div> 
-						@if(Auth::check())
-						@if($channel->user_id == Auth::user()->id)
-						<div class="cross-mark2">
-					        
-                            <label style="float:none; margin-top: 6px;" class="switch hidden-xs" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
-                                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
-                                <div class="slider round"></div>
-                            </label>
+											                        <div class="btn-group show-on-hover">
+															          	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+											
+																            <span class="hidden-xs">Action</span>
+																            <span class="caret"></span>
 
-	                        <div class="btn-group show-on-hover">
-					          	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	
-						            <span class="hidden-xs">Action</span>
-						            <span class="caret"></span>
+															          	</button>
 
-					          	</button>
+															          	<ul class="dropdown-menu dropdown-menu-right" role="menu">
 
-					          	<ul class="dropdown-menu dropdown-menu-right" role="menu">
+																          	@if(Setting::get('is_payper_view') == 1)
+																            <li><a data-toggle="modal" data-target="#pay-perview_{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a></li>
+																            @endif
 
-						          	@if(Setting::get('is_payper_view') == 1)
+																            @if($video->amount > 0) 
+																            <li><a data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}">{{tr('total_earning')}}</a></li>
+
+																            <li class="divider"></li>
+																            @endif
+																            
+																            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
+																            <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
+																            <li class="visible-xs">
+											                    			<a onclick="change_adstatus({{$video->ad_status}}, {{$video->video_tape_id}})" style="cursor: pointer;" id="ad_status_{{$video->video_tape_id}}">@if($video->ad_status) {{tr('disable_ad')}} @else {{tr('enable_ad')}} @endif</a>
+											 
+											                    		</li>
+															          	</ul>
+															        </div>                   
+														            
+														           
+										                        </div>
+										                    	@endif
+										                		@endif
+															</div> 
+
+										                    <div class="description">
+										                        <p>{{$video->description}}</p>
+										                    </div>
 
 
-						            <li><a data-toggle="modal" data-target="#pay-perview_{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a></li>
-										<h4 class="black-clr text-left">{{tr('amount')}}</h4>
-										<div>
-					                       <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
-					                  	<!-- /input-group -->
-					                
-							            </div>
 
+												          	@if($video->amount > 0) 
 
-						            @endif
+															<div class="modal fade modal-top" id="earning_{{$video->video_tape_id}}" role="dialog">
+																<div class="modal-dialog bg-img modal-sm" style="background-image: url({{asset('images/popup-back.jpg')}});">
 
-						            @if($video->amount > 0) 
-						            <li><a data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}">{{tr('total_earning')}}</a></li>
-						            <!-- <li><a data-toggle="modal" data-target="#earning">{{tr('total_earning')}}</a></li> -->
-						            <li class="divider"></li>
-						            @endif
-						            
-						            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
-						            <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
-						            <li class="visible-xs">
-		                    			<a href="#">Disable Ad</a>
-		                    		</li>
-					          	</ul>
-					        </div>                   
-				            
-				           
-                        </div>
-                        @endif
-                        @endif
+																	<div class="modal-content earning-content">
+																		<div class="modal-header text-center">
+																	      	<button type="button" class="close" data-dismiss="modal">&times;</button>
+																	      	<h3 class="modal-title no-margin">{{tr('total_earnings')}}</h3>
+																	    </div>
+																	    <div class="modal-body text-center">
+																	    	<div class="amount-circle">
+																	    		<h3 class="no-margin">${{$video->amount}}</h3>
+																	   		</div>
+																	      	<p>{{tr('total_views')}} - {{$video->watch_count}}</p>
+																	      	<a href="{{route('user.redeems')}}">
+																	      		<button class="btn btn-danger top">{{tr('view_redeem')}}</button>
+																	      	</a>
+																	    </div>
+																	</div>
+																</div>
+															</div>
 
-					                                        <!--end of cross-mark-->                       
-					                                    </div> <!--end of history-head--> 
+															@endif
 
-					                                    <div class="description">
-					                                        <p>{{$video->description}}</p>
-					                                    </div><!--end of description--> 
+																				<!-- ========modal pay per view======= -->
+															<div id="pay-perview_{{$video->video_tape_id}}" class="modal fade" role="dialog">
+																<div class="modal-dialog">
+																	<div class="modal-content">
+																			<form  action="{{route('user.save.video-payment', $video->video_tape_id)}}" method="POST">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal">&times;</button>
+																					<h4 class="modal-title text-left">{{tr('pay_per_view')}}</h4>
+																				</div>
+																				<div class="modal-body">
+																				   
+																				    	<h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
+																				    	<div>
+																							<label class="radio1">
+																							    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}} required>
+																								<span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
+																							</label>
+																						</div>
+																						<div>
+																						    <label class="radio1">
+																							    <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
+																						    <span class="outer"><span class="inner"></span></span>{{tr('paid_user')}}
+																						</label>
+																					</div>
+																					<div>
+																					    <label class="radio1">
+																						    <input id="radio2" type="radio" name="type_of_user" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
+																						    <span class="outer"><span class="inner"></span></span>{{tr('both_user')}}
+																						</label>
+																					</div>
 
-					                                   	<span class="stars">
-					                                        <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                    </span>                                                      
-					                                </div><!--end of history-title--> 
-					                                
-					                            </div><!--end of main-history-->
-					                        </li>    
+																					<div class="clearfix"></div>
 
+																					<h4 class="black-clr text-left">{{tr('type_of_subscription')}}</h4>
+																					<div>
+																					    <label class="radio1">
+																						    <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}} required>
+																						    <span class="outer"><span class="inner"></span></span>{{tr('one_time_payment')}}
+																						</label>
+																					</div>
+																					<div>
+																					    <label class="radio1">
+																						    <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
+																						    <span class="outer"><span class="inner"></span></span>{{tr('recurring_payment')}}
+																						</label>
+																					</div>
+
+																					<div class="clearfix"></div>
+
+																					<h4 class="black-clr text-left">{{tr('amount')}}</h4>
+																					<div>
+																                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+																                  <!-- /input-group -->
+																                
+																		            </div>
+
+																						
+																					
+																				<div class="clearfix"></div>
+																			</div>
+
+																			 <div class="modal-footer">
+																		      	<div class="pull-left">
+																		      		@if($video->ppv_amount > 0)
+																		       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
+																		       		@endif
+																		       	</div>
+																		        <div class="pull-right">
+																			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+																			        <button type="submit" class="btn btn-primary">Submit</button>
+																			    </div>
+																			    <div class="clearfix"></div>
+																		      </div>
+																	      </form>
+																	</div>
+																</div>
+															</div>	
+																			<!-- ========modal ends======= -->	
+                        						
+
+						                                   	<span class="stars">
+						                                        <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+						                                        <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+						                                        <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+						                                        <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+						                                        <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+						                                    </span>                                                      
+						                           		</div> 
+						                                
+						                            </div>
+						                        
+						                        </li> 
+
+						                     
+
+												<!-- ========modal ends======= -->   
+												
 					                        @endforeach
 
 
@@ -626,25 +741,15 @@
 					                   <p style="color: #000">{{tr('no_video_found')}}</p>
 
 					                @endif
-
-					                <?php /* @if(count($videos) > 0)
-
-					                    @if($videos)
-					                    <div class="row">
-					                        <div class="col-md-12">
-					                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
-					                        </div>
-					                    </div>
-					                    @endif 
-					                @endif*/ ?>
 					                
 					            </div>
 
 						</div>
 					</div>
 
-
 				</li>
+
+				<!-- Live Video Section Start -->
 
 				@if(Setting::get('broadcast_by_user') == 1 || (Auth::check() ? Auth::user()->is_master_user == 1 : 0))
 
@@ -667,140 +772,138 @@
 
 					                        @foreach($live_videos as $i => $live_video)
 
-					                         <?php 
+					                         	<?php 
 
 
-                                        $userId = Auth::check() ? Auth::user()->id : '';
+			                                        $userId = Auth::check() ? Auth::user()->id : '';
 
-                                        $url = ($live_video->amount > 0) ? route('user.payment_url', array('id'=>$live_video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$live_video->unique_id,'c_id'=>$live_video->channel_id));
+			                                        $url = ($live_video->amount > 0) ? route('user.payment_url', array('id'=>$live_video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$live_video->unique_id,'c_id'=>$live_video->channel_id));
+			                                    ?>
 
+		                                        <div class="modal fade cus-mod" id="paypal_{{$live_video->id}}" role="dialog">
+									                <div class="modal-dialog">
+									                
+									                  <!-- Modal content-->
+									                  <div class="modal-content">
 
-                                        ?>
-
-                                        <div class="modal fade cus-mod" id="paypal_{{$live_video->id}}" role="dialog">
-							                <div class="modal-dialog">
-							                
-							                  <!-- Modal content-->
-							                  <div class="modal-content">
-
-							                        <div class="modal-header">
-							                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-							                            <h4 class="modal-title text-center text-uppercase" style="color: #000 !important">{{tr('payment_options')}}</h4>
-							                        </div>
+									                        <div class="modal-header">
+									                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+									                            <h4 class="modal-title text-center text-uppercase" style="color: #000 !important">{{tr('payment_options')}}</h4>
+									                        </div>
 
 
-							                        <div class="modal-body">
-							                            <!-- <p>Please Pay to see the full video</p>  -->
-							                                <div class="col-lg-6">
-							                                  <!-- small box -->
-							                                  <div class="small-box bg-green">
-							                                    <div class="inner">
-							                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
-							                                      <div class="clearfix"></div>
-							                                      <p style="float: none;" class="text-left">{{tr('paypal_payment')}}</p>
-							                                    </div>
-							                                    <div class="icon">
-							                                      <i class="fa fa-money"></i>
-							                                    </div>
-							                                     <div class="clearfix"></div>
-							                                    <a href="{{route('user.live_video_paypal', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
-							                                  </div>
-							                                </div>
-							                           
-							                                <div class="col-lg-6">
-							                                  <!-- small box -->
-							                                  <div class="small-box bg-aqua">
-							                                    <div class="inner">
-							                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
-							                                      <div class="clearfix"></div>
-							                                      <p style="float: none;" class="text-left">{{tr('stripe_payment')}}</p>
-							                                    </div>
-							                                    <div class="icon">
-							                                      <i class="fa fa-money"></i>
-							                                    </div>
-							                                     <div class="clearfix"></div>
-							                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
-							                                  </div>
-							                                </div>
-							                            
-							                            
-							                            <div class="clearfix"></div>
-							                            
-							                        </div>
-
-							                        
-							                  </div>
-							                  
-							                </div>
-							            
-							            </div>  
-
-
-					                        <li class="sub-list row">
-					                            <div class="main-history">
-					                                 <div class="history-image">
-					                                 	@if($live_video->amount > 0) 
-
-					                                 		@if (isPaidAmount($live_video->id))
-					                                 		
-																<a href="{{$url}}">					                                 	
-					                                 		@else
-				                                        		<a data-toggle="modal" data-target="#paypal_{{$live_video->id}}" style="cursor: pointer;">
-				                                        	@endif
-				                                        @else
-				                                    
-				                                        <a href="{{$url}}">
-
-				                                        @endif
-
-				                                            <img src="{{$live_video->snapshot}}" /> 
-
-				                                        </a>
-
-					                                    <div class="video_duration text-uppercase">
-					                                         @if($live_video->amount > 0) 
-
-				                                                {{tr('paid')}} - ${{$live_video->amount}} 
-
-				                                            @else {{tr('free')}} @endif
-					                                    </div>                        
-					                                </div><!--history-image-->
-
-					                                <div class="history-title">
-					                                    <div class="history-head row">
-					                                        <div class="cross-title">
-					                                            <h5 class="payment_class">
-
-					                                            	@if($live_video->amount > 0) 
-							                                        	<a data-toggle="modal" data-target="#paypal_{{$live_video->id}}" style="cursor: pointer;">
-							                                        @else
-							                                    
-							                                        <a href="{{$url}}">
-
-							                                        @endif
-
-							                                            {{$live_video->title}}
-
-							                                        </a>
+									                        <div class="modal-body">
+									                            <!-- <p>Please Pay to see the full video</p>  -->
+									                                <div class="col-lg-6">
+									                                  <!-- small box -->
+									                                  <div class="small-box bg-green">
+									                                    <div class="inner">
+									                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
+									                                      <div class="clearfix"></div>
+									                                      <p style="float: none;" class="text-left">{{tr('paypal_payment')}}</p>
+									                                    </div>
+									                                    <div class="icon">
+									                                      <i class="fa fa-money"></i>
+									                                    </div>
+									                                     <div class="clearfix"></div>
+									                                    <a href="{{route('user.live_video_paypal', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
+									                                  </div>
+									                                </div>
+									                           
+									                                <div class="col-lg-6">
+									                                  <!-- small box -->
+									                                  <div class="small-box bg-aqua">
+									                                    <div class="inner">
+									                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
+									                                      <div class="clearfix"></div>
+									                                      <p style="float: none;" class="text-left">{{tr('stripe_payment')}}</p>
+									                                    </div>
+									                                    <div class="icon">
+									                                      <i class="fa fa-money"></i>
+									                                    </div>
+									                                     <div class="clearfix"></div>
+									                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
+									                                  </div>
+									                                </div>
+									                            
+									                            
+									                            <div class="clearfix"></div>
+									                            
+									                        </div>
+									                        
+									                  	</div>
+									                  
+									                </div>
+									            
+									            </div>  
 
 
-					                                            </h5>
-					                                           
-					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$live_video->viewers_cnt}} {{tr('views')}} <b>.</b> 
-							                                        {{$live_video->created_at->diffForHumans()}}
-							                                    </span>
-					                                        </div> 
-					                                        <!--end of cross-mark-->                       
-					                                    </div> <!--end of history-head--> 
+						                        <li class="sub-list row">
+						                            <div class="main-history">
+						                                 <div class="history-image">
+						                                 	@if($live_video->amount > 0) 
 
-					                                    <div class="description">
-					                                        <p>{{$live_video->description}}</p>
-					                                    </div><!--end of description--> 
-					                                </div><!--end of history-title--> 
-					                                
-					                            </div><!--end of main-history-->
-					                        </li>    
+						                                 		@if (isPaidAmount($live_video->id))
+						                                 		
+																	<a href="{{$url}}">					                                 	
+						                                 		@else
+					                                        		<a data-toggle="modal" data-target="#paypal_{{$live_video->id}}" style="cursor: pointer;">
+					                                        	@endif
+					                                        @else
+					                                    
+					                                        <a href="{{$url}}">
+
+					                                        @endif
+
+					                                            <img src="{{$live_video->snapshot}}" /> 
+
+					                                        </a>
+
+						                                    <div class="video_duration text-uppercase">
+						                                         @if($live_video->amount > 0) 
+
+					                                                {{tr('paid')}} - ${{$live_video->amount}} 
+
+					                                            @else {{tr('free')}} @endif
+						                                    </div>                        
+						                                </div><!--history-image-->
+
+						                                <div class="history-title">
+						                                    <div class="history-head row">
+						                                        <div class="cross-title">
+						                                            <h5 class="payment_class">
+
+						                                            	@if($live_video->amount > 0) 
+								                                        	<a data-toggle="modal" data-target="#paypal_{{$live_video->id}}" style="cursor: pointer;">
+								                                        @else
+								                                    
+								                                        <a href="{{$url}}">
+
+								                                        @endif
+
+								                                            {{$live_video->title}}
+
+								                                        </a>
+
+
+						                                            </h5>
+						                                           
+						                                            <span class="video_views">
+								                                        <i class="fa fa-eye"></i> {{$live_video->viewers_cnt}} {{tr('views')}} <b>.</b> 
+								                                        {{$live_video->created_at->diffForHumans()}}
+								                                    </span>
+						                                        </div> 
+						                                        <!--end of cross-mark-->                       
+						                                    </div> <!--end of history-head--> 
+
+						                                    <div class="description">
+						                                        <p>{{$live_video->description}}</p>
+						                                    </div><!--end of description--> 
+						                                </div><!--end of history-title--> 
+						                                
+						                            </div><!--end of main-history-->
+						                       
+						                        </li>    
 
 					                        @endforeach
 					                       
@@ -811,6 +914,8 @@
 					                   <p style="color: #000">{{tr('no_video_found')}}</p>
 
 					                @endif
+
+
 
 					                @if(count($live_videos) > 0)
 
@@ -833,6 +938,7 @@
 
 				@endif
 
+				<!-- Live Video Section END -->
 
 				<li role="tabpanel" class="tab-pane" id="about">
 
@@ -841,7 +947,6 @@
 							<h5>{{$channel->description}}</h5>
 						</div>
 					</div>
-
 
 				</li>
 
@@ -943,6 +1048,7 @@
 					</div>
 
 				</li>
+
 			</ul>
 
 			<div class="sidebar-back"></div> 
@@ -952,130 +1058,38 @@
 
 </div>
 
-@if($video->amount > 0) 
+<<<<<<< HEAD
+=======
 
-<div class="modal fade modal-top" id="earning_{{$video->video_tape_id}}" role="dialog">
-<!-- <div class="modal fade modal-top" id="earning" role="dialog"> -->
-	<div class="modal-dialog bg-img modal-sm" style="background-image: url({{asset('images/popup-back.jpg')}});">
-
-		<div class="modal-content earning-content">
-			<div class="modal-header text-center">
-		      	<button type="button" class="close" data-dismiss="modal">&times;</button>
-		      	<h3 class="modal-title no-margin">{{tr('total_earnings')}}</h3>
-		    </div>
-		    <div class="modal-body text-center">
-		    	<div class="amount-circle">
-		    		<h3 class="no-margin">${{$video->amount}}</h3>
-		   		</div>
-		      	<p>{{tr('total_views')}} - {{$video->watch_count}}</p>
-		      	<a href="{{route('user.redeems')}}">
-		      		<button class="btn btn-danger top">{{tr('view_redeem')}}</button>
-		      	</a>
-		    </div>
-		</div>
-	</div>
-</div>
-
-@endif
-
-	<!-- ========modal pay per view======= -->
-<div id="pay-perview_{{$video->video_tape_id}}" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form  action="{{route('user.save.video-payment', $video->video_tape_id)}}" method="POST">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title text-left">{{tr('pay_per_view')}}</h4>
-					</div>
-					<div class="modal-body">
-					   
-					    	<h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
-					    	<div>
-								<label class="radio1">
-								    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}} required>
-									<span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
-								</label>
-							</div>
-							<div>
-							    <label class="radio1">
-								    <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
-							    <span class="outer"><span class="inner"></span></span>{{tr('paid_user')}}
-							</label>
-						</div>
-						<div>
-						    <label class="radio1">
-							    <input id="radio2" type="radio" name="type_of_user" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
-							    <span class="outer"><span class="inner"></span></span>{{tr('both_user')}}
-							</label>
-						</div>
-
-						<div class="clearfix"></div>
-
-						<h4 class="black-clr text-left">{{tr('type_of_subscription')}}</h4>
-						<div>
-						    <label class="radio1">
-							    <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}} required>
-							    <span class="outer"><span class="inner"></span></span>{{tr('one_time_payment')}}
-							</label>
-						</div>
-						<div>
-						    <label class="radio1">
-							    <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
-							    <span class="outer"><span class="inner"></span></span>{{tr('recurring_payment')}}
-							</label>
-						</div>
-
-						<div class="clearfix"></div>
-
-						<h4 class="black-clr text-left">{{tr('amount')}}</h4>
-						<div>
-	                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
-	                  <!-- /input-group -->
-	                
-			            </div>
-
-							
-						
-					<div class="clearfix"></div>
-				</div>
-
-				 <div class="modal-footer">
-			      	<div class="pull-left">
-			      		@if($video->ppv_amount > 0)
-			       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
-			       		@endif
-			       	</div>
-			        <div class="pull-right">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				        <button type="submit" class="btn btn-primary">Submit</button>
-				    </div>
-				    <div class="clearfix"></div>
-			      </div>
-		      </form>
-		</div>
-	</div>
-</div>	
-<!-- ========modal ends======= -->	
+>>>>>>> 1bc65d9edddaca8064370082ada2a7f0b379b0bd
 @endsection
 
 @section('scripts')
 
 <script>
-    
+
     function change_adstatus(val, id) {
 
         var url = "{{route('user.ad_request')}}";
-
 
         $.ajax({
             url : url,
             method : "POST",
             data : {id : id , status : val},
             success : function(result) {
-                console.log(result);
+  
+                if (result.success == true) {
 
-                if (result == true) {
-                    // window.location.reload();
+                	if (result.status == 1) {
+
+                		$("#ad_status_"+id).html("{{tr('disable_ad')}}");
+
+                	} else {
+
+                		$("#ad_status_"+id).html("{{tr('enable_ad')}}");
+                	}
+                    
+                    alert("Ad Status Changed Successfully");
                 }
             }
 

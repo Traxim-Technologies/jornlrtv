@@ -126,6 +126,9 @@ body{
 	padding: 0px 7px;
 	color: #333;
 }
+.top5{
+	margin-top: 5px;
+}
 .y-button{
 	float: right;
 }
@@ -515,6 +518,9 @@ videos (single page) css
 	vertical-align: -24%;
 	font-size:18px;
 }
+{
+	margin-top: 30px;
+}
 .modal-top1 .modal-content{
 	border-radius: 0;
 }
@@ -594,7 +600,31 @@ videos (single page) css
 .stars i:active{
 	color: #f5ba0e;
 }
-
+.btn{
+	border-radius: 0px !important;
+}
+input{
+	border-radius: 0px !important;
+	box-shadow: none !important;
+	border-color:#b8b8b8 !important;
+}
+textarea{
+	border-radius: 0px !important;
+	box-shadow: none !important;
+	border-color:#b8b8b8 !important;
+	resize: none;
+}
+input:focus, textarea:focus{
+	box-shadow: none !important;
+	border-color:#fc8888 !important;
+}
+input[type="checkbox"], input[type="radio"]{
+	vertical-align: -17%;
+}
+.channel-tab-icon{
+	color: #999;
+	font-size: 20px;
+}
 /*.c-380:before{
 	content: '\002022';
     margin: 0 5px;
@@ -1078,7 +1108,7 @@ signup.html css
 	background-color: #fff;
 	padding: 15px;
 	border: 1px solid transparent;
-	border-radius: 5px;
+	border-radius:0px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
 }
 .sign-up{
@@ -1492,7 +1522,7 @@ changes
 .mylist button{
 	font-size: 17px;
     border: none;
-    padding: 1px 10px;
+    padding: 1px 0 1px 10px;
     background-color:transparent;
     color: #999;
 }
@@ -1671,7 +1701,7 @@ changes
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-height:40px;
+	max-height:38px;
 	line-height:17px;
 	font-family: arial;
 	font-size: 1em;
@@ -2464,6 +2494,44 @@ changes
 }
 >>>>>>> a6fd5d37123fa2ab7a6b3285c513fe1279377d5f
 }
+@media screen and (max-width: 767px) {
+.language-icon{
+	padding: 5px 10px !important;
+	margin-right: 5px;
+	color: white;
+	font-size: 20px;
+}
+.language-icon:hover, .language-icon:active, .language-icon:focus{
+	background-color: transparent !important;
+	color: white;
+}
+}
+@media screen and (min-width:768px) {
+.language-icon{
+	padding: 5px 10px !important;
+	margin-right: 5px;
+	color: #cc181e;
+	font-size: 20px;
+}
+.language-icon:hover, .language-icon:active, .language-icon:focus{
+	background-color: transparent !important;
+	color: #cc181e;
+}
+}
+.languages{
+	left: -90px !important;
+	min-width: 140px;
+	border-radius: 4px !important;
+}
+.languages1{
+	left: -90px !important;
+	min-width: 140px;
+	border-radius: 4px !important;
+	overflow: hidden !important;
+	position: absolute !important;
+	background: #fff !important;
+	border:1px solid #eee !important;
+}
 .wrapper_content {
 
 	position: relative;
@@ -2971,4 +3039,8 @@ changes
 .carousel-caption {
 
 	bottom: 0%;
+}
+
+.username a {
+	text-decoration : none;
 }
