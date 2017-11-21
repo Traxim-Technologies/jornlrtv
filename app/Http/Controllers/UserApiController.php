@@ -1969,6 +1969,9 @@ class UserApiController extends Controller {
                     'description'=> $user->description,
                 );
 
+            }
+
+        }
         return response()->json($response_array,200);
 
     }
@@ -2016,6 +2019,7 @@ class UserApiController extends Controller {
         }
 
         $response = response()->json($response_array, 200);
+
         return $response;
     }
 
