@@ -2144,53 +2144,6 @@ class UserApiController extends Controller {
     
     }
 
-    public function delete_wishlist(Request $request) {
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'wishlist_id' => 'integer|exists:wishlists,id,user_id,'.$request->id,
-                'video_tape_id' => 'integer|exists:video_tapes,id',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists please add to wishlists',
-            )
-        );
-
-        if ($validator->fails()) {
-
-            $error = implode(',', $validator->messages()->all());
-
-            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
-
-        } else {
-
-            /** Clear All wishlist of the loggedin user */
-
-            if($request->status == 1) {
-
-                $wishlist = Wishlist::where('user_id',$request->id)->delete();
-
-            } else {  /** Clear particularv wishlist of the loggedin user */
-
-                if($request->has('video_tape_id')) {
-
-                    $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
-   
-                } else {
-
-                    $wishlist = Wishlist::where('id',$request->wishlist_id)->delete();
-
-                }
-                
-            }
-
-            $response_array = array('success' => true);
-        }
-
-        return response()->json($response_array, 200);
-    
-    }
 
     public function spam_videos($request, $count = null, $skip = 0) {
 
