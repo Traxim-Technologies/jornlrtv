@@ -4434,41 +4434,6 @@ class UserApiController extends Controller {
     }
 
 
-    public function pay_per_videos(Request $request) {
-
-        // Load all the paper view videos based on logged in user id
-        $model = PayPerView::where('pay_per_views.user_id', $request->id)
-             ->leftJoin('video_tapes' ,'pay_per_views.video_id' , '=' , 'video_tapes.id')
-            ->where('video_tapes.is_approved' , 1)
-            ->where('video_tapes.status' , 1)
-            ->where('video_tapes.age_limit','<=', checkAge($request))
-            ->orderby('pay_per_views.created_at' , 'desc')
-            ->paginate(16);
-
-        $video = array('data' => $model->items(), 'pagination' => (string) $model->links());
-
-        $videos = $base_query->paginate(16);
-
-        $items = [];
-
-        $pagination = 0;
-
-        if (count($videos) > 0) {
-
-            foreach ($videos->items() as $key => $value) {
-                
-                $items[] = displayVideoDetails($value, $request->id);
-
-            }
-
-            $pagination = (string) $videos->links();
-
-        }
-
-        return response()->json(['items'=>$items, 'pagination'=>$pagination]);
-
-    }
-
     /**
      * Function Name : recently_added()
      *
