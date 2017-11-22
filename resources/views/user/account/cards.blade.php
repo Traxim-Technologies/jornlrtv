@@ -25,6 +25,8 @@
 
                     		<h4>{{tr('cards')}}</h4>
 
+                    		@include('notification.notify')
+
                     		<div class="row">
                     			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1 col-lg-4">
                     				
@@ -135,71 +137,66 @@
 
 					        <hr>
 
+					        <div class="row">
+
 					        @if(count($cards) > 0)
 
-					            @foreach($cards as $card)
 
-					            <div class="row top text-center">
-						            <div class="col-lg-1">
-						                <img src="{{asset('images/visa-card.png')}}" alt="">
-						            </div>
 
-						              <div class="col-lg-3">PERSONAL*********{{$card->last_four}}</div>
-
-						              @if(!$card->is_default)
-						              <div class="col-lg-2">
-
-						                <form action="{{ route('user.card.default') }}" method="POST" class="pull-left">
-						                      <input type="hidden" name="_method" value="PATCH">
-						                      <input type="hidden" name="card_id" value="{{ $card->id }}">
-
-						                      <button class="btn btn-primary btn-sm" type="submit" class="bk-nw-ct text-white"><i class="fa fa-check"></i> {{tr('set_as_default')}}</button>
-
-						                </form>
-					                   </div>
-
-					                   <div class="col-lg-2"> 
-						                <form action="{{ route('user.card.delete') }}" method="POST" class="pull-left">
-
-						                    <input type="hidden" name="_method" value="DELETE">
-						                    
-						                    <input type="hidden" name="card_id" value="{{ $card->id }}">
-
-						                    <button class="btn btn-danger btn-sm" type="submit" class="bk-nw-ct text-white"><i class="fa fa-times"></i> {{tr('delete_card')}}</button>
-						                </form>
-
-						                <div class="clearfix"></div>
-						              </div>
-						              @endif
-						              <div class="clearfix"></div>
-					            </div>
-
-					            <br>
-
-					            @endforeach
-					           	<!-- ===============CHANGED UI========== -->
 					           	<div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 						           	<div class="row">
+
+						           		@foreach($cards as $card)
+
+						           		@if(!$card->is_default)
+
 						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
 						           			<div>
-						           				<div class="card-title text-center">Card Name</div>
-						           				<div class="card-details">
-						           					<h5>PERSONAL*********4242 <span class="pull-right">MM / YY</span></h5>
-						           				</div>
-						           			</div>
-						           		</div>
-						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
-						           			<div>
-						           				<div class="card-title text-center">Card Name
-						           					<img src="{{asset('images/success.png')}}" class="set-default">
-						           					<img src="{{asset('images/error.png')}}" class="card-delete">
+						           				<div class="card-title text-center">{{tr('card_name')}}
+						           					<img src="{{asset('images/success.png')}}" class="set-default" onclick="$('#default-card').click()" style="cursor: pointer;">
+
+						           					<form action="{{ route('user.card.default') }}" method="POST" style="display: none">
+									                      <input type="hidden" name="_method" value="PATCH">
+									                      <input type="hidden" name="card_id" value="{{ $card->id }}">
+
+									                      <button type="submit" class="text-white" id="default-card"><i class="fa fa-check"></i> {{tr('set_as_default')}}</button>
+
+									                </form>
+								                   
+
+						           					<img src="{{asset('images/error.png')}}" class="card-delete" onclick="$('#delete-card').click()" style="cursor: pointer;">
+
+						           					<form action="{{ route('user.card.delete') }}" method="POST" style="display: none">
+
+									                    <input type="hidden" name="_method" value="DELETE">
+									                    
+									                    <input type="hidden" name="card_id" value="{{ $card->id }}">
+
+									                    <button type="submit" class="text-white" id="delete-card"><i class="fa fa-times"></i> {{tr('delete_card')}}</button>
+									                </form>
+
 						           				</div>
 						           				<div class="card-details">
 						           					
-						           					<h5>PERSONAL*********4242 <span class="pull-right">MM / YY</span></h5>
+						           					<h5>PERSONAL*********{{$card->last_four}} <span class="pull-right">MM / YY</span></h5>
 						           				</div>
 						           			</div>
 						           		</div>
+
+						           		@else
+
+						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
+						           			<div>
+						           				<div class="card-title text-center">{{tr('card_name')}}</div>
+						           				<div class="card-details">
+						           					<h5>PERSONAL*********{{$card->last_four}} <span class="pull-right">MM / YY</span></h5>
+						           				</div>
+						           			</div>
+						           		</div>
+						           		@endif
+
+						           		@endforeach
+
 						           	</div>
 					           	</div>
 					          @else
@@ -208,6 +205,8 @@
 
 
 					        @endif
+
+					        </div>
 
 					        <br>
 					        <br>

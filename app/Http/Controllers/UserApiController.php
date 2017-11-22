@@ -3630,11 +3630,9 @@ class UserApiController extends Controller {
 
             $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
-            if ($request->id) {
+            if ($request->has('channel_id')) {
 
-                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
-
-                $query->whereIn('channels.id', $channel_id);
+                $query->whereIn('channels.id', $request->channel_id);
             }
 
 
@@ -3687,7 +3685,6 @@ class UserApiController extends Controller {
     public function channel_videos($channel_id, $skip) {
 
         $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                    ->where('video_tapes.status' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
@@ -3708,6 +3705,24 @@ class UserApiController extends Controller {
 
             }
 
+        }
+
+        $channel = Channel::find($channel_id);
+
+        if ($channel) {
+
+            if ($u_id == $channel->user_id) {
+
+            } else {
+
+                $videos_query->where('video_tapes.status' , 1);
+
+            }
+
+        } else {
+
+            $videos_query->where('video_tapes.status' , 1);
+            
         }
 
         if ($skip >= 0) {

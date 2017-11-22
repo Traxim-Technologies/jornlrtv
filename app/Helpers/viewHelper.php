@@ -1099,6 +1099,7 @@ function displayVideoDetails($data,$userId) {
         'url'=>$url,
         'type_of_user'=>$data->type_of_user,
         'type_of_subscription'=>$data->type_of_subscription,
+        'status'=>$data->status,
     ];
 
     return $model;

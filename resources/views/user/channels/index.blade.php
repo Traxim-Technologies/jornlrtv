@@ -351,6 +351,8 @@
 					                                        </div> 
 						@if(Auth::check())
 						@if($channel->user_id == Auth::user()->id)
+
+						@if($video->status)
 						<div class="cross-mark2">
 					        
                             <label style="float:none; margin-top: 6px;" class="switch hidden-xs" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
@@ -420,14 +422,14 @@
 													<form  action="{{route('user.save.video-payment', $video->video_tape_id)}}" method="POST">
 														<div class="modal-header">
 															<button type="button" class="close" data-dismiss="modal">&times;</button>
-															<h4 class="modal-title text-left">{{tr('pay_per_view')}}</h4>
+															<h4 class="modal-title text-left" style="color: #000;">{{tr('pay_per_view')}}</h4>
 														</div>
 														<div class="modal-body">
 														   
 														    	<h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
 														    	<div>
 																	<label class="radio1">
-																	    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}} required>
+																	    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
 																		<span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
 																	</label>
 																</div>
@@ -448,12 +450,15 @@
 
 															<h4 class="black-clr text-left">{{tr('type_of_subscription')}}</h4>
 															<div>
+
 															    <label class="radio1">
-																    <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}} required>
+																    <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription > 0) ? (($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : '') : 'checked'}} required>
 																    <span class="outer"><span class="inner"></span></span>{{tr('one_time_payment')}}
 																</label>
 															</div>
 															<div>
+
+																{{{$video->type_of_subscription}}} ergergerg
 															    <label class="radio1">
 																    <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
 																    <span class="outer"><span class="inner"></span></span>{{tr('recurring_payment')}}
@@ -464,7 +469,7 @@
 
 															<h4 class="black-clr text-left">{{tr('amount')}}</h4>
 															<div>
-										                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+										                       <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
 										                  <!-- /input-group -->
 										                
 												            </div>
@@ -477,7 +482,7 @@
 													 <div class="modal-footer">
 												      	<div class="pull-left">
 												      		@if($video->ppv_amount > 0)
-												       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
+												       			<a class="btn btn-danger" href="{{route('user.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
 												       		@endif
 												       	</div>
 												        <div class="pull-right">
@@ -496,6 +501,9 @@
 				            
 				           
                         </div>
+                        @else
+                        	<button class="btn btn-warning btn-small">{{tr('video_compressing')}}</button>
+                        @endif
                         @endif
                         @endif
 
