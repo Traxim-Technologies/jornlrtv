@@ -429,7 +429,7 @@
 														    	<h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
 														    	<div>
 																	<label class="radio1">
-																	    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}} required>
+																	    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
 																		<span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
 																	</label>
 																</div>
@@ -450,12 +450,15 @@
 
 															<h4 class="black-clr text-left">{{tr('type_of_subscription')}}</h4>
 															<div>
+
 															    <label class="radio1">
-																    <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}} required>
+																    <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription > 0) ? (($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : '') : 'checked'}} required>
 																    <span class="outer"><span class="inner"></span></span>{{tr('one_time_payment')}}
 																</label>
 															</div>
 															<div>
+
+																{{{$video->type_of_subscription}}} ergergerg
 															    <label class="radio1">
 																    <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
 																    <span class="outer"><span class="inner"></span></span>{{tr('recurring_payment')}}
