@@ -91,6 +91,22 @@ thead>tr>th {
                             </div>
 
                         </div>
+                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                                <div class="sub-bg-img" style="background-image: url({{asset('images/popup-back.jpg')}});">
+                                    <div class="sub-bg-overlay">
+                                        <img src="{{Auth::user()->picture}}" alt="user-image">
+                                        <h4>User name</h4>
+                                        <p>3 months ago</p>
+                                        <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3"></div>
+                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3"></div>
+                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3"></div>
+                        </div>
 
                     @endif
             

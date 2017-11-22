@@ -30,7 +30,7 @@
 }
 .page-inner{
 	margin-top: 109px;
-	z-index:0;
+	/*z-index:0;*/
 	position: relative;
 }
 .streamtube-nav{
@@ -216,7 +216,8 @@
 }
 .page-inner{
 	margin-top: 120px;
-	z-index: 0;
+	/*z-index: 0;
+*/
 	position: relative;
 }
 .streamtube-nav{
@@ -286,7 +287,9 @@
 	background-repeat: no-repeat;
 	height: 200px;
 }
-
+button{
+	border-radius: 0 !important;
+}
 .add-card input {
     width: 330px;
 }

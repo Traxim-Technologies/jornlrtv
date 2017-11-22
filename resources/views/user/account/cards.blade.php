@@ -91,6 +91,10 @@
 								                <input id="id" name="id" type="hidden" required>
 
 								                <div class="input-group-signup">
+								                	<input type="text" name="card-name" placeholder="Card name (ex: visa)" class="form-control" required>
+								                </div>
+
+								                <div class="input-group-signup">
 								                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number" 
 								                    onkeyup="card_number_onkey(this.value)" maxlength="16">
 								                </div>
@@ -173,26 +177,31 @@
 					            <br>
 
 					            @endforeach
-					           	<div class="table-responsive">
-						            <table class="table table-bordered">
-						            	<tbody>
-						            		<tr>
-						            			<td>
-						            				<img src="{{asset('images/visa-card.png')}}" alt="">
-						            			</td>
-						            			<td>
-						            				PERSONAL*********{{$card->last_four}}
-						            			</td>
-						            			<td>
-						            				<button class="btn btn-primary btn-sm" type="submit" class="bk-nw-ct text-white"><i class="fa fa-check"></i> {{tr('set_as_default')}}</button>
-						            			</td>
-						            			<td>
-						            				<button class="btn btn-danger btn-sm" type="submit" class="bk-nw-ct text-white"><i class="fa fa-times"></i> {{tr('delete_card')}}</button>
-						            			</td>
-						            		</tr>
-						            	</tbody>
-						            </table>
-					            </div>
+					           	<!-- ===============CHANGED UI========== -->
+					           	<div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+						           	<div class="row">
+						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
+						           			<div>
+						           				<div class="card-title text-center">Card Name</div>
+						           				<div class="card-details">
+						           					<h5>PERSONAL*********4242 <span class="pull-right">MM / YY</span></h5>
+						           				</div>
+						           			</div>
+						           		</div>
+						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
+						           			<div>
+						           				<div class="card-title text-center">Card Name
+						           					<img src="{{asset('images/success.png')}}" class="set-default">
+						           					<img src="{{asset('images/error.png')}}" class="card-delete">
+						           				</div>
+						           				<div class="card-details">
+						           					
+						           					<h5>PERSONAL*********4242 <span class="pull-right">MM / YY</span></h5>
+						           				</div>
+						           			</div>
+						           		</div>
+						           	</div>
+					           	</div>
 					          @else
 
 					            {{tr('no_card_details_found')}}
