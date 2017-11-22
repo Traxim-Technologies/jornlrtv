@@ -85,7 +85,7 @@
 											    </tr> 
 										    </tbody>
 										</table>
-										<h3 class="no-margin black-clr top">{{tr('payment_options')}}</h3>
+										<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
 									    <form action="{{route('user.payment-type', $video->id)}}" method="post">
 									    	<div>
 												<label class="radio1">

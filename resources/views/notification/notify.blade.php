@@ -14,10 +14,10 @@
             @foreach(Session::get('flash_errors') as $errors)
                 @if(is_array($errors))
                     @foreach($errors as $error)
-                        <li> {{$error}} </li>
+                        <li> <?= $error ?></li>
                     @endforeach
                 @else
-                    <li> {{$errors}} </li>
+                    <li> <?= $errors ?> </li>
                 @endif
             @endforeach
             </ul>
@@ -25,7 +25,7 @@
     @else
         <div class="alert alert-danger" >
             <button type="button" class="close" data-dismiss="alert">×</button>
-            {{Session::get('flash_errors')}}
+            <?= Session::get('flash_errors') ?>
         </div>
     @endif
 @endif
@@ -33,7 +33,7 @@
 @if(Session::has('flash_error'))
     <div class="alert alert-danger"> 
         <button type="button" class="close" data-dismiss="alert">×</button>
-        {{Session::get('flash_error')}}
+        <?= Session::get('flash_error') ?>
     </div>
 @endif
 

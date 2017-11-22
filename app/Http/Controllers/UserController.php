@@ -1823,7 +1823,7 @@ class UserController extends Controller {
 
                     // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
 
-                    return back()->with('flash_error', Helper::get_error_message(901));
+                    return back()->with('flash_error', Helper::get_error_message(901).tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>Add Card</a>');
                     
                     //return response()->json($response_array , 200);
                 }
@@ -1831,7 +1831,7 @@ class UserController extends Controller {
             } else {
 
                 // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
-                return back()->with('flash_error', Helper::get_error_message(901));
+                return back()->with('flash_error', Helper::get_error_message(901).'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>Add Card</a>');
                 
                 // return response()->json($response_array , 200);
             }
@@ -2001,6 +2001,13 @@ class UserController extends Controller {
             return back()->with('flash_success', $payment->message);
 
         } else {
+
+
+            if ($payment->error_code == 901) {
+
+                return back()->with('flash_error', $payment->error_messages.'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>'.tr('add_card').'</a>');
+
+            }
 
             return back()->with('flash_error', $payment->error_messages);
         }

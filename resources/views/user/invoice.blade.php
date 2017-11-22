@@ -50,7 +50,7 @@
 											    </tr> 
 										    </tbody>
 										</table>
-										<h3 class="no-margin black-clr top">{{tr('payment_options')}}</h3>
+										<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
 									    <form method="post" action="{{route('user.subscription.payment')}}">
 
 

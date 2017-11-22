@@ -3205,7 +3205,7 @@ class UserApiController extends Controller {
 
                             $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
 
-                            throw new Exception(tr('no_default_card_available'));
+                            throw new Exception(tr('no_default_card_available'), 901);
 
                         }
 
@@ -3213,7 +3213,7 @@ class UserApiController extends Controller {
 
                         $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
 
-                        throw new Exception(tr('no_default_card_available'));
+                        throw new Exception(tr('no_default_card_available'), 901);
 
                     }
 
@@ -3234,9 +3234,13 @@ class UserApiController extends Controller {
 
             DB::rollback();
 
+            $code = $e->getCode();
+
             $e = $e->getMessage();
 
-            $response_array = ['success'=>false, 'error_messages'=>$e];
+
+
+            $response_array = ['success'=>false, 'error_messages'=>$e, 'error_code'=>$code];
 
             return response()->json($response_array);
 
