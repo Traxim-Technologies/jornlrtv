@@ -969,4 +969,13 @@ return array(
 	'user_not_found'=>'User not found',
 	'user_details_not_saved'=>'User Details not saved, please try again later',
 	'channel_not_found'=>'Channel not found, Please try again later',
+	'site_url_settings'=>"Company Site Url's",
+	'facebook_link'=>'Facebook Link',
+	'linkedin_link'=>'LinkedIn Link',
+	'twitter_link'=>'Twitter Link',
+	'google_plus_link'=>'Google Plus Link',
+	'pinterest_link'=>'Pinterest Link',
+	'app_url_settings'=>'App Url Settings',
+	'playstore'=>'Playstore',
+	'appstore'=>'Appstore',
 );

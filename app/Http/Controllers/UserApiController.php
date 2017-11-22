@@ -331,7 +331,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'video_tape_id' => 'required|integer|exists:video_tapes,id'
+                'video_tape_id' =>$request->has('status') ?  'integer|exists:video_tapes,id' : 'required|integer|exists:video_tapes,id'
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to history',
