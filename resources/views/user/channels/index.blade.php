@@ -321,34 +321,34 @@
 					                        @foreach($videos as $i => $video)
 
 
-					                        <li class="sub-list row">
-					                            <div class="main-history">
-					                                 <div class="history-image">
-					                                    <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>
-					                                    @if($video->ppv_amount > 0)
-					                                        @if(!$video->ppv_status)
-					                                            <div class="video_amount">
+        <li class="sub-list row">
+            <div class="main-history">
+                <div class="history-image">
+                    <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>
+                    @if($video->ppv_amount > 0)
+                        @if(!$video->ppv_status)
+                            <div class="video_amount">
 
-					                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+                            {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
 
-					                                            </div>
-					                                        @endif
-					                                    @endif
-					                                    <div class="video_duration">
-					                                        {{$video->duration}}
-					                                    </div>                        
-					                                </div><!--history-image-->
+                            </div>
+                        @endif
+                    @endif
+                    <div class="video_duration">
+                        {{$video->duration}}
+                    </div>                        
+                </div><!--history-image-->
 
-					                                <div class="history-title">
-					                                    <div class="history-head row">
-					                                        <div class="cross-title2">
-					                                            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
-					                                           
-					                                            <span class="video_views">
-							                                        <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-							                                        {{$video->created_at}}
-							                                    </span>
-					                                        </div> 
+                <div class="history-title">
+                    <div class="history-head row">
+                        <div class="cross-title2">
+                            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
+                           
+                            <span class="video_views">
+                                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                {{$video->created_at}}
+                            </span>
+                        </div> 
 						@if(Auth::check())
 						@if($channel->user_id == Auth::user()->id)
 
@@ -368,13 +368,15 @@
 
 					          	</button>
 
+					          	<?php $total_amount = $video->amount + ppv_amount($video->video_tape_id); ?>
+
 					          	<ul class="dropdown-menu dropdown-menu-right" role="menu">
 
 						          	@if(Setting::get('is_payper_view') == 1)
 						            <li><a data-toggle="modal" data-target="#pay-perview_{{$video->video_tape_id}}">{{tr('pay_per_view')}}</a></li>
 						            @endif
 
-						            @if($video->amount > 0) 
+						            @if($total_amount > 0) 
 						            <li><a data-toggle="modal" data-target="#earning_{{$video->video_tape_id}}">{{tr('total_earning')}}</a></li>
 						            <!-- <li><a data-toggle="modal" data-target="#earning">{{tr('total_earning')}}</a></li> -->
 						            <li class="divider"></li>
@@ -389,7 +391,8 @@
 					          	</ul>
 
 
-					          	@if($video->amount > 0) 
+
+					          	@if($total_amount > 0) 
 
 									<div class="modal fade modal-top" id="earning_{{$video->video_tape_id}}" role="dialog">
 									<!-- <div class="modal fade modal-top" id="earning" role="dialog"> -->
@@ -402,7 +405,7 @@
 											    </div>
 											    <div class="modal-body text-center">
 											    	<div class="amount-circle">
-											    		<h3 class="no-margin">${{$video->amount}}</h3>
+											    		<h3 class="no-margin">${{$total_amount}}</h3>
 											   		</div>
 											      	<p>{{tr('total_views')}} - {{$video->watch_count}}</p>
 											      	<a href="{{route('user.redeems')}}">
@@ -507,52 +510,52 @@
                         @endif
                         @endif
 
-					                                        <!--end of cross-mark-->                       
-					                                    </div> <!--end of history-head--> 
+	                                        <!--end of cross-mark-->                       
+                    </div> <!--end of history-head--> 
 
-					                                    <div class="description">
-					                                        <p>{{$video->description}}</p>
-					                                    </div><!--end of description--> 
+                    <div class="description">
+                        <p>{{$video->description}}</p>
+                    </div><!--end of description--> 
 
-					                                   	<span class="stars">
-					                                        <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                        <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-					                                    </span>                                                      
-					                                </div><!--end of history-title--> 
-					                                
-					                            </div><!--end of main-history-->
-					                        </li>    
+                   	<span class="stars">
+                        <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                        <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                        <a href="#"><i @if($video->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                        <a href="#"><i @if($video->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                        <a href="#"><i @if($video->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                    </span>                                                      
+                </div><!--end of history-title--> 
+                
+            </div><!--end of main-history-->
+        </li>    
 
-					                        @endforeach
+	                        @endforeach
 
 
-					                        <span id="videos_list"></span>
+	                        <span id="videos_list"></span>
 
-					                        <div id="video_loader"></div>
-					                       
-					                    </ul>
+	                        <div id="video_loader"></div>
+	                       
+	                    </ul>
 
-					                @else
+	                @else
 
-					                   <p style="color: #000">{{tr('no_video_found')}}</p>
+	                   <p style="color: #000">{{tr('no_video_found')}}</p>
 
-					                @endif
+	                @endif
 
-					                <?php /* @if(count($videos) > 0)
+	                <?php /* @if(count($videos) > 0)
 
-					                    @if($videos)
-					                    <div class="row">
-					                        <div class="col-md-12">
-					                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
-					                        </div>
-					                    </div>
-					                    @endif 
-					                @endif*/ ?>
-					                
-					            </div>
+	                    @if($videos)
+	                    <div class="row">
+	                        <div class="col-md-12">
+	                            <div align="center" id="paglink"><?php echo $videos->links(); ?></div>
+	                        </div>
+	                    </div>
+	                    @endif 
+	                @endif*/ ?>
+	                
+	            </div>
 
 						</div>
 					</div>
@@ -581,11 +584,11 @@
 					                    <div><h4 style="color: #000;">{{tr('payment_videos')}}</h4></div>              
 					                </div><!--end of content-head-->
 
-					                @if(count($payment_videos) > 0)
+					                @if($payment_videos->count > 0)
 
 					                    <ul class="history-list">
 
-					                        @foreach($payment_videos as $i => $video)
+					                        @foreach($payment_videos->data as $i => $video)
 
 
 					                        <li class="sub-list row">
@@ -609,7 +612,7 @@
 					                                <div class="history-title">
 					                                    <div class="history-head row">
 					                                        <div class="cross-title">
-					                                            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}} ($ {{$video->amount}})</a></h5>
+					                                            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
 					                                            
 
 					                                            <span class="video_views">
@@ -627,6 +630,15 @@
 					                                        <p>{{$video->description}}</p>
 					                                    </div><!--end of description--> 
 
+
+					                                    <div>
+					                                    	@if($video->amount > 0)
+					                                    	<span class="label label-success">{{tr('ad_amount')}} - ${{$video->amount}}</span>
+					                                    	@endif
+					                                    	@if($video->total_ppv_amount > 0)
+					                                    	<span class="label label-primary">{{tr('ppv_amount')}} - ${{$video->total_ppv_amount}}</span>
+					                                    	@endif
+					                                    </div>
 					                                   	<span class="stars">
 					                                        <a href="#"><i @if($video->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
 					                                        <a href="#"><i @if($video->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
@@ -719,9 +731,9 @@
 
 	var stopPaymentScroll = false;
 
-	var searchPaymentLength = "{{count($payment_videos)}}";
+	var searchPaymentLength = "{{$payment_videos->count}}";
 
-    
+
     $(window).scroll(function() {
 
 	    if($(window).scrollTop() == $(document).height() - $(window).height()) {

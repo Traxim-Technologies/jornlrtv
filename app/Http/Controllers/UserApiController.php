@@ -3793,8 +3793,7 @@ class UserApiController extends Controller {
      */
     public function payment_videos($id, $skip) {
 
-        $base_query = VideoTape::where('amount' , '>' , 0)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+        $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->where('channel_id', $id)
                         ->orderby('amount' , 'desc');
@@ -3813,13 +3812,22 @@ class UserApiController extends Controller {
 
         $items = [];
 
+
         foreach ($videos as $key => $value) {
 
-            $items[] = displayVideoDetails($value, $u_id);
+            $payment = PayPerView::where('video_id', $value->video_tape_id)->sum('amount');
+
+            if ($payment > 0 || $value->amount > 0) {
+
+                $items[$key] = displayVideoDetails($value, $u_id);
+
+                $items[$key]['total_ppv_amount'] = $payment > 0 ? $payment : 0;
+
+            }
 
         }
 
-        return response()->json($items);
+        return response()->json(['data'=>$items, 'count'=>count($videos)]);
 
     
     }
