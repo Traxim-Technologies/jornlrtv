@@ -490,11 +490,11 @@ function user_type_check($user) {
 
             if(Setting::get('is_subscription')) {
 
-                $user->user_type = 0;
+                $user->user_type = 1;
 
             } else {
                 // Enable the user as paid user
-                $user->user_type = 1;
+                $user->user_type = 0;
             }
 
         }
@@ -1099,6 +1099,7 @@ function displayVideoDetails($data,$userId) {
         'url'=>$url,
         'type_of_user'=>$data->type_of_user,
         'type_of_subscription'=>$data->type_of_subscription,
+        'status'=>$data->status,
     ];
 
     return $model;

@@ -29,5 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ChannelSettingsSeeder::class);
         $this->call(PayperviewCommissionSplit::class);
         $this->call(PayperViewInSetings::class);
+        $this->call(AddSocialLinksSeeder::class);
+        $this->call(AppLinkSeeder::class);
+        $this->call(LanguageSeeder::class);
     }
 }

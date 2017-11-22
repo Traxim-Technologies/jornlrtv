@@ -33,6 +33,8 @@
 									</div>
 								</div>
 								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 white-bg">
+
+
 									<div class="spacing1">
 									 	<table  class="table text-right top-space table-sripped">
 									 		<tbody>
@@ -65,7 +67,7 @@
 
 												    	@else
 
-												    		{{tr('all_users')}}
+												    		{{tr('normal_paid_user')}}
 
 												    	@endif
 												    </td>
@@ -85,7 +87,7 @@
 											    </tr> 
 										    </tbody>
 										</table>
-										<h3 class="no-margin black-clr top">{{tr('payment_options')}}</h3>
+										<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
 									    <form action="{{route('user.payment-type', $video->id)}}" method="post">
 									    	<div>
 												<label class="radio1">

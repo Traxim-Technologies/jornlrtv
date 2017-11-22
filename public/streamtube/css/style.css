@@ -150,7 +150,7 @@ body{
     margin-top: 3px;
     padding: 4px 15px;
     display: inline-block;
-    border-radius: 3px;
+    border-radius:0px;
 }
 .y-signin:hover,.y-signin:active,.y-signin:focus{
 	background-color: #155586;
@@ -1642,7 +1642,7 @@ changes
     line-height: 7px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
     top:30%;
-    border-radius: 50%;
+    border-radius: 50% !important;
     z-index: 800;
  }
 
@@ -2173,7 +2173,7 @@ changes
 	padding: 10px 0 ;
 }
 .modal-footer .btn-danger{
-	border-radius: 4px !important;
+	border-radius: 4px;
 }
 .video-title1{
 	font-size: 20px !important;
@@ -2518,6 +2518,81 @@ changes
 	width: 450px;
 	margin:0 auto;
 	padding-top: 15px;
+}
+.sub-bg-img{
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-color: white;
+	border:1px solid #d0d3d4;
+	/*box-shadow: 1px 1px 2px 2px rgba(0,0,0,.3);*/
+	text-align: center;
+}
+.sub-bg-overlay{
+	background-color: rgba(255,255,255,.7);
+	padding:15px;
+}
+.sub-bg-overlay img{
+	height:100px;
+	border-radius:50px;
+	width:100px;
+	border:2px solid red;
+}
+.sub-bg-overlay h4{
+	width: 95%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-align: center;
+}
+.sub-bg-overlay p{
+	font-size: 14px;
+	width: 95%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-align: center;
+}
+.card-title{
+	background-color: #191278;
+	padding:10px 15px;
+	font-size: 18px;
+	text-transform: capitalize;
+	color: white;
+}
+.card-details{
+	padding:15px;
+	border:1px solid #d0d3d4;
+}
+.card-details h5{
+	color: #999;
+}
+.set-default{
+	height: 50px;
+	width: 50px;
+	float: left;
+	margin-top: -28px;
+	margin-left:-35px;
+	transform: scale(1);
+	transition: all .3s linear;
+}
+.set-default:hover, .card-delete:hover{
+	transform: scale(1.1);
+}
+button{
+	border-radius: 0 !important;
+}
+.top1{
+	margin-top: 25px;
+}
+.card-delete{
+	height:26px;
+	width: 26px;
+	float:right;
+	margin-top:0px;
+	margin-right:0px;
+	transform: scale(1);
+	transition: all .3s linear;
 }
  #preloader {
 

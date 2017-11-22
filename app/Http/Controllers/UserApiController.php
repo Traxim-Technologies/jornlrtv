@@ -331,7 +331,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'video_tape_id' => 'required|integer|exists:video_tapes,id'
+                'video_tape_id' =>$request->has('status') ?  'integer|exists:video_tapes,id' : 'required|integer|exists:video_tapes,id'
             ),
             array(
                 'exists' => 'The :attribute doesn\'t exists please add to history',
@@ -2481,6 +2481,8 @@ class UserApiController extends Controller {
             $errors = implode(',', $validator->messages()->all());
             
             $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
+
         } else {
 
             $subscription = Subscription::find($request->subscription_id);
@@ -2489,6 +2491,8 @@ class UserApiController extends Controller {
             if ($subscription) {
 
                 $total = $subscription->amount;
+
+
 
                 $user = User::find($request->id);
 
@@ -2517,6 +2521,8 @@ class UserApiController extends Controller {
 
                             return response()->json($response_array , 200);
                         }
+
+
 
                         try{
 
@@ -2634,7 +2640,7 @@ class UserApiController extends Controller {
 
                 $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
 
-            }         
+            }    
 
             
         }
@@ -2925,22 +2931,27 @@ class UserApiController extends Controller {
 
                 // Load all the paper view videos based on logged in user id
         $model = PayPerView::where('pay_per_views.user_id', $request->id)
+        ->select('pay_per_views.id as id', 'pay_per_views.video_id', 'pay_per_views.amount as pay_per_view_amount',
+            'video_tapes.*', 'pay_per_views.created_at')
              ->leftJoin('video_tapes' ,'pay_per_views.video_id' , '=' , 'video_tapes.id')
             ->where('video_tapes.is_approved' , 1)
             ->where('video_tapes.status' , 1)
+            ->where('pay_per_views.amount', '>', 0)
             ->where('video_tapes.age_limit','<=', checkAge($request))
             ->orderby('pay_per_views.created_at' , 'desc')
             ->paginate(16);
 
         $video = array('data' => $model->items(), 'pagination' => (string) $model->links());
-
-
       
         $items = [];
 
         foreach ($video['data'] as $key => $value) {
+
             
             $items[] = displayVideoDetails($value->videoTapeResponse, $request->id);
+
+            $items[$key]['paid_amount'] = $value->pay_per_view_amount;
+
 
         }
 
@@ -2954,6 +2965,8 @@ class UserApiController extends Controller {
                     ->where('title','like', '%'.$key.'%')
                     ->where('video_tapes.status' , 1)
                     ->videoResponse()
+                    ->where('channels.is_approved', 1)
+                    ->where('channels.status', 1)
                     ->where('video_tapes.age_limit','<=', checkAge($request))
                     ->orderBy('video_tapes.created_at' , 'desc');
         if($web) {
@@ -3018,6 +3031,7 @@ class UserApiController extends Controller {
 
                 $userModel = User::find($request->id);
 
+
                 if ($userModel) {
 
                     if ($userModel->card_id) {
@@ -3030,7 +3044,8 @@ class UserApiController extends Controller {
 
                             if($video) {
 
-                                $total = $video->amount;
+                                $total = $video->ppv_amount;
+
 
                                 if ($total > 0) {
 
@@ -3044,6 +3059,8 @@ class UserApiController extends Controller {
 
                                         \Stripe\Stripe::setApiKey($stripe_secret_key);
 
+
+
                                     } else {
 
                                         $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
@@ -3051,6 +3068,8 @@ class UserApiController extends Controller {
                                         throw new Exception(Helper::get_error_message(902));
                                         
                                     }
+
+
 
                                     try {
 
@@ -3069,7 +3088,7 @@ class UserApiController extends Controller {
                                             $user_payment = new PayPerView;
                                             $user_payment->payment_id  = $payment_id;
                                             $user_payment->user_id = $request->id;
-                                            $user_payment->video_id = $request->admin_video_id;
+                                            $user_payment->video_id = $request->video_tape_id;
                                             $user_payment->status = DEFAULT_FALSE;
                                             $user_payment->amount = $amount;
 
@@ -3077,7 +3096,7 @@ class UserApiController extends Controller {
 
                                             if($user_payment->amount > 0) {
 
-                                                    $total = $payment->amount;
+                                                    $total = $user_payment->amount;
 
                                                     // Commission Spilit 
 
@@ -3115,56 +3134,7 @@ class UserApiController extends Controller {
                                                         
                                             }
 
-                                            // Commission Spilit 
-                                           /* if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
-
-                                                $video_amount = Setting::get('amount_per_video');
-
-                                                $video->redeem_amount += $video_amount;
-
-                                                if($video->amount > 0) { 
-
-                                                    $total = $video_amount;
-
-                                                    // Commission Spilit 
-
-                                                    $admin_commission = Setting::get('admin_commission')/100;
-
-                                                    $admin_amount = $total * $admin_commission;
-
-                                                    $moderator_amount = $total - $admin_amount;
-
-                                                    $video->admin_amount = $admin_amount;
-
-                                                    $video->user_amount = $moderator_amount;
-
-                                                    $video->save();
-
-                                                    // Commission Spilit Completed
-
-                                                    if($moderator = Moderator::find($video->uploaded_by)) {
-
-                                                        $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                                                        $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                                                        $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                                                        $moderator->total = $moderator->total + $total;
-
-                                                        $moderator->save();
-
-                                                        $video_amount = $moderator_amount;
-
-                                                    }
-                                                    
-                                                }
-
-                                                add_to_redeem($video->uploaded_by , $video_amount);
-
-                                                \Log::info("ADD History - add_to_redeem");
-
-                                            } */
+                                          
 
                                             $video->save();
 
@@ -3205,7 +3175,7 @@ class UserApiController extends Controller {
 
                             $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
 
-                            throw new Exception(tr('no_default_card_available'));
+                            throw new Exception(tr('no_default_card_available'), 901);
 
                         }
 
@@ -3213,7 +3183,7 @@ class UserApiController extends Controller {
 
                         $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
 
-                        throw new Exception(tr('no_default_card_available'));
+                        throw new Exception(tr('no_default_card_available'), 901);
 
                     }
 
@@ -3234,9 +3204,13 @@ class UserApiController extends Controller {
 
             DB::rollback();
 
+            $code = $e->getCode();
+
             $e = $e->getMessage();
 
-            $response_array = ['success'=>false, 'error_messages'=>$e];
+
+
+            $response_array = ['success'=>false, 'error_messages'=>$e, 'error_code'=>$code];
 
             return response()->json($response_array);
 
@@ -3264,12 +3238,15 @@ class UserApiController extends Controller {
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
                             ->where('wishlists.status' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
                             ->select(
                                     'wishlists.id as wishlist_id',
                                     'video_tapes.id as video_tape_id' ,
                                     'video_tapes.title',
                                     'video_tapes.description' ,
                                     'video_tapes.ppv_amount',
+                                    'channels.status as channel_status',
                                     'video_tapes.amount',
                                     'default_image',
                                     'video_tapes.watch_count',
@@ -3341,12 +3318,15 @@ class UserApiController extends Controller {
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
                             ->select('user_histories.id as history_id',
                                     'video_tapes.id as video_tape_id' ,
                                     'video_tapes.title',
                                     'video_tapes.description' , 
                                     'video_tapes.duration',
                                     'default_image',
+                                    'channels.status as channel_status',
                                     'video_tapes.watch_count',
                                     'video_tapes.ratings',
                                     'video_tapes.ppv_amount', 
@@ -3414,6 +3394,8 @@ class UserApiController extends Controller {
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
@@ -3476,6 +3458,8 @@ class UserApiController extends Controller {
                         ->where('video_tapes.publish_status' , 1)
                         ->where('video_tapes.status' , 1)
                         ->where('video_tapes.is_approved' , 1)
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
                         ->videoResponse()
                         ->where('video_tapes.age_limit','<=', checkAge($request))
                         ->orderby('watch_count' , 'desc');
@@ -3534,6 +3518,8 @@ class UserApiController extends Controller {
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->videoResponse()
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderByRaw('RAND()');
 
@@ -3612,11 +3598,9 @@ class UserApiController extends Controller {
 
             $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
-            if ($request->id) {
+            if ($request->has('channel_id')) {
 
-                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
-
-                $query->whereIn('channels.id', $channel_id);
+                $query->whereIn('channels.id', $request->channel_id);
             }
 
 
@@ -3669,7 +3653,6 @@ class UserApiController extends Controller {
     public function channel_videos($channel_id, $skip) {
 
         $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                    ->where('video_tapes.status' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
@@ -3690,6 +3673,24 @@ class UserApiController extends Controller {
 
             }
 
+        }
+
+        $channel = Channel::find($channel_id);
+
+        if ($channel) {
+
+            if ($u_id == $channel->user_id) {
+
+            } else {
+
+                $videos_query->where('video_tapes.status' , 1);
+
+            }
+
+        } else {
+
+            $videos_query->where('video_tapes.status' , 1);
+            
         }
 
         if ($skip >= 0) {
