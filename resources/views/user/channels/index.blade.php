@@ -422,7 +422,7 @@
 													<form  action="{{route('user.save.video-payment', $video->video_tape_id)}}" method="POST">
 														<div class="modal-header">
 															<button type="button" class="close" data-dismiss="modal">&times;</button>
-															<h4 class="modal-title text-left">{{tr('pay_per_view')}}</h4>
+															<h4 class="modal-title text-left" style="color: #000;">{{tr('pay_per_view')}}</h4>
 														</div>
 														<div class="modal-body">
 														   
@@ -466,7 +466,7 @@
 
 															<h4 class="black-clr text-left">{{tr('amount')}}</h4>
 															<div>
-										                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}">
+										                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}" step="any">
 										                  <!-- /input-group -->
 										                
 												            </div>
