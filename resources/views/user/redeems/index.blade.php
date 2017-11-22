@@ -102,7 +102,7 @@ thead>tr>th {
 
                     <div class="content-head">
 
-                        <div><h4>{{tr('redeems')}}</h4></div>
+                        <div><h4 class="no-margin-top">{{tr('redeems')}}</h4></div>
 
                     </div>
 

@@ -176,6 +176,7 @@
 }
 .banner-slider{
 	padding: 0 15px;
+	margin-top: 6px;
 }
 .carousel-caption p{
 	display:none !important;
@@ -287,9 +288,6 @@
 	background-repeat: no-repeat;
 	height: 200px;
 }
-button{
-	border-radius: 0 !important;
-}
 .add-card input {
     width: 330px;
 }
@@ -364,6 +362,7 @@ button{
 }
 .banner-slider{
 	padding: 0 50px;
+	margin-top: 6px;
 }
 }
 
@@ -512,6 +511,7 @@ button{
 }
 .banner-slider{
 	padding: 0 50px;
+	margin-top: 6px;
 }
 }
 
@@ -661,6 +661,7 @@ button{
 }
 .banner-slider{
 	padding: 0 50px;
+	margin-top: 6px;
 }
 }
 
@@ -811,6 +812,7 @@ button{
 }
 .banner-slider{
 	padding: 0 50px;
+	margin-top: 6px;
 }
 }
 /*index.html responsive*/
@@ -850,9 +852,9 @@ button{
 		top: 13px;
 		right: 15px;
 	}
-	.profile-edit{
+	/*.profile-edit{
 		margin-top: 80px !important;
-	}
+	}*/
 	/*#custom-search-input {
 	    width: 100% !important;
 	    float: none !important;
@@ -872,9 +874,9 @@ button{
 
 }
 @media screen and (max-width: 592px){
-	.profile-edit{
+	/*.profile-edit{
 		margin-top: 80px !important;
-	}
+	}*/
 }
 @media screen and (max-width: 467px){
 	.term li a {
@@ -1006,9 +1008,9 @@ videos.html responsive
 	.video-y-menu {
 	    top: 47px !important;
 	}
-	.profile-content {
-    margin-top: 122px !important;
-	}
+	/*.profile-content {
+    	margin-top: 122px !important;
+	}*/
 }
 @media screen and (max-width: 519px){
 	.title h3{

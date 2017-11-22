@@ -13,7 +13,7 @@
 
             <div class="new-history">
                 <div class="content-head">
-                    <div><h4>{{tr('pay_per_videos')}} ( ${{user_total_amount()}} )</h4></div>              
+                    <div><h4 class="no-margin-top">{{tr('pay_per_videos')}} ( ${{user_total_amount()}} )</h4></div>              
                 </div><!--end of content-head-->
 
                 @if(count($model->items) > 0)
