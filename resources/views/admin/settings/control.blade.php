@@ -28,20 +28,6 @@
                     <div class="box-body">
 
                         <div class="form-group">
-                            <label>{{ tr('admin_theme_control') }}</label>
-                            <br>
-                            <label>
-                                <input required type="radio" name="admin_theme_control" value="1" class="flat-red" @if(Setting::get('admin_theme_control') == 1) checked @endif>
-                                {{tr('yes')}}
-                            </label>
-
-                            <label>
-                                <input required type="radio" name="admin_theme_control" class="flat-red"  value="0" @if(Setting::get('admin_theme_control') == 0) checked @endif>
-                                {{tr('no')}}
-                            </label>
-                        </div>
-
-                        <div class="form-group">
                             <label>{{ tr('admin_delete_control') }}</label>
                             <br>
                             <label>
@@ -56,7 +42,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Spam Video</label>
+                            <label>{{tr('spam_video_enable')}}</label>
                             <br>
                             <label>
                                 <input required type="radio" name="is_spam" value="1" class="flat-red" @if(Setting::get('is_spam')) checked @endif>
@@ -70,7 +56,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Default Subscription</label>
+                            <label>{{tr('default_subscription')}}</label>
                             <br>
                             <label>
                                 <input required type="radio" name="is_subscription" value="1" class="flat-red" @if(Setting::get('is_subscription')) checked @endif>
@@ -79,6 +65,20 @@
 
                             <label>
                                 <input required type="radio" name="is_subscription" class="flat-red"  value="0" @if(!Setting::get('is_subscription')) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{tr('email_verify_control')}}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="email_verify_control" value="1" class="flat-red" @if(Setting::get('email_verify_control')) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="email_verify_control" class="flat-red"  value="0" @if(!Setting::get('email_verify_control')) checked @endif>
                                 {{tr('no')}}
                             </label>
                         </div>
@@ -140,22 +140,7 @@
                             </label>
                         </div>
 
-                        <div class="form-group">
-                            
-                            <label>{{tr('is_default_paid_user')}}</label>
-                            <br>
-                            <label>
-                                <input required type="radio" name="is_default_paid_user" value="1" class="flat-red" @if(Setting::get('is_default_paid_user')) checked @endif>
-                                {{tr('enabled')}}
-                            </label>
-
-                            <label>
-                                <input required type="radio" name="is_default_paid_user" class="flat-red"  value="0" @if(!Setting::get('is_default_paid_user')) checked @endif>
-                                {{tr('disabled')}}
-                            </label>
-                        </div>
-
-
+                    
                   </div>
                   <!-- /.box-body -->
 

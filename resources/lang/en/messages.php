@@ -735,7 +735,7 @@ return array(
 
 	'email_verify_alert' => 'Check your Inbox / Spam Folder to verify your email',
 	'admin_theme_control'=> 'Theme Control',
-	'admin_delete_control'=>'Delete/Update Control',
+	'admin_delete_control'=>'Do you want Disable the Delete/Update Control ?',
 	'admin_control'=>'Admin Control',
 	'warning_error_queue'=>'Redis Queue Driver not Configured. Kindly configure and upload the videos to compress queue videos',
 	'choose'=>'Choose',
@@ -979,4 +979,8 @@ return array(
 	'app_url_settings'=>'App Url Settings',
 	'playstore'=>'Playstore',
 	'appstore'=>'Appstore',
+	'default_subscription'=>'Do you want to Enable the user as paid user ?',
+	'spam_video_enable'=>'Do you want to Enable the spam video ?',
+	'email_verify_control'=>'Do you want to enable email verification for User Registration ?',
+	'configure_smtp'=>'If you want to enable email verification, configure SMTP and then enable the key',
 );

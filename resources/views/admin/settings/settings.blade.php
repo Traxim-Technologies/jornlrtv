@@ -24,6 +24,7 @@
                     <!-- <li><a href="#s3_settings" data-toggle="tab">{{tr('s3_settings')}}</a></li> -->
                     <li><a href="#social_settings" data-toggle="tab">{{tr('social_settings')}}</a></li>
                     <li><a href="#site_url_settings" data-toggle="tab">{{tr('site_url_settings')}}</a></li>
+                    <li><a href="#email_settings" data-toggle="tab">{{tr('email_settings')}}</a></li>
                     <li><a href="#app_url_settings" data-toggle="tab">{{tr('app_url_settings')}}</a></li>
                     <li><a href="#paypal_settings" data-toggle="tab">{{tr('paypal_settings')}}</a></li>
                 </ul>
@@ -376,6 +377,62 @@
                         </form>
 
                     </div>
+
+                    <div class="tab-pane" id="email_settings">
+                        <form action="{{route('admin.email.settings.save')}}" method="POST" enctype="multipart/form-data" role="form">
+                            
+                            <div class="box-body">
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="paypal_client_id">{{tr('MAIL_DRIVER')}}</label>
+                                        <input type="text" value="{{ $result['MAIL_DRIVER']}}" class="form-control" name="MAIL_DRIVER" id="MAIL_DRIVER" placeholder="Enter {{tr('MAIL_DRIVER')}}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="MAIL_HOST">{{tr('MAIL_HOST')}}</label>
+                                        <input type="text" class="form-control" value="{{$result['MAIL_HOST']}}" name="MAIL_HOST" id="MAIL_HOST" placeholder="{{tr('MAIL_HOST')}}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="MAIL_PORT">{{tr('MAIL_PORT')}}</label>
+                                        <input type="text" class="form-control" value="{{$result['MAIL_PORT']}}" name="MAIL_PORT" id="MAIL_PORT" placeholder="{{tr('MAIL_PORT')}}">
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="MAIL_USERNAME">{{tr('MAIL_USERNAME')}}</label>
+                                        <input type="text" class="form-control" value="{{$result['MAIL_USERNAME'] }}" name="MAIL_USERNAME" id="MAIL_USERNAME" placeholder="{{tr('MAIL_USERNAME')}}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="MAIL_PASSWORD">{{tr('MAIL_PASSWORD')}}</label>
+                                        <input type="password" class="form-control" name="MAIL_PASSWORD" id="MAIL_PASSWORD" placeholder="{{tr('MAIL_PASSWORD')}}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="MAIL_PORT">{{tr('MAIL_ENCRYPTION')}}</label>
+                                        <input type="text" class="form-control" value="{{$result['MAIL_ENCRYPTION'] }}" name="MAIL_ENCRYPTION" id="MAIL_ENCRYPTION" placeholder="{{tr('MAIL_ENCRYPTION')}}">
+                                    </div>
+
+                                </div>
+
+                          </div>
+                          <!-- /.box-body -->
+
+                            <div class="box-footer">
+                                @if(Setting::get('admin_delete_control'))
+                                    <a href="#" class="btn btn-success pull-right" disabled>{{tr('submit')}}</a>
+                                @else
+                                    <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
+                                @endif
+                            </div>
+                        </form>
+                    </div>
+
 
 
                     <div class="tab-pane" id="app_url_settings">

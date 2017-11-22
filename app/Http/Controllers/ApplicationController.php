@@ -59,29 +59,6 @@ class ApplicationController extends Controller {
     }
 
 
-    public function channel_create() {
-        return view('ui.channels.create');
-    }
-    public function ui() {
-        return view('ui.index');
-    }
-
-    public function channel_view() {
-        return view('ui.channels.view');
-    }
-
-    public function subscriptions() {
-        return view('ui.subscriptions.index');
-    }
-
-    public function subscription_view() {
-        return view('ui.subscriptions.view');
-    }
-
-    public function video_create() {
-        return view('ui.videos.create');
-    } 
-
     public $expiry_date = "";
 
     public function test() {
@@ -424,7 +401,14 @@ class ApplicationController extends Controller {
 
     public function admin_control() {
 
-        return view('admin.settings.control')->with('page', tr('admin_control'));
+        if (Auth::guard('admin')->check()) {
+
+            return view('admin.settings.control')->with('page', tr('admin_control'));
+
+        } else {
+
+            return back();
+        }
         
     }
 
@@ -434,9 +418,7 @@ class ApplicationController extends Controller {
         
         foreach ($model as $key => $value) {
 
-            if($value->key == 'admin_theme_control') {
-                $value->value = $request->admin_theme_control;
-            } else if ($value->key == 'admin_delete_control') {
+            if ($value->key == 'admin_delete_control') {
                 $value->value = $request->admin_delete_control;
             } else if ($value->key == 'is_spam') {
                 $value->value = $request->is_spam;
@@ -450,8 +432,23 @@ class ApplicationController extends Controller {
                 $value->value = $request->is_banner_ad;
             } else if ($value->key == 'create_channel_by_user') {
                 $value->value = $request->create_channel_by_user;
-            } else if ($value->key == 'is_default_paid_user') {
-                $value->value = $request->is_default_paid_user;
+            } else if ($value->key == 'email_verify_control') {
+
+                if ($request->email_verify_control == 1) {
+
+                    if(config('mail.username') &&  config('mail.password')) {
+
+                        $value->value = $request->email_verify_control;
+
+                    } else {
+
+                        return back()->with('flash_error', tr('configure_smtp'));
+                    }
+
+                }else {
+
+                    $value->value = $request->email_verify_control;
+                }
             } 
             
             $value->save();
