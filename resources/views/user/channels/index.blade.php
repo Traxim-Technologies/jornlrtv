@@ -351,6 +351,8 @@
 					                                        </div> 
 						@if(Auth::check())
 						@if($channel->user_id == Auth::user()->id)
+
+						@if($video->status)
 						<div class="cross-mark2">
 					        
                             <label style="float:none; margin-top: 6px;" class="switch hidden-xs" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
@@ -496,6 +498,9 @@
 				            
 				           
                         </div>
+                        @else
+                        	<button class="btn btn-warning btn-small">{{tr('video_compressing')}}</button>
+                        @endif
                         @endif
                         @endif
 

@@ -986,4 +986,5 @@ return array(
 	'admin_language_control'=>'Do you want to enable MultiLanguage Support ?',
 	'card_name'=>'Card Name',
 	'no_subscribers_found'=>'No subscribers found',
+	'video_compressing'=>'Video Compressing',
 );
