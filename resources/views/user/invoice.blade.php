@@ -64,12 +64,15 @@
 												</label>
 											</div>
 											<div class="clear-fix"></div>
+
+											@if(Setting::get('payment_type') == 'stripe')
 											<div>
 											    <label class="radio1">
 												    <input id="radio2" type="radio" name="payment_type" value="2">
 												    <span class="outer"><span class="inner"></span></span>{{tr('card_payment')}}
 												</label>
 											</div>
+											@endif
 											<div class="clear-fix"></div>
 											<div class="text-right top">
 												<button class="btn btn-danger">
