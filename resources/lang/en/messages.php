@@ -493,7 +493,7 @@ return array(
 	'back_profile' => 'Back Profile',
 
 	'password_change_success' => 'Password Changed successfully',
-	'password_mismatch' =>  'Pasword is mismatched',
+	'password_mismatch' =>  'Password is mismatched',
 	'push_send_success' => 'Push Notifications Sent Successfully',
 
 	//Admin Dashboard
