@@ -988,4 +988,5 @@ return array(
 	'no_subscribers_found'=>'No subscribers found',
 	'video_compressing'=>'Video Compressing',
 	'forgot_password_note'=>'The email is not configured. Please contact admin',
+	'normal_paid_user'=>'Both Subscribed & Unsubscribed Users'
 );

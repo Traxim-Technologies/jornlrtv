@@ -2020,7 +2020,7 @@ class UserController extends Controller {
 
         if ($payment->success) {
 
-            return back()->with('flash_success', $payment->message);
+            return redirect(route('user.video.success',$request->video_tape_id))->with('flash_success', $payment->message);
 
         } else {
 

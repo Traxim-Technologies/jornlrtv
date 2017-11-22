@@ -92,9 +92,9 @@
 
 								                <input id="id" name="id" type="hidden" required>
 
-								                <div class="input-group-signup">
+								                <!-- <div class="input-group-signup">
 								                	<input type="text" name="card-name" placeholder="Card name (ex: visa)" class="form-control" required>
-								                </div>
+								                </div> -->
 
 								                <div class="input-group-signup">
 								                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number" 

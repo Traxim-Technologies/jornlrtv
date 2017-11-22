@@ -33,6 +33,8 @@
 									</div>
 								</div>
 								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 white-bg">
+
+
 									<div class="spacing1">
 									 	<table  class="table text-right top-space table-sripped">
 									 		<tbody>
@@ -65,7 +67,7 @@
 
 												    	@else
 
-												    		{{tr('all_users')}}
+												    		{{tr('normal_paid_user')}}
 
 												    	@endif
 												    </td>
