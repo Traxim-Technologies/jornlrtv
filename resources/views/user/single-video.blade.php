@@ -189,12 +189,7 @@ textarea[name=comments] {
                                                     <!-- <h4 class="video-desc">{{$video->description}}</h4> -->
                                                     <hr>
                                                 </div>
-
                                                 
-
-                                                  
-
-                                           
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top zero-padding ">
                                                     <div class="row1"> 
@@ -219,7 +214,10 @@ textarea[name=comments] {
                                                                      && Auth::user()->id != $video->channel_created_by)
 
                                                                         @if($flaggedVideo == '')
-                                                                            <button onclick="showReportForm();" type="button" class="report-button bottom-space" title="{{tr('report')}}">
+                                                                            <!-- <button onclick="showReportForm();" type="button" class="report-button bottom-space" title="{{tr('report')}}">
+                                                                            <i class="fa fa-flag"></i> 
+                                                                            </button> -->
+                                                                            <button  type="button" class="report-button bottom-space" title="{{tr('report')}}" data-toggle="modal" data-target="#report-form">
                                                                             <i class="fa fa-flag"></i> 
                                                                             
                                                                             </button>
@@ -301,7 +299,42 @@ textarea[name=comments] {
                                                     @endif
 
                                                 @endif
-                                                    
+                                                
+<div class="modal fade" id="report-form" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Report this Video ?</h4>
+            </div>
+            <div class="modal-body">
+                @if(Setting::get('is_spam'))
+                    @if (!$flaggedVideo)
+                        <div class="more-content" id="report_video_form">
+                            <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
+                               <!--  <b>Report this Video ?</b>
+                                <br> -->
+                                @foreach($report_video as $report) 
+                                    <div class="report_list">
+                                        <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
+                                    </div>
+                                @endforeach
+                                <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
+                                <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                <div class="pull-right">
+                                    <button class="btn btn-success btn-sm">{{tr('submit')}}</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    @endif
+                @endif
+            </div>
+        </div>
+        <!-- modal content ends -->
+    </div>
+</div>    
 
                                             
 

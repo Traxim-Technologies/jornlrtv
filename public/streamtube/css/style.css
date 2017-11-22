@@ -440,8 +440,45 @@ videos (single page) css
 	padding: 4px 10px;
 	font-size: 13px;
 }
-
-
+.menu-foot{
+	list-style: none;
+	padding: 0;
+	border-bottom: 1px solid #e8e8e8
+}
+.menu-foot h3{
+	font-size: 13px;
+	margin-top: 0;
+	color: #cc181e;	
+	margin-bottom: 15px;
+}
+.menu-foot-head{
+	font-size: 13px;
+	margin-top: 0;
+	color: #cc181e;	
+	margin-bottom:10px;
+}
+.foot-share1{
+	color: red;
+}
+.foot-share2{
+	padding-top: 2px;
+}
+#report-form .modal-content{
+	border-radius: 0;
+}
+#report-form .modal-title{
+	font-size: 18px;
+}
+#report-form .close:hover{
+	color: black;
+}
+.menu-foot img{
+	height: 43px;
+	width:auto;
+	max-width: 100%;
+	margin-bottom:15px;
+	transition: all .3s linear;
+}
 .video-title h4{
 	font-size: 13px;
     font-weight: bold;
