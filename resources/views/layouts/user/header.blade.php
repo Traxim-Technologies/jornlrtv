@@ -32,7 +32,11 @@
 
                             <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
 
+                            @if(Setting::get('payment_type') == 'stripe')
+
                             <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
+
+                            @endif
 
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
 
@@ -165,8 +169,12 @@
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
+
+                            @if(Setting::get('payment_type') == 'stripe')
                             
                             <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>
+
+                            @endif
                             
                             <li><a href="{{route('user.channels.subscribed')}}">{{tr('subscribed_channels')}}</a></li>
                             
