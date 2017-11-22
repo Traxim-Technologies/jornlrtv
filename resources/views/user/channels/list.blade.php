@@ -24,10 +24,37 @@
 						
 						 <div class="new-history">
 				                <div class="content-head">
-				                    <div><h4 style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
+				                    <div class="pull-left"><h4 style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
 				  
-				                    </h4></div>              
+				                    </h4></div>      
+
+				                    @if(Auth::check())    	
+
+					                    @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
+
+					                    @if(Auth::user()->user_type)
+
+					                    @if((count($response->channels) == 0) || Setting::get('multi_channel_status'))  
+
+					                    <div class="pull-right" style="margin-bottom: 10px;">
+
+					                    	<a class="st_video_upload_btn " href="{{route('user.create_channel')}}"><i class="fa fa-tv"></i>&nbsp;{{tr('create_channel')}}</a>
+
+					                    	
+
+					                    </div>
+
+					                   	@endif
+
+					                    @endif
+
+					                    @endif
+
+				                    @endif
+
+				                    <div class="clearfix"></div>    
 				                </div><!--end of content-head-->
+
 
 				                @if(count($response->channels) > 0)
 

@@ -2108,7 +2108,6 @@ class UserController extends Controller {
 
         $response = $this->UserAPI->user_channel_list($request)->getData();
 
-        // dd($response);
 
         return view('user.channels.list')->with('page', 'channels')
                 ->with('subPage', 'channel_list')
