@@ -33,6 +33,8 @@
 									</div>
 								</div>
 								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 white-bg">
+
+
 									<div class="spacing1">
 									 	<table  class="table text-right top-space table-sripped">
 									 		<tbody>
@@ -65,7 +67,7 @@
 
 												    	@else
 
-												    		{{tr('all_users')}}
+												    		{{tr('normal_paid_user')}}
 
 												    	@endif
 												    </td>
@@ -94,12 +96,16 @@
 												</label>
 											</div>
 											<div class="clear-fix"></div>
+
+											@if(Setting::get('payment_type') == 'stripe')
 											<div>
 											    <label class="radio1">
 												    <input id="radio2" type="radio" name="payment_type" value="2">
 												    <span class="outer"><span class="inner"></span></span>{{tr('card_payment')}}
 												</label>
 											</div>
+
+											@endif
 											<div class="clear-fix"></div>
 											<div class="text-right top">
 												<button class="btn btn-danger">

@@ -493,7 +493,7 @@ return array(
 	'back_profile' => 'Back Profile',
 
 	'password_change_success' => 'Password Changed successfully',
-	'password_mismatch' =>  'Pasword is mismatched',
+	'password_mismatch' =>  'Password is mismatched',
 	'push_send_success' => 'Push Notifications Sent Successfully',
 
 	//Admin Dashboard
@@ -988,4 +988,7 @@ return array(
 	'no_subscribers_found'=>'No subscribers found',
 	'video_compressing'=>'Video Compressing',
 	'forgot_password_note'=>'The email is not configured. Please contact admin',
+	'normal_paid_user'=>'Both Subscribed & Unsubscribed Users',
+	'ad_amount'=>'Ad Amount',
+	'ppv_amount'=>'PPV Amount',
 );

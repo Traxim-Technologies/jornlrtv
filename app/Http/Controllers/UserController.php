@@ -1885,9 +1885,12 @@ class UserController extends Controller {
 
         // Get Videos
 
-        $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+       // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+
+        $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip)->getData();
 
         $channel = Channel::find($request->channel_id);
+
 
         $view = View::make('user.videos.partial_videos')
                     ->with('videos',$videos)
@@ -1904,12 +1907,15 @@ class UserController extends Controller {
 
         // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
 
-        $payment_videos = VideoRepo::payment_videos($request->channel_id, null, $request->skip);
+       // $payment_videos = VideoRepo::payment_videos($request->channel_id, null, $request->skip);
+
+        $payment_videos = $this->UserAPI->payment_videos($request->channel_id, $request->skip)->getData();
+
 
         $view = View::make('user.videos.partial_payment_videos')
                     ->with('payment_videos', $payment_videos)->render();
 
-        return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
+        return response()->json(['view'=>$view, 'length'=>$payment_videos->count]);
     }
 
     public function invoice(Request $request) {
@@ -2020,7 +2026,7 @@ class UserController extends Controller {
 
         if ($payment->success) {
 
-            return back()->with('flash_success', $payment->message);
+            return redirect(route('user.video.success',$request->video_tape_id))->with('flash_success', $payment->message);
 
         } else {
 
@@ -2108,9 +2114,8 @@ class UserController extends Controller {
 
         $response = $this->UserAPI->user_channel_list($request)->getData();
 
-        // dd($response);
 
-        return view('user.channels.list')->with('page', 'channels')
+        return view('user.channels.list')->with('page', 'my_channel')
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
     }

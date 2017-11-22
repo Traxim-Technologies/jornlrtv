@@ -2481,6 +2481,8 @@ class UserApiController extends Controller {
             $errors = implode(',', $validator->messages()->all());
             
             $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
+
         } else {
 
             $subscription = Subscription::find($request->subscription_id);
@@ -2489,6 +2491,8 @@ class UserApiController extends Controller {
             if ($subscription) {
 
                 $total = $subscription->amount;
+
+
 
                 $user = User::find($request->id);
 
@@ -2517,6 +2521,8 @@ class UserApiController extends Controller {
 
                             return response()->json($response_array , 200);
                         }
+
+
 
                         try{
 
@@ -2634,7 +2640,7 @@ class UserApiController extends Controller {
 
                 $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
 
-            }         
+            }    
 
             
         }
@@ -2925,22 +2931,27 @@ class UserApiController extends Controller {
 
                 // Load all the paper view videos based on logged in user id
         $model = PayPerView::where('pay_per_views.user_id', $request->id)
+        ->select('pay_per_views.id as id', 'pay_per_views.video_id', 'pay_per_views.amount as pay_per_view_amount',
+            'video_tapes.*', 'pay_per_views.created_at')
              ->leftJoin('video_tapes' ,'pay_per_views.video_id' , '=' , 'video_tapes.id')
             ->where('video_tapes.is_approved' , 1)
             ->where('video_tapes.status' , 1)
+            ->where('pay_per_views.amount', '>', 0)
             ->where('video_tapes.age_limit','<=', checkAge($request))
             ->orderby('pay_per_views.created_at' , 'desc')
             ->paginate(16);
 
         $video = array('data' => $model->items(), 'pagination' => (string) $model->links());
-
-
       
         $items = [];
 
         foreach ($video['data'] as $key => $value) {
+
             
             $items[] = displayVideoDetails($value->videoTapeResponse, $request->id);
+
+            $items[$key]['paid_amount'] = $value->pay_per_view_amount;
+
 
         }
 
@@ -3020,6 +3031,7 @@ class UserApiController extends Controller {
 
                 $userModel = User::find($request->id);
 
+
                 if ($userModel) {
 
                     if ($userModel->card_id) {
@@ -3032,7 +3044,8 @@ class UserApiController extends Controller {
 
                             if($video) {
 
-                                $total = $video->amount;
+                                $total = $video->ppv_amount;
+
 
                                 if ($total > 0) {
 
@@ -3046,6 +3059,8 @@ class UserApiController extends Controller {
 
                                         \Stripe\Stripe::setApiKey($stripe_secret_key);
 
+
+
                                     } else {
 
                                         $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
@@ -3053,6 +3068,8 @@ class UserApiController extends Controller {
                                         throw new Exception(Helper::get_error_message(902));
                                         
                                     }
+
+
 
                                     try {
 
@@ -3071,7 +3088,7 @@ class UserApiController extends Controller {
                                             $user_payment = new PayPerView;
                                             $user_payment->payment_id  = $payment_id;
                                             $user_payment->user_id = $request->id;
-                                            $user_payment->video_id = $request->admin_video_id;
+                                            $user_payment->video_id = $request->video_tape_id;
                                             $user_payment->status = DEFAULT_FALSE;
                                             $user_payment->amount = $amount;
 
@@ -3079,7 +3096,7 @@ class UserApiController extends Controller {
 
                                             if($user_payment->amount > 0) {
 
-                                                    $total = $payment->amount;
+                                                    $total = $user_payment->amount;
 
                                                     // Commission Spilit 
 
@@ -3117,56 +3134,7 @@ class UserApiController extends Controller {
                                                         
                                             }
 
-                                            // Commission Spilit 
-                                           /* if($video->watch_count >= Setting::get('video_viewer_count') && is_numeric($video->uploaded_by)) {
-
-                                                $video_amount = Setting::get('amount_per_video');
-
-                                                $video->redeem_amount += $video_amount;
-
-                                                if($video->amount > 0) { 
-
-                                                    $total = $video_amount;
-
-                                                    // Commission Spilit 
-
-                                                    $admin_commission = Setting::get('admin_commission')/100;
-
-                                                    $admin_amount = $total * $admin_commission;
-
-                                                    $moderator_amount = $total - $admin_amount;
-
-                                                    $video->admin_amount = $admin_amount;
-
-                                                    $video->user_amount = $moderator_amount;
-
-                                                    $video->save();
-
-                                                    // Commission Spilit Completed
-
-                                                    if($moderator = Moderator::find($video->uploaded_by)) {
-
-                                                        $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                                                        $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                                                        $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                                                        $moderator->total = $moderator->total + $total;
-
-                                                        $moderator->save();
-
-                                                        $video_amount = $moderator_amount;
-
-                                                    }
-                                                    
-                                                }
-
-                                                add_to_redeem($video->uploaded_by , $video_amount);
-
-                                                \Log::info("ADD History - add_to_redeem");
-
-                                            } */
+                                          
 
                                             $video->save();
 
@@ -3825,8 +3793,7 @@ class UserApiController extends Controller {
      */
     public function payment_videos($id, $skip) {
 
-        $base_query = VideoTape::where('amount' , '>' , 0)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+        $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->where('channel_id', $id)
                         ->orderby('amount' , 'desc');
@@ -3845,13 +3812,22 @@ class UserApiController extends Controller {
 
         $items = [];
 
+
         foreach ($videos as $key => $value) {
 
-            $items[] = displayVideoDetails($value, $u_id);
+            $payment = PayPerView::where('video_id', $value->video_tape_id)->sum('amount');
+
+            if ($payment > 0 || $value->amount > 0) {
+
+                $items[$key] = displayVideoDetails($value, $u_id);
+
+                $items[$key]['total_ppv_amount'] = $payment > 0 ? $payment : 0;
+
+            }
 
         }
 
-        return response()->json($items);
+        return response()->json(['data'=>$items, 'count'=>count($videos)]);
 
     
     }
