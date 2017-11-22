@@ -744,6 +744,7 @@
 					                       
 					                    </ul>
 
+
 					                @else
 
 					                   <p style="color: #000">{{tr('no_video_found')}}</p>
@@ -939,7 +940,7 @@
 					                
 					            </div>
 
-						</div>
+							</div>
 					</div>
 
 
