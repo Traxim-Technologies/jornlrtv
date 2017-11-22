@@ -318,6 +318,18 @@ class UserController extends Controller {
      */
     public function channel_list(Request $request){
 
+        if(Auth::check()) {
+
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+                'age'=>\Auth::user()->age_limit,
+            ]);
+
+        }
+
+
         $response = $this->UserAPI->channel_list($request)->getData();
 
 
@@ -1848,6 +1860,15 @@ class UserController extends Controller {
         $request->request->add([ 
             'id' => \Auth::user()->id,
         ]);        
+
+        if ($request->id) {
+
+            $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+            $request->request->add([ 
+                'channel_id' => $channel_id,
+            ]);        
+        }
 
         $response = $this->UserAPI->channel_list($request)->getData();
 

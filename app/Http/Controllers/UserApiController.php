@@ -3630,11 +3630,9 @@ class UserApiController extends Controller {
 
             $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
 
-            if ($request->id) {
+            if ($request->has('channel_id')) {
 
-                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
-
-                $query->whereIn('channels.id', $channel_id);
+                $query->whereIn('channels.id', $request->channel_id);
             }
 
 
