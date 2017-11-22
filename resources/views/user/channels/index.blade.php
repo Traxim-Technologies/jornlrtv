@@ -482,7 +482,7 @@
 													 <div class="modal-footer">
 												      	<div class="pull-left">
 												      		@if($video->ppv_amount > 0)
-												       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
+												       			<a class="btn btn-danger" href="{{route('user.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
 												       		@endif
 												       	</div>
 												        <div class="pull-right">
