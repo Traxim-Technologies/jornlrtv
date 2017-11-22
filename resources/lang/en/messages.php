@@ -987,4 +987,5 @@ return array(
 	'card_name'=>'Card Name',
 	'no_subscribers_found'=>'No subscribers found',
 	'video_compressing'=>'Video Compressing',
+	'forgot_password_note'=>'The email is not configured. Please contact admin',
 );
