@@ -1509,6 +1509,7 @@ class UserController extends Controller {
                                 'channels.name as channel_name',
                                 'users.id as user_id',
                                 'users.name as user_name',
+                                'users.picture as user_image',
                                 'channel_subscriptions.id as subscriber_id',
                                 'channel_subscriptions.created_at as created_at')
                         ->leftJoin('channels', 'channels.id', '=', 'channel_subscriptions.channel_id')

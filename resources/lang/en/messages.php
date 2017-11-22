@@ -984,4 +984,6 @@ return array(
 	'email_verify_control'=>'Do you want to enable email verification for User Registration ?',
 	'configure_smtp'=>'If you want to enable email verification, configure SMTP and then enable the key',
 	'admin_language_control'=>'Do you want to enable MultiLanguage Support ?',
+	'card_name'=>'Card Name',
+	'no_subscribers_found'=>'No subscribers found',
 );
