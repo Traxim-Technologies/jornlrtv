@@ -719,6 +719,8 @@
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
                         ->videoResponse()
+                        ->where('channels.is_approved', 1)
+                        ->where('channels.status', 1)
                         ->where('video_tapes.age_limit','<=', checkAge($request))
                         ->orderBy('video_tapes.created_at' , 'desc');
             if($web) {

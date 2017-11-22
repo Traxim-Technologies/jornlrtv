@@ -1046,22 +1046,14 @@ class AdminController extends Controller {
 
         $admin_id = \Auth::guard('admin')->user()->id;
 
+
         foreach ($email_settings as $key => $data) {
 
-            if($request->has($data)) {
-                \Enveditor::set($data,$request->$data);
-            }
+            \Enveditor::set($data,$request->$data);
+            
         }
 
-        /*\Artisan::call('config:cache');
-
-        Auth::guard('admin')->loginUsingId($admin_id);
-
-        $result = EnvEditorHelper::getEnvValues();*/
-
-        // return back()->with('result' , $result)->with('flash_success' , tr('email_settings_success'));
-
-        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , tr('email_settings_success'));
+        return redirect(route('clear-cache'))->with('flash_success' , tr('email_settings_success'));
 
     }
 

@@ -57,53 +57,6 @@ class VideoTapeRepository {
 
 	}
 
-	/**
-	 * Recently Added videos based on the Created At 
-	 * 
-	 */
-
-	public static function recently_added($request, $web = 1) {
-
-		$base_query = VideoTape::where('video_tapes.is_approved' , 1)                      				                ->where('video_tapes.status' , 1)
-                            ->where('video_tapes.publish_status' , 1)
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                            ->orderby('video_tapes.created_at' , 'desc')
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
-                            ->videoResponse();
-
-        if ($request->id) {
-
-            // Check any flagged videos are present
-
-            $flag_videos = flag_videos($request->id);
-
-            if($flag_videos) {
-                $base_query->whereNotIn('video_tapes.id',$flag_videos);
-            }
-
-        }
-
-        if($web) {
-
-            $videos = $base_query->paginate(16);
-
-        } else {
-
-            $videos = $base_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
-
-        }
-
-        $items = [];
-
-        foreach ($videos as $key => $value) {
-            
-            $items[] = displayVideoDetails($value, $request->id);
-
-        }
-
-        return $items;
-	
-	}
 
 	/**
 	 * Trending videos based on the watch count

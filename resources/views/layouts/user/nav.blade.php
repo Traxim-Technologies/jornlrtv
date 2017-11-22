@@ -35,13 +35,13 @@
                 
     @if(count($channels = loadChannels()) > 0)
         
-        <ul class="y-home" style="margin-top: 10px;">
+        <ul class="y-home menu1" style="margin-top: 10px;">
 
 
             <h3>{{tr('channels')}}</h3>
 
             @foreach($channels as $channel)
-                <li>
+                <li id="channels_{{$channel->id}}">
                     <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
                 </li>
             @endforeach              

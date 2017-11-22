@@ -15,7 +15,7 @@
                 <div class="content-head">
                     <div><h4>{{tr('history')}}</h4></div>
 
-                    @if(count($histories) > 0)
+                    @if(count($histories->items) > 0)
                         <div class="clear-button">
                             <form method="get" action="{{route('user.delete.history')}}">
                                 <input type="hidden" name="status" value="1">

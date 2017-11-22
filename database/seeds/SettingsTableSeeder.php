@@ -75,7 +75,7 @@ class SettingsTableSeeder extends Seeder
         	],
 		    [
 		    	'key' => 'video_compress_size',
-		    	'value' => 2
+		    	'value' => 50
 		    ],
 		    [
 		    	'key' => 'image_compress_size',
