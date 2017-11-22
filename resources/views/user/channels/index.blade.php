@@ -466,7 +466,7 @@
 
 															<h4 class="black-clr text-left">{{tr('amount')}}</h4>
 															<div>
-										                       <input type="text" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" pattern="[0-9]{1,}" step="any">
+										                       <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
 										                  <!-- /input-group -->
 										                
 												            </div>
