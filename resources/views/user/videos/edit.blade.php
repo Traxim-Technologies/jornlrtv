@@ -19,7 +19,7 @@
           <div class="col-sm-10">
                 <div class="wizard-container">
                     <div class="card wizard-card" data-color="red" id="wizard">
-                        <form action="{{route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">
+                        <form action="{{ (Setting::get('admin_delete_control')) ? '' : route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">
                     <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
 
                           <div class="wizard-header">
@@ -118,7 +118,11 @@
                                           </div>
                                         </div>
 
+                                        @if (Setting::get('admin_delete_control'))
+
+                                        @else
                                         <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();" required>
+                                        @endif
 
                                         <br>
                                         <div class="progress" class="col-sm-12">
@@ -143,8 +147,11 @@
 
                                     <input type='button' class='btn btn-abort btn-fill btn-warning btn-wd' name='abort' value="{{tr('abort')}}" id="abort_btn" onclick="abortVideo();"/>
 
+                                      @if (Setting::get('admin_delete_control'))
+                                      <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next'/>
+                                      @else
                                       <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next' id="next_btn"/>
-
+                                      @endif
                                       
 
                                       <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Finish' onclick="redirect()" />

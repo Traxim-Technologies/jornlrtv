@@ -1058,10 +1058,6 @@
 
 </div>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 1bc65d9edddaca8064370082ada2a7f0b379b0bd
 @endsection
 
 @section('scripts')

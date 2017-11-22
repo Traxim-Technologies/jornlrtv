@@ -38,61 +38,45 @@ thead>tr>th {
 
                     </div>
 
-                    @if(count($subscribers) > 0)
+                        @if(count($subscribers) > 0)
+
+                        
 
                         <div class="row">
+                            @foreach($subscribers as $i => $subscriber)
 
-                            <div class="col-md-12" >
-                                <div class="table-responsive">
-                                    <table class="table">
-
-                                        <thead>
-                                            <tr>
-                                                <th>{{tr('s_no')}}</th>
-                                                @if(!$channel_id)
-                                                    <th>{{tr('channel_name')}}</th>
-                                                @endif
-                                                <th>{{tr('user_name')}}</th>
-                                                <th>{{tr('created_at')}}</th>
-                                                <th>{{tr('action')}}</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-
-                                            @foreach($subscribers as $i => $subscriber)
-
-                                                <tr>
-
-                                                    <td>{{++$i}}</td>
-                                                    @if(!$channel_id)
-                                                        <td><a href="{{route('user.channel',$subscriber->channel_id)}}">{{$subscriber->channel_name}}</a></td>
-                                                    @endif
-                                                    <td>{{$subscriber->user_name}}</td>
-                                                    <td>{{$subscriber->created_at->diffForHumans()}}</td>
-
-                                                    <td><a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a></td>
-                                                </tr>
-
-                                            @endforeach
-                                        
-                                        </tbody>
-                                    
-                                    </table>
-                                </div>
-                                 @if($subscribers)
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div align="center" id="paglink"><?php echo $subscribers->links(); ?></div>
-                                        </div>
+                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                                <div class="sub-bg-img" style="background-image: url({{asset('images/popup-back.jpg')}});">
+                                    <div class="sub-bg-overlay">
+                                        <img src="{{$subscriber->user_image}}" alt="user-image">
+                                        <h4>{{$subscriber->user_name}}</h4>
+                                        <p>{{$subscriber->created_at->diffForHumans()}}</p>
+                                        <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
                                     </div>
-                                @endif
-
+                                </div>
                             </div>
 
+                            @endforeach
                         </div>
 
-                    @endif
+                        @if($subscribers)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div align="center" id="paglink"><?php echo $subscribers->links(); ?></div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @else 
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div align="center" id="paglink">{{tr('no_subscribers_found')}}</div>
+                                </div>
+                            </div>
+
+
+                        @endif
             
                 </div>
             
