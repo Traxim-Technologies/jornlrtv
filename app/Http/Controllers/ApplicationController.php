@@ -432,6 +432,9 @@ class ApplicationController extends Controller {
                 $value->value = $request->is_banner_ad;
             } else if ($value->key == 'create_channel_by_user') {
                 $value->value = $request->create_channel_by_user;
+            } else if ($value->key == 'admin_language_control') {
+                $value->value = $request->admin_language_control;
+            
             } else if ($value->key == 'email_verify_control') {
 
                 if ($request->email_verify_control == 1) {

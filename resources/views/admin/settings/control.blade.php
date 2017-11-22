@@ -41,6 +41,20 @@
                             </label>
                         </div>
 
+                         <div class="form-group">
+                            <label>{{ tr('admin_language_control') }}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="admin_language_control" value="1" class="flat-red" @if(Setting::get('admin_language_control') == 1) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="admin_language_control" class="flat-red"  value="0" @if(Setting::get('admin_language_control') == 0) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
                         <div class="form-group">
                             <label>{{tr('spam_video_enable')}}</label>
                             <br>

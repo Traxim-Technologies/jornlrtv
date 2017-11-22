@@ -2954,6 +2954,8 @@ class UserApiController extends Controller {
                     ->where('title','like', '%'.$key.'%')
                     ->where('video_tapes.status' , 1)
                     ->videoResponse()
+                    ->where('channels.is_approved', 1)
+                    ->where('channels.status', 1)
                     ->where('video_tapes.age_limit','<=', checkAge($request))
                     ->orderBy('video_tapes.created_at' , 'desc');
         if($web) {
@@ -3268,12 +3270,15 @@ class UserApiController extends Controller {
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
                             ->where('wishlists.status' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
                             ->select(
                                     'wishlists.id as wishlist_id',
                                     'video_tapes.id as video_tape_id' ,
                                     'video_tapes.title',
                                     'video_tapes.description' ,
                                     'video_tapes.ppv_amount',
+                                    'channels.status as channel_status',
                                     'video_tapes.amount',
                                     'default_image',
                                     'video_tapes.watch_count',
@@ -3345,12 +3350,15 @@ class UserApiController extends Controller {
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
                             ->select('user_histories.id as history_id',
                                     'video_tapes.id as video_tape_id' ,
                                     'video_tapes.title',
                                     'video_tapes.description' , 
                                     'video_tapes.duration',
                                     'default_image',
+                                    'channels.status as channel_status',
                                     'video_tapes.watch_count',
                                     'video_tapes.ratings',
                                     'video_tapes.ppv_amount', 
@@ -3418,6 +3426,8 @@ class UserApiController extends Controller {
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
@@ -3480,6 +3490,8 @@ class UserApiController extends Controller {
                         ->where('video_tapes.publish_status' , 1)
                         ->where('video_tapes.status' , 1)
                         ->where('video_tapes.is_approved' , 1)
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
                         ->videoResponse()
                         ->where('video_tapes.age_limit','<=', checkAge($request))
                         ->orderby('watch_count' , 'desc');
@@ -3538,6 +3550,8 @@ class UserApiController extends Controller {
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->videoResponse()
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->orderByRaw('RAND()');
 

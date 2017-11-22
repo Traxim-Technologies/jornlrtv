@@ -983,4 +983,5 @@ return array(
 	'spam_video_enable'=>'Do you want to Enable the spam video ?',
 	'email_verify_control'=>'Do you want to enable email verification for User Registration ?',
 	'configure_smtp'=>'If you want to enable email verification, configure SMTP and then enable the key',
+	'admin_language_control'=>'Do you want to enable MultiLanguage Support ?',
 );

@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PayperViewInSetings::class);
         $this->call(AddSocialLinksSeeder::class);
         $this->call(AppLinkSeeder::class);
+        $this->call(LanguageSeeder::class);
     }
 }
