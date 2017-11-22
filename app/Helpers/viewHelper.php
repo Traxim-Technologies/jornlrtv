@@ -492,11 +492,11 @@ function user_type_check($user) {
 
             if(Setting::get('is_subscription')) {
 
-                $user->user_type = 0;
+                $user->user_type = 1;
 
             } else {
                 // Enable the user as paid user
-                $user->user_type = 1;
+                $user->user_type = 0;
             }
 
         }
@@ -636,7 +636,32 @@ function getAmountBasedChannel($id) {
 
     $model = VideoTape::where('channel_id', $id)->sum('amount');
 
-    return $model;
+
+    $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->where('channel_id', $id)
+                        ->orderby('amount' , 'desc')->get();
+
+    $payment = 0;
+
+    foreach ($videos as $key => $value) {
+
+        $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('amount');
+
+
+    }
+
+    $amount = $payment+$model;
+
+    return $amount;
+
+}
+
+function ppv_amount($id) {
+
+    $model = PayPerView::where('video_id', $id)->sum('amount');
+
+    return $model > 0 ? $model : 0;
 
 }
 
@@ -1182,6 +1207,7 @@ function displayVideoDetails($data,$userId) {
         'url'=>$url,
         'type_of_user'=>$data->type_of_user,
         'type_of_subscription'=>$data->type_of_subscription,
+        'status'=>$data->status,
     ];
 
     return $model;

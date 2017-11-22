@@ -21,10 +21,7 @@ class AddedStripeKeyInSettings extends Seeder
 		    	'key' => 'stripe_secret_key' ,
 		    	'value' => "sk_test_lRUbYflDyRP3L2UbnsehTUHW",
 		    ],
-		    [
-		    	'key'=>'payment_type',
-		    	'value'=>'paypal'
-		    ]
+
 		]);
 	   
         

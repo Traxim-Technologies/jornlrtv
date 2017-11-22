@@ -1,7 +1,18 @@
 @extends('layouts.user.focused')
 
 @section('content')
+    <?php
 
+        if( config('mail.username') &&  config('mail.password')) {
+
+            $disabled = false;
+
+        } else {
+
+            $disabled = true;
+        }
+
+    ?>
     <div class="form-background forgot-password-reset">
         <div class="common-form login-common forgot">
 
@@ -14,8 +25,14 @@
             @include('notification.notify')
 
             <div class="sign-up login-page">
-                <form class="signup-form login-form" method="post" action="{{ url('/password/email') }}">
+                <form class="signup-form login-form" method="post" action="{{ $disabled ? '' : url('/password/email') }}">
                      {!! csrf_field() !!}
+
+                     @if($disabled)
+
+                        <p><small>{{tr('forgot_password_note')}}</small></p>    
+
+                     @endif
 
                     @if($errors->has('email'))
                         <div data-abide-error="" class="alert callout">
@@ -34,8 +51,12 @@
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your email">
                     </div>
 
-                    <div class="change-pwd">
+                    <div class="change-pwd">    
+                        @if($disabled)
+                        <button type="button" class="btn btn-primary signup-submit" disabled>{{tr('submit')}}</button>
+                        @else
                         <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
+                        @endif
                     </div>          
                     <p>Already Have an Account? <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
                 </form>

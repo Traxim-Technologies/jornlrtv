@@ -426,11 +426,16 @@ class CommonRepository {
                 $model->is_approved = DEFAULT_TRUE;
 
                 if($model->publish_time) {
+
                     if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
+
                         $model->publish_status = DEFAULT_TRUE;
+
                     } else {
+
                         $model->publish_status = DEFAULT_FALSE;
                     }
+                    
                 }
 
                 if ($request->video->getClientSize()) {

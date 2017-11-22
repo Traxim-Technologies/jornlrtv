@@ -14,11 +14,11 @@ class AddedMaxsizekeysInSettings extends Seeder
         DB::table('settings')->insert([
     		[
 		        'key' => 'post_max_size',
-		        'value' => "2M"
+		        'value' => "2000M"
 		    ],
 		    [
 		        'key' => 'upload_max_size',
-		        'value' => "2M"
+		        'value' => "2000M"
 		    ]
 		]);
     }

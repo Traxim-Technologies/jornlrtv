@@ -24,10 +24,6 @@ class ChannelSettingsSeeder extends Seeder
 		        'key' => 'master_user_login',
 		        'value' => 1
 		    ],
-		    [
-		        'key' => 'is_default_paid_user',
-		        'value' => 1
-		    ]
 		]);
     }
 }

@@ -373,6 +373,18 @@ class UserController extends Controller {
      */
     public function channel_list(Request $request){
 
+        if(Auth::check()) {
+
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+                'age'=>\Auth::user()->age_limit,
+            ]);
+
+        }
+
+
         $response = $this->UserAPI->channel_list($request)->getData();
 
 
@@ -1592,6 +1604,7 @@ class UserController extends Controller {
                                 'channels.name as channel_name',
                                 'users.id as user_id',
                                 'users.name as user_name',
+                                'users.picture as user_image',
                                 'channel_subscriptions.id as subscriber_id',
                                 'channel_subscriptions.created_at as created_at')
                         ->leftJoin('channels', 'channels.id', '=', 'channel_subscriptions.channel_id')
@@ -1906,7 +1919,7 @@ class UserController extends Controller {
 
                     // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
 
-                    return back()->with('flash_error', Helper::get_error_message(901));
+                    return back()->with('flash_error', Helper::get_error_message(901).tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>Add Card</a>');
                     
                     //return response()->json($response_array , 200);
                 }
@@ -1914,7 +1927,7 @@ class UserController extends Controller {
             } else {
 
                 // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
-                return back()->with('flash_error', Helper::get_error_message(901));
+                return back()->with('flash_error', Helper::get_error_message(901).'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>Add Card</a>');
                 
                 // return response()->json($response_array , 200);
             }
@@ -1930,6 +1943,15 @@ class UserController extends Controller {
         $request->request->add([ 
             'id' => \Auth::user()->id,
         ]);        
+
+        if ($request->id) {
+
+            $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+            $request->request->add([ 
+                'channel_id' => $channel_id,
+            ]);        
+        }
 
         $response = $this->UserAPI->channel_list($request)->getData();
 
@@ -2489,9 +2511,12 @@ class UserController extends Controller {
 
         // Get Videos
 
-        $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+       // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+
+        $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip)->getData();
 
         $channel = Channel::find($request->channel_id);
+
 
         $view = View::make('user.videos.partial_videos')
                     ->with('videos',$videos)
@@ -2508,12 +2533,15 @@ class UserController extends Controller {
 
         // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
 
-        $payment_videos = VideoRepo::payment_videos($request->channel_id, null, $request->skip);
+       // $payment_videos = VideoRepo::payment_videos($request->channel_id, null, $request->skip);
+
+        $payment_videos = $this->UserAPI->payment_videos($request->channel_id, $request->skip)->getData();
+
 
         $view = View::make('user.videos.partial_payment_videos')
                     ->with('payment_videos', $payment_videos)->render();
 
-        return response()->json(['view'=>$view, 'length'=>count($payment_videos)]);
+        return response()->json(['view'=>$view, 'length'=>$payment_videos->count]);
     }
 
 
@@ -2677,9 +2705,16 @@ class UserController extends Controller {
 
         if ($payment->success) {
 
-            return back()->with('flash_success', $payment->message);
+            return redirect(route('user.video.success',$request->video_tape_id))->with('flash_success', $payment->message);
 
         } else {
+
+
+            if ($payment->error_code == 901) {
+
+                return back()->with('flash_error', $payment->error_messages.'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>'.tr('add_card').'</a>');
+
+            }
 
             return back()->with('flash_error', $payment->error_messages);
         }
@@ -2760,9 +2795,8 @@ class UserController extends Controller {
 
         $response = $this->UserAPI->user_channel_list($request)->getData();
 
-        // dd($response);
 
-        return view('user.channels.list')->with('page', 'channels')
+        return view('user.channels.list')->with('page', 'my_channel')
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
     }
