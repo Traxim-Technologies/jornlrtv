@@ -19,7 +19,7 @@
                         <div class="clear-button">
                             <form method="get" action="{{route('user.delete.history')}}">
                                 <input type="hidden" name="status" value="1">
-                                <button onclick="return confirm('Are you sure?');" type="submit">{{tr('clear_all')}}</button>
+                                <button class="btn btn-danger" onclick="return confirm('Are you sure?');" type="submit">{{tr('clear_all')}}</button>
                             </form>
 
                         </div>  

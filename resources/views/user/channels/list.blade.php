@@ -91,7 +91,7 @@
 				                                        <!--end of cross-mark-->                       
 				                                    </div> <!--end of history-head--> 
 
-				                                    <div class="description">
+				                                    <div class="description hidden-xs">
 				                                        <p>{{$channel->description}}</p>
 				                                    </div><!--end of description--> 
 

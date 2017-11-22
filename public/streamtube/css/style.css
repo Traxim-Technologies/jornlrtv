@@ -1642,7 +1642,7 @@ changes
     line-height: 7px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
     top:30%;
-    border-radius: 50%;
+    border-radius: 50% !important;
     z-index: 800;
  }
 
@@ -2173,7 +2173,7 @@ changes
 	padding: 10px 0 ;
 }
 .modal-footer .btn-danger{
-	border-radius: 4px !important;
+	border-radius: 4px;
 }
 .video-title1{
 	font-size: 20px !important;

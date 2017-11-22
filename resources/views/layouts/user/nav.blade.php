@@ -29,6 +29,11 @@
                 <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
             </a>
         </li>
+        <li id="wishlist">
+            <a href="{{route('user.wishlist')}}">
+                <img src="{{asset('images/channel.png')}}">Channels
+            </a>
+        </li>
 
         @endif
     </ul>
