@@ -29,7 +29,7 @@
                 <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
             </a>
         </li>
-        <li id="wishlist">
+        <li id="my_channel">
             <a href="{{route('user.channel.mychannel')}}">
                 <img src="{{asset('images/channel.png')}}">{{tr('my_channels')}}
             </a>
