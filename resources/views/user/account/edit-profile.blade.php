@@ -41,17 +41,24 @@
                                     <img src="{{Auth::user()->picture}}" id="img_profile">
                                     @else
                                         <img src="{{asset('placeholder.png')}}" id="img_profile">
-                                    @endif                               
+                                    @endif    
+                                   <div class="edit-image-change">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                   </div> 
+                                   <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
                                 </div><!--end of image-profile-->
 
                                 <div class="editform-content"> 
                                     <form  action="{{ route('user.profile.save') }}" method="POST" enctype="multipart/form-data">
 
-                                         <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="exampleInputFile">{{tr('upload_image')}}</label>
                                             <input type="file" name="picture" class="form-control-file" accept="image/png, image/jpeg" id="exampleInputFile" aria-describedby="fileHelp" onchange="loadFile(this,'img_profile')">
                                             <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
-                                        </div>
+                                        </div> -->
 
                                         <div class="form-group">
                                             <label for="username">{{tr('username')}}</label>

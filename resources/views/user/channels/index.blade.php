@@ -409,7 +409,8 @@
 
 									  	@if(count($trending_videos) == 0)
 
-									  		<p>{{tr('no_video_found')}}</p>
+									  		<!-- <p>{{tr('no_video_found')}}</p> -->
+									  		<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
 									  	@endif
 										<div class="lohp-shelf-content row">
@@ -747,7 +748,8 @@
 
 					                @else
 
-					                   <p style="color: #000">{{tr('no_video_found')}}</p>
+					                   <!-- <p style="color: #000">{{tr('no_video_found')}}</p> -->
+					                   <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
 					                @endif
 

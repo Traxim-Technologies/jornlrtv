@@ -20,47 +20,49 @@
 
     <link rel="shortcut icon" href="@if( Setting::get('site_icon')) {{ Setting::get('site_icon') }} @else {{asset('favicon.png')}} @endif">
 
-    <?php echo Setting::get('header_scripts') ?>
-
-     <style>
-     
-        .admin-bg-login {
-            background-image: url("{{asset('admin-bg.jpg')}}");
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: 100%;
-            opacity: 0.7;
-            filter: alpha(opacity=80);
-        }
-    </style>
-
 </head>
 
 <body class="hold-transition login-page">
-    
-        <div class="admin-bg-login">
 
-    <div class="col-md-6 col-md-offset-3">
+    <div class="row">
 
-        @include('notification.notify')
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-    </div>
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
 
-    <div class="login-box">
+            <div class="box box-primary" style="margin-top: 10px">
 
-        <div class="login-logo">
-             <a href="{{route('admin.login')}}"><b> 
-                <img class="adm-log-logo" style="width:50%;height:auto" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif" /></b></a>
+                <div class="box-header with-border">
+
+                    <img class="adm-log-logo pull-right" style="width: 120px;height: 32px;" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif"/>
+
+                    <h2 class="pull-left">@if($model) {{$model->heading}} @else {{tr('model')}} @endif</h2>
+                   
+                </div>
+
+                <div class="box-body">
+
+                    <div class="col-md-12">
+
+                    @if($model) <?php echo $model->description; ?> @else {{tr('model')}} @endif
+
+                    </div>
+
+                
+                </div>
+
+                <div class="box-footer">
+
+                    <a href="{{url('/')}}" class="btn btn-success pull-right"> <i class="fa fa-arrow-left"></i> {{tr('go_home')}} </a>
+                
+                </div>
+                
+            </div>
+
+                        
         </div>
 
-        @yield('content')
-
     </div>
-
-</div>
 
     <!-- jQuery 2.2.0 -->
     <script src="{{asset('admin-css/plugins/jQuery/jQuery-2.2.0.min.js')}}"></script>
@@ -68,21 +70,6 @@
     <script src="{{asset('admin-css/bootstrap/js/bootstrap.min.js')}}"></script>
     <!-- iCheck -->
     <script src="{{asset('admin-css/plugins/iCheck/icheck.min.js')}}"></script>
-
-    <script>
-        $(function () {
-            $('input').iCheck({
-              checkboxClass: 'icheckbox_square-blue',
-              radioClass: 'iradio_square-blue',
-              increaseArea: '20%' // optional
-            });
-        });
-    </script>
-
-    @yield('scripts')
-
-    <?php echo Setting::get('body_scripts') ?>
-
 
 </body>
 
