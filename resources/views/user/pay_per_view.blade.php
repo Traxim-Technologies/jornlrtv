@@ -28,7 +28,9 @@
 							<div class="payment-card">
 								<h4>{{tr('subscription_plan')}}</h4>
 								<img src="{{asset('images/subscriptions-new.png')}}">
-								<p>{{tr('click_here_for_subscription')}}</p>
+								<div  class="h-60">
+									<p>{{tr('click_here_for_subscription')}}</p>
+								</div>
 								<div>
 									<a href="{{route('user.subscriptions')}}">
 									<button class="btn btn-danger">{{tr('click_here_subscription')}}</button>
@@ -40,8 +42,10 @@
 							<div class="payment-card">
 								<h4>{{tr('pay_per_video')}}</h4>
 								<img src="{{asset('images/PayPer_Icon.png')}}">
-								<p>{{tr('one_time_payment')}}</p>
-								<p>{{tr('amount')}} - {{Setting::get('currency')}} {{$video->ppv_amount}}</p>
+								<div class="h-60">
+									<p>{{tr('one_time_payment')}}</p>
+									<p>{{tr('amount')}} - {{Setting::get('currency')}} {{$video->ppv_amount}}</p>
+								</div>
 								<div>
 									<a href="{{route('user.subscription.ppv_invoice', $video->id)}}">
 									<button class="btn btn-danger">{{tr('click_here_subscription')}}</button>

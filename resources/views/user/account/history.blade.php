@@ -13,7 +13,7 @@
 
             <div class="new-history">
                 <div class="content-head">
-                    <div><h4>{{tr('history')}}</h4></div>
+                    <div><h4 class="no-margin-top">{{tr('history')}}</h4></div>
 
                     @if(count($histories->items) > 0)
                         <div class="clear-button">
