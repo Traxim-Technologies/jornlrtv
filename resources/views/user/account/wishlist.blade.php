@@ -13,7 +13,7 @@
 
             <div class="new-history">
                 <div class="content-head">
-                    <div><h4>{{tr('wishlist')}}</h4></div>              
+                    <div><h4 class="no-margin-top">{{tr('wishlist')}}</h4></div>              
                 </div><!--end of content-head-->
 
                 @if(count($videos->items) > 0)
@@ -75,7 +75,8 @@
                     </ul>
 
                 @else
-                    <p>{{tr('no_wishlist_found')}}</p>
+                   <!--  <p>{{tr('no_wishlist_found')}}</p> -->
+                   <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
                 @endif
 
                 @if(count($videos->items) > 0)

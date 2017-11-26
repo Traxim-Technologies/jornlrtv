@@ -425,7 +425,7 @@ videos (single page) css
 }
 
 .title button:hover{
-	background-color: #b31217;
+	/*background-color: #b31217;*/
 }
 
 .report-button{
@@ -440,8 +440,65 @@ videos (single page) css
 	padding: 4px 10px;
 	font-size: 13px;
 }
+.menu-foot{
+	list-style: none;
+	padding: 0;
+	border-bottom: 1px solid #e8e8e8
+}
+.menu-foot h3{
+	font-size: 13px;
+	margin-top: 0;
+	color: #cc181e;	
+	margin-bottom: 15px;
+}
+.menu-foot-head{
+	font-size: 13px;
+	margin-top: 0;
+	color: #cc181e;	
+	margin-bottom:10px;
+}
+.social-fb{
+	color: #3b5999;
+}
 
+.social-twitter{
+	color: #55acee;
+}
 
+.social-google{
+	color: #dd4b39;
+}
+
+.social-linkedin{
+	color: #0077B5;
+}
+
+.social-pinterest{
+	color: #bd081c;
+}
+
+.foot-share1{
+	color: red;
+}
+.foot-share2{
+	padding-top: 2px;
+}
+#report-form .modal-content{
+	border-radius: 0;
+}
+#report-form .modal-title{
+	font-size: 18px;
+}
+#report-form .close:hover{
+	color: black;
+}
+.menu-foot img{
+	height: 43px;
+	width:auto;
+	max-width: 100%;
+	margin-bottom:15px;
+	transition: all .3s linear;
+}
 .video-title h4{
 	font-size: 13px;
     font-weight: bold;
@@ -909,6 +966,9 @@ input[type="checkbox"], input[type="radio"]{
     outline-color: transparent;
     outline-offset: 0;
 }
+.no-margin-top{
+	margin-top: 0 !important;
+}
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------
 history (single page) css
@@ -917,9 +977,9 @@ history (single page) css
 .top{
 	margin-top:10px !important;
 }
-.history-content{
+/*.history-content{
 	margin-top: 75px !important;	
-}
+}*/
 .new-history{
 	padding: 15px;
 	background-color: #fff;
@@ -1327,9 +1387,9 @@ edit profile.html css
 }
 .edit-form{
 	background-color: #fff;
-	padding: 15px;
+	padding: 15px 30px;
 	margin: 0 auto;
-	max-width: 400px;
+	max-width:500px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
 }
 .editform-content {
@@ -1337,6 +1397,25 @@ edit profile.html css
 }
 .edit-image{
 	margin-bottom: 10px;
+	position: relative;
+}
+.edit-image-change{
+	position: absolute;
+	top: 0;
+	height: 150px;
+	width: 150px;
+	margin: 0 auto;
+	background-color: rgba(0,0,0,.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.edit-image-change .fa-stack-2x{
+	color: white;
+	opacity: .7;
+}
+.edit-image-change .fa-stack-1x{
+	color: red;
 }
 label{
 	border: none;
@@ -1569,11 +1648,11 @@ changes
 	border-color: transparent;
 	outline: transparent;
 }
-.comment-submit .btn-primary:active:focus, .btn-primary:active:hover{
+/*.comment-submit .btn-primary{
 	background-color: #b1100c !important;
 	border-color: transparent;
 	outline: transparent;
-}
+}*/
 .profile-edit{
 	margin-top: 0;
 }
@@ -1590,7 +1669,9 @@ changes
 .foot-content{
 	text-align: center;
 }
-
+.bottom-space{
+	margin-bottom: 10px;
+}
 .profile-content {
     margin-top:10px !important;
 }
@@ -1645,7 +1726,15 @@ changes
     border-radius: 50% !important;
     z-index: 800;
  }
-
+.shadow{
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.static-head{
+	margin-top: 10px;
+	margin-bottom: 15px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ddd;
+}
 .slick-prev {
     left: -30px;
 }
@@ -1707,7 +1796,14 @@ changes
 	font-size: 1em;
 
 }
-
+.h-50{
+	height: 50px;
+	overflow: hidden;
+}
+.h-60{
+	height:60px;
+	overflow: hidden;
+}
 .history-head h5 a{
 
 	color: #333;
@@ -2409,7 +2505,7 @@ changes
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
 	padding: 15px;
 	border-radius: 5px;
-	height: 295px;
+	/*height: 295px;*/
 	margin-top: 10px;
 	-webkit-transition: all 0.2s linear;
 	transition: all 0.2s linear;
