@@ -53,33 +53,76 @@
         </ul>
 
     @endif
+
     <!-- ============PLAY STORE, APP STORE AND SHARE LINKS======= -->
-    <ul class="menu-foot" style="margin-top: 10px;">
-        <h3>Download Our App</h3>
-        <li>
-            <a href="#">
-                <img src="{{asset('images/google-play.png')}}">
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <img src="{{asset('images/app_store.png')}}" >
-            </a>
-        </li>
-    </ul>
-    <h3 class="menu-foot-head">Contact Us</h3>
-    <a href="#"><span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x foot-share1"></i>
-        <i class="fa fa-facebook fa-stack-1x fa-inverse foot-share2"></i>
-    </span></a>
-    <a href="#"><span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x foot-share1"></i>
-        <i class="fa fa-twitter fa-stack-1x fa-inverse foot-share2"></i>
-    </span></a>
-    <a href="#"><span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x foot-share1"></i>
-        <i class="fa fa-flag fa-stack-1x fa-inverse foot-share2"></i>
-    </span></a>
+
+    @if(Setting::get('appstore') || Setting::get('playstore'))
+
+        <ul class="menu-foot" style="margin-top: 10px;">
+
+            <h3>{{tr('download_our_app')}}</h3>
+
+            @if(Setting::get('playstore'))
+
+            <li>
+                <a href="{{Setting::get('playstore')}}">
+                    <img src="{{asset('images/google-play.png')}}">
+                </a>
+            </li>
+
+            @endif
+
+            @if(Setting::get('appstore'))
+
+            <li>
+                <a href="{{Setting::get('appstore')}}">
+                    <img src="{{asset('images/app_store.png')}}" >
+                </a>
+            </li>
+
+            @endif
+
+        </ul>
+
+    @endif
+
+    <h3 class="menu-foot-head">{{tr('contact')}}</h3>
+
+    <a href="{{Setting::get('facebook_link')}}">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x social-fb"></i>
+            <i class="fa fa-facebook fa-stack-1x fa-inverse foot-share2"></i>
+        </span>
+    </a>
+
+    <a href="{{Setting::get('twitter_link')}}">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x social-twitter"></i>
+            <i class="fa fa-twitter fa-stack-1x fa-inverse foot-share2"></i>
+        </span>
+    </a>
+
+    <a href="{{Setting::get('linkedin_link')}}">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x social-linkedin"></i>
+            <i class="fa fa fa-linkedin fa-stack-1x fa-inverse foot-share2"></i>
+        </span>
+    </a>
+
+    <a href="{{Setting::get('pinterest_link')}}">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x social-pinterest"></i>
+            <i class="fa fa fa-pinterest fa-stack-1x fa-inverse foot-share2"></i>
+        </span>
+    </a>
+
+    <a href="{{Setting::get('google_link')}}">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x social-google"></i>
+            <i class="fa fa fa-google fa-stack-1x fa-inverse foot-share2"></i>
+        </span>
+    </a>
+    
     @if(Auth::check())
 
         <!-- Check the create channel options are enabled by admin -->
@@ -131,7 +174,6 @@
 
 
         @endif
-
 
     @else
         <div class="menu4">

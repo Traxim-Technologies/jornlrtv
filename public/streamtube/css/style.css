@@ -457,6 +457,26 @@ videos (single page) css
 	color: #cc181e;	
 	margin-bottom:10px;
 }
+.social-fb{
+	color: #3b5999;
+}
+
+.social-twitter{
+	color: #55acee;
+}
+
+.social-google{
+	color: #dd4b39;
+}
+
+.social-linkedin{
+	color: #0077B5;
+}
+
+.social-pinterest{
+	color: #bd081c;
+}
+
 .foot-share1{
 	color: red;
 }

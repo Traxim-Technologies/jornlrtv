@@ -23,6 +23,7 @@
     <?php echo Setting::get('header_scripts') ?>
 
      <style>
+     
         .admin-bg-login {
             background-image: url("{{asset('admin-bg.jpg')}}");
             position: fixed;
