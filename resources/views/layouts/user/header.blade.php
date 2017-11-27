@@ -1,3 +1,17 @@
+@if (!Auth::check()) 
+
+<style type="text/css">
+    
+.mobile-header li {
+
+    width: 24% !important;
+
+}
+</style>
+
+
+@endif
+
 <div class="streamtube-nav">
     <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
@@ -145,6 +159,11 @@
                     <i class="material-icons">live_tv</i>
                     <span class="hidden-xxs">{{tr('channels')}}</span>
                 </a></li>
+                <li><a href="{{route('user.live_videos')}}" class="mobile-menu">
+                    <i class="material-icons">videocam</i>
+                    <span class="hidden-xxs">Live videos</span>
+                </a></li>
+
                 @if(Auth::check())
                 <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
                     <i class="material-icons">subscriptions</i>

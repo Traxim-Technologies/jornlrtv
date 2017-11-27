@@ -161,18 +161,19 @@
 	display: none !important;
 }
 .y-signin{
-	background-color: #fff;
+	background-color:transparent;
     border-color: transparent;
-    color: #e61b1b;
+    color:white;
     margin-left: 16px;
     margin-top: 3px;
-    padding: 4px 15px;
+    /*padding: 4px 15px;*/
     display: inline-block;
     border-radius: 3px;
+    font-size: 17px;
 }
 .y-signin:hover,.y-signin:active,.y-signin:focus{
-	background-color: #eee;
-	color:#e61b1b;
+	background-color:transparent;
+	color:white;
 	text-decoration: none;
 }
 .payment-section{
@@ -187,7 +188,11 @@
 	display:none !important;
 }
 }
-
+@media (min-width: 480px) and (max-width: 560px) {
+.hidden-xxs{
+	display: none !important;
+}	
+}
 /*small devices*/
 @media (min-width: 480px) and (max-width: 767px) {
 .bottom{
@@ -343,18 +348,19 @@
 	margin-left: 70px;
 }
 .y-signin{
-	background-color: #fff;
+	background-color:transparent;
     border-color: transparent;
-    color: #e61b1b;
+    color:white;
     margin-left: 16px;
     margin-top: 3px;
-    padding: 4px 15px;
+  /*  padding: 4px 15px;*/
     display: inline-block;
     border-radius: 3px;
+    font-size: 17px;
 }
 .y-signin:hover,.y-signin:active,.y-signin:focus{
-	background-color: #eee;
-	color:#e61b1b;
+	background-color:transparent;
+	color:white;
 	text-decoration: none;
 }
 .payment-section{

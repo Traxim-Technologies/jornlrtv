@@ -1724,7 +1724,7 @@ changes
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
     top:30%;
     border-radius: 50% !important;
-    z-index: 800;
+    z-index:0;
  }
 .shadow{
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
@@ -2794,13 +2794,13 @@ changes
 .mobile-header li{
 	display: inline-block !important;
 	padding-top: 10px;
-	width: 24%;
+	width:19%;
 	text-align: center;
 }
 .mobile-header li i{
 	font-size: 20px;
 	color: white;
-	vertical-align: -14%;
+	vertical-align: -20%;
 }
 .mobile-header li span{
 	color: white;
