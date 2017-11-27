@@ -13,6 +13,8 @@ return array(
 	|
 	*/
 
+	'download_our_app' => 'Download Our App',
+
 	// Mobile Home 
 
 	'mobile_banner_heading' => 'Special Collections',

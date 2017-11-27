@@ -22,10 +22,27 @@
 
     <?php echo Setting::get('header_scripts') ?>
 
+     <style>
+     
+        .admin-bg-login {
+            background-image: url("{{asset('admin-bg.jpg')}}");
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 100%;
+            opacity: 0.7;
+            filter: alpha(opacity=80);
+        }
+    </style>
+
 </head>
 
 <body class="hold-transition login-page">
     
+        <div class="admin-bg-login">
+
     <div class="col-md-6 col-md-offset-3">
 
         @include('notification.notify')
@@ -42,6 +59,8 @@
         @yield('content')
 
     </div>
+
+</div>
 
     <!-- jQuery 2.2.0 -->
     <script src="{{asset('admin-css/plugins/jQuery/jQuery-2.2.0.min.js')}}"></script>
