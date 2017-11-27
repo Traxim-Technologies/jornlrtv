@@ -1425,7 +1425,7 @@ class UserApiController extends Controller {
             $error = implode(',', $validator->messages()->all());
 
             $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
-
+        } else {
 
             $wishlist = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
 
