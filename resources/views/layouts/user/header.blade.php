@@ -145,6 +145,11 @@
                     <i class="material-icons">live_tv</i>
                     <span class="hidden-xxs">{{tr('channels')}}</span>
                 </a></li>
+                <li><a href="#" class="mobile-menu">
+                    <i class="material-icons">videocam</i>
+                    <span class="hidden-xxs">Live videos</span>
+                </a></li>
+
                 @if(Auth::check())
                 <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
                     <i class="material-icons">subscriptions</i>
