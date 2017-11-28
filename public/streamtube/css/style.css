@@ -46,7 +46,9 @@ body{
 	/*background-color: #F1F1F1;*/
 	background-color: #fff;
 }
-
+a:hover{
+	text-decoration: none;
+}
 .no-margin{
 	margin: 0;
 }
@@ -1100,6 +1102,7 @@ history (single page) css
 }
 .thumb-class:hover{
 	color: #999;
+	text-decoration: none;
 }
 .thumb-class i {
 	margin-top:9px;
