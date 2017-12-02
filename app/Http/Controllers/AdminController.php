@@ -2315,7 +2315,7 @@ class AdminController extends Controller {
 
         $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
-                'description' => 'required',
+                'description' => '',
                 'position'=>$request->id ? 'required' :'required|unique:banner_ads',
                 'link'=>'required|url',
                 'file' => $request->id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
@@ -2331,9 +2331,9 @@ class AdminController extends Controller {
 
             $model = $request->id ? BannerAd::find($request->id) : new BannerAd;
 
-            $model->title = $request->title;
+            $model->title = $request->title ? $request->title : "";
 
-            $model->description = $request->description;
+            $model->description = $request->description ? $request->description : "";
 
             $model->position = $request->position;
 
