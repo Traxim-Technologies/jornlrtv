@@ -578,7 +578,7 @@ class UserApiController extends Controller {
 
                     $user->remaining_amount = $user->remaining_amount + $user_amount;
 
-                    $user->total = $user->total + $total;
+                    $user->total_amount = $user->total_amount + $total;
 
                     $user->save();
 
@@ -892,7 +892,7 @@ class UserApiController extends Controller {
 
                                 $user->remaining_amount = $user->remaining_amount + $user_amount;
 
-                                $user->total = $user->total + $total;
+                                $user->total_amount = $user->total_amount + $total;
 
                                 $user->save();
 

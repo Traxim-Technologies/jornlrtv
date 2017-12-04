@@ -99,16 +99,25 @@ class PaypalController extends Controller {
 
         try {
             $payment->create($this->_api_context);
+
         } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+
             if (\Config::get('app.debug')) {
+
                 echo "Exception: " . $ex->getMessage() . PHP_EOL;
+
                 echo "Payment" . $payment."<br />";
 
                 $err_data = json_decode($ex->getData(), true);
+
                 echo "Error" . print_r($err_data);
+
                 exit;
+
             } else {
+
                 die('Some error occur, sorry for inconvenient');
+                
             }
         }
 
@@ -602,7 +611,7 @@ class PaypalController extends Controller {
 
                     $user->remaining_amount = $user->remaining_amount + $user_amount;
 
-                    $user->total = $user->total + $total;
+                    $user->total_amount = $user->total_amount + $total;
 
                     $user->save();
                 
