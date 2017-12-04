@@ -92,7 +92,7 @@ class PaypalController extends Controller {
 
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(url('/user/payment/status'))
-                    ->setCancelUrl(url('/user/payment/status'));
+                    ->setCancelUrl(url('/'));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
@@ -184,7 +184,6 @@ class PaypalController extends Controller {
 
         } 
             
-     
         $payment = Payment::get($payment_id, $this->_api_context);
      
         // PaymentExecution object includes information necessary
@@ -193,13 +192,13 @@ class PaypalController extends Controller {
         // when the user is redirected from paypal back to your site
         
         $execution = new PaymentExecution();
+
         $execution->setPayerId($request->PayerID);
      
         //Execute the payment
+
         $result = $payment->execute($execution, $this->_api_context);
-     
-       // echo '<pre>';print_r($result);echo '</pre>';exit; // DEBUG RESULT, remove it later
-     
+          
         if ($result->getState() == 'approved') { // payment made
 
             $payment = UserPayment::where('payment_id',$payment_id)->first();
@@ -239,8 +238,7 @@ class PaypalController extends Controller {
 
             return back()->with('flash_error' , 'Payment is not approved. Please contact admin');
         }
-            
-           
+        
     }
 
     public function videoSubscriptionPay(Request $request) {
@@ -283,7 +281,7 @@ class PaypalController extends Controller {
 
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(url('/user/payment/video-status'))
-                    ->setCancelUrl(url('/user/payment/video-status'));
+                    ->setCancelUrl(url('/'));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
