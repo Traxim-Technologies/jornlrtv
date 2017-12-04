@@ -33,12 +33,15 @@ class PaypalController extends Controller {
     private $_api_context;
  
     public function __construct() {
+
+        // $this->middleware('PaypalCheck');
        
         // setup PayPal api context
 
         $paypal_conf = config('paypal');
 
         $paypal_conf['client_id'] = envfile('PAYPAL_ID') ?  envfile('PAYPAL_ID') : $paypal_conf['client_id'];
+        
         $paypal_conf['secret'] = envfile('PAYPAL_SECRET') ?  envfile('PAYPAL_SECRET') : $paypal_conf['secret'];
         $paypal_conf['settings']['mode'] = envfile('PAYPAL_MODE') ?  envfile('PAYPAL_MODE') : $paypal_conf['settings']['mode'];
 
@@ -99,21 +102,36 @@ class PaypalController extends Controller {
 
         try {
             $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
-            if (\Config::get('app.debug')) {
-                echo "Exception: " . $ex->getMessage() . PHP_EOL;
-                echo "Payment" . $payment."<br />";
 
-                $err_data = json_decode($ex->getData(), true);
-                echo "Error" . print_r($err_data);
-                exit;
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+
+
+            if (\Config::get('app.debug')) {
+
+                // echo "Exception: " . $ex->getMessage() . PHP_EOL;
+                // echo "Payment" . $payment."<br />";
+
+                // $err_data = json_decode($ex->getData(), true);
+                // echo "Error" . print_r($err_data);
+                // exit;
+
+                \Session::set('paypal_error' , $ex->getMessage());
+
+                return redirect()->route('payment.failure');
+
             } else {
-                die('Some error occur, sorry for inconvenient');
+
+                \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
+
+                return redirect()->route('payment.failure');
+
             }
         }
 
         foreach($payment->getLinks() as $link) {
+
             if($link->getRel() == 'approval_url') {
+
                 $redirect_url = $link->getHref();
                 break;
             }
@@ -274,17 +292,32 @@ class PaypalController extends Controller {
             ->setTransactions(array($transaction));
 
         try {
-            $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
-            if (\Config::get('app.debug')) {
-                echo "Exception: " . $ex->getMessage() . PHP_EOL;
-                echo "Payment" . $payment."<br />";
 
-                $err_data = json_decode($ex->getData(), true);
-                echo "Error" . print_r($err_data);
-                exit;
+            $payment->create($this->_api_context);
+
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+
+            if (\Config::get('app.debug')) {
+
+                // echo "Exception: " . $ex->getMessage() . PHP_EOL."<br />";
+
+                // echo "Payment" . $payment."<br />";
+
+                // $err_data = json_decode($ex->getData(), true);
+
+                // echo "Error" . print_r($err_data , true);
+
+                // exit;
+
+                \Session::set('paypal_error' , $ex->getMessage());
+
+                return redirect()->route('payment.failure');
+
             } else {
-                die('Some error occur, sorry for inconvenient');
+
+                \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
+
+                return redirect()->route('payment.failure');
             }
         }
 
