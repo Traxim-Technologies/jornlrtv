@@ -23,8 +23,8 @@ class AddedCommissionSplitInUsers extends Migration
             $table->dateTime('expiry_date')->nullable();
             $table->integer('no_of_days')->defined(0);
             $table->string('paypal_email')->after('user_type');
-            $table->float('total')->after('status');
-            $table->float('total_admin_amount')->after('total');
+            $table->float('total_amount')->after('status');
+            $table->float('total_admin_amount')->after('total_amount');
             $table->float('total_user_amount')->after('total_admin_amount');
             $table->float('paid_amount')->after('total_user_amount');
             $table->float('remaining_amount')->after('paid_amount');

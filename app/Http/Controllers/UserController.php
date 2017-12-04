@@ -62,6 +62,9 @@ use App\Viewer;
 
 use App\LiveVideoPayment;
 
+use App\Helpers\AppJwt;
+
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -159,7 +162,7 @@ class UserController extends Controller {
 
                 // Check the admin has logged in
 
-                if(!$master_user_id) {
+                if($master_user_id != null || $master_user_id != "") {
 
                     // Check already record exists
 
@@ -167,7 +170,11 @@ class UserController extends Controller {
 
                     if($check_admin_user_details) {
 
+                        $check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
+
                         $check_admin_user_details->is_master_user = 1;
+
+                        $check_admin_user_details->role = "model";
 
                         if ($check_admin_user_details->save()) {
 
@@ -180,30 +187,40 @@ class UserController extends Controller {
 
                     } else {
 
-                        $check_admin_user_details = new User;
-
-                        $check_admin_user_details->name = "Master User";
-
-                        $check_admin_user_details->email = Auth::guard('admin')->user()->email;
-
-                        $check_admin_user_details->password = \Hash::make("123456");
-
-                        $check_admin_user_details->user_type = $check_admin_user_details->is_master_user = $check_admin_user_details->is_verified = $check_admin_user_details->status = 1;
-
-                        $check_admin_user_details->device_type = WEB;
-
-                        if ($check_admin_user_details->save()) {
-
-                        } else {
-
-                            throw new Exception(tr('user_details_not_saved'));
-                        }
-
+                        throw new Exception(tr('user_details_not_saved'));
                     }
 
-                    $master_user_id = $check_admin_user_details->id;
+                } else {
+
+                    $check_admin_user_details = new User;
+
+                    $check_admin_user_details->name = "Master User";
+
+                    $check_admin_user_details->email = Auth::guard('admin')->user()->email;
+
+                    $check_admin_user_details->password = \Hash::make("123456");
+
+                    $check_admin_user_details->user_type = $check_admin_user_details->is_master_user = $check_admin_user_details->is_verified = $check_admin_user_details->status = 1;
+
+                    $check_admin_user_details->device_type = WEB;
+
+                    $check_admin_user_details->role = "model";
+
+                    if ($check_admin_user_details->save()) {
+
+                        $check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
+
+                        $check_admin_user_details->save();
+
+                    } else {
+
+                        throw new Exception(tr('user_details_not_saved'));
+                    }
 
                 }
+
+                
+                $master_user_id = $check_admin_user_details->id;
 
                 $master_user_details = User::find($master_user_id);
 
@@ -2452,7 +2469,7 @@ class UserController extends Controller {
 
                                 $user->remaining_amount = $user->remaining_amount + $user_amount;
 
-                                $user->total = $user->total + $total;
+                                $user->total_amount = $user->total_amount + $total;
 
                                 $user->save();
 

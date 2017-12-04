@@ -34,7 +34,7 @@ class PaypalController extends Controller {
  
     public function __construct() {
 
-        // $this->middleware('PaypalCheck');
+        $this->middleware('PaypalCheck');
        
         // setup PayPal api context
 
@@ -105,7 +105,6 @@ class PaypalController extends Controller {
 
         } catch (\PayPal\Exception\PayPalConnectionException $ex) {
 
-
             if (\Config::get('app.debug')) {
 
                 // echo "Exception: " . $ex->getMessage() . PHP_EOL;
@@ -124,7 +123,6 @@ class PaypalController extends Controller {
                 \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
 
                 return redirect()->route('payment.failure');
-
             }
         }
 
@@ -633,7 +631,7 @@ class PaypalController extends Controller {
 
                     $user->remaining_amount = $user->remaining_amount + $user_amount;
 
-                    $user->total = $user->total + $total;
+                    $user->total_amount = $user->total_amount + $total;
 
                     $user->save();
                 
