@@ -50,13 +50,13 @@ class ApplicationController extends Controller {
      *
      */
 
-    public function payment_failture($error = "") {
+    public function payment_failure($error = "") {
 
         $paypal_error = \Session::get("paypal_error") ? \Session::get('paypal_error') : "";
 
         \Session::forget("paypal_error");
 
-        return view('payment_failture')->with('paypal_error' , $paypal_error);
+        return view('payment_failure')->with('paypal_error' , $paypal_error);
 
     }
 
