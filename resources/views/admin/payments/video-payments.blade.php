@@ -38,8 +38,8 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a target="_blank" href="{{route('admin.videos.view' , $payment->id)}}">{{$payment->getVideo->title}}</a></td>
-							      	<td><a target="_blank" href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->user->name}} </a></td>
+							      	<td><a target="_blank" href="{{route('admin.videos.view' , $payment->id)}}">{{$payment->getVideo ? $payment->getVideo->title : ''}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->user ? $payment->user->name : ''}} </a></td>
 							      	<td>{{$payment->payment_id}}</td>
 							      	<td>$ {{$payment->amount}}</td>
 							      	<td>{{$payment->created_at->diffForHumans()}}</td>
