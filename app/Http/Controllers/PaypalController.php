@@ -28,6 +28,7 @@ use App\VideoTape;
 use App\PayPerView;
 use App\Subscription;
 use App\LiveVideo;
+use App\LiveVideoPayment;
  
 class PaypalController extends Controller {
    
