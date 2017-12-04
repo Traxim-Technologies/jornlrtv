@@ -118,13 +118,13 @@ class PaypalController extends Controller {
 
                 \Session::set('paypal_error' , $ex->getMessage());
 
-                return redirect()->route('payment.failture');
+                return redirect()->route('payment.failure');
 
             } else {
 
                 \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
 
-                return redirect()->route('payment.failture');
+                return redirect()->route('payment.failure');
 
             }
         }
@@ -132,7 +132,7 @@ class PaypalController extends Controller {
         foreach($payment->getLinks() as $link) {
 
             if($link->getRel() == 'approval_url') {
-                
+
                 $redirect_url = $link->getHref();
                 break;
             }
@@ -314,13 +314,13 @@ class PaypalController extends Controller {
 
                 \Session::set('paypal_error' , $ex->getMessage());
 
-                return redirect()->route('payment.failture');
+                return redirect()->route('payment.failure');
 
             } else {
 
                 \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
 
-                return redirect()->route('payment.failture');
+                return redirect()->route('payment.failure');
             }
         }
 

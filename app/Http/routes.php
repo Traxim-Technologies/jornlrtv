@@ -169,7 +169,7 @@ Route::get('/notification', function() {
 
 });
 
-Route::get('/payment/failture' , 'ApplicationController@payment_failture')->name('payment.failture');
+Route::get('/payment/failure' , 'ApplicationController@payment_failure')->name('payment.failure');
 
 Route::get('/message/save' , 'ApplicationController@message_save');
 
