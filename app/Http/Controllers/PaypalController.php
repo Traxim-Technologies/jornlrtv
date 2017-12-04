@@ -33,12 +33,15 @@ class PaypalController extends Controller {
     private $_api_context;
  
     public function __construct() {
+
+        $this->middleware('PaypalCheck');
        
         // setup PayPal api context
 
         $paypal_conf = config('paypal');
 
         $paypal_conf['client_id'] = envfile('PAYPAL_ID') ?  envfile('PAYPAL_ID') : $paypal_conf['client_id'];
+        
         $paypal_conf['secret'] = envfile('PAYPAL_SECRET') ?  envfile('PAYPAL_SECRET') : $paypal_conf['secret'];
         $paypal_conf['settings']['mode'] = envfile('PAYPAL_MODE') ?  envfile('PAYPAL_MODE') : $paypal_conf['settings']['mode'];
 
@@ -90,7 +93,7 @@ class PaypalController extends Controller {
 
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(url('/user/payment/status'))
-                    ->setCancelUrl(url('/user/payment/status'));
+                    ->setCancelUrl(url('/'));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
@@ -100,21 +103,36 @@ class PaypalController extends Controller {
 
         try {
             $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
-            if (\Config::get('app.debug')) {
-                echo "Exception: " . $ex->getMessage() . PHP_EOL;
-                echo "Payment" . $payment."<br />";
 
-                $err_data = json_decode($ex->getData(), true);
-                echo "Error" . print_r($err_data);
-                exit;
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+
+
+            if (\Config::get('app.debug')) {
+
+                // echo "Exception: " . $ex->getMessage() . PHP_EOL;
+                // echo "Payment" . $payment."<br />";
+
+                // $err_data = json_decode($ex->getData(), true);
+                // echo "Error" . print_r($err_data);
+                // exit;
+
+                \Session::set('paypal_error' , $ex->getMessage());
+
+                return redirect()->route('payment.failure');
+
             } else {
-                die('Some error occur, sorry for inconvenient');
+
+                \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
+
+                return redirect()->route('payment.failure');
+
             }
         }
 
         foreach($payment->getLinks() as $link) {
+
             if($link->getRel() == 'approval_url') {
+
                 $redirect_url = $link->getHref();
                 break;
             }
@@ -167,7 +185,6 @@ class PaypalController extends Controller {
 
 		} 
             
-     
         $payment = Payment::get($payment_id, $this->_api_context);
      
         // PaymentExecution object includes information necessary
@@ -176,20 +193,18 @@ class PaypalController extends Controller {
         // when the user is redirected from paypal back to your site
         
         $execution = new PaymentExecution();
+
         $execution->setPayerId($request->PayerID);
      
         //Execute the payment
+
         $result = $payment->execute($execution, $this->_api_context);
-     
-       // echo '<pre>';print_r($result);echo '</pre>';exit; // DEBUG RESULT, remove it later
-     
+          
         if ($result->getState() == 'approved') { // payment made
 
             $payment = UserPayment::where('payment_id',$payment_id)->first();
 
             $payment->status = 1;
-
-            // dd($payment->getSubscription);
 
             $payment->amount = $payment->getSubscription ? $payment->getSubscription->amount : 0;
 
@@ -222,8 +237,7 @@ class PaypalController extends Controller {
 
             return back()->with('flash_error' , 'Payment is not approved. Please contact admin');
         }
-            
-           
+        
     }
 
 
@@ -268,7 +282,7 @@ class PaypalController extends Controller {
 
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(url('/user/payment/video-status'))
-                    ->setCancelUrl(url('/user/payment/video-status'));
+                    ->setCancelUrl(url('/'));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
@@ -277,17 +291,32 @@ class PaypalController extends Controller {
             ->setTransactions(array($transaction));
 
         try {
-            $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
-            if (\Config::get('app.debug')) {
-                echo "Exception: " . $ex->getMessage() . PHP_EOL;
-                echo "Payment" . $payment."<br />";
 
-                $err_data = json_decode($ex->getData(), true);
-                echo "Error" . print_r($err_data);
-                exit;
+            $payment->create($this->_api_context);
+
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+
+            if (\Config::get('app.debug')) {
+
+                // echo "Exception: " . $ex->getMessage() . PHP_EOL."<br />";
+
+                // echo "Payment" . $payment."<br />";
+
+                // $err_data = json_decode($ex->getData(), true);
+
+                // echo "Error" . print_r($err_data , true);
+
+                // exit;
+
+                \Session::set('paypal_error' , $ex->getMessage());
+
+                return redirect()->route('payment.failure');
+
             } else {
-                die('Some error occur, sorry for inconvenient');
+
+                \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
+
+                return redirect()->route('payment.failure');
             }
         }
 
@@ -338,7 +367,6 @@ class PaypalController extends Controller {
           return back()->with('flash_error','Payment Failed!!');
 
         } 
-            
      
         $payment = Payment::get($payment_id, $this->_api_context);
      
@@ -348,6 +376,7 @@ class PaypalController extends Controller {
         // when the user is redirected from paypal back to your site
         
         $execution = new PaymentExecution();
+
         $execution->setPayerId($request->PayerID);
      
         //Execute the payment
@@ -358,7 +387,9 @@ class PaypalController extends Controller {
         if ($result->getState() == 'approved') { // payment made
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
-            // $payment->status = 1;
+
+            $payment->status = 1;
+
             $payment->amount = $payment->videoTape->ppv_amount;
 
             $payment->save();
@@ -397,7 +428,6 @@ class PaypalController extends Controller {
 
                     $moderator->save();
 
-                   // $video_amount = $moderator_amount;
 
                 }
 
@@ -412,9 +442,6 @@ class PaypalController extends Controller {
             $responses = response()->json($response_array);
 
             $response = $responses->getData();
-
-            // return back()->with('response', $response);
-            // ->with('flash_success' , 'Payment Successful');
 
             return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('payment_successful'));
 
