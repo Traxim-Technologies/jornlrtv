@@ -169,6 +169,8 @@ Route::get('/notification', function() {
 
 });
 
+Route::get('/payment/failture' , 'ApplicationController@payment_failture')->name('payment.failture');
+
 Route::get('/message/save' , 'ApplicationController@message_save');
 
 Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');

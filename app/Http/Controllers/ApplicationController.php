@@ -42,6 +42,25 @@ class ApplicationController extends Controller {
     }
 
     /**
+     * Function Name : payment_failture()
+     * 
+     * Created By: vidhya R
+     * 
+     * Usage : used to show thw view page, whenever the payment failed.
+     *
+     */
+
+    public function payment_failture($error = "") {
+
+        $paypal_error = \Session::get("paypal_error") ? \Session::get('paypal_error') : "";
+
+        \Session::forget("paypal_error");
+
+        return view('payment_failture')->with('paypal_error' , $paypal_error);
+
+    }
+
+    /**
      * Used to generate index.php file to avoid uploads folder access
      *
      */
