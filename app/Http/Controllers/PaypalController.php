@@ -203,8 +203,6 @@ class PaypalController extends Controller {
 
             $payment->status = 1;
 
-            // dd($payment->getSubscription);
-
             $payment->amount = $payment->getSubscription ? $payment->getSubscription->amount : 0;
 
             $payment->save();
@@ -364,7 +362,6 @@ class PaypalController extends Controller {
           return back()->with('flash_error','Payment Failed!!');
 
         } 
-            
      
         $payment = Payment::get($payment_id, $this->_api_context);
      
@@ -374,6 +371,7 @@ class PaypalController extends Controller {
         // when the user is redirected from paypal back to your site
         
         $execution = new PaymentExecution();
+
         $execution->setPayerId($request->PayerID);
      
         //Execute the payment
@@ -384,7 +382,9 @@ class PaypalController extends Controller {
         if ($result->getState() == 'approved') { // payment made
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
-            // $payment->status = 1;
+
+            $payment->status = 1;
+
             $payment->amount = $payment->videoTape->ppv_amount;
 
             $payment->save();
@@ -423,7 +423,6 @@ class PaypalController extends Controller {
 
                     $moderator->save();
 
-                   // $video_amount = $moderator_amount;
 
                 }
 
@@ -438,9 +437,6 @@ class PaypalController extends Controller {
             $responses = response()->json($response_array);
 
             $response = $responses->getData();
-
-            // return back()->with('response', $response);
-            // ->with('flash_success' , 'Payment Successful');
 
             return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('payment_successful'));
 
