@@ -13,6 +13,8 @@ return array(
 	|
 	*/
 
+	'payment_failed' => 'Don\'t worry, we got your back',
+
 	'download_our_app' => 'Download Our App',
 
 	// Mobile Home 
