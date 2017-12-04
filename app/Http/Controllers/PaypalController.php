@@ -34,7 +34,7 @@ class PaypalController extends Controller {
  
     public function __construct() {
 
-        // $this->middleware('PaypalCheck');
+        $this->middleware('PaypalCheck');
        
         // setup PayPal api context
 
