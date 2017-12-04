@@ -158,7 +158,7 @@
 		                	<a href="#"><b>{{tr('paypal_email')}}</b> <span class="pull-right">{{$user->paypal_email}}</span></a>
 		                </li>
 
-		                <li><a href="#">{{tr('total')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->total}}</span></a></li>
+		                <li><a href="#">{{tr('total')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->total_amount}}</span></a></li>
 
 		                <li><a href="#">{{tr('total_admin_amount')}} <span class="pull-right">{{Setting::get('currency' , '$')}} {{$user->total_admin_amount}}</span></a></li>
 

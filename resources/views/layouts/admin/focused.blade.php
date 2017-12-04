@@ -32,6 +32,7 @@
             width: 100%;
             height: 100%;
             background-size: 100%;
+            /*background-repeat: no-repeat; /*/
             opacity: 0.7;
             filter: alpha(opacity=80);
         }
