@@ -499,8 +499,8 @@ class PaypalController extends Controller {
             ->setDescription('Payment for the Request');
 
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(url('/user/livevideo-status'))
-                    ->setCancelUrl(url('/user/livevideo-status'));
+        $redirect_urls->setReturnUrl(url('/user/payment/livevideo-status'))
+                    ->setCancelUrl(url('/user/payment/livevideo-status'));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
