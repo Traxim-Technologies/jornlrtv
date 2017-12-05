@@ -1025,7 +1025,7 @@
 					                                    	<span class="label label-success">{{tr('ad_amount')}} - ${{$video->amount}}</span>
 					                                    	@endif
 					                                    	@if($video->total_ppv_amount > 0)
-					                                    	<span class="label label-primary">{{tr('ppv_amount')}} - ${{$video->total_ppv_amount}}</span>
+					                                    	<span class="label label-primary">{{tr('ppv_amount')}} - ${{$video->user_ppv_amount}}</span>
 					                                    	@endif
 					                                    </div>
 					                                   	<span class="stars">
