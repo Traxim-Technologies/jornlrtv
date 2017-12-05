@@ -651,7 +651,7 @@
 																								</div>
 																								<div>
 																								    <label class="radio1">
-																									    <input id="radio2" type="radio" name="type_of_user" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
+																									    <input id="radio2" type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
 																									    <span class="outer"><span class="inner"></span></span>{{tr('both_user')}}
 																									</label>
 																								</div>

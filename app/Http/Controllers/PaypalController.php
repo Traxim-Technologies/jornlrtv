@@ -27,6 +27,8 @@ use Auth;
 use App\VideoTape;
 use App\PayPerView;
 use App\Subscription;
+use App\LiveVideo;
+use App\LiveVideoPayment;
  
 class PaypalController extends Controller {
    
@@ -34,7 +36,7 @@ class PaypalController extends Controller {
  
     public function __construct() {
 
-        // $this->middleware('PaypalCheck');
+        $this->middleware('PaypalCheck');
        
         // setup PayPal api context
 
@@ -203,8 +205,6 @@ class PaypalController extends Controller {
 
             $payment->status = 1;
 
-            // dd($payment->getSubscription);
-
             $payment->amount = $payment->getSubscription ? $payment->getSubscription->amount : 0;
 
             $payment->save();
@@ -364,7 +364,6 @@ class PaypalController extends Controller {
           return back()->with('flash_error','Payment Failed!!');
 
         } 
-            
      
         $payment = Payment::get($payment_id, $this->_api_context);
      
@@ -374,6 +373,7 @@ class PaypalController extends Controller {
         // when the user is redirected from paypal back to your site
         
         $execution = new PaymentExecution();
+
         $execution->setPayerId($request->PayerID);
      
         //Execute the payment
@@ -384,7 +384,9 @@ class PaypalController extends Controller {
         if ($result->getState() == 'approved') { // payment made
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
-            // $payment->status = 1;
+
+            $payment->status = 1;
+
             $payment->amount = $payment->videoTape->ppv_amount;
 
             $payment->save();
@@ -403,9 +405,11 @@ class PaypalController extends Controller {
 
                 $moderator_amount = $total - $admin_amount;
 
-                $video->admin_ppv_amount = $admin_amount;
+                // Changes made by vidhya
 
-                $video->user_ppv_amount = $moderator_amount;
+                $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
+
+                $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
 
                 $video->save();
 
@@ -423,7 +427,6 @@ class PaypalController extends Controller {
 
                     $moderator->save();
 
-                   // $video_amount = $moderator_amount;
 
                 }
 
@@ -438,9 +441,6 @@ class PaypalController extends Controller {
             $responses = response()->json($response_array);
 
             $response = $responses->getData();
-
-            // return back()->with('response', $response);
-            // ->with('flash_success' , 'Payment Successful');
 
             return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('payment_successful'));
 
@@ -501,8 +501,8 @@ class PaypalController extends Controller {
             ->setDescription('Payment for the Request');
 
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(url('/user/livevideo-status'))
-                    ->setCancelUrl(url('/user/livevideo-status'));
+        $redirect_urls->setReturnUrl(url('/user/payment/livevideo-status'))
+                    ->setCancelUrl(url('/user/payment/livevideo-status'));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
