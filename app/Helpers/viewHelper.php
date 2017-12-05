@@ -656,9 +656,17 @@ function getAmountBasedChannel($id) {
 
 function ppv_amount($id) {
 
-    $model = PayPerView::where('video_id', $id)->sum('user_ppv_amount');
+    $model = VideoTape::find($id);
 
-    return $model > 0 ? $model : 0;
+    if($model) {
+
+        return $model->user_ppv_amount > 0 ? $model->user_ppv_amount : 0;
+
+    } else {
+        
+        return 0;
+    }
+
 
 }
 
