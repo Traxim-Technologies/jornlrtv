@@ -388,8 +388,6 @@ class PaypalController extends Controller {
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
 
-            $payment->status = 1;
-
             $payment->amount = $payment->videoTape->ppv_amount;
 
             $payment->save();
