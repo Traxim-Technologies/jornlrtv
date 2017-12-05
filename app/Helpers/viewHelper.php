@@ -632,19 +632,18 @@ function getChannels($id = null) {
 
 function getAmountBasedChannel($id) {
 
-    $model = VideoTape::where('channel_id', $id)->sum('amount');
-
+    $model = VideoTape::where('channel_id', $id)->sum('user_ppv_amount');
 
     $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->where('channel_id', $id)
-                        ->orderby('amount' , 'desc')->get();
+                        ->orderby('user_ppv_amount' , 'desc')->get();
 
     $payment = 0;
 
     foreach ($videos as $key => $value) {
 
-        $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('amount');
+        $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('user_ppv_amount');
 
 
     }
@@ -657,7 +656,7 @@ function getAmountBasedChannel($id) {
 
 function ppv_amount($id) {
 
-    $model = PayPerView::where('video_id', $id)->sum('amount');
+    $model = PayPerView::where('video_id', $id)->sum('user_amount');
 
     return $model > 0 ? $model : 0;
 
