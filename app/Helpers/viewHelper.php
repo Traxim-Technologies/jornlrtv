@@ -1137,6 +1137,7 @@ function displayVideoDetails($data,$userId) {
         'url'=>$url,
         'type_of_user'=>$data->type_of_user,
         'type_of_subscription'=>$data->type_of_subscription,
+        'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
     ];
 
