@@ -248,6 +248,21 @@
                                         <input type="text" class="form-control" name="user_commission" value="{{ Setting::get('user_commission')  }}" id="user_commission" placeholder="{{tr('user_commission')}}" disabled>
                                     </div>
                                 
+                                </div>      
+
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('admin_ppv_commission')}} {{tr('in_percentage')}}</label>
+                                        <input type="text" class="form-control" name="admin_ppv_commission" value="{{ Setting::get('admin_ppv_commission')  }}"  id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('user_ppv_commission')}} {{tr('in_percentage')}}</label>
+                                        <input type="text" class="form-control" name="user_ppv_commission" value="{{ Setting::get('user_ppv_commission')  }}" id="user_ppv_commission" placeholder="{{tr('user_ppv_commission')}}" disabled>
+                                    </div>
+                                
                                 </div>                           
 
                           </div>
