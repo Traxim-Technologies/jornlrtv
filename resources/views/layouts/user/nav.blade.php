@@ -29,12 +29,14 @@
                 <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
             </a>
         </li>
-        <li id="my_channel">
-            <a href="{{route('user.channel.mychannel')}}">
-                <img src="{{asset('images/channel.png')}}">{{tr('my_channels')}}
-            </a>
-        </li>
+        @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
+            <li id="my_channel">
+                <a href="{{route('user.channel.mychannel')}}">
+                    <img src="{{asset('images/channel.png')}}">{{tr('my_channels')}}
+                </a>
+            </li>
 
+        @endif
         @endif
     </ul>
                 
