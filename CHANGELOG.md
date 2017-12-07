@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.0] - 2015-12-03
+##[1.2.0] - 25 Dec 2017
+
+### Fixed 
+
+- mychannel hide added based on the create_channel_by_user fetaure
+
+## [1.0.0] - 2017-12-03
 
 ### Fixed
 
