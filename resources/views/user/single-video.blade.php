@@ -1290,12 +1290,9 @@ textarea[name=comments] {
 
                     }
 
-
-
                     jwplayer().on('displayClick', function(e) {
 
                         console.log("state pos "+jwplayer().getState());
-
 
                         jQuery.ajax({
                             url: "{{route('user.add.watch_count')}}",
