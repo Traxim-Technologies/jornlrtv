@@ -153,6 +153,14 @@
                             <i class="material-icons">subscriptions</i>
                             <span class="hidden-xxs">{{tr('my_channels')}}</span>
                         </a></li>
+                    @else
+
+                        <li>
+                            <a href="{{route('user.history')}}" class="mobile-menu">
+                                <i class="material-icons">history</i>
+                                <span class="hidden-xxs">{{tr('history')}}</span>
+                            </a>
+                        </li>
                     @endif
                 @endif
 
