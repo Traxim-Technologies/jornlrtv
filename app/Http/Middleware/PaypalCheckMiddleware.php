@@ -17,7 +17,7 @@ class PaypalCheckMiddleware
     {        
         if (!envfile('PAYPAL_ID') || !envfile('PAYPAL_SECRET') || !envfile('PAYPAL_MODE')) {
 
-            return redirect()->route('payment.failture');
+            return redirect()->route('payment.failure');
         }
 
         return $next($request);
