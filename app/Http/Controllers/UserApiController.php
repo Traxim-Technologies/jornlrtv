@@ -490,7 +490,7 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'video_tape_id' => 'required|integer|exists:video_tapes,id',
-                'rating' => 'integer|in:'.RATINGS,
+                'ratings' => 'integer|in:'.RATINGS,
                 'comments' => '',
             ),
             array(
@@ -509,7 +509,7 @@ class UserApiController extends Controller {
             $rating = new UserRating();
             $rating->user_id = $request->id;
             $rating->video_tape_id = $request->video_tape_id;
-            $rating->rating = $request->has('rating') ? $request->rating : 0;
+            $rating->rating = $request->has('ratings') ? $request->ratings : 0;
             $rating->comment = $request->comments ? $request->comments: '';
             $rating->save();
 
