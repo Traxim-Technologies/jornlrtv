@@ -388,8 +388,6 @@ class PaypalController extends Controller {
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
 
-            $payment->status = 1;
-
             $payment->amount = $payment->videoTape->ppv_amount;
 
             $payment->save();
@@ -408,9 +406,11 @@ class PaypalController extends Controller {
 
                 $moderator_amount = $total - $admin_amount;
 
-                $video->admin_ppv_amount = $admin_amount;
+                // Changes made by vidhya
 
-                $video->user_ppv_amount = $moderator_amount;
+                $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
+
+                $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
 
                 $video->save();
 

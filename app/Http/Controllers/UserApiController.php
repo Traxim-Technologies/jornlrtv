@@ -3106,9 +3106,12 @@ class UserApiController extends Controller {
 
                                                     $moderator_amount = $total - $admin_amount;
 
-                                                    $video->admin_ppv_amount = $admin_amount;
+                                                    // Changes made by vidhya
 
-                                                    $video->user_ppv_amount = $moderator_amount;
+
+                                                    $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
+
+                                                    $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
 
                                                     $video->save();
 

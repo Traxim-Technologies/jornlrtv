@@ -146,10 +146,22 @@
                     <span class="hidden-xxs">{{tr('channels')}}</span>
                 </a></li>
                 @if(Auth::check())
-                <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
-                    <i class="material-icons">subscriptions</i>
-                    <span class="hidden-xxs">{{tr('my_channels')}}</span>
-                </a></li>
+
+                    @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
+
+                        <li><a href="{{route('user.channel.mychannel')}}" class="mobile-menu">
+                            <i class="material-icons">subscriptions</i>
+                            <span class="hidden-xxs">{{tr('my_channels')}}</span>
+                        </a></li>
+                    @else
+
+                        <li>
+                            <a href="{{route('user.history')}}" class="mobile-menu">
+                                <i class="material-icons">history</i>
+                                <span class="hidden-xxs">{{tr('history')}}</span>
+                            </a>
+                        </li>
+                    @endif
                 @endif
 
             </ul>

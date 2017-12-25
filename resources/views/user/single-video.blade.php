@@ -953,6 +953,39 @@ textarea[name=comments] {
                                     "sharing": {
                                         "sites": ["reddit","facebook","twitter"]
                                     },
+                                    events : {
+
+                                        onComplete : function(event) {
+
+                                            console.log(jwplayer().getPosition());
+
+                                            @if(Auth::check())
+
+                                                if (playerInstance.getState() == 'complete') {
+
+                                                    jQuery.ajax({
+                                                        url: "{{route('user.add.history')}}",
+                                                        type: 'post',
+                                                        data: {'video_tape_id' : "{{$video->video_tape_id}}"},
+                                                        success: function(data) {
+
+                                                           if(data.success == true) {
+
+                                                            console.log('Added to history');
+
+                                                           } else {
+                                                                console.log('Wrong...!');
+                                                           }
+                                                        }
+                                                   
+                                                    });
+
+                                                }
+
+                                            @endif
+
+                                       }
+                                    },
                                      tracks : [{
                                       file : "{{$video->subtitle}}",
                                       kind : "captions",
@@ -1042,6 +1075,7 @@ textarea[name=comments] {
 
                                             console.log(jwplayer().getPosition());
 
+                                            @if(Auth::check())
 
 
                                             if (playerInstance.getState() == 'complete') {
@@ -1062,7 +1096,9 @@ textarea[name=comments] {
                                                     }
                                                 });
 
-                                           }
+                                            }
+
+                                            @endif
 
                                        }
 
@@ -1289,12 +1325,9 @@ textarea[name=comments] {
 
                     }
 
-
-
                     jwplayer().on('displayClick', function(e) {
 
                         console.log("state pos "+jwplayer().getState());
-
 
                         jQuery.ajax({
                             url: "{{route('user.add.watch_count')}}",
