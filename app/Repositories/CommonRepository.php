@@ -699,6 +699,8 @@ class CommonRepository {
 
         $video->description = $request->has('description') ? $request->description : $video->description;
 
+        $video->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
+
         $video->channel_id = $request->has('channel_id') ? $request->channel_id : $video->channel_id;
 
         $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;

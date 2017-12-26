@@ -2453,7 +2453,8 @@ class UserApiController extends Controller {
 
     public function my_channels(Request $request) {
 
-       $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->where('user_id', $request->id)->get();
+       $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)
+            ->where('user_id', $request->id)->get();
 
         if($model) {
 
@@ -2652,7 +2653,7 @@ class UserApiController extends Controller {
     public function subscribe_channel(Request $request) {
 
         $validator = Validator::make( $request->all(), array(
-                'channel_id'     => 'required|exists:channels,id',
+                'channel_id'     => 'required|exists:channels,id,status,'.DEFAULT_TRUE.',is_approved,'.DEFAULT_TRUE,
                 ));
 
 
@@ -2664,7 +2665,9 @@ class UserApiController extends Controller {
 
         } else {
 
-            $model = ChannelSubscription::where('user_id', $request->id)->where('channel_id',$request->channel_id)->first();
+            $model = ChannelSubscription::where('user_id', $request->id)
+            ->where('channel_id',$request->channel_id)
+            ->first();
 
             if (!$model) {
 
@@ -3611,7 +3614,15 @@ class UserApiController extends Controller {
 
         }
 
-        $channels = $query->paginate(16);
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+            $channels = $query->skip($request->skip)->take(Setting::get('admin_take_count', 12))->get();
+
+        } else {
+
+            $channels = $query->paginate(16);
+
+        }
 
         $lists = [];
 
@@ -3633,15 +3644,72 @@ class UserApiController extends Controller {
 
             }
 
-            $pagination = (string) $channels->links();
+            if ($request->device_type != DEVICE_ANDROID && $request->device_type != DEVICE_IOS) {
+
+                $pagination = (string) $channels->links();
+
+            }
 
         }
 
-        $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+            $response_array = ['success'=>true, 'data'=>$lists];
+
+        } else {
+
+            $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+        }
 
         return response()->json($response_array);
     }
 
+
+    /**
+     * Function Name : channel_list
+     *
+     * @usage_place : WEB
+     *
+     * To list out all the channels which is in active status
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list
+     */
+    public function subscribed_channels(Request $request) {
+
+        $validator = Validator::make($request->all(), 
+                array(
+                    'skip' => 'required',
+                ));
+
+        if($validator->fails()) {
+
+            $errors = implode(',', $validator->messages()->all());
+            
+            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
+
+        } else {
+
+            if ($request->id) {
+
+                $channel_id = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+                $request->request->add([ 
+                    'channel_id' => $channel_id,
+                ]);        
+            }
+
+            $response_array = $this->channel_list($request)->getData();
+
+
+        }
+
+        return response()->json($response_array);
+
+    }
     /**
      * Function Name : channel_videos()
      *
@@ -4049,4 +4117,6 @@ class UserApiController extends Controller {
         }
 
     }
+
+    
 }
