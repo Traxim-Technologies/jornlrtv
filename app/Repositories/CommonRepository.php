@@ -199,7 +199,7 @@ class CommonRepository {
 
         } else {
 
-    		if($request->id != '') {
+    		if($request->channel_id != '') {
     			
                 $validator = Validator::make( $request->all(), array(
                             'name' => 'required|max:255',
@@ -226,9 +226,9 @@ class CommonRepository {
 
             } else {
 
-                if($request->id != '') {
+                if($request->channel_id != '') {
 
-                    $channel = Channel::find($request->id);
+                    $channel = Channel::find($request->channel_id);
 
                     $message = tr('channel_update_success');
 

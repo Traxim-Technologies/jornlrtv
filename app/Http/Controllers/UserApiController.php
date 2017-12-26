@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
+use App\Repositories\CommonRepository as CommonRepo;
+
 use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
@@ -3669,13 +3671,13 @@ class UserApiController extends Controller {
     /**
      * Function Name : channel_list
      *
-     * @usage_place : WEB
+     * @usage_place : MOBILE
      *
-     * To list out all the channels which is in active status
+     * To list out all the channels which is subscribed the logged in user
      *
-     * @param Object $request - USer Details
+     * @param Object $request - Subscribed plan Details
      *
-     * @return array of channel list
+     * @return array of channel subscribed plans
      */
     public function subscribed_channels(Request $request) {
 
@@ -4118,5 +4120,50 @@ class UserApiController extends Controller {
 
     }
 
-    
+    /**
+     * Function Name : create_channel()
+     *
+     * To create a channel based on the logged in user
+     *
+     * @param object $request - User id, token
+     *
+     * @return success/failure message of boolean 
+     */ 
+    public function create_channel(Request $request) {
+
+        $channels = getChannels($request->id);
+
+        $user = User::find($request->id);
+
+        if((count($channels) == 0 || Setting::get('multi_channel_status'))) {
+
+            if ($user->user_type) {
+
+                $response = CommonRepo::channel_save($request)->getData();
+
+                if($response->success) {
+
+                    $response_array = ['success'=>true, 'data'=>$response->data, 'message'=>$response->message];
+                   
+                } else {
+                    
+                    $response_array = ['success'=>false, 'error_messages'=>$response->error];
+
+                }
+
+            } else {
+
+                $response_array = ['success'=>false, 'error_messages'=>tr('subscription_error')];
+
+            }
+
+        } else {
+
+            $response_array = ['success'=>false, 'error_messages'=>tr('channel_create_error')];
+        }
+
+        return response()->json($response_array);
+
+    }
+
 }

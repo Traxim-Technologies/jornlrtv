@@ -894,4 +894,6 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('remove_spam', 'UserApiController@remove_spam');
 
     Route::post('spam_videos', 'UserApiController@spam_videos_list');
+
+    Route::post('channel/create', 'UserApiController@create_channel');
 });
