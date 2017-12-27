@@ -909,4 +909,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('paypal_ppv', 'UserApiController@paypal_ppv');
 
+    Route::post('stripe_ppv', 'UserApiController@stripe_ppv');
+
 });
