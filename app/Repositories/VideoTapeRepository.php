@@ -373,14 +373,21 @@ class VideoTapeRepository {
 
                 $user_details = '';
 
+                $is_ppv_status = DEFAULT_TRUE;
+
                 if($request->id) {
 
                     if($user_details = User::find($request->id)) {
                         
                         $value['user_type'] = $user_details->user_type;
 
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+
                     }
                 }
+
+                $value['is_ppv_subscribe_page'] = $is_ppv_status;
 
                 $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
