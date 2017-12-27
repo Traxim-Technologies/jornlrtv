@@ -1762,18 +1762,6 @@ class UserApiController extends Controller {
 
                         $redeem_details->save();
 
-                        /** @todo Send mail notification to admin */ 
-
-                        // if($admin_details = get_admin_mail()) {
-
-                        //     $subject = tr('provider_redeeem_send_title');
-
-                        //     $page = "emails.redeems.redeem-request-send";
-
-                        //     $email = $admin_details->email;
-                            
-                        //     Helper::send_email($page,$subject,$email,$admin_details);
-                        // }
 
                         $response_array = ['success' => true];
 
@@ -1872,6 +1860,64 @@ class UserApiController extends Controller {
 
     }
 
+
+    /**
+     * Function Name : redeem_request_list()
+     * 
+     * List of redeem requests based on logged in user id 
+     *
+     * @param object $request - User id ,token
+     *
+     * @return redeem list wih boolean response
+     */
+    public function redeem_request_list(Request $request) {
+
+        $currency = Setting::get('currency');
+
+        $model = RedeemRequest::where('user_id' , $request->id)
+                ->select('request_amount' , 
+                     DB::raw("'$currency' as currency"),
+                     DB::raw('DATE_FORMAT(created_at , "%e %b %y") as requested_date'),
+                     'paid_amount',
+                     DB::raw('DATE_FORMAT(updated_at , "%e %b %y") as paid_date'),
+                     'status',
+                     'id as redeem_request_id'
+                 )
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+        $redeem_amount = Redeem::where('user_id' , $request->id)
+                ->select('total' , 'paid' , 'remaining' , 'status', DB::raw("'$currency' as currency"))
+                ->first();
+
+        $data = [];
+
+        foreach ($model as $key => $value) {
+
+            $redeem_status = redeem_request_status($value->status);
+
+            $redeem_cancel_status = in_array($value->status, [REDEEM_REQUEST_SENT , REDEEM_REQUEST_PROCESSING]) ? 1 : 0;
+            
+            $data[] = [
+                    'redeem_request_id'=>$value->redeem_request_id,
+                    'request_amount' => $value->request_amount,
+                      'redeem_status'=>$redeem_status,
+                      'currency'=>$value->currency,
+                      'requested_date'=>$value->requested_date,
+                      'paid_amount'=>$value->paid_amount,
+                      'paid_date'=>$value->paid_date,
+                      'redeem_cancel_status'=>$redeem_cancel_status,
+                      'status'=>$value->status
+            ];
+
+        }
+
+        $response_array = ['success' => true , 'data' => $data, 'redeem_amount'=>$redeem_amount];
+
+        return response()->json($response_array , 200);
+    
+    }
+   
 
     public function user_channel_list(Request $request) {
 
@@ -3097,6 +3143,31 @@ class UserApiController extends Controller {
                                             $user_payment->status = DEFAULT_FALSE;
                                             $user_payment->amount = $amount;
 
+
+                                        if ($video->type_of_user == 1) {
+
+                                            $user_payment->type_of_user = "Normal User";
+
+                                        } else if($video->type_of_user == 2) {
+
+                                            $user_payment->type_of_user = "Paid User";
+
+                                        } else if($video->type_of_user == 3) {
+
+                                            $user_payment->type_of_user = "Both Users";
+                                        }
+
+
+                                        if ($video->type_of_subscription == 1) {
+
+                                            $user_payment->type_of_subscription = "One Time Payment";
+
+                                        } else if($video->type_of_subscription == 2) {
+
+                                            $payment->type_of_subscription = "Recurring Payment";
+
+                                        }
+
                                             $user_payment->save();
 
                                             if($user_payment->amount > 0) {
@@ -4165,5 +4236,226 @@ class UserApiController extends Controller {
         return response()->json($response_array);
 
     }
+
+        /**
+     * Function Nmae : ppv_list()
+     * 
+     * to list out  all the paid videos by logged in user using PPV
+     *
+     * @param object $request - User id, token 
+     *
+     * @return response of array with message
+     */
+    public function ppv_list(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'skip'=>'required',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            $response_array = array(
+                    'success' => false,
+                    'error_messages' => $error_messages
+            );
+            return response()->json($response_array);
+        } else {
+
+            $model = PayPerView::select('pay_per_views.id as pay_per_view_id',
+                    'video_id as video_tape_id',
+                    'video_tapes.title',
+                    'pay_per_views.amount',
+                    'pay_per_views.status as video_status',
+                    'video_tapes.default_image as picture',
+                    'pay_per_views.type_of_subscription',
+                    'pay_per_views.type_of_user',
+                    'pay_per_views.payment_id',
+                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date'))
+                    ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
+                    ->where('pay_per_views.user_id', $request->id)
+                    ->where('pay_per_views.amount', '>', 0)
+                    ->skip($request->skip)
+                    ->take(Setting::get('admin_take_count', 12))
+                    ->get();
+
+            $data = [];
+
+            foreach ($model as $key => $value) {
+                
+                $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
+                        'video_tape_id'=>$value->video_tape_id,
+                        'title'=>$value->title,
+                        'amount'=>$value->amount,
+                        'video_status'=>$value->video_status,
+                        'paid_date'=>$value->paid_date,
+                        'currency'=>Setting::get('currency'),
+                        'picture'=>$value->picture,
+                        'type_of_subscription'=>$value->type_of_subscription,
+                        'type_of_user'=>$value->type_of_user,
+                        'payment_id'=>$value->payment_id];
+
+            }
+
+            return response()->json(['success'=>true,'data'=>$data]);
+
+        }
+
+    } 
+
+
+    /**
+     * Function Name : paypal_ppv()
+     * 
+     * Pay the payment for Pay per view through paypal
+     *
+     * @param object $request - video tape id
+     * 
+     * @return response of success/failure message
+     */
+    public function paypal_ppv(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                $request->all(),
+                array(
+                    'video_tape_id'=>'required|exists:video_tapes,id',
+                    'payment_id'=>'required',
+
+                ),  array(
+                    'exists' => 'The :attribute doesn\'t exists',
+                ));
+
+            if ($validator->fails()) {
+                // Error messages added in response for debugging
+                $errors = implode(',',$validator->messages()->all());
+
+                $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
+
+                throw new Exception($errors);
+
+            } else {
+
+                $video = VideoTape::find($request->video_tape_id);
+
+                $user_payment = new PayPerView;
+                
+                $user_payment->payment_id  = $request->payment_id;
+
+                $user_payment->user_id = $request->id;
+
+                $user_payment->video_id = $request->video_tape_id;
+
+                $user_payment->status = DEFAULT_FALSE;
+
+                $user_payment->amount = $video->amount;
+
+                if ($video->type_of_user == 1) {
+
+                    $user_payment->type_of_user = "Normal User";
+
+                } else if($video->type_of_user == 2) {
+
+                    $user_payment->type_of_user = "Paid User";
+
+                } else if($video->type_of_user == 3) {
+
+                    $user_payment->type_of_user = "Both Users";
+                }
+
+
+                if ($video->type_of_subscription == 1) {
+
+                    $user_payment->type_of_subscription = "One Time Payment";
+
+                } else if($video->type_of_subscription == 2) {
+
+                    $user_payment->type_of_subscription = "Recurring Payment";
+
+                }
+
+                $user_payment->save();
+
+                if($user_payment) {
+
+                    // if(is_numeric($video->uploaded_by)) {
+
+                        if($video->ppv_amount > 0) { 
+
+                            $total = $video->ppv_amount;
+
+                            // Commission Spilit 
+
+                            $admin_commission = Setting::get('admin_commission')/100;
+
+                            $admin_amount = $total * $admin_commission;
+
+                            $user_amount = $total - $admin_amount;
+
+                            $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
+
+                            $video->user_ppv_amount = $video->admin_ppv_amount+$user_amount;
+
+                            $video->save();
+
+                            // Commission Spilit Completed
+
+                            if($user = User::find($video->user_id)) {
+
+                                $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
+
+                                $user->total_user_amount = $user->total_user_amount + $user_amount;
+
+                                $user->remaining_amount = $user->remaining_amount + $user_amount;
+
+                                $user->total_amount = $user->total_amount + $total;
+
+                                $user->save();
+
+                                $video_amount = $user_amount;
+
+                            }
+
+                            add_to_redeem($video->user_id , $total);
+                            
+                        }
+
+                        \Log::info("ADD History - add_to_redeem");
+
+                    // } 
+
+                } 
+
+                $viewerModel = User::find($request->id);
+
+                $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
+                                    'data'=>['id'=>$request->id,
+                                     'token'=>$viewerModel ? $viewerModel->token : '']];
+
+            }
+
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $e = $e->getMessage();
+
+            $response_array = ['success'=>false, 'error_messages'=>$e];
+
+            return response()->json($response_array);
+        }
+
+    }
+
 
 }
