@@ -483,7 +483,7 @@ class VideoTapeRepository {
 
                 $data['is_liked'] = Helper::like_status($user_id,$video_tape_id);
 
-                $mycomment = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->where('ratings', '>', 0)->first();
+                $mycomment = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->where('rating', '>', 0)->first();
 
                 if ($mycomment) {
 
