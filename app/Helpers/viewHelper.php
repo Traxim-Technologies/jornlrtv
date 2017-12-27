@@ -1119,6 +1119,14 @@ function displayVideoDetails($data,$userId) {
 
     }
 
+    $is_ppv_status = DEFAULT_TRUE;
+
+    if ($user) {
+
+        $is_ppv_status = ($data->type_of_user == NORMAL_USER || $data->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+    } 
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1139,6 +1147,8 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
+        'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+        
     ];
 
     return $model;

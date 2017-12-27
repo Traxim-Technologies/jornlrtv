@@ -1088,7 +1088,7 @@ class UserApiController extends Controller {
 
                         if($user_details = User::find($request->id)) {
 
-                            $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
+                            $value['pay_per_view_status'] = watchFullVideo($user_details->id, $user_details->user_type, $value);
                             
                             $value['user_type'] = $user_details->user_type;
 
@@ -1212,7 +1212,7 @@ class UserApiController extends Controller {
 
                         if($user_details = User::find($request->id)) {
 
-                            $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
+                            $value['pay_per_view_status'] = watchFullVideo($user_details->id, $user_details->user_type, $value);
                             
                             $value['user_type'] = $user_details->user_type;
 
@@ -1388,7 +1388,7 @@ class UserApiController extends Controller {
 
                     if($user_details = User::find($request->id)) {
 
-                        $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
+                        $value['pay_per_view_status'] = watchFullVideo($user_details->id, $user_details->user_type, $value);
                         
                         $value['user_type'] = $user_details->user_type;
 
@@ -2832,7 +2832,7 @@ class UserApiController extends Controller {
 
                 if($user_details = User::find($request->id)) {
 
-                    $data['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
+                    $data['pay_per_view_status'] = watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
                     
                     $data['user_type'] = $user_details->user_type;
 
@@ -3231,7 +3231,7 @@ class UserApiController extends Controller {
                                         }
 
                                         
-                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
+                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id, 'video_tape_id'=>$video->video_tape_id];
 
                                         $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
@@ -4453,7 +4453,8 @@ class UserApiController extends Controller {
 
                 $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
                                     'data'=>['id'=>$request->id,
-                                     'token'=>$viewerModel ? $viewerModel->token : '']];
+                                     'token'=>$viewerModel ? $viewerModel->token : '',
+                                     'video_tape_id'=>$video->video_tape_id]];
 
             }
 
