@@ -38,9 +38,6 @@ use App\Language;
 
 use App\PayPerView;
 
-use Setting;
-
-
 function tr($key) {
 
     if (!\Session::has('locale'))
