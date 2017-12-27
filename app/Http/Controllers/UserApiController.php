@@ -3181,62 +3181,59 @@ class UserApiController extends Controller {
 
                                         } else if($video->type_of_subscription == 2) {
 
-                                            $payment->type_of_subscription = "Recurring Payment";
+                                            $user_payment->type_of_subscription = "Recurring Payment";
 
                                         }
 
-                                            $user_payment->save();
+                                        $user_payment->save();
 
-                                            if($user_payment->amount > 0) {
+                                        if($user_payment->amount > 0) {
 
-                                                    $total = $user_payment->amount;
+                                                $total = $user_payment->amount;
 
-                                                    // Commission Spilit 
+                                                // Commission Spilit 
 
-                                                    $admin_commission = Setting::get('admin_ppv_commission')/100;
+                                                $admin_commission = Setting::get('admin_ppv_commission')/100;
 
-                                                    $admin_amount = $total * $admin_commission;
+                                                $admin_amount = $total * $admin_commission;
 
-                                                    $moderator_amount = $total - $admin_amount;
+                                                $moderator_amount = $total - $admin_amount;
 
-                                                    // Changes made by vidhya
+                                                // Changes made by vidhya
 
 
-                                                    $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
+                                                $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
 
-                                                    $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
+                                                $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
 
-                                                    $video->save();
+                                                $video->save();
 
-                                                    // Commission Spilit Completed
+                                                // Commission Spilit Completed
 
-                                                    if($moderator = User::find($video->user_id)) {
+                                                if($moderator = User::find($video->user_id)) {
 
-                                                        $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
+                                                    $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
 
-                                                        $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
+                                                    $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
 
-                                                        $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
+                                                    $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
 
-                                                        $moderator->total_amount = $moderator->total_amount + $total;
+                                                    $moderator->total_amount = $moderator->total_amount + $total;
 
-                                                        $moderator->save();
+                                                    $moderator->save();
 
-                                                       // $video_amount = $moderator_amount;
+                                                   // $video_amount = $moderator_amount;
 
-                                                    }
+                                                }
 
-                                                    add_to_redeem($video->user_id , $moderator_amount);
-                                                        
-                                            }
+                                                add_to_redeem($video->user_id , $moderator_amount);
+                                                    
+                                        }
 
-                                          
+                                        
+                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
 
-                                            $video->save();
-
-                                            $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
-
-                                            $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
+                                        $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
                                         } else {
 
@@ -3255,6 +3252,10 @@ class UserApiController extends Controller {
                                        return response()->json($response_array , 200);
                                     
                                     }
+
+                                } else {
+
+                                     throw new Exception(tr('check_with_ppv_amount'));
 
                                 }
 
@@ -3287,7 +3288,6 @@ class UserApiController extends Controller {
 
                     throw new Exception(tr('no_user_detail_found'));
                     
-
                 }
 
             }
