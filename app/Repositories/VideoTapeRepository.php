@@ -371,16 +371,18 @@ class VideoTapeRepository {
 
             foreach ($videos as $key => $value) {
 
+                $user_details = '';
+
                 if($request->id) {
 
                     if($user_details = User::find($request->id)) {
-
-                        $value['pay_per_view_status'] = watchFullVideo($user_details->id, $user_details->user_type, $value);
                         
                         $value['user_type'] = $user_details->user_type;
 
                     }
                 }
+
+                $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
                 $value['watch_count'] = number_format_short($value->watch_count);
 
@@ -490,13 +492,17 @@ class VideoTapeRepository {
                     $data['comment_rating_status'] = DEFAULT_FALSE;
                 }
 
+                $user_details = '';
+
                 if($user_details = User::find($user_id)) {
 
-                    $data['pay_per_view_status'] = watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
-                    
+
                     $data['user_type'] = $user_details->user_type;
 
                 }
+
+                $data['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
+
 
             }
 
