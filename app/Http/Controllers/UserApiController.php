@@ -1103,6 +1103,7 @@ class UserApiController extends Controller {
 
                     $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
+                    $value['currency'] = Setting::get('currency');
 
                     $value['watch_count'] = number_format_short($value->watch_count);
 
@@ -1235,6 +1236,8 @@ class UserApiController extends Controller {
 
                     $value['is_ppv_subscribe_page'] = $is_ppv_status;
 
+                    $value['currency'] = Setting::get('currency');
+
                     $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
                     $value['watch_count'] = number_format_short($value->watch_count);
@@ -1355,6 +1358,7 @@ class UserApiController extends Controller {
 
                 $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
+                $value['currency'] = Setting::get('currency');
 
                 $value['watch_count'] = number_format_short($value->watch_count);
 
@@ -1426,6 +1430,8 @@ class UserApiController extends Controller {
                 }
 
                 $value['is_ppv_subscribe_page'] = $is_ppv_status;
+
+                $value['currency'] = Setting::get('currency');
 
                 $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
@@ -2876,12 +2882,14 @@ class UserApiController extends Controller {
 
                 }
 
-                $value['is_ppv_subscribe_page'] = $is_ppv_status;
-
+                $data['is_ppv_subscribe_page'] = $is_ppv_status;
+                
                 $data['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
 
 
             }
+
+            $data['currency'] = Setting::get('currency');
 
             $data['subscriberscnt'] = subscriberscnt($video_tape_details->channel_id);
 

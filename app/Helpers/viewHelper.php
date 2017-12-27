@@ -38,6 +38,8 @@ use App\Language;
 
 use App\PayPerView;
 
+use Setting;
+
 
 function tr($key) {
 
@@ -1149,6 +1151,7 @@ function displayVideoDetails($data,$userId) {
         'status'=>$data->status,
         'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+        'currency'=>Setting::get('currency')
         
     ];
 
