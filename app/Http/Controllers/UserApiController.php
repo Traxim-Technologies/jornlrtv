@@ -1953,9 +1953,19 @@ class UserApiController extends Controller {
 
         }*/
 
-        $channels = $query->paginate(16);
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
 
-        $items = $channels->items();
+            $channels = $query->skip($request->skip)->take(Setting::get('admin_take_count', 12))
+                ->get();
+
+
+        } else {
+
+            $channels = $query->paginate(16);
+
+            $items = $channels->items();
+
+        }   
 
         $lists = [];
 
@@ -1973,9 +1983,16 @@ class UserApiController extends Controller {
 
         }
 
-        $pagination = (string) $channels->links();
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
 
-        $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+            $response_array = ['success'=>true, 'data'=>$lists];
+
+        } else {
+
+            $pagination = (string) $channels->links();
+
+            $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+        }
 
         return response()->json($response_array);
     }
