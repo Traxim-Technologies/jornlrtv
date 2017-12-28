@@ -1014,6 +1014,7 @@ function watchFullVideo($user_id, $user_type, $video) {
         }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
 
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
+                ->where('amount', '>', 0)
                 ->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
@@ -1035,7 +1036,9 @@ function watchFullVideo($user_id, $user_type, $video) {
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)->orderBy('created_at', 'desc')->first();
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
+            ->where('amount', '>', 0)
+            ->orderBy('created_at', 'desc')->first();
 
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
