@@ -253,7 +253,7 @@ class CommonRepository {
 
                 $channel->description = $request->has('description') ? $request->description : '';
 
-                $channel->user_id = $request->has('user_id') ? $request->user_id : '';
+                $channel->user_id = $request->has('id') ? $request->id : '';
 
                 $channel->status = DEFAULT_TRUE;
 
