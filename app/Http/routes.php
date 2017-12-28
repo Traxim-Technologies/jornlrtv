@@ -911,4 +911,8 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('stripe_ppv', 'UserApiController@stripe_ppv');
 
+    Route::post('channel/edit', 'UserApiController@channel_edit');
+
+    Route::post('channel/delete', 'UserApiController@channel_delete');
+
 });

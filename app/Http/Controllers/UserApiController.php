@@ -4305,7 +4305,108 @@ class UserApiController extends Controller {
 
     }
 
-        /**
+
+    /**
+     * Function Name : channel_edit()
+     *
+     * To edit a channel based on logged in user id (Form Rendering)
+     *
+     * @param integer $id - Channel Id
+     *
+     * @return respnse with Html Page
+     */
+    public function channel_edit(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                            'channel_id' => 'required|exists:channels,id',
+                        ));
+
+         if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
+
+                // return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $channel = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+            if ($channel) {
+
+                $response = CommonRepo::channel_save($request)->getData();
+
+                if($response->success) {
+
+                    $response_array = ['success'=>true, 'data'=>$response->data, 'message'=>$response->message];
+                   
+                } else {
+                    
+                    $response_array = ['success'=>false, 'error_messages'=>$response->error];
+
+                }
+
+            } else {
+
+                $response_array = ['success'=>false, 'error_messages'=>tr('not_your_channel')];
+
+            }
+
+        }
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Function Name : channel_delete()
+     *
+     * To delete a channel based on logged in user id & channel id (Form Rendering)
+     *
+     * @param integer $request - Channel Id
+     *
+     * @return response with flash message
+     */
+    public function channel_delete(Request $request) {
+
+
+        $validator = Validator::make( $request->all(), array(
+                            'channel_id' => 'required|exists:channels,id',
+                        ));
+
+        if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
+
+                // return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $channel = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+            if($channel) {       
+
+                $channel->delete();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_delete_success')];
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>tr('not_your_channel')];
+
+
+            }
+
+        }
+
+        return response()->json($response_array);
+
+
+    }
+
+    /**
      * Function Nmae : ppv_list()
      * 
      * to list out  all the paid videos by logged in user using PPV
