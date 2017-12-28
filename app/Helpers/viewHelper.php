@@ -40,7 +40,6 @@ use App\LiveVideoPayment;
 
 use App\PayPerView;
 
-
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -1098,6 +1097,7 @@ function watchFullVideo($user_id, $user_type, $video) {
         }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
 
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
+                ->where('amount', '>', 0)
                 ->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
@@ -1119,7 +1119,9 @@ function watchFullVideo($user_id, $user_type, $video) {
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)->orderBy('created_at', 'desc')->first();
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
+            ->where('amount', '>', 0)
+            ->orderBy('created_at', 'desc')->first();
 
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
@@ -1202,6 +1204,14 @@ function displayVideoDetails($data,$userId) {
 
     }
 
+    $is_ppv_status = DEFAULT_TRUE;
+
+    if ($user) {
+
+        $is_ppv_status = ($data->type_of_user == NORMAL_USER || $data->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+    } 
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1222,6 +1232,10 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
+        'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
+        'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+        'currency'=>Setting::get('currency')
+        
     ];
 
     return $model;

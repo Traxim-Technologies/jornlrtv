@@ -1080,4 +1080,5 @@ return array(
 	'normal_paid_user'=>'Both Subscribed & Unsubscribed Users',
 	'ad_amount'=>'Ad Amount',
 	'ppv_amount'=>'PPV Amount',
+	'check_with_ppv_amount'=>'Check with pay per view amount',
 );

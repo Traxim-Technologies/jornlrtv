@@ -872,10 +872,9 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/index', 'UserApiController@index');
 
-    Route::post('/redeems', 'UserApiController@redeems');
+    //Route::post('/redeems/list', 'UserApiController@redeems');
 
-    Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
-
+    // Route::post('/send_redeem_request', 'UserApiController@send_redeem_request');
 
 
     Route::post('/like_video', 'UserApiController@likeVideo');
@@ -905,12 +904,13 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/my_channels', 'UserApiController@my_channels');
 
+    Route::post('/mychannel/list', 'UserApiController@user_channel_list');
 
     Route::post('subscribe_channel', 'UserApiController@subscribe_channel');
 
     Route::post('unsubscribe_channel', 'UserApiController@unsubscribe_channel');
 
-    Route::post('subscribed_channels', 'UserApiController@channel_list');
+    Route::post('subscribed_channels', 'UserApiController@subscribed_channels');
 
     Route::post('/add_spam', 'UserApiController@add_spam');
 
@@ -921,5 +921,20 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('spam_videos', 'UserApiController@spam_videos_list');
 
 
+    Route::post('channel/create', 'UserApiController@create_channel');
+
+    Route::post('ppv_list', 'UserApiController@ppv_list');
+
+    Route::post('/redeems/list', 'UserApiController@redeems');
+
+    Route::post('redeem/request/list', 'UserApiController@redeem_request_list');
+
+    Route::post('redeems/request', 'UserApiController@send_redeem_request');
+
+    Route::post('redeem/request/cancel', 'UserApiController@redeem_request_cancel');
+
+    Route::post('paypal_ppv', 'UserApiController@paypal_ppv');
+
+    Route::post('stripe_ppv', 'UserApiController@stripe_ppv');
 
 });

@@ -199,7 +199,7 @@ class CommonRepository {
 
         } else {
 
-    		if($request->id != '') {
+    		if($request->channel_id != '') {
     			
                 $validator = Validator::make( $request->all(), array(
                             'name' => 'required|max:255',
@@ -226,9 +226,9 @@ class CommonRepository {
 
             } else {
 
-                if($request->id != '') {
+                if($request->channel_id != '') {
 
-                    $channel = Channel::find($request->id);
+                    $channel = Channel::find($request->channel_id);
 
                     $message = tr('channel_update_success');
 
@@ -700,6 +700,8 @@ class CommonRepository {
         $video->title = $request->has('title') ? $request->title : $video->title;
 
         $video->description = $request->has('description') ? $request->description : $video->description;
+
+        $video->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
 
         $video->channel_id = $request->has('channel_id') ? $request->channel_id : $video->channel_id;
 
