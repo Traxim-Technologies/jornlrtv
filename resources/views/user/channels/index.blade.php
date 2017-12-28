@@ -377,7 +377,7 @@
 								@if($channel->user_id == Auth::user()->id)
 									<li role="presentation" id="payment_managment_sec">
 										<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
-										<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ($ {{getAmountBasedChannel($channel->id)}})</span> 
+										<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ({{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->total : "0.00"}})</span> 
 										<span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;($ {{getAmountBasedChannel($channel->id)}})</span>
 										</a>
 									</li>
@@ -651,7 +651,7 @@
 																								</div>
 																								<div>
 																								    <label class="radio1">
-																									    <input id="radio2" type="radio" name="type_of_user" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
+																									    <input id="radio2" type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
 																									    <span class="outer"><span class="inner"></span></span>{{tr('both_user')}}
 																									</label>
 																								</div>
@@ -988,7 +988,7 @@
 					                                        @if(!$video->ppv_status)
 					                                            <div class="video_amount">
 
-					                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
+					                                            {{tr('pay')}} - {{Setting::get('currency')}} {{$video->ppv_amount}}
 
 					                                            </div>
 					                                        @endif
@@ -1025,7 +1025,7 @@
 					                                    	<span class="label label-success">{{tr('ad_amount')}} - ${{$video->amount}}</span>
 					                                    	@endif
 					                                    	@if($video->total_ppv_amount > 0)
-					                                    	<span class="label label-primary">{{tr('ppv_amount')}} - ${{$video->total_ppv_amount}}</span>
+					                                    	<span class="label label-primary">{{tr('ppv_amount')}} - ${{$video->user_ppv_amount}}</span>
 					                                    	@endif
 					                                    </div>
 					                                   	<span class="stars">

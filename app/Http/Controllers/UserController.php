@@ -1038,6 +1038,12 @@ class UserController extends Controller {
      */
     public function save_channel(Request $request) {
 
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'channel_id' =>$request->id,
+        ]);
+
         $response = CommonRepo::channel_save($request)->getData();
 
         if($response->success) {

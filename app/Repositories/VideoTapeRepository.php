@@ -373,16 +373,27 @@ class VideoTapeRepository {
 
             foreach ($videos as $key => $value) {
 
+                $user_details = '';
+
+                $is_ppv_status = DEFAULT_TRUE;
+
                 if($request->id) {
 
                     if($user_details = User::find($request->id)) {
-
-                        $value['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $value);
                         
                         $value['user_type'] = $user_details->user_type;
 
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+
                     }
                 }
+
+                $value['currency'] = Setting::get('currency');
+
+                $value['is_ppv_subscribe_page'] = $is_ppv_status;
+
+                $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
                 $value['watch_count'] = number_format_short($value->watch_count);
 
@@ -548,20 +559,33 @@ class VideoTapeRepository {
 
                 $data['is_liked'] = Helper::like_status($user_id,$video_tape_id);
 
-                $mycomment = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->first();
+                $mycomment = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->where('rating', '>', 0)->first();
 
                 if ($mycomment) {
 
                     $data['comment_rating_status'] = DEFAULT_FALSE;
                 }
 
+                $data['currency'] = Setting::get('currency');
+
+                $user_details = '';
+
+                $is_ppv_status = DEFAULT_TRUE;
+
                 if($user_details = User::find($user_id)) {
 
-                    $data['pay_per_view_status'] = Helper::watchFullVideo($user_details->id, $user_details->user_type, $video_tape_details);
-                    
                     $data['user_type'] = $user_details->user_type;
 
+                    $is_ppv_status = ($video_tape_details->type_of_user == NORMAL_USER || $video_tape_details->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+
                 }
+
+                $data['is_ppv_subscribe_page'] = $is_ppv_status;
+
+
+                $data['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
+
 
             }
 

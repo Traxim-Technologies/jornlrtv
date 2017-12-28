@@ -40,7 +40,6 @@ use App\LiveVideoPayment;
 
 use App\PayPerView;
 
-
 function tr($key) {
 
     if (!\Session::has('locale'))
@@ -632,22 +631,24 @@ function getChannels($id = null) {
     return $response;
 }
 
+// changes by vidhya
+
 function getAmountBasedChannel($id) {
 
-    $model = VideoTape::where('channel_id', $id)->sum('amount');
-
+    $model = VideoTape::where('channel_id', $id)->sum('user_ppv_amount');
 
     $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->where('channel_id', $id)
-                        ->orderby('amount' , 'desc')->get();
+                        ->orderby('user_ppv_amount' , 'desc')->get();
 
     $payment = 0;
 
     foreach ($videos as $key => $value) {
 
-        $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('amount');
+        $payment += $value->sum('user_ppv_amount') ? $value->sum('user_ppv_amount') : 0;
 
+        // $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('user_ppv_amount');
 
     }
 
@@ -657,11 +658,22 @@ function getAmountBasedChannel($id) {
 
 }
 
+// changes by vidhya
+
+
 function ppv_amount($id) {
 
-    $model = PayPerView::where('video_id', $id)->sum('amount');
+    $model = VideoTape::find($id);
 
-    return $model > 0 ? $model : 0;
+    if($model) {
+
+        return $model->user_ppv_amount > 0 ? $model->user_ppv_amount : 0;
+
+    } else {
+
+        return 0;
+    }
+
 
 }
 
@@ -1085,6 +1097,7 @@ function watchFullVideo($user_id, $user_type, $video) {
         }else if($video->ppv_amount > 0 && ($video->type_of_user == PAID_USER || $video->type_of_user == BOTH_USERS)) {
 
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
+                ->where('amount', '>', 0)
                 ->orderBy('created_at', 'desc')->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
@@ -1106,7 +1119,9 @@ function watchFullVideo($user_id, $user_type, $video) {
         if ($video->ppv_amount == 0) {
             return true;
         }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
-            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)->orderBy('created_at', 'desc')->first();
+            $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
+            ->where('amount', '>', 0)
+            ->orderBy('created_at', 'desc')->first();
 
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
@@ -1189,6 +1204,14 @@ function displayVideoDetails($data,$userId) {
 
     }
 
+    $is_ppv_status = DEFAULT_TRUE;
+
+    if ($user) {
+
+        $is_ppv_status = ($data->type_of_user == NORMAL_USER || $data->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+    } 
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1207,7 +1230,12 @@ function displayVideoDetails($data,$userId) {
         'url'=>$url,
         'type_of_user'=>$data->type_of_user,
         'type_of_subscription'=>$data->type_of_subscription,
+        'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
+        'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
+        'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+        'currency'=>Setting::get('currency')
+        
     ];
 
     return $model;

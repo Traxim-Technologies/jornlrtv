@@ -385,10 +385,34 @@ class PaypalController extends Controller {
 
             $payment = PayPerView::where('payment_id',$payment_id)->first();
 
-            $payment->status = 1;
-
             $payment->amount = $payment->videoTape->ppv_amount;
 
+
+
+            if ($payment->videoTape->type_of_user == 1) {
+
+                $payment->type_of_user = "Normal User";
+
+            } else if($payment->videoTape->type_of_user == 2) {
+
+                $payment->type_of_user = "Paid User";
+
+            } else if($payment->videoTape->type_of_user == 3) {
+
+                $payment->type_of_user = "Both Users";
+            }
+
+
+            if ($payment->videoTape->type_of_subscription == 1) {
+
+                $payment->type_of_subscription = "One Time Payment";
+
+            } else if($payment->videoTape->type_of_subscription == 2) {
+
+                $payment->type_of_subscription = "Recurring Payment";
+
+            }
+            
             $payment->save();
 
             if($payment->amount > 0) {
@@ -405,9 +429,11 @@ class PaypalController extends Controller {
 
                 $moderator_amount = $total - $admin_amount;
 
-                $video->admin_ppv_amount = $admin_amount;
+                // Changes made by vidhya
 
-                $video->user_ppv_amount = $moderator_amount;
+                $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
+
+                $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
 
                 $video->save();
 
