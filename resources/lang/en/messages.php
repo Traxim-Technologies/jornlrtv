@@ -13,6 +13,9 @@ return array(
 	|
 	*/
 
+	'admin_ppv_commission' => 'Admin PPV Commission',
+	'user_ppv_commission' => 'User PPV Commission',
+
 	'payment_failed' => 'Don\'t worry, we got your back',
 
 	'download_our_app' => 'Download Our App',
@@ -80,10 +83,10 @@ return array(
 	'SOCKET_URL' => 'SOCKET URL',
 	'WEBRTC_SOCKET_URL' => 'WEBRTC SOCKET URL',
 	'cross_platform_url'=>"Cross Platform Url",
-	'admin_commission' => 'Admin Commission',
+	'admin_commission' => 'Admin Ads Commission',
 	'wowza_ip_address'=>'Wowza Ip Address',
 
-	'user_commission' => 'User Commission',
+	'user_commission' => 'User Ads Commission',
 	'short_notes_banner'=>'For Banner, Upload Rectangle images 4:3 Ratio Ex: 400 * 300, For Thumbanil, Upload Rectangle images 1:1 Ratio Ex: 200 * 200',
 
 	'in_percentage' => 'in %',	
