@@ -1495,12 +1495,23 @@ class UserApiController extends Controller {
                 
             }
 
+            $is_mychannel = DEFAULT_FALSE;
+
+            $my_channel = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+            if ($my_channel) {
+
+                $is_mychannel = DEFAULT_TRUE;
+
+            }
+
             $response_array = array('success' => true, 'channel_id'=>$channels->id, 
                         'channel_name'=>$channels->name, 'channel_image'=>$channels->picture,
                         'channel_cover'=>$channels->cover, 
                         'channel_description'=>$channels->description,
                         'is_subscribed'=>$channel_status,
                         'subscribers_count'=>$subscriberscnt,
+                        'is_mychannel'=>$is_mychannel,
                         'data' => $data);
         }
 
