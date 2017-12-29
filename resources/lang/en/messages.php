@@ -1082,4 +1082,5 @@ return array(
 	'ppv_amount'=>'PPV Amount',
 	'check_with_ppv_amount'=>'Check with pay per view amount',
 	'not_your_channel'=>'You are not authorized to this channel, Please contact admin',
+	'only_manual_can_access'=>'Only manual registered user can give forgot password, social login users not allowed',
 );

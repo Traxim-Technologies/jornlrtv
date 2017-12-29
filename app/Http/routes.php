@@ -775,6 +775,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('mychannels/list', 'UserController@my_channels')->name('channel.mychannel');
 
+    Route::post('/forgot/password', 'UserController@forgot_password')->name('forgot.password');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
