@@ -979,26 +979,35 @@ class UserApiController extends Controller {
 
             if($user) {
 
-                $new_password = Helper::generate_password();
-                $user->password =$new_password;
+                if ($user->login_by == 'manual') {
 
-                $email_data = array();
-                $subject = tr('user_forgot_email_title');
-                $email = $user->email;
-                $email_data['user']  = $user;
-                $email_data['password'] = \Hash::make($new_password);
-                $page = "emails.forgot-password";
-                $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
+                    $new_password = Helper::generate_password();
+                    $user->password =$new_password;
 
-                $response_array['success'] = true;
-                $response_array['message'] = Helper::get_message(106);
-                $user->save();
+                    $email_data = array();
+                    $subject = tr('user_forgot_email_title');
+                    $email = $user->email;
+                    $email_data['user']  = $user;
+                    $email_data['password'] = \Hash::make($new_password);
+                    $page = "emails.forgot-password";
+                    $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
+
+                    $response_array['success'] = true;
+                    $response_array['message'] = Helper::get_message(106);
+                    $user->save();
+
+                } else {
+
+                    $response_array = ['success'=>false, 'error_messages'=>tr('only_manual_can_access')];
+
+                }
 
             }
 
         }
 
         $response = response()->json($response_array, 200);
+
         return $response;
     }
 
