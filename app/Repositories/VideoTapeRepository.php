@@ -483,6 +483,7 @@ class VideoTapeRepository {
 
             $user_details = '';
 
+            $is_ppv_status = DEFAULT_TRUE;
 
             if($user_id) {
 
@@ -504,10 +505,7 @@ class VideoTapeRepository {
                     $data['comment_rating_status'] = DEFAULT_FALSE;
                 }
 
-                $data['currency'] = Setting::get('currency');
-
-
-                $is_ppv_status = DEFAULT_TRUE;
+    
 
                 if($user_details = User::find($user_id)) {
 
@@ -518,11 +516,12 @@ class VideoTapeRepository {
 
                 }
 
-                $data['is_ppv_subscribe_page'] = $is_ppv_status;
-
-
 
             }
+
+            $data['currency'] = Setting::get('currency');
+
+            $data['is_ppv_subscribe_page'] = $is_ppv_status;
 
             $data['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
 
