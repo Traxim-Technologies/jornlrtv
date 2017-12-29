@@ -47,12 +47,12 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof \Swift_TransportException) {
             
-            \Session::set('flash_error_mail', $e->getMessage());
+           // \Session::set('flash_error_mail', $e->getMessage());
 
-            return response()->view('user.auth.passwords.email');
+            return back()->with('flash_error', $e->getMessage());
         }
 
-        // return response()->view('errors.404', [], 404);
-        return parent::render($request, $e);
+        return response()->view('errors.404', [], 404);
+        // return parent::render($request, $e);
     }
 }
