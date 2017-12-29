@@ -982,13 +982,13 @@ class UserApiController extends Controller {
                 if ($user->login_by == 'manual') {
 
                     $new_password = Helper::generate_password();
-                    $user->password =$new_password;
+                    $user->password = \Hash::make($new_password);
 
                     $email_data = array();
                     $subject = tr('user_forgot_email_title');
                     $email = $user->email;
                     $email_data['user']  = $user;
-                    $email_data['password'] = \Hash::make($new_password);
+                    $email_data['password'] = $new_password;
                     $page = "emails.forgot-password";
                     $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
 
