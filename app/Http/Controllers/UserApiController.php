@@ -402,6 +402,15 @@ class UserApiController extends Controller {
 
             if(count($wishlist) > 0) {
 
+                if ($request->wishlist_id) {
+
+                    if ($wishlist->id == $request->wishlist_id) {
+
+                        $wishlist->delete();
+
+                    }
+
+                }
 
             } else {
 
