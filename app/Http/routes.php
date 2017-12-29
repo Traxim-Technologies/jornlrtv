@@ -775,6 +775,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('mychannels/list', 'UserController@my_channels')->name('channel.mychannel');
 
+    Route::post('/forgot/password', 'UserController@forgot_password')->name('forgot.password');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
@@ -936,5 +938,9 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('paypal_ppv', 'UserApiController@paypal_ppv');
 
     Route::post('stripe_ppv', 'UserApiController@stripe_ppv');
+
+    Route::post('channel/edit', 'UserApiController@channel_edit');
+
+    Route::post('channel/delete', 'UserApiController@channel_delete');
 
 });

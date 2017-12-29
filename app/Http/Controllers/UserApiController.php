@@ -1433,6 +1433,15 @@ class UserApiController extends Controller {
 
             if(count($wishlist) > 0) {
 
+                if ($request->wishlist_id) {
+
+                    if ($wishlist->id == $request->wishlist_id) {
+
+                        $wishlist->delete();
+
+                    }
+
+                }
 
             } else {
 
@@ -2002,20 +2011,28 @@ class UserApiController extends Controller {
 
             if($user) {
 
-                $new_password = Helper::generate_password();
-                $user->password =$new_password;
+                if ($user->login_by == 'manual') {
 
-                $email_data = array();
-                $subject = tr('user_forgot_email_title');
-                $email = $user->email;
-                $email_data['user']  = $user;
-                $email_data['password'] = \Hash::make($new_password);
-                $page = "emails.forgot-password";
-                $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
+                    $new_password = Helper::generate_password();
+                    $user->password = \Hash::make($new_password);
 
-                $response_array['success'] = true;
-                $response_array['message'] = Helper::get_message(106);
-                $user->save();
+                    $email_data = array();
+                    $subject = tr('user_forgot_email_title');
+                    $email = $user->email;
+                    $email_data['user']  = $user;
+                    $email_data['password'] = $new_password;
+                    $page = "emails.forgot-password";
+                    $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
+
+                    $response_array['success'] = true;
+                    $response_array['message'] = Helper::get_message(106);
+                    $user->save();
+
+                } else {
+
+                    $response_array = ['success'=>false, 'error_messages'=>tr('only_manual_can_access')];
+
+                }
 
             }
 
@@ -2526,12 +2543,23 @@ class UserApiController extends Controller {
                 
             }
 
+            $is_mychannel = DEFAULT_FALSE;
+
+            $my_channel = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+            if ($my_channel) {
+
+                $is_mychannel = DEFAULT_TRUE;
+
+            }
+
             $response_array = array('success' => true, 'channel_id'=>$channels->id, 
                         'channel_name'=>$channels->name, 'channel_image'=>$channels->picture,
                         'channel_cover'=>$channels->cover, 
                         'channel_description'=>$channels->description,
                         'is_subscribed'=>$channel_status,
                         'subscribers_count'=>$subscriberscnt,
+                        'is_mychannel'=>$is_mychannel,
                         'data' => $data);
         }
 
@@ -5332,7 +5360,108 @@ class UserApiController extends Controller {
 
     }
 
-        /**
+
+    /**
+     * Function Name : channel_edit()
+     *
+     * To edit a channel based on logged in user id (Form Rendering)
+     *
+     * @param integer $id - Channel Id
+     *
+     * @return respnse with Html Page
+     */
+    public function channel_edit(Request $request) {
+
+        $validator = Validator::make( $request->all(), array(
+                            'channel_id' => 'required|exists:channels,id',
+                        ));
+
+         if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
+
+                // return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $channel = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+            if ($channel) {
+
+                $response = CommonRepo::channel_save($request)->getData();
+
+                if($response->success) {
+
+                    $response_array = ['success'=>true, 'data'=>$response->data, 'message'=>$response->message];
+                   
+                } else {
+                    
+                    $response_array = ['success'=>false, 'error_messages'=>$response->error];
+
+                }
+
+            } else {
+
+                $response_array = ['success'=>false, 'error_messages'=>tr('not_your_channel')];
+
+            }
+
+        }
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Function Name : channel_delete()
+     *
+     * To delete a channel based on logged in user id & channel id (Form Rendering)
+     *
+     * @param integer $request - Channel Id
+     *
+     * @return response with flash message
+     */
+    public function channel_delete(Request $request) {
+
+
+        $validator = Validator::make( $request->all(), array(
+                            'channel_id' => 'required|exists:channels,id',
+                        ));
+
+        if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
+
+                // return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $channel = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+            if($channel) {       
+
+                $channel->delete();
+
+                $response_array = ['success'=>true, 'message'=>tr('channel_delete_success')];
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>tr('not_your_channel')];
+
+
+            }
+
+        }
+
+        return response()->json($response_array);
+
+
+    }
+
+    /**
      * Function Nmae : ppv_list()
      * 
      * to list out  all the paid videos by logged in user using PPV

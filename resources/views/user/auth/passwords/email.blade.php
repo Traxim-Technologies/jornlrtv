@@ -13,6 +13,8 @@
         }
 
     ?>
+
+    
     <div class="form-background forgot-password-reset">
         <div class="common-form login-common forgot">
 
@@ -25,7 +27,8 @@
             @include('notification.notify')
 
             <div class="sign-up login-page">
-                <form class="signup-form login-form" method="post" action="{{ $disabled ? '' : url('/password/email') }}">
+                <form class="signup-form login-form" method="post" action="{{ $disabled ? '' : route(
+                'user.forgot.password') }}">
                      {!! csrf_field() !!}
 
                      @if($disabled)
