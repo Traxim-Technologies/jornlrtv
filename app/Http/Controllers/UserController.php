@@ -81,7 +81,8 @@ class UserController extends Controller {
                 'channel_list', 
                 'watch_count', 
                 'partialVideos', 
-                'payment_mgmt_videos',  
+                'payment_mgmt_videos', 
+                'forgot_password' 
         ]]);
     }
 
@@ -2124,6 +2125,22 @@ class UserController extends Controller {
         return view('user.channels.list')->with('page', 'my_channel')
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
+    }
+
+
+    public function forgot_password(Request $request) {
+
+        $response = $this->UserAPI->forgot_password($request)->getData();
+
+        if ($response->success) {
+
+            return back()->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
     }
 
 }

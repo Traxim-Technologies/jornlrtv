@@ -410,7 +410,7 @@
 
                                     <div class="form-group">
                                         <label for="MAIL_PASSWORD">{{tr('MAIL_PASSWORD')}}</label>
-                                        <input type="password" class="form-control" name="MAIL_PASSWORD" id="MAIL_PASSWORD" placeholder="{{tr('MAIL_PASSWORD')}}">
+                                        <input type="password" class="form-control" name="MAIL_PASSWORD" id="MAIL_PASSWORD" placeholder="{{tr('MAIL_PASSWORD')}}" value="{{$result['MAIL_PASSWORD']}}">
                                     </div>
 
                                     <div class="form-group">
