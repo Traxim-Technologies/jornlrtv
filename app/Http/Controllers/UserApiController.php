@@ -1684,7 +1684,7 @@ class UserApiController extends Controller {
 
                     $amount = $value->ppv_amount;
 
-                    $items = ['video_tape_id'=>$value->video_tape_id,
+                    $items[] = ['video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
                             'currency'=>$currency,
                             'is_ppv_subscribe_page'=>$is_ppv_subscribe_page,
