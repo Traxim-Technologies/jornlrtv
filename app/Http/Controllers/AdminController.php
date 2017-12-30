@@ -1180,7 +1180,19 @@ class AdminController extends Controller {
 
                 $key = $setting->key;
                
-                if($setting->key == 'site_icon') {
+                if($setting->key == 'site_name') {
+
+                    if($request->has('site_name')) {
+                        
+                        $setting->value = $request->site_name;
+
+                        $site_name = preg_replace('/[^A-Za-z0-9\-]/', '', $request->site_name);
+
+                        \Enveditor::set('SITENAME',$site_name);
+                    
+                    }
+                    
+                } else if($setting->key == 'site_icon') {
 
                     if($request->hasFile('site_icon')) {
                         
@@ -1215,6 +1227,17 @@ class AdminController extends Controller {
                         }
                     }  
 
+                } else if($setting->key == 'HLS_STREAMING_URL') {
+
+                    if($request->has('HLS_STREAMING_URL') && $request->HLS_STREAMING_URL != $setting->value) {
+
+                        if(check_nginx_configure()) {
+                            $setting->value = $request->HLS_STREAMING_URL;
+                        } else {
+                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                        }
+                    }  
+
                 } else if($setting->key == 'multi_channel_status') {
 
                     $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
@@ -1239,16 +1262,19 @@ class AdminController extends Controller {
                     $setting->value = $request->$key;
 
                 }
+
                 $setting->save();
             
             }
-
         }
-        
         
         $message = "Settings Updated Successfully"." ".$check_streaming_url;
         
-        return back()->with('setting', $settings)->with('flash_success', $message);    
+        // return back()->with('setting', $settings)->with('flash_success', $message);
+
+        $result = EnvEditorHelper::getEnvValues();
+
+        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);    
     
     }
 
@@ -1487,8 +1513,6 @@ class AdminController extends Controller {
 
         $admin_id = \Auth::guard('admin')->user()->id;
 
-       // dd($request->all());
-
         foreach ($request->all() as $key => $data) {
 
             if($request->has($key)) {
@@ -1526,19 +1550,60 @@ class AdminController extends Controller {
             }
         }
 
-        /*\Artisan::call('config:clear');
+        $check_streaming_url = "";
 
-        \Artisan::call('config:cache');
+        $settings = Settings::all();
 
-        \Auth::guard('admin')->loginUsingId($admin_id);
+        if($settings) {
+
+            foreach ($settings as $setting) {
+
+                $key = $setting->key;
+
+                if($request->$key!='') {
+
+                    if($setting->key == 'streaming_url') {
+
+                        if($request->has('streaming_url') && $request->streaming_url != $setting->value) {
+
+                            if(check_nginx_configure()) {
+                                $setting->value = $request->streaming_url;
+                            } else {
+                                $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                            }
+                        }  
+
+                    }
+
+                    if($setting->key == 'HLS_STREAMING_URL') {
+
+                        if($request->has('HLS_STREAMING_URL') && $request->HLS_STREAMING_URL != $setting->value) {
+
+                            if(check_nginx_configure()) {
+                                $setting->value = $request->HLS_STREAMING_URL;
+                            } else {
+                                $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                            }
+                        }  
+
+                    }
+
+                    $setting->value = $request->$key;
+
+                }
+
+                $setting->save();
+
+            }
+        
+        }
+
 
         $result = EnvEditorHelper::getEnvValues();
 
-        return back()->with('result' , $result)->with('flash_success' , tr('common_settings_success'));*/
+        $message = tr('common_settings_success')." ".$check_streaming_url;
 
-        $result = EnvEditorHelper::getEnvValues();
-
-        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , tr('common_settings_success'));
+        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);
     }
 
     public function channels() {

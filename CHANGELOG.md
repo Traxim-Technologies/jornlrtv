@@ -6,7 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ## 30.12.2017 - Admin 
 
-- Nav bar - realigned options  
+- Nav bar - realigned options 
+
+- Settings - Realigned options 
 
 
 ## 30.12.2017 - User 

@@ -741,7 +741,18 @@
 
 					                        <span id="videos_list"></span>
 
-					                        <div id="video_loader"></div>
+					                        <div id="video_loader" style="display: none;">
+					                        		
+					                        	<h1 class="text-center"><i class="fa fa-spinner fa-spin" style="color:#ff0000"></i></h1>
+
+					                        </div>
+
+					                        <div class="clearfix"></div>
+
+
+					                        <button class="pull-right st_video_upload_btn subscribe_btn" onclick="getVideos()" style="color: #fff">{{tr('view_more')}}</button>
+
+					                        <div class="clearfix"></div>
 					                       
 					                    </ul>
 
@@ -972,7 +983,6 @@
 					                <div class="content-head">
 					                    <div><h4 style="color: #000;">{{tr('payment_videos')}}</h4></div>              
 					                </div><!--end of content-head-->
-
 					                @if($payment_videos->count > 0)
 
 					                    <ul class="history-list">
@@ -1024,7 +1034,7 @@
 					                                    	@if($video->amount > 0)
 					                                    	<span class="label label-success">{{tr('ad_amount')}} - ${{$video->amount}}</span>
 					                                    	@endif
-					                                    	@if($video->total_ppv_amount > 0)
+					                                    	@if($video->user_ppv_amount > 0)
 					                                    	<span class="label label-primary">{{tr('ppv_amount')}} - ${{$video->user_ppv_amount}}</span>
 					                                    	@endif
 					                                    </div>
@@ -1044,12 +1054,26 @@
 
 					                        <span id="payment_videos_list"></span>
 
-					                        <div id="payment_video_loader"></div>
+					                        <div id="payment_video_loader" style="display: none;">
+					                        		
+					                        	<h1 class="text-center"><i class="fa fa-spinner fa-spin" style="color:#ff0000"></i></h1>
+
+					                        </div>
+
+					                        <div class="clearfix"></div>
+
+
+					                        <button class="pull-right st_video_upload_btn subscribe_btn" onclick="getPaymentVideos()" style="color: #fff">{{tr('view_more')}}</button>
+
+					                        <div class="clearfix"></div>
 					                       
+
 					                    </ul>
 
 					                @else
-					                    <p style="color: #000">{{tr('no_videos_found')}}</p>
+
+					                    <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+
 					                @endif
 
 
@@ -1113,8 +1137,27 @@
 
 	var searchPaymentLength = "{{count($payment_videos)}}";
 
-    
-    $(window).scroll(function() {
+
+	function getVideos() {
+		
+		if (searchLength > 0) {
+
+			videos(searchLength);
+
+		}
+	}
+
+	function getPaymentVideos() {
+
+		if (searchPaymentLength > 0) {
+
+			payment_videos(searchPaymentLength);
+
+		}
+	}
+
+
+    /*$(window).scroll(function() {
 
 	    if($(window).scrollTop() == $(document).height() - $(window).height()) {
 
@@ -1154,10 +1197,12 @@
 
 		}
 
-	});
+	});*/
 
 
 	function videos(cnt) {
+
+
 
     	channel_id = "{{$channel->id}}";
 
@@ -1169,7 +1214,7 @@
 
     		beforeSend : function () {
 
-				$("#video_loader").html('<h1 class="text-center"><i class="fa fa-spinner fa-spin"></i></h1>');
+				$("#video_loader").fadeIn();
 			},
 
 			data : {skip : cnt, channel_id : channel_id},
@@ -1202,7 +1247,7 @@
 
 			complete : function() {
 
-				$("#video_loader").html('');
+				$("#video_loader").fadeOut();
 
 			},
 
@@ -1214,11 +1259,6 @@
     	});
 
     }
-
-
-
-
-
 
 
 	function payment_videos(cnt) {
@@ -1233,7 +1273,7 @@
 
     		beforeSend : function () {
 
-				$("#payment_video_loader").html('<h1 class="text-center"><i class="fa fa-spinner fa-spin"></i></h1>');
+				$("#payment_video_loader").fadeIn();
 			},
 
 			data : {skip : cnt, channel_id : channel_id},
@@ -1266,7 +1306,7 @@
 
 			complete : function() {
 
-				$("#payment_video_loader").html('');
+				$("#payment_video_loader").fadeOut();
 
 			},
 
