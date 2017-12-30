@@ -2,11 +2,29 @@
 
 @section('title', tr('settings'))
 
-@section('content-header', tr('settings'))
+@section('content-header') 
+
+{{tr('settings')}} 
+
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+
+<div id="help-content" style="display: none">
+
+    <ul class="popover-list">
+        <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
+        <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+    </ul>
+    
+</div>
+
+@endsection
 
 @section('breadcrumb')
+
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+
     <li class="active"><i class="fa fa-gears"></i> {{tr('settings')}}</li>
+
 @endsection
 
 @section('content')
@@ -20,13 +38,14 @@
 
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#site_settings" data-toggle="tab">{{tr('site_settings')}}</a></li>
-                    <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>
-                    <!-- <li><a href="#s3_settings" data-toggle="tab">{{tr('s3_settings')}}</a></li> -->
+                    <li><a href="#video_settings" data-toggle="tab">{{tr('video_settings')}}</a></li>
                     <li><a href="#social_settings" data-toggle="tab">{{tr('social_settings')}}</a></li>
-                    <li><a href="#site_url_settings" data-toggle="tab">{{tr('site_url_settings')}}</a></li>
+                    <li><a href="#revenue_settings" data-toggle="tab">{{tr('revenue_settings')}}</a></li>
+                    <li><a href="#payment_settings" data-toggle="tab">{{tr('payment_settings')}}</a></li>
+                    <li><a href="#social_media_app_settings" data-toggle="tab">{{tr('social_media_app_settings')}}</a></li>
                     <li><a href="#email_settings" data-toggle="tab">{{tr('email_settings')}}</a></li>
-                    <li><a href="#app_url_settings" data-toggle="tab">{{tr('app_url_settings')}}</a></li>
-                    <li><a href="#paypal_settings" data-toggle="tab">{{tr('paypal_settings')}}</a></li>
+                    <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>
+
                 </ul>
                
                 <div class="tab-content">
@@ -42,13 +61,6 @@
                                         <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="Enter sitename">
                                     </div>
                                 </div>
-
-                               <!--  <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="tagname">{{tr('tag_name')}}</label>
-                                        <input type="text" class="form-control" name="tag_name" value="{{Setting::get('tag_name')  }}" id="tagname" placeholder="Tag Name">
-                                    </div>
-                                </div> -->
 
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -83,158 +95,75 @@
                             @endif
                           </div>
                         </form>
+                    
                     </div>
 
-                    <div class="tab-pane" id="other_settings">
 
-                        <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                    <div class="tab-pane" id="video_settings">
+
+                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+
+
                             <div class="box-body">
+
+                                <h3 class="settings-sub-header">{{tr('player_configuration')}}</h3>
+                                <hr>
+
                                 <div class="col-lg-6">
                                     <div class="form-group">
+
+                                        <label for="streaming_url">{{tr('jwplayer_key')}}</label>
+
+                                        <input type="text" value="{{ Setting::get('JWPLAYER_KEY')}}" class="form-control" name="JWPLAYER_KEY" id="JWPLAYER_KEY" placeholder="{{tr('jwplayer_key')}}">
+                                    </div> 
+                                </div>
+
+                                <div class="clearfix"></div>
+
+
+                                <!-- Streaming Configuration start -->
+
+                                <h3 class="settings-sub-header">{{tr('streaming_configuration')}}</h3>
+                                <hr>
+
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+
                                         <label for="streaming_url">{{tr('streaming_url')}}</label>
+
+                                        <br>
+
+                                        <p class="example-note">{{tr('rtmp_settings_note')}}</p>
+
                                         <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="Enter Streaming URL">
                                     </div> 
                                 </div>
 
-                                @if(Setting::get('is_subscription'))
-
-                                @endif
-
-                                 <div class="col-lg-3">
-                                     <div class="form-group">
-                                        <label for="viewers_count_per_video">{{tr('viewers_count_per_video')}}</label>
-                                        <input type="number" step="any" min="1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('viewers_count_per_video')  }}" name="viewers_count_per_video" id="viewers_count_per_video" placeholder="{{tr('viewers_count_per_video')}}" pattern="[0-9]{1,}">
-                                    </div>
-                                </div>
-                                
-                                <div class="col-lg-3">
+                                <div class="col-lg-6">
                                     <div class="form-group">
-                                        <!-- pattern="[0-9]+(.[0-9]{0,2})?%?"  -->
-                                        <label for="amount_per_video">{{tr('amount_per_video')}}</label>
-                                        <input type="number" step="any" min="0.1" title="Amount Per Video must be a number" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="amount_per_video" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
-                                    </div>   
-                                </div>
 
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="multi_channel_status">{{tr('multi_channel_status')}}</label>
-
+                                        <label for="HLS_STREAMING_URL">{{tr('HLS_STREAMING_URL')}}</label>
+                                        
                                         <br>
 
-                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked @endif id="multi_channel_status" style="vertical-align: middle;"> {{tr('enable_channel_status')}}
-                                        
-                                    </div>   
-                                </div>
+                                        <p class="example-note">{{tr('hls_settings_note')}}</p>
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="post_max_size">{{tr('post_max_size_label')}}</label>
-                                        <input type="text" class="form-control" name="post_max_size" value="{{ Setting::get('post_max_size')  }}" id="post_max_size" placeholder="{{tr('post_max_size_label')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="upload_max_size">{{tr('max_upload_size_label')}}</label>
-                                        <input type="text" class="form-control" name="upload_max_size" value="{{Setting::get('upload_max_size')  }}" id="upload_max_size" placeholder="{{tr('max_upload_size_label')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="payment_type">{{tr('payment_type')}}</label>
-
-                                        <?php $type = Setting::get('payment_type') ;?>
-                                        <select id="payment_type" name="payment_type" class="form-control">
-                                            <option value="">{{tr('payment_type')}}</option>
-                                            
-                                            <option value="paypal" @if($type == 'paypal') selected @endif>Paypal</option>
-
-                                            <option value="stripe" @if($type == 'stripe') selected @endif >Stripe</option>
-                                            
-                                        </select>
-                                    </div>
-                                </div>
-
-                                
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="google_analytics">{{tr('google_analytics')}}</label>
-                                        <textarea class="form-control" id="google_analytics" name="google_analytics">{{Setting::get('google_analytics')}}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="header_scripts">{{tr('header_scripts')}}</label>
-                                        <textarea class="form-control" id="header_scripts" name="header_scripts">{{Setting::get('header_scripts')}}</textarea>
-                                    </div>
-                                </div>  
-
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="body_end_scripts">{{tr('body_end_scripts')}}</label>
-                                        <textarea class="form-control" id="body_end_scripts" name="body_end_scripts">{{Setting::get('body_end_scripts')}}</textarea>
-                                    </div>
-                                </div>   
-
-                          </div>
-                          <!-- /.box-body -->
-
-                          <div class="box-footer">
-                            @if(Setting::get('admin_delete_control') == 1) 
-                                <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
-                            @else
-                                <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
-                            @endif
-                          </div>
-                        </form>
-                    </div>
-
-                    <div class="tab-pane" id="s3_settings1">
-
-                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
-                            <div class="box-body">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="s3_key">{{tr('S3_KEY')}}</label>
-                                        <input type="text" class="form-control" name="S3_KEY" id="s3_key" placeholder="{{tr('S3_KEY')}}" value="{{$result['S3_KEY']}}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="s3_secret">{{tr('S3_SECRET')}}</label>    
-                                        <input type="text" class="form-control" name="S3_SECRET" id="s3_secret" placeholder="{{tr('S3_SECRET')}}" value="{{$result['S3_SECRET']}}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="s3_region">{{tr('S3_REGION')}}</label>    
-                                        <input type="text" class="form-control" name="S3_REGION" id="s3_region" placeholder="{{tr('S3_REGION')}}" value="{{$result['S3_REGION']}}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="s3_bucket">{{tr('S3_BUCKET')}}</label>    
-                                        <input type="text" class="form-control" name="S3_BUCKET" id="s3_bucket" placeholder="{{tr('S3_BUCKET')}}" value="{{$result['S3_BUCKET']}}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="s3_ses_region">{{tr('S3_SES_REGION')}}</label>    
-                                        <input type="text" class="form-control" name="S3_SES_REGION" id="s3_ses_region" placeholder="{{tr('S3_SES_REGION')}}" value="{{$result['S3_SES_REGION']}}">
-                                    </div>
+                                        <input type="text" value="{{ Setting::get('HLS_STREAMING_URL')}}" class="form-control" name="HLS_STREAMING_URL" id="HLS_STREAMING_URL" placeholder="Enter Streaming URL">
+                                    </div> 
                                 </div>
                                 <div class="clearfix"></div>
 
                             </div>
+
                             <div class="box-footer">
                                 @if(Setting::get('admin_delete_control') == 1) 
                                     <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
                                 @else
                                     <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
                                 @endif
-                          </div>
+                            </div>
+
                         </form>
 
                     </div>
@@ -318,10 +247,95 @@
 
                     </div>
 
-                    <div class="tab-pane" id="site_url_settings">
+                    <div class="tab-pane" id="revenue_settings">
+
+                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <label for="upload_max_size">{{tr('video_viewer_count_size_label')}}</label>
+
+                                        <br>
+
+                                        <p class="example-note">{{tr('video_viewer_count_size_label_note')}}</p>
+
+                                        <input type="text" class="form-control" name="video_viewer_count" value="{{Setting::get('video_viewer_count')  }}" id="video_viewer_count" placeholder="{{tr('video_viewer_count_size_label')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="upload_max_size">{{tr('amount_per_video')}}</label>
+                                        
+                                        <br>
+                                        
+                                        <p class="example-note">{{tr('amount_per_video_note')}}</p>
+
+                                        <input type="text" class="form-control" name="amount_per_video" value="{{Setting::get('amount_per_video')  }}" min="0.5" id="amount_per_video" placeholder="{{tr('amount_per_video')}}">
+
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <label for="upload_max_size">{{tr('admin_commission')}}</label>
+
+                                        <input type="text" class="form-control" name="admin_commission" value="{{Setting::get('admin_commission')  }}" id="admin_commission" placeholder="{{tr('admin_commission')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="upload_max_size">{{tr('moderator_commission')}}</label>
+                                        <input type="text" class="form-control" name="user_commission" value="{{Setting::get('user_commission')  }}" id="user_commission" placeholder="{{tr('moderator_commission')}}">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                
+                            </div>
+                            <div class="box-footer">
+                                @if(Setting::get('admin_delete_control') == 1) 
+                                    <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                @endif
+                          </div>
+                        </form>
+
+                    </div>
+
+                    <div class="tab-pane" id="social_media_app_settings">
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
+
+                                <h3 class="settings-sub-header">{{tr('app_url_settings')}}</h3>
+                                <hr>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <label for="upload_max_size">{{tr('appstore')}}</label>
+
+                                        <input type="url" class="form-control" name="appstore" id="appstore"
+                                        value="{{Setting::get('appstore')}}" placeholder="{{tr('appstore')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="upload_max_size">{{tr('playstore')}}</label>
+
+                                        <input type="url" class="form-control" name="playstore" value="{{Setting::get('playstore')  }}" id="playstore" placeholder="{{tr('playstore')}}">
+
+                                    </div>
+                                </div>
+
+                                <h3 class="settings-sub-header">{{tr('social_media_settings')}}</h3>
+                                <hr>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
 
@@ -375,8 +389,82 @@
                                 @endif
                           </div>
                         </form>
-
+                    
                     </div>
+
+                    
+
+                    <div class="tab-pane" id="other_settings">
+
+                        <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            
+                            <div class="box-body">
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="multi_channel_status">{{tr('multi_channel_status')}}</label>
+
+                                        <br>
+
+                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked @endif id="multi_channel_status" style="vertical-align: middle;"> {{tr('enable_channel_status')}}
+                                        
+                                    </div>   
+                                </div>
+
+                               
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="payment_type">{{tr('payment_type')}}</label>
+
+                                        <?php $type = Setting::get('payment_type') ;?>
+                                        <select id="payment_type" name="payment_type" class="form-control">
+                                            <option value="">{{tr('payment_type')}}</option>
+                                            
+                                            <option value="paypal" @if($type == 'paypal') selected @endif>Paypal</option>
+
+                                            <option value="stripe" @if($type == 'stripe') selected @endif >Stripe</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="google_analytics">{{tr('google_analytics')}}</label>
+                                        <textarea class="form-control" id="google_analytics" name="google_analytics">{{Setting::get('google_analytics')}}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="header_scripts">{{tr('header_scripts')}}</label>
+                                        <textarea class="form-control" id="header_scripts" name="header_scripts">{{Setting::get('header_scripts')}}</textarea>
+                                    </div>
+                                </div>  
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="body_end_scripts">{{tr('body_end_scripts')}}</label>
+                                        <textarea class="form-control" id="body_end_scripts" name="body_end_scripts">{{Setting::get('body_end_scripts')}}</textarea>
+                                    </div>
+                                </div>   
+
+                          </div>
+                          <!-- /.box-body -->
+
+                          <div class="box-footer">
+                            @if(Setting::get('admin_delete_control') == 1) 
+                                <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                            @else
+                                <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                            @endif
+                          </div>
+                        </form>
+                    
+                    </div>
+
+                    
 
                     <div class="tab-pane" id="email_settings">
                         <form action="{{route('admin.email.settings.save')}}" method="POST" enctype="multipart/form-data" role="form">
@@ -431,52 +519,17 @@
                                 @endif
                             </div>
                         </form>
+                    
                     </div>
 
-
-
-                    <div class="tab-pane" id="app_url_settings">
-
-                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
-                            <div class="box-body">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-
-                                        <label for="upload_max_size">{{tr('appstore')}}</label>
-
-                                        <input type="url" class="form-control" name="appstore" id="appstore"
-                                        value="{{Setting::get('appstore')}}" placeholder="{{tr('appstore')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="upload_max_size">{{tr('playstore')}}</label>
-
-                                        <input type="url" class="form-control" name="playstore" value="{{Setting::get('playstore')  }}" id="playstore" placeholder="{{tr('playstore')}}">
-
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <div class="box-footer">
-                                @if(Setting::get('admin_delete_control') == 1) 
-                                    <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
-                                @else
-                                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
-                                @endif
-                          </div>
-                        </form>
-
-                    </div>
-
-
-                    <div class="tab-pane" id="paypal_settings">
+                    <div class="tab-pane" id="payment_settings">
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
-                                <h4>{{tr('paypal_settings')}}</h4>
+                                
+                                <h3 class="settings-sub-header">{{tr('paypal_settings')}}</h3>
                                 <hr>
+
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="paypal_id">{{tr('PAYPAL_ID')}}</label>
@@ -498,9 +551,10 @@
 
                                 <div class="clearfix"></div>
 
-                                <h4>{{tr('stripe_settings')}}</h4>
+                                <h3 class="settings-sub-header">{{tr('stripe_settings')}}</h3>
                                 <hr>
-                                 <div class="col-lg-6">
+                                
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="paypal_id">{{tr('stripe_publishable_key')}}</label>
                                         <input type="text" class="form-control" name="stripe_publishable_key" id="stripe_publishable_key" placeholder="{{tr('stripe_publishable_key')}}" value="{{Setting::get('stripe_publishable_key')}}">

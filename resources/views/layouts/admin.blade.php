@@ -37,6 +37,33 @@
 
     @yield('styles')
 
+    <style>
+        /*.skin-blue .main-header .navbar {
+            background: linear-gradient(to bottom right, rgb(86, 202, 193), #0e5c73);
+        }
+        .skin-blue .main-header .logo {
+            background: linear-gradient(to bottom right, rgb(86, 202, 193), #0e5c73);
+        }
+        .skin-blue .main-sidebar{
+            background: linear-gradient(to bottom right, rgb(42, 49, 53), #39a1bf);
+        }*/
+
+        .popover {
+            max-width: 500px;
+        }
+
+        .popover-content {
+            padding: 10px 5px;
+
+        }
+
+        .popover-list li{
+
+            margin-bottom: 5px;
+
+        }
+    </style>
+
     <?php echo Setting::get('header_scripts') ?>
 
 </head>
@@ -119,6 +146,16 @@
 
     <!-- page script -->
     <script>
+
+        $(document).ready(function(){
+            $('#help-popover').popover({
+                html : true, 
+                content: function() {
+                    return $('#help-content').html();
+                } 
+            });  
+        });
+        
         $(function () {
             $("#example1").DataTable();
             $('#example2').DataTable({

@@ -47,8 +47,6 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof \Swift_TransportException) {
             
-           // \Session::set('flash_error_mail', $e->getMessage());
-
             return back()->with('flash_error', $e->getMessage());
         }
 
