@@ -999,7 +999,7 @@ return array(
 	'revenues' => 'Revenues',
 	'revenue'  => 'Revenue',
 	'ppv_payments' => 'PPV Payments',
-	'subscription_payments' => 'Subscription Payments'
+	'subscription_payments' => 'Subscription Payments',
 	'check_with_ppv_amount'=>'Check with pay per view amount',
 	'not_your_channel'=>'You are not authorized to this channel, Please contact admin',
 	'only_manual_can_access'=>'Only manual registered user can give forgot password, social login users not allowed',
