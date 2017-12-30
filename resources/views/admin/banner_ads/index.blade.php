@@ -124,42 +124,52 @@
                             
                             </tr>
 
-
                             <!-- Modal -->
+                            
                             <div id="position_{{$result->id}}" class="modal fade" role="dialog">
-                              <div class="modal-dialog">
+                                
+                                <div class="modal-dialog">
 
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">{{tr('change_position')}}</h4>
-                                  </div>
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-header">
 
-                                  <form action="{{route('admin.banner-ads.position', array('id'=>$result->id))}}" method="post">
-                                      <div class="modal-body">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                                        <input type="hidden" name="position" id="position_name_{{$result->id}}" value="{{$result->position}}">
+                                            <h4 class="modal-title">{{tr('change_position')}}</h4>
+
+                                        </div>
+
+                                        <form action="{{route('admin.banner-ads.position', array('id'=>$result->id))}}" method="post">
+                                            <div class="modal-body">
+
+                                                <input type="hidden" name="position" id="position_name_{{$result->id}}" value="{{$result->position}}">
+                                                
+                                                @for($i = 1; $i <= $cnt; $i++)
+
+
+                                                    <button type="button" id="{{$result->id}}_{{$i}}" class="{{$i == $result->position ? 'btn btn-danger' : 'btn btn-default'}}" onclick="selectCurrentPosition({{$cnt}}, {{$i}}, {{$result->id}}, this.id)">{{$i}}</button>
+
+                                                @endfor
+
+                                            </div>
+                                          
+                                            <div class="modal-footer">
                                             
-                                        <?php for($i = 1; $i <= $cnt; $i++) { ?>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
 
+                                                <button type="submit" class="btn btn-success">{{tr('submit')}}</button>
+                                            </div>
 
-                                            <button type="button" id="{{$result->id}}_{{$i}}" class="{{$i == $result->position ? 'btn btn-danger' : 'btn btn-default'}}" onclick="selectCurrentPosition({{$cnt}}, {{$i}}, {{$result->id}}, this.id)">{{$i}}</button>
+                                        </form>
+                                    
+                                    </div>
 
-                                        <?php } ?>
-
-                                      </div>
-                                      <div class="modal-footer">
-                                        
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-success">{{tr('submit')}}</button>
-                                      </div>
-
-                                  </form>
                                 </div>
-
-                              </div>
+                            
                             </div>
+
                         @endforeach
 
                     </tbody>
