@@ -1892,12 +1892,9 @@ class UserController extends Controller {
 
         // Get Videos
 
-       // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
-
         $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip)->getData();
 
         $channel = Channel::find($request->channel_id);
-
 
         $view = View::make('user.videos.partial_videos')
                     ->with('videos',$videos)

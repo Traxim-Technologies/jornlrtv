@@ -3985,6 +3985,7 @@ class UserApiController extends Controller {
 
         if ($skip >= 0) {
 
+            //Setting::get('admin_take_count', 12)
             $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count', 12))->get();
 
         } else {
@@ -4117,7 +4118,7 @@ class UserApiController extends Controller {
 
         }
 
-        return response()->json(['data'=>$items, 'count'=>count($videos)]);
+        return response()->json(['data'=>$items, 'count'=>count($items)]);
 
     
     }

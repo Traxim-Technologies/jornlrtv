@@ -1003,4 +1003,5 @@ return array(
 	'authentication_error'=>'Authentication Error',
 	'subscription_history'=>'Subscription History',
 	'ppv_history'=>'PPV History',
+	'view_more'=>'View More',
 );
