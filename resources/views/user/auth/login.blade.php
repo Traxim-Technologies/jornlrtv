@@ -27,7 +27,7 @@
                                 <input type="hidden" value="facebook" name="provider" id="provider">
                                 <a href="#">
                                     <button type="submit">
-                                        <i class="fa fa-facebook"></i>{{tr('login_via_fb')}}
+                                        <i class="fa fa-facebook"></i>&nbsp;&nbsp;{{tr('login_via_fb')}}
                                     </button>
                                 </a>
                             </form>
@@ -42,7 +42,7 @@
                             <input type="hidden" value="twitter" name="provider" id="provider">
                             <a href="#">
                                 <button type="submit">
-                                    <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
+                                    <i class="fa fa-twitter"></i>&nbsp;&nbsp;{{tr('login_via_twitter')}}
                                 </button>
                             </a>
                             </form>

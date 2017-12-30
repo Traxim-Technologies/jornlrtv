@@ -2143,4 +2143,54 @@ class UserController extends Controller {
         }
     }
 
+
+    public function subscription_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->subscribedPlans($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.subscription_history')->with('page', 'history')
+                ->with('subPage', 'subscription_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
+
+
+    public function ppv_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->ppv_list($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.ppv_history')->with('page', 'history')
+                ->with('subPage', 'ppv_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
+
 }

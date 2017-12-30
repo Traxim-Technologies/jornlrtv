@@ -1001,4 +1001,6 @@ return array(
 	'notes_for_channel'=>"Seems , you haven't subscribed any plans. Please subscribe any plans and create channel",
 	'login_notes'=>'Please login and continue to watch video',
 	'authentication_error'=>'Authentication Error',
+	'subscription_history'=>'Subscription History',
+	'ppv_history'=>'PPV History',
 );

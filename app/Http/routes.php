@@ -782,6 +782,10 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('/forgot/password', 'UserController@forgot_password')->name('forgot.password');
 
+    Route::get('subscription/history', 'UserController@subscription_history')->name('subscription.history');
+
+    Route::get('ppv/history', 'UserController@ppv_history')->name('ppv.history');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
