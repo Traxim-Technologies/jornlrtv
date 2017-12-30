@@ -1,4 +1,14 @@
-<div class="streamtube-nav">
+<div class="header-search" id="search-section">
+    <form >
+        <div class="form-group no-margin pull-left width-95">
+            <input type="text" class="form-control" placeholder="search">
+        </div>
+    </form>
+    <a href="#" id="close-btn"><i class="fa fa-close"></i></a>    
+    <div class="clear-both"></div>
+</div>
+
+<div class="streamtube-nav" id="header-section">
     <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
@@ -54,10 +64,7 @@
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
 
-                            @if(Setting::get('is_payper_view')) 
-                             <li><a href="{{route('user.pay-per-videos')}}">{{tr('pay_per_videos')}}</a></li>
-
-                             @endif
+      
                             @if (Auth::user()->login_by == 'manual') 
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
@@ -110,6 +117,7 @@
 
 
             @endif
+            <span class="search-cls pull-right" id="search-btn"><i class="fa fa-search top5"></i></span>
             <div class="clearfix"></div>
 
         </div>
@@ -199,10 +207,6 @@
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
 
-                            @if(Setting::get('is_payper_view')) 
-                             <li><a href="{{route('user.pay-per-videos')}}">{{tr('pay_per_videos')}}</a></li>
-
-                             @endif
                             @if (Auth::user()->login_by == 'manual') 
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>

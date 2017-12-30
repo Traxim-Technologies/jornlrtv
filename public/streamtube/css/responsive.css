@@ -38,7 +38,7 @@
 	border-bottom: 1px solid #e8e8e8;
 	background-color:#e61b1b;
 	position: fixed;
-	z-index: 100;
+	z-index:999;
 	width: 100%;
 }
 .logo-img{
