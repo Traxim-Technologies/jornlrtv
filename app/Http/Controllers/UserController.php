@@ -1153,7 +1153,7 @@ class UserController extends Controller {
             if($response->error == 101)
                 return back()->with('flash_error', $response->error_messages);
             else
-                return back()->with('flash_error', $response->error);
+                return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
