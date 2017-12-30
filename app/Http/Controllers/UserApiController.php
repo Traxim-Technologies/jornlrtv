@@ -1383,7 +1383,7 @@ class UserApiController extends Controller {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.watch_count' , 'desc')
-                            ->shortVideoResponse();
+                            ->videoResponse();
 
         if ($request->id) {
 
@@ -1407,33 +1407,8 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $user_details = '';
-
-                $is_ppv_status = DEFAULT_TRUE;
-
-                if($request->id) {
-
-                    if($user_details = User::find($request->id)) {
-
-                        $value['user_type'] = $user_details->user_type;
-
-                         $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
-                    }
-                }
-
-                $value['is_ppv_subscribe_page'] = $is_ppv_status;
-
-                $value['currency'] = Setting::get('currency');
-
-                $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
-
-                $value['watch_count'] = number_format_short($value->watch_count);
+                $data[] = displayVideoDetails($value, $request->id);
                 
-                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
-
-                $value['share_url'] = route('user.single' , $value->video_tape_id);
-
-                array_push($data, $value->toArray());
             }
         }
 
@@ -3118,7 +3093,7 @@ class UserApiController extends Controller {
 
         foreach ($video['data'] as $key => $value) {
 
-            
+        
             $items[] = displayVideoDetails($value->videoTapeResponse, $request->id);
 
             $items[$key]['paid_amount'] = $value->pay_per_view_amount;
