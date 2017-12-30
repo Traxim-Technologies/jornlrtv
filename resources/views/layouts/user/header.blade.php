@@ -1,9 +1,11 @@
 <div class="header-search" id="search-section">
-    <form >
+    <form method="post" action="{{route('search-all')}}" id="userSearch_min">
         <div class="form-group no-margin pull-left width-95">
-            <input type="text" class="form-control" placeholder="search">
+            <input type="text" id="auto_complete_search_min" name="key" class="auto_complete_search search-query form-control" required placeholder="Search">
         </div>
     </form>
+
+
     <a href="#" id="close-btn"><i class="fa fa-close"></i></a>    
     <div class="clear-both"></div>
 </div>
