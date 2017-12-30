@@ -57,7 +57,7 @@
                                 <input type="hidden" value="google" name="provider" id="provider">
                                 <a href="#">
                                     <button type="submit">
-                                        <i class="fa fa-google-plus"></i>{{tr('login_via_google')}}
+                                        <i class="fa fa-google-plus"></i>&nbsp;&nbsp;{{tr('login_via_google')}}
                                     </button>
                                 </a>
                             </form>

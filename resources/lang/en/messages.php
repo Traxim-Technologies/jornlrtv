@@ -1007,6 +1007,8 @@ return array(
 	'authentication_error'=>'Authentication Error',
 	'subscription_history'=>'Subscription History',
 	'ppv_history'=>'PPV History',
+	'view_more'=>'View More',
+
 	'video_settings' => 'Video Settings',
 	'revenue_settings' => 'Revenue Settings',
 	'social_media_app_settings' => 'Social Media & App Settings',

@@ -1333,7 +1333,7 @@ class UserApiController extends Controller {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
-                            ->shortVideoResponse();
+                            ->videoResponse();
 
         if ($request->id) {
 
@@ -1357,34 +1357,8 @@ class UserApiController extends Controller {
 
             foreach ($videos as $key => $value) {
 
-                $user_details = '';
+                $data[] = displayVideoDetails($value, $request->id);
 
-                $is_ppv_status = DEFAULT_TRUE;
-
-                if($request->id) {
-
-                    if($user_details = User::find($request->id)) {
-
-                        $value['user_type'] = $user_details->user_type;
-
-                         $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
-
-                    }
-                }
-
-                $value['is_ppv_subscribe_page'] = $is_ppv_status;
-
-                $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
-
-                $value['currency'] = Setting::get('currency');
-
-                $value['watch_count'] = number_format_short($value->watch_count);
-
-                $value['wishlist_status'] = $request->id ? (Helper::check_wishlist_status($request->id,$value->video_tape_id) ? DEFAULT_TRUE : DEFAULT_FALSE): 0;
-
-                $value['share_url'] = route('user.single' , $value->video_tape_id);
-
-                array_push($data, $value->toArray());
             }
         }
 
@@ -3985,6 +3959,7 @@ class UserApiController extends Controller {
 
         if ($skip >= 0) {
 
+            //Setting::get('admin_take_count', 12)
             $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count', 12))->get();
 
         } else {
@@ -4083,10 +4058,14 @@ class UserApiController extends Controller {
      */
     public function payment_videos($id, $skip) {
 
+        $u_id = Auth::check() ? Auth::user()->id : '';    
+
         $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->where('channel_id', $id)
-                        ->orderby('amount' , 'desc');
+                        ->whereRaw('user_ppv_amount > 0 or amount > 0')
+                        ->orderby('amount' , 'desc')
+                        ->where('channels.user_id', $u_id);
 
         if($skip >= 0) {
 
@@ -4098,26 +4077,15 @@ class UserApiController extends Controller {
             
         }
 
-        $u_id = Auth::check() ? Auth::user()->id : '';    
-
         $items = [];
-
 
         foreach ($videos as $key => $value) {
 
-            $payment = PayPerView::where('video_id', $value->video_tape_id)->sum('amount');
-
-            if ($payment > 0 || $value->amount > 0) {
-
-                $items[$key] = displayVideoDetails($value, $u_id);
-
-                $items[$key]['total_ppv_amount'] = $payment > 0 ? $payment : 0;
-
-            }
+            $items[] = displayVideoDetails($value, $u_id);
 
         }
 
-        return response()->json(['data'=>$items, 'count'=>count($videos)]);
+        return response()->json(['data'=>$items, 'count'=>count($items)]);
 
     
     }

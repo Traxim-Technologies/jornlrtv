@@ -900,21 +900,17 @@
             }
         }
 
-        /**
-         * Function Name : watchFullVideo()
-         * To check whether the user has to pay the amount or not
-         * 
-         * @param integer $user_id User id
-         * @param integer $user_type User Type
-         * @param integer $video_id Video Id
-         * 
-         * @return true or not
-         */
-
-        public static function watchFullVideo($user_id, $user_type, $video) {
-            
-            return false;
+        public static function wishlist_status($video_id,$user_id) {
+            if($wishlist = Wishlist::where('video_tape_id' , $video_id)->where('user_id' , $user_id)->first()) {
+                if($wishlist->status)
+                    return $wishlist->id;
+                else
+                    return 0 ;
+            } else {
+                return 0;
+            }
         }
+
     }
 
 
