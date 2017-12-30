@@ -1141,7 +1141,7 @@ function displayVideoDetails($data,$userId) {
 
         $history_status = Helper::history_status($data->video_tape_id,$user->id);
 
-        $like_status = Helper::like_status($user_id,$data->video_tape_id);
+        $like_status = Helper::like_status($user->id,$data->video_tape_id);
     }
 
     $model = [
