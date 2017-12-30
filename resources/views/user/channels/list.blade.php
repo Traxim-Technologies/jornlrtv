@@ -46,6 +46,16 @@
 
 					                   	@endif
 
+					                   	@else
+
+					                   		<div class="pull-right" style="margin-bottom: 10px;">
+
+					                    	<a class="st_video_upload_btn " href="{{route('user.subscriptions')}}"><i class="fa fa-list"></i>&nbsp;{{tr('subscriptions')}}</a>
+
+					                    	
+
+					                    	</div>
+
 					                    @endif
 
 					                    @endif
@@ -135,6 +145,8 @@
 				                    </ul>
 
 				                @else
+
+				                <p><small><b>{{tr('notes_for_channel')}}</b></small></p>
 
 				                   <!-- <p style="color: #000">{{tr('no_channel_found')}}</p> -->
 				                   <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">

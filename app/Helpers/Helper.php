@@ -188,45 +188,32 @@
             return time() + 24*3600*30;  // 30 days
         }
 
-        public static function send_email($page,$subject,$email,$email_data)
-        {
-            \Log::info(envfile('MAIL_USERNAME'));
+        public static function send_email($page,$subject,$email,$email_data) {
 
-            \Log::info(envfile('MAIL_PASSWORD'));
+            \Log::info(envfile('MAIL_USERNAME')); \Log::info(envfile('MAIL_PASSWORD'));
 
-            if( config('mail.username') &&  config('mail.password')) {
+            if(config('mail.username') && config('mail.password')) {
 
                 try {
 
-                    $site_url=url('/');
-
-                    $mail_status = Mail::send($page, array('email_data' => $email_data,'site_url' => $site_url), function ($message) use ($email, $subject) {
+                    $mail_status = Mail::queue($page, array('email_data' => $email_data), function ($message) use ($email, $subject) {
 
                         $message->to($email)->subject($subject);
                         
                     });
 
-                    //If error from Mail::send
-
-                    // if($mail_status->failures() > 0) {
-
-                    //     //Fail for which email address...
-
-                    //     foreach(Mail::failures as $address) {
-                           
-                    //         print $address . ', ';
-
-                    //     }
-
-                    //     exit;
-                    // }  
                 } catch(Exception $e) {
+
                     \Log::info($e);
+
                     return Helper::get_error_message(123);
+
                 }
+
                 return Helper::get_message(105);
 
             } else {
+
                 return Helper::get_error_message(123);
             }
         }

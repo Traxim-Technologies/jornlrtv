@@ -106,7 +106,7 @@ return array(
 	'admin_not_ur_del'=>'User Rating has been deleted Successfully',
 
 	'enter_dob'=>'Enter DOB',
-	'no_subscription_found'=>'No SubScription Detaild Found',
+	'no_subscription_found'=>'No Subscription details found',
 	'uploaded_new_video'=>'Uploaded New Video',
 	'user_reviews'=>'User Reviews',
 	'no_of_spam_videos'=>'No of Spam Videos',
@@ -375,7 +375,7 @@ return array(
 	'female'	=>	'Female',
 	'others'	=>	'Others',
 	'address'	=>	'Address',
-	'validity_days'  =>  'Validity Days',
+	'validity_days'  =>  'Plan Validity',
 
 	'image' => 'Image',
 	'upload_message'	=>	'Upload only .png, .jpg or .jpeg image files only',
@@ -1080,7 +1080,17 @@ return array(
 	'normal_paid_user'=>'Both Subscribed & Unsubscribed Users',
 	'ad_amount'=>'Ad Amount',
 	'ppv_amount'=>'PPV Amount',
+
+	'revenues' => 'Revenues',
+	'revenue'  => 'Revenue',
+	'ppv_payments' => 'PPV Payments',
+	'subscription_payments' => 'Subscription Payments',
 	'check_with_ppv_amount'=>'Check with pay per view amount',
 	'not_your_channel'=>'You are not authorized to this channel, Please contact admin',
 	'only_manual_can_access'=>'Only manual registered user can give forgot password, social login users not allowed',
+	'notes_for_channel'=>"Seems , you haven't subscribed any plans. Please subscribe any plans and create channel",
+	'login_notes'=>'Please login and continue to watch video',
+	'authentication_error'=>'Authentication Error',
+	'subscription_history'=>'Subscription History',
+	'ppv_history'=>'PPV History',
 );

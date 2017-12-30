@@ -38,8 +38,6 @@
 								<th>{{tr('subscription')}}</th>
 								<th>{{tr('payment_id')}}</th>
 								<th>{{tr('username')}}</th>
-								<!-- <th>{{tr('payment_mode')}}</th> -->
-								<!-- <th>{{tr('no_of_jobs')}}</th> -->
 								<th>{{tr('plan')}}</th>
 								<th>{{tr('amount')}}</th>
 								<th>{{tr('status')}}</th>
@@ -76,9 +74,6 @@
 								      		<a href="{{route('admin.view.user' , $payment->user_id)}}"> @if($payment->user) {{$payment->user->name}} @endif</a>
 								      	</td>
 
-								      	<!-- <td class="text-uppercase">{{$payment->payment_mode}}</td> -->
-
-								      	<!-- <td>{{$payment->no_of_jobs}}</td> -->
 
 								      	<td>{{$payment->getSubscription ? $payment->getSubscription->plan : ""}}</td>
 

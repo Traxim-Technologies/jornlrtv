@@ -373,6 +373,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/change/banner/video/{id}', 'AdminController@change_banner_video')->name('change.video');
     
     // User Payment details
+
+    Route::get('revenues' , 'AdminController@revenues')->name('revenues');
+    
+    Route::get('ppv_payments' , 'AdminController@ppv_payments')->name('ppv_payments');
+
     Route::get('user/payments' , 'AdminController@user_payments')->name('user.payments');
 
     Route::get('user/video-payments' , 'AdminController@video_payments')->name('user.video-payments');
@@ -776,6 +781,10 @@ Route::group(['as' => 'user.'], function(){
     Route::get('mychannels/list', 'UserController@my_channels')->name('channel.mychannel');
 
     Route::post('/forgot/password', 'UserController@forgot_password')->name('forgot.password');
+
+    Route::get('subscription/history', 'UserController@subscription_history')->name('subscription.history');
+
+    Route::get('ppv/history', 'UserController@ppv_history')->name('ppv.history');
 
 });
 

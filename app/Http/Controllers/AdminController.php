@@ -243,6 +243,13 @@ class AdminController extends Controller {
         }
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
     public function users() {
 
         $users = User::orderBy('created_at','desc')->get();
@@ -252,10 +259,25 @@ class AdminController extends Controller {
                         ->with('sub_page','view-user');
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
     public function add_user() {
         return view('admin.users.add-user')->with('page' , 'users')->with('sub_page','add-user');
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+    
     public function edit_user(Request $request) {
 
         $user = User::find($request->id);
@@ -267,7 +289,16 @@ class AdminController extends Controller {
         }
 
         return view('admin.users.edit-user')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
+    
     }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
     public function add_user_process(Request $request) {
 
@@ -314,7 +345,7 @@ class AdminController extends Controller {
 
             } else {
 
-                //Add New User
+                // Add New User
 
                 if(!$check_user) {
                     $user = new User;
@@ -336,14 +367,11 @@ class AdminController extends Controller {
             $user->email = $request->has('email') ? $request->email: '';
             $user->mobile = $request->has('mobile') ? $request->mobile : '';
             $user->description = $request->has('description') ? $request->description : '';
-
-            
             
             
             $user->token_expiry = Helper::generate_token_expiry();
 
             $user->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user->dob;
-
 
             if ($user->dob) {
 
@@ -365,24 +393,28 @@ class AdminController extends Controller {
                 $email_data['name'] = $user->name;
                 $email_data['password'] = $request->password;
                 $email_data['email'] = $user->email;
-
                 $subject = tr('user_welcome_title');
                 $page = "emails.admin_user_welcome";
                 $email = $user->email;
-                Log::info("TEST EMAIL");
+
                 Helper::send_email($page,$subject,$email,$email_data);
 
                 register_mobile('web');
             }
 
             // Upload picture
+
             if ($request->hasFile('picture') != "") {
+
                 if ($request->id) {
+
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
 
                     Helper::delete_picture($user->chat_picture, "/uploads/user_chat_img/");
                 }
+                
                 $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/", $user);
+
             }
 
             $user->is_verified = DEFAULT_TRUE;
@@ -408,30 +440,56 @@ class AdminController extends Controller {
     
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
     public function delete_user(Request $request) {
        
         if($user = User::where('id',$request->id)->first()) {
+
             // Check User Exists or not
+
             if ($user) {
+
+                Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
+
                 if ($user->device_type) {
+
                     // Load Mobile Registers
+
                     subtract_count($user->device_type);
+                
                 }
+
                 // After reduce the count from mobile register model delete the user
                 if ($user->delete()) {
                     return back()->with('flash_success',tr('admin_not_user_del'));   
                 }
             }
         }
+
         return back()->with('flash_error',tr('admin_not_error'));
     
     }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
     public function view_user($id) {
 
         if($user = User::find($id)) {
 
-            $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
+            // $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
 
             return view('admin.users.user-details')
                         ->with('user' , $user)
@@ -466,6 +524,14 @@ class AdminController extends Controller {
         }
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
     public function user_upgrade($id) {
 
         if($user = User::find($id)) {
@@ -475,12 +541,19 @@ class AdminController extends Controller {
             if(!$moderator = Moderator::where('email' , $user->email)->first()) {
 
                 $moderator_user = new Moderator;
+
                 $moderator_user->name = $user->name;
+
                 $moderator_user->email = $user->email;
+
                 if($user->login_by == "manual") {
-                    $moderator_user->password = $user->password;  
+
+                    $moderator_user->password = $user->password; 
+
                     $new_password = "Please use you user login Pasword.";
+
                 } else {
+
                     $new_password = time();
                     $new_password .= rand();
                     $new_password = sha1($new_password);
@@ -509,15 +582,16 @@ class AdminController extends Controller {
             }
 
             if($moderator) {
+
                 $user->is_moderator = 1;
                 $user->moderator_id = $moderator->id;
                 $user->save();
 
-                // $moderator->is_activated = 1;
                 $moderator->is_user = 1;
                 $moderator->save();
 
                 return back()->with('flash_warning',tr('admin_user_upgrade'));
+
             } else  {
                 return back()->with('flash_error',tr('admin_not_error'));    
             }
@@ -528,6 +602,14 @@ class AdminController extends Controller {
 
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
     public function user_upgrade_disable(Request $request) {
 
         if($moderator = Moderator::find($request->moderator_id)) {
@@ -536,8 +618,6 @@ class AdminController extends Controller {
                 $user->is_moderator = 0;
                 $user->save();
             }
-
-            // $moderator->is_activated = 0;
 
             $moderator->save();
 
@@ -1023,7 +1103,7 @@ class AdminController extends Controller {
 
         $user_reviews = $query->get();
 
-        return view('admin.reviews.reviews')->with('page' ,'reviews')
+        return view('admin.reviews.reviews')->with('page' ,'videos')
                 ->with('sub_page' ,'reviews')->with('reviews', $user_reviews);
     }
 
@@ -1040,7 +1120,7 @@ class AdminController extends Controller {
 
         $payments = UserPayment::orderBy('created_at' , 'desc')->get();
 
-        return view('admin.payments.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','user-payments'); 
+        return view('admin.payments.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','payments-subscriptions'); 
     }
 
     public function email_settings() {
@@ -1326,8 +1406,8 @@ class AdminController extends Controller {
         $model = Flag::groupBy('video_tape_id')->get();
         // Return array of values
         return view('admin.spam_videos.spam_videos')->with('model' , $model)
-                        ->with('page' , 'spam_videos')
-                        ->with('subPage' , '');
+                        ->with('page' , 'videos')
+                        ->with('sub_page' , 'spam_videos');
     }
 
     /**
@@ -1338,13 +1418,14 @@ class AdminController extends Controller {
      *
      * @return all the spam videos
      */
+
     public function view_users($id) {
         // Load all the users
         $model = Flag::where('video_tape_id', $id)->get();
         // Return array of values
         return view('admin.spam_videos.user_report')->with('model' , $model)
                         ->with('page' , 'Spam Videos')
-                        ->with('subPage' , 'User Reports');   
+                        ->with('sub_page' , 'User Reports');   
     }
 
     /**
@@ -1802,7 +1883,7 @@ class AdminController extends Controller {
 
         $response = AdminRepo::ad_index()->getData();
 
-        return view('admin.video_ads.index')->with('model', $response)->with('page', 'videos_ads')->with('subPage', 'view-ads');        
+        return view('admin.video_ads.index')->with('model', $response)->with('page', 'videos_ads')->with('sub_page', 'view-ads');        
 
     }
 
@@ -1863,7 +1944,7 @@ class AdminController extends Controller {
 
         $model = AdsDetail::find($request->id);
 
-        return view('admin.video_ads.view')->with('model', $model)->with('page', 'videos_ads')->with('subPage', 'view-ads');
+        return view('admin.video_ads.view')->with('model', $model)->with('page', 'videos_ads')->with('sub_page', 'view-ads');
 
     }
 
@@ -1873,14 +1954,6 @@ class AdminController extends Controller {
         $model = AdsDetail::find($request->id);
 
         if($model) {
-
-            /*if($model->getVideoTape) {
-
-                $model->getVideoTape->ad_status = DEFAULT_FALSE;
-
-                $model->getVideoTape->save();
-
-            } */
 
             if (count($model->getAssignedVideo) > 0) {
 
@@ -1917,7 +1990,7 @@ class AdminController extends Controller {
         $videos = VideoTape::where('status', DEFAULT_TRUE)->where('publish_status', DEFAULT_TRUE)
             ->where('is_approved', DEFAULT_TRUE)->where('ad_status', DEFAULT_TRUE)->paginate(12);
 
-        return view('admin.video_ads.assign_ad')->with('page', 'videos_ads')->with('subPage', 'view-ads')
+        return view('admin.video_ads.assign_ad')->with('page', 'videos_ads')->with('sub_page', 'view-ads')
             ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
     }
 
@@ -2145,7 +2218,7 @@ class AdminController extends Controller {
 
         $ads = AdsDetail::get(); 
 
-        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos')->with('subPage', 'videos')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('ads', $ads);
+        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos')->with('sub_page', 'videos')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('ads', $ads);
     }
 
 
@@ -2176,7 +2249,7 @@ class AdminController extends Controller {
 
         }
 
-        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('subPage', 'view-ads')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index)->with('ads', $ads);
+        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('sub_page', 'view-ads')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index)->with('ads', $ads);
     }
 
 
@@ -2214,7 +2287,7 @@ class AdminController extends Controller {
 
         $response = AdminRepo::ad_index()->getData();
 
-        return view('admin.ads.index')->with('model', $response)->with('page', 'videos_ads')->with('subPage', 'view-ads');        
+        return view('admin.ads.index')->with('model', $response)->with('page', 'videos_ads')->with('sub_page', 'view-ads');        
 
     }
 
@@ -2249,7 +2322,7 @@ class AdminController extends Controller {
 
         $model = AdminRepo::ad_view($request)->getData();
 
-        return view('admin.ads.view')->with('ads', $model)->with('page', 'videos_ads')->with('subPage', 'view-ads');
+        return view('admin.ads.view')->with('ads', $model)->with('page', 'videos_ads')->with('sub_page', 'view-ads');
 
     }
 
@@ -2270,7 +2343,7 @@ class AdminController extends Controller {
         return view('admin.subscriptions.user_plans')->withPage('users')
                         ->with('subscriptions' , $data)
                         ->with('id', $id)
-                        ->with('subPage','users')->with('payments', $payments);        
+                        ->with('sub_page','users')->with('payments', $payments);        
 
     }
 
@@ -2613,6 +2686,33 @@ class AdminController extends Controller {
             }
         }
         return back()->with('flash_error' , tr('admin_published_video_failure'));
+    }
+
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
+    public function revenues() {
+        
+        return redirect()->to('/admin');
+    }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
+    public function ppv_payments() {
+
+        return redirect()->to('/admin');
     }
 
 }

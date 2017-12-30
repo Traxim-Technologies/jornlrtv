@@ -2276,7 +2276,8 @@ changes
 .channel-img{
 	margin-right: 10px;
     width: 60px;
-    float: left
+    float: left;
+    height: 60px;
 }
 
 .rating1{
