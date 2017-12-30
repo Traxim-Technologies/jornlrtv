@@ -454,7 +454,6 @@ class PaypalController extends Controller {
 
                     $moderator->save();
 
-
                 }
 
                 add_to_redeem($video->user_id , $moderator_amount);

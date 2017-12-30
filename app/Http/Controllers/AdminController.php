@@ -1226,6 +1226,23 @@ class AdminController extends Controller {
 
                     $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
 
+                } else if($setting->key == "admin_ppv_commission") {
+
+                    $setting->value = $request->admin_ppv_commission < 100 ? $request->admin_ppv_commission : 100;
+
+                    $user_ppv_commission = $request->admin_ppv_commission < 100 ? 100 - $request->admin_ppv_commission : 0;
+
+                    $user_ppv_commission_details = Settings::where('key' , 'user_ppv_commission')->first();
+
+                    if(count($user_ppv_commission_details) > 0) {
+
+                        $user_ppv_commission_details->value = $user_ppv_commission;
+
+
+                        $user_ppv_commission_details->save();
+                    }
+
+
                 } else if($request->$key!='') {
 
                     $setting->value = $request->$key;
@@ -2419,7 +2436,15 @@ class AdminController extends Controller {
 
     }
 
-    public function create_banner() {
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
+    public function banner_ads_create() {
 
         $model = new BannerAd;
 
@@ -2428,10 +2453,19 @@ class AdminController extends Controller {
         $model->position = $banner ? $banner->position + DEFAULT_TRUE : DEFAULT_TRUE;
 
         return view('admin.banner_ads.create')->with('model', $model)
-            ->with('page', 'banner-ads')->with('sub_page', 'create-banner');
+            ->with('page', 'bannerads_nav')->with('sub_page', 'bannerads-create');
+    
     }
 
-    public function edit_banner(Request $request) {
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
+    public function banner_ads_edit(Request $request) {
 
         $model = BannerAd::find($request->id);
 
@@ -2442,11 +2476,19 @@ class AdminController extends Controller {
         }
 
         return view('admin.banner_ads.edit')->with('model', $model)
-            ->with('page', 'banner-ads')->with('sub_page', 'banner-ads-index');
+            ->with('page', 'bannerads_nav')->with('sub_page', 'bannerads-index');
+    
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
-    public function save_banner(Request $request) {
+    public function banner_ads_save(Request $request) {
 
         $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
@@ -2478,11 +2520,11 @@ class AdminController extends Controller {
 
                 if ($request->id) {
 
-                    Helper::delete_picture($model->file, '/uploads/images/');
+                    Helper::delete_picture($model->file, '/uploads/banners/');
 
                 } 
 
-                $model->file = Helper::normal_upload_picture($request->file('file'), '/uploads/images/');
+                $model->file = Helper::normal_upload_picture($request->file('file'), '/uploads/banners/');
 
             }
 
@@ -2503,7 +2545,15 @@ class AdminController extends Controller {
 
     }
 
-    public function view_banner_ad(Request $request) {
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
+
+    public function banner_ads_view(Request $request) {
 
 
         $model = BannerAd::find($request->id);
@@ -2514,23 +2564,38 @@ class AdminController extends Controller {
 
         } else {
 
-            return view('admin.banner_ads.view')->with('model', $model)->with('page', 'banner-ads')->with('sub_page', 'banner-ads-index');
+            return view('admin.banner_ads.view')->with('model', $model)->with('page', 'bannerads_nav')->with('sub_page', 'bannerads-index');
 
         }
 
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
     public function banner_ads(Request $request) {
 
-        $model = BannerAd::get();
+        $model = BannerAd::orderBy('position' , 'asc')->get();
 
         return view('admin.banner_ads.index')->with('model', $model)
-            ->with('page', 'banner-ads')->with('sub_page', 'banner-ads-index');
+            ->with('page', 'bannerads')->with('sub_page', 'banner-ads-index');
+    
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
-    public function delete_banner(Request $request) {
+    public function banner_ads_delete(Request $request) {
 
         $model = BannerAd::find($request->id);
 
@@ -2539,6 +2604,28 @@ class AdminController extends Controller {
             return back()->with('flash_error', tr('something_error'));
 
         } else {
+
+            // Check the current position 
+
+            $current_position = $model->position;
+
+            $banner = BannerAd::orderBy('position', 'desc')->first();
+
+            $last_position = $banner ? $banner->position : "";
+
+            if($last_position == $current_position) {
+
+                // No need to do anything
+
+            } else if($current_position < $last_position) {
+
+                // Update remaining records positions
+
+                DB::select(DB::raw("UPDATE banner_ads SET position = position-1 WHERE position > $current_position"));
+
+            }
+
+            Helper::delete_picture($model->file, '/uploads/banners/');
 
             $model->delete();
 
@@ -2548,10 +2635,17 @@ class AdminController extends Controller {
 
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
-    public function banner_ad_status(Request $request) {
+    public function banner_ads_status($id) {
 
-        $model = BannerAd::find($request->id);
+        $model = BannerAd::find($id);
 
         if (!$model) {
 
@@ -2569,8 +2663,15 @@ class AdminController extends Controller {
 
     }
 
+    /**
+     *
+     *
+     *
+     *
+     *
+     */
 
-    public function banner_position(Request $request) {
+    public function banner_ads_position(Request $request) {
 
         $model = BannerAd::find($request->id);
 
@@ -2623,6 +2724,7 @@ class AdminController extends Controller {
             return back()->with('flash_success', tr('banner_position_success'));
 
         }
+    
     }
 
     /**

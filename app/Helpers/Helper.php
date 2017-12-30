@@ -570,7 +570,7 @@
         public static function delete_picture($picture, $path) {
 
             if (file_exists(public_path() . $path . basename($picture))) {
-            // "/uploads/"
+                
                 File::delete( public_path() . $path . basename($picture));
 
             }
