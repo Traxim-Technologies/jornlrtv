@@ -606,7 +606,7 @@
 
             $push_data = array();
 
-            $push_message = array('success' => true,'message' => $message,'data' => array());
+            // $push_message = array('success' => true,'message' => $message,'data' => array());
 
             $push_notification = 1; // Check the push notifictaion is enabled
 
@@ -617,6 +617,10 @@
                 if($users){
 
                     Log::info('Check users variable');
+
+                    $data = ['video_tape_id' => 1];
+
+                    $push_message = ['success' => true,'title' => $message,'type' => 1,'data' => $data];
 
                     foreach ($users as $key => $user) {
 
@@ -654,6 +658,7 @@
                             Log::info("Andriod push Started");
 
                             require_once app_path().'/gcm/GCM_1.php';
+
                             require_once app_path().'/gcm/const.php';
 
                             if (!isset($user->device_token) || empty($user->device_token)) {

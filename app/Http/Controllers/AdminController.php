@@ -2555,7 +2555,6 @@ class AdminController extends Controller {
 
     public function banner_ads_view(Request $request) {
 
-
         $model = BannerAd::find($request->id);
 
         if (!$model) {
@@ -2582,8 +2581,10 @@ class AdminController extends Controller {
 
         $model = BannerAd::orderBy('position' , 'asc')->get();
 
-        return view('admin.banner_ads.index')->with('model', $model)
-            ->with('page', 'bannerads')->with('sub_page', 'banner-ads-index');
+        return view('admin.banner_ads.index')
+                    ->with('model', $model)
+                    ->with('page', 'bannerads_nav')
+                    ->with('sub_page', 'bannerads-index');
     
     }
 
