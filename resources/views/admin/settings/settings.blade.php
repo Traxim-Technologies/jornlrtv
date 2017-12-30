@@ -2,7 +2,22 @@
 
 @section('title', tr('settings'))
 
-@section('content-header', tr('settings'))
+@section('content-header') 
+
+{{tr('settings')}} 
+
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+
+<div id="help-content" style="display: none">
+
+    <ul class="popover-list">
+        <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
+        <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+    </ul>
+    
+</div>
+
+@endsection
 
 @section('breadcrumb')
 
@@ -127,7 +142,7 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        
+
                                         <label for="HLS_STREAMING_URL">{{tr('HLS_STREAMING_URL')}}</label>
                                         
                                         <br>
