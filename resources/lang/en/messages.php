@@ -150,8 +150,7 @@ return array(
 	'fb_settings' => 'FB Settings',
 	'twitter_settings' => 'Twitter Settings',
 	'google_settings' => 'Google Settings',
-	'social_settings' => 'Social Settings',
-	'paypal_settings' => 'Payment Settings',
+	'social_settings' => 'Social Login',
 
 	'S3_KEY'=>'S3 Key',
 	'S3_SECRET'=>'S3 Secret Key',
@@ -1008,4 +1007,21 @@ return array(
 	'authentication_error'=>'Authentication Error',
 	'subscription_history'=>'Subscription History',
 	'ppv_history'=>'PPV History',
+	'video_settings' => 'Video Settings',
+	'revenue_settings' => 'Revenue Settings',
+	'social_media_app_settings' => 'Social Media & App Settings',
+
+	'social_media_settings' => 'Social Media Settings',
+
+	'player_configuration'=>'Player Configuration',
+	'jwplayer_key'=>'Jwplayer Key',
+	'streaming_configuration' => 'Streaming Configuration',
+	'rtmp_settings_note' => 'Ex : rtmp://IP_ADDRESS_OR_DOMAIN:1935/vod2/',
+	'hls_settings_note' => 'Ex : http://IP_ADDRESS_OR_DOMAIN:8080/',
+
+	'video_viewer_count_size_label'=>'Set Viewer Count Limit Per Video',
+	'video_viewer_count_size_label_note' => 'Usage : Set the viewer count limit. If the user enabled ads option for the video, after this view count reached. The user will get AMOUNT for each view of the video.',
+	'amount_per_video_note' => "Usage : Set the amount for each view . If the user enabled ads option for the video, after this view count reached. The user will get AMOUNT for each view of the video.",
+	'HLS_STREAMING_URL' => 'HLS Streaming URL',
+	'amount_per_video'=>'Amount Per Video View',
 );
