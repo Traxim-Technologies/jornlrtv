@@ -52,18 +52,47 @@
             </li>
 
             <li class="treeview" id="videos">
+                
                 <a href="{{route('admin.videos')}}">
                     <i class="fa fa-video-camera"></i> <span>{{tr('videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="add-video"><a href="{{route('admin.add.video')}}"><i class="fa fa-circle-o"></i>{{tr('add_video')}}</a></li>
-                    <li id="view-videos"><a href="{{route('admin.videos')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
+
+                    <li id="add-video">
+                        <a href="{{route('admin.add.video')}}">
+                            <i class="fa fa-circle-o"></i>{{tr('add_video')}}
+                        </a>
+                    </li>
+
+                    <li id="view-videos">
+                        <a href="{{route('admin.videos')}}">
+                            <i class="fa fa-circle-o"></i>{{tr('view_videos')}}
+                        </a>
+                    </li>
+
+                    @if(Setting::get('is_spam'))
+
+                        <li id="spam_videos">
+                            <a href="{{route('admin.spam-videos')}}">
+                                <i class="fa fa-flag"></i>{{tr('spam_videos')}}
+                            </a>
+                        </li>
+
+                    @endif
+
+                    <li id="reviews">
+                        <a href="{{route('admin.reviews')}}">
+                            <i class="fa fa-star"></i>{{tr('reviews')}}
+                        </a>
+                    </li>
+
+
                 </ul>
 
             </li>
 
-             <li class="treeview" id="videos_ads">
+            <li class="treeview" id="videos_ads">
 
                 <a href="{{route('admin.ad_index')}}">
                     <i class="fa fa-bullhorn"></i> <span>{{tr('ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
@@ -73,27 +102,26 @@
                     <li id="create-ad-videos"><a href="{{route('admin.ad_create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
                     <li id="view-ads"><a href="{{route('admin.ad_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li>
                     <li id="ad-videos"><a href="{{route('admin.ad_videos')}}"><i class="fa fa-circle-o"></i>{{tr('ads')}}</a></li>
-                   <?php /*<li id="view-ads"><a href="{{route('admin.ads_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li> */?>
                 </ul>
 
             </li>
 
             @if(Setting::get('is_banner_ad'))
 
-            <li class="treeview" id="banner-ads">
-                <a href="{{route('admin.banner-ads.index')}}">
-                    <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
+                <li class="treeview" id="banner-ads">
+                    <a href="{{route('admin.banner-ads.index')}}">
+                        <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                    </a>
 
-                <ul class="treeview-menu">
-                   
-                    <li id="create-banner"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
-                
-                    <li id="banner-ads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+                    <ul class="treeview-menu">
+                       
+                        <li id="create-banner"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
+                    
+                        <li id="banner-ads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
 
-                </ul>
+                    </ul>
 
-            </li>
+                </li>
 
             @endif
 
@@ -138,22 +166,41 @@
 
             @endif
 
-            <li id="payments">
-                <a href="{{route('admin.user.payments')}}">
-                    <i class="fa fa-credit-card"></i> <span>{{tr('payments')}}</span> 
+            <li class="treeview" id="payments">
+
+                <a href="#">
+                    <i class="fa fa-key"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
+
+                <ul class="treeview-menu">
+
+                    <li id="payments-dashboard">
+                        <a href="{{route('admin.revenues')}}">
+                            <i class="fa fa-circle-o"></i>
+                            {{tr('revenues')}}
+                        </a>
+                    </li>
+
+                    <li id="payments-subscriptions">
+                        <a href="{{route('admin.user.payments')}}">
+                            <i class="fa fa-credit-card"></i>
+                            {{tr('subscription_payments')}}
+                        </a>
+                    </li>
+
+                    <li id="payments-ppv">
+                        <a href="{{route('admin.ppv_payments')}}">
+                            <i class="fa fa-circle-o"></i>
+                            {{tr('ppv_payments')}}
+                        </a>
+                    </li>
+                </ul>
             </li>
 
 
             <li id="settings">
                 <a href="{{route('admin.settings')}}">
                     <i class="fa fa-gears"></i> <span>{{tr('settings')}}</span>
-                </a>
-            </li>
-
-            <li id="custom-push">
-                <a href="{{route('admin.push')}}">
-                    <i class="fa fa-send"></i> <span>{{tr('custom_push')}}</span>
                 </a>
             </li>
 
@@ -164,6 +211,12 @@
                 </a>
             </li>
             @endif
+
+            <li id="custom-push">
+                <a href="{{route('admin.push')}}">
+                    <i class="fa fa-send"></i> <span>{{tr('custom_push')}}</span>
+                </a>
+            </li>
 
             <li class="treeview" id="viewpages">
                 <a href="{{route('admin.pages.index')}}">
@@ -181,23 +234,6 @@
                 </a>
             </li>
 
-
-
-            <li id="reviews">
-                <a href="{{route('admin.reviews')}}">
-                    <i class="fa fa-star"></i> <span>{{tr('reviews')}}</span>
-                </a>
-            </li>
-
-            @if(Setting::get('is_spam'))
-
-                <li id="spam_videos">
-                    <a href="{{route('admin.spam-videos')}}">
-                        <i class="fa fa-flag"></i> <span>{{tr('spam_videos')}}</span>
-                    </a>
-                </li>
-
-            @endif
 
             <li id="help">
                 <a href="{{route('admin.help')}}">

@@ -2453,7 +2453,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'skip'=>'required|numeric',
+                'skip'=>($request->device_type == DEVICE_WEB) ? '' : 'required|numeric',
             ));
 
         if ($validator->fails()) {
@@ -2466,7 +2466,7 @@ class UserApiController extends Controller {
 
         } else {
 
-            $model = UserPayment::where('user_id' , $request->id)
+            $query = UserPayment::where('user_id' , $request->id)
                         ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_id')
                         ->select('user_id as id',
                                 'subscription_id',
@@ -2479,11 +2479,23 @@ class UserApiController extends Controller {
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
                                 'user_payments.created_at as created_at',
                                 DB::raw("'$' as currency"))
-                        ->orderBy('user_payments.updated_at', 'desc')
-                        ->skip($request->skip)
+                        ->orderBy('user_payments.updated_at', 'desc');
+                        
+
+            if ($request->device_type == DEVICE_WEB) {
+
+                $model = $query->paginate(16);
+
+                $response_array = array('success'=>true, 'data' => $model->items(), 'pagination' => (string) $model->links());
+
+            } else {
+
+                $model = $query->skip($request->skip)
                         ->take(Setting::get('admin_take_count' ,12))
                         ->get();
-            $response_array = ['success'=>true, 'data'=>$model];
+
+                $response_array = ['success'=>true, 'data'=>$model];
+            }
 
         }
 
@@ -4486,7 +4498,7 @@ class UserApiController extends Controller {
         $validator = Validator::make(
             $request->all(),
             array(
-                'skip'=>'required',
+                'skip'=>($request->device_type == DEVICE_WEB) ? '' : 'required|numeric',
             ));
 
         if ($validator->fails()) {
@@ -4500,7 +4512,7 @@ class UserApiController extends Controller {
             return response()->json($response_array);
         } else {
 
-            $model = PayPerView::select('pay_per_views.id as pay_per_view_id',
+            $query = PayPerView::select('pay_per_views.id as pay_per_view_id',
                     'video_id as video_tape_id',
                     'video_tapes.title',
                     'pay_per_views.amount',
@@ -4512,30 +4524,60 @@ class UserApiController extends Controller {
                      DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date'))
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
                     ->where('pay_per_views.user_id', $request->id)
-                    ->where('pay_per_views.amount', '>', 0)
-                    ->skip($request->skip)
-                    ->take(Setting::get('admin_take_count', 12))
-                    ->get();
+                    ->where('pay_per_views.amount', '>', 0);
 
-            $data = [];
+            if ($request->device_type == DEVICE_WEB) {
 
-            foreach ($model as $key => $value) {
-                
-                $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
-                        'video_tape_id'=>$value->video_tape_id,
-                        'title'=>$value->title,
-                        'amount'=>$value->amount,
-                        'video_status'=>$value->video_status,
-                        'paid_date'=>$value->paid_date,
-                        'currency'=>Setting::get('currency'),
-                        'picture'=>$value->picture,
-                        'type_of_subscription'=>$value->type_of_subscription,
-                        'type_of_user'=>$value->type_of_user,
-                        'payment_id'=>$value->payment_id];
+                $model = $query->paginate(16);
 
+                $data = [];
+
+                foreach ($model->items() as $key => $value) {
+                    
+                    $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
+                            'video_tape_id'=>$value->video_tape_id,
+                            'title'=>$value->title,
+                            'amount'=>$value->amount,
+                            'video_status'=>$value->video_status,
+                            'paid_date'=>$value->paid_date,
+                            'currency'=>Setting::get('currency'),
+                            'picture'=>$value->picture,
+                            'type_of_subscription'=>$value->type_of_subscription,
+                            'type_of_user'=>$value->type_of_user,
+                            'payment_id'=>$value->payment_id];
+
+                }
+
+                $response_array = array('success'=>true, 'data' => $data, 'pagination' => (string) $model->links());
+
+            } else {
+
+                $model = $query->skip($request->skip)
+                        ->take(Setting::get('admin_take_count' ,12))
+                        ->get();
+
+                $data = [];
+
+                foreach ($model as $key => $value) {
+                    
+                    $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
+                            'video_tape_id'=>$value->video_tape_id,
+                            'title'=>$value->title,
+                            'amount'=>$value->amount,
+                            'video_status'=>$value->video_status,
+                            'paid_date'=>$value->paid_date,
+                            'currency'=>Setting::get('currency'),
+                            'picture'=>$value->picture,
+                            'type_of_subscription'=>$value->type_of_subscription,
+                            'type_of_user'=>$value->type_of_user,
+                            'payment_id'=>$value->payment_id];
+
+                }
+
+                $response_array = ['success'=>true, 'data'=>$model];
             }
 
-            return response()->json(['success'=>true,'data'=>$data]);
+            return response()->json($response_array);
 
         }
 

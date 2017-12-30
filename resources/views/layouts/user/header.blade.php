@@ -46,6 +46,10 @@
 
                             <li><a href="{{route('user.history')}}">{{tr('history')}}</a></li>
 
+                            <li><a href="{{route('user.subscription.history')}}">{{tr('subscription_history')}}</a></li>
+
+                            <li><a href="{{route('user.ppv.history')}}">{{tr('ppv_history')}}</a></li>
+
                             @if(Setting::get('is_spam')) 
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
@@ -204,6 +208,13 @@
                                 <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
                             @endif
 
+                            <li><a href="{{route('user.subscription.history')}}">{{tr('subscription_history')}}</a></li>
+
+                            @if(Setting::get('is_payper_view')) 
+
+                            <li><a href="{{route('user.ppv.history')}}">{{tr('ppv_history')}}</a></li>
+
+                            @endif
                             <li role="separator" class="divider"></li>
                             <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
                             <li role="separator" class="divider"></li>

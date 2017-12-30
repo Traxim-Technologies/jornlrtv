@@ -115,13 +115,13 @@ textarea[name=comments] {
 
                                                             <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
 
-                                                            @else 
-                                                            
-                                                            <a class="thumb-class"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
+                                                        @else 
+                                                        
+                                                            <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
 
-                                                            <a class="thumb-class"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
+                                                            <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
 
-                                                            @endif
+                                                        @endif
 
                                                             <a  class="share-new" data-toggle="modal" data-target="#popup1">
                                                                 <i class="material-icons">share</i>
@@ -195,7 +195,7 @@ textarea[name=comments] {
                                                     <div class="row1"> 
                                                         <div class="col-xs-12 col-md-7 col-sm-7 col-lg-7" >
                                                             <div class="channel-img">
-                                                                <img src="{{$video->channel_picture}}" class="img-responsive img-circle">
+                                                                <img src="{{$video->channel_picture}}" class="img-responsive img-circle" style="height: 100%;width: 100%">
                                                             </div>
                                                             <div class="username"><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
                                                             <h5 class="rating no-margin top">
@@ -335,6 +335,34 @@ textarea[name=comments] {
         <!-- modal content ends -->
     </div>
 </div>    
+
+<div class="modal fade" id="login_error" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{tr('authentication_error')}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        {{tr('login_notes')}}   
+
+                        <div class="clearfix"></div>
+
+                        <br>
+                        <div class="text-center">
+                            <a href="{{route('user.login.form')}}"><button class="btn btn-sm btn-danger">{{tr('login')}}</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal content ends -->
+    </div>
+</div>
 
                                             
 
