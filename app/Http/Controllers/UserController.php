@@ -717,30 +717,34 @@ class UserController extends Controller {
 
                     // Check the video view count reached admin viewers count, to add amount for each view
 
-                    if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
+                    if ($video->user_id != Auth::user()->id) {
 
-                        \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
+                        if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
-                        $video_amount = Setting::get('amount_per_video');
+                            \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
-                        // $video->redeem_count = 1;
+                            $video_amount = Setting::get('amount_per_video');
 
-                        // $video->watch_count = $video->watch_count + 1;
+                            // $video->redeem_count = 1;
 
-                        $video->amount += $video_amount;
+                            // $video->watch_count = $video->watch_count + 1;
 
-                        add_to_redeem($video->user_id , $video_amount);
+                            $video->amount += $video_amount;
 
-                        \Log::info("ADD History - add_to_redeem");
+                            add_to_redeem($video->user_id , $video_amount);
+
+                            \Log::info("ADD History - add_to_redeem");
 
 
-                    } else {
+                        } else {
 
-                        \Log::info("ADD History - NO REDEEM");
+                            \Log::info("ADD History - NO REDEEM");
 
-                        // $video->redeem_count += 1;
+                            // $video->redeem_count += 1;
 
-                        // $video->watch_count = $video->watch_count + 1;
+                            // $video->watch_count = $video->watch_count + 1;
+                        }
+
                     }
 
                 }

@@ -4084,10 +4084,14 @@ class UserApiController extends Controller {
      */
     public function payment_videos($id, $skip) {
 
+        $u_id = Auth::check() ? Auth::user()->id : '';    
+
         $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->where('channel_id', $id)
-                        ->orderby('amount' , 'desc');
+                        ->whereRaw('user_ppv_amount > 0 or amount > 0')
+                        ->orderby('amount' , 'desc')
+                        ->where('channels.user_id', $u_id);
 
         if($skip >= 0) {
 
@@ -4099,22 +4103,11 @@ class UserApiController extends Controller {
             
         }
 
-        $u_id = Auth::check() ? Auth::user()->id : '';    
-
         $items = [];
-
 
         foreach ($videos as $key => $value) {
 
-            $payment = PayPerView::where('video_id', $value->video_tape_id)->sum('amount');
-
-            if ($payment > 0 || $value->amount > 0) {
-
-                $items[$key] = displayVideoDetails($value, $u_id);
-
-                $items[$key]['total_ppv_amount'] = $payment > 0 ? $payment : 0;
-
-            }
+            $items[] = displayVideoDetails($value, $u_id);
 
         }
 
