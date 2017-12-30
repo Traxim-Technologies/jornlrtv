@@ -998,4 +998,7 @@ return array(
 	'check_with_ppv_amount'=>'Check with pay per view amount',
 	'not_your_channel'=>'You are not authorized to this channel, Please contact admin',
 	'only_manual_can_access'=>'Only manual registered user can give forgot password, social login users not allowed',
+	'notes_for_channel'=>"Seems , you haven't subscribed any plans. Please subscribe any plans and create channel",
+	'login_notes'=>'Please login and continue to watch video',
+	'authentication_error'=>'Authentication Error',
 );
