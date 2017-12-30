@@ -11,8 +11,11 @@
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
+
         <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
+
         <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+
     </ul>
     
 </div>
@@ -249,12 +252,12 @@
 
                     <div class="tab-pane" id="revenue_settings">
 
-                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
                                 <div class="col-md-12">
                                     <div class="form-group">
 
-                                        <label for="upload_max_size">{{tr('video_viewer_count_size_label')}}</label>
+                                        <label for="video_viewer_count">{{tr('video_viewer_count_size_label')}}</label>
 
                                         <br>
 
@@ -266,7 +269,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="upload_max_size">{{tr('amount_per_video')}}</label>
+                                        <label for="amount_per_video">{{tr('amount_per_video')}}</label>
                                         
                                         <br>
                                         
@@ -280,21 +283,27 @@
                                  <div class="col-md-6">
                                     <div class="form-group">
 
-                                        <label for="upload_max_size">{{tr('admin_commission')}}</label>
+                                        <label for="admin_ppv_commission">{{tr('admin_ppv_commission')}}</label>
 
-                                        <input type="text" class="form-control" name="admin_commission" value="{{Setting::get('admin_commission')  }}" id="admin_commission" placeholder="{{tr('admin_commission')}}">
+                                        <input type="text" class="form-control" name="admin_ppv_commission" value="{{Setting::get('admin_ppv_commission')  }}" id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="upload_max_size">{{tr('moderator_commission')}}</label>
-                                        <input type="text" class="form-control" name="user_commission" value="{{Setting::get('user_commission')  }}" id="user_commission" placeholder="{{tr('moderator_commission')}}">
+
+                                        <label for="user_ppv_commission">{{tr('user_ppv_commission')}}</label>
+
+                                        <input type="text" class="form-control" name="" disabled value="{{Setting::get('user_ppv_commission')  }}" id="user_ppv_commission" placeholder="{{tr('user_ppv_commission')}}">
+
                                     </div>
+
                                 </div>
+
                                 <div class="clearfix"></div>
                                 
                             </div>
+                            
                             <div class="box-footer">
                                 @if(Setting::get('admin_delete_control') == 1) 
                                     <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>

@@ -1026,4 +1026,6 @@ return array(
 	'amount_per_video_note' => "Usage : Set the amount for each view . If the user enabled ads option for the video, after this view count reached. The user will get AMOUNT for each view of the video.",
 	'HLS_STREAMING_URL' => 'HLS Streaming URL',
 	'amount_per_video'=>'Amount Per Video View',
+	'admin_ppv_commission' => 'Admin PPV Commission',
+	'user_ppv_commission' => 'User PPV Commission',
 );
