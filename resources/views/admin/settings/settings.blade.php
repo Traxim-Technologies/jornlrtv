@@ -86,7 +86,7 @@
 
                     <div class="tab-pane" id="video_settings">
 
-                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
 
 
                             <div class="box-body">
@@ -127,6 +127,7 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
+                                        
                                         <label for="HLS_STREAMING_URL">{{tr('HLS_STREAMING_URL')}}</label>
                                         
                                         <br>
