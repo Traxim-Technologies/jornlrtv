@@ -1129,6 +1129,21 @@ function displayVideoDetails($data,$userId) {
 
     } 
 
+    $wishlist_status = 0;
+
+    $history_status = 0;
+
+    $like_status = 0;
+
+    if ($user) {
+
+        $wishlist_status = Helper::wishlist_status($data->video_tape_id, $user->id);
+
+        $history_status = Helper::history_status($data->video_tape_id,$user->id);
+
+        $like_status = Helper::like_status($user_id,$data->video_tape_id);
+    }
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1142,7 +1157,7 @@ function displayVideoDetails($data,$userId) {
         'created_at'=>$data->created_at->diffForHumans(),   
         'ad_status'=>$data->ad_status,
         'description'=>$data->description,
-        'ratings'=>$data->ratings,
+        'ratings'=>$data->ratings ? $data->ratings : 0,
         'amount'=>$data->amount,
         'url'=>$url,
         'type_of_user'=>$data->type_of_user,
@@ -1152,9 +1167,17 @@ function displayVideoDetails($data,$userId) {
         'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
+        'publish_time'=>date('F Y', strtotime($data->publish_time)),
         'user_ppv_amount'=>$data->user_ppv_amount,
-        
+        'is_liked'=>$like_status,
+        'wishlist_status'=>$wishlist_status,
+        'history_status'=>$history_status,
+        'subtitle'=>$data->subtitle,
+        'embed_link'=>route('embed_video', array('u_id'=>$data->unique_id)),
+        'currency'=>Setting::get('currency'),
+        'share_url'=>route('user.single' , $data->video_tape_id),
     ];
+
 
     return $model;
 
