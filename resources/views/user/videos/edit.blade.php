@@ -59,7 +59,7 @@
                                         <label for="video" class="control-label">{{tr('sub_title')}}</label>
                                         <div class="clearfix"></div>
                                         <div>
-                                        <input type="file" id="subtitle" name="subtitle" style="width: 100%;overflow: hidden;" accept="text/plain">
+                                        <input type="file" id="subtitle" name="subtitle" style="width: 100%;overflow: hidden;" onchange="checksrt(this, this.id)">
                                         <p class="help-block">{{tr('subtitle_validate')}}</p>
 
                                         </div>
@@ -424,6 +424,35 @@
     }); 
 
 
+/**
+ * Clear the selected files 
+ * @param id
+ */
+function clearSelectedFiles(id) {
+    e = $('#'+id);
+    e.wrap('<form>').closest('form').get(0).reset();
+    e.unwrap();
+}
+
+function checksrt(e,id) {
+
+    console.log(e.files[0].type);
+
+    console.log(e.files[0].type == '');
+
+    if(e.files[0].type == "application/x-subrip" || e.files[0].type == '') {
+
+
+    } else {
+
+        alert("Please select '.srt' files");
+
+        clearSelectedFiles(id);
+
+    }
+
+    return false;
+}
 </script>
 
 @endsection

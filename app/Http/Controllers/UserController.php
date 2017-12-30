@@ -81,7 +81,8 @@ class UserController extends Controller {
                 'channel_list', 
                 'watch_count', 
                 'partialVideos', 
-                'payment_mgmt_videos',  
+                'payment_mgmt_videos', 
+                'forgot_password' 
         ]]);
     }
 
@@ -937,6 +938,12 @@ class UserController extends Controller {
      * @return respnse with flash message
      */
     public function save_channel(Request $request) {
+
+         $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'channel_id' =>$request->id,
+        ]);
 
         $response = CommonRepo::channel_save($request)->getData();
 
@@ -2118,6 +2125,72 @@ class UserController extends Controller {
         return view('user.channels.list')->with('page', 'my_channel')
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
+    }
+
+
+    public function forgot_password(Request $request) {
+
+        $response = $this->UserAPI->forgot_password($request)->getData();
+
+        if ($response->success) {
+
+            return back()->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+    }
+
+
+    public function subscription_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->subscribedPlans($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.subscription_history')->with('page', 'history')
+                ->with('subPage', 'subscription_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
+
+
+    public function ppv_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->ppv_list($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.ppv_history')->with('page', 'history')
+                ->with('subPage', 'ppv_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
     }
 
 }

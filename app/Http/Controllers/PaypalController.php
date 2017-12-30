@@ -390,6 +390,32 @@ class PaypalController extends Controller {
 
             $payment->amount = $payment->videoTape->ppv_amount;
 
+
+
+            if ($payment->videoTape->type_of_user == 1) {
+
+                $payment->type_of_user = "Normal User";
+
+            } else if($payment->videoTape->type_of_user == 2) {
+
+                $payment->type_of_user = "Paid User";
+
+            } else if($payment->videoTape->type_of_user == 3) {
+
+                $payment->type_of_user = "Both Users";
+            }
+
+
+            if ($payment->videoTape->type_of_subscription == 1) {
+
+                $payment->type_of_subscription = "One Time Payment";
+
+            } else if($payment->videoTape->type_of_subscription == 2) {
+
+                $payment->type_of_subscription = "Recurring Payment";
+
+            }
+            
             $payment->save();
 
             if($payment->amount > 0) {
