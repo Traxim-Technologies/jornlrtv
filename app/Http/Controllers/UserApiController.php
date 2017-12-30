@@ -2664,12 +2664,17 @@ class UserApiController extends Controller {
             $data = [];
 
             $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
-                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->videoResponse()
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')     
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('title', 'like', "%".$request->key."%")
-                                ->orderby('video_tapes.watch_count' , 'desc')
-                                ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
+                                ->orderby('video_tapes.watch_count' , 'desc');
+                               //  ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
+            $user_details = '';
+
+
+            $is_ppv_status = DEFAULT_TRUE;
 
             if ($request->id) {
 
@@ -2682,15 +2687,47 @@ class UserApiController extends Controller {
                     $base_query->whereNotIn('video_tapes.id',$flag_videos);
 
                 }
+
+                $user_details = User::find($request->id);
+
+                $is_ppv_status = ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
             
             }
 
             $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
-            $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get()->toArray();
+            $data = $base_query->skip($request->skip)->take(Setting::get('admin_take_count' ,12))->get();
+
+            $items = [];
 
 
-            $response_array = array('success' => true, 'data' => $data);
+            if (count($data) > 0) {
+
+                foreach ($data as $key => $value) {
+                   
+                    $currency = Setting::get('currency');
+
+                    $is_ppv_subscribe_page = $is_ppv_status;
+
+
+                    $pay_per_view_status = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
+
+                    $amount = $value->ppv_amount;
+
+                    $items[] = ['video_tape_id'=>$value->video_tape_id,
+                            'title'=>$value->title,
+                            'currency'=>$currency,
+                            'is_ppv_subscribe_page'=>$is_ppv_subscribe_page,
+                            'pay_per_view_status'=>$pay_per_view_status,
+                            'ppv_amount'=>$amount];
+
+
+                }
+
+            }
+
+
+            $response_array = array('success' => true, 'data' => $items);
         }
 
         return response()->json($response_array, 200);
