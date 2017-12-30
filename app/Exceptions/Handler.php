@@ -49,7 +49,12 @@ class Handler extends ExceptionHandler
             
             \Session::set('flash_error_mail', $e->getMessage());
 
-            return response()->view('user.auth.passwords.email');
+            if(Auth::check()) {
+
+                return response()->view('user.auth.passwords.email');
+            } else {
+                return response()->to('/admin/');
+            }
         }
 
         // return response()->view('errors.404', [], 404);
