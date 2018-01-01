@@ -161,6 +161,8 @@ class PaypalController extends Controller {
 
         Session::put('paypal_payment_id', $payment->getId());
 
+        Session::put('subscription_id' , $subscription->id);
+
         if(isset($redirect_url)) {
 
             $user_payment = UserPayment::where('user_id' , Auth::user()->id)->first();
@@ -186,6 +188,7 @@ class PaypalController extends Controller {
             $response_array = array('success' => true); 
 
             return redirect()->away($redirect_url);
+        
         }
 
         return response()->json(Helper::null_safe($response_array) , 200);
@@ -210,11 +213,27 @@ class PaypalController extends Controller {
 
         // Get the payment ID before session clear
 
-        $payment_id = Session::get('paypal_payment_id');
+        $paypal_payment_id = Session::get('paypal_payment_id');
+
+        if(empty($paypal_payment_id)) {
+
+            $error_message = "Payment ID - Session Not Found";
+
+            $subscription_id = Session::get('subscription_id');
+
+            PaymentRepo::subscription_payment_failure_save(Auth::user()->id, $subscription_id , $error_message , "");
+
+            Session::forget('subscription_id');
+
+            Session::forget('paypal_payment_id');
+
+            return back()->with('flash_error' , $error_message);
+
+        }
         
         // clear the session payment ID
      
-        if (empty($request->PayerID) || empty($request->token)) {
+        if (empty($request->paymentId) || empty($request->token)) {
         	
 		  return back()->with('flash_error','Payment Failed!!');
 
@@ -222,7 +241,7 @@ class PaypalController extends Controller {
 
         try { 
             
-            $payment = Payment::get($payment_id, $this->_api_context);
+            $payment = Payment::get($paypal_payment_id, $this->_api_context);
          
             // PaymentExecution object includes information necessary
             // to execute a PayPal account payment.
@@ -243,7 +262,7 @@ class PaypalController extends Controller {
 
             $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
 
-            PaymentRepo::subscription_payment_failure_save("", "", $error_message , $payment_id);
+            PaymentRepo::subscription_payment_failure_save("", "", $error_message , $paypal_payment_id);
 
             Session::forget('paypal_payment_id');
 
@@ -253,7 +272,7 @@ class PaypalController extends Controller {
 
         if ($result->getState() == 'approved') { // payment made
 
-            $user_payment_details = UserPayment::where('payment_id',$payment_id)->first();
+            $user_payment_details = UserPayment::where('payment_id',$paypal_payment_id)->first();
 
             if($user_payment_details) {
 
