@@ -42,7 +42,6 @@
 					      	<th>{{tr('id')}}</th>
 					      	<th>{{tr('title')}}</th>
 					      	<th>{{tr('plan')}}</th>
-					      	<!-- <th>{{tr('no_of_jobs')}}</th> -->
 					      	<th>{{tr('amount')}}</th>
 					      	<th>{{tr('status')}}</th>
 					      	<th>{{tr('subscribers')}}</th>
@@ -58,7 +57,6 @@
 						      	<td>{{$i+1}}</td>
 						      	<td><a href="{{route('admin.subscriptions.view' , $value->unique_id)}}"> {{$value->title}} </a></td>
 						      	<td>{{$value->plan}}</td>
-						      	<!-- <td>{{$value->no_of_jobs}}</td> -->
 						      	<td>{{Setting::get('currency' , "$")}} {{$value->amount}}</td>
 
 						      	<td class="text-center">
@@ -71,7 +69,7 @@
 						      	</td>
 
 						      	<td>
-						      		<a href="{{route('admin.user.subscription.payments' , $value->id)}}" class="btn btn-success btn-xs">
+						      		<a href="{{route('admin.subscription.payments' , $value->id)}}" class="btn btn-success btn-xs">
 						      			{{tr('subscribers')}}
 						      		</a>
 						      	</td>

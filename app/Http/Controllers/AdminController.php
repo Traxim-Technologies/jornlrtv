@@ -1113,25 +1113,6 @@ class AdminController extends Controller {
         return back()->with('flash_success', tr('admin_not_ur_del'));
     }
 
-    public function user_payments() {
-
-        $payments = UserPayment::orderBy('created_at' , 'desc')->get();
-
-        return view('admin.payments.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','payments-subscriptions'); 
-    }
-
-    public function email_settings() {
-
-        $admin_id = \Auth::guard('admin')->user()->id;
-
-        $result = EnvEditorHelper::getEnvValues();
-
-        \Auth::guard('admin')->loginUsingId($admin_id);
-
-        return view('admin.email-settings')->with('result',$result)->withPage('email-settings')->with('sub_page',''); 
-    }
-
-
     public function email_settings_process(Request $request) {
 
         $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
@@ -1158,12 +1139,6 @@ class AdminController extends Controller {
         return view('admin.settings.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
     }
 
-    public function payment_settings() {
-
-        $settings = array();
-
-        return view('admin.payment-settings')->with('settings' , $settings)->withPage('payment-settings')->with('sub_page',''); 
-    }
 
     public function settings_process(Request $request) {
 
@@ -1451,27 +1426,19 @@ class AdminController extends Controller {
                         ->with('sub_page' , 'User Reports');   
     }
 
-    /**
-     * Function Name : video_payments()
-     * To get payments based on the video subscription
-     *
-     * @return array of payments
-     */
-    public function video_payments() {
-        $payments = [];
-
-        return view('admin.payments.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
-    }
 
     /**
      * Function Name : save_video_payment
+     *
      * Brief : To save the payment details
      *
      * @param integer $id Video Id
+     *
      * @param object  $request Object (Post Attributes)
      *
      * @return flash message
      */
+    
     public function save_video_payment($id, Request $request) {
 
         // Load Video Model
@@ -1494,6 +1461,7 @@ class AdminController extends Controller {
             }
         }
         return back()->with('flash_error', tr('admin_published_video_failure'));
+    
     }
 
     /**
@@ -1882,9 +1850,16 @@ class AdminController extends Controller {
         }
     }
 
-    public function user_subscription_payments($id = "") {
+    /**
+     * subscription_payments()
+     *
+     * Used to display the subscription payments details List or 
+     * 
+     * Based on the particuler subscriptions details
+     *
+     */
 
-        $page = "user-payments";
+    public function subscription_payments($id = "") {
 
         $base_query = UserPayment::orderBy('created_at' , 'desc');
 
@@ -1896,12 +1871,11 @@ class AdminController extends Controller {
 
             $base_query = $base_query->where('subscription_id' , $id);
 
-            $page = "user-payments";
         }
 
         $payments = $base_query->get();
 
-        return view('admin.users.subscription_payments')->with('data' , $payments)->withPage($page)->with('sub_page','')->with('subscription' , $subscription); 
+        return view('admin.payments.subscription-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-subscriptions')->with('subscription' , $subscription); 
     
     }
 

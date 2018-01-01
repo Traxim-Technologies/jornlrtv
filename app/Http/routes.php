@@ -382,15 +382,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/change/banner/video/{id}', 'AdminController@change_banner_video')->name('change.video');
     
-    // User Payment details
+    // Payment details
 
     Route::get('revenues' , 'AdminController@revenues')->name('revenues');
     
     Route::get('ppv_payments' , 'AdminController@ppv_payments')->name('ppv_payments');
 
-    Route::get('user/payments' , 'AdminController@user_payments')->name('user.payments');
-
-    Route::get('user/video-payments' , 'AdminController@video_payments')->name('user.video-payments');
+    Route::get('/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('subscription.payments');
 
     Route::get('/remove_payper_view/{id}', 'AdminController@remove_payper_view')->name('remove_pay_per_view');
 
@@ -399,12 +397,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('settings' , 'AdminController@settings')->name('settings');
 
     Route::post('save_common_settings' , 'AdminController@save_common_settings')->name('save.common-settings');
-
-    Route::get('payment/settings' , 'AdminController@payment_settings')->name('payment.settings');
     
     Route::post('settings' , 'AdminController@settings_process')->name('save.settings');
-
-    Route::get('settings/email' , 'AdminController@email_settings')->name('email.settings');
 
     Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
 
@@ -421,8 +415,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('/pages/create', 'AdminController@page_save')->name('pages.save');
 
     Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
-
-    Route::get('video/payments', 'AdminController@video_payments')->name('videos.payments');
 
 
     // Custom Push
@@ -489,7 +481,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Subscriptions
 
-    Route::get('users/subscription/payments/{id?}' , 'AdminController@user_subscription_payments')->name('user.subscription.payments');
 
     Route::get('/user_subscriptions/{id}', 'AdminController@user_subscriptions')->name('subscriptions.plans');
 

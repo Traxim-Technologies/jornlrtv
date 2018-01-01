@@ -182,7 +182,7 @@
                     </li>
 
                     <li id="payments-subscriptions">
-                        <a href="{{route('admin.user.payments')}}">
+                        <a href="{{route('admin.subscription.payments')}}">
                             <i class="fa fa-credit-card"></i>
                             {{tr('subscription_payments')}}
                         </a>
