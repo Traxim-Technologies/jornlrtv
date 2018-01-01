@@ -82,7 +82,7 @@ class PaypalController extends Controller {
 
             $error_message = "Subscription Details Not Found";
 
-            return redirect()->route("payment.failure")->with('flash_error' , $error_message);
+            return back()->with('flash_error' , $error_message);
 
         }
 
@@ -138,7 +138,15 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+            $error_message = "Payment Failed";
+
+            if(is_array($error_data)) {
+                $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+
+            } else {
+
+                $error_message = $ex->getMessage() . PHP_EOL;
+            }
 
             Log::info("Pay API catch METHOD");
 
@@ -296,7 +304,7 @@ class PaypalController extends Controller {
 
             Session::forget('subscription_id');
             
-            $response_array = array('success' => true , 'message' => "Payment Successful" ); 
+            $response_array = array('success' => true , 'message' => tr('subscription_payment_success') ); 
 
             $responses = response()->json($response_array);
 
@@ -331,8 +339,16 @@ class PaypalController extends Controller {
 
         $video = VideoTape::where('id', $request->id)->first();
 
-        if(count($video) == 0 ){
-            return back()->with('flash_error' , "");
+        if(count($video) == 0 ) {
+
+            if(count($subscription) == 0) {
+
+            Log::info("Video Details Not Found");
+
+            $error_message = "Video Details Not Found";
+
+            return back()->with('flash_error' , $error_message);
+
         }
 
         $total = $video->ppv_amount;
@@ -385,13 +401,21 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = $ex->getMessage() . PHP_EOL;
+            $error_message = "Payment Failed";
+
+            if(is_array($error_data)) {
+                $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+
+            } else {
+
+                $error_message = $ex->getMessage() . PHP_EOL;
+            }
 
             Log::info("Pay API catch METHOD");
 
-            PaymentRepo::ppv_payment_failure_save($request->user_id, $request->id, $error_message);
+            PaymentRepo::ppv_payment_failure_save(Auth::user()->id, $request->id, $error_message);
 
-            return back();
+            return redirect()->route('payment.failure')->with('flash_error' , $error_message);
         }
 
         foreach($payment->getLinks() as $link) {
@@ -408,7 +432,9 @@ class PaypalController extends Controller {
 
         // Add payment ID to session
 
-        Session::put('paypal_payment_id', $payment->getId());
+        Session::put('ppv_payment_id', $payment->getId());
+
+        Session::put('video_tape_id', $request->id);
 
         if(isset($redirect_url)) {
 
@@ -419,19 +445,22 @@ class PaypalController extends Controller {
             }
 
             $ppv_payment_details->expiry_date = date('Y-m-d H:i:s');
+
             $ppv_payment_details->payment_id  = $payment->getId();
+
             $ppv_payment_details->user_id = Auth::user()->id;
+
             $ppv_payment_details->video_id = $request->id;
+
             $ppv_payment_details->save();
 
             $response_array = array('success' => true); 
 
             return redirect()->away($redirect_url);
 
-            
         }
 
-        return response()->json(Helper::null_safe($response_array) , 200);
+        return redirect()->route('payment.failure')->with('flash_error' , tr('something_wrong'));
                     
     }
     
@@ -452,19 +481,29 @@ class PaypalController extends Controller {
     public function getVideoPaymentStatus(Request $request) {
 
         // Get the payment ID before session clear
-        $payment_id = Session::get('paypal_payment_id');
+        $ppv_payment_id = Session::get('ppv_payment_id');
         
         // clear the session payment ID
      
-        if (empty($request->PayerID) || empty($request->token)) {
+        if (empty($request->paymentId) || empty($request->token) || empty($ppv_payment_id)) {
             
-          return back()->with('flash_error','Payment Failed!!');
+            $error_message = "Payment ID - Session Not Found";
 
-        } 
+            $video_tape_id = Session::get('video_tape_id');
+
+            PaymentRepo::ppv_payment_failure_save(Auth::user()->id, $video_tape_id , $error_message , "");
+
+            Session::forget('video_tape_id');
+
+            Session::forget('ppv_payment_id');
+
+            return redirect()->route('payment.failure')->with('flash_error' , $error_message);
+
+        }
 
         try { 
      
-            $payment = Payment::get($payment_id, $this->_api_context);
+            $payment = Payment::get($ppv_payment_id, $this->_api_context);
          
             // PaymentExecution object includes information necessary
             // to execute a PayPal account payment.
@@ -482,11 +521,21 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = $ex->getMessage() . PHP_EOL;
+            $error_message = "Payment Failed";
 
-            PaymentRepo::ppv_payment_failure_save("", "", $error_message , $payment_id);
+            if(is_array($error_data)) {
+                $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
 
-            Session::forget('paypal_payment_id');
+            } else {
+
+                $error_message = $ex->getMessage() . PHP_EOL;
+            }
+
+            PaymentRepo::ppv_payment_failure_save("", "", $error_message , $ppv_payment_id);
+
+            Session::forget('ppv_payment_id');
+
+            Session::forget('video_tape_id');
 
             return back();
 
@@ -496,7 +545,7 @@ class PaypalController extends Controller {
      
         if ($result->getState() == 'approved') { // payment made
 
-            $payment = PayPerView::where('payment_id',$payment_id)->first();
+            $payment = PayPerView::where('payment_id',$ppv_payment_id)->first();
 
             $payment->amount = $payment->videoTape->ppv_amount;
 
@@ -538,15 +587,17 @@ class PaypalController extends Controller {
                     
             }
 
-            Session::forget('paypal_payment_id');
+            Session::forget('ppv_payment_id');
+
+            Session::forget('video_tape_id');
             
-            $response_array = array('success' => true , 'message' => "Payment Successful" ); 
+            $response_array = array('success' => true , 'message' => tr('ppv_payment_success') ); 
 
             $responses = response()->json($response_array);
 
             $response = $responses->getData();
 
-            return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('payment_successful'));
+            return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('ppv_payment_success'));
 
        
         } else {

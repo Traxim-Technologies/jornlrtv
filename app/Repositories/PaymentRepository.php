@@ -129,7 +129,7 @@ class PaymentRepository {
      * @return boolean response
      */
 
-	public static function ppv_payment_failure_save($user_id = 0 , $admin_video_id = 0 , $reason = "" , $payment_id = "") {
+	public static function ppv_payment_failure_save($user_id = 0 , $video_tape_id = 0 , $reason = "" , $payment_id = "") {
 
         /*********** DON't REMOVE LOGS **************/
 
@@ -157,7 +157,7 @@ class PaymentRepository {
 
         /************ Before user payment, if any configuration failture or TimeOut *******/
 
-        if(!$user_id || !$admin_video_id) {
+        if(!$user_id || !$video_tape_id) {
 
             Log::info('Payment failure save - USER ID and Subscription ID not found');
 
@@ -165,7 +165,7 @@ class PaymentRepository {
 
         }
 
-        $ppv_user_payment_details = PayPerView::where('user_id' , $user_id)->where('video_id' , $admin_video_id)->where('amount',0)->first();
+        $ppv_user_payment_details = PayPerView::where('user_id' , $user_id)->where('video_id' , $video_tape_id)->where('amount',0)->first();
 
         if(empty($ppv_user_payment_details)) {
 
@@ -179,7 +179,7 @@ class PaymentRepository {
 
         $ppv_user_payment_details->user_id = $user_id;
 
-        $ppv_user_payment_details->video_id = $admin_video_id;
+        $ppv_user_payment_details->video_id = $video_tape_id;
 
         $ppv_user_payment_details->reason = "BEFORE-".$reason;
 

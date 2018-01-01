@@ -1030,4 +1030,7 @@ return array(
 	'user_ppv_commission' => 'User PPV Commission',
 
 	'signin_nav_content' => 'Sign in now to see your channels and recommendations!',
+
+	'ppv_payment_success' => 'Thank you! Your payment was processed successfully.Enjoy the video!!!',
+	'subscription_payment_success' => 'Thank you! Your payment was processed successfully.',
 );
