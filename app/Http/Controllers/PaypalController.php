@@ -210,13 +210,11 @@ class PaypalController extends Controller {
      */
 
     public function getPaymentStatus(Request $request) {
-
-        // Get the payment ID before session clear
-
-        $paypal_payment_id = Session::get('paypal_payment_id');
-
-        if(empty($paypal_payment_id)) {
-
+        
+        // clear the session payment ID
+     
+        if (empty($request->paymentId) || empty($request->token) || empty($paypal_payment_id)) {
+        	
             $error_message = "Payment ID - Session Not Found";
 
             $subscription_id = Session::get('subscription_id');
@@ -227,15 +225,7 @@ class PaypalController extends Controller {
 
             Session::forget('paypal_payment_id');
 
-            return back()->with('flash_error' , $error_message);
-
-        }
-        
-        // clear the session payment ID
-     
-        if (empty($request->paymentId) || empty($request->token)) {
-        	
-		  return back()->with('flash_error','Payment Failed!!');
+            return redirect()->route('payment.failure')->with('flash_error' , $error_message);
 
 		} 
 
@@ -260,7 +250,15 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+            $error_message = "Payment Failed";
+
+            if(is_array($error_data)) {
+                $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+
+            } else {
+
+                $error_message = $ex->getMessage() . PHP_EOL;
+            }
 
             PaymentRepo::subscription_payment_failure_save("", "", $error_message , $paypal_payment_id);
 
@@ -268,7 +266,7 @@ class PaypalController extends Controller {
 
             Session::forget('subscription_id');
 
-            return back()->with('flash_error' , $error_message);
+            return redirect()->route('payment.failure')->with('flash_error' , $error_message);
 
         }     
 
@@ -501,8 +499,6 @@ class PaypalController extends Controller {
             $payment = PayPerView::where('payment_id',$payment_id)->first();
 
             $payment->amount = $payment->videoTape->ppv_amount;
-
-
 
             if ($payment->videoTape->type_of_user == 1) {
 
