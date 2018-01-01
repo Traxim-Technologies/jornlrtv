@@ -207,7 +207,7 @@ class PaymentRepository {
         if(!$video_tape_id || !$payperview_id) {
 
             Log::info("VideoTape"+$video_tape_id);
-            
+
             Log::info("payperview_id"+$payperview_id);
 
             return false;
@@ -286,16 +286,7 @@ class PaymentRepository {
 
         }
 
-        // Check the video uploaded by moderator or admin (uploaded_by = admin , uploaded_by = moderator ID)
-
-        if(is_numeric($video_tape_details->uploaded_by)) {
-
-            add_to_redeem($video_tape_details->uploaded_by , $user_ppv_amount , $admin_ppv_amount);
-
-        } else {
-
-            Log::info("No Redeems - ");
-        }
+        add_to_redeem(Auth::user()->id , $user_ppv_amount , $admin_ppv_amount);
 
         return true;
 
