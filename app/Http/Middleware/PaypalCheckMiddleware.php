@@ -20,6 +20,12 @@ class PaypalCheckMiddleware
             return redirect()->route('payment.failure');
         }
 
+        if(in_array(envfile('PAYPAL_MODE'), ['sandbox' , 'live'])) {
+
+            return redirect()->route('payment.failure');
+ 
+        }
+
         return $next($request);
     }
 }
