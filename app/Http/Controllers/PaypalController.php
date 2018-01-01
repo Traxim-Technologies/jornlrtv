@@ -144,7 +144,12 @@ class PaypalController extends Controller {
 
                 Log::info(print_r($error_data , true));
 
-                $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+                $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
+                
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+
+                $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
+
 
             } else {
 
@@ -267,7 +272,12 @@ class PaypalController extends Controller {
 
                 Log::info(print_r($error_data , true));
 
-                $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+                $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
+                
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+
+                $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
+
 
             } else {
 
@@ -408,7 +418,15 @@ class PaypalController extends Controller {
             $error_message = "Payment Failed";
 
             if(is_array($error_data)) {
-                $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+
+                Log::info(print_r($error_data , true));
+
+                $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
+                
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+
+                $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
+
 
             } else {
 
