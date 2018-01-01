@@ -276,7 +276,8 @@ class PaymentRepository {
         
         } else {
 
-            Log::info("payperview_id".$payperview_id)
+            Log::info("payperview_id".$payperview_id);
+            
             Log::info("PPV DETAILS  - NOOOOOOO");
 
         }
