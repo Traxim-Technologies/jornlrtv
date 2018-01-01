@@ -705,7 +705,7 @@ function redeem_request_status($status) {
  *
  */
 
-function add_to_redeem($id , $amount) {
+function add_to_redeem($id , $amount , $admin_amount) {
 
     \Log::info('Add to Redeem Start');
 
@@ -728,7 +728,7 @@ function add_to_redeem($id , $amount) {
 
         $redeems_details->total_admin_amount = $redeems_details->total_admin_amount + $admin_amount;
 
-        $redeems_details->total_moderator_amount = $redeems_details->total_moderator_amount + $amount;
+        $redeems_details->total_user_amount = $redeems_details->total_user_amount + $amount;
         
         $redeems_details->save();   
     }
