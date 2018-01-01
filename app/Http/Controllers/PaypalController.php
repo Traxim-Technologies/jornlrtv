@@ -545,43 +545,45 @@ class PaypalController extends Controller {
      
         if ($result->getState() == 'approved') { // payment made
 
-            $payment = PayPerView::where('payment_id',$ppv_payment_id)->first();
+            $ppv_details = PayPerView::where('payment_id',$ppv_payment_id)->first();
 
-            $payment->amount = $payment->videoTape->ppv_amount;
+            $ppv_details->amount = $ppv_details->videoTape->ppv_amount;
 
-            if ($payment->videoTape->type_of_user == 1) {
+            if ($ppv_details->videoTape->type_of_user == 1) {
 
-                $payment->type_of_user = "Normal User";
+                $ppv_details->type_of_user = "Normal User";
 
-            } else if($payment->videoTape->type_of_user == 2) {
+            } else if($ppv_details->videoTape->type_of_user == 2) {
 
-                $payment->type_of_user = "Paid User";
+                $ppv_details->type_of_user = "Paid User";
 
-            } else if($payment->videoTape->type_of_user == 3) {
+            } else if($ppv_details->videoTape->type_of_user == 3) {
 
-                $payment->type_of_user = "Both Users";
+                $ppv_details->type_of_user = "Both Users";
             }
 
 
-            if ($payment->videoTape->type_of_subscription == 1) {
+            if ($ppv_details->videoTape->type_of_subscription == 1) {
 
-                $payment->type_of_subscription = "One Time Payment";
+                $ppv_details->type_of_subscription = "One Time Payment";
 
-            } else if($payment->videoTape->type_of_subscription == 2) {
+            } else if($ppv_details->videoTape->type_of_subscription == 2) {
 
-                $payment->type_of_subscription = "Recurring Payment";
+                $ppv_details->type_of_subscription = "Recurring Payment";
 
             }
             
-            $payment->save();
+            $ppv_details->save();
 
-            if($payment->amount > 0) {
+            if($ppv_details->amount > 0) {
 
-               // Do Commission spilit  and redeems for moderator
+                $video_tape_details = $ppv_details->videoTape;
+
+                // Do Commission spilit  and redeems for moderator
 
                 Log::info("ppv_commission_spilit started");
 
-                PaymentRepo::ppv_commission_split($video->id , $payment->id , $video->uploaded_by);
+                PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id , $video_tape_details->uploaded_by);
 
                 Log::info("ppv_commission_spilit END");  
                     

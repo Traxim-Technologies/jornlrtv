@@ -183,10 +183,6 @@ class PaymentRepository {
 
         $ppv_user_payment_details->reason = "BEFORE-".$reason;
 
-        // @todo 
-
-        
-
         $ppv_user_payment_details->save();
 
         return true;
