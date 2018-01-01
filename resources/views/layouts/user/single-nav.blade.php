@@ -17,11 +17,11 @@
         
         <ul class="y-home ">
             <h3>Best of Streamtube</h3>
-                @foreach($categories as $category)
-                    <li>
-                        <a href="{{route('user.category',$category->id)}}"><img src="{{$category->picture}}">{{$category->name}}</a>
-                    </li>
-                @endforeach              
+            @foreach($categories as $category)
+                <li>
+                    <a href="{{route('user.category',$category->id)}}"><img src="{{$category->picture}}">{{$category->name}}</a>
+                </li>
+            @endforeach              
         </ul>
 
     @endif
