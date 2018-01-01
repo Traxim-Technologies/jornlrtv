@@ -54,6 +54,8 @@ class PaymentRepository {
 
     public static function subscription_payment_failure_save($user_id = 0 , $subscription_id = 0 , $reason = "" , $payment_id = "") {
 
+        Log::info("subscription_payment_failure_save STRAT");
+
         /*********** DON't REMOVE LOGS **************/
 
         // Log::info("1- Subscription ID".$subscription_id);

@@ -142,7 +142,7 @@ class PaypalController extends Controller {
 
             Log::info("Pay API catch METHOD");
 
-            PaymentRepo::subscription_payment_failure_save($request->user_id, $request->id, $error_message);
+            PaymentRepo::subscription_payment_failure_save(Auth::user()->id, $subscription->id, $error_message);
 
             return redirect()->route('payment.failure')->with('flash_error' , $error_message);
 
