@@ -545,7 +545,7 @@ class PaypalController extends Controller {
 
             $ppv_details = PayPerView::where('payment_id',$ppv_payment_id)->first();
 
-            $ppv_details->amount = $ppv_details->videoTape->ppv_amount;
+            $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
 
             if ($ppv_details->videoTape->type_of_user == 1) {
 
