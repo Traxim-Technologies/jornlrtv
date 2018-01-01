@@ -561,6 +561,8 @@ class PaypalController extends Controller {
 
             $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
 
+            Log::info("$ppv_details->amount".$ppv_details->amount);
+            
             if ($ppv_details->videoTape->type_of_user == 1) {
 
                 $ppv_details->type_of_user = "Normal User";
@@ -595,7 +597,7 @@ class PaypalController extends Controller {
 
                 Log::info("ppv_commission_spilit started");
 
-                PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id , $video_tape_details->uploaded_by);
+                PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id);
 
                 Log::info("ppv_commission_spilit END");  
                     

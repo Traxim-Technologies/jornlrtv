@@ -202,9 +202,13 @@ class PaymentRepository {
      * @return boolean response
      */
 
-    public static function ppv_commission_split($video_tape_id = "" , $payperview_id = "" , $moderator_id = "") {
+    public static function ppv_commission_split($video_tape_id = "" , $payperview_id = "") {
 
-        if(!$video_tape_id || !$payperview_id || !$moderator_id) {
+        if(!$video_tape_id || !$payperview_id) {
+
+            Log::info("VideoTape"+$video_tape_id);
+            
+            Log::info("payperview_id"+$payperview_id);
 
             return false;
         }
@@ -277,7 +281,7 @@ class PaymentRepository {
         } else {
 
             Log::info("payperview_id".$payperview_id);
-            
+
             Log::info("PPV DETAILS  - NOOOOOOO");
 
         }
