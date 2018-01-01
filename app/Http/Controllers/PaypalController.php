@@ -533,9 +533,9 @@ class PaypalController extends Controller {
 
                 $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
                 
-                $error_message =. array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
 
-                $error_message =. array_key_exists('message', $error_data) ? $error_data['message'] : "";
+                $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
 
             } else {
