@@ -286,7 +286,7 @@ class PaymentRepository {
 
         }
 
-        add_to_redeem(Auth::user()->id , $user_ppv_amount , $admin_ppv_amount);
+        add_to_redeem(\Auth::user()->id , $user_ppv_amount , $admin_ppv_amount);
 
         return true;
 
