@@ -597,7 +597,7 @@ class PaypalController extends Controller {
 
             $response = $responses->getData();
 
-            return redirect()->route('user.video.success' , $payment->video_id)->with('flash_success', tr('ppv_payment_success'));
+            return redirect()->route('user.video.success' , $video_tape_details->video_id)->with('flash_success', tr('ppv_payment_success'));
 
        
         } else {
