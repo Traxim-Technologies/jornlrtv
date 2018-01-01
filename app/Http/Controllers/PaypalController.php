@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
+use App\Helpers\Helper;
+
+use App\Repositories\PaymentRepository as PaymentRepo;
+
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\Amount;
@@ -17,16 +23,23 @@ use PayPal\Api\Transaction;
 use PayPal\Exception\PayPalConnectionException;
 
 use Setting;
+
 use Log;
+
 use Session;
-use Illuminate\Http\Request;
-use App\Helpers\Helper;
-use App\User;
-use App\UserPayment;
+
 use Auth;
+
+use App\UserPayment;
+
+use App\User;
+
 use App\VideoTape;
+
 use App\PayPerView;
+
 use App\Subscription;
+
  
 class PaypalController extends Controller {
    
@@ -53,7 +66,12 @@ class PaypalController extends Controller {
    
     }
 
-
+    /** 
+     *
+     *
+     *
+     *
+     */
     public function pay(Request $request) {
 
         $subscription = Subscription::find($request->id);
@@ -116,27 +134,18 @@ class PaypalController extends Controller {
 
         } catch (\PayPal\Exception\PayPalConnectionException $ex) {
 
+            // Log::info("Exception: " . $ex->getMessage() . PHP_EOL);
 
-            if (\Config::get('app.debug')) {
+            $error_data = json_decode($ex->getData(), true);
 
-                // echo "Exception: " . $ex->getMessage() . PHP_EOL;
-                // echo "Payment" . $payment."<br />";
+            $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
 
-                // $err_data = json_decode($ex->getData(), true);
-                // echo "Error" . print_r($err_data);
-                // exit;
+            Log::info("Pay API catch METHOD");
 
-                \Session::set('paypal_error' , $ex->getMessage());
+            PaymentRepo::subscription_payment_failure_save($request->user_id, $request->id, $error_message);
 
-                return redirect()->route('payment.failure');
+            return redirect()->route('payment.failure')->with('flash_error' , $error_message);
 
-            } else {
-
-                \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
-
-                return redirect()->route('payment.failure');
-
-            }
         }
 
         foreach($payment->getLinks() as $link) {
@@ -149,21 +158,23 @@ class PaypalController extends Controller {
         }
 
         // add payment ID to session
+
         Session::put('paypal_payment_id', $payment->getId());
 
         if(isset($redirect_url)) {
-
-           // dd($subscription);
 
             $user_payment = UserPayment::where('user_id' , Auth::user()->id)->first();
 
             if($user_payment) {
 
                 $expiry_date = $user_payment->expiry_date;
+
                 $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
 
             } else {
+
                 $user_payment = new UserPayment;
+
                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
             }
 
@@ -181,10 +192,24 @@ class PaypalController extends Controller {
                     
     }
     
+    /**
+     * @uses to store user payment details from the paypal response
+     *
+     * @param paypal ID
+     *
+     * @param paypal Token
+     *
+     * @return redirect to angular pages, depends on the response
+     * 
+     * @author vidhyar2612
+     *
+     * @edited : 
+     */
 
     public function getPaymentStatus(Request $request) {
 
         // Get the payment ID before session clear
+
         $payment_id = Session::get('paypal_payment_id');
         
         // clear the session payment ID
@@ -194,37 +219,54 @@ class PaypalController extends Controller {
 		  return back()->with('flash_error','Payment Failed!!');
 
 		} 
+
+        try { 
             
-        $payment = Payment::get($payment_id, $this->_api_context);
-     
-        // PaymentExecution object includes information necessary
-        // to execute a PayPal account payment.
-        // The payer_id is added to the request query parameters
-        // when the user is redirected from paypal back to your site
-        
-        $execution = new PaymentExecution();
+            $payment = Payment::get($payment_id, $this->_api_context);
+         
+            // PaymentExecution object includes information necessary
+            // to execute a PayPal account payment.
+            // The payer_id is added to the request query parameters
+            // when the user is redirected from paypal back to your site
+            
+            $execution = new PaymentExecution();
 
-        $execution->setPayerId($request->PayerID);
-     
-        //Execute the payment
+            $execution->setPayerId($request->PayerID);
+         
+            //Execute the payment
 
-        $result = $payment->execute($execution, $this->_api_context);
-          
+            $result = $payment->execute($execution, $this->_api_context);
+
+        } catch(\PayPal\Exception\PayPalConnectionException $ex){
+
+            $error_data = json_decode($ex->getData(), true);
+
+            $error_message = isset($error_data['error']) ? $error_data['error']: "".".".isset($error_data['error_description']) ? $error_data['error_description'] : "";
+
+            PaymentRepo::subscription_payment_failure_save("", "", $error_message , $payment_id);
+
+            Session::forget('paypal_payment_id');
+
+            return back()->with('flash_error' , $error_message);
+
+        }     
+
         if ($result->getState() == 'approved') { // payment made
 
-            $payment = UserPayment::where('payment_id',$payment_id)->first();
+            $user_payment_details = UserPayment::where('payment_id',$payment_id)->first();
 
-            $payment->status = 1;
+            if($user_payment_details) {
 
-            $payment->amount = $payment->getSubscription ? $payment->getSubscription->amount : 0;
+                $user_payment_details->status = 1;
 
-            $payment->save();
+                $user_payment_details->amount = $user_payment_details->getSubscription ? $user_payment_details->getSubscription->amount : 0;
 
-            if($payment) {
+                $user_payment_details->save();
 
-                if($user = User::find($payment->user_id)) {
+                if($user = User::find($user_payment_details->user_id)) {
 
                     $user->user_type = 1;
+                    
                     $user->save();
 
                 }
@@ -239,8 +281,6 @@ class PaypalController extends Controller {
 
             $response = $responses->getData();
 
-            // return back()->with('flash_success' , 'Payment Successful');
-
             return redirect()->route('user.subscription.success')->with('response', $response);
        
         } else {
@@ -250,24 +290,40 @@ class PaypalController extends Controller {
         
     }
 
-
+    /**
+     * @uses Get the payment for PPV from user
+     *
+     * @param id = VIDEO ID
+     *
+     * @param user_id 
+     *
+     * @return redirect to success/faiture pages, depends on the payment status
+     * 
+     * @author shobanacs
+     *
+     * @edited : vidhyar2612
+     */
 
     public function videoSubscriptionPay(Request $request) {
 
-        // Load Video id
+        // Get the PPV total amount based on the selected video
+
         $video = VideoTape::where('id', $request->id)->first();
+
+        if(count($video) == 0 ){
+            return back()->with('flash_error' , "");
+        }
 
         $total = $video->ppv_amount;
 
         $item = new Item();
 
         $item->setName(Setting::get('site_name')) // item name
-                   ->setCurrency('USD')
-               ->setQuantity('1')
-               ->setPrice($total);
+                    ->setCurrency('USD')
+                    ->setQuantity('1')
+                    ->setPrice($total);
      
         $payer = new Payer();
-        
         $payer->setPaymentMethod('paypal');
 
         // add item to list
@@ -306,52 +362,46 @@ class PaypalController extends Controller {
 
         } catch (\PayPal\Exception\PayPalConnectionException $ex) {
 
-            if (\Config::get('app.debug')) {
+            $error_data = json_decode($ex->getData(), true);
 
-                // echo "Exception: " . $ex->getMessage() . PHP_EOL."<br />";
+            $error_message = $ex->getMessage() . PHP_EOL;
 
-                // echo "Payment" . $payment."<br />";
+            Log::info("Pay API catch METHOD");
 
-                // $err_data = json_decode($ex->getData(), true);
+            PaymentRepo::ppv_payment_failure_save($request->user_id, $request->id, $error_message);
 
-                // echo "Error" . print_r($err_data , true);
-
-                // exit;
-
-                \Session::set('paypal_error' , $ex->getMessage());
-
-                return redirect()->route('payment.failure');
-
-            } else {
-
-                \Session::set('paypal_error' , "Some error occur, sorry for inconvenient");
-
-                return redirect()->route('payment.failure');
-            }
+            return back();
         }
 
         foreach($payment->getLinks() as $link) {
+
             if($link->getRel() == 'approval_url') {
+
                 $redirect_url = $link->getHref();
+
                 break;
+
             }
+        
         }
 
-        // add payment ID to session
+        // Add payment ID to session
+
         Session::put('paypal_payment_id', $payment->getId());
 
         if(isset($redirect_url)) {
 
-            $user_payment = PayPerView::where('user_id' , Auth::user()->id)->where('amount',0)->first();
+            $ppv_payment_details = PayPerView::where('user_id' , Auth::user()->id)->where('video_id' , $request->id)->where('amount',0)->first();
 
-            if(empty($user_payment)) {
-                $user_payment = new PayPerView;
+            if(empty($ppv_payment_details)) {
+                $ppv_payment_details = new PayPerView;
             }
-            $user_payment->expiry_date = date('Y-m-d H:i:s');
-            $user_payment->payment_id  = $payment->getId();
-            $user_payment->user_id = Auth::user()->id;
-            $user_payment->video_id = $request->id;
-            $user_payment->save();
+
+            $ppv_payment_details->expiry_date = date('Y-m-d H:i:s');
+            $ppv_payment_details->payment_id  = $payment->getId();
+            $ppv_payment_details->user_id = Auth::user()->id;
+            $ppv_payment_details->video_id = $request->id;
+            $ppv_payment_details->save();
 
             $response_array = array('success' => true); 
 
@@ -364,6 +414,19 @@ class PaypalController extends Controller {
                     
     }
     
+    /**
+     * @uses to store user payment details from the paypal response
+     *
+     * @param paypal ID
+     *
+     * @param paypal Token
+     *
+     * @return redirect to angular pages, depends on the 
+     * 
+     * @author shobanacs
+     *
+     * @edited : vidhyar2612
+     */
 
     public function getVideoPaymentStatus(Request $request) {
 
@@ -377,20 +440,36 @@ class PaypalController extends Controller {
           return back()->with('flash_error','Payment Failed!!');
 
         } 
-     
-        $payment = Payment::get($payment_id, $this->_api_context);
-     
-        // PaymentExecution object includes information necessary
-        // to execute a PayPal account payment.
-        // The payer_id is added to the request query parameters
-        // when the user is redirected from paypal back to your site
-        
-        $execution = new PaymentExecution();
 
-        $execution->setPayerId($request->PayerID);
+        try { 
      
-        //Execute the payment
-        $result = $payment->execute($execution, $this->_api_context);
+            $payment = Payment::get($payment_id, $this->_api_context);
+         
+            // PaymentExecution object includes information necessary
+            // to execute a PayPal account payment.
+            // The payer_id is added to the request query parameters
+            // when the user is redirected from paypal back to your site
+            
+            $execution = new PaymentExecution();
+
+            $execution->setPayerId($request->PayerID);
+         
+            //Execute the payment
+            $result = $payment->execute($execution, $this->_api_context);
+
+        } catch(\PayPal\Exception\PayPalConnectionException $ex){
+
+            $error_data = json_decode($ex->getData(), true);
+
+            $error_message = $ex->getMessage() . PHP_EOL;
+
+            PaymentRepo::ppv_payment_failure_save("", "", $error_message , $payment_id);
+
+            Session::forget('paypal_payment_id');
+
+            return back();
+
+        }
      
        // echo '<pre>';print_r($result);echo '</pre>';exit; // DEBUG RESULT, remove it later
      
@@ -430,43 +509,13 @@ class PaypalController extends Controller {
 
             if($payment->amount > 0) {
 
-                $video = $payment->videoTape;
+               // Do Commission spilit  and redeems for moderator
 
-                $total = $payment->amount;
+                Log::info("ppv_commission_spilit started");
 
-                // Commission Spilit 
+                PaymentRepo::ppv_commission_split($video->id , $payment->id , $video->uploaded_by);
 
-                $admin_commission = Setting::get('admin_ppv_commission')/100;
-
-                $admin_amount = $total * $admin_commission;
-
-                $moderator_amount = $total - $admin_amount;
-
-                // Changes made by vidhya
-
-                $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
-
-                $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
-
-                $video->save();
-
-                // Commission Spilit Completed
-
-                if($moderator = User::find($video->user_id)) {
-
-                    $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                    $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                    $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                    $moderator->total_amount = $moderator->total_amount + $total;
-
-                    $moderator->save();
-
-                }
-
-                add_to_redeem($video->user_id , $moderator_amount);
+                Log::info("ppv_commission_spilit END");  
                     
             }
 

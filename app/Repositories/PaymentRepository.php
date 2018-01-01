@@ -225,11 +225,11 @@ class PaymentRepository {
 
         // Get the details
 
-        $admin_video_details = AdminVideo::find($admin_video_id);
+        $video_tape_details = VideoTape::find($admin_video_id);
 
-        if(count($admin_video_details) == 0 ) {
+        if(count($video_tape_details) == 0 ) {
 
-            Log::info('ppv_commission_split - AdminVideo Not Found');
+            Log::info('ppv_commission_split - VideoTape Not Found');
 
             return false;
         }
@@ -244,33 +244,33 @@ class PaymentRepository {
 
         }
 
-        $total = $admin_video_details->amount;
+        $total = $video_tape_details->amount;
 
         // Commission split 
 
         $admin_commission = Setting::get('admin_commission')/100;
 
-        $admin_amount = $total * $admin_commission;
+        $admin_ppv_amount = $total * $admin_commission;
 
-        $moderator_amount = $total - $admin_amount;
+        $user_ppv_amount = $total - $admin_ppv_amount;
 
         // Update video earnings
 
-        $admin_video_details->admin_amount = $admin_video_details->admin_amount + $admin_amount;
+        $video_tape_details->admin_ppv_amount = $video_tape_details->admin_ppv_amount + $admin_ppv_amount;
 
-        $admin_video_details->user_amount = $admin_video_details->user_amount+$moderator_amount;
+        $video_tape_details->user_ppv_amount = $video_tape_details->user_ppv_amount+$user_ppv_amount;
 
-        $admin_video_details->save();
+        $video_tape_details->save();
 
         // Update PPV Details
 
-        if($ppv_details = PayPerView::find($payperview_id)) {
+        if($ppv_details) {
 
             $ppv_details->currency = Setting::get('currency');
 
-            $ppv_details->admin_amount = $admin_amount;
+            $ppv_details->admin_ppv_amount = $admin_ppv_amount;
 
-            $ppv_details->moderator_amount = $moderator_amount;
+            $ppv_details->user_ppv_amount = $user_ppv_amount;
 
             $ppv_details->save();
         
@@ -278,9 +278,9 @@ class PaymentRepository {
 
         // Check the video uploaded by moderator or admin (uploaded_by = admin , uploaded_by = moderator ID)
 
-        if(is_numeric($admin_video_details->uploaded_by)) {
+        if(is_numeric($video_tape_details->uploaded_by)) {
 
-            add_to_redeem($admin_video_details->uploaded_by , $moderator_amount , $admin_amount);
+            add_to_redeem($video_tape_details->uploaded_by , $user_ppv_amount , $admin_ppv_amount);
 
         } else {
 

@@ -711,17 +711,26 @@ function add_to_redeem($id , $amount) {
 
     if($id && $amount) {
 
-        $data = Redeem::where('user_id' , $id)->first();
+        $redeems_details = Redeem::where('user_id' , $id)->first();
 
-        if(!$data) {
-            $data = new Redeem;
-            $data->user_id = $id;
+        if(!$redeems_details) {
+
+            $redeems_details = new Redeem;
+
+            $redeems_details->user_id = $id;
         }
 
-        $data->total = $data->total + $amount;
-        $data->remaining = $data->remaining+$amount;
-        $data->save();
-   
+        $redeems_details->total = $redeems_details->total + $amount;
+        
+        $redeems_details->remaining = $redeems_details->remaining+$amount;
+
+        // Update the earnings for moderator and admin amount
+
+        $redeems_details->total_admin_amount = $redeems_details->total_admin_amount + $admin_amount;
+
+        $redeems_details->total_moderator_amount = $redeems_details->total_moderator_amount + $amount;
+        
+        $redeems_details->save();   
     }
 
     \Log::info('Add to Redeem End');

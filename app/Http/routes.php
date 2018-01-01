@@ -453,7 +453,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('assign_ad', 'AdminController@save_assign_ad')->name('assign_ads');
 
 
-
     // Banner Ads
 
     Route::get('create_banner','AdminController@banner_ads_create')->name('banner-ads.create');
