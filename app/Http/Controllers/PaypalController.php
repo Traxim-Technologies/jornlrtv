@@ -144,9 +144,9 @@ class PaypalController extends Controller {
 
                 Log::info(print_r($error_data , true));
 
-                $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
+                $error_message = array_key_exists('error', $error_data) ? $error_data['error']." " : "";
                 
-                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description']." " : "";
 
                 $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
@@ -272,9 +272,9 @@ class PaypalController extends Controller {
 
                 Log::info(print_r($error_data , true));
 
-                $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
-                
-                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+                $error_message = array_key_exists('error', $error_data) ? $error_data['error']." " : "";
+
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description']." " : "";
 
                 $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
@@ -421,9 +421,9 @@ class PaypalController extends Controller {
 
                 Log::info(print_r($error_data , true));
 
-                $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
+                $error_message = array_key_exists('error', $error_data) ? $error_data['error']." " : "";
                 
-                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description']." " : "";
 
                 $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
@@ -549,9 +549,9 @@ class PaypalController extends Controller {
 
                 Log::info(print_r($error_data , true));
 
-                $error_message = array_key_exists('error', $error_data) ? $error_data['error'] : "";
+                $error_message = array_key_exists('error', $error_data) ? $error_data['error']." " : "";
                 
-                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description'] : "";
+                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description']." " : "";
 
                 $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
@@ -580,7 +580,7 @@ class PaypalController extends Controller {
             $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
 
             Log::info("$ppv_details->amount".$ppv_details->amount);
-            
+
             if ($ppv_details->videoTape->type_of_user == 1) {
 
                 $ppv_details->type_of_user = "Normal User";
