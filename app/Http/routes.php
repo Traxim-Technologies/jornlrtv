@@ -173,11 +173,11 @@ Route::get('/payment/failure' , 'ApplicationController@payment_failure')->name('
 
 Route::get('/message/save' , 'ApplicationController@message_save');
 
-Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
+// Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
 
-Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
+// Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
 
-Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
+// Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
 
 
 Route::get('/test' , 'ApplicationController@test')->name('test');
@@ -558,12 +558,13 @@ Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthContro
 
 Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
+// Embed Links
+
 Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
 
+// Admin to users login
 
 Route::get('/master/login', 'UserController@master_login')->name('master.login');
-
-Route::get('cron_delete_video', 'ApplicationController@cron_delete_video');
 
 
 Route::group(['as' => 'user.'], function(){
@@ -597,8 +598,6 @@ Route::group(['as' => 'user.'], function(){
     Route::get('deleteHistory', 'UserController@delete_history')->name('delete.history');
 
     Route::post('addHistory', 'UserController@add_history')->name('add.history');
-
-
 
 
     Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
@@ -677,10 +676,7 @@ Route::group(['as' => 'user.'], function(){
     Route::get('payment-video', 'UserController@payment_url')->name('payment_url');
 
     Route::get('stripe-payment-video', 'UserController@stripe_payment_video')->name('stripe_payment_video');
-
-
-
-
+    
 
     Route::post('/save_video_payment/{id}', 'UserController@save_video_payment')->name('save.video-payment');
 
@@ -694,10 +690,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/live_videos', 'UserController@live_videos')->name('live_videos');
 
-    Route::get('/user_subscriptions', 'UserController@subscriptions')->name('subscriptions');
+    Route::get('/subscriptions', 'UserController@subscriptions')->name('subscriptions');
 
     Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'UserController@user_subscription_save')->name('subscription.save');
-
     
 
     // Video Upload
