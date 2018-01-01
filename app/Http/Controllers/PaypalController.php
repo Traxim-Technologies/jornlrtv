@@ -601,25 +601,25 @@ class PaypalController extends Controller {
 
             Log::info("$ppv_details->amount".$ppv_details->amount);
 
-            if ($ppv_details->videoTape->type_of_user == 1) {
+            if ($video_tape_details->type_of_user == 1) {
 
                 $ppv_details->type_of_user = "Normal User";
 
-            } else if($ppv_details->videoTape->type_of_user == 2) {
+            } else if($video_tape_details->type_of_user == 2) {
 
                 $ppv_details->type_of_user = "Paid User";
 
-            } else if($ppv_details->videoTape->type_of_user == 3) {
+            } else if($video_tape_details->type_of_user == 3) {
 
                 $ppv_details->type_of_user = "Both Users";
             }
 
 
-            if ($ppv_details->videoTape->type_of_subscription == 1) {
+            if ($video_tape_details->type_of_subscription == 1) {
 
                 $ppv_details->type_of_subscription = "One Time Payment";
 
-            } else if($ppv_details->videoTape->type_of_subscription == 2) {
+            } else if($video_tape_details->type_of_subscription == 2) {
 
                 $ppv_details->type_of_subscription = "Recurring Payment";
 

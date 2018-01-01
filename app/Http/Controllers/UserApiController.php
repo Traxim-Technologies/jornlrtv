@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
 
+use App\Repositories\PaymentRepository as PaymentRepo;
+
+
 use Log;
 
 use Hash;
@@ -3175,8 +3178,9 @@ class UserApiController extends Controller {
 
             } else {
 
-                $userModel = User::find($request->id);
+                // Check stripe is enabled by admin and stripe configuration
 
+                $userModel = User::find($request->id);
 
                 if ($userModel) {
 
@@ -3186,17 +3190,16 @@ class UserApiController extends Controller {
 
                         if ($user_card && $user_card->is_default) {
 
-                            $video = VideoTape::find($request->video_tape_id);
+                            $video_tape_details = VideoTape::find($request->video_tape_id);
 
-                            if($video) {
+                            if($video_tape_details) {
 
-                                $total = $video->ppv_amount;
-
+                                $total = $video_tape_details->ppv_amount;
 
                                 if ($total > 0) {
-
                                     
                                     // Get the key from settings table
+
                                     $stripe_secret_key = Setting::get('stripe_secret_key');
 
                                     $customer_id = $user_card->customer_id;
@@ -3205,8 +3208,6 @@ class UserApiController extends Controller {
 
                                         \Stripe\Stripe::setApiKey($stripe_secret_key);
 
-
-
                                     } else {
 
                                         $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
@@ -3214,8 +3215,6 @@ class UserApiController extends Controller {
                                         throw new Exception(Helper::get_error_message(902));
                                         
                                     }
-
-
 
                                     try {
 
@@ -3226,90 +3225,61 @@ class UserApiController extends Controller {
                                         ));
 
                                        $payment_id = $user_charge->id;
+
                                        $amount = $user_charge->amount/100;
+
                                        $paid_status = $user_charge->paid;
 
                                        if($paid_status) {
 
-                                            $user_payment = new PayPerView;
-                                            $user_payment->payment_id  = $payment_id;
-                                            $user_payment->user_id = $request->id;
-                                            $user_payment->video_id = $request->video_tape_id;
-                                            $user_payment->status = DEFAULT_FALSE;
-                                            $user_payment->amount = $amount;
+                                            $ppv_details = new PayPerView;
+                                            $ppv_details->payment_id  = $payment_id;
+                                            $ppv_details->user_id = $request->id;
+                                            $ppv_details->video_id = $request->video_tape_id;
+                                            $ppv_details->status = DEFAULT_FALSE;
+                                            $ppv_details->amount = $amount;
 
 
-                                        if ($video->type_of_user == 1) {
+                                        if ($video_tape_details->type_of_user == 1) {
 
-                                            $user_payment->type_of_user = "Normal User";
+                                            $ppv_details->type_of_user = "Normal User";
 
-                                        } else if($video->type_of_user == 2) {
+                                        } else if($video_tape_details->type_of_user == 2) {
 
-                                            $user_payment->type_of_user = "Paid User";
+                                            $ppv_details->type_of_user = "Paid User";
 
-                                        } else if($video->type_of_user == 3) {
+                                        } else if($video_tape_details->type_of_user == 3) {
 
-                                            $user_payment->type_of_user = "Both Users";
+                                            $ppv_details->type_of_user = "Both Users";
                                         }
 
 
-                                        if ($video->type_of_subscription == 1) {
+                                        if ($video_tape_details->type_of_subscription == 1) {
 
-                                            $user_payment->type_of_subscription = "One Time Payment";
+                                            $ppv_details->type_of_subscription = "One Time Payment";
 
-                                        } else if($video->type_of_subscription == 2) {
+                                        } else if($video_tape_details->type_of_subscription == 2) {
 
-                                            $user_payment->type_of_subscription = "Recurring Payment";
+                                            $ppv_details->type_of_subscription = "Recurring Payment";
 
                                         }
 
-                                        $user_payment->save();
+                                        $ppv_details->save();
 
-                                        if($user_payment->amount > 0) {
+                                        if($ppv_details->amount > 0) {
 
-                                                $total = $user_payment->amount;
+                                            // Do Commission spilit  and redeems for moderator
 
-                                                // Commission Spilit 
+                                            Log::info("ppv_commission_spilit started");
 
-                                                $admin_commission = Setting::get('admin_ppv_commission')/100;
+                                            PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id);
 
-                                                $admin_amount = $total * $admin_commission;
+                                            Log::info("ppv_commission_spilit END");
 
-                                                $moderator_amount = $total - $admin_amount;
-
-                                                // Changes made by vidhya
-
-
-                                                $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
-
-                                                $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
-
-                                                $video->save();
-
-                                                // Commission Spilit Completed
-
-                                                if($moderator = User::find($video->user_id)) {
-
-                                                    $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                                                    $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                                                    $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                                                    $moderator->total_amount = $moderator->total_amount + $total;
-
-                                                    $moderator->save();
-
-                                                   // $video_amount = $moderator_amount;
-
-                                                }
-
-                                                add_to_redeem($video->user_id , $moderator_amount);
-                                                    
                                         }
 
                                         
-                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id, 'video_tape_id'=>$video->id];
+                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id, 'video_tape_id'=> $video_tape_details->id];
 
                                         $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
@@ -3381,8 +3351,6 @@ class UserApiController extends Controller {
             $code = $e->getCode();
 
             $e = $e->getMessage();
-
-
 
             $response_array = ['success'=>false, 'error_messages'=>$e, 'error_code'=>$code];
 
@@ -4562,102 +4530,72 @@ class UserApiController extends Controller {
 
             } else {
 
-                $video = VideoTape::find($request->video_tape_id);
+                $video_tape_details = VideoTape::find($request->video_tape_id);
 
-                $user_payment = new PayPerView;
+                $ppv_details = new PayPerView;
                 
-                $user_payment->payment_id  = $request->payment_id;
+                $ppv_details->payment_id  = $request->payment_id;
 
-                $user_payment->user_id = $request->id;
+                $ppv_details->user_id = $request->id;
 
-                $user_payment->video_id = $request->video_tape_id;
+                $ppv_details->video_id = $request->video_tape_id;
 
-                $user_payment->status = DEFAULT_FALSE;
+                $ppv_details->status = DEFAULT_FALSE;
 
-                $user_payment->amount = $video->amount;
+                $ppv_details->expiry_date = date('Y-m-d H:i:s');
 
-                if ($video->type_of_user == 1) {
+                $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
 
-                    $user_payment->type_of_user = "Normal User";
+                if ($video_tape_details->type_of_user == 1) {
 
-                } else if($video->type_of_user == 2) {
+                    $ppv_details->type_of_user = "Normal User";
 
-                    $user_payment->type_of_user = "Paid User";
+                } else if($video_tape_details->type_of_user == 2) {
 
-                } else if($video->type_of_user == 3) {
+                    $ppv_details->type_of_user = "Paid User";
 
-                    $user_payment->type_of_user = "Both Users";
+                } else if($video_tape_details->type_of_user == 3) {
+
+                    $ppv_details->type_of_user = "Both Users";
                 }
 
 
-                if ($video->type_of_subscription == 1) {
+                if ($video_tape_details->type_of_subscription == 1) {
 
-                    $user_payment->type_of_subscription = "One Time Payment";
+                    $ppv_details->type_of_subscription = "One Time Payment";
 
-                } else if($video->type_of_subscription == 2) {
+                } else if($video_tape_details->type_of_subscription == 2) {
 
-                    $user_payment->type_of_subscription = "Recurring Payment";
+                    $ppv_details->type_of_subscription = "Recurring Payment";
 
                 }
 
-                $user_payment->save();
+                $ppv_details->save();
 
-                if($user_payment) {
+                if($ppv_details) {
 
-                    // if(is_numeric($video->uploaded_by)) {
+                    if($video_tape_details->ppv_amount > 0) { 
 
-                        if($video->ppv_amount > 0) { 
+                        // Do Commission spilit  and redeems for user
 
-                            $total = $video->ppv_amount;
+                        Log::info("ppv_commission_spilit started");
 
-                            // Commission Spilit 
+                        PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id);
 
-                            $admin_commission = Setting::get('admin_commission')/100;
+                        Log::info("ppv_commission_spilit END");
+                        
+                    }
 
-                            $admin_amount = $total * $admin_commission;
-
-                            $user_amount = $total - $admin_amount;
-
-                            $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
-
-                            $video->user_ppv_amount = $video->admin_ppv_amount+$user_amount;
-
-                            $video->save();
-
-                            // Commission Spilit Completed
-
-                            if($user = User::find($video->user_id)) {
-
-                                $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
-
-                                $user->total_user_amount = $user->total_user_amount + $user_amount;
-
-                                $user->remaining_amount = $user->remaining_amount + $user_amount;
-
-                                $user->total_amount = $user->total_amount + $total;
-
-                                $user->save();
-
-                                $video_amount = $user_amount;
-
-                            }
-
-                            add_to_redeem($video->user_id , $total);
-                            
-                        }
-
-                        \Log::info("ADD History - add_to_redeem");
-
-                    // } 
+                    \Log::info("ADD History - add_to_redeem");
 
                 } 
 
                 $viewerModel = User::find($request->id);
 
-                $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
-                                    'data'=>['id'=>$request->id,
-                                     'token'=>$viewerModel ? $viewerModel->token : '',
-                                     'video_tape_id'=>$video->id]];
+                $response_array = [
+                                    'success' => true, 'message' => tr('payment_success'), 
+                                    'data' => ['id' => $request->id,'token' => $viewerModel ? $viewerModel->token : '','video_tape_id' => $video_tape_details->id]
+                                ];
 
             }
 
