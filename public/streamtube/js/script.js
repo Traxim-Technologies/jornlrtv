@@ -1,4 +1,13 @@
   $(document).ready(function(){
+
+      $("#search-btn").click(function(){
+          $("#header-section").slideUp();
+          $("#search-section").slideDown();
+      });
+       $("#close-btn").click(function(){
+          $("#search-section").slideUp();
+          $("#header-section").slideDown();
+      });
       
             $('.toggle-icon').click(function () {
             $('.y-menu').toggleClass('hidden');
