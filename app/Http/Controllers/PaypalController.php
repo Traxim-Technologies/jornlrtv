@@ -577,6 +577,26 @@ class PaypalController extends Controller {
 
             $ppv_details = PayPerView::where('payment_id',$ppv_payment_id)->first();
 
+            $video_tape_details = $ppv_details->videoTape;
+
+            // Check the PPV and video details
+
+            if(count($ppv_details) == 0 || count($video_tape_details) == 0) {
+
+                $error_message = "PPV || Video Details Not found";
+
+                $video_tape_id = Session::get('video_tape_id');
+
+                PaymentRepo::ppv_payment_failure_save(Auth::user()->id, $video_tape_id , $error_message , "");
+
+                Session::forget('video_tape_id');
+
+                Session::forget('ppv_payment_id');
+
+                return redirect()->route('payment.failure')->with('flash_error' , $error_message);
+
+            }
+
             $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
 
             Log::info("$ppv_details->amount".$ppv_details->amount);
@@ -608,8 +628,6 @@ class PaypalController extends Controller {
             $ppv_details->save();
 
             if($ppv_details->amount > 0) {
-
-                $video_tape_details = $ppv_details->videoTape;
 
                 // Do Commission spilit  and redeems for moderator
 
