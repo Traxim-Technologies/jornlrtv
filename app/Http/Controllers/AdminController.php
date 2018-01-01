@@ -92,11 +92,19 @@ class AdminController extends Controller {
         return view('admin.login')->withPage('admin-login')->with('sub_page','');
     }
 
+    /**
+     *
+     *
+     *
+     *
+     */
+
     public function dashboard() {
 
         $admin = Admin::first();
 
         $admin->token = Helper::generate_token();
+
         $admin->token_expiry = Helper::generate_token_expiry();
 
         $admin->save();
@@ -110,12 +118,12 @@ class AdminController extends Controller {
         $recent_videos = VideoRepo::admin_recently_added();
 
         $get_registers = get_register_count();
+
         $recent_users = get_recent_users();
+
         $total_revenue = total_revenue();
 
         $view = last_days(10);
-
-        // user_track();
 
         return view('admin.dashboard.dashboard')->withPage('dashboard')
                     ->with('sub_page','')
@@ -132,6 +140,7 @@ class AdminController extends Controller {
     public function profile() {
 
         $admin = Admin::first();
+
         return view('admin.account.profile')->with('admin' , $admin)->withPage('profile')->with('sub_page','');
     }
 
@@ -139,7 +148,7 @@ class AdminController extends Controller {
 
         $validator = Validator::make( $request->all(),array(
                 'name' => 'max:255',
-                'email' => 'email|max:255',
+                'email' => $request->id ? 'email|max:255|unique:admins,email,'.$request->id : 'email|max:255|unique:admins,email,NULL',
                 'mobile' => 'digits_between:6,13',
                 'address' => 'max:300',
                 'id' => 'required|exists:admins,id',
@@ -148,7 +157,9 @@ class AdminController extends Controller {
         );
         
         if($validator->fails()) {
+
             $error_messages = implode(',', $validator->messages()->all());
+
             return back()->with('flash_errors', $error_messages);
         } else {
             
@@ -165,12 +176,14 @@ class AdminController extends Controller {
             $admin->address = $request->has('address') ? $request->address : $admin->address;
 
             if($request->hasFile('picture')) {
+
                 Helper::delete_picture($admin->picture, "/uploads/images/");
+
                 $admin->picture = Helper::normal_upload_picture($request->picture, "/uploads/images/");
             }
                 
             $admin->remember_token = Helper::generate_token();
-           // @ $admin->is_activated = 1;
+            
             $admin->save();
 
             return back()->with('flash_success', tr('admin_not_profile'));

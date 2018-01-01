@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ##[1.2.1] - 
 
+## 01.01.2018 - user 
+
+- PPV - commission spilit fixed in stripe and paypal 
+
+- Header - Profile options order changed
+
+## 01.01.2018 - Admin 
+
+- Dashboard - total revenue changes based on the subscription and ppv payments
+
+- Profile - email exists issue fixed 
+
+
 ## 30.12.2017 - Admin 
 
 - Nav bar - realigned options 

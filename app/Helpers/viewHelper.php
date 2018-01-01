@@ -151,8 +151,14 @@ function get_recent_videos() {
 
     return $videos;
 }
+
 function total_revenue() {
-    return UserPayment::sum('amount');
+
+    $user_payments = UserPayment::sum('amount');
+
+    $video_payments = VideoTape::sum('admin_ppv_amount');
+
+    return $video_payments + $user_payments;
 }
 
 function check_s3_configure() {
