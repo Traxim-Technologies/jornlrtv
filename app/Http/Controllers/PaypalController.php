@@ -266,6 +266,8 @@ class PaypalController extends Controller {
 
             Session::forget('paypal_payment_id');
 
+            Session::forget('subscription_id');
+
             return back()->with('flash_error' , $error_message);
 
         }     
@@ -293,6 +295,8 @@ class PaypalController extends Controller {
             }
 
             Session::forget('paypal_payment_id');
+
+            Session::forget('subscription_id');
             
             $response_array = array('success' => true , 'message' => "Payment Successful" ); 
 
