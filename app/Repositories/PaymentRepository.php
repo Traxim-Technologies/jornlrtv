@@ -202,9 +202,9 @@ class PaymentRepository {
      * @return boolean response
      */
 
-    public static function ppv_commission_split($admin_video_id = "" , $payperview_id = "" , $moderator_id = "") {
+    public static function ppv_commission_split($video_tape_id = "" , $payperview_id = "" , $moderator_id = "") {
 
-        if(!$admin_video_id || !$payperview_id || !$moderator_id) {
+        if(!$video_tape_id || !$payperview_id || !$moderator_id) {
 
             return false;
         }
@@ -223,7 +223,7 @@ class PaymentRepository {
 
         // Get the details
 
-        $video_tape_details = VideoTape::find($admin_video_id);
+        $video_tape_details = VideoTape::find($video_tape_id);
 
         if(count($video_tape_details) == 0 ) {
 
@@ -242,7 +242,7 @@ class PaymentRepository {
 
         }
 
-        $total = $video_tape_details->amount;
+        $total = $video_tape_details->ppv_amount;
 
         // Commission split 
 
@@ -264,6 +264,8 @@ class PaymentRepository {
 
         if($ppv_details) {
 
+            Log::info("PPV DETAILS INSIDE");
+
             $ppv_details->currency = Setting::get('currency');
 
             $ppv_details->admin_ppv_amount = $admin_ppv_amount;
@@ -272,6 +274,11 @@ class PaymentRepository {
 
             $ppv_details->save();
         
+        } else {
+
+            Log::info("payperview_id".$payperview_id)
+            Log::info("PPV DETAILS  - NOOOOOOO");
+
         }
 
         // Check the video uploaded by moderator or admin (uploaded_by = admin , uploaded_by = moderator ID)
