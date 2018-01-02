@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ##[1.2.1] - 
 
+## 02.01.2018 - Admin 
+
+- Revenues dashboard and PPV payments sections added 
+
 ## 01.01.2018 - user 
 
 - PPV - commission spilit fixed in stripe and paypal 
