@@ -1204,7 +1204,11 @@ function displayVideoDetails($data,$userId) {
  *
  * @return amount
  */
-function total_video_revenue() {
+function total_video_revenue($type = "") {
+
+    if($type == 'admin') {
+        return PayPerView::sum('admin_ppv_amount');
+    }
     return PayPerView::sum('amount');
 }
 
@@ -1217,4 +1221,11 @@ function total_video_revenue() {
  */
 function user_total_amount() {
     return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
+}
+
+function get_commission_percentage($total , $actual_amount) {
+
+    $percentage = $total > 0 ? ($actual_amount/$total ) * 100 : 0;
+
+    return $percentage;
 }

@@ -1033,4 +1033,7 @@ return array(
 
 	'ppv_payment_success' => 'Thank you! Your payment was processed successfully.Enjoy the video!!!',
 	'subscription_payment_success' => 'Thank you! Your payment was processed successfully.',
+	
+	'admin_amount' => 'Admin Amount',
+	'user_amount' => 'User Amount',
 );

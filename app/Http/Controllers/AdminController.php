@@ -66,6 +66,8 @@ use App\Redeem;
 
 use App\RedeemRequest;
 
+use App\PayPerView;
+
 use App\Repositories\CommonRepository as CommonRepo;
 
 use App\Repositories\AdminRepository as AdminRepo;
@@ -2747,12 +2749,32 @@ class AdminController extends Controller {
      */
 
     public function revenues() {
+
+        $total  = total_revenue();
+
+        $ppv_total = PayPerView::sum('amount');
+
+        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
+
+        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
+
+        $subscription_total = UserPayment::sum('amount');
+
+        $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
         
-        return redirect()->to('/admin');
+        return view('admin.payments.revenues')
+                        ->with('total' , $total)
+                        ->with('ppv_total' , $ppv_total)
+                        ->with('ppv_admin_amount' , $ppv_admin_amount)
+                        ->with('ppv_user_amount' , $ppv_user_amount)
+                        ->with('subscription_total' , $subscription_total)
+                        ->with('total_subscribers' , $total_subscribers)
+                        ->withPage('payments')
+                        ->with('sub_page' , 'payments-dashboard');
     }
 
     /**
-     *
+     * used to display ppv payments
      *
      *
      *
@@ -2761,7 +2783,9 @@ class AdminController extends Controller {
 
     public function ppv_payments() {
 
-        return redirect()->to('/admin');
+        $payments = PayPerView::orderBy('created_at' , 'desc')->get();
+    
+        return view('admin.payments.ppv-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-ppv');
     }
 
 }
