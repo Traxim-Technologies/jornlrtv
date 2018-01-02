@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->hasMany('App\UserPayment');
     }
 
+    public function ppvDetails()
+    {
+        return $this->hasMany('App\PayPerView');
+    }
+
     /**
      * Get the flag record associated with the user.
      */

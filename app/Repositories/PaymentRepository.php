@@ -54,6 +54,8 @@ class PaymentRepository {
 
     public static function subscription_payment_failure_save($user_id = 0 , $subscription_id = 0 , $reason = "" , $payment_id = "") {
 
+        Log::info("subscription_payment_failure_save STRAT");
+
         /*********** DON't REMOVE LOGS **************/
 
         // Log::info("1- Subscription ID".$subscription_id);
@@ -127,7 +129,7 @@ class PaymentRepository {
      * @return boolean response
      */
 
-	public static function ppv_payment_failure_save($user_id = 0 , $admin_video_id = 0 , $reason = "" , $payment_id = "") {
+	public static function ppv_payment_failure_save($user_id = 0 , $video_tape_id = 0 , $reason = "" , $payment_id = "") {
 
         /*********** DON't REMOVE LOGS **************/
 
@@ -155,7 +157,7 @@ class PaymentRepository {
 
         /************ Before user payment, if any configuration failture or TimeOut *******/
 
-        if(!$user_id || !$admin_video_id) {
+        if(!$user_id || !$video_tape_id) {
 
             Log::info('Payment failure save - USER ID and Subscription ID not found');
 
@@ -163,7 +165,7 @@ class PaymentRepository {
 
         }
 
-        $ppv_user_payment_details = PayPerView::where('user_id' , $user_id)->where('video_id' , $admin_video_id)->where('amount',0)->first();
+        $ppv_user_payment_details = PayPerView::where('user_id' , $user_id)->where('video_id' , $video_tape_id)->where('amount',0)->first();
 
         if(empty($ppv_user_payment_details)) {
 
@@ -177,13 +179,9 @@ class PaymentRepository {
 
         $ppv_user_payment_details->user_id = $user_id;
 
-        $ppv_user_payment_details->video_id = $admin_video_id;
+        $ppv_user_payment_details->video_id = $video_tape_id;
 
         $ppv_user_payment_details->reason = "BEFORE-".$reason;
-
-        // @todo 
-
-        
 
         $ppv_user_payment_details->save();
 
@@ -204,9 +202,13 @@ class PaymentRepository {
      * @return boolean response
      */
 
-    public static function ppv_commission_split($admin_video_id = "" , $payperview_id = "" , $moderator_id = "") {
+    public static function ppv_commission_split($video_tape_id = "" , $payperview_id = "") {
 
-        if(!$admin_video_id || !$payperview_id || !$moderator_id) {
+        if(!$video_tape_id || !$payperview_id) {
+
+            Log::info("VideoTape"+$video_tape_id);
+
+            Log::info("payperview_id"+$payperview_id);
 
             return false;
         }
@@ -225,11 +227,11 @@ class PaymentRepository {
 
         // Get the details
 
-        $admin_video_details = AdminVideo::find($admin_video_id);
+        $video_tape_details = VideoTape::find($video_tape_id);
 
-        if(count($admin_video_details) == 0 ) {
+        if(count($video_tape_details) == 0 ) {
 
-            Log::info('ppv_commission_split - AdminVideo Not Found');
+            Log::info('ppv_commission_split - VideoTape Not Found');
 
             return false;
         }
@@ -244,48 +246,47 @@ class PaymentRepository {
 
         }
 
-        $total = $admin_video_details->amount;
+        $total = $video_tape_details->ppv_amount;
 
         // Commission split 
 
         $admin_commission = Setting::get('admin_commission')/100;
 
-        $admin_amount = $total * $admin_commission;
+        $admin_ppv_amount = $total * $admin_commission;
 
-        $moderator_amount = $total - $admin_amount;
+        $user_ppv_amount = $total - $admin_ppv_amount;
 
         // Update video earnings
 
-        $admin_video_details->admin_amount = $admin_video_details->admin_amount + $admin_amount;
+        $video_tape_details->admin_ppv_amount = $video_tape_details->admin_ppv_amount + $admin_ppv_amount;
 
-        $admin_video_details->user_amount = $admin_video_details->user_amount+$moderator_amount;
+        $video_tape_details->user_ppv_amount = $video_tape_details->user_ppv_amount+$user_ppv_amount;
 
-        $admin_video_details->save();
+        $video_tape_details->save();
 
         // Update PPV Details
 
-        if($ppv_details = PayPerView::find($payperview_id)) {
+        if($ppv_details) {
+
+            Log::info("PPV DETAILS INSIDE");
 
             $ppv_details->currency = Setting::get('currency');
 
-            $ppv_details->admin_amount = $admin_amount;
+            $ppv_details->admin_ppv_amount = $admin_ppv_amount;
 
-            $ppv_details->moderator_amount = $moderator_amount;
+            $ppv_details->user_ppv_amount = $user_ppv_amount;
 
             $ppv_details->save();
         
-        }
-
-        // Check the video uploaded by moderator or admin (uploaded_by = admin , uploaded_by = moderator ID)
-
-        if(is_numeric($admin_video_details->uploaded_by)) {
-
-            add_to_redeem($admin_video_details->uploaded_by , $moderator_amount , $admin_amount);
-
         } else {
 
-            Log::info("No Redeems - ");
+            Log::info("payperview_id".$payperview_id);
+
+            Log::info("PPV DETAILS  - NOOOOOOO");
+
         }
+
+        add_to_redeem($video_tape_details->user_id , $user_ppv_amount , $admin_ppv_amount);
 
         return true;
 

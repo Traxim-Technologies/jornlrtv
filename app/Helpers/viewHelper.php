@@ -151,8 +151,14 @@ function get_recent_videos() {
 
     return $videos;
 }
+
 function total_revenue() {
-    return UserPayment::sum('amount');
+
+    $user_payments = UserPayment::sum('amount');
+
+    $video_payments = VideoTape::sum('admin_ppv_amount');
+
+    return $video_payments + $user_payments;
 }
 
 function check_s3_configure() {
@@ -705,23 +711,32 @@ function redeem_request_status($status) {
  *
  */
 
-function add_to_redeem($id , $amount) {
+function add_to_redeem($id , $amount , $admin_amount) {
 
     \Log::info('Add to Redeem Start');
 
     if($id && $amount) {
 
-        $data = Redeem::where('user_id' , $id)->first();
+        $redeems_details = Redeem::where('user_id' , $id)->first();
 
-        if(!$data) {
-            $data = new Redeem;
-            $data->user_id = $id;
+        if(!$redeems_details) {
+
+            $redeems_details = new Redeem;
+
+            $redeems_details->user_id = $id;
         }
 
-        $data->total = $data->total + $amount;
-        $data->remaining = $data->remaining+$amount;
-        $data->save();
-   
+        $redeems_details->total = $redeems_details->total + $amount;
+        
+        $redeems_details->remaining = $redeems_details->remaining+$amount;
+
+        // Update the earnings for moderator and admin amount
+
+        $redeems_details->total_admin_amount = $redeems_details->total_admin_amount + $admin_amount;
+
+        $redeems_details->total_user_amount = $redeems_details->total_user_amount + $amount;
+        
+        $redeems_details->save();   
     }
 
     \Log::info('Add to Redeem End');
@@ -1189,7 +1204,11 @@ function displayVideoDetails($data,$userId) {
  *
  * @return amount
  */
-function total_video_revenue() {
+function total_video_revenue($type = "") {
+
+    if($type == 'admin') {
+        return PayPerView::sum('admin_ppv_amount');
+    }
     return PayPerView::sum('amount');
 }
 
@@ -1202,4 +1221,11 @@ function total_video_revenue() {
  */
 function user_total_amount() {
     return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
+}
+
+function get_commission_percentage($total , $actual_amount) {
+
+    $percentage = $total > 0 ? ($actual_amount/$total ) * 100 : 0;
+
+    return $percentage;
 }
