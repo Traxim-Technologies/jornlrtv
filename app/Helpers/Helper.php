@@ -618,9 +618,9 @@
 
                     Log::info('Check users variable');
 
-                    $data = ['video_tape_id' => 1];
+                    $data = ['video_tape_id' => 1 , 'channel_id' => 109 ];
 
-                    $push_message = ['success' => true,'title' => $message,'type' => 1,'data' => $data];
+                    $push_message = ['success' => true,'title' => $message,'type' => 2,'data' => $data];
 
                     foreach ($users as $key => $user) {
 
