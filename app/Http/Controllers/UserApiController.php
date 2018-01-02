@@ -1593,7 +1593,7 @@ class UserApiController extends Controller {
             $user_details = '';
 
 
-            $is_ppv_status = DEFAULT_TRUE;
+            
 
             if ($request->id) {
 
@@ -1609,7 +1609,6 @@ class UserApiController extends Controller {
 
                 $user_details = User::find($request->id);
 
-                $is_ppv_status = ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
             
             }
 
@@ -1623,6 +1622,14 @@ class UserApiController extends Controller {
             if (count($data) > 0) {
 
                 foreach ($data as $key => $value) {
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($request->id) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    }
                    
                     $currency = Setting::get('currency');
 
