@@ -808,30 +808,34 @@ class UserController extends Controller {
 
                     // Check the video view count reached admin viewers count, to add amount for each view
 
-                    if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
+                    if ($video->user_id != Auth::user()->id) {
 
-                        \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
+                        if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
-                        $video_amount = Setting::get('amount_per_video');
+                            \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
 
-                        // $video->redeem_count = 1;
+                            $video_amount = Setting::get('amount_per_video');
 
-                        // $video->watch_count = $video->watch_count + 1;
+                            // $video->redeem_count = 1;
 
-                        $video->amount += $video_amount;
+                            // $video->watch_count = $video->watch_count + 1;
 
-                        add_to_redeem($video->user_id , $video_amount);
+                            $video->amount += $video_amount;
 
-                        \Log::info("ADD History - add_to_redeem");
+                            add_to_redeem($video->user_id , $video_amount);
+
+                            \Log::info("ADD History - add_to_redeem");
 
 
-                    } else {
+                        } else {
 
-                        \Log::info("ADD History - NO REDEEM");
+                            \Log::info("ADD History - NO REDEEM");
 
-                        // $video->redeem_count += 1;
+                            // $video->redeem_count += 1;
 
-                        // $video->watch_count = $video->watch_count + 1;
+                            // $video->watch_count = $video->watch_count + 1;
+                        }
+
                     }
 
                 }
@@ -1153,7 +1157,7 @@ class UserController extends Controller {
             if($response->error == 101)
                 return back()->with('flash_error', $response->error_messages);
             else
-                return back()->with('flash_error', $response->error);
+                return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
@@ -2535,12 +2539,9 @@ class UserController extends Controller {
 
         // Get Videos
 
-       // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
-
         $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip)->getData();
 
         $channel = Channel::find($request->channel_id);
-
 
         $view = View::make('user.videos.partial_videos')
                     ->with('videos',$videos)
@@ -2839,6 +2840,56 @@ class UserController extends Controller {
             return back()->with('flash_error', $response->error_messages);
 
         }
+    }
+
+
+    public function subscription_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->subscribedPlans($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.subscription_history')->with('page', 'history')
+                ->with('subPage', 'subscription_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
+
+
+    public function ppv_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->ppv_list($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.ppv_history')->with('page', 'history')
+                ->with('subPage', 'ppv_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
     }
 
 }

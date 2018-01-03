@@ -106,7 +106,7 @@ return array(
 	'admin_not_ur_del'=>'User Rating has been deleted Successfully',
 
 	'enter_dob'=>'Enter DOB',
-	'no_subscription_found'=>'No SubScription Detaild Found',
+	'no_subscription_found'=>'No Subscription details found',
 	'uploaded_new_video'=>'Uploaded New Video',
 	'user_reviews'=>'User Reviews',
 	'no_of_spam_videos'=>'No of Spam Videos',
@@ -219,7 +219,6 @@ return array(
 	'paypal_settings' => 'Payment Settings',
 	'video_settings' => 'Video Settings',
 	'revenue_settings' => 'Revenue Settings',
-
 	'S3_KEY'=>'S3 Key',
 	'S3_SECRET'=>'S3 Secret Key',
 	'S3_REGION'=>'S3 Region',
@@ -375,7 +374,7 @@ return array(
 	'female'	=>	'Female',
 	'others'	=>	'Others',
 	'address'	=>	'Address',
-	'validity_days'  =>  'Validity Days',
+	'validity_days'  =>  'Plan Validity',
 
 	'image' => 'Image',
 	'upload_message'	=>	'Upload only .png, .jpg or .jpeg image files only',
@@ -1080,7 +1079,36 @@ return array(
 	'normal_paid_user'=>'Both Subscribed & Unsubscribed Users',
 	'ad_amount'=>'Ad Amount',
 	'ppv_amount'=>'PPV Amount',
+
+	'revenues' => 'Revenues',
+	'revenue'  => 'Revenue',
+	'ppv_payments' => 'PPV Payments',
+	'subscription_payments' => 'Subscription Payments',
 	'check_with_ppv_amount'=>'Check with pay per view amount',
 	'not_your_channel'=>'You are not authorized to this channel, Please contact admin',
 	'only_manual_can_access'=>'Only manual registered user can give forgot password, social login users not allowed',
+	'notes_for_channel'=>"Seems , you haven't subscribed any plans. Please subscribe any plans and create channel",
+	'login_notes'=>'Please login and continue to watch video',
+	'authentication_error'=>'Authentication Error',
+	'subscription_history'=>'Subscription History',
+	'ppv_history'=>'PPV History',
+	'view_more'=>'View More',
+
+	'video_settings' => 'Video Settings',
+	'revenue_settings' => 'Revenue Settings',
+	'social_media_app_settings' => 'Social Media & App Settings',
+
+	'social_media_settings' => 'Social Media Settings',
+
+	'player_configuration'=>'Player Configuration',
+	'jwplayer_key'=>'Jwplayer Key',
+	'streaming_configuration' => 'Streaming Configuration',
+	'rtmp_settings_note' => 'Ex : rtmp://IP_ADDRESS_OR_DOMAIN:1935/vod2/',
+	'hls_settings_note' => 'Ex : http://IP_ADDRESS_OR_DOMAIN:8080/',
+
+	'video_viewer_count_size_label'=>'Set Viewer Count Limit Per Video',
+	'video_viewer_count_size_label_note' => 'Usage : Set the viewer count limit. If the user enabled ads option for the video, after this view count reached. The user will get AMOUNT for each view of the video.',
+	'amount_per_video_note' => "Usage : Set the amount for each view . If the user enabled ads option for the video, after this view count reached. The user will get AMOUNT for each view of the video.",
+	'HLS_STREAMING_URL' => 'HLS Streaming URL',
+	'amount_per_video'=>'Amount Per Video View',
 );

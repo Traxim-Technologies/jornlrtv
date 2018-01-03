@@ -93,6 +93,7 @@ class VideoTape extends Model
             'video_tapes.type_of_user',
             'video_tapes.type_of_subscription',
             'video_tapes.ppv_amount',
+            'video_tapes.created_at as created_at',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as publish_time')
             
         );
