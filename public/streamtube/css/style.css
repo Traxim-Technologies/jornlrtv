@@ -2921,3 +2921,18 @@ button{
 .grey-clr{
 	color: grey;
 }
+.alert {
+	border-radius: 0 !important;
+}
+
+.alert-danger {
+    color: #e12701;
+    background-color: #ffc4c4;
+    border-color: #e2cfd2;
+}
+
+.alert-success {
+    color: #175618;
+    background-color: #dbfbcd;
+    border-color: #d6e9c6;
+}

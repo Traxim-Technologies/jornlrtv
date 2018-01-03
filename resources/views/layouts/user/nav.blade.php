@@ -19,24 +19,24 @@
 
         @if(Auth::check())
 
-        <li id="history">
-            <a href="{{route('user.history')}}">
-                <img src="{{asset('images/history.png')}}">{{tr('history')}}
-            </a>
-        </li>
-        <li id="wishlist">
-            <a href="{{route('user.wishlist')}}">
-                <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
-            </a>
-        </li>
-        @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
-            <li id="my_channel">
-                <a href="{{route('user.channel.mychannel')}}">
-                    <img src="{{asset('images/channel.png')}}">{{tr('my_channels')}}
+            <li id="history">
+                <a href="{{route('user.history')}}">
+                    <img src="{{asset('images/history.png')}}">{{tr('history')}}
                 </a>
             </li>
+            <li id="wishlist">
+                <a href="{{route('user.wishlist')}}">
+                    <img src="{{asset('images/wishlist.png')}}">{{tr('wishlist')}}
+                </a>
+            </li>
+            @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
+                <li id="my_channel">
+                    <a href="{{route('user.channel.mychannel')}}">
+                        <img src="{{asset('images/channel.png')}}">{{tr('my_channels')}}
+                    </a>
+                </li>
 
-        @endif
+            @endif
         @endif
     </ul>
                 
@@ -178,7 +178,7 @@
 
     @else
         <div class="menu4">
-            <p>Sign in now to see your channels and recommendations!</p>
+            <p>{{tr('signin_nav_content')}}</p>
             <form method="get" action="{{route('user.login.form')}}">
                 <button type="submit">{{tr('login')}}</button>
             </form>

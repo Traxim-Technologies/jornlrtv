@@ -2054,7 +2054,11 @@ class UserController extends Controller {
         return view('user.subscription');
     }
 
-    public function video_success($id) {
+    public function video_success($id = "") {
+
+        if(!$id) {
+            return redirect()->to('/')->with('flash_error' , tr('something_error'));
+        }
 
         return view('user.video_subscription')->with('id', $id);
     }
