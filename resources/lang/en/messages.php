@@ -1113,4 +1113,12 @@ return array(
 	'amount_per_video'=>'Amount Per Video View',
 	'admin_ppv_commission' => 'Admin PPV Commission',
 	'user_ppv_commission' => 'User PPV Commission',
+
+	'signin_nav_content' => 'Sign in now to see your channels and recommendations!',
+
+	'ppv_payment_success' => 'Thank you! Your payment was processed successfully.Enjoy the video!!!',
+	'subscription_payment_success' => 'Thank you! Your payment was processed successfully.',
+	
+	'admin_amount' => 'Admin Amount',
+	'user_amount' => 'User Amount',
 );

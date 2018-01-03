@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
-@section('title', tr('user_subscription_payments'))
+@section('title', tr('subscription_payments'))
 
 @section('content-header')
 
-{{ tr('user_subscription_payments') }} - {{Setting::get('currency')}} {{total_subscription_revenue($subscription ? $subscription->id : "")}}
+{{ tr('subscription_payments') }} - {{Setting::get('currency')}} {{total_subscription_revenue($subscription ? $subscription->id : "")}}
 
 @endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active"><i class="fa fa-money"></i> {{tr('user_subscription_payments')}}</li>
+    <li class="active"><i class="fa fa-money"></i> {{tr('subscription_payments')}}</li>
 @endsection
 
 @section('content')
@@ -24,7 +24,7 @@
           	<div class="box box-primary">
 
           		<div class="box-header label-primary">
-	                <b>{{tr('user_subscription_payments')}}</b>
+	                <b>{{tr('subscription_payments')}}</b>
 	                <a href="{{route('admin.users')}}" style="float:right" class="btn btn-default">{{tr('view_users')}}</a>
 	            </div>
 
@@ -40,6 +40,7 @@
 								<th>{{tr('username')}}</th>
 								<th>{{tr('plan')}}</th>
 								<th>{{tr('amount')}}</th>
+						      	<th>{{tr('expiry_date')}}</th>
 								<th>{{tr('status')}}</th>
 						    </tr>
 						</thead>
@@ -78,6 +79,8 @@
 								      	<td>{{$payment->getSubscription ? $payment->getSubscription->plan : ""}}</td>
 
 								      	<td class="text-red"><b>{{Setting::get('currency')}} {{$payment->amount}}</b></td>
+
+							      		<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>
 
 								      	<td>
 								      		@if($payment->status) 
