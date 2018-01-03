@@ -383,8 +383,6 @@ class CommonRepository {
 
                 if ($getDuration) {
 
-                    // dd($getDuration);
-
                     $model->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
 
                     $seconds = $getDuration['hours'] * 3600 + $getDuration['mins'] * 60 + $getDuration['secs'];
@@ -489,10 +487,7 @@ class CommonRepository {
                     
                    Log::info('Video Id Ajax : '.$model->id);
 
-                  
-
                     $get_image_model = ($request->id) ? self::deleteVideoTapeImage($model->id) : []; 
-
 
                     $img_status = DEFAULT_FALSE;
 

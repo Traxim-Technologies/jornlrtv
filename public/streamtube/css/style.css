@@ -3215,3 +3215,108 @@ button{
 .username a {
 	text-decoration : none;
 }
+.search-cls{
+	color: white;
+	padding: 0 15px;
+	font-size: 18px;
+}
+.header-search{
+	padding: 30px 15px;
+	background-color: #e61b1b;
+	/*border-bottom: 1px solid #fff;*/
+}
+.clear-both{
+	clear: both;
+}
+.width-95{
+	width: 94%;
+}
+.header-search{
+	display: none;
+	height: 94px;
+	position: fixed;
+	width: 100%;
+	z-index:1000;
+}
+.header-search i{
+	margin-top: 8px;
+	margin-left: 3px;
+	color: white;
+}
+.header-search a:hover, .header-search a:active, .header-search a:focus{
+	color: white
+}
+.header-search input{
+	border:1px solid #fff !important;
+	background-color: transparent;
+	color: white;
+}
+.header-search input::placeholder{
+	color: white;
+}
+.sub-history{
+	margin: 40px 15px;
+	text-align: center;
+}
+.sub-history-card{
+	border:1px solid #ddd;
+	background-color: #fff;
+	box-shadow: 1px 2px 3px rgba(0,0,0,.2);
+}
+.sub-head{
+	padding: 15px;
+	background-color: #444;
+	color: white;
+	text-align: center;
+}
+.sub-desc{
+	height:60px;
+	overflow: auto;
+	text-align: center;
+	padding: 10px 15px;
+	border-bottom: 1px solid #ddd;
+}
+.sub-deatils{
+	padding: 15px 0;
+	text-align: center;
+}
+.text-ellipsis{
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.ppv-card{
+	border: 1px solid #ddd;
+}
+.ppv-video{
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	height: 120px;
+}
+.ppv-title{
+	background-color: rgba(0,0,0,.5);
+	padding: 7px 10px;
+	width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	color: white;
+}
+.ppv-view{
+	background-color: rgba(0,0,0,.5);
+	padding: 7px 10px;
+	color: white;
+	float: right;
+	margin-top: 52px;
+}
+.ppv-details{
+	padding:10px 15px;
+}
+.green-clr{
+	color: green;
+}
+.grey-clr{
+	color: grey;
+}

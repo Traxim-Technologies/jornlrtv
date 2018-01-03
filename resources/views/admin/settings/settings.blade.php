@@ -2,7 +2,29 @@
 
 @section('title', tr('settings'))
 
+<<<<<<< HEAD
 @section('content-header', tr('settings'))
+=======
+@section('content-header') 
+
+{{tr('settings')}} 
+
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+
+<div id="help-content" style="display: none">
+
+    <ul class="popover-list">
+
+        <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
+
+        <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+
+    </ul>
+    
+</div>
+
+@endsection
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
@@ -441,6 +463,71 @@
                     </div>
 
                     <div class="tab-pane" id="site_url_settings">
+
+                        <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <label for="video_viewer_count">{{tr('video_viewer_count_size_label')}}</label>
+
+                                        <br>
+
+                                        <p class="example-note">{{tr('video_viewer_count_size_label_note')}}</p>
+
+                                        <input type="text" class="form-control" name="video_viewer_count" value="{{Setting::get('video_viewer_count')  }}" id="video_viewer_count" placeholder="{{tr('video_viewer_count_size_label')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="amount_per_video">{{tr('amount_per_video')}}</label>
+                                        
+                                        <br>
+                                        
+                                        <p class="example-note">{{tr('amount_per_video_note')}}</p>
+
+                                        <input type="text" class="form-control" name="amount_per_video" value="{{Setting::get('amount_per_video')  }}" min="0.5" id="amount_per_video" placeholder="{{tr('amount_per_video')}}">
+
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <label for="admin_ppv_commission">{{tr('admin_ppv_commission')}}</label>
+
+                                        <input type="text" class="form-control" name="admin_ppv_commission" value="{{Setting::get('admin_ppv_commission')  }}" id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <label for="user_ppv_commission">{{tr('user_ppv_commission')}}</label>
+
+                                        <input type="text" class="form-control" name="" disabled value="{{Setting::get('user_ppv_commission')  }}" id="user_ppv_commission" placeholder="{{tr('user_ppv_commission')}}">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="clearfix"></div>
+                                
+                            </div>
+                            
+                            <div class="box-footer">
+                                @if(Setting::get('admin_delete_control') == 1) 
+                                    <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                @endif
+                          </div>
+                        </form>
+
+                    </div>
+
+                    <div class="tab-pane" id="social_media_app_settings">
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
