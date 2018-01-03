@@ -338,7 +338,7 @@ class VideoTapeRepository {
         return $videos;
     }
 
-     public static function channelVideos($request, $channel_id, $web = NULL , $skip = 0) {
+    public static function channelVideos($request, $channel_id, $web = NULL , $skip = 0) {
 
         $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
                     ->where('video_tapes.status' , 1)
@@ -346,7 +346,7 @@ class VideoTapeRepository {
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->shortVideoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
-                    
+
         if ($request->id) {
             // Check any flagged videos are present
             $flagVideos = getFlagVideos($request->id);
@@ -362,8 +362,11 @@ class VideoTapeRepository {
         $videos_query->where('video_tapes.age_limit','<=', checkAge($request));
 
         if($web) {
+
             $videos = $videos_query->paginate(16);
+
         } else {
+
             $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
         }
 
@@ -603,7 +606,7 @@ class VideoTapeRepository {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.watch_count' , 'desc')
-                            ->shortVideoResponse();
+                            ->videoResponse();
 
         if ($request->id) {
 

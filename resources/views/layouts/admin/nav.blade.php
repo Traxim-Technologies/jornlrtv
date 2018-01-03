@@ -121,16 +121,16 @@
 
             @if(Setting::get('is_banner_ad'))
 
-                <li class="treeview" id="banner-ads">
+                <li class="treeview" id="bannerads_nav">
                     <a href="{{route('admin.banner-ads.index')}}">
                         <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
 
                     <ul class="treeview-menu">
                        
-                        <li id="create-banner"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
+                        <li id="bannerads-create"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
                     
-                        <li id="banner-ads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
 
                     </ul>
 
@@ -179,25 +179,14 @@
 
             @endif
 
-<<<<<<< HEAD
-             <li class="treeview" id="payments">
-                <a href="{{route('admin.user.payments')}}">
-                    <i class="fa fa-money"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
-=======
             <li class="treeview" id="payments">
 
                 <a href="#">
                     <i class="fa fa-key"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
                 </a>
 
                 <ul class="treeview-menu">
 
-<<<<<<< HEAD
-                    <li id="subscription_payments"><a href="{{route('admin.user.payments')}}"><i class="fa fa-circle-o"></i>{{tr('user_payments')}}</a></li>
-
-                    <li id="video_payments"><a href="{{route('admin.videos.payments')}}"><i class="fa fa-circle-o"></i>{{tr('video_payments')}}</a></li>
-=======
                     <li id="payments-dashboard">
                         <a href="{{route('admin.revenues')}}">
                             <i class="fa fa-circle-o"></i>
@@ -206,7 +195,7 @@
                     </li>
 
                     <li id="payments-subscriptions">
-                        <a href="{{route('admin.user.payments')}}">
+                        <a href="{{route('admin.subscription.payments')}}">
                             <i class="fa fa-credit-card"></i>
                             {{tr('subscription_payments')}}
                         </a>
@@ -218,7 +207,8 @@
                             {{tr('ppv_payments')}}
                         </a>
                     </li>
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
+
+                    <li id="video_payments"><a href="{{route('admin.videos.payments')}}"><i class="fa fa-circle-o"></i>{{tr('video_payments')}}</a></li>
                 </ul>
             </li>
 

@@ -12,7 +12,19 @@
 
 @endif
 
-<div class="streamtube-nav">
+<div class="header-search" id="search-section">
+    <form method="post" action="{{route('search-all')}}" id="userSearch_min">
+        <div class="form-group no-margin pull-left width-95">
+            <input type="text" id="auto_complete_search_min" name="key" class="auto_complete_search search-query form-control" required placeholder="Search">
+        </div>
+    </form>
+
+
+    <a href="#" id="close-btn"><i class="fa fa-close"></i></a>    
+    <div class="clear-both"></div>
+</div>
+
+<div class="streamtube-nav" id="header-section">
     <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
@@ -68,10 +80,7 @@
                             <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
 
-                            @if(Setting::get('is_payper_view')) 
-                             <li><a href="{{route('user.pay-per-videos')}}">{{tr('pay_per_videos')}}</a></li>
-
-                             @endif
+      
                             @if (Auth::user()->login_by == 'manual') 
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
@@ -124,6 +133,7 @@
 
 
             @endif
+            <span class="search-cls pull-right" id="search-btn"><i class="fa fa-search top5"></i></span>
             <div class="clearfix"></div>
 
         </div>
@@ -219,40 +229,36 @@
                                 <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
 
-                        @if(Setting::get('is_payper_view')) 
-                            <li><a href="{{route('user.pay-per-videos')}}">{{tr('pay_per_videos')}}</a></li>
-                        @endif
 
-
-                        <li role="separator" class="divider"></li>
-                        
-                        @if(Auth::user()->login_by == 'manual') 
+                            <li role="separator" class="divider"></li>
                             
-                            <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
-                        @endif
+                            @if(Auth::user()->login_by == 'manual') 
+                                
+                                <li><a href="{{route('user.change.password')}}">{{tr('change_password')}}</a></li>
+                            @endif
 
-                        <li><a href="{{route('user.subscription.history')}}">{{tr('subscription_history')}}</a></li>
+                            <li><a href="{{route('user.subscription.history')}}">{{tr('subscription_history')}}</a></li>
 
-                        @if(Setting::get('is_payper_view')) 
+                            @if(Setting::get('is_payper_view')) 
 
-                        <li><a href="{{route('user.ppv.history')}}">{{tr('ppv_history')}}</a></li>
+                            <li><a href="{{route('user.ppv.history')}}">{{tr('ppv_history')}}</a></li>
 
-                        @endif
+                            @endif
 
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
-                        
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
+                            
 
-                        <li role="separator" class="divider"></li>
+                            <li role="separator" class="divider"></li>
 
-                        <li>
-                            <a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}
-                            </a>
-                        </li>
+                            <li>
+                                <a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}
+                                </a>
+                            </li>
 
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
-                      </ul>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
+                          </ul>
                     </div>
             </div><!--y-button end-->
         @else

@@ -59,6 +59,16 @@ class PaypalController extends Controller {
 
         $subscription = Subscription::find($request->id);
 
+        if(count($subscription) == 0) {
+
+            Log::info("Subscription Details Not Found");
+
+            $error_message = "Subscription Details Not Found";
+
+            return redirect()->route("payment.failure")->with('flash_error' , $error_message);
+
+        }
+
         $total = $subscription ? $subscription->amount : "1.00" ;
 
         $item = new Item();
@@ -450,7 +460,6 @@ class PaypalController extends Controller {
                     $moderator->total_amount = $moderator->total_amount + $total;
 
                     $moderator->save();
-
 
                 }
 

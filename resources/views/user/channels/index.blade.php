@@ -668,7 +668,7 @@
 																								</div>
 																								<div>
 
-																									{{{$video->type_of_subscription}}} ergergerg
+																									{{{$video->type_of_subscription}}}
 																								    <label class="radio1">
 																									    <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
 																									    <span class="outer"><span class="inner"></span></span>{{tr('recurring_payment')}}
