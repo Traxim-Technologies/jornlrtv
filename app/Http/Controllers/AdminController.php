@@ -2482,7 +2482,7 @@ class AdminController extends Controller {
     public function banner_ads_save(Request $request) {
 
         $validator = Validator::make($request->all(),[
-                'title' => 'required|max:255',
+                'title' => 'max:255',
                 'description' => '',
                 'position'=>$request->id ? 'required' :'required|unique:banner_ads',
                 'link'=>'required|url',
