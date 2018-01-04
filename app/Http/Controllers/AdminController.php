@@ -690,7 +690,7 @@ class AdminController extends Controller {
 
     public function view_history($id) {
 
-        if($user = User::find($id)) {
+        if($user_details = User::find($id)) {
 
             $user_history = UserHistory::where('user_histories.user_id' , $id)
                             ->leftJoin('users' , 'user_histories.user_id' , '=' , 'users.id')
@@ -706,6 +706,7 @@ class AdminController extends Controller {
                             ->get();
 
             return view('admin.users.user-history')
+                        ->with('user_details' , $user_details)
                         ->with('data' , $user_history)
                         ->withPage('users')
                         ->with('sub_page','users');
@@ -749,6 +750,7 @@ class AdminController extends Controller {
 
             return view('admin.users.user-wishlist')
                         ->with('data' , $user_wishlist)
+                        ->with('user_details' , $user)
                         ->withPage('users')
                         ->with('sub_page','users');
 

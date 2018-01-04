@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ##[1.2.1] - 
 
+## 04.01.2018 - Admin 
+
+- user type added in users list and view page
+
+- user wishlist and history - username added
+
+- View Videos - Channel link added
+
+
 ## 02.01.2018 - Admin 
 
 - Revenues dashboard and PPV payments sections added 

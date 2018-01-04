@@ -454,8 +454,8 @@
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="body_end_scripts">{{tr('body_end_scripts')}}</label>
-                                        <textarea class="form-control" id="body_end_scripts" name="body_end_scripts">{{Setting::get('body_end_scripts')}}</textarea>
+                                        <label for="body_scripts">{{tr('body_scripts')}}</label>
+                                        <textarea class="form-control" id="body_scripts" name="body_scripts">{{Setting::get('body_scripts')}}</textarea>
                                     </div>
                                 </div>   
 
