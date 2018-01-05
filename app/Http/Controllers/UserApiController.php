@@ -4290,13 +4290,13 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = ['success'=>false, 'error_messages'=>tr('subscription_error')];
+                $response_array = ['success'=>false,'error_messages'=>Helper::get_error_message(164), 'error_code'=>164];
 
             }
 
         } else {
 
-            $response_array = ['success'=>false, 'error_messages'=>tr('channel_create_error')];
+            $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(163), 'error_code'=>163];
         }
 
         return response()->json($response_array);
