@@ -4483,8 +4483,7 @@ class UserApiController extends Controller {
 
                     } 
 
-                    $videoDetails = $value->videoTapeDetails ? $value->videoTapeDetails : '';
-
+                    $videoDetails = $value->video ? $value->video : '';
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -4524,9 +4523,8 @@ class UserApiController extends Controller {
 
                     } 
 
-                    $videoDetails = $value->videoTapeDetails ? $value->videoTapeDetails : '';
-
-                    
+                    $videoDetails = $value->video ? $value->video : '';
+    
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
