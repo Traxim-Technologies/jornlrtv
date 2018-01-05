@@ -4543,7 +4543,7 @@ class UserApiController extends Controller {
 
                 }
 
-                $response_array = ['success'=>true, 'data'=>$model];
+                $response_array = ['success'=>true, 'data'=>$data];
             }
 
             return response()->json($response_array);
