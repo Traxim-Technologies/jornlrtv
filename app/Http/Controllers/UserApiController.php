@@ -2392,6 +2392,12 @@ class UserApiController extends Controller {
 
             if($user_payment) {
 
+                if ($user_payment->amount <= 0) {
+
+                    $user_payment->user->one_time_subscription = DEFAULT_TRUE;
+
+                }
+
                 $user_payment->user->user_type = DEFAULT_TRUE;
 
                 $user_payment->user->save();
@@ -2704,6 +2710,7 @@ class UserApiController extends Controller {
                                 $user_payment->save();
 
 
+
                                 $user->user_type = 1;
 
                                 $user->save();
@@ -2766,7 +2773,10 @@ class UserApiController extends Controller {
                     $user_payment->save();
 
 
+
                     $user->user_type = 1;
+
+                    $user->one_time_subscription = 1;
 
                     $user->save();
                     
