@@ -1068,7 +1068,9 @@ function watchFullVideo($user_id, $user_type, $video) {
                     }
                 }  
             }
-        } 
+        } else if($video->ppv_amount > 0 && $video->type_of_user == PAID_USER){
+            return true;
+        }
     }
     return false;
 }
