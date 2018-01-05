@@ -1031,7 +1031,8 @@ function watchFullVideo($user_id, $user_type, $video) {
 
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
                 ->where('amount', '>', 0)
-                ->orderBy('created_at', 'desc')->first();
+                ->orderBy('created_at', 'desc')
+                ->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
                 if ($paymentView) {
