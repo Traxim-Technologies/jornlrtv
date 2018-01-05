@@ -1050,6 +1050,7 @@ class UserApiController extends Controller {
             'login_by' => $user->login_by,
             'social_unique_id' => $user->social_unique_id,
             'push_status' => $user->push_status,
+            'user_type'=>$user->user_type ? $user->user_type : 0
         );
         $response = response()->json(Helper::null_safe($response_array), 200);
         return $response;
