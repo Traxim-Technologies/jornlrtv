@@ -4456,7 +4456,7 @@ class UserApiController extends Controller {
                     'pay_per_views.type_of_subscription',
                     'pay_per_views.type_of_user',
                     'pay_per_views.payment_id',
-                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date'),
+                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date')
                      )
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
                     ->where('pay_per_views.user_id', $request->id)
