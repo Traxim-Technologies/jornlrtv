@@ -306,6 +306,7 @@ class UserApiController extends Controller {
 
             $payperview = PayPerView::where('user_id', $request->id)
                             ->where('video_id',$request->video_tape_id)
+                            ->orderby('created_at', 'desc')
                             ->where('status',0)->first();
 
             if ($payperview) {
