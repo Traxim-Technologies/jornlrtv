@@ -1171,6 +1171,7 @@ function displayVideoDetails($data,$userId) {
         'ppv_amount'=>$data->ppv_amount,
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
+        'channel_image'=>$data->channel_picture,
         'created_at'=>$data->created_at->diffForHumans(),   
         'ad_status'=>$data->ad_status,
         'description'=>$data->description,
