@@ -2336,7 +2336,7 @@ class UserApiController extends Controller {
 
             if ($user) {
 
-               if ($user->one_time_subscription == DEFAULT_TRUE) {
+               if ($user->zero_subscription_status == DEFAULT_TRUE) {
 
                    $query->where('amount','>', 0);
 
@@ -2392,15 +2392,17 @@ class UserApiController extends Controller {
 
             if($user_payment) {
 
+                $user =  User::find($request->id);
+
                 if ($user_payment->amount <= 0) {
 
-                    $user_payment->user->one_time_subscription = DEFAULT_TRUE;
+                    $user->zero_subscription_status = DEFAULT_TRUE;
 
                 }
 
-                $user_payment->user->user_type = DEFAULT_TRUE;
+                $user->user_type = DEFAULT_TRUE;
 
-                $user_payment->user->save();
+                $user->save();
             }
 
             $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
@@ -2776,7 +2778,7 @@ class UserApiController extends Controller {
 
                     $user->user_type = 1;
 
-                    $user->one_time_subscription = 1;
+                    $user->zero_subscription_status = 1;
 
                     $user->save();
                     
