@@ -4445,6 +4445,8 @@ class UserApiController extends Controller {
             return response()->json($response_array);
         } else {
 
+            $currency = Setting::get('currency');
+
             $query = PayPerView::select('pay_per_views.id as pay_per_view_id',
                     'video_id as video_tape_id',
                     'video_tapes.title',
@@ -4454,7 +4456,8 @@ class UserApiController extends Controller {
                     'pay_per_views.type_of_subscription',
                     'pay_per_views.type_of_user',
                     'pay_per_views.payment_id',
-                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date'))
+                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date'),
+                     )
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
                     ->where('pay_per_views.user_id', $request->id)
                     ->where('pay_per_views.amount', '>', 0);
@@ -4465,7 +4468,21 @@ class UserApiController extends Controller {
 
                 $data = [];
 
+                $user = User::find($request->id);
+
                 foreach ($model->items() as $key => $value) {
+
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($user) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    } 
+
+                    $videoDetails = $value->videoTapeDetails ? $value->videoTapeDetails : '';
+
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -4477,7 +4494,11 @@ class UserApiController extends Controller {
                             'picture'=>$value->picture,
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
-                            'payment_id'=>$value->payment_id];
+                            'payment_id'=>$value->payment_id,
+                            'pay_per_view_status'=>$videoDetrueils ? watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails) : true,
+                            'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+
+                            ];
 
                 }
 
@@ -4492,6 +4513,17 @@ class UserApiController extends Controller {
                 $data = [];
 
                 foreach ($model as $key => $value) {
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($user) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    } 
+
+                    $videoDetails = $value->videoTapeDetails ? $value->videoTapeDetails : '';
+
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -4503,7 +4535,9 @@ class UserApiController extends Controller {
                             'picture'=>$value->picture,
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
-                            'payment_id'=>$value->payment_id];
+                            'payment_id'=>$value->payment_id,'pay_per_view_status'=>$videoDetrueils ? watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails) : true,
+                            'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page];
+                            ];
 
                 }
 

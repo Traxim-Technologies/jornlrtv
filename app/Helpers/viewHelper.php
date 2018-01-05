@@ -1022,6 +1022,7 @@ function number_format_short( $n, $precision = 1 ) {
  */
 function watchFullVideo($user_id, $user_type, $video) {
 
+
     if ($user_type == 1) {
 
         if ($video->ppv_amount == 0) {
