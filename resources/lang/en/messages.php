@@ -813,7 +813,7 @@ return array(
 	'add_cover_photo'=>'Add cover photo',
 
 	'header_scripts' => 'Header Scripts',
-	'body_end_scripts' => 'Body Bottom Scripts',
+	'body_scripts' => 'Body Bottom Scripts',
 
 	// REDEEM MESSAGES START
 
@@ -1036,4 +1036,15 @@ return array(
 	
 	'admin_amount' => 'Admin Amount',
 	'user_amount' => 'User Amount',
+	'ppv' => 'PPV',
+	'is_ads' => 'Is Ads',
+	'is_ppv' => 'Is PPV',
+	'ads_view_revenue' => 'Ads View Amount',
+	'ppv_revenue' => 'PPV Revenue',
+	'ppv_created_by' => 'PPV Created BY',
+
+	'now' => 'Now',
+	'later' => 'Later',
+
+	'is_verified' => 'Is Verified',
 );

@@ -298,7 +298,9 @@ class UserApiController extends Controller {
 
                 }
 
-                $response_array = array('success' => true);
+                // navigateback = used to handle the replay in mobile for recurring payments
+
+                $response_array = array('success' => true , 'navigateback' => 1);
            
             }
 

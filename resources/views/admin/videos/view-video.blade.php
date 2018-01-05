@@ -2,7 +2,23 @@
 
 @section('title', tr('view_video'))
 
-@section('content-header', tr('view_video'))
+@section('content-header') 
+
+{{tr('view_video')}} 
+
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+
+<div id="help-content" style="display: none">
+
+    <ul class="popover-list">
+        <li><b>{{tr('ads_view_revenue')}} - </b> Watch Count revenue based on the {{tr('ad_status')}} </li>
+        <li><b>{{tr('age_limit')}} - </b> If the video marked as 18+, the video will be display only for above 18+ age users. </li>
+        <li><b>{{tr('ppv_created_by')}} - </b> Admin or User </li>
+    </ul>
+    
+</div>
+
+@endsection
 
 @section('styles')
 
@@ -47,6 +63,47 @@ hr {
             <!-- /.box-header -->
             <div class="box-body">
 
+                <section id="revenue-section" >
+
+                    <div class="row">
+
+                        <h3 style="margin-top:0;" class="text-green col-lg-12">{{tr('ppv_revenue')}}</h3>
+
+                        <div class="col-md-4">
+
+                            <p class="ppv-amount-label">
+                                <b>{{tr('total')}}: </b>
+                                <label class="text-red">{{Setting::get('currency')}} {{$video->admin_amount + $video->user_amount}}</label>
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <p class="ppv-amount-label">
+                                <b>{{tr('admin_amount')}}: </b>
+                                <label class="text-green">{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</label>
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <p class="ppv-amount-label">
+                                <b>{{tr('user_amount')}}: </b>
+                                <label class="text-blue">
+                                    {{Setting::get('currency')}} {{$video->user_ppv_amount}}
+                                </label>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                </section>
+
               <div class="row">
                   <div class="col-lg-12 row">
 
@@ -66,10 +123,48 @@ hr {
                                 <li class="list-group-item">
                                     <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <a href="#" class="pull-right">{{$video->duration}}</a>
                                 </li>
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-stop margin-r-5"></i>{{tr('age_limit')}}</b> <a class="pull-right">{{$video->age_limit ? '18+' :  'All Users'}}&nbsp;</a>
+                                </li> 
+
                                 <li class="list-group-item">
                                     <b><i class="fa fa-bullhorn margin-r-5"></i>{{tr('ad_status')}}</b> <a class="pull-right">
                                         
                                         @if($video->ad_status)
+                                            <span class="label label-success">{{tr('yes')}}</span>
+                                        @else
+                                            <span class="label label-danger">{{tr('no')}}</span>
+                                        @endif
+                                    </a>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-bullhorn margin-r-5"></i>{{tr('publish_type')}}</b> <a class="pull-right">
+                                        
+                                        @if($video->publish_status)
+                                            <span class="label label-success">{{tr('now')}}</span>
+                                        @else
+                                            <span class="label label-danger">{{tr('later')}}</span>
+                                        @endif
+                                    </a>
+                                </li>
+
+                                @if($video->publish_status != 1)
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-bullhorn margin-r-5"></i>{{tr('publish_time')}}</b> <a class="pull-right">
+                                        
+                                        {{$video->publish_time }}
+                                    </a>
+                                </li>
+
+                                @endif
+
+                                <li class="list-group-item">
+                                    <b><i class="fa fa-bullhorn margin-r-5"></i>{{tr('is_ppv')}}</b> <a class="pull-right">
+                                        
+                                       @if($video->ppv_amount > 0)
                                             <span class="label label-success">{{tr('yes')}}</span>
                                         @else
                                             <span class="label label-danger">{{tr('no')}}</span>
@@ -103,12 +198,10 @@ hr {
                                 </li>
 
                                 <li class="list-group-item">
-                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('amount')}}</b> <a class="pull-right"> {{Setting::get('currency')}} {{$video->amount}}</a>
+                                    <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('ads_view_revenue')}}</b> <a class="pull-right"> {{Setting::get('currency')}} {{$video->amount}}</a>
                                 </li>
 
-                                <li class="list-group-item">
-                                    <b><i class="fa fa-stop margin-r-5"></i>{{tr('age_limit')}}</b> <a class="pull-right">{{$video->age_limit ? '18+' :  'All Users'}}&nbsp;</a>
-                                </li> 
+                                
 
                                 <li class="list-group-item">
                                     <b><i class="fa fa-thumbs-up margin-r-5"></i>{{tr('likes')}}</b> <a class="pull-right">{{number_format_short($video->getScopeLikeCount->count())}}&nbsp;</a>

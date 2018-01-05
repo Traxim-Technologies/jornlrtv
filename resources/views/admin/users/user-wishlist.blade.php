@@ -2,7 +2,13 @@
 
 @section('title', tr('view_wishlist'))
 
-@section('content-header',tr('view_wishlist'))
+@section('content-header')
+
+{{tr('view_wishlist')}} - 
+
+<a href="{{route('admin.view.user' , $user_details->id)}}">{{$user_details->name}}</a>
+
+@endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
