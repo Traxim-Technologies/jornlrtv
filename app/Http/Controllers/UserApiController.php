@@ -4462,14 +4462,15 @@ class UserApiController extends Controller {
                     ->where('pay_per_views.user_id', $request->id)
                     ->where('pay_per_views.amount', '>', 0);
 
+            $user = User::find($request->id);
+
             if ($request->device_type == DEVICE_WEB) {
 
                 $model = $query->paginate(16);
 
                 $data = [];
 
-                $user = User::find($request->id);
-
+            
                 foreach ($model->items() as $key => $value) {
 
 
