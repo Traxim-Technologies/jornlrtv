@@ -295,7 +295,7 @@ class UserApiController extends Controller {
 
             if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first()) {
 
-                $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
+                // $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
 
             } else {
 
@@ -311,22 +311,22 @@ class UserApiController extends Controller {
 
                 }
 
-                $video = VideoTape::find($request->video_tape_id);
-
-                $navigateback = 0;
-
-                if ($video->type_of_subscription == RECURRING_PAYMENT) {
-
-                    $navigateback = 1;
-
-                }
-
-                // navigateback = used to handle the replay in mobile for recurring payments
-
-                $response_array = array('success' => true , 'navigateback' => $navigateback);
            
             }
 
+            $video = VideoTape::find($request->video_tape_id);
+
+            $navigateback = 0;
+
+            if ($video->type_of_subscription == RECURRING_PAYMENT) {
+
+                $navigateback = 1;
+
+            }
+
+            // navigateback = used to handle the replay in mobile for recurring payments
+
+            $response_array = array('success' => true , 'navigateback' => $navigateback);
            
 
         }
