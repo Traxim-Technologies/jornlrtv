@@ -1192,7 +1192,8 @@ function displayVideoDetails($data,$userId) {
         'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
-        'publish_time'=>date('F Y', strtotime($data->publish_time)),
+        // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
+        'publish_time'=>$data->created_at->diffForHumans(),
         'user_ppv_amount'=>$data->user_ppv_amount,
         'is_liked'=>$like_status,
         'wishlist_status'=>$wishlist_status,
