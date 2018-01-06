@@ -41,10 +41,10 @@
                                             <h4>{{Auth::user()->email}}</h4>
                                         @endif
                                         
-                                        @if(Auth::user()->user_type)
+                                        <?php /*@if(Auth::user()->user_type)
                                             <?php $subscription_details = get_expiry_days(Auth::user()->id);?>
                                             <p style="color:#cc181e">{{tr('no_of_days_expiry')}} <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
-                                        @endif
+                                        @endif */
 
                                        
                                         <p>{{Auth::user()->mobile}}</p>  

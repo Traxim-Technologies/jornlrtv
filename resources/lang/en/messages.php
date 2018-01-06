@@ -1050,4 +1050,5 @@ return array(
 	'failed'=>'Failed',
 	'success'=>'Success',
 	'no_page_found'=>'No Page Found. Please try again later',
+	'view_plans'=>'View Plans',
 );

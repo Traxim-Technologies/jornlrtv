@@ -1052,12 +1052,12 @@ class UserController extends Controller {
         $response = $this->UserAPI->delete_account($request)->getData();
 
         if($response->success) {
+            
             return back()->with('flash_success', tr('user_account_delete_success'));
+
         } else {
-            if($response->error == 101)
-                return back()->with('flash_error', $response->error_messages);
-            else
-                return back()->with('flash_error', $response->error);
+
+            return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
