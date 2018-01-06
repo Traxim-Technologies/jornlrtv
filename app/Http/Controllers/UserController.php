@@ -1792,6 +1792,7 @@ class UserController extends Controller {
                        if($paid_status) {
 
 
+
                             $last_payment = UserPayment::where('user_id' , $request->id)
                                     ->where('status', DEFAULT_TRUE)
                                     ->orderBy('created_at', 'desc')
