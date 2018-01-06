@@ -1049,4 +1049,5 @@ return array(
 	'is_verified' => 'Is Verified',
 	'failed'=>'Failed',
 	'success'=>'Success',
+	'no_page_found'=>'No Page Found. Please try again later',
 );

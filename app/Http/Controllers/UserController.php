@@ -1398,6 +1398,12 @@ class UserController extends Controller {
 
         $page = Page::find($id);
 
+        if (!$page) {
+
+            return back()->with('flash_error', tr('no_page_found'));
+
+        }
+
         return view('static.common')->with('model' , $page)
                         ->with('page' , $page->type)
                         ->with('subPage' , '');
