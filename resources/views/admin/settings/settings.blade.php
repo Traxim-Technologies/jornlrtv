@@ -257,13 +257,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
 
-                                        <label for="video_viewer_count">{{tr('video_viewer_count_size_label')}}</label>
+                                        <label for="viewers_count_per_video">{{tr('video_viewer_count_size_label')}}</label>
 
                                         <br>
 
                                         <p class="example-note">{{tr('video_viewer_count_size_label_note')}}</p>
 
-                                        <input type="text" class="form-control" name="video_viewer_count" value="{{Setting::get('video_viewer_count')  }}" id="video_viewer_count" placeholder="{{tr('video_viewer_count_size_label')}}">
+                                        <input type="text" class="form-control" name="viewers_count_per_video" value="{{Setting::get('viewers_count_per_video')  }}" id="viewers_count_per_video" placeholder="{{tr('video_viewer_count_size_label')}}">
                                     </div>
                                 </div>
 
@@ -454,8 +454,8 @@
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="body_end_scripts">{{tr('body_end_scripts')}}</label>
-                                        <textarea class="form-control" id="body_end_scripts" name="body_end_scripts">{{Setting::get('body_end_scripts')}}</textarea>
+                                        <label for="body_scripts">{{tr('body_scripts')}}</label>
+                                        <textarea class="form-control" id="body_scripts" name="body_scripts">{{Setting::get('body_scripts')}}</textarea>
                                     </div>
                                 </div>   
 

@@ -204,6 +204,7 @@ class CommonRepository {
                 $validator = Validator::make( $request->all(), array(
                             'name' => 'required|max:255',
                             'description'=>'required',
+                            'channel_id' => 'required|exists:channels,id'
                         ));
             } else {
                 $validator = Validator::make( $request->all(), array(
@@ -253,7 +254,7 @@ class CommonRepository {
 
                 $channel->description = $request->has('description') ? $request->description : '';
 
-                $channel->user_id = $request->has('id') ? $request->id : '';
+                $channel->user_id = $request->has('user_id') ? $request->user_id : '';
 
                 $channel->status = DEFAULT_TRUE;
 

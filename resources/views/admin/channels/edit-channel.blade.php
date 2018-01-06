@@ -29,7 +29,7 @@
 
                     <div class="box-body">
 
-                        <input type="hidden" name="id" value="{{$channel->id}}">
+                        <input type="hidden" name="channel_id" value="{{$channel->id}}">
 
                         <input type="hidden" name="user_id" value="{{$channel->user_id}}" >
 

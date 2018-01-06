@@ -280,9 +280,22 @@ class UserApiController extends Controller {
 
         } else {
 
+            $payperview = PayPerView::where('user_id', $request->id)
+                            ->where('video_id',$request->video_tape_id)
+                            ->orderby('created_at', 'desc')
+                            ->where('status',0)->first();
+
+            if ($payperview) {
+
+                $payperview->status = DEFAULT_TRUE;
+
+                $payperview->save();
+
+            }
+
             if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first()) {
 
-                $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
+                // $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
 
             } else {
 
@@ -298,22 +311,23 @@ class UserApiController extends Controller {
 
                 }
 
-                $response_array = array('success' => true);
            
             }
 
-            $payperview = PayPerView::where('user_id', $request->id)
-                            ->where('video_id',$request->video_tape_id)
-                            ->where('status',0)->first();
+            $video = VideoTape::find($request->video_tape_id);
 
-            if ($payperview) {
+            $navigateback = 0;
 
-                $payperview->status = DEFAULT_TRUE;
+            if ($video->type_of_subscription == RECURRING_PAYMENT) {
 
-                $payperview->save();
+                $navigateback = 1;
 
             }
 
+            // navigateback = used to handle the replay in mobile for recurring payments
+
+            $response_array = array('success' => true , 'navigateback' => $navigateback);
+           
 
         }
         return response()->json($response_array, 200);
@@ -1048,6 +1062,7 @@ class UserApiController extends Controller {
             'login_by' => $user->login_by,
             'social_unique_id' => $user->social_unique_id,
             'push_status' => $user->push_status,
+            'user_type'=>$user->user_type ? $user->user_type : 0
         );
         $response = response()->json(Helper::null_safe($response_array), 200);
         return $response;
@@ -2334,7 +2349,7 @@ class UserApiController extends Controller {
 
             if ($user) {
 
-               if ($user->one_time_subscription == DEFAULT_TRUE) {
+               if ($user->zero_subscription_status == DEFAULT_TRUE) {
 
                    $query->where('amount','>', 0);
 
@@ -2390,9 +2405,17 @@ class UserApiController extends Controller {
 
             if($user_payment) {
 
-                $user_payment->user->user_type = DEFAULT_TRUE;
+                $user =  User::find($request->id);
 
-                $user_payment->user->save();
+                if ($user_payment->amount <= 0) {
+
+                    $user->zero_subscription_status = DEFAULT_TRUE;
+
+                }
+
+                $user->user_type = DEFAULT_TRUE;
+
+                $user->save();
             }
 
             $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
@@ -2702,6 +2725,7 @@ class UserApiController extends Controller {
                                 $user_payment->save();
 
 
+
                                 $user->user_type = 1;
 
                                 $user->save();
@@ -2764,7 +2788,10 @@ class UserApiController extends Controller {
                     $user_payment->save();
 
 
+
                     $user->user_type = 1;
+
+                    $user->zero_subscription_status = 1;
 
                     $user->save();
                     
@@ -4288,13 +4315,13 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = ['success'=>false, 'error_messages'=>tr('subscription_error')];
+                $response_array = ['success'=>false,'error_messages'=>Helper::get_error_message(164), 'error_code'=>164];
 
             }
 
         } else {
 
-            $response_array = ['success'=>false, 'error_messages'=>tr('channel_create_error')];
+            $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(163), 'error_code'=>163];
         }
 
         return response()->json($response_array);
@@ -4430,6 +4457,8 @@ class UserApiController extends Controller {
             return response()->json($response_array);
         } else {
 
+            $currency = Setting::get('currency');
+
             $query = PayPerView::select('pay_per_views.id as pay_per_view_id',
                     'video_id as video_tape_id',
                     'video_tapes.title',
@@ -4439,10 +4468,13 @@ class UserApiController extends Controller {
                     'pay_per_views.type_of_subscription',
                     'pay_per_views.type_of_user',
                     'pay_per_views.payment_id',
-                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date'))
+                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date')
+                     )
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
                     ->where('pay_per_views.user_id', $request->id)
                     ->where('pay_per_views.amount', '>', 0);
+
+            $user = User::find($request->id);
 
             if ($request->device_type == DEVICE_WEB) {
 
@@ -4450,7 +4482,19 @@ class UserApiController extends Controller {
 
                 $data = [];
 
+            
                 foreach ($model->items() as $key => $value) {
+
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($user) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    } 
+
+                    $videoDetails = $value->video ? $value->video : '';
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -4462,7 +4506,11 @@ class UserApiController extends Controller {
                             'picture'=>$value->picture,
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
-                            'payment_id'=>$value->payment_id];
+                            'payment_id'=>$value->payment_id,
+                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+
+                            ];
 
                 }
 
@@ -4477,7 +4525,17 @@ class UserApiController extends Controller {
                 $data = [];
 
                 foreach ($model as $key => $value) {
-                    
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($user) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    } 
+
+                    $videoDetails = $value->video ? $value->video : '';
+    
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
@@ -4488,11 +4546,14 @@ class UserApiController extends Controller {
                             'picture'=>$value->picture,
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
-                            'payment_id'=>$value->payment_id];
+                            'payment_id'=>$value->payment_id,
+                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ 
+                            ];
 
                 }
 
-                $response_array = ['success'=>true, 'data'=>$model];
+                $response_array = ['success'=>true, 'data'=>$data];
             }
 
             return response()->json($response_array);

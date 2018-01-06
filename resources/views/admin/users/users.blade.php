@@ -2,8 +2,24 @@
 
 @section('title', tr('users'))
 
-@section('content-header', tr('users'))
+@section('content-header') 
 
+{{tr('users')}} 
+
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+
+<div id="help-content" style="display: none">
+
+    <ul class="popover-list">
+        <li><span class="text-green"><i class="fa fa-check-circle"></i></span> - Paid / Subscribed Users</li>
+        <li><span class="text-red"><i class="fa fa-times"></i></span> - Unpaid / Unsubscribed Users</li>
+        <li><b>{{tr('redeems')}} - </b> Current Wallet amount the user </li>
+        <li><b>{{tr('validity_days')}} - </b> Expiry days of the subscription for the user. </li>
+    </ul>
+    
+</div>
+
+@endsection
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li class="active"><i class="fa fa-user"></i> {{tr('users')}}</li>
@@ -47,13 +63,29 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a href="{{route('admin.view.user' , $user->id)}}"> {{$user->name}}</a></td>
+							      	<td>
+							      		<a href="{{route('admin.view.user' , $user->id)}}"> 
+
+							      			{{$user->name}}
+
+							      			@if($user->user_type)
+
+							      			<span class="text-green pull-right"><i class="fa fa-check-circle"></i></span>
+
+							      			@else
+
+							      			<span class="text-red pull-right"><i class="fa fa-times"></i></span>
+
+							      			@endif
+
+							      		</a>
+							      	</td>
 							      	<td>{{$user->email}}</td>
 							      	<td>{{$user->mobile}}</td>
 							      	
 									<td>
 										@if($user->user_type)
-											{{get_expiry_days($user->id)['days']}}
+											{{get_expiry_days($user->id)['days']}} days
 										@endif
 									</td>
 
@@ -91,7 +123,8 @@
 							 
 							      <td>
             							<ul class="admin-action btn btn-default">
-            								<li class="dropup">
+
+            								<li class="@if($i < 2) dropdown @else dropup @endif">
 								               
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
