@@ -999,7 +999,13 @@ textarea[name=comments] {
 
                                                            if(data.success == true) {
 
-                                                            console.log('Added to history');
+                                                                if (data.navigateback) {
+
+                                                                    window.location.reload(true);
+
+                                                                }
+
+                                                                console.log('Added to history');
 
                                                            } else {
                                                                 console.log('Wrong...!');
@@ -1115,6 +1121,12 @@ textarea[name=comments] {
                                                     success: function(data) {
 
                                                        if(data.success == true) {
+
+                                                            if (data.navigateback) {
+
+                                                                window.location.reload(true);
+
+                                                            }
 
                                                         console.log('Added to history');
 

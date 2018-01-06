@@ -482,17 +482,13 @@ class VideoTapeRepository {
                     $data['comment_rating_status'] = DEFAULT_FALSE;
                 }
 
-    
-
                 if($user_details = User::find($user_id)) {
 
                     $data['user_type'] = $user_details->user_type;
 
                     $is_ppv_status = ($video_tape_details->type_of_user == NORMAL_USER || $video_tape_details->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
 
-
                 }
-
 
             }
 
