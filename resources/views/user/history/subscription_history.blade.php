@@ -52,10 +52,13 @@
 											@endif
 											<p class="top5">{{$temp->plan}} months</p>
 										</div>
+
+										@if($temp->status)
 										<div class="col-xs-6 col-sm-6">
 											<small class="no-margin">Expies On</small>
 											<p class="no-margin">{{$temp->expiry_date}}</p>
 										</div>
+										@endif
 									</div>
 								</div>
 							</div>
