@@ -316,7 +316,6 @@
                     $string = tr('failed_to_upload');
 
                     break;
-
                 case 163 :
                     $string = tr('streaming_stopped');
 
@@ -343,9 +342,15 @@
 
                 break;
 
-                
+                // case 163 :
+//                     $string = tr('channel_create_error');
 
+//                     break;
+//                 case 164 :
 
+//                     $string = tr('subscription_error');
+
+//                     break;
                 case 1000:
                     $string = tr('video_is_in_flag_list');
                     break;

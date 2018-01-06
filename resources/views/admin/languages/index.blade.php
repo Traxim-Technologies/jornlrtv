@@ -112,7 +112,12 @@
                                                     </li>
 
                                                     @endif
+
+                                                    
+
                                                     <li>
+
+                                                        @if(count($data) > 1)
 
                                                         <a href="{{route('admin.languages.status', $value->id)}}"><b>
                                                         @if($value->status)
@@ -122,7 +127,14 @@
                                                         @endif
                                                         </b>
                                                         </a>
+
+                                                        @else
+
+                                                         <a href="javascript:void(0);" disabled style="color: red;cursor: no-drop" title="This option will enable when more than one languages !!!">{{$value->status ? tr('inactivate') : tr('activate')}}</a>
+
+                                                        @endif
                                                     </li>
+
                                                     
                                                     @if($value->folder_name != Setting::get('default_lang'))
                                                     <li>

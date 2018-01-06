@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ##[1.2.1] - 
 
+## 06-01-2018 - ADMIN 
+
+- channel user_id and channel_id save issue fixed
+
+## 04.01.2018 - Admin 
+
+- user type added in users list and view page
+
+- user wishlist and history - username added
+
+- View Videos - Channel link added
+
+
 ## 02.01.2018 - Admin 
 
 - Revenues dashboard and PPV payments sections added 

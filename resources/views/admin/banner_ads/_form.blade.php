@@ -20,14 +20,12 @@
 
                     <div class="form-group">
                         <label for="title">{{tr('title')}}</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{$model->title}}" required>
+                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{$model->title}}">
                     </div>
 
                     <div class="form-group">
                         <label for="heading">{{tr('image')}}</label>
                         <input type="file" name="file" id="file" accept="image/jpeg,image/png" @if(!$model->id) required @endif>
-
-
 
                         <p><small>{{tr('banner_notes')}}</small></p>
                     </div>
@@ -38,6 +36,7 @@
                     </div>
 
                     <div class="form-group">
+                        
                         <label for="description">{{tr('description')}}</label>
 
                         <textarea id="ckeditor" name="description" class="form-control" placeholder="Enter text ...">{{$model->description}}</textarea>
