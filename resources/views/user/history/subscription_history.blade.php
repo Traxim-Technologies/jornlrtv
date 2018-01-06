@@ -42,6 +42,14 @@
 									</div>
 									<div class="row sub-deatils">
 										<div class="col-xs-6 col-sm-6">
+
+											@if($temp->status)
+
+											<small class="label label-success">{{tr('success')}}</small>
+
+											@else
+											<small class="label label-danger">{{tr('failed')}}</small>
+											@endif
 											<p class="top5">{{$temp->plan}} months</p>
 										</div>
 										<div class="col-xs-6 col-sm-6">

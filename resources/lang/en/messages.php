@@ -1047,4 +1047,6 @@ return array(
 	'later' => 'Later',
 
 	'is_verified' => 'Is Verified',
+	'failed'=>'Failed',
+	'success'=>'Success',
 );
