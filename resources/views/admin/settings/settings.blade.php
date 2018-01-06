@@ -2,9 +2,6 @@
 
 @section('title', tr('settings'))
 
-<<<<<<< HEAD
-@section('content-header', tr('settings'))
-=======
 @section('content-header') 
 
 {{tr('settings')}} 
@@ -24,7 +21,6 @@
 </div>
 
 @endsection
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
@@ -490,26 +486,6 @@
                                         <input type="text" class="form-control" name="amount_per_video" value="{{Setting::get('amount_per_video')  }}" min="0.5" id="amount_per_video" placeholder="{{tr('amount_per_video')}}">
 
                                     </div>
-                                </div>
-
-                                 <div class="col-md-6">
-                                    <div class="form-group">
-
-                                        <label for="admin_ppv_commission">{{tr('admin_ppv_commission')}}</label>
-
-                                        <input type="text" class="form-control" name="admin_ppv_commission" value="{{Setting::get('admin_ppv_commission')  }}" id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-
-                                        <label for="user_ppv_commission">{{tr('user_ppv_commission')}}</label>
-
-                                        <input type="text" class="form-control" name="" disabled value="{{Setting::get('user_ppv_commission')  }}" id="user_ppv_commission" placeholder="{{tr('user_ppv_commission')}}">
-
-                                    </div>
-
                                 </div>
 
                                 <div class="clearfix"></div>
