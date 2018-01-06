@@ -42,16 +42,20 @@
 									<th>{{tr('slider_video')}}</th>
 								@endif */?>
 
-								<th>{{tr('ad_status')}}</th>
+								<!-- <th>{{tr('likes')}}</th>
+								<th>{{tr('dislikes')}}</th> -->
 								<th>{{tr('amount')}}</th>
 								<th>{{tr('likes')}}</th>
 								<th>{{tr('dislikes')}}</th>
 								@if(Setting::get('is_vod'))
 								<th>{{tr('video_type')}}</th>
 								@endif
+
 								@if(Setting::get('is_payper_view'))
-									<th>{{tr('pay_per_view')}}</th>
+									<th>{{tr('ppv')}}</th>
 								@endif
+								<th>{{tr('is_ads')}}</th>
+
 								<th>{{tr('status')}}</th>
 								<th>{{tr('action')}}</th>
 						    </tr>
@@ -66,7 +70,7 @@
 							      	
 							      	<td><a href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
 							      	
-							      	<td>{{$video->channel_name}}</td>
+							      	<td><a href="{{route('admin.channel.videos', $video->channel_id)}}">{{$video->channel_name}}</a></td>
 							      	
 							      	<td><a href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
@@ -85,21 +89,13 @@
 
 							      	@endif */?>
 
-							      	<td class="text-center">
+							      	
 
-							      		@if($video->ad_status)
-							      			<span class="label label-success">{{tr('yes')}}</span>
-							      		@else
-							      			<span class="label label-danger">{{tr('no')}}</span>
-							      		@endif
+							      	<td><b>{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</b></td>
 
-							      	</td>
+							      	<!-- <td>{{number_format_short($video->getScopeLikeCount->count())}}</td> -->
 
-							      	<td><b>{{Setting::get('currency')}} {{$video->amount}}</b></td>
-
-							      	<td>{{number_format_short($video->getScopeLikeCount->count())}}</td>
-
-							      	<td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td>
+							      	<!-- <td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td> -->
 
 							      	@if(Setting::get('is_vod'))
 							      	<td>@if($video->video_type == 1) 
@@ -123,6 +119,16 @@
 							      		@endif
 							      	</td>
 							      	@endif
+
+							      	<td class="text-center">
+
+							      		@if($video->ad_status)
+							      			<span class="label label-success">{{tr('yes')}}</span>
+							      		@else
+							      			<span class="label label-danger">{{tr('no')}}</span>
+							      		@endif
+
+							      	</td>
 
 							      	<td>
 							      		@if ($video->compress_status == 0)

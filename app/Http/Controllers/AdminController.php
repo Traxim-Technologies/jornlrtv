@@ -705,7 +705,7 @@ class AdminController extends Controller {
 
     public function view_history($id) {
 
-        if($user = User::find($id)) {
+        if($user_details = User::find($id)) {
 
             $user_history = UserHistory::where('user_histories.user_id' , $id)
                             ->leftJoin('users' , 'user_histories.user_id' , '=' , 'users.id')
@@ -721,6 +721,7 @@ class AdminController extends Controller {
                             ->get();
 
             return view('admin.users.user-history')
+                        ->with('user_details' , $user_details)
                         ->with('data' , $user_history)
                         ->withPage('users')
                         ->with('sub_page','users');
@@ -764,6 +765,7 @@ class AdminController extends Controller {
 
             return view('admin.users.user-wishlist')
                         ->with('data' , $user_wishlist)
+                        ->with('user_details' , $user)
                         ->withPage('users')
                         ->with('sub_page','users');
 
@@ -2512,7 +2514,7 @@ class AdminController extends Controller {
     public function banner_ads_save(Request $request) {
 
         $validator = Validator::make($request->all(),[
-                'title' => 'required|max:255',
+                'title' => 'max:255',
                 'description' => '',
                 'position'=>$request->id ? 'required' :'required|unique:banner_ads',
                 'link'=>'required|url',
