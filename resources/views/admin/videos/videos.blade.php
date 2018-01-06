@@ -45,8 +45,8 @@
 								<!-- <th>{{tr('likes')}}</th>
 								<th>{{tr('dislikes')}}</th> -->
 								<th>{{tr('amount')}}</th>
-								<th>{{tr('likes')}}</th>
-								<th>{{tr('dislikes')}}</th>
+								<!-- <th>{{tr('likes')}}</th> -->
+								<!-- <th>{{tr('dislikes')}}</th> -->
 								@if(Setting::get('is_vod'))
 								<th>{{tr('video_type')}}</th>
 								@endif
