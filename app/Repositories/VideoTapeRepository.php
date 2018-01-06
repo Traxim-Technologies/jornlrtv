@@ -477,9 +477,21 @@ class VideoTapeRepository {
 
                 $mycomment = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->where('rating', '>', 0)->first();
 
+                $data['is_rated'] = DEFAULT_FALSE;
+
+                $data['rating_comment'] = "";
+
+                $data['ratingvalue'] = 0;
+
                 if ($mycomment) {
 
                     $data['comment_rating_status'] = DEFAULT_FALSE;
+
+                    $data['is_rated'] = DEFAULT_TRUE;
+
+                    $data['ratingcomment'] = $mycomment->comment;
+
+                    $data['ratingvalue'] = $mycomment->rating;
                 }
 
                 if($user_details = User::find($user_id)) {
