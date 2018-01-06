@@ -464,7 +464,7 @@ textarea[name=comments] {
                                                                 <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
 
                                                                 @if($comment_rating_status)
-                                                                 <input id="rating_system" name="rating" type="number" class="rating comment_rating" min="1" max="5" step="1">
+                                                                 <input id="rating_system" name="ratings" type="number" class="rating comment_rating" min="1" max="5" step="1">
                                                                  @endif
 
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
@@ -709,6 +709,8 @@ textarea[name=comments] {
         // $('#rating_system').rating('clear');
 
          $('.view_rating').rating({disabled: true, showClear: false});
+
+         $('.comment_rating').rating({showClear: false});
     </script>
     <script type="text/javascript">
         $(document).on('ready', function() {
@@ -822,12 +824,14 @@ textarea[name=comments] {
                 //prevent Default functionality
                 e.preventDefault();
 
+
                 //get the action-url of the form
                 var actionurl = e.currentTarget.action;
 
                 var form_data = jQuery("#comment").val();
 
                 if(form_data) {
+
 
                     //do your own request an handle the results
                     jQuery.ajax({
@@ -873,6 +877,12 @@ textarea[name=comments] {
                                     **/
 
                                     $('.comment_rating').rating('clear');
+
+                                    if (data.comment.rating > 1) {
+
+                                        window.location.reload();
+
+                                    }
 
                                     jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                                 @endif
