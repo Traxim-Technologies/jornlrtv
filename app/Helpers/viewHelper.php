@@ -1022,6 +1022,7 @@ function number_format_short( $n, $precision = 1 ) {
  */
 function watchFullVideo($user_id, $user_type, $video) {
 
+
     if ($user_type == 1) {
 
         if ($video->ppv_amount == 0) {
@@ -1030,7 +1031,8 @@ function watchFullVideo($user_id, $user_type, $video) {
 
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
                 ->where('amount', '>', 0)
-                ->orderBy('created_at', 'desc')->first();
+                ->orderBy('created_at', 'desc')
+                ->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
                 if ($paymentView) {
@@ -1068,7 +1070,9 @@ function watchFullVideo($user_id, $user_type, $video) {
                     }
                 }  
             }
-        } 
+        } else if($video->ppv_amount > 0 && $video->type_of_user == PAID_USER){
+            return true;
+        }
     }
     return false;
 }
@@ -1169,6 +1173,7 @@ function displayVideoDetails($data,$userId) {
         'ppv_amount'=>$data->ppv_amount,
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
+        'channel_image'=>$data->channel_picture,
         'created_at'=>$data->created_at->diffForHumans(),   
         'ad_status'=>$data->ad_status,
         'description'=>$data->description,
