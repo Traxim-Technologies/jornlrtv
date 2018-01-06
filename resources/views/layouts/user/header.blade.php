@@ -271,13 +271,6 @@
 
                             <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
                             
-
-                            <li role="separator" class="divider"></li>
-
-                            <li>
-                                <a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}
-                                </a>
-                            </li>
                             <li role="separator" class="divider"></li>
                            
                             <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
