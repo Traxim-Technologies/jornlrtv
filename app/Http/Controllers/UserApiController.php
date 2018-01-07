@@ -760,15 +760,19 @@ class UserApiController extends Controller {
                 }
 
                 if($request->has('dob')) {
-                    $user->dob = date("Y-m-d" , strtotime($request->dob));;
+                    $user->dob = date("Y-m-d" , strtotime($request->dob));
                 }
 
                  if ($user->dob) {
 
-                    $from = new \DateTime($user->dob);
-                    $to   = new \DateTime('today');
+                    if ($user->dob != '0000-00-00') {
 
-                    $user->age_limit = $from->diff($to)->y;
+                        $from = new \DateTime($user->dob);
+                        $to   = new \DateTime('today');
+
+                        $user->age_limit = $from->diff($to)->y;
+
+                    }
 
                 }
 
@@ -792,7 +796,7 @@ class UserApiController extends Controller {
                 }
 
                 Log::info("Device Token - ".$request->device_token);
-                $user->device_token = $request->has('device_token') ? $request->device_token : "";
+                $user->device_token = $request->device_token;
                 $user->device_type = $request->has('device_type') ? $request->device_type : "";
                 $user->login_by = $request->has('login_by') ? $request->login_by : "";
                 $user->social_unique_id = $request->has('social_unique_id') ? $request->social_unique_id : '';
