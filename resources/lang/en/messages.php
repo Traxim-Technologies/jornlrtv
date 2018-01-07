@@ -744,6 +744,7 @@ return array(
 	'choose'=>'Choose',
 
 	'subscription_note' => 'Choose one plan and enjoy everything.',
+	'subscription_image_note'=>'Upload Square images 4:4 Ratio Ex: 400 * 400',
 
 	'plan_note' => 'Please enter no of months. Allowed numbers from 1 to 12',
 

@@ -701,7 +701,7 @@ class AdminController extends Controller {
 
                     $message = tr('redeems_request_admin_less_amount');
 
-                    $redeem_amount = 0; // To restrict the redeeem update
+                    $redeem_amount = 0; // To restrict the redeeem paid amount update
 
                 }
 
