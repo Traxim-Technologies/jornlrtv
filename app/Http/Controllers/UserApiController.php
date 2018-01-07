@@ -703,7 +703,7 @@ class UserApiController extends Controller {
                     array(
                         'name' => 'required|max:255',
                         'email' => 'required|email|max:255',
-                        'mobile' => 'required|digits_between:6,13',
+                        'mobile' => 'digits_between:6,13',
                         'password' => 'required|min:6',
                         'picture' => 'mimes:jpeg,jpg,bmp,png',
                     )
