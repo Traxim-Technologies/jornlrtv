@@ -1351,6 +1351,8 @@ class UserApiController extends Controller {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->videoResponse();
 
         if ($request->id) {
