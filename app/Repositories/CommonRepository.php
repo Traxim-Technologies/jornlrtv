@@ -234,11 +234,11 @@ class CommonRepository {
                     $message = tr('channel_update_success');
 
                     if($request->hasFile('picture')) {
-                        Helper::delete_picture($channel->picture, "/uploads/channel/picture/");
+                        Helper::delete_picture($channel->picture, "/uploads/channels/picture/");
                     }
 
                     if($request->hasFile('cover')) {
-                        Helper::delete_picture($channel->cover, "/uploads/channel/cover/");
+                        Helper::delete_picture($channel->cover, "/uploads/channels/cover/");
                     }
 
                 } else {
