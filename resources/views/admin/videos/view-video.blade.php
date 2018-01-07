@@ -253,9 +253,68 @@ hr {
 
                 <hr>
 
+                <section id="ppv-details">
+
+                    @if(Setting::get('is_payper_view'))
+
+                        @if($video->ppv_amount > 0)
+
+
+                            <h4 style="margin-left: 15px;font-weight: bold;">{{tr('pay_per_view')}}</h4>
+
+                            <div class="row">
+
+                                <div class="col-lg-12">
+                                    <div class="col-lg-4">
+                                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('type_of_user')}}</strong>
+
+                                        <p style="margin-top: 10px;">
+                                            @if($video->type_of_user == NORMAL_USER)
+                                                {{tr('normal_user')}}
+                                            @elseif($video->type_of_user == PAID_USER)
+                                                {{tr('paid_user')}}
+                                            @elseif($video->type_of_user == BOTH_USERS) 
+                                                {{tr('both_user')}}
+                                            @else
+                                                -
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('type_of_subscription')}}</strong>
+
+                                        <p style="margin-top: 10px;">
+                                            @if($video->type_of_subscription == ONE_TIME_PAYMENT)
+                                                {{tr('one_time_payment')}}
+                                            @elseif($video->type_of_subscription == RECURRING_PAYMENT)
+                                                {{tr('recurring_payment')}}
+                                            @else
+                                                -
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('amount')}}</strong>
+
+                                        <p style="margin-top: 10px;">
+                                           {{Setting::get('currency')}} {{$video->amount}}
+                                        </p>
+                                    </div>
+                                </div>
+                            
+                            </div>
+
+                            <hr>
+                        
+                        @endif
+
+                    @endif
+
+                </section>
 
                 <div class="row">
-                  <div class="col-lg-12">
+
+                    <div class="col-lg-12">
                         <div class="col-lg-6">
 
                             <strong><i class="fa fa-video-camera margin-r-5"></i> {{tr('full_video')}}</strong>
@@ -318,7 +377,9 @@ hr {
                         </div>
                         
                     </div>
+
                 </div>
+                
             <!-- /.box-body -->
             </div>
         </div>
