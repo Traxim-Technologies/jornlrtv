@@ -1289,7 +1289,6 @@ class UserController extends Controller {
 
     public function upload_video_image(Request $request) {
 
-
         $response = CommonRepo::upload_video_image($request)->getData();
 
         return response()->json(['id'=>$response]);
