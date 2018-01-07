@@ -504,8 +504,6 @@ class AdminController extends Controller {
 
         if($user = User::find($id)) {
 
-            // $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
-
             return view('admin.users.user-details')
                         ->with('user' , $user)
                         ->withPage('users')
@@ -684,7 +682,16 @@ class AdminController extends Controller {
 
                     return back()->with('flash_error' , tr('redeem_request_status_mismatch'));
 
-                } else {
+                }
+
+
+                $message = tr('action_success');
+
+                $redeem_amount = $request->paid_amount ? $request->paid_amount : 0;
+
+                // Check the requested and admin paid amount is equal 
+
+                if($request->paid_amount == $redeem_request_details->request_amount) {
 
                     $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
 
@@ -692,9 +699,37 @@ class AdminController extends Controller {
 
                     $redeem_request_details->save();
 
-                    return back()->with('flash_success' , tr('action_success'));
+                }
+
+
+                else if($request->paid_amount > $redeem_request_details->request_amount) {
+
+                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
+
+                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
+
+                    $redeem_request_details->save();
+
+                    $redeem_amount = $redeem_request_details->request_amount;
+
+                } else {
+
+                    $message = tr('redeems_request_admin_less_amount');
+
+                    $redeem_amount = 0; // To restrict the redeeem paid amount update
 
                 }
+
+                $redeem_details = Redeem::where('user_id' , $redeem_request_details->user_id)->first();
+
+                if(count($redeem_details) > 0 ) {
+
+                    $redeem_details->paid = $redeem_details->paid + $redeem_amount;
+
+                    $redeem_details->save();
+                }
+
+                return back()->with('flash_success' , $message);
 
             } else {
                 return back()->with('flash_error' , tr('something_error'));

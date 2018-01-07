@@ -2677,6 +2677,10 @@ class UserController extends Controller {
 
         $subscription = Subscription::find($request->s_id);
 
+        if(!count($subscription)) {
+            return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
+        }
+
         return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)->with('model',$model);
    
     }

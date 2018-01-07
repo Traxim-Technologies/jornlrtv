@@ -2,7 +2,25 @@
 
 @section('title', tr('view_user'))
 
-@section('content-header', tr('view_user'))
+@section('content-header') 
+
+{{tr('view_user')}} 
+
+<!-- <a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+
+<div id="help-content" style="display: none">
+
+    <ul class="popover-list">
+
+        <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
+
+        <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+
+    </ul>
+    
+</div>
+ -->
+@endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
@@ -149,7 +167,7 @@
               		<ul class="nav nav-stacked">
 
               			<li>
-		                	<a href="#">{{tr('total')}} 
+		                	<a href="#" title="{{tr('total_earning')}} of the user">{{tr('total_earning')}}
 		                		<span class="pull-right">
 		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->total : "0.00"}}
 		                		</span>
@@ -157,7 +175,7 @@
 		                </li>
 
 		                <li>
-		                	<a href="#">{{tr('wallet_balance')}} 
+		                	<a href="#" title="Admin needs to pay this amount to user">{{tr('wallet_balance')}}
 		                		<span class="pull-right">
 		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : "0.00"}}
 		                		</span>
@@ -165,7 +183,7 @@
 		                </li>
 
 		                <li>
-		                	<a href="#">{{tr('paid_amount')}} 
+		                	<a href="#" title="Admin cleared this Amount to the user">{{tr('paid_amount')}} 
 		                		<span class="pull-right">
 		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->paid : "0.00"}}
 		                		</span>

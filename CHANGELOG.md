@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ##[1.2.1] - 
 
+
+## 07-01-2018 - ADMIN 
+
+- Redeems Request Payment - handled the status change based on the admin paid amount.
+
+- View user details redeems help added
+
+
 ## 06-01-2018 - ADMIN 
 
 - channel user_id and channel_id save issue fixed

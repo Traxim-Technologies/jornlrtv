@@ -238,6 +238,8 @@ class PaypalController extends Controller {
      */
 
     public function getPaymentStatus(Request $request) {
+
+        $paypal_payment_id = Session::get('paypal_payment_id');
         
         // clear the session payment ID
      

@@ -35,20 +35,19 @@
                         <div class="form-group">
                             <label for="title" class="">{{tr('title')}}</label>
 
-                            <!-- <div class="col-sm-10"> -->
-                                <input type="text" name="title" class="form-control" id="title" value="{{isset($data) ? $data->title : old('title')}}" placeholder="{{tr('title')}}">
-                            <!-- </div> -->
+                            <input type="text" name="title" class="form-control" id="title" value="{{isset($data) ? $data->title : old('title')}}" placeholder="{{tr('title')}}">
                         </div>
 
                         <div class="form-group">
                         
-                            <label for="image" class="">{{tr('image')}}</label>
+                            <label for="image" class="">
+                                {{tr('image')}} 
+                                <br><span class="text-red"><b>{{tr('subscription_image_note')}}</b></span>
+                            </label>
 
-                            <!-- <div class="col-sm-10"> -->
-                                <input type="file" name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}" accept="image/png, image/jpeg" onchange="loadFile(this, 'image_preview')">
-                            <!-- </div> -->
+                            <input type="file" name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}" accept="image/png, image/jpeg" onchange="loadFile(this, 'image_preview')">
 
-                                <br>
+                            <br>
 
                              <img src="{{$data->picture}}" id="image_preview" style="width:100px;height:100px;">
                         </div>
@@ -58,29 +57,23 @@
 
                             <label for="plan" class="">{{tr('plan')}} <br><span class="text-red"><b>{{tr('plan_note')}}</b></span></label>
 
-                            <!-- <div class="col-sm-10"> -->
-                                <input type="number" min="1" max="12" pattern="[0-9][0-2]{2}"  name="plan" class="form-control" id="plan" value="{{isset($data) ? $data->plan : old('plan')}}" title="Please enter the plan months. Max : 12 months" placeholder="plan">
-                            <!-- </div> -->
+                            <input type="number" min="1" max="12" pattern="[0-9][0-2]{2}"  name="plan" class="form-control" id="plan" value="{{isset($data) ? $data->plan : old('plan')}}" title="Please enter the plan months. Max : 12 months" placeholder="plan">
                         </div>
 
                         <div class="form-group">
 
                             <label for="amount" class="">{{tr('amount')}}</label>
 
-                            <!-- <div class="col-sm-10"> -->
-                                <input type="number" value="{{isset($data) ? $data->amount : old('amount')}}" name="amount" class="form-control" id="amount" placeholder="amount" step="any">
-                            <!-- </div> -->
+                            <input type="number" value="{{isset($data) ? $data->amount : old('amount')}}" name="amount" class="form-control" id="amount" placeholder="amount" step="any">
                         </div>
 
                         <div class="form-group">
 
                             <label for="description" class="">{{tr('description')}}</label>
 
-                            <!-- <div class="col-sm-10"> -->
 
-                                <textarea id="ckeditor" name="description" class="form-control" placeholder="{{tr('description')}}.">{{isset($data) ? $data->description : old('description')}}</textarea>
+                            <textarea id="ckeditor" name="description" class="form-control" placeholder="{{tr('description')}}.">{{isset($data) ? $data->description : old('description')}}</textarea>
 
-                            <!-- </div> -->
                         </div>
 
                         </div>
