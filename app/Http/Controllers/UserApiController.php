@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
 
+use App\Repositories\PaymentRepository as PaymentRepo;
+
+
 use Log;
 
 use Hash;
@@ -332,7 +335,7 @@ class UserApiController extends Controller {
 
                 } else {
 
-                     $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(165), 'error_code'=>165];
+                     $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
 
                 }
             } else {
@@ -1310,9 +1313,22 @@ class UserApiController extends Controller {
 
         } else {
 
+            $payperview = PayPerView::where('user_id', $request->id)
+                            ->where('video_id',$request->video_tape_id)
+                            ->orderby('created_at', 'desc')
+                            ->where('status',0)->first();
+
+            if ($payperview) {
+
+                $payperview->status = DEFAULT_TRUE;
+
+                $payperview->save();
+
+            }
+
             if($history = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first()) {
 
-                $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
+                // $response_array = array('success' => true , 'error_messages' => Helper::get_error_message(145) , 'error_code' => 145);
 
             } else {
 
@@ -1328,22 +1344,23 @@ class UserApiController extends Controller {
 
                 }
 
-                $response_array = array('success' => true);
            
             }
 
-            $payperview = PayPerView::where('user_id', $request->id)
-                            ->where('video_id',$request->video_tape_id)
-                            ->where('status',0)->first();
+            $video = VideoTape::find($request->video_tape_id);
 
-            if ($payperview) {
+            $navigateback = 0;
 
-                $payperview->status = DEFAULT_TRUE;
+            if ($video->type_of_subscription == RECURRING_PAYMENT) {
 
-                $payperview->save();
+                $navigateback = 1;
 
             }
 
+            // navigateback = used to handle the replay in mobile for recurring payments
+
+            $response_array = array('success' => true , 'navigateback' => $navigateback);
+           
 
         }
         return response()->json($response_array, 200);
@@ -2077,6 +2094,7 @@ class UserApiController extends Controller {
             'login_by' => $user->login_by,
             'social_unique_id' => $user->social_unique_id,
             'push_status' => $user->push_status,
+            'user_type'=>$user->user_type ? $user->user_type : 0
         );
         $response = response()->json(Helper::null_safe($response_array), 200);
         return $response;
@@ -2363,6 +2381,8 @@ class UserApiController extends Controller {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->videoResponse();
 
         if ($request->id) {
@@ -2623,7 +2643,7 @@ class UserApiController extends Controller {
             $user_details = '';
 
 
-            $is_ppv_status = DEFAULT_TRUE;
+            
 
             if ($request->id) {
 
@@ -2639,7 +2659,6 @@ class UserApiController extends Controller {
 
                 $user_details = User::find($request->id);
 
-                $is_ppv_status = ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
             
             }
 
@@ -2653,6 +2672,14 @@ class UserApiController extends Controller {
             if (count($data) > 0) {
 
                 foreach ($data as $key => $value) {
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($request->id) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    }
                    
                     $currency = Setting::get('currency');
 
@@ -3354,7 +3381,7 @@ class UserApiController extends Controller {
 
             if ($user) {
 
-               if ($user->one_time_subscription == DEFAULT_TRUE) {
+               if ($user->zero_subscription_status == DEFAULT_TRUE) {
 
                    $query->where('amount','>', 0);
 
@@ -3390,6 +3417,7 @@ class UserApiController extends Controller {
         } else {
 
             $model = UserPayment::where('user_id' , $request->id)
+                        ->where('status', DEFAULT_TRUE)
                         ->orderBy('id', 'desc')->first();
 
             $subscription = Subscription::find($request->subscription_id);
@@ -3397,7 +3425,18 @@ class UserApiController extends Controller {
             $user_payment = new UserPayment();
 
             if ($model) {
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+    
+                if (strtotime($model->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+
+                } else {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+
+                }    
+
+
             } else {
                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
             }
@@ -3410,9 +3449,17 @@ class UserApiController extends Controller {
 
             if($user_payment) {
 
-                $user_payment->user->user_type = DEFAULT_TRUE;
+                $user =  User::find($request->id);
 
-                $user_payment->user->save();
+                if ($user_payment->amount <= 0) {
+
+                    $user->zero_subscription_status = DEFAULT_TRUE;
+
+                }
+
+                $user->user_type = DEFAULT_TRUE;
+
+                $user->save();
             }
 
             $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
@@ -3457,7 +3504,8 @@ class UserApiController extends Controller {
                                 // 'user_payments.expiry_date as expiry_date',
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
                                 'user_payments.created_at as created_at',
-                                DB::raw("'$' as currency"))
+                                DB::raw("'$' as currency"),
+                                'user_payments.status')
                         ->orderBy('user_payments.updated_at', 'desc');
                         
 
@@ -3556,6 +3604,14 @@ class UserApiController extends Controller {
                     $cards->customer_id = $customer_id;
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    $cards->cvv = $request->cvc;
+
+                    $cards->card_name = $request->card_name;
+
+                    $cards->month = $request->month;
+
+                    $cards->year = $request->year;
 
                     // Check is any default is available
                     $check_card = Card::where('user_id', $userModel->id)->first();
@@ -3702,15 +3758,27 @@ class UserApiController extends Controller {
 
                             if($paid_status) {
 
-                                $user_payment = UserPayment::where('user_id' , $request->id)->first();
+                                $last_payment = UserPayment::where('user_id' , $request->id)
+                                    ->where('status', DEFAULT_TRUE)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
 
-                                if($user_payment) {
 
-                                    $expiry_date = $user_payment->expiry_date;
-                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+                                $user_payment = new UserPayment;
+
+                                if($last_payment) {
+
+                                    if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+
+                                    } else {
+
+                                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+                                    }    
 
                                 } else {
-                                    $user_payment = new UserPayment;
+                                    
                                     $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
                                 }
 
@@ -3721,6 +3789,7 @@ class UserApiController extends Controller {
                                 $user_payment->status = 1;
                                 $user_payment->amount = $amount;
                                 $user_payment->save();
+
 
 
                                 $user->user_type = 1;
@@ -3785,7 +3854,10 @@ class UserApiController extends Controller {
                     $user_payment->save();
 
 
+
                     $user->user_type = 1;
+
+                    $user->zero_subscription_status = 1;
 
                     $user->save();
                     
@@ -4206,8 +4278,9 @@ class UserApiController extends Controller {
 
             } else {
 
-                $userModel = User::find($request->id);
+                // Check stripe is enabled by admin and stripe configuration
 
+                $userModel = User::find($request->id);
 
                 if ($userModel) {
 
@@ -4217,17 +4290,16 @@ class UserApiController extends Controller {
 
                         if ($user_card && $user_card->is_default) {
 
-                            $video = VideoTape::find($request->video_tape_id);
+                            $video_tape_details = VideoTape::find($request->video_tape_id);
 
-                            if($video) {
+                            if($video_tape_details) {
 
-                                $total = $video->ppv_amount;
-
+                                $total = $video_tape_details->ppv_amount;
 
                                 if ($total > 0) {
-
                                     
                                     // Get the key from settings table
+
                                     $stripe_secret_key = Setting::get('stripe_secret_key');
 
                                     $customer_id = $user_card->customer_id;
@@ -4236,8 +4308,6 @@ class UserApiController extends Controller {
 
                                         \Stripe\Stripe::setApiKey($stripe_secret_key);
 
-
-
                                     } else {
 
                                         $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
@@ -4245,8 +4315,6 @@ class UserApiController extends Controller {
                                         throw new Exception(Helper::get_error_message(902));
                                         
                                     }
-
-
 
                                     try {
 
@@ -4257,90 +4325,61 @@ class UserApiController extends Controller {
                                         ));
 
                                        $payment_id = $user_charge->id;
+
                                        $amount = $user_charge->amount/100;
+
                                        $paid_status = $user_charge->paid;
 
                                        if($paid_status) {
 
-                                            $user_payment = new PayPerView;
-                                            $user_payment->payment_id  = $payment_id;
-                                            $user_payment->user_id = $request->id;
-                                            $user_payment->video_id = $request->video_tape_id;
-                                            $user_payment->status = DEFAULT_FALSE;
-                                            $user_payment->amount = $amount;
+                                            $ppv_details = new PayPerView;
+                                            $ppv_details->payment_id  = $payment_id;
+                                            $ppv_details->user_id = $request->id;
+                                            $ppv_details->video_id = $request->video_tape_id;
+                                            $ppv_details->status = DEFAULT_FALSE;
+                                            $ppv_details->amount = $amount;
 
 
-                                        if ($video->type_of_user == 1) {
+                                        if ($video_tape_details->type_of_user == 1) {
 
-                                            $user_payment->type_of_user = "Normal User";
+                                            $ppv_details->type_of_user = "Normal User";
 
-                                        } else if($video->type_of_user == 2) {
+                                        } else if($video_tape_details->type_of_user == 2) {
 
-                                            $user_payment->type_of_user = "Paid User";
+                                            $ppv_details->type_of_user = "Paid User";
 
-                                        } else if($video->type_of_user == 3) {
+                                        } else if($video_tape_details->type_of_user == 3) {
 
-                                            $user_payment->type_of_user = "Both Users";
+                                            $ppv_details->type_of_user = "Both Users";
                                         }
 
 
-                                        if ($video->type_of_subscription == 1) {
+                                        if ($video_tape_details->type_of_subscription == 1) {
 
-                                            $user_payment->type_of_subscription = "One Time Payment";
+                                            $ppv_details->type_of_subscription = "One Time Payment";
 
-                                        } else if($video->type_of_subscription == 2) {
+                                        } else if($video_tape_details->type_of_subscription == 2) {
 
-                                            $user_payment->type_of_subscription = "Recurring Payment";
+                                            $ppv_details->type_of_subscription = "Recurring Payment";
 
                                         }
 
-                                        $user_payment->save();
+                                        $ppv_details->save();
 
-                                        if($user_payment->amount > 0) {
+                                        if($ppv_details->amount > 0) {
 
-                                                $total = $user_payment->amount;
+                                            // Do Commission spilit  and redeems for moderator
 
-                                                // Commission Spilit 
+                                            Log::info("ppv_commission_spilit started");
 
-                                                $admin_commission = Setting::get('admin_ppv_commission')/100;
+                                            PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id);
 
-                                                $admin_amount = $total * $admin_commission;
+                                            Log::info("ppv_commission_spilit END");
 
-                                                $moderator_amount = $total - $admin_amount;
-
-                                                // Changes made by vidhya
-
-
-                                                $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
-
-                                                $video->user_ppv_amount = $video->user_ppv_amount+$moderator_amount;
-
-                                                $video->save();
-
-                                                // Commission Spilit Completed
-
-                                                if($moderator = User::find($video->user_id)) {
-
-                                                    $moderator->total_admin_amount = $moderator->total_admin_amount + $admin_amount;
-
-                                                    $moderator->total_user_amount = $moderator->total_user_amount + $moderator_amount;
-
-                                                    $moderator->remaining_amount = $moderator->remaining_amount + $moderator_amount;
-
-                                                    $moderator->total_amount = $moderator->total_amount + $total;
-
-                                                    $moderator->save();
-
-                                                   // $video_amount = $moderator_amount;
-
-                                                }
-
-                                                add_to_redeem($video->user_id , $moderator_amount);
-                                                    
                                         }
 
                                         
-                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id, 'video_tape_id'=>$video->id];
+                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id, 'video_tape_id'=> $video_tape_details->id];
 
                                         $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
@@ -4412,8 +4451,6 @@ class UserApiController extends Controller {
             $code = $e->getCode();
 
             $e = $e->getMessage();
-
-
 
             $response_array = ['success'=>false, 'error_messages'=>$e, 'error_code'=>$code];
 
@@ -5339,13 +5376,13 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = ['success'=>false, 'error_messages'=>tr('subscription_error')];
+                $response_array = ['success'=>false,'error_messages'=>Helper::get_error_message(169, 'error_code'=>169];
 
             }
 
         } else {
 
-            $response_array = ['success'=>false, 'error_messages'=>tr('channel_create_error')];
+            $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(168), 'error_code'=>168];
         }
 
         return response()->json($response_array);
@@ -5481,6 +5518,8 @@ class UserApiController extends Controller {
             return response()->json($response_array);
         } else {
 
+            $currency = Setting::get('currency');
+
             $query = PayPerView::select('pay_per_views.id as pay_per_view_id',
                     'video_id as video_tape_id',
                     'video_tapes.title',
@@ -5490,10 +5529,13 @@ class UserApiController extends Controller {
                     'pay_per_views.type_of_subscription',
                     'pay_per_views.type_of_user',
                     'pay_per_views.payment_id',
-                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date'))
+                     DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date')
+                     )
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
                     ->where('pay_per_views.user_id', $request->id)
                     ->where('pay_per_views.amount', '>', 0);
+
+            $user = User::find($request->id);
 
             if ($request->device_type == DEVICE_WEB) {
 
@@ -5501,7 +5543,19 @@ class UserApiController extends Controller {
 
                 $data = [];
 
+            
                 foreach ($model->items() as $key => $value) {
+
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($user) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    } 
+
+                    $videoDetails = $value->video ? $value->video : '';
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -5513,7 +5567,11 @@ class UserApiController extends Controller {
                             'picture'=>$value->picture,
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
-                            'payment_id'=>$value->payment_id];
+                            'payment_id'=>$value->payment_id,
+                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+
+                            ];
 
                 }
 
@@ -5528,7 +5586,17 @@ class UserApiController extends Controller {
                 $data = [];
 
                 foreach ($model as $key => $value) {
-                    
+
+                    $is_ppv_status = DEFAULT_TRUE;
+
+                    if ($user) {
+
+                        $is_ppv_status = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+
+                    } 
+
+                    $videoDetails = $value->video ? $value->video : '';
+    
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
@@ -5539,11 +5607,14 @@ class UserApiController extends Controller {
                             'picture'=>$value->picture,
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
-                            'payment_id'=>$value->payment_id];
+                            'payment_id'=>$value->payment_id,
+                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ 
+                            ];
 
                 }
 
-                $response_array = ['success'=>true, 'data'=>$model];
+                $response_array = ['success'=>true, 'data'=>$data];
             }
 
             return response()->json($response_array);
@@ -5588,102 +5659,72 @@ class UserApiController extends Controller {
 
             } else {
 
-                $video = VideoTape::find($request->video_tape_id);
+                $video_tape_details = VideoTape::find($request->video_tape_id);
 
-                $user_payment = new PayPerView;
+                $ppv_details = new PayPerView;
                 
-                $user_payment->payment_id  = $request->payment_id;
+                $ppv_details->payment_id  = $request->payment_id;
 
-                $user_payment->user_id = $request->id;
+                $ppv_details->user_id = $request->id;
 
-                $user_payment->video_id = $request->video_tape_id;
+                $ppv_details->video_id = $request->video_tape_id;
 
-                $user_payment->status = DEFAULT_FALSE;
+                $ppv_details->status = DEFAULT_FALSE;
 
-                $user_payment->amount = $video->amount;
+                $ppv_details->expiry_date = date('Y-m-d H:i:s');
 
-                if ($video->type_of_user == 1) {
+                $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
 
-                    $user_payment->type_of_user = "Normal User";
+                if ($video_tape_details->type_of_user == 1) {
 
-                } else if($video->type_of_user == 2) {
+                    $ppv_details->type_of_user = "Normal User";
 
-                    $user_payment->type_of_user = "Paid User";
+                } else if($video_tape_details->type_of_user == 2) {
 
-                } else if($video->type_of_user == 3) {
+                    $ppv_details->type_of_user = "Paid User";
 
-                    $user_payment->type_of_user = "Both Users";
+                } else if($video_tape_details->type_of_user == 3) {
+
+                    $ppv_details->type_of_user = "Both Users";
                 }
 
 
-                if ($video->type_of_subscription == 1) {
+                if ($video_tape_details->type_of_subscription == 1) {
 
-                    $user_payment->type_of_subscription = "One Time Payment";
+                    $ppv_details->type_of_subscription = "One Time Payment";
 
-                } else if($video->type_of_subscription == 2) {
+                } else if($video_tape_details->type_of_subscription == 2) {
 
-                    $user_payment->type_of_subscription = "Recurring Payment";
+                    $ppv_details->type_of_subscription = "Recurring Payment";
 
                 }
 
-                $user_payment->save();
+                $ppv_details->save();
 
-                if($user_payment) {
+                if($ppv_details) {
 
-                    // if(is_numeric($video->uploaded_by)) {
+                    if($video_tape_details->ppv_amount > 0) { 
 
-                        if($video->ppv_amount > 0) { 
+                        // Do Commission spilit  and redeems for user
 
-                            $total = $video->ppv_amount;
+                        Log::info("ppv_commission_spilit started");
 
-                            // Commission Spilit 
+                        PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id);
 
-                            $admin_commission = Setting::get('admin_commission')/100;
+                        Log::info("ppv_commission_spilit END");
+                        
+                    }
 
-                            $admin_amount = $total * $admin_commission;
-
-                            $user_amount = $total - $admin_amount;
-
-                            $video->admin_ppv_amount = $video->admin_ppv_amount+$admin_amount;
-
-                            $video->user_ppv_amount = $video->admin_ppv_amount+$user_amount;
-
-                            $video->save();
-
-                            // Commission Spilit Completed
-
-                            if($user = User::find($video->user_id)) {
-
-                                $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
-
-                                $user->total_user_amount = $user->total_user_amount + $user_amount;
-
-                                $user->remaining_amount = $user->remaining_amount + $user_amount;
-
-                                $user->total_amount = $user->total_amount + $total;
-
-                                $user->save();
-
-                                $video_amount = $user_amount;
-
-                            }
-
-                            add_to_redeem($video->user_id , $total);
-                            
-                        }
-
-                        \Log::info("ADD History - add_to_redeem");
-
-                    // } 
+                    \Log::info("ADD History - add_to_redeem");
 
                 } 
 
                 $viewerModel = User::find($request->id);
 
-                $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
-                                    'data'=>['id'=>$request->id,
-                                     'token'=>$viewerModel ? $viewerModel->token : '',
-                                     'video_tape_id'=>$video->id]];
+                $response_array = [
+                                    'success' => true, 'message' => tr('payment_success'), 
+                                    'data' => ['id' => $request->id,'token' => $viewerModel ? $viewerModel->token : '','video_tape_id' => $video_tape_details->id]
+                                ];
 
             }
 

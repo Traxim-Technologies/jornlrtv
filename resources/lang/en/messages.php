@@ -887,7 +887,7 @@ return array(
 	'add_cover_photo'=>'Add cover photo',
 
 	'header_scripts' => 'Header Scripts',
-	'body_end_scripts' => 'Body Bottom Scripts',
+	'body_scripts' => 'Body Bottom Scripts',
 
 	// REDEEM MESSAGES START
 
@@ -1113,4 +1113,30 @@ return array(
 	'amount_per_video'=>'Amount Per Video View',
 	'admin_ppv_commission' => 'Admin PPV Commission',
 	'user_ppv_commission' => 'User PPV Commission',
+
+	'signin_nav_content' => 'Sign in now to see your channels and recommendations!',
+
+	'ppv_payment_success' => 'Thank you! Your payment was processed successfully.Enjoy the video!!!',
+	'subscription_payment_success' => 'Thank you! Your payment was processed successfully.',
+	
+	'admin_amount' => 'Admin Amount',
+	'user_amount' => 'User Amount',
+	'ppv' => 'PPV',
+	'is_ads' => 'Is Ads',
+	'is_ppv' => 'Is PPV',
+	'ads_view_revenue' => 'Ads View Amount',
+	'ppv_revenue' => 'PPV Revenue',
+	'ppv_created_by' => 'PPV Created BY',
+
+	'now' => 'Now',
+	'later' => 'Later',
+
+	'is_verified' => 'Is Verified',
+	'failed'=>'Failed',
+	'success'=>'Success',
+	'no_page_found'=>'No Page Found. Please try again later',
+	'view_plans'=>'View Plans',
+	'card_notes'=>"You can't delete default card, if you want to delete, please choose another card as default and then delete it",
+	'normal_user_note'=>"You are a Normal User. If you are Paid User, you no need to pay the video payment. You can watch the video anytime. If you want to paid user, Please choose plan and continue the same.",
+	'paid_user_note'=>'If you subscribe also , you need to pay for this selected video',
 );

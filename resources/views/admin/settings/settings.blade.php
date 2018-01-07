@@ -2,12 +2,8 @@
 
 @section('title', tr('settings'))
 
-<<<<<<< HEAD
 @section('content-header', tr('settings'))
-=======
-@section('content-header') 
 
-{{tr('settings')}} 
 
 <a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
 
@@ -24,7 +20,6 @@
 </div>
 
 @endsection
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
@@ -469,13 +464,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
 
-                                        <label for="video_viewer_count">{{tr('video_viewer_count_size_label')}}</label>
+                                        <label for="viewers_count_per_video">{{tr('video_viewer_count_size_label')}}</label>
 
                                         <br>
 
                                         <p class="example-note">{{tr('video_viewer_count_size_label_note')}}</p>
 
-                                        <input type="text" class="form-control" name="video_viewer_count" value="{{Setting::get('video_viewer_count')  }}" id="video_viewer_count" placeholder="{{tr('video_viewer_count_size_label')}}">
+                                        <input type="text" class="form-control" name="viewers_count_per_video" value="{{Setting::get('viewers_count_per_video')  }}" id="viewers_count_per_video" placeholder="{{tr('video_viewer_count_size_label')}}">
                                     </div>
                                 </div>
 

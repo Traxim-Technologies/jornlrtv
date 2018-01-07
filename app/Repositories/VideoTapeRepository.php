@@ -344,7 +344,7 @@ class VideoTapeRepository {
                     ->where('video_tapes.status' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.channel_id' , $channel_id)
-                    ->shortVideoResponse()
+                    ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
 
         if ($request->id) {
@@ -542,12 +542,22 @@ class VideoTapeRepository {
 
                 $mycomment = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->where('rating', '>', 0)->first();
 
+                $data['is_rated'] = DEFAULT_FALSE;
+
+                $data['ratingcomment'] = "";
+
+                $data['ratingvalue'] = 0;
+
                 if ($mycomment) {
 
                     $data['comment_rating_status'] = DEFAULT_FALSE;
-                }
 
-    
+                    $data['is_rated'] = DEFAULT_TRUE;
+
+                    $data['ratingcomment'] = $mycomment->comment;
+
+                    $data['ratingvalue'] = $mycomment->rating;
+                }
 
                 if($user_details = User::find($user_id)) {
 
@@ -555,9 +565,7 @@ class VideoTapeRepository {
 
                     $is_ppv_status = ($video_tape_details->type_of_user == NORMAL_USER || $video_tape_details->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
 
-
                 }
-
 
             }
 

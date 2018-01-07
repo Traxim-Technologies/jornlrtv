@@ -153,8 +153,14 @@ function get_recent_videos() {
 
     return $videos;
 }
+
 function total_revenue() {
-    return UserPayment::sum('amount');
+
+    $user_payments = UserPayment::sum('amount');
+
+    $video_payments = VideoTape::sum('admin_ppv_amount');
+
+    return $video_payments + $user_payments;
 }
 
 function check_s3_configure() {
@@ -509,7 +515,7 @@ function user_type_check($user) {
 
 function get_expiry_days($id) {
     
-    $data = UserPayment::where('user_id' , $id)->orderBy('updated_at', 'desc')->first();
+    $data = UserPayment::where('user_id' , $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
 
     // User Amount
 
@@ -518,11 +524,16 @@ function get_expiry_days($id) {
     $days = 0;
 
     if($data) {
-        $start_date = new \DateTime(date('Y-m-d h:i:s'));
-        $end_date = new \DateTime($data->expiry_date);
 
-        $time_interval = date_diff($start_date,$end_date);
-        $days = $time_interval->days;
+        if(strtotime($data->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+            $start_date = new \DateTime(date('Y-m-d h:i:s'));
+            $end_date = new \DateTime($data->expiry_date);
+
+            $time_interval = date_diff($start_date,$end_date);
+            $days = $time_interval->days;
+
+        }
     }
 
     return ['days'=>$days, 'amount'=>($amt) ? $amt->amt : 0];
@@ -707,23 +718,32 @@ function redeem_request_status($status) {
  *
  */
 
-function add_to_redeem($id , $amount) {
+function add_to_redeem($id , $amount , $admin_amount) {
 
     \Log::info('Add to Redeem Start');
 
     if($id && $amount) {
 
-        $data = Redeem::where('user_id' , $id)->first();
+        $redeems_details = Redeem::where('user_id' , $id)->first();
 
-        if(!$data) {
-            $data = new Redeem;
-            $data->user_id = $id;
+        if(!$redeems_details) {
+
+            $redeems_details = new Redeem;
+
+            $redeems_details->user_id = $id;
         }
 
-        $data->total = $data->total + $amount;
-        $data->remaining = $data->remaining+$amount;
-        $data->save();
-   
+        $redeems_details->total = $redeems_details->total + $amount;
+        
+        $redeems_details->remaining = $redeems_details->remaining+$amount;
+
+        // Update the earnings for moderator and admin amount
+
+        $redeems_details->total_admin_amount = $redeems_details->total_admin_amount + $admin_amount;
+
+        $redeems_details->total_user_amount = $redeems_details->total_user_amount + $amount;
+        
+        $redeems_details->save();   
     }
 
     \Log::info('Add to Redeem End');
@@ -1090,6 +1110,7 @@ function getMinutesBetweenTime($startTime, $endTime) {
  */
 function watchFullVideo($user_id, $user_type, $video) {
 
+
     if ($user_type == 1) {
 
         if ($video->ppv_amount == 0) {
@@ -1098,7 +1119,8 @@ function watchFullVideo($user_id, $user_type, $video) {
 
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
                 ->where('amount', '>', 0)
-                ->orderBy('created_at', 'desc')->first();
+                ->orderBy('created_at', 'desc')
+                ->first();
             if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
                 // Load Payment view
                 if ($paymentView) {
@@ -1136,7 +1158,9 @@ function watchFullVideo($user_id, $user_type, $video) {
                     }
                 }  
             }
-        } 
+        } else if($video->ppv_amount > 0 && $video->type_of_user == PAID_USER){
+            return true;
+        }
     }
     return false;
 }
@@ -1227,6 +1251,10 @@ function displayVideoDetails($data,$userId) {
         $like_status = Helper::like_status($user->id,$data->video_tape_id);
     }
 
+    $pay_per_view_status = watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data);
+
+    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1237,6 +1265,7 @@ function displayVideoDetails($data,$userId) {
         'ppv_amount'=>$data->ppv_amount,
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
+        'channel_image'=>$data->channel_picture,
         'created_at'=>$data->created_at->diffForHumans(),   
         'ad_status'=>$data->ad_status,
         'description'=>$data->description,
@@ -1247,10 +1276,11 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
-        'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
+        'pay_per_view_status'=>$pay_per_view_status,
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
-        'publish_time'=>date('F Y', strtotime($data->publish_time)),
+        // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
+        'publish_time'=>$data->created_at->diffForHumans(),
         'user_ppv_amount'=>$data->user_ppv_amount,
         'is_liked'=>$like_status,
         'wishlist_status'=>$wishlist_status,
@@ -1259,6 +1289,7 @@ function displayVideoDetails($data,$userId) {
         'embed_link'=>route('embed_video', array('u_id'=>$data->unique_id)),
         'currency'=>Setting::get('currency'),
         'share_url'=>route('user.single' , $data->video_tape_id),
+        'ppv_notes'=>$ppv_notes,
     ];
 
 
@@ -1272,7 +1303,17 @@ function displayVideoDetails($data,$userId) {
  *
  * @return amount
  */
+
 function total_ppv_video_revenue() {
+
+    return PayPerView::sum('amount');
+
+}
+
+function total_video_revenue($type = "") {
+    if($type == 'admin') {
+        return PayPerView::sum('admin_ppv_amount');
+    }
     return PayPerView::sum('amount');
 }
 
@@ -1285,4 +1326,11 @@ function total_ppv_video_revenue() {
  */
 function user_total_amount() {
     return PayPerView::where('user_id', Auth::user()->id)->sum('amount');
+}
+
+function get_commission_percentage($total , $actual_amount) {
+
+    $percentage = $total > 0 ? ($actual_amount/$total ) * 100 : 0;
+
+    return $percentage;
 }

@@ -51,7 +51,18 @@
 	              		</div>
 
 	              		<h3 class="widget-user-username">{{$user->name}} </h3>
-	      				<h5 class="widget-user-desc">{{tr('user')}}</h5>
+	      				<h5 class="widget-user-desc">{{tr('user')}} 
+
+	      					@if($user->user_type)
+
+			      				<span class="text-white"><i class="fa fa-check-circle"></i></span>
+
+			      			@else
+
+			      				<span class="text-white" ><i class="fa fa-times-circle"></i></span>
+
+			      			@endif
+						</h5>
       				</div>
       				<div class="pull-right">
       					<a href="{{route('admin.edit.user' , array('id' => $user->id))}}" class="btn btn-sm btn-warning">{{tr('edit')}}</a>
@@ -60,11 +71,45 @@
             	</div>
 
             	<div class="box-footer no-padding">
+
               		<ul class="nav nav-stacked">
+              			
 		                <li><a href="#">{{tr('username')}} <span class="pull-right">{{$user->name}}</span></a></li>
 		                <li><a href="#">{{tr('email')}} <span class="pull-right">{{$user->email}}</span></a></li>
 		                <li><a href="#">{{tr('dob')}} <span class="pull-right">{{$user->dob}}</span></a></li>
 		                <li><a href="#">{{tr('mobile')}} <span class="pull-right">{{$user->mobile}}</span></a></li>
+
+		                @if(Setting::get('email_verify_control'))
+		                
+		                <li>
+
+		                	@if(!$user->is_verified)
+
+					      		<a href="{{route('admin.users.verify' , $user->id)}}">
+					      			{{tr('is_verified')}}
+					      		
+					      			<span class="pull-right btn btn-xs btn-success">{{tr('verify')}}</span>
+
+					      		</a>
+
+					      	@else
+
+					      	<a href="#">
+
+					      		{{tr('is_verified')}}
+
+					      		<span class="pull-right">{{tr('verified')}}</span>
+
+					      	</a>
+
+					      	@endif
+
+		                	
+		                </li>
+
+		                @endif
+
+
 		                <li><a href="#">{{tr('validity_days')}} <span class="pull-right"> 
         				@if($user->user_type)
                             <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>

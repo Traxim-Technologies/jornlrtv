@@ -70,6 +70,8 @@ use App\Redeem;
 
 use App\RedeemRequest;
 
+use App\PayPerView;
+
 use App\Repositories\CommonRepository as CommonRepo;
 
 use App\Repositories\AdminRepository as AdminRepo;
@@ -98,11 +100,19 @@ class AdminController extends Controller {
         return view('admin.login')->withPage('admin-login')->with('sub_page','');
     }
 
+    /**
+     *
+     *
+     *
+     *
+     */
+
     public function dashboard() {
 
         $admin = Admin::first();
 
         $admin->token = Helper::generate_token();
+
         $admin->token_expiry = Helper::generate_token_expiry();
 
         $admin->save();
@@ -116,12 +126,12 @@ class AdminController extends Controller {
         $recent_videos = VideoRepo::admin_recently_added();
 
         $get_registers = get_register_count();
+
         $recent_users = get_recent_users();
+
         $total_revenue = total_revenue();
 
         $view = last_days(10);
-
-        // user_track();
 
         return view('admin.dashboard.dashboard')->withPage('dashboard')
                     ->with('sub_page','')
@@ -138,6 +148,7 @@ class AdminController extends Controller {
     public function profile() {
 
         $admin = Admin::first();
+
         return view('admin.account.profile')->with('admin' , $admin)->withPage('profile')->with('sub_page','');
     }
 
@@ -145,7 +156,7 @@ class AdminController extends Controller {
 
         $validator = Validator::make( $request->all(),array(
                 'name' => 'max:255',
-                'email' => 'email|max:255',
+                'email' => $request->id ? 'email|max:255|unique:admins,email,'.$request->id : 'email|max:255|unique:admins,email,NULL',
                 'mobile' => 'digits_between:6,13',
                 'address' => 'max:300',
                 'id' => 'required|exists:admins,id',
@@ -154,7 +165,9 @@ class AdminController extends Controller {
         );
         
         if($validator->fails()) {
+
             $error_messages = implode(',', $validator->messages()->all());
+
             return back()->with('flash_errors', $error_messages);
         } else {
             
@@ -171,12 +184,14 @@ class AdminController extends Controller {
             $admin->address = $request->has('address') ? $request->address : $admin->address;
 
             if($request->hasFile('picture')) {
+
                 Helper::delete_picture($admin->picture, "/uploads/images/");
+
                 $admin->picture = Helper::normal_upload_picture($request->picture, "/uploads/images/");
             }
                 
             $admin->remember_token = Helper::generate_token();
-           // @ $admin->is_activated = 1;
+            
             $admin->save();
 
             return back()->with('flash_success', tr('admin_not_profile'));
@@ -690,7 +705,7 @@ class AdminController extends Controller {
 
     public function view_history($id) {
 
-        if($user = User::find($id)) {
+        if($user_details = User::find($id)) {
 
             $user_history = UserHistory::where('user_histories.user_id' , $id)
                             ->leftJoin('users' , 'user_histories.user_id' , '=' , 'users.id')
@@ -706,6 +721,7 @@ class AdminController extends Controller {
                             ->get();
 
             return view('admin.users.user-history')
+                        ->with('user_details' , $user_details)
                         ->with('data' , $user_history)
                         ->withPage('users')
                         ->with('sub_page','users');
@@ -749,6 +765,7 @@ class AdminController extends Controller {
 
             return view('admin.users.user-wishlist')
                         ->with('data' , $user_wishlist)
+                        ->with('user_details' , $user)
                         ->withPage('users')
                         ->with('sub_page','users');
 
@@ -1116,25 +1133,6 @@ class AdminController extends Controller {
         return back()->with('flash_success', tr('admin_not_ur_del'));
     }
 
-    public function user_payments() {
-
-        $payments = UserPayment::orderBy('created_at' , 'desc')->get();
-
-        return view('admin.payments.user-payments')->with('data' , $payments)->with('page','payments')->with('sub_page','payments-subscriptions'); 
-    }
-
-    public function email_settings() {
-
-        $admin_id = \Auth::guard('admin')->user()->id;
-
-        $result = EnvEditorHelper::getEnvValues();
-
-        \Auth::guard('admin')->loginUsingId($admin_id);
-
-        return view('admin.email-settings')->with('result',$result)->withPage('email-settings')->with('sub_page',''); 
-    }
-
-
     public function email_settings_process(Request $request) {
 
         $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
@@ -1161,12 +1159,6 @@ class AdminController extends Controller {
         return view('admin.settings.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
     }
 
-    public function payment_settings() {
-
-        $settings = array();
-
-        return view('admin.payment-settings')->with('settings' , $settings)->withPage('payment-settings')->with('sub_page',''); 
-    }
 
     public function settings_process(Request $request) {
 
@@ -1486,13 +1478,16 @@ class AdminController extends Controller {
 
     /**
      * Function Name : save_video_payment
+     *
      * Brief : To save the payment details
      *
      * @param integer $id Video Id
+     *
      * @param object  $request Object (Post Attributes)
      *
      * @return flash message
      */
+    
     public function save_video_payment($id, Request $request) {
 
         // Load Video Model
@@ -1515,6 +1510,7 @@ class AdminController extends Controller {
             }
         }
         return back()->with('flash_error', tr('admin_published_video_failure'));
+    
     }
 
     /**
@@ -1903,9 +1899,16 @@ class AdminController extends Controller {
         }
     }
 
-    public function user_subscription_payments($id = "") {
+    /**
+     * subscription_payments()
+     *
+     * Used to display the subscription payments details List or 
+     * 
+     * Based on the particuler subscriptions details
+     *
+     */
 
-        $page = "user-payments";
+    public function subscription_payments($id = "") {
 
         $base_query = UserPayment::orderBy('created_at' , 'desc');
 
@@ -1917,12 +1920,11 @@ class AdminController extends Controller {
 
             $base_query = $base_query->where('subscription_id' , $id);
 
-            $page = "user-payments";
         }
 
         $payments = $base_query->get();
 
-        return view('admin.users.subscription_payments')->with('data' , $payments)->withPage($page)->with('sub_page','')->with('subscription' , $subscription); 
+        return view('admin.payments.subscription-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-subscriptions')->with('subscription' , $subscription); 
     
     }
 
@@ -2525,7 +2527,7 @@ class AdminController extends Controller {
     public function banner_ads_save(Request $request) {
 
         $validator = Validator::make($request->all(),[
-                'title' => 'required|max:255',
+                'title' => 'max:255',
                 'description' => '',
                 'position'=>$request->id ? 'required' :'required|unique:banner_ads',
                 'link'=>'required|url',
@@ -2866,12 +2868,32 @@ class AdminController extends Controller {
      */
 
     public function revenues() {
+
+        $total  = total_revenue();
+
+        $ppv_total = PayPerView::sum('amount');
+
+        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
+
+        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
+
+        $subscription_total = UserPayment::sum('amount');
+
+        $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
         
-        return redirect()->to('/admin');
+        return view('admin.payments.revenues')
+                        ->with('total' , $total)
+                        ->with('ppv_total' , $ppv_total)
+                        ->with('ppv_admin_amount' , $ppv_admin_amount)
+                        ->with('ppv_user_amount' , $ppv_user_amount)
+                        ->with('subscription_total' , $subscription_total)
+                        ->with('total_subscribers' , $total_subscribers)
+                        ->withPage('payments')
+                        ->with('sub_page' , 'payments-dashboard');
     }
 
     /**
-     *
+     * used to display ppv payments
      *
      *
      *
@@ -2880,7 +2902,9 @@ class AdminController extends Controller {
 
     public function ppv_payments() {
 
-        return redirect()->to('/admin');
+        $payments = PayPerView::orderBy('created_at' , 'desc')->get();
+    
+        return view('admin.payments.ppv-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-ppv');
     }
 
 }

@@ -163,11 +163,11 @@ Route::get('/payment/failure' , 'ApplicationController@payment_failure')->name('
 
 Route::get('/message/save' , 'ApplicationController@message_save');
 
-Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
+// Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
 
-Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
+// Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
 
-Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
+// Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
 
 
 Route::get('/test' , 'ApplicationController@test')->name('test');
@@ -178,7 +178,7 @@ Route::get('/email/verification' , 'ApplicationController@email_verify')->name('
 
 // Installation
 
-Route::get('/install/theme', 'InstallationController@install')->name('installTheme');
+Route::get('/install/configure', 'InstallationController@install')->name('installTheme');
 
 Route::get('/system/check', 'InstallationController@system_check_process')->name('system-check');
 
@@ -372,15 +372,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/change/banner/video/{id}', 'AdminController@change_banner_video')->name('change.video');
     
-    // User Payment details
+    // Payment details
 
     Route::get('revenues' , 'AdminController@revenues')->name('revenues');
     
     Route::get('ppv_payments' , 'AdminController@ppv_payments')->name('ppv_payments');
 
-    Route::get('user/payments' , 'AdminController@user_payments')->name('user.payments');
-
-    Route::get('user/video-payments' , 'AdminController@video_payments')->name('user.video-payments');
+    Route::get('/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('subscription.payments');
 
     Route::get('/remove_payper_view/{id}', 'AdminController@remove_payper_view')->name('remove_pay_per_view');
 
@@ -389,12 +387,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('settings' , 'AdminController@settings')->name('settings');
 
     Route::post('save_common_settings' , 'AdminController@save_common_settings')->name('save.common-settings');
-
-    Route::get('payment/settings' , 'AdminController@payment_settings')->name('payment.settings');
     
     Route::post('settings' , 'AdminController@settings_process')->name('save.settings');
-
-    Route::get('settings/email' , 'AdminController@email_settings')->name('email.settings');
 
     Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
 
@@ -411,8 +405,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('/pages/create', 'AdminController@page_save')->name('pages.save');
 
     Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
-
-    Route::get('video/payments', 'AdminController@video_payments')->name('videos.payments');
 
 
     // Custom Push
@@ -441,7 +433,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('assign_ad', 'AdminController@assign_ad')->name('assign_ad');
 
     Route::post('assign_ad', 'AdminController@save_assign_ad')->name('assign_ads');
-
 
 
     // Banner Ads
@@ -480,7 +471,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Subscriptions
 
-    Route::get('users/subscription/payments/{id?}' , 'AdminController@user_subscription_payments')->name('user.subscription.payments');
 
     Route::get('/user_subscriptions/{id}', 'AdminController@user_subscriptions')->name('subscriptions.plans');
 
@@ -549,12 +539,13 @@ Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthContro
 
 Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
+// Embed Links
+
 Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
 
+// Admin to users login
 
 Route::get('/master/login', 'UserController@master_login')->name('master.login');
-
-Route::get('cron_delete_video', 'ApplicationController@cron_delete_video');
 
 
 Route::group(['as' => 'user.'], function(){
@@ -588,8 +579,6 @@ Route::group(['as' => 'user.'], function(){
     Route::get('deleteHistory', 'UserController@delete_history')->name('delete.history');
 
     Route::post('addHistory', 'UserController@add_history')->name('add.history');
-
-
 
 
     Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
@@ -673,10 +662,7 @@ Route::group(['as' => 'user.'], function(){
     Route::get('payment-video', 'UserController@payment_url')->name('payment_url');
 
     Route::get('stripe-payment-video', 'UserController@stripe_payment_video')->name('stripe_payment_video');
-
-
-
-
+    
 
     Route::post('/save_video_payment/{id}', 'UserController@save_video_payment')->name('save.video-payment');
 
@@ -690,10 +676,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/live_videos', 'UserController@live_videos')->name('live_videos');
 
-    Route::get('/user_subscriptions', 'UserController@subscriptions')->name('subscriptions');
+    Route::get('/subscriptions', 'UserController@subscriptions')->name('subscriptions');
 
     Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'UserController@user_subscription_save')->name('subscription.save');
-
     
 
     // Video Upload

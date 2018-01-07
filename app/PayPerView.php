@@ -26,6 +26,22 @@ class PayPerView extends Model
     /**
      * Get the video record associated with the flag.
      */
+    public function userDetails()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
+
+    /**
+     * Get the video record associated with the flag.
+     */
+    public function videoTapeDetails()
+    {
+        return $this->belongsTo('App\VideoTape', 'video_id');
+    }
+
+    /**
+     * Get the video record associated with the flag.
+     */
     public function videoTapeResponse()
     {
         return $this->hasOne('App\VideoTape', 'id', 'video_id')
@@ -39,5 +55,14 @@ class PayPerView extends Model
     public function userVideos()
     {
         return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
+
+    /**
+     * Get the video record associated with the flag.
+     */
+    public function video()
+    {
+        return $this->belongsTo('App\VideoTape', 'video_tape_id');
     }
 }

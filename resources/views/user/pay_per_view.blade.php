@@ -43,7 +43,16 @@
 								<h4>{{tr('pay_per_video')}}</h4>
 								<img src="{{asset('images/PayPer_Icon.png')}}">
 								<div class="h-60">
-									<p>{{tr('one_time_payment')}}</p>
+									@if($video->type_of_subscription == 1)
+
+							    		{{tr('one_time_payment')}}
+
+							    	@else
+
+							    		{{tr('recurring_payment')}}
+
+							    	@endif
+	
 									<p>{{tr('amount')}} - {{Setting::get('currency')}} {{$video->ppv_amount}}</p>
 								</div>
 								<div>
