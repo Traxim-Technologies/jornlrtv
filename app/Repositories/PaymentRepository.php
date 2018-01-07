@@ -250,7 +250,7 @@ class PaymentRepository {
 
         // Commission split 
 
-        $admin_commission = Setting::get('admin_commission')/100;
+        $admin_commission = Setting::get('admin_ppv_commission')/100;
 
         $admin_ppv_amount = $total * $admin_commission;
 
