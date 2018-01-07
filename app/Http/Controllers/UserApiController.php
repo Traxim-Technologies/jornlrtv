@@ -99,80 +99,92 @@ class UserApiController extends Controller {
             $error_messages = implode(',', $validator->messages()->all());
 
             $response_array = ['success' => false , 'error_messages' => $error_messages , 'error_code' => 001];
+
         } else {
 
-            $last = LiveVideo::orderBy('port_no', 'desc')->first();
+            $model = LiveVideo::where('user_id', $request->id)->where('status', DEFAULT_FALSE)->first();
 
-            $model = new LiveVideo;
-            $model->title = $request->title;
-            $model->payment_status = $request->payment_status;
-            $model->type = $request->type ? $request->type : TYPE_PUBLIC;
-            $model->channel_id = $request->channel_id;
-            $model->amount = 0;
+            $this->erase_streaming($request);
 
-            if($request->payment_status) {
+            if(!$model) {
 
-                $model->amount = ($request->amount > 0) ? $request->amount : 1;
+                $last = LiveVideo::orderBy('port_no', 'desc')->first();
 
-            }
-            $model->description = ($request->has('description')) ? $request->description : null;
-            $model->is_streaming = DEFAULT_TRUE;
-            $model->status = DEFAULT_FALSE;
-            $model->user_id = $request->user_id;
-            $model->virtual_id = md5(time());
-            $model->unique_id = $model->title;
-            $model->snapshot = asset('images/live_stream.jpg');
+                $model = new LiveVideo;
+                $model->title = $request->title;
+                $model->payment_status = $request->payment_status;
+                $model->type = $request->type ? $request->type : TYPE_PUBLIC;
+                $model->channel_id = $request->channel_id;
+                $model->amount = 0;
 
-            $destination_port = 44104;
+                if($request->payment_status) {
 
-            if ($last) {
+                    $model->amount = ($request->amount > 0) ? $request->amount : 1;
 
-                if ($last->port_no) {
+                }
+                $model->description = ($request->has('description')) ? $request->description : null;
+                $model->is_streaming = DEFAULT_TRUE;
+                $model->status = DEFAULT_FALSE;
+                $model->user_id = $request->user_id;
+                $model->virtual_id = md5(time());
+                $model->unique_id = $model->title;
+                $model->snapshot = asset('images/live_stream.jpg');
 
-                    $destination_port = $last->port_no + 2;
+                $destination_port = 44104;
+
+                if ($last) {
+
+                    if ($last->port_no) {
+
+                        $destination_port = $last->port_no + 2;
+
+                    }
 
                 }
 
-            }
+                $model->port_no = $destination_port;
 
-            $model->port_no = $destination_port;
+                $model->save();
 
-            $model->save();
+                /*// $usrModel
 
-            /*// $usrModel
-
-            $userModel = User::find($request->id);
+                $userModel = User::find($request->id);
 
 
-            $appSettings = json_encode([
-                'SOCKET_URL' => Setting::get('SOCKET_URL'),
-                'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
-                'BASE_URL' => Setting::get('BASE_URL'),
-                'TURN_CONFIG' => [],
-                'TOKEN' => $request->token,
-                'USER_PICTURE'=>$userModel->chat_picture,
-                'NAME'=>$userModel->name,
-                'CLASS'=>'left',
-                'USER' => ['id' => $request->id, 'role' => "model"],
-                'VIDEO_PAYMENT'=>null,
-            ]);*/
+                $appSettings = json_encode([
+                    'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                    'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                    'BASE_URL' => Setting::get('BASE_URL'),
+                    'TURN_CONFIG' => [],
+                    'TOKEN' => $request->token,
+                    'USER_PICTURE'=>$userModel->chat_picture,
+                    'NAME'=>$userModel->name,
+                    'CLASS'=>'left',
+                    'USER' => ['id' => $request->id, 'role' => "model"],
+                    'VIDEO_PAYMENT'=>null,
+                ]);*/
 
-            if ($model) {
-                $response_array = [
-                    'success' => true , 
+                if ($model) {
+                    $response_array = [
+                        'success' => true , 
 
-                    'data' => $model, 
+                        'data' => $model, 
 
-                    /*'appSettings'=> $appSettings, */
+                        /*'appSettings'=> $appSettings, */
 
-                    'port_no'=>$model->port_no, 
+                        'port_no'=>$model->port_no, 
 
-                    'message'=>tr('video_broadcating_success')
-                ];
+                        'message'=>tr('video_broadcating_success')
+                    ];
 
-                
+                    
+                } else {
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+                }
+
             } else {
-                $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+
+                $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(170), 'error_code'=>170];
             }
         }
         return response()->json($response_array,200);
