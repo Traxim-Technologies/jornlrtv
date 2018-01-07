@@ -1148,4 +1148,5 @@ return array(
 	'user_live_commission'=>'User Commission',
 	'live_history'=>'Live videos History',
 	'live_videos_billing'=>'Live Video Billing',
+	'banner_ads_note' => 'Banner Ads will display in web.'
 );

@@ -1406,7 +1406,6 @@ class UserController extends Controller {
 
     public function upload_video_image(Request $request) {
 
-
         $response = CommonRepo::upload_video_image($request)->getData();
 
         return response()->json(['id'=>$response]);
@@ -2085,9 +2084,11 @@ class UserController extends Controller {
 
             return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', $response->message);
 
+
         } else {
 
             return back()->with('flash_error', $response->error_messages);
+
         }
 
     }

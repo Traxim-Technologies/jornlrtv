@@ -475,11 +475,12 @@ class PaypalController extends Controller {
 
         if(isset($redirect_url)) {
 
+            // $ppv_payment_details = PayPerView::where('user_id' , Auth::user()->id)->where('video_id' , $request->id)->where('amount',0)->first();
             $ppv_payment_details = PayPerView::where('user_id' , Auth::user()->id)->where('video_id' , $request->id)->where('amount',0)->first();
 
-            if(empty($ppv_payment_details)) {
+            // if(empty($ppv_payment_details)) {
                 $ppv_payment_details = new PayPerView;
-            }
+            // }
 
             $ppv_payment_details->expiry_date = date('Y-m-d H:i:s');
 
