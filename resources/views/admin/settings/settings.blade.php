@@ -2,7 +2,9 @@
 
 @section('title', tr('settings'))
 
-@section('content-header', tr('settings'))
+@section('content-header')
+
+{{ tr('settings')}}
 
 <a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
 
