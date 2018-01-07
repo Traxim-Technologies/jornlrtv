@@ -2,7 +2,14 @@
 
 @section('title', tr('banner_ads'))
 
-@section('content-header', tr('banner_ads'))
+@section('content-header')
+
+{{tr('banner_ads')}}
+
+<br>
+<small class="header-note">** {{tr('banner_ads_note')}} <a target="_blank" href="http://prntscr.com/hx6e61">http://prntscr.com/hx6e61</a>**</small>
+
+@endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>

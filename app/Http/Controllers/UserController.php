@@ -1289,7 +1289,6 @@ class UserController extends Controller {
 
     public function upload_video_image(Request $request) {
 
-
         $response = CommonRepo::upload_video_image($request)->getData();
 
         return response()->json(['id'=>$response]);
@@ -1966,7 +1965,7 @@ class UserController extends Controller {
         $subscription = Subscription::find($request->s_id);
 
         if(!count($subscription)) {
-            return back()->with('flash_error', tr('no_subscription_found'));
+            return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
         }
 
         return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)->with('model',$model);
