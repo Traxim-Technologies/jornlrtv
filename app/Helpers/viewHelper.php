@@ -1170,7 +1170,7 @@ function displayVideoDetails($data,$userId) {
 
     $pay_per_view_status = watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data);
 
-    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note');) : ''; 
+    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
 
     $model = [
         'video_tape_id'=>$data->video_tape_id,
