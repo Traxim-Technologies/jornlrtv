@@ -744,6 +744,7 @@ return array(
 	'choose'=>'Choose',
 
 	'subscription_note' => 'Choose one plan and enjoy everything.',
+	'subscription_image_note'=>'Upload Square images 4:4 Ratio Ex: 400 * 400',
 
 	'plan_note' => 'Please enter no of months. Allowed numbers from 1 to 12',
 
@@ -1047,6 +1048,8 @@ return array(
 	'later' => 'Later',
 
 	'is_verified' => 'Is Verified',
+
+	'redeems_request_admin_less_amount' => 'The payment release amount is less than the user requested amount !!!',
 	'failed'=>'Failed',
 	'success'=>'Success',
 	'no_page_found'=>'No Page Found. Please try again later',
