@@ -5751,4 +5751,128 @@ class UserApiController extends Controller {
     }
 
 
+/**
+     * Function Name : live_history()
+     *
+     * To display my live videos History
+     *
+     * @param object $request - User id and token
+     *
+     * @return return array of list
+     */
+    public function live_history(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'skip'=>($request->device_type == DEVICE_WEB) ? '' : 'required|numeric',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            $response_array = array(
+                    'success' => false,
+                    'error_messages' => $error_messages
+            );
+            return response()->json($response_array);
+        } else {
+
+            $currency = Setting::get('currency');
+
+            $query = LiveVideoPayment::select('live_video_payments.id as live_video_payment_id',
+                    'live_video_id',
+                    'live_videos.title',
+                    'live_video_payments.amount',
+                    'live_video_payments.status as video_status',
+                    'live_videos.snapshot as picture',
+                    'live_video_payments.payment_id',
+                     DB::raw('DATE_FORMAT(live_video_payments.created_at , "%e %b %y") as paid_date'),
+                      DB::raw("'$currency' as currency"))
+                    ->leftJoin('live_videos', 'live_videos.id', '=', 'live_video_payments.live_video_id')
+                    ->where('live_video_payments.live_video_viewer_id', $request->id)
+                    ->where('live_video_payments.amount', '>', 0);
+
+            if ($request->device_type == DEVICE_WEB) {
+
+                $model = $query->paginate(16);
+
+                $response_array = array('success'=>true, 'data' => $model->items(), 'pagination' => (string) $model->links());
+
+            } else {
+
+                $model = $query->skip($request->skip)
+                        ->take(Setting::get('admin_take_count' ,12))
+                        ->get();
+
+                $response_array = ['success'=>true, 'data'=>$model];
+            }
+
+            return response()->json($response_array);
+
+        }
+    }
+
+    /**
+     * Function Name : live_video_revenue()
+     *
+     * To display my live videos revenue history
+     *
+     * @param object $request - User id and token
+     *
+     * @return return array of list
+     */
+    public function live_video_revenue(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'skip'=>($request->device_type == DEVICE_WEB) ? '' : 'required|numeric',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            $response_array = array(
+                    'success' => false,
+                    'error_messages' => $error_messages
+            );
+            return response()->json($response_array);
+
+        } else {
+
+            $currency = Setting::get('currency');
+
+
+            $model = LiveVideoPayment::select('live_video_payments.id as live_video_payment_id',
+                    'live_video_id',
+                    'live_videos.title',
+                    'live_video_payments.amount',
+                    'live_video_payments.status as video_status',
+                    'live_videos.snapshot as video_image',
+                    'live_video_payments.payment_id',
+                    'live_videos.description',
+                     DB::raw('DATE_FORMAT(live_video_payments.created_at , "%e %b %y") as paid_date'),
+                      DB::raw("'$currency' as currency"),
+                       DB::raw("sum(live_video_payments.user_amount) as user_amount"))
+                    ->leftJoin('live_videos', 'live_videos.id', '=', 'live_video_payments.live_video_id')
+                    ->where('live_video_payments.user_id', $request->id)
+                    ->where('live_videos.channel_id', $request->channel_id)
+                    ->where('live_video_payments.amount', '>', 0)
+                    ->skip($request->skip)
+                    ->take(Setting::get('admin_take_count' ,12))
+                    ->groupBy('live_videos.id')
+                    ->get();
+
+            $response_array = ['success'=>true, 'data'=>$model];
+        
+
+            return response()->json($response_array);
+
+        }
+    }
+
+
 }

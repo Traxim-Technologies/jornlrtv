@@ -79,11 +79,17 @@
 
                             @endif
 
+
                             <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
+
+                            <li role="separator" class="divider"></li>
 
                             <li><a href="{{route('user.subscription.history')}}">{{tr('subscription_history')}}</a></li>
 
                             <li><a href="{{route('user.ppv.history')}}">{{tr('ppv_history')}}</a></li>
+
+                             <li><a href="{{route('user.live.history')}}">{{tr('live_history')}}</a></li>
+
 
                             
                             <li role="separator" class="divider"></li>
@@ -253,6 +259,8 @@
 
                             <li><a href="{{route('user.redeems')}}">{{tr('redeems')}}</a></li>
 
+                            <li role="separator" class="divider"></li>
+                            
                             <li>
                                 <a href="{{route('user.subscription.history')}}">{{tr('subscription_history')}}</a>
                             </li>
@@ -262,6 +270,8 @@
                                 <li><a href="{{route('user.ppv.history')}}">{{tr('ppv_history')}}</a></li>
 
                             @endif
+
+                            <li><a href="{{route('user.live.history')}}">{{tr('live_history')}}</a></li>
 
                             <li role="separator" class="divider"></li>
 

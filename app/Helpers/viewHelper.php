@@ -1336,3 +1336,14 @@ function get_commission_percentage($total , $actual_amount) {
 
     return $percentage;
 }
+
+
+/**
+ * Function Name : total_video_revenue
+ * To sum all the payment based on video subscription
+ *
+ * @return amount
+ */
+function total_ppv_admin_video_revenue() {
+    return PayPerView::sum('admin_ppv_amount');
+}

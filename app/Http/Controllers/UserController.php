@@ -476,7 +476,7 @@ class UserController extends Controller {
      *
      * @return channel videos list
      */
-    public function channel_videos($id) {
+    public function channel_videos($id, Request $request) {
 
         $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
                 ->where('id', $id)
@@ -504,6 +504,21 @@ class UserController extends Controller {
 
             $subscriberscnt = subscriberscnt($channel->id);
 
+            $live_video_history = [];
+
+            if (Auth::check()) {
+
+                $request->request->add([
+                    'skip'=>0,
+                    'channel_id'=>$id,
+                    'id'=>Auth::user()->id,
+
+                ]);
+
+                $live_video_history = $this->UserAPI->live_video_revenue($request)->getData();
+
+            }
+
             return view('user.channels.index')
                         ->with('page' , 'channels_'.$id)
                         ->with('subPage' , 'channels')
@@ -512,7 +527,8 @@ class UserController extends Controller {
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
-                        ->with('subscriberscnt', $subscriberscnt);
+                        ->with('subscriberscnt', $subscriberscnt)
+                        ->with('live_video_history', $live_video_history);
         } else {
 
             return back()->with('flash_error', tr('channel_not_found'));
@@ -2922,6 +2938,46 @@ class UserController extends Controller {
 
         }
 
+    }
+
+    public function live_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->live_history($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.live_history')->with('page', 'history')
+                ->with('subPage', 'live_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+        }
+    }
+
+
+    public function live_mgmt_videos(Request $request) {
+
+        // Get Videos
+
+        // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+
+       // $payment_videos = VideoRepo::payment_videos($request->channel_id, null, $request->skip);
+
+        $live_video_history = $this->UserAPI->live_video_revenue($request)->getData();
+
+
+        $view = View::make('user.videos.partial_live_video_history')
+                    ->with('live_video_history', $live_video_history)->render();
+
+        return response()->json(['view'=>$view, 'length'=>count($live_video_history->data)]);
     }
 
 }

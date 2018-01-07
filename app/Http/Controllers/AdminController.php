@@ -2872,24 +2872,38 @@ class AdminController extends Controller {
 
         $total  = total_revenue();
 
-        $ppv_total = PayPerView::sum('amount');
-
-        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
-
-        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
-
         $subscription_total = UserPayment::sum('amount');
 
         $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
+
+        $admin_ppv_amount = VideoTape::sum('admin_ppv_amount');
+
+        $user_ppv_amount = VideoTape::sum('user_ppv_amount');
+
+        $total_ppv_amount = $admin_ppv_amount + $user_ppv_amount;
+
+
+        $admin_live_amount = LiveVideoPayment::sum('admin_amount');
+
+        $user_live_amount = LiveVideoPayment::sum('user_amount');
+
+        $total_live_amount = $admin_live_amount + $user_live_amount;
+
+
         
         return view('admin.payments.revenues')
                         ->with('total' , $total)
-                        ->with('ppv_total' , $ppv_total)
-                        ->with('ppv_admin_amount' , $ppv_admin_amount)
-                        ->with('ppv_user_amount' , $ppv_user_amount)
+                    
                         ->with('subscription_total' , $subscription_total)
                         ->with('total_subscribers' , $total_subscribers)
+                        ->with('admin_ppv_amount', $admin_ppv_amount)
+                        ->with('user_ppv_amount', $user_ppv_amount)
+                        ->with('total_ppv_amount', $total_ppv_amount)
+                        ->with('admin_live_amount', $admin_live_amount)
+                        ->with('user_live_amount', $user_live_amount)
+                        ->with('total_live_amount', $total_live_amount)
                         ->withPage('payments')
+
                         ->with('sub_page' , 'payments-dashboard');
     }
 

@@ -406,6 +406,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
 
+    Route::get('video/payments', 'AdminController@video_payments')->name('videos.payments');
+
 
     // Custom Push
 
@@ -770,6 +772,11 @@ Route::group(['as' => 'user.'], function(){
     Route::get('subscription/history', 'UserController@subscription_history')->name('subscription.history');
 
     Route::get('ppv/history', 'UserController@ppv_history')->name('ppv.history');
+
+    Route::get('live/history', 'UserController@live_history')->name('live.history');
+
+    Route::post('/live/videos/mgmt', 'UserController@live_mgmt_videos')->name('live.video.mgmt');
+
 
 });
 

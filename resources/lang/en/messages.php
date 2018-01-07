@@ -1139,4 +1139,10 @@ return array(
 	'card_notes'=>"You can't delete default card, if you want to delete, please choose another card as default and then delete it",
 	'normal_user_note'=>"You are a Normal User. If you are Paid User, you no need to pay the video payment. You can watch the video anytime. If you want to paid user, Please choose plan and continue the same.",
 	'paid_user_note'=>'If you subscribe also , you need to pay for this selected video',
+	'revenue_system'=>'Revenue System',
+	'live_payments'=>'Live Payments',
+	'admin_live_commission'=>'Admin Commission',
+	'user_live_commission'=>'User Commission',
+	'live_history'=>'Live videos History',
+	'live_videos_billing'=>'Live Video Billing',
 );
