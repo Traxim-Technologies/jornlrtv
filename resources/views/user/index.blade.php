@@ -111,7 +111,7 @@
 
                                             <div class="clearfix"></div>
 
-                                            <p class="hidden-xs">@if($banner_ad->content) <?= substr($banner_ad->content , 0 , 200) ?>... @endif</p>
+                                            <p class="hidden-xs">@if($banner_ad->content) <?= strlen($banner_ad->content) > 200 ? substr($banner_ad->content , 0 , 200).'...' :  substr($banner_ad->content , 0 , 200)?> @endif</p>
                                         </div>
                                     </a>
                                 </div>

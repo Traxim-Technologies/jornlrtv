@@ -1052,12 +1052,12 @@ class UserController extends Controller {
         $response = $this->UserAPI->delete_account($request)->getData();
 
         if($response->success) {
+            
             return back()->with('flash_success', tr('user_account_delete_success'));
+
         } else {
-            if($response->error == 101)
-                return back()->with('flash_error', $response->error_messages);
-            else
-                return back()->with('flash_error', $response->error);
+
+            return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
@@ -1398,6 +1398,12 @@ class UserController extends Controller {
 
         $page = Page::find($id);
 
+        if (!$page) {
+
+            return back()->with('flash_error', tr('no_page_found'));
+
+        }
+
         return view('static.common')->with('model' , $page)
                         ->with('page' , $page->type)
                         ->with('subPage' , '');
@@ -1603,6 +1609,14 @@ class UserController extends Controller {
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
+                $cards->cvv = $request->cvc;
+
+                $cards->card_name = $request->card_name;
+
+                $cards->month = $request->month;
+
+                $cards->year = $request->year;
+
                 if($check_card)
                     $cards->is_default = 0;
                 else
@@ -1792,15 +1806,28 @@ class UserController extends Controller {
                        if($paid_status) {
 
 
-                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
 
-                            if($user_payment) {
+                            $last_payment = UserPayment::where('user_id' , $request->id)
+                                    ->where('status', DEFAULT_TRUE)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
 
-                                $expiry_date = $user_payment->expiry_date;
-                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                            $user_payment = new UserPayment;
+
+                            if($last_payment) {
+
+                                if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+
+                                } else {
+
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+                                }    
 
                             } else {
-                                $user_payment = new UserPayment;
+                                
                                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
                             }
 
