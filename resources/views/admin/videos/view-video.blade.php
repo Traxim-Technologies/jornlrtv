@@ -297,7 +297,7 @@ hr {
                                         <strong><i class="fa fa-file-text-o margin-r-5"></i> {{tr('amount')}}</strong>
 
                                         <p style="margin-top: 10px;">
-                                           {{Setting::get('currency')}} {{$video->amount}}
+                                           {{Setting::get('currency')}} {{$video->ppv_amount}}
                                         </p>
                                     </div>
                                 </div>
@@ -379,7 +379,7 @@ hr {
                     </div>
 
                 </div>
-                
+
             <!-- /.box-body -->
             </div>
         </div>
