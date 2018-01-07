@@ -489,8 +489,6 @@ class AdminController extends Controller {
 
         if($user = User::find($id)) {
 
-            // $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
-
             return view('admin.users.user-details')
                         ->with('user' , $user)
                         ->withPage('users')
@@ -674,6 +672,8 @@ class AdminController extends Controller {
 
                 $message = tr('action_success');
 
+                $redeem_amount = $request->paid_amount ? $request->paid_amount : 0;
+
                 // Check the requested and admin paid amount is equal 
 
                 if($request->paid_amount == $redeem_request_details->request_amount) {
@@ -695,10 +695,23 @@ class AdminController extends Controller {
 
                     $redeem_request_details->save();
 
+                    $redeem_amount = $redeem_request_details->request_amount;
+
                 } else {
 
                     $message = tr('redeems_request_admin_less_amount');
 
+                    $redeem_amount = 0; // To restrict the redeeem update
+
+                }
+
+                $redeem_details = Redeem::where('user_id' , $redeem_request_details->user_id)->first();
+
+                if(count($redeem_details) > 0 ) {
+
+                    $redeem_details->paid = $redeem_details->paid + $redeem_amount;
+
+                    $redeem_details->save();
                 }
 
                 return back()->with('flash_success' , $message);
