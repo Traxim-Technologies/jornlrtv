@@ -5122,13 +5122,16 @@ class UserApiController extends Controller {
 
         $items = [];
 
+        $billing_amt = 0;
+
         foreach ($videos as $key => $value) {
 
-            $items[] = displayVideoDetails($value, $u_id);
+            $items[] = $video_detail = displayVideoDetails($value, $u_id);
 
+            $billing_amt += ($video_detail['user_ppv_amount'] + $video_detail['amount']);
         }
 
-        return response()->json(['data'=>$items, 'count'=>count($items)]);
+        return response()->json(['data'=>$items, 'count'=>count($items),  'billing_amt'=>$billing_amt]);
 
     
     }
