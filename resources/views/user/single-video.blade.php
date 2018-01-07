@@ -573,11 +573,11 @@ textarea[name=comments] {
                                                     </span> 
                                                     <br>
                                                     <span class="stars">
-                                                        <a href="#"><i @if($suggestion->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                        <a href="#"><i @if($suggestion->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($suggestion->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($suggestion->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($suggestion->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($suggestion->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($suggestion->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                     </span>                              
                                                 </div><!--end of sugg-head-->
                                     
@@ -866,11 +866,11 @@ textarea[name=comments] {
                                     var fifth_star = data.comment.rating >= 5 ? "color:#ff0000" : "";
 
                                    var stars = '<span class="stars">'+
-                                    '<a href="#"><i style="'+first_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i style="'+second_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i style="'+third_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i style="'+fourth_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                                    '<a href="#"><i style="'+fifth_star+'" class="fa fa-star" aria-hidden="true"></i></a></span>';   
+                                    '<a><i style="'+first_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a><i style="'+second_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a><i style="'+third_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a><i style="'+fourth_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
+                                    '<a><i style="'+fifth_star+'" class="fa fa-star" aria-hidden="true"></i></a></span>';   
 
                                     /**
                                     <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="'+data.comment.rating+'"></p>
@@ -884,7 +884,7 @@ textarea[name=comments] {
 
                                     }
 
-                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a href="#"><h5 style="float:left">{{Auth::user()->name}}</h5></a><a href="#"><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
+                                    jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a><h5 style="float:left">{{Auth::user()->name}}</h5></a><a><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                                 @endif
                                } else {
                                     console.log('Wrong...!');
