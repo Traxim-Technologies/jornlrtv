@@ -1168,7 +1168,9 @@ function displayVideoDetails($data,$userId) {
         $like_status = Helper::like_status($user->id,$data->video_tape_id);
     }
 
-    $ppv_notes = $data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note');  
+    $pay_per_view_status = watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data);
+
+    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note');) : ''; 
 
     $model = [
         'video_tape_id'=>$data->video_tape_id,
@@ -1191,7 +1193,7 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
-        'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
+        'pay_per_view_status'=>$pay_per_view_status,
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
         // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
