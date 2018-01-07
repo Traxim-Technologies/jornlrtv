@@ -1148,5 +1148,6 @@ return array(
 	'user_live_commission'=>'User Commission',
 	'live_history'=>'Live videos History',
 	'live_videos_billing'=>'Live Video Billing',
-	'banner_ads_note' => 'Banner Ads will display in web.'
+	'banner_ads_note' => 'Banner Ads will display in web.',
+	'already_you_have_video'=>'If you have any Ongoing Broadcasting or Not proper Ending Call. All videos will delete once you submit the form',
 );

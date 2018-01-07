@@ -944,4 +944,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('channel/delete', 'UserApiController@channel_delete');
 
+    Route::post('/video/erase-streaming', 'UserApiController@erase_streaming');
+
 });

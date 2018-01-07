@@ -355,7 +355,11 @@
                     $string = tr('subscription_error');
 
                     break;
+                case 170 :
 
+                    $string = tr('already_you_have_video');
+
+                    break;
 
                 case 1000:
                     $string = tr('video_is_in_flag_list');

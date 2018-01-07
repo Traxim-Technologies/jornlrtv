@@ -12,6 +12,7 @@ use App\Helpers\Helper;
 
 use App\Repositories\PaymentRepository as PaymentRepo;
 
+use App\Helpers\AppJwt;
 
 use Log;
 
@@ -280,62 +281,73 @@ class UserApiController extends Controller {
 
                 if ($user->user_type) {
 
-                    $model = new LiveVideo;
-                    $model->title = $request->title;
-                    $model->channel_id = $request->channel_id;
-                    $model->payment_status = $request->payment_status;
-                    $model->type = TYPE_PUBLIC;
-                    $model->amount = ($request->payment_status) ? (($request->has('amount')) ? $request->amount : 0 ): 0;
 
-                    $model->description = ($request->has('description')) ? $request->description : null;
-                    $model->is_streaming = DEFAULT_TRUE;
-                    $model->status = DEFAULT_FALSE;
-                    $model->user_id = $request->id;
-                    $model->virtual_id = md5(time());
-                    $model->unique_id = $model->title;
-                    $model->snapshot = asset("/images/live_stream.jpg");
-                    $model->start_time = getUserTime(date('H:i:s'), ($user) ? $user->timezone : '', "H:i:s");
+                    $model = LiveVideo::where('user_id', $request->id)->where('status', DEFAULT_FALSE)->first();
 
-                    // $model->video_url = 'rtsp://104.236.1.170:1935/live/'.$user->id.'_'.$model->id;
-                    // $model->video_url = $request->video_url;
 
-                    $model->save();
+                    if(!$model) {
 
-                    if ($model) {
+                        $model = new LiveVideo;
+                        $model->title = $request->title;
+                        $model->channel_id = $request->channel_id;
+                        $model->payment_status = $request->payment_status;
+                        $model->type = TYPE_PUBLIC;
+                        $model->amount = ($request->payment_status) ? (($request->has('amount')) ? $request->amount : 0 ): 0;
 
-                        $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+                        $model->description = ($request->has('description')) ? $request->description : null;
+                        $model->is_streaming = DEFAULT_TRUE;
+                        $model->status = DEFAULT_FALSE;
+                        $model->user_id = $request->id;
+                        $model->virtual_id = md5(time());
+                        $model->unique_id = $model->title;
+                        $model->snapshot = asset("/images/live_stream.jpg");
+                        $model->start_time = getUserTime(date('H:i:s'), ($user) ? $user->timezone : '', "H:i:s");
+
+                        // $model->video_url = 'rtsp://104.236.1.170:1935/live/'.$user->id.'_'.$model->id;
+                        // $model->video_url = $request->video_url;
 
                         $model->save();
 
-                        $response_array = [
-                            'success' => true , 
-                            "video_image"=> $model->snapshot,
-                            "channel_image"=> $model->channel ? $model->channel->picture : '',
-                            "title"=> $model->title,
-                            "channel_name"=> $model->channel ? $model->channel->name : '',
-                            "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                            "video"=>$model->video_url,
-                            "video_tape_id"=>$model->id,
-                            "channel_id"=>$model->channel_id,
-                            'unique_id'=>$model->unique_id,
-                            "description"=> $model->description,
-                            "user_id"=>$model->user ? $model->user->id : '',
-                            "name"=> $model->user->name,
-                            "email"=> $model->user->email,
-                            "user_picture"=> $model->user->chat_picture,
-                            'payment_status' => $model->payment_status ? $model->payment_status : 0,
-                            "amount"=> $model->amount,
-                            'currency'=> Setting::get('currency'),
-                            "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
-                            'is_streaming'=>$model->is_streaming,
-                        ];
+                        if ($model) {
+
+                            $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+
+                            $model->save();
+
+                            $response_array = [
+                                'success' => true , 
+                                "video_image"=> $model->snapshot,
+                                "channel_image"=> $model->channel ? $model->channel->picture : '',
+                                "title"=> $model->title,
+                                "channel_name"=> $model->channel ? $model->channel->name : '',
+                                "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
+                                "video"=>$model->video_url,
+                                "video_tape_id"=>$model->id,
+                                "channel_id"=>$model->channel_id,
+                                'unique_id'=>$model->unique_id,
+                                "description"=> $model->description,
+                                "user_id"=>$model->user ? $model->user->id : '',
+                                "name"=> $model->user->name,
+                                "email"=> $model->user->email,
+                                "user_picture"=> $model->user->chat_picture,
+                                'payment_status' => $model->payment_status ? $model->payment_status : 0,
+                                "amount"=> $model->amount,
+                                'currency'=> Setting::get('currency'),
+                                "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
+                                'is_streaming'=>$model->is_streaming,
+                            ];
+                        } else {
+                            $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+                        }
+
                     } else {
-                        $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+
+                        $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
                     }
 
                 } else {
 
-                     $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
+                    $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
 
                 }
             } else {
@@ -1816,7 +1828,6 @@ class UserApiController extends Controller {
 
                 $user->gender = $request->has('gender') ? $request->gender : "male";
 
-                $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 $check_device_exist = User::where('device_token', $request->device_token)->first();
@@ -1851,6 +1862,10 @@ class UserApiController extends Controller {
 
 
                 // $user->is_activated = 1;
+
+                $user->save();
+
+                $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
 
                 $user->save();
 
@@ -1970,7 +1985,7 @@ class UserApiController extends Controller {
             if($operation) {
 
                 // Generate new tokens
-                $user->token = Helper::generate_token();
+                $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 // Save device details
@@ -5880,4 +5895,25 @@ class UserApiController extends Controller {
     }
 
 
+
+    public function erase_streaming(Request $request) {
+
+        $model = LiveVideo::where('user_id', $request->id)->where('status', 0)->get();
+
+
+        foreach ($model as $key => $value) {
+           
+            $value->status = DEFAULT_TRUE;
+
+            if ($value->save()) {
+
+                
+            }
+
+        }
+
+        $response_array = ['success'=>true, 'message'=>tr('streaming_stopped')];
+
+        return response()->json($response_array);
+    }
 }
