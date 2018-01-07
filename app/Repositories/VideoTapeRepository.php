@@ -479,7 +479,7 @@ class VideoTapeRepository {
 
                 $data['is_rated'] = DEFAULT_FALSE;
 
-                $data['rating_comment'] = "";
+                $data['ratingcomment'] = "";
 
                 $data['ratingvalue'] = 0;
 
