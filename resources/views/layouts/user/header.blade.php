@@ -243,7 +243,6 @@
                                 <li><a href="{{route('user.spam-videos')}}">{{tr('spam_videos')}}</a></li>
                             @endif
 
-
                             <li role="separator" class="divider"></li>
 
                             @if(Setting::get('payment_type') == 'stripe')
@@ -264,7 +263,6 @@
 
                             @endif
 
-
                             <li role="separator" class="divider"></li>
 
                             @if (Auth::user()->login_by == 'manual') 
@@ -272,19 +270,10 @@
                             @endif
 
                             <li><a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}</a></li>
-                            
-                            <li role="separator" class="divider"></li>
-
-                            <li>
-                                <a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>{{tr('delete_account')}}
-                                </a>
-                            </li>
-
 
                             <li role="separator" class="divider"></li>
                            
                             <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
-
 
                         </ul>
                     </div>
@@ -294,7 +283,7 @@
                     <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
                 </div><!--y-button end-->
 
-        @endif
+            @endif
 
 
             <ul class="nav navbar-nav pull-right" style="margin: 3.5px 0px">

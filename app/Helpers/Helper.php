@@ -342,6 +342,7 @@
 
                     $string = tr('user_not_subscribed');
 
+
                     break;
 
                 case 168 :
@@ -354,6 +355,7 @@
                     $string = tr('subscription_error');
 
                     break;
+
 
                 case 1000:
                     $string = tr('video_is_in_flag_list');

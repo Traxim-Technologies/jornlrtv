@@ -1476,6 +1476,7 @@ class AdminController extends Controller {
         return view('admin.payments.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
     }
 
+
     /**
      * Function Name : save_video_payment
      *

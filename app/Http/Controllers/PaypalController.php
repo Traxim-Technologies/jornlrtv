@@ -68,6 +68,7 @@ class PaypalController extends Controller {
    
     }
 
+
     /** 
      *
      *
@@ -152,10 +153,10 @@ class PaypalController extends Controller {
 
                 $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
-
             } else {
 
                 $error_message = $ex->getMessage() . PHP_EOL;
+
             }
 
             Log::info("Pay API catch METHOD");
@@ -345,6 +346,7 @@ class PaypalController extends Controller {
         }
         
     }
+
 
     /**
      * @uses Get the payment for PPV from user

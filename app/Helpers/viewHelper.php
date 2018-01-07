@@ -998,7 +998,8 @@ function getUserTime($time, $timezone = "Asia/Kolkata", $format = "H:i:s") {
 
 }
 
-function total_video_revenue() {
+function total_video_revenue_merge() {
+
     $model = LiveVideoPayment::sum('amount');
 
     return $model;
@@ -1304,13 +1305,14 @@ function displayVideoDetails($data,$userId) {
  * @return amount
  */
 
-function total_ppv_video_revenue() {
+
+function total_video_revenue($type = "") {
 
     return PayPerView::sum('amount');
 
 }
 
-function total_video_revenue($type = "") {
+function total_ppv_video_revenue($type = "") {
     if($type == 'admin') {
         return PayPerView::sum('admin_ppv_amount');
     }

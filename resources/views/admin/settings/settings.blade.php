@@ -4,7 +4,6 @@
 
 @section('content-header', tr('settings'))
 
-
 <a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
 
 <div id="help-content" style="display: none">
@@ -487,26 +486,6 @@
                                     </div>
                                 </div>
 
-                                 <div class="col-md-6">
-                                    <div class="form-group">
-
-                                        <label for="admin_ppv_commission">{{tr('admin_ppv_commission')}}</label>
-
-                                        <input type="text" class="form-control" name="admin_ppv_commission" value="{{Setting::get('admin_ppv_commission')  }}" id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-
-                                        <label for="user_ppv_commission">{{tr('user_ppv_commission')}}</label>
-
-                                        <input type="text" class="form-control" name="" disabled value="{{Setting::get('user_ppv_commission')  }}" id="user_ppv_commission" placeholder="{{tr('user_ppv_commission')}}">
-
-                                    </div>
-
-                                </div>
-
                                 <div class="clearfix"></div>
                                 
                             </div>
@@ -635,9 +614,8 @@
                                 @endif
                             </div>
                         </form>
+                    
                     </div>
-
-
 
                     <div class="tab-pane" id="app_url_settings">
 
