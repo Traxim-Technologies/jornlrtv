@@ -669,7 +669,14 @@ class AdminController extends Controller {
 
                     return back()->with('flash_error' , tr('redeem_request_status_mismatch'));
 
-                } else {
+                }
+
+
+                $message = tr('action_success');
+
+                // Check the requested and admin paid amount is equal 
+
+                if($request->paid_amount == $redeem_request_details->request_amount) {
 
                     $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
 
@@ -677,9 +684,24 @@ class AdminController extends Controller {
 
                     $redeem_request_details->save();
 
-                    return back()->with('flash_success' , tr('action_success'));
+                }
+
+
+                else if($request->paid_amount > $redeem_request_details->request_amount) {
+
+                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
+
+                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
+
+                    $redeem_request_details->save();
+
+                } else {
+
+                    $message = tr('redeems_request_admin_less_amount');
 
                 }
+
+                return back()->with('flash_success' , $message);
 
             } else {
                 return back()->with('flash_error' , tr('something_error'));

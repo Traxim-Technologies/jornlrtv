@@ -1047,4 +1047,6 @@ return array(
 	'later' => 'Later',
 
 	'is_verified' => 'Is Verified',
+
+	'redeems_request_admin_less_amount' => 'The payment release amount is less than the user requested amount !!!',
 );
