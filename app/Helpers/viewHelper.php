@@ -1168,6 +1168,8 @@ function displayVideoDetails($data,$userId) {
         $like_status = Helper::like_status($user->id,$data->video_tape_id);
     }
 
+    $ppv_notes = $data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note');  
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1202,6 +1204,7 @@ function displayVideoDetails($data,$userId) {
         'embed_link'=>route('embed_video', array('u_id'=>$data->unique_id)),
         'currency'=>Setting::get('currency'),
         'share_url'=>route('user.single' , $data->video_tape_id),
+        'ppv_notes'=>$ppv_notes,
     ];
 
 
