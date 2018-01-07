@@ -200,11 +200,14 @@
 				                                  </div> -->
 
 				                                 	<!-- payment -->
-				                                 	@if(!Setting::get('is_subscription') || Setting::get('is_default_paid_user'))
+				                                 	<?php /*@if(!Setting::get('is_subscription') || Setting::get('is_default_paid_user'))
 
 				                                 		<input type="hidden"  name="payment_status" value="0">
 
-				                                 	@else
+				                                 	@else 
+	
+													@endif
+				                                 	*/?>
 
 														<div class="form-group radio-btn">
 
@@ -224,7 +227,7 @@
 
 					                                  	<div class="clearfix"></div>
 
-				                                  	@endif
+				                                  	
 
 				                                  <!-- Multiple Radios (inline) -->
 				                                  <!-- <div class="row" style="display: none">
