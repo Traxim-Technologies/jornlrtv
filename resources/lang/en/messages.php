@@ -1051,4 +1051,5 @@ return array(
 	'success'=>'Success',
 	'no_page_found'=>'No Page Found. Please try again later',
 	'view_plans'=>'View Plans',
+	'card_notes'=>"You can't delete default card, if you want to delete, please choose another card as default and then delete it",
 );

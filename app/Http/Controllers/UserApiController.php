@@ -2573,6 +2573,14 @@ class UserApiController extends Controller {
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
+                    $cards->cvv = $request->cvc;
+
+                    $cards->card_name = $request->card_name;
+
+                    $cards->month = $request->month;
+
+                    $cards->year = $request->year;
+
                     // Check is any default is available
                     $check_card = Card::where('user_id', $userModel->id)->first();
 
