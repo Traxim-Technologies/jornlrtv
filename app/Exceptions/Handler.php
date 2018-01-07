@@ -50,6 +50,13 @@ class Handler extends ExceptionHandler
             return back()->with('flash_error', $e->getMessage());
         }
 
+        if ($e instanceof ValidationException)
+        {
+
+            return parent::render($request, $e);
+        }
+
+
         return response()->view('errors.404', [], 404);
         // return parent::render($request, $e);
     }

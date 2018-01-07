@@ -513,7 +513,7 @@ function user_type_check($user) {
 
 function get_expiry_days($id) {
     
-    $data = UserPayment::where('user_id' , $id)->orderBy('updated_at', 'desc')->first();
+    $data = UserPayment::where('user_id' , $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
 
     // User Amount
 
@@ -522,11 +522,16 @@ function get_expiry_days($id) {
     $days = 0;
 
     if($data) {
-        $start_date = new \DateTime(date('Y-m-d h:i:s'));
-        $end_date = new \DateTime($data->expiry_date);
 
-        $time_interval = date_diff($start_date,$end_date);
-        $days = $time_interval->days;
+        if(strtotime($data->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+            $start_date = new \DateTime(date('Y-m-d h:i:s'));
+            $end_date = new \DateTime($data->expiry_date);
+
+            $time_interval = date_diff($start_date,$end_date);
+            $days = $time_interval->days;
+
+        }
     }
 
     return ['days'=>$days, 'amount'=>($amt) ? $amt->amt : 0];
@@ -1163,6 +1168,10 @@ function displayVideoDetails($data,$userId) {
         $like_status = Helper::like_status($user->id,$data->video_tape_id);
     }
 
+    $pay_per_view_status = watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data);
+
+    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1184,10 +1193,11 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
-        'pay_per_view_status'=>watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data),
+        'pay_per_view_status'=>$pay_per_view_status,
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
-        'publish_time'=>date('F Y', strtotime($data->publish_time)),
+        // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
+        'publish_time'=>$data->created_at->diffForHumans(),
         'user_ppv_amount'=>$data->user_ppv_amount,
         'is_liked'=>$like_status,
         'wishlist_status'=>$wishlist_status,
@@ -1196,6 +1206,7 @@ function displayVideoDetails($data,$userId) {
         'embed_link'=>route('embed_video', array('u_id'=>$data->unique_id)),
         'currency'=>Setting::get('currency'),
         'share_url'=>route('user.single' , $data->video_tape_id),
+        'ppv_notes'=>$ppv_notes,
     ];
 
 

@@ -92,9 +92,9 @@
 
 								                <input id="id" name="id" type="hidden" required>
 
-								                <!-- <div class="input-group-signup">
-								                	<input type="text" name="card-name" placeholder="Card name (ex: visa)" class="form-control" required>
-								                </div> -->
+								                <div class="input-group-signup">
+								                	<input type="text" name="card_name" placeholder="Card name (ex: visa)" class="form-control" required>
+								                </div>
 
 								                <div class="input-group-signup">
 								                    <input id="name" name="number" type="text" placeholder="{{tr('card_number')}}" class="form-control" required data-stripe="number" 
@@ -141,7 +141,7 @@
 
 					        @if(count($cards) > 0)
 
-
+					        	<p><small><b>Note : </b>{{tr('card_notes')}}</small></p>
 
 					           	<div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 						           	<div class="row">
@@ -152,19 +152,19 @@
 
 						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
 						           			<div>
-						           				<div class="card-title text-center">{{tr('card_name')}}
-						           					<img src="{{asset('images/success.png')}}" class="set-default" onclick="$('#default-card').click()" style="cursor: pointer;">
+						           				<div class="card-title text-center">{{$card->card_name ? $card->card_name : tr('card_name')}}
+						           					<img src="{{asset('images/success.png')}}" class="set-default" onclick="$('#default-card').click()" style="cursor: pointer;" title="{{tr('set_as_default')}}">
 
 						           					<form action="{{ route('user.card.default') }}" method="POST" style="display: none">
 									                      <input type="hidden" name="_method" value="PATCH">
 									                      <input type="hidden" name="card_id" value="{{ $card->id }}">
 
-									                      <button type="submit" class="text-white" id="default-card"><i class="fa fa-check"></i> {{tr('set_as_default')}}</button>
+									                      <button type="submit" class="text-white" id="default-card"><i class="fa fa-check"  title="{{tr('set_as_default')}}"></i> {{tr('set_as_default')}}</button>
 
 									                </form>
 								                   
 
-						           					<img src="{{asset('images/error.png')}}" class="card-delete" onclick="$('#delete-card').click()" style="cursor: pointer;">
+						           					<img src="{{asset('images/error.png')}}" class="card-delete" onclick="$('#delete-card').click()" style="cursor: pointer;" title="{{tr('delete_card')}}">
 
 						           					<form action="{{ route('user.card.delete') }}" method="POST" style="display: none">
 
@@ -172,7 +172,7 @@
 									                    
 									                    <input type="hidden" name="card_id" value="{{ $card->id }}">
 
-									                    <button type="submit" class="text-white" id="delete-card"><i class="fa fa-times"></i> {{tr('delete_card')}}</button>
+									                    <button type="submit" class="text-white" id="delete-card"><i class="fa fa-times" title="{{tr('delete_card')}}"></i> {{tr('delete_card')}}</button>
 									                </form>
 
 						           				</div>
@@ -187,7 +187,7 @@
 
 						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
 						           			<div>
-						           				<div class="card-title text-center">{{tr('card_name')}}</div>
+						           				<div class="card-title text-center">{{$card->card_name ? $card->card_name : tr('card_name')}}</div>
 						           				<div class="card-details">
 						           					<h5>PERSONAL*********{{$card->last_four}} <span class="pull-right">MM / YY</span></h5>
 						           				</div>

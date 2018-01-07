@@ -181,17 +181,26 @@ class PaypalController extends Controller {
 
         if(isset($redirect_url)) {
 
-            $user_payment = UserPayment::where('user_id' , Auth::user()->id)->first();
+            $last_payment = UserPayment::where('user_id' , Auth::user()->id)
+                    ->where('status', DEFAULT_TRUE)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
 
-            if($user_payment) {
+            $user_payment = new UserPayment;
 
-                $expiry_date = $user_payment->expiry_date;
+            if($last_payment) {
 
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+                if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+
+                } else {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+
+                }    
 
             } else {
-
-                $user_payment = new UserPayment;
 
                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
             }

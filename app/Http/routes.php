@@ -188,7 +188,7 @@ Route::get('/email/verification' , 'ApplicationController@email_verify')->name('
 
 // Installation
 
-Route::get('/install/theme', 'InstallationController@install')->name('installTheme');
+Route::get('/install/configure', 'InstallationController@install')->name('installTheme');
 
 Route::get('/system/check', 'InstallationController@system_check_process')->name('system-check');
 

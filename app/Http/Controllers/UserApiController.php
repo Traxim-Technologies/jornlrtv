@@ -703,7 +703,7 @@ class UserApiController extends Controller {
                     array(
                         'name' => 'required|max:255',
                         'email' => 'required|email|max:255',
-                        'mobile' => 'required|digits_between:6,13',
+                        'mobile' => 'digits_between:6,13',
                         'password' => 'required|min:6',
                         'picture' => 'mimes:jpeg,jpg,bmp,png',
                     )
@@ -760,15 +760,19 @@ class UserApiController extends Controller {
                 }
 
                 if($request->has('dob')) {
-                    $user->dob = date("Y-m-d" , strtotime($request->dob));;
+                    $user->dob = date("Y-m-d" , strtotime($request->dob));
                 }
 
                  if ($user->dob) {
 
-                    $from = new \DateTime($user->dob);
-                    $to   = new \DateTime('today');
+                    if ($user->dob != '0000-00-00') {
 
-                    $user->age_limit = $from->diff($to)->y;
+                        $from = new \DateTime($user->dob);
+                        $to   = new \DateTime('today');
+
+                        $user->age_limit = $from->diff($to)->y;
+
+                    }
 
                 }
 
@@ -791,7 +795,8 @@ class UserApiController extends Controller {
                     $check_device_exist->save();
                 }
 
-                $user->device_token = $request->has('device_token') ? $request->device_token : "";
+                Log::info("Device Token - ".$request->device_token);
+                $user->device_token = $request->device_token;
                 $user->device_type = $request->has('device_type') ? $request->device_type : "";
                 $user->login_by = $request->has('login_by') ? $request->login_by : "";
                 $user->social_unique_id = $request->has('social_unique_id') ? $request->social_unique_id : '';
@@ -1351,6 +1356,8 @@ class UserApiController extends Controller {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->videoResponse();
 
         if ($request->id) {
@@ -2385,6 +2392,7 @@ class UserApiController extends Controller {
         } else {
 
             $model = UserPayment::where('user_id' , $request->id)
+                        ->where('status', DEFAULT_TRUE)
                         ->orderBy('id', 'desc')->first();
 
             $subscription = Subscription::find($request->subscription_id);
@@ -2392,7 +2400,18 @@ class UserApiController extends Controller {
             $user_payment = new UserPayment();
 
             if ($model) {
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+    
+                if (strtotime($model->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+
+                } else {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+
+                }    
+
+
             } else {
                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
             }
@@ -2460,7 +2479,8 @@ class UserApiController extends Controller {
                                 // 'user_payments.expiry_date as expiry_date',
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
                                 'user_payments.created_at as created_at',
-                                DB::raw("'$' as currency"))
+                                DB::raw("'$' as currency"),
+                                'user_payments.status')
                         ->orderBy('user_payments.updated_at', 'desc');
                         
 
@@ -2559,6 +2579,14 @@ class UserApiController extends Controller {
                     $cards->customer_id = $customer_id;
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    $cards->cvv = $request->cvc;
+
+                    $cards->card_name = $request->card_name;
+
+                    $cards->month = $request->month;
+
+                    $cards->year = $request->year;
 
                     // Check is any default is available
                     $check_card = Card::where('user_id', $userModel->id)->first();
@@ -2704,15 +2732,27 @@ class UserApiController extends Controller {
 
                             if($paid_status) {
 
-                                $user_payment = UserPayment::where('user_id' , $request->id)->first();
+                                $last_payment = UserPayment::where('user_id' , $request->id)
+                                    ->where('status', DEFAULT_TRUE)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
 
-                                if($user_payment) {
 
-                                    $expiry_date = $user_payment->expiry_date;
-                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+                                $user_payment = new UserPayment;
+
+                                if($last_payment) {
+
+                                    if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+
+                                    } else {
+
+                                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+                                    }    
 
                                 } else {
-                                    $user_payment = new UserPayment;
+                                    
                                     $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
                                 }
 
