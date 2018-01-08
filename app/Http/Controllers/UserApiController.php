@@ -1212,7 +1212,7 @@ class UserApiController extends Controller {
 
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
 
-                    $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
+                    $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/", $user);
                 }
 
                 $user->save();
