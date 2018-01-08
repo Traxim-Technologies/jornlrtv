@@ -1613,6 +1613,8 @@ class UserApiController extends Controller {
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')     
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
+                                ->where('channels.is_approved', 1)
+                                ->where('channels.status', 1)
                                 ->where('title', 'like', "%".$request->key."%")
                                 ->orderby('video_tapes.watch_count' , 'desc');
                                //  ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
@@ -1666,12 +1668,16 @@ class UserApiController extends Controller {
 
                     $amount = $value->ppv_amount;
 
+                    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+
                     $items[] = ['video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
                             'currency'=>$currency,
                             'is_ppv_subscribe_page'=>$is_ppv_subscribe_page,
                             'pay_per_view_status'=>$pay_per_view_status,
-                            'ppv_amount'=>$amount];
+                            'ppv_amount'=>$amount,
+                            'ppv_notes'=>$ppv_notes
+                            ];
 
 
                 }
@@ -2529,6 +2535,10 @@ class UserApiController extends Controller {
             array(
                 'number' => 'required|numeric',
                 'card_token'=>'required',
+                'month'=>'required',
+                'year'=>'required',
+                'cvv'=>'required',
+                'card_name'=>'required',
             )
             );
 
@@ -2574,14 +2584,13 @@ class UserApiController extends Controller {
 
                     $customer_id = $customer->id;
 
-
                     $cards = new Card;
                     $cards->user_id = $userModel->id;
                     $cards->customer_id = $customer_id;
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
-                    $cards->cvv = $request->cvc;
+                    $cards->cvv = $request->cvv;
 
                     $cards->card_name = $request->card_name;
 
@@ -4124,6 +4133,11 @@ class UserApiController extends Controller {
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
+                    ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.publish_status' , 1)
+                    ->where('channels.is_approved', 1)
+                    ->where('channels.status', 1)
                     ->first();
 
         if ($video) {
@@ -4536,6 +4550,10 @@ class UserApiController extends Controller {
                     } 
 
                     $videoDetails = $value->video ? $value->video : '';
+
+                    $pay_per_view_status = $videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true;
+
+                    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -4548,9 +4566,9 @@ class UserApiController extends Controller {
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
                             'payment_id'=>$value->payment_id,
-                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
-
+                            'ppv_notes'=>$ppv_notes
                             ];
 
                 }

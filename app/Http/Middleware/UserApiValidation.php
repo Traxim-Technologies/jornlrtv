@@ -38,7 +38,7 @@ class UserApiValidation
 
             $error_messages = implode(',', $validator->messages()->all());
 
-            $response = array('success' => false, 'error' => Helper::get_error_message(101), 'error_code' => 101, 'error_messages'=>$error_messages);
+            $response = array('success' => false, 'error' => Helper::get_error_message(9001), 'error_code' => 9001, 'error_messages'=>$error_messages);
 
             return response()->json($response,200);
 
