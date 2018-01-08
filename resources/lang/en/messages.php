@@ -216,7 +216,6 @@ return array(
 	'twitter_settings' => 'Twitter Settings',
 	'google_settings' => 'Google Settings',
 	'social_settings' => 'Social Settings',
-	'paypal_settings' => 'Payment Settings',
 	'video_settings' => 'Video Settings',
 	'revenue_settings' => 'Revenue Settings',
 	'S3_KEY'=>'S3 Key',
@@ -1133,6 +1132,7 @@ return array(
 	'later' => 'Later',
 
 	'is_verified' => 'Is Verified',
+	'go_live' => 'Go Live',
 
 	'redeems_request_admin_less_amount' => 'The payment release amount is less than the user requested amount !!!',
 	'failed'=>'Failed',

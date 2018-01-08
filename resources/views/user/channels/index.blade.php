@@ -132,7 +132,7 @@
 
 										<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast">
 											<i class="fa fa-video-camera"></i> 
-											{{tr('start_broadcast')}}
+											{{tr('go_live')}}
 										</button>
 
 									@endif
