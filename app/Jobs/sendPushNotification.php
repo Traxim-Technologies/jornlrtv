@@ -62,7 +62,7 @@ class sendPushNotification extends Job implements ShouldQueue {
 
                 Log::info("Request Push Notification Queue Started");
 
-                $data = ['video_tape_id' => $this->video_tape_id , 'channel_id' => 96];
+                $data = ['video_tape_id' => $this->video_tape_id , 'channel_id' => $this->channel_id];
 
                 $push_notification_data = ['success' => true , 'title' => $this->push_message,'type' => $this->push_redirect_type,'data' => $data];
 
@@ -82,7 +82,7 @@ class sendPushNotification extends Job implements ShouldQueue {
 
                     if($this->push_all_type == PUSH_TO_CHANNEL_SUBSCRIBERS) {
 
-                        $subscribers = ChannelSubscription::where('channel_id', 104)->get();
+                        $subscribers = ChannelSubscription::where('channel_id', $this->channel_id)->get();
 
                         foreach ($subscribers as $key => $subscriber) {
         
