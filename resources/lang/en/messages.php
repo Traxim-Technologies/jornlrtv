@@ -1153,4 +1153,5 @@ return array(
 	'already_you_have_video'=>'If you have any Ongoing Broadcasting or Not proper Ending Call. All videos will delete once you submit the form',
 	'banner_ads_note' => 'Banner Ads will display in web.',
 	'cannot_pay_zero_amount'=>"You can't pay zero amount through paypal, Please check with admin",
+	'video_going_to_broadcast'=>'Your video is going to broadcast, once you allow your camera',
 );
