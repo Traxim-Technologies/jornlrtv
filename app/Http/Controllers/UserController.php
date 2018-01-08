@@ -1231,6 +1231,7 @@ class UserController extends Controller {
     public function remove_report_video($id) {
         // Load Spam Video from flag section
         $model = Flag::where('video_tape_id', $id)->where('user_id', Auth::user()->id)->first();
+
         Log::info("Loaded Values : ".print_r($model, true));
         // If the flag model exists then delete the row
         if ($model) {
@@ -1725,7 +1726,7 @@ class UserController extends Controller {
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
-                $cards->cvv = $request->cvc;
+                $cards->cvv = $request->cvv;
 
                 $cards->card_name = $request->card_name;
 
@@ -1854,8 +1855,6 @@ class UserController extends Controller {
             'subscription_id' => $request->subscription_id
         ]);        
 
-        /*$response = $this->UserAPI->pay_video($request)->getData();*/
-
 
         $validator = Validator::make($request->all(), [
            // 'tour_id' => 'required|exists:tours,id',
@@ -1878,6 +1877,12 @@ class UserController extends Controller {
             if($subscription) {
 
                 $total = $subscription->amount;
+
+                if ($subscription->amount <= 0) {
+
+                    return back()->with('flash_error', tr('cannot_pay_zero_amount'));
+
+                }
 
                 $user = User::find($request->id);
 

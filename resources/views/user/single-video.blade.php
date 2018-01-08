@@ -223,7 +223,7 @@ textarea[name=comments] {
                                                                             
                                                                             </button>
                                                                             @else 
-                                                                            <a href="{{route('user.remove.report_video', $flaggedVideo->id)}}" class="btn btn-warning unmark bottom-space" title="{{tr('remove_report')}}">
+                                                                            <a href="{{route('user.remove.report_video', $flaggedVideo->video_tape_id)}}" class="btn btn-warning unmark bottom-space" title="{{tr('remove_report')}}">
                                                                                 <i class="fa fa-flag"></i> 
                                                                             </a>
                                                                         @endif
@@ -452,6 +452,8 @@ textarea[name=comments] {
                                     <div class="com-content">
                                         @if(Auth::check())
 
+                                            @if(Auth::user()->id != $video->channel_created_by)
+
                                             <div class="image-form">
                                                 <div class="comment-box1">
                                                     <div class="com-image">
@@ -479,6 +481,8 @@ textarea[name=comments] {
                                                 </div>                                                              
                                             
                                             </div>
+
+                                            @endif
 
                                         @endif
 

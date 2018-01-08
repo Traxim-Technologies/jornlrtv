@@ -1142,6 +1142,7 @@ return array(
 	'card_notes'=>"You can't delete default card, if you want to delete, please choose another card as default and then delete it",
 	'normal_user_note'=>"You are a Normal User. If you are Paid User, you no need to pay the video payment. You can watch the video anytime. If you want to paid user, Please choose plan and continue the same.",
 	'paid_user_note'=>'If you subscribe also , you need to pay for this selected video',
+
 	'revenue_system'=>'Revenue System',
 	'live_payments'=>'Live Payments',
 	'admin_live_commission'=>'Admin Commission',
@@ -1150,4 +1151,6 @@ return array(
 	'live_videos_billing'=>'Live Video Billing',
 	'banner_ads_note' => 'Banner Ads will display in web.',
 	'already_you_have_video'=>'If you have any Ongoing Broadcasting or Not proper Ending Call. All videos will delete once you submit the form',
+	'banner_ads_note' => 'Banner Ads will display in web.',
+	'cannot_pay_zero_amount'=>"You can't pay zero amount through paypal, Please check with admin",
 );
