@@ -1461,7 +1461,7 @@ class AdminController extends Controller {
 
             // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
 
-            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_CHANNEL,0));
+            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
 
             return back()->with('flash_success' , tr('push_send_success'));
         }
