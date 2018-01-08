@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Jobs\sendPushNotification;
+
 use App\Requests;
 
 use App\Admin;
@@ -1081,8 +1083,7 @@ class AdminController extends Controller {
                     }
 
                 }
-
-                
+        
 
             }
 
@@ -1454,15 +1455,13 @@ class AdminController extends Controller {
 
         } else {
 
-            $message = $request->message;
-            $title = Setting::get('site_name');
-            $message = $message;
-            
-            \Log::info($message);
+            // Send notifications to the provider
 
-            $id = 'all';
+            $push_message = $request->message;
 
-            Helper::send_notification($id,$title,$message);
+            // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
+
+            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_CHANNEL,0));
 
             return back()->with('flash_success' , tr('push_send_success'));
         }

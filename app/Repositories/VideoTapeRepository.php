@@ -569,11 +569,18 @@ class VideoTapeRepository {
 
             }
 
+
+            $pay_per_view_status = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
+
+            $ppv_notes = !$pay_per_view_status ? ($video_tape_details->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+
             $data['currency'] = Setting::get('currency');
 
             $data['is_ppv_subscribe_page'] = $is_ppv_status;
 
-            $data['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
+            $data['pay_per_view_status'] = $pay_per_view_status;
+
+            $data['ppv_notes'] = $ppv_notes;
 
             $data['subscriberscnt'] = subscriberscnt($video_tape_details->channel_id);
 
