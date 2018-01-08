@@ -1058,5 +1058,6 @@ return array(
 	'normal_user_note'=>"You are a Normal User. If you are Paid User, you no need to pay the video payment. You can watch the video anytime. If you want to paid user, Please choose plan and continue the same.",
 	'paid_user_note'=>'If you subscribe also , you need to pay for this selected video',
 
-	'banner_ads_note' => 'Banner Ads will display in web.'
+	'banner_ads_note' => 'Banner Ads will display in web.',
+	'cannot_pay_zero_amount'=>"You can't pay zero amount through paypal, Please check with admin",
 );

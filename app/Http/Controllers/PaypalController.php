@@ -86,6 +86,12 @@ class PaypalController extends Controller {
 
         }
 
+        if ($subscription->amount <= 0) {
+
+            return back()->with('flash_error', tr('cannot_pay_zero_amount'));
+
+        }
+
         $total = $subscription ? $subscription->amount : "1.00" ;
 
 		$item = new Item();
