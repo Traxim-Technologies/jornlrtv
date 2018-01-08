@@ -218,6 +218,10 @@
         public static function get_error_message($code)
         {
             switch($code) {
+
+                case 9001:
+                    $string = "Invalid input.";
+                    break;
                 case 101:
                     $string = "Invalid input.";
                     break;
