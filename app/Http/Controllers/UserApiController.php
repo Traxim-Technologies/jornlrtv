@@ -612,7 +612,7 @@ class UserApiController extends Controller {
 
                     $user->save();
 
-                    add_to_redeem($user->id, $user_amount);
+                    add_to_redeem($user->id, $user_amount, $admin_amount);
                 
                 }
 
