@@ -102,9 +102,10 @@ class UserApiController extends Controller {
 
         } else {
 
-            $model = LiveVideo::where('user_id', $request->id)->where('status', DEFAULT_FALSE)->first();
 
             $this->erase_streaming($request);
+
+            $model = LiveVideo::where('user_id', $request->id)->where('status', DEFAULT_FALSE)->first();
 
             if(!$model) {
 
@@ -5911,7 +5912,6 @@ class UserApiController extends Controller {
     public function erase_streaming(Request $request) {
 
         $model = LiveVideo::where('user_id', $request->id)->where('status', 0)->get();
-
 
         foreach ($model as $key => $value) {
            
