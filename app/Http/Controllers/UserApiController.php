@@ -2722,14 +2722,14 @@ class UserApiController extends Controller {
 
                     $is_ppv_subscribe_page = $is_ppv_status;
 
-
                     $pay_per_view_status = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
                     $amount = $value->ppv_amount;
 
-                    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+                    $ppv_notes = !$pay_per_view_status ? ($value->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
 
-                    $items[] = ['video_tape_id'=>$value->video_tape_id,
+                    $items[] = [
+                        'video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
                             'currency'=>$currency,
                             'is_ppv_subscribe_page'=>$is_ppv_subscribe_page,
