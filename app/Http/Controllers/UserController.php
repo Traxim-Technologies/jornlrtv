@@ -1114,6 +1114,7 @@ class UserController extends Controller {
     public function remove_report_video($id) {
         // Load Spam Video from flag section
         $model = Flag::where('video_tape_id', $id)->where('user_id', Auth::user()->id)->first();
+        
         Log::info("Loaded Values : ".print_r($model, true));
         // If the flag model exists then delete the row
         if ($model) {
