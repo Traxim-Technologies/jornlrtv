@@ -1627,7 +1627,7 @@ liveAppCtrl
 
 			if (!mobile_ios_type && !rtsp_mobile_type) {
 
-				window.location.href = stop_streaming_url;
+/				window.location.href = stop_streaming_url;
 
 			}
 
@@ -1802,6 +1802,8 @@ liveAppCtrl
 
 			// stop all media streams
 			connection.streams.stop();
+
+			window.location.href = stop_streaming_url;
 
 	    	
 	    };
