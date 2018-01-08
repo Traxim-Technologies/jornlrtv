@@ -4133,6 +4133,7 @@ class UserApiController extends Controller {
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
                     ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.is_approved' , 1)
                     ->where('video_tapes.publish_status' , 1)
                     ->where('channels.is_approved', 1)
                     ->where('channels.status', 1)
