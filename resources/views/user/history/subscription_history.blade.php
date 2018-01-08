@@ -67,7 +67,7 @@
 
 										@if($temp->status)
 										<div class="col-xs-6 col-sm-6">
-											<small class="no-margin">Expies On</small>
+											<small class="no-margin">Expires On</small>
 											<p class="no-margin">{{$temp->expiry_date}}</p>
 										</div>
 										@endif

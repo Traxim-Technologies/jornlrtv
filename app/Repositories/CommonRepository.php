@@ -22,6 +22,8 @@ use ChannelSubscription;
 
 use App\Jobs\SubscriptionMail;
 
+use App\Jobs\sendPushNotification;
+
 class CommonRepository {
 
 
@@ -291,8 +293,6 @@ class CommonRepository {
     
 	}
 
-
-
     public static function video_save($request) {
 
         try {
@@ -549,7 +549,12 @@ class CommonRepository {
 
                     // Channel Subscription email
 
+
                     dispatch(new SubscriptionMail($model->channel_id, $model->id));
+
+                    $push_message = $model->title;
+
+                    dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
 
                     $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
                    

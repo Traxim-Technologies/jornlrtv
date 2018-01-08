@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 
 - View user details redeems help added
 
+- Banner ads - usage note added
+
 
 ## 06-01-2018 - ADMIN 
 

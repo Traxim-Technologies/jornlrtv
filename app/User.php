@@ -73,6 +73,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Channel', 'user_id', 'id');
     }
 
+     /**
+     * Get the flag record associated with the user.
+     */
+    public function getChannelVideos()
+    {
+        return $this->hasMany('App\VideoTape', 'user_id', 'id');
+    }
+
 
     /**
      * Get the Redeems
@@ -174,7 +182,52 @@ class User extends Authenticatable
             if (count($user->getChannel) > 0) {
 
                 foreach($user->getChannel as $channel) {
+
+
                     $channel->delete();
+
+
+                } 
+
+            }
+
+            if (count($user->getChannelVideos) > 0) {
+
+                foreach($user->getChannelVideos as $video) {
+
+                    
+                    Helper::delete_picture($video->video, "/uploads/videos/");
+
+                    Helper::delete_picture($video->subtitle, "/uploads/subtitles/"); 
+
+                    if ($video->banner_image) {
+
+                        Helper::delete_picture($video->banner_image, "/uploads/images/");
+                    }
+
+                    Helper::delete_picture($video->default_image, "/uploads/images/");
+
+                    if ($video->video_path) {
+
+                        $explode = explode(',', $video->video_path);
+
+                        if (count($explode) > 0) {
+
+
+                            foreach ($explode as $key => $exp) {
+
+
+                                Helper::delete_picture($exp, "/uploads/videos/");
+
+                            }
+
+                        }
+                
+
+                    }
+
+                    $video->delete();
+                    
                 } 
 
             }

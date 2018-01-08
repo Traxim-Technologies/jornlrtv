@@ -12,6 +12,7 @@ use App\Helpers\Helper;
 
 use App\Repositories\PaymentRepository as PaymentRepo;
 
+use App\Jobs\sendPushNotification;
 
 use Log;
 
@@ -4132,6 +4133,11 @@ class UserApiController extends Controller {
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
+                    ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.publish_status' , 1)
+                    ->where('channels.is_approved', 1)
+                    ->where('channels.status', 1)
                     ->first();
 
         if ($video) {
