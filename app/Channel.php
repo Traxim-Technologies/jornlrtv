@@ -61,6 +61,36 @@ class Channel extends Model
 
                 foreach ($model->getVideoTape as $key => $value) {
 
+                    Helper::delete_picture($value->video, "/uploads/videos/");
+
+                    Helper::delete_picture($value->subtitle, "/uploads/subtitles/"); 
+
+                    if ($value->banner_image) {
+
+                        Helper::delete_picture($value->banner_image, "/uploads/images/");
+                    }
+
+                    Helper::delete_picture($value->default_image, "/uploads/images/");
+
+                    if ($value->video_path) {
+
+                        $explode = explode(',', $value->video_path);
+
+                        if (count($explode) > 0) {
+
+
+                            foreach ($explode as $key => $exp) {
+
+
+                                Helper::delete_picture($exp, "/uploads/videos/");
+
+                            }
+
+                        }
+                
+
+                    }
+
                    $value->delete();    
 
                 }
