@@ -2534,6 +2534,10 @@ class UserApiController extends Controller {
             array(
                 'number' => 'required|numeric',
                 'card_token'=>'required',
+                'month'=>'required',
+                'year'=>'required',
+                'cvv'=>'required',
+                'card_name'=>'required',
             )
             );
 
@@ -2579,14 +2583,13 @@ class UserApiController extends Controller {
 
                     $customer_id = $customer->id;
 
-
                     $cards = new Card;
                     $cards->user_id = $userModel->id;
                     $cards->customer_id = $customer_id;
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
-                    $cards->cvv = $request->cvc;
+                    $cards->cvv = $request->cvv;
 
                     $cards->card_name = $request->card_name;
 

@@ -1608,7 +1608,7 @@ class UserController extends Controller {
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
-                $cards->cvv = $request->cvc;
+                $cards->cvv = $request->cvv;
 
                 $cards->card_name = $request->card_name;
 
