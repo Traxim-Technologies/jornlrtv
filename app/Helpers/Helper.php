@@ -602,109 +602,73 @@
             return $file_name;
         }
 
-        public static function send_notification($id,$title,$message) {
+        public static function send_notification($title = "STREMHASH" , $user_details , $push_notification_data ) {
 
-            Log::info("Send Push Started");
+            if(!$user_details || !$push_notification_data) {
 
-            // Check the user type whether "USER" or "PROVIDER"
-            if($id == "all") {
-                $users = User::where('push_status' , 1)->get();
-            } else {
-                $users = User::find($id);
+                Log::info("send_notification ----- Data missing");
+               
+                return false;
+
             }
 
-            $push_data = array();
+            if(!$user_details->device_token) {
 
-            // $push_message = array('success' => true,'message' => $message,'data' => array());
+                Log::info('User device_token empty');
 
-            $push_notification = 1; // Check the push notifictaion is enabled
+                return false;
+            }
 
-            if ($push_notification == 1) {
+            if ($user_details->device_type == 'ios') {
 
-                Log::info('Admin enabled the push ');
+                require_once app_path().'/ios/apns.php';
 
-                if($users){
+                $msg = ["alert" => '$message',"status" => "success","title" => '$title',"message" => '$push_message',"badge" => 1,"sound" => "default","status" => "","rid" => ""];
 
-                    Log::info('Check users variable');
+                if (!isset($user_details->device_token) || empty($user_details->device_token)) {
+                    
+                    $deviceTokens = array();
 
-                    $data = ['video_tape_id' => 46 , 'channel_id' => 109 ];
+                } else {
 
-                    $push_message = ['success' => true,'title' => $message,'type' => 3,'data' => $data];
+                    $deviceTokens = $user_details->device_token;
+                }
 
-                    foreach ($users as $key => $user) {
+                $apns = new \Apns();
 
-                        Log::info('Individual User');
+                $apns->send_notification($deviceTokens, $msg);
 
-                        if ($user->device_type == 'ios') {
+                Log::info("iOS push end");
 
-                            Log::info("iOS push Started");
+            } else {
 
-                            require_once app_path().'/ios/apns.php';
+                Log::info("Andriod push Started");
 
-                            $msg = array("alert" => $message,
-                                "status" => "success",
-                                "title" => $title,
-                                "message" => $push_message,
-                                "badge" => 1,
-                                "sound" => "default",
-                                "status" => "",
-                                "rid" => "",
-                                );
+                require_once app_path().'/gcm/GCM_1.php';
 
-                            if (!isset($user->device_token) || empty($user->device_token)) {
-                                $deviceTokens = array();
-                            } else {
-                                $deviceTokens = $user->device_token;
-                            }
+                require_once app_path().'/gcm/const.php';
 
-                            $apns = new \Apns();
-                            $apns->send_notification($deviceTokens, $msg);
+                if (!isset($user_details->device_token) || empty($user_details->device_token)) {
 
-                            Log::info("iOS push end");
+                    $registatoin_ids = "0";
 
-                        } else {
+                } else {
 
-                            Log::info("Andriod push Started");
-
-                            require_once app_path().'/gcm/GCM_1.php';
-
-                            require_once app_path().'/gcm/const.php';
-
-                            if (!isset($user->device_token) || empty($user->device_token)) {
-                                $registatoin_ids = "0";
-                            } else {
-                                $registatoin_ids = trim($user->device_token);
-                            }
-                            if (!isset($push_message) || empty($push_message)) {
-                                $msg = "Message not set";
-                            } else {
-                                $msg = $push_message;
-                            }
-                            if (!isset($title) || empty($title)) {
-                                $title1 = "Message not set";
-                            } else {
-                                $title1 = trim($title);
-                            }
-
-                            $message = array(TEAM => $title1, MESSAGE => $msg);
-
-                            $gcm = new \GCM();
-                            $registatoin_ids = array($registatoin_ids);
-                            $gcm->send_notification($registatoin_ids, $message);
-
-                            Log::info("Andriod push end");
-
-                        }
-
-                    }
+                    $registatoin_ids = trim($user_details->device_token);
 
                 }
 
-            } else {
-                Log::info('Push notifictaion is not enabled. Please contact admin');
-            }
+                $message = array(TEAM => trim($title) , MESSAGE => $push_notification_data);
 
-            Log::info("*************************************");
+                $gcm = new \GCM();
+
+                $registatoin_ids = array($registatoin_ids);
+                // $registatoin_ids = array('APA91bGQpH74-VqRGxLIjkuSOeJIGdZ9C5w0IPUkKzEulv5jMx5HuRvj2dID_YPxwePk7HBZ4majWpGRQmPzp4ytUdzOEmVRNqVqObBbJu7J-XJ7ir9TeJxDurQS1Zg6t-ooD0cc5pXK' , 'APA91bFz6VxbSURJyaM1pe8GQtLAKCQL3oT1lk0bAjTKeDmVYMiAckn00jadZZbV6vKu8xttXHGGyeTfnLOmE76jykMeiHUHb7aw2KFOPQcXO2eMWqkcUuHNqPa8mj56MZZn6d9jYgUX');
+                $gcm->send_notification($registatoin_ids, $message);
+
+                Log::info("Andriod push end");
+
+            }
 
         }
 

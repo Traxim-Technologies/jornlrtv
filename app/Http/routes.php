@@ -17,6 +17,16 @@ use Illuminate\Support\Facades\Redis;
 
 // Report Video type
 
+
+if(!defined('PUSH_TO_ALL')) define('PUSH_TO_ALL', 0);
+
+if(!defined('PUSH_TO_CHANNEL_SUBSCRIBERS')) define('PUSH_TO_CHANNEL_SUBSCRIBERS', 1);
+
+if(!defined('PUSH_REDIRECT_HOME')) define('PUSH_REDIRECT_HOME', 1);
+if(!defined('PUSH_REDIRECT_CHANNEL')) define('PUSH_REDIRECT_CHANNEL', 2);
+if(!defined('PUSH_REDIRECT_SINGLE_VIDEO')) define('PUSH_REDIRECT_SINGLE_VIDEO', 3);
+
+
 if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
 
 if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
