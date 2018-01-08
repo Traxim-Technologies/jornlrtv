@@ -4542,6 +4542,8 @@ class UserApiController extends Controller {
 
                     $videoDetails = $value->video ? $value->video : '';
 
+                    $pay_per_view_status = $videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true
+
                     $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
@@ -4555,7 +4557,7 @@ class UserApiController extends Controller {
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
                             'payment_id'=>$value->payment_id,
-                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'pay_per_view_status'=>,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
                             'ppv_notes'=>$ppv_notes
                             ];
