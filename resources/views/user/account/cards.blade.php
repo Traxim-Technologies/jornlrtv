@@ -101,7 +101,7 @@
 								                    onkeyup="card_number_onkey(this.value)" maxlength="16">
 								                </div>
 								                <div class="input-group-signup ">
-								                    <input id="email" name="cvc" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)">
+								                    <input id="email" name="cvv" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)">
 								                </div>
 
 								                <div class="input-group-signup">
@@ -178,7 +178,7 @@
 						           				</div>
 						           				<div class="card-details">
 						           					
-						           					<h5>PERSONAL*********{{$card->last_four}} <span class="pull-right">MM / YY</span></h5>
+						           					<h5>PERSONAL*********{{$card->last_four}} <span class="pull-right">{{$card->month}} / {{$card->year}}</span></h5>
 						           				</div>
 						           			</div>
 						           		</div>
@@ -189,7 +189,7 @@
 						           			<div>
 						           				<div class="card-title text-center">{{$card->card_name ? $card->card_name : tr('card_name')}}</div>
 						           				<div class="card-details">
-						           					<h5>PERSONAL*********{{$card->last_four}} <span class="pull-right">MM / YY</span></h5>
+						           					<h5>PERSONAL*********{{$card->last_four}} <span class="pull-right">{{$card->month}} / {{$card->year}}</span></h5>
 						           				</div>
 						           			</div>
 						           		</div>
