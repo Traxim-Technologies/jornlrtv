@@ -2,11 +2,9 @@
 
 @section('title', tr('settings'))
 
-@section('title', tr('settings'))
-
 @section('content-header') 
 
-{{tr('settings')}} 
+{{ tr('settings')}}
 
 <a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
 
@@ -17,6 +15,10 @@
         <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
 
         <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+
+        <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">Checked</span> - User can create n of channels.</li>
+
+        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">Un Checked</span> - User can create only one channel. <span style="color: #a735a7">Note: Previously created channels will not affect by this option. </span></li>
 
     </ul>
     
