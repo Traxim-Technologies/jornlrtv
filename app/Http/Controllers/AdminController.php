@@ -1065,8 +1065,7 @@ class AdminController extends Controller {
                     }
 
                 }
-
-                
+        
 
             }
 
