@@ -427,7 +427,11 @@ class AdminController extends Controller {
 
             // Check the default subscription and save the user type 
 
-            user_type_check($user->id);
+            if ($request->id == '') {
+                
+                user_type_check($user->id);
+
+            }
 
             if($user) {
                 
@@ -447,7 +451,6 @@ class AdminController extends Controller {
      *
      *
      */
-
     public function delete_user(Request $request) {
        
         if($user = User::where('id',$request->id)->first()) {
