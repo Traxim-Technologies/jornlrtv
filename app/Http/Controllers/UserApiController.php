@@ -225,7 +225,7 @@ class UserApiController extends Controller {
 
                 if($request->id) {
 
-                    $query->whereNotIn('live_videos.user_id', [$request->id])
+                    $query->whereNotIn('live_videos.user_id', [$request->id]);
                 }
 
                 $model = $query->get();
