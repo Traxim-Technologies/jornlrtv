@@ -1053,7 +1053,7 @@ class UserController extends Controller {
 
         if($response->success) {
             
-            return back()->with('flash_success', tr('user_account_delete_success'));
+            return redirect(route('user.dashboard'))->with('flash_success', tr('user_account_delete_success'));
 
         } else {
 
