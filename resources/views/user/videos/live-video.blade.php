@@ -425,7 +425,7 @@ video {
 
 <script type="text/javascript">
 
-setTimeout(jQuery(".flash").fadeOut("slow"),5000);
+setTimeout( function() { jQuery(".alert-success").fadeOut("slow") },5000);
 
 var appSettings = <?= $appSettings ?>;
 
