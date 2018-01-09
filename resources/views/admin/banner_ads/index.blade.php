@@ -195,14 +195,22 @@
 <script type="text/javascript">
     
 function selectCurrentPosition(no_of_positions, current_position, id, btnid) {
+
+    console.log(id);
+
+    console.log(btnid);
+
+    console.log(no_of_positions);
     
     for(var i = 0; i < no_of_positions; i++) {
 
-        $("#"+i+"_"+id).removeClass('btn-success');
+        $("#"+id+"_"+i).removeClass('btn-success');
+        
+        $("#"+id+"_"+i).addClass('btn-default');
 
     }
 
-    //alert(current_position);
+    // console.log(current_position);
 
     $("#"+btnid).removeClass('btn-default');
 
