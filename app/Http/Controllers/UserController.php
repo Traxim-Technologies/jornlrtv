@@ -838,7 +838,7 @@ class UserController extends Controller {
 
                             $video->amount += $video_amount;
 
-                            add_to_redeem($video->user_id , $video_amount);
+                            add_to_redeem($video->user_id , $video_amount, 0);
 
                             \Log::info("ADD History - add_to_redeem");
 
