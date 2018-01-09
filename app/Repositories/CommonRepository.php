@@ -549,9 +549,7 @@ class CommonRepository {
 
                     $model->save();
 
-
                     // Channel Subscription email
-
 
                     dispatch(new SubscriptionMail($model->channel_id, $model->id));
 

@@ -2,7 +2,7 @@
 
 @section('title', tr('settings'))
 
-@section('content-header')
+@section('content-header') 
 
 {{ tr('settings')}}
 
@@ -16,6 +16,10 @@
 
         <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
 
+        <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">Checked</span> - User can create n of channels.</li>
+
+        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">Un Checked</span> - User can create only one channel. <span style="color: #a735a7">Note: Previously created channels will not affect by this option. </span></li>
+
     </ul>
     
 </div>
@@ -23,8 +27,11 @@
 @endsection
 
 @section('breadcrumb')
+
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+
     <li class="active"><i class="fa fa-gears"></i> {{tr('settings')}}</li>
+
 @endsection
 
 @section('content')
@@ -37,16 +44,15 @@
         <div class="nav-tabs-custom">
 
                 <ul class="nav nav-tabs">
+
                     <li class="active"><a href="#site_settings" data-toggle="tab">{{tr('site_settings')}}</a></li>
                     <li><a href="#video_settings" data-toggle="tab">{{tr('video_settings')}}</a></li>
-                    <li><a href="#revenue_settings" data-toggle="tab">{{tr('revenue_settings')}}</a></li>
-                    <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>
                     <li><a href="#social_settings" data-toggle="tab">{{tr('social_settings')}}</a></li>
-                    <li><a href="#site_url_settings" data-toggle="tab">{{tr('site_url_settings')}}</a></li>
+                    <li><a href="#revenue_settings" data-toggle="tab">{{tr('revenue_settings')}}</a></li>
+                    <li><a href="#payment_settings" data-toggle="tab">{{tr('payment_settings')}}</a></li>
+                    <li><a href="#social_media_app_settings" data-toggle="tab">{{tr('social_media_app_settings')}}</a></li>
                     <li><a href="#email_settings" data-toggle="tab">{{tr('email_settings')}}</a></li>
-                    <li><a href="#app_url_settings" data-toggle="tab">{{tr('app_url_settings')}}</a></li>
-                    <li><a href="#paypal_settings" data-toggle="tab">{{tr('paypal_settings')}}</a></li>
-                    
+                    <li><a href="#other_settings" data-toggle="tab">{{tr('other_settings')}}</a></li>                    
                     
                 </ul>
                
@@ -313,7 +319,7 @@
                                     </div>   
                                 </div>
 
-                                <div class="col-md-3">
+                                <!-- <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="post_max_size">{{tr('post_max_size_label')}}</label>
                                         <input type="text" class="form-control" name="post_max_size" value="{{ Setting::get('post_max_size')  }}" id="post_max_size" placeholder="{{tr('post_max_size_label')}}">
@@ -325,7 +331,7 @@
                                         <label for="upload_max_size">{{tr('max_upload_size_label')}}</label>
                                         <input type="text" class="form-control" name="upload_max_size" value="{{Setting::get('upload_max_size')  }}" id="upload_max_size" placeholder="{{tr('max_upload_size_label')}}">
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -359,8 +365,8 @@
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="body_end_scripts">{{tr('body_end_scripts')}}</label>
-                                        <textarea class="form-control" id="body_end_scripts" name="body_scripts">{{Setting::get('body_scripts')}}</textarea>
+                                        <label for="body_scripts">{{tr('body_scripts')}}</label>
+                                        <textarea class="form-control" id="body_scripts" name="body_scripts">{{Setting::get('body_scripts')}}</textarea>
                                     </div>
                                 </div>   
 
@@ -507,6 +513,32 @@
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
+
+                                <h3 class="settings-sub-header">{{tr('app_url_settings')}}</h3>
+                                <hr>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <label for="upload_max_size">{{tr('appstore')}}</label>
+
+                                        <input type="url" class="form-control" name="appstore" id="appstore"
+                                        value="{{Setting::get('appstore')}}" placeholder="{{tr('appstore')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="upload_max_size">{{tr('playstore')}}</label>
+
+                                        <input type="url" class="form-control" name="playstore" value="{{Setting::get('playstore')  }}" id="playstore" placeholder="{{tr('playstore')}}">
+
+                                    </div>
+                                </div>
+
+                                <h3 class="settings-sub-header">{{tr('social_media_settings')}}</h3>
+                                <hr>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
 
@@ -560,7 +592,7 @@
                                 @endif
                           </div>
                         </form>
-
+                    
                     </div>
 
                     <div class="tab-pane" id="email_settings">
@@ -655,11 +687,11 @@
                     </div>
 
 
-                    <div class="tab-pane" id="paypal_settings">
+                    <div class="tab-pane" id="payment_settings">
 
                         <form action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.common-settings')}}" method="POST" enctype="multipart/form-data" role="form">
                             <div class="box-body">
-                                <h4>{{tr('paypal_settings')}}</h4>
+                                <h4>{{tr('payment_settings')}}</h4>
                                 <hr>
                                 <div class="col-lg-6">
                                     <div class="form-group">
