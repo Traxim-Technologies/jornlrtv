@@ -214,18 +214,23 @@ class UserApiController extends Controller {
 
         } else {
 
-                $model = LiveVideo::where('is_streaming', DEFAULT_TRUE)
+                $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
                         ->where('live_videos.status', DEFAULT_FALSE)
                         ->videoResponse()
                         ->leftJoin('users' , 'users.id' ,'=' , 'live_videos.user_id')
                         ->leftJoin('channels' , 'channels.id' ,'=' , 'live_videos.channel_id')
                         ->orderBy('live_videos.created_at', 'desc')
                         ->skip($request->skip)
-                        ->take(Setting::get('admin_take_count' ,12))->get();
+                        ->take(Setting::get('admin_take_count' ,12));
 
+                if($request->id) {
+
+                    $query->whereNotIn('live_videos.user_id', [$request->id])
+                }
+
+                $model = $query->get();
 
                 $values = [];
-
 
 
                 foreach ($model as $key => $value) {
@@ -820,7 +825,7 @@ class UserApiController extends Controller {
 
                     } else {
 
-                        $response_array = ['success'=> false, 'message'=>tr('streaming_stopped')];
+                        $response_array = ['success'=> false, 'message'=>tr('streaming_stopped'), 'error_code'=>550];
 
 
                     }
