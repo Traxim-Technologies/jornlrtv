@@ -1700,6 +1700,11 @@ class AdminController extends Controller {
 
     public function add_channel_process(Request $request) {
 
+        $request->request->add([
+                'channel_id'=>$request->id,
+                'id'=>$request->user_id,
+            ]);
+
         $response = CommonRepo::channel_save($request)->getData();
 
         if($response->success) {
