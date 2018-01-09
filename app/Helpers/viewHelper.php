@@ -718,7 +718,7 @@ function redeem_request_status($status) {
  *
  */
 
-function add_to_redeem($id , $amount , $admin_amount) {
+function add_to_redeem($id , $amount , $admin_amount = 0) {
 
     \Log::info('Add to Redeem Start');
 
