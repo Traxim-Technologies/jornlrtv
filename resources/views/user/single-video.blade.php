@@ -471,7 +471,7 @@ textarea[name=comments] {
 
                                                                 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
                                                                 <p class="underline"></p>
-                                                                <button class="btn pull-right btn-sm btn-success top-btn-space" type="submit">{{tr('comment')}}</button>
+                                                                <button class="btn pull-right btn-sm btn-success top-btn-space" type="submit" id="comment_btn">{{tr('comment')}}</button>
 
                                                                 <div class="clearfix"></div>
                                                             </form>
@@ -836,6 +836,10 @@ textarea[name=comments] {
 
                 if(form_data) {
 
+                    $("#comment_btn").html("Sending...");
+
+                    $("#comment_btn").attr('disabled', true);
+
 
                     //do your own request an handle the results
                     jQuery.ajax({
@@ -844,6 +848,10 @@ textarea[name=comments] {
                             dataType: 'json',
                             data: jQuery("#comment_sent").serialize(),
                             success: function(data) {
+
+                                $("#comment_btn").html("Comment");
+
+                                $("#comment_btn").attr('disabled', false);
 
                                if(data.success == true) {
 
@@ -880,9 +888,9 @@ textarea[name=comments] {
                                     <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="'+data.comment.rating+'"></p>
                                     **/
 
-                                    $('.comment_rating').rating('clear');
-
                                     if (data.comment.rating > 1) {
+
+                                        $('.comment_rating').rating('clear');
 
                                         window.location.reload();
 
