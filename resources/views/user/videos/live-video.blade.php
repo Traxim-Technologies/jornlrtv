@@ -425,6 +425,8 @@ video {
 
 <script type="text/javascript">
 
+setTimeout(jQuery(".flash").fadeOut("slow"),5000);
+
 var appSettings = <?= $appSettings ?>;
 
 var port_no = "<?= $data->port_no; ?>";
