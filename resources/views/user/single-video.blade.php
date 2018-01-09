@@ -832,7 +832,7 @@ textarea[name=comments] {
                 //get the action-url of the form
                 var actionurl = e.currentTarget.action;
 
-                var form_data = jQuery("#comment").val();
+                var form_data = $.trim(jQuery("#comment").val());
 
                 if(form_data) {
 
@@ -904,6 +904,9 @@ textarea[name=comments] {
                             }
                     });
                 } else {
+
+                    alert("Please fill the comment field");
+
                     return false;
                 }
 
