@@ -416,6 +416,8 @@ liveAppCtrl
 
 	                    $("#videos-container").css('display', 'none');
 
+	                    $("#rtsp_container").css('display', 'none');
+
 	                    var hasFlash = false;
 	                    
 	                   try {
@@ -445,7 +447,7 @@ liveAppCtrl
 
 	                    alert("There is not live video available, Redirecting into main page");
 
-                    	// window.location.href = routeUrl;
+                    	window.location.href = routeUrl;
 
 	                   
 	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
@@ -458,6 +460,8 @@ liveAppCtrl
 					 	console.log("setupError");
 
 	                    $("#videos-container").css('display', 'none');
+
+	                    $("#rtsp_container").css('display', 'none');
 
 	                    var hasFlash = false;
 	                   try {
@@ -485,7 +489,7 @@ liveAppCtrl
 
 	                    alert("There is not live video available, Redirecting into main page");
 
-                    	// window.location.href = routeUrl;
+                    	window.location.href = routeUrl;
 	                    
 
 	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
@@ -1377,6 +1381,9 @@ liveAppCtrl
 
 				                    $("#videos-container").hide();
 
+
+									$("#rtsp_container").css('display', 'none');
+
 				                    var hasFlash = false;
 				                    
 				                   try {
@@ -1419,6 +1426,8 @@ liveAppCtrl
 								 	console.log("setupError");
 
 				                    $("#videos-container").hide();
+
+				                    $("#rtsp_container").css('display', 'none');
 
 				                    var hasFlash = false;
 				                   try {
