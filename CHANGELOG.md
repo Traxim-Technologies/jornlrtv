@@ -112,3 +112,18 @@ All notable changes to this project will be documented in this file.
 
 - User side, Added PPV History.
 
+## 09.01.2017
+
+- User side - comment & rating issue fixed.
+
+- Admin panel - Revenue Dashboard 
+
+- Strip card - added cardname
+
+- Subscription - Expiry date issue fixed
+
+- Restricted - From Embedded link other users can't see ppv video 
+
+- Video having recurring payment. Once the user seen the page will reload
+
+- Payper view issues fixed
