@@ -78,7 +78,6 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Commission Spilit Issue fixed.
->>>>>>> dfcbf4cfde8c6eca09a116fe138f258fcae2eac2
 
 ### Changed 
 
