@@ -216,7 +216,6 @@ return array(
 	'twitter_settings' => 'Twitter Settings',
 	'google_settings' => 'Google Settings',
 	'social_settings' => 'Social Settings',
-	'paypal_settings' => 'Payment Settings',
 	'video_settings' => 'Video Settings',
 	'revenue_settings' => 'Revenue Settings',
 	'S3_KEY'=>'S3 Key',
@@ -818,6 +817,7 @@ return array(
 	'choose'=>'Choose',
 
 	'subscription_note' => 'Choose one plan and enjoy everything.',
+	'subscription_image_note'=>'Upload Square images 4:4 Ratio Ex: 400 * 400',
 
 	'plan_note' => 'Please enter no of months. Allowed numbers from 1 to 12',
 
@@ -1132,4 +1132,26 @@ return array(
 	'later' => 'Later',
 
 	'is_verified' => 'Is Verified',
+	'go_live' => 'Go Live',
+
+	'redeems_request_admin_less_amount' => 'The payment release amount is less than the user requested amount !!!',
+	'failed'=>'Failed',
+	'success'=>'Success',
+	'no_page_found'=>'No Page Found. Please try again later',
+	'view_plans'=>'View Plans',
+	'card_notes'=>"You can't delete default card, if you want to delete, please choose another card as default and then delete it",
+	'normal_user_note'=>"You are a Normal User. If you are Paid User, you no need to pay the video payment. You can watch the video anytime. If you want to paid user, Please choose plan and continue the same.",
+	'paid_user_note'=>'If you subscribe also , you need to pay for this selected video',
+
+	'revenue_system'=>'Revenue System',
+	'live_payments'=>'Live Payments',
+	'admin_live_commission'=>'Admin Commission',
+	'user_live_commission'=>'User Commission',
+	'live_history'=>'Live videos History',
+	'live_videos_billing'=>'Live Video Billing',
+	'banner_ads_note' => 'Banner Ads will display in web.',
+	'already_you_have_video'=>'If you have any Ongoing Broadcasting or Not proper Ending Call. All videos will delete once you submit the form',
+	'banner_ads_note' => 'Banner Ads will display in web.',
+	'cannot_pay_zero_amount'=>"You can't pay zero amount through paypal, Please check with admin",
+	'video_going_to_broadcast'=>'Your video is going to broadcast, once you allow your camera',
 );

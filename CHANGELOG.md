@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ##[1.2.1] - 
 
+
+## 07-01-2018 - ADMIN 
+
+- Redeems Request Payment - handled the status change based on the admin paid amount.
+
+- View user details redeems help added
+
+- Banner ads - usage note added
+
+
 ## 06-01-2018 - ADMIN 
 
 - channel user_id and channel_id save issue fixed
@@ -68,7 +78,6 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Commission Spilit Issue fixed.
->>>>>>> dfcbf4cfde8c6eca09a116fe138f258fcae2eac2
 
 ### Changed 
 
@@ -102,3 +111,18 @@ All notable changes to this project will be documented in this file.
 
 - User side, Added PPV History.
 
+## 09.01.2017
+
+- User side - comment & rating issue fixed.
+
+- Admin panel - Revenue Dashboard 
+
+- Strip card - added cardname
+
+- Subscription - Expiry date issue fixed
+
+- Restricted - From Embedded link other users can't see ppv video 
+
+- Video having recurring payment. Once the user seen the page will reload
+
+- Payper view issues fixed

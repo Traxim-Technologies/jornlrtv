@@ -39,5 +39,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AddSocialLinksSeeder::class);
         $this->call(AppLinkSeeder::class);
         $this->call(LanguageSeeder::class);
+        $this->call(PushNotificationSeeder::class);
     }
 }

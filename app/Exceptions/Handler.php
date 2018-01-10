@@ -50,7 +50,6 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof ValidationException)
         {
-
             return parent::render($request, $e);
         }
 

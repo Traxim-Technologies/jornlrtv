@@ -2,7 +2,14 @@
 
 @section('title', tr('banner_ads'))
 
-@section('content-header', tr('banner_ads'))
+@section('content-header')
+
+{{tr('banner_ads')}}
+
+<br>
+<small class="header-note">** {{tr('banner_ads_note')}} <a target="_blank" href="http://prntscr.com/hx6e61">http://prntscr.com/hx6e61</a>**</small>
+
+@endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
@@ -188,14 +195,22 @@
 <script type="text/javascript">
     
 function selectCurrentPosition(no_of_positions, current_position, id, btnid) {
+
+    console.log(id);
+
+    console.log(btnid);
+
+    console.log(no_of_positions);
     
     for(var i = 0; i < no_of_positions; i++) {
 
-        $("#"+i+"_"+id).removeClass('btn-success');
+        $("#"+id+"_"+i).removeClass('btn-success');
+        
+        $("#"+id+"_"+i).addClass('btn-default');
 
     }
 
-    //alert(current_position);
+    // console.log(current_position);
 
     $("#"+btnid).removeClass('btn-default');
 

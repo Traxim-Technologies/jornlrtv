@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', tr('ppv_payments'))
+@section('title', tr('video_payments'))
 
-@section('content-header',tr('ppv_payments') . ' ( $ ' . total_ppv_admin_video_revenue() . ' ) ' ) 
+@section('content-header',tr('video_payments'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active"><i class="fa fa-credit-card	"></i> {{tr('ppv_payments')}}</li>
+    <li class="active"><i class="fa fa-credit-card"></i> {{tr('video_payments')}}</li>
 @endsection
 
 @section('content')
@@ -28,8 +28,8 @@
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('payment_id')}}</th>
 						      <th>{{tr('amount')}}</th>
-						      <th>{{tr('admin_ppv_commission')}}</th>
-						      <th>{{tr('admin_ppv_commission')}}</th>
+							  <th>{{tr('admin_live_commission')}}</th>
+						      <th>{{tr('user_live_commission')}}</th>
 						      <th>{{tr('paid_date')}}</th>
 						    </tr>
 						</thead>
@@ -40,12 +40,12 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a target="_blank" href="{{route('admin.videos.view' , $payment->video_id)}}">{{$payment->videoTape ? $payment->videoTape->title : ''}}</a></td>
-							      	<td><a target="_blank" href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->userVideos ? $payment->userVideos->name : ''}} </a></td>
+							      	<td><a target="_blank" href="{{route('admin.videos.view' , $payment->id)}}">{{$payment->getVideo ? $payment->getVideo->title : ''}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.view.user' , $payment->user_id)}}"> {{$payment->user ? $payment->user->name : ''}} </a></td>
 							      	<td>{{$payment->payment_id}}</td>
 							      	<td>$ {{$payment->amount}}</td>
-							      	<td>$ {{$payment->admin_ppv_amount}}</td>
-							      	<td>$ {{$payment->user_ppv_amount}}</td>
+							      	<td>$ {{$payment->admin_amount}}</td>
+							      	<td>$ {{$payment->user_amount}}</td>
 							      	<td>{{$payment->created_at->diffForHumans()}}</td>
 							    </tr>					
 

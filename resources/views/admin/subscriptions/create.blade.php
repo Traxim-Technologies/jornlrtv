@@ -21,7 +21,9 @@
             <div class="box box-primary">
 
                 <div class="box-header label-primary">
+
                     <b>{{tr('add_subscription')}}</b>
+
                     <a href="{{route('admin.subscriptions.index')}}" style="float:right" class="btn btn-default">{{tr('view_subscriptions')}}</a>
                 </div>
 
@@ -35,34 +37,28 @@
                         <div class="form-group">
                             <label for="title" class="">{{tr('title')}}</label>
 
-                            <!-- <div class="col-sm-10"> -->
-                                <input type="text" required name="title" class="form-control" id="title" value="{{old('title')}}" placeholder="{{tr('title')}}">
-                            <!-- </div> -->
+                            <input type="text" required name="title" class="form-control" id="title" value="{{old('title')}}" placeholder="{{tr('title')}}">
                         </div>
 
                         <div class="form-group">
 
-                            <label for="image" class="">{{tr('image')}}</label>
+                            <label for="image" class="">
+                                {{tr('image')}} 
+                                <br><span class="text-red"><b>{{tr('subscription_image_note')}}</b></span>
+                            </label>
 
-                            <!-- <div class="col-sm-10"> -->
-                                <input type="file" required name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}" accept="image/png, image/jpeg" onchange="loadFile(this, 'image_preview')">
+                            <input type="file" required name="image" class="form-control" id="image" value="{{old('image')}}" placeholder="{{tr('image')}}" accept="image/png, image/jpeg" onchange="loadFile(this, 'image_preview')">
 
                             <br>
 
                             <img id="image_preview" style="width:100px;height:100px;display: none;">
-                            <!-- </div> -->
                         </div>
-
-
-
 
                         <div class="form-group">
                         
                             <label for="plan" class="">{{tr('plan')}} <br><span class="text-red"><b>{{tr('plan_note')}}</b></span></label>
 
-                            <!-- <div class="col-sm-10"> -->
                                 <input type="number" min="1" max="12" pattern="[0-9][0-2]{2}"  required name="plan" class="form-control" id="plan" value="{{old('plan')}}" title="Please enter the plan months. Max : 12 months" placeholder="plan">
-                            <!-- </div> -->
                         </div>
 
                         <div class="form-group">

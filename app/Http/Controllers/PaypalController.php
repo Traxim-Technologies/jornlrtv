@@ -42,7 +42,7 @@ use App\Subscription;
 
 use App\LiveVideo;
 use App\LiveVideoPayment;
- 
+
 class PaypalController extends Controller {
    
     private $_api_context;
@@ -86,6 +86,12 @@ class PaypalController extends Controller {
             $error_message = "Subscription Details Not Found";
 
             return back()->with('flash_error' , $error_message);
+
+        }
+
+        if ($subscription->amount <= 0) {
+
+            return back()->with('flash_error', tr('cannot_pay_zero_amount'));
 
         }
 
@@ -153,6 +159,10 @@ class PaypalController extends Controller {
 
                 $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
+            } else {
+
+                $error_message = $ex->getMessage() . PHP_EOL;
+
             }
 
             Log::info("Pay API catch METHOD");
@@ -180,17 +190,26 @@ class PaypalController extends Controller {
 
         if(isset($redirect_url)) {
 
-            $user_payment = UserPayment::where('user_id' , Auth::user()->id)->first();
+            $last_payment = UserPayment::where('user_id' , Auth::user()->id)
+                    ->where('status', DEFAULT_TRUE)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
 
-            if($user_payment) {
+            $user_payment = new UserPayment;
 
-                $expiry_date = $user_payment->expiry_date;
+            if($last_payment) {
 
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+                if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+
+                } else {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+
+                }    
 
             } else {
-
-                $user_payment = new UserPayment;
 
                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
             }
@@ -225,11 +244,13 @@ class PaypalController extends Controller {
      */
 
     public function getPaymentStatus(Request $request) {
+
+        $paypal_payment_id = Session::get('paypal_payment_id');
         
         // clear the session payment ID
      
         if (empty($request->paymentId) || empty($request->token) || empty($paypal_payment_id)) {
-        	
+            
             $error_message = "Payment ID - Session Not Found";
 
             $subscription_id = Session::get('subscription_id');
@@ -242,7 +263,7 @@ class PaypalController extends Controller {
 
             return redirect()->route('payment.failure')->with('flash_error' , $error_message);
 
-		} 
+        } 
 
         try { 
             
@@ -460,11 +481,12 @@ class PaypalController extends Controller {
 
         if(isset($redirect_url)) {
 
+            // $ppv_payment_details = PayPerView::where('user_id' , Auth::user()->id)->where('video_id' , $request->id)->where('amount',0)->first();
             $ppv_payment_details = PayPerView::where('user_id' , Auth::user()->id)->where('video_id' , $request->id)->where('amount',0)->first();
 
-            if(empty($ppv_payment_details)) {
+            // if(empty($ppv_payment_details)) {
                 $ppv_payment_details = new PayPerView;
-            }
+            // }
 
             $ppv_payment_details->expiry_date = date('Y-m-d H:i:s');
 
@@ -877,6 +899,5 @@ class PaypalController extends Controller {
             return back()->with('flash_error' , 'Payment is not approved. Please contact admin');
         }
 
-    }
-   
+    }   
 }

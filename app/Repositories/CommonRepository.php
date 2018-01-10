@@ -22,6 +22,8 @@ use ChannelSubscription;
 
 use App\Jobs\SubscriptionMail;
 
+use App\Jobs\sendPushNotification;
+
 class CommonRepository {
 
 
@@ -234,11 +236,11 @@ class CommonRepository {
                     $message = tr('channel_update_success');
 
                     if($request->hasFile('picture')) {
-                        Helper::delete_picture($channel->picture, "/uploads/channel/picture/");
+                        Helper::delete_picture($channel->picture, "/uploads/channels/picture/");
                     }
 
                     if($request->hasFile('cover')) {
-                        Helper::delete_picture($channel->cover, "/uploads/channel/cover/");
+                        Helper::delete_picture($channel->cover, "/uploads/channels/cover/");
                     }
 
                 } else {
@@ -254,7 +256,7 @@ class CommonRepository {
 
                 $channel->description = $request->has('description') ? $request->description : '';
 
-                $channel->user_id = $request->has('user_id') ? $request->user_id : '';
+                $channel->user_id = $request->has('id') ? $request->id : '';
 
                 $channel->status = DEFAULT_TRUE;
 
@@ -290,7 +292,6 @@ class CommonRepository {
         return response()->json($response_array, 200);
     
 	}
-
 
 
     public static function video_save(Request $request) {
@@ -548,10 +549,13 @@ class CommonRepository {
 
                     $model->save();
 
-
                     // Channel Subscription email
 
                     dispatch(new SubscriptionMail($model->channel_id, $model->id));
+
+                    $push_message = $model->title;
+
+                    dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
 
                     $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
                    

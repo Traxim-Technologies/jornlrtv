@@ -208,6 +208,7 @@
                         </a>
                     </li>
 
+                     <li id="video_payments"><a href="{{route('admin.videos.payments')}}"><i class="fa fa-circle-o"></i>{{tr('live_payments')}}</a></li>
                 </ul>
             </li>
 

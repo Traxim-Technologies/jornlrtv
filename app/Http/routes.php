@@ -17,6 +17,16 @@ use Illuminate\Support\Facades\Redis;
 
 // Report Video type
 
+
+if(!defined('PUSH_TO_ALL')) define('PUSH_TO_ALL', 0);
+
+if(!defined('PUSH_TO_CHANNEL_SUBSCRIBERS')) define('PUSH_TO_CHANNEL_SUBSCRIBERS', 1);
+
+if(!defined('PUSH_REDIRECT_HOME')) define('PUSH_REDIRECT_HOME', 1);
+if(!defined('PUSH_REDIRECT_CHANNEL')) define('PUSH_REDIRECT_CHANNEL', 2);
+if(!defined('PUSH_REDIRECT_SINGLE_VIDEO')) define('PUSH_REDIRECT_SINGLE_VIDEO', 3);
+
+
 if(!defined('DEVICE_ANDROID')) define('DEVICE_ANDROID', 'android');
 
 if(!defined('DEVICE_IOS')) define('DEVICE_IOS', 'ios');
@@ -178,7 +188,7 @@ Route::get('/email/verification' , 'ApplicationController@email_verify')->name('
 
 // Installation
 
-Route::get('/install/theme', 'InstallationController@install')->name('installTheme');
+Route::get('/install/configure', 'InstallationController@install')->name('installTheme');
 
 Route::get('/system/check', 'InstallationController@system_check_process')->name('system-check');
 
@@ -405,6 +415,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('/pages/create', 'AdminController@page_save')->name('pages.save');
 
     Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
+
+    Route::get('video/payments', 'AdminController@video_payments')->name('videos.payments');
 
 
     // Custom Push
@@ -771,6 +783,11 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('ppv/history', 'UserController@ppv_history')->name('ppv.history');
 
+    Route::get('live/history', 'UserController@live_history')->name('live.history');
+
+    Route::post('/live/videos/mgmt', 'UserController@live_mgmt_videos')->name('live.video.mgmt');
+
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
@@ -936,5 +953,7 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('channel/edit', 'UserApiController@channel_edit');
 
     Route::post('channel/delete', 'UserApiController@channel_delete');
+
+    Route::post('/video/erase-streaming', 'UserApiController@erase_streaming');
 
 });

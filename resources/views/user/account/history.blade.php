@@ -71,11 +71,11 @@
                                         </div><!--end of description--> 
 
                                         <span class="stars">
-                                           <a href="#"><i @if($history->ratings >= 1) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($history->ratings >= 2) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($history->ratings >= 3) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($history->ratings >= 4) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                           <a href="#"><i @if($history->ratings >= 5) style="color:gold" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a><i @if($history->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a><i @if($history->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a><i @if($history->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a><i @if($history->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                           <a><i @if($history->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                         </span>      
 
                                     </div><!--end of history-title--> 

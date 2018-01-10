@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Jobs\sendPushNotification;
+
 use App\Requests;
 
 use App\Admin;
@@ -438,7 +440,11 @@ class AdminController extends Controller {
 
             // Check the default subscription and save the user type 
 
-            user_type_check($user->id);
+            if ($request->id == '') {
+                
+                user_type_check($user->id);
+
+            }
 
             if($user) {
 
@@ -462,7 +468,6 @@ class AdminController extends Controller {
      *
      *
      */
-
     public function delete_user(Request $request) {
        
         if($user = User::where('id',$request->id)->first()) {
@@ -503,8 +508,6 @@ class AdminController extends Controller {
     public function view_user($id) {
 
         if($user = User::find($id)) {
-
-            // $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
 
             return view('admin.users.user-details')
                         ->with('user' , $user)
@@ -684,7 +687,16 @@ class AdminController extends Controller {
 
                     return back()->with('flash_error' , tr('redeem_request_status_mismatch'));
 
-                } else {
+                }
+
+
+                $message = tr('action_success');
+
+                $redeem_amount = $request->paid_amount ? $request->paid_amount : 0;
+
+                // Check the requested and admin paid amount is equal 
+
+                if($request->paid_amount == $redeem_request_details->request_amount) {
 
                     $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
 
@@ -692,9 +704,37 @@ class AdminController extends Controller {
 
                     $redeem_request_details->save();
 
-                    return back()->with('flash_success' , tr('action_success'));
+                }
+
+
+                else if($request->paid_amount > $redeem_request_details->request_amount) {
+
+                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
+
+                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
+
+                    $redeem_request_details->save();
+
+                    $redeem_amount = $redeem_request_details->request_amount;
+
+                } else {
+
+                    $message = tr('redeems_request_admin_less_amount');
+
+                    $redeem_amount = 0; // To restrict the redeeem paid amount update
 
                 }
+
+                $redeem_details = Redeem::where('user_id' , $redeem_request_details->user_id)->first();
+
+                if(count($redeem_details) > 0 ) {
+
+                    $redeem_details->paid = $redeem_details->paid + $redeem_amount;
+
+                    $redeem_details->save();
+                }
+
+                return back()->with('flash_success' , $message);
 
             } else {
                 return back()->with('flash_error' , tr('something_error'));
@@ -1043,8 +1083,7 @@ class AdminController extends Controller {
                     }
 
                 }
-
-                
+        
 
             }
 
@@ -1416,15 +1455,13 @@ class AdminController extends Controller {
 
         } else {
 
-            $message = $request->message;
-            $title = Setting::get('site_name');
-            $message = $message;
-            
-            \Log::info($message);
+            // Send notifications to the provider
 
-            $id = 'all';
+            $push_message = $request->message;
 
-            Helper::send_notification($id,$title,$message);
+            // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
+
+            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
 
             return back()->with('flash_success' , tr('push_send_success'));
         }
@@ -1462,6 +1499,20 @@ class AdminController extends Controller {
                         ->with('page' , 'Spam Videos')
                         ->with('sub_page' , 'User Reports');   
     }
+
+    /**
+     * Function Name : video_payments()
+     * To get payments based on the video subscription
+     *
+     * @return array of payments
+     */
+    public function video_payments() {
+
+        $payments = LiveVideoPayment::orderBy('created_at' , 'desc')->get();
+
+        return view('admin.payments.video-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','video-subscription'); 
+    }
+
 
     /**
      * Function Name : save_video_payment
@@ -1648,6 +1699,11 @@ class AdminController extends Controller {
     }
 
     public function add_channel_process(Request $request) {
+
+        $request->request->add([
+                'channel_id'=>$request->id,
+                'id'=>$request->user_id,
+            ]);
 
         $response = CommonRepo::channel_save($request)->getData();
 
@@ -2858,24 +2914,38 @@ class AdminController extends Controller {
 
         $total  = total_revenue();
 
-        $ppv_total = PayPerView::sum('amount');
-
-        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
-
-        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
-
         $subscription_total = UserPayment::sum('amount');
 
         $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
+
+        $admin_ppv_amount = VideoTape::sum('admin_ppv_amount');
+
+        $user_ppv_amount = VideoTape::sum('user_ppv_amount');
+
+        $total_ppv_amount = $admin_ppv_amount + $user_ppv_amount;
+
+
+        $admin_live_amount = LiveVideoPayment::sum('admin_amount');
+
+        $user_live_amount = LiveVideoPayment::sum('user_amount');
+
+        $total_live_amount = $admin_live_amount + $user_live_amount;
+
+
         
         return view('admin.payments.revenues')
                         ->with('total' , $total)
-                        ->with('ppv_total' , $ppv_total)
-                        ->with('ppv_admin_amount' , $ppv_admin_amount)
-                        ->with('ppv_user_amount' , $ppv_user_amount)
+                    
                         ->with('subscription_total' , $subscription_total)
                         ->with('total_subscribers' , $total_subscribers)
+                        ->with('admin_ppv_amount', $admin_ppv_amount)
+                        ->with('user_ppv_amount', $user_ppv_amount)
+                        ->with('total_ppv_amount', $total_ppv_amount)
+                        ->with('admin_live_amount', $admin_live_amount)
+                        ->with('user_live_amount', $user_live_amount)
+                        ->with('total_live_amount', $total_live_amount)
                         ->withPage('payments')
+
                         ->with('sub_page' , 'payments-dashboard');
     }
 

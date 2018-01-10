@@ -414,7 +414,9 @@ liveAppCtrl
 
 						console.log("setupError");
 
-	                    $("#videos-container").hide();
+	                    $("#videos-container").css('display', 'none');
+
+	                    $("#rtsp_container").css('display', 'none');
 
 	                    var hasFlash = false;
 	                    
@@ -457,7 +459,9 @@ liveAppCtrl
 
 					 	console.log("setupError");
 
-	                    $("#videos-container").hide();
+	                    $("#videos-container").css('display', 'none');
+
+	                    $("#rtsp_container").css('display', 'none');
 
 	                    var hasFlash = false;
 	                   try {
@@ -1377,6 +1381,9 @@ liveAppCtrl
 
 				                    $("#videos-container").hide();
 
+
+									$("#rtsp_container").css('display', 'none');
+
 				                    var hasFlash = false;
 				                    
 				                   try {
@@ -1419,6 +1426,8 @@ liveAppCtrl
 								 	console.log("setupError");
 
 				                    $("#videos-container").hide();
+
+				                    $("#rtsp_container").css('display', 'none');
 
 				                    var hasFlash = false;
 				                   try {
@@ -1802,6 +1811,8 @@ liveAppCtrl
 
 			// stop all media streams
 			connection.streams.stop();
+
+			window.location.href = stop_streaming_url;
 
 	    	
 	    };

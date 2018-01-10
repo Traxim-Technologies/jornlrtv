@@ -12,6 +12,9 @@ use App\Helpers\Helper;
 
 use App\Repositories\PaymentRepository as PaymentRepo;
 
+use App\Helpers\AppJwt;
+
+use App\Jobs\sendPushNotification;
 
 use Log;
 
@@ -75,7 +78,7 @@ class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons', 'get_live_url', 'video_detail']));
+        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons', 'get_live_url', 'video_detail', 'live_videos']));
 
     }
 
@@ -98,80 +101,93 @@ class UserApiController extends Controller {
             $error_messages = implode(',', $validator->messages()->all());
 
             $response_array = ['success' => false , 'error_messages' => $error_messages , 'error_code' => 001];
+
         } else {
 
-            $last = LiveVideo::orderBy('port_no', 'desc')->first();
 
-            $model = new LiveVideo;
-            $model->title = $request->title;
-            $model->payment_status = $request->payment_status;
-            $model->type = $request->type ? $request->type : TYPE_PUBLIC;
-            $model->channel_id = $request->channel_id;
-            $model->amount = 0;
+            $this->erase_streaming($request);
 
-            if($request->payment_status) {
+            $model = LiveVideo::where('user_id', $request->id)->where('status', DEFAULT_FALSE)->first();
 
-                $model->amount = ($request->amount > 0) ? $request->amount : 1;
+            if(!$model) {
 
-            }
-            $model->description = ($request->has('description')) ? $request->description : null;
-            $model->is_streaming = DEFAULT_TRUE;
-            $model->status = DEFAULT_FALSE;
-            $model->user_id = $request->user_id;
-            $model->virtual_id = md5(time());
-            $model->unique_id = $model->title;
-            $model->snapshot = asset('images/live_stream.jpg');
+                $last = LiveVideo::orderBy('port_no', 'desc')->first();
 
-            $destination_port = 44104;
+                $model = new LiveVideo;
+                $model->title = $request->title;
+                $model->payment_status = $request->payment_status;
+                $model->type = $request->type ? $request->type : TYPE_PUBLIC;
+                $model->channel_id = $request->channel_id;
+                $model->amount = 0;
 
-            if ($last) {
+                if($request->payment_status) {
 
-                if ($last->port_no) {
+                    $model->amount = ($request->amount > 0) ? $request->amount : 1;
 
-                    $destination_port = $last->port_no + 2;
+                }
+                $model->description = ($request->has('description')) ? $request->description : null;
+                $model->is_streaming = DEFAULT_TRUE;
+                $model->status = DEFAULT_FALSE;
+                $model->user_id = $request->user_id;
+                $model->virtual_id = md5(time());
+                $model->unique_id = $model->title;
+                $model->snapshot = asset('images/live_stream.jpg');
+
+                $destination_port = 44104;
+
+                if ($last) {
+
+                    if ($last->port_no) {
+
+                        $destination_port = $last->port_no + 2;
+
+                    }
 
                 }
 
-            }
+                $model->port_no = $destination_port;
 
-            $model->port_no = $destination_port;
+                $model->save();
 
-            $model->save();
+                /*// $usrModel
 
-            /*// $usrModel
-
-            $userModel = User::find($request->id);
+                $userModel = User::find($request->id);
 
 
-            $appSettings = json_encode([
-                'SOCKET_URL' => Setting::get('SOCKET_URL'),
-                'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
-                'BASE_URL' => Setting::get('BASE_URL'),
-                'TURN_CONFIG' => [],
-                'TOKEN' => $request->token,
-                'USER_PICTURE'=>$userModel->chat_picture,
-                'NAME'=>$userModel->name,
-                'CLASS'=>'left',
-                'USER' => ['id' => $request->id, 'role' => "model"],
-                'VIDEO_PAYMENT'=>null,
-            ]);*/
+                $appSettings = json_encode([
+                    'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                    'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                    'BASE_URL' => Setting::get('BASE_URL'),
+                    'TURN_CONFIG' => [],
+                    'TOKEN' => $request->token,
+                    'USER_PICTURE'=>$userModel->chat_picture,
+                    'NAME'=>$userModel->name,
+                    'CLASS'=>'left',
+                    'USER' => ['id' => $request->id, 'role' => "model"],
+                    'VIDEO_PAYMENT'=>null,
+                ]);*/
 
-            if ($model) {
-                $response_array = [
-                    'success' => true , 
+                if ($model) {
+                    $response_array = [
+                        'success' => true , 
 
-                    'data' => $model, 
+                        'data' => $model, 
 
-                    /*'appSettings'=> $appSettings, */
+                        /*'appSettings'=> $appSettings, */
 
-                    'port_no'=>$model->port_no, 
+                        'port_no'=>$model->port_no, 
 
-                    'message'=>tr('video_broadcating_success')
-                ];
+                        'message'=>tr('video_broadcating_success')
+                    ];
 
-                
+                    
+                } else {
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+                }
+
             } else {
-                $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+
+                $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(170), 'error_code'=>170];
             }
         }
         return response()->json($response_array,200);
@@ -198,18 +214,23 @@ class UserApiController extends Controller {
 
         } else {
 
-                $model = LiveVideo::where('is_streaming', DEFAULT_TRUE)
+                $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
                         ->where('live_videos.status', DEFAULT_FALSE)
                         ->videoResponse()
                         ->leftJoin('users' , 'users.id' ,'=' , 'live_videos.user_id')
                         ->leftJoin('channels' , 'channels.id' ,'=' , 'live_videos.channel_id')
                         ->orderBy('live_videos.created_at', 'desc')
                         ->skip($request->skip)
-                        ->take(Setting::get('admin_take_count' ,12))->get();
+                        ->take(Setting::get('admin_take_count' ,12));
 
+                if($request->id) {
+
+                    $query->whereNotIn('live_videos.user_id', [$request->id]);
+                }
+
+                $model = $query->get();
 
                 $values = [];
-
 
 
                 foreach ($model as $key => $value) {
@@ -280,62 +301,73 @@ class UserApiController extends Controller {
 
                 if ($user->user_type) {
 
-                    $model = new LiveVideo;
-                    $model->title = $request->title;
-                    $model->channel_id = $request->channel_id;
-                    $model->payment_status = $request->payment_status;
-                    $model->type = TYPE_PUBLIC;
-                    $model->amount = ($request->payment_status) ? (($request->has('amount')) ? $request->amount : 0 ): 0;
 
-                    $model->description = ($request->has('description')) ? $request->description : null;
-                    $model->is_streaming = DEFAULT_TRUE;
-                    $model->status = DEFAULT_FALSE;
-                    $model->user_id = $request->id;
-                    $model->virtual_id = md5(time());
-                    $model->unique_id = $model->title;
-                    $model->snapshot = asset("/images/live_stream.jpg");
-                    $model->start_time = getUserTime(date('H:i:s'), ($user) ? $user->timezone : '', "H:i:s");
+                    $model = LiveVideo::where('user_id', $request->id)->where('status', DEFAULT_FALSE)->first();
 
-                    // $model->video_url = 'rtsp://104.236.1.170:1935/live/'.$user->id.'_'.$model->id;
-                    // $model->video_url = $request->video_url;
 
-                    $model->save();
+                    if(!$model) {
 
-                    if ($model) {
+                        $model = new LiveVideo;
+                        $model->title = $request->title;
+                        $model->channel_id = $request->channel_id;
+                        $model->payment_status = $request->payment_status;
+                        $model->type = TYPE_PUBLIC;
+                        $model->amount = ($request->payment_status) ? (($request->has('amount')) ? $request->amount : 0 ): 0;
 
-                        $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+                        $model->description = ($request->has('description')) ? $request->description : null;
+                        $model->is_streaming = DEFAULT_TRUE;
+                        $model->status = DEFAULT_FALSE;
+                        $model->user_id = $request->id;
+                        $model->virtual_id = md5(time());
+                        $model->unique_id = $model->title;
+                        $model->snapshot = asset("/images/live_stream.jpg");
+                        $model->start_time = getUserTime(date('H:i:s'), ($user) ? $user->timezone : '', "H:i:s");
+
+                        // $model->video_url = 'rtsp://104.236.1.170:1935/live/'.$user->id.'_'.$model->id;
+                        // $model->video_url = $request->video_url;
 
                         $model->save();
 
-                        $response_array = [
-                            'success' => true , 
-                            "video_image"=> $model->snapshot,
-                            "channel_image"=> $model->channel ? $model->channel->picture : '',
-                            "title"=> $model->title,
-                            "channel_name"=> $model->channel ? $model->channel->name : '',
-                            "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                            "video"=>$model->video_url,
-                            "video_tape_id"=>$model->id,
-                            "channel_id"=>$model->channel_id,
-                            'unique_id'=>$model->unique_id,
-                            "description"=> $model->description,
-                            "user_id"=>$model->user ? $model->user->id : '',
-                            "name"=> $model->user->name,
-                            "email"=> $model->user->email,
-                            "user_picture"=> $model->user->chat_picture,
-                            'payment_status' => $model->payment_status ? $model->payment_status : 0,
-                            "amount"=> $model->amount,
-                            'currency'=> Setting::get('currency'),
-                            "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
-                            'is_streaming'=>$model->is_streaming,
-                        ];
+                        if ($model) {
+
+                            $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+
+                            $model->save();
+
+                            $response_array = [
+                                'success' => true , 
+                                "video_image"=> $model->snapshot,
+                                "channel_image"=> $model->channel ? $model->channel->picture : '',
+                                "title"=> $model->title,
+                                "channel_name"=> $model->channel ? $model->channel->name : '',
+                                "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
+                                "video"=>$model->video_url,
+                                "video_tape_id"=>$model->id,
+                                "channel_id"=>$model->channel_id,
+                                'unique_id'=>$model->unique_id,
+                                "description"=> $model->description,
+                                "user_id"=>$model->user ? $model->user->id : '',
+                                "name"=> $model->user->name,
+                                "email"=> $model->user->email,
+                                "user_picture"=> $model->user->chat_picture,
+                                'payment_status' => $model->payment_status ? $model->payment_status : 0,
+                                "amount"=> $model->amount,
+                                'currency'=> Setting::get('currency'),
+                                "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
+                                'is_streaming'=>$model->is_streaming,
+                            ];
+                        } else {
+                            $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+                        }
+
                     } else {
-                        $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
+
+                        $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(170), 'error_code'=>170];
                     }
 
                 } else {
 
-                     $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(165), 'error_code'=>165];
+                    $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
 
                 }
             } else {
@@ -587,7 +619,7 @@ class UserApiController extends Controller {
 
                     $user->save();
 
-                    add_to_redeem($user->id, $user_amount);
+                    add_to_redeem($user->id, $user_amount, $admin_amount);
                 
                 }
 
@@ -793,7 +825,7 @@ class UserApiController extends Controller {
 
                     } else {
 
-                        $response_array = ['success'=> false, 'message'=>tr('streaming_stopped')];
+                        $response_array = ['success'=> false, 'message'=>tr('streaming_stopped'), 'error_code'=>550];
 
 
                     }
@@ -901,7 +933,7 @@ class UserApiController extends Controller {
 
                                 $user->save();
 
-                                add_to_redeem($user->id, $user_amount);
+                                add_to_redeem($user->id, $user_amount, $admin_amount);
                             
                             }
 
@@ -1187,7 +1219,7 @@ class UserApiController extends Controller {
 
                     Helper::delete_picture($user->picture, "/uploads/images/"); // Delete the old pic
 
-                    $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
+                    $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/", $user);
                 }
 
                 $user->save();
@@ -1734,7 +1766,7 @@ class UserApiController extends Controller {
                     array(
                         'name' => 'required|max:255',
                         'email' => 'required|email|max:255',
-                        'mobile' => 'required|digits_between:6,13',
+                        'mobile' => 'digits_between:6,13',
                         'password' => 'required|min:6',
                         'picture' => 'mimes:jpeg,jpg,bmp,png',
                     )
@@ -1791,15 +1823,19 @@ class UserApiController extends Controller {
                 }
 
                 if($request->has('dob')) {
-                    $user->dob = date("Y-m-d" , strtotime($request->dob));;
+                    $user->dob = date("Y-m-d" , strtotime($request->dob));
                 }
 
                  if ($user->dob) {
 
-                    $from = new \DateTime($user->dob);
-                    $to   = new \DateTime('today');
+                    if ($user->dob != '0000-00-00') {
 
-                    $user->age_limit = $from->diff($to)->y;
+                        $from = new \DateTime($user->dob);
+                        $to   = new \DateTime('today');
+
+                        $user->age_limit = $from->diff($to)->y;
+
+                    }
 
                 }
 
@@ -1812,7 +1848,6 @@ class UserApiController extends Controller {
 
                 $user->gender = $request->has('gender') ? $request->gender : "male";
 
-                $user->token = Helper::generate_token();
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 $check_device_exist = User::where('device_token', $request->device_token)->first();
@@ -1822,7 +1857,8 @@ class UserApiController extends Controller {
                     $check_device_exist->save();
                 }
 
-                $user->device_token = $request->has('device_token') ? $request->device_token : "";
+                Log::info("Device Token - ".$request->device_token);
+                $user->device_token = $request->device_token;
                 $user->device_type = $request->has('device_type') ? $request->device_type : "";
                 $user->login_by = $request->has('login_by') ? $request->login_by : "";
                 $user->social_unique_id = $request->has('social_unique_id') ? $request->social_unique_id : '';
@@ -1846,6 +1882,10 @@ class UserApiController extends Controller {
 
 
                 // $user->is_activated = 1;
+
+                $user->save();
+
+                $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
 
                 $user->save();
 
@@ -1965,7 +2005,7 @@ class UserApiController extends Controller {
             if($operation) {
 
                 // Generate new tokens
-                $user->token = Helper::generate_token();
+                $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 // Save device details
@@ -2381,6 +2421,8 @@ class UserApiController extends Controller {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->videoResponse();
 
         if ($request->id) {
@@ -2635,6 +2677,8 @@ class UserApiController extends Controller {
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')     
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
+                                ->where('channels.is_approved', 1)
+                                ->where('channels.status', 1)
                                 ->where('title', 'like', "%".$request->key."%")
                                 ->orderby('video_tapes.watch_count' , 'desc');
                                //  ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
@@ -2683,17 +2727,21 @@ class UserApiController extends Controller {
 
                     $is_ppv_subscribe_page = $is_ppv_status;
 
-
                     $pay_per_view_status = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
 
                     $amount = $value->ppv_amount;
 
-                    $items[] = ['video_tape_id'=>$value->video_tape_id,
+                    $ppv_notes = !$pay_per_view_status ? ($value->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+
+                    $items[] = [
+                        'video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
                             'currency'=>$currency,
                             'is_ppv_subscribe_page'=>$is_ppv_subscribe_page,
                             'pay_per_view_status'=>$pay_per_view_status,
-                            'ppv_amount'=>$amount];
+                            'ppv_amount'=>$amount,
+                            'ppv_notes'=>$ppv_notes
+                            ];
 
 
                 }
@@ -3415,6 +3463,7 @@ class UserApiController extends Controller {
         } else {
 
             $model = UserPayment::where('user_id' , $request->id)
+                        ->where('status', DEFAULT_TRUE)
                         ->orderBy('id', 'desc')->first();
 
             $subscription = Subscription::find($request->subscription_id);
@@ -3422,7 +3471,18 @@ class UserApiController extends Controller {
             $user_payment = new UserPayment();
 
             if ($model) {
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+    
+                if (strtotime($model->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+
+                } else {
+
+                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+
+                }    
+
+
             } else {
                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
             }
@@ -3490,7 +3550,8 @@ class UserApiController extends Controller {
                                 // 'user_payments.expiry_date as expiry_date',
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
                                 'user_payments.created_at as created_at',
-                                DB::raw("'$' as currency"))
+                                DB::raw("'$' as currency"),
+                                'user_payments.status')
                         ->orderBy('user_payments.updated_at', 'desc');
                         
 
@@ -3538,6 +3599,10 @@ class UserApiController extends Controller {
             array(
                 'number' => 'required|numeric',
                 'card_token'=>'required',
+                'month'=>'required',
+                'year'=>'required',
+                'cvv'=>'required',
+                'card_name'=>'required',
             )
             );
 
@@ -3583,12 +3648,19 @@ class UserApiController extends Controller {
 
                     $customer_id = $customer->id;
 
-
                     $cards = new Card;
                     $cards->user_id = $userModel->id;
                     $cards->customer_id = $customer_id;
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    $cards->cvv = $request->cvv;
+
+                    $cards->card_name = $request->card_name;
+
+                    $cards->month = $request->month;
+
+                    $cards->year = $request->year;
 
                     // Check is any default is available
                     $check_card = Card::where('user_id', $userModel->id)->first();
@@ -3735,15 +3807,27 @@ class UserApiController extends Controller {
 
                             if($paid_status) {
 
-                                $user_payment = UserPayment::where('user_id' , $request->id)->first();
+                                $last_payment = UserPayment::where('user_id' , $request->id)
+                                    ->where('status', DEFAULT_TRUE)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
 
-                                if($user_payment) {
 
-                                    $expiry_date = $user_payment->expiry_date;
-                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+                                $user_payment = new UserPayment;
+
+                                if($last_payment) {
+
+                                    if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+
+                                    } else {
+
+                                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+                                    }    
 
                                 } else {
-                                    $user_payment = new UserPayment;
+                                    
                                     $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
                                 }
 
@@ -5082,13 +5166,16 @@ class UserApiController extends Controller {
 
         $items = [];
 
+        $billing_amt = 0;
+
         foreach ($videos as $key => $value) {
 
-            $items[] = displayVideoDetails($value, $u_id);
+            $items[] = $video_detail = displayVideoDetails($value, $u_id);
 
+            $billing_amt += ($video_detail['user_ppv_amount'] + $video_detail['amount']);
         }
 
-        return response()->json(['data'=>$items, 'count'=>count($items)]);
+        return response()->json(['data'=>$items, 'count'=>count($items),  'billing_amt'=>$billing_amt]);
 
     
     }
@@ -5109,6 +5196,11 @@ class UserApiController extends Controller {
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
+                    ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.is_approved' , 1)
+                    ->where('video_tapes.publish_status' , 1)
+                    ->where('channels.is_approved', 1)
+                    ->where('channels.status', 1)
                     ->first();
 
         if ($video) {
@@ -5341,13 +5433,13 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = ['success'=>false,'error_messages'=>Helper::get_error_message(164), 'error_code'=>164];
+                $response_array = ['success'=>false,'error_messages'=>Helper::get_error_message(169), 'error_code'=>169];
 
             }
 
         } else {
 
-            $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(163), 'error_code'=>163];
+            $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(168), 'error_code'=>168];
         }
 
         return response()->json($response_array);
@@ -5521,6 +5613,10 @@ class UserApiController extends Controller {
                     } 
 
                     $videoDetails = $value->video ? $value->video : '';
+
+                    $pay_per_view_status = $videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true;
+
+                    $ppv_notes = !$pay_per_view_status ? ($videoDetails->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
                     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -5533,9 +5629,9 @@ class UserApiController extends Controller {
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
                             'payment_id'=>$value->payment_id,
-                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
-
+                            'ppv_notes'=>$ppv_notes
                             ];
 
                 }
@@ -5711,4 +5807,148 @@ class UserApiController extends Controller {
     }
 
 
+/**
+     * Function Name : live_history()
+     *
+     * To display my live videos History
+     *
+     * @param object $request - User id and token
+     *
+     * @return return array of list
+     */
+    public function live_history(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'skip'=>($request->device_type == DEVICE_WEB) ? '' : 'required|numeric',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            $response_array = array(
+                    'success' => false,
+                    'error_messages' => $error_messages
+            );
+            return response()->json($response_array);
+        } else {
+
+            $currency = Setting::get('currency');
+
+            $query = LiveVideoPayment::select('live_video_payments.id as live_video_payment_id',
+                    'live_video_id',
+                    'live_videos.title',
+                    'live_video_payments.amount',
+                    'live_video_payments.status as video_status',
+                    'live_videos.snapshot as picture',
+                    'live_video_payments.payment_id',
+                     DB::raw('DATE_FORMAT(live_video_payments.created_at , "%e %b %y") as paid_date'),
+                      DB::raw("'$currency' as currency"))
+                    ->leftJoin('live_videos', 'live_videos.id', '=', 'live_video_payments.live_video_id')
+                    ->where('live_video_payments.live_video_viewer_id', $request->id)
+                    ->where('live_video_payments.amount', '>', 0);
+
+            if ($request->device_type == DEVICE_WEB) {
+
+                $model = $query->paginate(16);
+
+                $response_array = array('success'=>true, 'data' => $model->items(), 'pagination' => (string) $model->links());
+
+            } else {
+
+                $model = $query->skip($request->skip)
+                        ->take(Setting::get('admin_take_count' ,12))
+                        ->get();
+
+                $response_array = ['success'=>true, 'data'=>$model];
+            }
+
+            return response()->json($response_array);
+
+        }
+    }
+
+    /**
+     * Function Name : live_video_revenue()
+     *
+     * To display my live videos revenue history
+     *
+     * @param object $request - User id and token
+     *
+     * @return return array of list
+     */
+    public function live_video_revenue(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'skip'=>($request->device_type == DEVICE_WEB) ? '' : 'required|numeric',
+            ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            $response_array = array(
+                    'success' => false,
+                    'error_messages' => $error_messages
+            );
+            return response()->json($response_array);
+
+        } else {
+
+            $currency = Setting::get('currency');
+
+
+            $model = LiveVideoPayment::select('live_video_payments.id as live_video_payment_id',
+                    'live_video_id',
+                    'live_videos.title',
+                    'live_video_payments.amount',
+                    'live_video_payments.status as video_status',
+                    'live_videos.snapshot as video_image',
+                    'live_video_payments.payment_id',
+                    'live_videos.description',
+                     DB::raw('DATE_FORMAT(live_video_payments.created_at , "%e %b %y") as paid_date'),
+                      DB::raw("'$currency' as currency"),
+                       DB::raw("sum(live_video_payments.user_amount) as user_amount"))
+                    ->leftJoin('live_videos', 'live_videos.id', '=', 'live_video_payments.live_video_id')
+                    ->where('live_video_payments.user_id', $request->id)
+                    ->where('live_videos.channel_id', $request->channel_id)
+                    ->where('live_video_payments.amount', '>', 0)
+                    ->skip($request->skip)
+                    ->take(Setting::get('admin_take_count' ,12))
+                    ->groupBy('live_videos.id')
+                    ->get();
+
+            $response_array = ['success'=>true, 'data'=>$model];
+        
+
+            return response()->json($response_array);
+
+        }
+    }
+
+
+
+    public function erase_streaming(Request $request) {
+
+        $model = LiveVideo::where('user_id', $request->id)->where('status', 0)->get();
+
+        foreach ($model as $key => $value) {
+           
+            $value->status = DEFAULT_TRUE;
+
+            if ($value->save()) {
+
+                
+            }
+
+        }
+
+        $response_array = ['success'=>true, 'message'=>tr('streaming_stopped')];
+
+        return response()->json($response_array);
+    }
 }

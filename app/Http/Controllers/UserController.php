@@ -476,7 +476,7 @@ class UserController extends Controller {
      *
      * @return channel videos list
      */
-    public function channel_videos($id) {
+    public function channel_videos($id, Request $request) {
 
         $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
                 ->where('id', $id)
@@ -504,6 +504,21 @@ class UserController extends Controller {
 
             $subscriberscnt = subscriberscnt($channel->id);
 
+            $live_video_history = [];
+
+            if (Auth::check()) {
+
+                $request->request->add([
+                    'skip'=>0,
+                    'channel_id'=>$id,
+                    'id'=>Auth::user()->id,
+
+                ]);
+
+                $live_video_history = $this->UserAPI->live_video_revenue($request)->getData();
+
+            }
+
             return view('user.channels.index')
                         ->with('page' , 'channels_'.$id)
                         ->with('subPage' , 'channels')
@@ -512,7 +527,8 @@ class UserController extends Controller {
                         ->with('videos' , $videos)->with('trending_videos', $trending_videos)
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
-                        ->with('subscriberscnt', $subscriberscnt);
+                        ->with('subscriberscnt', $subscriberscnt)
+                        ->with('live_video_history', $live_video_history);
         } else {
 
             return back()->with('flash_error', tr('channel_not_found'));
@@ -822,7 +838,7 @@ class UserController extends Controller {
 
                             $video->amount += $video_amount;
 
-                            add_to_redeem($video->user_id , $video_amount);
+                            add_to_redeem($video->user_id , $video_amount, 0);
 
                             \Log::info("ADD History - add_to_redeem");
 
@@ -1152,12 +1168,13 @@ class UserController extends Controller {
         $response = $this->UserAPI->delete_account($request)->getData();
 
         if($response->success) {
-            return back()->with('flash_success', tr('user_account_delete_success'));
+            
+            return redirect(route('user.dashboard'))->with('flash_success', tr('user_account_delete_success'));
+
         } else {
-            if($response->error == 101)
-                return back()->with('flash_error', $response->error_messages);
-            else
-                return back()->with('flash_error', $response->error_messages);
+
+            return back()->with('flash_error', $response->error_messages);
+
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
@@ -1214,6 +1231,7 @@ class UserController extends Controller {
     public function remove_report_video($id) {
         // Load Spam Video from flag section
         $model = Flag::where('video_tape_id', $id)->where('user_id', Auth::user()->id)->first();
+
         Log::info("Loaded Values : ".print_r($model, true));
         // If the flag model exists then delete the row
         if ($model) {
@@ -1389,7 +1407,6 @@ class UserController extends Controller {
 
     public function upload_video_image(Request $request) {
 
-
         $response = CommonRepo::upload_video_image($request)->getData();
 
         return response()->json(['id'=>$response]);
@@ -1497,6 +1514,12 @@ class UserController extends Controller {
     public function page_view($id) {
 
         $page = Page::find($id);
+
+        if (!$page) {
+
+            return back()->with('flash_error', tr('no_page_found'));
+
+        }
 
         return view('static.common')->with('model' , $page)
                         ->with('page' , $page->type)
@@ -1703,6 +1726,14 @@ class UserController extends Controller {
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
+                $cards->cvv = $request->cvv;
+
+                $cards->card_name = $request->card_name;
+
+                $cards->month = $request->month;
+
+                $cards->year = $request->year;
+
                 if($check_card)
                     $cards->is_default = 0;
                 else
@@ -1824,8 +1855,6 @@ class UserController extends Controller {
             'subscription_id' => $request->subscription_id
         ]);        
 
-        /*$response = $this->UserAPI->pay_video($request)->getData();*/
-
 
         $validator = Validator::make($request->all(), [
            // 'tour_id' => 'required|exists:tours,id',
@@ -1848,6 +1877,12 @@ class UserController extends Controller {
             if($subscription) {
 
                 $total = $subscription->amount;
+
+                if ($subscription->amount <= 0) {
+
+                    return back()->with('flash_error', tr('cannot_pay_zero_amount'));
+
+                }
 
                 $user = User::find($request->id);
 
@@ -1892,15 +1927,28 @@ class UserController extends Controller {
                        if($paid_status) {
 
 
-                            $user_payment = UserPayment::where('user_id' , $request->id)->first();
 
-                            if($user_payment) {
+                            $last_payment = UserPayment::where('user_id' , $request->id)
+                                    ->where('status', DEFAULT_TRUE)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
 
-                                $expiry_date = $user_payment->expiry_date;
-                                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                            $user_payment = new UserPayment;
+
+                            if($last_payment) {
+
+                                if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+
+                                } else {
+
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+                                }    
 
                             } else {
-                                $user_payment = new UserPayment;
+                                
                                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
                             }
 
@@ -2039,11 +2087,13 @@ class UserController extends Controller {
 
             }
 
-            return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', $response->message);
+            return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', tr('video_going_to_broadcast'));
+
 
         } else {
 
             return back()->with('flash_error', $response->error_messages);
+
         }
 
     }
@@ -2633,6 +2683,10 @@ class UserController extends Controller {
 
         $subscription = Subscription::find($request->s_id);
 
+        if(!count($subscription)) {
+            return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
+        }
+
         return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)->with('model',$model);
    
     }
@@ -2894,6 +2948,46 @@ class UserController extends Controller {
 
         }
 
+    }
+
+    public function live_history(Request $request) {
+
+        $request->request->add([ 
+            'id'=>Auth::user()->id,
+            'token'=>Auth::user()->token,
+            'device_type'=>DEVICE_WEB,
+        ]); 
+
+        $response = $this->UserAPI->live_history($request)->getData();
+
+        if ($response->success) {
+
+            return view('user.history.live_history')->with('page', 'history')
+                ->with('subPage', 'live_history')
+                ->with('response', $response);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+        }
+    }
+
+
+    public function live_mgmt_videos(Request $request) {
+
+        // Get Videos
+
+        // $videos = VideoRepo::channel_videos($request->channel_id, null, $request->skip);
+
+       // $payment_videos = VideoRepo::payment_videos($request->channel_id, null, $request->skip);
+
+        $live_video_history = $this->UserAPI->live_video_revenue($request)->getData();
+
+
+        $view = View::make('user.videos.partial_live_video_history')
+                    ->with('live_video_history', $live_video_history)->render();
+
+        return response()->json(['view'=>$view, 'length'=>count($live_video_history->data)]);
     }
 
 }
