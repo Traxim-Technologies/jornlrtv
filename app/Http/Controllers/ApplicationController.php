@@ -26,6 +26,8 @@ use App\Admin;
 
 use Auth;
 
+use Setting;
+
 class ApplicationController extends Controller {
 
     protected $UserAPI;
@@ -481,7 +483,91 @@ class ApplicationController extends Controller {
 
     public function embed_video(Request $request) {
 
-        $model = VideoTape::where('unique_id', $request->u_id)->first();
+        $model = VideoTape::videoResponse()
+                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                ->where('video_tapes.status' , 1)
+                ->where('video_tapes.publish_status' , 1)
+                ->where('video_tapes.is_approved' , 1)
+                ->where('video_tapes.unique_id', $request->u_id)->first();
+
+        if (Setting::get('is_payper_view')) {
+
+            $user_id = "";
+
+            if (Auth::check()) {
+
+                $user_id = Auth::user()->id;
+
+            }
+
+            if ($user_id != $model->channel_created_by) {
+
+                $user = User::find($user_id);
+
+                if ($model->ppv_amount > 0) {
+
+                    $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $model) : false;
+
+                    if ($ppv_status) {
+                        
+
+                    } else {
+
+                        if ($user_id) {
+
+                            if ($user->user_type) {        
+                                
+                                return redirect(route('user.subscription.ppv_invoice', $model->video_tape_id));
+
+                            } else {
+
+                                return redirect(route('user.subscription.pay_per_view', $model->video_tape_id));
+                            }
+
+                        } else {
+
+                            return redirect(route('user.subscription.pay_per_view', $model->video_tape_id));
+
+                        }
+
+                  
+                    }
+
+                }
+
+            }
+
+        } 
+
+        if($user_id) {
+
+            $channel = $model->getChannel ? $model->getChannel : '';
+
+            if ($channel) { 
+
+                if ($channel->user_id != $user_id) {
+
+                    $age = $user->age_limit ? ($user->age_limit >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+                    if ($model->age_limit > $age) {
+
+                        return redirect(route('user.dashboard'))->with('flash_error', tr('age_error'));
+
+                    }
+
+                } 
+
+            }
+
+        } else {
+
+            if ($model->age_limit == 1) {
+
+                return redirect(route('user.dashboard'))->with('flash_error', tr('age_error'));
+
+            }
+
+        }
 
         if ($model) {
 
