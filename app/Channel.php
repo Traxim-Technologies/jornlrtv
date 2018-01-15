@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\Helper;
+
 class Channel extends Model
 {
     //
