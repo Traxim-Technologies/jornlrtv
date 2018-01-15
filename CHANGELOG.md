@@ -2,8 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-##[1.2.1] - 
 
+##[1.2.1] 
+
+### User
+
+	- 16-01-2018
+
+		- Helper function added in channels model 
+
+##[1.2.0]
 
 ## 07-01-2018 - ADMIN 
 
