@@ -26,7 +26,7 @@
                               <h3 class="wizard-title">
                                 {{tr('upload_video')}}
                               </h3>
-                               <h5>{{tr('video_short_notes')}}</h5>
+                               <h5>{{tr('video_short_notes' , Setting::get('site_name'))}}</h5>
                           </div>
                           <div class="wizard-navigation">
                               <ul>
