@@ -337,7 +337,7 @@ return array(
 	'message' => 'Message',
 	'upload_image' => 'Upload Image',
 	'upload_video_image' => 'Upload Video/Image',
-	'video_short_notes'=>"By submitting your videos to Streamtube, you acknowledge that you agree to Streamtube's Terms of Service and Privacy Policy",
+	'video_short_notes'=>"By submitting your videos to :otherkey, you acknowledge that you agree to :otherkey Terms of Service and Privacy Policy",
 	'upload_video'=>'Upload Video',
 	'amount'	=> 	'Amount',
 	'currency' 	=>	'Currency',
