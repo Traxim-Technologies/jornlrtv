@@ -410,7 +410,7 @@ class AdminController extends Controller {
                 $email_data['name'] = $user->name;
                 $email_data['password'] = $request->password;
                 $email_data['email'] = $user->email;
-                $subject = tr('user_welcome_title');
+                $subject = tr('user_welcome_title' , Setting::get('site_name'));
                 $page = "emails.admin_user_welcome";
                 $email = $user->email;
 
@@ -586,7 +586,7 @@ class AdminController extends Controller {
 
                 $email_data = array();
 
-                $subject = tr('user_welcome_title');
+                $subject = tr('user_welcome_title' , Setting::get('site_name'));
                 $page = "emails.moderator_welcome";
                 $email = $user->email;
                 $email_data['name'] = $moderator_user->name;

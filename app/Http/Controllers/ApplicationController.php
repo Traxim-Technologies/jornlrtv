@@ -99,7 +99,7 @@ class ApplicationController extends Controller {
 
         Log::info("MAIN VIDEO MOBILE");
 
-        // $subject = tr('user_welcome_title');
+        // $subject = tr('user_welcome_title' , Setting::get('site_name'));
         // $email_data = User::find(3);
         // $page = "emails.welcome";
         // $email = "test@mail.com";
