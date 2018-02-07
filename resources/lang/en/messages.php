@@ -334,9 +334,9 @@ return array(
 
 	// mail title configure
 
-	'user_welcome_title' => 'Welcome to Stream Hash',
+	'user_welcome_title' => 'Welcome to :otherkey',
 	'verification_code_title' => 'Please Verify Your Account',
-	'provider_welcome_title' => 'Welcome to Stream Hash',
+	'provider_welcome_title' => 'Welcome to :otherkey',
 
 	'user_forgot_email_title' => "Your new password",
 	'provider_forgot_email_title' =>  'Your new password',
@@ -485,7 +485,7 @@ return array(
 
 
 	//Admin Login
-	'welcome'	=>	'Welcome to StreamHash. Please sign in to your account',
+	'welcome'	=>	'Welcome to :otherkey. Please sign in to your account',
 	'email_add'	=>	'E-mail Address',
 	
 	'password_reset_msg'	=>	'Enter a new password and log in to your account',
