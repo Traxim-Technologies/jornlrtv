@@ -998,7 +998,7 @@ liveAppCtrl
 			    video.muted = true;
 			  }
 
-			  video.src = URL.createObjectURL(event.stream);
+			  video.srcObject = .stream;
 
 			  console.log("Video Src "+video.src);
 
