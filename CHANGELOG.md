@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+##[1.2.2]
+
+### ADMIN
+
+### Added 
+
+
+### Changed
+
+	- 07 FEB 2018 - Language "Stream Hash" text replaced with Setting "site_name"
+
+### Removed 
+
+### USER
+
+### Added 
+
+### Changed
+
+### Removed 
+ 
 
 ##[1.2.1] 
 
