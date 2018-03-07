@@ -2,8 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
-##[1.2.1] - 
+##[1.2.2]
 
+### ADMIN
+
+### Added 
+
+
+### Changed
+
+	- 07 FEB 2018 - Language "Stream Hash" text replaced with Setting "site_name"
+
+### Removed 
+
+### USER
+
+### Added 
+
+### Changed
+
+### Removed 
+ 
+
+##[1.2.1] 
+
+### User
+
+	- 16-01-2018
+
+		- Helper function added in channels model 
+
+##[1.2.0]
 
 ## 07-01-2018 - ADMIN 
 
@@ -90,10 +119,6 @@ All notable changes to this project will be documented in this file.
 
 - 66da49d Social login - cancel button error fixed
 
-
-2017-04-07 : Email Features Added for user
-
-2017-04-17 : API Youtube link issue fixed - Refer Commit ID -  4697c37
 
 
 ## 30.12.2017

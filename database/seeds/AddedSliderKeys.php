@@ -18,7 +18,7 @@ class AddedSliderKeys extends Seeder
 		    ],
 		    [
 		    	'key' => 'is_banner_ad' ,
-		    	'value' => 0,
+		    	'value' => 1,
 		    ],
 		]);
 	   

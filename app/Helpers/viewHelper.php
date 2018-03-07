@@ -38,11 +38,15 @@ use App\Language;
 
 use App\PayPerView;
 
-function tr($key) {
+function tr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
+
         \Session::put('locale', \Config::get('app.locale'));
-    return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
+
+    // return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
+
+    return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
 
 }
 

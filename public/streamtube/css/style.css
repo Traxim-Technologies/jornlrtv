@@ -166,7 +166,7 @@ a:hover{
 }
 .content-row{
 	margin: 0;
-	margin-bottom: 15px;
+	/*margin-bottom: 15px;*/
 }
 .slide-area{
 	background-color: #fff;
@@ -1563,6 +1563,7 @@ recommended.html css
 	float: left;
     width: 19%;
     margin: 0.5%;
+    margin-top: 10px;
 }
 .recom-area{
 	margin: 0;
@@ -2935,4 +2936,7 @@ button{
     color: #175618;
     background-color: #dbfbcd;
     border-color: #d6e9c6;
+}
+.form-control[readonly]{
+	background-color: transparent;
 }

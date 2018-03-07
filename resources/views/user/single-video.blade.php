@@ -669,7 +669,7 @@ textarea[name=comments] {
                            <form onsubmit="return false;">
 
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="5" id="embed_link_url">{{$embed_link}}</textarea>
+                                    <textarea class="form-control" rows="5" id="embed_link_url" readonly>{{$embed_link}}</textarea>
                                     <p class="underline1"></p>
                                 </div>
 
