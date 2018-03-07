@@ -145,6 +145,15 @@ class UserController extends Controller {
 
                         if ($check_admin_user_details->save()) {
 
+                                $admin = Admin::where('email',  Auth::guard('admin')->user()->email)->first();
+
+                                if ($admin) {
+
+                                    $admin->user_id = $check_admin_user_details->id;
+
+                                    $admin->save();
+                                }   
+
                         } else {
 
                             throw new Exception(tr('user_details_not_saved'));
@@ -186,7 +195,7 @@ class UserController extends Controller {
 
             $e = $e->getMessage();
 
-            return back()->with('falsh_error', $e);
+            return back()->with('flash_error', $e);
 
         }
 
@@ -1810,12 +1819,10 @@ class UserController extends Controller {
                        if($paid_status) {
 
 
-
                             $last_payment = UserPayment::where('user_id' , $request->id)
                                     ->where('status', DEFAULT_TRUE)
                                     ->orderBy('created_at', 'desc')
                                     ->first();
-
 
                             $user_payment = new UserPayment;
 
