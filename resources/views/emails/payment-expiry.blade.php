@@ -1,224 +1,471 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{Setting::get('site_name')}}</title>
-    <style type="text/css">
-
-        body {
-            background-color: black;
-        }
-
-        #outlook a {padding:0;}
-        body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
-        .ExternalClass {width:100%;}
-        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
-        #backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}
-        img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
-        a img {border:none;display:inline-block;}
-        .image_fix {display:block;}
-        
-        h1, h2, h3, h4, h5, h6 {color: white !important;}
-
-        h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: blue !important;}
-
-        h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-            color: red !important; 
-        }
-
-        h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-            color: purple !important; 
-        }
-
-        table td {border-collapse: collapse;}
-
-        table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
-
-        a {color: #000;}
-
-        @media only screen and (max-device-width: 480px) {
-
-            a[href^="tel"], a[href^="sms"] {
-                text-decoration: none;
-                color: black; /* or whatever your want */
-                pointer-events: none;
-                cursor: default;
-            }
-
-            .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-                text-decoration: default;
-                color: orange !important; /* or whatever your want */
-                pointer-events: auto;
-                cursor: default;
-            }
-        }
-
-
-        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-            a[href^="tel"], a[href^="sms"] {
-                text-decoration: none;
-                color: blue; /* or whatever your want */
-                pointer-events: none;
-                cursor: default;
-            }
-
-            .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-                text-decoration: default;
-                color: orange !important;
-                pointer-events: auto;
-                cursor: default;
-            }
-        }
-
-        p {
-            margin:0;
-            color:#FFF;
-            font-family:Helvetica, Arial, sans-serif;
-            font-size:16px;
-            line-height:160%;
-        }
-        a.link2{
-            text-decoration:none;
-            font-family:Helvetica, Arial, sans-serif;
-            font-size:16px;
-            color:#fff;
-            border-radius:4px;
-        }
-        h2{
-            color:#FFF;
-            font-family:Helvetica, Arial, sans-serif;
-            font-size:22px;
-            font-weight: normal;
-        }
-
-        .bgItem{
-            background:#cf4545;
-        }
-        .bgBody{
-            background:#ffffff;
-        }
-
-        .table-full{
-            height:100%;
-        }
-
-    </style>
-
-<script type="colorScheme" class="swatch active">
-  {
-    "name":"Default",
-    "bgBody":"ffffff",
-    "link":"f2f2f2",
-    "color":"555555",
-    "bgItem":"F4A81C",
-    "title":"181818"
+  <style type="text/css">
+    p{
+      margin:10px 0;
+      padding:0;
+    }
+    table{
+      border-collapse:collapse;
+    }
+    h1,h2,h3,h4,h5,h6{
+      display:block;
+      margin:0;
+      padding:0;
+    }
+    img,a img{
+      border:0;
+      height:auto;
+      outline:none;
+      text-decoration:none;
+    }
+    body,#bodyTable,#bodyCell{
+      height:100%;
+      margin:0;
+      padding:0;
+      width:100%;
+    }
+    .mcnPreviewText{
+      display:none !important;
+    }
+    #outlook a{
+      padding:0;
+    }
+    img{
+      -ms-interpolation-mode:bicubic;
+    }
+    table{
+      mso-table-lspace:0pt;
+      mso-table-rspace:0pt;
+    }
+    .ReadMsgBody{
+      width:100%;
+    }
+    .ExternalClass{
+      width:100%;
+    }
+    p,a,li,td,blockquote{
+      mso-line-height-rule:exactly;
+    }
+    a[href^=tel],a[href^=sms]{
+      color:inherit;
+      cursor:default;
+      text-decoration:none;
+    }
+    p,a,li,td,body,table,blockquote{
+      -ms-text-size-adjust:100%;
+      -webkit-text-size-adjust:100%;
+    }
+    .ExternalClass,.ExternalClass p,.ExternalClass td,.ExternalClass div,.ExternalClass span,.ExternalClass font{
+      line-height:100%;
+    }
+    a[x-apple-data-detectors]{
+      color:inherit !important;
+      text-decoration:none !important;
+      font-size:inherit !important;
+      font-family:inherit !important;
+      font-weight:inherit !important;
+      line-height:inherit !important;
+    }
+    a.mcnButton{
+      display:block;
+    }
+    .mcnImage{
+      vertical-align:bottom;
+    }
+    .mcnTextContent{
+      word-break:break-word;
+    }
+    .mcnTextContent img{
+      height:auto !important;
+    }
+    .mcnDividerBlock{
+      table-layout:fixed !important;
+    }
+    #templatePreheader,#templateHeader,#templateBody,#templateFooter{
+      padding-right:5px;
+      padding-left:5px;
+    }
+    .templateContainer{
+      max-width:600px;
+    }
+    #bodyCell{
+      border-top:0;
+    }
+    #lowerBody{
+      background-color:#f97676;
+    }
+    h1{
+      color:#202020;
+      display:block;
+      font-family:Helvetica;
+      font-size:26px;
+      font-style:normal;
+      font-weight:bold;
+      line-height:150%;
+      letter-spacing:normal;
+      text-align:left;
+    }
+    h2{
+      color:#404040;
+      display:block;
+      font-family:Helvetica;
+      font-size:20px;
+      font-style:normal;
+      font-weight:bold;
+      line-height:150%;
+      letter-spacing:normal;
+      text-align:left;
+    }
+    h3{
+      color:#990000;
+      display:block;
+      font-family:Georgia;
+      font-size:20px;
+      font-style:normal;
+      font-weight:normal;
+      line-height:125%;
+      letter-spacing:normal;
+      text-align:left;
+    }
+    h4{
+      color:#808080;
+      display:block;
+      font-family:Helvetica;
+      font-size:12px;
+      font-style:normal;
+      font-weight:bold;
+      line-height:125%;
+      letter-spacing:normal;
+      text-align:left;
+    }
+    #templatePreheader{
+      background-color:#C8BA8C;
+      border-top:0;
+      border-bottom:0;
+    }
+    .preheaderContainer .mcnTextContent,.preheaderContainer .mcnTextContent p{
+      color:#404040;
+      font-family:Helvetica;
+      font-size:10px;
+      line-height:125%;
+      text-align:left;
+    }
+    .preheaderContainer .mcnTextContent a{
+      color:#202020;
+      font-weight:normal;
+      text-decoration:underline;
+    }
+    #templateHeader{
+      border-top:0;
+      border-bottom:0;
+    }
+    .bodyContainer{
+      background-color:#FFFFFF;
+      border-top:0;
+      border-bottom:0;
+    }
+    .bodyContainer .mcnTextContent,.bodyContainer .mcnTextContent p{
+      color:#505050;
+      font-family:Helvetica;
+      font-size:17px;
+      line-height:150%;
+      text-align:left;
+    }
+    .bodyContainer .mcnTextContent a{
+      color:#990000;
+      font-weight:normal;
+      text-decoration:underline;
+    }
+    #templateFooter{
+      background-color:#FFFFFF;
+      border-top:0;
+    }
+    .footerContainer{
+      padding-bottom:40px;
+    }
+    .footerContainer .mcnTextContent,.footerContainer .mcnTextContent p{
+      color:#808080;
+      font-family:Helvetica;
+      font-size:10px;
+      line-height:150%;
+      text-align:center;
+    }
+    .footerContainer .mcnTextContent a{
+      color:#606060;
+      font-weight:normal;
+      text-decoration:underline;
+    }
+  @media screen and (min-width:768px){
+    .templateContainer{
+      width:600px !important;
+    }
+    body,table,td,p,a,li,blockquote{
+      -webkit-text-size-adjust:none !important;
+    }
+    body{
+      width:100% !important;
+      min-width:100% !important;
+    }
+    .templateContainer{
+      max-width:600px !important;
+      width:100% !important;
+    }
+    .mcnImage{
+      width:100% !important;
+    }
+    .mcnCartContainer,.mcnCaptionTopContent,.mcnRecContentContainer,.mcnCaptionBottomContent,.mcnTextContentContainer,.mcnBoxedTextContentContainer,.mcnImageGroupContentContainer,.mcnCaptionLeftTextContentContainer,.mcnCaptionRightTextContentContainer,.mcnCaptionLeftImageContentContainer,.mcnCaptionRightImageContentContainer,.mcnImageCardLeftTextContentContainer,.mcnImageCardRightTextContentContainer{
+      max-width:100% !important;
+      width:100% !important;
+    }
+    .mcnBoxedTextContentContainer{
+      min-width:100% !important;
+    }
+    .mcnImageGroupContent{
+      padding:9px !important;
+    }
+    .mcnCaptionLeftContentOuter .mcnTextContent,.mcnCaptionRightContentOuter .mcnTextContent{
+      padding-top:9px !important;
+    }
+    .mcnImageCardTopImageContent,.mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent{
+      padding-top:18px !important;
+    }
+    .mcnImageCardBottomImageContent{
+      padding-bottom:9px !important;
+    }
+    .mcnImageGroupBlockInner{
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .mcnImageGroupBlockOuter{
+      padding-top:9px !important;
+      padding-bottom:9px !important;
+    }
+    .mcnTextContent,.mcnBoxedTextContentColumn{
+      padding-right:18px !important;
+      padding-left:18px !important;
+    }
+    .mcnImageCardLeftImageContent,.mcnImageCardRightImageContent{
+      padding-right:18px !important;
+      padding-bottom:0 !important;
+      padding-left:18px !important;
+    }
+    .mcpreview-image-uploader{
+      display:none !important;
+      width:100% !important;
+    }
+    h1{
+      font-size:24px !important;
+      line-height:125% !important;
+    }
+    h2{
+      font-size:20px !important;
+      line-height:125% !important;
+    }
+    h3{
+      font-size:18px !important;
+      line-height:125% !important;
+    }
+    h4{
+      font-size:16px !important;
+      line-height:125% !important;
+    }
+    .mcnBoxedTextContentContainer .mcnTextContent,.mcnBoxedTextContentContainer .mcnTextContent p{
+      font-size:18px !important;
+      line-height:125% !important;
+    }
+    #templatePreheader{
+      display:block !important;
+    }
+    .preheaderContainer .mcnTextContent,.preheaderContainer .mcnTextContent p{
+      font-size:14px !important;
+      line-height:115% !important;
+    }
+    .bodyContainer .mcnTextContent,.bodyContainer .mcnTextContent p{
+      font-size:18px !important;
+      line-height:125% !important;
+    }
+    .footerContainer .mcnTextContent,.footerContainer .mcnTextContent p{
+      font-size:14px !important;
+      line-height:115% !important;
+    }
   }
-</script>
-
-</head>
-<body >
-    <!-- Wrapper/Container Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
-    <table style="background-color: black;" cellpadding="0" width="100%" cellspacing="0" border="0" id="backgroundTable" class='bgBody table-full'>
+</style></head>
+  <body>
+       <span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;"></span>
+    <center>
+      <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
         <tr>
-            <td>
-
-                <!-- Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. -->
-
-                <table cellpadding="0" class="table-full" cellspacing="0" border="0" align="center" width="100%" style="border-collapse:collapse;">
-                    <tr>
-                        <td class='movableContentContainer'>
-                            
-                            <div class='movableContent'>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="600">
-                                    <tr height="40">
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td width="200" valign="top">&nbsp;</td>
-                                        <td width="200" valign="top" align="center">
-                                            <div class="contentEditableContainer contentTextEditable">
-                                                <div class="contentEditable" >
-                                                    <img src="@if(Setting::get('site_logo')) {{Setting::get('site_logo' )}} @else {{ asset('logo.png')}} @endif" width="155" height='155' alt='Logo'  data-default="placeholder" />
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td width="200" valign="top">&nbsp;</td>
-                                    </tr>
-                                    <tr height="25">
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                        <td width="200">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class='movableContent'>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="600">
-                                    <tr>
-                                        <td width="100%" colspan="3" align="center" style="padding-bottom:10px;padding-top:25px;">
-                                            <div class="contentEditableContainer contentTextEditable">
-                                                <div class="contentEditable" >
-                                                    <h2 >Hi 
-                                                        @if(isset($email_data['name']))
-                                                            {{$email_data['name']}}! 
-                                                        @endif
-                                                    </h2>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="100">&nbsp;</td>
-                                        <td width="400" align="center" style="padding-bottom:5px;">
-                                            <div class="contentEditableContainer contentTextEditable">
-                                                <div class="contentEditable" >
-                                                    <p >
-                                                        Your Premium pack will expiry on @if(isset($email_data['expiry_date'])) {{$email_data['expiry_date']}} @endif.
-                                                    </p>
-                                                    <br />
-                                                    <p> Please re-pay and emjoy the videos!!!</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td width="100">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class='movableContent'>
-                                <table cellpadding="0" cellspacing="0" border="0" align="center" width="600">
-                                    <tr>
-                                        <td width="100">&nbsp;</td>
-                                        <td width="400" align="center" style="padding-top:25px;padding-bottom:115px;">
-                                            <table cellpadding="0" cellspacing="0" border="0" align="center" width="200" height="50">
-                                                <tr>
-                                                    <td bgcolor="#cf4545" align="center" style="border-radius:4px;" width="200" height="50">
-                                                        <div class="contentEditableContainer contentTextEditable">
-                                                            <div class="contentEditable" >
-                                                                <a target='_blank' href="{{route('user.dashboard')}}" style="color: #FFF;text-orientation: none" class='link2'>Visit our Website</a>
-                                                            </div>
-                                                        </div>
-
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td width="100">&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </div>
+          <td align="center" valign="top" id="bodyCell">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td align="center" valign="top" id="templatePreheader">
+                                    <!-- BEGIN PREHEADER // -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                                        <tr>
+                                          <td valign="top" class="preheaderContainer"></td>
+                                        </tr>
+                                    </table>
+                                    <!-- // END PREHEADER -->
+                                </td>
+                            </tr>
+                        </table>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" id="lowerBody">
+                            <tr>
+                                <td align="center" valign="top" id="templateHeader">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                                        <tr>
+                                            <td valign="top">
+                                              <img height="90" src="https://cdn-images.mailchimp.com/template_images/gallery/snowflakes_top.png" style="display:block; max-width:100%;" width="600" class="mcnImage">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // END HEADER -->
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr><tr>
+                                <td align="center" valign="top" id="templateBody">
+                                    <!-- BEGIN BODY // -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                                      <tr>
+                                          <td align="center" bgcolor="#FFFFFF" valign="top">
+                                          <table border="0" cellpadding="0" cellspacing="0" width="90%">
+                                                  <tr>
+                                                      <td valign="top" class="bodyContainer"><table class="mcnImageBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody class="mcnImageBlockOuter">
+            <tr>
+                <td style="padding:9px" class="mcnImageBlockInner" valign="top">
+                    <table class="mcnImageContentContainer" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                        <tbody><tr>
+                            <td class="mcnImageContent" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;" valign="top">
+                                
+                                    
+                                        <img alt="" src="{{Setting::get('site_logo')}}" style="width:auto; height:45px;max-width:100%;padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage" width="429" align="middle">
+                                    
+                                
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+    </tbody>
+</table><table class="mcnDividerBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody class="mcnDividerBlockOuter">
+        <tr>
+            <td class="mcnDividerBlockInner" style="min-width:100%; padding:18px;">
+                <table class="mcnDividerContent" style="min-width: 100%;border-top: 1px solid #999999;" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tbody><tr>
+                        <td>
+                            <span></span>
                         </td>
                     </tr>
-                </table>
-                    <!-- END BODY -->
-
+                </tbody></table>
             </td>
         </tr>
-    </table>
-    <!-- End of wrapper table -->
-</body>
+    </tbody>
+</table><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top">
+                <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                    <tbody><tr>
+                        
+                        <td class="mcnTextContent" style="padding: 0px 18px 9px;color: #E02424;font-size: 12px;font-style: normal;font-weight: normal;" valign="top">
+                        
+                            <h1>Hi {{$email_data['name']}},</h1>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+            </td>
+        </tr>
+    </tbody>
+</table><table class="mcnTextBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td class="mcnTextBlockInner" style="padding-top:9px;" valign="top">
+                <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                    <tbody><tr>
+                        
+                        <td class="mcnTextContent" style="padding: 0px 18px 9px;color: #000000;font-style: normal;font-weight: normal;" valign="top">
+                        
+                           {{$email_data['content']}}<br>
+&nbsp;
+                        </td>
+                    </tr>
+                </tbody></table>
+            </td>
+        </tr>
+    </tbody>
+</table><table class="mcnButtonBlock" style="min-width:100%;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody class="mcnButtonBlockOuter">
+        <tr>
+           
+            <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:18px;" class="mcnButtonBlockInner" valign="top" align="center">
+                <table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius:5px;background-color: #e61b1b;" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 10px 25px ;" valign="middle" align="center">
+                                <a class="mcnButton " title="Visit Our Site" href="{{route('user.dashboard')}}" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Visit Our Site</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</td>
+                                                    </tr>
+                                                </table>
+                                          </td>
+                                        </tr>  
+                                        <tr>
+                                          <td align="center" valign="bottom">
+                                              <img height="45" src="https://cdn-images.mailchimp.com/template_images/gallery/snowflakes_bottom.png" style="display:block; max-width:100%" width="600" class="mcnImage">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // END BODY -->
+                                </td>
+                            </tr>
+                            <tr>
+                              <td align="center" width="100%">
+                                  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                      <tr>
+                                          <td align="center" valign="bottom">
+                                          <img height="158" src="https://cdn-images.mailchimp.com/template_images/gallery/footer_top_snowman.png" width="600" style="display:block;" class="mcnImage">
+                                            </td>
+                                        </tr>
+                                     </table>
+                                  </td>
+                            </tr>
+                            <tr>
+                                <td align="center" valign="top" id="templateFooter">
+                                    <!-- BEGIN FOOTER // -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                                        <tr>
+                                          <td align="center" valign="top">
+                                              <img height="32" src="https://cdn-images.mailchimp.com/template_images/gallery/footer_bottom_snowman.png" width="600" style="display:block;" class="mcnImage">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" class="footerContainer"></td>
+                                        </tr>
+                                    </table>
+                                    <!-- // END FOOTER -->
+                                </td>
+                            </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </center>
+  </body>
 </html>

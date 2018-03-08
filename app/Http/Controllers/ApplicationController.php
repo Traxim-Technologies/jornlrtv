@@ -196,6 +196,7 @@ class ApplicationController extends Controller {
                         $email_data['status'] = 0;
                         $page = "emails.payment-expiry";
                         $email = $user->email;
+                        $email_data['content'] = "Your subscription will expire soon. Our records indicate that no payment method has been associated with this subscripton account. Go to the subscription plans and provide the required payment information to renew your subscription for channel creation & uploading video and continue using your profile uninterrupted."; 
                         $result = Helper::send_email($page,$subject,$email,$email_data);
 
                         \Log::info("Email".$result);
@@ -242,6 +243,7 @@ class ApplicationController extends Controller {
                         $email_data['status'] = 1;
                         $page = "emails.payment-expiry";
                         $email = $user->email;
+                        $email_data['content'] = "Your notification has expired. To keep using channel creation  & upload video without interruption, subscribe any one of our plans and continue to upload";
                         $result = Helper::send_email($page,$subject,$email,$email_data);
 
                         \Log::info("Email".$result);
