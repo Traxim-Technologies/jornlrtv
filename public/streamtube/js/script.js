@@ -68,13 +68,13 @@
 
 $(window).load(function(){
 
-$(".y-menu").css({'height':($(".page-inner").height()+'px')});
+$(".y-menu").css({'height':($(".page-inner").outerHeight( true )+'px')});
 
 });
 
 $(window).resize(function(){
 
-$(".y-menu").css({'height':($(".page-inner").height()+'px')});
+$(".y-menu").css({'height':($(".page-inner").outerHeight( true )+'px')});
 
 });
 
