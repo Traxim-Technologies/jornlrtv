@@ -952,9 +952,18 @@ function readFileLength($file)  {
 }
 
 
-function checkAge($request) {
+function checkAge($request , $user_age = "") {
 
-    $age = $request->age ? ($request->age >= Setting::get('age_limit') ? 1 : 0) : 0;
+    $age = 1;
+
+    if($user_age) {
+        
+        $age = $user_age ? ($user_age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+    } else {
+
+        $age = $request->age ? ($request->age >= Setting::get('age_limit') ? 1 : 0) : 0;
+    }
 
     return $age;
 }

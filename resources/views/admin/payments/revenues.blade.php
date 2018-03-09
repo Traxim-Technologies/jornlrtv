@@ -52,7 +52,7 @@
 					<i class="fa fa-money"></i>
 				</div>
 
-				<a href="javascript:void(0);" class="small-box-footer">
+				<a href="{{route('admin.ppv_payments')}}" class="small-box-footer">
 					{{tr('more_info')}}
 					<i class="fa fa-arrow-circle-right"></i>
 				</a>
@@ -72,7 +72,7 @@
 					<i class="fa fa-money"></i>
 				</div>
 
-				<a href="javascript:void(0);" class="small-box-footer">
+				<a href="{{route('admin.subscription_payments')}}" class="small-box-footer">
 					{{tr('more_info')}}
 					<i class="fa fa-arrow-circle-right"></i>
 				</a>

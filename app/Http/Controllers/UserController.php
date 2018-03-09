@@ -423,7 +423,9 @@ class UserController extends Controller {
 
             $videos = $this->UserAPI->channel_videos($id, 0)->getData();
 
-            $trending_videos = $this->UserAPI->channel_trending($id, 5)->getData();
+            $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
+
+            $trending_videos = $this->UserAPI->channel_trending($id, 5 , $channel_owner_id)->getData();
 
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
