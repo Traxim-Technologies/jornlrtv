@@ -51,7 +51,11 @@
 							      	<td>
 							      		<a href="{{route('admin.view.video' , array('id' => $review->video_id))}}" target="_blank">{{$review->title}}</a>
 							      	</td>
-							      	<td><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$review->rating}}"></td>
+							      	<td>
+							      		<span style="display: none;">{{$review->rating}}</span>
+							      		<input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$review->rating}}">
+
+							      	</td>
 							      	<td>{{$review->comment}}</td>
 							      	<td>{{$review->created_at->diffForHumans()}}</td>
 							      	<td><a href="{{route('admin.delete_user_ratings', array('id'=>$review->rating_id))}}" title="{{tr('delete')}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
