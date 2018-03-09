@@ -413,7 +413,7 @@ class UserController extends Controller {
      *
      * @return channel videos list
      */
-    public function channel_videos($id) {
+    public function channel_videos($id , Request $request) {
 
         $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
                 ->where('id', $id)
@@ -421,11 +421,15 @@ class UserController extends Controller {
 
         if ($channel) {
 
-            $videos = $this->UserAPI->channel_videos($id, 0)->getData();
+            $request->request->add([ 
+                'age' => \Auth::user()->age_limit,
+            ]);
+
+            $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
 
             $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
 
-            $trending_videos = $this->UserAPI->channel_trending($id, 5 , $channel_owner_id)->getData();
+            $trending_videos = $this->UserAPI->channel_trending($id, 5 , $channel_owner_id , $request)->getData();
 
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
