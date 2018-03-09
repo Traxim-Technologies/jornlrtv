@@ -962,7 +962,11 @@ function checkAge($request , $user_age = "") {
 
     } else {
 
-        $age = $request->age ? ($request->age >= Setting::get('age_limit') ? 1 : 0) : 0;
+        if($request->all()) {
+
+            $age = $request->age ? ($request->age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+        }
     }
 
     return $age;
