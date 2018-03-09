@@ -3957,7 +3957,7 @@ class UserApiController extends Controller {
             $u_id = Auth::user()->id;
 
                             
-            $videos_query->where('video_tapes.age_limit','<=', checkAge($request);
+            $videos_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             // Check any flagged videos are present
             $flagVideos = getFlagVideos($u_id);
@@ -4060,7 +4060,7 @@ class UserApiController extends Controller {
 
             $u_id = Auth::user()->id;
                             
-            $base_query->where('video_tapes.age_limit','<=', checkAge($request);
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             $flag_videos = flag_videos($u_id);
 
