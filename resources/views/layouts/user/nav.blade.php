@@ -12,7 +12,7 @@
         </li>
         <li id="live_videos">
             <a href="{{route('user.live_videos')}}">
-                <img src="{{asset('streamtube/images/video.png')}}">{{tr('live_videos')}}
+                <img src="{{asset('images/video.png')}}">{{tr('live_videos')}}
             </a>
         </li>
 

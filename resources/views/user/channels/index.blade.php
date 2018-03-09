@@ -211,9 +211,9 @@
 
 														<div class="form-group radio-btn">
 
-															<label class="control-label col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
+															<label class="control-label col-xs-4 col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
 
-															<div class="col-sm-8">
+															<div class="col-xs-8 col-sm-8">
 
 															    <label class="radio-inline width-100" for="reqType-1">
 																	<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free

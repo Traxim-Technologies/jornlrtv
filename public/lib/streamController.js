@@ -366,7 +366,7 @@ liveAppCtrl
 			  if (event.type === 'local') {
 			    video.muted = true;
 			  }
-			  video.src = URL.createObjectURL(event.stream);
+			  video.srcObject = event.stream;
 			  connection.videosContainer.appendChild(video);
 			};
 
