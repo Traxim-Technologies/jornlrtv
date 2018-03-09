@@ -83,15 +83,6 @@ class ApplicationController extends Controller {
 
     }
 
-    public function welcome_email() {
-        return view('emails.ui.welcome');
-    }
-    public function forgot_email() {
-        return view('emails.ui.forgot');
-    }  
-    public function notification_email() {
-        return view('emails.ui.notification');
-    } 
 
     public $expiry_date = "";
 
