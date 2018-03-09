@@ -242,7 +242,7 @@ class ApplicationController extends Controller {
                         // Send welcome email to the new user:
                         $subject = tr('payment_notification');
                         $email_data['id'] = $user->id;
-                        $email_data['username'] = $user->name;
+                        $email_data['name'] = $user->name;
                         $email_data['expiry_date'] = $payment->expiry_date;
                         $email_data['status'] = 1;
                         $page = "emails.payment-expiry";
