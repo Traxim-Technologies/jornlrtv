@@ -142,7 +142,7 @@
                                         <td width="200" valign="top" align="center">
                                             <div class="contentEditableContainer contentTextEditable">
                                                 <div class="contentEditable" >
-                                                    <img src="@if(Setting::get('site_logo')) {{Setting::get('site_logo' )}} @else {{ asset('logo.png')}} @endif" width="155" height='155' alt='Logo'  data-default="placeholder" />
+                                                    <img src="@if(Setting::get('site_logo')) {{Setting::get('site_logo' )}} @else {{ asset('logo.png')}} @endif" width="155" height='auto' alt='Logo'  data-default="placeholder" />
                                                 </div>
                                             </div>
                                         </td>
