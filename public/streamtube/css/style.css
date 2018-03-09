@@ -1563,6 +1563,7 @@ recommended.html css
 	float: left;
     width: 19%;
     margin: 0.5%;
+    margin-top: 10px;
 }
 .recom-area{
 	margin: 0;
@@ -3334,4 +3335,7 @@ button{
     color: #175618;
     background-color: #dbfbcd;
     border-color: #d6e9c6;
+}
+.form-control[readonly]{
+	background-color: transparent;
 }
