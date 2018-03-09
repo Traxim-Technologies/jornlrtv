@@ -170,7 +170,7 @@ class CommonRepository {
 
         $validator = [];
 
-        if($request->id != '') {
+        if($request->channel_id != '') {
 
             if ($request->has('picture')) {
 

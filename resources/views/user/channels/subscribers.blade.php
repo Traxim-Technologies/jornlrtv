@@ -45,7 +45,7 @@ thead>tr>th {
                         <div class="row">
                             @foreach($subscribers as $i => $subscriber)
 
-                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 top">
                                 <div class="sub-bg-img" style="background-image: url({{asset('images/popup-back.jpg')}});">
                                     <div class="sub-bg-overlay">
                                         <img src="{{$subscriber->user_image}}" alt="user-image">

@@ -179,14 +179,14 @@ video {
 										<div class="item">
 
 
-							                <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2" style="padding: 0">
+							                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-2" style="padding: 0">
 
 							                	<a target="_blank" href="{{route('user.profile', array('id'=>$uid))}}" title="{{$name}}">  
 							                		<img src="{{$img}}" alt="user image" class="chat_img">
 							                	</a>
 
 							                </div>
-							                <div class="message col-lg-10 col-md-10 col-xs-10 col-sm-10">
+							                <div class="message col-lg-10 col-md-10 col-xs-9 col-sm-10">
 
 							                  <a href="{{route('user.profile', array('id'=>$uid))}}" class="name clearfix" style="text-decoration: none">
 							                    <small class="text-muted pull-left">{{$name}}</small>

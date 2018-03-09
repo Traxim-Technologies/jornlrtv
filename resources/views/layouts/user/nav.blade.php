@@ -12,7 +12,7 @@
         </li>
         <li id="live_videos">
             <a href="{{route('user.live_videos')}}">
-                <img src="{{asset('streamtube/images/video.png')}}">{{tr('live_videos')}}
+                <img src="{{asset('images/video.png')}}">{{tr('live_videos')}}
             </a>
         </li>
 
@@ -173,7 +173,7 @@
 
         @if(!Auth::user()->user_type)
 
-            <div class="menu4">
+            <div class="menu4 top">
                 <p>{{tr('subscribe_note')}}</p>
                 <a href="{{route('user.subscriptions')}}" class="btn btn-sm btn-primary">{{tr('subscribe')}}</a>
             </div> 
@@ -182,7 +182,7 @@
         @endif
 
     @else
-        <div class="menu4">
+        <div class="menu4 top">
             <p>{{tr('signin_nav_content')}}</p>
             <form method="get" action="{{route('user.login.form')}}">
                 <button type="submit">{{tr('login')}}</button>
