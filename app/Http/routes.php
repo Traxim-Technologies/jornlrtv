@@ -162,13 +162,6 @@ Route::get('/clear-cache', function() {
 Route::get('/generate/index' , 'ApplicationController@generate_index');
 
 
-Route::get('/welcome_email' , 'ApplicationController@welcome_email');
-
-Route::get('/forgot_email' , 'ApplicationController@forgot_email');
-
-Route::get('/notification_email' , 'ApplicationController@notification_email');
-
-
 Route::get('/payment/failure' , 'ApplicationController@payment_failure')->name('payment.failure');
 
 Route::get('/message/save' , 'ApplicationController@message_save');
