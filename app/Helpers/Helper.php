@@ -687,6 +687,7 @@
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
+                        ->where('video_tapes.publish_status' , 1)
                         ->videoResponse()
                         ->where('channels.is_approved', 1)
                         ->where('channels.status', 1)

@@ -2650,7 +2650,7 @@ class AdminController extends Controller {
 
                 // Update remaining records positions
 
-                DB::select(DB::raw("UPDATE banner_ads SET position = position-1 WHERE position > $current_position"));
+                DB::update("UPDATE banner_ads SET position =  position-1 WHERE position > $current_position");
 
             }
 
