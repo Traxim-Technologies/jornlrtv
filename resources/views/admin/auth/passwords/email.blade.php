@@ -1,6 +1,6 @@
 @extends('layouts.admin.focused')
 
-@section('title', 'Reset Password')
+@section('title', tr('reset_password'))
 
 @section('content')
 
@@ -13,11 +13,11 @@
                <a href="{{route('admin.login')}}"><b>{{Setting::get('site_name')}}</b></a>
             </div>
 
-            <p class="text-center mb25">Enter a email address to reset your password.</p></br>
+            <p class="text-center mb25">{{tr('email_notes')}}</p></br>
 
             <div class="form-inputs">
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="E-Mail Address">
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{tr('e_mail_address')}}">
 
                     @if ($errors->has('email'))
                         <span class="help-block">
@@ -29,11 +29,11 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-3">
                         <button class="pull-right btn btn-warning btn-block mb15" type="submit">
-                            <i class="fa fa-btn fa-envelope"></i> Reset
+                            <i class="fa fa-btn fa-envelope"></i>tr('reset')
                         </button>
 
                          <a href="{{route('admin.dashboard')}}" class="pull-left btn btn-info btn-block mb15">
-                            <i class="fa fa-btn fa-user"></i> Login
+                            <i class="fa fa-btn fa-user"></i> tr('login')
                         </a>
                     </div>
                 </div>

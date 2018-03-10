@@ -42,7 +42,7 @@
                 <ul class="nav nav-tabs" role="tablist">
 
                     <li role="presentation" class="active">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Video Details">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="{{tr('video_details')}}">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-book"></i>
                             </span>
@@ -50,7 +50,7 @@
                     </li>
 
                     <li role="presentation" class="disabled">
-                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Channels">
+                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="{{tr('channels')}}">
                             <span class="round-tab">
                                 <i class="fa fa-tv"></i>
                             </span>

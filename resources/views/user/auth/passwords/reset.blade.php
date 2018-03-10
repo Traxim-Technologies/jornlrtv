@@ -19,7 +19,7 @@
 
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="exampleInputEmail1">{{tr('email')}}</label>
-                        <input type="email" id="email" type="email" placeholder="Enter your email" required="" name="email" value="{{ $email or old('email') }}" aria-describedby="emailHelp" class="form-control"  >
+                        <input type="email" id="email" type="email" placeholder="{{tr('enter_your_email')}}" required="" name="email" value="{{ $email or old('email') }}" aria-describedby="emailHelp" class="form-control"  >
                         @if ($errors->has('email'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('email') }}</strong>
@@ -31,7 +31,7 @@
 
                         <label for="exampleInputEmail1">{{tr('password')}}</label>
 
-                        <input id="password" type="password" placeholder="Enter your password" required="" name="password" value="{{ $password or old('password') }}" aria-describedby="emailHelp" class="form-control"  >
+                        <input id="password" type="password" placeholder="{{tr('enter_your_password')}}" required="" name="password" value="{{ $password or old('password') }}" aria-describedby="emailHelp" class="form-control"  >
 
                         @if ($errors->has('password'))
                             <span class="help-block">
@@ -44,7 +44,7 @@
 
                         <label for="exampleInputEmail1">{{tr('password_confirmation')}}</label>
 
-                        <input  id="password_confirmation" type="password" placeholder="Enter your confirm password " required="" name="password_confirmation" value="{{ $password_confirmation or old('password_confirmation') }}" aria-describedby="emailHelp" class="form-control" >
+                        <input  id="password_confirmation" type="password" placeholder="{{tr('enter_confirm_password')}}" required="" name="password_confirmation" value="{{ $password_confirmation or old('password_confirmation') }}" aria-describedby="emailHelp" class="form-control" >
 
                         @if ($errors->has('password_confirmation'))
                             <span class="help-block">

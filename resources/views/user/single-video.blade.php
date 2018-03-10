@@ -124,7 +124,7 @@ textarea[name=comments] {
                                                         @endif
 
                                                             <a  class="share-new" data-toggle="modal" data-target="#popup1">
-                                                                <i class="material-icons">share</i>
+                                                                <i class="material-icons">{{tr('share')}}</i>
                                                                <!--  <p class="hidden-xs">share</p> -->
                                                             </a>
 
@@ -280,7 +280,7 @@ textarea[name=comments] {
                                                     @if (!$flaggedVideo)
                                                         <div class="more-content" style="display: none;" id="report_video_form">
                                                             <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
-                                                                <b>Report this Video ?</b>
+                                                                <b>{{tr('report_this_video')}}</b>
                                                                 <br>
                                                                 @foreach($report_video as $report) 
                                                                     <div class="report_list">
@@ -306,7 +306,7 @@ textarea[name=comments] {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Report this Video ?</h4>
+                <h4 class="modal-title">{{tr('report_this_video')}}</h4>
             </div>
             <div class="modal-body">
                 @if(Setting::get('is_spam'))
@@ -626,7 +626,7 @@ textarea[name=comments] {
             <div>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Share</h4>
+                    <h4 class="modal-title">{{tr('share')}}</h4>
                 </div>
                 <div class="modal-body">
                     <div>
@@ -660,7 +660,7 @@ textarea[name=comments] {
                     <div class="copy-embed">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title hidden-xs">Embed Video</h4>
+                            <h4 class="modal-title hidden-xs">{{tr('embed_video')}}</h4>
                             <h4 class="modal-title visible-xs">{{$video->title}}</h4>
                         </div>
 
@@ -676,7 +676,7 @@ textarea[name=comments] {
                             </form>
                         </div> 
                         <div class="modal-footer">
-                            <button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" style="border-radius: 0">Copy</button>
+                            <button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" style="border-radius: 0">{{tr('copy')}}</button>
                         </div>
                     </div>
                 </div>

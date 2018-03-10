@@ -1370,7 +1370,7 @@ class AdminController extends Controller {
                         return back()->with('flash_error',tr('page_already_alert'));
                     }
                 }else {
-                    return back()->with('flash_error',"You cannot create more pages");
+                    return back()->with('flash_error',tr('cannot_create_more_pages'));
                 }
                 
             }

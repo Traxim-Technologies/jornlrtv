@@ -34,7 +34,7 @@
 
                 <div class="box-header with-border">
 
-                    <h2 class="pull-left">@if($data) {{$data->heading}} @else Privacy Policy @endif</h2>
+                    <h2 class="pull-left">@if($data) {{$data->heading}} @else {{tr('privacy_policy')}} @endif</h2>
 
                     <img class="adm-log-logo pull-right" style="width:20%;height:auto" src="@if(Setting::get('site_logo')) {{Setting::get('site_logo')}} @else {{asset('logo.png')}} @endif"/></a>
                 
@@ -44,7 +44,7 @@
 
                     <div class="col-md-12">
 
-                    @if($data) <?php echo $data->description; ?> @else Privacy Policy @endif
+                    @if($data) <?php echo $data->description; ?> @else {{tr('privacy_policy')}}@endif
 
                     </div>
 
@@ -53,7 +53,7 @@
 
                 <div class="box-footer">
 
-                    <a href="{{url('/')}}" class="btn btn-success pull-right"> <i class="fa fa-arrow-left"></i> Go Home </a>
+                    <a href="{{url('/')}}" class="btn btn-success pull-right"> <i class="fa fa-arrow-left"></i>{{tr('go_home')}}</a>
                 
                 </div>
                 

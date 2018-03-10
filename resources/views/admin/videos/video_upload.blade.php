@@ -51,7 +51,7 @@
                 <ul class="nav nav-tabs" role="tablist">
 
                     <li role="presentation" class="active">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Video Details">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="{{tr('video_details')}}">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-book"></i>
                             </span>
@@ -59,7 +59,7 @@
                     </li>
 
                     <li role="presentation" class="disabled">
-                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Channels">
+                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="{{tr('channels')}}">
                             <span class="round-tab">
                                 <i class="fa fa-tv"></i>
                             </span>
@@ -87,7 +87,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
-                        <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span> fields are mandatory. Please fill and click next.</small></div> 
+                        <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
                         <hr>
                         <div class="">
                             <input type="hidden" name="id" id="main_id">
@@ -168,7 +168,7 @@
                                 <div class="form-group" style="display: none;" id="publish_time_div">
                                     <label for="datepicker" class="">{{tr('publish_time')}} * </label>
 
-                                    <input type="text" name="publish_time" placeholder="Select the Publish Time i.e YYYY-MM-DD" class="form-control pull-right" id="datepicker">
+                                    <input type="text" name="publish_time" placeholder="{{tr('select_publish_time')}}" class="form-control pull-right" id="datepicker">
                                 </div>
                             </div>
                             <div class="clearfix"></div>
