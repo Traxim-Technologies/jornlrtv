@@ -51,6 +51,7 @@
 
 <div class="embed-responsive embed-responsive-16by9" id="flash_error_display" style="display: none;width: 100%;">
    <div style="width: 100%;background: black; color:#fff;height:350px;">
-   		 <div style="text-align: center;padding-top:25%">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+   		 <div style="text-align: center;padding-top:25%">{{tr('flash_missing')}} <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{'adobe'}}</a>.</div>
+
    </div>
 </div>

@@ -50,14 +50,14 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">{{tr('name')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" required class="form-control" value="{{$channel->name}}" id="name" name="name" placeholder="Category Name">
+                                <input type="text" required class="form-control" value="{{$channel->name}}" id="name" name="name" placeholder="{{tr('category_name')}}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="description" class="col-sm-2 control-label">{{tr('description')}}</label>
                             <div class="col-sm-10">
-                                <textarea required class="form-control" id="description" name="description" placeholder="Description">{{$channel->description}}</textarea> 
+                                <textarea required class="form-control" id="description" name="description" placeholder="{{tr('description')}}">{{$channel->description}}</textarea> 
                             </div>
                         </div>
 

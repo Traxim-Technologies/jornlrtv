@@ -4,21 +4,23 @@
 
 @section('content-header') 
 
+
 {{ tr('settings')}}
 
-<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="{{tr('any_help')}}">{{tr('help')}}</a>
 
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
 
-        <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
+        <li><b>{{tr('paypal_')}} </b>{{tr('minimum_amount')}}</li>
 
-        <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+        <li><b>{{tr('stripe')}}</b>{{tr('minimum_accepted')}}- <a target="_blank" href="https://stripe.com/docs/currencies">{{tr('check_refrences')}}</a></li>
 
-        <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">Checked</span> - User can create n of channels.</li>
+        <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">{{tr('checked')}}</span> -{{tr('user_create_n_channels')}}</li>
 
-        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">Un Checked</span> - User can create only one channel. <span style="color: #a735a7">Note: Previously created channels will not affect by this option. </span></li>
+        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">{{tr('un_checked')}}</span> -{{tr('user_create_only_one_channel')}} <span style="color: #a735a7">{{tr('note')}}: {{tr('Previously_note_channel')}} </span></li>
+
 
     </ul>
     
@@ -68,7 +70,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sitename">{{tr('site_name')}}</label>
-                                        <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="Enter sitename">
+<<<<<<< HEAD
+                                        <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="{{tr('enter_sitename')}}">
+=======
+                                        <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="{{tr('enter_site_name')}}">
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                     </div>
                                 </div>
 
@@ -87,7 +93,11 @@
 
                                         <label for="site_logo">{{tr('site_logo')}}</label>
                                         <input type="file" id="site_logo" name="site_logo" accept="image/png, image/jpeg">
-                                        <p class="help-block">Please enter .png images only.</p>
+<<<<<<< HEAD
+                                        <p class="help-block">{{tr('please_enter_png_image')}}</p>
+=======
+                                        <p class="help-block">{{tr('image_notes')}}</p>
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -97,7 +107,11 @@
                                         @endif
                                         <label for="site_icon">{{tr('site_icon')}}</label>
                                         <input type="file" id="site_icon" name="site_icon" accept="image/png, image/jpeg">
-                                        <p class="help-block">Please enter .png images only.</p>
+<<<<<<< HEAD
+                                        <p class="help-block">{{tr('please_enter_png_image')}}</p>
+=======
+                                        <p class="help-block">{{tr('image_notes')}}</p>
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                     </div>
                                 </div>
 
@@ -131,9 +145,9 @@
 
                                         <label for="streaming_url">{{tr('streaming_url')}}</label>
 
-                                        <p class="example-note">Ex : rtmp://IP_ADDRESS_OR_DOMAIN:1935/vod2/</p>
+                                        <p class="example-note">{{tr('exam_rtmp_ip_address')}}</p>
 
-                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="Enter Streaming URL">
+                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="{{tr('enter_streaming_url')}}">
                                     </div> 
 
                                 </div>
@@ -141,7 +155,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sitename">{{tr('WEBRTC_SOCKET_URL')}}</label>
-                                        <p class="example-note">Ex : https://IP_ADDRESS_OR_DOMAIN:3000</p>
+                                        <p class="example-note">{{tr('exam_ip_address_domain')}}</p>
                                         <input type="text" class="form-control" name="SOCKET_URL" value="{{ Setting::get('SOCKET_URL')  }}" id="SOCKET_URL" placeholder="{{tr('WEBRTC_SOCKET_URL')}}">
                                     </div>
                                 </div>
@@ -151,7 +165,7 @@
                                     <div class="form-group">
 
                                         <label for="sitename">{{tr('kurento_socket_url')}}</label>
-                                        <p class="example-note">Ex : IP_ADDRESS_OR_DOMAIN:8443</p>
+                                        <p class="example-note">{{tr('exam_ip_address_domain_8443')}}</p>
                                         <input type="text" class="form-control" name="kurento_socket_url" value="{{ Setting::get('kurento_socket_url')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('kurento_socket_url')}}">
                                     </div>
 
@@ -162,7 +176,7 @@
                                         
                                         <label for="wowza_server_url">{{tr('wowza_server_url')}}</label>
 
-                                        <p class="example-note">Ex : IP_ADDRESS_OR_DOMAIN:8087</p>
+                                        <p class="example-note">{{tr('exam_ip_address_domain_8087')}}</p>
 
                                         <input type="text" class="form-control" name="wowza_server_url" value="{{ Setting::get('wowza_server_url')  }}" id="wowza_server_url" placeholder="{{tr('wowza_server_url')}}">
 
@@ -175,7 +189,7 @@
 
                                         <label for="cross_platform_url">{{tr('cross_platform_url')}}</label>
 
-                                        <p class="example-note">Ex : IP_ADDRESS_OR_DOMAIN:1935</p>
+                                        <p class="example-note">{{tr('exam_ip_address_domain_1935')}}</p>
 
                                         <input type="text" class="form-control" name="cross_platform_url" value="{{ Setting::get('cross_platform_url')  }}" id="cross_platform_url" placeholder="{{tr('cross_platform_url')}}">
 
@@ -186,7 +200,7 @@
                                     <div class="form-group">
                                         <label for="chat_socket_url">{{tr('chat_socket_url')}}</label>
 
-                                        <p class="example-note">Ex : http://IP_ADDRESS_OR_DOMAIN:3002</p>
+                                        <p class="example-note">{{tr('exam_ip_address_domain_3002')}}</p>
 
                                         <input type="text" class="form-control" name="chat_socket_url" value="{{ Setting::get('chat_socket_url')  }}" id="chat_socket_url" placeholder="{{tr('chat_socket_url')}}">
                                     </div>
@@ -196,7 +210,7 @@
                                     <div class="form-group">
 
                                         <label for="sitename">{{tr('wowza_ip_address')}}</label>
-                                        <p class="example-note">Ex : IP_ADDRESS</p>
+                                        <p class="example-note">{{tr('exam_ip_address')}}</p>
                                         <input type="text" class="form-control" name="wowza_ip_address" value="{{ Setting::get('wowza_ip_address')  }}" id="wowza_ip_address" placeholder="{{tr('wowza_ip_address')}}">
                                     </div>
 
@@ -214,6 +228,7 @@
                           </div>
                           <!-- /.box-body -->
 
+<<<<<<< HEAD
                           <div class="box-footer">
                             @if(Setting::get('admin_delete_control') == 1) 
                                 <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
@@ -240,10 +255,14 @@
 
                                         <label for="viewers_count_per_video">{{tr('viewers_count_per_video')}}</label>
 
-                                        <p class="example-note">Usage : Set the viewer count limit. If the user enabled <i>ads option </i> for the video, after this view count reached. The user will get <i>AMOUNT</i> for each view of the video.</p>
+                                        <p class="example-note">{{tr('viewer_count_limit')}} <i>{{tr('ads_option')}} </i> {{tr('video_count_reached')}} <i>{{tr('amt')}} </i>{{tr('last_content')}}</p>
 
                                         <input type="number" step="any" min="1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('viewers_count_per_video')  }}" name="viewers_count_per_video" id="viewers_count_per_video" placeholder="{{tr('viewers_count_per_video')}}" pattern="[0-9]{1,}">
                                     </div>
+=======
+                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="{{tr('enter_streaming_url')}}">
+                                    </div> 
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                 </div>
 
                                 
@@ -251,7 +270,8 @@
                                     <div class="form-group">
                                         <label for="amount_per_video">{{tr('amount_per_video')}}</label>
 
-                                        <p class="example-note">Usage : Set the amount for each view . If the user enabled <i>ads option </i> for the video, after this view count reached. The user will get <i>AMOUNT</i> for each view of the video.</p>
+                                        <p class="example-note">{{tr('set_amount_foreach_view')}}<i>
+                                        {{tr('ads_option')}} </i> {{tr('video_count_reached')}} <i>{{tr('amt')}}</i> {{tr('last_content')}}</p>
 
                                         <input type="number" step="any" min="0.1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="amount_per_video" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
                                     </div>   
@@ -341,9 +361,9 @@
                                         <select id="payment_type" name="payment_type" class="form-control">
                                             <option value="">{{tr('payment_type')}}</option>
                                             
-                                            <option value="paypal" @if($type == 'paypal') selected @endif>Paypal</option>
+                                            <option value="paypal" @if($type == 'paypal') selected @endif>{{tr('paypal')}}</option>
 
-                                            <option value="stripe" @if($type == 'stripe') selected @endif >Stripe</option>
+                                            <option value="stripe" @if($type == 'stripe') selected @endif >{{tr('stripe')}}</option>
                                             
                                         </select>
                                     </div>
@@ -595,6 +615,83 @@
                     
                     </div>
 
+<<<<<<< HEAD
+=======
+                    
+
+                    <div class="tab-pane" id="other_settings">
+
+                        <form action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.save.settings')}}" method="POST" enctype="multipart/form-data" role="form">
+                            
+                            <div class="box-body">
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="multi_channel_status">{{tr('multi_channel_status')}}</label>
+
+                                        <br>
+
+                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked @endif id="multi_channel_status" style="vertical-align: middle;"> {{tr('enable_channel_status')}}
+                                        
+                                    </div>   
+                                </div>
+
+                               
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="payment_type">{{tr('payment_type')}}</label>
+
+                                        <?php $type = Setting::get('payment_type') ;?>
+                                        <select id="payment_type" name="payment_type" class="form-control">
+                                            <option value="">{{tr('payment_type')}}</option>
+                                            
+                                            <option value="paypal" @if($type == 'paypal') selected @endif>{{tr('paypal')}}</option>
+
+                                            <option value="stripe" @if($type == 'stripe') selected @endif >{{tr('stripe')}}</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="google_analytics">{{tr('google_analytics')}}</label>
+                                        <textarea class="form-control" id="google_analytics" name="google_analytics">{{Setting::get('google_analytics')}}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="header_scripts">{{tr('header_scripts')}}</label>
+                                        <textarea class="form-control" id="header_scripts" name="header_scripts">{{Setting::get('header_scripts')}}</textarea>
+                                    </div>
+                                </div>  
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="body_scripts">{{tr('body_scripts')}}</label>
+                                        <textarea class="form-control" id="body_scripts" name="body_scripts">{{Setting::get('body_scripts')}}</textarea>
+                                    </div>
+                                </div>   
+
+                          </div>
+                          <!-- /.box-body -->
+
+                          <div class="box-footer">
+                            @if(Setting::get('admin_delete_control') == 1) 
+                                <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
+                            @else
+                                <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                            @endif
+                          </div>
+                        </form>
+                    
+                    </div>
+
+                    
+
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
                     <div class="tab-pane" id="email_settings">
                         <form action="{{route('admin.email.settings.save')}}" method="POST" enctype="multipart/form-data" role="form">
                             

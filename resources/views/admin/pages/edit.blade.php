@@ -30,23 +30,23 @@
 
                     <div class="form-group">
                         <label for="title">{{tr('page_type')}}</label>
-                        <input type="text" class="form-control" name="type" id="title" value="{{ $data->type  }}" placeholder="Enter title" disabled="true">
+                        <input type="text" class="form-control" name="type" id="title" value="{{ $data->type  }}" placeholder="{{tr('enter_title')}}" disabled="true">
                     </div>
 
                     <div class="form-group">
                         <label for="title">{{tr('title')}}</label>
-                        <input type="text" class="form-control" name="title" id="title" value="{{ $data->title  }}" placeholder="Enter title" disabled="true">
+                        <input type="text" class="form-control" name="title" id="title" value="{{ $data->title  }}" placeholder="{{tr('enter_title')}}" disabled="true">
                     </div>
 
                     <div class="form-group">
                         <label for="heading">{{tr('heading')}}</label>
-                        <input type="text" class="form-control" name="heading" value="{{ $data->heading  }}" id="heading" placeholder="Enter heading">
+                        <input type="text" class="form-control" name="heading" value="{{ $data->heading  }}" id="heading" placeholder="{{tr('enter_heading')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="description">{{tr('description')}}</label>
 
-                        <textarea id="ckeditor" name="description" class="form-control" placeholder="Enter text ...">{{$data->description}}</textarea>
+                        <textarea id="ckeditor" name="description" class="form-control" placeholder="{{tr('enter_text')}}">{{$data->description}}</textarea>
                         
                     </div>
 

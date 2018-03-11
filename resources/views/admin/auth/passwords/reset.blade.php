@@ -1,6 +1,6 @@
 @extends('layouts.admin.focused')
 
-@section('title', 'Reset Password')
+@section('title', tr('reset_password'))
 
 @section('content')
 
@@ -15,12 +15,12 @@
                <a href="{{route('admin.login')}}"><b>{{Setting::get('site_name')}}</b></a>
             </div>
 
-            <p class="text-center mb25">Enter a new password and log in to your account</p>
+            <p class="text-center mb25">{{tr('password_reset_msg')}}</p>
 
             <div class="form-inputs">
 
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <input type="email" class="form-control input-lg" name="email" value="{{ $email or old('email') }}" placeholder="E-Mail Address">
+                    <input type="email" class="form-control input-lg" name="email" value="{{ $email or old('email') }}" placeholder="{{tr('email_add')}}">
 
                     @if ($errors->has('email'))
                         <span class="help-block">
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <input type="password" class="form-control input-lg" name="password" placeholder="Password">
+                    <input type="password" class="form-control input-lg" name="password" placeholder="{{tr('password')}}">
 
                     @if ($errors->has('password'))
                         <span class="help-block">
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                    <input type="password" class="form-control input-lg" name="password_confirmation" placeholder="Confirm Password">
+                    <input type="password" class="form-control input-lg" name="password_confirmation" placeholder="{{tr('confirm_password')}}">
 
                     @if ($errors->has('password_confirmation'))
                         <span class="help-block">
@@ -52,7 +52,8 @@
 
             <div class="col-md-6 col-md-offset-3">
                 <button class="btn btn-success btn-block mb15" type="submit">
-                        <span><i class="fa fa-btn fa-refresh"></i> Reset</span>
+                        <span><i class="fa fa-btn fa-refresh"></i> {{tr('reset')}}</span>
+
                 </button>
             </div>
             

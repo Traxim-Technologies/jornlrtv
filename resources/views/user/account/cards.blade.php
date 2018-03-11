@@ -40,7 +40,7 @@
 
 							            			<div class="jp-card-logo jp-card-visa">
 
-							            				Visa
+							            				{{tr('visa')}}
 
 							            			</div>
 
@@ -93,7 +93,7 @@
 								                <input id="id" name="id" type="hidden" required>
 
 								                <div class="input-group-signup">
-								                	<input type="text" name="card_name" placeholder="Card name (ex: visa)" class="form-control" required onkeyup="$('.jp-card-name').html(this.value)">
+								                	<input type="text" name="card_name" placeholder="{{tr('card_name')}} (ex: visa)" class="form-control" required onkeyup="$('.jp-card-name').html(this.value)">
 								                </div>
 
 								                <div class="input-group-signup">

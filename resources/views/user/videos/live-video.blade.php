@@ -72,7 +72,7 @@ video {
 
                           <div class="flash_display" id="flash_error_display" style="display: none;">
                                  <div class="flash_error_div">
-                                       <div class="flash_error">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+                                       <div class="flash_error">{{tr('flash_missing')}} <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{tr('adobe')}}</a>.</div>
                                  </div>
                           </div>
                         </div>
@@ -109,11 +109,11 @@ video {
 								<i class="fa fa-eye"></i>&nbsp;<span id='viewers_cnt'>{{$data->viewer_cnt}}</span> {{tr('views')}}
 							</button>
 	
-							<a href="http://www.facebook.com/sharer.php?u={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="Share On Facebook" style="background: #3b5998;border-color:#3b5998;">
+							<a href="http://www.facebook.com/sharer.php?u={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="{{tr('share_on_fb')}}" style="background: #3b5998;border-color:#3b5998;">
 								<i class="fa fa-facebook"></i>
 							</a>
 
-							<a href="http://twitter.com/share?text={{$data->title}}...&url={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="Share On Twitter" style="background: #4099ff;border-color:#4099ff;">
+							<a href="http://twitter.com/share?text={{$data->title}}...&url={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="{{tr('share_on_twitter')}}" style="background: #4099ff;border-color:#4099ff;">
 								<i class="fa fa-twitter"></i>
 							</a>
 

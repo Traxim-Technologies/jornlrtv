@@ -214,12 +214,12 @@ class UserController extends Controller {
                         if ($admin) {
 
                             $admin->user_id = $check_admin_user_details->id;
-
+                           
                             $admin->save();
                         }   
 
                         $check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
-
+                        
                         $check_admin_user_details->save();
 
                     } else {
@@ -493,9 +493,15 @@ class UserController extends Controller {
 
         if ($channel) {
 
-            $videos = $this->UserAPI->channel_videos($id, 0)->getData();
+            $request->request->add([ 
+                'age' => \Auth::user()->age_limit,
+            ]);
 
-            $trending_videos = $this->UserAPI->channel_trending($id, 5)->getData();
+            $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
+
+            $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
+
+            $trending_videos = $this->UserAPI->channel_trending($id, 5 , $channel_owner_id , $request)->getData();
 
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
@@ -1707,7 +1713,7 @@ class UserController extends Controller {
 
             $response->success = false;
             
-            $response->message = 'Adding cards is not enabled on this application. Please contact administrator';
+            $response->message = tr('adding_cards_not_enabled_application');
 
             return back()->with('flash_errors', $response);
         }
@@ -1774,7 +1780,7 @@ class UserController extends Controller {
 
         }
         
-        return back()->with('flash_success', 'Successfully Created');
+        return back()->with('flash_success', tr('successfully_created'));
     }
 
 

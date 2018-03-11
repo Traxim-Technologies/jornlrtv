@@ -6,14 +6,16 @@
 
 {{tr('view_video')}} 
 
-<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="{{tr('any_help')}}">{{tr('help')}}</a>
+
 
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
-        <li><b>{{tr('ads_view_revenue')}} - </b> Watch Count revenue based on the {{tr('ad_status')}} </li>
-        <li><b>{{tr('age_limit')}} - </b> If the video marked as 18+, the video will be display only for above 18+ age users. </li>
-        <li><b>{{tr('ppv_created_by')}} - </b> Admin or User </li>
+        <li><b>{{tr('ads_view_revenue')}} - </b> {{tr('watch_count_revenue')}} {{tr('ad_status')}} </li>
+        <li><b>{{tr('age_limit')}} - </b>{{tr('video_marked_only_18_years')}}</li>
+        <li><b>{{tr('ppv_created_by')}} - </b> {{tr('admin_or_user')}} </li>
+
     </ul>
     
 </div>
@@ -50,7 +52,8 @@ hr {
                 <div class='pull-left'>
                     <h3 class="box-title" style="color: white"> <b>{{$video->title}}</b></h3>
                     <br>
-                    <span style="margin-left:0px;color: white" class="description">Created Time - {{$video->video_date}}</span>
+                    <span style="margin-left:0px;color: white" class="description">{{tr('created_time')}}- {{$video->video_date}}</span>
+
                 </div>
                 <div class='pull-right'>
                     @if ($video->compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>
@@ -342,7 +345,7 @@ hr {
                             </div>
                             <div class="embed-responsive embed-responsive-16by9" id="flash_error_display" style="display: none;background: black;">
                                    <div style="width: 100%;color:#fff;height: 100%;padding-top: 25%;">
-                                         <div style="text-align: center;align-items: center;">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+                                         <div style="text-align: center;align-items: center;">{{tr('flash_missing')}}<a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{tr('adobe')}}</a>.</div>
                                    </div>
                             </div>
                         </div>

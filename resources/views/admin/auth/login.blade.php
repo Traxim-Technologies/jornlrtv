@@ -1,6 +1,6 @@
 @extends('layouts.admin.focused')
 
-@section('title', 'Login')
+@section('title', tr('login'))
 
 @section('content')
 

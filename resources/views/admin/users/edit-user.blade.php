@@ -69,15 +69,15 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-2 control-label">{{tr('description')}}</label>
+                            <label for="description" class="col-sm-2 control-label">{{tr('description')}}</label>
 
                             <div class="col-sm-10">
-                                <textarea type="text" name="description" class="form-control" id="description" placeholder="Description">{{$user->description}}</textarea>
+                                <textarea type="text" name="description" class="form-control" id="description" placeholder="{{tr('description')}}">{{$user->description}}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-2 control-label">{{tr('picture')}}</label>
+                            <label for="picture" class="col-sm-2 control-label">{{tr('picture')}}</label>
 
                             <div class="col-sm-3">
                                 <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;" accept="image/jpeg, image/png"/>

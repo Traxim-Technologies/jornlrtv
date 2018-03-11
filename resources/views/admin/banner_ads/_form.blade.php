@@ -20,7 +20,7 @@
 
                     <div class="form-group">
                         <label for="title">{{tr('title')}}</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{$model->title}}">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="{{tr('enter_title')}}" value="{{$model->title}}">
                     </div>
 
                     <div class="form-group">
@@ -39,7 +39,7 @@
                         
                         <label for="description">{{tr('description')}}</label>
 
-                        <textarea id="ckeditor" name="description" class="form-control" placeholder="Enter text ...">{{$model->description}}</textarea>
+                        <textarea id="ckeditor" name="description" class="form-control" placeholder="{{tr('enter_text')}}">{{$model->description}}</textarea>
                         
                     </div>
 

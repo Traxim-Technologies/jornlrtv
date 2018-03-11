@@ -170,7 +170,7 @@
 													<!-- Text input-->
 
 				                                    <div class="form-group form-group1">
-				                                    	<input type="text" class="form-control signup-form1" placeholder="Enter Title" id="title" name="title" required="">
+				                                    	<input type="text" class="form-control signup-form1" placeholder="{{tr('enter_title')}}" id="title" name="title" required="">
 				                                   	</div>
 
 				                                    <!-- <div class="row">
@@ -216,10 +216,10 @@
 															<div class="col-xs-8 col-sm-8">
 
 															    <label class="radio-inline width-100" for="reqType-1">
-																	<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">Free
+																	<input type="radio" id="reqType-1" checked="checked" class="option-input radio" name="payment_status" onchange="return $('#price').hide();" value="0">{{tr('free')}}
 																</label>
 																<label class="radio-inline">
-																	<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">Paid
+																	<input type="radio" id="reqType-0" class="option-input radio" name="payment_status" onchange="return $('#price').show()" value="1">{{tr('paid')}}
 															    </label>
 													      	</div>
 														
@@ -428,7 +428,8 @@
 
 										<h2 class="branded-page-module-title">
 									        <span class="branded-page-module-title-text">
-										      What to watch next
+										      {{tr('what_to_watch_next')}}
+
 										    </span>
 
 									  	</h2>
@@ -596,7 +597,7 @@
 										                        <div class="btn-group show-on-hover">
 														          	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 										
-															            <span class="hidden-xs">Action</span>
+															            <span class="hidden-xs">{{tr('action')}}</span>
 															            <span class="caret"></span>
 
 														          	</button>
@@ -664,14 +665,12 @@
 																							   
 																							    	<h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
 																							    	<div>
-																										<label class="radio1">
-																										    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
+																										<label class="radio1">  <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
 																											<span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
 																										</label>
 																									</div>
 																									<div>
-																									    <label class="radio1">
-																										    <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
+																									    <label class="radio1">   <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
 																									    <span class="outer"><span class="inner"></span></span>{{tr('paid_user')}}
 																									</label>
 																								</div>

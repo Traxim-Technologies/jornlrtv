@@ -175,7 +175,7 @@
 		                </li>
 
 		                <li>
-		                	<a href="#" title="Admin needs to pay this amount to user">{{tr('wallet_balance')}}
+		                	<a href="#" title="{{tr('admin_need_pay_amount_user')}}">{{tr('wallet_balance')}}
 		                		<span class="pull-right">
 		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : "0.00"}}
 		                		</span>
@@ -183,7 +183,7 @@
 		                </li>
 
 		                <li>
-		                	<a href="#" title="Admin cleared this Amount to the user">{{tr('paid_amount')}} 
+		                	<a href="#" title="{{tr('admin_cleared_amount_user')}}">{{tr('paid_amount')}} 
 		                		<span class="pull-right">
 		                			{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->paid : "0.00"}}
 		                		</span>

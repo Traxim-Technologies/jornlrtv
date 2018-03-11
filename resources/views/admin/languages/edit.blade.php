@@ -40,13 +40,14 @@
 
 	                    <div class="form-group">
 	                        <label for="name">{{tr('short_name')}}</label>
-	                        <input type="text" class="form-control" name="folder_name" id="folder_name" placeholder="Example : en, tn" required maxlength="4" value="{{$model->folder_name}}">
+	                        <input type="text" class="form-control" name="folder_name" id="folder_name" placeholder="{{tr('example_language1')}}" required maxlength="4" value="{{$model->folder_name}}">
+
 	                    </div>
 
 	                    <div class="form-group">
 	                        <label for="name">{{tr('language')}}</label>
 	                        <div>
-		                        <input type="text" class="form-control" name="language" id="language" placeholder="Example : Hindi, English" required maxlength="64" value="{{$model->language}}">
+		                        <input type="text" class="form-control" name="language" id="language" placeholder="{{tr('example_language2')}}" required maxlength="64" value="{{$model->language}}">
 	                        </div>
 	                    </div>
 

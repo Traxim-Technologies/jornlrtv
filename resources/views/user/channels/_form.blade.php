@@ -29,7 +29,7 @@
 								</button>
 							</div>
 							<div class="st_photo_div">
-								<img class="channel-header-profile-image" src="{{$model->picture ?  $model->picture : asset('images/default.png')}}" title="Channel Profile Photo" alt="Channel Profile Photo" id="picture_preview">
+								<img class="channel-header-profile-image" src="{{$model->picture ?  $model->picture : asset('images/default.png')}}" title="{{tr('channel_profile_photo')}}" alt="{{tr('channel_profile_photo')}}" id="picture_preview">
 								<div class="st_photo">
 									<button class="st_profile_btn" onclick="$('#picture').click();return false">
 										@if($model->id)

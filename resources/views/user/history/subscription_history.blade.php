@@ -21,7 +21,7 @@
 			@include('notification.notify')
 
 			<div class="sub-history">
-				<h3 class="no-margin">Subscription History</h3>	
+				<h3 class="no-margin">{{tr('subscription_history')}}</h3>	
 
 				<?php $subscription_details = get_expiry_days(Auth::user()->id);?>
 
@@ -62,12 +62,12 @@
 											@else
 											<small class="label label-danger">{{tr('failed')}}</small>
 											@endif
-											<p class="top5">{{$temp->plan}} months</p>
+											<p class="top5">{{$temp->plan}} {{tr('months')}}</p>
 										</div>
 
 										@if($temp->status)
 										<div class="col-xs-6 col-sm-6">
-											<small class="no-margin">Expires On</small>
+											<small class="no-margin">{{tr('expires_on')}}</small>
 											<p class="no-margin">{{$temp->expiry_date}}</p>
 										</div>
 										@endif

@@ -89,6 +89,7 @@ hr {
                  @endif
 
                  @if($ads->between_ad)
+                 
                   @foreach($ads->between_ad as $details)
                     <!-- timeline time label -->
                     <li class="time-label" title="{{tr('video_time')}}">

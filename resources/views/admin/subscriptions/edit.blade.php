@@ -57,14 +57,15 @@
 
                             <label for="plan" class="">{{tr('plan')}} <br><span class="text-red"><b>{{tr('plan_note')}}</b></span></label>
 
-                            <input type="number" min="1" max="12" pattern="[0-9][0-2]{2}"  name="plan" class="form-control" id="plan" value="{{isset($data) ? $data->plan : old('plan')}}" title="Please enter the plan months. Max : 12 months" placeholder="plan">
+                            <input type="number" min="1" max="12" pattern="[0-9][0-2]{2}"  name="plan" class="form-control" id="plan" value="{{isset($data) ? $data->plan : old('plan')}}" title="{{tr('month_of_plans')}}" placeholder="{{tr('plan')}}">
+
                         </div>
 
                         <div class="form-group">
 
                             <label for="amount" class="">{{tr('amount')}}</label>
 
-                            <input type="number" value="{{isset($data) ? $data->amount : old('amount')}}" name="amount" class="form-control" id="amount" placeholder="amount" step="any">
+                            <input type="number" value="{{isset($data) ? $data->amount : old('amount')}}" name="amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any">
                         </div>
 
                         <div class="form-group">

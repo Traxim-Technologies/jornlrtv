@@ -11,9 +11,9 @@
 				<div class="row no-margin" style="margin-bottom:10px;">
 					<div class="col-md-12">
 
-					<h4 style="color:brown"><strong>Note : </strong></h4>
+					<h4 style="color:brown"><strong>{{tr('note')}} : </strong></h4>
 
-					<p class="text-justify">It is very simple, just start adding categories and sub-categories and upload video from admin panel or moderator panel, thats it we are good to go. User can able view all trailer videos without payment. Once the payment is done user can able to view the full movie video. Payment is like subscription model. Payment enable, disable and amount for 30 days are controlled by admin.
+					<p class="text-justify">{{tr('configure_message_note')}}
 					</p>
 
 					</div>
@@ -32,7 +32,8 @@
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
 							    <label for="site_name">{{tr('site_name')}}</label>
-							    <input type="text" class="form-control" id="site_name" aria-describedby="emailHelp" name="site_name" placeholder="Please Enter Your Site Name">
+							    <input type="text" class="form-control" id="site_name" aria-describedby="emailHelp" name="site_name" placeholder="{{tr('enter_your_site_name')}}">
+
 							</div><!--end of form-group-->
 						</div><!--end of column-->
 
@@ -55,8 +56,9 @@
 
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
-							    <label for="streaming_url">Streaming URL</label>
-					    		<input type="text" class="form-control" id="streaming_url" name="streaming_url" placeholder="Ex: rtmp://streamhash.com/vod2/" aria-describedby="fileHelp">
+							    <label for="streaming_url">{{tr('streaming_url_install_page')}}</label>
+					    		<input type="text" class="form-control" id="streaming_url" name="streaming_url" placeholder="{{tr('example_rtmp_streamhash')}}" aria-describedby="fileHelp">
+
 							</div><!--end of form-group-->
 						</div><!--end of column-->
 					</div><!--end of row-->
