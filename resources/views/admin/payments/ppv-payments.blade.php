@@ -29,7 +29,7 @@
 						      <th>{{tr('payment_id')}}</th>
 						      <th>{{tr('amount')}}</th>
 						      <th>{{tr('admin_ppv_commission')}}</th>
-						      <th>{{tr('admin_ppv_commission')}}</th>
+						      <th>{{tr('user_ppv_commission')}}</th>
 						      <th>{{tr('paid_date')}}</th>
 						    </tr>
 						</thead>

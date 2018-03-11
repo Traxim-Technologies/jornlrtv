@@ -42,7 +42,7 @@
                             <div class="btn-group show-on-hover">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     
-                                    <span class="hidden-xs">Action</span>
+                                    <span class="hidden-xs">{{tr('action')}}</span>
                                     <span class="caret"></span>
 
                                 </button>
@@ -165,8 +165,8 @@
                                                             @endif
                                                         </div>
                                                         <div class="pull-right">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
+                                                            <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
                                                         </div>
                                                         <div class="clearfix"></div>
                                                       </div>

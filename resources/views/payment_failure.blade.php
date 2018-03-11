@@ -43,7 +43,7 @@
 							<h4>{{tr('payment_failed')}}</h4>
 
 							<p>
-								The payment may be caused because of the following reasons : 
+								{{tr('payment_caused')}} 
 							</p>
 
 							@if($paypal_error)
@@ -53,16 +53,16 @@
 							@else
 
 							<ul class="list-style">
-								<li><span>* Insufficient Funds</span></li>
-								<li><span>* Payment Configuration issues</span></li>
-								<li><span>* Unexcepted errors ..etc</span></li>
+								<li><span>*{{tr('insufficient_funds')}}</span></li>
+								<li><span>* {{tr('payment_configuration_issues')}}</span></li>
+								<li><span>* {{tr('unexcepted_error')}}</span></li>
 							</ul>
 
 							@endif
 
 							<div class="clearfix"></div>
 
-							<a href="{{url('/')}}" class="btn btn-primary">Go Home</a>
+							<a href="{{url('/')}}" class="btn btn-primary">{{tr('go_home')}}</a>
 
 						</div>
 						

@@ -122,11 +122,11 @@
                             <!-- Controls-->
                             <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
+                                <span class="sr-only">{{tr('previous')}}</span>
                             </a>
                             <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
                                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
+                                <span class="sr-only">{{tr('next')}}</span>
                             </a>
                         </div>
                     </div>

@@ -58,14 +58,14 @@
                         
                             <label for="plan" class="">{{tr('plan')}} <br><span class="text-red"><b>{{tr('plan_note')}}</b></span></label>
 
-                                <input type="number" min="1" max="12" pattern="[0-9][0-2]{2}"  required name="plan" class="form-control" id="plan" value="{{old('plan')}}" title="Please enter the plan months. Max : 12 months" placeholder="plan">
+                                <input type="number" min="1" max="12" pattern="[0-9][0-2]{2}"  required name="plan" class="form-control" id="plan" value="{{old('plan')}}" title="{{tr('month_of_plans')}}" placeholder="{{tr('plan')}}">
                         </div>
 
                         <div class="form-group">
                             <label for="amount" class="">{{tr('amount')}}</label>
 
                             <!-- <div class="col-sm-10"> -->
-                                <input type="number" required name="amount" class="form-control" id="amount" placeholder="amount" step="any">
+                                <input type="number" required name="amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any">
                             <!-- </div> -->
                         </div>
 

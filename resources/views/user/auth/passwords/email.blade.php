@@ -61,7 +61,7 @@
                         <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
                         @endif
                     </div>          
-                    <p>Already Have an Account? <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
+                    <p>{{tr('already_account')}} <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
                 </form>
             </div><!--end of sign-up-->
         </div><!--end of common-form-->     

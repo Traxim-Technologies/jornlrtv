@@ -26,16 +26,16 @@
 
 
 			       	<div class="card-head style-primary">
-			            <header>Hi there!</header>
+			            <header>{{tr('hi_there')}}</header>
 			        </div>
 
             		<div class="card-body help">
 		                <p>
-		                  We would like to thank you for choosing StreamHash. Kudos from our team!!
+		                 {{tr('help_notes_content')}}
 		                </p>
 
 		                <p>
-		                  If you want to make any changes to your site, drop a mail to contact@streamhash.com or Skype us @ contact@streamhash.com and we will help you out!
+		                  {{tr('help_message_content')}}
 		                </p>
 
 		                <a href="https://www.facebook.com/StreamHash/" target="_blank"><img class="aligncenter size-full wp-image-159 help-image" src="http://default.streamhash.com/helpsocial/Facebook.png" alt="Facebook-100" width="100" height="100" /></a>
@@ -52,11 +52,11 @@
 			             &nbsp;
 
 
-			             <p>We have this team of innate developers and dedicated team of support to sort out the things for your benefits. Tell us what you like about StreamHash and we may suggest you the best solution for you :)</p>
+			             <p>{{tr('help_content')}}</p>
 
               			<a href="#" target="_blank"><img class="aligncenter help-image size-full wp-image-160" src="http://default.streamhash.com/helpsocial/Money-Box-100.png" alt="Money Box-100" width="100" height="100" /></a>
 
-						<p>Cheers!</p>
+						<p>{{tr('cheers')}}</p>
 
             		</div>
 

@@ -433,7 +433,7 @@ class ApplicationController extends Controller {
 
                         \Auth::loginUsingId($request->id);
 
-                        return redirect(route('user.profile'))->with('flash_success' , "Email verified successfully!!!");
+                        return redirect(route('user.profile'))->with('flash_success' ,tr('email_verified_success'));
 
                     } else {
 
@@ -450,12 +450,12 @@ class ApplicationController extends Controller {
                 }
 
             } else {
-                return redirect(route('user.login.form'))->with('flash_error' , "User Record Not Found");
+                return redirect(route('user.login.form'))->with('flash_error',tr('user_record_not_found'));
             }
 
         } else {
 
-            return redirect(route('user.login.form'))->with('flash_error' , "Something Missing From Email verification");
+            return redirect(route('user.login.form'))->with('flash_error' ,tr('something_missing_email'));
         }
     
     }

@@ -36,9 +36,9 @@
 											<span class="ppv-view"><i class="fa fa-money"></i> {{$temp->currency}}{{$temp->amount}}</span>
 										</div>
 										<div class="ppv-details">
-											<p>Paid Status: &nbsp;@if($temp->amount > 0) <span class="green-clr">Paid</span>@else <span class="grey-clr">Pending</span> @endif</p>
-											<p>Payment ID: &nbsp;<span class="grey-clr">{{$temp->payment_id}}</span></p>
-											<p class="no-margin">Paid at: &nbsp;<span class="grey-clr">{{$temp->paid_date}}</span></p>
+											<p>{{tr('paid_status')}} &nbsp;@if($temp->amount > 0) <span class="green-clr">{{tr('paid')}}</span>@else <span class="grey-clr">{{tr('pending')}}</span> @endif</p>
+											<p>{{tr('payment_id')}} &nbsp;<span class="grey-clr">{{$temp->payment_id}}</span></p>
+											<p class="no-margin">{{tr('paid_at')}} &nbsp;<span class="grey-clr">{{$temp->paid_date}}</span></p>
 										</div>
 									</div>
 								</div>

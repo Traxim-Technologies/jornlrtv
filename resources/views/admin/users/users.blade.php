@@ -6,20 +6,21 @@
 
 {{tr('users')}} 
 
-<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="{{tr('any_help')}}">{{tr('help')}}</a>
 
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
-        <li><span class="text-green"><i class="fa fa-check-circle"></i></span> - Paid / Subscribed Users</li>
-        <li><span class="text-red"><i class="fa fa-times"></i></span> - Unpaid / Unsubscribed Users</li>
-        <li><b>{{tr('redeems')}} - </b> Current Wallet amount the user </li>
-        <li><b>{{tr('validity_days')}} - </b> Expiry days of the subscription for the user. </li>
+        <li><span class="text-green"><i class="fa fa-check-circle"></i></span> - {{tr('paid_subscribed_user')}}</li>
+        <li><span class="text-red"><i class="fa fa-times"></i></span> - {{tr('unpaid_subscribed_user')}}</li>
+        <li><b>{{tr('redeems')}} - </b> {{tr('current_wallet_amount_user')}} </li>
+        <li><b>{{tr('validity_days')}} - </b> {{tr('expiry_days_subscription_user')}}</li>
     </ul>
     
 </div>
 
 @endsection
+
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li class="active"><i class="fa fa-user"></i> {{tr('users')}}</li>

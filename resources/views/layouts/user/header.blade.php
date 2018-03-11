@@ -166,7 +166,7 @@
                 <form method="post" action="{{route('search-all')}}" id="userSearch">
                 <div class="input-group search-input">
                     
-                        <input type="text" id="auto_complete_search" name="key" class="search-query form-control" required placeholder="Search" />
+                        <input type="text" id="auto_complete_search" name="key" class="search-query form-control" required placeholder="{{tr('search')}}" />
                         <div class="input-group-btn">
                             <button class="btn btn-danger" type="submit">
                             <i class=" glyphicon glyphicon-search"></i>

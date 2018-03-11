@@ -70,7 +70,7 @@ video {
                                             <div id="videos-container" room="{{$data->id}}">
 
                                                 <div id="loader_btn" style="margin-left: 30%">
-                                                    <p>Video Loading....</p>
+                                                    <p>{{tr('video_loading')}}</p>
                                                 </div>
 
                                             </div>
@@ -80,7 +80,7 @@ video {
 
                                                 <div class="flash_display" id="flash_error_display" style="display: none;">
                                                     <div class="flash_error_div">
-                                                        <div class="flash_error">Flash is missing. Download it from <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">Adobe</a>.</div>
+                                                        <div class="flash_error">{{tr('flash_missing')}} <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{tr('adobe')}}</a>.</div>
                                                     </div>
                                                 </div>
                                             </div>

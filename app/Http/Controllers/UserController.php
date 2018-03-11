@@ -214,12 +214,12 @@ class UserController extends Controller {
                         if ($admin) {
 
                             $admin->user_id = $check_admin_user_details->id;
-
+                           
                             $admin->save();
                         }   
 
                         $check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
-
+                        
                         $check_admin_user_details->save();
 
                     } else {
@@ -1774,7 +1774,7 @@ class UserController extends Controller {
 
         }
         
-        return back()->with('flash_success', 'Successfully Created');
+        return back()->with('flash_success', tr('successfully_created'));
     }
 
 

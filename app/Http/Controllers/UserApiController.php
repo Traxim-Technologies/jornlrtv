@@ -1286,7 +1286,7 @@ class UserApiController extends Controller {
             
             $error_messages = implode(',',$validator->messages()->all());
            
-            $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 401, 'error_messages' => $error_messages );
+            $response_array = array('success' => false, 'error' => tr('invalid_input'), 'error_code' => 401, 'error_messages' => $error_messages );
        
         } else {
 

@@ -53,7 +53,7 @@
 
                 <div class="box-footer">
 
-                    <a href="{{url('/')}}" class="btn btn-success pull-right"> <i class="fa fa-arrow-left"></i> Go Home </a>
+                    <a href="{{url('/')}}" class="btn btn-success pull-right"> <i class="fa fa-arrow-left"></i>{{tr('go_home')}}</a>
                 
                 </div>
                 

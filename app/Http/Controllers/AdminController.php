@@ -429,9 +429,9 @@ class AdminController extends Controller {
 
                     Helper::delete_picture($user->chat_picture, "/uploads/user_chat_img/");
                 }
-                
+               
                 $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/", $user);
-
+                
             }
 
             $user->is_verified = DEFAULT_TRUE;
@@ -1316,7 +1316,7 @@ class AdminController extends Controller {
             }
         }
         
-        $message = "Settings Updated Successfully"." ".$check_streaming_url;
+        $message = tr('settings_success')." ".$check_streaming_url;
         
         // return back()->with('setting', $settings)->with('flash_success', $message);
 
@@ -1388,7 +1388,7 @@ class AdminController extends Controller {
                     if($request->type != 'others') {
                         $check_page_type = Page::where('type',$request->type)->first();
                         if($check_page_type){
-                            return back()->with('flash_error',"You have already created $request->type page");
+                            return back()->with('flash_error',tr('you_already_created_page'));
                         }
                     }
                     
@@ -1401,7 +1401,7 @@ class AdminController extends Controller {
                         return back()->with('flash_error',tr('page_already_alert'));
                     }
                 }else {
-                    return back()->with('flash_error',"You cannot create more pages");
+                    return back()->with('flash_error',tr('you_not_create_more_page'));
                 }
                 
             }

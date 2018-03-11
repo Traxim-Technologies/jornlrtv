@@ -40,7 +40,7 @@
                                 <div class="tab-pane" id="details">
                                   <div class="row">
                                     <div class="col-sm-12">
-                                        <h4 class="info-text"> Let's start with the basic details.</h4>
+                                        <h4 class="info-text">{{tr('let_start_basic_details')}}</h4>
                                         <input type="hidden" name="channel_id" id="channel_id" value="{{$id}}">
 
                                         <input type="hidden" name="id" id="main_id">
@@ -94,7 +94,7 @@
                                     <div class="col-sm-12">
                                         <label for="name" class="control-label">{{tr('description')}}</label>
                                         <div>
-                                            <textarea placeholder="Description...." rows="5" required class="form-control" id="description" name="description" ></textarea>
+                                            <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description" ></textarea>
                                         </div>
                                     </div>
                                    
