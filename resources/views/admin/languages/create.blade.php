@@ -32,7 +32,8 @@
 
 	                    <div class="form-group">
 	                        <label for="name">{{tr('short_name')}}</label>
-	                        <input type="text" class="form-control" name="folder_name" id="name" placeholder="{{tr('example_language1')}}" required maxlength="4">
+	                        <input type="text" class="form-control" name="folder_name" id="name" placeholder="{{tr('example_language')}}" required maxlength="4">
+
 	                    </div>
 
 	                    <div class="form-group">

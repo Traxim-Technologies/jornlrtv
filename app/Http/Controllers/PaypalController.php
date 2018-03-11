@@ -285,8 +285,8 @@ class PaypalController extends Controller {
         } catch(\PayPal\Exception\PayPalConnectionException $ex){
 
             $error_data = json_decode($ex->getData(), true);
-
             $error_message = tr('payment_failed_paypal');
+
 
             if(is_array($error_data)) {
 
@@ -351,6 +351,7 @@ class PaypalController extends Controller {
         } else {
 
             return back()->with('flash_error' ,tr('payment_not_approve'));
+
         }
         
     }
@@ -437,6 +438,7 @@ class PaypalController extends Controller {
             $error_data = json_decode($ex->getData(), true);
 
             $error_message = tr('payment_failed_paypal');
+
             if(is_array($error_data)) {
 
                 Log::info(print_r($error_data , true));
@@ -674,7 +676,6 @@ class PaypalController extends Controller {
 
        
         } else {
-
             return back()->with('flash_error' , tr('payment_not_approve'));
         }
 

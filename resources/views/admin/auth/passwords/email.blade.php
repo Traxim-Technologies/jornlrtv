@@ -19,6 +19,7 @@
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                     <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{tr('email_add')}}">
 
+
                     @if ($errors->has('email'))
                         <span class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
@@ -34,6 +35,7 @@
 
                          <a href="{{route('admin.dashboard')}}" class="pull-left btn btn-info btn-block mb15">
                             <i class="fa fa-btn fa-user"></i> {{tr('login')}}
+
                         </a>
                     </div>
                 </div>

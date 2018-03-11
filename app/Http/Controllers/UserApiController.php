@@ -4262,6 +4262,7 @@ class UserApiController extends Controller {
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('title','like', '%'.$key.'%')
                     ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.publish_status' , 1)
                     ->videoResponse()
                     ->where('channels.is_approved', 1)
                     ->where('channels.status', 1)
@@ -5001,7 +5002,7 @@ class UserApiController extends Controller {
      * 
      * @return list out all the videos, and status of the subscribers
      */
-    public function channel_videos($channel_id, $skip) {
+    public function channel_videos($channel_id, $skip , $request) {
 
         $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
@@ -5014,6 +5015,9 @@ class UserApiController extends Controller {
         if (Auth::check()) {
 
             $u_id = Auth::user()->id;
+
+                            
+            $videos_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             // Check any flagged videos are present
             $flagVideos = getFlagVideos($u_id);
@@ -5082,7 +5086,15 @@ class UserApiController extends Controller {
      *
      * @return channel videos
      */
-    public function channel_trending($id, $count) {
+    public function channel_trending($id, $count = 5 , $channel_owner_id = "" , $request) {
+
+        $items = [];
+
+        if(!$id) {
+
+            return response()->json($items , 200);
+
+        }
 
         $base_query = VideoTape::where('watch_count' , '>' , 0)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
@@ -5090,13 +5102,25 @@ class UserApiController extends Controller {
                         ->where('channel_id', $id)
                         ->orderby('watch_count' , 'desc');
 
+        if(!$channel_owner_id) {
+
+            $base_query = $base_query->where('video_tapes.status' , 1)
+                        ->where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.publish_status' , 1);
+
+        }
+
         $u_id = "";
 
         if (Auth::check()) {
 
+            // Check Age Limit 
+
             // Check any flagged videos are present
 
             $u_id = Auth::user()->id;
+                            
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             $flag_videos = flag_videos($u_id);
 
@@ -5116,7 +5140,6 @@ class UserApiController extends Controller {
             
         }
 
-        $items = [];
 
         if (count($videos) > 0) { 
 

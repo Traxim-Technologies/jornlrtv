@@ -200,7 +200,7 @@ class ApplicationController extends Controller {
                         $email_data['status'] = 0;
                         $page = "emails.payment-expiry";
                         $email = $user->email;
-                        $email_data['content'] = "Your subscription will expire soon. Our records indicate that no payment method has been associated with this subscripton account. Go to the subscription plans and provide the required payment information to renew your subscription for channel creation & uploading video and continue using your profile uninterrupted."; 
+                        $email_data['content'] =tr('subscription_expire_soon'); 
                         $result = Helper::send_email($page,$subject,$email,$email_data);
 
                         \Log::info("Email".$result);
@@ -247,7 +247,7 @@ class ApplicationController extends Controller {
                         $email_data['status'] = 1;
                         $page = "emails.payment-expiry";
                         $email = $user->email;
-                        $email_data['content'] = "Your notification has expired. To keep using channel creation  & upload video without interruption, subscribe any one of our plans and continue to upload";
+                        $email_data['content'] = tr('your_notification_expired');
                         $result = Helper::send_email($page,$subject,$email,$email_data);
 
                         \Log::info("Email".$result);
@@ -435,6 +435,7 @@ class ApplicationController extends Controller {
 
                         return redirect(route('user.profile'))->with('flash_success' ,tr('email_verified_success'));
 
+
                     } else {
 
                         return redirect(route('user.login.form'))->with('flash_error' , $error);
@@ -456,6 +457,7 @@ class ApplicationController extends Controller {
         } else {
 
             return redirect(route('user.login.form'))->with('flash_error' ,tr('something_missing_email'));
+
         }
     
     }

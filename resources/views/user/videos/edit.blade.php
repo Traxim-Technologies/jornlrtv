@@ -20,7 +20,7 @@
                 <div class="wizard-container">
                     <div class="card wizard-card" data-color="red" id="wizard">
                         <form action="{{ (Setting::get('admin_delete_control')) ? '' : route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">
-                    <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
+                    <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orangetr", "red", "purple"             -->
 
                           <div class="wizard-header">
                               <h3 class="wizard-title">
@@ -41,6 +41,7 @@
                                   <div class="row">
                                     <div class="col-sm-12">
                                         <h4 class="info-text">{{tr('let_start_basic_details')}}</h4>
+
                                         <input type="hidden" name="channel_id" id="channel_id" value="{{$model->channel_id}}">
 
                                         <input type="hidden" name="id" id="main_id" value="{{$model->id}}">

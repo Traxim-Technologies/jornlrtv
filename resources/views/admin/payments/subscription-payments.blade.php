@@ -24,7 +24,7 @@
           	<div class="box box-primary">
 
           		<div class="box-header label-primary">
-	                <b>{{tr('subscription_payments')}}</b>
+	                <b style="font-size: 18px;">{{tr('subscription_payments')}}</b>
 	                <a href="{{route('admin.users')}}" style="float:right" class="btn btn-default">{{tr('view_users')}}</a>
 	            </div>
 

@@ -38,13 +38,13 @@
 
                                             <div class="medium-6 columns">
                                                 <label>{{tr('username')}}:
-                                                    <input type="text"  name="name" required  placeholder="enter your {{tr('username')}}..">
+                                                    <input type="text"  name="name" required  placeholder="{{tr('enter_your_username')}}..">
                                                 </label>
                                             </div>
 
                                             <div class="medium-6 columns">
                                                 <label>{{tr('email')}}:
-                                                    <input type="email" name="email" required  placeholder="enter your {{tr('username')}}..">
+                                                    <input type="email" name="email" required  placeholder="{{tr('enter_your_email')}}..">
                                                 </label>
                                             </div>
 
