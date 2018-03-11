@@ -1,6 +1,6 @@
 @extends('layouts.admin.focused')
 
-@section('title', 'Reset Password')
+@section('title', tr('reset_password'))
 
 @section('content')
 
@@ -52,7 +52,7 @@
 
             <div class="col-md-6 col-md-offset-3">
                 <button class="btn btn-success btn-block mb15" type="submit">
-                        <span><i class="fa fa-btn fa-refresh"></i> Reset</span>
+                        <span><i class="fa fa-btn fa-refresh"></i>tr('reset')</span>
                 </button>
             </div>
             

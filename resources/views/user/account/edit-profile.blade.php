@@ -62,14 +62,14 @@
 
                                         <div class="form-group">
                                             <label for="username">{{tr('username')}}</label>
-                                            <input required value="{{Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username">
+                                            <input required value="{{Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}">
                                         </div>
 
                                         @if(Auth::user()->login_by == 'manual')
 
                                             <div class="form-group">
                                                 <label for="email">{{tr('email')}}</label>
-                                                <input type="email" value="{{Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                                <input type="email" value="{{Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
                                             
                                             </div>
 
@@ -77,7 +77,7 @@
 
                                         <div class="form-group">
                                             <label for="mobile">{{tr('mobile')}}</label>
-                                            <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="Enter mobile" maxlength="13">
+                                            <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="{{tr('enter_mobile')}}" maxlength="13">
                                             <small style="color:brown">{{tr('mobile_note')}}</small>
                                         </div>
 
@@ -97,7 +97,7 @@
 
 
                                         <div class="form-group">
-                                            <label for="mobile">{{tr('dob')}}</label>
+                                            <label for="dob">{{tr('dob')}}</label>
                                             <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob">
                                         </div>
 
@@ -128,6 +128,7 @@
                     @if(count($wishlist->items) > 0)
                         
                         <div class="mylist-profile col-sm-5">
+                            
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
                             <ul class="history-list profile-history">

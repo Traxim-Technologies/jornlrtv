@@ -15,7 +15,7 @@
 
 	<div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box box-info">
             <div class="box-body">
 
             	@if(count($model) > 0)
@@ -97,7 +97,7 @@
 						</tbody>
 					</table>
 				@else
-					<h3 class="no-result">No results found</h3>
+					<h3 class="no-result">{{tr('no_result_found')}}</h3>
 				@endif
             </div>
           </div>

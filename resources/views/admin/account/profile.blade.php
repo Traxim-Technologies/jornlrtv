@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Profile')
+@section('title', tr('profile'))
 
-@section('content-header', 'Profile')
+@section('content-header', tr('profile'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>

@@ -1596,7 +1596,7 @@ class UserController extends Controller {
 
             $response->success = false;
             
-            $response->message = 'Adding cards is not enabled on this application. Please contact administrator';
+            $response->message = tr('adding_cards_not_enabled_application');
 
             return back()->with('flash_errors', $response);
         }
@@ -1663,7 +1663,7 @@ class UserController extends Controller {
 
         }
         
-        return back()->with('flash_success', 'Successfully Created');
+        return back()->with('flash_success', tr('successfully_created'));
     }
 
 

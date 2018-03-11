@@ -32,7 +32,7 @@
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
 							    <label for="site_name">{{tr('site_name')}}</label>
-							    <input type="text" class="form-control" id="site_name" aria-describedby="emailHelp" name="site_name" placeholder="Please Enter Your Site Name">
+							    <input type="text" class="form-control" id="site_name" aria-describedby="emailHelp" name="site_name" placeholder="{{tr('please_enter_site_name')}}">
 							</div><!--end of form-group-->
 						</div><!--end of column-->
 
@@ -55,7 +55,7 @@
 
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group">
-							    <label for="streaming_url">Streaming URL</label>
+							    <label for="streaming_url">{{tr('streaming_url')}}</label>
 					    		<input type="text" class="form-control" id="streaming_url" name="streaming_url" placeholder="Ex: rtmp://streamhash.com/vod2/" aria-describedby="fileHelp">
 							</div><!--end of form-group-->
 						</div><!--end of column-->

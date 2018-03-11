@@ -76,7 +76,7 @@
 											<div class="clear-fix"></div>
 											<div class="text-right top">
 												<button class="btn btn-danger">
-													<i class="fa fa-credit-card"></i> &nbsp; Pay Now
+													<i class="fa fa-credit-card"></i> &nbsp; {{tr('pay_now')}}
 												</button>
 											</div>
 				 						</form>

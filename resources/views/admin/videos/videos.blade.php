@@ -253,8 +253,8 @@
 									       		@endif
 									       	</div>
 									        <div class="pull-right">
-										        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										        <button type="submit" class="btn btn-primary">Submit</button>
+										        <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('cancel')}}</button>
+										        <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
 										    </div>
 										    <div class="clearfix"></div>
 									      </div>

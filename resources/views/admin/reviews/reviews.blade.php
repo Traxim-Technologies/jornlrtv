@@ -24,7 +24,7 @@
 
 	<div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box box-info">
             <div class="box-body">
 
             	@if(count($reviews) > 0)
@@ -51,12 +51,14 @@
 							      	<td>
 							      		<a href="{{route('admin.view.video' , array('id' => $review->video_id))}}" target="_blank">{{$review->title}}</a>
 							      	</td>
+
 							      	<td>
 							      		<span style="display: none;">{{$review->rating}}</span>
 							      		<input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$review->rating}}">
 
 							      	</td>
 							      	<td>{{$review->comment}}</td>
+
 							      	<td>{{$review->created_at->diffForHumans()}}</td>
 							      	<td><a href="{{route('admin.delete_user_ratings', array('id'=>$review->rating_id))}}" title="{{tr('delete')}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
 							    </tr>
@@ -64,7 +66,7 @@
 						</tbody>
 					</table>
 				@else
-					<h3 class="no-result">No results found</h3>
+					<h3 class="no-result">{{tr('no_result_found')}}</h3>
 				@endif
             </div>
           </div>

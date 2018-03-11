@@ -63,7 +63,7 @@
                             <label for="password" class="col-sm-2 control-label">{{tr('password')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="password" required name="password" class="form-control" id="password" placeholder="Password">
+                                <input type="password" required name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
                             </div>
                         </div>
 
@@ -72,7 +72,7 @@
                             <label for="confirm-password" class="col-sm-2 control-label">{{tr('confirm_password')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="Password">
+                                <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="{{tr('confirm_password')}}">
                             </div>
                         </div>
 
@@ -88,10 +88,10 @@
                         </div>
 
                          <div class="form-group">
-                            <label for="mobile" class="col-sm-2 control-label">{{tr('description')}}</label>
+                            <label for="description" class="col-sm-2 control-label">{{tr('description')}}</label>
 
                             <div class="col-sm-10">
-                                <textarea type="text" name="description" class="form-control" id="description" placeholder="Description"></textarea>
+                                <textarea type="text" name="description" class="form-control" id="description" placeholder="{{tr('description')}}"></textarea>
                             </div>
                         </div>
 

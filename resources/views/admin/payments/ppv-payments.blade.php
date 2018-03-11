@@ -33,7 +33,7 @@
 
 	<div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box box-info">
             <div class="box-body">
 
             	@if(count($data) > 0)
