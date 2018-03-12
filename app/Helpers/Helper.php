@@ -138,7 +138,7 @@
                     $email = $data['email'];
                     $result = Helper::send_email($page,$subject,$email,$email_data);
 
-                    $error = 'Verification Code Expired';
+                    $error = tr('verification_code_expired');
 
                     return FALSE;
                 }

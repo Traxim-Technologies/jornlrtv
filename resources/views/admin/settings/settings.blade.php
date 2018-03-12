@@ -19,7 +19,7 @@
 
         <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">{{tr('checked')}}</span>{{tr('user_create_n_channels')}}</li>
 
-        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">{{tr('un_checked')}}</span>{{tr('user_create_only_one_channel')}}<span style="color: #a735a7">Note : {{tr('Previously_note_channel')}}</span></li>
+        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">{{tr('un_checked')}}</span>{{tr('user_create_only_one_channel')}}<span style="color: #a735a7">{{tr('note')}} : {{tr('Previously_note_channel')}}</span></li>
 
     </ul>
     

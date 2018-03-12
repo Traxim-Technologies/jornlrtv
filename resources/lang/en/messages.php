@@ -1197,54 +1197,42 @@ return array(
 	'something_error_try_again'=>'Something went Wrong.Please try again later!.',
 	'default_card_not_available_add_card'=>'Default card is not available. Please add a card',
 	'something_went_wrong_error_payment'=>'Something went wrong with Payment Configuration',
-
 	'payment_not_completed_pay_again'=>'Payment is not completed. Please try to pay Again',
-
 	'success'=>'Success',
-
 	'unknown_error_occured'=>'Unknown error occurred.',
-
 	'successfully_logged_in'=>'Successfully logged in.',
-
 	'successfully_logged_out'=>'Successfully logged out.',
-
 	'successfully_sign_up'=>'Successfully signed up.',
-
 	'mail_sent_successfully'=>'Mail sent successfully',
-
 	'favourite_provider_delete'=>'Favourite provider deleted successfully',
-
 	'payment_mode_changed'=>'Payment mode changed successfully',
-
 	'service_accepted'=>'Service Accepted',
-
 	'provider_started'=>'provider started',
-
 	'arrived_service_location'=>'Arrived to service location',
-
 	'service_started'=>'Service started',
-
 	'service_completed'=>'Service completed',
-
 	'user_rating_done'=>'User rating done',
-
 	'request_cancelled_successfully'=>'Request cancelled successfully.',
-
 	'wishlist_added'=>'Wishlist added.',
-
 	'payment_confirmed_successfully'=>'Payment confirmed successfully.',
-
 	'history_added'=>'History added.',
-
 	'history_deleted_successfully'=>'History deleted Successfully.',
-
 	'payment_successful_done'=>'Payment successfully done',
-
 	'no_provider_available'=>'No Provider Available',
-
 	'no_provider_available_take_service'=>'No provider available to take the Service.',
-
 	'request_complted_successfully'=>'Request completed successfully',
-
 	'new_request'=>'New Request',
+	'you_recently_requested'=>'You recently requested to reset password for your ',
+	'click_reset_button'=>' account. Click the reset button to reset password.',
+	'login_as_user'=>'Login as a User',
+	'note'=>'Note',
+	'banner_video_content'=>' You can able to add banner videos upto 6 only. If want to add new video, other than this 6 videos means change anyone of the video as "Normal video" and upload a banner video.',
+	'installation_process_content'=>'It is very simple, just start adding categories and sub-categories and upload video from admin panel or moderator panel, thats it we are good to go. User can able view all trailer videos without payment. Once the payment is done user can able to view the full movie video. Payment is like subscription model. Payment enable, disable and amount for 30 days are controlled by admin.',
+	'success!'=>'Success!',
+	'on_sanp'=>'Oh snap!',
+	'visa'=>'Visa',
+	'single_video_content'=>'If you report this video, you won\'t see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.',
+	'installation_done'=>'Installation Process is done',
+	'verification_code_expired'=>'Verification Code Expired',
+
 );

@@ -29,11 +29,11 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-3">
                         <button class="pull-right btn btn-warning btn-block mb15" type="submit">
-                            <i class="fa fa-btn fa-envelope"></i>tr('reset')
+                            <i class="fa fa-btn fa-envelope"></i>{{tr('reset')}}
                         </button>
 
                          <a href="{{route('admin.dashboard')}}" class="pull-left btn btn-info btn-block mb15">
-                            <i class="fa fa-btn fa-user"></i> tr('login')
+                            <i class="fa fa-btn fa-user"></i>{{tr('login')}}
                         </a>
                     </div>
                 </div>

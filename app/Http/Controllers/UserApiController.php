@@ -2279,7 +2279,7 @@ class UserApiController extends Controller {
                 $response_array = Helper::null_safe(array('success' => true, 'data'=>['id'=>$request->id,'token'=>$user->token]));
 
             } else {
-                $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
+                $response_array = array('success' => false , 'error_messages' => tr('something_error'));
             }
         }
         return response()->json($response_array , 200);
