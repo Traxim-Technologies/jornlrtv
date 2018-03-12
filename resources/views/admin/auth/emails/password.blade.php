@@ -571,7 +571,7 @@ h4 {
                               <tbody>
                                 <tr>
                                   <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top"><h1><span style="color:#FFFFFF"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif"><span style="font-size:52px"><strong>{{tr('it_is_easy')}}</strong></span><br>
-                                      <span style="font-size:32px">to start<br>
+                                      <span style="font-size:32px">{{tr('to_start')}}<br>
                                       enjoying </span></span><span style="font-size:32px">{{Setting::get('site_name' , tr('site_name'))}}</span></span></h1>
                                       <br>
                                       </td>

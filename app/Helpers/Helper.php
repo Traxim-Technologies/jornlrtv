@@ -373,7 +373,7 @@
                     break;
 
                 default:
-                    $string ={{tr('unknown_error_occured')}};
+                    $string =tr('unknown_error_occured');
             }
             return $string;
         }

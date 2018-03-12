@@ -1334,5 +1334,7 @@ return array(
 	'default_card_not_available'=>'Default card is not available. Please add a card',
 	'something_went_payment_configuration'=>'Something went wrong with Payment Configuration',
 	'payment_not_completed_try_again'=>'Payment is not completed. Please try to pay Again',
+	'remove_question'=>'Remove Question',
+	'add_question'=>'Add Question',
 
 );
