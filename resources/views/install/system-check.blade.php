@@ -52,7 +52,7 @@
                         <strong><i class="fa fa-times incorrect"></i></strong>
                     @endif
 
-                     {{tr('database_connection_required')}}
+                    {{tr('database_connection_required')}}
                 </p>
             </div>
 
@@ -63,7 +63,8 @@
                     @else
                         <strong><i class="fa fa-times incorrect"></i></strong>
                     @endif
-                   {{tr('sql_file_installation')}}
+
+                    {{tr('sql_file_installation')}}
                 </p>
             </div>
         </div>
@@ -125,7 +126,8 @@
             <div class="col-md-6 col-md-offset-6 agree">
 
                 @if($overall_configure == 0)
-                    <button disabled>{{tr('agree')}}  &amp; {{tr('continue')}}</button>
+
+                    <button disabled>{{tr('agree')}} &amp; {{tr('continue')}}</button>
                 @else
                     <a href="{{route('system-check')}}" class="btn btn-primary btn-lg" style="float:right" href="#">{{tr('agree')}} &amp; {{tr('continue')}}</a>
                 @endif

@@ -31,6 +31,7 @@
     @else
         <div class="menu4">
             <p>{{tr('signin_nav_content')}}!</p>
+
             <form method="get" action="{{route('user.login.form')}}">
                 <button type="submit">{{tr('login')}}</button>
             </form>

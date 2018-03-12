@@ -8,12 +8,20 @@ All notable changes to this project will be documented in this file.
 
 ### Added 
 
+### Fixed 
+
+	- 09 Mar 2018 - Banner ads delete issue fixed
+
+	- 09 Mar 2018 - Reviews can't be sorted by rating in admin panel - reviews section
+
+	- 09 Mar 2018 - More info link not working for revenues in admin panel
 
 ### Changed
 
 	- 07 FEB 2018 - Language "Stream Hash" text replaced with Setting "site_name"
 
 ### Removed 
+
 
 ### USER
 
@@ -22,6 +30,14 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 ### Removed 
+
+### FIXED
+
+	- 09 Mar 2018 - Age restricted videoes are showing up on the channels page, when you click on that it shows "Something went wrong! please try again later".
+
+	- 09 Mar 2018 - Publish video are listed and searchable before the publish time.
+
+	- 09 Mar 2018 - Declined video are displaying in the channel page home section. 
  
 
 ##[1.2.1] 

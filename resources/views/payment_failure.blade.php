@@ -43,7 +43,8 @@
 							<h4>{{tr('payment_failed')}}</h4>
 
 							<p>
-								{{tr('payment_caused')}} 
+
+								{{tr('payment_caused')}} : 
 							</p>
 
 							@if($paypal_error)
@@ -53,9 +54,10 @@
 							@else
 
 							<ul class="list-style">
-								<li><span>*{{tr('insufficient_funds')}}</span></li>
+
+								<li><span>* {{tr('insufficient_funds')}}</span></li>
 								<li><span>* {{tr('payment_configuration_issues')}}</span></li>
-								<li><span>* {{tr('unexcepted_error')}}</span></li>
+								<li><span>* {{tr('unexcepted_error')}} ..etc</span></li>
 							</ul>
 
 							@endif

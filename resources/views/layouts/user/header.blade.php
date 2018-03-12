@@ -252,7 +252,7 @@
                             @endif
 
                             <li role="separator" class="divider"></li>
-
+                            
                             @if(Setting::get('payment_type') == 'stripe')
                             
                             <li><a href="{{route('user.card.card_details')}}">{{tr('cards')}}</a></li>

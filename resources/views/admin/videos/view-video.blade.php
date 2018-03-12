@@ -8,12 +8,14 @@
 
 <a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="{{tr('any_help')}}">{{tr('help')}}</a>
 
+
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
         <li><b>{{tr('ads_view_revenue')}} - </b> {{tr('watch_count_revenue')}} {{tr('ad_status')}} </li>
         <li><b>{{tr('age_limit')}} - </b>{{tr('video_marked_only_18_years')}}</li>
         <li><b>{{tr('ppv_created_by')}} - </b> {{tr('admin_or_user')}} </li>
+
     </ul>
     
 </div>
@@ -51,6 +53,7 @@ hr {
                     <h3 class="box-title" style="color: white"> <b>{{$video->title}}</b></h3>
                     <br>
                     <span style="margin-left:0px;color: white" class="description">{{tr('created_time')}}- {{$video->video_date}}</span>
+
                 </div>
                 <div class='pull-right'>
                     @if ($video->compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>

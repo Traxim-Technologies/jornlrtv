@@ -41,6 +41,7 @@
                                   <div class="row">
                                     <div class="col-sm-12">
                                         <h4 class="info-text">{{tr('let_start_basic_details')}}</h4>
+
                                         <input type="hidden" name="channel_id" id="channel_id" value="{{$id}}">
 
                                         <input type="hidden" name="id" id="main_id">

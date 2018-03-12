@@ -272,14 +272,18 @@ return array(
 	'remember'	=>	'Remember Me',
 
 	'reset_password' => 'Reset Password',
+	'reset'=>' Reset',
 	'change_password'	=> 	'Change Password',
 	'old_password'	=> 	'Old Password',
 	'new_password'	=> 	'New Password',
 	'confirm_password'	=> 	'Confirm Password',
 	'password_confirmation' => 'Confirm Password',
-	
 
-	'help'	=>	'Help',
+	'it_is_easy'=>'Its easy',
+	'visit_our_Website'=>'Visit our Website',
+	'reset_now'=>'Reset Now',
+
+	'help_1'	=>	'Help',
 	'contact' => 'Contact Us',
 	'about' => 'About Us',
 	'terms_conditions' => 'Terms and Conditions',
@@ -411,7 +415,9 @@ return array(
 
 	'user_forgot_email_title' => "Your new password",
 	'provider_forgot_email_title' =>  'Your new password',
-
+	'to_start'=>'To Start',
+	'enjoying'=>'Enjoying',
+	'email_notes'=>'Enter a email address to reset your password.',
 	'new_provider_signup' => 'New provider registered',
 
 	// Login
@@ -433,6 +439,7 @@ return array(
 	'share'=>'share',
 	'reset_now' => 'Reset Now',
 	'update_now' => 'Update Now',
+	'e_mail_address'=>'E-Mail Address',
 
 	// Home Page
 
@@ -635,6 +642,7 @@ return array(
 	'edit_channel'	=>	'Edit Channel',
 	'delete_channel'	=>	'Delete Channel',
 	'is_series' => 'Is Series',
+	'category_name'=>'Category Name',
 	'channel_update_success'	=>	'Channel has been updated Successfully',
 	'channel_create_success'	=>	'Channel has been created Successfully',
 	'channel_delete_success'	=>	'Channel has been deleted Successfully',
@@ -783,6 +791,8 @@ return array(
 	'delete_page' => 'Delete Page',
 	'view_page' => 'View Page',
 	'view_pages' => 'View Pages',
+	'enter_title'=>'Enter title',
+	'enter_heading'=>'Enter heading',
 	'heading' => 'Heading',
 	'page_type' => 'Page Type',
 	'select_page_type' => 'Select Page Type',
@@ -870,6 +880,9 @@ return array(
 	'dislikes'=>'Dislikes',
 	'age_limit'=>'Age Limit',
 	'18_users'=>'18+ Users Only',
+	'video_details'=>'Video Details',
+	'channels'=>'Channels',
+
 	'age_limit_note'=>'Above this age users can view the video',
 
 	'cover'=>'Cover',
@@ -959,6 +972,8 @@ return array(
 	'language'=>'Language',
 	'short_name'=>'Short Name',
 	'file'=>'File',
+	'example_language'=>'Example : en, tn',
+	'example_language2'=>'Example : Hindi, English',
 	'download_here'=>'Download',
 	'create_language'=>'Create Language',
 	'edit_language'=>'Edit Language',
@@ -1155,6 +1170,7 @@ return array(
 	'already_you_have_video'=>'If you have any Ongoing Broadcasting or Not proper Ending Call. All videos will delete once you submit the form',
 	'banner_ads_note' => 'Banner Ads will display in web.',
 	'cannot_pay_zero_amount'=>"You can't pay zero amount through paypal, Please check with admin",
+
 	'video_going_to_broadcast'=>'Your video is going to broadcast, once you allow your camera',
 
 	// New Message
@@ -1194,6 +1210,10 @@ return array(
  	'visit_website'=>'Visit Website',
 
  	'help'=>'HELP ?',
+
+	// New
+	'enter_text'=>'Enter text ...',
+	'help'=>'HELP ?',
 	'any_help'=>'Any Help ?',
 	'paypal_'=>'PayPal - ',
 	'minimum_amount'=>'Minimum Accepted Amount - $ 0.01',
@@ -1205,6 +1225,7 @@ return array(
 	'un_checked'=>'Un Checked',
 	'user_create_only_one_channel'=>' - User can create only one channel.',
 	'Previously_note_channel'=>'Previously created channels will not affect by this option.',
+
 	'enter_sitename'=>'Enter sitename',
 	'please_enter_png_image'=>'Please enter .png images only.',
 	'exam_rtmp_ip_address'=>'Ex : rtmp://IP_ADDRESS_OR_DOMAIN:1935/vod2/',
@@ -1337,4 +1358,161 @@ return array(
 	'remove_question'=>'Remove Question',
 	'add_question'=>'Add Question',
 
+	'enter_site_name'=>'Enter sitename',
+	'enter_streaming_url'=>'Enter Streaming URL',
+	'image_notes'=>'Please enter .png images only.',
+	'hi_there'=>'Hi there!',
+	'help_notes_content'=>'We would like to thank you for choosing StreamHash. Kudos from our team!!',
+	'help_message_content'=>' If you want to make any changes to your site, drop a mail to contact@streamhash.com or Skype us @ contact@streamhash.com and we will help you out!',
+	'alt_fb_attri'=>'Facebook-100',
+	'twitter'=>'Twitter',
+	'skype'=>'Skype',
+	'message_100'=>'Message-100',
+	'help_content'=>'We have this team of innate developers and dedicated team of support to sort out the things for your benefits. Tell us what you like about StreamHash and we may suggest you the best solution for you :)',
+	'money_box'=>'Money Box-100',
+	'cheers'=>'Cheers!',
+	'custom_push_message'=>'Enter Custom Push Message',
+	'month_of_plans'=>'Please enter the plan months. Max : 12 months',
+	'plans'=>'Plan',
+	'subscribed_user'=>'- Paid / Subscribed Users',
+	'unsubscribed_user'=>'- Unpaid / Unsubscribed Users',
+	'current_wallet_amt'=>'Current Wallet amount the user',
+	'expiry_date_subscription'=>'Expiry days of the subscription for the user.',
+	'video_fields_mandatory'=>'fields are mandatory. Please fill and click next.',
+	'select_publish_time'=>'Select the Publish Time i.e YYYY-MM-DD',
+	'flash_missing'=>'Flash is missing. Download it from',
+	'adobe'=>'Adobe',
+	'watch_revenue_count'=>'Watch Count revenue based on the ',
+	'video_marked_age'=>'If the video marked as 18+, the video will be display only for above 18+ age users.',
+	'admin_user'=>'Admin or User',
+	'created_time'=>'Created Time - ',
+	'page_not_found'=>'Page Not Found',
+	'go_back_home'=>'Go Back Home Page',
+	'share'=>'Share',
+	'report_this_video'=>'Report this Video ?',
+	'embed_video'=>'Embed Video',
+	'copy'=>'Copy',
+	'start_basics_details'=>'Lets start with the basic details.',
+	'ppv_history_user'=>'PayPerView History',
+	'expires_on'=>'Expires On',
+	'months'=>'months',
+	'paid_at'=>'Paid at',
+	'watch_to_next'=>'What to watch next',
+	'enter_your_email'=>'Enter your email',
+	'enter_your_password'=>'Enter your password',
+	'enter_confirm_password'=>'Enter your confirm password ',
+	'card_name'=>'Card Name',
+	'enter_username'=>'Enter username',
+	'enter_email'=>'Enter email',
+	'enter_mobile'=>'Enter mobile',
+	'sign_in_channels'=>'Sign in now to see your channels and recommendations!',
+	'visit_site'=>'Visit Website',
+	'please_enter_site_name'=>'Please Enter Your Site Name',
+	'ngnix_installed_configure'=>'Ngnix installed and configured',
+	'php_installation_required'=>'PHP installation is required',
+	'mysql_installation_required'=>'MySQL installation is required',
+	'database_connection_required'=>'Database connection is required',
+	'sql_file_installation'=>'  SQL File intallation with database',
+	'system_check'=>'System Check Success',
+	'system_check_failed'=>'System Check Failed',
+	'basic_installation_requirment'=>'Please do the basic installation requirement.',
+	'retry_system_check'=>'Retry System Check',
+	'agree'=>'Agree',
+	'continue'=>'Continue',
+	'privacy_policy'=>'Privacy Policy ',
+	'enter_your_username'=>'Enter Your Username',
+	'payment_caused'=>'The payment may be caused because of the following reasons',
+	'insufficient_funds'=>'Insufficient Funds',
+	'payment_configuration_issues'=>'Payment Configuration issues',
+	'unexcepted_error'=>'Unexcepted errors',
+	'cannot_create_more_pages'=>'You cannot create more pages',
+	'adding_cards_not_enabled_application'=>'Adding cards is not enabled on this application. Please contact administrator',
+	'successfully_created'=>'Successfully Created',
+	'subscription_expire_soon'=>'Your subscription will expire soon. Our records indicate that no payment method has been associated with this subscripton account. Go to the subscription plans and provide the required payment information to renew your subscription for channel creation & uploading video and continue using your profile uninterrupted.',
+
+	'your_notification_expired'=>'Your notification has expired. To keep using channel creation  & upload video without interruption, subscribe any one of our plans and continue to upload',
+	'email_verified_success'=>'Email verified successfully!!!',
+	'user_record_not_found'=>'"User Record Not Found',
+	'something_email_verification_missing'=>'Something Missing From Email verification',
+	'subscription_details_not_found'=>'Subscription Details Not Found',
+	'payment_id_session_not_found'=>'Payment ID - Session Not Found',
+	'payment_failed_error'=>'Payment Failed',
+	'payment_not_approved_contact_admin'=>'Payment is not approved. Please contact admin',
+	'video_details_not_found'=>'Video Details Not Found',
+	'ppv_video_details_not_found'=>'PPV || Video Details Not found',
+	'permission_denied'=>'Permission Denied',
+	'verification_code_mismatched'=>'Verification Code Mismatched',
+	'invalid_input'=>'Invalid input.',
+	'email_address_already_use'=>'Email address is already in use.',
+	'token_expiry'=>'Token expired.',
+	'invalid_token'=>'Invalid token.',
+	'invalid_email_password'=>'Invalid email or password.',
+	'all_fields_required'=>'All fields are required.',
+	'current_password_incorrect'=>'The current password is incorrect.',
+	'password_donot_match'=>'The passwords do not match',
+	'problem_with_server_try_again'=>'There was a problem with the server. Please try again.',
+	'email_not_activated'=>'Email is not activated.',
+	'invalid_refresh_token'=>'Invalid refresh token.',
+	'something_went_wrong_error'=>'Oops! Something went wrong in mail configuration',
+	'email_not_registered'=>'This Email is not registered',
+	'not_valid_social_register'=>'Not a valid social registration User',
+	'password_doesnot_match'=>'Password doesn\'t match',
+	'provider_id_not_found'=>'Provider ID not found',
+	'user_id_not_found'=>'User ID not found',
+	'something_went_wrong_paying_amount'=>'Something went wrong while paying amount.',
+	'account_disabled_admin'=>'Account is disabled by admin',
+	'video_already_added_history'=>'The video is already added in history.',
+	'something_error_try_again'=>'Something went Wrong.Please try again later!.',
+	'default_card_not_available_add_card'=>'Default card is not available. Please add a card',
+	'something_went_wrong_error_payment'=>'Something went wrong with Payment Configuration',
+
+	'payment_not_completed_pay_again'=>'Payment is not completed. Please try to pay Again',
+
+	'success'=>'Success',
+
+	'unknown_error_occured'=>'Unknown error occurred.',
+
+	'successfully_logged_in'=>'Successfully logged in.',
+
+	'successfully_logged_out'=>'Successfully logged out.',
+
+	'successfully_sign_up'=>'Successfully signed up.',
+
+	'mail_sent_successfully'=>'Mail sent successfully',
+
+	'favourite_provider_delete'=>'Favourite provider deleted successfully',
+
+	'payment_mode_changed'=>'Payment mode changed successfully',
+
+	'service_accepted'=>'Service Accepted',
+
+	'provider_started'=>'provider started',
+
+	'arrived_service_location'=>'Arrived to service location',
+
+	'service_started'=>'Service started',
+
+	'service_completed'=>'Service completed',
+
+	'user_rating_done'=>'User rating done',
+
+	'request_cancelled_successfully'=>'Request cancelled successfully.',
+
+	'wishlist_added'=>'Wishlist added.',
+
+	'payment_confirmed_successfully'=>'Payment confirmed successfully.',
+
+	'history_added'=>'History added.',
+
+	'history_deleted_successfully'=>'History deleted Successfully.',
+
+	'payment_successful_done'=>'Payment successfully done',
+
+	'no_provider_available'=>'No Provider Available',
+
+	'no_provider_available_take_service'=>'No provider available to take the Service.',
+
+	'request_complted_successfully'=>'Request completed successfully',
+
+	'new_request'=>'New Request',
 );

@@ -31,6 +31,7 @@
 
                             <div class="col-sm-10">
                                 <input type="text" required name="message" class="form-control" id="message" placeholder="{{tr('enter_push_message')}}">
+
                             </div>
                         </div>
 

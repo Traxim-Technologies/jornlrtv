@@ -53,6 +53,7 @@
             <div class="col-md-6 col-md-offset-3">
                 <button class="btn btn-success btn-block mb15" type="submit">
                         <span><i class="fa fa-btn fa-refresh"></i> {{tr('reset')}}</span>
+
                 </button>
             </div>
             

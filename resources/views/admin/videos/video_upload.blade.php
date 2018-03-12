@@ -88,6 +88,7 @@
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
                         <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span> {{tr('mandatory_fields_fill_check')}}</small></div> 
+
                         <hr>
                         <div class="">
                             <input type="hidden" name="id" id="main_id">

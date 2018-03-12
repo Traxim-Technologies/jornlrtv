@@ -35,6 +35,7 @@ class SocialAuthController extends Controller
 
 	    	if(!$request->has('code') || $request->has('denied')) {
 			    return redirect('/')->with('flash_error' , tr('permission_denied');
+
 			}
 
 		}

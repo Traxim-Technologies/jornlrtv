@@ -28,7 +28,8 @@
 
                     <a href="{{url('/')}}" class="btn btn-default" target="_blank" style="color:black"> 
                         <i class="fa fa-external-link"></i>
-                        <b>{{tr('visit_website')}}</b>
+
+                        <b>{{tr('visit_site')}}</b>
                         <span class="label label-warning"></span>
                     </a>
 

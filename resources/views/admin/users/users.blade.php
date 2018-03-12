@@ -15,6 +15,7 @@
         <li><span class="text-red"><i class="fa fa-times"></i></span> - {{tr('unpaid_subscribed_user')}}</li>
         <li><b>{{tr('redeems')}} - </b> {{tr('current_wallet_amount_user')}} </li>
         <li><b>{{tr('validity_days')}} - </b> {{tr('expiry_days_subscription_user')}}</li>
+
     </ul>
     
 </div>

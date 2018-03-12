@@ -572,7 +572,9 @@ h4 {
                                 <tr>
                                   <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top"><h1><span style="color:#FFFFFF"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif"><span style="font-size:52px"><strong>{{tr('it_is_easy')}}</strong></span><br>
                                       <span style="font-size:32px">{{tr('to_start')}}<br>
-                                      enjoying </span></span><span style="font-size:32px">{{Setting::get('site_name' , tr('site_name'))}}</span></span></h1>
+
+                                      {{tr('enjoying')}} </span></span><span style="font-size:32px">{{Setting::get('site_name' , tr('site_name'))}}</span></span></h1>
+
                                       <br>
                                       </td>
                                 </tr>
@@ -598,6 +600,7 @@ h4 {
                                 <tr>
                                   <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " title="JOIN FREE FOR MONTH"  target='_blank' href="{{route('user.dashboard')}}" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">
                                      {{tr('visit_our_website')}}
+
                                   </a></td>
                                 </tr>
                               </tbody>
@@ -664,6 +667,7 @@ h4 {
                               <tbody>
                                 <tr>
                                   <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " href="{{ $link = url('/admin/password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}" target="_blank" style="font-weight: normal;letter-spacing: 2px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">>{{tr('reset_now')}}</a>
+
 
                                   </td>
                                 </tr>

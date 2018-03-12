@@ -97,7 +97,7 @@
 
 
                                         <div class="form-group">
-                                            <label for="mobile">{{tr('dob')}}</label>
+                                            <label for="dob">{{tr('dob')}}</label>
                                             <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob">
                                         </div>
 
@@ -128,6 +128,7 @@
                     @if(count($wishlist->items) > 0)
                         
                         <div class="mylist-profile col-sm-5">
+                            
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
                             <ul class="history-list profile-history">
