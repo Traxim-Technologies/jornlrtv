@@ -4261,9 +4261,7 @@ class UserApiController extends Controller {
 
                     if ($video->is_approved == 1) {
 
-
                         if ($video->video_resolutions) {
-
 
                             $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
                         }
@@ -4279,22 +4277,36 @@ class UserApiController extends Controller {
 
                     if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
 
-                        $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
+                        $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
 
                         // dd($videoPath);
-                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : ['original'];
+
+
+                        $videoPath = [];
+
+                        foreach ($videos as $key => $value) {
+
+                            $videoPath[] = ['file' => $value, 'label' => $video_pixels[$key]];
+
+                        }
 
 
                     }
 
-
                 } else {
 
+                    $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
 
-                    $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
+                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : ['original'];
 
-                    // dd($videoPath);
-                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                    $videoPath = [];
+
+                    foreach ($videos as $key => $value) {
+
+                        $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , ), 'label' => $video_pixels[$key]];
+
+                    }
                     
                 }
 

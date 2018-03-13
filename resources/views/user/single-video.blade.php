@@ -1089,19 +1089,6 @@ textarea[name=comments] {
                                 } else {
 
                                     var videoPath = "{{$videoPath}}";
-                                    var videoPixels = "{{$video_pixels}}";
-
-                                    var path = [];
-
-                                    var splitVideo = videoPath.split(',');
-
-                                    var splitVideoPixel = videoPixels.split(',');
-
-
-                                    for (var i = 0 ; i < splitVideo.length; i++) {
-
-                                        path.push({file : splitVideo[i], label : splitVideoPixel[i]});
-                                    }
 
                                     //alert("HELELo");
                                 }
@@ -1109,7 +1096,7 @@ textarea[name=comments] {
 
                                 playerInstance.setup({
                                     
-                                    sources: path,
+                                    sources: videoPath,
                                     image: "{{$video->default_image}}",
                                     width: "100%",
                                     aspectratio: "16:9",
