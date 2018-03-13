@@ -894,6 +894,179 @@
             }
         }
 
+        /**
+         * Function name: RTMP Secure video url 
+         *
+         * @description: used to convert the video to rtmp secure link
+         *
+         * @created: vidhya R
+         * 
+         * @edited: 
+         *
+         * @param string $video_name
+         *
+         * @param string $video_link
+         *
+         * @return RTMP SECURE LINK or Normal video link
+         */
+
+        public static function convert_rtmp_to_secure($video_name  = "", $video_link = "") {
+
+            if(Setting::get('RTMP_SECURE_VIDEO_URL') != "") {
+
+                // HLS_STREAMING_URL
+            
+                // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
+
+                $e = date('U')+20; 
+
+                $secret_word = "cgshlockkey"; 
+
+                $user_remote_address = $_SERVER['REMOTE_ADDR']; 
+
+                $md5 = base64_encode(md5($secret_word . $user_remote_address . $e , true)); 
+
+                $md5 = strtr($md5, '+/', '-_'); 
+
+                $md5 = str_replace('=', '', $md5); 
+
+                $rtmp = $video_name."?token=".$md5."&e=".$e; 
+                
+                $secure_url = Setting::get('RTMP_SECURE_VIDEO_URL').$rtmp;
+
+                return $secure_url; 
+            
+            } elseif (Setting::get('streaming_url')) {
+
+                $rtmp_video_url = Setting::get('streaming_url').$video_name;
+
+                return $rtmp_video_url;
+
+            } else {
+
+                return $video_link;
+
+            }
+            
+        }
+
+        /**
+         * Function name: RTMP Secure video url 
+         *
+         * @description: used to convert the video to rtmp secure link
+         *
+         * @created: vidhya R
+         * 
+         * @edited: 
+         *
+         * @param string $video_name
+         *
+         * @param string $video_link
+         *
+         * @return RTMP SECURE LINK or Normal video link
+         */
+
+        public static function convert_hls_to_secure($video_name  = "", $video_link = "") {
+
+            if(Setting::get('HLS_SECURE_VIDEO_URL') != "") {
+
+
+                // HLS_STREAMING_URL
+            
+                // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
+
+                $expires = date('U')+20;
+
+                // secure_link_md5 "$secure_link_expires$uri$remote_addr cgshlockkey";
+
+                $secret_word = "cgshlockkey"; 
+ 
+                $user_remote_address = $_SERVER['REMOTE_ADDR']; 
+
+                Log::info("user_remote_address".$user_remote_address);
+
+                $md5 = md5("$expires/$video_name$user_remote_address $secret_word", true);
+
+                $md5 = base64_encode($md5); 
+
+                $md5 = strtr($md5, '+/', '-_'); 
+
+                $md5 = str_replace('=', '', $md5); 
+
+                $hls = $video_name."?md5=".$md5."&expires=".$expires; 
+                
+                $secure_url = Setting::get('HLS_SECURE_VIDEO_URL').$hls;
+
+                return $secure_url; 
+            
+            } elseif (Setting::get('HLS_STREAMING_URL')) {
+
+                $hls_video_url = Setting::get('HLS_STREAMING_URL').$video_name;
+
+                return $hls_video_url;
+
+            } else {
+
+                return $video_link;
+
+            }
+            
+        }
+
+        /**
+         * Function name: RTMP Secure video url 
+         *
+         * @description: used to convert the video to rtmp secure link
+         *
+         * @created: vidhya R
+         * 
+         * @edited: 
+         *
+         * @param string $video_name
+         *
+         * @param string $video_link
+         *
+         * @return RTMP SECURE LINK or Normal video link
+         */
+
+        public static function convert_smil_to_secure($smil_file  = "", $smil_link = "") {
+
+            if(Setting::get('VIDEO_SMIL_URL') != "") {
+            
+                // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
+
+                $expires = date('U')+20;
+
+                // secure_link_md5 "$secure_link_expires$uri$remote_addr cgshlockkey";
+
+                $secret_word = "cgshlockkey"; 
+ 
+                $user_remote_address = $_SERVER['REMOTE_ADDR']; 
+
+                Log::info("user_remote_address".$user_remote_address);
+
+                $md5 = md5("$expires/$smil_file$user_remote_address $secret_word", true);
+
+                $md5 = base64_encode($md5); 
+
+                $md5 = strtr($md5, '+/', '-_'); 
+
+                $md5 = str_replace('=', '', $md5); 
+
+                $smil = $smil_file."?md5=".$md5."&expires=".$expires; 
+                
+                $secure_url = Setting::get('VIDEO_SMIL_URL').$smil;
+
+                return $secure_url; 
+            
+            } else {
+
+                return $smil_link;
+
+            }
+            
+        }
+
     }
 
 
