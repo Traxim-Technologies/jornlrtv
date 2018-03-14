@@ -4265,6 +4265,7 @@ class UserApiController extends Controller {
 
                             $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
                         } else {
+
                             $videoStreamUrl =  Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
                         }
 
@@ -4304,12 +4305,18 @@ class UserApiController extends Controller {
 
                     $videoPath = [];
 
-                    foreach ($videos as $key => $value) {
+                    Log::info("VIDEOS LIST".print_r($videos , true));
 
-                        $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+                    if(count($videos) > 0) {
+
+                        foreach ($videos as $key => $value) {
+
+                            $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
 
 
-                        array_push($videoPath, $videoPathData);
+                            array_push($videoPath, $videoPathData);
+                       
+                        }
                     }
 
                     $videoPath =  json_decode(json_encode($videoPath));
