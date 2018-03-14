@@ -93,186 +93,186 @@ a.mcnButton {
 }
 
 body, #bodyTable {
-    /*@editable*/background-color: #1F2934;
+    background-color: #1F2934;
 }
 
 #bodyCell {
-    /*@editable*/border-top: 0;
+    border-top: 0;
 }
 
 h1 {
-    /*@editable*/color: #202020;
-    /*@editable*/font-family: Georgia;
-    /*@editable*/font-size: 30px;
-    /*@editable*/font-style: normal;
-    /*@editable*/font-weight: normal;
-    /*@editable*/line-height: 125%;
-    /*@editable*/letter-spacing: normal;
-    /*@editable*/text-align: left;
+    color: #202020;
+    font-family: Georgia;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 125%;
+    letter-spacing: normal;
+    text-align: left;
 }
 
 h2 {
-    /*@editable*/color: #202020;
-    /*@editable*/font-family: Helvetica;
-    /*@editable*/font-size: 24px;
-    /*@editable*/font-style: normal;
-    /*@editable*/font-weight: bold;
-    /*@editable*/line-height: 150%;
-    /*@editable*/letter-spacing: normal;
-    /*@editable*/text-align: center;
+    color: #202020;
+    font-family: Helvetica;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 150%;
+    letter-spacing: normal;
+    text-align: center;
 }
 
 h3 {
-    /*@editable*/color: #989898;
-    /*@editable*/font-family: Helvetica;
-    /*@editable*/font-size: 24px;
-    /*@editable*/font-style: normal;
-    /*@editable*/font-weight: bold;
-    /*@editable*/line-height: 150%;
-    /*@editable*/letter-spacing: normal;
-    /*@editable*/text-align: center;
+    color: #989898;
+    font-family: Helvetica;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 150%;
+    letter-spacing: normal;
+    text-align: center;
 }
 
 h4 {
-    /*@editable*/color: #202020;
-    /*@editable*/font-family: Helvetica;
-    /*@editable*/font-size: 18px;
-    /*@editable*/font-style: normal;
-    /*@editable*/font-weight: bold;
-    /*@editable*/line-height: 200%;
-    /*@editable*/letter-spacing: normal;
-    /*@editable*/text-align: center;
+    color: #202020;
+    font-family: Helvetica;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 200%;
+    letter-spacing: normal;
+    text-align: center;
 }
 
 #templatePreheader {
-    /*@editable*/background-color: #bf0b00;
-    /*@editable*/background-image: none;
-    /*@editable*/background-repeat: no-repeat;
-    /*@editable*/background-position: center;
-    /*@editable*/background-size: cover;
-    /*@editable*/border-top: 0;
-    /*@editable*/border-bottom: 0;
-    /*@editable*/padding-top: 0px;
-    /*@editable*/padding-bottom: 15px;
+    background-color: #bf0b00;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top: 0;
+    border-bottom: 0;
+    padding-top: 0px;
+    padding-bottom: 15px;
 }
 
 #templatePreheader .mcnTextContent, #templatePreheader .mcnTextContent p {
-    /*@editable*/color: #656565;
-    /*@editable*/font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
-    /*@editable*/font-size: 12px;
-    /*@editable*/line-height: 150%;
-    /*@editable*/text-align: left;
+    color: #656565;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+    font-size: 12px;
+    line-height: 150%;
+    text-align: left;
 }
 
 #templatePreheader .mcnTextContent a, #templatePreheader .mcnTextContent p a {
-    /*@editable*/color: #656565;
-    /*@editable*/font-weight: normal;
-    /*@editable*/text-decoration: underline;
+    color: #656565;
+    font-weight: normal;
+    text-decoration: underline;
 }
 
 #templateHeader {
-    /*@editable*/background-color: #373737;
-    /*@editable*/background-image: url("https://gallery.mailchimp.com/8d6214bae878ba445c5fcda7a/images/b933391a-6e44-4ef2-b16f-dd52fcdacac0.jpg");
-    /*@editable*/background-repeat: no-repeat;
-    /*@editable*/background-position: center;
-    /*@editable*/background-size: cover;
-    /*@editable*/border-top: 0;
-    /*@editable*/border-bottom: 0;
-    /*@editable*/padding-top: 60px;
-    /*@editable*/padding-bottom: 60px;
+    background-color: #373737;
+    background-image: url("https://gallery.mailchimp.com/8d6214bae878ba445c5fcda7a/images/b933391a-6e44-4ef2-b16f-dd52fcdacac0.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top: 0;
+    border-bottom: 0;
+    padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 #templateHeader .mcnTextContent, #templateHeader .mcnTextContent p {
-    /*@editable*/color: #202020;
-    /*@editable*/font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
-    /*@editable*/font-size: 18px;
-    /*@editable*/line-height: 150%;
-    /*@editable*/text-align: left;
+    color: #202020;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+    font-size: 18px;
+    line-height: 150%;
+    text-align: left;
 }
 
 #templateHeader .mcnTextContent a, #templateHeader .mcnTextContent p a {
-    /*@editable*/color: #202020;
-    /*@editable*/font-weight: normal;
-    /*@editable*/text-decoration: underline;
+    color: #202020;
+    font-weight: normal;
+    text-decoration: underline;
 }
 
 #templateBody {
-    /*@editable*/background-color: #373737;
-    /*@editable*/background-image: none;
-    /*@editable*/background-repeat: no-repeat;
-    /*@editable*/background-position: center;
-    /*@editable*/background-size: cover;
-    /*@editable*/border-top: 0;
-    /*@editable*/border-bottom: 0;
-    /*@editable*/padding-top: 20px;
-    /*@editable*/padding-bottom: 20px;
+    background-color: #373737;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top: 0;
+    border-bottom: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 #templateBody .mcnTextContent, #templateBody .mcnTextContent p {
-    /*@editable*/color: #666666;
-    /*@editable*/font-family: Georgia;
-    /*@editable*/font-size: 16px;
-    /*@editable*/line-height: 150%;
-    /*@editable*/text-align: center;
+    color: #666666;
+    font-family: Georgia;
+    font-size: 16px;
+    line-height: 150%;
+    text-align: center;
 }
 
 #templateBody .mcnTextContent a, #templateBody .mcnTextContent p a {
-    /*@editable*/color: #999999;
-    /*@editable*/font-weight: normal;
-    /*@editable*/text-decoration: underline;
+    color: #999999;
+    font-weight: normal;
+    text-decoration: underline;
 }
 
 #templateColumns {
-    /*@editable*/background-color: #6d7d81;
-    /*@editable*/background-image: none;
-    /*@editable*/background-repeat: no-repeat;
-    /*@editable*/background-position: center;
-    /*@editable*/background-size: cover;
-    /*@editable*/border-top: 0;
-    /*@editable*/border-bottom: 0;
-    /*@editable*/padding-top: 0px;
-    /*@editable*/padding-bottom: 0px;
+    background-color: #6d7d81;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top: 0;
+    border-bottom: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 #templateColumns .columnContainer .mcnTextContent, #templateColumns .columnContainer .mcnTextContent p {
-    /*@editable*/color: #202020;
-    /*@editable*/font-family: Helvetica;
-    /*@editable*/font-size: 16px;
-    /*@editable*/line-height: 100%;
-    /*@editable*/text-align: center;
+    color: #202020;
+    font-family: Helvetica;
+    font-size: 16px;
+    line-height: 100%;
+    text-align: center;
 }
 
 #templateColumns .columnContainer .mcnTextContent a, #templateColumns .columnContainer .mcnTextContent p a {
-    /*@editable*/color: #202020;
-    /*@editable*/font-weight: normal;
-    /*@editable*/text-decoration: underline;
+    color: #202020;
+    font-weight: normal;
+    text-decoration: underline;
 }
 
 #templateFooter {
-    /*@editable*/background-color: #1F2934;
-    /*@editable*/background-image: none;
-    /*@editable*/background-repeat: no-repeat;
-    /*@editable*/background-position: center;
-    /*@editable*/background-size: cover;
-    /*@editable*/border-top: 0;
-    /*@editable*/border-bottom: 0;
-    /*@editable*/padding-top: 30px;
-    /*@editable*/padding-bottom: 20px;
+    background-color: #1F2934;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-top: 0;
+    border-bottom: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
 }
 
 #templateFooter .mcnTextContent, #templateFooter .mcnTextContent p {
-    /*@editable*/color: #FFFFFF;
-    /*@editable*/font-family: Helvetica;
-    /*@editable*/font-size: 12px;
-    /*@editable*/line-height: 150%;
-    /*@editable*/text-align: center;
+    color: #FFFFFF;
+    font-family: Helvetica;
+    font-size: 12px;
+    line-height: 150%;
+    text-align: center;
 }
 
 #templateFooter .mcnTextContent a, #templateFooter .mcnTextContent p a {
-    /*@editable*/color: #FFFFFF;
-    /*@editable*/font-weight: normal;
-    /*@editable*/text-decoration: none;
-    /*@editable*/cursor:pointer;
+    color: #FFFFFF;
+    font-weight: normal;
+    text-decoration: none;
+    cursor:pointer;
 }
 .footer-menu li {
     border-left: 1px solid #fff;
@@ -389,87 +389,87 @@ body {
 @media only screen and (max-width: 480px) {
 
 h1 {
-    /*@editable*/font-size: 22px !important;
-    /*@editable*/line-height: 125% !important;
+    font-size: 22px !important;
+    line-height: 125% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 h2 {
-    /*@editable*/font-size: 20px !important;
-    /*@editable*/line-height: 125% !important;
+    font-size: 20px !important;
+    line-height: 125% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 h3 {
-    /*@editable*/font-size: 18px !important;
-    /*@editable*/line-height: 125% !important;
+    font-size: 18px !important;
+    line-height: 125% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 h4 {
-    /*@editable*/font-size: 16px !important;
-    /*@editable*/line-height: 150% !important;
+    font-size: 16px !important;
+    line-height: 150% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 .mcnBoxedTextContentContainer .mcnTextContent, .mcnBoxedTextContentContainer .mcnTextContent p {
-    /*@editable*/font-size: 14px !important;
-    /*@editable*/line-height: 150% !important;
+    font-size: 14px !important;
+    line-height: 150% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 #templatePreheader {
-    /*@editable*/display: block !important;
+    display: block !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 #templatePreheader .mcnTextContent, #templatePreheader .mcnTextContent p {
-    /*@editable*/font-size: 14px !important;
-    /*@editable*/line-height: 150% !important;
+    font-size: 14px !important;
+    line-height: 150% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 #templateHeader .mcnTextContent, #templateHeader .mcnTextContent p {
-    /*@editable*/font-size: 16px !important;
-    /*@editable*/line-height: 150% !important;
+    font-size: 16px !important;
+    line-height: 150% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 #templateBody .mcnTextContent, #templateBody .mcnTextContent p {
-    /*@editable*/font-size: 16px !important;
-    /*@editable*/line-height: 150% !important;
+    font-size: 16px !important;
+    line-height: 150% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 #templateColumns .columnContainer .mcnTextContent, #templateColumns .columnContainer .mcnTextContent p {
-    /*@editable*/font-size: 16px !important;
-    /*@editable*/line-height: 150% !important;
+    font-size: 16px !important;
+    line-height: 150% !important;
 }
 }
 
 @media only screen and (max-width: 480px) {
 
 #templateFooter .mcnTextContent, #templateFooter .mcnTextContent p {
-    /*@editable*/font-size: 14px !important;
-    /*@editable*/line-height: 150% !important;
+    font-size: 14px !important;
+    line-height: 150% !important;
 }
 }
 </style>
@@ -570,7 +570,7 @@ h4 {
                             <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                               <tbody>
                                 <tr>
-                                  <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top"><h1><span style="color:#FFFFFF"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif"><span style="font-size:52px"><strong>{{tr('it_is_easy')}}</strong></span><br>
+                                  <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top"><h1><span style="color:#FFFFFF"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif"><span style="font-size:52px"><strong>{{tr(it_is_easy')}}</strong></span><br>
                                       <span style="font-size:32px">{{tr('to_start')}}<br>
 
                                       {{tr('enjoying')}} </span></span><span style="font-size:32px">{{Setting::get('site_name' , tr('site_name'))}}</span></span></h1>
@@ -599,8 +599,8 @@ h4 {
                               <tbody>
                                 <tr>
                                   <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " title="JOIN FREE FOR MONTH"  target='_blank' href="{{route('user.dashboard')}}" style="font-weight: normal;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">
-                                     {{tr('visit_our_website')}}
 
+                                      {{tr('visit_our_Website')}}
                                   </a></td>
                                 </tr>
                               </tbody>
@@ -641,7 +641,11 @@ h4 {
                             <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                               <tbody>
                                 <tr>
+<<<<<<< HEAD
                                   <td class="mcnTextContent" style="padding: 0px 18px 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-style: normal; font-weight: normal; line-height: 150%; text-align: center;" valign="top"><h2 class="null" style="text-align: center;"><span style="font-size:24px"><span style="color: #FFFFFF;"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif">"{{tr('recently_requested_password')}}{{Setting::get('site_name' , tr('site_name'))}} {{tr('click_reset_button')}}"</span></span></span></h2>
+=======
+                                  <td class="mcnTextContent" style="padding: 0px 18px 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-style: normal; font-weight: normal; line-height: 150%; text-align: center;" valign="top"><h2 class="null" style="text-align: center;"><span style="font-size:24px"><span style="color: #FFFFFF;"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif">"{{tr('you_recently_requested')}}{{Setting::get('site_name' , tr('site_name'))}}{{tr('click_reset_button')}}"</span></span></span></h2>
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                   <br>
                                   </td>
                                 </tr>
@@ -666,8 +670,12 @@ h4 {
                           <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:18px;" class="mcnButtonBlockInner" valign="top" align="center"><table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #BF0B00;" cellspacing="0" cellpadding="0" border="0">
                               <tbody>
                                 <tr>
+<<<<<<< HEAD
                                   <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " href="{{ $link = url('/admin/password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}" target="_blank" style="font-weight: normal;letter-spacing: 2px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">>{{tr('reset_now')}}</a>
 
+=======
+                                  <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " href="{{ $link = url('/admin/password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}" target="_blank" style="font-weight: normal;letter-spacing: 2px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">>{{tr('reset_Now')}}</a>
+>>>>>>> remotes/codegama/streamtube-v1.2-package/master
 
                                   </td>
                                 </tr>

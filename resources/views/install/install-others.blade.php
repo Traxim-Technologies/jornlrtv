@@ -13,7 +13,7 @@
 
 					<h4 style="color:brown"><strong>{{tr('note')}} : </strong></h4>
 
-					<p class="text-justify">{{tr('configure_message_note')}}
+					<p class="text-justify">{{tr('installation_process_content')}}
 					</p>
 
 					</div>

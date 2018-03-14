@@ -21,6 +21,7 @@
 
         <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">{{tr('un_checked')}}</span> -{{tr('user_create_only_one_channel')}} <span style="color: #a735a7">{{tr('note')}}: {{tr('Previously_note_channel')}} </span></li>
 
+        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">{{tr('un_checked')}}</span>{{tr('user_create_only_one_channel')}}<span style="color: #a735a7">{{tr('note')}} : {{tr('Previously_note_channel')}}</span></li>
 
     </ul>
     
@@ -70,11 +71,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sitename">{{tr('site_name')}}</label>
-<<<<<<< HEAD
-                                        <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="{{tr('enter_sitename')}}">
-=======
+
                                         <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="{{tr('enter_site_name')}}">
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                     </div>
                                 </div>
 
@@ -93,11 +91,7 @@
 
                                         <label for="site_logo">{{tr('site_logo')}}</label>
                                         <input type="file" id="site_logo" name="site_logo" accept="image/png, image/jpeg">
-<<<<<<< HEAD
-                                        <p class="help-block">{{tr('please_enter_png_image')}}</p>
-=======
                                         <p class="help-block">{{tr('image_notes')}}</p>
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -107,11 +101,8 @@
                                         @endif
                                         <label for="site_icon">{{tr('site_icon')}}</label>
                                         <input type="file" id="site_icon" name="site_icon" accept="image/png, image/jpeg">
-<<<<<<< HEAD
-                                        <p class="help-block">{{tr('please_enter_png_image')}}</p>
-=======
+
                                         <p class="help-block">{{tr('image_notes')}}</p>
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                     </div>
                                 </div>
 
@@ -227,8 +218,6 @@
 
                           </div>
                           <!-- /.box-body -->
-
-<<<<<<< HEAD
                           <div class="box-footer">
                             @if(Setting::get('admin_delete_control') == 1) 
                                 <button type="submit" class="btn btn-primary" disabled>{{tr('submit')}}</button>
@@ -259,10 +248,6 @@
 
                                         <input type="number" step="any" min="1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('viewers_count_per_video')  }}" name="viewers_count_per_video" id="viewers_count_per_video" placeholder="{{tr('viewers_count_per_video')}}" pattern="[0-9]{1,}">
                                     </div>
-=======
-                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="{{tr('enter_streaming_url')}}">
-                                    </div> 
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                 </div>
 
                                 
@@ -275,15 +260,15 @@
 
                                         <input type="number" step="any" min="0.1" pattern="[0-9]+(.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places and/or %" class="form-control" value="{{Setting::get('amount_per_video')  }}" name="amount_per_video" id="amount_per_video" placeholder="{{tr('amount_per_video')}}" pattern="[0-9]{1,}">
                                     </div>   
-                                </div>
-
                                 
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sitename">{{tr('admin_commission')}} {{tr('in_percentage')}}</label>
                                         <input type="text" class="form-control" name="admin_commission" value="{{ Setting::get('admin_commission')  }}"  id="admin_commission" placeholder="{{tr('admin_commission')}}">
                                     </div>
+                               
                                 </div>
 
                                 <div class="col-md-6">
@@ -294,7 +279,7 @@
                                 
                                 </div>      
 
-                                 <div class="col-md-6">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sitename">{{tr('admin_ppv_commission')}} {{tr('in_percentage')}}</label>
                                         <input type="text" class="form-control" name="admin_ppv_commission" value="{{ Setting::get('admin_ppv_commission')  }}"  id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
@@ -339,20 +324,7 @@
                                     </div>   
                                 </div>
 
-                                <!-- <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="post_max_size">{{tr('post_max_size_label')}}</label>
-                                        <input type="text" class="form-control" name="post_max_size" value="{{ Setting::get('post_max_size')  }}" id="post_max_size" placeholder="{{tr('post_max_size_label')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="upload_max_size">{{tr('max_upload_size_label')}}</label>
-                                        <input type="text" class="form-control" name="upload_max_size" value="{{Setting::get('upload_max_size')  }}" id="upload_max_size" placeholder="{{tr('max_upload_size_label')}}">
-                                    </div>
-                                </div> -->
-
+                                
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="payment_type">{{tr('payment_type')}}</label>
@@ -615,9 +587,6 @@
                     
                     </div>
 
-<<<<<<< HEAD
-=======
-                    
 
                     <div class="tab-pane" id="other_settings">
 
@@ -689,9 +658,6 @@
                     
                     </div>
 
-                    
-
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
                     <div class="tab-pane" id="email_settings">
                         <form action="{{route('admin.email.settings.save')}}" method="POST" enctype="multipart/form-data" role="form">
                             
@@ -782,7 +748,6 @@
                         </form>
 
                     </div>
-
 
                     <div class="tab-pane" id="payment_settings">
 

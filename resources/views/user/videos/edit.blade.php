@@ -20,7 +20,7 @@
                 <div class="wizard-container">
                     <div class="card wizard-card" data-color="red" id="wizard">
                         <form action="{{ (Setting::get('admin_delete_control')) ? '' : route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">
-                    <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orangetr", "red", "purple"             -->
+                    <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
 
                           <div class="wizard-header">
                               <h3 class="wizard-title">

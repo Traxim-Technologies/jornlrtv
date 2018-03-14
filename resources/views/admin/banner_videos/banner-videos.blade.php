@@ -17,7 +17,7 @@
 	<div class="row">
         <div class="col-xs-12">
 
-        <p class="text-justify" style="color:brown;"><b>{{tr('note')}}: </b>{{tr('banner_video_upload_notes')}}</p>
+        <p class="text-justify" style="color:brown;"><b>{{tr('note')}} : </b>{{tr('banner_video_content')}}</p>
           <div class="box box-primary">
 
           	<div class="box-header label-primary">
