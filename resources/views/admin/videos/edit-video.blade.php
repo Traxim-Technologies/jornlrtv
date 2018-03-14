@@ -87,7 +87,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
-                        <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
+                        <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
                         <hr>
                         <div class="">
                             <input type="hidden" name="id" id="main_id" value="{{$video->video_tape_id}}">

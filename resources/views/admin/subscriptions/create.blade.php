@@ -75,7 +75,7 @@
 
                             <!-- <div class="col-sm-10"> -->
 
-                                <textarea id="ckeditor" name="description" required class="form-control" placeholder="{{tr('description')}}.">{{old('description')}}</textarea>
+                                <textarea id="ckeditor" name="description" required class="form-control" placeholder="{{tr('description')}}">{{old('description')}}</textarea>
 
                             <!-- </div> -->
                             

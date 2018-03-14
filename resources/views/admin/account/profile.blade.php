@@ -46,7 +46,7 @@
 
                         <li class="list-group-item">
 
-                            <a href="{{route('master.login')}}" class="btn btn-success">Login as a User</a>
+                            <a href="{{route('master.login')}}" class="btn btn-success">{{tr('login_as_user')}}</a>
 
                         </li>
                         

@@ -40,7 +40,7 @@
 
 							            			<div class="jp-card-logo jp-card-visa">
 
-							            				Visa
+							            				{{tr('visa')}}
 
 							            			</div>
 

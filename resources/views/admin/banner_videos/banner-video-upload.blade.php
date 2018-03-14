@@ -78,7 +78,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
-                        <div style="margin-left: 15px"><small>Note : <span style="color:red">*</span> fields are mandatory. Please fill and click next.</small></div> 
+                        <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
                         <hr>
                         <div class="">
                             <input type="hidden" name="id" id="main_id">
@@ -138,7 +138,7 @@
                                 <div class="form-group" style="display: none;" id="publish_time_div">
                                     <label for="datepicker" class="">{{tr('publish_time')}} * </label>
 
-                                    <input type="text" name="publish_time" placeholder="Select the Publish Time i.e YYYY-MM-DD" class="form-control pull-right" id="datepicker">
+                                    <input type="text" name="publish_time" placeholder="{{tr('select_publish_time')}}" class="form-control pull-right" id="datepicker">
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -225,7 +225,7 @@
                     
                     <div class="tab-pane" role="tabpanel" id="complete">
                         <!-- <h3>{{tr('upload_video_image')}}</h3> -->
-                        <div style="margin-left: 15px"><small>Note : {{tr('select_image_short_notes')}}</small></div> 
+                        <div style="margin-left: 15px"><small>{{tr('note')}} : {{tr('select_image_short_notes')}}</small></div> 
                         <hr>
                         <div class="row">
                            <!--  <h4 class="info-text">{{tr('select_image_short_notes')}}</h4> -->

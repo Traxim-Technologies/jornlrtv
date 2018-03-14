@@ -74,7 +74,7 @@
 											    </tr>
 
 											    <tr  class="danger">
-												    <td>Amount</td>
+												    <td>{{tr('amount')}}</td>
 												    <td> {{Setting::get('currency')}} {{$video->ppv_amount}}</td>
 											    </tr>
 											    <!-- <tr>

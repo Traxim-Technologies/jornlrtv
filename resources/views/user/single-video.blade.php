@@ -321,7 +321,7 @@ textarea[name=comments] {
                                     </div>
                                 @endforeach
                                 <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
-                                <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                <p class="help-block"><small>{{tr('single_video_content')}}</small></p>
                                 <div class="pull-right">
                                     <button class="btn btn-success btn-sm">{{tr('submit')}}</button>
                                 </div>
@@ -1088,22 +1088,14 @@ textarea[name=comments] {
 
                                 } else {
 
-                                    var videoPath = "{{$videoPath}}";
-                                    var videoPixels = "{{$video_pixels}}";
+                                    path = [];
 
-                                    var path = [];
+                                    @foreach($videoPath as $path)
 
-                                    var splitVideo = videoPath.split(',');
+                                        path.push({file : "{{$path->file}}", label : "{{$path->label}}"});
 
-                                    var splitVideoPixel = videoPixels.split(',');
+                                    @endforeach
 
-
-                                    for (var i = 0 ; i < splitVideo.length; i++) {
-
-                                        path.push({file : splitVideo[i], label : splitVideoPixel[i]});
-                                    }
-
-                                    //alert("HELELo");
                                 }
 
 

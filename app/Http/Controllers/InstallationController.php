@@ -30,10 +30,10 @@ class InstallationController extends Controller {
         if($settings == INSTALL_COMPLETE) {
             // return view('admin.auth.login')->with('flash_success' , "Installation Process is done"); 
 
-            return redirect()->route('admin.login')->with('flash_success' , "Installation Process is done");
+            return redirect()->route('admin.login')->with('flash_success' , tr('installation_done'));
         }
         
-        return redirect()->route('admin.login')->with('flash_success' , "Installation Process is done"); 
+        return redirect()->route('admin.login')->with('flash_success' , tr('installation_done')); 
     
     }
 
