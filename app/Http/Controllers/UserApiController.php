@@ -4255,7 +4255,7 @@ class UserApiController extends Controller {
 
             if ($video->publish_status == 1) {
 
-                $hls_video = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
+                $hls_video = Helper::convert_hls_to_secure(get_video_end($video->video) , $video->video);
 
                 if (\Setting::get('streaming_url')) {
 
@@ -4264,6 +4264,8 @@ class UserApiController extends Controller {
                         if ($video->video_resolutions) {
 
                             $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+                        } else {
+                            $videoStreamUrl =  Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
                         }
 
                     }
