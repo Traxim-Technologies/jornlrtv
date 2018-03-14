@@ -4261,9 +4261,10 @@ class UserApiController extends Controller {
 
                     if ($video->is_approved == 1) {
 
-                        if ($video->video_resolutions) {
+                        if (!$video->video_resolutions) {
 
                             $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+
                         } else {
 
                             $videoStreamUrl =  Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
@@ -4271,21 +4272,25 @@ class UserApiController extends Controller {
 
                     }
 
+
                     \Log::info("video Stream url".$videoStreamUrl);
 
                     \Log::info("Empty Stream url".empty($videoStreamUrl));
 
-                    \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
+                    // \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
+
 
                     if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
 
-                        $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
+                        $videos = $video->video_path ? $video->video.','.$video->video_path : $video->video;
 
-                        // dd($videoPath);
-                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : ['original'];
-
+                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
 
                         $videoPath = [];
+
+                        $videos = $videos ? explode(',', $videos) : [];
+
+                        $video_pixels = $video_pixels ? explode(',', $video_pixels) : [];
 
                         foreach ($videos as $key => $value) {
 
