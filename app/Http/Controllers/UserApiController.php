@@ -4255,7 +4255,7 @@ class UserApiController extends Controller {
 
             if ($video->publish_status == 1) {
 
-                $hls_video = (Setting::get('HLS_STREAMING_URL')) ? Setting::get('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
+                $hls_video = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
 
                 if (\Setting::get('streaming_url')) {
 
@@ -4274,7 +4274,6 @@ class UserApiController extends Controller {
 
                     \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
 
-
                     if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
 
                         $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
@@ -4291,6 +4290,7 @@ class UserApiController extends Controller {
 
                         }
 
+                        $videoPath = json_decode(json_encode($videoPath));
 
                     }
 
@@ -4304,9 +4304,13 @@ class UserApiController extends Controller {
 
                     foreach ($videos as $key => $value) {
 
-                        $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , ), 'label' => $video_pixels[$key]];
+                        $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
 
+
+                        array_push($videoPath, $videoPathData);
                     }
+
+                    $videoPath =  json_decode(json_encode($videoPath));
                     
                 }
 
@@ -4590,7 +4594,8 @@ class UserApiController extends Controller {
 
                     $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
                     
-                    $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
+                    $data[] = [
+                            'pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
                             'amount'=>$value->amount,

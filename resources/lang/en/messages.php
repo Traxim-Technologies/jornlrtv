@@ -1235,4 +1235,8 @@ return array(
 	'installation_done'=>'Installation Process is done',
 	'verification_code_expired'=>'Verification Code Expired',
 
+	'user_account_declined_by_admin' => 'Your Account is waiting for admin approval!!',
+	'user_account_email_not_verified' => 'Please verify Your Account!!.',
+	'login_account_record_not_found' => 'Sorry!!! The record not found in system!!.',
+
 );

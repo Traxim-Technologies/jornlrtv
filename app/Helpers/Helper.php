@@ -333,6 +333,16 @@
                     $string = tr('video_not_found');
                     break;
 
+                case 502:
+                    $string = tr('user_account_declined_by_admin');
+                    break;
+                case 503:
+                    $string = tr('user_account_email_not_verified');
+                    break;
+                case 504:
+                    $string = tr('login_account_record_not_found');
+                    break;
+
                 default:
                     $string = tr('unknown_error_occured');
             }

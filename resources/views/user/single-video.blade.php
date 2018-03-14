@@ -1088,15 +1088,20 @@ textarea[name=comments] {
 
                                 } else {
 
-                                    var videoPath = "{{$videoPath}}";
+                                    path = [];
 
-                                    //alert("HELELo");
+                                    @foreach($videoPath as $path)
+
+                                        path.push({file : {{$path->file}}, label : {{$path->label}}});
+
+                                    @endforeach
+
                                 }
 
 
                                 playerInstance.setup({
                                     
-                                    sources: videoPath,
+                                    sources: path,
                                     image: "{{$video->default_image}}",
                                     width: "100%",
                                     aspectratio: "16:9",
