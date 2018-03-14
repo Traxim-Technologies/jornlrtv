@@ -1092,7 +1092,7 @@ textarea[name=comments] {
 
                                     @foreach($videoPath as $path)
 
-                                        path.push({file : {{$path->file}}, label : {{$path->label}}});
+                                        path.push({file : "{{$path->file}}", label : "{{$path->label}}"});
 
                                     @endforeach
 
