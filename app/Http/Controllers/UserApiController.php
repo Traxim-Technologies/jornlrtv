@@ -4257,6 +4257,8 @@ class UserApiController extends Controller {
 
                 $hls_video = Helper::convert_hls_to_secure(get_video_end($video->video) , $video->video);
 
+                // $videoStreamUrl =  Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
+
                 if (\Setting::get('streaming_url')) {
 
                     if ($video->is_approved == 1) {
@@ -4265,9 +4267,6 @@ class UserApiController extends Controller {
 
                             $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
 
-                        } else {
-
-                            $videoStreamUrl =  Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
                         }
 
                     }
@@ -4277,7 +4276,7 @@ class UserApiController extends Controller {
 
                     \Log::info("Empty Stream url".empty($videoStreamUrl));
 
-                    // \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
+                    \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
 
 
                     if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
@@ -4294,7 +4293,7 @@ class UserApiController extends Controller {
 
                         foreach ($videos as $key => $value) {
 
-                            $videoPath[] = ['file' => $value, 'label' => $video_pixels[$key]];
+                            $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
 
                         }
 
