@@ -5318,7 +5318,8 @@ class UserApiController extends Controller {
 
             if ($video->publish_status == 1) {
 
-                $hls_video = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
+                $hls_video = Helper::convert_hls_to_secure(get_video_end($video->video) , $video->video);
+
 
                 if (\Setting::get('streaming_url')) {
 
@@ -5327,34 +5328,40 @@ class UserApiController extends Controller {
                         if ($video->video_resolutions) {
 
                             $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+
+                            \Log::info("video Stream url".$videoStreamUrl);
+
+                            \Log::info("Empty Stream url".empty($videoStreamUrl));
+
+                            \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
+
+                            if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
+
+                                $videos = $video->video_path ? $video->video.','.$video->video_path : $video->video;
+
+                                $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+
+                                $videoPath = [];
+
+                                $videos = $videos ? explode(',', $videos) : [];
+
+                                $video_pixels = $video_pixels ? explode(',', $video_pixels) : [];
+
+                                foreach ($videos as $key => $value) {
+
+                                    $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+
+                                }
+
+                                $videoPath = json_decode(json_encode($videoPath));
+
+                            }
+
+                        } else {
+ 
+                            $videoStreamUrl = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
+
                         }
-
-                    }
-
-                    \Log::info("video Stream url".$videoStreamUrl);
-
-                    \Log::info("Empty Stream url".empty($videoStreamUrl));
-
-                    \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
-
-                    if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
-
-                        $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
-
-                        // dd($videoPath);
-                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : ['original'];
-
-
-                        $videoPath = [];
-
-                        foreach ($videos as $key => $value) {
-
-                            $videoPath[] = ['file' => $value, 'label' => $video_pixels[$key]];
-
-                        }
-
-                        $videoPath = json_decode(json_encode($videoPath));
-
                     }
 
                 } else {
@@ -5365,12 +5372,18 @@ class UserApiController extends Controller {
 
                     $videoPath = [];
 
-                    foreach ($videos as $key => $value) {
+                    Log::info("VIDEOS LIST".print_r($videos , true));
 
-                        $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+                    if(count($videos) > 0) {
+
+                        foreach ($videos as $key => $value) {
+
+                            $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
 
 
-                        array_push($videoPath, $videoPathData);
+                            array_push($videoPath, $videoPathData);
+                       
+                        }
                     }
 
                     $videoPath =  json_decode(json_encode($videoPath));
