@@ -4295,7 +4295,7 @@ class UserApiController extends Controller {
                             }
 
                         } else {
-
+ 
                             $videoStreamUrl = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
 
                         }
