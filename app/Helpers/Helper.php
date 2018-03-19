@@ -44,6 +44,8 @@
     
     use App\PayPerView;
 
+    use Mailgun\Mailgun;
+
     class Helper
     {
 
@@ -196,11 +198,59 @@
 
                 try {
 
-                    $mail_status = Mail::queue($page, array('email_data' => $email_data), function ($message) use ($email, $subject) {
+                   /* $mail_status = Mail::queue($page, array('email_data' => $email_data), function ($message) use ($email, $subject) {
 
                         $message->to($email)->subject($subject);
                         
-                    });
+                    });*/
+
+                    $site_url=url('/');
+
+                    $isValid = 1;
+
+                    if(envfile('MAIL_DRIVER') == 'mailgun' && Setting::get('MAILGUN_PUBLIC_KEY')) {
+
+                        Log::info("isValid - STRAT");
+
+                        # Instantiate the client.
+
+                        $email_address = new Mailgun(Setting::get('MAILGUN_PUBLIC_KEY'));
+
+                        $validateAddress = $email;
+
+                        # Issue the call to the client.
+                        $result = $email_address->get("address/validate", array('address' => $validateAddress));
+
+                        # is_valid is 0 or 1
+
+                        $isValid = $result->http_response_body->is_valid;
+
+                        Log::info("isValid FINAL STATUS - ".$isValid);
+
+                    }
+
+                    if($isValid) {
+
+                        if (Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), 
+                                function ($message) use ($email, $subject) {
+
+                                    $message->to($email)->subject($subject);
+                                }
+                        )) {
+
+                           //  return Helper::get_message(106);
+
+                        } else {
+
+                            throw new Exception(Helper::get_error_message(123));
+                            
+                        }
+
+                    } else {
+
+                       // throw new Exception(Helper::get_message(106), 106);
+
+                    }
 
                 } catch(Exception $e) {
 
