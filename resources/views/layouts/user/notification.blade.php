@@ -5,7 +5,10 @@
 	@else
 		<i class="fa fa-fw fa-times"></i>&nbsp; <strong>{{tr('oh_snap')}}!</strong>
 	@endif
+
 	{{ session('response')->message }}
-<!-- 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
- --></div>
+	
+	<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> -->
+
+</div>
 @endif
