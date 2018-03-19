@@ -34,5 +34,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguageSeeder::class);
         $this->call(PushNotificationSeeder::class);
         $this->call(SecureVideoSeeder::class);
+        $this->call(MailGunSeeder::class);
     }
 }
