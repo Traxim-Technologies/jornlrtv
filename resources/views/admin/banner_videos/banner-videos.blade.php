@@ -17,7 +17,7 @@
 	<div class="row">
         <div class="col-xs-12">
 
-        <p class="text-justify" style="color:brown;"><b>Please Note : </b> You can able to add banner videos upto 6 only. If want to add new video, other than this 6 videos means change anyone of the video as "Normal video" and upload a banner video.</p>
+        <p class="text-justify" style="color:brown;"><b>{{tr('note')}} : </b>{{tr('banner_video_content')}}</p>
           <div class="box box-primary">
 
           	<div class="box-header label-primary">

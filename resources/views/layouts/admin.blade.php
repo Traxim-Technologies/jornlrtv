@@ -67,8 +67,6 @@
     <?php echo Setting::get('header_scripts') ?>
 
 </head>
-
-
 <body class="hold-transition skin-blue sidebar-mini">
 
     <div class="wrapper">

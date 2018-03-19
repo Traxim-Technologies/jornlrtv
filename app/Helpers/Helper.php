@@ -106,7 +106,7 @@
 
                     if ($verification_code !=  $data->verification_code ) {
 
-                        $error = 'Verification Code Mismatched';
+                        $error = tr('verification_code_mismatched');
 
                         return FALSE;
 
@@ -140,7 +140,7 @@
                     $email = $data['email'];
                     $result = Helper::send_email($page,$subject,$email,$email_data);
 
-                    $error = 'Verification Code Expired';
+                    $error = tr('verification_code_expired');
 
                     return FALSE;
                 }
@@ -270,73 +270,73 @@
             switch($code) {
 
                 case 9001:
-                    $string = "Invalid input.";
+                    $string = tr('invalid_input');
                     break;
                 case 101:
-                    $string = "Invalid input.";
+                    $string = tr('invalid_input');
                     break;
                 case 102:
-                    $string = "Email address is already in use.";
+                    $string = tr('email_address_already_use');
                     break;
                 case 103:
-                    $string = "Token expired.";
+                    $string = tr('token_expiry');
                     break;
                 case 104:
-                    $string = "Invalid token.";
+                    $string = tr('invalid_token');
                     break;
                 case 105:
-                    $string = "Invalid email or password.";
+                    $string = tr('invalid_email_password');
                     break;
                 case 106:
-                    $string = "All fields are required.";
+                    $string = tr('all_fields_required');
                     break;
                 case 107:
-                    $string = "The current password is incorrect.";
+                    $string = tr('current_password_incorrect');
                     break;
                 case 108:
-                    $string = "The passwords do not match.";
+                    $string = tr('password_donot_match');
                     break;
                 case 109:
-                    $string = "There was a problem with the server. Please try again.";
+                    $string = tr('problem_with_server_try_again');
                     break;
                 case 111:
-                    $string = "Email is not activated.";
+                    $string = tr('email_not_activated');
                     break;
                 case 115:
-                    $string = "Invalid refresh token.";
+                    $string = tr('invalid_refresh_token');
                     break;
                 case 123:
-                    $string = "Something went wrong in mail configuration";
+                    $string = tr('something_went_wrong_error');
                     break;
                 case 124:
-                    $string = "This Email is not registered";
+                    $string = tr('email_not_registered');
                     break;
                 case 125:
-                    $string = "Not a valid social registration User";
+                    $string = tr('not_valid_social_register');
                     break;
                 case 130:
-                    $string = "No results found";
+                    $string = tr('no_result_found');
                     break;
                 case 131:
-                    $string = 'Password doesn\'t match';
+                    $string = tr('password_doesnot_match');
                     break;
                 case 132:
-                    $string = 'Provider ID not found';
+                    $string = tr('provider_id_not_found');
                     break;
                 case 133:
-                    $string = 'User ID not found';
+                    $string = tr('user_id_not_found');
                     break;
                 case 141:
-                    $string = "Something went wrong while paying amount.";
+                    $string = tr('something_went_wrong_paying_amount');
                     break;
                 case 144:
-                    $string = "Account is disabled by admin";
+                    $string = tr('account_disabled_admin');
                     break;
                 case 145:
-                    $string = "The video is already added in history.";
+                    $string = tr('video_already_added_history');
                     break;
                 case 146:
-                    $string = "Something went Wrong.Please try again later!.";
+                    $string = tr('something_error_try_again');
                     break;
                 case 147:
                     $string = tr('redeem_disabled_by_admin');
@@ -354,13 +354,13 @@
                     $string = tr('redeem_not_found');
                     break;
                  case 901:
-                    $string = "Default card is not available. Please add a card";
+                    $string = tr('default_card_not_available_add_card');
                     break;
                 case 902:
-                    $string = "Something went wrong with Payment Configuration";
+                    $string = tr('something_went_wrong_error_payment');
                     break;
                 case 903:
-                    $string = "Payment is not completed. Please try to pay Again";
+                    $string = tr('payment_not_completed_pay_again');
                     break;
 
                 case 162:
@@ -383,8 +383,18 @@
                     $string = tr('video_not_found');
                     break;
 
+                case 502:
+                    $string = tr('user_account_declined_by_admin');
+                    break;
+                case 503:
+                    $string = tr('user_account_email_not_verified');
+                    break;
+                case 504:
+                    $string = tr('login_account_record_not_found');
+                    break;
+
                 default:
-                    $string = "Unknown error occurred.";
+                    $string = tr('unknown_error_occured');
             }
             return $string;
         }
@@ -393,67 +403,67 @@
         {
             switch($code) {
                 case 101:
-                    $string = "Success";
+                    $string = tr('success');
                     break;
                 case 102:
-                    $string = "Password Changed successfully.";
+                    $string = tr('password_change_success');
                     break;
                 case 103:
-                    $string = "Successfully logged in.";
+                    $string = tr('successfully_logged_in');
                     break;
                 case 104:
-                    $string = "Successfully logged out.";
+                    $string = tr('successfully_logged_out');
                     break;
                 case 105:
-                    $string = "Successfully signed up.";
+                    $string = tr('successfully_sign_up');
                     break;
                 case 106:
-                    $string = "Mail sent successfully";
+                    $string = tr('mail_sent_successfully');
                     break;
                 case 107:
-                    $string = "Payment successfully done";
+                    $string = tr('payment_successful_done');
                     break;
                 case 108:
-                    $string = "Favourite provider deleted successfully";
+                    $string = tr('favourite_provider_delete');
                     break;
                 case 109:
-                    $string = "Payment mode changed successfully";
+                    $string = tr('payment_mode_changed');
                     break;
                 case 110:
-                    $string = "Payment mode changed successfully";
+                    $string = tr('payment_mode_changed');
                     break;
                 case 111:
-                    $string = "Service Accepted";
+                    $string = tr('service_accepted');
                     break;
                 case 112:
-                    $string = "provider started";
+                    $string = tr('provider_started');
                     break;
                 case 113:
-                    $string = "Arrived to service location";
+                    $string = tr('arrived_service_location');
                     break;
                 case 114:
-                    $string = "Service started";
+                    $string = tr('service_started');
                     break;
                 case 115:
-                    $string = "Service completed";
+                    $string = tr('service_completed');
                     break;
                 case 116:
-                    $string = "User rating done";
+                    $string = tr('user_rating_done');
                     break;
                 case 117:
-                    $string = "Request cancelled successfully.";
+                    $string = tr('request_cancelled_successfully');
                     break;
                 case 118:
-                    $string = "Wishlist added.";
+                    $string = tr('wishlist_added');
                     break;
                 case 119:
-                    $string = "Payment confirmed successfully.";
+                    $string = tr('payment_confirmed_successfully');
                     break;
                 case 120:
-                    $string = "History added.";
+                    $string = tr('history_added');
                     break;
                 case 121:
-                    $string = "History deleted Successfully.";
+                    $string = tr('history_deleted_successfully');
                     break;
                 default:
                     $string = "";
@@ -467,16 +477,16 @@
 
             switch ($code) {
                 case 601:
-                    $string = "No Provider Available";
+                    $string = tr('no_provider_available');
                     break;
                 case 602:
-                    $string = "No provider available to take the Service.";
+                    $string = tr('no_provider_available_take_service');
                     break;
                 case 603:
-                    $string = "Request completed successfully";
+                    $string = tr('request_complted_successfully');
                     break;
                 case 604:
-                    $string = "New Request";
+                    $string = tr('new_request');
                     break;
                 default:
                     $string = "";
@@ -737,6 +747,7 @@
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
+                        ->where('video_tapes.publish_status' , 1)
                         ->videoResponse()
                         ->where('channels.is_approved', 1)
                         ->where('channels.status', 1)
@@ -941,6 +952,179 @@
             } else {
                 return 0;
             }
+        }
+
+        /**
+         * Function name: RTMP Secure video url 
+         *
+         * @description: used to convert the video to rtmp secure link
+         *
+         * @created: vidhya R
+         * 
+         * @edited: 
+         *
+         * @param string $video_name
+         *
+         * @param string $video_link
+         *
+         * @return RTMP SECURE LINK or Normal video link
+         */
+
+        public static function convert_rtmp_to_secure($video_name  = "", $video_link = "") {
+
+            if(Setting::get('RTMP_SECURE_VIDEO_URL') != "") {
+
+                // HLS_STREAMING_URL
+            
+                // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
+
+                $e = date('U')+20; 
+
+                $secret_word = "cgshlockkey"; 
+
+                $user_remote_address = $_SERVER['REMOTE_ADDR']; 
+
+                $md5 = base64_encode(md5($secret_word . $user_remote_address . $e , true)); 
+
+                $md5 = strtr($md5, '+/', '-_'); 
+
+                $md5 = str_replace('=', '', $md5); 
+
+                $rtmp = $video_name."?token=".$md5."&e=".$e; 
+                
+                $secure_url = Setting::get('RTMP_SECURE_VIDEO_URL').$rtmp;
+
+                return $secure_url; 
+            
+            } elseif (Setting::get('streaming_url')) {
+
+                $rtmp_video_url = Setting::get('streaming_url').$video_name;
+
+                return $rtmp_video_url;
+
+            } else {
+
+                return $video_link;
+
+            }
+            
+        }
+
+        /**
+         * Function name: RTMP Secure video url 
+         *
+         * @description: used to convert the video to rtmp secure link
+         *
+         * @created: vidhya R
+         * 
+         * @edited: 
+         *
+         * @param string $video_name
+         *
+         * @param string $video_link
+         *
+         * @return RTMP SECURE LINK or Normal video link
+         */
+
+        public static function convert_hls_to_secure($video_name  = "", $video_link = "") {
+
+            if(Setting::get('HLS_SECURE_VIDEO_URL') != "") {
+
+
+                // HLS_STREAMING_URL
+            
+                // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
+
+                $expires = date('U')+20;
+
+                // secure_link_md5 "$secure_link_expires$uri$remote_addr cgshlockkey";
+
+                $secret_word = "cgshlockkey"; 
+ 
+                $user_remote_address = $_SERVER['REMOTE_ADDR']; 
+
+                Log::info("user_remote_address".$user_remote_address);
+
+                $md5 = md5("$expires/$video_name$user_remote_address $secret_word", true);
+
+                $md5 = base64_encode($md5); 
+
+                $md5 = strtr($md5, '+/', '-_'); 
+
+                $md5 = str_replace('=', '', $md5); 
+
+                $hls = $video_name."?md5=".$md5."&expires=".$expires; 
+                
+                $secure_url = Setting::get('HLS_SECURE_VIDEO_URL').$hls;
+
+                return $secure_url; 
+            
+            } elseif (Setting::get('HLS_STREAMING_URL')) {
+
+                $hls_video_url = Setting::get('HLS_STREAMING_URL').$video_name;
+
+                return $hls_video_url;
+
+            } else {
+
+                return $video_link;
+
+            }
+            
+        }
+
+        /**
+         * Function name: RTMP Secure video url 
+         *
+         * @description: used to convert the video to rtmp secure link
+         *
+         * @created: vidhya R
+         * 
+         * @edited: 
+         *
+         * @param string $video_name
+         *
+         * @param string $video_link
+         *
+         * @return RTMP SECURE LINK or Normal video link
+         */
+
+        public static function convert_smil_to_secure($smil_file  = "", $smil_link = "") {
+
+            if(Setting::get('VIDEO_SMIL_URL') != "") {
+            
+                // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
+
+                $expires = date('U')+20;
+
+                // secure_link_md5 "$secure_link_expires$uri$remote_addr cgshlockkey";
+
+                $secret_word = "cgshlockkey"; 
+ 
+                $user_remote_address = $_SERVER['REMOTE_ADDR']; 
+
+                Log::info("user_remote_address".$user_remote_address);
+
+                $md5 = md5("$expires/$smil_file$user_remote_address $secret_word", true);
+
+                $md5 = base64_encode($md5); 
+
+                $md5 = strtr($md5, '+/', '-_'); 
+
+                $md5 = str_replace('=', '', $md5); 
+
+                $smil = $smil_file."?md5=".$md5."&expires=".$expires; 
+                
+                $secure_url = Setting::get('VIDEO_SMIL_URL').$smil;
+
+                return $secure_url; 
+            
+            } else {
+
+                return $smil_link;
+
+            }
+            
         }
 
     }

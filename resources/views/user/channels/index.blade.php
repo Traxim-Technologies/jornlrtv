@@ -196,7 +196,7 @@
 
 										<h2 class="branded-page-module-title">
 									        <span class="branded-page-module-title-text">
-										      What to watch next
+										      {{tr('watch_to_next')}}
 										    </span>
 
 									  	</h2>
@@ -364,7 +364,7 @@
 										                        <div class="btn-group show-on-hover">
 														          	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 										
-															            <span class="hidden-xs">Action</span>
+															            <span class="hidden-xs">{{tr('action')}}</span>
 															            <span class="caret"></span>
 
 														          	</button>
@@ -432,14 +432,12 @@
 																							   
 																							    	<h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
 																							    	<div>
-																										<label class="radio1">
-																										    <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
+																										<label class="radio1">  <input id="radio1" type="radio" name="type_of_user"  value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
 																											<span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
 																										</label>
 																									</div>
 																									<div>
-																									    <label class="radio1">
-																										    <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
+																									    <label class="radio1">   <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
 																									    <span class="outer"><span class="inner"></span></span>{{tr('paid_user')}}
 																									</label>
 																								</div>

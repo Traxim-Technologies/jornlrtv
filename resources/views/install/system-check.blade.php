@@ -16,7 +16,7 @@
                 @else
                     <strong><i class="fa fa-times incorrect"></i></strong>
                 @endif
-                    Ngnix installed and configured
+                    {{tr('ngnix_installed_configure')}}
                 </p>
             </div>
 
@@ -28,7 +28,7 @@
                         <strong><i class="fa fa-times incorrect"></i></strong>
                     @endif
 
-                    PHP installation is required
+                    {{tr('php_installation_required')}}
                 </p>
             </div>
 
@@ -40,7 +40,7 @@
                         <strong><i class="fa fa-times incorrect"></i></strong>
                     @endif
 
-                    MySQL installation is required
+                    {{tr('mysql_installation_required')}}
                 </p>
             </div> 
 
@@ -52,7 +52,7 @@
                         <strong><i class="fa fa-times incorrect"></i></strong>
                     @endif
 
-                    Database connection is required
+                    {{tr('database_connection_required')}}
                 </p>
             </div>
 
@@ -63,7 +63,7 @@
                     @else
                         <strong><i class="fa fa-times incorrect"></i></strong>
                     @endif
-                    SQL File intallation with database
+                    {{tr('sql_file_installation')}}
                 </p>
             </div>
         </div>
@@ -79,7 +79,7 @@
             <div class="check-fail-outer" id="system_check_result" style="display:none">
 
                 <div class="check-success-inner">
-                    <h4 class="fail-head">System Check Success</h4>
+                    <h4 class="fail-head">{{tr('system_check')}}</h4>
                 
                 </div>
 
@@ -92,9 +92,9 @@
             <div class="check-fail-outer" id="system_check_result" style="display:none">
 
                 <div class="check-fail-inner">
-                    <h4 class="fail-head">System Check Failed</h4>
-                    <p>Please do the basic installation requirement.</p>
-                    <a style="text-decoration: none;cursor: pointer;" href="{{route('installTheme')}}" class="fail-button">Retry System Check</a>
+                    <h4 class="fail-head">{{tr('system_check_failed')}}</h4>
+                    <p>{{tr('basic_installation_requirment')}}</p>
+                    <a style="text-decoration: none;cursor: pointer;" href="{{route('installTheme')}}" class="fail-button">{{tr('retry_system_check')}}</a>
                 
                 </div>
 
@@ -125,9 +125,9 @@
             <div class="col-md-6 col-md-offset-6 agree">
 
                 @if($overall_configure == 0)
-                    <button disabled>Agree &amp; continue</button>
+                    <button disabled>{{tr('agree')}} &amp; {{tr('continue')}}</button>
                 @else
-                    <a href="{{route('system-check')}}" class="btn btn-primary btn-lg" style="float:right" href="#">Agree &amp; continue</a>
+                    <a href="{{route('system-check')}}" class="btn btn-primary btn-lg" style="float:right" href="#">{{tr('agree')}} &amp; {{tr('continue')}}</a>
                 @endif
 
             </div><!--end of agree-->

@@ -2279,7 +2279,7 @@ class UserApiController extends Controller {
                 $response_array = Helper::null_safe(array('success' => true, 'data'=>['id'=>$request->id,'token'=>$user->token]));
 
             } else {
-                $response_array = array('success' => false , 'error_messages' => 'Something went wrong');
+                $response_array = array('success' => false , 'error_messages' => tr('something_error'));
             }
         }
         return response()->json($response_array , 200);
@@ -3197,6 +3197,7 @@ class UserApiController extends Controller {
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('title','like', '%'.$key.'%')
                     ->where('video_tapes.status' , 1)
+                    ->where('video_tapes.publish_status' , 1)
                     ->videoResponse()
                     ->where('channels.is_approved', 1)
                     ->where('channels.status', 1)
@@ -3941,7 +3942,7 @@ class UserApiController extends Controller {
      * 
      * @return list out all the videos, and status of the subscribers
      */
-    public function channel_videos($channel_id, $skip) {
+    public function channel_videos($channel_id, $skip , $request) {
 
         $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
@@ -3954,6 +3955,9 @@ class UserApiController extends Controller {
         if (Auth::check()) {
 
             $u_id = Auth::user()->id;
+
+                            
+            $videos_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             // Check any flagged videos are present
             $flagVideos = getFlagVideos($u_id);
@@ -4022,7 +4026,15 @@ class UserApiController extends Controller {
      *
      * @return channel videos
      */
-    public function channel_trending($id, $count) {
+    public function channel_trending($id, $count = 5 , $channel_owner_id = "" , $request) {
+
+        $items = [];
+
+        if(!$id) {
+
+            return response()->json($items , 200);
+
+        }
 
         $base_query = VideoTape::where('watch_count' , '>' , 0)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
@@ -4030,13 +4042,25 @@ class UserApiController extends Controller {
                         ->where('channel_id', $id)
                         ->orderby('watch_count' , 'desc');
 
+        if(!$channel_owner_id) {
+
+            $base_query = $base_query->where('video_tapes.status' , 1)
+                        ->where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.publish_status' , 1);
+
+        }
+
         $u_id = "";
 
         if (Auth::check()) {
 
+            // Check Age Limit 
+
             // Check any flagged videos are present
 
             $u_id = Auth::user()->id;
+                            
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
 
             $flag_videos = flag_videos($u_id);
 
@@ -4056,7 +4080,6 @@ class UserApiController extends Controller {
             
         }
 
-        $items = [];
 
         if (count($videos) > 0) { 
 
@@ -4232,46 +4255,75 @@ class UserApiController extends Controller {
 
             if ($video->publish_status == 1) {
 
-                $hls_video = (Setting::get('HLS_STREAMING_URL')) ? Setting::get('HLS_STREAMING_URL').get_video_end($video->video) : $video->video;
+                $hls_video = Helper::convert_hls_to_secure(get_video_end($video->video) , $video->video);
+
 
                 if (\Setting::get('streaming_url')) {
 
                     if ($video->is_approved == 1) {
 
-
                         if ($video->video_resolutions) {
 
-
                             $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+
+                            \Log::info("video Stream url".$videoStreamUrl);
+
+                            \Log::info("Empty Stream url".empty($videoStreamUrl));
+
+                            \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
+
+                            if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
+
+                                $videos = $video->video_path ? $video->video.','.$video->video_path : $video->video;
+
+                                $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+
+                                $videoPath = [];
+
+                                $videos = $videos ? explode(',', $videos) : [];
+
+                                $video_pixels = $video_pixels ? explode(',', $video_pixels) : [];
+
+                                foreach ($videos as $key => $value) {
+
+                                    $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+
+                                }
+
+                                $videoPath = json_decode(json_encode($videoPath));
+
+                            }
+
+                        } else {
+ 
+                            $videoStreamUrl = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
+
                         }
-
                     }
-
-                    \Log::info("video Stream url".$videoStreamUrl);
-
-                    \Log::info("Empty Stream url".empty($videoStreamUrl));
-
-                    \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
-
-
-                    if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
-
-                        $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
-
-                        // dd($videoPath);
-                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
-
-
-                    }
-
 
                 } else {
 
+                    $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
 
-                    $videoPath = $video->video_path ? $video->video.','.$video->video_path : $video->video;
+                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : ['original'];
 
-                    // dd($videoPath);
-                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                    $videoPath = [];
+
+                    Log::info("VIDEOS LIST".print_r($videos , true));
+
+                    if(count($videos) > 0) {
+
+                        foreach ($videos as $key => $value) {
+
+                            $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+
+
+                            array_push($videoPath, $videoPathData);
+                       
+                        }
+                    }
+
+                    $videoPath =  json_decode(json_encode($videoPath));
                     
                 }
 
@@ -4555,7 +4607,8 @@ class UserApiController extends Controller {
 
                     $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
                     
-                    $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
+                    $data[] = [
+                            'pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
                             'title'=>$value->title,
                             'amount'=>$value->amount,

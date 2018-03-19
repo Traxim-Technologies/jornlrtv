@@ -1370,7 +1370,7 @@ class AdminController extends Controller {
                         return back()->with('flash_error',tr('page_already_alert'));
                     }
                 }else {
-                    return back()->with('flash_error',"You cannot create more pages");
+                    return back()->with('flash_error',tr('cannot_create_more_pages'));
                 }
                 
             }
@@ -2650,7 +2650,7 @@ class AdminController extends Controller {
 
                 // Update remaining records positions
 
-                DB::select(DB::raw("UPDATE banner_ads SET position = position-1 WHERE position > $current_position"));
+                DB::update("UPDATE banner_ads SET position =  position-1 WHERE position > $current_position");
 
             }
 

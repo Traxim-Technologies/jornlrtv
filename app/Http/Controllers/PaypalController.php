@@ -80,7 +80,7 @@ class PaypalController extends Controller {
 
             Log::info("Subscription Details Not Found");
 
-            $error_message = "Subscription Details Not Found";
+            $error_message = tr('subscription_details_not_found');
 
             return back()->with('flash_error' , $error_message);
 
@@ -144,7 +144,7 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = "Payment Failed";
+            $error_message = tr('payment_failed_error');
 
             if(is_array($error_data)) {
 
@@ -248,7 +248,7 @@ class PaypalController extends Controller {
      
         if (empty($request->paymentId) || empty($request->token) || empty($paypal_payment_id)) {
         	
-            $error_message = "Payment ID - Session Not Found";
+            $error_message = tr('payment_id_session_not_found');
 
             $subscription_id = Session::get('subscription_id');
 
@@ -283,7 +283,7 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = "Payment Failed";
+            $error_message = tr('payment_failed_error');
 
             if(is_array($error_data)) {
 
@@ -347,7 +347,7 @@ class PaypalController extends Controller {
        
         } else {
 
-            return back()->with('flash_error' , 'Payment is not approved. Please contact admin');
+            return back()->with('flash_error' ,tr('payment_not_approved_contact_admin'));
         }
         
     }
@@ -376,7 +376,7 @@ class PaypalController extends Controller {
 
             Log::info("Video Details Not Found");
 
-            $error_message = "Video Details Not Found";
+            $error_message =tr('video_details_not_found');
 
             return back()->with('flash_error' , $error_message);
 
@@ -432,7 +432,7 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = "Payment Failed";
+            $error_message = tr('payment_failed_error');
 
             if(is_array($error_data)) {
 
@@ -527,7 +527,7 @@ class PaypalController extends Controller {
      
         if (empty($request->paymentId) || empty($request->token) || empty($ppv_payment_id)) {
             
-            $error_message = "Payment ID - Session Not Found";
+            $error_message = tr('payment_id_session_not_found');
 
             $video_tape_id = Session::get('video_tape_id');
 
@@ -561,7 +561,7 @@ class PaypalController extends Controller {
 
             $error_data = json_decode($ex->getData(), true);
 
-            $error_message = "Payment Failed";
+            $error_message = tr('payment_failed_error');
 
             if(is_array($error_data)) {
 
@@ -601,7 +601,7 @@ class PaypalController extends Controller {
 
             if(count($ppv_details) == 0 || count($video_tape_details) == 0) {
 
-                $error_message = "PPV || Video Details Not found";
+                $error_message = tr('ppv_video_details_not_found');
 
                 $video_tape_id = Session::get('video_tape_id');
 
@@ -672,7 +672,7 @@ class PaypalController extends Controller {
        
         } else {
 
-            return back()->with('flash_error' , 'Payment is not approved. Please contact admin');
+            return back()->with('flash_error' ,tr('payment_not_approved_contact_admin'));
         }
 
     }

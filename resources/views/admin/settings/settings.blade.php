@@ -1,22 +1,25 @@
 @extends('layouts.admin')
 
+@section('title',tr('settings'))
+
+
 @section('content-header')
 
 {{ tr('settings')}}
 
-<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="Any Help ?">HELP ?</a>
+<a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="{{tr('any_help')}}">{{tr('help')}}</a>
 
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
 
-        <li><b>PayPal - </b> Minimum Accepted Amount - $ 0.01</li>
+        <li><b>{{tr('paypal')}}-</b>{{tr('minimum_amount')}}</li>
 
-        <li><b>Stripe - </b> Minimum Accepted Amount - $ 0.50 - <a target="_blank" href="https://stripe.com/docs/currencies">Check References</a></li>
+        <li><b>{{tr('stripe')}}</b>{{tr('minimum_accepted')}}<a target="_blank" href="https://stripe.com/docs/currencies">{{tr('check_refrences')}}</a></li>
 
-        <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">Checked</span> - User can create n of channels.</li>
+        <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">{{tr('checked')}}</span>{{tr('user_create_n_channels')}}</li>
 
-        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">Un Checked</span> - User can create only one channel. <span style="color: #a735a7">Note: Previously created channels will not affect by this option. </span></li>
+        <li><b><span class="text-uppercase">{{tr('other_settings')}} </span>- {{tr('multi_channel_status')}} - </b> <span style="color: red">{{tr('un_checked')}}</span>{{tr('user_create_only_one_channel')}}<span style="color: #a735a7">{{tr('note')}} : {{tr('Previously_note_channel')}}</span></li>
 
     </ul>
     
@@ -63,7 +66,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sitename">{{tr('site_name')}}</label>
-                                        <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="Enter sitename">
+                                        <input type="text" class="form-control" name="site_name" value="{{ Setting::get('site_name')  }}" id="sitename" placeholder="{{tr('enter_site_name')}}">
                                     </div>
                                 </div>
 
@@ -75,7 +78,7 @@
 
                                         <label for="site_logo">{{tr('site_logo')}}</label>
                                         <input type="file" id="site_logo" name="site_logo" accept="image/png, image/jpeg">
-                                        <p class="help-block">Please enter .png images only.</p>
+                                        <p class="help-block">{{tr('image_notes')}}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -85,7 +88,7 @@
                                         @endif
                                         <label for="site_icon">{{tr('site_icon')}}</label>
                                         <input type="file" id="site_icon" name="site_icon" accept="image/png, image/jpeg">
-                                        <p class="help-block">Please enter .png images only.</p>
+                                        <p class="help-block">{{tr('image_notes')}}</p>
                                     </div>
                                 </div>
 
@@ -141,7 +144,7 @@
 
                                         <p class="example-note">{{tr('rtmp_settings_note')}}</p>
 
-                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="Enter Streaming URL">
+                                        <input type="text" value="{{ Setting::get('streaming_url')}}" class="form-control" name="streaming_url" id="streaming_url" placeholder="{{tr('enter_streaming_url')}}">
                                     </div> 
                                 </div>
 
@@ -431,9 +434,9 @@
                                         <select id="payment_type" name="payment_type" class="form-control">
                                             <option value="">{{tr('payment_type')}}</option>
                                             
-                                            <option value="paypal" @if($type == 'paypal') selected @endif>Paypal</option>
+                                            <option value="paypal" @if($type == 'paypal') selected @endif>{{tr('paypal')}}</option>
 
-                                            <option value="stripe" @if($type == 'stripe') selected @endif >Stripe</option>
+                                            <option value="stripe" @if($type == 'stripe') selected @endif >{{tr('stripe')}}</option>
                                             
                                         </select>
                                     </div>
