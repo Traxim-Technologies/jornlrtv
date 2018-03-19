@@ -87,8 +87,8 @@
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
-                        <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span> {{tr('mandatory_fields_fill_check')}}</small></div> 
 
+                        <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
                         <hr>
                         <div class="">
                             <input type="hidden" name="id" id="main_id">
@@ -260,6 +260,7 @@
                         <br>
 
                         <div style="margin-left: 15px"><small>{{tr('note')}} : {{tr('short_notes_banner')}}</small></div>
+
                         <hr>
                         <div class="row">
                            <!--  <h4 class="info-text">{{tr('select_image_short_notes')}}</h4> -->

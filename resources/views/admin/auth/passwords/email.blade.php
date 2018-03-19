@@ -34,8 +34,8 @@
                         </button>
 
                          <a href="{{route('admin.dashboard')}}" class="pull-left btn btn-info btn-block mb15">
-                            <i class="fa fa-btn fa-user"></i> {{tr('login')}}
 
+                            <i class="fa fa-btn fa-user"></i> {{tr('login')}}
                         </a>
                     </div>
                 </div>

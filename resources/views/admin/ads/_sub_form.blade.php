@@ -48,13 +48,13 @@
 
                @if($index != 0)
                 
-                    <a href="javascript:void(0);" onclick="removeQuestion({{$index}})" style="color: #ff0000"><i class="fa fa-minus-circle" title="Remove Question"></i></a>
+                    <a href="javascript:void(0);" onclick="removeQuestion({{$index}})" style="color: #ff0000"><i class="fa fa-minus-circle" title="{{tr('remove_question')}}"></i></a>
 
                @endif
 
                @if($index == 0)
 
-                    <a href="javascript:void(0);" onclick="addQuestion({{$index}})"><i class="fa fa-plus-circle" title="Add Question"></i></a>
+                    <a href="javascript:void(0);" onclick="addQuestion({{$index}})"><i class="fa fa-plus-circle" title="{{tr('add_question')}}"></i></a>
 
                @endif
 
