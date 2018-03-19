@@ -414,7 +414,7 @@
                         
                         <td class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;" valign="top">
                         
-                            <h1 style="text-align: center;">Hi {{$email_data['name']}},</h1>
+                            <h1 style="text-align: center;">Hi {{$email_data['user']['name']}},</h1>
 
                         </td>
                     </tr>
