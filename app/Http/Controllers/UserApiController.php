@@ -4605,7 +4605,7 @@ class UserApiController extends Controller {
 
                     $pay_per_view_status = $videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true;
 
-                    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+                    $ppv_notes = !$pay_per_view_status ? ($value->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
                     
                     $data[] = [
                             'pay_per_view_id'=>$value->pay_per_view_id,
