@@ -1038,8 +1038,8 @@ return array(
 	'hls_settings_note' => 'Ex : http://IP_ADDRESS_OR_DOMAIN:8080/',
 
 	'video_viewer_count_size_label'=>'Set Viewer Count Limit Per Video',
-	'video_viewer_count_size_label_note' => 'Usage : Set the viewer count limit. If the user enabled ads option for the video, after this view count reached. The user will get AMOUNT for each view of the video.',
-	'amount_per_video_note' => "Usage : Set the amount for each view . If the user enabled ads option for the video, after this view count reached. The user will get AMOUNT for each view of the video.",
+	'video_viewer_count_size_label_note' => 'Usage : View count limit. Once the view count reaches the limit set by the admin, the moderator gets paid for each view.',
+	'amount_per_video_note' => "Usage : The amount set for each view once the count crosses the view limit.",
 	'HLS_STREAMING_URL' => 'HLS Streaming URL',
 	'amount_per_video'=>'Amount Per Video View',
 	'admin_ppv_commission' => 'Admin PPV Commission',
@@ -1273,5 +1273,8 @@ return array(
 	'coupon_code_note'=>'If Your giving lowercase and tab space means we will remove this things and giving Uppercase coupon code format without space.',
 	'video_not_found_error'=>'Video Details Not Found',
 	'ppv_not_found_error'=>'PPV Amount is Not Found you watch free video and status Unapproved',
+	'user_approved_success'=>'User Approved Successfully',
+	'user_decline_success'=>'User Declined Successfully',
+	'add_ppv_amount'=>'Add PPV Amount',
 
 );

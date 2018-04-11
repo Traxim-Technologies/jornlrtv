@@ -530,6 +530,47 @@ class AdminController extends Controller {
     }
 
     /**
+    * Function Name : user_status_change()
+    * 
+    * Description: Change the user status in approve and decline 
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Request in user id
+    *
+    * @return success message in approve/decline
+    */
+    public function user_status_change(Request $request){
+
+
+        $users_status = User::find($request->id);
+
+        if($users_status){
+
+            $users_status->status = $request->status;
+
+            $users_status->save();
+
+            if($request->status==DEFAULT_FALSE){
+
+                return back()->with('flash_success',tr('user_decline_success'));
+
+            } else{
+
+                return back()->with('flash_success',tr('user_approved_success'));
+
+            }
+
+        } else {
+
+            return back()->with('flash_error',tr('user_id_not_found'));
+        }
+
+    }
+
+    /**
      *
      *
      *
@@ -667,7 +708,7 @@ class AdminController extends Controller {
         } else {
 
             $redeem_request_details = RedeemRequest::find($request->redeem_request_id);
-
+            
             if($redeem_request_details) {
 
                 if($redeem_request_details->status == REDEEM_REQUEST_PAID ) {
@@ -675,15 +716,10 @@ class AdminController extends Controller {
                     return back()->with('flash_error' , tr('redeem_request_status_mismatch'));
 
                 }
-
-
-                $message = tr('action_success');
-
-                $redeem_amount = $request->paid_amount ? $request->paid_amount : 0;
-
+                
                 // Check the requested and admin paid amount is equal 
 
-                if($request->paid_amount == $redeem_request_details->request_amount) {
+                if($request->paid_amount == $redeem_request_details->request_amount || $request->paid_amount < $redeem_request_details->request_amount) {
 
                     $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
 
@@ -691,25 +727,16 @@ class AdminController extends Controller {
 
                     $redeem_request_details->save();
 
-                }
+                    $redeem_amount = $request->paid_amount ? $request->paid_amount : 0;
 
+                    $message = tr('action_success');
 
-                else if($request->paid_amount > $redeem_request_details->request_amount) {
-
-                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
-
-                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
-
-                    $redeem_request_details->save();
-
-                    $redeem_amount = $redeem_request_details->request_amount;
 
                 } else {
 
                     $message = tr('redeems_request_admin_less_amount');
 
                     $redeem_amount = 0; // To restrict the redeeem paid amount update
-
                 }
 
                 $redeem_details = Redeem::where('user_id' , $redeem_request_details->user_id)->first();
@@ -718,7 +745,9 @@ class AdminController extends Controller {
 
                     $redeem_details->paid = $redeem_details->paid + $redeem_amount;
 
-                    $redeem_details->save();
+                    $redeem_details->remaining += $redeem_request_details->request_amount -$request->paid_amount;
+                    
+                    $redeem_details->save();    
                 }
 
                 return back()->with('flash_success' , $message);
@@ -1483,27 +1512,35 @@ class AdminController extends Controller {
      */
     
     public function save_video_payment($id, Request $request) {
+        
+        if($request->ppv_amount!= 0){
 
-        // Load Video Model
-        $model = VideoTape::find($id);
+            // Load Video Model
+            $model = VideoTape::find($id);
 
-        // Get post attribute values and save the values
-        if ($model) {
+            // Get post attribute values and save the values
+            if ($model) {
 
-             $request->request->add([ 
-                'ppv_created_by'=> 0 ,
-            ]); 
+                 $request->request->add([ 
+                    'ppv_created_by'=> 0 ,
+                ]); 
 
-            if ($data = $request->all()) {
+                if ($data = $request->all()) {
 
-                // Update the post
-                if (VideoTape::where('id', $id)->update($data)) {
-                    // Redirect into particular value
-                    return back()->with('flash_success', tr('payment_added'));       
-                } 
+                    // Update the post
+                    if (VideoTape::where('id', $id)->update($data)) {
+                        // Redirect into particular value
+                        return back()->with('flash_success', tr('payment_added'));       
+                    } 
+                }
             }
+
+            return back()->with('flash_error', tr('admin_published_video_failure'));
+
+        } else {
+
+            return back()->with('flash_error',tr('add_ppv_amount'));
         }
-        return back()->with('flash_error', tr('admin_published_video_failure'));
     
     }
 
@@ -1640,8 +1677,9 @@ class AdminController extends Controller {
                             ->where('status', DEFAULT_TRUE)
                             ->orderBy('created_at', 'desc')
                             ->get();
-        }
 
+        }
+          // dd($users);
         return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
     }
 
@@ -2066,8 +2104,8 @@ class AdminController extends Controller {
         $model = AdsDetail::find($request->id);
 
         $videos = VideoTape::where('status', DEFAULT_TRUE)->where('publish_status', DEFAULT_TRUE)
-            ->where('is_approved', DEFAULT_TRUE)->where('ad_status', DEFAULT_TRUE)->paginate(12);
-
+            ->where('is_approved', DEFAULT_TRUE)->paginate(12);
+       
         return view('admin.video_ads.assign_ad')->with('page', 'videos_ads')->with('sub_page', 'view-ads')
             ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
     }
@@ -2091,6 +2129,12 @@ class AdminController extends Controller {
             foreach ($video_tape_ids as $key => $video_tape_id) {
                
                 $model = VideoAd::where('video_tape_id', $video_tape_id)->first();
+
+                $video_ad_status = VideoTape::where('id',$video_tape_id)->first();
+
+                $video_ad_status->ad_status = DEFAULT_TRUE;
+
+                $video_ad_status->save();
 
                 if($model) {
 
@@ -2179,7 +2223,6 @@ class AdminController extends Controller {
                     }
 
                 } else {
-
 
                     $model = new VideoAd;
 
