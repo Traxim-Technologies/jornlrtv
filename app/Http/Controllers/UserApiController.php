@@ -263,7 +263,7 @@ class UserApiController extends Controller {
                         'video_stopped_status'=>$value->video_stopped_status,
                         'video_payment_status'=> $videopayment ? DEFAULT_TRUE : DEFAULT_FALSE,
                         'redirect_web_url'=>route('user.android.video',['u_id'=>$value->unique_id,
-                            'id'=>$request->id]),
+                            'id'=>$request->id, 'c_id'=>$value->channel_id]),
                     ];
 
                     $values[] = $null_safe_value;
@@ -356,7 +356,7 @@ class UserApiController extends Controller {
                                 'currency'=> Setting::get('currency'),
                                 "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
                                 'is_streaming'=>$model->is_streaming,
-                                'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id]),
+                                'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
                             ];
                         } else {
                             $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
