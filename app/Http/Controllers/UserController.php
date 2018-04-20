@@ -2100,8 +2100,10 @@ class UserController extends Controller {
 
             }
 
-            return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', tr('video_going_to_broadcast'));
+            // return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', tr('video_going_to_broadcast'));
 
+            return redirect(route('user.android.video',['u_id'=>$response->data->unique_id,
+                            'id'=>$request->id, 'c_id'=>$response->data->channel_id]));
 
         } else {
 
@@ -3003,4 +3005,123 @@ class UserController extends Controller {
         return response()->json(['view'=>$view, 'length'=>count($live_video_history->data)]);
     }
 
+    public function android_web_page(Request $request) {
+
+        if ($request->u_id) {
+
+            $model = LiveVideo::where('unique_id', $request->u_id)
+                        ->where('status', '!=', DEFAULT_TRUE)
+                       // ->where('user_id', Auth::user()->id)
+                        ->first();
+    
+            if ($model) {
+
+                Auth::loginUsingId($request->id);
+
+                // $delete_videos = LiveVideo::
+
+                $videoPayment = null;
+
+
+                if (Auth::check()) {
+
+                    // $usrModel
+
+                    $userModel = User::find(Auth::user()->id);
+
+                    if ($model->user_id != $userModel->id) {
+
+                            // Load Viewers model
+
+                            $viewer = Viewer::where('video_id', $model->id)->where('user_id', Auth::user()->id)->first();
+
+                            if(!$viewer) {
+
+                                $viewer = new Viewer;
+
+                                $viewer->video_id = $model->id;
+
+                                $viewer->user_id = Auth::user()->id;
+
+                            }
+
+                            $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
+
+                            $viewer->save();
+
+                            if ($viewer) {
+
+                                $model->viewer_cnt += 1;
+
+                                $model->save();
+
+                            }
+                            // video payment 
+
+                            $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
+                                ->where('live_video_viewer_id', Auth::user()->id)
+                                ->where('status',DEFAULT_TRUE)->first();
+                        
+                    }
+
+                    $appSettings = json_encode([
+                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                        'BASE_URL' => Setting::get('BASE_URL'),
+                        'TURN_CONFIG' => [],
+                        'TOKEN' =>  ($model->user_id == $userModel->id) ? Auth::user()->token : null,
+                        'USER_PICTURE'=>$userModel->chat_picture,
+                        'NAME'=>$userModel->name,
+                        'CLASS'=>'left',
+                        'USER' => ($model->user_id == $userModel->id) ? ['id' => $userModel->id, 'role' => "model"] : null,
+                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
+                    ]);
+
+
+                } else {
+
+                    $model->viewer_cnt += 1;
+
+                    $model->save();
+
+                    $appSettings = json_encode([
+                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                        'BASE_URL' => Setting::get('BASE_URL'),
+                        'TURN_CONFIG' => [],
+                        'TOKEN' =>  null,
+                        'USER_PICTURE'=>$model->user->chat_picture,
+                        'NAME'=>$model->user->name,
+                        'CLASS'=>'left',
+                        'USER' => null,
+                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
+                    ]);
+
+
+                }
+
+
+            } else {
+
+                Log::info(tr('no_live_video_found'));
+
+            }
+
+        } else {
+
+            if ($request->c_id) {
+
+                Log::info(tr('id_not_matching'));
+
+            } else {
+
+                Log::info(tr('something_error'));
+
+            }
+
+
+        }
+
+        return view('user.android.android-video')->with('data', $model)->with('appSettings', $appSettings)->with('page', '')->with('sub_page','');
+    }
 }
