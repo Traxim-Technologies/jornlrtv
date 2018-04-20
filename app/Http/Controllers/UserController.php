@@ -85,7 +85,7 @@ class UserController extends Controller {
 
 
         $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos','master_login',
-            'forgot_password']]);
+            'forgot_password', 'android_web_page']]);
 
         if (Auth::check()) {
 
