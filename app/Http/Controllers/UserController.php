@@ -85,7 +85,7 @@ class UserController extends Controller {
 
 
         $this->middleware('auth', ['except' => ['index','single_video','all_categories' ,'category_videos' , 'sub_category_videos' , 'contact','trending', 'channel_videos', 'add_history', 'page_view', 'channel_list', 'live_videos','broadcasting', 'get_viewer_cnt', 'stop_streaming', 'watch_count', 'partialVideos', 'payment_mgmt_videos','master_login',
-            'forgot_password']]);
+            'forgot_password', 'android_web_page']]);
 
         if (Auth::check()) {
 
@@ -93,9 +93,6 @@ class UserController extends Controller {
 
             } else {
 
-                Log::info("starts ".Auth::user()->id);
-
-               // $this->deleteStreaming();
 
             }
 
@@ -2065,44 +2062,9 @@ class UserController extends Controller {
 
         if ($response->success) {
 
-            if (Setting::get('wowza_server_url')) {
+           // return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', tr('video_going_to_broadcast'));
 
-
-                if (!file_exists(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp")) {
-
-                    $myfile = fopen(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp", "w") or die("Unable to open file!");
-
-                    $destination_ip = Setting::get('wowza_ip_address');
-
-                    // $destination_port = time();
-
-                    $destination_port = $response->data->port_no;
-
-                    $data = "v=0\n"
-                            ."o=- 0 0 IN IP4 " . $destination_ip . "\n"
-                            . "s=Kurento\n"
-                            . "c=IN IP4 " . $destination_ip . "\n"
-                            . "t=0 0\n"
-                            . "m=video " . $destination_port . " RTP/AVP 100\n"
-                            . "a=rtpmap:100 H264/90000\n";
-
-                    fwrite($myfile, $data);
-
-                    fclose($myfile);
-
-                    $filepath = public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp";
-
-                    shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
-
-                    $this->connectStream($response->data->user_id.'-'.$response->data->id);
-
-                }
-
-            }
-
-            return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', tr('video_going_to_broadcast'));
-
-
+            return redirect(route('user.android.video', array('u_id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id, 'id'=>\Auth::user()->id)));
         } else {
 
             return back()->with('flash_error', $response->error_messages);
@@ -2363,73 +2325,6 @@ class UserController extends Controller {
 
     }
 
-    public function connectStream($file = null)
-    {
-
-        try {
-            $client = new \GuzzleHttp\Client();
-
-            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file/actions/connect?connectAppName=live&appInstance=_definst_&mediaCasterType=rtp";
-
-            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
-            $promise = $client->sendAsync($request)->then(function ($response) {
-                     echo 'I completed! ' . $response->getBody();
-            });
-            $promise->wait();
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
-            dd($e->getResponse()->getBody()->getContents());
-        }
-
-    }
-
-
-    // Disconnect Stream
-    public function disConnectStream($file = null) {
-
-
-        try {
-            $client = new \GuzzleHttp\Client();
-
-            $sdp = $file.".sdp";
-
-            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/applications/live/instances/_definst_/incomingstreams/$sdp/actions/disconnectStream";
-
-            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
-            $promise = $client->sendAsync($request)->then(function ($response) {
-                     echo 'I completed! ' . $response->getBody();
-            });
-            $promise->wait();
-
-            $this->deleteStream($file);
-
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
-            dd($e->getResponse()->getBody()->getContents());
-        }
-
-
-    }
-
-    // Delete Stream
-
-    public function deleteStream($file = null) {
-
-
-        try {
-            $client = new \GuzzleHttp\Client();
-
-            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file";
-
-            $request = new \GuzzleHttp\Psr7\Request('DELETE', $url);
-            $promise = $client->sendAsync($request)->then(function ($response) {
-                     echo 'I completed! ' . $response->getBody();
-            });
-            $promise->wait();
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
-            dd($e->getResponse()->getBody()->getContents());
-        }
-
-
-    }
 
     public function payment_url(Request $request) {
 
@@ -3003,4 +2898,123 @@ class UserController extends Controller {
         return response()->json(['view'=>$view, 'length'=>count($live_video_history->data)]);
     }
 
+    public function android_web_page(Request $request) {
+
+        if ($request->u_id) {
+
+            $model = LiveVideo::where('unique_id', $request->u_id)
+                        ->where('status', '!=', DEFAULT_TRUE)
+                       // ->where('user_id', Auth::user()->id)
+                        ->first();
+    
+            if ($model) {
+
+                Auth::loginUsingId($request->id);
+
+                // $delete_videos = LiveVideo::
+
+                $videoPayment = null;
+
+
+                if (Auth::check()) {
+
+                    // $usrModel
+
+                    $userModel = User::find(Auth::user()->id);
+
+                    if ($model->user_id != $userModel->id) {
+
+                            // Load Viewers model
+
+                            $viewer = Viewer::where('video_id', $model->id)->where('user_id', Auth::user()->id)->first();
+
+                            if(!$viewer) {
+
+                                $viewer = new Viewer;
+
+                                $viewer->video_id = $model->id;
+
+                                $viewer->user_id = Auth::user()->id;
+
+                            }
+
+                            $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
+
+                            $viewer->save();
+
+                            if ($viewer) {
+
+                                $model->viewer_cnt += 1;
+
+                                $model->save();
+
+                            }
+                            // video payment 
+
+                            $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
+                                ->where('live_video_viewer_id', Auth::user()->id)
+                                ->where('status',DEFAULT_TRUE)->first();
+                        
+                    }
+
+                    $appSettings = json_encode([
+                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                        'BASE_URL' => Setting::get('BASE_URL'),
+                        'TURN_CONFIG' => [],
+                        'TOKEN' =>  ($model->user_id == $userModel->id) ? Auth::user()->token : null,
+                        'USER_PICTURE'=>$userModel->chat_picture,
+                        'NAME'=>$userModel->name,
+                        'CLASS'=>'left',
+                        'USER' => ($model->user_id == $userModel->id) ? ['id' => $userModel->id, 'role' => "model"] : null,
+                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
+                    ]);
+
+
+                } else {
+
+                    $model->viewer_cnt += 1;
+
+                    $model->save();
+
+                    $appSettings = json_encode([
+                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
+                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
+                        'BASE_URL' => Setting::get('BASE_URL'),
+                        'TURN_CONFIG' => [],
+                        'TOKEN' =>  null,
+                        'USER_PICTURE'=>$model->user->chat_picture,
+                        'NAME'=>$model->user->name,
+                        'CLASS'=>'left',
+                        'USER' => null,
+                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
+                    ]);
+
+
+                }
+
+
+            } else {
+
+                Log::info(tr('no_live_video_found'));
+
+            }
+
+        } else {
+
+            if ($request->c_id) {
+
+                Log::info(tr('id_not_matching'));
+
+            } else {
+
+                Log::info(tr('something_error'));
+
+            }
+
+
+        }
+
+        return view('user.android.android-video')->with('data', $model)->with('appSettings', $appSettings)->with('page', '')->with('sub_page','');
+    }
 }

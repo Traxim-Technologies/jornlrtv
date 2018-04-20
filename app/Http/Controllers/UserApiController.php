@@ -247,7 +247,7 @@ class UserApiController extends Controller {
                         "title"=> $value->title,
                         "channel_name"=> $value->channel_name ? $value->channel_name : '',
                         "watch_count"=> $value->viewers,
-                        "video"=> $value->video_url ? $value->video_url : VideoRepo::getUrl($value, $request),
+                      // "video"=> $value->video_url ? $value->video_url : VideoRepo::getUrl($value, $request),
                         "video_tape_id"=>$value->video_id,
                         "channel_id"=>$value->channel_id,
                         "description"=> $value->description,
@@ -261,8 +261,9 @@ class UserApiController extends Controller {
                         'currency'=> Setting::get('currency'),
                         "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$value->unique_id,'c_id'=>$value->channel_id)),
                         'video_stopped_status'=>$value->video_stopped_status,
-                        'video_payment_status'=> $videopayment ? DEFAULT_TRUE : DEFAULT_FALSE
-
+                        'video_payment_status'=> $videopayment ? DEFAULT_TRUE : DEFAULT_FALSE,
+                        'redirect_web_url'=>route('user.android.video',['u_id'=>$value->unique_id,
+                            'id'=>$request->id, 'c_id'=>$value->channel_id]),
                     ];
 
                     $values[] = $null_safe_value;
@@ -330,7 +331,7 @@ class UserApiController extends Controller {
 
                         if ($model) {
 
-                            $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+                           // $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
 
                             $model->save();
 
@@ -341,7 +342,7 @@ class UserApiController extends Controller {
                                 "title"=> $model->title,
                                 "channel_name"=> $model->channel ? $model->channel->name : '',
                                 "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                                "video"=>$model->video_url,
+                               //  "video"=>$model->video_url,
                                 "video_tape_id"=>$model->id,
                                 "channel_id"=>$model->channel_id,
                                 'unique_id'=>$model->unique_id,
@@ -355,6 +356,7 @@ class UserApiController extends Controller {
                                 'currency'=> Setting::get('currency'),
                                 "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
                                 'is_streaming'=>$model->is_streaming,
+                                'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
                             ];
                         } else {
                             $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
@@ -447,7 +449,7 @@ class UserApiController extends Controller {
                                 "title"=> $model->title,
                                 "channel_name"=> $model->channel ? $model->channel->name : '',
                                 "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                                "video"=> $model->video_url ? VideoRepo::rtmpUrl($model) : VideoRepo::getUrl($model, $request),
+                                // "video"=> $model->video_url ? VideoRepo::rtmpUrl($model) : VideoRepo::getUrl($model, $request),
                                 'unique_id'=>$model->unique_id,
                                 "video_tape_id"=>$model->id,
                                 "channel_id"=>$model->channel_id,
@@ -465,6 +467,7 @@ class UserApiController extends Controller {
                                 'video_payment_status'=> $videopayment ? DEFAULT_TRUE : DEFAULT_FALSE,
                                 'comments'=>$messages,  
                                 'suggestions'=>$suggestions,
+                                'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
                             ];
 
                             $response_array = ['success'=>true, 'data'=>$data];

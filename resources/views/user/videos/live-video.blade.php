@@ -50,32 +50,7 @@ video {
 
 					<div class="col-lg-8" ng-controller="streamCtrl" ng-cloak ng-init="initRoom({{$data->id}}, '{{$data->virtual_id}}')">
 
-						<div style="display: none">
-
-							<textarea id="rtpSdp">v=0
-	                              o=- 0 0 IN IP4 {{Setting::get('wowza_ip_address')}}
-	                              s=Kurento
-	                              c=IN IP4 {{Setting::get('wowza_ip_address')}}
-	                              t=0 0
-	                              m=video {{$data->port_no}} RTP/AVP 100
-	                              a=rtpmap:100 H264/90000
-	                            </textarea>
-
-	                        <video id="videoInput" autoplay></video>
-
-                        </div>
-
-                        <div id="rtsp_container"></div>
-
-                        <div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
-                          <img src="{{asset('error.jpg')}}" class="error-image" alt="Error">
-
-                          <div class="flash_display" id="flash_error_display" style="display: none;">
-                                 <div class="flash_error_div">
-                                       <div class="flash_error">{{tr('flash_missing')}} <a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{tr('adobe')}}</a>.</div>
-                                 </div>
-                          </div>
-                        </div>
+						
 
 						<div class="live_img" id="videos-container" room="{{$data->id}}">
 							<!-- <img src="{{asset('images/mobile-camera.jpg')}}" width="100%" height="400px"> -->

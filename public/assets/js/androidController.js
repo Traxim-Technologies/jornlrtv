@@ -216,7 +216,7 @@ liveAppCtrl
 	};
 }
 )
-.controller('streamCtrl', ['$rootScope', '$window', 'socketFactory','commonHelper', '$sce',
+.controller('androidCtrl', ['$rootScope', '$window', 'socketFactory','commonHelper', '$sce',
 	function ($rootScope, $window, socketFactory, commonHelper, $sce) {
 
 		$scope = $rootScope;
@@ -328,6 +328,7 @@ liveAppCtrl
 
         var m_type = getMobileOperatingSystem();
 
+       
 		var socket = {};
 
 		// console.log("Before "+socket);
@@ -482,12 +483,7 @@ liveAppCtrl
 		}
 
 		socket = $scope.socketrun();
-		// socket.resetData();
 
-
-		$('#myModal').modal('hide');		
-
-		$(".home div").removeClass('modal-backdrop fade in');
 
 		// using single socket for RTCMultiConnection signaling
 		var onMessageCallbacks = {};
@@ -533,6 +529,8 @@ liveAppCtrl
 		$scope.connectionNow = null;
 
 		socket.on('disconnect', function (data) {
+
+
 
 
 		});
@@ -614,6 +612,7 @@ liveAppCtrl
 
 			  console.log(event);
 
+			 
 
 
 			};
@@ -643,66 +642,69 @@ liveAppCtrl
 
 			console.log(event);
 
-			  if (event.type == 'local') {
-
-			  	if(is_vod == 1) {
-
-			  		alert(is_vod);
-
-			  		connection.streams[event.streamid].startRecording({ 
-				        video: true ,
-				        audio:true,
-				    });
-
-			  	}
-
-			    var initNumber = 1;
 
 
-			    console.log("capture image");
 
-			    var capture = function capture() {
+		  if (event.type == 'local') {
 
+		  	if(is_vod == 1) {
 
-			    	console.log("Inside capture image");
+		  		alert(is_vod);
 
-			    	console.log(event.userid);
-
-			      connection.takeSnapshot(event.userid, function (snapshot) {
-
-			      	console.log("url "+snapshot);
-			      	console.log("url "+url);
-
-			      	$.ajax({
-
-			      		type : 'post',
-			      		url : url+'/take_snapshot/'+$scope.videoDetails.id,
-			      		data : {base64: snapshot,shotNumber: initNumber},
-			      		success : function(data) {
-			      			
-			      		}
-
-			      	});
-
-			      	$scope.viewerscnt = 0;
-
-			      	$scope.minutes = 0;
-
-			      	
-			   	 });
-
-			     initNumber = initNumber < 6 ? initNumber + 1 : 1;
-
-			     timeout = setTimeout(capture, 30000);
-
-		
-			    };
-
-			    capture();
-
-			    $scope.$on('destroy', function () {
-			      clearTimeout(timeout);
+		  		connection.streams[event.streamid].startRecording({ 
+			        video: true ,
+			        audio:true,
 			    });
+
+		  	}
+
+		    var initNumber = 1;
+
+
+		    console.log("capture image");
+
+		    var capture = function capture() {
+
+
+		    	console.log("Inside capture image");
+
+		    	console.log(event.userid);
+
+		      connection.takeSnapshot(event.userid, function (snapshot) {
+
+		      	console.log("url "+snapshot);
+		      	console.log("url "+url);
+
+		      	$.ajax({
+
+		      		type : 'post',
+		      		url : url+'/take_snapshot/'+$scope.videoDetails.id,
+		      		data : {base64: snapshot,shotNumber: initNumber},
+		      		success : function(data) {
+		      			
+		      		}
+
+		      	});
+
+		      	$scope.viewerscnt = 0;
+
+		      	$scope.minutes = 0;
+
+		      
+		   	 });
+
+		     initNumber = initNumber < 6 ? initNumber + 1 : 1;
+
+		     timeout = setTimeout(capture, 30000);
+
+	
+		    };
+
+		    capture();
+
+		    $scope.$on('destroy', function () {
+		      clearTimeout(timeout);
+		    });
 		  }
 		  //      event.mediaElement.controls = false;
 		 // console.log("Media Element "+event.mediaElement);
@@ -715,6 +717,19 @@ liveAppCtrl
 
 		  connection.body.appendChild(event.mediaElement);
 
+		 /* $.ajax({
+				type : 'post',
+				url : apiUrl+"live_streaming/"+$stateParams.id,
+				data : {id : memoryStorage.user_id, token : memoryStorage.access_token},
+				success : function(result) {*/
+
+					$scope.open = true;
+
+					$scope.displayStop = true;
+
+		/*		}
+
+		 });*/
 
 		  if (connection.isInitiator == false && !connection.broadcastingConnection) {
 		    $scope.isStreaming = true;
@@ -810,9 +825,13 @@ liveAppCtrl
 
 	          $("#loader_btn").show();
 
-
+	        
+			
 		}
-		$('#myModal').modal('hide');
+
+
+
+
 
 		$("#videos-container").show();
 
@@ -832,8 +851,11 @@ liveAppCtrl
 
 		}
 
+		
+
 		$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
-					
+
+						
 
 		/**
 		* join broadcast directly, use for member side
@@ -928,9 +950,8 @@ liveAppCtrl
 			if (!appSettings.USER || appSettings.USER.role != 'model') {
 			  // alert('Warning', data.msg);
 			}
-			console.log("Broadcast Error");
+			alert("Broadcast Error");
 
-			
 		});
 
 		//rejoin event
@@ -948,39 +969,11 @@ liveAppCtrl
 		});
 
 
-		var getViewerCnt = function getViewerCnt() {
-
-	      	$.ajax({
-	      		type : 'post',
-	      		url : url+'/get_viewer_cnt?id='+$scope.videoDetails.id,
-	      		success : function(data) {
-
-	      			console.log(data.model.status);
-
-	      			if (data.model.status == 1) {
-
-	      				console.log("stop_streaming_url");
-
-	      				window.location.href = stop_streaming_url;
-
-	      			}
-
-	      			$("#viewers_cnt").html(data.viewer_cnt);
-	      		}
-
-	      	});
-
-		    timeout = setTimeout(getViewerCnt, 30000);
-	
-		};
-
-		getViewerCnt();
 
 	    $scope.$on('destroy', function () {
 
-	    alert("diconn destroy");
 
-	      clearTimeout(viewerCount);
+	      	clearTimeout(viewerCount);
 
 	    });
 
@@ -1037,7 +1030,9 @@ liveAppCtrl
 
 									console.log(result);
 
-									window.location.href = stop_streaming_url;
+									$scope.stopStreaming();
+
+									alert("Video streaming Stopped");
 									
 								}, 
 						    	error : function(result) {
@@ -1055,7 +1050,9 @@ liveAppCtrl
 
 	    	} else {
 
-	    		window.location.href = stop_streaming_url;
+	    		$scope.stopStreaming();
+
+	    		alert('streaming stopped');
 	    		
 	    	}
 
@@ -1063,230 +1060,23 @@ liveAppCtrl
 
 	    $scope.stopStreaming = function() {
 
-	    	if (confirm("Are You sure want to stop streaming ?")) {
+	    	$rootScope.$emit('model_leave_room');
 
-		    	$rootScope.$emit('model_leave_room');
+	    	// stop all local media streams
+			connection.streams.stop('local');
 
-		    	// stop all local media streams
-				connection.streams.stop('local');
+			// stop all remote media streams
+			connection.streams.stop('remote');
 
-				// stop all remote media streams
-				connection.streams.stop('remote');
+			// stop all media streams
+			connection.streams.stop();
 
-				// stop all media streams
-				connection.streams.stop();
-
-				window.location.href = stop_streaming_url;
-
-			}
+			alert("Stop streaming");
 
 	    	
 	    };
 
-	    /*$scope.$on('stop_streaming', function () {
-
-	    	
-	      
-	    });*/
 		
 
 	}
-])
-
-.controller('chatBarCtrl', ['$scope', '$http', '$rootScope', '$window',
-	function ($scope, $http, $rootScope, $window) {
-
-		if (live_user_id != '' && live_user_id != undefined) {
-
-			console.log('chat');
-
-			console.log(chat_socket_url);
-
-
-			var appSettings = $scope.appSettings;
-
-	        var defaultImage = "";
-
-	        var chatBox = document.getElementById('chat-box'); // Chat Box container
-
-	        var chatInput = document.getElementById('chat-input'); // User Typed text in input
-	 
-	        var chatSend = document.getElementById('chat-send'); // Send Box 
-
-
-	        var liveVideoID = $scope.videoDetails.id;
-
-	        var liveVideoViewerID = (appSettings.USER == null) ? $scope.user_id : 0;
-
-	        var userID = (appSettings.USER != null) ?  appSettings.USER.id : 0;
-
-	        var userToViewer ="uv";
-
-	        var viewerToUser ="vu";
-
-	        // let's assume that the client page, once rendered, knows what room it wants to join
-
-	        var room = $scope.videoDetails.unique_id; // Room will be video ID
-
-	        // set-up a connection between the client and the server
-
-	        var socket = io(chat_socket_url ,  { secure: true , query: "room="+room});
-
-	        var socketState = false;
-
-	        // The socket state will be enable, once the socket is connected
-
-	        socket.on('connected', function (data) {
-
-	            socketState = true;
-
-	            // Enable chat input box
-
-	            chatInput.enable();
-
-	        });
-
-	        socket.on('message', function(data) {
-
-
-	           if(data.message){
-
-	                $('#chat-box').append(messageTemplate(data));
-
-	                // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
-	                // $('#chat-box').scrollTop($('#chat-box').height());
-	                // $('#chat_box_scroll').scrollTop($('#chat_box_scroll')[0].scrollHeight);
-	                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
-	            }
-
-	        });
-
-	        socket.on('disconnect', function (data) {
-	            socketState = false;
-	            chatInput.disable();
-	           //  console.log('Disconnected from server');
-	        });
-
-	        chatInput.enable = function() {
-	            this.disabled = false;
-	        };
-
-	        chatInput.clear = function() {
-	            this.value = "";
-	        };
-
-	        chatInput.disable = function() {
-	            this.disabled = true;
-	        };
-
-	        chatInput.addEventListener("keyup", function (e) {
-
-	            if (e.which == 13) {
-	                sendMessage(chatInput);
-	                return false;
-	            }
-	        });
-
-	        // User Click send message , this function will trigger
-
-	        chatSend.addEventListener('click', function() {
-	            sendMessage(chatInput);
-	        });
-
-	        function sendMessage(input) {
-
-	            chatMessage = input.value.trim();
-
-	            if(socketState && chatMessage != '') {
-
-	                message = {};
-	                message.type = userToViewer;
-	                message.live_video_viewer_id = liveVideoViewerID;
-	                message.live_video_id = liveVideoID;
-	                message.user_id = userID;
-	                message.profile_id = (appSettings.USER == null) ? $scope.user_id : appSettings.USER.id;
-	                message.room = room;
-	                message.message = chatMessage;
-	                // message.created_at = appSettings.created_at;
-	                // message.username = $scope.videoDetails.name;
-	                message.userpicture = appSettings.USER_PICTURE;
-	                message.username = appSettings.NAME;
-	                message.class = appSettings.CLASS;
-
-	                // The user send message display to other users
-
-	                updateMessageToOthers(message);
-
-	                // socketClient.sendMessage(text);
-
-	                $('#chat-box').append(messageTemplate(message));
-
-
-	                // $("#chat-box").animate({ scrollTop: $('#chat-box').prop("scrollHeight")}, 300);
-
-	                chatInput.clear();
-
-	                $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
-	                
-	                /*$(chatBox).animate({
-	                    scrollTop: chatBox.scrollHeight,
-	                }, 500);*/
-	            
-	            }
-	        
-	        }
-
-	        // The user send message display to other users
-
-	        function updateMessageToOthers(data) {
-
-	            socket.emit('message', data); 
-	        }
-
-	        // Message Template
-
-	        // <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
-
-	        function messageTemplate(data) {
-
-	        	// <small class="text-muted pull-right">'+data.created_at+'</small>
-
-	            var messageTemplate = '';
-
-	            // if (data.class == 'left') {
-		            messageTemplate = '<div class="item">';
-		            messageTemplate += '<div class="col-lg-2 col-md-2 col-xs-2 col-sm-2" style="padding: 0">';
-		            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'"><img class="chat_img" src="'+data.userpicture+'" alt="'+data.username+'"></a>';
-		            messageTemplate += '</div>';
-		            messageTemplate += '<div class="message col-lg-10 col-md-10 col-xs-10 col-sm-10">';
-		            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small></a>';
-		            messageTemplate += ' <div>'+data.message+'</div>';
-		            messageTemplate += '</div>';
-		            messageTemplate += '<div class="clearfix"></div>';
-		            messageTemplate += '</div>';
-		        // }
-
-		         /*else {
-		        	messageTemplate = '<li class="'+data.class+' clearfix">';
-		            messageTemplate += '<span class="chat-img pull-right">';
-		            messageTemplate += '<img style="width: 60px;height: 60px;" src="'+data.userpicture+'" alt="'+data.username+'" class="img-circle">';
-		            messageTemplate += '</span>';
-		            messageTemplate += '<div class="chat-body clearfix">';
-		            messageTemplate += ' <div class="header"> ';
-		            messageTemplate += ' <strong class="pull-right primary-font">'+data.username+'</strong>';
-		            messageTemplate += '</div>';
-		            messageTemplate += ' <p>'+data.message+'</p>';
-		            messageTemplate += '</div>';
-		            messageTemplate += '</li>';
-		        }
-	*/
-	            return messageTemplate;
-
-	        }
-
-	    }
-    
-
-    }
-
-    ]);
+]);
