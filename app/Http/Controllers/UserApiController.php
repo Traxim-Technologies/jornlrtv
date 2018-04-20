@@ -467,6 +467,7 @@ class UserApiController extends Controller {
                                 'video_payment_status'=> $videopayment ? DEFAULT_TRUE : DEFAULT_FALSE,
                                 'comments'=>$messages,  
                                 'suggestions'=>$suggestions,
+                                'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
                             ];
 
                             $response_array = ['success'=>true, 'data'=>$data];
