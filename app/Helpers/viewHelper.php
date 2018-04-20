@@ -1210,6 +1210,8 @@ function displayVideoDetails($data,$userId) {
                 
                     if ($userId) {
 
+                        Log::info(print_r($user, true));
+
                         if ($user->user_type) {        
 
                             $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
