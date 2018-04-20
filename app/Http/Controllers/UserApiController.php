@@ -385,7 +385,7 @@ class UserApiController extends Controller {
     public function live_video(Request $request) {
         $validator = Validator::make(
             $request->all(),
-            array(a
+            array(
                 'browser'=>'required',
                 'device_type'=>'required|in:'.DEVICE_ANDROID.','.DEVICE_IOS.','.DEVICE_WEB,
                 'video_tape_id'=>'required|exists:live_videos,id',
