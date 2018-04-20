@@ -11,7 +11,13 @@
 	<script src="{{asset('lib/angular-socket-io/socket.min.js')}}"></script>
 	<script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 	<script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
+	<style type="text/css">
+		video{
+			height:100%;
+			width: 100%;
 
+		}
+	</style>
 	<script type="text/javascript">
 
 var appSettings = <?= $appSettings ?>;
@@ -61,16 +67,18 @@ console.log(appSettings);
 
 <body>
 
-<div class="slide-area recom-area abt-sec" ng-app="liveApp" >
+<div class="slide-area recom-area abt-sec" ng-app="liveApp" style="position: relative;">
 
-	<div class="row live_video">
+	<div class="live_video">
 
 		<div class="col-lg-8" ng-controller="androidCtrl" ng-cloak ng-init="initRoom({{$data->id}}, '{{$data->virtual_id}}')">
 
-			<div class="live_img" id="videos-container" room="{{$data->id}}">
+			<div class="live_img" id="videos-container" room="{{$data->id}}" style="position: fixed;height: 100%;
+			background-color: #000;width: 100%;top:0;left:0;justify-content: center;display: flex;align-items: center;">
 				<!-- <img src="{{asset('images/mobile-camera.jpg')}}" width="100%" height="400px"> -->
 
-				<img src="{{asset('images/preview_img.jpg')}}" width="100%" id="default_image">
+				<!-- <img src="{{asset('images/preview_img.jpg')}}" width="100%" id="default_image"> -->
+				<div style="background-image: url({{asset('images/mobile-camera.jpg')}});background-size: cover;background-position: center;background-repeat: no-repeat;height: 100%;"></div>
 				
 
 				<div class="loader_img" id="loader_btn" style="display: none;"><img src="{{asset('images/loader.svg')}}"/></div>
