@@ -328,341 +328,6 @@ liveAppCtrl
 
         var m_type = getMobileOperatingSystem();
 
-        var mobile_ios_type = 0;
-
-        var rtsp_mobile_type = 0;
-
-        if (wowza_ip_address != '' && wowza_ip_address != undefined && socket_url != '' && socket_url != undefined) {
-
-	        if ((browser == 'Safari' || browser == 'IE') || m_type == 'ios') {
-
-	        		if (m_type == 'ios') {
-
-	        			browser = 'Safari';
-	        		}
-
-	        		mobile_ios_type = 1;
-
-					jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
-
-					$("#videos-container").html("");
-
-
-					var playerInstance = jwplayer("videos-container");
-
-					$scope.url = "";
-
-					var data = new FormData;
-					data.append('video_id', $scope.videoDetails.id);
-					data.append('device_type', 'web');
-					data.append('browser', browser);
-
-					$.ajax({
-						type : 'post',
-						url : url+'/userApi/get_live_url',
-						contentType : false,
-						processData: false,
-						
-						async : false,
-						data : data,
-						success : function(result) {
-
-							if (result.success) {
-
-								$scope.url = result.url;
-
-							} else {
-
-								console.log(result.message);
-
-							}
-							
-						}, 
-				    	error : function(result) {
-
-				    	}
-					});
-
-					console.log("Url "+$scope.url);
-
-
-					playerInstance.setup({
-
-					   file : $sce.trustAsResourceUrl($scope.url),
-
-					    width: "100%",
-					    aspectratio: "16:9",
-					    primary: "flash",
-					    controls : true,
-					    "controlbar.idlehide" : false,
-					    controlBarMode:'floating',
-					    "controls": {
-					      "enableFullscreen": false,
-					      "enablePlay": false,
-					      "enablePause": false,
-					      "enableMute": true,
-					      "enableVolume": true
-					    },
-					    autostart : true,
-					   /* "sharing": {
-					        "sites": ["reddit","facebook","twitter"]
-					      }*/
-					});
-
-
-					playerInstance.on('error', function() {
-
-						console.log("setupError");
-
-	                    $("#videos-container").css('display', 'none');
-
-	                    $("#rtsp_container").css('display', 'none');
-
-	                    var hasFlash = false;
-	                    
-	                   try {
-	                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-	                        if (fo) {
-	                            hasFlash = true;
-	                        }
-	                    } catch (e) {
-	                        if (navigator.mimeTypes
-	                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-	                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-	                            hasFlash = true;
-	                        }
-	                    }
-
-	                    console.log(hasFlash == false);
-
-	                    $('#main_video_setup_error').css('display', 'block');
-
-	                    if (hasFlash == false) {
-	                        $('#flash_error_display').show();
-
-	                        confirm('Download Flash Player. Flash Player Fail to Load.');
-
-	                        return false;
-	                    }
-
-	                    alert("There is not live video available, Redirecting into main page");
-
-                    	window.location.href = routeUrl;
-
-	                   
-	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-
-					});
-
-
-					playerInstance.on('setupError', function() {
-
-					 	console.log("setupError");
-
-	                    $("#videos-container").css('display', 'none');
-
-	                    $("#rtsp_container").css('display', 'none');
-
-	                    var hasFlash = false;
-	                   try {
-	                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-	                        if (fo) {
-	                            hasFlash = true;
-	                        }
-	                    } catch (e) {
-	                        if (navigator.mimeTypes
-	                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-	                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-	                            hasFlash = true;
-	                        }
-	                    }
-
-	                    $('#main_video_setup_error').show();
-
-	                    if (hasFlash == false) {
-	                        $('#flash_error_display').show();
-
-	                        confirm('Download Flash Player. Flash Player Fail to Load.');
-
-	                        return false;
-	                    }
-
-	                    alert("There is not live video available, Redirecting into main page");
-
-                    	window.location.href = routeUrl;
-	                    
-
-	                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-	                
-	                });
-
-
-					 $("#loader_btn").hide();
-
-
-	        }
-
-
-			var ws = new WebSocket('wss://'+socket_url+'/rtprelay');
-
-			console.log(ws);
-
-			var videoInput;
-			var videoOutput;
-			var webRtcPeer;
-			var state = null;
-			var destinationIp;
-			var destinationPort;
-			var rtpSdp;
-
-			console.log('Page loaded ...');
-			videoInput = document.getElementById('videoInput');
-			videoOutput = document.getElementById('videoOutput');
-			rtpSdp = document.getElementById('rtpSdp');
-
-			ws.onmessage = function(message) {
-
-
-				var parsedMessage = JSON.parse(message.data);
-				console.info('Received message: ' + message.data);
-
-				switch (parsedMessage.id) {
-				case 'startResponse':
-					startResponse(parsedMessage);
-					break;
-				case 'error':
-					onError('Error message from server: ' + parsedMessage.message);
-					break;
-				case 'iceCandidate':
-					webRtcPeer.addIceCandidate(parsedMessage.candidate)
-					break;
-				default:
-					onError('Unrecognized message', parsedMessage);
-				}
-			}
-
-			$scope.start = function() {
-				console.log('Starting video call ...')
-
-				// showSpinner(videoInput);
-
-				console.log('Creating WebRtcPeer and generating local sdp offer ...');
-
-			    var options = {
-			      localVideo: videoInput,
-			      onicecandidate : onIceCandidate
-			    }
-
-			    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
-			        if(error) return onError(error);
-			        this.generateOffer(onOffer);
-			    });
-			}
-
-			function onIceCandidate(candidate) {
-				   console.log('Local candidate' + JSON.stringify(candidate));
-
-				   var message = {
-				      id : 'onIceCandidate',
-				      candidate : candidate
-				   };
-				   sendMessage(message);
-			}
-
-			function onOffer(error, offerSdp) {
-				if(error) return onError(error);
-
-				console.info('Invoking SDP offer callback function ' + location.host);
-				var message = {
-					id : 'start',
-					sdpOffer : offerSdp,
-					rtpSdp : rtpSdp.value
-				}
-				console.log("This is the offer sdp:");
-				console.log(offerSdp);
-				sendMessage(message);
-			}
-
-			function onError(error) {
-				console.error(error);
-			}
-
-			function startResponse(message) {
-				console.log('SDP answer received from server. Processing ...');
-				webRtcPeer.processAnswer(message.sdpAnswer);
-			}
-
-			$scope.stop = function() {
-				console.log('Stopping video call ...');
-				if (webRtcPeer) {
-					webRtcPeer.dispose();
-					webRtcPeer = null;
-
-					var message = {
-						id : 'stop'
-					}
-					sendMessage(message);
-				}
-				// hideSpinner(videoInput, videoOutput);
-			}
-
-			function sendMessage(message) {
-				var jsonMessage = JSON.stringify(message);
-				console.log('Senging message: ' + jsonMessage);
-				ws.send(jsonMessage);
-			}
-
-			/*function showSpinner() {
-				for (var i = 0; i < arguments.length; i++) {
-					arguments[i].poster = './img/transparent-1px.png';
-					arguments[i].style.background = 'center transparent url("./img/spinner.gif") no-repeat';
-				}
-			}
-
-			function hideSpinner() {
-				for (var i = 0; i < arguments.length; i++) {
-					arguments[i].src = '';
-					arguments[i].poster = './img/webrtc.png';
-					arguments[i].style.background = '';
-				}
-			}*/
-
-			function forceEvenRtpPort(rtpPort) {
-				if ((rtpPort > 0) && (rtpPort % 2 != 0))
-					return rtpPort - 1;
-				else return rtpPort;
-			}
-
-			function updateRtpSdp() {
-				var destination_ip;
-				var destination_port;
-
-				if (!destinationIp.value)
-					destination_ip= wowza_ip_address;
-				else
-					destination_ip = destinationIp.value.trim();
-
-				if (!destinationPort.value)
-					destination_port="33124";
-				else
-					destination_port = forceEvenRtpPort(destinationPort.value.trim());
-
-
-				destination_ip = wowza_ip_address;
-
-					rtpSdp.value = 'v=0\n'
-					+ 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
-					+ 's=Kurento\n'
-					+ 'c=IN IP4 ' + destination_ip + '\n'
-					+ 't=0 0\n'
-					+ 'm=video ' + destination_port + ' RTP/AVP 100\n'
-					+ 'a=rtpmap:100 H264/90000\n';
-
-					console.log(rtpSdp.value);
-			}
-
-		}
-
 		var socket = {};
 
 		// console.log("Before "+socket);
@@ -819,48 +484,6 @@ liveAppCtrl
 		socket = $scope.socketrun();
 		// socket.resetData();
 
-		// console.log("After "+socket);
-/*
-		$scope.sureStreaming = function() {
-			$window.sessionStorage.reload = 0;
-			window.btn_clicked = false;
-			if (confirm('Are you want to stream your video ? ')) {
-				if ($window.sessionStorage.reload == undefined || $window.sessionStorage.reload == '' || $window.sessionStorage.reload == 0) {
-					$window.sessionStorage.reload = 1;
-				    window.location.reload();
-				} 
-			} else {
-			   // alert('Why did you press cancel? You should have confirmed');
-			}
-		}*/
-
-
-		/*var data = new FormData;
-		data.append('id', memoryStorage.user_id);
-
-		$.ajax({
-			url : apiUrl+'userDetails',
-			type : 'post',
-			contentType : false,
-			processData: false,
-			async : false,
-			data : data,
-			success :  function(data) {
-				memoryStorage.access_token = data.token;
-				memoryStorage.user_type = data.user_type;
-				memoryStorage.one_time_subscription = data.one_time_subscription;
-				localStorage.setItem('sessionStorage', JSON.stringify(memoryStorage));
-			},
-	    	error : function(result) {
-
-	    	}
-		});
-
-		var appSettings = JSON.parse(memoryStorage.appSettings);*/
-		
-
-		//$scope.user_id = memoryStorage.user_id;
-
 
 		$('#myModal').modal('hide');		
 
@@ -910,23 +533,6 @@ liveAppCtrl
 		$scope.connectionNow = null;
 
 		socket.on('disconnect', function (data) {
-			// console.log("disconect");
-
-			// alert(data);
-
-
-			/*alert($scope.connectionNow.session);
-
-			return false;*/
-
-			/*connection.streams[e.streamid].stopRecording(function (blob) { 
-	            // var mediaElement = document.createElement('video'); 
-	           //  mediaElement.src = URL.createObjectURL(blob.video); 
-	           
-
-
-	        }); */
-
 
 
 		});
@@ -1008,22 +614,6 @@ liveAppCtrl
 
 			  console.log(event);
 
-			      // e.type == 'remote' || 'local' 
-			    /*connection.streams[e.streamid].startRecording({ 
-			        video: true 
-			    }); */
-
-			   /* // record 10 sec audio/video 
-			    var recordingInterval = 10 * 10000; 
-
-			    setTimeout(function () { 
-			        connection.streams[e.streamid].stopRecording(function (blob) { 
-			            var mediaElement = document.createElement('video'); 
-			            mediaElement.src = URL.createObjectURL(blob.video); 
-			           //  document.documentElement.appendChild(h2); 
-			        }); 
-			    }, recordingInterval)*/
-
 
 
 			};
@@ -1053,89 +643,66 @@ liveAppCtrl
 
 			console.log(event);
 
+			  if (event.type == 'local') {
+
+			  	if(is_vod == 1) {
+
+			  		alert(is_vod);
+
+			  		connection.streams[event.streamid].startRecording({ 
+				        video: true ,
+				        audio:true,
+				    });
+
+			  	}
+
+			    var initNumber = 1;
 
 
+			    console.log("capture image");
 
-		  if (event.type == 'local') {
+			    var capture = function capture() {
 
-		  	if(is_vod == 1) {
 
-		  		alert(is_vod);
+			    	console.log("Inside capture image");
 
-		  		connection.streams[event.streamid].startRecording({ 
-			        video: true ,
-			        audio:true,
+			    	console.log(event.userid);
+
+			      connection.takeSnapshot(event.userid, function (snapshot) {
+
+			      	console.log("url "+snapshot);
+			      	console.log("url "+url);
+
+			      	$.ajax({
+
+			      		type : 'post',
+			      		url : url+'/take_snapshot/'+$scope.videoDetails.id,
+			      		data : {base64: snapshot,shotNumber: initNumber},
+			      		success : function(data) {
+			      			
+			      		}
+
+			      	});
+
+			      	$scope.viewerscnt = 0;
+
+			      	$scope.minutes = 0;
+
+			      	
+			   	 });
+
+			     initNumber = initNumber < 6 ? initNumber + 1 : 1;
+
+			     timeout = setTimeout(capture, 30000);
+
+		
+			    };
+
+			    capture();
+
+			    $scope.$on('destroy', function () {
+			      clearTimeout(timeout);
 			    });
-
-		  	}
-
-		    var initNumber = 1;
-
-
-		    console.log("capture image");
-
-		    var capture = function capture() {
-
-
-		    	console.log("Inside capture image");
-
-		    	console.log(event.userid);
-
-		      connection.takeSnapshot(event.userid, function (snapshot) {
-
-		      	console.log("url "+snapshot);
-		      	console.log("url "+url);
-
-		      	$.ajax({
-
-		      		type : 'post',
-		      		url : url+'/take_snapshot/'+$scope.videoDetails.id,
-		      		data : {base64: snapshot,shotNumber: initNumber},
-		      		success : function(data) {
-		      			
-		      		}
-
-		      	});
-
-		      	$scope.viewerscnt = 0;
-
-		      	$scope.minutes = 0;
-
-		      	/*var data = new FormData;
-				data.append('id', memoryStorage.user_id);
-				data.append('token', memoryStorage.access_token);
-				data.append('mid', $stateParams.id);
-
-		      	$.ajax({
-		      		type : 'post',
-		      		url : apiUrl+'getVideoDetails',
-		      		contentType : false,
-					processData: false,
-					async : false,
-					data : data,
-		      		success : function(data) {
-		      			$scope.minutes = data.no_of_minutes;
-		      			$scope.viewerscnt = data.viewer_cnt;
-
-		      			$("#viewers_cnt").html(data.viewer_cnt);
-		      			$("#minutes").html(data.no_of_minutes);
-		      		}
-
-		      	});*/
-		   	 });
-
-		     initNumber = initNumber < 6 ? initNumber + 1 : 1;
-
-		     timeout = setTimeout(capture, 30000);
-
-	
-		    };
-
-		    capture();
-
-		    $scope.$on('destroy', function () {
-		      clearTimeout(timeout);
-		    });
 		  }
 		  //      event.mediaElement.controls = false;
 		 // console.log("Media Element "+event.mediaElement);
@@ -1148,19 +715,6 @@ liveAppCtrl
 
 		  connection.body.appendChild(event.mediaElement);
 
-		 /* $.ajax({
-				type : 'post',
-				url : apiUrl+"live_streaming/"+$stateParams.id,
-				data : {id : memoryStorage.user_id, token : memoryStorage.access_token},
-				success : function(result) {*/
-
-					$scope.open = true;
-
-					$scope.displayStop = true;
-
-		/*		}
-
-		 });*/
 
 		  if (connection.isInitiator == false && !connection.broadcastingConnection) {
 		    $scope.isStreaming = true;
@@ -1256,288 +810,30 @@ liveAppCtrl
 
 	          $("#loader_btn").show();
 
-	          // window.btn_clicked = true;
 
-	       	if (wowza_ip_address != '' && wowza_ip_address != undefined && socket_url != '' && socket_url != undefined) {
-	           	$scope.start();
-	       	}
-	          // $window.sessionStorage.reload = 0;
-			
+		}
+		$('#myModal').modal('hide');
+
+		$("#videos-container").show();
+
+		$scope.user_id = live_user_id;
+
+		console.log($scope.user_id );
+
+		console.log($scope.videoDetails.user_id)
+
+		if ($scope.user_id != $scope.videoDetails.user_id) {
+			// $("#default_image").hide();
+			$("#loader_btn").hide();
+
+		} else {
+
+			$scope.openBroadcast($scope.videoDetails.id, $scope.videoDetails.virtual_id);
+
 		}
 
-
-		/*var data = new FormData;
-		data.append('id', memoryStorage.user_id);
-		data.append('token', memoryStorage.access_token);
-		data.append('mid', $stateParams.id);
-		data.append('device_type', 'web');*/
-
-		/*$.ajax({
-				url : apiUrl+"video/"+$stateParams.id,
-				type : 'post',
-				contentType : false,
-				processData: false,
-				beforeSend: function(xhr){
-					$(".fond").show();
-				},
-				async : false,
-				data : data,
-				success : function(data) {
-
-					if (data.success == false && data.error_code == 104) {
-
-						$scope.loadToken();
-
-					}
-
-					if(data == '') {
-
-							UIkit.notify({message : 'This video no more available, Please Start New Video Stream By clicking "Start BroadCasting" Button', status : 'warning', timeout:5000, pos : 'top-center'});
-
-							$state.go('restricted.video-form', {}, {reload : true});
-
-					} else {
-*/
-							$('#myModal').modal('hide');
-
-							/*$scope.videoDetails = data;
-
-							$scope.viewerscnt = data.viewer_cnt;
-
-		      				$scope.minutes = data.no_of_minutes;*/
-
-
-
-							$("#videos-container").show();
-
-							$scope.user_id = live_user_id;
-
-							console.log($scope.user_id );
-
-							console.log($scope.videoDetails.user_id)
-
-							if ($scope.user_id != $scope.videoDetails.user_id) {
-								// $("#default_image").hide();
-								$("#loader_btn").hide();
-
-							} else {
-
-								$scope.openBroadcast($scope.videoDetails.id, $scope.videoDetails.virtual_id);
-
-							}
-
-							/*if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
-
-							} else {
-								console.log($scope.videoDetails.video_url);
-
-								$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
-
-							}*/
-
-
-							// $scope.start();
-
-							if($scope.videoDetails.video_url != null && $scope.videoDetails.video_url != '' && !mobile_ios_type) {
-
-								jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
-
-								var playerInstance = jwplayer("rtsp_container");
-
-								console.log("data Url "+$scope.videoDetails.video_url);
-
-								$("#videos-container").hide();
-
-								$("#loader_btn").hide();
-
-								$("#rtsp_container").show();
-
-								rtsp_mobile_type = 1;
-
-								playerInstance.setup({
-
-								   file : $sce.trustAsResourceUrl($scope.videoDetails.video_url),
-									width: "100%",
-									aspectratio: "16:9",
-									primary: "flash",
-									controls : true,
-									"controlbar.idlehide" : false,
-									controlBarMode:'floating',
-									"controls": {
-									  "enableFullscreen": false,
-									  "enablePlay": false,
-									  "enablePause": false,
-									  "enableMute": true,
-									  "enableVolume": true
-									},
-									autostart : true,
-
-								});
-
-
-								playerInstance.on('error', function() {
-
-									console.log("setupError");
-
-				                    $("#videos-container").hide();
-
-
-									$("#rtsp_container").css('display', 'none');
-
-				                    var hasFlash = false;
-				                    
-				                   try {
-				                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-				                        if (fo) {
-				                            hasFlash = true;
-				                        }
-				                    } catch (e) {
-				                        if (navigator.mimeTypes
-				                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-				                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-				                            hasFlash = true;
-				                        }
-				                    }
-
-				                    console.log(hasFlash == false);
-
-				                    $('#main_video_setup_error').css('display', 'block');
-
-				                    if (hasFlash == false) {
-				                        $('#flash_error_display').show();
-
-				                        confirm('Download Flash Player. Flash Player Fail to Load.');
-
-				                        return false;
-				                    }
-
-				                    alert("There is not live video available, Redirecting into main page");
-
-                    				window.location.href = routeUrl;
-
-				                   
-				                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-
-								});
-
-
-								playerInstance.on('setupError', function() {
-
-								 	console.log("setupError");
-
-				                    $("#videos-container").hide();
-
-				                    $("#rtsp_container").css('display', 'none');
-
-				                    var hasFlash = false;
-				                   try {
-				                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-				                        if (fo) {
-				                            hasFlash = true;
-				                        }
-				                    } catch (e) {
-				                        if (navigator.mimeTypes
-				                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-				                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-				                            hasFlash = true;
-				                        }
-				                    }
-
-				                    $('#main_video_setup_error').show();
-
-				                    if (hasFlash == false) {
-				                        $('#flash_error_display').show();
-
-				                        confirm('Download Flash Player. Flash Player Fail to Load.');
-
-				                        return false;
-				                    }
-
-				                    
-				                    alert("There is not live video available, Redirecting into main page");
-
-                    				window.location.href = routeUrl;
-				                   // confirm('The video format is not supported in this browser. Please option some other browser.');
-				                
-				                });
-
-
-
-
-							} else {
-
-								$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
-
-							}
-
-
-							// if ($window.sessionStorage.reload == 1) {
-								// $scope.start();
-								
-
-
-								/*memoryStorage.room_id = $scope.videoDetails.id;
-
-								localStorage.setItem('sessionStorage', JSON.stringify(memoryStorage));								
-
-							// }
-
-								console.log(data.video_url != null && data.video_url != '');
-
-								console.log(data.video_url);
-
-								console.log("mobile_ios_type "+mobile_ios_type)
-
-
-								if(data.video_url != null && data.video_url != '' && !mobile_ios_type) {
-
-									jwplayer.key="M2NCefPoiiKsaVB8nTttvMBxfb1J3Xl7PDXSaw==";
-
-									var playerInstance = jwplayer("rtsp_container");
-
-									console.log("data Url "+data.video_url);
-
-									$("#videos-container").hide();
-
-									$("#rtsp_container").show();
-
-									rtsp_mobile_type = 1;
-
-									playerInstance.setup({
-
-									   file : $sce.trustAsResourceUrl(data.video_url),
-										width: "100%",
-										aspectratio: "16:9",
-										primary: "flash",
-										controls : true,
-										"controlbar.idlehide" : false,
-										controlBarMode:'floating',
-										"controls": {
-										  "enableFullscreen": false,
-										  "enablePlay": false,
-										  "enablePause": false,
-										  "enableMute": true,
-										  "enableVolume": true
-										},
-										autostart : true,
-
-									});
-
-								} else {
-
-									$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
-
-								}*/
-/*
-					}
-				},
-				complete : function() {
-		    		$(".fond").hide();
-		    	},
-		    	error : function(result) {
-
-		    	}
-		});*/
+		$scope.initRoom($scope.videoDetails.id, $scope.videoDetails.virtual_id);
+					
 
 		/**
 		* join broadcast directly, use for member side
@@ -1634,41 +930,7 @@ liveAppCtrl
 			}
 			console.log("Broadcast Error");
 
-			if (!mobile_ios_type && !rtsp_mobile_type) {
-
-				window.location.href = stop_streaming_url;
-
-			}
-
-
-			/*var data = new FormData;
-			data.append('id', memoryStorage.user_id);
-			data.append('token', memoryStorage.access_token);
-			data.append('model', 1);
-
-			$("#videos-container").hide();
-
-			if (!mobile_ios_type && !rtsp_mobile_type) {
 			
-				$.ajax({
-
-		      		type : 'post',
-		      		url : apiUrl+"delete_streaming/"+appSettings.CHAT_ROOM_ID,
-		      		contentType : false,
-					processData: false,
-					async : false,
-					data : data,
-		      		success : function(data) {
-		      			UIkit.notify({message : 'This video no more available', status : 'warning', timeout:5000, pos : 'top-center'});
-
-		      			$state.go('static.home', {}, {reload : true});
-		      		}
-
-	      		});
-			}
-
-			$scope.isStreaming = false;
-			$window.sessionStorage.reload = 0;*/
 		});
 
 		//rejoin event
@@ -1801,18 +1063,22 @@ liveAppCtrl
 
 	    $scope.stopStreaming = function() {
 
-	    	$rootScope.$emit('model_leave_room');
+	    	if (confirm("Are You sure want to stop streaming ?")) {
 
-	    	// stop all local media streams
-			connection.streams.stop('local');
+		    	$rootScope.$emit('model_leave_room');
 
-			// stop all remote media streams
-			connection.streams.stop('remote');
+		    	// stop all local media streams
+				connection.streams.stop('local');
 
-			// stop all media streams
-			connection.streams.stop();
+				// stop all remote media streams
+				connection.streams.stop('remote');
 
-			window.location.href = stop_streaming_url;
+				// stop all media streams
+				connection.streams.stop();
+
+				window.location.href = stop_streaming_url;
+
+			}
 
 	    	
 	    };

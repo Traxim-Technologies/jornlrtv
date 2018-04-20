@@ -247,7 +247,7 @@ class UserApiController extends Controller {
                         "title"=> $value->title,
                         "channel_name"=> $value->channel_name ? $value->channel_name : '',
                         "watch_count"=> $value->viewers,
-                        "video"=> $value->video_url ? $value->video_url : VideoRepo::getUrl($value, $request),
+                      // "video"=> $value->video_url ? $value->video_url : VideoRepo::getUrl($value, $request),
                         "video_tape_id"=>$value->video_id,
                         "channel_id"=>$value->channel_id,
                         "description"=> $value->description,
@@ -331,7 +331,7 @@ class UserApiController extends Controller {
 
                         if ($model) {
 
-                            $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+                           // $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
 
                             $model->save();
 
@@ -342,7 +342,7 @@ class UserApiController extends Controller {
                                 "title"=> $model->title,
                                 "channel_name"=> $model->channel ? $model->channel->name : '',
                                 "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                                "video"=>$model->video_url,
+                               //  "video"=>$model->video_url,
                                 "video_tape_id"=>$model->id,
                                 "channel_id"=>$model->channel_id,
                                 'unique_id'=>$model->unique_id,
@@ -385,7 +385,7 @@ class UserApiController extends Controller {
     public function live_video(Request $request) {
         $validator = Validator::make(
             $request->all(),
-            array(
+            array(a
                 'browser'=>'required',
                 'device_type'=>'required|in:'.DEVICE_ANDROID.','.DEVICE_IOS.','.DEVICE_WEB,
                 'video_tape_id'=>'required|exists:live_videos,id',
@@ -449,7 +449,7 @@ class UserApiController extends Controller {
                                 "title"=> $model->title,
                                 "channel_name"=> $model->channel ? $model->channel->name : '',
                                 "watch_count"=> $model->viewer_cnt ? $model->viewer_cnt : 0,
-                                "video"=> $model->video_url ? VideoRepo::rtmpUrl($model) : VideoRepo::getUrl($model, $request),
+                                // "video"=> $model->video_url ? VideoRepo::rtmpUrl($model) : VideoRepo::getUrl($model, $request),
                                 'unique_id'=>$model->unique_id,
                                 "video_tape_id"=>$model->id,
                                 "channel_id"=>$model->channel_id,

@@ -816,7 +816,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('peerProfile', 'UserApiController@peerProfile');
 
-    Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
+    Route::get('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
 
     Route::post('close_streaming', 'UserApiController@close_streaming');
 

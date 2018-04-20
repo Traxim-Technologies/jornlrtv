@@ -93,9 +93,6 @@ class UserController extends Controller {
 
             } else {
 
-                Log::info("starts ".Auth::user()->id);
-
-               // $this->deleteStreaming();
 
             }
 
@@ -2065,41 +2062,6 @@ class UserController extends Controller {
 
         if ($response->success) {
 
-            if (Setting::get('wowza_server_url')) {
-
-
-                if (!file_exists(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp")) {
-
-                    $myfile = fopen(public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp", "w") or die("Unable to open file!");
-
-                    $destination_ip = Setting::get('wowza_ip_address');
-
-                    // $destination_port = time();
-
-                    $destination_port = $response->data->port_no;
-
-                    $data = "v=0\n"
-                            ."o=- 0 0 IN IP4 " . $destination_ip . "\n"
-                            . "s=Kurento\n"
-                            . "c=IN IP4 " . $destination_ip . "\n"
-                            . "t=0 0\n"
-                            . "m=video " . $destination_port . " RTP/AVP 100\n"
-                            . "a=rtpmap:100 H264/90000\n";
-
-                    fwrite($myfile, $data);
-
-                    fclose($myfile);
-
-                    $filepath = public_path()."/uploads/sdp_files/".$response->data->user_id.'-'.$response->data->id.".sdp";
-
-                    shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
-
-                    $this->connectStream($response->data->user_id.'-'.$response->data->id);
-
-                }
-
-            }
-
             return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', tr('video_going_to_broadcast'));
 
 
@@ -2363,73 +2325,6 @@ class UserController extends Controller {
 
     }
 
-    public function connectStream($file = null)
-    {
-
-        try {
-            $client = new \GuzzleHttp\Client();
-
-            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file/actions/connect?connectAppName=live&appInstance=_definst_&mediaCasterType=rtp";
-
-            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
-            $promise = $client->sendAsync($request)->then(function ($response) {
-                     echo 'I completed! ' . $response->getBody();
-            });
-            $promise->wait();
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
-            dd($e->getResponse()->getBody()->getContents());
-        }
-
-    }
-
-
-    // Disconnect Stream
-    public function disConnectStream($file = null) {
-
-
-        try {
-            $client = new \GuzzleHttp\Client();
-
-            $sdp = $file.".sdp";
-
-            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/applications/live/instances/_definst_/incomingstreams/$sdp/actions/disconnectStream";
-
-            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
-            $promise = $client->sendAsync($request)->then(function ($response) {
-                     echo 'I completed! ' . $response->getBody();
-            });
-            $promise->wait();
-
-            $this->deleteStream($file);
-
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
-            dd($e->getResponse()->getBody()->getContents());
-        }
-
-
-    }
-
-    // Delete Stream
-
-    public function deleteStream($file = null) {
-
-
-        try {
-            $client = new \GuzzleHttp\Client();
-
-            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file";
-
-            $request = new \GuzzleHttp\Psr7\Request('DELETE', $url);
-            $promise = $client->sendAsync($request)->then(function ($response) {
-                     echo 'I completed! ' . $response->getBody();
-            });
-            $promise->wait();
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
-            dd($e->getResponse()->getBody()->getContents());
-        }
-
-
-    }
 
     public function payment_url(Request $request) {
 
