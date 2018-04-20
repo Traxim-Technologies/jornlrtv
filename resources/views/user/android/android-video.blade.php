@@ -11,7 +11,13 @@
 	<script src="{{asset('lib/angular-socket-io/socket.min.js')}}"></script>
 	<script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 	<script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
+	<style type="text/css">
+		video{
+			height:100%;
+			width: 100%;
 
+		}
+	</style>
 	<script type="text/javascript">
 
 var appSettings = <?= $appSettings ?>;
