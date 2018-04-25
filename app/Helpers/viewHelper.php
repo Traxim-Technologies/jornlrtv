@@ -1185,6 +1185,8 @@ function watchFullVideo($user_id, $user_type, $video) {
 
 function displayVideoDetails($data,$userId) {
 
+
+
     $user = User::find($userId);
 
     if (Setting::get('is_payper_view')) {
@@ -1205,10 +1207,15 @@ function displayVideoDetails($data,$userId) {
 
                     $url = route('user.single', $data->video_tape_id);
 
-                } else {
+                } else {    
+
+                   // Log::info($userId)
+                    Log::info(print_r($userId, true));
 
                 
                     if ($userId) {
+
+                        Log::info(print_r($user, true));
 
                         if ($user->user_type) {        
 

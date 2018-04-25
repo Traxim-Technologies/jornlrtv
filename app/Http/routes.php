@@ -789,6 +789,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('/live/videos/mgmt', 'UserController@live_mgmt_videos')->name('live.video.mgmt');
 
+    Route::get('android/video', 'UserController@android_web_page')->name('android.video');
+
 
 });
 
@@ -814,7 +816,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('peerProfile', 'UserApiController@peerProfile');
 
-    Route::post('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
+    Route::get('checkVideoStreaming', 'UserApiController@checkVideoStreaming');
 
     Route::post('close_streaming', 'UserApiController@close_streaming');
 
