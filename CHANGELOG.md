@@ -167,3 +167,18 @@ All notable changes to this project will be documented in this file.
 - Video having recurring payment. Once the user seen the page will reload
 
 - Payper view issues fixed
+
+
+## 28.04.2018
+
+- Admin Panel - Language files text changed in all overall text
+
+- User side - Changed Timer functions in client side into Socket connection.
+
+- User Panel - Removed kurento & Wowza
+
+- Implemented "WEBRTC" for all the browsers (WEB/MOBILE)
+
+- Admin Panel - Coupon code added
+
+- Admin Panel - Email Template issue fixed.
