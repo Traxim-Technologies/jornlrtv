@@ -5672,7 +5672,7 @@ class UserApiController extends Controller {
                     $pay_per_view_status = $videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true;
 
                     $ppv_notes = !$pay_per_view_status ? ($videoDetails->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
-                    
+                 
                     $data[] = [
                             'pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -5861,9 +5861,10 @@ class UserApiController extends Controller {
         }
 
     }
+    
+   
 
-
-/**
+    /**
      * Function Name : live_history()
      *
      * To display my live videos History
@@ -6006,5 +6007,109 @@ class UserApiController extends Controller {
         $response_array = ['success'=>true, 'message'=>tr('streaming_stopped')];
 
         return response()->json($response_array);
+
+    /**
+     * FOR MOBILE APP WE ARE USING THIS
+     *  
+     * Function Name: cards_add()
+     *
+     * Description: add card using stripe payment
+     *
+     * @created Vidhya R
+     *
+     * @edited Vidhya R
+     *
+     * @param 
+     * 
+     * @return
+     */
+
+    public function cards_add(Request $request) {
+
+        try {
+        
+            $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'last_four' => 'required',
+                        'card_token' => 'required',
+                        'customer_id' => 'required',
+                        'card_type' => '',
+                    ]
+                );
+
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+             
+                throw new Exception($error , 101);
+
+            } else {
+
+                $user_details = User::find($request->id);
+
+                if(!$user_details) {
+
+                    throw new Exception(Helper::get_error_message(133), 133);
+                    
+                }
+
+                $customer_id = $request->customer_id;
+
+                $card_details = new Card;
+                $card_details->user_id = $request->id;
+                $card_details->customer_id = $request->customer_id;
+                $card_details->last_four = $request->last_four;
+                $card_details->card_token = $request->card_token;
+                $card_details->card_name = $request->card_name ? $request->card_name : "";
+
+                // Check is any default is available
+                $check_card_details = Card::where('user_id',$request->id)->count();
+
+                $card_details->is_default = $check_card_details ? 0 : 1;
+
+                if($card_details->save()) {
+
+                    if($user_details) {
+
+                        $user_details->card_id = $check_card_details ? $user_details->card_id : $card_details->id;
+
+                        $user_details->save();
+                    }
+
+                    $data = [
+                            'user_id' => $request->id, 
+                            'card_id' => $card_details->id,
+                            'customer_id' => $card_details->customer_id,
+                            'last_four' => $card_details->last_four, 
+                            'card_token' => $card_details->card_token, 
+                            'is_default' => $card_details->is_default
+                            ];
+
+                    $response_array = ['success' => true, 'message' => tr('add_card_success'), 
+                        'data'=> $data];
+
+                        return response()->json($response_array , 200);
+
+                } else {
+
+                    throw new Exception(Helper::get_error_message(123), 123);
+                    
+                }
+
+
+            }
+
+        } catch(Exception $e) {
+
+            $error_message = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+
+            return response()->json($response_array , 200);
+        }
+   
     }
 }
