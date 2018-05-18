@@ -6008,6 +6008,7 @@ class UserApiController extends Controller {
 
         return response()->json($response_array);
 
+    }
     /**
      * FOR MOBILE APP WE ARE USING THIS
      *  
