@@ -736,7 +736,7 @@ class AdminController extends Controller {
                 }
 
 
-                else if($request->paid_amount < $redeem_request_details->request_amount) {
+                else if($request->paid_amount > $redeem_request_details->request_amount) {
 
                     $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
 
@@ -1692,7 +1692,7 @@ class AdminController extends Controller {
                             ->get();
 
         }
-          // dd($users);
+         
         return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
     }
 

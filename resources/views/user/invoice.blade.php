@@ -50,7 +50,9 @@
 											    </tr> 
 										    </tbody>
 										</table>
-										@if($subscription->amount >0)
+
+										@if($subscription->amount > 0)
+
 										<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
 									    <form method="post" action="{{route('user.subscription.payment')}}">
 
@@ -83,6 +85,7 @@
 											</div>
 				 						</form>
 				 						@else
+
 											<div class="clear-fix"></div>
 											<div class="text-right top">
 												<a href="{{route('user.subscription.save' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}"" class="btn btn-danger" id="my_button">
