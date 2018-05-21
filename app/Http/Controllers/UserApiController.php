@@ -3859,9 +3859,6 @@ class UserApiController extends Controller {
                                 return response()->json($response_array, 200);
 
                             }
-
-
-                            dd("djdjdjdj");
                         
                         } catch(Stripe_CardError $e) {
 
@@ -3881,7 +3878,7 @@ class UserApiController extends Controller {
                             return response()->json($response_array , 200);
 
                         } catch (Stripe_AuthenticationError $e) {
-                            
+
                             // Authentication with Stripe's API failed
                             $error3 = $e->getMessage();
 
