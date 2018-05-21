@@ -6072,6 +6072,8 @@ class UserApiController extends Controller {
         Log::info("CARDS ADD".print_r($request->all() , true) );
 
         try {
+
+            Log::info("TRY FUNCTION INSIDE");
         
             $validator = Validator::make(
                     $request->all(),
@@ -6084,6 +6086,8 @@ class UserApiController extends Controller {
                 );
 
             if ($validator->fails()) {
+
+                Log::info("validator FAILS INSIDE");
 
                 $error = implode(',',$validator->messages()->all());
              
@@ -6174,9 +6178,12 @@ class UserApiController extends Controller {
                     throw new Exception("Could not create client ID");
                     
                 }
+            
             }
 
         } catch(Exception $e) {
+
+            Log::info("catch FUNCTION INSIDE");
 
             $error_message = $e->getMessage();
 
