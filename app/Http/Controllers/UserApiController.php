@@ -3859,56 +3859,6 @@ class UserApiController extends Controller {
 
                             }
                         
-                        } catch(Stripe_CardError $e) {
-
-                            $error1 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error1 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_InvalidRequestError $e) {
-
-                            // Invalid parameters were supplied to Stripe's API
-                            $error2 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error2 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_AuthenticationError $e) {
-
-                            // Authentication with Stripe's API failed
-                            $error3 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error3 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_ApiConnectionError $e) {
-                            // Network communication with Stripe failed
-                            $error4 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error4 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_Error $e) {
-                            // Display a very generic error to the user, and maybe send
-                            // yourself an email
-                            $error5 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error5 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Exception $e) {
-                            // Something else happened, completely unrelated to Stripe
-                            $error6 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error6 ,'error_code' => 903);
-
-
                         } catch (\Stripe\StripeInvalidRequestError $e) {
 
                             // Log::info(print_r($e,true));
