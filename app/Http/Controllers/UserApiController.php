@@ -6069,6 +6069,8 @@ class UserApiController extends Controller {
 
     public function cards_add(Request $request) {
 
+        Log::info("CARDS ADD".print_r($request->all() , true) );
+
         try {
         
             $validator = Validator::make(
@@ -6164,6 +6166,7 @@ class UserApiController extends Controller {
                             throw new Exception(Helper::get_error_message(123), 123);
                             
                         }
+                   
                     } else {
 
                         $response_array = ['success'=>false, 'error_messages'=>tr('Could not create client ID')];
