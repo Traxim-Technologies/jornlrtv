@@ -6107,7 +6107,7 @@ class UserApiController extends Controller {
 
                 } else {
 
-                    throw new Exception(tr('add_card_is_not_enabled');
+                    throw new Exception(tr('add_card_is_not_enabled'));
 
                 }
 
