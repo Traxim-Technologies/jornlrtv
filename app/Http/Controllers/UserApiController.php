@@ -3794,15 +3794,15 @@ class UserApiController extends Controller {
 
                         try{
 
-                           $user_charge =  \Stripe\Charge::create(array(
-                              "amount" => $total * 100,
-                              "currency" => "usd",
-                              "customer" => $customer_id,
+                            $user_charge =  \Stripe\Charge::create(array(
+                                "amount" => $total * 100,
+                                "currency" => "usd",
+                                "customer" => $customer_id,
                             ));
 
-                           $payment_id = $user_charge->id;
-                           $amount = $user_charge->amount/100;
-                           $paid_status = $user_charge->paid;
+                            $payment_id = $user_charge->id;
+                            $amount = $user_charge->amount/100;
+                            $paid_status = $user_charge->paid;
 
                             if($paid_status) {
 
@@ -3810,7 +3810,6 @@ class UserApiController extends Controller {
                                     ->where('status', DEFAULT_TRUE)
                                     ->orderBy('created_at', 'desc')
                                     ->first();
-
 
                                 $user_payment = new UserPayment;
 
@@ -6076,9 +6075,9 @@ class UserApiController extends Controller {
             $validator = Validator::make(
                     $request->all(),
                     [
-                        'last_four' => '',
+                        'last_four' => 'required',
                         'card_token' => 'required',
-                        'customer_id' => '',
+                        'customer_id' => 'required',
                         'card_type' => '',
                     ]
                 );
@@ -6099,87 +6098,48 @@ class UserApiController extends Controller {
                     
                 }
 
-                if($stripe_secret_key) {
+                $customer_id = $request->customer_id;
 
-                    \Stripe\Stripe::setApiKey($stripe_secret_key);
+                $card_details = new Card;
+                $card_details->user_id = $request->id;
+                $card_details->customer_id = $request->customer_id;
+                $card_details->last_four = $request->last_four;
+                $card_details->card_token = $request->card_token;
+                $card_details->card_name = $request->card_name ? $request->card_name : "";
+
+                // Check is any default is available
+
+                $check_card_details = Card::where('user_id',$request->id)->count();
+
+                $card_details->is_default = $check_card_details ? 0 : 1;
+
+                if($card_details->save()) {
+
+                    if($user_details) {
+
+                        $user_details->card_id = $check_card_details ? $user_details->card_id : $card_details->id;
+
+                        $user_details->save();
+                    }
+
+                    $data = [
+                            'user_id' => $request->id, 
+                            'card_id' => $card_details->id,
+                            'customer_id' => $card_details->customer_id,
+                            'last_four' => $card_details->last_four, 
+                            'card_token' => $card_details->card_token, 
+                            'is_default' => $card_details->is_default
+                            ];
+
+                    $response_array = ['success' => true, 'message' => tr('add_card_success'), 
+                        'data'=> $data];
+
+                        return response()->json($response_array , 200);
 
                 } else {
 
-                    $response_array = ['success'=>false, 'error_messages'=>tr('add_card_is_not_enabled')];
-
-                    return response()->json($response_array);
-                }
-
-                try {
-
-                    // Get the key from settings table
+                    throw new Exception(Helper::get_error_message(123), 123);
                     
-                    $customer = \Stripe\Customer::create([
-                            "card" => $request->card_token,
-                            "email" => $user_details->email,
-                            "description" => "Customer for ".Setting::get('site_name'),
-                        ]);
-
-                    if($customer) {
-
-                        Log::info('Customer'.print_r($customer , true));
-
-                        $customer_id = $customer->id;
-
-                        $card_details = new Card;
-                        $card_details->user_id = $request->id;
-                        $card_details->customer_id = $request->customer_id;
-                        $card_details->last_four = $request->last_four;
-                        $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
-                        $card_details->card_name = $request->card_name ? $request->card_name : "";
-
-                        // Check is any default is available
-                        $check_card_details = Card::where('user_id',$request->id)->count();
-
-                        $card_details->is_default = $check_card_details ? 0 : 1;
-
-                        if($card_details->save()) {
-
-                            if($user_details) {
-
-                                $user_details->card_id = $check_card_details ? $user_details->card_id : $card_details->id;
-
-                                $user_details->save();
-                            }
-
-                            $data = [
-                                    'user_id' => $request->id, 
-                                    'card_id' => $card_details->id,
-                                    'customer_id' => $card_details->customer_id,
-                                    'last_four' => $card_details->last_four, 
-                                    'card_token' => $card_details->card_token, 
-                                    'is_default' => $card_details->is_default
-                                    ];
-
-                            $response_array = ['success' => true, 'message' => tr('add_card_success'), 
-                                'data'=> $data];
-
-                                return response()->json($response_array , 200);
-
-                        } else {
-
-                            throw new Exception(Helper::get_error_message(123), 123);
-                            
-                        }
-                    } else {
-
-                        $response_array = ['success'=>false, 'error_messages'=>tr('Could not create client ID')];
-
-                        throw new Exception(tr('Could not create client ID'));
-                        
-                    }
-
-                } catch(Exception $e) {
-
-                    $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
-
-                    return response()->json($response_array);
-
                 }
 
 
@@ -6197,4 +6157,5 @@ class UserApiController extends Controller {
         }
    
     }
+
 }
