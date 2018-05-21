@@ -3598,6 +3598,8 @@ class UserApiController extends Controller {
      */
     public function payment_card_add(Request $request) {
 
+        Log::info("HELLO");
+
         $validator = Validator::make($request->all(), 
             array(
                 'number' => 'required|numeric',
