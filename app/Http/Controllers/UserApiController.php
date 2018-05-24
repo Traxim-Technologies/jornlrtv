@@ -1980,9 +1980,15 @@ class UserApiController extends Controller {
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-        $redeem_amount = Redeem::where('user_id' , $request->id)
+        $redeem_details = Redeem::where('user_id' , $request->id)
                 ->select('total' , 'paid' , 'remaining' , 'status', DB::raw("'$currency' as currency"))
                 ->first();
+
+        if(!$redeem_details) {
+            $redeem_details->total = $redeem_details->paid = $redeem_details->remaining = 0;
+            $redeem_details->status = 0;
+            $redeem_details->currency = $currency;
+        }
 
         $data = [];
 
@@ -2006,7 +2012,7 @@ class UserApiController extends Controller {
 
         }
 
-        $response_array = ['success' => true , 'data' => $data, 'redeem_amount'=>$redeem_amount];
+        $response_array = ['success' => true , 'data' => $data, 'redeem_amount'=> $redeem_details];
 
         return response()->json($response_array , 200);
     
