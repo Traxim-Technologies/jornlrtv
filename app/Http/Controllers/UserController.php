@@ -2097,10 +2097,10 @@ class UserController extends Controller {
 
                 if (Auth::check()) {
 
-                    if(!count($subscription)) {
+                    // if(!count($subscription)) {
 
-                        return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
-                    }
+                    //     return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
+                    // }
 
                     $userModel = User::find(Auth::user()->id);
 
