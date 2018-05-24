@@ -153,6 +153,10 @@ if(!defined('BANNER')) define('BANNER' , 'banner');
 if(!defined('ALL_VIDEOS')) define('ALL_VIDEOS', 'All Videos');
 if(!defined('JWT_SECRET')) define('JWT_SECRET', '12345');
 
+if(!defined('PERCENTAGE')) define('PERCENTAGE',0);
+
+if(!defined('ABSOULTE')) define('ABSOULTE',1);
+
 
 
 
@@ -300,6 +304,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('/redeems/pay', 'AdminController@user_redeem_pay')->name('users.redeem.pay');
 
+    Route::get('/user/status','AdminController@user_status_change')->name('users.status');
+
     // User History - admin
 
     Route::get('/user/history/{id}', 'AdminController@view_history')->name('user.history');
@@ -404,6 +410,31 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
 
     Route::get('help' , 'AdminController@help')->name('help');
+
+    // Coupons
+
+    // Get the add coupon forms
+    Route::get('/coupons/add','AdminController@coupon_create')->name('add.coupons');
+
+    // Get the edit coupon forms
+    Route::get('/coupons/edit/{id}','AdminController@coupon_edit')->name('edit.coupons');
+
+    // Save the coupon details
+    Route::post('/coupons/save','AdminController@coupon_save')->name('save.coupon');
+
+    // Get the list of coupon details
+    Route::get('/coupons/list','AdminController@coupon_index')->name('coupon.list');
+
+    //Get the particular coupon details
+    Route::get('/coupons/view/{id}','AdminController@coupon_view')->name('coupon.view');
+
+    // Delete the coupon details
+    Route::get('/coupons/delete/{id}','AdminController@coupon_delete')->name('delete.coupon');
+
+    //Coupon approve and decline status
+    Route::get('/coupon/status','AdminController@coupon_status_change')->name('coupon.status');
+
+
 
     // Pages
 
@@ -510,6 +541,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
 
+    
 
     // Videos
 

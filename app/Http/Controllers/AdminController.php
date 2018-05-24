@@ -36,6 +36,8 @@ use App\UserRating;
 
 use App\Settings;
 
+use App\Coupon;
+
 use App\Page;
 
 use App\Helpers\Helper;
@@ -99,6 +101,7 @@ class AdminController extends Controller {
     }
 
     public function login() {
+        
         return view('admin.login')->withPage('admin-login')->with('sub_page','');
     }
 
@@ -543,6 +546,47 @@ class AdminController extends Controller {
     }
 
     /**
+    * Function Name : user_status_change()
+    * 
+    * Description: Change the user status in approve and decline 
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Request in user id
+    *
+    * @return success message in approve/decline
+    */
+    public function user_status_change(Request $request){
+
+
+        $users_status = User::find($request->id);
+
+        if($users_status){
+
+            $users_status->status = $request->status;
+
+            $users_status->save();
+
+            if($request->status==DEFAULT_FALSE){
+
+                return back()->with('flash_success',tr('user_decline_success'));
+
+            } else{
+
+                return back()->with('flash_success',tr('user_approved_success'));
+
+            }
+
+        } else {
+
+            return back()->with('flash_error',tr('user_id_not_found'));
+        }
+
+    }
+
+    /**
      *
      *
      *
@@ -668,7 +712,7 @@ class AdminController extends Controller {
 
     public function user_redeem_pay(Request $request) {
 
-        $validator = Validator::make($request->all() , [
+         $validator = Validator::make($request->all() , [
             'redeem_request_id' => 'required|exists:redeem_requests,id',
             'paid_amount' => 'required', 
             ]);
@@ -1528,27 +1572,35 @@ class AdminController extends Controller {
      */
     
     public function save_video_payment($id, Request $request) {
+        
+        if($request->ppv_amount > 0){
 
-        // Load Video Model
-        $model = VideoTape::find($id);
+            // Load Video Model
+            $model = VideoTape::find($id);
 
-        // Get post attribute values and save the values
-        if ($model) {
+            // Get post attribute values and save the values
+            if ($model) {
 
-             $request->request->add([ 
-                'ppv_created_by'=> 0 ,
-            ]); 
+                 $request->request->add([ 
+                    'ppv_created_by'=> 0 ,
+                ]); 
 
-            if ($data = $request->all()) {
+                if ($data = $request->all()) {
 
-                // Update the post
-                if (VideoTape::where('id', $id)->update($data)) {
-                    // Redirect into particular value
-                    return back()->with('flash_success', tr('payment_added'));       
-                } 
+                    // Update the post
+                    if (VideoTape::where('id', $id)->update($data)) {
+                        // Redirect into particular value
+                        return back()->with('flash_success', tr('payment_added'));       
+                    } 
+                }
             }
+
+            return back()->with('flash_error', tr('admin_published_video_failure'));
+
+        } else {
+
+            return back()->with('flash_error',tr('add_ppv_amount'));
         }
-        return back()->with('flash_error', tr('admin_published_video_failure'));
     
     }
 
@@ -1685,8 +1737,9 @@ class AdminController extends Controller {
                             ->where('status', DEFAULT_TRUE)
                             ->orderBy('created_at', 'desc')
                             ->get();
-        }
 
+        }
+         
         return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
     }
 
@@ -2116,8 +2169,8 @@ class AdminController extends Controller {
         $model = AdsDetail::find($request->id);
 
         $videos = VideoTape::where('status', DEFAULT_TRUE)->where('publish_status', DEFAULT_TRUE)
-            ->where('is_approved', DEFAULT_TRUE)->where('ad_status', DEFAULT_TRUE)->paginate(12);
-
+            ->where('is_approved', DEFAULT_TRUE)->where('ad_status',DEFAULT_TRUE)->paginate(12);
+       
         return view('admin.video_ads.assign_ad')->with('page', 'videos_ads')->with('sub_page', 'view-ads')
             ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
     }
@@ -2229,7 +2282,6 @@ class AdminController extends Controller {
                     }
 
                 } else {
-
 
                     $model = new VideoAd;
 
@@ -2963,6 +3015,329 @@ class AdminController extends Controller {
         $payments = PayPerView::orderBy('created_at' , 'desc')->get();
     
         return view('admin.payments.ppv-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-ppv');
+    }
+
+
+
+    // Coupons
+
+    /**
+    * Function Name: coupon_create()
+    *
+    * Description: Get the coupon add form fields
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Get the route of add coupon form
+    *
+    * @return Html form page
+    */
+    public function coupon_create(){
+
+       return view('admin.coupons.create')
+                ->with('page','coupons')
+                ->with('sub_page','create');
+    }
+
+    /**
+    * Function Name: coupon_save()
+    *
+    * Description: Save/Update the coupon details in database 
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Request to all the coupon details
+    *
+    * @return add details for success message
+    */
+    public function coupon_save(Request $request){
+        
+        if($request->id !=''){
+
+            $validator = Validator::make($request->all(),array(
+
+                'id'=>'required|exists:coupons,id',
+                'title'=>'required',
+                'coupon_code' => 'required|max:10|min:1|unique:coupons,coupon_code,'.$request->id,
+                'amount'=>'required|numeric|min:1|max:5000',
+                'amount_type'=>'required',
+                'expiry_date'=>'required|date_format:d-m-Y|after:today',  
+            )
+        );
+
+        } else{
+
+                $validator = Validator::make($request->all(),[
+
+                'title'=>'required',
+                'coupon_code'=>'required|unique:coupons,coupon_code|min:1|max:10',
+                'amount'=>'required|numeric|min:1|max:5000',
+                'amount_type'=>'required',
+                'expiry_date'=>'required|date_format:d-m-Y|after:today',
+            ]);
+        }
+
+        if($validator->fails()){
+
+            $error_messages = implode(',',$validator->messages()->all());
+
+            return back()->with('flash_error',$error_messages);
+        }
+        if($request->id !=''){
+                    
+               
+                $coupon_detail = Coupon::find($request->id); 
+
+                $message=tr('coupon_update_success');
+
+        } else {
+
+            $coupon_detail = new Coupon;
+
+            $coupon_detail->status = DEFAULT_TRUE;
+
+            $message = tr('coupon_add_success');
+        }
+
+        // Check the condition amount type equal zero mean percentage
+        if($request->amount_type == PERCENTAGE){
+
+            // Amount type zero must should be amount less than or equal 100 only
+            if($request->amount <= 100){
+
+                $coupon_detail->amount_type = $request->has('amount_type') ? $request->amount_type :0;
+ 
+                $coupon_detail->amount = $request->has('amount') ?  $request->amount : '';
+
+            } else{
+
+                return back()->with('flash_error',tr('coupon_amount_lessthan_100'));
+            }
+
+        } else{
+
+            // This else condition is absoulte amount 
+
+            // Amount type one must should be amount less than or equal 5000 only
+            if($request->amount <= 5000){
+
+                $coupon_detail->amount_type=$request->has('amount_type') ? $request->amount_type : 1;
+
+                $coupon_detail->amount=$request->has('amount') ?  $request->amount : '';
+
+            } else{
+
+                return back()->with('flash_error',tr('coupon_amount_lessthan_5000'));
+            }
+        }
+        $coupon_detail->title=ucfirst($request->title);
+
+        // Remove the string space and special characters
+        $coupon_code_format  = preg_replace("/[^A-Za-z0-9\-]+/", "", $request->coupon_code);
+
+        // Replace the string uppercase format
+        $coupon_detail->coupon_code = strtoupper($coupon_code_format);
+
+        // Convert date format year,month,date purpose of database storing
+        $coupon_detail->expiry_date = date('Y-m-d',strtotime($request->expiry_date));
+      
+        $coupon_detail->description = $request->has('description')? $request->description : '' ;
+
+        if($coupon_detail){
+
+            $coupon_detail->save(); 
+
+            return back()->with('flash_success',$message);
+
+        } else {
+
+            return back()->with('flash_error',tr('coupon_not_found_error'));
+        }
+        
+    }
+
+    /**
+    * Function Name: coupon_index()
+    *
+    * Description: Get the coupon details for all 
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Get the coupon list in table
+    *
+    * @return Html table from coupon list page
+    */
+    public function coupon_index(){
+
+        $coupon_index = Coupon::orderBy('updated_at','desc')->get();
+
+        if($coupon_index){
+
+            return view('admin.coupons.index')
+                ->with('coupon_index',$coupon_index)
+                ->with('page','coupons')
+                ->with('sub_page','view_coupons');
+        } else{
+
+            return back()->with('flash_error',tr('coupon_not_found_error'));
+        }
+    }
+
+    /**
+    * Function Name: coupon_edit() 
+    *
+    * Description: Edit the coupon details and get the coupon edit form for 
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Coupon id
+    *
+    * @return Get the html form
+    */
+    public function coupon_edit($id){
+
+        if($id){
+
+            $edit_coupon = Coupon::find($id);
+
+            if($edit_coupon){
+
+                return view('admin.coupons.edit')
+                        ->with('edit_coupon',$edit_coupon)
+                        ->with('page','coupons')
+                        ->with('sub_page','edit_coupons');
+
+            } else{
+                return back()->with('flash_error',tr('coupon_not_found_error'));
+            }
+        }else{
+
+            return back()->with('flash_error',tr('coupon_id_not_found_error'));
+        }
+    }
+
+    /**
+    * Function Name: coupon_delete()
+    *
+    * Description: Delete the particular coupon detail
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Coupon id
+    *
+    * @return Deleted Success message
+    */
+    public function coupon_delete($id){
+
+        if($id){
+
+            $delete_coupon = Coupon::find($id);
+
+            if($delete_coupon){
+
+                $delete_coupon->delete();
+
+                return back()->with('flash_success',tr('coupon_delete_success'));
+            } else{
+
+                return back()->with('flash_error',tr('coupon_not_found_error'));
+            }
+
+        } else{
+
+            return back()->with('flash_error',tr('coupon_id_not_found_error'));
+        }
+    }
+
+    /**
+    * Function Name: coupon_status_change()
+    * 
+    * Description: Coupon status for active and inactive update the status function
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Request the coupon id
+    *
+    * @return Success message for active/inactive
+    */
+    public function coupon_status_change(Request $request){
+
+        if($request->id){
+
+            $coupon_status = Coupon::find($request->id);
+
+            if($coupon_status) {
+
+                $coupon_status->status = $request->status;
+
+                $coupon_status->save();
+
+            } else {
+
+                return back()->with('flash_error',tr('coupon_not_found_error'));
+            }
+
+            if($request->status==DEFAULT_FALSE){
+
+                $message = tr('coupon_inactive_success');
+
+            } 
+
+            if($request->status==DEFAULT_TRUE){
+
+                $message = tr('coupon_active_success');
+            }
+            return back()->with('flash_success',$message);
+
+        } else{
+
+            return back()->with('flash_error',tr('coupon_id_not_found_error'));
+        }
+    }
+
+    /**
+    * Function Name: coupon_view()
+    *
+    * Description: Get the particular coupon details for view page content
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswaari
+    *
+    * @param Coupon id
+    *
+    * @return Html view page with coupon detail
+    */
+    public function coupon_view($id){
+
+        if($id){
+
+            $view_coupon = Coupon::find($id);
+
+            if($view_coupon){
+
+                return view('admin.coupons.view')
+                    ->with('view_coupon',$view_coupon)
+                    ->with('page','coupons')
+                    ->with('sub_page','view_coupons');
+            }
+
+        } else{
+
+            return back()->with('flash_error',tr('coupon_id_not_found_error'));
+        }
     }
 
 }
