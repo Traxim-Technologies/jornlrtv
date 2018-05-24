@@ -43,7 +43,7 @@
           </thead>
           <tbody>
 
-
+        
           @foreach($videos as $i => $data)
               <tr>
                   <td>{{$i+1}}</td>

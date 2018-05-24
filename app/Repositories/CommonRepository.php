@@ -338,6 +338,7 @@ class CommonRepository {
                     $channel = Channel::find($channel_id);
                     
                     if($channel) {
+                        
                         $model->user_id = $channel->user_id;
                     }
                 }
@@ -382,6 +383,8 @@ class CommonRepository {
 
                 $seconds = 10;
 
+                Log::info('seconds : '.$seconds);
+
                 if ($getDuration) {
 
                     $model->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
@@ -404,7 +407,9 @@ class CommonRepository {
 
                 $frames = ($model->is_banner == DEFAULT_TRUE) ? 4 : 3;
 
-               // dd(1/ ($seconds/$frames));
+                Log::info('frames : ' .$frames);
+
+                Log::info('seconds with frames : '.($seconds/$frames));
 
                 $FFmpeg
                     ->input($main_video_duration['baseUrl'])
@@ -638,6 +643,7 @@ class CommonRepository {
             if ($request->idx > $img_status) {
 
                 $model = VideoTapeImage::find($request->id);
+
 
                 $data = VideoTape::find($model->video_tape_id);
 
