@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="{{ asset('admin-css/dist/css/skins/_all-skins.min.css')}}">
 
     <link rel="stylesheet" href="{{ asset('admin-css/dist/css/custom.css')}}">
+    
+    <link rel="stylesheet" href="{{asset('admin-css/plugins/datepicker/datepicker3.css')}}">
 
     @yield('styles')
 
@@ -127,6 +129,8 @@
 
     <script src="{{asset('admin-css/plugins/chartjs/Chart.min.js')}}"></script>
 
+    <script src = "{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
+
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <!-- <script src="{{asset('admin-css/dist/js/pages/dashboard2.js')}}"></script> -->
 
@@ -163,6 +167,19 @@
     <script type="text/javascript">
         $("#{{$page}}").addClass("active");
         @if(isset($sub_page)) $("#{{$sub_page}}").addClass("active"); @endif
+    </script>
+
+
+    <script type="text/javascript">
+        
+        $(document).ready(function() {
+        $('#expiry_date').datepicker({
+            autoclose:true,
+            format : 'dd-mm-yyyy',
+            startDate: 'today',
+        });
+    });
+
     </script>
 
     <script type="text/javascript">

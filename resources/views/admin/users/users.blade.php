@@ -139,7 +139,6 @@
 								                  	<li role="presentation" class="divider"></li>
 
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.channels' , $user->id)}}">{{tr('channels')}}</a></li>
-
 								                  	
 								                  	<li role="presentation">
 								                  	
@@ -163,6 +162,13 @@
 								                  	 	@endif
 
 								                  	</li>
+
+								                  	@if($user->status==0)
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.status',array('id'=>$user->id,'status'=>1))}}">{{tr('approve')}}</a></li>
+								                  	@else
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.status',array('id'=>$user->id,'status'=>0))}}">{{tr('decline')}}</a></li>
+								                  	@endif
+								                  	
 								                  	<li role="presentation" class="divider"></li>
 
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.user.history', $user->id)}}">{{tr('history')}}</a></li>

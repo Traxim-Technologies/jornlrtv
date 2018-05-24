@@ -50,6 +50,9 @@
 											    </tr> 
 										    </tbody>
 										</table>
+
+										@if($subscription->amount > 0)
+
 										<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
 									    <form method="post" action="{{route('user.subscription.payment')}}">
 
@@ -73,13 +76,23 @@
 												</label>
 											</div>
 											@endif
+
 											<div class="clear-fix"></div>
 											<div class="text-right top">
-												<button class="btn btn-danger">
+												<button id="my_button" class="btn btn-danger">
 													<i class="fa fa-credit-card"></i> &nbsp; {{tr('pay_now')}}
 												</button>
 											</div>
 				 						</form>
+				 						@else
+
+											<div class="clear-fix"></div>
+											<div class="text-right top">
+												<a href="{{route('user.subscription.save' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}"" class="btn btn-danger" id="my_button">
+												<i class="fa fa-credit-card"></i> &nbsp; {{tr('pay_now')}}
+												</a>
+											</div>
+										@endif
 			 						</div>
 								</div>
 							 </div>
@@ -94,4 +107,13 @@
 	</div>
 
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    $('#my_button').on('click', function(){
+        // alert('paypal action');
+        $('#my_button').attr("disabled", true);
+    });
+</script>
 @endsection
