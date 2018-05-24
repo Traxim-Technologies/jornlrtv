@@ -20,6 +20,8 @@ use App\Page;
 
 use App\Flag;
 
+use App\Admin;
+
 use Auth;
 
 use DB;
@@ -734,6 +736,7 @@ class UserController extends Controller {
 
                     if ($video->user_id != Auth::user()->id) {
 
+
                         if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
                             \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
@@ -1318,7 +1321,7 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return back()->with('flash_success', $response->message);
+            return redirect()->route('user.subscriptions')->with('flash_success', $response->message);
 
         } else {
 
@@ -1373,7 +1376,7 @@ class UserController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
@@ -1983,6 +1986,7 @@ class UserController extends Controller {
         $subscription = Subscription::find($request->s_id);
 
         if(!count($subscription)) {
+
             return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
         }
 

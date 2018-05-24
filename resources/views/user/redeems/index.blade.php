@@ -131,7 +131,7 @@ thead>tr>th {
 
                                 $min_status = Setting::get('minimum_redeem') < $remaining;
                             ?>
-
+                          
                             @if(count(Auth::user()->userRedeem) > 0 && $min_status)
 
                                 <a href="{{route('user.redeems.send.request')}}" class="btn btn-success">{{tr('send_redeem')}}</a>

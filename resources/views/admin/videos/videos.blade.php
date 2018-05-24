@@ -83,8 +83,6 @@
 
 							      	@endif */?>
 
-							      	
-
 							      	<td><b>{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</b></td>
 
 							      	<!-- <td>{{number_format_short($video->getScopeLikeCount->count())}}</td> -->
@@ -102,7 +100,7 @@
 							      	@endif
 
 							      	<td class="text-center">
-
+							      		
 							      		@if($video->ad_status)
 							      			<span class="label label-success">{{tr('yes')}}</span>
 							      		@else
@@ -215,7 +213,7 @@
 									        	</div>
 								                <div class="col-lg-9">
 								                  <div class="input-group">
-								                        <input type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user == NORMAL_USER) ? 'checked' : ''}}>&nbsp;<label>{{tr('normal_user')}}</label>&nbsp;
+								                        <input type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user == 0 || $video->type_of_user == '') ? 'checked' : (($video->type_of_user == NORMAL_USER) ? 'checked' : '')}}>&nbsp;<label>{{tr('normal_user')}}</label>&nbsp;
 								                        <input type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}}>&nbsp;<label>{{tr('paid_user')}}</label>&nbsp;
 								                        <input type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}}>&nbsp;<label>{{tr('both_user')}}</label>
 								                  </div>
@@ -229,7 +227,7 @@
 									        	</div>
 								                <div class="col-lg-9">
 								                  <div class="input-group">
-								                        <input type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : ''}}>&nbsp;<label>{{tr('one_time_payment')}}</label>&nbsp;
+								                        <input type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}"  {{($video->type_of_subscription == 0 || $video->type_of_subscription == '') ? 'checked' : (($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : '')}}>&nbsp;<label>{{tr('one_time_payment')}}</label>&nbsp;
 								                        <input type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}}>&nbsp;<label>{{tr('recurring_payment')}}</label>
 								                  </div>
 								                  <!-- /input-group -->

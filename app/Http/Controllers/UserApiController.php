@@ -1889,7 +1889,7 @@ class UserApiController extends Controller {
 
         if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) {
 
-            $data = Redeem::where('provider_id' , $request->id)->select('total' , 'paid' , 'remaining' , 'status')->get()->toArray();
+            $data = Redeem::where('user_id' , $request->id)->select('total' , 'paid' , 'remaining' , 'status')->get()->toArray();
 
             $response_array = ['success' => true , 'data' => $data];
 
