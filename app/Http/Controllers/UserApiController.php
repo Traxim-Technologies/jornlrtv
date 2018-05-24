@@ -1985,9 +1985,18 @@ class UserApiController extends Controller {
                 ->first();
 
         if(!$redeem_details) {
+
+            // To avoid <null> value (http://prntscr.com/jm33cq), created dummy object with empty values
+
+            $redeem_details = new Redeem;
+
             $redeem_details->total = $redeem_details->paid = $redeem_details->remaining = 0;
+
             $redeem_details->status = 0;
+            
             $redeem_details->currency = $currency;
+
+            // NO NEED TO SAVE THE DETAILS
         }
 
         $data = [];
