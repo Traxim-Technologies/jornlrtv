@@ -1,5 +1,4 @@
-<?php
-
+<?php  
 
 use Illuminate\Support\Facades\Redis;
 
@@ -889,6 +888,8 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('card_details', 'UserApiController@card_details');
 
+    Route::post('cards_add', 'UserApiController@cards_add');
+    
     Route::post('payment_card_add', 'UserApiController@payment_card_add');
 
     Route::post('default_card', 'UserApiController@default_card');

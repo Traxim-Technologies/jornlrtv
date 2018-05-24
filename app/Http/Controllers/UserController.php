@@ -528,7 +528,7 @@ class UserController extends Controller {
        
         } else {
 
-            $error_message = isset($data->message) ? $data->message : tr('something_error');
+            $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
 
             return back()->with('flash_error', $error_message);
             
