@@ -40,11 +40,12 @@
 	position: fixed;
 	z-index:999;
 	width: 100%;
+	top:0;
 }
 .logo-img{
-	width: 87px;
-	height: 29px;
-	vertical-align: middle;
+	height: 28px;
+    vertical-align: middle;
+    margin-top: 2px;
 }
 .cross-mark {
     width:15%;
@@ -229,6 +230,7 @@
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .logo-img{
 	width: 120px;
@@ -392,6 +394,7 @@
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .page-inner{
 	margin-top: 65px;
@@ -545,6 +548,7 @@
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .logo-img{
 	width: 120px;
@@ -689,18 +693,20 @@
 
 }
 .streamtube-nav{
-	padding:10px 20px;
+	padding:10px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
 	position: fixed;
 	z-index:100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .logo-img{
-	width: 120px;
-	height: 35px;
+	max-width: 128px;
+	height:30px;
 	vertical-align: middle;
+	margin-top: 4px;
 }
 .cross-mark {
     width:35%;
@@ -823,10 +829,6 @@
 	.about{
 		padding: 0;
 	}
-	.term{
-		padding: 0;
-		text-align: center;
-	}
 }
 @media screen and (max-width: 767px){
 	.foot-content ul{
@@ -834,8 +836,7 @@
 	}
 	.foot-content {
 	    padding: 0 !important;
-	}
-	
+	}	
 }
 @media screen and (max-width:651px){
 	.foot-content {
@@ -879,9 +880,6 @@
 	}*/
 }
 @media screen and (max-width: 467px){
-	.term li a {
-	    font-size: 14px !important;
-	}
 	.about li a{
 		font-size: 10px !important;
 	}
@@ -892,12 +890,6 @@
 	}
 	.foot-content {
 	    margin-left: 16px !important;
-	}
-	.terms li a {
-	    font-size: 14px !important;
-	}
-	.foot-content ul {
-	    margin: 0 !important;
 	}
 }
 
@@ -1235,16 +1227,8 @@ category.html css
 		margin: 5px 5px 5px 21px !important;
 		padding: 4px !important;
 	}
-	.tube-image{
-		height: 36px !important;
-		padding: 0 !important;
-		margin:0 auto;
-	}
 	.about li a{
 		font-size: 11px;
-	}
-	.term li a{
-		font-size: 14px;
 	}
 	.profile-next{
 		margin: 0;

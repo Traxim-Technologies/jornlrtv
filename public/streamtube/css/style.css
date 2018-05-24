@@ -17,21 +17,14 @@
 }
 
 html,body {
-
 	width: 100%;
-
 	height: 100%;
-
 	margin : 0;
-
 	padding: 0;
-
+	position: relative;
 }
-
 .wrap {
-
-position: relative;min-height: 100%
-
+	position: relative;min-height: 100%
 }
 
 .footer_class {
@@ -45,6 +38,8 @@ body{
 	font-family: Roboto, Arial, sans-serif;
 	/*background-color: #F1F1F1;*/
 	background-color: #fafafa;
+	position: relative;
+	min-height: 100%;
 }
 a:hover{
 	text-decoration: none;
@@ -62,30 +57,55 @@ a:hover{
 	padding: 0;
 }
 .y-home h3{
-	font-size: 13px;
-	margin-top: 0; 
-	color: #cc181e;
+	font-size: 14px;
+	margin-top: 0;
+	color: #777;
+	padding: 10px 25px;
+	text-transform: uppercase;
+	margin-bottom: 0;
 }
 .y-home li{
 	list-style-type: none;
 	transition: all .25s linear;
 }
 .y-home li:hover{
-	background-color: #444;
+	background-color: #e1e1e1;
+}
+.y-home li.active{
+	background-color: transparent;
+	font-weight: bold;
+	
+}
+.y-home li.active:hover{
+	background-color: #e1e1e1;
+}
+.y-home li.active a{
+	color:#333 !important;
+}
+.y-home li.active{
+	background-color: transparent; 
+}
+.y-home li.active:hover{
+	background-color: #e1e1e1; 
 }
 .y-home a{
 	display: block;
-	padding: 10px;
-}
-.y-home a:hover{
-	color: #fff;
+	padding: 10px 25px;
 }
 .y-home{
 	border-bottom: 1px solid #e8e8e8;
 }
 .y-home li:last-child{
 	margin-bottom: 10px;
-
+}
+.y-home li a .red-img{
+	display: none;
+}
+.y-home li.active a .red-img{
+	display:inline-block;
+}
+.y-home li.active a .grey-img{
+	display:none;
 }
 .toggle1 a{
 	float: left;
@@ -112,20 +132,22 @@ a:hover{
 	width: 22px;
 	height: 22px;
 	margin: 0 10px 0px 0;
-	border-radius: 50%;
+	vertical-align: -32%;
+	/*border-radius: 50%;*/
 }
 .y-home a{
 	text-decoration: none;
-	color: #584d4d;
-	font-size: 13px;
+	color: #333;
+	font-size:14px;
 
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 }
 .toggle-icon{
-	margin-top: 10px;
-	padding: 0px 7px;
+	margin-top:3px;
+	height: 24px;
+	padding-right:7px;
 	color: #333;
 }
 .top5{
@@ -239,24 +261,17 @@ a:hover{
 	padding: 4px 12px;
 }
 footer{
+	position: absolute;
+	bottom: 0;
+	left:0;
+	right: 0;
+	width: 100%;
 	background-color: #fff;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
 }
 .footer1{
 	padding: 10px;	
 	margin: 0;
-}
-.tube-image{
-	width: 130px;
-    height: 30px;
-    margin: 0 auto;
-    /*margin-top: 10PX;*/
-
-}
-.tube-image img{
-	max-width: 130px;
-	width: 100%;
-    min-height: 100%;
 }
 .about li{
 	list-style-type: none;
@@ -274,10 +289,13 @@ footer{
 	color: #167ac6;
 	text-decoration: underline;
 }
+.term{
+	padding-left:0;
+	text-align: center; 
+}
 .term li{
 	list-style-type: none;
 	display: inline-block;
-
 }
 .term li a{
 	text-decoration:  none;
@@ -447,17 +465,24 @@ videos (single page) css
 	padding: 0;
 	border-bottom: 1px solid #e8e8e8
 }
+.menu-foot li{
+	padding:0 25px;
+}
 .menu-foot h3{
-	font-size: 13px;
+	font-size: 14px;
 	margin-top: 0;
-	color: #cc181e;	
-	margin-bottom: 15px;
+	color: #777;
+	padding: 10px 25px;
+	text-transform: uppercase;
+	margin-bottom: 0;
 }
 .menu-foot-head{
-	font-size: 13px;
+	font-size: 14px;
 	margin-top: 0;
-	color: #cc181e;	
-	margin-bottom:10px;
+	color: #777;
+	padding: 10px 25px;
+	text-transform: uppercase;
+	margin-bottom: 0;
 }
 .social-fb{
 	color: #3b5999;
@@ -478,7 +503,9 @@ videos (single page) css
 .social-pinterest{
 	color: #bd081c;
 }
-
+.nav-space{
+	padding: 0 25px;
+}
 .foot-share1{
 	color: red;
 }
@@ -659,11 +686,11 @@ videos (single page) css
 .stars i:active{
 	color: #f5ba0e;
 }
-.btn{
+/*.btn{
 	border-radius: 0px !important;
-}
+}*/
 input{
-	border-radius: 0px !important;
+	border-radius: 3px !important;
 	box-shadow: none !important;
 	border-color:#b8b8b8 !important;
 }
@@ -960,6 +987,7 @@ input[type="checkbox"], input[type="radio"]{
 	left: -105px;
 	font-size: 12px;
 	min-width: 120px;
+	border-radius: 3px;
 }
 .profile-button .open > .dropdown-toggle.btn-default{
 	background-color: transparent;
@@ -1131,7 +1159,7 @@ signup.html css
 */
 .form-background{
 	text-align: center;
-	padding: 15px;
+	padding:0 15px;
 }
 .signup-nav{
 	background-color: #fff;
@@ -1272,12 +1300,16 @@ login.html css
 .login-page{
 	margin-top: 0px;
 }
+.login-space{
+	padding:106px 15px 50px 15px;
+}
 .login-common{
 	overflow: hidden;
 	padding: 15px;
 	border-top: none;
-	margin-top: 100px;
-    margin-bottom: 100px;
+	margin: 0 auto;
+	/*margin-top: 106px;
+    margin-bottom:50px;*/
 }
 .login1 h4{
 	background-color: #e52d27;
@@ -1445,6 +1477,8 @@ label{
 .signup-submit{
 	background-color: #e52d27;
 	border-color: #b31217;
+	border-radius: 4px;
+	padding: 7px 12px;
 }
 .signup-submit:hover{
 	background-color: #b31217;
@@ -2683,9 +2717,9 @@ changes
 .set-default:hover, .card-delete:hover{
 	transform: scale(1.1);
 }
-button{
+/*button{
 	border-radius: 0 !important;
-}
+}*/
 .top1{
 	margin-top: 25px;
 }
@@ -2945,4 +2979,12 @@ button{
 }
 .form-control{
 	background-color: transparent;
+	height: 36px;
+}
+.y-menu{
+	padding-left: 0;
+	padding-right: 0;
+}
+*:focus{
+	outline: none;
 }

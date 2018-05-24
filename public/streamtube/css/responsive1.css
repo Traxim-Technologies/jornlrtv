@@ -1,0 +1,275 @@
+@media screen and (max-width: 479px) {
+.test img{
+    height: 28px;
+    margin-left: 10px;
+}
+.tube-image img {
+	margin-top: 10px;
+    width:auto;
+    height: 28px;
+}
+.term li a{
+	font-size: 12px;
+}
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+.test img{
+    height:28px;
+    margin-left: 10px;
+}
+.tube-image img {
+	margin-top: 10px;
+    width:auto;
+    height: 28px;
+}
+.term li a{
+	font-size: 12px;
+}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+.test img{
+    height: 35px;
+}
+.tube-image{
+	text-align: left;
+}
+.tube-image img {
+    width:auto;
+    height: 35px;
+    margin-top:2px;
+}
+.term li a{
+	font-size: 14px;
+}
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+.test img{
+    height: 35px;
+}
+.tube-image{
+	text-align: left;
+}
+.tube-image img {
+    width:auto;
+    height: 35px;
+    margin-top: 2px;
+}
+.term li a{
+	font-size: 14px;
+}
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+.test img{
+    height: 35px;
+    margin-left: 10px;
+}
+.tube-image{
+	text-align: left;
+}
+.tube-image img {
+    width:auto;
+    height: 35px;
+    margin-top: 2px;
+}
+.term li a{
+	font-size: 14px;
+}
+}
+
+@media (min-width: 1440px) and (max-width: 1679px) {
+.test img{
+    height:38px;
+    margin-left: 10px;
+}
+.signup-nav{
+	padding: 15px;
+}
+.login-space{
+	padding:139px 15px 70px 15px;
+}
+.common-form{
+	max-width: 500px;
+}
+.login-common{
+	padding: 25px;
+}
+.signup-head h3{
+	font-size: 26px;
+	margin-bottom:20px;
+}
+.signup-form label{
+	font-size: 18px;
+}
+.signup-form input{
+	height: 42px;
+	font-size:16px;
+	margin-bottom: 20px;
+}
+.signup-form p{
+	font-size: 16px;
+}
+.signup-submit{
+	padding: 12px;
+	font-size:16px;
+	margin-bottom: 20px;
+}
+.footer1{
+	padding: 15px;
+}
+.tube-image img {
+    width:auto;
+    height: 38px;
+    margin-top: 2px;
+}
+.term li a{
+	font-size: 16px;
+}
+}
+
+@media (min-width: 1680px) and (max-width: 1919px) {
+.test img{
+    height: 42px;
+    margin-left: 10px;
+}
+.signup-nav{
+	padding: 20px;
+}
+.login-space{
+	padding:163px 15px 80px 15px;
+}
+.common-form{
+	max-width: 600px;
+}
+.login-common{
+	padding: 35px;
+}
+.signup-head h3{
+	font-size: 30px;
+	margin-bottom:25px;
+}
+.signup-form label{
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+.signup-form input{
+	height: 48px;
+	font-size:18px;
+	margin-bottom: 25px;
+}
+.signup-form p{
+	font-size: 18px;
+}
+.signup-submit{
+	padding: 15px;
+	font-size:18px;
+	margin-bottom: 25px;
+}
+.tube-image img {
+    width:auto;
+    height: 42px;
+    margin-top: 2px;
+}
+.term li a{
+	font-size: 18px;
+}
+}
+
+@media (min-width: 1920px) and (max-width: 2559px) {
+.test img{
+    height: 44px;
+    margin-left: 10px;
+}
+.signup-nav{
+	padding: 20px;
+}
+.login-space{
+	padding:175px 15px 90px 15px;
+}
+.common-form{
+	max-width: 700px;
+}
+.login-common{
+	padding: 45px;
+}
+.signup-head h3{
+	font-size: 36px;
+	margin-bottom:30px;
+}
+.signup-form label{
+	font-size: 24px;
+	margin-bottom: 15px;
+}
+.signup-form input{
+	height: 54px;
+	font-size:20px;
+	margin-bottom: 30px;
+}
+.signup-form p{
+	font-size: 20px;
+}
+.signup-submit{
+	padding: 18px;
+	font-size:20px;
+	margin-bottom: 30px;
+}
+.tube-image img {
+    width:auto;
+    height: 44px;
+    margin-top: 2px;
+}
+.term li a{
+	font-size: 20px;
+}
+}
+
+@media screen and (min-width: 2560px){
+.test img{
+    height: 44px;
+    margin-left: 10px;
+}
+.signup-nav{
+	padding: 20px;
+}
+.login-space{
+	padding:175px 15px 90px 15px;
+}
+.common-form{
+	max-width: 780px;
+}
+.login-common{
+	padding:50px;
+}
+.signup-head h3{
+	font-size:40px;
+	margin-bottom:30px;
+}
+.signup-form label{
+	font-size: 26px;
+	margin-bottom: 15px;
+}
+.signup-form input{
+	height: 58px;
+	font-size:22px;
+	margin-bottom: 35px;
+}
+.signup-form p{
+	font-size: 22px;
+}
+.signup-submit{
+	padding:20px;
+	font-size:22px;
+	margin-bottom: 35px;
+}
+.tube-image img {
+    width:auto;
+    height: 44px;
+    margin-top: 2px;
+}
+.term li a{
+	font-size: 22px;
+}
+}

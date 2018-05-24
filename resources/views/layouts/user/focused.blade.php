@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/style.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive1.css')}}">
 
     <link rel="shortcut icon" type="image/png" href="@if(Setting::get('site_icon')) {{Setting::get('site_icon')}} @else {{asset('img/favicon.png')}} @endif"/>
 
@@ -37,13 +38,9 @@
 
         @yield('content')
 
-        <div class="bottom"></div>
-
-        <div class="footer_class">
-
-            @include('layouts.user.footer')   
-
-        </div>
+        <!-- <div class="bottom"></div> -->
+        
+        @include('layouts.user.footer')      
 
     </div> 
     

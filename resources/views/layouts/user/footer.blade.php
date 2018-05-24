@@ -1,6 +1,7 @@
-<footer>
+<div class="bottom-height"></div>
+<footer class="footer">
     <div class="footer1 row">
-        <div class="col-sm-2 ">
+        <div class="col-sm-3 col-md-3 col-lg-3">
             <div class="tube-image text-center">
                 @if(Setting::get('site_logo'))
                     <img src="{{Setting::get('site_logo')}}">
@@ -10,7 +11,7 @@
             </div>                                 
         </div><!--end of col-sm-2-->
 
-        <div class="col-sm-10 foot-content">
+        <div class="col-sm-9 col-md-9 col-lg-9 foot-content">
 
             <ul class="term">
                 <?php $pages = pages();?>

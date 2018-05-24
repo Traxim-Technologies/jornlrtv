@@ -256,10 +256,10 @@ a.yt-uix-button {
 	color: #555;
 	cursor: default;
 }
-.y-home.menu1 .active {
+/*.y-home.menu1 .active {
 	background-color: #cc181e;
 	color: white;
-}
+}*/
 a:focus {
 	outline: none;
 	outline-offset: -2px;

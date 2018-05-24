@@ -1,6 +1,6 @@
 <div class="streamtube-nav signup-nav">
     <div class="row">
-        <div class="test you-image col-lg-2 col-md-2 col-sm-2 col-xs-8">
+        <div class="test col-xs-12">
             <a href="{{route('user.dashboard')}}" class="">
                 @if(Setting::get('site_logo'))
                     <img src="{{Setting::get('site_logo')}}">
@@ -51,3 +51,5 @@
 
     </div><!--end of row-->
 </div><!--end of streamtube-nav-->
+
+<!-- <div class="clear-fix"></div> -->
