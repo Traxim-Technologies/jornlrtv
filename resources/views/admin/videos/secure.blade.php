@@ -406,11 +406,14 @@ hr {
 
                 @if($url)
 
+                    var sample_video = "{{$secure_video}}";
+                    secure_video = sample_video.replace(/&amp;/g, '&');
+
                     var playerInstance = jwplayer("main-video-player");
 
 
                     playerInstance.setup({
-                        file: "{{$secure_video}}",
+                        file: secure_video,
                         image: "{{$video->default_image}}",
                         width: "100%",
                         aspectratio: "16:9",
