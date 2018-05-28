@@ -210,7 +210,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false, 'error_messages' => $errors , 'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false, 'error_messages' => $errors , 'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -3561,9 +3561,9 @@ class UserApiController extends Controller {
                         ->select('user_id as id',
                                 'subscription_id',
                                 'user_payments.id as user_subscription_id',
-                                'subscriptions.title as title',
-                                'subscriptions.description as description',
-                                'subscriptions.plan',
+                                \DB::raw('IFNULL(subscriptions.title,"") as title'),
+                                \DB::raw('IFNULL(subscriptions.description,"") as description'),
+                                \DB::raw('IFNULL(subscriptions.plan,"") as plan'),
                                 'user_payments.amount as amount',
                                 // 'user_payments.expiry_date as expiry_date',
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
@@ -3984,7 +3984,7 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
+                $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901) , 'error_code' => 901);
 
             }    
 
@@ -6204,7 +6204,7 @@ class UserApiController extends Controller {
 
             $error_code = $e->getCode();
 
-            $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
             return response()->json($response_array , 200);
         }
