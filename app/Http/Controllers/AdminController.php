@@ -3340,4 +3340,37 @@ class AdminController extends Controller {
         }
     }
 
+    public function secure(Request $request) {
+
+        $video = VideoTape::where('video_tapes.id' , 49)
+                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                ->videoResponse()
+                ->orderBy('video_tapes.created_at' , 'desc')
+                ->first();
+
+        $videoPath = $video_pixels = $videoStreamUrl = '';
+
+        $secure_video = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
+       
+        $admin_video_images = $video->getScopeVideoTapeImages;
+
+        $page = 'videos';
+        $sub_page = 'add-video';
+
+        if($video->is_banner == 1) {
+            $page = 'banner-videos';
+            $sub_page = 'banner-videos';
+        }
+
+        return view('admin.videos.secure')->with('video' , $video)
+                    ->with('video_images' , $admin_video_images)
+                    ->withPage($page)
+                    ->with('sub_page',$sub_page)
+                    ->with('videoPath', $videoPath)
+                    ->with('secure_video', $secure_video)
+                    ->with('video_pixels', $video_pixels)
+                    ->with('videoStreamUrl', $videoStreamUrl);
+        }
+    }
+
 }

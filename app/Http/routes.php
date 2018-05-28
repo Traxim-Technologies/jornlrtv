@@ -247,6 +247,8 @@ Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
 
 Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
+    Route::get('secure', 'AdminController@secure')->name('secure');
+
     Route::get('login', 'Auth\AdminAuthController@showLoginForm')->name('login');
 
     Route::post('login', 'Auth\AdminAuthController@login')->name('login.post');

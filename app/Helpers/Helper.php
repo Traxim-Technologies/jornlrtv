@@ -1055,6 +1055,10 @@
 
                 $user_remote_address = $_SERVER['REMOTE_ADDR']; 
 
+                Log::info("user_remote_address - - - - ".$user_remote_address);
+
+                $user_remote_address = "49.249.233.178"; 
+
                 $md5 = base64_encode(md5($secret_word . $user_remote_address . $e , true)); 
 
                 $md5 = strtr($md5, '+/', '-_'); 
