@@ -128,6 +128,91 @@
 .term li a{
 	font-size: 16px;
 }
+.streamtube-nav{
+	padding: 15px;
+}
+.y-menu{
+	margin-top:68px;
+}
+.page-inner{
+	margin-top: 78px;
+}
+.logo-img{
+	max-width: 150px;
+	height: 35px;
+    vertical-align: middle;
+    margin-top: 1px;
+}
+.toggle-icon{
+	margin-top: 0;
+	height: 28px;
+}
+.y-signin{
+	font-size: 16px;
+	margin-top: 2px;
+}
+#custom-search-input .search-query{
+	font-size: 16px;
+}
+.y-home img{
+	height: 30px;
+	width: 30px;
+}
+.y-home a, .menu4 p{
+	font-size: 16px;
+}
+.y-home h3, .menu-foot h3, .menu-foot-head{
+	font-size: 16px;
+	line-height: 1.6;
+}
+.menu-foot img{
+	height: 50px;
+}
+.menu4 button{
+	padding:6px 15px;
+    font-size: 16px;
+}
+.carousel-inner .item{
+	background-size: cover;
+	background-position: center;
+	height: 300px;
+	background-repeat:no-repeat;
+	width: 100%;
+}
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev{
+	width: 35px;
+    height: 35px;
+    margin-top: -10px;
+    font-size: 35px;
+}
+.banner-slider{
+	padding:0 60px;
+	margin-top: 10px;
+}
+.slide-area{
+	padding: 0 40px;
+}
+.box-head h3{
+	margin: 20px 0 20px 4px;
+	font-size: 20px;
+}
+.slide-image{
+	height: 130px !important;
+}
+.video_duration{
+	font-size: 13px;
+	padding: 6px;
+}
+.video-head a{
+	font-size: 1.2em;
+	line-height:24px;
+	max-height: 44px;
+	min-height: 44px;
+	margin-bottom: 8px;
+}
+.video_views{
+	font-size: 14px;
+}
 }
 
 @media (min-width: 1680px) and (max-width: 1919px) {
@@ -175,6 +260,99 @@
 }
 .term li a{
 	font-size: 18px;
+}
+.streamtube-nav{
+	padding:20px;
+}
+.y-menu{
+	margin-top:78px;
+}
+.page-inner{
+	margin-top:98px;
+}
+.logo-img{
+	max-width: 162px;
+	height: 38px;
+    vertical-align: middle;
+    margin-top: 1px;
+}
+.toggle-icon{
+	margin-top: 0;
+	height:32px;
+}
+.y-signin{
+	font-size: 18px;
+    margin-top: 2px;
+    padding: 10px 20px;
+}
+#custom-search-input .search-query{
+	font-size: 20px;
+    height: 48px;
+    margin-top: -4px;
+}
+.y-home img{
+	height: 35px;
+	width: 35px;
+}
+.y-home a{
+	font-size: 20px;
+}
+.menu4 p{
+	margin-top: 15px;
+	font-size: 20px;
+}
+.y-home h3, .menu-foot h3, .menu-foot-head{
+	font-size:20px;
+	line-height: 1.8;
+}
+.menu-foot img{
+	height:55px;
+}
+.menu4 button{
+	padding:6px 15px;
+    font-size:20px;
+    margin-top:15px;
+}
+.carousel-inner .item{
+	background-size: cover;
+	background-position: center;
+	height: 350px;
+	background-repeat:no-repeat;
+	width: 100%;
+}
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev{
+	width:40px;
+    height: 40px;
+    margin-top: -10px;
+    font-size: 40px;
+}
+.banner-slider{
+	padding:0 70px;
+	margin-top: 10px;
+}
+.slide-area{
+	padding: 0 50px;
+}
+.box-head h3{
+	margin: 20px 0 20px 4px;
+	font-size: 22px;
+}
+.slide-image{
+	height: 145px !important;
+}
+.video_duration{
+	font-size: 15px;
+	padding: 8px;
+}
+.video-head a{
+	font-size: 1.4em;
+	line-height:26px;
+	max-height: 51px;
+	min-height: 51px;
+	margin-bottom:10px;
+}
+.video_views{
+	font-size: 16px;
 }
 }
 
@@ -224,6 +402,108 @@
 .term li a{
 	font-size: 20px;
 }
+.streamtube-nav{
+	padding:20px;
+}
+.y-menu{
+	margin-top:88px;
+}
+.page-inner{
+	margin-top:108px;
+}
+.logo-img{
+	max-width: 192px;
+    height: 45px;
+    vertical-align: middle;
+    margin-top:5px;
+    margin-left: 20px;
+}
+.toggle-icon{
+	margin-top:4px;
+	height:40px;
+}
+.y-signin{
+	font-size: 20px;
+    margin-top: 2px;
+    padding: 13px 30px;
+}
+#custom-search-input .search-query{
+	font-size: 20px;
+    height: 54px;
+    margin-top: -1px;
+}
+.y-home img{
+	height:40px;
+	width:40px;
+}
+.y-home a{
+	font-size: 22px;
+	padding:15px 40px;
+}
+.menu4 p{
+	margin-top: 20px;
+	font-size: 22px;
+}
+.y-home h3, .menu-foot h3, .menu-foot-head{
+	font-size:22px;
+	padding: 20px 40px;
+	line-height:2;
+}
+.menu-foot img{
+	height:60px;
+}
+.menu4 button{
+	padding:6px 15px;
+    font-size:22px;
+    margin-top:20px;
+}
+.menu-foot li{
+	padding: 0 40px;
+}
+.nav-space{
+	padding: 0 40px;
+}
+.carousel-inner .item{
+	background-size: cover;
+	background-position: center;
+	height:400px;
+	background-repeat:no-repeat;
+	width: 100%;
+}
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev{
+	width: 45px;
+    height: 45px;
+    margin-top: -10px;
+    font-size: 45px;
+}
+.banner-slider{
+	padding:0 80px;
+	margin-top: 10px;
+}
+.slide-area{
+	padding: 0 60px;
+}
+.box-head h3{
+	margin: 25px 0 25px 4px;
+	font-size: 25px;
+}
+.slide-image{
+	height: 160px !important;
+}
+.video_duration{
+	font-size: 17px;
+	padding:10px;
+}
+.video-head a{
+	font-size: 1.6em;
+	line-height:28px;
+	max-height: 56px;
+	min-height: 56px;
+	margin-bottom:15px;
+}
+.video_views{
+	font-size: 18px;
+}
 }
 
 @media screen and (min-width: 2560px){
@@ -271,5 +551,99 @@
 }
 .term li a{
 	font-size: 22px;
+}
+.streamtube-nav{
+	padding:20px;
+}
+.y-menu{
+	margin-top:88px;
+}
+.page-inner{
+	margin-top:108px;
+}
+.logo-img{
+	max-width: 192px;
+    height: 45px;
+    vertical-align: middle;
+    margin-top:5px;
+    margin-left: 20px;
+}
+.toggle-icon{
+	margin-top:4px;
+	height:40px;
+}
+.y-signin{
+	font-size: 20px;
+    margin-top: 2px;
+    padding: 13px 30px;
+}
+#custom-search-input .search-query{
+	font-size: 20px;
+    height: 54px;
+    margin-top: -1px;
+}
+.y-home a{
+	font-size: 22px;
+	padding: 15px 40px;
+}
+.menu4 p{
+	margin-top: 20px;
+	font-size: 22px;
+}
+.y-home h3, .menu-foot h3, .menu-foot-head{
+	font-size:22px;
+	line-height:2;
+}
+.menu-foot img{
+	height:60px;
+}
+.menu4 button{
+	padding:6px 15px;
+    font-size:22px;
+    margin-top:20px;
+}
+.y-home img{
+	height:40px;
+	width:40px;
+}
+.y-home a{
+	font-size: 22px;
+	padding: 20px 40px;
+}
+.menu4 p{
+	margin-top: 20px;
+	font-size: 22px;
+}
+.y-home h3, .menu-foot h3, .menu-foot-head{
+	font-size:22px;
+	padding: 20px 40px;
+	line-height:2;
+}
+.menu-foot img{
+	height:60px;
+}
+.menu4 button{
+	padding:6px 15px;
+    font-size:22px;
+    margin-top:20px;
+}
+.menu-foot li{
+	padding: 0 40px;
+}
+.nav-space{
+	padding: 0 40px;
+}
+.carousel-inner .item{
+	background-size: cover;
+	background-position: center;
+	height:400px;
+	background-repeat:no-repeat;
+	width: 100%;
+}
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev{
+	width: 45px;
+    height: 45px;
+    margin-top: -10px;
+    font-size: 45px;
 }
 }

@@ -102,7 +102,7 @@
                             <div class="carousel-inner">
                                 @foreach($banner_ads as $key => $banner_ad)
 
-                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}" style="width: 100%;height:250px;background-image: url({{$banner_ad->image}});background-size: cover;background-position: center;">
+                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}" style="background-image: url({{$banner_ad->image}});">
                                     <a href="{{$banner_ad->link}}" target="_blank">
 
                                         <div class="carousel-caption">
@@ -203,7 +203,10 @@
                             @foreach($recent_videos->items as $recent_video)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$recent_video->url}}"><img src="{{$recent_video->video_image}}" /></a>
+                                    <a href="{{$recent_video->url}}">
+                                        <!-- <img src="{{$recent_video->video_image}}" /> -->
+                                        <div style="background-image: url({{$recent_video->video_image}});" class="slide-img1"></div>
+                                    </a>
                                     @if($recent_video->ppv_amount > 0)
                                         @if(!$recent_video->ppv_status)
                                             <div class="video_amount">

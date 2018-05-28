@@ -400,9 +400,10 @@
 	margin-top: 65px;
 }
 .logo-img{
-	width: 120px;
-	height: 35px;
-	vertical-align: middle;
+	width: 117px;
+    height: 27px;
+    vertical-align: middle;
+    margin-top: 5px;
 }
 .cross-mark {
     width:35%;
@@ -551,9 +552,10 @@
 	top:0;
 }
 .logo-img{
-	width: 120px;
-	height: 35px;
-	vertical-align: middle;
+	width: 128px;
+    height: 30px;
+    vertical-align: middle;
+    margin-top: 4px;
 }
 .cross-mark {
     width:35%;
