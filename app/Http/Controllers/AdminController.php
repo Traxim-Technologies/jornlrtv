@@ -3350,7 +3350,7 @@ class AdminController extends Controller {
 
         $videoPath = $video_pixels = $videoStreamUrl = '';
 
-        $secure_video = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
+        $secure_video = Helper::convert_hls_to_secure(get_video_end($video->video) , $video->video);
        
         $admin_video_images = $video->getScopeVideoTapeImages;
 
