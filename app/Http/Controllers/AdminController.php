@@ -3357,11 +3357,6 @@ class AdminController extends Controller {
         $page = 'videos';
         $sub_page = 'add-video';
 
-        if($video->is_banner == 1) {
-            $page = 'banner-videos';
-            $sub_page = 'banner-videos';
-        }
-
         return view('admin.videos.secure')->with('video' , $video)
                     ->with('video_images' , $admin_video_images)
                     ->withPage($page)
@@ -3370,7 +3365,6 @@ class AdminController extends Controller {
                     ->with('secure_video', $secure_video)
                     ->with('video_pixels', $video_pixels)
                     ->with('videoStreamUrl', $videoStreamUrl);
-        }
     }
 
 }
