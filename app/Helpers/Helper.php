@@ -1106,7 +1106,7 @@
             
                 // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
 
-                $expires = date('U')+20;
+                $expires = date('U')+200;
 
                 // secure_link_md5 "$secure_link_expires$uri$remote_addr cgshlockkey";
 
