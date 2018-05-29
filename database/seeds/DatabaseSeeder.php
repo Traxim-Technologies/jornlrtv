@@ -35,5 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PushNotificationSeeder::class);
         $this->call(SecureVideoSeeder::class);
         $this->call(MailGunSeeder::class);
+        $this->call(IosPaymentStatusSeeder::class);
     }
 }

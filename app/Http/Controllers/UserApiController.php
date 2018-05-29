@@ -852,6 +852,8 @@ class UserApiController extends Controller {
                     'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
                     'push_status' => $user->push_status,
+                    'payment_subscription' => Setting::get('ios_payment_subscription_status')
+
                 );
 
                 $response_array = Helper::null_safe($response_array);
@@ -970,6 +972,8 @@ class UserApiController extends Controller {
                     'push_status' => $user->push_status,
                     'dob'=> $user->dob,
                     'description'=> $user->description,
+                    'payment_subscription' => Setting::get('ios_payment_subscription_status')
+
                 );
 
                 $response_array = Helper::null_safe($response_array);
