@@ -402,7 +402,7 @@ a:focus {
 	margin-top: 58px;
 }*/
 .big-section-main {
-	padding: 0 15px;
+	/*padding: 0 15px;*/
 }
 .abt-sec-head h5 {
 	color: #333;
@@ -526,8 +526,8 @@ a:focus {
 
 @media screen and (max-width: 996px){
 	.lohp-medium-shelves-container.col-md-6{
-		margin: 0;
-		padding: 0;
+		/*margin: 0;
+		padding: 0;*/
 	}
 	.slide-box.recom-box.big-box-slide.sq-bx {
     float: none;

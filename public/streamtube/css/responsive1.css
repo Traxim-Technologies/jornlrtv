@@ -11,6 +11,9 @@
 .term li a{
 	font-size: 12px;
 }
+.slide-area1{
+	padding: 0px !important
+}
 }
 
 @media (min-width: 480px) and (max-width: 767px) {
@@ -151,6 +154,10 @@
 	font-size: 16px;
 	margin-top: 2px;
 }
+.clear-button button{
+	font-size: 16px;
+	margin-bottom: 10px;
+}
 #custom-search-input .search-query{
 	font-size: 16px;
 }
@@ -190,7 +197,10 @@
 	margin-top: 10px;
 }
 .slide-area{
-	padding: 0 40px;
+	padding: 0 40px !important;
+}
+.slide-area1{
+	padding: 0 25px !important;
 }
 .box-head h3{
 	margin: 20px 0 20px 4px;
@@ -212,6 +222,65 @@
 }
 .video_views{
 	font-size: 14px;
+}
+.slick-prev, .slick-next{
+	height: 50px;
+	width: 50px;
+}
+.slick-prev{
+	left: -35px;
+}
+.slick-next{
+	right: -35px;
+}
+.recom-box{
+	margin-top:20px;
+}
+.recom-head h3{
+	padding:20px 13px;
+	padding-bottom: 0;
+	margin:0;
+}
+.recom-details{
+	height:92px;
+}
+.content-head h4{
+	font-size: 20px;
+	margin-top:10px;
+	margin-bottom:20px;
+}
+.content-head{
+	margin-bottom: 20px;
+}
+.history-image{
+	max-height: 130px;
+}
+.history-head h5 a{
+	font-size: 1.35em;
+}
+.history-head h5{
+	margin-bottom: 8px;
+}
+.description p{
+	font-size: 14px;
+	margin-top: 6px;
+	line-height: 20px;
+	max-height: 38px;
+	margin-bottom:8px;
+}
+.sub-list{
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+}
+.st_video_upload_btn{
+	font-size: 15px;
+	padding: 5px 15px;
+}
+.video-views-channel-name{
+	margin-bottom: 6px;
+}
+.cross-mark1 i{
+	font-size: 16px;
 }
 }
 
@@ -285,6 +354,11 @@
     margin-top: 2px;
     padding: 10px 20px;
 }
+.clear-button button{
+	font-size: 18px;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
 #custom-search-input .search-query{
 	font-size: 20px;
     height: 48px;
@@ -331,14 +405,17 @@
 	margin-top: 10px;
 }
 .slide-area{
-	padding: 0 50px;
+	padding: 0 50px !important;
+}
+.slide-area1{
+	padding: 0 35px !important;
 }
 .box-head h3{
 	margin: 20px 0 20px 4px;
 	font-size: 22px;
 }
 .slide-image{
-	height: 145px !important;
+	height: 150px !important;
 }
 .video_duration{
 	font-size: 15px;
@@ -353,6 +430,68 @@
 }
 .video_views{
 	font-size: 16px;
+}
+.slick-prev, .slick-next{
+	height: 60px;
+	width: 60px;
+}
+.slick-prev{
+	left: -40px;
+}
+.slick-next{
+	right: -40px;
+}
+.slick-prev:before, .slick-next:before{
+	font-size: 26px;
+}
+.recom-box{
+	margin-top:20px;
+}
+.recom-head h3{
+	padding:20px 13px;
+	padding-bottom: 0;
+	margin:0;
+}
+.recom-details{
+	height:107px;
+}
+.content-head h4{
+	font-size: 24px;
+	margin-top:15px;
+	margin-bottom:25px;
+}
+.content-head{
+	margin-bottom: 25px;
+}
+.history-image{
+	max-height: 140px;
+}
+.history-head h5 a{
+	font-size: 1.5em;
+}
+.history-head h5{
+	margin-bottom:15px;
+}
+.description p{
+	font-size: 16px;
+	margin-top: 11px;
+    line-height: 24px;
+    max-height: 45px;
+    margin-bottom: 10px;
+}
+.sub-list{
+	padding-bottom: 25px;
+	margin-bottom: 25px;
+}
+.st_video_upload_btn{
+	font-size:17px;
+	padding:7px 20px;
+}
+.video-views-channel-name{
+	margin-bottom:7px;
+}
+.cross-mark1 i{
+	font-size: 18px;
 }
 }
 
@@ -427,6 +566,11 @@
     margin-top: 2px;
     padding: 13px 30px;
 }
+.clear-button button{
+	font-size: 20px;
+    padding: 13px 30px;
+    margin-bottom: 20px;
+}
 #custom-search-input .search-query{
 	font-size: 20px;
     height: 54px;
@@ -481,14 +625,17 @@
 	margin-top: 10px;
 }
 .slide-area{
-	padding: 0 60px;
+	padding: 0 60px !important;
+}
+.slide-area1{
+	padding: 0 45px !important;
 }
 .box-head h3{
 	margin: 25px 0 25px 4px;
 	font-size: 25px;
 }
 .slide-image{
-	height: 160px !important;
+	height: 180px !important;
 }
 .video_duration{
 	font-size: 17px;
@@ -503,6 +650,68 @@
 }
 .video_views{
 	font-size: 18px;
+}
+.slick-prev, .slick-next{
+	height: 70px;
+	width: 70px;
+}
+.slick-prev{
+	left: -50px;
+}
+.slick-next{
+	right: -50px;
+}
+.slick-prev:before, .slick-next:before{
+	font-size: 30px;
+}
+.recom-box{
+	margin-top:25px;
+}
+.recom-head h3{
+	padding:25px 13px;
+	padding-bottom: 0;
+	margin:0;
+}
+.recom-details{
+	height:123px;
+}
+.content-head h4{
+	font-size: 28px;
+	margin-top:20px;
+	margin-bottom:30px;
+}
+.content-head{
+	margin-bottom:30px;
+}
+.history-image{
+	max-height:160px;
+}
+.history-head h5 a{
+	font-size: 1.75em;
+}
+.history-head h5{
+	margin-bottom:15px;
+}
+.description p{
+	font-size: 20px;
+	margin-top:10px;
+	line-height: 28px;
+	max-height: 53px;
+	margin-bottom: 12px
+}
+.sub-list{
+	padding-bottom:30px;
+	margin-bottom: 30px;
+}
+.st_video_upload_btn{
+	font-size:19px;
+	padding:10px 20px;
+}
+.video-views-channel-name{
+	margin-bottom:9px;
+}
+.cross-mark1 i{
+	font-size:20px;
 }
 }
 
@@ -577,6 +786,11 @@
     margin-top: 2px;
     padding: 13px 30px;
 }
+.clear-button button{
+	font-size: 20px;
+    padding: 13px 30px;
+    margin-bottom: 20px;
+}
 #custom-search-input .search-query{
 	font-size: 20px;
     height: 54px;
@@ -645,5 +859,98 @@
     height: 45px;
     margin-top: -10px;
     font-size: 45px;
+}
+.banner-slider{
+	padding:0 80px;
+	margin-top: 10px;
+}
+.slide-area]{
+	padding: 0 60px !important;
+}
+.slide-area1{
+	padding: 0 45px !important;
+}
+.box-head h3{
+	margin: 25px 0 25px 4px;
+	font-size: 25px;
+}
+.slide-image{
+	height: 180px !important;
+}
+.video_duration{
+	font-size: 17px;
+	padding:10px;
+}
+.video-head a{
+	font-size: 1.6em;
+	line-height:28px;
+	max-height: 56px;
+	min-height: 56px;
+	margin-bottom:15px;
+}
+.video_views{
+	font-size: 18px;
+}
+.slick-prev, .slick-next{
+	height: 70px;
+	width: 70px;
+}
+.slick-prev{
+	left: -50px;
+}
+.slick-next{
+	right: -50px;
+}
+.slick-prev:before, .slick-next:before{
+	font-size: 34px;
+}
+.recom-box{
+	margin-top:20px;
+}
+.recom-head h3{
+	padding:20px 13px;
+	padding-bottom: 0;
+	margin:0;
+}
+.recom-details{
+	height:123px;
+}
+.content-head h4{
+	font-size: 28px;
+	margin-top:20px;
+	margin-bottom:30px;
+}
+.content-head{
+	margin-bottom:30px;
+}
+.history-image{
+	max-height:160px;
+}
+.history-head h5 a{
+	font-size: 1.75em;
+}
+.history-head h5{
+	margin-bottom:15px;
+}
+.description p{
+	font-size: 20px;
+	margin-top:10px;
+	line-height: 28px;
+	max-height: 53px;
+	margin-bottom: 12px;
+}
+.sub-list{
+	padding-bottom:30px;
+	margin-bottom: 30px;
+}
+.st_video_upload_btn{
+	font-size:19px;
+	padding:10px 20px;
+}
+.video-views-channel-name{
+	margin-bottom:9px;
+}
+.cross-mark1 i{
+	font-size:20px;
 }
 }

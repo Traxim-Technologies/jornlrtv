@@ -19,7 +19,7 @@
 
 			@include('notification.notify')
 
-				<div class="slide-area recom-area abt-sec">
+				<div class="slide-area1 recom-area abt-sec">
 					<div class="abt-sec-head">
 						
 						 <div class="new-history">

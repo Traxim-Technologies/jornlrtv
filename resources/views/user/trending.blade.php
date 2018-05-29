@@ -10,7 +10,7 @@
 
             <div class="page-inner col-sm-9 col-md-10">
 
-                <div class="slide-area recom-area">
+                <div class="slide-area1 recom-area">
                     <div class="box-head recom-head">
                         <h3>{{tr('trending')}}</h3>
                     </div>
@@ -22,8 +22,11 @@
 
                             @foreach($videos->items as $video)
                                 <div class="slide-box recom-box">
-                                    <div class="slide-image recom-image">
-                                        <a href="{{$video->url}}"><img src="{{$video->video_image}}" /></a>
+                                    <div class="slide-image">
+                                        <a href="{{$video->url}}">
+                                            <!-- <img src="{{$video->video_image}}" /> -->
+                                            <div style="background-image: url({{$video->video_image}});" class="slide-img1"></div>
+                                        </a>
                                         @if($video->ppv_amount > 0)
                                             @if(!$video->ppv_status)
                                                 <div class="video_amount">

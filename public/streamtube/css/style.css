@@ -195,8 +195,11 @@ a:hover{
 }
 .slide-area{
 	/*background-color: #fff;*/
-	padding: 0px 30px;
+	padding: 0px 30px !important;
 	/*margin: 10px 0;*/
+}
+.slide-area1{
+	padding: 0 15px !important
 }
 .slide-image img{
 	width: 95%;
@@ -1039,7 +1042,8 @@ history (single page) css
     font-size: 12px;
 }
 .clear-button button{
-	padding: 1px 16px;
+	padding:4px 16px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
 }
 .sub-list{
 	list-style-type: none;
@@ -1117,7 +1121,7 @@ history (single page) css
     margin-top: 3px;
     font-size: 12px;
     line-height: 16px;
-    margin-bottom: 0;
+    margin-bottom:4px;
     display: block;
   	display: -webkit-box;
   /* Fallback for non-webkit */
@@ -1615,7 +1619,7 @@ recommended.html css
     padding: 10px;
 }
 .recom-head h3{
-	padding: 18px;
+	padding: 18px 16px;
     padding-bottom: 0;
     margin: 0;
 }
@@ -2317,6 +2321,13 @@ changes
 .modal-footer .btn-danger{
 	border-radius: 4px;
 }
+.btn .btn-danger{
+	border:1px solid #d9534f !important;
+	transition: .3s all linear;
+}
+.btn .btn-danger:hover, .btn .btn-danger:active, .btn .btn-danger:focus{
+	border-color: #c9302c !important;
+}
 .video-title1{
 	font-size: 20px !important;
 	color: white;
@@ -3005,4 +3016,20 @@ changes
 	background-position: center;
 	height: 100%;
 	width: 100%;
+}
+.content-head h4{
+	margin-top:5px;
+	margin-bottom: 15px;
+}
+/*.branded-page-v2-top-row {
+	padding: 15px;
+	margin:0 5px;
+}*/
+.lohp-large-shelf-container .recom-box{
+	margin-left:0;
+	margin-right:0;
+	padding: 0;
+}
+.lohp-large-shelf-container .slide-box.recom-box.big-box-slide{
+	padding: 0;
 }

@@ -153,7 +153,10 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$wishlist->url}}"><img src="{{$wishlist->video_image}}" /></a>
+                                    <a href="{{$wishlist->url}}">
+                                        <!-- <img src="{{$wishlist->video_image}}" /> -->
+                                        <div style="background-image: url({{$wishlist->video_image}});" class="slide-img1"></div>
+                                    </a>
 
                                     @if($wishlist->ppv_amount > 0)
                                         @if(!$wishlist->ppv_status)
@@ -258,7 +261,10 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$trending->url}}"><img src="{{$trending->video_image}}" /></a>
+                                    <a href="{{$trending->url}}">
+                                        <!-- <img src="{{$trending->video_image}}" /> -->
+                                        <div style="background-image: url({{$trending->video_image}});" class="slide-img1"></div>
+                                    </a>
                                     @if($trending->ppv_amount > 0)
                                         @if(!$trending->ppv_status)
                                             <div class="video_amount">
@@ -307,7 +313,10 @@
                             @foreach($suggestions->items as $suggestion)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$suggestion->url}}"><img src="{{$suggestion->video_image}}" /></a>
+                                    <a href="{{$suggestion->url}}">
+                                        <!-- <img src="{{$suggestion->video_image}}" /> -->
+                                        <div style="background-image: url({{$suggestion->video_image}});" class="slide-img1"></div>
+                                    </a>
 
                                     @if($suggestion->ppv_amount > 0)
                                         @if(!$suggestion->ppv_status)
