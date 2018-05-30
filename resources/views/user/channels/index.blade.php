@@ -105,82 +105,91 @@
 									<div class="hd-banner-image"></div>
 								</div>
 		
-								<a class="channel-header-profile-image spf-link" href="">
+								<!-- <a class="channel-header-profile-image spf-link" href="">
 							      <img class="channel-header-profile-image" src="{{$channel->picture}}" title="{{$channel->name}}" alt="{{$channel->name}}">
+							    </a> -->
+							</div>
+
+						</div>
+
+						<div class="channel-content-spacing">
+							<div>
+								<div class="pull-left">
+									<a class="channel-header-profile-image spf-link" href="">
+									<div style="background-image:url({{$channel->picture}});" class="channel-header-profile-image1"></div>
 							    </a>
-							</div>
-
-						</div>
-
-						<div>
-							<div class="pull-left">
-								<h1 class="st_channel_heading text-uppercase">{{$channel->name}}</h1>
-								<?php /*<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p> */?>
-							</div>
-							<div class="pull-right upload_a">
-								@if(Auth::check())
-									@if($channel->user_id == Auth::user()->id)
-										<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
-										<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
-										<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
-									@endif
-
-									@if($channel->user_id != Auth::user()->id)
-
-										@if (!$subscribe_status)
-
-										<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}} </a>
-
-										@else 
-
-											<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
-
-										@endif
-									@else
-
-										@if($subscriberscnt > 0)
-
-										<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$subscriberscnt}}</a>
-
+								</div>
+								<div class="pull-left">
+									<h1 class="st_channel_heading text-uppercase">{{$channel->name}}</h1>
+									<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p>
+									<?php /*<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p> */?>
+								</div>
+								<div class="pull-right upload_a btn-space">
+									@if(Auth::check())
+										@if($channel->user_id == Auth::user()->id)
+											<a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
+											<a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
+											<a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a>
 										@endif
 
-									@endif
-								@endif
-							</div>
-							<div class="clearfix"></div>
-						</div>
+										@if($channel->user_id != Auth::user()->id)
 
-						<div id="channel-subheader" class="clearfix branded-page-gutter-padding appbar-content-trigger">
-							<ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
-								<li role="presentation" class="active">
-									<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab">
-									<span class="yt-uix-button-content hidden-xs">{{tr('home')}}</span>
-									<span class="visible-xs"><i class="fa fa-home channel-tab-icon"></i></span>
-									</a>
-								</li>
-								<li role="presentation" id="videos_sec">
-									<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab">
-									<span class="yt-uix-button-content hidden-xs">{{tr('videos')}}</span> 
-									<span class="visible-xs"><i class="fa fa-video-camera channel-tab-icon"></i></span>
-									</a>
-								</li>
-								<li role="presentation">
-									<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab">
-									<span class="yt-uix-button-content hidden-xs">{{tr('about_video')}}</span> 
-									<span class="visible-xs"><i class="fa fa-info channel-tab-icon"></i></span>
-								</a>
-								</li>
-								@if(Auth::check())
-									@if($channel->user_id == Auth::user()->id)
-										<li role="presentation" id="payment_managment_sec">
-											<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
-											<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ({{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->total : "0.00"}})</span> 
-											<span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;($ {{getAmountBasedChannel($channel->id)}})</span>
-											</a>
-										</li>
+											@if (!$subscribe_status)
+
+											<a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}} </a>
+
+											@else 
+
+												<a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+
+											@endif
+										@else
+
+											@if($subscriberscnt > 0)
+
+											<a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$subscriberscnt}}</a>
+
+											@endif
+
+										@endif
 									@endif
-								@endif
-							</ul>
+								</div>
+								<div class="clearfix"></div>
+								
+							</div>
+
+							<div id="channel-subheader" class="clearfix branded-page-gutter-padding appbar-content-trigger">
+								<ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
+									<li role="presentation" class="active">
+										<a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab">
+										<span class="yt-uix-button-content hidden-xs">{{tr('home')}}</span>
+										<span class="visible-xs"><i class="fa fa-home channel-tab-icon"></i></span>
+										</a>
+									</li>
+									<li role="presentation" id="videos_sec">
+										<a href="#videos" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="videos" role="tab" data-toggle="tab">
+										<span class="yt-uix-button-content hidden-xs">{{tr('videos')}}</span> 
+										<span class="visible-xs"><i class="fa fa-video-camera channel-tab-icon"></i></span>
+										</a>
+									</li>
+									<li role="presentation">
+										<a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab">
+										<span class="yt-uix-button-content hidden-xs">{{tr('about_video')}}</span> 
+										<span class="visible-xs"><i class="fa fa-info channel-tab-icon"></i></span>
+									</a>
+									</li>
+									@if(Auth::check())
+										@if($channel->user_id == Auth::user()->id)
+											<li role="presentation" id="payment_managment_sec">
+												<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
+												<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ({{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->total : "0.00"}})</span> 
+												<span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;($ {{getAmountBasedChannel($channel->id)}})</span>
+												</a>
+											</li>
+										@endif
+									@endif
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -213,7 +222,10 @@
 													@if(count($trending_videos) > 0)
 													<div class="slide-box recom-box big-box-slide">
 														<div class="slide-image recom-image hbb">
-															<a href="{{$trending_videos[0]->url}}"><img src="{{$trending_videos[0]->video_image}}"></a>
+															<a href="{{$trending_videos[0]->url}}">
+																<img src="{{$trending_videos[0]->video_image}}">
+																<!-- <div class="slide-img1" style="background-image: url({{$trending_videos[0]->url}});"></div> -->
+															</a>
 															@if($trending_videos[0]->ppv_amount > 0)
 						                                        @if(!$trending_videos[0]->ppv_status)
 						                                            <div class="video_amount">
@@ -298,10 +310,10 @@
 
 					<li role="tabpanel" class="tab-pane" id="videos">
 
-						<div class="slide-area recom-area abt-sec">
+						<div class="recom-area abt-sec">
 							<div class="abt-sec-head">
 								
-								 <div class="new-history">
+								 <div class="new-history1">
 						                <div class="content-head">
 						                    <div><h4 style="color: #000;">{{tr('videos')}}&nbsp;&nbsp;
 						                    @if(Auth::check())
@@ -564,7 +576,7 @@
 					</li>
 					<li role="tabpanel" class="tab-pane" id="about">
 
-						<div class="slide-area recom-area abt-sec">
+						<div class="recom-area abt-sec">
 							<div class="abt-sec-head">
 								<h5>{{$channel->description}}</h5>
 							</div>
@@ -576,10 +588,10 @@
 
 					<li role="tabpanel" class="tab-pane" id="payment_managment">
 
-						<div class="slide-area recom-area abt-sec">
+						<div class="recom-area abt-sec">
 							<div class="abt-sec-head">
 								
-								 <div class="new-history">
+								 <div class="new-history1">
 						                <div class="content-head">
 						                    <div><h4 style="color: #000;">{{tr('payment_videos')}}</h4></div>              
 						                </div><!--end of content-head-->
@@ -630,7 +642,7 @@
 						                                    </div><!--end of description--> 
 
 
-						                                    <div>
+						                                    <div class="label-sec">
 						                                    	@if($video->amount > 0)
 						                                    	<span class="label label-success">{{tr('ad_amount')}} - ${{$video->amount}}</span>
 						                                    	@endif

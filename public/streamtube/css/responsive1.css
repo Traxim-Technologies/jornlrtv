@@ -14,6 +14,35 @@
 .slide-area1{
 	padding: 0px !important
 }
+.btn-space{
+	margin: 10px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:50px;
+	width:50px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:10px 0 10px 10px;
+}
+.st_channel_heading{
+	margin:5px 0 0 0;
+	font-size: 1em !important;
+}
+.subscriber-count{
+	font-size: 12px;
+}
+.btn-space{
+	margin:0px 10px 10px 10px;
+}
+.yt-card{
+	margin-right: -15px !important;
+	margin-left: -15px !important;
+}
+.new-history1{
+	padding-top: 30px;
+}
 }
 
 @media (min-width: 480px) and (max-width: 767px) {
@@ -28,6 +57,29 @@
 }
 .term li a{
 	font-size: 12px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:60px;
+	width:60px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 15px;
+}
+.st_channel_heading{
+	margin:10px 0 0 0;
+	font-size: 1.2em !important;
+}
+.btn-space{
+	margin:0px 10px 20px 10px;
+}
+.yt-card{
+	margin-right: -30px !important;
+	margin-left: -30px !important;
+}
+.new-history1{
+	padding-top: 30px;
 }
 }
 
@@ -46,6 +98,28 @@
 .term li a{
 	font-size: 14px;
 }
+.channel-header-profile-image1{
+	background-size: cover;
+	height:80px;
+	width:80px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 15px;
+}
+.st_channel_heading{
+	margin:22px 0 0 0;
+}
+.btn-space{
+	margin:0px 10px 20px 10px;
+}
+.yt-card{
+	margin-right: -30px !important;
+	margin-left: -30px !important;
+}
+.new-history1{
+	padding-top: 30px;
+}
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
@@ -62,6 +136,28 @@
 }
 .term li a{
 	font-size: 14px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:80px;
+	width:80px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 15px;
+}
+.st_channel_heading{
+	margin:22px 0 0 0;
+}
+.btn-space{
+	margin:25px 10px 15px 10px;
+}
+.yt-card{
+	margin-right: -30px !important;
+	margin-left: -30px !important;
+}
+.new-history1{
+	padding-top: 30px;
 }
 }
 
@@ -80,6 +176,31 @@
 }
 .term li a{
 	font-size: 14px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:80px;
+	width:80px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 15px;
+}
+.st_channel_heading{
+	margin:22px 0 0 0;
+}
+.btn-space{
+	margin:25px 10px 15px 10px;
+}
+.yt-card{
+	margin-right: -30px !important;
+	margin-left: -30px !important;
+}
+.new-history1{
+	padding-top: 30px;
+}
+.label-sec{
+	margin-bottom:6px !important;
 }
 }
 
@@ -135,10 +256,10 @@
 	padding: 15px;
 }
 .y-menu{
-	margin-top:68px;
+	margin-top:70px;
 }
 .page-inner{
-	margin-top: 78px;
+	margin-top:70px;
 }
 .logo-img{
 	max-width: 150px;
@@ -194,7 +315,7 @@
 }
 .banner-slider{
 	padding:0 60px;
-	margin-top: 10px;
+	margin-top:15px;
 }
 .slide-area{
 	padding: 0 40px !important;
@@ -214,7 +335,7 @@
 	padding: 6px;
 }
 .video-head a{
-	font-size: 1.2em;
+	font-size: 1.2em !important;
 	line-height:24px;
 	max-height: 44px;
 	min-height: 44px;
@@ -259,7 +380,7 @@
 	font-size: 1.35em;
 }
 .history-head h5{
-	margin-bottom: 8px;
+	margin-bottom: 8px !important;
 }
 .description p{
 	font-size: 14px;
@@ -281,6 +402,69 @@
 }
 .cross-mark1 i{
 	font-size: 16px;
+}
+.gh-banner{
+	margin-right: -30px;
+	margin-left: -30px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:80px;
+	width:80px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 25px;
+}
+.st_channel_heading{
+	margin:20px 0 0 0;
+}
+.subscriber-count{
+	font-size: 16px;
+}
+.btn-space{
+	margin:25px 25px 15px 10px;
+}
+.yt-card{
+	margin-right: -40px !important;
+	margin-left: -40px !important;
+}
+.st_video_upload_btn{
+	padding: 8px 15px;
+	font-size: 16px;
+}
+#channel-subheader li > a, #channel-subheader .active > a{
+	font-size: 14px !important;
+}
+.branded-page-gutter-padding{
+	padding-left:25px !important;
+	padding-right: 25px !important;
+}
+.branded-page-module-title{
+	margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 18px !important;
+}
+.new-history1{
+	padding-top: 20px;
+}
+.abt-sec-head h5{
+	padding-top: 30px;
+	font-size: 16px;
+	line-height: 24px !important;
+}
+#c4-header-bg-container{
+	height:230px !important;
+}
+.content-head small{
+	font-size: 15px !important;
+}
+.label-sec{
+	margin-bottom:8px !important;
+}
+.label-sec .label{
+	font-size:90% !important;
+	padding: .4em .6em .4em !important;
 }
 }
 
@@ -334,10 +518,10 @@
 	padding:20px;
 }
 .y-menu{
-	margin-top:78px;
+	margin-top:86px;
 }
 .page-inner{
-	margin-top:98px;
+	margin-top:86px;
 }
 .logo-img{
 	max-width: 162px;
@@ -402,7 +586,7 @@
 }
 .banner-slider{
 	padding:0 70px;
-	margin-top: 10px;
+	margin-top:15px;
 }
 .slide-area{
 	padding: 0 50px !important;
@@ -422,7 +606,7 @@
 	padding: 8px;
 }
 .video-head a{
-	font-size: 1.4em;
+	font-size: 1.4em !important;
 	line-height:26px;
 	max-height: 51px;
 	min-height: 51px;
@@ -470,7 +654,7 @@
 	font-size: 1.5em;
 }
 .history-head h5{
-	margin-bottom:15px;
+	margin-bottom:15px !important;
 }
 .description p{
 	font-size: 16px;
@@ -492,6 +676,69 @@
 }
 .cross-mark1 i{
 	font-size: 18px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:80px;
+	width:80px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 35px;
+}
+.st_channel_heading{
+	margin:18px 0 0 0;
+	font-size: 1.6em !important;
+}
+.subscriber-count{
+	font-size: 18px;
+}
+.btn-space{
+	margin:25px 35px 15px 10px;
+}
+.yt-card{
+	margin-right: -50px !important;
+	margin-left: -50px !important;
+}
+.st_video_upload_btn{
+	padding:10px 20px;
+	font-size: 17px;
+}
+#channel-subheader li > a, #channel-subheader .active > a{
+	font-size: 16px !important;
+	height: 36px !important;
+}
+.branded-page-gutter-padding{
+	padding-top: 15px;
+	padding-left: 35px !important;
+	padding-right: 35px !important;
+}
+.branded-page-module-title{
+	margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 20px !important;
+}
+.new-history1{
+	padding-top:15px;
+}
+.abt-sec-head h5{
+	padding-top: 30px;
+	font-size: 18px;
+	line-height: 26px !important;
+}
+#c4-header-bg-container{
+	height:270px !important;
+}
+.content-head small{
+	font-size: 17px !important;
+}
+.label-sec{
+	margin-bottom:13px !important;
+	margin-top: 12px;
+}
+.label-sec .label{
+	font-size:100% !important;
+	padding: .5em .8em .5em !important;
 }
 }
 
@@ -545,10 +792,10 @@
 	padding:20px;
 }
 .y-menu{
-	margin-top:88px;
+	margin-top:97px;
 }
 .page-inner{
-	margin-top:108px;
+	margin-top:97px;
 }
 .logo-img{
 	max-width: 192px;
@@ -622,7 +869,7 @@
 }
 .banner-slider{
 	padding:0 80px;
-	margin-top: 10px;
+	margin-top:25px;
 }
 .slide-area{
 	padding: 0 60px !important;
@@ -642,7 +889,7 @@
 	padding:10px;
 }
 .video-head a{
-	font-size: 1.6em;
+	font-size: 1.6em !important;
 	line-height:28px;
 	max-height: 56px;
 	min-height: 56px;
@@ -690,7 +937,7 @@
 	font-size: 1.75em;
 }
 .history-head h5{
-	margin-bottom:15px;
+	margin-bottom:15px !important;
 }
 .description p{
 	font-size: 20px;
@@ -712,6 +959,69 @@
 }
 .cross-mark1 i{
 	font-size:20px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:80px;
+	width:80px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 45px;
+}
+.st_channel_heading{
+	margin:18px 0 0 0;
+	font-size: 1.7em !important;
+}
+.subscriber-count{
+	font-size:20px;
+}
+.btn-space{
+	margin:25px 45px 15px 10px;
+}
+.yt-card{
+	margin-right: -60px !important;
+	margin-left: -60px !important;
+}
+.st_video_upload_btn{
+	padding:13px 25px;
+	font-size: 18px;
+}
+#channel-subheader li > a, #channel-subheader .active > a{
+	font-size: 17px !important;
+	height:40px !important;
+}
+.branded-page-gutter-padding{
+	padding-top: 15px;
+	padding-left: 45px !important;
+	padding-right: 45px !important;
+}
+.branded-page-module-title{
+	margin-top: 35px;
+    margin-bottom: 10px;
+    font-size: 22px !important;
+}
+.new-history1{
+	padding-top:15px;
+}
+.abt-sec-head h5{
+	padding-top:35px;
+	font-size: 20px !important;
+	line-height: 34px !important;
+}
+#c4-header-bg-container{
+	height: 330px !important;
+}
+.content-head small{
+	font-size: 20px !important;
+}
+.label-sec{
+	margin-bottom: 15px;
+	margin-top:15px;
+}
+.label-sec .label{
+	font-size:110% !important;
+	padding: .6em .8em .6em !important;
 }
 }
 
@@ -765,10 +1075,10 @@
 	padding:20px;
 }
 .y-menu{
-	margin-top:88px;
+	margin-top:97px;
 }
 .page-inner{
-	margin-top:108px;
+	margin-top:97px;
 }
 .logo-img{
 	max-width: 192px;
@@ -862,7 +1172,7 @@
 }
 .banner-slider{
 	padding:0 80px;
-	margin-top: 10px;
+	margin-top: 25px;
 }
 .slide-area]{
 	padding: 0 60px !important;
@@ -882,7 +1192,7 @@
 	padding:10px;
 }
 .video-head a{
-	font-size: 1.6em;
+	font-size: 1.6em !important;
 	line-height:28px;
 	max-height: 56px;
 	min-height: 56px;
@@ -930,7 +1240,7 @@
 	font-size: 1.75em;
 }
 .history-head h5{
-	margin-bottom:15px;
+	margin-bottom:15px !important;
 }
 .description p{
 	font-size: 20px;
@@ -952,5 +1262,68 @@
 }
 .cross-mark1 i{
 	font-size:20px;
+}
+.channel-header-profile-image1{
+	background-size: cover;
+	height:80px;
+	width:80px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	margin:15px 0 15px 45px;
+}
+.st_channel_heading{
+	margin:18px 0 0 0;
+	font-size: 1.7em !important;
+}
+.subscriber-count{
+	font-size:20px;
+}
+.btn-space{
+	margin:25px 45px 15px 10px;
+}
+.yt-card{
+	margin-right: -60px !important;
+	margin-left: -60px !important;
+}
+.st_video_upload_btn{
+	padding:13px 25px;
+	font-size: 18px;
+}
+#channel-subheader li > a, #channel-subheader .active > a{
+	font-size: 17px !important;
+	height:40px !important;
+}
+.branded-page-gutter-padding{
+	padding-top: 15px;
+	padding-left: 45px !important;
+	padding-right: 45px !important;
+}
+.branded-page-module-title{
+	margin-top: 35px;
+    margin-bottom: 10px;
+    font-size: 22px !important;
+}
+.new-history1{
+	padding-top:15px;
+}
+.abt-sec-head h5{
+	padding-top: 35px;
+	font-size: 22px !important;
+	line-height: 34px !important;
+}
+#c4-header-bg-container{
+	height: 330px !important;
+}
+.content-head small{
+	font-size: 22px !important;
+}
+.label-sec{
+	margin-bottom: 15px;
+	margin-top:15px;
+}
+.label-sec .label{
+	font-size:110% !important;
+	padding: .6em .8em .6em !important;
 }
 }

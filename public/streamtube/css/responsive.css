@@ -72,9 +72,9 @@
 	margin-top: 10px;
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -177,7 +177,7 @@
 }
 .banner-slider{
 	padding: 0 15px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 .carousel-caption p{
 	display:none !important;
@@ -217,7 +217,7 @@
 	padding:0 30px;
 }
 .page-inner{
-	margin-top: 120px;
+	margin-top:93px;
 	/*z-index: 0;
 */
 	position: relative;
@@ -257,9 +257,9 @@
 	padding: 0;
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -364,7 +364,7 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 }
 
@@ -397,7 +397,7 @@
 	top:0;
 }
 .page-inner{
-	margin-top: 65px;
+	margin-top:60px;
 }
 .logo-img{
 	width: 117px;
@@ -423,9 +423,9 @@
 	padding-left: 0;
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -515,7 +515,7 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 }
 
@@ -539,7 +539,7 @@
 	padding-right:30px;
 }
 .page-inner{
-	margin-top: 65px;
+	margin-top: 60px;
 }
 .streamtube-nav{
 	padding:10px 20px;
@@ -575,9 +575,9 @@
 	padding-left: 0;
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -667,7 +667,7 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 }
 
@@ -678,7 +678,7 @@
     background-color: #f1f1f1;
     padding-bottom: 15px;
     padding-top: 15px;
-    margin-top: 58px;
+    margin-top: 60px;
     min-height: 700px;
     /*height: calc(100% - 60px) !important;*/
     overflow: auto;
@@ -691,7 +691,7 @@
 	padding-right:30px;
 }
 .page-inner{
-	margin: 65px 0 0 0;
+	margin:60px 0 0 0;
 
 }
 .streamtube-nav{
@@ -728,9 +728,9 @@
 	padding-left: 0;
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius:4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -820,7 +820,7 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 }
 /*index.html responsive*/
