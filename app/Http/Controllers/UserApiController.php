@@ -6143,16 +6143,21 @@ class UserApiController extends Controller {
 
                 if($customer) {
 
-                    Log::info('Customer'.print_r($customer , true));
+                    // Log::info('Customer'.print_r($customer , true));
 
                     $customer_id = $customer->id;
 
                     $card_details = new Card;
                     $card_details->user_id = $request->id;
-                    $card_details->customer_id = $request->customer_id;
+                    $card_details->customer_id = $customer_id;
                     $card_details->last_four = $request->last_four;
-                    $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
-                    $card_details->card_name = $request->card_name ? $request->card_name : "";
+
+                    $card_details->card_token = "CARD-TOKEN";
+
+                    $card_details->card_name = "CARD NAME";
+
+                    // $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+                    // $card_details->card_name = $request->card_name ? $request->card_name : "";
 
                     // Check is any default is available
                     $check_card_details = Card::where('user_id',$request->id)->count();
@@ -6160,6 +6165,8 @@ class UserApiController extends Controller {
                     $card_details->is_default = $check_card_details ? 0 : 1;
 
                     if($card_details->save()) {
+
+                        Log::info("JDJJDJDJDJD");
 
                         if($user_details) {
 
@@ -6196,7 +6203,67 @@ class UserApiController extends Controller {
             
             }
 
-        } catch(Exception $e) {
+        } catch(Stripe_CardError $e) {
+
+            $error1 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error1 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_InvalidRequestError $e) {
+
+            // Invalid parameters were supplied to Stripe's API
+
+            $error2 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error2 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_AuthenticationError $e) {
+
+            // Authentication with Stripe's API failed
+            $error3 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error3 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_ApiConnectionError $e) {
+            // Network communication with Stripe failed
+            $error4 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error4 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_Error $e) {
+            // Display a very generic error to the user, and maybe send
+            // yourself an email
+            $error5 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error5 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Exception $e) {
+            // Something else happened, completely unrelated to Stripe
+            $error6 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error6 ,'error_code' => 903);
+
+
+        } catch (\Stripe\StripeInvalidRequestError $e) {
+
+            // Log::info(print_r($e,true));
+
+            $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+        }
+        
+        catch(Exception $e) {
 
             Log::info("catch FUNCTION INSIDE");
 
