@@ -6147,25 +6147,16 @@ class UserApiController extends Controller {
 
                 if($customer) {
 
-                    // Log::info('Customer'.print_r($customer , true));
-
-                    Log::info(print_r($customer->sources , true));
-
-                    // Log::info(print_r($customer->source , true));
-
                     $customer_id = $customer->id;
 
                     $card_details = new Card;
                     $card_details->user_id = $request->id;
                     $card_details->customer_id = $customer_id;
-                    $card_details->last_four = $request->last_four;
+                    $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
-                    $card_details->card_token = "CARD-TOKEN";
+                    $cards->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
 
-                    $card_details->card_name = "CARD NAME";
-
-                    // $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
-                    // $card_details->card_name = $request->card_name ? $request->card_name : "";
+                    $cards->last_four = $customer->sources->data ? $customer->sources->data[0]->last4 : "";
 
                     // Check is any default is available
 
