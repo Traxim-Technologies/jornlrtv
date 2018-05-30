@@ -6147,11 +6147,11 @@ class UserApiController extends Controller {
 
                 if($customer) {
 
-                    Log::info('Customer'.print_r($customer , true));
+                    // Log::info('Customer'.print_r($customer , true));
 
                     Log::info(print_r($customer->sources , true));
 
-                    Log::info(print_r($customer->source , true));
+                    // Log::info(print_r($customer->source , true));
 
                     $customer_id = $customer->id;
 
