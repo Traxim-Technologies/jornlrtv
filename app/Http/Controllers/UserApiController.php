@@ -6155,13 +6155,11 @@ class UserApiController extends Controller {
 
                     $card_details->customer_id = $customer_id;
 
-                    $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+                    $card_details->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
-                    $cards->card_name = "Visa";
+                    $card_details->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
 
-                    // $cards->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
-
-                    $cards->last_four = $request->last_four;
+                    $card_details->last_four = $request->last_four;
 
                     // Check is any default is available
 
@@ -6190,7 +6188,7 @@ class UserApiController extends Controller {
                         $response_array = ['success' => true, 'message' => tr('add_card_success'), 
                             'data'=> $data];
 
-                            return response()->json($response_array , 200);
+                        return response()->json($response_array , 200);
 
                     } else {
 
