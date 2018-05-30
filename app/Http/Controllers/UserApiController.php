@@ -6149,6 +6149,10 @@ class UserApiController extends Controller {
 
                     Log::info('Customer'.print_r($customer , true));
 
+                    Log::info(print_r($customer->sources , true));
+
+                    Log::info(print_r($customer->source , true));
+
                     $customer_id = $customer->id;
 
                     $card_details = new Card;
@@ -6164,7 +6168,7 @@ class UserApiController extends Controller {
                     // $card_details->card_name = $request->card_name ? $request->card_name : "";
 
                     // Check is any default is available
-                    
+
                     $check_card_details = Card::where('user_id',$request->id)->count();
 
                     $card_details->is_default = $check_card_details ? 0 : 1;
