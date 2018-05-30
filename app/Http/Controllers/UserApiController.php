@@ -6260,17 +6260,6 @@ class UserApiController extends Controller {
 
             return response()->json($response_array , 200);
 
-        } catch (Exception $e) {
-
-            Log::info("error6");
-
-            // Something else happened, completely unrelated to Stripe
-
-            $error6 = $e->getMessage();
-
-            $response_array = array('success' => false , 'error_messages' => $error6 ,'error_code' => 903);
-
-
         } catch (\Stripe\StripeInvalidRequestError $e) {
 
             Log::info("error7");
@@ -6280,9 +6269,7 @@ class UserApiController extends Controller {
             $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
 
             return response()->json($response_array , 200);
-        }
-        
-        catch(Exception $e) {
+        } catch(Exception $e) {
 
             Log::info("catch FUNCTION INSIDE");
 
