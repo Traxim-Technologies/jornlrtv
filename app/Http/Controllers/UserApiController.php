@@ -6150,14 +6150,18 @@ class UserApiController extends Controller {
                     $customer_id = $customer->id;
 
                     $card_details = new Card;
+
                     $card_details->user_id = $request->id;
+
                     $card_details->customer_id = $customer_id;
 
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
-                    $cards->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
+                    $cards->card_name = "Visa";
 
-                    $cards->last_four = $customer->sources->data ? $customer->sources->data[0]->last4 : "";
+                    // $cards->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
+
+                    $cards->last_four = $request->last_four;
 
                     // Check is any default is available
 
@@ -6261,6 +6265,7 @@ class UserApiController extends Controller {
             Log::info("error6");
 
             // Something else happened, completely unrelated to Stripe
+
             $error6 = $e->getMessage();
 
             $response_array = array('success' => false , 'error_messages' => $error6 ,'error_code' => 903);
