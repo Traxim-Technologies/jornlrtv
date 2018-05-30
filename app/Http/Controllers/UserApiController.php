@@ -6271,11 +6271,12 @@ class UserApiController extends Controller {
             return response()->json($response_array , 200);
         } catch(Exception $e) {
 
-            Log::info("catch FUNCTION INSIDE");
 
             $error_message = $e->getMessage();
 
             $error_code = $e->getCode();
+
+            Log::info("catch FUNCTION INSIDE".$error_message);
 
             $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
