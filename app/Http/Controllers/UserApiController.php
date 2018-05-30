@@ -6152,6 +6152,7 @@ class UserApiController extends Controller {
                     $card_details = new Card;
                     $card_details->user_id = $request->id;
                     $card_details->customer_id = $customer_id;
+
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
                     $cards->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
@@ -6203,6 +6204,8 @@ class UserApiController extends Controller {
 
         } catch(Stripe_CardError $e) {
 
+            Log::info("error1");
+
             $error1 = $e->getMessage();
 
             $response_array = array('success' => false , 'error_messages' => $error1 ,'error_code' => 903);
@@ -6213,6 +6216,8 @@ class UserApiController extends Controller {
 
             // Invalid parameters were supplied to Stripe's API
 
+            Log::info("error2");
+
             $error2 = $e->getMessage();
 
             $response_array = array('success' => false , 'error_messages' => $error2 ,'error_code' => 903);
@@ -6220,6 +6225,8 @@ class UserApiController extends Controller {
             return response()->json($response_array , 200);
 
         } catch (Stripe_AuthenticationError $e) {
+
+            Log::info("error3");
 
             // Authentication with Stripe's API failed
             $error3 = $e->getMessage();
@@ -6229,6 +6236,8 @@ class UserApiController extends Controller {
             return response()->json($response_array , 200);
 
         } catch (Stripe_ApiConnectionError $e) {
+            Log::info("error4");
+
             // Network communication with Stripe failed
             $error4 = $e->getMessage();
 
@@ -6237,6 +6246,8 @@ class UserApiController extends Controller {
             return response()->json($response_array , 200);
 
         } catch (Stripe_Error $e) {
+            Log::info("error5");
+
             // Display a very generic error to the user, and maybe send
             // yourself an email
             $error5 = $e->getMessage();
@@ -6246,6 +6257,9 @@ class UserApiController extends Controller {
             return response()->json($response_array , 200);
 
         } catch (Exception $e) {
+
+            Log::info("error6");
+
             // Something else happened, completely unrelated to Stripe
             $error6 = $e->getMessage();
 
@@ -6253,6 +6267,8 @@ class UserApiController extends Controller {
 
 
         } catch (\Stripe\StripeInvalidRequestError $e) {
+
+            Log::info("error7");
 
             // Log::info(print_r($e,true));
 
