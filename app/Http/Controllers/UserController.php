@@ -2254,19 +2254,7 @@ class UserController extends Controller {
 
         if ($model->save()) {
 
-            if ( Auth::check()) {
-
-                if ($model->user_id == Auth::user()->id) {  
-
-                    if (Setting::get('wowza_server_url')) {
-
-                        $this->disConnectStream($model->user->id.'-'.$model->id);
-
-                    }
-
-                }
-
-            }
+            
 
         }
 
@@ -2553,12 +2541,7 @@ class UserController extends Controller {
 
                     if ($model->save()) {
 
-                        if (Setting::get('wowza_server_url')) {
-
-                            $this->disConnectStream($model->user->id.'-'.$mid);
-
-                        }
-
+                       
                     } else {
 
                         $response_array = ['success'=>false, 'error_messages'=>tr('went_wrong')];
