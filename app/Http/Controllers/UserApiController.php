@@ -174,6 +174,7 @@ class UserApiController extends Controller {
 
             $response_array = array(
                 'success' => true,
+                'message' => tr('profile_updated'),
                 'id' => $user->id,
                 'name' => $user->name,
                 'description' => $user->description,
