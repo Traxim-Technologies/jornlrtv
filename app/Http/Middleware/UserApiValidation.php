@@ -16,6 +16,8 @@ use App\User;
 
 use DB;
 
+use Setting;
+
 class UserApiValidation
 {
     /**

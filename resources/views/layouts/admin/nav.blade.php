@@ -169,6 +169,20 @@
                 </ul>
             </li>
 
+            <!-- Coupon Section-->
+            <li class="treeview" id="coupons">
+
+                <a href="#">
+                    <i class="fa fa-gift"></i><span>{{tr('coupons')}}</span><i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+                <ul class="treeview-menu">
+
+                    <li id="add-coupons"><a href="{{route('admin.add.coupons')}}"><i class="fa fa-circle-o"></i>{{tr('add_coupon')}}</a></li>
+                    <li id = "view-coupons"><a href="{{route('admin.coupon.list')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
+                </ul>
+            </li>
+            
             @if(Setting::get('redeem_control'))
 
             <li id="redeems">
