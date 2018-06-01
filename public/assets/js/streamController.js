@@ -1107,10 +1107,10 @@ liveAppCtrl
 	            // if (data.class == 'left') {
 		            messageTemplate = '<div class="item">';
 		            messageTemplate += '<div class="col-lg-2 col-md-2 col-xs-2 col-sm-2" style="padding: 0">';
-		            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'"><img class="chat_img" src="'+data.userpicture+'" alt="'+data.username+'"></a>';
+		            messageTemplate += '<a target="_blank" href="'+apiUrl+'/profile?id='+data.profile_id+'"><img class="chat_img" src="'+data.userpicture+'" alt="'+data.username+'"></a>';
 		            messageTemplate += '</div>';
 		            messageTemplate += '<div class="message col-lg-10 col-md-10 col-xs-10 col-sm-10">';
-		            messageTemplate += '<a target="_blank" href="'+url+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small></a>';
+		            messageTemplate += '<a target="_blank" href="'+apiUrl+'/profile?id='+data.profile_id+'" class="clearfix"><small class="text-muted pull-left">'+data.username+'</small></a>';
 		            messageTemplate += ' <div>'+data.message+'</div>';
 		            messageTemplate += '</div>';
 		            messageTemplate += '<div class="clearfix"></div>';
