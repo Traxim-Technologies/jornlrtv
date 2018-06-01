@@ -2957,18 +2957,7 @@ class UserController extends Controller {
                         
                     }
 
-                    $appSettings = json_encode([
-                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
-                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
-                        'BASE_URL' => Setting::get('BASE_URL'),
-                        'TURN_CONFIG' => [],
-                        'TOKEN' =>  ($model->user_id == $userModel->id) ? Auth::user()->token : null,
-                        'USER_PICTURE'=>$userModel->chat_picture,
-                        'NAME'=>$userModel->name,
-                        'CLASS'=>'left',
-                        'USER' => ($model->user_id == $userModel->id) ? ['id' => $userModel->id, 'role' => "model"] : null,
-                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
-                    ]);
+                  
 
 
                 } else {
@@ -2976,21 +2965,6 @@ class UserController extends Controller {
                     $model->viewer_cnt += 1;
 
                     $model->save();
-
-                    $appSettings = json_encode([
-                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
-                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
-                        'BASE_URL' => Setting::get('BASE_URL'),
-                        'TURN_CONFIG' => [],
-                        'TOKEN' =>  null,
-                        'USER_PICTURE'=>$model->user->chat_picture,
-                        'NAME'=>$model->user->name,
-                        'CLASS'=>'left',
-                        'USER' => null,
-                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
-                    ]);
-
-
                 }
 
 
@@ -3015,6 +2989,6 @@ class UserController extends Controller {
 
         }
 
-        return view('user.android.android-video')->with('data', $model)->with('appSettings', $appSettings)->with('page', '')->with('sub_page','');
+        return view('user.android.android-video')->with('data', $model)->with('page', '')->with('sub_page','');
     }
 }
