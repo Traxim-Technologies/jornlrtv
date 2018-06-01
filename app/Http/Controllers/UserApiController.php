@@ -222,7 +222,7 @@ class UserApiController extends Controller {
             
             $error_messages = implode(',',$validator->messages()->all());
            
-            $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 401, 'error_messages' => $error_messages );
+            $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 101, 'error_messages' => $error_messages );
        
         } else {
 
@@ -823,12 +823,14 @@ class UserApiController extends Controller {
 
                 $user->save();
 
-                // Check the default subscription and save the user type 
-
-                user_type_check($user->id);
+                
 
                 // Send welcome email to the new user:
                 if($new_user) {
+                    // Check the default subscription and save the user type 
+
+                    user_type_check($user->id);
+
                     $subject = tr('user_welcome_title' , Setting::get('site_name'));
                     $email_data = $user;
                     $page = "emails.welcome";
@@ -3197,7 +3199,11 @@ class UserApiController extends Controller {
 
             $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
 
-            return response()->json(['success'=>false , 'message'=>$error_messages]);
+            return response()->json($response_array , 200);
+
+            // COMMANDED BY VIDHYA. why we need message key in error response
+
+            // return response()->json(['success'=>false , 'message'=>$error_messages]);
         }
 
         if ($request->status) {
