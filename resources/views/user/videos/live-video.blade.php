@@ -112,7 +112,7 @@ video {
 
 								<?php /*<a href="{{route('user.live_video.stop_streaming',array('id'=>$data->id))}}" class="btn btn-sm btn-danger">{{tr('stop')}}</a> */?>
 
-								<a ng-click="stopStreaming()" class="btn btn-sm btn-danger">{{tr('stop')}}</a>
+								<a onclick="return alert('Are you sure want to stop?')" href="{{route('user.live_video.stop_streaming', array('id'=>$data->id))}}"class="btn btn-sm btn-danger">{{tr('stop')}}</a>
 
 							</div>
 

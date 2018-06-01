@@ -115,7 +115,7 @@
 .media-box video {
     width:100% !important;
     vertical-align: top;
-    max-height: 460px !important;
+    max-height: 400px !important;
     /*object-fit: fill;*/
 }
 

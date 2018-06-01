@@ -882,7 +882,7 @@ liveAppCtrl
 		                };
 
 		                $("#default_image").hide();
-		                
+
 		                connection.join(roomid);
 		                return;
 		            }
@@ -905,9 +905,9 @@ liveAppCtrl
 			if (confirm('Do you want to stop streaming ?')) {
 
 				var data = new FormData;
-				data.append('id', memoryStorage.user_id);
-				data.append('token', memoryStorage.access_token);
-				data.append('video_id', video_id);
+				data.append('id', live_user_id);
+				data.append('token',user_token);
+				data.append('video_id', video_details.id);
 				
 				$.ajax({
 
