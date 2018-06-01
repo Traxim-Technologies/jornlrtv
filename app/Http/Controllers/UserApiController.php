@@ -4250,15 +4250,16 @@ class UserApiController extends Controller {
         $validator = Validator::make($request->all(), [
             'video_tape_id' => $request->status ? '' : 'required|exists:video_tapes,id',
         ]);
+
         // If validator Fails, redirect same with error values
+
         if ($validator->fails()) {
-             //throw new Exception("error", tr('admin_published_video_failure'));
 
             $error_messages = implode(',', $validator->messages()->all());
 
             $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
 
-            return response()->json(['success'=>false , 'message'=>$error_messages]);
+            return response()->json($response_array , 200);
         }
 
         if ($request->status) {
@@ -4268,6 +4269,7 @@ class UserApiController extends Controller {
             return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
 
         } else {
+            
             // Load Spam Video from flag section
             $model = Flag::where('user_id', $request->id)
                 ->where('video_tape_id', $request->video_tape_id)
