@@ -967,7 +967,7 @@ liveAppCtrl
 
 	        var liveVideoID = $scope.videoDetails.id;
 
-	        var liveVideoViewerID = (appSettings.USER == null) ? $scope.user_id : 0;
+	        var liveVideoViewerID = (appSettings.USER == null) ? live_user_id : 0;
 
 	        var userID = (appSettings.USER != null) ?  appSettings.USER.id : 0;
 
@@ -1055,7 +1055,7 @@ liveAppCtrl
 	                message.live_video_viewer_id = liveVideoViewerID;
 	                message.live_video_id = liveVideoID;
 	                message.user_id = userID;
-	                message.profile_id = (appSettings.USER == null) ? $scope.user_id : appSettings.USER.id;
+	                message.profile_id = (appSettings.USER == null) ? live_user_id : appSettings.USER.id;
 	                message.room = room;
 	                message.message = chatMessage;
 	                // message.created_at = appSettings.created_at;
