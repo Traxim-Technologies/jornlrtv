@@ -111,15 +111,12 @@ class UserApiController extends Controller {
 
             if(!$model) {
 
-                $last = LiveVideo::orderBy('port_no', 'desc')->first();
-
                 $model = new LiveVideo;
                 $model->title = $request->title;
                 $model->payment_status = $request->payment_status;
                 $model->type = $request->type ? $request->type : TYPE_PUBLIC;
                 $model->channel_id = $request->channel_id;
                 $model->amount = 0;
-
                 if($request->payment_status) {
 
                     $model->amount = ($request->amount > 0) ? $request->amount : 1;
@@ -132,21 +129,6 @@ class UserApiController extends Controller {
                 $model->virtual_id = md5(time());
                 $model->unique_id = $model->title;
                 $model->snapshot = asset('images/live_stream.jpg');
-
-                $destination_port = 44104;
-
-                if ($last) {
-
-                    if ($last->port_no) {
-
-                        $destination_port = $last->port_no + 2;
-
-                    }
-
-                }
-
-                $model->port_no = $destination_port;
-
                 $model->save();
 
                 /*// $usrModel
@@ -168,14 +150,13 @@ class UserApiController extends Controller {
                 ]);*/
 
                 if ($model) {
+
                     $response_array = [
                         'success' => true , 
 
                         'data' => $model, 
 
                         /*'appSettings'=> $appSettings, */
-
-                        'port_no'=>$model->port_no, 
 
                         'message'=>tr('video_broadcating_success')
                     ];

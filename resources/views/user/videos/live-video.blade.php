@@ -101,8 +101,6 @@ video {
 							<a href="http://twitter.com/share?text={{$data->title}}...&url={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="{{tr('share_on_twitter')}}" style="background: #4099ff;border-color:#4099ff;">
 								<i class="fa fa-twitter"></i>
 							</a>
-
-
 						</div>
 
 						@if (Auth::check())
