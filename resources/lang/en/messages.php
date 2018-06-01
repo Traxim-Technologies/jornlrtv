@@ -1513,7 +1513,7 @@ return array(
 	'percentage'=>'Percentage',
 	'absoulte'=>'Absoulte',
 	'absoulte_amount'=>'Absoulte Amount',
-	'enter_title'=>'Enter Coupon Title',
+	'enter_coupon_title'=>'Enter Coupon Title',
 	'enter_coupon_code'=>'Coupon Code Atleast 5 or 10 with Letters,Numbers,Uppercase only without space',
 	'expiry_date_coupon'=>'Expiry date DD-MM-YYYY and today to above',
 	'coupon_code'=>'Coupon Code',
