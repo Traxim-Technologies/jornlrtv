@@ -152,40 +152,6 @@
                                 </div>
 
 
-                                 <div class="col-md-6">
-                                    <div class="form-group">
-
-                                        <label for="sitename">{{tr('kurento_socket_url')}}</label>
-                                        <p class="example-note">{{tr('exam_ip_address_domain_8443')}}</p>
-                                        <input type="text" class="form-control" name="kurento_socket_url" value="{{ Setting::get('kurento_socket_url')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('kurento_socket_url')}}">
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        
-                                        <label for="wowza_server_url">{{tr('wowza_server_url')}}</label>
-
-                                        <p class="example-note">{{tr('exam_ip_address_domain_8087')}}</p>
-
-                                        <input type="text" class="form-control" name="wowza_server_url" value="{{ Setting::get('wowza_server_url')  }}" id="wowza_server_url" placeholder="{{tr('wowza_server_url')}}">
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-
-                                    <div class="form-group">
-
-                                        <label for="cross_platform_url">{{tr('cross_platform_url')}}</label>
-
-                                        <p class="example-note">{{tr('exam_ip_address_domain_1935')}}</p>
-
-                                        <input type="text" class="form-control" name="cross_platform_url" value="{{ Setting::get('cross_platform_url')  }}" id="cross_platform_url" placeholder="{{tr('cross_platform_url')}}">
-
-                                    </div>
-                                </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -197,15 +163,6 @@
                                     </div>
                                 </div>
 
-                                 <div class="col-md-6">
-                                    <div class="form-group">
-
-                                        <label for="sitename">{{tr('wowza_ip_address')}}</label>
-                                        <p class="example-note">{{tr('exam_ip_address')}}</p>
-                                        <input type="text" class="form-control" name="wowza_ip_address" value="{{ Setting::get('wowza_ip_address')  }}" id="wowza_ip_address" placeholder="{{tr('wowza_ip_address')}}">
-                                    </div>
-
-                                </div>
                                 
                                  <div class="col-md-6">
                                     <div class="form-group">

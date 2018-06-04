@@ -212,6 +212,8 @@ Route::get('/user_session_language/{lang}', 'ApplicationController@set_session_l
 
 // CRON
 
+Route::get('cron_delete_video', 'ApplicationController@cron_delete_video');
+
 Route::get('/publish/video', 'ApplicationController@cron_publish_video')->name('publish');
 
 Route::get('/notification/payment', 'ApplicationController@send_notification_user_payment')->name('notification.user.payment');

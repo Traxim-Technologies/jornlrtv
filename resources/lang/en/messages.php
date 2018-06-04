@@ -78,13 +78,9 @@ return array(
 
 	'user_payout_greater_error' => 'Please enter less than or equal to the remaining Amount',
 
-	'kurento_socket_url'=>'Kurento Socket Url',
-	'wowza_server_url'=>'Wowza Server Url',
 	'SOCKET_URL' => 'SOCKET URL',
 	'WEBRTC_SOCKET_URL' => 'WEBRTC SOCKET URL',
-	'cross_platform_url'=>"Cross Platform Url",
 	'admin_commission' => 'Admin Ads Commission',
-	'wowza_ip_address'=>'Wowza Ip Address',
 
 	'user_commission' => 'User Ads Commission',
 	'short_notes_banner'=>'For Banner, Upload Rectangle images 4:3 Ratio Ex: 400 * 300, For Thumbanil, Upload Rectangle images 1:1 Ratio Ex: 200 * 200',
@@ -1228,8 +1224,6 @@ return array(
 	'exam_rtmp_ip_address'=>'Ex : rtmp://IP_ADDRESS_OR_DOMAIN:1935/vod2/',
 	'enter_streaming_url'=>'Enter Streaming URL',
 	'exam_ip_address_domain'=>'Ex : https://IP_ADDRESS_OR_DOMAIN:3000',
-	'exam_ip_address_domain_8443'=>'Ex : IP_ADDRESS_OR_DOMAIN:8443',
-	'exam_ip_address_domain_8087'=>'Ex : IP_ADDRESS_OR_DOMAIN:8087',
 	'exam_ip_address_domain_1935'=>'Ex : IP_ADDRESS_OR_DOMAIN:1935',
 	'exam_ip_address_domain_3002'=>'Ex : http://IP_ADDRESS_OR_DOMAIN:3002',
 	'exam_ip_address'=>'Ex : IP_ADDRESS',
