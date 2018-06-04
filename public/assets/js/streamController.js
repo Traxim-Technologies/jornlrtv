@@ -785,7 +785,54 @@ liveAppCtrl
 
 		    mediaElement.id = event.streamid;
 
-		    $scope.live_status();
+		   // $scope.live_status();
+
+           function takePhoto(video) {
+                var canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth || video.clientWidth;
+                canvas.height = video.videoHeight || video.clientHeight;
+
+                var context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                return canvas.toDataURL('image/png');
+            }
+
+            if (event.type == 'local') {
+
+                var yourVideoElement = document.querySelector('video');
+
+                var initNumber = 1;
+                var capture = function capture() {
+                    
+                    var snapshot_pic = takePhoto(yourVideoElement);
+                    
+                    $.ajax({
+
+                        type : 'post',
+                        url : apiUrl+'/take_snapshot/'+video_details.id,
+                        data : {base64: snapshot_pic,shotNumber: initNumber, 
+                            id : live_user_id, token : user_token},
+                        success : function(data) {
+                            // console.log(data);
+                        }
+
+                    });
+
+                  
+                  initNumber = initNumber < 6 ? initNumber + 1 : 1;
+
+                  timeout = setTimeout(capture, 120 * 1000);
+
+                };
+
+                window.setTimeout(function(){
+
+                    capture();
+
+                }, 6000);
+
+            }
 		};
 
 		connection.onstreamended = function(event) {
@@ -793,6 +840,17 @@ liveAppCtrl
 		    if (mediaElement) {
 		        mediaElement.parentNode.removeChild(mediaElement);
 		    }
+
+            window.setTimeout(function(){
+
+
+                alert("Streaming stopped unfortunately..!");
+
+                window.location.reload(true);
+
+            }, 2000);
+
+
 		};
 
 		function disableInputButtons() {
@@ -947,7 +1005,6 @@ liveAppCtrl
 .controller('chatBarCtrl', ['$scope', '$http', '$rootScope', '$window',
 	function ($scope, $http, $rootScope, $window) {
 
-		if (live_user_id != '' && live_user_id != undefined) {
 
 			console.log('chat');
 
@@ -993,10 +1050,45 @@ liveAppCtrl
 
 	            // Enable chat input box
 
-	            chatInput.enable();
+                if (live_user_id != '' && live_user_id != undefined) {
 
+	               chatInput.enable();
+
+                }
 	        });
 
+
+
+            socket.on('stream-stop', function(video_id) {
+
+                alert("Streaming Stopped..!");
+
+                window.location.reload(true);
+
+            });
+
+            socket.on('video-streaming-status', function(no_of_views) {
+
+                    $("#viewers_cnt").html(no_of_views);
+
+                
+
+            });
+
+                                    // console.log(result);
+
+            var viewer_cnt = video_details.viewer_cnt;
+
+     
+            window.setTimeout(function(){
+
+                console.log("viewer_cnt "+viewer_cnt);
+
+                socket.emit('check-video-streaming', viewer_cnt);
+
+            }, 5 * 1000);
+
+                
 	        socket.on('message', function(data) {
 
 
@@ -1018,31 +1110,37 @@ liveAppCtrl
 	           //  console.log('Disconnected from server');
 	        });
 
-	        chatInput.enable = function() {
-	            this.disabled = false;
-	        };
+            if (live_user_id != '' && live_user_id != undefined) {
 
-	        chatInput.clear = function() {
-	            this.value = "";
-	        };
+    	        chatInput.enable = function() {
+    	            this.disabled = false;
+    	        };
 
-	        chatInput.disable = function() {
-	            this.disabled = true;
-	        };
 
-	        chatInput.addEventListener("keyup", function (e) {
 
-	            if (e.which == 13) {
-	                sendMessage(chatInput);
-	                return false;
-	            }
-	        });
+    	        chatInput.clear = function() {
+    	            this.value = "";
+    	        };
 
-	        // User Click send message , this function will trigger
+    	        chatInput.disable = function() {
+    	            this.disabled = true;
+    	        };
 
-	        chatSend.addEventListener('click', function() {
-	            sendMessage(chatInput);
-	        });
+    	        chatInput.addEventListener("keyup", function (e) {
+
+    	            if (e.which == 13) {
+    	                sendMessage(chatInput);
+    	                return false;
+    	            }
+    	        });
+
+    	        // User Click send message , this function will trigger
+
+    	        chatSend.addEventListener('click', function() {
+    	            sendMessage(chatInput);
+    	        });
+
+            }
 
 	        function sendMessage(input) {
 
@@ -1135,7 +1233,7 @@ liveAppCtrl
 
 	        }
 
-	    }
+	    
     
 
     }

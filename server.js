@@ -83,4 +83,22 @@ io.on('connection', function (socket) {
         debug('disconnect', data);
     });
 
+    socket.on('check-video-streaming', function(data) {
+
+       console.log("final_count "+data);
+
+       var room = socket.handshake.query.room;
+       
+       socket.broadcast.to(room).emit('video-streaming-status', data);
+
+      // socket.emit('video-streaming-status', no_of_views, video_id);
+
+    });
+
+    socket.on('streaming_stopped', function(data) {
+        
+        var room = socket.handshake.query.room;
+       
+       socket.broadcast.to(room).emit('stop-stream', data);
+    });
 });

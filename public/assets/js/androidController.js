@@ -778,16 +778,69 @@ function getAudioElement(mediaElement, config) {
 
 		    mediaElement.id = event.streamid;
 
+            function takePhoto(video) {
+                var canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth || video.clientWidth;
+                canvas.height = video.videoHeight || video.clientHeight;
+
+                var context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                return canvas.toDataURL('image/png');
+            }
+
+            if (event.type == 'local') {
+
+                var yourVideoElement = document.querySelector('video');
+
+                var initNumber = 1;
+                var capture = function capture() {
+                    
+                    var snapshot_pic = takePhoto(yourVideoElement);
+                    
+                    $.ajax({
+
+                        type : 'post',
+                        url : apiUrl+'/take_snapshot/'+video_details.id,
+                        data : {base64: snapshot_pic,shotNumber: initNumber, 
+                            id : live_user_id, token : user_token},
+                        success : function(data) {
+                            // console.log(data);
+                        }
+
+                    });
+
+                  
+                  initNumber = initNumber < 6 ? initNumber + 1 : 1;
+
+                  timeout = setTimeout(capture, 120 * 1000);
+
+                };
+
+                window.setTimeout(function(){
+
+                    capture();
+
+                }, 6000);
+
+            }
 		    
 		};
 
-		$scope.live_status();
+		// $scope.live_status();
 
 		connection.onstreamended = function(event) {
 		    var mediaElement = document.getElementById(event.streamid);
 		    if (mediaElement) {
 		        mediaElement.parentNode.removeChild(mediaElement);
 		    }
+
+            window.setTimeout(function(){
+
+                alert("Streaming stopped unfortunately..!");
+
+            }, 2000);
+
 		};
 
 		function disableInputButtons() {
