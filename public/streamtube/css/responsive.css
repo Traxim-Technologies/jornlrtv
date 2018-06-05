@@ -76,7 +76,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 11px;
@@ -269,7 +270,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;
@@ -436,7 +438,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;
@@ -587,7 +590,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;
@@ -737,7 +741,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;

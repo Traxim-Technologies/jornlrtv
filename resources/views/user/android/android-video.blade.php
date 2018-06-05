@@ -15,7 +15,7 @@
 		video{
 			height:100%;
 			width: 100%;
-
+            max-height: unset;
 		}
 
 		
@@ -135,7 +135,8 @@
 .media-box video {
     width:100% !important;
     vertical-align: top;
-    max-height: 460px !important;
+    position: fixed;
+    /*max-height: 460px !important;*/
     /*object-fit: fill;*/
 }
 
