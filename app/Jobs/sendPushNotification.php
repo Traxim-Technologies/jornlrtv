@@ -112,8 +112,12 @@ class sendPushNotification extends Job implements ShouldQueue {
                 } else {
                     
                     $user_details = User::find($this->user_id);
+
+                    if(count($user_details) > 0) {
                     
-                    Helper::send_notification($this->push_message , $user_details ,$push_notification_data);
+                        Helper::send_notification($this->push_message , $user_details ,$push_notification_data);
+
+                    }
 
                 }
 
