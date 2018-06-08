@@ -13,12 +13,12 @@
         "laravel/socialite": "^2.0",
         "paypal/rest-api-sdk-php": "*",
         "vidhyar2612/enveditor": "^1.1",
-        "olaferlandsen/ffmpeg-php-class": "^0.1.4",
         "predis/predis": "^1.1",
         "stripe/stripe-php": "^3.13",
         "mailgun/mailgun-php": "^2.4",
         "php-http/curl-client": "^1.7",
-        "guzzlehttp/psr7": "^1.4"
+        "guzzlehttp/psr7": "^1.4",
+        "vidhyar2612/ffmpeg-php-class": "1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
