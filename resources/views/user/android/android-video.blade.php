@@ -226,7 +226,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 	<div class="live_video">
 
-		<div class="col-lg-8" ng-controller="androidCtrl" ng-cloak>
+		<div class="col-lg-8" ng-controller="androidCtrl">
 
 			<div style="display: none">
 		      <input type="text" id="room-id">
@@ -234,15 +234,7 @@ input[type="range"]::-webkit-slider-thumb {
 		      <button id="open-or-join-room">Auto Open Or Join Room</button>
 		    </div>
 
-			<div class="live_img" id="videos-container" room="{{$data->id}}" style="position: fixed;height: 100%;
-			background-color: #000;width: 100%;top:0;left:0;justify-content: center;display: flex;align-items: center;">
-				<!-- <img src="{{asset('images/mobile-camera.jpg')}}" width="100%" height="400px"> -->
-
-				<!-- <img src="{{asset('images/preview_img.jpg')}}" width="100%" id="default_image"> -->
-				<div style="background-image: url({{asset('images/mobile-camera.jpg')}});background-size: cover;background-position: center;background-repeat: no-repeat;height: 100%;"></div>
-				
-
-				<div class="loader_img" id="loader_btn" style="display: none;"><img src="{{asset('images/loader.svg')}}"/></div>
+			<div id="videos-container">
 
 			</div>
 
