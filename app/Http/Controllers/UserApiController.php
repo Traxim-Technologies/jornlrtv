@@ -111,15 +111,12 @@ class UserApiController extends Controller {
 
             if(!$model) {
 
-                $last = LiveVideo::orderBy('port_no', 'desc')->first();
-
                 $model = new LiveVideo;
                 $model->title = $request->title;
                 $model->payment_status = $request->payment_status;
                 $model->type = $request->type ? $request->type : TYPE_PUBLIC;
                 $model->channel_id = $request->channel_id;
                 $model->amount = 0;
-
                 if($request->payment_status) {
 
                     $model->amount = ($request->amount > 0) ? $request->amount : 1;
@@ -132,21 +129,6 @@ class UserApiController extends Controller {
                 $model->virtual_id = md5(time());
                 $model->unique_id = $model->title;
                 $model->snapshot = asset('images/live_stream.jpg');
-
-                $destination_port = 44104;
-
-                if ($last) {
-
-                    if ($last->port_no) {
-
-                        $destination_port = $last->port_no + 2;
-
-                    }
-
-                }
-
-                $model->port_no = $destination_port;
-
                 $model->save();
 
                 /*// $usrModel
@@ -168,14 +150,13 @@ class UserApiController extends Controller {
                 ]);*/
 
                 if ($model) {
+
                     $response_array = [
                         'success' => true , 
 
                         'data' => $model, 
 
                         /*'appSettings'=> $appSettings, */
-
-                        'port_no'=>$model->port_no, 
 
                         'message'=>tr('video_broadcating_success')
                     ];
@@ -210,7 +191,7 @@ class UserApiController extends Controller {
             // Error messages added in response for debugging
             $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false, 'error_messages' => $errors , 'error' => $errors,'error_code' => 101];
+            $response_array = ['success' => false, 'error_messages' => $errors , 'error_messages' => $errors,'error_code' => 101];
 
         } else {
 
@@ -1289,7 +1270,7 @@ class UserApiController extends Controller {
             
             $error_messages = implode(',',$validator->messages()->all());
            
-            $response_array = array('success' => false, 'error' => tr('invalid_input'), 'error_code' => 401, 'error_messages' => $error_messages );
+            $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 101, 'error_messages' => $error_messages );
        
         } else {
 
@@ -1883,7 +1864,6 @@ class UserApiController extends Controller {
                     $user->is_verified = 1;
                 }
 
-
                 // $user->is_activated = 1;
 
                 $user->save();
@@ -1892,12 +1872,13 @@ class UserApiController extends Controller {
 
                 $user->save();
 
-                // Check the default subscription and save the user type 
-
-                user_type_check($user->id);
 
                 // Send welcome email to the new user:
                 if($new_user) {
+                    // Check the default subscription and save the user type 
+
+                    user_type_check($user->id);
+
                     $subject = tr('user_welcome_title' , Setting::get('site_name'));
                     $email_data = $user;
                     $page = "emails.welcome";
@@ -1921,6 +1902,8 @@ class UserApiController extends Controller {
                     'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
                     'push_status' => $user->push_status,
+                    'payment_subscription' => Setting::get('ios_payment_subscription_status')
+
                 );
 
                 $response_array = Helper::null_safe($response_array);
@@ -2039,6 +2022,8 @@ class UserApiController extends Controller {
                     'push_status' => $user->push_status,
                     'dob'=> $user->dob,
                     'description'=> $user->description,
+                    'payment_subscription' => Setting::get('ios_payment_subscription_status')
+
                 );
 
             }
@@ -2956,7 +2941,7 @@ class UserApiController extends Controller {
 
         if(Setting::get('redeem_control') == REDEEM_OPTION_ENABLED) {
 
-            $data = Redeem::where('provider_id' , $request->id)->select('total' , 'paid' , 'remaining' , 'status')->get()->toArray();
+            $data = Redeem::where('user_id' , $request->id)->select('total' , 'paid' , 'remaining' , 'status')->get()->toArray();
 
             $response_array = ['success' => true , 'data' => $data];
 
@@ -3047,9 +3032,24 @@ class UserApiController extends Controller {
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-        $redeem_amount = Redeem::where('user_id' , $request->id)
+        $redeem_details = Redeem::where('user_id' , $request->id)
                 ->select('total' , 'paid' , 'remaining' , 'status', DB::raw("'$currency' as currency"))
                 ->first();
+
+        if(!$redeem_details) {
+
+            // To avoid <null> value (http://prntscr.com/jm33cq), created dummy object with empty values
+
+            $redeem_details = new Redeem;
+
+            $redeem_details->total = $redeem_details->paid = $redeem_details->remaining = 0;
+
+            $redeem_details->status = 0;
+            
+            $redeem_details->currency = $currency;
+
+            // NO NEED TO SAVE THE DETAILS
+        }
 
         $data = [];
 
@@ -3073,7 +3073,7 @@ class UserApiController extends Controller {
 
         }
 
-        $response_array = ['success' => true , 'data' => $data, 'redeem_amount'=>$redeem_amount];
+        $response_array = ['success' => true , 'data' => $data, 'redeem_amount'=> $redeem_details];
 
         return response()->json($response_array , 200);
     
@@ -3546,9 +3546,9 @@ class UserApiController extends Controller {
                         ->select('user_id as id',
                                 'subscription_id',
                                 'user_payments.id as user_subscription_id',
-                                'subscriptions.title as title',
-                                'subscriptions.description as description',
-                                'subscriptions.plan',
+                                \DB::raw('IFNULL(subscriptions.title,"") as title'),
+                                \DB::raw('IFNULL(subscriptions.description,"") as description'),
+                                \DB::raw('IFNULL(subscriptions.plan,"") as plan'),
                                 'user_payments.amount as amount',
                                 // 'user_payments.expiry_date as expiry_date',
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
@@ -3764,8 +3764,6 @@ class UserApiController extends Controller {
 
                 $total = $subscription->amount;
 
-
-
                 $user = User::find($request->id);
 
                 if ($total > 0) {
@@ -3794,19 +3792,17 @@ class UserApiController extends Controller {
                             return response()->json($response_array , 200);
                         }
 
-
-
                         try{
 
-                           $user_charge =  \Stripe\Charge::create(array(
-                              "amount" => $total * 100,
-                              "currency" => "usd",
-                              "customer" => $customer_id,
+                            $user_charge =  \Stripe\Charge::create(array(
+                                "amount" => $total * 100,
+                                "currency" => "usd",
+                                "customer" => $customer_id,
                             ));
 
-                           $payment_id = $user_charge->id;
-                           $amount = $user_charge->amount/100;
-                           $paid_status = $user_charge->paid;
+                            $payment_id = $user_charge->id;
+                            $amount = $user_charge->amount/100;
+                            $paid_status = $user_charge->paid;
 
                             if($paid_status) {
 
@@ -3814,7 +3810,6 @@ class UserApiController extends Controller {
                                     ->where('status', DEFAULT_TRUE)
                                     ->orderBy('created_at', 'desc')
                                     ->first();
-
 
                                 $user_payment = new UserPayment;
 
@@ -3863,20 +3858,68 @@ class UserApiController extends Controller {
                                 return response()->json($response_array, 200);
 
                             }
-
                         
+                        }  catch(Stripe_CardError $e) {
+
+                            $error1 = $e->getMessage();
+
+                            $response_array = array('success' => false , 'error_messages' => $error1 ,'error_code' => 903);
+
+                            return response()->json($response_array , 200);
+
+                        } catch (Stripe_InvalidRequestError $e) {
+
+                            // Invalid parameters were supplied to Stripe's API
+                            $error2 = $e->getMessage();
+
+                            $response_array = array('success' => false , 'error_messages' => $error2 ,'error_code' => 903);
+
+                            return response()->json($response_array , 200);
+
+                        } catch (Stripe_AuthenticationError $e) {
+
+                            // Authentication with Stripe's API failed
+                            $error3 = $e->getMessage();
+
+                            $response_array = array('success' => false , 'error_messages' => $error3 ,'error_code' => 903);
+
+                            return response()->json($response_array , 200);
+
+                        } catch (Stripe_ApiConnectionError $e) {
+                            // Network communication with Stripe failed
+                            $error4 = $e->getMessage();
+
+                            $response_array = array('success' => false , 'error_messages' => $error4 ,'error_code' => 903);
+
+                            return response()->json($response_array , 200);
+
+                        } catch (Stripe_Error $e) {
+                            // Display a very generic error to the user, and maybe send
+                            // yourself an email
+                            $error5 = $e->getMessage();
+
+                            $response_array = array('success' => false , 'error_messages' => $error5 ,'error_code' => 903);
+
+                            return response()->json($response_array , 200);
+
+                        } catch (Exception $e) {
+                            // Something else happened, completely unrelated to Stripe
+                            $error6 = $e->getMessage();
+
+                            $response_array = array('success' => false , 'error_messages' => $error6 ,'error_code' => 903);
+
+
                         } catch (\Stripe\StripeInvalidRequestError $e) {
 
-                            Log::info(print_r($e,true));
+                            // Log::info(print_r($e,true));
 
                             $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
 
                             return response()->json($response_array , 200);
-
-                        
                         }
 
                     } else {
+
                         $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(901) , 'error_code' => 901);
                         return response()->json($response_array , 200);
                     }
@@ -3926,7 +3969,7 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901));
+                $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901) , 'error_code' => 901);
 
             }    
 
@@ -4188,15 +4231,20 @@ class UserApiController extends Controller {
         $validator = Validator::make($request->all(), [
             'video_tape_id' => $request->status ? '' : 'required|exists:video_tapes,id',
         ]);
+
         // If validator Fails, redirect same with error values
+
         if ($validator->fails()) {
-             //throw new Exception("error", tr('admin_published_video_failure'));
 
             $error_messages = implode(',', $validator->messages()->all());
 
             $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
 
-            return response()->json(['success'=>false , 'message'=>$error_messages]);
+            return response()->json($response_array , 200);
+
+            // COMMANDED BY VIDHYA. why we need message key in error response
+
+            // return response()->json(['success'=>false , 'message'=>$error_messages]);
         }
 
         if ($request->status) {
@@ -4206,6 +4254,7 @@ class UserApiController extends Controller {
             return response()->json(['success'=>true, 'message'=>tr('unmark_report_video_success_msg')]);
 
         } else {
+            
             // Load Spam Video from flag section
             $model = Flag::where('user_id', $request->id)
                 ->where('video_tape_id', $request->video_tape_id)
@@ -5672,7 +5721,7 @@ class UserApiController extends Controller {
                     $pay_per_view_status = $videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true;
 
                     $ppv_notes = !$pay_per_view_status ? ($videoDetails->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
-                    
+                 
                     $data[] = [
                             'pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_tape_id,
@@ -5860,10 +5909,9 @@ class UserApiController extends Controller {
             return response()->json($response_array);
         }
 
-    }
-
-
-/**
+    }    
+   
+    /**
      * Function Name : live_history()
      *
      * To display my live videos History
@@ -6006,5 +6054,220 @@ class UserApiController extends Controller {
         $response_array = ['success'=>true, 'message'=>tr('streaming_stopped')];
 
         return response()->json($response_array);
+
     }
+
+    /**
+     * FOR MOBILE APP WE ARE USING THIS
+     *  
+     * Function Name: cards_add()
+     *
+     * Description: add card using stripe payment
+     *
+     * @created Vidhya R
+     *
+     * @edited Vidhya R
+     *
+     * @param 
+     * 
+     * @return
+     */
+
+    public function cards_add(Request $request) {
+
+        Log::info("CARDS ADD".print_r($request->all() , true) );
+
+        try {
+
+            Log::info("TRY FUNCTION INSIDE");
+        
+            $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'last_four' => '',
+                        'card_token' => 'required',
+                        'customer_id' => '',
+                        'card_type' => '',
+                    ]
+                );
+
+            if ($validator->fails()) {
+
+                Log::info("validator FAILS INSIDE");
+
+                $error = implode(',',$validator->messages()->all());
+             
+                throw new Exception($error , 101);
+
+            } else {
+
+                Log::info("INSIDE CARDS ADD");
+
+                $user_details = User::find($request->id);
+
+                if(!$user_details) {
+
+                    throw new Exception(Helper::get_error_message(133), 133);
+                    
+                }
+
+                if(Setting::get('stripe_secret_key')) {
+
+                    \Stripe\Stripe::setApiKey(Setting::get('stripe_secret_key'));
+
+                } else {
+
+                    throw new Exception(tr('add_card_is_not_enabled'));
+
+                }
+
+                Log::info("INSIDE CARDS ADD");
+
+
+                // Get the key from settings table
+                
+                $customer = \Stripe\Customer::create([
+                        "card" => $request->card_token,
+                        "email" => $user_details->email,
+                        "description" => "Customer for ".Setting::get('site_name'),
+                    ]);
+
+                if($customer) {
+
+                    $customer_id = $customer->id;
+
+                    $card_details = new Card;
+
+                    $card_details->user_id = $request->id;
+
+                    $card_details->customer_id = $customer_id;
+
+                    $card_details->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    $card_details->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
+
+                    $card_details->last_four = $request->last_four;
+
+                    // Check is any default is available
+
+                    $check_card_details = Card::where('user_id',$request->id)->count();
+
+                    $card_details->is_default = $check_card_details ? 0 : 1;
+
+                    if($card_details->save()) {
+
+                        if($user_details) {
+
+                            $user_details->card_id = $check_card_details ? $user_details->card_id : $card_details->id;
+
+                            $user_details->save();
+                        }
+
+                        $data = [
+                                'user_id' => $request->id, 
+                                'card_id' => $card_details->id,
+                                'customer_id' => $card_details->customer_id,
+                                'last_four' => $card_details->last_four, 
+                                'card_token' => $card_details->card_token, 
+                                'is_default' => $card_details->is_default
+                                ];
+
+                        $response_array = ['success' => true, 'message' => tr('add_card_success'), 
+                            'data'=> $data];
+
+                        return response()->json($response_array , 200);
+
+                    } else {
+
+                        throw new Exception(Helper::get_error_message(123), 123);
+                        
+                    }
+               
+                } else {
+
+                    throw new Exception("Could not create client ID");
+                    
+                }
+            
+            }
+
+        } catch(Stripe_CardError $e) {
+
+            Log::info("error1");
+
+            $error1 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error1 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_InvalidRequestError $e) {
+
+            // Invalid parameters were supplied to Stripe's API
+
+            Log::info("error2");
+
+            $error2 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error2 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_AuthenticationError $e) {
+
+            Log::info("error3");
+
+            // Authentication with Stripe's API failed
+            $error3 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error3 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_ApiConnectionError $e) {
+            Log::info("error4");
+
+            // Network communication with Stripe failed
+            $error4 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error4 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_Error $e) {
+            Log::info("error5");
+
+            // Display a very generic error to the user, and maybe send
+            // yourself an email
+            $error5 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error_messages' => $error5 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (\Stripe\StripeInvalidRequestError $e) {
+
+            Log::info("error7");
+
+            // Log::info(print_r($e,true));
+
+            $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+        } catch(Exception $e) {
+
+
+            $error_message = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            Log::info("catch FUNCTION INSIDE".$error_message);
+
+            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
+
+            return response()->json($response_array , 200);
+        }
+   
+    }
+
 }

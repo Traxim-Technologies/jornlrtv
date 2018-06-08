@@ -16,7 +16,7 @@
 	width: 50%;
 }*/
 .y-menu{
-	border-right: 1px solid #e8e8e8;
+	border-right: 1px solid #f1f1f1;
     /*background-color: #fff;*/
     padding-bottom: 15px;
     padding-top: 15px;
@@ -58,7 +58,7 @@
     text-transform: capitalize;
 }
 .mylist-profile{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 15px;
 	margin-top: 15px;
 }
@@ -76,7 +76,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 11px;
@@ -213,7 +214,7 @@
 	width: 50%;
 }*/
 .y-menu{
-	border-right: 1px solid #e8e8e8;
+	border-right: 1px solid #f1f1f1;
     /*background-color: #fff;*/
     padding-bottom: 15px;
     padding-top: 15px;
@@ -256,7 +257,7 @@
     text-transform: capitalize;
 }
 .mylist-profile{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 15px;
 	margin-top: 15px;
 }
@@ -269,7 +270,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;
@@ -380,8 +382,8 @@
 /* Tablets */
 @media (min-width: 768px) and (max-width: 991px) {
 .y-menu{
-	border-right: 1px solid #e8e8e8;
-    background-color: #F1F1F1;
+	border-right: 1px solid #f1f1f1;
+    background-color: #f1f1f1;
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
@@ -424,7 +426,7 @@
     text-transform: capitalize;
 }
 .mylist-profile{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 15px;
 }
 .profile-view{
@@ -436,7 +438,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;
@@ -530,8 +533,8 @@
 /* Medium Devices, */
 @media (min-width : 992px) and (max-width: 1199px){
 .y-menu{
-	border-right: 1px solid #e8e8e8;
-    background-color: #F1F1F1;
+	border-right: 1px solid #f1f1f1;
+    background-color: #f1f1f1;
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 60px;
@@ -575,7 +578,7 @@
     text-transform: capitalize;
 }
 .mylist-profile{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 15px;
 }
 .profile-view{
@@ -587,7 +590,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;
@@ -681,8 +685,8 @@
 /* Desktops */
 @media only screen and (min-width : 1200px) {
 .y-menu{
-	border-right: 1px solid #e8e8e8;
-    background-color: #F1F1F1;
+	border-right: 1px solid #f1f1f1;
+    background-color: #f1f1f1;
     padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 58px;
@@ -725,7 +729,7 @@
     text-transform: capitalize;
 }
 .mylist-profile{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 15px;
 }
 .profile-view{
@@ -737,7 +741,8 @@
 	border-radius: 0;
 	border: solid 1px transparent;
 	box-sizing: content-box;
-	color: #333;
+	color:#626567;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 13px;

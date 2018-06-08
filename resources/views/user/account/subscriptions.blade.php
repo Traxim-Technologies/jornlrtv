@@ -47,12 +47,6 @@
 
 														<!-- <a href="#" class="btn btn-success pull-right">{{tr('choose')}}</a> -->
 
-
-
-			
-
-														@if($subscription->amount > 0)
-
 															<?php /* @if(Setting::get('payment_type') == 'paypal')
 
 															<a href="{{route('user.paypal' , $subscription->id)}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
@@ -66,13 +60,6 @@
 															<?php /*<button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#paypal">{{tr('choose_plan')}}</button> */?>
 
 															<a href="{{route('user.subscription.invoice' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
-
-														@else
-
-																<a href="{{route('user.subscription.save' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
-															
-
-														@endif
 													</p>
 													<br>
 													<br>

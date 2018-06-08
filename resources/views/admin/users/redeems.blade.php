@@ -81,6 +81,7 @@
 								      			<?php $confirm_message = tr('redeem_pay_confirm'); ?>
 
 								      			<button type="submit" class="btn btn-success btn-sm" onclick='confirm("{{$confirm_message}}")'>{{tr('paynow')}}</button>
+								      			
 								      		</form>
 
 								      	@else

@@ -1055,6 +1055,10 @@
 
                 $user_remote_address = $_SERVER['REMOTE_ADDR']; 
 
+                Log::info("user_remote_address - - - - ".$user_remote_address);
+
+                $user_remote_address = "49.249.233.178"; 
+
                 $md5 = base64_encode(md5($secret_word . $user_remote_address . $e , true)); 
 
                 $md5 = strtr($md5, '+/', '-_'); 
@@ -1106,7 +1110,7 @@
             
                 // validity of the link in seconds (if rtmp and www are on two different machines, it is better to give a higher value, because there may be a time difference.
 
-                $expires = date('U')+20;
+                $expires = date('U')+200;
 
                 // secure_link_md5 "$secure_link_expires$uri$remote_addr cgshlockkey";
 

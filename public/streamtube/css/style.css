@@ -44,7 +44,7 @@ body{
 	/*font-family: 'Roboto', sans-serif;*/
 	font-family: Roboto, Arial, sans-serif;
 	/*background-color: #F1F1F1;*/
-	background-color: #fff;
+	background-color: #fafafa;
 }
 a:hover{
 	text-decoration: none;
@@ -169,7 +169,7 @@ a:hover{
 	/*margin-bottom: 15px;*/
 }
 .slide-area{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 0px 30px;
 	/*margin: 10px 0;*/
 }
@@ -386,7 +386,7 @@ videos (single page) css
 }
 .video-content{
 	padding-bottom: 6px;
-    background-color: #fff;
+    /*background-color: #fff;*/
     padding: 20px 0px;
     margin-top: 10px;
     min-height: 221px;
@@ -673,6 +673,7 @@ textarea{
 	box-shadow: none !important;
 	border-color:#b8b8b8 !important;
 	resize: none;
+	background-color: transparent;
 }
 input:focus, textarea:focus{
 	box-shadow: none !important;
@@ -690,7 +691,7 @@ input[type="checkbox"], input[type="radio"]{
     margin: 0 5px;
 }*/
 .v-comments{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 15px;
 }
 .row1{
@@ -843,7 +844,7 @@ input[type="checkbox"], input[type="radio"]{
 	padding: 0;
 }
 .up-next{
-	background-color: rgb(255, 255, 255);
+	/*background-color: rgb(255, 255, 255);*/
 	/*margin-top: 15px;*/
 	padding: 15px;
 }
@@ -985,7 +986,7 @@ history (single page) css
 }*/
 .new-history{
 	padding: 15px;
-	background-color: #fff;
+	/*background-color: #fff;*/
 }
 .content-head {
 	border-bottom:  1px solid #b8b8b8;
@@ -1169,11 +1170,11 @@ signup.html css
 .common-form{
 	max-width: 400px;
 	margin: 62px auto 50px;
-	background-color: #fff;
+	background-color: #fafafa;
 	padding: 15px;
 	border: 1px solid transparent;
-	border-radius:0px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
+	border-radius:4px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
 }
 .sign-up{
 	margin-top: 15px;
@@ -1329,14 +1330,15 @@ profile.html css
     margin-bottom: 15px;
 }
 .profile-details{
-	background-color: #fff;
+	/*background-color: #fff;*/
 }
 .sub-profile{
 	text-align: center;
 	padding: 15px;
+	border-radius: 4px;
 	margin: 0 auto;
 	max-width: 500px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
 }
 .image-profile{
 	width: 150px;
@@ -1387,11 +1389,12 @@ edit profile.html css
 ---------------------------------------------------------------------------------------------------------------------------------------------
 */
 .edit-profile{
-	background-color: #fff;
+	/*background-color: #fff;*/
 }
 .edit-form{
-	background-color: #fff;
+	/*background-color: #fff;*/
 	padding: 15px 30px;
+	border-radius: 4px;
 	margin: 0 auto;
 	max-width:500px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
@@ -1724,7 +1727,7 @@ changes
     height: 42px;
     transition: all .3s linear;
     /*background-color: #eee;*/
-    background-color: #fff;
+    background-color: #fafafa !important;
     line-height: 7px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);
     top:30%;
@@ -1749,7 +1752,7 @@ changes
 }
 
 .slick-prev:hover,.slick-prev:active,.slick-prev:focus{
-	background-color: #eee;
+	background-color: #F1F1F1 !important;
 	/*box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 0, 0, 0.2);*/
 }
 
@@ -3340,5 +3343,8 @@ button{
     border-color: #d6e9c6;
 }
 .form-control[readonly]{
+	background-color: transparent;
+}
+.form-control{
 	background-color: transparent;
 }

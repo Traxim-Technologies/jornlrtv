@@ -1,5 +1,4 @@
-<?php
-
+<?php  
 
 use Illuminate\Support\Facades\Redis;
 
@@ -154,6 +153,10 @@ if(!defined('BANNER')) define('BANNER' , 'banner');
 if(!defined('ALL_VIDEOS')) define('ALL_VIDEOS', 'All Videos');
 if(!defined('JWT_SECRET')) define('JWT_SECRET', '12345');
 
+if(!defined('PERCENTAGE')) define('PERCENTAGE',0);
+
+if(!defined('ABSOULTE')) define('ABSOULTE',1);
+
 
 
 
@@ -209,6 +212,8 @@ Route::get('/user_session_language/{lang}', 'ApplicationController@set_session_l
 
 // CRON
 
+Route::get('cron_delete_video', 'ApplicationController@cron_delete_video');
+
 Route::get('/publish/video', 'ApplicationController@cron_publish_video')->name('publish');
 
 Route::get('/notification/payment', 'ApplicationController@send_notification_user_payment')->name('notification.user.payment');
@@ -243,6 +248,8 @@ Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
 
 
 Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
+
+    Route::get('secure', 'AdminController@secure')->name('secure');
 
     Route::get('login', 'Auth\AdminAuthController@showLoginForm')->name('login');
 
@@ -300,6 +307,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/user/verify/{id?}', 'AdminController@user_verify_status')->name('users.verify');
 
     Route::post('/redeems/pay', 'AdminController@user_redeem_pay')->name('users.redeem.pay');
+
+    Route::get('/user/status','AdminController@user_status_change')->name('users.status');
 
     // User History - admin
 
@@ -406,6 +415,31 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('help' , 'AdminController@help')->name('help');
 
+    // Coupons
+
+    // Get the add coupon forms
+    Route::get('/coupons/add','AdminController@coupon_create')->name('add.coupons');
+
+    // Get the edit coupon forms
+    Route::get('/coupons/edit/{id}','AdminController@coupon_edit')->name('edit.coupons');
+
+    // Save the coupon details
+    Route::post('/coupons/save','AdminController@coupon_save')->name('save.coupon');
+
+    // Get the list of coupon details
+    Route::get('/coupons/list','AdminController@coupon_index')->name('coupon.list');
+
+    //Get the particular coupon details
+    Route::get('/coupons/view/{id}','AdminController@coupon_view')->name('coupon.view');
+
+    // Delete the coupon details
+    Route::get('/coupons/delete/{id}','AdminController@coupon_delete')->name('delete.coupon');
+
+    //Coupon approve and decline status
+    Route::get('/coupon/status','AdminController@coupon_status_change')->name('coupon.status');
+
+
+
     // Pages
 
     Route::get('/pages', 'AdminController@pages')->name('pages.index');
@@ -511,6 +545,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
 
+    
 
     // Videos
 
@@ -902,6 +937,8 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('card_details', 'UserApiController@card_details');
 
+    Route::post('cards_add', 'UserApiController@cards_add');
+    
     Route::post('payment_card_add', 'UserApiController@payment_card_add');
 
     Route::post('default_card', 'UserApiController@default_card');

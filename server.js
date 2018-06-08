@@ -12,8 +12,8 @@ var chat_save_url = process.env.CHAT_URL;
 var https = require('https');
 
 var server = https.createServer({ 
-                key: fs.readFileSync('/home/live-test/.acme.sh/livetest.streamhash.info/livetest.streamhash.info.key'),
-                cert: fs.readFileSync('/home/live-test/.acme.sh/livetest.streamhash.info/livetest.streamhash.info.cer') 
+                key: fs.readFileSync('/home/tubenow/.acme.sh/tubenow.bytecollar.com/tubenow.bytecollar.com.key'),
+                cert: fs.readFileSync('/home/tubenow/.acme.sh/tubenow.bytecollar.com/tubenow.bytecollar.com.cer') 
              },app);
 
 var io = require('socket.io')(server);
@@ -83,4 +83,22 @@ io.on('connection', function (socket) {
         debug('disconnect', data);
     });
 
+    socket.on('check-video-streaming', function(data) {
+
+       console.log("final_count "+data);
+
+       var room = socket.handshake.query.room;
+       
+       socket.broadcast.to(room).emit('video-streaming-status', data);
+
+      // socket.emit('video-streaming-status', no_of_views, video_id);
+
+    });
+
+    socket.on('streaming_stopped', function(data) {
+        
+        var room = socket.handshake.query.room;
+       
+       socket.broadcast.to(room).emit('stop-stream', data);
+    });
 });

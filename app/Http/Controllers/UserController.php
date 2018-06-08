@@ -20,6 +20,8 @@ use App\Page;
 
 use App\Flag;
 
+use App\Admin;
+
 use Auth;
 
 use DB;
@@ -614,7 +616,7 @@ class UserController extends Controller {
        
         } else {
 
-            $error_message = isset($data->message) ? $data->message : tr('something_error');
+            $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
 
             return back()->with('flash_error', $error_message);
             
@@ -837,6 +839,7 @@ class UserController extends Controller {
                     // Check the video view count reached admin viewers count, to add amount for each view
 
                     if ($video->user_id != Auth::user()->id) {
+
 
                         if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
@@ -1432,7 +1435,7 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return back()->with('flash_success', $response->message);
+            return redirect()->route('user.subscriptions')->with('flash_success', $response->message);
 
         } else {
 
@@ -1487,7 +1490,7 @@ class UserController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
@@ -2094,7 +2097,10 @@ class UserController extends Controller {
 
                 if (Auth::check()) {
 
-                    // $usrModel
+                    // if(!count($subscription)) {
+
+                    //     return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
+                    // }
 
                     $userModel = User::find(Auth::user()->id);
 
@@ -2248,19 +2254,7 @@ class UserController extends Controller {
 
         if ($model->save()) {
 
-            if ( Auth::check()) {
-
-                if ($model->user_id == Auth::user()->id) {  
-
-                    if (Setting::get('wowza_server_url')) {
-
-                        $this->disConnectStream($model->user->id.'-'.$model->id);
-
-                    }
-
-                }
-
-            }
+            
 
         }
 
@@ -2547,12 +2541,7 @@ class UserController extends Controller {
 
                     if ($model->save()) {
 
-                        if (Setting::get('wowza_server_url')) {
-
-                            $this->disConnectStream($model->user->id.'-'.$mid);
-
-                        }
-
+                       
                     } else {
 
                         $response_array = ['success'=>false, 'error_messages'=>tr('went_wrong')];
@@ -2957,18 +2946,7 @@ class UserController extends Controller {
                         
                     }
 
-                    $appSettings = json_encode([
-                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
-                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
-                        'BASE_URL' => Setting::get('BASE_URL'),
-                        'TURN_CONFIG' => [],
-                        'TOKEN' =>  ($model->user_id == $userModel->id) ? Auth::user()->token : null,
-                        'USER_PICTURE'=>$userModel->chat_picture,
-                        'NAME'=>$userModel->name,
-                        'CLASS'=>'left',
-                        'USER' => ($model->user_id == $userModel->id) ? ['id' => $userModel->id, 'role' => "model"] : null,
-                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
-                    ]);
+                  
 
 
                 } else {
@@ -2976,21 +2954,6 @@ class UserController extends Controller {
                     $model->viewer_cnt += 1;
 
                     $model->save();
-
-                    $appSettings = json_encode([
-                        'SOCKET_URL' => Setting::get('SOCKET_URL'),
-                        'CHAT_ROOM_ID' => isset($model) ? $model->id : null,
-                        'BASE_URL' => Setting::get('BASE_URL'),
-                        'TURN_CONFIG' => [],
-                        'TOKEN' =>  null,
-                        'USER_PICTURE'=>$model->user->chat_picture,
-                        'NAME'=>$model->user->name,
-                        'CLASS'=>'left',
-                        'USER' => null,
-                        'VIDEO_PAYMENT'=>($videoPayment) ? $videoPayment : null,
-                    ]);
-
-
                 }
 
 
@@ -3015,6 +2978,6 @@ class UserController extends Controller {
 
         }
 
-        return view('user.android.android-video')->with('data', $model)->with('appSettings', $appSettings)->with('page', '')->with('sub_page','');
+        return view('user.android.android-video')->with('data', $model)->with('page', '')->with('sub_page','');
     }
 }

@@ -10,6 +10,8 @@ video {
 	height: 100%;	
 }
 </style>
+
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/video.css')}}">
 @endsection
 
 
@@ -48,8 +50,16 @@ video {
 
 				<div class="row live_video">
 
-					<div class="col-lg-8" ng-controller="streamCtrl" ng-cloak ng-init="initRoom({{$data->id}}, '{{$data->virtual_id}}')">
+					<div class="col-lg-8" ng-controller="streamCtrl">
 
+					<div style="display: none">
+                        <input type="text" id="room-id" size=20 value="{{$data->virtual_id}}">
+
+
+                        <button id="join-room">Join Room</button>
+                        <button id="open-or-join-room">Auto Open Or Join Room</button>
+
+                      </div>
 						
 
 						<div class="live_img" id="videos-container" room="{{$data->id}}">
@@ -91,8 +101,6 @@ video {
 							<a href="http://twitter.com/share?text={{$data->title}}...&url={{route('user.live_video.start_broadcasting' , array('id'=>$data->unique_id,'c_id'=>$data->channel_id))}}" target="_blank" class="btn btn-sm btn-success text-uppercase" title="{{tr('share_on_twitter')}}" style="background: #4099ff;border-color:#4099ff;">
 								<i class="fa fa-twitter"></i>
 							</a>
-
-
 						</div>
 
 						@if (Auth::check())
@@ -102,7 +110,7 @@ video {
 
 								<?php /*<a href="{{route('user.live_video.stop_streaming',array('id'=>$data->id))}}" class="btn btn-sm btn-danger">{{tr('stop')}}</a> */?>
 
-								<a ng-click="stopStreaming()" class="btn btn-sm btn-danger">{{tr('stop')}}</a>
+								<a onclick="return alert('Are you sure want to stop?')" href="{{route('user.live_video.stop_streaming', array('id'=>$data->id))}}"class="btn btn-sm btn-danger">{{tr('stop')}}</a>
 
 							</div>
 
@@ -396,19 +404,19 @@ video {
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
+<script src="{{asset('assets/js/stream-controller.js')}}"></script>
 
 
 <script type="text/javascript">
 
 setTimeout( function() { jQuery(".alert-success").fadeOut("slow") },5000);
 
-var appSettings = <?= $appSettings ?>;
-
-var port_no = "<?= $data->port_no; ?>";
 
 var video_details = <?= $data; ?>;
 
-var socket_url =  "<?= Setting::get('kurento_socket_url'); ?>";
+var appSettings = <?= $appSettings;?>
+
+var socket_url =  "<?= Setting::get('SOCKET_URL'); ?>";
 
 var chat_socket_url = "<?= Setting::get('chat_socket_url');?>"; 
 
@@ -416,15 +424,13 @@ var stop_streaming_url = "<?= route('user.live_video.stop_streaming', array('id'
 
 $('.chat_box_scroll').scrollTop($('.chat_box_scroll')[0].scrollHeight);
 
-var url = "<?= url('/');?>";
+var apiUrl = "<?= url('/');?>";
 
 var live_user_id = "<?= Auth::check() ? Auth::user()->id : '' ?>";
 
 var user_token = "<?= Auth::check() ? Auth::user()->token : '' ?>";
 
 var is_vod = "<?= Setting::get('is_vod')?>";
-
-var wowza_ip_address = "<? = Setting::get('wowza_ip_address') ?>";
 
 var routeUrl = "<?= route('user.live_videos') ?>";
 
@@ -435,15 +441,14 @@ var liveAppCtrl = angular.module('liveApp', [
   $interpolateProvider.startSymbol('<%');
   $interpolateProvider.endSymbol('%>');
 })
-.constant('appSettings', appSettings)
-.constant('port_no', port_no)
 .constant('socket_url', socket_url)
 .constant('stop_streaming_url',stop_streaming_url)
 .constant('chat_socket_url', chat_socket_url)
-.constant('url',url)
+.constant('apiUrl',apiUrl)
 .constant('live_user_id',live_user_id)
 .constant('routeUrl', routeUrl)
-.constant('user_token',user_token);
+.constant('user_token',user_token)
+.constant('appSettings', appSettings);
 
 liveAppCtrl
     .run(['$rootScope',
@@ -451,14 +456,13 @@ liveAppCtrl
         '$timeout',
         function ($rootScope,$window, $timeout) {
             
-            $rootScope.appSettings = appSettings;
 
             $rootScope.videoDetails = video_details;
+
+            $rootScope.appSettings = appSettings;
         }
 ]);
     
-console.log(appSettings);
-
 </script>
 
 <script src="{{asset('assets/js/streamController.js')}}"></script>
