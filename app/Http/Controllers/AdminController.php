@@ -1499,9 +1499,7 @@ class AdminController extends Controller {
             return back()->with('flash_errors',$error);
 
         } else {
-
-            // Send notifications to the provider
-
+            // Send notifications to the users
             $push_message = $request->message;
 
             // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
