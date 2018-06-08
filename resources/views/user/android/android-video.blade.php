@@ -12,13 +12,17 @@
 	<script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
 	<script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
 	<style type="text/css">
+		video{
+			height:100%;
+			width: 100%;
+            max-height: unset;
+		}
 
-    /*
-Muaz Khan     - www.MuazKhan.com
-MIT License   - www.WebRTC-Experiment.com/licence
-Documentation - github.com/muaz-khan/WebRTC-Experiment/tree/master/getMediaElement
-*/
+		
 
+/**
+ * Live stream css
+ */
 .media-container, .media-container * {
     margin: 0;
     padding: 0;
@@ -34,22 +38,17 @@ Documentation - github.com/muaz-khan/WebRTC-Experiment/tree/master/getMediaEleme
     -o-transition: all .5s ease-in-out;
     -webkit-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
+    width: unset !important;
 }
 
-.media-container {
-    width: 36%;
-    display: inline-block;
-    border: 1px solid rgb(0, 0, 0);
-    border-radius: 4px;
-    overflow: hidden;
-    vertical-align: top;
-    background: white;
-}
 
 .media-box {
     background: black;
     border: 1px solid rgb(107, 107, 107);
     margin: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .media-controls, .volume-control {
@@ -134,9 +133,11 @@ Documentation - github.com/muaz-khan/WebRTC-Experiment/tree/master/getMediaEleme
 }
 
 .media-box video {
-    width: 100%;
+    width:100% !important;
     vertical-align: top;
-    object-fit: fill;
+    position: fixed;
+    /*max-height: 460px !important;*/
+    /*object-fit: fill;*/
 }
 
 .media-box audio {
@@ -229,9 +230,10 @@ input[type="range"]::-webkit-slider-thumb {
 
 		<div class="col-lg-8" ng-controller="androidCtrl">
 
-			<div style="display: none">
+			<div>
 		      <input type="text" id="room-id">
 		      <button id="join-room">Join Room</button>
+              <button id="open-room">Open Room</button>
 		      <button id="open-or-join-room">Auto Open Or Join Room</button>
 		    </div>
 
