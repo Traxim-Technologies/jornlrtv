@@ -2,6 +2,8 @@ angular.module('liveApp')
 .controller('androidCtrl', ['$rootScope', '$window', '$sce',
 	function ($rootScope, $window, $sce) {
 
+        $scope = $rootScope;
+
 		window.enableAdapter = true; // enable adapter.js
 
         // ......................................................
