@@ -232,6 +232,8 @@ input[type="range"]::-webkit-slider-thumb {
 			<div>
 		      <input type="text" id="room-id">
 		      <button id="join-room">Join Room</button>
+
+              <button id="open-room">Open Room</button>
 		      <button id="open-or-join-room">Auto Open Or Join Room</button>
 		    </div>
 
