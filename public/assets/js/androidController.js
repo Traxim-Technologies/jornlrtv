@@ -298,7 +298,7 @@ angular.module('liveApp')
                 mediaElement.parentNode.removeChild(mediaElement);
             }
 
-            
+
             window.setTimeout(function(){
 
                 alert("Streaming stopped unfortunately..!");
@@ -308,7 +308,7 @@ angular.module('liveApp')
 
         function disableInputButtons() {
             document.getElementById('open-or-join-room').disabled = true;
-            document.getElementById('open-room').disabled = true;
+          //  document.getElementById('open-room').disabled = true;
             document.getElementById('join-room').disabled = true;
             document.getElementById('room-id').disabled = true;
         }
