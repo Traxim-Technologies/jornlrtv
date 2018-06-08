@@ -663,7 +663,7 @@ function getAudioElement(mediaElement, config) {
 		  	});
 		}
 
-		window.enableAdapter = false; // enable adapter.js
+		window.enableAdapter = true; // enable adapter.js
 
 		// $("#room-id").val('1auji7mmo5k4916tnu4t');
 
@@ -671,6 +671,9 @@ function getAudioElement(mediaElement, config) {
 		// .......................UI Code........................
 		// ......................................................
 		$scope.openRoom = function() {
+
+            alert("dd");
+
 		    // disableInputButtons();
 
 		    var room_id_value = document.getElementById('room-id').value;
@@ -679,6 +682,8 @@ function getAudioElement(mediaElement, config) {
 
 		    connection.open(document.getElementById('room-id').value, function() {
 		       // showRoomURL(connection.sessionid);
+
+               alert("Working Inside");
 
 		       $("#default_image").hide();
 
@@ -770,6 +775,8 @@ function getAudioElement(mediaElement, config) {
 		        showOnMouseEnter: false
 		    });
 
+            alert("Working");
+
 		    connection.videosContainer.appendChild(mediaElement);
 
 		    setTimeout(function() {
@@ -809,7 +816,6 @@ function getAudioElement(mediaElement, config) {
                         }
 
                     });
-
                   
                   initNumber = initNumber < 6 ? initNumber + 1 : 1;
 
@@ -940,6 +946,8 @@ function getAudioElement(mediaElement, config) {
 		}
 
 		if (video_details.user_id == live_user_id) {
+
+            alert("eee");
 
 			$scope.openRoom();
 
