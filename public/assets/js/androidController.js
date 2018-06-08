@@ -161,7 +161,7 @@ angular.module('liveApp')
         $scope.openRoom = function() {
             disableInputButtons();
             connection.open(document.getElementById('room-id').value, function() {
-                showRoomURL(connection.sessionid);
+               // showRoomURL(connection.sessionid);
             });
         };
 
@@ -179,7 +179,7 @@ angular.module('liveApp')
             disableInputButtons();
             connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
                 if (!isRoomExist) {
-                    showRoomURL(roomid);
+                   // showRoomURL(roomid);
                 }
                 else {
                     connection.sdpConstraints.mandatory = {
@@ -316,22 +316,6 @@ angular.module('liveApp')
         // ......................................................
         // ......................Handling Room-ID................
         // ......................................................
-
-        function showRoomURL(roomid) {
-            var roomHashURL = '#' + roomid;
-            var roomQueryStringURL = '?roomid=' + roomid;
-
-            var html = '<h2>Unique URL for your room:</h2><br>';
-
-            html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
-            html += '<br>';
-            html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
-
-            var roomURLsDiv = document.getElementById('room-urls');
-            roomURLsDiv.innerHTML = html;
-
-            roomURLsDiv.style.display = 'block';
-        }
 
         (function() {
             var params = {},

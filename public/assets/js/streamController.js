@@ -154,122 +154,118 @@ liveAppCtrl
 
 		window.enableAdapter = false; // enable adapter.js
 
-		// $("#room-id").val('1auji7mmo5k4916tnu4t');
 
-		// ......................................................
-		// .......................UI Code........................
-		// ......................................................
-		$scope.openRoom = function() {
-		    // disableInputButtons();
+        $scope.socket_url = socket_url;
 
-		    var room_id_value = document.getElementById('room-id').value;
+       // alert($scope.socket_url);
 
-		    console.log(room_id_value);
-
-		    connection.open(document.getElementById('room-id').value, function() {
-		       // showRoomURL(connection.sessionid);
-
-		       $("#default_image").hide();
-
-		       $("#loader_btn").hide();
-
-		       $("#open-room").hide();
-
-		       $("#stop-room").show();
-
-		       
-		    });
-		}
+        $scope.connectionNow= null;
 
 
-		document.getElementById('join-room').onclick = function() {
-		    //disableInputButtons();
+        window.enableAdapter = true; // enable adapter.js
 
-		    $("#default_image").hide();
+        // ......................................................
+        // .......................UI Code........................
+        // ......................................................
+        $scope.openRoom = function() {
+            // disableInputButtons();
+            connection.open(document.getElementById('room-id').value, function() {
+               // showRoomURL(connection.sessionid);
 
-		    connection.sdpConstraints.mandatory = {
-		        OfferToReceiveAudio: true,
-		        OfferToReceiveVideo: true
-		    };
-		    connection.join(document.getElementById('room-id').value);
-		};
 
-		document.getElementById('open-or-join-room').onclick = function() {
-		    // disableInputButtons();
-		    connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
-		        if (!isRoomExist) {
-		            showRoomURL(roomid);
-		        }
-		        else {
-		            connection.sdpConstraints.mandatory = {
-		                OfferToReceiveAudio: true,
-		                OfferToReceiveVideo: true
-		            };
-		        }
-		    });
-		};
+                   $("#default_image").hide();
 
-	    $scope.socket_url = socket_url;
+                   $("#loader_btn").hide();
 
-	   // alert($scope.socket_url);
+                   $("#open-room").hide();
 
-	    $scope.connectionNow= null;
+                   $("#stop-room").show();
+            });
+        };
 
-		var connection = new RTCMultiConnection();
+        document.getElementById('join-room').onclick = function() {
+            // disableInputButtons();
 
-		// by default, socket.io server is assumed to be deployed on your own URL
-		// connection.socketURL = '/';
-		connection.socketURL = $scope.socket_url;
+            $("#default_image").hide();
 
-		// comment-out below line if you do not have your own socket.io server
-		// connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+            connection.sdpConstraints.mandatory = {
+                OfferToReceiveAudio: true,
+                OfferToReceiveVideo: true
+            };
+            connection.join(document.getElementById('room-id').value);
+        };
 
-		connection.socketMessageEvent = 'video-broadcast-demo';
+        document.getElementById('open-or-join-room').onclick = function() {
+            disableInputButtons();
+            connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
+                if (!isRoomExist) {
+                   // showRoomURL(roomid);
+                }
+                else {
+                    connection.sdpConstraints.mandatory = {
+                        OfferToReceiveAudio: true,
+                        OfferToReceiveVideo: true
+                    };
+                }
+            });
+        };
 
-		$scope.connectionNow = connection;
+        $scope.socket_url = socket_url;
 
-		connection.session = {
-		    audio: true,
-		    video: true,
-		    oneway: true
-		};
+        // ......................................................
+        // ..................RTCMultiConnection Code.............
+        // ......................................................
 
-		connection.sdpConstraints.mandatory = {
-		    OfferToReceiveAudio: false,
-		    OfferToReceiveVideo: false
-		};
+        var connection = new RTCMultiConnection();
 
-		connection.videosContainer = document.getElementById('videos-container');
-		connection.onstream = function(event) {
-		    event.mediaElement.removeAttribute('src');
-		    event.mediaElement.removeAttribute('srcObject');
+        // by default, socket.io server is assumed to be deployed on your own URL
+        connection.socketURL = $scope.socket_url;
 
-		    var video = document.createElement('video');
-		    video.controls = false;
-		    if(event.type === 'local') {
-		        video.muted = true;
-		    }
-		    video.srcObject = event.stream;
+        // comment-out below line if you do not have your own socket.io server
+        // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
-		    var width = parseInt(connection.videosContainer.clientWidth / 2) - 20;
-		    var mediaElement = getHTMLMediaElement(video, {
-		        title: event.userid,
-		        buttons: ['full-screen'],
-		        width: width,
-		        showOnMouseEnter: false
-		    });
+        connection.socketMessageEvent = 'video-broadcast-demo';
 
-		    connection.videosContainer.appendChild(mediaElement);
+        connection.session = {
+            audio: true,
+            video: true,
+            oneway: true
+        };
 
-		    setTimeout(function() {
-		        mediaElement.media.play();
-		    }, 5000);
+        connection.sdpConstraints.mandatory = {
+            OfferToReceiveAudio: false,
+            OfferToReceiveVideo: false
+        };
 
-		    mediaElement.id = event.streamid;
+        connection.videosContainer = document.getElementById('videos-container');
+        connection.onstream = function(event) {
+            event.mediaElement.removeAttribute('src');
+            event.mediaElement.removeAttribute('srcObject');
 
-		   // $scope.live_status();
+            var video = document.createElement('video');
+            video.controls = true;
+            if(event.type === 'local') {
+                video.muted = true;
+            }
+            video.srcObject = event.stream;
 
-           function takePhoto(video) {
+            var width = parseInt(connection.videosContainer.clientWidth / 2) - 20;
+            var mediaElement = getHTMLMediaElement(video, {
+                title: event.userid,
+                buttons: ['full-screen'],
+                width: width,
+                showOnMouseEnter: false
+            });
+
+            connection.videosContainer.appendChild(mediaElement);
+
+            setTimeout(function() {
+                mediaElement.media.play();
+            }, 5000);
+
+            mediaElement.id = event.streamid;
+
+             function takePhoto(video) {
                 var canvas = document.createElement('canvas');
                 canvas.width = video.videoWidth || video.clientWidth;
                 canvas.height = video.videoHeight || video.clientHeight;
@@ -300,7 +296,6 @@ liveAppCtrl
                         }
 
                     });
-
                   
                   initNumber = initNumber < 6 ? initNumber + 1 : 1;
 
@@ -315,133 +310,83 @@ liveAppCtrl
                 }, 6000);
 
             }
-		};
+        };
 
-		connection.onstreamended = function(event) {
-		    var mediaElement = document.getElementById(event.streamid);
-		    if (mediaElement) {
-		        mediaElement.parentNode.removeChild(mediaElement);
-		    }
+        connection.onstreamended = function(event) {
+            var mediaElement = document.getElementById(event.streamid);
+            if (mediaElement) {
+                mediaElement.parentNode.removeChild(mediaElement);
+            }
+
 
             window.setTimeout(function(){
-
 
                 alert("Streaming stopped unfortunately..!");
 
                 window.location.reload(true);
 
             }, 2000);
+        };
+
+        function disableInputButtons() {
+            document.getElementById('open-or-join-room').disabled = true;
+          //  document.getElementById('open-room').disabled = true;
+            document.getElementById('join-room').disabled = true;
+            document.getElementById('room-id').disabled = true;
+        }
+
+        // ......................................................
+        // ......................Handling Room-ID................
+        // ......................................................
+
+        (function() {
+            var params = {},
+                r = /([^&=]+)=?([^&]*)/g;
+
+            function d(s) {
+                return decodeURIComponent(s.replace(/\+/g, ' '));
+            }
+            var match, search = window.location.search;
+            while (match = r.exec(search.substring(1)))
+                params[d(match[1])] = d(match[2]);
+            window.params = params;
+        })();
+
+        var roomid = '';
+
+        roomid = $scope.videoDetails.virtual_id;
+
+        if (roomid == '') {
+
+            if (localStorage.getItem(connection.socketMessageEvent)) {
+
+                roomid = localStorage.getItem(connection.socketMessageEvent);
+
+            } else {
+                roomid = connection.token();
+            }
+
+        }
+
+        document.getElementById('room-id').value = roomid;
+        document.getElementById('room-id').onkeyup = function() {
+            localStorage.setItem(connection.socketMessageEvent, this.value);
+        };
 
 
-		};
+        if (video_details.user_id == live_user_id) {
 
-		function disableInputButtons() {
-		    document.getElementById('open-or-join-room').disabled = true;
-		    document.getElementById('open-room').disabled = true;
-		    document.getElementById('join-room').disabled = true;
-		    document.getElementById('room-id').disabled = true;
-		}
+            console.log("room...");
 
-		// ......................................................
-		// ......................Handling Room-ID................
-		// ......................................................
+            $scope.openRoom();
 
-		/*function showRoomURL(roomid) {
-		    var roomHashURL = '#' + roomid;
-		    var roomQueryStringURL = '?roomid=' + roomid;
+        } else {
 
-		    var html = '<h2>Unique URL for your room:</h2><br>';
+            //alert("Joining Room");
 
-		    html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
-		    html += '<br>';
-		    html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
-
-		    var roomURLsDiv = document.getElementById('room-urls');
-		    roomURLsDiv.innerHTML = html;
-
-		    roomURLsDiv.style.display = 'block';
-		}*/
-
-		(function() {
-		    var params = {},
-		        r = /([^&=]+)=?([^&]*)/g;
-
-		    function d(s) {
-		        return decodeURIComponent(s.replace(/\+/g, ' '));
-		    }
-		    var match, search = window.location.search;
-		    while (match = r.exec(search.substring(1)))
-		        params[d(match[1])] = d(match[2]);
-		    window.params = params;
-		})();
-
-		var roomid = '';
-
-		roomid = $scope.videoDetails.virtual_id;
-
-		if (roomid == '') {
-
-			if (localStorage.getItem(connection.socketMessageEvent)) {
-
-			    roomid = localStorage.getItem(connection.socketMessageEvent);
-
-			} else {
-			    roomid = connection.token();
-			}
-
-		}
-
-
-		document.getElementById('room-id').value = roomid;
-
-		document.getElementById('room-id').onkeyup = function() {
-		    localStorage.setItem(connection.socketMessageEvent, this.value);
-		};
-
-		/*var hashString = location.hash.replace('#', '');
-		if (hashString.length && hashString.indexOf('comment-') == 0) {
-		    hashString = '';
-		}*/
-
-		/*var roomid = params.roomid;
-		if (!roomid && hashString.length) {
-		    roomid = hashString;
-		}*/
-
-		/*if (roomid && roomid.length) {
-		    document.getElementById('room-id').value = roomid;
-		    localStorage.setItem(connection.socketMessageEvent, roomid);
-
-		    // auto-join-room
-		    (function reCheckRoomPresence() {
-		        connection.checkPresence(roomid, function(isRoomExist) {
-		            if (isRoomExist) {
-		                connection.sdpConstraints.mandatory = {
-		                    OfferToReceiveAudio: true,
-		                    OfferToReceiveVideo: true
-		                };
-
-		                $("#default_image").hide();
-
-		                connection.join(roomid);
-		                return;
-		            }
-
-		            setTimeout(reCheckRoomPresence, 5000);
-		        });
-		    })();
-
-		   // disableInputButtons();
-		}*/
-
-		if (video_details.user_id == live_user_id) {
-
-			$scope.openRoom();
-
-		} else {
+            console.log("Join Room...");
 
             $("#join-room").click();
-
         }
 
 		$scope.stopStreaming = function(video_id) {
