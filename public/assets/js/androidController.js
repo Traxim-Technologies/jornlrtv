@@ -9,7 +9,7 @@ angular.module('liveApp')
         // ......................................................
         // .......................UI Code........................
         // ......................................................
-        document.getElementById('open-room').onclick = function() {
+        $scope.openRoom = function() {
             disableInputButtons();
             connection.open(document.getElementById('room-id').value, function() {
                 showRoomURL(connection.sessionid);
@@ -145,27 +145,39 @@ angular.module('liveApp')
         })();
 
         var roomid = '';
-        if (localStorage.getItem(connection.socketMessageEvent)) {
-            roomid = localStorage.getItem(connection.socketMessageEvent);
-        } else {
-            roomid = connection.token();
+
+        roomid = $scope.videoDetails.virtual_id;
+
+        if (roomid == '') {
+
+            if (localStorage.getItem(connection.socketMessageEvent)) {
+
+                roomid = localStorage.getItem(connection.socketMessageEvent);
+
+            } else {
+                roomid = connection.token();
+            }
+
         }
+
         document.getElementById('room-id').value = roomid;
         document.getElementById('room-id').onkeyup = function() {
             localStorage.setItem(connection.socketMessageEvent, this.value);
         };
 
-        var hashString = location.hash.replace('#', '');
-        if (hashString.length && hashString.indexOf('comment-') == 0) {
-            hashString = '';
+
+        if (video_details.user_id == live_user_id) {
+
+            $scope.openRoom();
+
+        } else {
+
+            //alert("Joining Room");
+
+            $("#join-room").click();
         }
 
-        var roomid = params.roomid;
-        if (!roomid && hashString.length) {
-            roomid = hashString;
-        }
-
-        if (roomid && roomid.length) {
+        /*if (roomid && roomid.length) {
             document.getElementById('room-id').value = roomid;
             localStorage.setItem(connection.socketMessageEvent, roomid);
 
@@ -186,7 +198,7 @@ angular.module('liveApp')
             })();
 
             disableInputButtons();
-        }
+        }*/
 	}
 ]);
 
