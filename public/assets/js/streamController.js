@@ -192,6 +192,10 @@ liveAppCtrl
                 OfferToReceiveAudio: true,
                 OfferToReceiveVideo: true
             };
+
+            console.log("Room Id "+ document.getElementById('room-id').value);
+
+
             connection.join(document.getElementById('room-id').value);
         };
 

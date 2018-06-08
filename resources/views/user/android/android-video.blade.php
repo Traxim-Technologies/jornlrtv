@@ -230,7 +230,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 		<div class="col-lg-8" ng-controller="androidCtrl" ng-cloak>
 
-			<div style="display: none">
+			<div>
 		      <input type="text" id="room-id">
 		      <button id="join-room">Join Room</button>
 		      <button id="open-or-join-room">Auto Open Or Join Room</button>
