@@ -1222,6 +1222,7 @@ class UserApiController extends Controller {
 
             $response_array = array(
                 'success' => true,
+                'message' => tr('profile_updated'),
                 'id' => $user->id,
                 'name' => $user->name,
                 'description' => $user->description,
@@ -1270,7 +1271,7 @@ class UserApiController extends Controller {
             
             $error_messages = implode(',',$validator->messages()->all());
            
-            $response_array = array('success' => false, 'error' => 'Invalid Input', 'error_code' => 101, 'error_messages' => $error_messages );
+            $response_array = array('success' => false, 'error' => tr('invalid_input'), 'error_code' => 101, 'error_messages' => $error_messages );
        
         } else {
 
