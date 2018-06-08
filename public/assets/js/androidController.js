@@ -370,11 +370,15 @@ angular.module('liveApp')
 
         if (video_details.user_id == live_user_id) {
 
+            console.log("room...");
+
             $scope.openRoom();
 
         } else {
 
             //alert("Joining Room");
+
+            console.log("Join Room...");
 
             $("#join-room").click();
         }

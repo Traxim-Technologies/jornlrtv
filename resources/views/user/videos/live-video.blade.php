@@ -404,6 +404,7 @@ video {
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
+<script src="{{asset('assets/js/stream-controller.js')}}"></script>
 
 
 <script type="text/javascript">
