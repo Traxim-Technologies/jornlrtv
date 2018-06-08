@@ -39,6 +39,8 @@ angular.module('liveApp')
             });
         };
 
+        $scope.socket_url = socket_url;
+
         // ......................................................
         // ..................RTCMultiConnection Code.............
         // ......................................................
@@ -46,7 +48,7 @@ angular.module('liveApp')
         var connection = new RTCMultiConnection();
 
         // by default, socket.io server is assumed to be deployed on your own URL
-        connection.socketURL = '/';
+        connection.socketURL = $scope.socket_url;
 
         // comment-out below line if you do not have your own socket.io server
         // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
