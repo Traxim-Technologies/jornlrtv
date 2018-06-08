@@ -4,6 +4,155 @@ angular.module('liveApp')
 
         $scope = $rootScope;
 
+        function getBrowser() {
+
+            // Opera 8.0+
+            var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+            // Firefox 1.0+
+            var isFirefox = typeof InstallTrigger !== 'undefined';
+
+            // Safari 3.0+ "[object HTMLElementConstructor]" 
+            var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+
+            // Internet Explorer 6-11
+            var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+            // Edge 20+
+            var isEdge = !isIE && !!window.StyleMedia;
+
+            // Chrome 1+
+            var isChrome = (!!window.chrome && !!window.chrome.webstore) || navigator.userAgent.indexOf("Chrome") !== -1;
+
+            // Blink engine detection
+            var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+            var b_n = '';
+
+            switch(true) {
+
+                case isFirefox :
+
+                        b_n = "Firefox";
+
+                        break;
+                case isChrome :
+
+                        b_n = "Chrome";
+
+                        break;
+
+                case isSafari :
+
+                        b_n = "Safari";
+
+                        break;
+                case isOpera :
+
+                        b_n = "Opera";
+
+                        break;
+
+                case isIE :
+
+                        b_n = "IE";
+
+                        break;
+
+                case isEdge : 
+
+                        b_n = "Edge";
+
+                        break;
+
+                case isBlink : 
+
+                        b_n = "Blink";
+
+                        break;
+
+                default :
+
+                        b_n = "Unknown";
+
+                        break;
+
+            }
+
+            return b_n;
+
+        }
+
+        var mobile_type = "";
+
+        function getMobileOperatingSystem() {
+
+          var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+          if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) )
+          {
+            mobile_type =  'ios';
+
+          }
+          else if( userAgent.match( /Android/i ) )
+          {
+
+            mobile_type =  'andriod';
+          }
+          else
+          {
+            mobile_type =  'unknown'; 
+          }
+
+          return mobile_type;
+        
+        }
+
+        var browser = getBrowser();
+
+        var m_type = getMobileOperatingSystem();
+
+        // This function will call, when the streaming started by user
+        $scope.live_status = function() {
+
+            var data = new FormData;
+            data.append('id', live_user_id);
+            data.append('token', user_token);
+            data.append('video_id', video_details.id);
+            
+            $.ajax({
+                type : 'post',
+                url : apiUrl+"userApi/streaming/status",
+                contentType : false,
+                processData: false,
+                async : false,
+                data : data,
+                success : function(response) {
+
+                    if (response.success) {
+
+                    } else {
+
+                        alert(response.error_messages);
+
+                    }
+
+                },
+                error : function(response) {
+
+
+                },
+            });
+        }
+
+
+        $scope.socket_url = socket_url;
+
+       // alert($scope.socket_url);
+
+        $scope.connectionNow= null;
+
+
 		window.enableAdapter = true; // enable adapter.js
 
         // ......................................................
@@ -95,6 +244,52 @@ angular.module('liveApp')
             }, 5000);
 
             mediaElement.id = event.streamid;
+
+             function takePhoto(video) {
+                var canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth || video.clientWidth;
+                canvas.height = video.videoHeight || video.clientHeight;
+
+                var context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                return canvas.toDataURL('image/png');
+            }
+
+            if (event.type == 'local') {
+
+                var yourVideoElement = document.querySelector('video');
+
+                var initNumber = 1;
+                var capture = function capture() {
+                    
+                    var snapshot_pic = takePhoto(yourVideoElement);
+                    
+                    $.ajax({
+
+                        type : 'post',
+                        url : apiUrl+'/take_snapshot/'+video_details.id,
+                        data : {base64: snapshot_pic,shotNumber: initNumber, 
+                            id : live_user_id, token : user_token},
+                        success : function(data) {
+                            // console.log(data);
+                        }
+
+                    });
+                  
+                  initNumber = initNumber < 6 ? initNumber + 1 : 1;
+
+                  timeout = setTimeout(capture, 120 * 1000);
+
+                };
+
+                window.setTimeout(function(){
+
+                    capture();
+
+                }, 6000);
+
+            }
         };
 
         connection.onstreamended = function(event) {
@@ -102,6 +297,13 @@ angular.module('liveApp')
             if (mediaElement) {
                 mediaElement.parentNode.removeChild(mediaElement);
             }
+
+            
+            window.setTimeout(function(){
+
+                alert("Streaming stopped unfortunately..!");
+
+            }, 2000);
         };
 
         function disableInputButtons() {
@@ -199,6 +401,45 @@ angular.module('liveApp')
 
             disableInputButtons();
         }*/
+
+        $scope.stopStreaming = function(video_id) {
+
+            if (confirm('Do you want to stop streaming ?')) {
+
+                var data = new FormData;
+                data.append('id', memoryStorage.user_id);
+                data.append('token', memoryStorage.access_token);
+                data.append('video_id', video_id);
+                
+                $.ajax({
+
+                    type : 'post',
+                    url : apiUrl+"userApi/close_streaming",
+                    contentType : false,
+                    processData: false,
+                    async : false,
+                    data : data,
+                    success : function(data) {
+
+                        connection.attachStreams.forEach(function (stream) {
+                            stream.stop();
+                        });
+
+                        connection.videosContainer.innerHTML = '';
+
+                        connection.autoCloseEntireSession = true;
+                         
+                        $scope.connectionNow.close();
+
+                        alert('Your streaming has been ended successfully.');
+
+                    }
+
+                });
+
+            }
+
+        }
 	}
 ]);
 
