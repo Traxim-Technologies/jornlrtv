@@ -36,5 +36,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SecureVideoSeeder::class);
         $this->call(MailGunSeeder::class);
         $this->call(IosPaymentStatusSeeder::class);
+        $this->call(PaymentTypeSeeder::class);
     }
 }
