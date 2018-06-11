@@ -146,10 +146,12 @@
 
 				                @else
 
-				                @if(!Auth::user()->user_type)
+				                @if(Auth::user())
+					                @if(!Auth::user()->user_type)
 
-				                	<p><small><b>{{tr('notes_for_channel')}}</b></small></p>
-				                @endif
+					                	<p><small><b>{{tr('notes_for_channel')}}</b></small></p>
+					                @endif
+					            @endif
 				                   <!-- <p style="color: #000">{{tr('no_channel_found')}}</p> -->
 				                   <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
