@@ -18,9 +18,9 @@
 
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
             
-            <div class="profile-content">
+            <div class="profile-content slide-area1">
                 <div class="row no-margin">
-                    <div class="col-sm-7 profile-view">
+                    <div class="col-md-7 col-lg-6 profile-view">
                         <div class="edit-profile ">
                             <div class="profile-details">
                                 <div class="sub-profile">
@@ -95,7 +95,7 @@
                     
                     @if(count($wishlist->items) > 0)
                         
-                        <div class="mylist-profile col-sm-5">
+                        <div class="mylist-profile col-md-5 col-lg-6">
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
                             <ul class="history-list profile-history">

@@ -1364,7 +1364,7 @@ profile.html css
 ----------------------------------------------------------------------------------------------------------------------------------------
 */
 .profile-content{
-	margin-top: 75px;
+	/*margin-top: 75px;*/
     margin-bottom: 15px;
 }
 .profile-details{
@@ -1375,7 +1375,7 @@ profile.html css
 	padding: 15px;
 	border-radius: 4px;
 	margin: 0 auto;
-	max-width: 500px;
+	/*max-width: 500px;*/
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
 }
 .image-profile{
@@ -1722,7 +1722,7 @@ changes
 	margin-bottom: 10px;
 }
 .profile-content {
-    margin-top:10px !important;
+    margin-top:30px !important;
 }
 .common-streamtube {
 	min-height: 700px;
@@ -2321,11 +2321,15 @@ changes
 .modal-footer .btn-danger{
 	border-radius: 4px;
 }
-.btn .btn-danger{
+.btn{
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);	
+}
+.btn.btn-danger{
 	border:1px solid #d9534f !important;
 	transition: .3s all linear;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
 }
-.btn .btn-danger:hover, .btn .btn-danger:active, .btn .btn-danger:focus{
+.btn.btn-danger:hover, .btn.btn-danger:active, .btn.btn-danger:focus{
 	border-color: #c9302c !important;
 }
 .video-title1{
@@ -3053,4 +3057,11 @@ changes
 }
 .active .channel-tab-icon {
 	color: #666;
+}
+.input-group-btn .btn.btn-danger{
+	border:0 !important;
+	box-shadow: none !important;
+}
+.dropdown .btn.btn-default{
+	box-shadow: none !important;
 }

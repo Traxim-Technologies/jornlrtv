@@ -60,7 +60,7 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
 	margin-top: 15px;
 }
 .play-video{
@@ -139,7 +139,7 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
+	padding: 15px;
 }
 .invoice-img{
 	background-size: cover;
@@ -250,11 +250,11 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
-	margin-top: 15px;
+	/*padding: 15px;*/
+	/*margin-top: 15px;*/
 }
 .profile-view{
-	padding: 0;
+	/*padding: 0;*/
 }
 .st_video_upload_btn {
 	border-color: #e1e1e1 !important;
@@ -325,7 +325,7 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
+	padding: 15px;
 }
 .invoice-img{
 	background-size: cover;
@@ -417,10 +417,12 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
+	margin-top: 20px;
+	/*margin-bottom: 20px;*/
 }
 .profile-view{
-	padding-left: 0;
+	/*padding-left: 0;*/
 }
 .st_video_upload_btn {
 	border-color: #e1e1e1 !important;
@@ -490,17 +492,17 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
-	display: flex;
+	padding: 15px;
+	/*display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 330px;
+	align-items: center;*/
+	height: 394px;
 }
 .invoice-img{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 330px;
+	height:394px;
 }
 .video-desc{
 	margin-top:5px;
@@ -569,10 +571,10 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
 }
 .profile-view{
-	padding-left: 0;
+	/*padding-left: 0;*/
 }
 .st_video_upload_btn {
 	border-color: #e1e1e1 !important;
@@ -642,17 +644,17 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
-	display: flex;
+	padding: 15px;
+	/*display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 330px;
+	align-items: center;*/
+	height: 394px;
 }
 .invoice-img{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 330px;
+	height: 394px;
 }
 .video-desc{
 	margin-top:5px;
@@ -722,10 +724,10 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
 }
 .profile-view{
-	padding-left: 0;
+	/*padding-left: 0;*/
 }
 .st_video_upload_btn {
 	border-color: #e1e1e1 !important;
@@ -795,17 +797,17 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
-	display: flex;
+	padding: 15px;
+	/*display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 330px;
+	align-items: center;*/
+	height: 394px;
 }
 .invoice-img{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 330px;
+	height: 394px;
 }
 .video-desc{
 	margin-top:5px;
@@ -1267,8 +1269,8 @@ recommend.html css
 		margin-top: 15px;
 	}
 	.profile-view{
-		padding-right: 0;
-		padding-left: 0;
+		/*padding-right: 0;
+		padding-left: 0;*/
 	}
 }
 

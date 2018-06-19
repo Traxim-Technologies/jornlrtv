@@ -271,7 +271,7 @@
 	margin-top: 0;
 	height: 28px;
 }
-.y-signin{
+.y-signin .btn{
 	font-size: 16px;
 	margin-top: 2px;
 }
@@ -466,6 +466,44 @@
 	font-size:90% !important;
 	padding: .4em .6em .4em !important;
 }
+.profile-content {
+    margin-top:30px !important;
+}
+.edit-head{
+	font-size: 28px;
+	margin-bottom:20px;
+}
+.profile-title h3{
+	font-size: 26px;
+}
+.profile-title h4{
+	font-size: 17px;
+	margin-bottom: 10px;
+}
+.profile-title p{
+	font-size: 16px;
+    margin-bottom: 7px;
+}
+.edit-pro-btn a{
+	padding: 8px 15px;
+	font-size: 16px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding: 10px;
+	font-size: 16px;
+}
+.invoice-desc{
+	font-size: 16px;
+}
+.payment-failure h4{
+	font-size: 22px;
+}
+.payment-failure p{
+	font-size: 16px;
+}
+.list-style li{
+	font-size: 16px;
+}
 }
 
 @media (min-width: 1680px) and (max-width: 1919px) {
@@ -533,7 +571,7 @@
 	margin-top: 0;
 	height:32px;
 }
-.y-signin{
+.y-signin, .btn{
 	font-size: 18px;
     margin-top: 2px;
     padding: 10px 20px;
@@ -740,6 +778,41 @@
 	font-size:100% !important;
 	padding: .5em .8em .5em !important;
 }
+.edit-head{
+	font-size:30px;
+	margin-bottom:23px;
+}
+.profile-title h3{
+	font-size:28px;
+}
+.profile-title h4{
+	font-size:19px;
+	margin-bottom: 15px;
+}
+.profile-title p{
+	font-size:18px;
+    margin-bottom:10px;
+}
+.edit-pro-btn a{
+	padding:10px 20px;
+	font-size:18px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding: 10px;
+	font-size: 18px;
+}
+.invoice-desc{
+	font-size: 18px;
+}
+.payment-failure h4{
+	font-size: 24px;
+}
+.payment-failure p{
+	font-size: 18px;
+}
+.list-style li{
+	font-size: 18px;
+}
 }
 
 @media (min-width: 1920px) and (max-width: 2559px) {
@@ -808,7 +881,7 @@
 	margin-top:4px;
 	height:40px;
 }
-.y-signin{
+.y-signin, .btn{
 	font-size: 20px;
     margin-top: 2px;
     padding: 13px 30px;
@@ -1023,6 +1096,47 @@
 	font-size:110% !important;
 	padding: .6em .8em .6em !important;
 }
+.edit-head{
+	font-size:32px;
+	margin-bottom:25px;
+}
+.profile-title h3{
+	font-size:30px;
+}
+.profile-title h4{
+	font-size:21px;
+	margin-bottom:18px;
+}
+.profile-title p{
+	font-size:18px;
+    margin-bottom:14px;
+}
+.edit-pro-btn a{
+	padding:15px 25px;
+	font-size:20px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding:10px;
+	font-size: 20px;
+}
+.invoice-desc{
+	font-size:20px;
+}
+.invoice1 .black-clr{
+ 	font-size:26px; 
+}
+.radio1{
+	font-size: 18px;
+}
+.payment-failure h4{
+	font-size: 26px;
+}
+.payment-failure p{
+	font-size: 20px;
+}
+.list-style li{
+	font-size: 20px;
+}
 }
 
 @media screen and (min-width: 2560px){
@@ -1091,7 +1205,7 @@
 	margin-top:4px;
 	height:40px;
 }
-.y-signin{
+.y-signin .btn{
 	font-size: 20px;
     margin-top: 2px;
     padding: 13px 30px;
@@ -1325,5 +1439,46 @@
 .label-sec .label{
 	font-size:110% !important;
 	padding: .6em .8em .6em !important;
+}
+.edit-head{
+	font-size:32px;
+	margin-bottom:25px;
+}
+.profile-title h3{
+	font-size:30px;
+}
+.profile-title h4{
+	font-size:21px;
+	margin-bottom:18px;
+}
+.profile-title p{
+	font-size:18px;
+    margin-bottom:14px;
+}
+.edit-pro-btn a{
+	padding:15px 25px;
+	font-size:20px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	padding:12px;
+	font-size: 20px;
+}
+.invoice-desc{
+	font-size:22px;
+}
+.invoice1 .black-clr{
+ 	font-size:26px; 
+}
+.radio1{
+	font-size: 18px;
+}
+.payment-failure h4{
+	font-size: 26px;
+}
+.payment-failure p{
+	font-size: 20px;
+}
+.list-style li{
+	font-size: 20px;
 }
 }
