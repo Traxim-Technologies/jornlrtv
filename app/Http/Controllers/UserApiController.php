@@ -1310,6 +1310,8 @@ class UserApiController extends Controller {
      */
     public function add_history(Request $request)  {
 
+        Log::info("Adding History...!");
+
         $validator = Validator::make(
             $request->all(),
             array(
