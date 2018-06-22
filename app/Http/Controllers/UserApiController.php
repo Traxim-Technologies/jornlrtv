@@ -3497,6 +3497,7 @@ class UserApiController extends Controller {
             $user_payment->user_id = $request->id;
             $user_payment->amount = $subscription->amount;
             $user_payment->subscription_id = $request->subscription_id;
+            $user_payment->status = DEFAULT_TRUE;
             $user_payment->save();
 
             if($user_payment) {
