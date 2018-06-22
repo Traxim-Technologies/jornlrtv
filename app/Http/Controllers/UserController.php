@@ -501,6 +501,8 @@ class UserController extends Controller {
 
             $response = $data->response_array;
 
+            // Video is autoplaying ,so we are incrementing the watch count 
+
             $this->watch_count($request);
         
             return view('user.single-video')
