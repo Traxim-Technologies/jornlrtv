@@ -500,6 +500,10 @@ class UserController extends Controller {
         if ($data->success) {
 
             $response = $data->response_array;
+
+            // Video is autoplaying ,so we are incrementing the watch count 
+
+            $this->watch_count($request);
         
             return view('user.single-video')
                         ->with('page' , '')
@@ -772,7 +776,7 @@ class UserController extends Controller {
 
             $video->save();
 
-            \Log::info("ADD History - Watch Count Start");
+            \Log::info("ADD History - Watch Count Start completed");
 
             return response()->json(['success'=>true, 
                     'data'=>['watch_count'=>number_format_short($video->watch_count)]]);
