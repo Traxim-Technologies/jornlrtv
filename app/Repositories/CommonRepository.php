@@ -202,16 +202,16 @@ class CommonRepository {
         } else {
 
     		if($request->channel_id != '') {
-    			
+                
                 $validator = Validator::make( $request->all(), array(
-                            'name' => 'required|max:255',
-                            'description'=>'required',
+                            'name' => 'required|min:6|max:255',
+                            'description'=>'required|max:1000',
                             'channel_id' => 'required|exists:channels,id'
                         ));
             } else {
                 $validator = Validator::make( $request->all(), array(
-                        'name' => 'required|max:255',
-                        'description'=>'required',
+                        'name' => 'required|min:6|max:255',
+                        'description'=>'required|max:1000',
                         'picture' => 'required|mimes:jpeg,jpg,bmp,png',
                         'cover' => 'required|mimes:jpeg,jpg,bmp,png',
                     )
