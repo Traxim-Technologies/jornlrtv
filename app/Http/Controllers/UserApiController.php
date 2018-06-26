@@ -1311,6 +1311,8 @@ class UserApiController extends Controller {
      */
     public function add_history(Request $request)  {
 
+        Log::info("Adding History...!");
+
         $validator = Validator::make(
             $request->all(),
             array(
@@ -3495,6 +3497,7 @@ class UserApiController extends Controller {
             $user_payment->user_id = $request->id;
             $user_payment->amount = $subscription->amount;
             $user_payment->subscription_id = $request->subscription_id;
+            $user_payment->status = DEFAULT_TRUE;
             $user_payment->save();
 
             if($user_payment) {
