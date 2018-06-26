@@ -242,6 +242,9 @@ liveAppCtrl
         };
 
         connection.videosContainer = document.getElementById('videos-container');
+
+        var append_already = 0;
+
         connection.onstream = function(event) {
             event.mediaElement.removeAttribute('src');
             event.mediaElement.removeAttribute('srcObject');
@@ -261,7 +264,17 @@ liveAppCtrl
                 showOnMouseEnter: false
             });
 
-            connection.videosContainer.appendChild(mediaElement);
+            if (append_already == 0) { 
+
+                connection.videosContainer.appendChild(mediaElement);
+
+                if (browser == 'Safari' || m_type =='ios') {
+
+                    append_already = 1;
+
+                }
+
+            }
 
             setTimeout(function() {
                 mediaElement.media.play();
