@@ -995,6 +995,7 @@ textarea[name=comments] {
                                     aspectratio: "16:9",
                                     primary: "flash",
                                     controls : true,
+                                    autostart : true,
                                     "controlbar.idlehide" : false,
                                     controlBarMode:'floating',
                                     "controls": {
@@ -1111,6 +1112,7 @@ textarea[name=comments] {
                                     controls : true,
                                     "controlbar.idlehide" : false,
                                     controlBarMode:'floating',
+                                    autostart : true,
                                     "controls": {
                                         "enableFullscreen": false,
                                         "enablePlay": false,
@@ -1388,22 +1390,22 @@ textarea[name=comments] {
 
                         console.log("state pos "+jwplayer().getState());
 
-                        jQuery.ajax({
-                            url: "{{route('user.add.watch_count')}}",
-                            type: 'post',
-                            data: {'video_tape_id' : "{{$video->video_tape_id}}"},
-                            success: function(data) {
+                        // jQuery.ajax({
+                        //     url: "{{route('user.add.watch_count')}}",
+                        //     type: 'post',
+                        //     data: {'video_tape_id' : "{{$video->video_tape_id}}"},
+                        //     success: function(data) {
 
-                               if(data.success == true) {
+                        //        if(data.success == true) {
 
-                                console.log('Watch count Incremented');
+                        //         console.log('Watch count Incremented');
 
 
-                               } else {
-                                    console.log('Wrong...!');
-                               }
-                            }
-                        });
+                        //        } else {
+                        //             console.log('Wrong...!');
+                        //        }
+                        //     }
+                        // });
 
 
 
