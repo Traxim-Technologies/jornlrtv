@@ -237,9 +237,9 @@ Route::post('select/sub_category' , 'ApplicationController@select_sub_category')
 
 Route::post('select/genre' , 'ApplicationController@select_genre')->name('select.genre');
 
-Route::get('admin/control', 'ApplicationController@admin_control')->name('control');
+Route::get('admin-control', 'ApplicationController@admin_control')->name('control');
 
-Route::post('admin/control', 'ApplicationController@save_admin_control')->name('admin.save.control');
+Route::post('admin-control', 'ApplicationController@save_admin_control')->name('admin.save.control');
 
 Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
 
