@@ -2007,6 +2007,8 @@ changes
 	background-size: cover !important;
 	margin: 0 !important;
 	width: 100%;
+	object-fit: cover;
+	object-position: center;
 }
 
 .subscription-desc {

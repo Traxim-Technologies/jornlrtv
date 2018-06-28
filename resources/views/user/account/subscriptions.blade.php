@@ -42,7 +42,7 @@
 														<?php echo $subscription->description; ?>
 													</div>
 
-													<p>
+													<div>
 														<span class="btn btn-danger pull-left" style="cursor: auto";>{{ Setting::get('currency')}} {{$subscription->amount}} / {{$subscription->plan}} M</span>
 
 														<!-- <a href="#" class="btn btn-success pull-right">{{tr('choose')}}</a> -->
@@ -73,9 +73,10 @@
 															
 
 														@endif
-													</p>
-													<br>
-													<br>
+													</div>
+													<div class="clearfix"></div>
+													<!-- <br>
+													<br> -->
 												</div>
 											
 											</div>
