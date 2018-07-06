@@ -1434,7 +1434,7 @@ edit profile.html css
 	padding: 15px 30px;
 	border-radius: 4px;
 	margin: 0 auto;
-	max-width:500px;
+	/*max-width:500px;*/
 	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.3);
 }
 .editform-content {
@@ -3066,4 +3066,7 @@ changes
 }
 .dropdown .btn.btn-default{
 	box-shadow: none !important;
+}
+.common-form{
+	margin-top: 50px !important;
 }

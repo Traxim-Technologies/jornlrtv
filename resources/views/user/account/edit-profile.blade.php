@@ -24,13 +24,13 @@
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
 
 
-            <div class="profile-content">
+            <div class="profile-content slide-area1">
                
                 <div class="row no-margin">
 
                     @include('notification.notify')
 
-                    <div class="col-sm-7 profile-view">
+                    <div class="col-sm-7 col-md-7 col-lg-6 profile-view">
                         <div class="edit-profile profile-view">
                             <div class="edit-form">
 
@@ -42,12 +42,12 @@
                                     @else
                                         <img src="{{asset('placeholder.png')}}" id="img_profile">
                                     @endif    
-                                  <!--  <div class="edit-image-change">
+                                    <!--  <div class="edit-image-change">
                                         <span class="fa-stack fa-lg">
                                             <i class="fa fa-square fa-stack-2x"></i>
                                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                         </span>
-                                   </div>  -->
+                                    </div>  -->
                                    <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
                                 </div><!--end of image-profile-->
 
@@ -78,7 +78,7 @@
                                         <div class="form-group">
                                             <label for="mobile">{{tr('mobile')}}</label>
                                             <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="{{tr('enter_mobile')}}" maxlength="13">
-                                            <small style="color:brown">{{tr('mobile_note')}}</small>
+                                            <p class="mobile-note"><small style="color:brown">{{tr('mobile_note')}}</small></p>
                                         </div>
 
                                         <?php
@@ -127,7 +127,7 @@
                     
                     @if(count($wishlist->items) > 0)
                         
-                        <div class="mylist-profile col-sm-5">
+                        <div class="mylist-profile col-sm-5 col-md-5 col-lg-6">
                             
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
