@@ -995,7 +995,7 @@ textarea[name=comments] {
                                     aspectratio: "16:9",
                                     primary: "flash",
                                     controls : true,
-                                    autostart : true,
+                                    // autostart : true,
                                     "controlbar.idlehide" : false,
                                     controlBarMode:'floating',
                                     "controls": {
@@ -1112,7 +1112,7 @@ textarea[name=comments] {
                                     controls : true,
                                     "controlbar.idlehide" : false,
                                     controlBarMode:'floating',
-                                    autostart : true,
+                                    // autostart : true,
                                     "controls": {
                                         "enableFullscreen": false,
                                         "enablePlay": false,
