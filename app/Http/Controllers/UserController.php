@@ -842,8 +842,9 @@ class UserController extends Controller {
 
                     // Check the video view count reached admin viewers count, to add amount for each view
 
-                    if ($video->user_id != Auth::user()->id) {
+                    $user_id = Auth::check() ? Auth::user()->id : 0;
 
+                    if ($video->user_id != Auth::user()->id) {
 
                         if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
