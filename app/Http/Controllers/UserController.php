@@ -844,7 +844,7 @@ class UserController extends Controller {
 
                     $user_id = Auth::check() ? Auth::user()->id : 0;
 
-                    if ($video->user_id != Auth::user()->id) {
+                    if ($video->user_id != $user_id) {
 
                         if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
