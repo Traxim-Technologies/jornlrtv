@@ -398,7 +398,7 @@
 	padding: 5px 15px;
 }
 .video-views-channel-name{
-	margin-bottom: 6px;
+	/*margin-bottom: 6px;*/
 }
 .cross-mark1 i{
 	font-size: 16px;
@@ -553,6 +553,36 @@
 }
 .common-form{
 	margin-top: 60px !important;
+}
+.video_views a{
+	margin-bottom: 6px !important;
+	display: inline-block;
+}
+.cards-head{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.jp-card-container1{
+	height: 230px !important;
+}
+.note-sec{
+	font-size: 18px;
+}
+.card-title{
+	font-size: 20px;
+}
+.card-details h5{
+	font-size: 16px;
+}
+.input-group-signup input{
+	height: 45px;
+}
+.jp-card-container{
+	max-width: 550px !important;
+    height: 235px !important;
+}
+.jp-card.jp-card-identified{
+	margin-top: 20px !important;
 }
 }
 
@@ -760,7 +790,7 @@
 	padding:7px 20px;
 }
 .video-views-channel-name{
-	margin-bottom:7px;
+	/*margin-bottom:7px;*/
 }
 .cross-mark1 i{
 	font-size: 18px;
@@ -913,6 +943,33 @@
 }
 .common-form{
 	margin-top: 70px !important;
+}
+.video_views a{
+	margin-bottom: 7px !important;
+	display: inline-block;
+}
+.cards-head{
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+.note-sec{
+	font-size: 20px;
+}
+.card-title{
+	font-size: 22px;
+}
+.card-details h5{
+	font-size: 18px;
+}
+.input-group-signup input{
+	height:48px;
+}
+.jp-card-container{
+	max-width: 650px !important;
+    height: 275px !important;
+}
+.jp-card.jp-card-identified{
+	margin-top: 20px !important;
 }
 }
 
@@ -1129,7 +1186,7 @@
 	padding:10px 20px;
 }
 .video-views-channel-name{
-	margin-bottom:9px;
+	/*margin-bottom:9px;*/
 }
 .cross-mark1 i{
 	font-size:20px;
@@ -1261,8 +1318,8 @@
 	margin-bottom: 20px;
 }
 .history-image{
-	min-height: 130px;
-	max-height: 130px;
+	min-height: 190px;
+	max-height: 190px;
 }
 .history-image img {
     width: 100%;
@@ -1288,6 +1345,33 @@
 }
 .common-form{
 	margin-top: 70px !important;
+}
+.video_views a{
+	margin-bottom: 8px !important;
+	display: inline-block;
+}
+.cards-head{
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+.note-sec{
+	font-size: 22px;
+}
+.card-title{
+	font-size: 24px;
+}
+.card-details h5{
+	font-size: 20px;
+}
+.input-group-signup input{
+	height:52px;
+}
+.jp-card-container{
+	max-width: 650px !important;
+    height: 275px !important;
+}
+.jp-card.jp-card-identified{
+	margin-top: 20px !important;
 }
 }
 
@@ -1524,7 +1608,7 @@
 	padding:10px 20px;
 }
 .video-views-channel-name{
-	margin-bottom:9px;
+	/*margin-bottom:9px;*/
 }
 .cross-mark1 i{
 	font-size:20px;
@@ -1656,8 +1740,8 @@
 	margin-bottom: 20px;
 }
 .history-image{
-	min-height: 130px;
-	max-height: 130px;
+	min-height: 190px;
+	max-height: 190px;
 }
 .history-image img {
     width: 100%;
@@ -1683,5 +1767,32 @@
 }
 .common-form{
 	margin-top: 70px !important;
+}
+.video_views a{
+	margin-bottom: 8px !important;
+	display: inline-block;
+}
+.cards-head{
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+.note-sec{
+	font-size: 22px;
+}
+.card-title{
+	font-size: 24px;
+}
+.card-details h5{
+	font-size: 20px;
+}
+.input-group-signup input{
+	height:52px;
+}
+.jp-card-container{
+	max-width: 650px !important;
+    height: 275px !important;
+}
+.jp-card.jp-card-identified{
+	margin-top: 20px !important;
 }
 }

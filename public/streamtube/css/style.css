@@ -1490,17 +1490,17 @@ label{
 }
 .signup-submit:hover{
 	background-color: #b31217;
-	/*border-color: transparent;*/
-	outline-color: transparent;
+	border-color:#b31217;
+	outline-color: #b31217;
 }
 .signup-submit:focus{
 	background-color: #b31217;
-	/*border-color: transparent;*/
-	outline-color: transparent;
+	border-color: #b31217;
+	outline-color: #b31217;
 }
 .signup-submit:active{
 	background-color: #b31217 !important;
-	/*border-color: transparent !important;*/
+	border-color: #b31217 !important;
 	outline-color: transparent;
 }
 .signup-pwd{
@@ -3069,4 +3069,9 @@ changes
 }
 .common-form{
 	margin-top: 50px !important;
+}
+.cards-head{
+	margin-top: 0;
+	margin-bottom: 15px;
+	font-weight: 600;
 }

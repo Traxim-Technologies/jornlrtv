@@ -23,7 +23,7 @@
 
 						<div class="col-lg-12">
 
-                    		<h4>{{tr('cards')}}</h4>
+                    		<h4 class="cards-head">{{tr('cards')}}</h4>
 
                     		@include('notification.notify')
 
@@ -32,7 +32,7 @@
                     				
                     				<div class="card-wrapper row">
 
-				            			<div class="jp-card-container">
+				            			<div class="jp-card-container jp-card-container1">
 
 					            			<div class="jp-card jp-card-visa jp-card-identified  top">
 
@@ -141,7 +141,7 @@
 
 					        @if(count($cards) > 0)
 
-					        	<p><small><b>Note : </b>{{tr('card_notes')}}</small></p>
+					        	<p class="note-sec"><small><b>Note : </b>{{tr('card_notes')}}</small></p>
 
 					           	<div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 						           	<div class="row">
