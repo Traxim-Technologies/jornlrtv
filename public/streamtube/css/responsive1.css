@@ -489,7 +489,7 @@
 	font-size: 16px;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
-	padding: 10px;
+	padding: 10px !important;
 	font-size: 16px;
 }
 .invoice-desc{
@@ -583,6 +583,21 @@
 }
 .jp-card.jp-card-identified{
 	margin-top: 20px !important;
+}
+.circle{
+	height: 170px !important;
+	width: 170px !important;
+}
+.circle__content{
+	font-size: 1.5em !important; 
+}
+.redeem-content{
+	font-size: 1.1em;
+	margin:2em 0 1em 0 !important;
+}
+.label{
+	padding:.4em .7em;
+	font-size: 80%;
 }
 }
 
@@ -878,7 +893,7 @@
 	font-size:18px;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
-	padding: 10px;
+	padding: 10px !important;
 	font-size: 18px;
 }
 .invoice-desc{
@@ -970,6 +985,22 @@
 }
 .jp-card.jp-card-identified{
 	margin-top: 20px !important;
+}
+.circle{
+	height: 190px !important;
+	width: 190px !important;
+	margin: auto auto 30px auto !important;
+}
+.circle__content{
+	font-size: 1.5em !important;
+}
+.redeem-content{
+	font-size: 1.3em;
+	margin: 2.5em 0 1em 0 !important;
+}
+.label{
+	padding:.4em 1em;
+	font-size: 80%;
 }
 }
 
@@ -1274,7 +1305,7 @@
 	font-size:20px;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
-	padding:10px;
+	padding:14px !important;
 	font-size: 20px;
 }
 .invoice-desc{
@@ -1372,6 +1403,22 @@
 }
 .jp-card.jp-card-identified{
 	margin-top: 20px !important;
+}
+.circle{
+	height: 210px !important;
+	width: 210px !important;
+	margin: auto auto 40px auto !important;
+}
+.circle__content{
+	font-size: 1.7em !important;
+}
+.redeem-content{
+	font-size: 1.3em;
+	margin: 2.5em 0 1em 0 !important;
+}
+.label{
+	padding:.5em 1.4em;
+	font-size: 80%;
 }
 }
 
@@ -1696,7 +1743,7 @@
 	font-size:20px;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
-	padding:12px;
+	padding:16px !important;
 	font-size: 20px;
 }
 .invoice-desc{
@@ -1794,5 +1841,21 @@
 }
 .jp-card.jp-card-identified{
 	margin-top: 20px !important;
+}
+.circle{
+	height: 210px !important;
+	width: 210px !important;
+	margin: auto auto 40px auto !important;
+}
+.circle__content{
+	font-size: 1.7em !important;
+}
+.redeem-content{
+	font-size: 1.3em !important;
+	margin: 2.5em 0 1em 0 !important;
+}
+.label{
+	padding:.5em 1.4em;
+	font-size: 80%;
 }
 }

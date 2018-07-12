@@ -3075,3 +3075,6 @@ changes
 	margin-bottom: 15px;
 	font-weight: 600;
 }
+.circle{
+	margin: auto auto 20px auto !important;
+}

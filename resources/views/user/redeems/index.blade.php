@@ -177,7 +177,7 @@ thead>tr>th {
                                                     <td>{{$redeem_request->created_at->diffForHumans()}}</td>
 
                                                     <td>
-                                                        <span class="btn btn-primary btn-xs"> <b>
+                                                        <span class="label label-primary"> <b>
 
                                                             {{redeem_request_status($redeem_request->status)}}
 
