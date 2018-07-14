@@ -599,6 +599,87 @@
 	padding:.4em .7em;
 	font-size: 80%;
 }
+.sub-history h3{
+	font-size: 22px;
+	margin-bottom: 10px;
+}
+.sub-history p{
+	font-size: 16px;
+}
+.sub-head h4{
+	font-size: 20px;
+}
+.sub-head p{
+	font-size: 16px;
+}
+.sub-desc{
+	height: 108px;
+}
+.sub-desc p{
+	font-size: 16px;
+}
+.sub-deatils{
+	font-size: 16px;
+}
+.ppv-video{
+	height: 150px;
+}
+.ppv-title{
+	font-size: 16px;
+	padding: 10px;
+}
+.ppv-view{
+	margin-top: 71px;
+	font-size: 16px;
+}
+.ppv-details p{
+	font-size: 16px;
+}
+.sugg-head1{
+	font-size: 20px;
+	padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+.suggn-title h5{
+	font-size: 14px;
+}
+.sugg-head .stars{
+	margin-top: 3px;
+    display: inline-block;
+}
+.title h3{
+	font-size: 20px;
+}
+.views{
+	font-size: 18px;
+	padding-top: 12px;
+}
+.thumb-class, .share-new{
+	font-size: 18px;
+}
+.mylist{
+	font-size: 18px;
+	line-height: unset;
+}
+.username{
+	font-size: 17px;
+}
+.video-desc{
+	font-size: 17px !important;
+	line-height: 1.4;
+}
+.star-rating-active s, .star-rating-rtl-active s{
+	font-size: 16px;
+}
+#comment_form textarea{
+	font-size: 16px;
+	height: 75px !important;
+}
+.profile-button .dropdown-menu {
+    left: -135px;
+    font-size: 14px;
+    min-width: 175px;
+}
 }
 
 @media (min-width: 1680px) and (max-width: 1919px) {
@@ -1001,6 +1082,91 @@
 .label{
 	padding:.4em 1em;
 	font-size: 80%;
+}
+.sub-history h3{
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+.sub-history p{
+	font-size: 18px;
+}
+.sub-head h4{
+	font-size: 22px;
+}
+.sub-head p{
+	font-size: 18px;
+}
+.sub-desc{
+	height: 108px;
+}
+.sub-desc p{
+	font-size: 18px;
+}
+.sub-deatils{
+	font-size: 18px;
+}
+.ppv-video{
+	height: 170px;
+}
+.ppv-title{
+	font-size: 18px;
+	padding: 12px;
+}
+.ppv-view{
+	margin-top: 82px;
+	font-size: 18px;
+}
+.ppv-details p{
+	font-size: 18px;
+}
+.ppv-details{
+	padding: 15px;
+}
+.sugg-head1{
+	font-size: 22px;
+	padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+.suggn-title h5{
+	font-size: 16px;
+	margin-bottom: 7px;
+}
+.sugg-head .stars{
+	margin-top: 6px;
+    display: inline-block;
+}
+.title h3{
+	font-size: 22px;
+}
+.views{
+	font-size: 20px;
+	padding-top: 12px;
+}
+.thumb-class, .share-new{
+	font-size: 20px;
+}
+.mylist{
+	font-size: 20px;
+	line-height:unset;
+}
+.username{
+	font-size: 19px;
+}
+.video-desc{
+	font-size: 19px !important;
+	line-height: 1.4;
+}
+.star-rating-active s, .star-rating-rtl-active s{
+	font-size: 16px;
+}
+#comment_form textarea{
+	font-size: 18px;
+	height: 80px !important;
+}
+.profile-button .dropdown-menu {
+    left: -160px;
+    font-size: 16px;
+    min-width: 200px;
 }
 }
 
@@ -1419,6 +1585,87 @@
 .label{
 	padding:.5em 1.4em;
 	font-size: 80%;
+}
+.sub-history p{
+	font-size: 20px;
+}
+.sub-head h4{
+	font-size: 24px;
+}
+.sub-head p{
+	font-size: 20px;
+}
+.sub-desc{
+	height: 130px;
+}
+.sub-desc p{
+	font-size: 20px;
+}
+.sub-deatils{
+	font-size: 20px;
+}
+.ppv-video{
+	height: 190px;
+}
+.ppv-title{
+	font-size: 20px;
+	padding: 14px;
+}
+.ppv-view{
+	margin-top: 92px;
+	font-size:20px;
+}
+.ppv-details p{
+	font-size: 20px;
+}
+.ppv-details{
+	padding: 20px;
+}
+.sugg-head1{
+	font-size: 22px;
+	padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+.suggn-title h5{
+	font-size: 18px;
+	margin-bottom: 7px;
+}
+.sugg-head .stars{
+	margin-top: 6px;
+    display: inline-block;
+}
+.title h3{
+	font-size: 24px;
+}
+.views{
+	font-size: 22px;
+	padding-top: 12px;
+}
+.thumb-class, .share-new{
+	font-size: 22px;
+}
+.mylist{
+	font-size: 22px;
+	line-height:unset;
+}
+.username{
+	font-size:21px;
+}
+.video-desc{
+	font-size: 21px !important;
+	line-height: 1.4;
+}
+.star-rating-active s, .star-rating-rtl-active s{
+	font-size: 18px;
+}
+#comment_form textarea{
+	font-size: 20px;
+	height: 85px !important;
+}
+.profile-button .dropdown-menu {
+    left: -195px;
+    font-size: 18px;
+    min-width: 225px;
 }
 }
 
@@ -1858,4 +2105,83 @@
 	padding:.5em 1.4em;
 	font-size: 80%;
 }
+.sub-history p{
+	font-size: 20px;
 }
+.sub-head h4{
+	font-size: 24px;
+}
+.sub-head p{
+	font-size: 20px;
+}
+.sub-desc{
+	height: 130px;
+}
+.sub-desc p{
+	font-size: 20px;
+}
+.sub-deatils{
+	font-size: 20px;
+}
+.ppv-video{
+	height: 190px;
+}
+.ppv-title{
+	font-size: 20px;
+	padding: 14px;
+}
+.ppv-view{
+	margin-top: 92px;
+	font-size:20px;
+}
+.ppv-details p{
+	font-size: 20px;
+}
+.ppv-details{
+	padding: 20px;
+}
+.sugg-head1{
+	font-size: 22px;
+	padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+.suggn-title h5{
+	font-size: 18px;
+	margin-bottom: 7px;
+}
+.sugg-head .stars{
+	margin-top: 6px;
+    display: inline-block;
+}
+.views{
+	font-size: 22px;
+	padding-top: 12px;
+}
+.thumb-class, .share-new{
+	font-size: 22px;
+}
+.mylist{
+	font-size: 22px;
+	line-height:unset;
+}
+.username{
+	font-size:21px;
+}
+.video-desc{
+	font-size: 21px !important;
+	line-height: 1.4;
+}
+.star-rating-active s, .star-rating-rtl-active s{
+	font-size: 18px;
+}
+#comment_form textarea{
+	font-size: 20px;
+	height: 85px !important;
+}
+.profile-button .dropdown-menu {
+    left: -195px;
+    font-size: 18px;
+    min-width: 225px;
+}
+}
+

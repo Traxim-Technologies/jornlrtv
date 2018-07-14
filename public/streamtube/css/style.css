@@ -455,7 +455,7 @@ videos (single page) css
 }
 
 .report-button{
-    background-color: #b31217;
+    background-color: rgb(229, 45, 39);
 	color: #fff;
 	box-shadow: none;
 	border-color: transparent;
@@ -465,6 +465,8 @@ videos (single page) css
 	margin-left: 10px;
 	padding: 4px 10px;
 	font-size: 13px;
+	border-radius: 4px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
 }
 .menu-foot{
 	list-style: none;
@@ -764,7 +766,10 @@ input[type="checkbox"], input[type="radio"]{
     height:65px !important;
     border-bottom: 1px solid #999;
     position: relative;
-    margin-bottom: -6px;
+    margin-bottom: -9px;
+}
+.video-desc{
+	line-height: 1.4;
 }
 #comment_form textarea:focus+.underline {
   transform: scale(1);
@@ -2930,11 +2935,14 @@ changes
 	text-align: center;
 }
 .sub-desc{
-	height:60px;
+	height:90px;
 	overflow: auto;
 	text-align: center;
 	padding: 10px 15px;
 	border-bottom: 1px solid #ddd;
+}
+.sub-history h3{
+	margin-bottom: 10px;
 }
 .sub-deatils{
 	padding: 15px 0;
@@ -3077,4 +3085,10 @@ changes
 }
 .circle{
 	margin: auto auto 20px auto !important;
+}
+.mb-0{
+	margin-bottom: 0;
+}
+.btn{
+	border-radius:4px;
 }
