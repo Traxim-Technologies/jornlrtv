@@ -1945,9 +1945,15 @@ class UserController extends Controller {
 
     public function partialVideos(Request $request) {
 
+        $request->request->add([ 
+
+               'age' => \Auth::check() ? \Auth::user()->age_limit : "",
+
+        ]);
+
         // Get Videos
 
-        $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip)->getData();
+        $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip, $request)->getData();
 
         $channel = Channel::find($request->channel_id);
 
