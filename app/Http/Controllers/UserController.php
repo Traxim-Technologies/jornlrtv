@@ -842,8 +842,9 @@ class UserController extends Controller {
 
                     // Check the video view count reached admin viewers count, to add amount for each view
 
-                    if ($video->user_id != Auth::user()->id) {
+                    $user_id = Auth::check() ? Auth::user()->id : 0;
 
+                    if ($video->user_id != $user_id) {
 
                         if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
 
@@ -2495,7 +2496,11 @@ class UserController extends Controller {
 
         // Get Videos
 
-        $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip)->getData();
+         $request->request->add([ 
+                'age' => \Auth::check() ? \Auth::user()->age_limit : "",
+            ]);
+
+        $videos = $this->UserAPI->channel_videos($request->channel_id, $request->skip, $request)->getData();
 
         $channel = Channel::find($request->channel_id);
 

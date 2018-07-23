@@ -5058,7 +5058,7 @@ class UserApiController extends Controller {
      * 
      * @return list out all the videos, and status of the subscribers
      */
-    public function channel_videos($channel_id, $skip , $request) {
+    public function channel_videos($channel_id, $skip , $request = null) {
 
         $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
