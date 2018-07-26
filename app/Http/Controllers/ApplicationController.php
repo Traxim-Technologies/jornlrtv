@@ -226,7 +226,7 @@ class ApplicationController extends Controller {
                   FROM user_payments";
 
         $payments = DB::select(DB::raw($query));*/
-        $current_time = date("Y-m-d");
+        $current_time = date("Y-m-d H:i:s");
         // $current_time = "2018-06-06 18:01:56";
 
         $payments = UserPayment::leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
@@ -244,7 +244,7 @@ class ApplicationController extends Controller {
                 if(strtotime($payment->expiry_date) <= strtotime($current_time))
                 {
                     // Delete provider availablity
-                    Log::info('Send mail to user');
+                    Log::info('Send mail to user '.$payment->id);
 
                     $email_data = array();
                     
