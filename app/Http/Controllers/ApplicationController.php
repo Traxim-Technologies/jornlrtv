@@ -229,7 +229,7 @@ class ApplicationController extends Controller {
         $current_time = date("Y-m-d H:i:s");
         // $current_time = "2018-06-06 18:01:56";
 
-        $payments = UserPayment::leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
+        $payments = UserPayment::select('user_payments.*')->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
                                 ->where('user_payments.status' , 1)
                                 ->where('user_payments.expiry_date' ,"<=" , $current_time)
                                 ->where('user_type' ,1)
@@ -237,14 +237,14 @@ class ApplicationController extends Controller {
                                 ->get();
 
 
-        Log::info(print_r($payments));
-
         if($payments) {
             foreach($payments as $payment){
                 if(strtotime($payment->expiry_date) <= strtotime($current_time))
                 {
                     // Delete provider availablity
                     Log::info('Send mail to user '.$payment->id);
+
+                    Log::info(print_r($payment->toArray(), true));
 
                     $email_data = array();
                     
