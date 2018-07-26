@@ -241,7 +241,7 @@ class ApplicationController extends Controller {
 
         if($payments) {
             foreach($payments as $payment){
-                if(strtotime($pending_payment_details->expiry_date) <= strtotime($current_time))
+                if(strtotime($payment->expiry_date) <= strtotime($current_time))
                 {
                     // Delete provider availablity
                     Log::info('Send mail to user');
