@@ -233,7 +233,7 @@ class ApplicationController extends Controller {
                                 ->where('user_payments.status' , 1)
                                 ->where('user_payments.expiry_date' ,"<=" , $current_time)
                                 ->where('user_type' ,1)
-                                ->orderBy('created_at', 'desc')
+                                ->orderBy('user_payments.created_at', 'desc')
                                 ->get();
 
 
