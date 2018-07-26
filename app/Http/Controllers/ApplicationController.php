@@ -32,6 +32,8 @@ use App\LiveVideo;
 
 use Setting;
 
+use App\UserPayment;
+
 class ApplicationController extends Controller {
 
     protected $UserAPI;
