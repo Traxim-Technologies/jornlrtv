@@ -229,16 +229,19 @@ class ApplicationController extends Controller {
         $current_time = date("Y-m-d H:i:s");
         // $current_time = "2018-06-06 18:01:56";
 
-        $payments = UserPayment::select('user_payments.*')->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
+        $payments = UserPayment::select('user_payments.*', DB::raw('max(user_payments.id) as payment_auto_id'))->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
                                 ->where('user_payments.status' , 1)
-                                ->where('user_payments.expiry_date' ,"<=" , $current_time)
+                                // ->where('user_payments.expiry_date' ,"<=" , $current_time)
                                 ->where('user_type' ,1)
                                 ->orderBy('user_payments.created_at', 'desc')
+                                ->groupBy('user_id')
                                 ->get();
-
 
         if($payments) {
             foreach($payments as $payment){
+
+                $payment = UserPayment::find($payment->payment_auto_id);
+
                 if(strtotime($payment->expiry_date) <= strtotime($current_time))
                 {
                     // Delete provider availablity
