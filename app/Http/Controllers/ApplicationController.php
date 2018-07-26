@@ -220,16 +220,26 @@ class ApplicationController extends Controller {
 
         $time = date("Y-m-d");
         // Get provious provider availability data
-        $query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
+        /*$query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
                   FROM user_payments";
 
-        $payments = DB::select(DB::raw($query));
+        $payments = DB::select(DB::raw($query));*/
+        $current_time = date("Y-m-d");
+        // $current_time = "2018-06-06 18:01:56";
+
+        $payments = UserPayment::leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
+                                ->where('user_payments.status' , 1)
+                                ->where('user_payments.expiry_date' ,"<=" , $current_time)
+                                ->where('user_type' ,1)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+
 
         Log::info(print_r($payments));
 
         if($payments) {
             foreach($payments as $payment){
-                if($payment->date_difference < 0)
+                if(strtotime($pending_payment_details->expiry_date) <= strtotime($current_time))
                 {
                     // Delete provider availablity
                     Log::info('Send mail to user');
