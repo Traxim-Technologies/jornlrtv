@@ -5434,6 +5434,8 @@ class UserApiController extends Controller {
 
                         $videos = is_array($videos) ? $videos : explode(',', $videos);
 
+                        $video_pixels = is_array($video_pixels) ? $video_pixels : explode(',', $video_pixels)
+
                         if (is_array($videos)) {
 
                             foreach ($videos as $key => $value) {
