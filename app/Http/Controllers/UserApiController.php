@@ -5432,7 +5432,7 @@ class UserApiController extends Controller {
 
                     if(count($videos) > 0) {
 
-                        $videos = explode(',', $videos);
+                        $videos = is_array($videos) ? $videos : explode(',', $videos);
 
                         if (is_array($videos)) {
 
