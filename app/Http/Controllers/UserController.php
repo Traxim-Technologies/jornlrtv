@@ -738,7 +738,10 @@ class UserController extends Controller {
 
                     // User logged in or not
 
-                    if (Auth::check()) {
+
+                    $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                    if ($video->user_id != $user_id) {
 
                         // Check the video view count reached admin viewers count, to add amount for each view
 
