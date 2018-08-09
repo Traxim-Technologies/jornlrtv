@@ -517,8 +517,11 @@ videos (single page) css
 .foot-share1{
 	color: red;
 }
-.foot-share2{
+/*.foot-share2{
 	padding-top: 2px;
+}*/
+.foot-share2::before{
+	vertical-align: -3.5%;
 }
 #report-form .modal-content{
 	border-radius: 0;
@@ -703,7 +706,7 @@ input{
 	border-color:#b8b8b8 !important;
 }
 textarea{
-	border-radius: 0px !important;
+	border-radius: 3px !important;
 	box-shadow: none !important;
 	border-color:#b8b8b8 !important;
 	resize: none;
@@ -2550,6 +2553,10 @@ changes
 }
 .mobile-header{
 	padding:0;
+	margin-bottom: 0;
+}
+.mylist-profile{
+	padding-top: 10px;
 }
 .mobile-header li{
 	display: inline-block !important;
@@ -2758,28 +2765,20 @@ changes
 	transform: scale(1);
 	transition: all .3s linear;
 }
- #preloader {
-
-    position: absolute;
-
+#preloader {
+    position: fixed;
+    overflow: hidden;
     background: #fff;
-
     height: 100%;
-
     width: 100%;
-
     z-index: 1000;
 }
 .loader3 {
-
-  	top:0;
-    bottom: 0;
-    right: 0;
-    left: 0;
     align-items: center;
     display: flex;
     justify-content:center;
-    position: fixed;
+    height: 100%;
+    width: 100%;
 }
 .loader3:after, .loader3:before {
 	position: absolute;
@@ -3091,4 +3090,17 @@ changes
 }
 .btn{
 	border-radius:4px;
+}
+.card.wizard-card{
+	margin-bottom:15px;
+}
+.video_mobile_views {
+	background-color: #000;
+	opacity: 0.7;
+	left: 0;
+	top: 0;
+	position: absolute;
+	color: #fff;
+	font-size: 11px;
+	padding: 4px;
 }

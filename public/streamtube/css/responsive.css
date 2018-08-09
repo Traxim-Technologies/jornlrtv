@@ -82,8 +82,8 @@
 	display: inline-block;
 	font-size: 11px;
 	font-weight: normal;
-	height: 29px;
-	line-height: 29px;
+	height: 21px;
+	line-height: 21px;
 	padding: 3px 7px;
 	vertical-align: bottom;
 	margin : 10px 7px 5px 8px;
@@ -182,10 +182,113 @@
 .carousel-caption p{
 	display:none !important;
 }
+.history-image{
+	width: 30%;
+}
+.history-title{
+	width: 68%;
+}
+.new-history{
+	padding:0;
+}
+.recommend-list{
+	padding:10px 0;
+}
+.recom-head h3{
+	padding-left: 0;
+	padding-right: 0;
+}
+.profile-view{
+	padding-left: 0;
+	padding-right: 0;
+}
+.mylist-profile {
+	padding-left: 0;
+	padding-right: 0;
+}
+.cards-head{
+	margin-left:-15px;
+}
+.content-head h4{
+	padding-top: 15px;
+}
+.cards-head{
+	margin-top: 15px;
+}
+.sub-history h3{
+	padding-top: 10px;
+}
+.sub-history{
+	margin-bottom: 10px;
+}
+.common-form{
+	margin-top: 125px !important;
+}
+.channel-header.yt-card{
+	margin-top: -10px;
+}
+.st_photo_div{
+	margin-left: 0 !important;
+}
+.slide-area{
+	padding: 0 !important;
+}
+.slide-image {
+    height: 180px !important;
+}
+.slick-initialized .slick-slide{
+	padding: 0;
+}
+.slick-prev::before, .slick-next::before {
+    font-size: 32px;
+    color: #fff;
+}
+.slick-prev, .slick-prev:hover, .slick-prev:active, .slick-prev:focus {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,.5), transparent) !important;
+}
+.slick-next, .slick-next:hover, .slick-next:active, .slick-next:focus {
+	right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,.5), transparent) !important;
+}
+.slick-prev, .slick-next {
+    font-weight: bold;
+    padding: 0;
+    display: inline-block;
+    width: 42px;
+    height: 180px;
+    transition: all .3s linear;
+    background-color: unset;
+    line-height: 7px;
+    box-shadow: none;
+    top: 0%;
+    border-radius: 0% !important;
+    z-index: 100;
+    margin-top: 90px;
+}
+.video-head a {
+    max-height: 20px !important;
+    min-height: 20px !important;
+}
+.hidden-mobile{
+	display: none;
+}
 }
 
 /*small devices*/
 @media (min-width: 480px) and (max-width: 767px) {
+.wizard-container{
+	padding-top: 15px;
+}
+.common-form{
+	margin-top: 125px !important;
+}
+.history-image{
+	width: 25%;
+}
+.history-title{
+	width: 73%;
+}
 .bottom{
 	height: 95px;
 }
@@ -267,8 +370,8 @@
 	display: inline-block;
 	font-size: 13px;
 	font-weight: normal;
-	height: 29px;
-	line-height: 29px;
+	height: 21px;
+	line-height:21px;
 	padding: 3px 10px;
 	vertical-align: bottom;
 	margin :8px 7px 5px 8px;
@@ -366,10 +469,16 @@
 	padding: 0 50px;
 	margin-top:15px;
 }
+.recom-box{
+	width: 32%;
+}
 }
 
 /* Tablets */
 @media (min-width: 768px) and (max-width: 991px) {
+.recom-box{
+	width: 32%;
+}
 .y-menu{
 	border-right: 1px solid #f1f1f1;
     background-color: #f1f1f1;
@@ -398,6 +507,7 @@
 }
 .page-inner{
 	margin-top:60px;
+	overflow-x: hidden;
 }
 .logo-img{
 	width: 117px;
@@ -406,12 +516,12 @@
     margin-top: 5px;
 }
 .cross-mark {
-    width:35%;
+    width:40%;
     float: left;
     text-align: right;
 }
 .cross-title {
-    width: 65%;
+    width:60%;
     float: left;
     text-transform: capitalize;
 }
@@ -435,8 +545,8 @@
 	display: inline-block;
 	font-size: 13px;
 	font-weight: normal;
-	height: 29px;
-	line-height: 29px;
+	height: 21px;
+    line-height: 21px;
 	padding: 3px 10px;
 	vertical-align: bottom;
 	/*margin : 15px 7px 0px 8px;*/
@@ -523,6 +633,9 @@
 
 /* Medium Devices, */
 @media (min-width : 992px) and (max-width: 1199px){
+.recom-box{
+	width: 24%;
+}
 .y-menu{
 	border-right: 1px solid #f1f1f1;
     background-color: #f1f1f1;

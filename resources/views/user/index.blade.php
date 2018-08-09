@@ -167,6 +167,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$wishlist->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$wishlist->duration}}
                                     </div>
@@ -178,8 +181,8 @@
                                     </div>
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$wishlist->channel_id)}}">{{$wishlist->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$wishlist->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$wishlist->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$wishlist->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$wishlist->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -219,6 +222,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$recent_video->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$recent_video->duration}}
                                     </div>
@@ -231,8 +237,8 @@
 
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$recent_video->channel_id)}}">{{$recent_video->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$recent_video->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$recent_video->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$recent_video->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$recent_video->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -274,6 +280,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$trending->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$trending->duration}}
                                     </div>
@@ -286,8 +295,8 @@
                                     
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$trending->channel_id)}}">{{$trending->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$trending->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$trending->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$trending->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$trending->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -327,6 +336,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$suggestion->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$suggestion->duration}}
                                     </div>
@@ -339,8 +351,8 @@
                                    
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$suggestion->channel_id)}}">{{$suggestion->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$suggestion->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$suggestion->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -379,6 +391,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$watch_list->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$watch_list->duration}}
                                     </div>
@@ -390,8 +405,8 @@
                                     </div>
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$watch_list->channel_id)}}">{{$watch_list->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$watch_list->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$watch_list->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$watch_list->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$watch_list->created_at}}</div>
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->

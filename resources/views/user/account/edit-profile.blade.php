@@ -30,7 +30,7 @@
 
                     @include('notification.notify')
 
-                    <div class="col-sm-7 col-md-7 col-lg-6 profile-view">
+                    <div class="col-sm-12 col-md-7 col-lg-6 profile-view">
                         <div class="edit-profile profile-view">
                             <div class="edit-form">
 
@@ -127,7 +127,7 @@
                     
                     @if(count($wishlist->items) > 0)
                         
-                        <div class="mylist-profile col-sm-5 col-md-5 col-lg-6">
+                        <div class="mylist-profile col-sm-12 col-md-5 col-lg-6">
                             
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 
