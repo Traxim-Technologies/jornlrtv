@@ -104,7 +104,7 @@ use  Carbon\Carbon;
               		<i class="fa fa-video-camera"></i>
             	</div>
 
-            	<a href="{{route('admin.videos')}}" class="small-box-footer">
+            	<a href="{{route('admin.videos.list')}}" class="small-box-footer">
               		{{tr('more_info')}}
               		<i class="fa fa-arrow-circle-right"></i>
             	</a>
@@ -348,7 +348,7 @@ use  Carbon\Carbon;
 
                     <!-- /.box-body -->
                     <div class="box-footer text-center">
-                        <a href="{{route('admin.videos')}}" class="uppercase">{{tr('view_all')}}</a>
+                        <a href="{{route('admin.videos.list')}}" class="uppercase">{{tr('view_all')}}</a>
                     </div>
                     <!-- /.box-footer -->
                 </div>

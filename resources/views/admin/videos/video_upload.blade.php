@@ -16,7 +16,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
+    <li><a href="{{route('admin.videos.list')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
     <li class="active"><i class="fa fa-video-camera"></i> {{tr('add_video')}}</li>
 @endsection 
 
