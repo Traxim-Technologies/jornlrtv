@@ -35,9 +35,9 @@
           <div class="box box-primary">
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('users')}}</b>
-                <a href="{{route('admin.add.user')}}" class="btn btn-default pull-right">{{tr('add_user')}}</a>
+                <a href="{{route('admin.users.create')}}" class="btn btn-default pull-right">{{tr('add_user')}}</a>
             </div>
-            <div class="box-body">
+            <div class="box-body table-responsive">
 
             	@if(count($users) > 0)
 
@@ -48,7 +48,8 @@
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('username')}}</th>
 						      <th>{{tr('email')}}</th>
-						      <th>{{tr('mobile')}}</th>
+						      <th>{{tr('no_of_channels')}}</th>
+						      <th>{{tr('no_of_videos')}}</th>
 						      <th>{{tr('validity_days')}}</th>
 						      <th>{{tr('redeems')}}</th>
 						      @if(Setting::get('email_verify_control'))
@@ -65,7 +66,7 @@
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>
-							      		<a href="{{route('admin.view.user' , $user->id)}}"> 
+							      		<a href="{{route('admin.users.view' , $user->id)}}"> 
 
 							      			{{$user->name}}
 
@@ -82,8 +83,11 @@
 							      		</a>
 							      	</td>
 							      	<td>{{$user->email}}</td>
-							      	<td>{{$user->mobile}}</td>
 							      	
+							      	<td class="text-center"><a href="{{route('admin.users.channels' , $user->id)}}">{{$user->get_channel_count}}</a></td>
+
+							      	<td class="text-center">{{$user->get_channel_videos_count}}</td>
+
 									<td>
 										@if($user->user_type)
 											{{get_expiry_days($user->id)['days']}} days
@@ -132,29 +136,19 @@
 								                </a>
 
 								                <ul class="dropdown-menu">
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.edit.user' , array('id' => $user->id))}}">{{tr('edit')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.edit' , array('id' => $user->id))}}">{{tr('edit')}}</a></li>
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view.user' , $user->id)}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.view' , $user->id)}}">{{tr('view')}}</a></li>
 								                  	
 								                  	<li role="presentation" class="divider"></li>
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.channels' , $user->id)}}">{{tr('channels')}}</a></li>
 								                  	
-								                  	<li role="presentation">
-								                  	
-								                  		<a role="menuitem" tabindex="-1" href="{{route('admin.users.redeems' , $user->id)}}">{{tr('redeems')}}</a>
-
-								                  	</li>
-
-								                  	<li role="presentation" class="divider"></li>
-
-
 								                  	<li role="presentation">
 								                  	 	@if(Setting::get('admin_delete_control'))
 								                  	 		<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 								                  	 	@elseif(get_expiry_days($user->id) > 0)
 
-								                  	 		<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure want to delete the premium user?');" href="{{route('admin.delete.user', array('id' => $user->id))}}">{{tr('delete')}}
+								                  	 		<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure want to delete the premium user?');" href="{{route('admin.users.delete', array('id' => $user->id))}}">{{tr('delete')}}
 								                  			</a>
 								                  		@else 
 								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.user', array('id' => $user->id))}}">{{tr('delete')}}
@@ -169,21 +163,6 @@
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.status',array('id'=>$user->id,'status'=>0))}}">{{tr('decline')}}</a></li>
 								                  	@endif
 								                  	
-								                  	<li role="presentation" class="divider"></li>
-
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.user.history', $user->id)}}">{{tr('history')}}</a></li>
-
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.user.wishlist', $user->id)}}">{{tr('wishlist')}}</a></li>
-
-
-								                  	<li>
-														<a href="{{route('admin.subscriptions.plans' , $user->id)}}">		
-															<span>{{tr('subscription_plans')}}</span>
-														</a>
-
-													</li>
-								                  	
-
 								                </ul>
               								</li>
             							</ul>

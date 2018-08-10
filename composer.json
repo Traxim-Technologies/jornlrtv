@@ -36,7 +36,8 @@
         },
         "files": [
             "app/Helpers/viewHelper.php",
-            "app/Helpers/tracker.php"
+            "app/Helpers/tracker.php",
+            "app/Constants/constants.php"
         ]
     },
     "autoload-dev": {

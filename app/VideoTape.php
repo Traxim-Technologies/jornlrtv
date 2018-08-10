@@ -107,6 +107,15 @@ class VideoTape extends Model
 
     }
 
+    public function userHistory()
+    {
+        return $this->hasMany('App\UserHistory', 'video_tape_id', 'id');
+    }
+
+    public function userWishlist()
+    {
+        return $this->hasMany('App\Wishlist', 'video_tape_id', 'id');
+    }
 
     public function getUserRatings() {
 
@@ -254,14 +263,33 @@ class VideoTape extends Model
 
             }
 
-             if (count($model->getUserRatings) > 0) {
+            if (count($model->getUserRatings) > 0) {
 
                 foreach ($model->getUserRatings as $key => $value) {
 
                    $value->delete();    
 
                 }               
-            
+
+            }
+
+            if (count($model->userHistory) > 0) {
+
+                foreach ($model->userHistory as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+
+            }
+
+            if (count($model->userWishlist) > 0) {
+
+                foreach ($model->userWishlist as $key => $value) {
+
+                   $value->delete();    
+
+                }               
 
             }
 

@@ -63,7 +63,7 @@
 
 									    <tr>
 									      	<td>{{$i+1}}</td>
-									      	<td><a href="{{route('admin.view.user' , $payment->user_id)}}"> {{($payment->user) ? $payment->user->name : ''}} </a></td>
+									      	<td><a href="{{route('admin.users.view' , $payment->user_id)}}"> {{($payment->user) ? $payment->user->name : ''}} </a></td>
 									      	<td>{{$payment->payment_id}}</td>
 									      	<td>{{Setting::get('currency')}} {{$payment->amount}}</td>
 									      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>

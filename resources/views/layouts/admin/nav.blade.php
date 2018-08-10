@@ -32,7 +32,7 @@
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="add-user"><a href="{{route('admin.add.user')}}"><i class="fa fa-circle-o"></i>{{tr('add_user')}}</a></li>
+                    <li id="add-user"><a href="{{route('admin.users.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_user')}}</a></li>
                     <li id="view-user"><a href="{{route('admin.users')}}"><i class="fa fa-circle-o"></i>{{tr('view_users')}}</a></li>
                 </ul>
     
@@ -53,7 +53,7 @@
 
             <li class="treeview" id="videos">
                 
-                <a href="{{route('admin.videos')}}">
+                <a href="{{route('admin.videos.list')}}">
                     <i class="fa fa-video-camera"></i> <span>{{tr('videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
@@ -66,7 +66,7 @@
                     </li>
 
                     <li id="view-videos">
-                        <a href="{{route('admin.videos')}}">
+                        <a href="{{route('admin.videos.list')}}">
                             <i class="fa fa-circle-o"></i>{{tr('view_videos')}}
                         </a>
                     </li>

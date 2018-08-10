@@ -143,7 +143,8 @@ return array(
 	'video_create_success'=>'Successfully created the video details.',
 	'removed_pay_per_view'=> 'Successfully, Removed Pay Per View',
 	'full_video'=>'Full Video',
-	'click_here'=>'Click Here to upload a file',
+	'click_here_to_upload'=>'Click Here to upload a file',
+	'click_here'=>'Click Here',
 	'do_upload'=>'Do you want to upload a video?',
 
 	's3_settings' => 'S3 Settings',
@@ -986,7 +987,7 @@ return array(
 	'payment_received'=>'Your payment is received Successfully !!!',
 	'thank_you'=>'Thank You!',	
 	'admin_not_logged_in'=>'Admin not logged in , Please check with credentials',
-	'user_not_found'=>'User not found',
+	'user_not_found'=>'The user you were looking for could not be found.',
 	'user_details_not_saved'=>'User Details not saved, please try again later',
 	'channel_not_found'=>'Channel not found, Please try again later',
 	'site_url_settings'=>"Company Site Url's",
@@ -1279,5 +1280,20 @@ return array(
 	'device_type'=>'Device Type',
 	'register_type'=>'Register Type',
 	'login_type'=>'Login Type',
-	'timezone'=>'Timezone'
+	'timezone'=>'Timezone',
+	'no_of_channels'=>'No of Channels',
+	'no_of_videos'=>'No of Videos',
+	'earnings'=>'Earnings',
+	'location'=>'Location',
+	'favourties'=>'Favourites',
+	'favourties_notes'=>'Recent Activities of favourties you can find here. To Find out more about Favourties of this users.',
+	'to_view_more'=>'To View More',
+	'wishlists'=>'Wishlists',
+	'history_notes'=>'Recent Activities of Histories you can find here. To Find out more about Histories of this users.',
+
+	'histories'=>'Histories',
+	'channels_short_notes'=>'Recent Activities of Channels you can find here. To Find out more about Channels of this users.',
+	'personal_info'=>'Personal Info',
+	'no_channels_found'=>'No channels found',
+
 );

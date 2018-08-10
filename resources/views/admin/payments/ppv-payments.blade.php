@@ -83,7 +83,7 @@
 
 							      		@if($payment->userDetails)
 
-							      		<a href="{{route('admin.view.user' , $payment->user_id)}}"> 
+							      		<a href="{{route('admin.users.view' , $payment->user_id)}}"> 
 							      			{{$payment->userDetails ? $payment->userDetails->name : " "}} 
 							      		</a>
 
@@ -147,7 +147,7 @@
 										      		<li>
 										      			{{tr('username')}} :
 
-										      			<a href="{{route('admin.view.user' , $payment->user_id)}}"> 
+										      			<a href="{{route('admin.users.view' , $payment->user_id)}}"> 
 							      							{{$payment->userDetails ? $payment->userDetails->name : " "}} 
 							      						</a>
 

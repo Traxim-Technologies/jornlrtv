@@ -278,7 +278,7 @@ use  Carbon\Carbon;
 
                             <li>
                                 <img style="width:60px;height:60px" src="@if($user->picture) {{$user->picture}} @else {{asset('placeholder.png')}} @endif" alt="User Image">
-                                <a class="users-list-name" href="{{route('admin.view.user' , $user->id)}}" target="_blank">{{$user->name}}</a>
+                                <a class="users-list-name" href="{{route('admin.users.view' , $user->id)}}" target="_blank">{{$user->name}}</a>
                                 <span class="users-list-date">
                                 {{$user->created_at->diffForHumans()}}</span>
                             </li>

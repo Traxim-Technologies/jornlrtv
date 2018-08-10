@@ -239,60 +239,75 @@ class AdminController extends Controller {
         return $response;
     }
 
-    public function user_channels($user_id) {
 
-        if($user_id){
-
-            $user = User::find($user_id);
-
-            $channels = Channel::orderBy('channels.created_at', 'desc')
-                            ->where('user_id' , $user_id)
-                            ->distinct('channels.id')
-                            ->get();
-
-            return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels')->with('user' , $user);
-
-        } else {
-            return back()->with('flash_error' , tr('something_error'));
-        }
-    }
 
     /**
+     * Function Name : users_list
      *
+     * To Load all the users 
      *
+     * @created By - shobana
      *
+     * @updated by - -
      *
+     * @param --
+     * 
+     * @return response of users list
      *
      */
-    public function users() {
+    public function users_list() {
 
-        $users = User::orderBy('created_at','desc')->get();
+        $users = User::orderBy('created_at','desc')
+                    ->withCount('getChannel')
+                    ->withCount('getChannelVideos')
+                    ->get();
 
-        return view('admin.users.users')->withPage('users')
+        return view('admin.users.list')->withPage('users')
                         ->with('users' , $users)
                         ->with('sub_page','view-user');
-    }
-
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-    public function add_user() {
-        return view('admin.users.add-user')->with('page' , 'users')->with('sub_page','add-user');
-    }
-
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
     
-    public function edit_user(Request $request) {
+    }
+
+    /**
+     * Function Name : users_create
+     *
+     * To create a new user
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of new User object
+     *
+     */
+    public function users_create() {
+
+        $user = new User;
+
+        return view('admin.users.create')
+                ->with('page' , 'users')
+                ->with('sub_page','add-user')
+                ->with('user', $user);
+
+    }
+
+    /**
+     * Function Name : users_edit
+     *
+     * To edit a user based on their id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of new User object
+     *
+     */
+    public function users_edit(Request $request) {
 
         $user = User::find($request->id);
 
@@ -300,44 +315,45 @@ class AdminController extends Controller {
 
             $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
 
-        }
+            return view('admin.users.edit')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
 
-        return view('admin.users.edit-user')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
+        } else {
+
+            return back()->with('flash_error', tr('user_not_found'));
+
+        }
     
     }
 
     /**
+     * Function Name : users_save
      *
+     * To save the details based on user or to create a new user
      *
+     * @created By - shobana
      *
+     * @updated by - -
      *
+     * @param --
+     * 
+     * @return response of success/failure reponse details
      *
      */
+    public function users_save(Request $request) {
 
-    public function add_user_process(Request $request) {
+        $validator = Validator::make( $request->all(), array(
+                'id'=>'exists:users,id',
+                'name' => 'required|max:255',
+                'email' => $request->id ? 'required|email|max:255|unique:users,email,'.$request->id.',id' : 'required|email|max:255|unique:users,email,NULL,id',
+                'mobile' => 'digits_between:6,13',
+                'password' => $request->id ? '' :'required|min:6|confirmed',
+                'dob'=>'required',
+                'description'=>'max:255',
+                'picture'=>'mimes:jpg,png,jpeg',
 
-        if($request->id != '') {
-
-            $validator = Validator::make( $request->all(), array(
-                        'name' => 'required|max:255',
-                        'email' => 'required|email|max:255|unique:users,email,'.$request->id.',id',
-                        'mobile' => 'required|digits_between:6,13',
-                        'dob'=>'required',
-                    )
-                );
+            )
+        );
         
-        } else {
-            $validator = Validator::make( $request->all(), array(
-                    'name' => 'required|max:255',
-                    'email' => 'required|email|max:255|unique:users,email,NULL,id',
-                    'mobile' => 'required|digits_between:6,13',
-                    'password' => 'required|min:6|confirmed',
-                    'dob'=>'required',
-                )
-            );
-        
-        }
-       
         if($validator->fails()) {
 
             $error_messages = implode(',', $validator->messages()->all());
@@ -346,41 +362,42 @@ class AdminController extends Controller {
 
         } else {
 
-            $check_user = $user = User::where('email' , $request->email)->first();
+            $user = $request->id ? User::find($request->id) : new User;
 
-            if($request->id != '') {
+            $new_user = NEW_USER;
 
-                if(!$check_user) {
+            if($user->id) {
 
-                    $user = User::find($request->id);
-                }
+                $new_user = EXISTING_USER;
 
                 $message = tr('admin_not_user');
 
             } else {
 
-                // Add New User
-
-                if(!$check_user) {
-                    $user = new User;
-                }
-
                 $user->password = ($request->password) ? \Hash::make($request->password) : null;
+
                 $message = tr('admin_add_user');
+
                 $user->login_by = 'manual';
+
                 $user->device_type = 'web';
 
                 $user->picture = asset('placeholder.png');
+
+                $user->timezone = $request->has('timezone') ? $request->timezone : '';
+
             }
-
-            $user->timezone = $request->has('timezone') ? $request->timezone : '';
-
+            
             $user->name = $request->has('name') ? $request->name : '';
+
             $user->email = $request->has('email') ? $request->email: '';
+
             $user->mobile = $request->has('mobile') ? $request->mobile : '';
+
             $user->description = $request->has('description') ? $request->description : '';
             
             $user->token = Helper::generate_token();
+
             $user->token_expiry = Helper::generate_token_expiry();
 
             $user->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user->dob;
@@ -388,6 +405,7 @@ class AdminController extends Controller {
             if ($user->dob) {
 
                 $from = new \DateTime($user->dob);
+
                 $to   = new \DateTime('today');
 
                 $user->age_limit = $from->diff($to)->y;
@@ -400,14 +418,21 @@ class AdminController extends Controller {
 
             }
 
-            if($request->id == '') {
+            if($new_user) {
 
                 $email_data['name'] = $user->name;
+
                 $email_data['password'] = $request->password;
+
                 $email_data['email'] = $user->email;
+
                 $subject = tr('user_welcome_title' , Setting::get('site_name'));
+
                 $page = "emails.admin_user_welcome";
+
                 $email = $user->email;
+
+                $user->is_verified = DEFAULT_TRUE;
 
                 Helper::send_email($page,$subject,$email,$email_data);
 
@@ -426,7 +451,6 @@ class AdminController extends Controller {
                 $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
             }
 
-            $user->is_verified = DEFAULT_TRUE;
 
             $user->save();
 
@@ -440,9 +464,12 @@ class AdminController extends Controller {
 
             if($user) {
                 
-                return redirect('/admin/view/user/'.$user->id)->with('flash_success', $message);
+                return redirect(route('admin.users.view', $user->id))->with('flash_success', $message);
+
             } else {
+
                 return back()->with('flash_error', tr('admin_not_error')->withInput());
+
             }
 
         }
@@ -450,13 +477,125 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : users_view
      *
+     * To view the usre details based on user id
      *
+     * @created By - shobana
      *
+     * @updated by - -
      *
+     * @param --
+     * 
+     * @return response of user details
      *
      */
-    public function delete_user(Request $request) {
+    public function users_view($id) {
+
+        $user = User::where('id', $id)->withCount('getChannel')
+                    ->withCount('getChannelVideos')
+                    ->withCount('userWishlist')
+                    ->withCount('userHistory')
+                    ->first();
+
+        if($user) {
+
+            $channels = Channel::where('user_id', $id)
+                    ->orderBy('created_at', 'desc')
+                    ->withCount('getVideoTape')
+                    ->withCount('getChannelSubscribers')
+                    ->paginate(12);
+
+            $channel_datas = [];
+
+            foreach ($channels as $key => $value) {
+
+                $earnings = 0;
+
+                if ($value->getVideoTape) {
+
+                    foreach ($value->getVideoTape as $key => $video) {
+
+                        $earnings += $video->user_ppv_amount;
+
+                    }
+
+                }
+                
+                $channel_datas[] = [
+
+                    'channel_id'=>$value->id,
+
+                    'channel_name'=>$value->name,
+
+                    'picture'=>$value->picture,
+
+                    'cover'=>$value->cover,
+
+                    'subscribers'=>$value->get_channel_subscribers_count,
+
+                    'videos'=>$value->get_video_tape_count,
+
+                    'earnings'=>$earnings,
+
+                    'currency'=>Setting::get('currency')
+
+                ];
+
+            }
+
+            // Without below condition the output of $channel_datas will be array f index value
+
+            $channel_datas = json_encode($channel_datas);
+
+            $channel_datas = json_decode($channel_datas);
+
+            $videos = $user->getChannelVideos;
+
+            $wishlist = Wishlist::select('wishlists.*', 'video_tapes.title as title')
+                    ->where('wishlists.user_id', $id)
+                    ->leftJoin('video_tapes', 'video_tapes.id', '=', 'wishlists.video_tape_id')
+                    ->orderBy('wishlists.created_at', 'desc')
+                    ->paginate(12);
+
+            $history = UserHistory::select('user_histories.*', 'video_tapes.title as title')
+                    ->where('user_histories.user_id', $id)
+                    ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_histories.video_tape_id')
+                    ->orderBy('user_histories.created_at', 'desc')
+                    ->paginate(12);
+
+            return view('admin.users.view')
+                        ->with('user' , $user)
+                        ->withPage('users')
+                        ->with('sub_page','users')
+                        ->with('channels', $channel_datas)
+                        ->with('videos', $videos)
+                        ->with('wishlists', $wishlist)
+                        ->with('histories', $history);
+        } else {
+
+            return back()->with('flash_error',tr('user_not_found'));
+
+        }
+    
+    }
+
+
+    /**
+     * Function Name : users_delete
+     *
+     * To delete the user details based on user id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of user details
+     *
+     */
+    public function users_delete(Request $request) {
        
         if($user = User::where('id',$request->id)->first()) {
 
@@ -486,65 +625,19 @@ class AdminController extends Controller {
     }
 
     /**
-     *
-     *
-     *
-     *
-     *
-     */
-
-    public function view_user($id) {
-
-        if($user = User::find($id)) {
-
-            return view('admin.users.user-details')
-                        ->with('user' , $user)
-                        ->withPage('users')
-                        ->with('sub_page','users');
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    }
-
-    /** 
-     * User status change
-     * 
-     *
-     */
-
-    public function user_verify_status($id) {
-
-        if($data = User::find($id)) {
-
-            $data->is_verified  = $data->is_verified ? 0 : 1;
-
-            $data->save();
-
-            return back()->with('flash_success' , $data->status ? tr('user_verify_success') : tr('user_unverify_success'));
-
-        } else {
-
-            return back()->with('flash_error',tr('admin_not_error'));
-            
-        }
-    }
-
-    /**
     * Function Name : user_status_change()
     * 
     * Description: Change the user status in approve and decline 
     *
     * @created Maheswari
     *
-    * @edited Maheswari
+    * @edited Shobana
     *
     * @param Request in user id
     *
     * @return success message in approve/decline
     */
-    public function user_status_change(Request $request){
-
+    public function users_status_change(Request $request){
 
         $users_status = User::find($request->id);
 
@@ -570,6 +663,113 @@ class AdminController extends Controller {
         }
 
     }
+
+
+    /**
+     * Function Name : users_verify_status
+     *
+     * To verify the user based on the details of id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of user details
+     *
+     */
+    public function users_verify_status($id) {
+
+        if($data = User::find($id)) {
+
+            $data->is_verified  = $data->is_verified ? 0 : 1;
+
+            $data->save();
+
+            return back()->with('flash_success' , $data->status ? tr('user_verify_success') : tr('user_unverify_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+            
+        }
+    
+    }
+
+    /**
+     * Function Name : users_channels
+     *
+     * To list out all the channels based on users id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of user channel details
+     *
+     */
+    public function users_channels($user_id) {
+
+        $user = User::find($user_id);
+
+        if($user){
+
+            $channels = Channel::orderBy('channels.created_at', 'desc')
+                            ->where('user_id' , $user_id)
+                            ->distinct('channels.id')
+                            ->get();
+
+            return view('admin.channels.channels')
+                    ->with('channels' , $channels)
+                    ->withPage('channels')
+                    ->with('sub_page','view-channels')
+                    ->with('user' , $user);
+        } else {
+
+            return back()->with('flash_error' , tr('user_not_found'));
+
+        }
+    
+    }
+
+    /**
+     * Function Name : videos_list
+     *
+     * List of videos displayed and also based on user it will list out
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of videos details
+     *
+     */
+    public function videos_list(Request $request) {
+
+        $query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->videoResponse()
+                    ->orderBy('video_tapes.created_at' , 'desc');
+
+        if ($request->id) {
+
+            $query->where('user_id', $request->id);
+
+        }
+
+        $videos = $query->get();
+
+        return view('admin.videos.videos')
+                    ->with('videos' , $videos)
+                    ->withPage('videos')
+                    ->with('sub_page','view-videos');
+   
+    }
+
 
     /**
      *
@@ -857,18 +1057,7 @@ class AdminController extends Controller {
     }
   
 
-    public function videos(Request $request) {
 
-        $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                    ->videoResponse()
-                    ->orderBy('video_tapes.created_at' , 'desc')
-                    ->get();
-
-        return view('admin.videos.videos')->with('videos' , $videos)
-                    ->withPage('videos')
-                    ->with('sub_page','view-videos');
-   
-    }
 
 
     public function add_video(Request $request) {

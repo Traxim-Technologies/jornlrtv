@@ -6,7 +6,7 @@
 
 {{tr('view_history')}} - 
 
-<a href="{{route('admin.view.user' , $user_details->id)}}">{{$user_details->name}}</a>
+<a href="{{route('admin.users.view' , $user_details->id)}}">{{$user_details->name}}</a>
 
 @endsection
 
