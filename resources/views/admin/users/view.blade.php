@@ -138,7 +138,7 @@
 		            </li>
 		          </ul>
 
-		          <a href="{{route('admin.users.edit', $user->id)}}" class="btn btn-primary btn-block"><b>{{tr('edit_user')}}</b></a>
+		          <a href="{{route('admin.users.edit', array('id' => $user->id))}}" class="btn btn-primary btn-block"><b>{{tr('edit_user')}}</b></a>
 
 
 
