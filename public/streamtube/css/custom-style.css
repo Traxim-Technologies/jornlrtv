@@ -1,5 +1,5 @@
 .branded-page-v2-top-row {
-	margin-bottom: 10px;
+	/*margin-bottom: 10px;*/
 }
 .channel-header.yt-card {
 	margin-bottom: 0;
@@ -9,9 +9,9 @@
 	position: relative;
 }
 .yt-card {
-	background: transparent none repeat scroll 0 0;
+	background: #f4f4f4 none repeat scroll 0 0;
 	border: 0 none;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	/*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);*/
 	box-sizing: border-box;
 	margin: 0 0 10px;
 }
@@ -237,15 +237,19 @@ a.yt-uix-button {
 	float: right;
 }
 #channel-subheader .active > a {
-	border-bottom: 3px solid #cc181e;
+	border:0;
+	border-bottom: 3px solid #666;
 	display: inline-block;
 	height: 29px;
 	line-height: 29px;
 	padding-bottom: 0;
 	margin: 0;
-	color: #333;
+	color: #666;
 	font-weight: 500;
-	background-color: #fafafa;
+	background-color: transparent;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: bold;
 }
 #channel-subheader .clearfix.nav.nav-tabs {
 	border-bottom: medium none;
@@ -256,10 +260,10 @@ a.yt-uix-button {
 	color: #555;
 	cursor: default;
 }
-.y-home.menu1 .active {
+/*.y-home.menu1 .active {
 	background-color: #cc181e;
 	color: white;
-}
+}*/
 a:focus {
 	outline: none;
 	outline-offset: -2px;
@@ -283,7 +287,6 @@ a:focus {
 	line-height: 1.3em;
 	overflow: hidden;
 	overflow-wrap: normal;
-	padding-bottom: 10px;
 	text-overflow: ellipsis;
 	vertical-align: middle;
 	white-space: nowrap;
@@ -402,13 +405,14 @@ a:focus {
 	margin-top: 58px;
 }*/
 .big-section-main {
-	padding: 0 15px;
+	/*padding: 0 15px;*/
 }
 .abt-sec-head h5 {
 	color: #333;
 	font-weight: 500;
 	line-height: 17px;
-	padding: 20px;
+	padding-top:30px;
+	margin: 0;
 }
 
 
@@ -434,6 +438,7 @@ a:focus {
 }
 .abt-sec-head.description-create h5 {
     padding: 0;
+    margin-top: 15px;
 }
 .btn-create {
     float: right;
@@ -456,8 +461,10 @@ a:focus {
 }
 
 .channel-header-profile-image {
-    max-height: 100px;
-    max-width: 100px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
 }
 .slide-box.recom-box.big-box-slide.sq-bx {
     float: left;
@@ -526,8 +533,8 @@ a:focus {
 
 @media screen and (max-width: 996px){
 	.lohp-medium-shelves-container.col-md-6{
-		margin: 0;
-		padding: 0;
+		/*margin: 0;
+		padding: 0;*/
 	}
 	.slide-box.recom-box.big-box-slide.sq-bx {
     float: none;
@@ -614,6 +621,7 @@ a:focus {
 	position: relative;
 	width: 100px;
 	cursor: pointer;
+	margin-left: 15px;
 }
 .st_photo {
 	position: absolute;
@@ -634,17 +642,18 @@ a:focus {
 	font-size:1.5em;
 	font-weight: bold;
 	text-shadow: none;
-	padding:15px;
-	margin:10px 0 5px 0;
+	padding: 10px;
 }
 .subscriber-count{
 	color:#626567;
-	margin:0 0 10px 15px;
+	margin:0 0 10px 10px;
 }
 
 .subscribe_btn {
-	border-color: #ff0000 !important;
-	background: #ff0000 !important;
+	border-color: #e62117 !important;
+	background: #e62117 !important;
+	border-radius: 4px;
+	/*box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);*/
 	
 }
 

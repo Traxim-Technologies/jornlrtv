@@ -124,7 +124,7 @@ textarea[name=comments] {
                                                         @endif
 
                                                             <a  class="share-new" data-toggle="modal" data-target="#popup1">
-                                                                <i class="material-icons">{{tr('share')}}</i>
+                                                                <i class="material-icons">share</i>
                                                                <!--  <p class="hidden-xs">share</p> -->
                                                             </a>
 
@@ -217,7 +217,7 @@ textarea[name=comments] {
                                                                             <!-- <button onclick="showReportForm();" type="button" class="report-button bottom-space" title="{{tr('report')}}">
                                                                             <i class="fa fa-flag"></i> 
                                                                             </button> -->
-                                                                            <button  type="button" class="report-button bottom-space" title="{{tr('report')}}" data-toggle="modal" data-target="#report-form">
+                                                                            <button  type="button" class="btn btn-danger report-button bottom-space" title="{{tr('report')}}" data-toggle="modal" data-target="#report-form">
                                                                             <i class="fa fa-flag"></i> 
                                                                             
                                                                             </button>

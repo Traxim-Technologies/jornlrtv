@@ -14,9 +14,9 @@
     <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
-            <a href="#" class="hidden-xs"><i class="fa fa-align-justify toggle-icon" aria-hidden="true"></i></a>
-
-            <a href="{{route('user.dashboard')}}">
+            <!-- <a href="#" class="hidden-xs"><i class="fa fa-bars toggle-icon" aria-hidden="true"></i></a> -->
+            <a href="#" class="hidden-xs"><img src="{{asset('images/menu.png')}}" class="toggle-icon"></a>
+            <a href="{{route('user.dashboard')}}"> 
                 @if(Setting::get('site_logo'))
                     <img src="{{Setting::get('site_logo')}}" class="logo-img">
                 @else
