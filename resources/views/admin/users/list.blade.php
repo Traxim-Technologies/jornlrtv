@@ -84,9 +84,9 @@
 							      	</td>
 							      	<td>{{$user->email}}</td>
 							      	
-							      	<td class="text-center"><a href="{{route('admin.users.channels' , $user->id)}}">{{$user->get_channel_count}}</a></td>
+							      	<td class="text-center"><a target="_blank" href="{{route('admin.users.channels' , $user->id)}}">{{$user->get_channel_count}}</a></td>
 
-							      	<td class="text-center">{{$user->get_channel_videos_count}}</td>
+							      	<td class="text-center"><a target="_blank" href="{{route('admin.videos.list' , $user->id)}}">{{$user->get_channel_videos_count}}</a></td>
 
 									<td>
 										@if($user->user_type)

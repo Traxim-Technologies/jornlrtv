@@ -757,7 +757,7 @@ class AdminController extends Controller {
 
         if ($request->id) {
 
-            $query->where('user_id', $request->id);
+            $query->where('video_tapes.user_id', $request->id);
 
         }
 
