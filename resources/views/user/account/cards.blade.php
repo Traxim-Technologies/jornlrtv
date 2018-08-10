@@ -23,7 +23,7 @@
 
 						<div class="col-lg-12">
 
-                    		<h4>{{tr('cards')}}</h4>
+                    		<h4 class="cards-head">{{tr('cards')}}</h4>
 
                     		@include('notification.notify')
 
@@ -32,7 +32,7 @@
                     				
                     				<div class="card-wrapper row">
 
-				            			<div class="jp-card-container">
+				            			<div class="jp-card-container jp-card-container1">
 
 					            			<div class="jp-card jp-card-visa jp-card-identified  top">
 
@@ -141,16 +141,17 @@
 
 					        @if(count($cards) > 0)
 
-					        	<p><small><b>Note : </b>{{tr('card_notes')}}</small></p>
+					           	<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 
-					           	<div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+					           		<p class="note-sec"><small><b>Note : </b>{{tr('card_notes')}}</small></p>
+
 						           	<div class="row">
 
 						           		@foreach($cards as $card)
 
 						           		@if(!$card->is_default)
 
-						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
+						           		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 top1">
 						           			<div>
 						           				<div class="card-title text-center">{{$card->card_name ? $card->card_name : tr('card_name')}}
 						           					<img src="{{asset('images/success.png')}}" class="set-default" onclick="$('#default-card').click()" style="cursor: pointer;" title="{{tr('set_as_default')}}">
@@ -185,7 +186,7 @@
 
 						           		@else
 
-						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
+						           		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 top1">
 						           			<div>
 						           				<div class="card-title text-center">{{$card->card_name ? $card->card_name : tr('card_name')}}</div>
 						           				<div class="card-details">
