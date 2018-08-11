@@ -302,7 +302,7 @@ class AdminController extends Controller {
      *
      * @updated by - -
      *
-     * @param --
+     * @param Integer $request - User id
      * 
      * @return response of new User object
      *
@@ -334,7 +334,7 @@ class AdminController extends Controller {
      *
      * @updated by - -
      *
-     * @param --
+     * @param object $request - User object details
      * 
      * @return response of success/failure reponse details
      *
@@ -485,7 +485,7 @@ class AdminController extends Controller {
      *
      * @updated by - -
      *
-     * @param --
+     * @param integer $id - User Id
      * 
      * @return response of user details
      *
@@ -590,7 +590,7 @@ class AdminController extends Controller {
      *
      * @updated by - -
      *
-     * @param --
+     * @param integer $request - User id
      * 
      * @return response of user details
      *
@@ -674,7 +674,7 @@ class AdminController extends Controller {
      *
      * @updated by - -
      *
-     * @param --
+     * @param integer $request - User id
      * 
      * @return response of user details
      *
@@ -698,6 +698,409 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : users_history
+     *
+     * To list down all the videos based on hstory
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $requesr - User id
+     * 
+     * @return - Response of channel creation page
+     *
+     */
+    public function users_history($id) {
+
+        if($user_details = User::find($id)) {
+
+            $user_history = UserHistory::where('user_histories.user_id' , $id)
+                            ->leftJoin('users' , 'user_histories.user_id' , '=' , 'users.id')
+                            ->leftJoin('video_tapes' , 'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                            ->select(
+                                'users.name as username' , 
+                                'users.id as user_id' , 
+                                'user_histories.video_tape_id',
+                                'user_histories.id as user_history_id',
+                                'video_tapes.title',
+                                'user_histories.created_at as date'
+                                )
+                            ->get();
+
+            return view('admin.users.history')
+                        ->with('user_details' , $user_details)
+                        ->with('data' , $user_history)
+                        ->withPage('users')
+                        ->with('sub_page','users');
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+
+        }
+    
+    }
+
+    /**
+     * Function Name : users_history_delete
+     *
+     * To delete the history based on history id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request - Integer id
+     * 
+     * @return - Response of success/failure message
+     *
+     */
+    public function users_history_delete($id) {
+
+        if($user_history = UserHistory::find($id)) {
+
+            $user_history->delete();
+
+            return back()->with('flash_success',tr('admin_not_history_del'));
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+
+        }
+    
+    }
+
+
+    /**
+     * Function Name : users_wishlist
+     *
+     * To list out all the wishlist details based on user
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request - User id
+     * 
+     * @return - Response of wishlist based on id
+     *
+     */
+    public function users_wishlist($id) {
+
+        if($user = User::find($id)) {
+
+            $user_wishlist = Wishlist::where('wishlists.user_id' , $id)
+                            ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
+                            ->leftJoin('video_tapes' , 'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                            ->select(
+                                'users.name as username' , 
+                                'users.id as user_id' , 
+                                'wishlists.video_tape_id',
+                                'wishlists.id as wishlist_id',
+                                'video_tapes.title',
+                                'wishlists.created_at as date'
+                                )
+                            ->get();
+
+            return view('admin.users.user-wishlist')
+                        ->with('data' , $user_wishlist)
+                        ->with('user_details' , $user)
+                        ->withPage('users')
+                        ->with('sub_page','users');
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+
+        }
+    
+    }
+
+    /**
+     * Function Name : users_wishlist_delete
+     *
+     * To delete the wishlist based on wishlist id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request - User id
+     * 
+     * @return - Response of success/failure message
+     *
+     */
+    public function users_wishlist_delete($id) {
+
+        if($user_wishlist = Wishlist::find($id)) {
+
+            $user_wishlist->delete();
+
+            return back()->with('flash_success',tr('admin_not_wishlist_del'));
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+
+        }
+    
+    }
+  
+
+    /**
+     * Function Name : channels_create
+     *
+     * To create a new channel
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return - Response of channel creation page
+     *
+     */
+    public function channels_create() {
+
+        // Check the create channel option is enabled from admin settings
+
+        if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED) {
+
+            $users = User::where('is_verified', DEFAULT_TRUE)
+                    ->where('status', DEFAULT_TRUE)
+                    ->where('user_type', SUBSCRIBED_USER)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        } else {
+
+            // Load master user
+
+            $users = User::where('is_verified', DEFAULT_TRUE)
+                        ->where('is_master_user' , 1)
+                        ->where('status', DEFAULT_TRUE)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+        }
+
+        $channel = new Channel;
+         
+        return view('admin.channels.create')
+                ->with('users', $users)
+                ->with('channel', $channel)
+                ->with('page' ,'channels')
+                ->with('sub_page' ,'add-channel');
+    }
+
+    /**
+     * Function Name : channels_edit
+     *
+     * To edit the channel based on the channel id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id - Channel id
+     * 
+     * @return response of channel edit
+     *
+     */
+    public function channels_edit($id) {
+
+        $channel = Channel::find($id);
+
+        if ($channel) {
+
+            $users = User::where('is_verified', DEFAULT_TRUE)
+                    ->where('status', DEFAULT_TRUE)
+                    ->where('user_type', SUBSCRIBED_USER)
+                    ->get();
+
+            return view('admin.channels.edit')
+                    ->with('channel' , $channel)
+                    ->with('page' ,'channels')
+                    ->with('sub_page' ,'edit-channel')
+                    ->with('users', $users);
+
+        } else {
+
+            return back()->with('flash_error', tr('channel_not_found'));
+
+        }
+    
+    }
+
+
+    /**
+     * Function Name : channels_view
+     *
+     * To view the channel based on the channel id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id - Channel id
+     * 
+     * @return response of channel edit
+     *
+     */
+    public function channels_view($id) {
+
+        $channel = Channel::select('channels.*', 'users.name as user_name', 'users.picture as user_picture')
+                    ->leftjoin('users', 'users.id', '=', 'channels.user_id')
+                    ->withCount('getVideoTape')
+                    ->withCount('getChannelSubscribers')
+                    ->where('channels.id', $id)
+                    ->first();
+        if ($channel) {
+
+            // Load videos and subscribrs based on the channel
+
+            $channel_earnings = getAmountBasedChannel($channel->id);
+
+            $videos = VideoTape::select('video_tapes.title', 'video_tapes.default_image', 'video_tapes.id', 'video_tapes.description', 'video_tapes.created_at')
+                        ->where('channel_id', $channel->id)
+                        ->paginate(12);
+
+            $subscribers = ChannelSubscription::select('users.name as user_name', 'users.id as user_id', 'users.picture as user_picture', 'users.description', 'users.created_at', 'users.email')->where('channel_id', $channel->id)
+                        ->leftjoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
+                        ->paginate(12);
+
+            return view('admin.channels.view')
+                    ->with('channel' , $channel)
+                    ->with('channel_earnings', $channel_earnings)
+                    ->with('videos', $videos)
+                    ->with('page' ,'channels')
+                    ->with('subscribers', $subscribers)
+                    ->with('sub_page' ,'edit-channel');
+        } else {
+
+            return back()->with('flash_error', tr('channel_not_found'));
+
+        }
+    
+    }
+
+    /**
+     * Function Name : channels_save
+     *
+     * To save the channel video object details
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id - Channel id
+     * 
+     * @return response of channel edit
+     *
+     */
+    public function channels_save(Request $request) {
+
+        $response = CommonRepo::channel_save($request)->getData();
+
+        if($response->success) {
+
+            return back()->with('flash_success', $response->message);
+
+        } else {
+            
+            return back()->with('flash_error', $response->error);
+        }
+        
+    }
+
+    /**
+     * Function Name : channels_delete
+     *
+     * To delete the channel based on channel id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request->id - Channel id
+     * 
+     * @return response of channel edit
+     *
+     */
+    public function channels_delete(Request $request) {
+        
+        $channel = Channel::where('id' , $request->channel_id)->first();
+
+        if($channel) {       
+
+            $channel->delete();
+
+            return back()->with('flash_success',tr('channel_delete_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('something_error'));
+
+        }
+    }
+
+    /**
+     * Function Name : channels_status_change
+     *
+     * To change the channel status of approve and decline 
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request->id - Channel id
+     * 
+     * @return response of channel edit
+     *
+     */
+    public function channels_status_change(Request $request) {
+
+        $channel = Channel::find($request->id);
+
+        if ($channel) {
+
+            $channel->is_approved = $request->status;
+
+            $channel->save();
+
+            if ($request->status == 0) {
+               
+                foreach($channel->videoTape as $video)
+                {                
+                    $video->is_approved = $request->status;
+
+                    $video->save();
+                } 
+
+            }
+
+            $message = tr('channel_decline_success');
+
+            if($channel->is_approved == DEFAULT_TRUE){
+
+                $message = tr('channel_approve_success');
+            }
+
+            return back()->with('flash_success', $message);
+
+        } else {
+
+            return back()->with('flash_error', tr('channel_not_found'));
+
+        }
+    
+    }
+
+
+    /**
      * Function Name : users_channels
      *
      * To list out all the channels based on users id
@@ -706,7 +1109,7 @@ class AdminController extends Controller {
      *
      * @updated by - -
      *
-     * @param --
+     * @param integer $user_id - User id
      * 
      * @return response of user channel details
      *
@@ -722,7 +1125,7 @@ class AdminController extends Controller {
                             ->distinct('channels.id')
                             ->get();
 
-            return view('admin.channels.channels')
+            return view('admin.channels.list')
                     ->with('channels' , $channels)
                     ->withPage('channels')
                     ->with('sub_page','view-channels')
@@ -734,6 +1137,74 @@ class AdminController extends Controller {
         }
     
     }
+
+    /**
+     * Function Name : channels
+     *
+     * To list out all the channels
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of user channel details
+     *
+     */
+    public function channels() {
+
+        $channels = Channel::orderBy('channels.created_at', 'desc')
+                        ->distinct('channels.id')
+                        ->withCount('getChannelSubscribers')
+                        ->withCount('getVideoTape')
+                        ->get();
+
+        return view('admin.channels.list')
+            ->with('channels' , $channels)
+            ->withPage('channels')
+            ->with('sub_page','view-channels');
+    
+    }
+
+    /**
+     * Function Name : channels_videos
+     *
+     * To list out particular channel videos based on channel id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $channel_id - Channel Id
+     * 
+     * @return response of user channel details
+     *
+     */
+    public function channels_videos($channel_id) {
+
+        $channel = Channel::find($channel_id);
+
+        if ($channel) {
+
+            $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->where('channel_id' , $channel_id)
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc')
+                        ->get();
+
+            return view('admin.videos.videos')->with('videos' , $videos)
+                        ->withPage('videos')
+                        ->with('channel' , $channel)
+                        ->with('sub_page','view-videos');
+        } else {
+
+            return back()->with('flash_error', tr('channel_not_found'));
+
+        }
+   
+    }
+
 
     /**
      * Function Name : videos_list
@@ -768,6 +1239,93 @@ class AdminController extends Controller {
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
    
+    }
+
+    /**
+     * Function Name : videos_view
+     *
+     * Load video based on id 
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of videos details
+     *
+     */
+    public function videos_view(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+                'id' => 'required|exists:video_tapes,id'
+            ]);
+
+        if($validator->fails()) {
+            $error_messages = implode(',', $validator->messages()->all());
+            return back()->with('flash_errors', $error_messages);
+        } else {
+            $video = VideoTape::where('video_tapes.id' , $request->id)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->videoResponse()
+                    ->orderBy('video_tapes.created_at' , 'desc')
+                    ->first();
+
+            $videoPath = $video_pixels = $videoStreamUrl = '';
+        // if ($video->video_type == 1) {
+            if (\Setting::get('streaming_url')) {
+                $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
+                if ($video->is_approved == 1) {
+                    if ($video->video_resolutions) {
+                        $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+                    }
+                }
+            } else {
+
+                $videoPath = $video->video_resize_path ? $videos->video.','.$video->video_resize_path : $video->video;
+                $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                
+
+            }
+        /*} else {
+            $trailerstreamUrl = $videos->trailer_video;
+            $videoStreamUrl = $videos->video;
+        }*/
+        
+        $admin_video_images = $video->getScopeVideoTapeImages;
+
+        $page = 'videos';
+        $sub_page = 'add-video';
+
+        if($video->is_banner == 1) {
+            $page = 'banner-videos';
+            $sub_page = 'banner-videos';
+        }
+
+        return view('admin.videos.view-video')->with('video' , $video)
+                    ->with('video_images' , $admin_video_images)
+                    ->withPage($page)
+                    ->with('sub_page',$sub_page)
+                    ->with('videoPath', $videoPath)
+                    ->with('video_pixels', $video_pixels)
+                    ->with('videoStreamUrl', $videoStreamUrl);
+        }
+    }
+
+
+    public function subscribers(Request $request) {
+
+        if ($request->id) {
+
+            $subscribers = ChannelSubscription::where('channel_id', $request->id)->orderBy('created_at', 'desc')->get();
+
+        } else {
+
+            $subscribers = ChannelSubscription::orderBy('created_at', 'desc')->get();
+
+        }
+
+        return view('admin.channels.subscribers')->with('subscribers' , $subscribers)->withPage('channels')->with('sub_page','subscribers');
     }
 
 
@@ -972,92 +1530,6 @@ class AdminController extends Controller {
 
     }
 
-    public function view_history($id) {
-
-        if($user_details = User::find($id)) {
-
-            $user_history = UserHistory::where('user_histories.user_id' , $id)
-                            ->leftJoin('users' , 'user_histories.user_id' , '=' , 'users.id')
-                            ->leftJoin('video_tapes' , 'user_histories.video_tape_id' , '=' , 'video_tapes.id')
-                            ->select(
-                                'users.name as username' , 
-                                'users.id as user_id' , 
-                                'user_histories.video_tape_id',
-                                'user_histories.id as user_history_id',
-                                'video_tapes.title',
-                                'user_histories.created_at as date'
-                                )
-                            ->get();
-
-            return view('admin.users.user-history')
-                        ->with('user_details' , $user_details)
-                        ->with('data' , $user_history)
-                        ->withPage('users')
-                        ->with('sub_page','users');
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    
-    }
-
-    public function delete_history($id) {
-
-        if($user_history = UserHistory::find($id)) {
-
-            $user_history->delete();
-
-            return back()->with('flash_success',tr('admin_not_history_del'));
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    
-    }
-
-    public function view_wishlist($id) {
-
-        if($user = User::find($id)) {
-
-            $user_wishlist = Wishlist::where('wishlists.user_id' , $id)
-                            ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
-                            ->leftJoin('video_tapes' , 'wishlists.video_tape_id' , '=' , 'video_tapes.id')
-                            ->select(
-                                'users.name as username' , 
-                                'users.id as user_id' , 
-                                'wishlists.video_tape_id',
-                                'wishlists.id as wishlist_id',
-                                'video_tapes.title',
-                                'wishlists.created_at as date'
-                                )
-                            ->get();
-
-            return view('admin.users.user-wishlist')
-                        ->with('data' , $user_wishlist)
-                        ->with('user_details' , $user)
-                        ->withPage('users')
-                        ->with('sub_page','users');
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    }
-
-    public function delete_wishlist($id) {
-
-        if($user_wishlist = Wishlist::find($id)) {
-
-            $user_wishlist->delete();
-
-            return back()->with('flash_success',tr('admin_not_wishlist_del'));
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    }
-  
-
-
 
 
     public function add_video(Request $request) {
@@ -1151,62 +1623,6 @@ class AdminController extends Controller {
     }
 
 
-    public function view_video(Request $request) {
-
-        $validator = Validator::make($request->all() , [
-                'id' => 'required|exists:video_tapes,id'
-            ]);
-
-        if($validator->fails()) {
-            $error_messages = implode(',', $validator->messages()->all());
-            return back()->with('flash_errors', $error_messages);
-        } else {
-            $video = VideoTape::where('video_tapes.id' , $request->id)
-                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                    ->videoResponse()
-                    ->orderBy('video_tapes.created_at' , 'desc')
-                    ->first();
-
-            $videoPath = $video_pixels = $videoStreamUrl = '';
-        // if ($video->video_type == 1) {
-            if (\Setting::get('streaming_url')) {
-                $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
-                if ($video->is_approved == 1) {
-                    if ($video->video_resolutions) {
-                        $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
-                    }
-                }
-            } else {
-
-                $videoPath = $video->video_resize_path ? $videos->video.','.$video->video_resize_path : $video->video;
-                $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
-                
-
-            }
-        /*} else {
-            $trailerstreamUrl = $videos->trailer_video;
-            $videoStreamUrl = $videos->video;
-        }*/
-        
-        $admin_video_images = $video->getScopeVideoTapeImages;
-
-        $page = 'videos';
-        $sub_page = 'add-video';
-
-        if($video->is_banner == 1) {
-            $page = 'banner-videos';
-            $sub_page = 'banner-videos';
-        }
-
-        return view('admin.videos.view-video')->with('video' , $video)
-                    ->with('video_images' , $admin_video_images)
-                    ->withPage($page)
-                    ->with('sub_page',$sub_page)
-                    ->with('videoPath', $videoPath)
-                    ->with('video_pixels', $video_pixels)
-                    ->with('videoStreamUrl', $videoStreamUrl);
-        }
-    }
 
 
     public function approve_video($id) {
@@ -1850,139 +2266,9 @@ class AdminController extends Controller {
         return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);
     }
 
-    public function channels() {
-
-        $channels = Channel::orderBy('channels.created_at', 'desc')
-                        ->distinct('channels.id')
-                        ->get();
-
-        return view('admin.channels.channels')->with('channels' , $channels)->withPage('channels')->with('sub_page','view-channels');
-    }
 
 
 
-    public function add_channel() {
-
-        // Check the create channel option is enabled from admin settings
-
-        if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED) {
-
-            $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->get();
-
-        } else {
-
-            // Load master user
-
-            $users = User::where('is_verified', DEFAULT_TRUE)->where('is_master_user' , 1)
-                            ->where('status', DEFAULT_TRUE)
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-
-        }
-         
-        return view('admin.channels.add-channel')->with('users', $users)->with('page' ,'channels')->with('sub_page' ,'add-channel');
-    }
-
-    public function edit_channel($id) {
-
-        $channel = Channel::find($id);
-
-        $users = User::where('is_verified', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)->get();
-
-        return view('admin.channels.edit-channel')->with('channel' , $channel)->with('page' ,'channels')->with('sub_page' ,'edit-channel')->with('users', $users);
-    }
-
-    public function add_channel_process(Request $request) {
-
-        $response = CommonRepo::channel_save($request)->getData();
-
-        if($response->success) {
-            return back()->with('flash_success', $response->message);
-        } else {
-            
-            return back()->with('flash_error', $response->error);
-        }
-        
-    }
-
-    public function subscribers(Request $request) {
-
-        if ($request->id) {
-
-            $subscribers = ChannelSubscription::where('channel_id', $request->id)->orderBy('created_at', 'desc')->get();
-
-        } else {
-
-            $subscribers = ChannelSubscription::orderBy('created_at', 'desc')->get();
-
-        }
-
-        return view('admin.channels.subscribers')->with('subscribers' , $subscribers)->withPage('channels')->with('sub_page','subscribers');
-    }
-
-    public function approve_channel(Request $request) {
-
-        $channel = Channel::find($request->id);
-
-        $channel->is_approved = $request->status;
-
-        $channel->save();
-
-        if ($request->status == 0) {
-           
-            foreach($channel->videoTape as $video)
-            {                
-                $video->is_approved = $request->status;
-
-                $video->save();
-            } 
-
-        }
-
-        $message = tr('channel_decline_success');
-
-        if($channel->is_approved == DEFAULT_TRUE){
-
-            $message = tr('channel_approve_success');
-        }
-
-        return back()->with('flash_success', $message);
-    
-    }
-
-    public function delete_channel(Request $request) {
-        
-        $channel = Channel::where('id' , $request->channel_id)->first();
-
-        if($channel) {       
-
-            $channel->delete();
-
-            return back()->with('flash_success',tr('channel_delete_success'));
-
-        } else {
-
-            return back()->with('flash_error',tr('something_error'));
-
-        }
-    }
-
-    public function channel_videos($channel_id) {
-
-        $channel = Channel::find($channel_id);
-
-        $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                    ->where('channel_id' , $channel_id)
-                    ->videoResponse()
-                    ->orderBy('video_tapes.created_at' , 'desc')
-                    ->get();
-
-        return view('admin.videos.videos')->with('videos' , $videos)
-                    ->withPage('videos')
-                    ->with('channel' , $channel)
-                    ->with('sub_page','view-videos');
-   
-    }
 
 
      public function subscriptions() {

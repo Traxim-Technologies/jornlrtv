@@ -59,6 +59,15 @@ class Channel extends Model
         //delete your related models here, for example
         static::deleting(function($model)
         {
+
+            if($model->picture) {
+                Helper::delete_picture($model->picture, "/uploads/channel/picture/");
+            }
+
+            if($model->cover) {
+                Helper::delete_picture($model->cover, "/uploads/channel/cover/");
+            }
+
             if (count($model->getVideoTape) > 0) {
 
                 foreach ($model->getVideoTape as $key => $value) {

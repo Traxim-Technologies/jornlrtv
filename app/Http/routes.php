@@ -145,11 +145,43 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/users/channels/{id}', 'AdminController@users_channels')->name('users.channels');
 
+    Route::get('/users/history/{id}', 'AdminController@users_history')->name('users.history');
+
+    Route::get('/users/history/delete/{id}', 'AdminController@users_history_delete')->name('users.history.delete');
+
+    Route::get('/users/wishlist/{id}', 'AdminController@users_wishlist')->name('users.wishlist');
+
+    Route::get('/users/wishlist/delete/{id}', 'AdminController@users_wishlist_delete')->name('users.wishlist.delete');
+
+    
+
+
+    // Channel CRUD Operations
+
+
+    Route::get('/channels', 'AdminController@channels')->name('channels');
+
+    Route::get('/channels/create', 'AdminController@channels_create')->name('channels.create');
+
+    Route::get('/channels/edit/{id}', 'AdminController@channels_edit')->name('channels.edit');
+
+    Route::get('/channels/videos/{id?}', 'AdminController@channels_videos')->name('channels.videos');
+
+    Route::post('/channels/save', 'AdminController@channels_save')->name('channels.save');
+
+    Route::get('/channels/delete', 'AdminController@channels_delete')->name('channels.delete');
+
+    Route::get('/channels/view/{id}', 'AdminController@channels_view')->name('channels.view');
+
+    Route::get('/channels/status/change', 'AdminController@channels_status_change')->name('channel.approve');
+
+
 
     // Videos CRUD Operations
 
     Route::get('/videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
 
+    Route::get('/videos/view', 'AdminController@videos_view')->name('videos.view');
 
 
     Route::get('/delete_user_ratings', 'AdminController@delete_user_ratings')->name('delete_user_ratings');
@@ -174,42 +206,12 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('/redeems/pay', 'AdminController@user_redeem_pay')->name('users.redeem.pay');
 
-    // User History - admin
-
-    Route::get('/user/history/{id}', 'AdminController@view_history')->name('user.history');
-
-    Route::get('/delete/history/{id}', 'AdminController@delete_history')->name('delete.history');
-    
-    // User Wishlist - admin
-
-    Route::get('/user/wishlist/{id}', 'AdminController@view_wishlist')->name('user.wishlist');
-
-    Route::get('/delete/wishlist/{id}', 'AdminController@delete_wishlist')->name('delete.wishlist');
 
     // Spam Videos
     Route::get('/spam-videos', 'AdminController@spam_videos')->name('spam-videos');
 
     Route::get('/view-users/{id}', 'AdminController@view_users')->name('view-users');
-    
-    // Categories
 
-    Route::get('/channels', 'AdminController@channels')->name('channels');
-
-    Route::get('/add/channel', 'AdminController@add_channel')->name('add.channel');
-
-    Route::get('/edit/channel/{id}', 'AdminController@edit_channel')->name('edit.channel');
-
-    Route::post('/add/channel', 'AdminController@add_channel_process')->name('save.channel');
-
-    Route::get('/delete/channel', 'AdminController@delete_channel')->name('delete.channel');
-
-    Route::get('/view/channel/{id}', 'AdminController@view_channel')->name('view.channel');
-
-    Route::get('/channel/approve', 'AdminController@approve_channel')->name('channel.approve');
-
-    Route::get('/channel/videos/{id?}', 'AdminController@channel_videos')->name('channel.videos');
-
-    
 
     // Videos
 
@@ -224,8 +226,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/edit/video/{id}', 'AdminController@edit_video')->name('edit.video');
 
     Route::post('/edit/video/process', 'AdminController@edit_video_process')->name('save.edit.video');
-
-    Route::get('/view/video', 'AdminController@view_video')->name('view.video');
 
     Route::post('save_video', 'AdminController@video_save')->name('video_save');
 
@@ -414,8 +414,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/live_videos', 'AdminController@live_videos')->name('videos.index');
 
     Route::get('/videos_list', 'AdminController@videos_list')->name('videos.videos_list');
-
-    Route::get('/videos/view/{id}', 'AdminController@videos_view')->name('videos.view');
 
 
      // Languages

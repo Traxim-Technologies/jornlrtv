@@ -63,11 +63,11 @@
 
 							    <tr>
 							      	
-							      	<td><a href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
 							      	
-							      	<td><a href="{{route('admin.channel.videos', $video->channel_id)}}">{{$video->channel_name}}</a></td>
+							      	<td><a href="{{route('admin.channels.videos', $video->channel_id)}}">{{$video->channel_name}}</a></td>
 							      	
-							      	<td><a href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
+							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 							      	<?php /*@if(Setting::get('theme') == 'default')
 							      	
@@ -136,7 +136,7 @@
                                                         @endif
                                                     </li>
                                                     @endif
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 
 								               		@if(Setting::get('is_payper_view'))
 

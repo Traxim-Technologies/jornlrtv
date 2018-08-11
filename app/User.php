@@ -73,6 +73,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Channel', 'user_id', 'id');
     }
 
+    /**
+     * Get the flag record associated with the user.
+     */
+    public function getChannelSubscription()
+    {
+        return $this->hasMany('App\ChannelSubscription', 'user_id', 'id');
+    }
+
      /**
      * Get the flag record associated with the user.
      */
@@ -137,6 +145,15 @@ class User extends Authenticatable
                 foreach($user->userRating as $rating)
                 {
                     $rating->delete();
+                } 
+
+            }
+
+            if (count($user->getChannelSubscription) > 0) {
+
+                foreach($user->getChannelSubscription as $subscripton_user)
+                {
+                    $subscripton_user->delete();
                 } 
 
             }

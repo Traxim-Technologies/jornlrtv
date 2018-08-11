@@ -22,7 +22,7 @@
           <div class="box box-primary">
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('channels')}}</b>
-                <a href="{{route('admin.add.channel')}}" class="btn btn-default pull-right">{{tr('add_channel')}}</a>
+                <a href="{{route('admin.channels.create')}}" class="btn btn-default pull-right">{{tr('add_channel')}}</a>
             </div>
             <div class="box-body">
 
@@ -35,8 +35,7 @@
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('channel')}}</th>
 						      <th>{{tr('user_name')}}</th>
-						      <th>{{tr('picture')}}</th>
-						      <th>{{tr('cover')}}</th>
+						      <th>{{tr('no_of_videos')}}</th>
 						      <th>{{tr('subscribers')}}</th>
 						      <th>{{tr('amount')}}</th>
 						      <th>{{tr('status')}}</th>
@@ -49,17 +48,10 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a href="{{route('admin.channel.videos', $channel->id)}}">{{$channel->name}}</a></td>
-							      	<td>{{$channel->getUser ? $channel->getUser->name : ''}}</td>
-							      	<td>
-	                                	<img style="height: 30px;" src="{{$channel->picture}}">
-	                            	</td>
-
-	                            	<td>
-	                                	<img style="height: 30px;" src="{{$channel->cover}}">
-	                            	</td>
-
-	                            	<td><a href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{$channel->getChannelSubscribers()->count()}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.channels.view', $channel->id)}}">{{$channel->name}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.users.view', $channel->user_id)}}">{{$channel->getUser ? $channel->getUser->name : ''}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.channels.videos', array('id'=> $channel->id))}}">{{$channel->get_video_tape_count}}</a></td>
+	                            	<td><a target="_blank" href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></td>
 
 	                            	<td>{{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}}</td>
 
@@ -83,21 +75,12 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.channel' , array('id' => $channel->id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.channels.edit' , array('id' => $channel->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
 
-													<li class="divider" role="presentation"></li>
-
-
-													<li role="presentation">
-                                                       
-                                                        <a role="menuitem" tabindex="-1" href="{{route('admin.channel.videos', $channel->id)}}">{{tr('videos')}}</a>
-
-                                                    </li>
-
-                                                    <li role="presentation"><a href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{tr('subscribers')}}</a></li>
-
+													
+                                                    
 													<li class="divider" role="presentation"></li>
 
 								                  	<li role="presentation">
@@ -108,7 +91,7 @@
 
 										                @else
 
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.channel' , array('channel_id' => $channel->id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.channels.delete' , array('channel_id' => $channel->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 

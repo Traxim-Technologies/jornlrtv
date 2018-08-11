@@ -115,10 +115,10 @@
 		              <b>{{tr('videos')}}</b> <a class="pull-right" target="_blank" href="{{route('admin.videos.list' , $user->id)}}">{{$user->get_channel_videos_count}}</a>
 		            </li>
 		            <li class="list-group-item">
-		              <b>{{tr('wishlists')}}</b> <a href="{{route('admin.user.wishlist', $user->id)}}" class="pull-right" target="_blank">{{$user->user_wishlist_count}}</a>
+		              <b>{{tr('wishlists')}}</b> <a href="{{route('admin.users.wishlist', $user->id)}}" class="pull-right" target="_blank">{{$user->user_wishlist_count}}</a>
 		            </li>
 		            <li class="list-group-item">
-		              <b>{{tr('histories')}}</b> <a href="{{route('admin.user.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_history_count}}</a>
+		              <b>{{tr('histories')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_history_count}}</a>
 		            </li>
 		            <li class="list-group-item">
 		              <b>{{tr('videos')}}</b> <a class="pull-right" target="_blank">{{$user->get_channel_videos_count}}</a>
@@ -310,7 +310,7 @@
 			              <div class="row">
 			                <div class="col-sm-4 border-right">
 			                  <div class="description-block">
-			                    <h5 class="description-header"><a href="{{route('admin.channel.videos', $channel->channel_id)}}">{{$channel->videos}}</a></h5>
+			                    <h5 class="description-header"><a href="{{route('admin.channels.videos', $channel->channel_id)}}">{{$channel->videos}}</a></h5>
 			                    <span class="description-text">{{tr('videos')}}</span>
 			                  </div>
 			                  <!-- /.description-block -->
@@ -357,7 +357,7 @@
 
 	          		<blockquote>
 		                <p>{{tr('favourties_notes')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.user.wishlist', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.wishlist', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 
 	           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
@@ -380,7 +380,7 @@
 							      	<td>{{$wishlist->created_at->diffForHumans()}}</td>
 								    <td>
             							
-								        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.wishlist' , $wishlist->id)}}"><i class="fa fa-trash"></i></a>
+								        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.users.wishlist.delete' , $wishlist->id)}}"><i class="fa fa-trash"></i></a>
 								              
 								    </td>
 							    </tr>					
@@ -395,7 +395,7 @@
 
 	          		<blockquote>
 		                <p>{{tr('history_notes')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a target="_blank" href="{{route('admin.user.history', $user->id)}}">{{tr('click_here')}}</a></cite></small>
+		                <small>{{tr('to_view_more')}} <cite><a target="_blank" href="{{route('admin.users.history', $user->id)}}">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 
 	           		<table id="datatable-withoutpagination1" class="table table-bordered table-striped">
@@ -419,7 +419,7 @@
 							      	<td>{{$history->created_at->diffForHumans()}}</td>
 								    <td>
             							
-								        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.history' , $history->id)}}"><i class="fa fa-trash"></i></a>
+								        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.users.history.delete' , $history->id)}}"><i class="fa fa-trash"></i></a>
 								              
 								    </td>
 							    </tr>					

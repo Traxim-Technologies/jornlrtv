@@ -1295,5 +1295,9 @@ return array(
 	'channels_short_notes'=>'Recent Activities of Channels you can find here. To Find out more about Channels of this users.',
 	'personal_info'=>'Personal Info',
 	'no_channels_found'=>'No channels found',
-
+	'view_channel'=>'View Channel',
+	'shared_publicly'=>'Shared Publicaly',
+	'about_channel'=>'About Channel',
+	'videos_short_notes'=>'Recent Activities of Videos you can find here. To Find out more about Videos from this Channel.',
+	'subscribers_short_notes'=>'Recent Activities of subscribers in this channel. To Find out more about Subscribers from this Channel.'
 );

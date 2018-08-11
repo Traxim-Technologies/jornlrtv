@@ -96,7 +96,7 @@
 
                         <div class="col-lg-12">
 
-                            <textarea type="text" name="description" class="form-control" id="description" placeholder="{{tr('description')}}">{{$user->description ? $user->description  :old('description')}}</textarea>
+                            <textarea type="text" name="description" class="form-control" id="description" placeholder="{{tr('description')}}" maxlength="255">{{$user->description ? $user->description  :old('description')}}</textarea>
 
                         </div>
 
