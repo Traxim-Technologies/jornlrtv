@@ -144,103 +144,6 @@ class AdminController extends Controller {
                     ->with('recent_videos' , $recent_videos);
     }
 
-    public function profile() {
-
-        $admin = Admin::first();
-
-        return view('admin.account.profile')->with('admin' , $admin)->withPage('profile')->with('sub_page','');
-    }
-
-    public function profile_process(Request $request) {
-
-        $validator = Validator::make( $request->all(),array(
-                'name' => 'max:255',
-                'email' => $request->id ? 'email|max:255|unique:admins,email,'.$request->id : 'email|max:255|unique:admins,email,NULL',
-                'mobile' => 'digits_between:6,13',
-                'address' => 'max:300',
-                'id' => 'required|exists:admins,id',
-                'picture' => 'mimes:jpeg,jpg,png'
-            )
-        );
-        
-        if($validator->fails()) {
-
-            $error_messages = implode(',', $validator->messages()->all());
-
-            return back()->with('flash_errors', $error_messages);
-        } else {
-            
-            $admin = Admin::find($request->id);
-            
-            $admin->name = $request->has('name') ? $request->name : $admin->name;
-
-            $admin->email = $request->has('email') ? $request->email : $admin->email;
-
-            $admin->mobile = $request->has('mobile') ? $request->mobile : $admin->mobile;
-
-            $admin->gender = $request->has('gender') ? $request->gender : $admin->gender;
-
-            $admin->address = $request->has('address') ? $request->address : $admin->address;
-
-            if($request->hasFile('picture')) {
-
-                Helper::delete_picture($admin->picture, "/uploads/images/");
-
-                $admin->picture = Helper::normal_upload_picture($request->picture, "/uploads/images/");
-            }
-                
-            $admin->remember_token = Helper::generate_token();
-            
-            $admin->save();
-
-            return back()->with('flash_success', tr('admin_not_profile'));
-            
-        }
-    
-    }
-
-    public function change_password(Request $request) {
-
-        $old_password = $request->old_password;
-        $new_password = $request->password;
-        $confirm_password = $request->confirm_password;
-        
-        $validator = Validator::make($request->all(), [              
-                'password' => 'required|min:6',
-                'old_password' => 'required',
-                'confirm_password' => 'required|min:6',
-                'id' => 'required|exists:admins,id'
-            ]);
-
-        if($validator->fails()) {
-
-            $error_messages = implode(',',$validator->messages()->all());
-
-            return back()->with('flash_errors', $error_messages);
-
-        } else {
-
-            $admin = Admin::find($request->id);
-
-            if(\Hash::check($old_password,$admin->password))
-            {
-                $admin->password = \Hash::make($new_password);
-                $admin->save();
-
-                return back()->with('flash_success', tr('password_change_success'));
-                
-            } else {
-                return back()->with('flash_error', tr('password_mismatch'));
-            }
-        }
-
-        $response = response()->json($response_array,$response_code);
-
-        return $response;
-    }
-
-
-
     /**
      * Function Name : users_list
      *
@@ -1207,6 +1110,39 @@ class AdminController extends Controller {
 
 
     /**
+     * Function Name : channels_subscribers
+     *
+     * To list out particular channel subscribers based on channel id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request->id - Channel Id (optional)
+     * 
+     * @return response of subscribers of channel details
+     *
+     */
+    public function channels_subscribers(Request $request) {
+
+        if ($request->id) {
+
+            $subscribers = ChannelSubscription::where('channel_id', $request->id)->orderBy('created_at', 'desc')->get();
+
+        } else {
+
+            $subscribers = ChannelSubscription::orderBy('created_at', 'desc')->get();
+
+        }
+
+        return view('admin.channels.subscribers')
+                ->with('subscribers' , $subscribers)
+                ->withPage('channels')
+                ->with('sub_page','subscribers');
+    
+    }
+
+    /**
      * Function Name : videos_list
      *
      * List of videos displayed and also based on user it will list out
@@ -1313,127 +1249,7 @@ class AdminController extends Controller {
     }
 
 
-    public function subscribers(Request $request) {
-
-        if ($request->id) {
-
-            $subscribers = ChannelSubscription::where('channel_id', $request->id)->orderBy('created_at', 'desc')->get();
-
-        } else {
-
-            $subscribers = ChannelSubscription::orderBy('created_at', 'desc')->get();
-
-        }
-
-        return view('admin.channels.subscribers')->with('subscribers' , $subscribers)->withPage('channels')->with('sub_page','subscribers');
-    }
-
-
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
-    public function user_upgrade($id) {
-
-        if($user = User::find($id)) {
-
-            // Check the user is exists in moderators table
-
-            if(!$moderator = Moderator::where('email' , $user->email)->first()) {
-
-                $moderator_user = new Moderator;
-
-                $moderator_user->name = $user->name;
-
-                $moderator_user->email = $user->email;
-
-                if($user->login_by == "manual") {
-
-                    $moderator_user->password = $user->password; 
-
-                    $new_password = "Please use you user login Pasword.";
-
-                } else {
-
-                    $new_password = time();
-                    $new_password .= rand();
-                    $new_password = sha1($new_password);
-                    $new_password = substr($new_password, 0, 8);
-                    $moderator_user->password = \Hash::make($new_password);
-                }
-
-                $moderator_user->picture = $user->picture;
-                $moderator_user->mobile = $user->mobile;
-                $moderator_user->address = $user->address;
-                $moderator_user->save();
-
-                $email_data = array();
-
-                $subject = tr('user_welcome_title' , Setting::get('site_name'));
-                $page = "emails.moderator_welcome";
-                $email = $user->email;
-                $email_data['name'] = $moderator_user->name;
-                $email_data['email'] = $moderator_user->email;
-                $email_data['password'] = \Hash::make($new_password);
-
-                Helper::send_email($page,$subject,$email,$email_data);
-
-                $moderator = $moderator_user;
-
-            }
-
-            if($moderator) {
-
-                $user->is_moderator = 1;
-                $user->moderator_id = $moderator->id;
-                $user->save();
-
-                $moderator->is_user = 1;
-                $moderator->save();
-
-                return back()->with('flash_warning',tr('admin_user_upgrade'));
-
-            } else  {
-                return back()->with('flash_error',tr('admin_not_error'));    
-            }
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-
-    }
-
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
-    public function user_upgrade_disable(Request $request) {
-
-        if($moderator = Moderator::find($request->moderator_id)) {
-
-            if($user = User::find($request->id)) {
-                $user->is_moderator = 0;
-                $user->save();
-            }
-
-            $moderator->save();
-
-            return back()->with('flash_success',tr('admin_user_upgrade_disable'));
-
-        } else {
-
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-    
-    }
+    /************************** FROM TODO *********************/
 
     public function user_redeem_requests($id = "") {
 
@@ -1455,7 +1271,7 @@ class AdminController extends Controller {
 
     public function user_redeem_pay(Request $request) {
 
-         $validator = Validator::make($request->all() , [
+        $validator = Validator::make($request->all() , [
             'redeem_request_id' => 'required|exists:redeem_requests,id',
             'paid_amount' => 'required', 
             ]);
@@ -1570,6 +1386,7 @@ class AdminController extends Controller {
                 ->with('video' ,$video)
                 ->with('page' ,$page)
                 ->with('sub_page' ,$sub_page);
+    
     }
 
     public function video_save(Request $request) {
@@ -1591,7 +1408,6 @@ class AdminController extends Controller {
         }
 
     }  
-
 
     public function get_images($id) {
 
@@ -1615,15 +1431,11 @@ class AdminController extends Controller {
 
     public function upload_video_image(Request $request) {
 
-
         $response = CommonRepo::upload_video_image($request)->getData();
 
         return response()->json(['id'=>$response]);
 
     }
-
-
-
 
     public function approve_video($id) {
 
@@ -1642,6 +1454,7 @@ class AdminController extends Controller {
             $message = tr('admin_not_video_decline');
         }
         return back()->with('flash_success', $message);
+    
     }
 
 
@@ -1684,6 +1497,7 @@ class AdminController extends Controller {
         }
 
         return back()->with('flash_success', $message);
+    
     }
 
     public function delete_video($id) {
@@ -1723,6 +1537,7 @@ class AdminController extends Controller {
             $video->delete();
         }
         return back()->with('flash_success', tr('video_delete_success'));
+    
     }
 
     public function slider_video($id) {
@@ -1794,6 +1609,7 @@ class AdminController extends Controller {
 
         return view('admin.reviews.reviews')->with('page' ,'videos')
                 ->with('sub_page' ,'reviews')->with('reviews', $user_reviews);
+    
     }
 
     public function delete_user_ratings(Request $request) {
@@ -1803,6 +1619,7 @@ class AdminController extends Controller {
         }
 
         return back()->with('flash_success', tr('admin_not_ur_del'));
+    
     }
 
     public function email_settings_process(Request $request) {
@@ -1829,6 +1646,7 @@ class AdminController extends Controller {
         $result = EnvEditorHelper::getEnvValues();
 
         return view('admin.settings.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
+    
     }
 
 
@@ -1944,142 +1762,9 @@ class AdminController extends Controller {
     
     }
 
-    public function help() {
-        return view('admin.static.help')->withPage('help')->with('sub_page' , "");
-    }
 
-    public function pages() {
 
-        $all_pages = Page::all();
 
-        return view('admin.pages.index')->with('page',"viewpages")->with('sub_page','view_pages')->with('data',$all_pages);
-    }
-
-    public function page_create() {
-
-        $all = Page::all();
-
-        return view('admin.pages.create')->with('page' , 'viewpages')->with('sub_page',"add_page")
-                ->with('view_pages',$all);
-    }
-
-    public function page_edit($id) {
-
-        $data = Page::find($id);
-
-        if($data) {
-            return view('admin.pages.edit')->withPage('viewpages')->with('sub_page',"view_pages")
-                    ->with('data',$data);
-        } else {
-            return back()->with('flash_error',tr('something_error'));
-        }
-    }
-
-    public function page_save(Request $request) {
-
-        if($request->has('id')) {
-            $validator = Validator::make($request->all() , array(
-                'title' => '',
-                'heading' => 'required',
-                'description' => 'required'
-            ));
-        } else {
-            $validator = Validator::make($request->all() , array(
-                'type' => 'required',
-                'title' => 'required|max:255|unique:pages',
-                'heading' => 'required',
-                'description' => 'required'
-            ));
-        }
-
-        if($validator->fails()) {
-            $error = implode('',$validator->messages()->all());
-            return back()->with('flash_errors',$error);
-        } else {
-
-            if($request->has('id')) {
-                $pages = Page::find($request->id);
-
-            } else {
-                if(Page::count() <= 5) {
-
-                    if($request->type != 'others') {
-                        $check_page_type = Page::where('type',$request->type)->first();
-                        if($check_page_type){
-                            return back()->with('flash_error',"You have already created $request->type page");
-                        }
-                    }
-                    
-                    
-                    $pages = new Page;
-
-                    $check_page = Page::where('title',$request->title)->first();
-                    
-                    if($check_page) {
-                        return back()->with('flash_error',tr('page_already_alert'));
-                    }
-                }else {
-                    return back()->with('flash_error',tr('cannot_create_more_pages'));
-                }
-                
-            }
-
-            if($pages) {
-
-                $pages->type = $request->type ? $request->type : $pages->type;
-                $pages->title = $request->title ? $request->title : $pages->title;
-                $pages->heading = $request->heading ? $request->heading : $pages->heading;
-                $pages->description = $request->description ? $request->description : $pages->description;
-                $pages->save();
-            }
-            if($pages) {
-                return back()->with('flash_success',tr('page_create_success'));
-            } else {
-                return back()->with('flash_error',tr('something_error'));
-            }
-        }
-    }
-
-    public function page_delete($id) {
-
-        $page = Page::where('id',$id)->delete();
-
-        if($page) {
-            return back()->with('flash_success',tr('page_delete_success'));
-        } else {
-            return back()->with('flash_error',tr('something_error'));
-        }
-    }
-    public function custom_push() {
-
-        return view('admin.static.push')->with('title' , "Custom Push")->with('page' , "custom-push");
-
-    }
-
-    public function custom_push_process(Request $request) {
-
-        $validator = Validator::make(
-            $request->all(),
-            array( 'message' => 'required')
-        );
-
-        if($validator->fails()) {
-
-            $error = $validator->messages()->all();
-
-            return back()->with('flash_errors',$error);
-
-        } else {
-            // Send notifications to the users
-            $push_message = $request->message;
-
-            // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
-
-            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
-
-            return back()->with('flash_success' , tr('push_send_success'));
-        }
-    }
 
     /**
      * Function Name : spam_videos()
@@ -3354,8 +3039,6 @@ class AdminController extends Controller {
 
 
 
-    // Coupons
-
     /**
     * Function Name: coupon_create()
     *
@@ -3374,6 +3057,7 @@ class AdminController extends Controller {
        return view('admin.coupons.create')
                 ->with('page','coupons')
                 ->with('sub_page','create');
+    
     }
 
     /**
@@ -3522,6 +3206,7 @@ class AdminController extends Controller {
 
             return back()->with('flash_error',tr('coupon_not_found_error'));
         }
+    
     }
 
     /**
@@ -3557,6 +3242,7 @@ class AdminController extends Controller {
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
         }
+    
     }
 
     /**
@@ -3592,6 +3278,7 @@ class AdminController extends Controller {
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
         }
+    
     }
 
     /**
@@ -3640,9 +3327,10 @@ class AdminController extends Controller {
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
         }
+    
     }
 
-    /**
+   /**
     * Function Name: coupon_view()
     *
     * Description: Get the particular coupon details for view page content
@@ -3673,6 +3361,435 @@ class AdminController extends Controller {
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
         }
+    
+    }
+
+   /**
+    * Function Name: custom_push()
+    *
+    * Description: To display custom message
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return response of HTML page view
+    */
+    public function custom_push() {
+
+        return view('admin.static.push')->with('title' , "Custom Push")->with('page' , "custom-push");
+
+    }
+
+   /**
+    * Function Name: custom_push_process()
+    *
+    * Description: To send custom push message to mobile
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param object $request - message details
+    *
+    * @return response of flash success/failure message
+    */
+    public function custom_push_process(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array( 'message' => 'required')
+        );
+
+        if($validator->fails()) {
+
+            $error = $validator->messages()->all();
+
+            return back()->with('flash_errors',$error);
+
+        } else {
+            // Send notifications to the users
+            $push_message = $request->message;
+
+            // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
+
+            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
+
+            return back()->with('flash_success' , tr('push_send_success'));
+        }
+    
+    }
+
+   /**
+    * Function Name: pages()
+    *
+    * Description: To load all the statc pages which is created by admin
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return Html view page with page detail
+    */
+    public function pages() {
+
+        $all_pages = Page::all();
+
+        return view('admin.pages.index')
+                ->with('page',"viewpages")
+                ->with('sub_page','view_pages')
+                ->with('data',$all_pages);
+    
+    }
+
+   /**
+    * Function Name: pages_create()
+    *
+    * Description: To create a new page of staitc page using type
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return Html view page with page detail
+    */
+    public function pages_create() {
+
+        $all = Page::all();
+
+        return view('admin.pages.create')
+                ->with('page' , 'viewpages')->with('sub_page',"add_page")
+                ->with('view_pages',$all);
+    
+    }
+
+   /**
+    * Function Name: pages_edit()
+    *
+    * Description: To edit a existing page of static page using type
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $id = Page id
+    *
+    * @return Html view page with page detail
+    */
+    public function pages_edit($id) {
+
+        $data = Page::find($id);
+
+        if($data) {
+            return view('admin.pages.edit')
+                    ->withPage('viewpages')->with('sub_page',"view_pages")
+                    ->with('data',$data);
+        } else {
+
+            return back()->with('flash_error',tr('something_error'));
+
+        }
+    
+    }
+
+   /**
+    * Function Name: pages_view()
+    *
+    * Description: To view a existing page of static page 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $id = Page id
+    *
+    * @return Html view page with page detail
+    */
+    public function pages_view($id) {
+
+        $data = Page::find($id);
+
+        if($data) {
+            return view('admin.pages.view')
+                    ->withPage('viewpages')->with('sub_page',"view_pages")
+                    ->with('data',$data);
+        } else {
+
+            return back()->with('flash_error',tr('something_error'));
+
+        }
+    
+    }
+
+   /**
+    * Function Name: pages_save()
+    *
+    * Description: To save new page / existing  page post details
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $request - Postdetails of static page
+    *
+    * @return Html view page with page detail
+    */
+    public function pages_save(Request $request) {
+
+        if($request->has('id')) {
+            $validator = Validator::make($request->all() , array(
+                'title' => '',
+                'heading' => 'required',
+                'description' => 'required'
+            ));
+        } else {
+            $validator = Validator::make($request->all() , array(
+                'type' => 'required',
+                'title' => 'required|max:255|unique:pages',
+                'heading' => 'required',
+                'description' => 'required'
+            ));
+        }
+
+        if($validator->fails()) {
+            $error = implode('',$validator->messages()->all());
+            return back()->with('flash_errors',$error);
+        } else {
+
+            if($request->has('id')) {
+                $pages = Page::find($request->id);
+            } else {
+                if(Page::count() <= 5) {
+                    if($request->type != 'others') {
+                        $check_page_type = Page::where('type',$request->type)->first();
+                        if($check_page_type){
+                            return back()->with('flash_error',"You have already created $request->type page");
+                        }
+                    }
+                    
+                    
+                    $pages = new Page;
+
+                    $check_page = Page::where('title',$request->title)->first();
+                    
+                    if($check_page) {
+                        return back()->with('flash_error',tr('page_already_alert'));
+                    }
+                }else {
+                    return back()->with('flash_error',tr('cannot_create_more_pages'));
+                }
+                
+            }
+            if($pages) {
+
+                $pages->type = $request->type ? $request->type : $pages->type;
+                $pages->title = $request->title ? $request->title : $pages->title;
+                $pages->heading = $request->heading ? $request->heading : $pages->heading;
+                $pages->description = $request->description ? $request->description : $pages->description;
+                $pages->save();
+            }
+            if($pages) {
+                return back()->with('flash_success',tr('page_create_success'));
+            } else {
+                return back()->with('flash_error',tr('something_error'));
+            }
+        }
+    
+    }
+
+   /**
+    * Function Name: pages_delete()
+    *
+    * Description: To delete page based on static page id
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $id - page id
+    *
+    * @return Html view page with page detail
+    */
+    public function pages_delete($id) {
+
+        $page = Page::where('id',$id)->delete();
+
+        if($page) {
+
+            return back()->with('flash_success',tr('page_delete_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('something_error'));
+
+        }
+    
+    }
+
+   /**
+    * Function Name: profile()
+    *
+    * Admin profile page 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param -- 
+    *
+    * @return Html view page with admin details
+    */
+    public function profile() {
+
+        $admin = Admin::first();
+
+        return view('admin.account.profile')
+                ->with('admin' , $admin)->withPage('profile')->with('sub_page','');
+    
+    }
+
+   /**
+    * Function Name: profile_process()
+    *
+    * Admin profile page 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param -- 
+    *
+    * @return Html view page with admin details
+    */
+    public function profile_process(Request $request) {
+
+        $validator = Validator::make( $request->all(),array(
+                'name' => 'max:255',
+                'email' => $request->id ? 'email|max:255|unique:admins,email,'.$request->id : 'email|max:255|unique:admins,email,NULL',
+                'mobile' => 'digits_between:6,13',
+                'address' => 'max:300',
+                'id' => 'required|exists:admins,id',
+                'picture' => 'mimes:jpeg,jpg,png'
+            )
+        );
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_errors', $error_messages);
+        } else {
+            
+            $admin = Admin::find($request->id);
+            
+            $admin->name = $request->has('name') ? $request->name : $admin->name;
+
+            $admin->email = $request->has('email') ? $request->email : $admin->email;
+
+            $admin->mobile = $request->has('mobile') ? $request->mobile : $admin->mobile;
+
+            $admin->gender = $request->has('gender') ? $request->gender : $admin->gender;
+
+            $admin->address = $request->has('address') ? $request->address : $admin->address;
+
+            if($request->hasFile('picture')) {
+
+                Helper::delete_picture($admin->picture, "/uploads/images/");
+
+                $admin->picture = Helper::normal_upload_picture($request->picture, "/uploads/images/");
+            }
+                
+            $admin->remember_token = Helper::generate_token();
+            
+            $admin->save();
+
+            return back()->with('flash_success', tr('admin_not_profile'));
+            
+        }
+    
+    }
+
+   /**
+    * Function Name: change_password()
+    *
+    * Admin  - Change password page, he can change his password
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param -- 
+    *
+    * @return Html view page with admin details
+    */
+    public function change_password(Request $request) {
+
+        $old_password = $request->old_password;
+        $new_password = $request->password;
+        $confirm_password = $request->confirm_password;
+        
+        $validator = Validator::make($request->all(), [              
+                'password' => 'required|min:6',
+                'old_password' => 'required',
+                'confirm_password' => 'required|min:6',
+                'id' => 'required|exists:admins,id'
+            ]);
+
+        if($validator->fails()) {
+
+            $error_messages = implode(',',$validator->messages()->all());
+
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            $admin = Admin::find($request->id);
+
+            if(\Hash::check($old_password,$admin->password))
+            {
+                $admin->password = \Hash::make($new_password);
+
+                $admin->save();
+
+                return back()->with('flash_success', tr('password_change_success'));
+                
+            } else {
+
+                return back()->with('flash_error', tr('password_mismatch'));
+
+            }
+        }
+
+        $response = response()->json($response_array,$response_code);
+
+        return $response;
+    
+    }
+
+
+   /**
+    * Function Name: help()
+    *
+    * Help page for admin 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param -- 
+    *
+    * @return Html view page with help content
+    */
+    public function help() {
+
+        return view('admin.static.help')->withPage('help')->with('sub_page' , "");
+
     }
 
 }

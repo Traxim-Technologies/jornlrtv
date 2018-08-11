@@ -46,7 +46,7 @@
                 <ul class="treeview-menu">
                     <li id="add-channel"><a href="{{route('admin.channels.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
                     <li id="view-channels"><a href="{{route('admin.channels')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
-                     <li id="subscribers"><a href="{{route('admin.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('subscribers')}}</a></li>
+                     <li id="subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
                 </ul>
 
             </li>

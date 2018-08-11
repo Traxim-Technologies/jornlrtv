@@ -51,7 +51,7 @@
 							      	<td><a target="_blank" href="{{route('admin.channels.view', $channel->id)}}">{{$channel->name}}</a></td>
 							      	<td><a target="_blank" href="{{route('admin.users.view', $channel->user_id)}}">{{$channel->getUser ? $channel->getUser->name : ''}}</a></td>
 							      	<td><a target="_blank" href="{{route('admin.channels.videos', array('id'=> $channel->id))}}">{{$channel->get_video_tape_count}}</a></td>
-	                            	<td><a target="_blank" href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></td>
+	                            	<td><a target="_blank" href="{{route('admin.channels.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></td>
 
 	                            	<td>{{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}}</td>
 

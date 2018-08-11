@@ -1299,5 +1299,6 @@ return array(
 	'shared_publicly'=>'Shared Publicaly',
 	'about_channel'=>'About Channel',
 	'videos_short_notes'=>'Recent Activities of Videos you can find here. To Find out more about Videos from this Channel.',
-	'subscribers_short_notes'=>'Recent Activities of subscribers in this channel. To Find out more about Subscribers from this Channel.'
+	'subscribers_short_notes'=>'Recent Activities of subscribers in this channel. To Find out more about Subscribers from this Channel.',
+	'channel_subscribers'=>'Channel Subscribers',
 );

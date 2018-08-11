@@ -175,6 +175,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/channels/status/change', 'AdminController@channels_status_change')->name('channel.approve');
 
+    Route::get('/channels/subscribers', 'AdminController@channels_subscribers')->name('channels.subscribers');
 
 
     // Videos CRUD Operations
@@ -186,21 +187,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/delete_user_ratings', 'AdminController@delete_user_ratings')->name('delete_user_ratings');
 
-    Route::get('/profile', 'AdminController@profile')->name('profile');
-
-    Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
-
-    Route::post('/change/password', 'AdminController@change_password')->name('change.password');
+    
 
     Route::get('/unspam-video/{id}', 'AdminController@unspam_video')->name('unspam-video');
 
     // users
 
     
-
-    Route::get('/user/upgrade/{id}', 'AdminController@user_upgrade')->name('user.upgrade');
-
-    Route::any('/upgrade/disable', 'AdminController@user_upgrade_disable')->name('user.upgrade.disable');
 
     Route::get('/redeems/{id?}', 'AdminController@user_redeem_requests')->name('users.redeems');
 
@@ -267,17 +260,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/remove_payper_view/{id}', 'AdminController@remove_payper_view')->name('remove_pay_per_view');
 
-    // Settings
-
-    Route::get('settings' , 'AdminController@settings')->name('settings');
-
-    Route::post('save_common_settings' , 'AdminController@save_common_settings')->name('save.common-settings');
-    
-    Route::post('settings' , 'AdminController@settings_process')->name('save.settings');
-
-    Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
-
-    Route::get('help' , 'AdminController@help')->name('help');
 
     // Coupons
 
@@ -301,27 +283,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     //Coupon approve and decline status
     Route::get('/coupon/status','AdminController@coupon_status_change')->name('coupon.status');
-
-
-
-    // Pages
-
-    Route::get('/pages', 'AdminController@pages')->name('pages.index');
-
-    Route::get('/pages/edit/{id}', 'AdminController@page_edit')->name('pages.edit');
-
-    Route::get('/pages/create', 'AdminController@page_create')->name('pages.create');
-
-    Route::post('/pages/create', 'AdminController@page_save')->name('pages.save');
-
-    Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
-
-
-    // Custom Push
-
-    Route::get('/custom/push', 'AdminController@custom_push')->name('push');
-
-    Route::post('/custom/push', 'AdminController@custom_push_process')->name('send.push');
 
 
     // Ads
@@ -401,7 +362,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('subscriptions.status');
 
-    Route::get('/subscribers', 'AdminController@subscribers')->name('subscribers');
+
+
 
     Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
 
@@ -416,7 +378,18 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/videos_list', 'AdminController@videos_list')->name('videos.videos_list');
 
 
-     // Languages
+    // Settings
+
+    Route::get('settings' , 'AdminController@settings')->name('settings');
+
+    Route::post('save_common_settings' , 'AdminController@save_common_settings')->name('save.common-settings');
+    
+    Route::post('settings' , 'AdminController@settings_process')->name('save.settings');
+
+    Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
+
+    // Languages
+
     Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 
 
     Route::get('/languages/download', 'LanguageController@languages_download')->name('languages.download'); 
@@ -433,6 +406,40 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/languages/set_default_language/{name}', 'LanguageController@set_default_language')->name('languages.set_default_language');
 
+
+    // Custom Push
+
+    Route::get('/custom/push', 'AdminController@custom_push')->name('push');
+
+    Route::post('/custom/push', 'AdminController@custom_push_process')->name('send.push');
+
+
+    // Pages
+
+    Route::get('/pages', 'AdminController@pages')->name('pages.index');
+
+    Route::get('/pages/edit/{id}', 'AdminController@pages_edit')->name('pages.edit');
+
+    Route::get('/pages/view/{id}', 'AdminController@pages_view')->name('pages.view');
+
+    Route::get('/pages/create', 'AdminController@pages_create')->name('pages.create');
+
+    Route::post('/pages/create', 'AdminController@pages_save')->name('pages.save');
+
+    Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
+
+
+    // Admin profile pages
+
+    Route::get('/profile', 'AdminController@profile')->name('profile');
+
+    Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
+
+    Route::post('/change/password', 'AdminController@change_password')->name('change.password');
+
+    // Admin Help, account pages
+
+    Route::get('help' , 'AdminController@help')->name('help');
 
 });
 

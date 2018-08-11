@@ -39,7 +39,7 @@
                 <!-- /.col -->
                 <div class="col-sm-4 border-right">
                   <div class="description-block">
-                    <h5 class="description-header"><a  target="_blank" href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></h5>
+                    <h5 class="description-header"><a  target="_blank" href="{{route('admin.channels.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></h5>
                     <span class="description-text">{{tr('subscribers')}}</span>
                   </div>
                   <!-- /.description-block -->
@@ -136,7 +136,7 @@
                     <div class="tab-pane" id="tab_3">
                       <blockquote>
                           <p>{{tr('subscribers_short_notes')}}</p>
-                          <small>{{tr('to_view_more')}} <cite><a  target="_blank" href="{{route('admin.subscribers', array('id'=> $channel->id))}}">{{tr('click_here')}}</a></cite></small>
+                          <small>{{tr('to_view_more')}} <cite><a  target="_blank" href="{{route('admin.channels.subscribers', array('id'=> $channel->id))}}">{{tr('click_here')}}</a></cite></small>
                       </blockquote>
 
                       @if($channel->get_channel_subscribers_count > 0)

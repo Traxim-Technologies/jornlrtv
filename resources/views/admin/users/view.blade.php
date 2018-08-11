@@ -318,7 +318,7 @@
 			                <!-- /.col -->
 			                <div class="col-sm-4 border-right">
 			                  <div class="description-block">
-			                    <h5 class="description-header"><a href="{{route('admin.subscribers', array('id'=> $channel->channel_id))}}"> {{$channel->subscribers}}</a></h5>
+			                    <h5 class="description-header"><a href="{{route('admin.channels.subscribers', array('id'=> $channel->channel_id))}}"> {{$channel->subscribers}}</a></h5>
 			                    <span class="description-text">{{tr('subscribers')}}</span>
 			                  </div>
 			                  <!-- /.description-block -->
