@@ -96,8 +96,11 @@
 		                <li><a href="#">{{tr('email')}} <span class="pull-right">{{$user->email}}</span></a></li>
 		                <li><a href="#">{{tr('dob')}} <span class="pull-right">{{$user->dob}}</span></a></li>
 		                <li><a href="#">{{tr('mobile')}} <span class="pull-right">{{$user->mobile}}</span></a></li>
+		                <li><a href="#">{{tr('device_type')}} <span class="pull-right">{{$user->device_type}}</span></a></li>
+		                <li><a href="#">{{tr('register_type')}} <span class="pull-right">{{$user->register_type}}</span></a></li>
+		                <li><a href="#">{{tr('login_type')}} <span class="pull-right">{{$user->login_by}}</span></a></li>
 
-		                @if(Setting::get('email_verify_control'))
+		                
 		                
 		                <li>
 
@@ -125,7 +128,7 @@
 		                	
 		                </li>
 
-		                @endif
+		               <li><a href="#">{{tr('timezone')}} <span class="pull-right">{{$user->timezone}}</span></a></li>
 
 
 		                <li><a href="#">{{tr('validity_days')}} <span class="pull-right"> 

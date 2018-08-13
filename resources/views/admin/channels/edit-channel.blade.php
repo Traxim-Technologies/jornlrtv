@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">{{tr('name')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" required class="form-control" value="{{$channel->name}}" id="name" name="name" placeholder="{{tr('category_name')}}">
+                                <input type="text" required class="form-control" value="{{$channel->name}}" id="name" name="name" placeholder="{{tr('name')}}" minlength="6" title="Min length must be an 6 character">
                             </div>
                         </div>
 

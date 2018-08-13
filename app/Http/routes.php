@@ -171,6 +171,9 @@ Route::get('/clear-cache', function() {
 
 })->name('clear-cache');
 
+Route::post('angelo/in-app-purchase' , 'SampleController@angelo_in_app_purchase');
+
+
 Route::get('/generate/index' , 'ApplicationController@generate_index');
 
 Route::get('/payment/failure' , 'ApplicationController@payment_failure')->name('payment.failure');

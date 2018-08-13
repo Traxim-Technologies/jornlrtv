@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label">{{tr('email')}}</label>
                             <div class="col-sm-10">
-                                <input type="email" required class="form-control" value="{{$user->email}}" id="email" name="email" placeholder="{{tr('email')}}">
+                                <input type="email" required class="form-control" value="{{$user->email ? $user->email : old('email')}}" id="email" name="email" placeholder="{{tr('email')}}">
                             </div>
                         </div>
 
@@ -47,7 +47,7 @@
                             <label for="username" class="col-sm-2 control-label">{{tr('username')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="text" required name="name" value="{{$user->name}}" class="form-control" id="username" placeholder="{{tr('name')}}">
+                                <input type="text" required name="name" value="{{$user->name ? $user->name : old('name')}}" class="form-control" id="username" placeholder="{{tr('name')}}" pattern="[a-zA-Z0-9\s]+" title="Only accepts alphanumeric with spaces">
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                             <label for="username" class="col-sm-2 control-label">{{tr('dob')}}</label>
 
                             <div class="col-sm-10">
-                               <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off" value="{{$user->dob}}">
+                               <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off" value="{{$user->dob ? $user->dob : old('dob')}}">
                             </div>
                         </div>
 
@@ -64,7 +64,7 @@
                             <label for="mobile" class="col-sm-2 control-label">{{tr('mobile')}}</label>
 
                             <div class="col-sm-10">
-                                <input type="text" required name="mobile" value="{{$user->mobile}}" class="form-control" id="mobile" placeholder="{{tr('mobile')}}">
+                                <input type="text" required name="mobile" value="{{$user->mobile ? $user->mobile : old('mobile')}}" class="form-control" id="mobile" placeholder="{{tr('mobile')}}">
                             </div>
                         </div>
 
@@ -72,7 +72,7 @@
                             <label for="description" class="col-sm-2 control-label">{{tr('description')}}</label>
 
                             <div class="col-sm-10">
-                                <textarea type="text" name="description" class="form-control" id="description" placeholder="{{tr('description')}}">{{$user->description}}</textarea>
+                                <textarea type="text" name="description" class="form-control" id="description" placeholder="{{tr('description')}}">{{$user->description ? $user->description  :old('description')}}</textarea>
                             </div>
                         </div>
 

@@ -342,7 +342,7 @@ class AdminController extends Controller {
 
             $error_messages = implode(',', $validator->messages()->all());
 
-            return back()->with('flash_errors', $error_messages);
+            return back()->with('flash_errors', $error_messages)->withInput();
 
         } else {
 
@@ -396,7 +396,7 @@ class AdminController extends Controller {
 
             if ($user->age_limit < 10) {
 
-               return back()->with('flash_error', tr('min_age_error'));
+               return back()->with('flash_error', tr('min_age_error'))->withInput();
 
             }
 
@@ -442,7 +442,7 @@ class AdminController extends Controller {
                 
                 return redirect('/admin/view/user/'.$user->id)->with('flash_success', $message);
             } else {
-                return back()->with('flash_error', tr('admin_not_error'));
+                return back()->with('flash_error', tr('admin_not_error')->withInput());
             }
 
         }
@@ -689,7 +689,7 @@ class AdminController extends Controller {
             $user = User::find($id);
         }
 
-        $data = $base_query->get();
+        $data = $base_query->orderBy('updated_at', 'desc')->get();
 
         return view('admin.users.redeems')->withPage('redeems')->with('sub_page' , 'redeems')->with('data' , $data)->with('user' , $user);
     

@@ -1276,5 +1276,8 @@ return array(
 	'user_approved_success'=>'User Approved Successfully',
 	'user_decline_success'=>'User Declined Successfully',
 	'add_ppv_amount'=>'Add PPV Amount',
-
+	'device_type'=>'Device Type',
+	'register_type'=>'Register Type',
+	'login_type'=>'Login Type',
+	'timezone'=>'Timezone'
 );
