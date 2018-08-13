@@ -41,7 +41,7 @@
 							<label for = "title" class="col-sm-2 control-label"> * {{tr('title')}}</label>
 
 							<div class="col-sm-10">
-								<input type="text" name="title" role="title" min="5" max="20" class="form-control" value="{{ old('title') }}" required placeholder="{{tr('enter_title')}}">
+								<input type="text" name="title" role="title" min="5" max="20" class="form-control" value="{{ old('title') }}" required placeholder="{{tr('enter_coupon_title')}}">
 							</div>
 
 						</div> 

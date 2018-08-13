@@ -1319,7 +1319,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error', tr('video_not_found'));
-            
+
         }
     
     }
@@ -3606,6 +3606,10 @@ class AdminController extends Controller {
      *
      * Save the values in env file
      *
+     * @created Shobana Chandrasekar
+     *
+     * @edited -
+     *
      * @param object $request Post Attribute values
      * 
      * @return settings values
@@ -3706,6 +3710,34 @@ class AdminController extends Controller {
 
         return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);
     
+    }
+
+    /**
+    * Function Name: email_settings_process()
+    *
+    * Description: Email Setting Process
+    *
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @return Html view page with coupon detail
+    */
+    public function email_settings_process(Request $request) {
+
+        $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
+
+        $admin_id = \Auth::guard('admin')->user()->id;
+
+
+        foreach ($email_settings as $key => $data) {
+
+            \Enveditor::set($data,$request->$data);
+            
+        }
+
+        return redirect(route('clear-cache'))->with('flash_success' , tr('email_settings_success'));
+
     }
 
    /**

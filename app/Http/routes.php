@@ -195,7 +195,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
 
     Route::get('/videos/view', 'AdminController@videos_view')->name('videos.view');
-    
+
 
 
     Route::get('/delete_user_ratings', 'AdminController@delete_user_ratings')->name('delete_user_ratings');
@@ -378,6 +378,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     
     Route::post('settings' , 'AdminController@settings_process')->name('save.settings');
 
+    Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
 
     // Languages
 

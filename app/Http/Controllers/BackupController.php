@@ -110,32 +110,6 @@ class BackupController extends Controller {
     }
 
 
-   /**
-    * Function Name: email_settings_process()
-    *
-    * Description: Email Setting Process
-    *
-    *  Route : Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
-    *
-    * @return Html view page with coupon detail
-    */
-    public function email_settings_process(Request $request) {
-
-        $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
-
-        $admin_id = \Auth::guard('admin')->user()->id;
-
-
-        foreach ($email_settings as $key => $data) {
-
-            \Enveditor::set($data,$request->$data);
-            
-        }
-
-        return redirect(route('clear-cache'))->with('flash_success' , tr('email_settings_success'));
-
-    }
-
     public function decline_video($id) {
         
         $video = VideoTape::find($id);
