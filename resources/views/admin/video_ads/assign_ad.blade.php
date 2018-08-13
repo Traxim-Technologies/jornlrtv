@@ -335,7 +335,7 @@ $("#assign_ad").click(function(event){
                 <!-- <p>Compiled and ready to use in production. Download this version if you don't want to customize AdminLTE's LESS files.</p> -->
                 <img src="{{$video->default_image}}" style="width: 100%; height: 130px; margin-bottom: 10px;" />
                 <p><b>{{tr('type_of_ads')}} : </b> {{($video->getVideoAds) ? implode(',' , getTypeOfAds($video->getVideoAds->types_of_ad)) : '-'}}</p>
-                <a href="{{route('admin.view.video' , array('id' => $video->id))}}" class="btn btn-primary" target="_blank"><i class="fa fa-eye"></i> {{tr('view')}}</a>
+                <a href="{{route('admin.videos.view' , array('id' => $video->id))}}" class="btn btn-primary" target="_blank"><i class="fa fa-eye"></i> {{tr('view')}}</a>
               </div><!-- /.box-body -->
             </div><!-- /.box -->
           </div><!-- /.col -->

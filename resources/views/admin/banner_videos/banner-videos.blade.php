@@ -96,7 +96,7 @@
                                                         @endif
                                                     </li>
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 								                  	
 								                  	<li class="divider" role="presentation"></li>
 

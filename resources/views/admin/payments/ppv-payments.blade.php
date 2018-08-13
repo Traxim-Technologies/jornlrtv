@@ -67,7 +67,7 @@
 
 							      		@if($payment->videoTapeDetails)
 
-							      			<a href="{{route('admin.view.video' , array('id' => $payment->videoTapeDetails->id))}}">
+							      			<a href="{{route('admin.videos.view' , array('id' => $payment->videoTapeDetails->id))}}">
 							      				{{$payment->videoTapeDetails->title}}
 							      			</a>
 
@@ -133,7 +133,7 @@
 													<li>
 														{{tr('video')}} : @if($payment->videoTapeDetails)
 
-										      			<a href="{{route('admin.view.video' , array('id' => $payment->videoTapeDetails->id))}}">
+										      			<a href="{{route('admin.videos.view' , array('id' => $payment->videoTapeDetails->id))}}">
 										      				{{$payment->videoTapeDetails->title}}
 										      			</a>
 

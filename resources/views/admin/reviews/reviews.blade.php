@@ -49,7 +49,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$review->name}}</td>
 							      	<td>
-							      		<a href="{{route('admin.view.video' , array('id' => $review->video_id))}}" target="_blank">{{$review->title}}</a>
+							      		<a href="{{route('admin.videos.view' , array('id' => $review->video_id))}}" target="_blank">{{$review->title}}</a>
 							      	</td>
 
 							      	<td>
