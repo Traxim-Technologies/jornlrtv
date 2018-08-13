@@ -55,7 +55,7 @@ hr {
                 <div class='pull-right'>
                     @if ($video->compress_status == 0) <span class="label label-danger">{{tr('compress')}}</span>
                     @else
-                    <a href="{{route('admin.edit.video' , array('id' => $video->video_tape_id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+                    <a href="{{route('admin.videos.edit' , array('id' => $video->video_tape_id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
                     @endif
                 </div>
                 <div class="clearfix"></div>

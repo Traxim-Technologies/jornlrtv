@@ -135,4 +135,22 @@ class BackupController extends Controller {
         return redirect(route('clear-cache'))->with('flash_success' , tr('email_settings_success'));
 
     }
+
+    public function decline_video($id) {
+        
+        $video = VideoTape::find($id);
+
+        $video->is_approved = DEFAULT_FALSE;
+
+        $video->save();
+
+        if($video->is_approved == DEFAULT_TRUE){
+            $message = tr('admin_not_video_approve');
+        } else {
+            $message = tr('admin_not_video_decline');
+        }
+
+        return back()->with('flash_success', $message);
+    
+    }
 }

@@ -22,7 +22,7 @@
 
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('videos')}}</b>
-                <a href="{{route('admin.add.video')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
+                <a href="{{route('admin.videos.create')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
             </div>
 
             <div class="box-body">
@@ -132,7 +132,7 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.videos.edit' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     @endif

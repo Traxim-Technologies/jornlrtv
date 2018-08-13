@@ -180,9 +180,22 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Videos CRUD Operations
 
+    Route::get('/videos/create', 'AdminController@videos_create')->name('videos.create');
+
+    Route::get('/videos/edit/{id}', 'AdminController@videos_edit')->name('videos.edit');
+
+    Route::post('/videos/save', 'AdminController@videos_save')->name('videos.save');
+
+    Route::get('/videos/images/{id}', 'AdminController@videos_images')->name('videos.images');
+
+    Route::post('/videos/upload/image', 'AdminController@videos_upload_image')->name('videos.upload_image');
+
+    Route::post('videos/save/default_img', 'AdminController@videos_save_default_img')->name('videos.save.default_img');
+
     Route::get('/videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
 
     Route::get('/videos/view', 'AdminController@videos_view')->name('videos.view');
+    
 
 
     Route::get('/delete_user_ratings', 'AdminController@delete_user_ratings')->name('delete_user_ratings');
@@ -199,23 +212,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Videos
 
-   
-
     Route::get('/reviews', 'AdminController@user_ratings')->name('reviews');
 
     Route::get('/ad_videos', 'AdminController@ad_videos')->name('ad_videos');
-
-    Route::get('/add/video', 'AdminController@add_video')->name('add.video');
-
-    Route::get('/edit/video/{id}', 'AdminController@edit_video')->name('edit.video');
+    
 
     Route::post('/edit/video/process', 'AdminController@edit_video_process')->name('save.edit.video');
-
-    Route::post('save_video', 'AdminController@video_save')->name('video_save');
-
-    Route::post('save_default_img', 'AdminController@save_default_img')->name('save_default_img');
-
-    Route::post('upload_video_image', 'AdminController@upload_video_image')->name('upload_video_image');
+    
 
     Route::post('/save_video_payment/{id}', 'AdminController@save_video_payment')->name('save.video-payment');
 
@@ -226,8 +229,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/video/publish-video/{id}', 'AdminController@publish_video')->name('video.publish-video');
 
     Route::get('/video/decline/{id}', 'AdminController@decline_video')->name('video.decline');
-
-    Route::get('get_images/{id}', 'AdminController@get_images')->name('get_images');
+    
 
     // Slider Videos
 
@@ -242,10 +244,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/change/banner/video/{id}', 'AdminController@change_banner_video')->name('change.video');
     
 
-
     Route::get('/remove_payper_view/{id}', 'AdminController@remove_payper_view')->name('remove_pay_per_view');
-
-
 
 
     // Ads
@@ -267,25 +266,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('assign_ad', 'AdminController@assign_ad')->name('assign_ad');
 
     Route::post('assign_ad', 'AdminController@save_assign_ad')->name('assign_ads');
-
-
-    // Banner Ads
-
-    Route::get('create_banner','AdminController@banner_ads_create')->name('banner-ads.create');
-
-    Route::get('edit_banner','AdminController@banner_ads_edit')->name('banner-ads.edit');
-
-    Route::post('save_banner','AdminController@banner_ads_save')->name('banner-ads.save-banner-ad');
-
-    Route::get('banner_ads','AdminController@banner_ads')->name('banner-ads.index');
-
-    Route::get('banner_ad_status/{id}','AdminController@banner_ads_status')->name('banner-ads.status');
-
-    Route::get('delete_banner','AdminController@banner_ads_delete')->name('banner-ads.delete');
-
-    Route::get('view_banner_ad','AdminController@banner_ads_view')->name('banner-ads.view');
-
-    Route::post('banner-position','AdminController@banner_ads_position')->name('banner-ads.position');
 
 
     Route::get('ads_create/{video_tape_id}','AdminController@ads_create')->name('ads_create');
@@ -316,11 +296,24 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
 
 
-    // Videos
+    // Banner Ads
 
-    Route::get('/live_videos', 'AdminController@live_videos')->name('videos.index');
+    Route::get('banner-ads/create','AdminController@banner_ads_create')->name('banner-ads.create');
 
-    Route::get('/videos_list', 'AdminController@videos_list')->name('videos.videos_list');
+    Route::get('banner-ads/edit','AdminController@banner_ads_edit')->name('banner-ads.edit');
+
+    Route::post('banner-ads/save','AdminController@banner_ads_save')->name('banner-ads.save');
+
+    Route::get('banner-ads/list','AdminController@banner_ads')->name('banner-ads.list');
+
+    Route::get('banner-ads/status/{id}','AdminController@banner_ads_status')->name('banner-ads.status');
+
+    Route::get('banner-ads/delete','AdminController@banner_ads_delete')->name('banner-ads.delete');
+
+    Route::get('banner-ads/view','AdminController@banner_ads_view')->name('banner-ads.view');
+
+    Route::post('banner-ads/position','AdminController@banner_ads_position')->name('banner-ads.position');
+
 
     // Subscriptions
 

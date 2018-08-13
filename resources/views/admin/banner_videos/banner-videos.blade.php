@@ -92,7 +92,7 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.videos.edit' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
 

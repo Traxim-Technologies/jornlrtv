@@ -8,10 +8,10 @@
 
             <div class="box-header label-primary">
                 <b>{{tr('create_banner_ad')}}</b>
-                <a href="{{route('admin.banner-ads.index')}}" style="float:right" class="btn btn-default">{{tr('banner_ads')}}</a>
+                <a href="{{route('admin.banner-ads.list')}}" style="float:right" class="btn btn-default">{{tr('banner_ads')}}</a>
             </div>
 
-            <form  action="{{Setting::get('admin_delete_control') ? '' : route('admin.banner-ads.save-banner-ad')}}" method="POST" enctype="multipart/form-data" role="form">
+            <form  action="{{Setting::get('admin_delete_control') ? '' : route('admin.banner-ads.save')}}" method="POST" enctype="multipart/form-data" role="form">
 
                 <div class="box-body">
                     <input type="hidden" name="id" value="{{$model->id}}">

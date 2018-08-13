@@ -60,7 +60,7 @@
                 <ul class="treeview-menu">
 
                     <li id="add-video">
-                        <a href="{{route('admin.add.video')}}">
+                        <a href="{{route('admin.videos.create')}}">
                             <i class="fa fa-circle-o"></i>{{tr('add_video')}}
                         </a>
                     </li>
@@ -109,7 +109,7 @@
             @if(Setting::get('is_banner_ad'))
 
                 <li class="treeview" id="bannerads_nav">
-                    <a href="{{route('admin.banner-ads.index')}}">
+                    <a href="{{route('admin.banner-ads.list')}}">
                         <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
 
@@ -117,7 +117,7 @@
                        
                         <li id="bannerads-create"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
                     
-                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.list')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
 
                     </ul>
 

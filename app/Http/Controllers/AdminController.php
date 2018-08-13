@@ -527,7 +527,7 @@ class AdminController extends Controller {
     
     }
 
-    /**
+   /**
     * Function Name : user_status_change()
     * 
     * Description: Change the user status in approve and decline 
@@ -948,6 +948,7 @@ class AdminController extends Controller {
             return back()->with('flash_error',tr('something_error'));
 
         }
+    
     }
 
     /**
@@ -1246,13 +1247,24 @@ class AdminController extends Controller {
                     ->with('video_pixels', $video_pixels)
                     ->with('videoStreamUrl', $videoStreamUrl);
         }
+    
     }
 
-
-    /************************** FROM TODO *********************/
-
-
-    public function add_video(Request $request) {
+    /**
+     * Function Name : videos_create
+     *
+     * To create new video 
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of videos form
+     *
+     */
+    public function videos_create(Request $request) {
 
         $channels = getChannels();
 
@@ -1263,10 +1275,21 @@ class AdminController extends Controller {
 
     }
 
-    public function edit_video(Request $request) {
-
-        Log::info("Queue Driver ".envfile('QUEUE_DRIVER'));
-
+    /**
+     * Function Name : videos_edit
+     *
+     * To Edit a video based on video id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $request - Video Id
+     * 
+     * @return response of videos form
+     *
+     */
+    public function videos_edit(Request $request) {
 
         $video = VideoTape::where('video_tapes.id' , $request->id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
@@ -1274,26 +1297,48 @@ class AdminController extends Controller {
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
 
-        $page = 'videos';
-        $sub_page = 'add-video';
+        if ($video) {
+
+            $page = 'videos';
+            $sub_page = 'add-video';
 
 
-        if($video->is_banner == 1) {
-            $page = 'banner-videos';
-            $sub_page = 'banner-videos';
+            if($video->is_banner == 1) {
+                $page = 'banner-videos';
+                $sub_page = 'banner-videos';
+            }
+
+            $channels = getChannels();
+
+            return view('admin.videos.edit-video')
+                    ->with('channels' , $channels)
+                    ->with('video' ,$video)
+                    ->with('page' ,$page)
+                    ->with('sub_page' ,$sub_page);
+
+        } else {
+
+            return back()->with('flash_error', tr('video_not_found'));
+            
         }
-
-        $channels = getChannels();
-
-        return view('admin.videos.edit-video')
-                ->with('channels' , $channels)
-                ->with('video' ,$video)
-                ->with('page' ,$page)
-                ->with('sub_page' ,$sub_page);
     
     }
 
-    public function video_save(Request $request) {
+    /**
+     * Function Name : videos_save()
+     *
+     * To Save video based on new /edit video details
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Object $request - Video Object Details
+     * 
+     * @return response of success/failure 
+     *
+     */
+    public function videos_save(Request $request) {
 
         $response = CommonRepo::video_save($request)->getData();
 
@@ -1313,7 +1358,21 @@ class AdminController extends Controller {
 
     }  
 
-    public function get_images($id) {
+    /**
+     * Function Name : videos_images()
+     *
+     * To get images which is uploaded in Video Based on id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $request - Video Id
+     * 
+     * @return response of success/failure 
+     *
+     */
+    public function videos_images($id) {
 
         $response = CommonRepo::get_video_tape_images($id)->getData();
 
@@ -1323,9 +1382,23 @@ class AdminController extends Controller {
 
         return response()->json(['path'=>$view, 'data'=>$response->data]);
 
-    }  
+    } 
 
-    public function save_default_img(Request $request) {
+    /**
+     * Function Name : videos_save_default_img()
+     *
+     * To set the default image based on object details
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $request - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_save_default_img(Request $request) {
 
         $response = CommonRepo::set_default_image($request)->getData();
 
@@ -1333,7 +1406,21 @@ class AdminController extends Controller {
 
     }
 
-    public function upload_video_image(Request $request) {
+    /**
+     * Function Name : videos_upload_image()
+     *
+     * To save the image based on object details
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $request - Video Id, Video details
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_upload_image(Request $request) {
 
         $response = CommonRepo::upload_video_image($request)->getData();
 
@@ -1341,70 +1428,96 @@ class AdminController extends Controller {
 
     }
 
-    public function approve_video($id) {
+    /**
+     * Function Name : videos_status()
+     *
+     * To change the status of approve/decline video
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $request - Video Id, Video details
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_status($id) {
 
         $video = VideoTape::find($id);
 
-        $video->is_approved = DEFAULT_TRUE;
+        $video->is_approved = $video->is_approved ? DEFAULT_FALSE : DEFAULT_TRUE;
 
         $video->save();
 
-        if($video->is_approved == DEFAULT_TRUE)
-        {
+        if($video->is_approved == DEFAULT_TRUE) {
+
             $message = tr('admin_not_video_approve');
-        }
-        else
-        {
+
+        } else {
+
             $message = tr('admin_not_video_decline');
+
         }
+
         return back()->with('flash_success', $message);
     
     }
 
-
     /**
-     * Function Name : publish_video()
-     * To Publish the video for user
+     * Function Name : videos_publish()
      *
-     * @param int $id : Video id
+     * To publish the video based on changing the status of the video
      *
-     * @return Flash Message
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
      */
-    public function publish_video($id) {
+    public function videos_publish($id) {
+
         // Load video based on Auto increment id
         $video = VideoTape::find($id);
+
         // Check the video present or not
         if ($video) {
+
             $video->status = DEFAULT_TRUE;
+
             $video->publish_time = date('Y-m-d H:i:s');
+
             // Save the values in DB
             if ($video->save()) {
+
                 return back()->with('flash_success', tr('admin_published_video_success'));
+
             }
+
         }
+
         return back()->with('flash_error', tr('admin_published_video_failure'));
     }
 
 
-    public function decline_video($id) {
-        
-        $video = VideoTape::find($id);
-
-        $video->is_approved = DEFAULT_FALSE;
-
-        $video->save();
-
-        if($video->is_approved == DEFAULT_TRUE){
-            $message = tr('admin_not_video_approve');
-        } else {
-            $message = tr('admin_not_video_decline');
-        }
-
-        return back()->with('flash_success', $message);
-    
-    }
-
-    public function delete_video($id) {
+    /**
+     * Function Name : videos_delete()
+     *
+     * To delete a video based on video id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_delete($id) {
 
         if($video = VideoTape::where('id' , $id)->first())  {
 
@@ -1439,12 +1552,29 @@ class AdminController extends Controller {
             }
 
             $video->delete();
+
+            return back()->with('flash_success', tr('video_delete_success'));
         }
-        return back()->with('flash_success', tr('video_delete_success'));
+
+        return back()->with('flash_error', tr('video_not_found'));
     
     }
 
-    public function slider_video($id) {
+    /**
+     * Function Name : banner_videos_set()
+     *
+     * To set a video as banner based on video id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function banner_videos_set($id) {
 
         $video = VideoTape::where('is_home_slider' , 1 )->update(['is_home_slider' => 0]); 
 
@@ -1454,6 +1584,20 @@ class AdminController extends Controller {
     
     }
 
+    /**
+     * Function Name : banner_videos()
+     *
+     * To list out all the banner videos 
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param - 
+     * 
+     * @return response of array of banner videos
+     *
+     */
     public function banner_videos(Request $request) {
 
         $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
@@ -1468,7 +1612,21 @@ class AdminController extends Controller {
    
     }
 
-    public function add_banner_video(Request $request) {
+    /**
+     * Function Name : banner_videos_create()
+     *
+     * To create a banner video based on id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of create form of banner 
+     *
+     */
+    public function banner_videos_create(Request $request) {
 
         $channels = getChannels();
 
@@ -1479,7 +1637,21 @@ class AdminController extends Controller {
 
     }
 
-    public function change_banner_video($id) {
+    /**
+     * Function Name : banner_videos_remove()
+     *
+     * To remove a banner video based on id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of succes/failure message
+     *
+     */
+    public function banner_videos_remove($id) {
 
         $video = VideoTape::find($id);
 
@@ -1490,6 +1662,27 @@ class AdminController extends Controller {
         $message = tr('change_banner_video_success');
        
         return back()->with('flash_success', $message);
+    
+    }
+
+    /**
+     * Function Name : spam_videos()
+     *
+     * Load all the videos from flag table
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos(Request $request) {
+        // Load all the videos from flag table
+        $model = Flag::groupBy('video_tape_id')->get();
+        // Return array of values
+        return view('admin.spam_videos.spam_videos')->with('model' , $model)
+                        ->with('page' , 'videos')
+                        ->with('sub_page' , 'spam_videos');
     }
 
     public function user_ratings(Request $request) {
@@ -1526,20 +1719,7 @@ class AdminController extends Controller {
     
     }
 
-    /**
-     * Function Name : spam_videos()
-     * Load all the videos from flag table
-     *
-     * @return all the spam videos
-     */
-    public function spam_videos(Request $request) {
-        // Load all the videos from flag table
-        $model = Flag::groupBy('video_tape_id')->get();
-        // Return array of values
-        return view('admin.spam_videos.spam_videos')->with('model' , $model)
-                        ->with('page' , 'videos')
-                        ->with('sub_page' , 'spam_videos');
-    }
+
 
     /**
      * Function Name : view_users()
@@ -2143,14 +2323,43 @@ class AdminController extends Controller {
         }
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
 
+    /**
+     * Function Name : remove_payper_view()
+     * To remove pay per view
+     * 
+     * @return falsh success
+     */
+    public function remove_payper_view($id) {
+        
+        // Load video model using auto increment id of the table
+        $model = VideoTape::find($id);
+        if ($model) {
+            $model->ppv_amount = 0;
+            $model->type_of_subscription = 0;
+            $model->type_of_user = 0;
+            $model->save();
+            if ($model) {
+                return back()->with('flash_success' , tr('removed_pay_per_view'));
+            }
+        }
+        return back()->with('flash_error' , tr('admin_published_video_failure'));
+    }
+
+
+   /**
+    * Function Name: banner_ads_create()
+    *
+    * Description: To create a banner Ad
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return HTML view page with new Object Banner Ad
+    */
     public function banner_ads_create() {
 
         $model = new BannerAd;
@@ -2164,14 +2373,19 @@ class AdminController extends Controller {
     
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
+   /**
+    * Function Name: banner_ads_edit()
+    *
+    * Description: To edit a banner Ad based on Given Banner Id
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $request->id - Banner Id
+    *
+    * @return HTML view page with  Banner Ad Objectt
+    */
     public function banner_ads_edit(Request $request) {
 
         $model = BannerAd::find($request->id);
@@ -2187,14 +2401,19 @@ class AdminController extends Controller {
     
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
+   /**
+    * Function Name: banner_ads_save()
+    *
+    * Description: To save a banner ad based on new / Old object details
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $request->id - Banner Id
+    *
+    * @return response of success/failure response of banner ad details
+    */
     public function banner_ads_save(Request $request) {
 
         $validator = Validator::make($request->all(),[
@@ -2252,14 +2471,19 @@ class AdminController extends Controller {
 
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
+   /**
+    * Function Name: banner_ads_view()
+    *
+    * Description: To view the banner id based on the Banner Id
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param Integer request->id - Banner Id
+    *
+    * @return HTML view page with new Object Banner Ad
+    */
     public function banner_ads_view(Request $request) {
 
         $model = BannerAd::find($request->id);
@@ -2276,14 +2500,19 @@ class AdminController extends Controller {
 
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
+   /**
+    * Function Name: banner_ads()
+    *
+    * Description: Display all the banner ads list 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return banner ads list
+    */
     public function banner_ads(Request $request) {
 
         $model = BannerAd::orderBy('position' , 'asc')->get();
@@ -2295,14 +2524,19 @@ class AdminController extends Controller {
     
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
+   /**
+    * Function Name: banner_ads_delete()
+    *
+    * Description: Delete banner Ad based on banner Id
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param Object $request - Banner Id 
+    *
+    * @return Banner Ad response of success/failure response
+    */
     public function banner_ads_delete(Request $request) {
 
         $model = BannerAd::find($request->id);
@@ -2343,14 +2577,19 @@ class AdminController extends Controller {
 
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
+   /**
+    * Function Name: banner_ads_status()
+    *
+    * Description: To change the Banner Ad status of Approve/Decline status
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param Object $request - Banner Id 
+    *
+    * @return Banner Ad response of success/failure response
+    */
     public function banner_ads_status($id) {
 
         $model = BannerAd::find($id);
@@ -2371,14 +2610,19 @@ class AdminController extends Controller {
 
     }
 
-    /**
-     *
-     *
-     *
-     *
-     *
-     */
-
+   /**
+    * Function Name: banner_ads_position()
+    *
+    * Description: To change the Banner Ad position 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param Object $request - Banner Id 
+    *
+    * @return Banner Ad response of success/failure response
+    */
     public function banner_ads_position(Request $request) {
 
         $model = BannerAd::find($request->id);
@@ -2435,27 +2679,6 @@ class AdminController extends Controller {
     
     }
 
-    /**
-     * Function Name : remove_payper_view()
-     * To remove pay per view
-     * 
-     * @return falsh success
-     */
-    public function remove_payper_view($id) {
-        
-        // Load video model using auto increment id of the table
-        $model = VideoTape::find($id);
-        if ($model) {
-            $model->ppv_amount = 0;
-            $model->type_of_subscription = 0;
-            $model->type_of_user = 0;
-            $model->save();
-            if ($model) {
-                return back()->with('flash_success' , tr('removed_pay_per_view'));
-            }
-        }
-        return back()->with('flash_error' , tr('admin_published_video_failure'));
-    }
 
    /**
     * Function Name: subscriptions()
@@ -2525,6 +2748,20 @@ class AdminController extends Controller {
 
     }
 
+
+   /**
+    * Function Name: subscription_save()
+    *
+    * Description: To save the subscription details of new /old object based on details
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param object $request - Subscription details
+    *
+    * @return response of success/failure details
+    */
     public function subscription_save(Request $request) {
 
         $validator = Validator::make($request->all(),[
@@ -2588,12 +2825,19 @@ class AdminController extends Controller {
         
     }
 
-    /** 
-     * 
-     * Subscription View
-     *
-     */
-
+   /**
+    * Function Name: subscription_view()
+    *
+    * Description: to view the subscription details based on subscription id
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $request - Unique id of subscription
+    *
+    * @return response of success/failure details
+    */
     public function subscription_view($unique_id) {
 
         if($data = Subscription::where('unique_id' , $unique_id)->first()) {
@@ -2609,7 +2853,19 @@ class AdminController extends Controller {
    
     }
 
-
+   /**
+    * Function Name: subscription_delete()
+    *
+    * Description: To delete a particualr subscrption details based on id
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $request - Subscription Id
+    *
+    * @return response of success/failure details
+    */
     public function subscription_delete($id) {
 
         if($data = Subscription::where('id',$id)->first()->delete()) {
@@ -2622,12 +2878,19 @@ class AdminController extends Controller {
         
     }
 
-    /** 
-     * Subscription status change
-     * 
-     *
-     */
-
+   /**
+    * Function Name: subscription_status()
+    *
+    * Description: To change the status of subscription (Approve/decline)
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param integer $request - Subscription Unique id
+    *
+    * @return response of success/failure details
+    */
     public function subscription_status($unique_id) {
 
         if($data = Subscription::where('unique_id' , $unique_id)->first()) {
