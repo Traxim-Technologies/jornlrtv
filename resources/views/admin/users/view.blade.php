@@ -194,14 +194,12 @@
 
 	          <p><strong><i class="fa fa-bell margin-r-5"></i> {{tr('validity_days')}}</strong></p>
 
-		        @if($user->user_type)
 
-	                <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>
-	            @else
+                <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>
+           
 
-	            	<p><a target="_blank" href="{{route('admin.subscriptions.plans' , $user->id)}}" class="btn btn-xs btn-success"><i class="fa fa-hand-pointer-o"></i>&nbsp;{{tr('subscribe')}}</a></p>
+            	<p><a target="_blank" href="{{route('admin.subscriptions.plans' , $user->id)}}" class="btn btn-xs btn-success"><i class="fa fa-hand-pointer-o"></i>&nbsp;{{tr('subscribe')}}</a></p>
 
-	            @endif
 	        </div>
 	        <!-- /.box-body -->
 	      </div>

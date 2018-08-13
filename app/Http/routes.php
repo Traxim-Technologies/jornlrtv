@@ -386,7 +386,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     
     Route::post('settings' , 'AdminController@settings_process')->name('save.settings');
 
-    Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
 
     // Languages
 

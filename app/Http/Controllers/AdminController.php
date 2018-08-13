@@ -1622,150 +1622,6 @@ class AdminController extends Controller {
     
     }
 
-    public function email_settings_process(Request $request) {
-
-        $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
-
-        $admin_id = \Auth::guard('admin')->user()->id;
-
-
-        foreach ($email_settings as $key => $data) {
-
-            \Enveditor::set($data,$request->$data);
-            
-        }
-
-        return redirect(route('clear-cache'))->with('flash_success' , tr('email_settings_success'));
-
-    }
-
-    public function settings() {
-
-        $settings = array();
-
-        $result = EnvEditorHelper::getEnvValues();
-
-        return view('admin.settings.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
-    
-    }
-
-
-    public function settings_process(Request $request) {
-
-        $settings = Settings::all();
-
-        $check_streaming_url = "";
-
-        if($settings) {
-
-            foreach ($settings as $setting) {
-
-                $key = $setting->key;
-               
-                if($setting->key == 'site_name') {
-
-                    if($request->has('site_name')) {
-                        
-                        $setting->value = $request->site_name;
-
-                        $site_name = preg_replace('/[^A-Za-z0-9\-]/', '', $request->site_name);
-
-                        \Enveditor::set('SITENAME',$site_name);
-                    
-                    }
-                    
-                } else if($setting->key == 'site_icon') {
-
-                    if($request->hasFile('site_icon')) {
-                        
-                        if($setting->value) {
-                            Helper::delete_picture($setting->value, "/uploads/images/");
-                        }
-
-                        $setting->value = Helper::normal_upload_picture($request->file('site_icon'), "/uploads/images/");
-                    
-                    }
-                    
-                } else if($setting->key == 'site_logo') {
-
-                    if($request->hasFile('site_logo')) {
-
-                        if($setting->value) {
-
-                            Helper::delete_picture($setting->value, "/uploads/images/");
-                        }
-
-                        $setting->value = Helper::normal_upload_picture($request->file('site_logo'),"/uploads/images/");
-                    }
-
-                } else if($setting->key == 'streaming_url') {
-
-                    if($request->has('streaming_url') && $request->streaming_url != $setting->value) {
-
-                        if(check_nginx_configure()) {
-                            $setting->value = $request->streaming_url;
-                        } else {
-                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
-                        }
-                    }  
-
-                } else if($setting->key == 'HLS_STREAMING_URL') {
-
-                    if($request->has('HLS_STREAMING_URL') && $request->HLS_STREAMING_URL != $setting->value) {
-
-                        if(check_nginx_configure()) {
-                            $setting->value = $request->HLS_STREAMING_URL;
-                        } else {
-                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
-                        }
-                    }  
-
-                } else if($setting->key == 'multi_channel_status') {
-
-                    $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
-
-                } else if($setting->key == "admin_ppv_commission") {
-
-                    $setting->value = $request->admin_ppv_commission < 100 ? $request->admin_ppv_commission : 100;
-
-                    $user_ppv_commission = $request->admin_ppv_commission < 100 ? 100 - $request->admin_ppv_commission : 0;
-
-                    $user_ppv_commission_details = Settings::where('key' , 'user_ppv_commission')->first();
-
-                    if(count($user_ppv_commission_details) > 0) {
-
-                        $user_ppv_commission_details->value = $user_ppv_commission;
-
-
-                        $user_ppv_commission_details->save();
-                    }
-
-
-                } else if($request->$key!='') {
-
-                    $setting->value = $request->$key;
-
-                }
-
-                $setting->save();
-            
-            }
-        }
-        
-        $message = "Settings Updated Successfully"." ".$check_streaming_url;
-        
-        // return back()->with('setting', $settings)->with('flash_success', $message);
-
-        $result = EnvEditorHelper::getEnvValues();
-
-        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);    
-    
-    }
-
-
-
-
-
     /**
      * Function Name : spam_videos()
      * Load all the videos from flag table
@@ -1845,118 +1701,7 @@ class AdminController extends Controller {
     
     }
 
-    /**
-     * Function Name : save_common_settings
-     * Save the values in env file
-     *
-     * @param object $request Post Attribute values
-     * 
-     * @return settings values
-     */
-    
-    public function save_common_settings(Request $request) {
-
-        $admin_id = \Auth::guard('admin')->user()->id;
-
-        foreach ($request->all() as $key => $data) {
-
-            if($request->has($key)) {
-
-                if ($key == 'stripe_publishable_key') {
-
-                    $setting = Settings::where('key', $key)->first();
-
-                    if ($setting) {
-
-                        $setting->value = $data;
-
-                        $setting->save();
-
-                    }
-
-                } else if ($key == 'stripe_secret_key') {
-
-                    $setting = Settings::where('key', $key)->first();
-
-                    if ($setting) {
-
-                        $setting->value = $data;
-
-                        $setting->save();
-
-                    }
-
-                } else {
-
-                    \Enveditor::set($key,$data);
-
-                }      
-
-            }
-        }
-
-        $check_streaming_url = "";
-
-        $settings = Settings::all();
-
-        if($settings) {
-
-            foreach ($settings as $setting) {
-
-                $key = $setting->key;
-
-                if($request->$key!='') {
-
-                    if($setting->key == 'streaming_url') {
-
-                        if($request->has('streaming_url') && $request->streaming_url != $setting->value) {
-
-                            if(check_nginx_configure()) {
-                                $setting->value = $request->streaming_url;
-                            } else {
-                                $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
-                            }
-                        }  
-
-                    }
-
-                    if($setting->key == 'HLS_STREAMING_URL') {
-
-                        if($request->has('HLS_STREAMING_URL') && $request->HLS_STREAMING_URL != $setting->value) {
-
-                            if(check_nginx_configure()) {
-                                $setting->value = $request->HLS_STREAMING_URL;
-                            } else {
-                                $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
-                            }
-                        }  
-
-                    }
-
-                    $setting->value = $request->$key;
-
-                }
-
-                $setting->save();
-
-            }
-        
-        }
-
-
-        $result = EnvEditorHelper::getEnvValues();
-
-        $message = tr('common_settings_success')." ".$check_streaming_url;
-
-        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);
-    }
-
-
-
-
-
-
-     public function subscriptions() {
+    public function subscriptions() {
 
         $data = Subscription::orderBy('created_at','desc')->get();
 
@@ -3361,6 +3106,262 @@ class AdminController extends Controller {
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
         }
+    
+    }
+
+
+   /**
+    * Function Name: settings()
+    *
+    * Description: To display the settings value from settings table
+    *
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @param -
+    *
+    * @return Html view page with settings detail
+    */
+    public function settings() {
+
+        $settings = array();
+
+        $result = EnvEditorHelper::getEnvValues();
+
+        return view('admin.settings.settings')->with('settings' , $settings)->with('result', $result)->withPage('settings')->with('sub_page',''); 
+    
+    }
+
+   /**
+    * Function Name: settings_process()
+    *
+    * Description: To save the settings table values
+    *
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @param object $request - Settings object values
+    *
+    * @return response of Success / Failure Response details
+    */
+    public function settings_process(Request $request) {
+
+        $settings = Settings::all();
+
+        $check_streaming_url = "";
+
+        if($settings) {
+
+            foreach ($settings as $setting) {
+
+                $key = $setting->key;
+               
+                if($setting->key == 'site_name') {
+
+                    if($request->has('site_name')) {
+                        
+                        $setting->value = $request->site_name;
+
+                        $site_name = preg_replace('/[^A-Za-z0-9\-]/', '', $request->site_name);
+
+                        \Enveditor::set('SITENAME',$site_name);
+                    
+                    }
+                    
+                } else if($setting->key == 'site_icon') {
+
+                    if($request->hasFile('site_icon')) {
+                        
+                        if($setting->value) {
+                            Helper::delete_picture($setting->value, "/uploads/images/");
+                        }
+
+                        $setting->value = Helper::normal_upload_picture($request->file('site_icon'), "/uploads/images/");
+                    
+                    }
+                    
+                } else if($setting->key == 'site_logo') {
+
+                    if($request->hasFile('site_logo')) {
+
+                        if($setting->value) {
+
+                            Helper::delete_picture($setting->value, "/uploads/images/");
+                        }
+
+                        $setting->value = Helper::normal_upload_picture($request->file('site_logo'),"/uploads/images/");
+                    }
+
+                } else if($setting->key == 'streaming_url') {
+
+                    if($request->has('streaming_url') && $request->streaming_url != $setting->value) {
+
+                        if(check_nginx_configure()) {
+                            $setting->value = $request->streaming_url;
+                        } else {
+                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                        }
+                    }  
+
+                } else if($setting->key == 'HLS_STREAMING_URL') {
+
+                    if($request->has('HLS_STREAMING_URL') && $request->HLS_STREAMING_URL != $setting->value) {
+
+                        if(check_nginx_configure()) {
+                            $setting->value = $request->HLS_STREAMING_URL;
+                        } else {
+                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                        }
+                    }  
+
+                } else if($setting->key == 'multi_channel_status') {
+
+                    $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
+
+                } else if($setting->key == "admin_ppv_commission") {
+
+                    $setting->value = $request->admin_ppv_commission < 100 ? $request->admin_ppv_commission : 100;
+
+                    $user_ppv_commission = $request->admin_ppv_commission < 100 ? 100 - $request->admin_ppv_commission : 0;
+
+                    $user_ppv_commission_details = Settings::where('key' , 'user_ppv_commission')->first();
+
+                    if(count($user_ppv_commission_details) > 0) {
+
+                        $user_ppv_commission_details->value = $user_ppv_commission;
+
+
+                        $user_ppv_commission_details->save();
+                    }
+
+
+                } else if($request->$key!='') {
+
+                    $setting->value = $request->$key;
+
+                }
+
+                $setting->save();
+            
+            }
+        }
+        
+        $message = "Settings Updated Successfully"." ".$check_streaming_url;
+        
+        // return back()->with('setting', $settings)->with('flash_success', $message);
+
+        $result = EnvEditorHelper::getEnvValues();
+
+        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);    
+    
+    }
+
+    /**
+     * Function Name : save_common_settings
+     *
+     * Save the values in env file
+     *
+     * @param object $request Post Attribute values
+     * 
+     * @return settings values
+     */
+    public function save_common_settings(Request $request) {
+
+        $admin_id = \Auth::guard('admin')->user()->id;
+
+        foreach ($request->all() as $key => $data) {
+
+            if($request->has($key)) {
+
+                if ($key == 'stripe_publishable_key') {
+
+                    $setting = Settings::where('key', $key)->first();
+
+                    if ($setting) {
+
+                        $setting->value = $data;
+
+                        $setting->save();
+
+                    }
+
+                } else if ($key == 'stripe_secret_key') {
+
+                    $setting = Settings::where('key', $key)->first();
+
+                    if ($setting) {
+
+                        $setting->value = $data;
+
+                        $setting->save();
+
+                    }
+
+                } else {
+
+                    \Enveditor::set($key,$data);
+
+                }      
+
+            }
+        }
+
+        $check_streaming_url = "";
+
+        $settings = Settings::all();
+
+        if($settings) {
+
+            foreach ($settings as $setting) {
+
+                $key = $setting->key;
+
+                if($request->$key!='') {
+
+                    if($setting->key == 'streaming_url') {
+
+                        if($request->has('streaming_url') && $request->streaming_url != $setting->value) {
+
+                            if(check_nginx_configure()) {
+                                $setting->value = $request->streaming_url;
+                            } else {
+                                $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                            }
+                        }  
+
+                    }
+
+                    if($setting->key == 'HLS_STREAMING_URL') {
+
+                        if($request->has('HLS_STREAMING_URL') && $request->HLS_STREAMING_URL != $setting->value) {
+
+                            if(check_nginx_configure()) {
+                                $setting->value = $request->HLS_STREAMING_URL;
+                            } else {
+                                $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                            }
+                        }  
+
+                    }
+
+                    $setting->value = $request->$key;
+
+                }
+
+                $setting->save();
+
+            }
+        
+        }
+
+
+        $result = EnvEditorHelper::getEnvValues();
+
+        $message = tr('common_settings_success')." ".$check_streaming_url;
+
+        return redirect(route('clear-cache'))->with('result' , $result)->with('flash_success' , $message);
     
     }
 
