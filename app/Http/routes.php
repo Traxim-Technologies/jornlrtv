@@ -196,55 +196,42 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/videos/view', 'AdminController@videos_view')->name('videos.view');
 
+    Route::post('/videos/set-ppv/{id}', 'AdminController@videos_set_ppv')->name('videos.set-ppv');
 
+    Route::get('/videos/delete/{id}', 'AdminController@videos_delete')->name('videos.delete');
 
-    Route::get('/delete_user_ratings', 'AdminController@delete_user_ratings')->name('delete_user_ratings');
+    Route::get('/videos/status/{id}', 'AdminController@videos_status')->name('videos.status');
 
+    Route::get('/videos/publish/{id}', 'AdminController@videos_publish')->name('videos.publish');
 
-    Route::get('/unspam-video/{id}', 'AdminController@unspam_video')->name('unspam-video');
+    Route::get('/videos/remove-ppv/{id}', 'AdminController@videos_remove_ppv')->name('videos.remove-ppv');
 
-
-    // Spam Videos
-    Route::get('/spam-videos', 'AdminController@spam_videos')->name('spam-videos');
-
-    Route::get('/view-users/{id}', 'AdminController@view_users')->name('view-users');
-
-
-    // Videos
-
-    Route::get('/reviews', 'AdminController@user_ratings')->name('reviews');
-
-    Route::get('/ad_videos', 'AdminController@ad_videos')->name('ad_videos');
-    
-
-    Route::post('/edit/video/process', 'AdminController@edit_video_process')->name('save.edit.video');
-    
-
-    Route::post('/save_video_payment/{id}', 'AdminController@save_video_payment')->name('save.video-payment');
-
-    Route::get('/delete/video/{id}', 'AdminController@delete_video')->name('delete.video');
-
-    Route::get('/video/approve/{id}', 'AdminController@approve_video')->name('video.approve');
-
-    Route::get('/video/publish-video/{id}', 'AdminController@publish_video')->name('video.publish-video');
-
-    Route::get('/video/decline/{id}', 'AdminController@decline_video')->name('video.decline');
-    
-
-    // Slider Videos
-
-    Route::get('/slider/video/{id}', 'AdminController@slider_video')->name('slider.video');
 
     // Banner Videos
 
+    Route::get('/banner/videos/set/{id}', 'AdminController@banner_videos_set')->name('banner.videos.set');
+
     Route::get('/banner/videos', 'AdminController@banner_videos')->name('banner.videos');
 
-    Route::get('/add/banner/video', 'AdminController@add_banner_video')->name('add.banner.video');
+    Route::get('/banner/videos/create', 'AdminController@banner_videos_create')->name('banner.videos.create');
 
-    Route::get('/change/banner/video/{id}', 'AdminController@change_banner_video')->name('change.video');
-    
+    Route::get('/banner/videos/remove/{id}', 'AdminController@banner_videos_remove')->name('banner.videos.remove');
 
-    Route::get('/remove_payper_view/{id}', 'AdminController@remove_payper_view')->name('remove_pay_per_view');
+
+    // Spam Videos
+
+    Route::get('/spam-videos', 'AdminController@spam_videos')->name('spam-videos');
+
+    Route::get('/spam-videos/user-reports/{id}', 'AdminController@spam_videos_user_reports')->name('spam-videos.user-reports');
+
+    Route::get('/unspam-video/{id}', 'AdminController@spam_videos_unspam')->name('spam-videos.unspam-video');
+
+
+    // Reviews
+
+    Route::get('/reviews', 'AdminController@user_reviews')->name('reviews');
+
+    Route::get('/reviews/delete', 'AdminController@user_reviews_delete')->name('reviews.delete');
 
 
     // Ads
@@ -282,18 +269,14 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('add_between_ads', 'AdminController@add_between_ads')->name('add.between_ads');
 
+    Route::get('/ad_videos', 'AdminController@ad_videos')->name('ad_videos');
 
     // Subscriptions
-
 
     Route::get('/user_subscriptions/{id}', 'AdminController@user_subscriptions')->name('subscriptions.plans');
 
     Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'AdminController@user_subscription_save')->name('subscription.save');
 
-
-    Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
-
-    Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
 
 
     // Banner Ads

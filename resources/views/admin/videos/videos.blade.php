@@ -65,7 +65,7 @@
 							      	
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
 							      	
-							      	<td><a href="{{route('admin.channels.videos', $video->channel_id)}}">{{$video->channel_name}}</a></td>
+							      	<td><a href="{{route('admin.channels.view', $video->channel_id)}}">{{$video->channel_name}}</a></td>
 							      	
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
@@ -149,12 +149,12 @@
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@if($video->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
 								                	@else
 								                		@if ($video->compress_status == 0)
 								                			<li role="presentation"><a role="menuitem" tabindex="-1">{{tr('compress')}}</a></li>
 								                		@else 
-								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
 								                  		@endif
 								                  	@endif
 
@@ -185,7 +185,7 @@
 										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 										                  	@else
-									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
+									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.videos.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
 									                  		@endif
 									                  	</li>
 								                  	@endif
@@ -197,7 +197,7 @@
 
 							    <div id="{{$video->video_tape_id}}" class="modal fade" role="dialog">
 								  <div class="modal-dialog">
-								  <form action="{{route('admin.save.video-payment', $video->video_tape_id)}}" method="POST">
+								  <form action="{{route('admin.videos.set-ppv', $video->video_tape_id)}}" method="POST">
 									    <!-- Modal content-->
 									   	<div class="modal-content">
 									      <div class="modal-header">
@@ -247,7 +247,7 @@
 									      <div class="modal-footer">
 									      	<div class="pull-left">
 									      		@if($video->ppv_amount > 0)
-									       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
+									       			<a class="btn btn-danger" href="{{route('admin.videos.remove-ppv', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
 									       		@endif
 									       	</div>
 									        <div class="pull-right">

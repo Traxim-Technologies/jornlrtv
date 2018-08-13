@@ -131,8 +131,6 @@ $('form').ajaxForm({
         alert(xhr);
     },
     success : function(xhr) {
-        console.log(xhr);
-
 
         $(".overlay").hide();
 

@@ -39,7 +39,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td>{{($video->videoTape) ? $video->videoTape->channel_name : ''}}</td>
 							      	<td>{{$video->videoTape ? substr($video->videoTape->title , 0,25) : ''}}...</td>
-							      	<td>{{$video->videoTape ? count($video->videoTape->getScopeUserFlags) : 0}}</td>
+							      	<td><a target="_blank" href="{{route('admin.spam-videos.user-reports' , $video->video_tape_id)}}">{{$video->videoTape ? count($video->videoTape->getScopeUserFlags) : 0}}</a></td>
 							      	<td>
 							      		@if ($video->videoTape)
 							      		@if($video->videoTape->is_approved)
@@ -69,7 +69,7 @@
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.videos.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 
@@ -78,16 +78,16 @@
 													@if($video->videoTape)
 
 								                  	@if($video->videoTape->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
 								                	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@endif
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.view-users' , $video->video_tape_id)}}">{{tr('user_reports')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.spam-videos.user-reports' , $video->video_tape_id)}}">{{tr('user_reports')}}</a></li>
 								                </ul>
               								</li>
             							</ul>

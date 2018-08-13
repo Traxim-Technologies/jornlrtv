@@ -1561,6 +1561,85 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : videos_set_ppv
+     *
+     * Brief : To save the payment details
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id Video Id
+     *
+     * @param object  $request Object (Post Attributes)
+     *
+     * @return flash message
+     */
+    public function videos_set_ppv($id, Request $request) {
+        
+        if($request->ppv_amount > 0){
+
+            // Load Video Model
+            $model = VideoTape::find($id);
+
+            // Get post attribute values and save the values
+            if ($model) {
+
+                 $request->request->add([ 
+                    'ppv_created_by'=> 0 ,
+                ]); 
+
+                if ($data = $request->all()) {
+
+                    // Update the post
+                    if (VideoTape::where('id', $id)->update($data)) {
+                        // Redirect into particular value
+                        return back()->with('flash_success', tr('payment_added'));       
+                    } 
+                }
+            }
+
+            return back()->with('flash_error', tr('admin_published_video_failure'));
+
+        } else {
+
+            return back()->with('flash_error',tr('add_ppv_amount'));
+        }
+    
+    }
+
+
+    /**
+     * Function Name : videos_remove_ppv
+     *
+     * Brief : To remove PPV Details
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id Video Id
+     *     
+     * @return flash message
+     */
+    public function videos_remove_ppv($id) {
+        
+        // Load video model using auto increment id of the table
+        $model = VideoTape::find($id);
+        if ($model) {
+            $model->ppv_amount = 0;
+            $model->type_of_subscription = 0;
+            $model->type_of_user = 0;
+            $model->save();
+            if ($model) {
+                return back()->with('flash_success' , tr('removed_pay_per_view'));
+            }
+        }
+        return back()->with('flash_error' , tr('admin_published_video_failure'));
+    }
+
+
+    /**
      * Function Name : banner_videos_set()
      *
      * To set a video as banner based on video id
@@ -1685,7 +1764,76 @@ class AdminController extends Controller {
                         ->with('sub_page' , 'spam_videos');
     }
 
-    public function user_ratings(Request $request) {
+    /**
+     * Function Name : spam_videos_user_reports()
+     *
+     * Load all the flags based on the video id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id Video id
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos_user_reports($id) {
+        // Load all the users
+        $model = Flag::where('video_tape_id', $id)->get();
+        // Return array of values
+        return view('admin.spam_videos.user_report')->with('model' , $model)
+                        ->with('page' , 'videos')
+                        ->with('sub_page' , 'spam_videos');   
+    }
+
+    /**
+     * Function Name : spam_videos_unspam()
+     *
+     * Unsapm video based on flag id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id Flag id
+     *
+     * @return response of success/failure message
+     */
+    public function spam_videos_unspam($id) {
+
+        $model = Flag::find($id);
+
+        if ($model) {
+
+            if ($model->delete()) {
+
+                return back()->with('flash_success', tr('unmark_report_video_success_msg'));
+
+            } else {
+
+                return back()->with('flash_error', tr('something_error'));
+            }
+
+        } else {
+
+            return back()->with('flash_error', tr('something_error'));
+        }
+    }
+
+    /**
+     * Function Name : user_reviews()
+     *
+     * list out all the reviews which is leaves by user
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param -
+     *
+     * @return response of array details
+     */
+    public function user_reviews(Request $request) {
             
         $query = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
             ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
@@ -1709,79 +1857,28 @@ class AdminController extends Controller {
     
     }
 
-    public function delete_user_ratings(Request $request) {
+    /**
+     * Function Name : user_reviews_delete()
+     *
+     * Delete a user review based on review id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request - User review id
+     *
+     * @return response of array details
+     */
+    public function user_reviews_delete(Request $request) {
 
         if($user = UserRating::find($request->id)) {
+
             $user->delete();
+
         }
 
         return back()->with('flash_success', tr('admin_not_ur_del'));
-    
-    }
-
-
-
-    /**
-     * Function Name : view_users()
-     * Load all the flags based on the video id
-     *
-     * @param integer $id Video id
-     *
-     * @return all the spam videos
-     */
-
-    public function view_users($id) {
-        // Load all the users
-        $model = Flag::where('video_tape_id', $id)->get();
-        // Return array of values
-        return view('admin.spam_videos.user_report')->with('model' , $model)
-                        ->with('page' , 'Spam Videos')
-                        ->with('sub_page' , 'User Reports');   
-    }
-
-
-    /**
-     * Function Name : save_video_payment
-     *
-     * Brief : To save the payment details
-     *
-     * @param integer $id Video Id
-     *
-     * @param object  $request Object (Post Attributes)
-     *
-     * @return flash message
-     */
-    
-    public function save_video_payment($id, Request $request) {
-        
-        if($request->ppv_amount > 0){
-
-            // Load Video Model
-            $model = VideoTape::find($id);
-
-            // Get post attribute values and save the values
-            if ($model) {
-
-                 $request->request->add([ 
-                    'ppv_created_by'=> 0 ,
-                ]); 
-
-                if ($data = $request->all()) {
-
-                    // Update the post
-                    if (VideoTape::where('id', $id)->update($data)) {
-                        // Redirect into particular value
-                        return back()->with('flash_success', tr('payment_added'));       
-                    } 
-                }
-            }
-
-            return back()->with('flash_error', tr('admin_published_video_failure'));
-
-        } else {
-
-            return back()->with('flash_error',tr('add_ppv_amount'));
-        }
     
     }
 
@@ -2302,49 +2399,8 @@ class AdminController extends Controller {
 
     }
 
-    public function unspam_video($id) {
-
-        $model = Flag::find($id);
-
-        if ($model) {
-
-            if ($model->delete()) {
-
-                return back()->with('flash_success', tr('unmark_report_video_success_msg'));
-
-            } else {
-
-                return back()->with('flash_error', tr('something_error'));
-            }
-
-        } else {
-
-            return back()->with('flash_error', tr('something_error'));
-        }
-    }
 
 
-    /**
-     * Function Name : remove_payper_view()
-     * To remove pay per view
-     * 
-     * @return falsh success
-     */
-    public function remove_payper_view($id) {
-        
-        // Load video model using auto increment id of the table
-        $model = VideoTape::find($id);
-        if ($model) {
-            $model->ppv_amount = 0;
-            $model->type_of_subscription = 0;
-            $model->type_of_user = 0;
-            $model->save();
-            if ($model) {
-                return back()->with('flash_success' , tr('removed_pay_per_view'));
-            }
-        }
-        return back()->with('flash_error' , tr('admin_published_video_failure'));
-    }
 
 
    /**
