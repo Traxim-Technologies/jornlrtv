@@ -311,6 +311,19 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'AdminController@user_subscription_save')->name('subscription.save');
 
 
+    Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
+
+    Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
+
+
+    // Videos
+
+    Route::get('/live_videos', 'AdminController@live_videos')->name('videos.index');
+
+    Route::get('/videos_list', 'AdminController@videos_list')->name('videos.videos_list');
+
+    // Subscriptions
+
     Route::get('/subscriptions', 'AdminController@subscriptions')->name('subscriptions.index');
 
     Route::get('/subscriptions/create', 'AdminController@subscription_create')->name('subscriptions.create');
@@ -324,18 +337,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/subscriptions/view/{id}', 'AdminController@subscription_view')->name('subscriptions.view');
 
     Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('subscriptions.status');
-
-
-    Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
-
-    Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
-
-
-    // Videos
-
-    Route::get('/live_videos', 'AdminController@live_videos')->name('videos.index');
-
-    Route::get('/videos_list', 'AdminController@videos_list')->name('videos.videos_list');
 
 
     // Coupons

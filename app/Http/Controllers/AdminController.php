@@ -1605,154 +1605,6 @@ class AdminController extends Controller {
     
     }
 
-    public function subscriptions() {
-
-        $data = Subscription::orderBy('created_at','desc')->get();
-
-        return view('admin.subscriptions.index')->withPage('subscriptions')
-                        ->with('data' , $data)
-                        ->with('sub_page','subscriptions-view');        
-
-    }
-
-    public function subscription_create() {
-
-        return view('admin.subscriptions.create')->with('page' , 'subscriptions')
-                    ->with('sub_page','subscriptions-add');
-    }
-
-    public function subscription_edit($unique_id) {
-
-        $data = Subscription::where('unique_id' ,$unique_id)->first();
-
-        return view('admin.subscriptions.edit')->withData($data)
-                    ->with('sub_page','subscriptions-view')
-                    ->with('page' , 'subscriptions ');
-
-    }
-
-    public function subscription_save(Request $request) {
-
-        $validator = Validator::make($request->all(),[
-                'title' => 'required|max:255',
-                'plan' => 'required',
-                'amount' => 'required',
-                'image' => 'mimes:jpeg,png,jpg'
-        ]);
-        
-        if($validator->fails()) {
-
-            $error_messages = implode(',', $validator->messages()->all());
-
-            return back()->with('flash_errors', $error_messages);
-
-        } else {
-
-            if($request->id != '') {
-
-                $model = Subscription::find($request->id);
-
-
-                if($request->hasFile('image')) {
-
-                    $model->picture ? Helper::delete_picture('uploads/subscriptions' , $model->picture) : "";
-
-                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
-                    
-                    $request->request->add(['picture' => $picture , 'image' => '']);
-
-                }
-
-                $model->update($request->all());
-
-            } else {
-
-                if($request->hasFile('image')) {
-
-                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
-
-                    $request->request->add(['picture' => $picture , 'image'=> '']);
-                }
-
-                $model = Subscription::create($request->all());
-
-                $model->status = 1;
-
-                $model->unique_id = $request->title;
-
-                $model->save();
-            }
-        
-            if($model) {
-                return redirect(route('admin.subscriptions.view', $model->unique_id))->with('flash_success', $request->id ? tr('subscription_update_success') : tr('subscription_create_success'));
-
-            } else {
-                return back()->with('flash_error',tr('admin_not_error'));
-            }
-        }
-    
-        
-    }
-
-    /** 
-     * 
-     * Subscription View
-     *
-     */
-
-    public function subscription_view($unique_id) {
-
-        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
-
-            return view('admin.subscriptions.view')
-                        ->with('data' , $data)
-                        ->withPage('subscriptions')
-                        ->with('sub_page','subscriptions-view');
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-   
-    }
-
-
-    public function subscription_delete($id) {
-
-        if($data = Subscription::where('id',$id)->first()->delete()) {
-
-            return back()->with('flash_success',tr('subscription_delete_success'));
-
-        } else {
-            return back()->with('flash_error',tr('admin_not_error'));
-        }
-        
-    }
-
-    /** 
-     * Subscription status change
-     * 
-     *
-     */
-
-    public function subscription_status($unique_id) {
-
-        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
-
-            $data->status  = $data->status ? 0 : 1;
-
-            $data->save();
-
-            return back()->with('flash_success' , $data->status ? tr('subscription_approve_success') : tr('subscription_decline_success'));
-
-        } else {
-
-            return back()->with('flash_error',tr('admin_not_error'));
-            
-        }
-    }
-
-
-
     public function ad_create() {
 
         $model = new AdsDetail;
@@ -2291,10 +2143,6 @@ class AdminController extends Controller {
         }
     }
 
-    public function redeems(Request $request) {
-
-    }
-
     /**
      *
      *
@@ -2609,6 +2457,193 @@ class AdminController extends Controller {
         return back()->with('flash_error' , tr('admin_published_video_failure'));
     }
 
+   /**
+    * Function Name: subscriptions()
+    *
+    * Description: To list out subscription details
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return HTML view page with subscription details
+    */
+    public function subscriptions() {
+
+        $data = Subscription::orderBy('created_at','desc')->get();
+
+        return view('admin.subscriptions.index')->withPage('subscriptions')
+                        ->with('data' , $data)
+                        ->with('sub_page','subscriptions-view');        
+
+    }
+
+   /**
+    * Function Name: subscription_create()
+    *
+    * Description: To create subscription details 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return HTML view page 
+    */
+    public function subscription_create() {
+
+        $data = new Subscription;
+
+        return view('admin.subscriptions.create')->with('page' , 'subscriptions')
+                    ->with('sub_page','subscriptions-add')
+                    ->with('data', $data);
+    }
+
+   /**
+    * Function Name: subscription_edit()
+    *
+    * Description: To create subscription details 
+    *
+    * @created Shobana
+    *
+    * @edited -
+    *
+    * @param - 
+    *
+    * @return HTML view page 
+    */
+    public function subscription_edit($unique_id) {
+
+        $data = Subscription::where('unique_id' ,$unique_id)->first();
+
+        return view('admin.subscriptions.edit')->withData($data)
+                    ->with('sub_page','subscriptions-view')
+                    ->with('page' , 'subscriptions ');
+
+    }
+
+    public function subscription_save(Request $request) {
+
+        $validator = Validator::make($request->all(),[
+                'title' => 'required|max:255',
+                'plan' => 'required',
+                'amount' => 'required',
+                'image' => 'mimes:jpeg,png,jpg'
+        ]);
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            return back()->with('flash_errors', $error_messages);
+
+        } else {
+
+            if($request->id != '') {
+
+                $model = Subscription::find($request->id);
+
+
+                if($request->hasFile('image')) {
+
+                    $model->picture ? Helper::delete_picture('uploads/subscriptions' , $model->picture) : "";
+
+                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
+                    
+                    $request->request->add(['picture' => $picture , 'image' => '']);
+
+                }
+
+                $model->update($request->all());
+
+            } else {
+
+                if($request->hasFile('image')) {
+
+                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('image'));
+
+                    $request->request->add(['picture' => $picture , 'image'=> '']);
+                }
+
+                $model = Subscription::create($request->all());
+
+                $model->status = 1;
+
+                $model->unique_id = $request->title;
+
+                $model->save();
+            }
+        
+            if($model) {
+                return redirect(route('admin.subscriptions.view', $model->unique_id))->with('flash_success', $request->id ? tr('subscription_update_success') : tr('subscription_create_success'));
+
+            } else {
+                return back()->with('flash_error',tr('admin_not_error'));
+            }
+        }
+    
+        
+    }
+
+    /** 
+     * 
+     * Subscription View
+     *
+     */
+
+    public function subscription_view($unique_id) {
+
+        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
+
+            return view('admin.subscriptions.view')
+                        ->with('data' , $data)
+                        ->withPage('subscriptions')
+                        ->with('sub_page','subscriptions-view');
+
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+   
+    }
+
+
+    public function subscription_delete($id) {
+
+        if($data = Subscription::where('id',$id)->first()->delete()) {
+
+            return back()->with('flash_success',tr('subscription_delete_success'));
+
+        } else {
+            return back()->with('flash_error',tr('admin_not_error'));
+        }
+        
+    }
+
+    /** 
+     * Subscription status change
+     * 
+     *
+     */
+
+    public function subscription_status($unique_id) {
+
+        if($data = Subscription::where('unique_id' , $unique_id)->first()) {
+
+            $data->status  = $data->status ? 0 : 1;
+
+            $data->save();
+
+            return back()->with('flash_success' , $data->status ? tr('subscription_approve_success') : tr('subscription_decline_success'));
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+            
+        }
+    }
 
    /**
     * Function Name: coupon_create()
