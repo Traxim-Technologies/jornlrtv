@@ -189,21 +189,21 @@
                 <ul class="treeview-menu">
 
                     <li id="payments-dashboard">
-                        <a href="{{route('admin.revenues')}}">
+                        <a href="{{route('admin.revenues.dashboard')}}">
                             <i class="fa fa-circle-o"></i>
                             {{tr('revenues')}}
                         </a>
                     </li>
 
                     <li id="payments-subscriptions">
-                        <a href="{{route('admin.subscription.payments')}}">
+                        <a href="{{route('admin.revenues.subscription-payments')}}">
                             <i class="fa fa-circle-o"></i>
                             {{tr('subscription_payments')}}
                         </a>
                     </li>
 
                     <li id="payments-ppv">
-                        <a href="{{route('admin.ppv_payments')}}">
+                        <a href="{{route('admin.revenues.ppv_payments')}}">
                             <i class="fa fa-circle-o"></i>
                             {{tr('ppv_payments')}}
                         </a>

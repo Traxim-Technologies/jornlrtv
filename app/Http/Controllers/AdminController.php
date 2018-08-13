@@ -1251,102 +1251,6 @@ class AdminController extends Controller {
 
     /************************** FROM TODO *********************/
 
-    public function user_redeem_requests($id = "") {
-
-        $base_query = RedeemRequest::orderBy('status' , 'asc');
-
-        $user = [];
-
-        if($id) {
-            $base_query = $base_query->where('user_id' , $id);
-
-            $user = User::find($id);
-        }
-
-        $data = $base_query->orderBy('updated_at', 'desc')->get();
-
-        return view('admin.users.redeems')->withPage('redeems')->with('sub_page' , 'redeems')->with('data' , $data)->with('user' , $user);
-    
-    }
-
-    public function user_redeem_pay(Request $request) {
-
-        $validator = Validator::make($request->all() , [
-            'redeem_request_id' => 'required|exists:redeem_requests,id',
-            'paid_amount' => 'required', 
-            ]);
-
-        if($validator->fails()) {
-
-            return back()->with('flash_error' , $validator->messages()->all())->withInput();
-
-        } else {
-
-            $redeem_request_details = RedeemRequest::find($request->redeem_request_id);
-
-            if($redeem_request_details) {
-
-                if($redeem_request_details->status == REDEEM_REQUEST_PAID ) {
-
-                    return back()->with('flash_error' , tr('redeem_request_status_mismatch'));
-
-                }
-
-
-                $message = tr('action_success');
-
-                $redeem_amount = $request->paid_amount ? $request->paid_amount : 0;
-
-                // Check the requested and admin paid amount is equal 
-
-                if($request->paid_amount == $redeem_request_details->request_amount) {
-
-                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
-
-                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
-
-                    $redeem_request_details->save();
-
-                }
-
-
-                else if($request->paid_amount > $redeem_request_details->request_amount) {
-
-                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
-
-                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
-
-                    $redeem_request_details->save();
-
-                    $redeem_amount = $redeem_request_details->request_amount;
-
-                } else {
-
-                    $message = tr('redeems_request_admin_less_amount');
-
-                    $redeem_amount = 0; // To restrict the redeeem paid amount update
-
-                }
-
-                $redeem_details = Redeem::where('user_id' , $redeem_request_details->user_id)->first();
-
-                if(count($redeem_details) > 0 ) {
-
-                    $redeem_details->paid = $redeem_details->paid + $redeem_amount;
-
-                    $redeem_details->save();
-                }
-
-                return back()->with('flash_success' , $message);
-
-            } else {
-                return back()->with('flash_error' , tr('something_error'));
-            }
-        }
-
-    }
-
-
 
     public function add_video(Request $request) {
 
@@ -2706,7 +2610,7 @@ class AdminController extends Controller {
     }
 
 
-    /**
+   /**
     * Function Name: coupon_create()
     *
     * Description: Get the coupon add form fields
@@ -2727,7 +2631,7 @@ class AdminController extends Controller {
     
     }
 
-    /**
+   /**
     * Function Name: coupon_save()
     *
     * Description: Save/Update the coupon details in database 
@@ -2758,7 +2662,6 @@ class AdminController extends Controller {
         } else{
 
                 $validator = Validator::make($request->all(),[
-
                 'title'=>'required',
                 'coupon_code'=>'required|unique:coupons,coupon_code|min:1|max:10',
                 'amount'=>'required|numeric|min:1|max:5000',
@@ -2846,7 +2749,7 @@ class AdminController extends Controller {
         
     }
 
-    /**
+   /**
     * Function Name: coupon_index()
     *
     * Description: Get the coupon details for all 
@@ -2876,7 +2779,7 @@ class AdminController extends Controller {
     
     }
 
-    /**
+   /**
     * Function Name: coupon_edit() 
     *
     * Description: Edit the coupon details and get the coupon edit form for 
@@ -2891,28 +2794,23 @@ class AdminController extends Controller {
     */
     public function coupon_edit($id){
 
-        if($id){
+        $edit_coupon = Coupon::find($id);
 
-            $edit_coupon = Coupon::find($id);
+        if($edit_coupon){
 
-            if($edit_coupon){
-
-                return view('admin.coupons.edit')
+            return view('admin.coupons.edit')
                         ->with('edit_coupon',$edit_coupon)
                         ->with('page','coupons')
                         ->with('sub_page','edit_coupons');
 
-            } else{
-                return back()->with('flash_error',tr('coupon_not_found_error'));
-            }
-        }else{
+        } else{
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
         }
     
     }
 
-    /**
+   /**
     * Function Name: coupon_delete()
     *
     * Description: Delete the particular coupon detail
@@ -2927,20 +2825,14 @@ class AdminController extends Controller {
     */
     public function coupon_delete($id){
 
-        if($id){
+        $delete_coupon = Coupon::find($id);
 
-            $delete_coupon = Coupon::find($id);
+        if($delete_coupon){
 
-            if($delete_coupon){
+            $delete_coupon->delete();
 
-                $delete_coupon->delete();
-
-                return back()->with('flash_success',tr('coupon_delete_success'));
-            } else{
-
-                return back()->with('flash_error',tr('coupon_not_found_error'));
-            }
-
+            return back()->with('flash_success',tr('coupon_delete_success'));
+            
         } else{
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
@@ -2948,7 +2840,7 @@ class AdminController extends Controller {
     
     }
 
-    /**
+   /**
     * Function Name: coupon_status_change()
     * 
     * Description: Coupon status for active and inactive update the status function
@@ -2976,6 +2868,7 @@ class AdminController extends Controller {
             } else {
 
                 return back()->with('flash_error',tr('coupon_not_found_error'));
+
             }
 
             if($request->status==DEFAULT_FALSE){
@@ -2988,6 +2881,7 @@ class AdminController extends Controller {
 
                 $message = tr('coupon_active_success');
             }
+
             return back()->with('flash_success',$message);
 
         } else{
@@ -3012,17 +2906,15 @@ class AdminController extends Controller {
     */
     public function coupon_view($id){
 
-        if($id){
+        $view_coupon = Coupon::find($id);
 
-            $view_coupon = Coupon::find($id);
+        if($view_coupon){
 
-            if($view_coupon){
-
-                return view('admin.coupons.view')
-                    ->with('view_coupon',$view_coupon)
-                    ->with('page','coupons')
-                    ->with('sub_page','view_coupons');
-            }
+            return view('admin.coupons.view')
+                ->with('view_coupon',$view_coupon)
+                ->with('page','coupons')
+                ->with('sub_page','view_coupons');
+            
 
         } else {
 
@@ -3031,6 +2923,135 @@ class AdminController extends Controller {
         }
     
     }
+
+
+   /**
+    * Function Name: user_redeem_requests()
+    *
+    * Description: To list out the all the redeem requests from the users, admin can payout amount
+    *
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @param integer $id - Optional ( Redeem request id)
+    *
+    * @return Html view page with redeem request details
+    */
+    public function user_redeem_requests($id = "") {
+
+        $base_query = RedeemRequest::orderBy('status' , 'asc');
+
+        $user = [];
+
+        if($id) {
+
+            $base_query = $base_query->where('user_id' , $id);
+
+            $user = User::find($id);
+
+        }
+
+        $data = $base_query->orderBy('updated_at', 'desc')->get();
+
+        return view('admin.users.redeems')
+                ->withPage('redeems')
+                ->with('sub_page' , 'redeems')
+                ->with('data' , $data)->with('user' , $user);
+    
+    }
+
+
+   /**
+    * Function Name: user_redeem_pay()
+    *
+    * Description: Pay the amount to the users.
+    *
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @param amount $request - Amount, Request Id
+    *
+    * @return response of success/failure response details
+    */
+    public function user_redeem_pay(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'redeem_request_id' => 'required|exists:redeem_requests,id',
+            'paid_amount' => 'required', 
+            ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , $validator->messages()->all())->withInput();
+
+        } else {
+
+            $redeem_request_details = RedeemRequest::find($request->redeem_request_id);
+
+            if($redeem_request_details) {
+
+                if($redeem_request_details->status == REDEEM_REQUEST_PAID ) {
+
+                    return back()->with('flash_error' , tr('redeem_request_status_mismatch'));
+
+                }
+
+
+                $message = tr('action_success');
+
+                $redeem_amount = $request->paid_amount ? $request->paid_amount : 0;
+
+                // Check the requested and admin paid amount is equal 
+
+                if($request->paid_amount == $redeem_request_details->request_amount) {
+
+                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
+
+                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
+
+                    $redeem_request_details->save();
+
+                }
+
+
+                else if($request->paid_amount > $redeem_request_details->request_amount) {
+
+                    $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
+
+                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
+
+                    $redeem_request_details->save();
+
+                    $redeem_amount = $redeem_request_details->request_amount;
+
+                } else {
+
+                    $message = tr('redeems_request_admin_less_amount');
+
+                    $redeem_amount = 0; // To restrict the redeeem paid amount update
+
+                }
+
+                $redeem_details = Redeem::where('user_id' , $redeem_request_details->user_id)->first();
+
+                if(count($redeem_details) > 0 ) {
+
+                    $redeem_details->paid = $redeem_details->paid + $redeem_amount;
+
+                    $redeem_details->save();
+                }
+
+                return back()->with('flash_success' , $message);
+
+            } else {
+                return back()->with('flash_error' , tr('something_error'));
+            }
+        }
+
+    }
+
 
    /**
     * Function Name: revenues()
@@ -3068,6 +3089,7 @@ class AdminController extends Controller {
                         ->with('total_subscribers' , $total_subscribers)
                         ->withPage('payments')
                         ->with('sub_page' , 'payments-dashboard');
+    
     }
 
    /**

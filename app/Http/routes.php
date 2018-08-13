@@ -187,17 +187,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/delete_user_ratings', 'AdminController@delete_user_ratings')->name('delete_user_ratings');
 
-    
 
     Route::get('/unspam-video/{id}', 'AdminController@unspam_video')->name('unspam-video');
-
-    // users
-
-    
-
-    Route::get('/redeems/{id?}', 'AdminController@user_redeem_requests')->name('users.redeems');
-
-    Route::post('/redeems/pay', 'AdminController@user_redeem_pay')->name('users.redeem.pay');
 
 
     // Spam Videos
@@ -250,39 +241,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/change/banner/video/{id}', 'AdminController@change_banner_video')->name('change.video');
     
-    // Payment details
 
-    Route::get('revenues' , 'AdminController@revenues')->name('revenues');
-    
-    Route::get('ppv_payments' , 'AdminController@ppv_payments')->name('ppv_payments');
-
-    Route::get('/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('subscription.payments');
 
     Route::get('/remove_payper_view/{id}', 'AdminController@remove_payper_view')->name('remove_pay_per_view');
 
 
-    // Coupons
-
-    // Get the add coupon forms
-    Route::get('/coupons/add','AdminController@coupon_create')->name('add.coupons');
-
-    // Get the edit coupon forms
-    Route::get('/coupons/edit/{id}','AdminController@coupon_edit')->name('edit.coupons');
-
-    // Save the coupon details
-    Route::post('/coupons/save','AdminController@coupon_save')->name('save.coupon');
-
-    // Get the list of coupon details
-    Route::get('/coupons/list','AdminController@coupon_index')->name('coupon.list');
-
-    //Get the particular coupon details
-    Route::get('/coupons/view/{id}','AdminController@coupon_view')->name('coupon.view');
-
-    // Delete the coupon details
-    Route::get('/coupons/delete/{id}','AdminController@coupon_delete')->name('delete.coupon');
-
-    //Coupon approve and decline status
-    Route::get('/coupon/status','AdminController@coupon_status_change')->name('coupon.status');
 
 
     // Ads
@@ -363,19 +326,54 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('subscriptions.status');
 
 
-
-
     Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('channels.unsubscribe');
 
     Route::post('/users/payout', 'AdminController@user_payout')->name('users.payout');
 
-    
 
     // Videos
 
     Route::get('/live_videos', 'AdminController@live_videos')->name('videos.index');
 
     Route::get('/videos_list', 'AdminController@videos_list')->name('videos.videos_list');
+
+
+    // Coupons
+
+    // Get the add coupon forms
+    Route::get('/coupons/add','AdminController@coupon_create')->name('add.coupons');
+
+    // Get the edit coupon forms
+    Route::get('/coupons/edit/{id}','AdminController@coupon_edit')->name('edit.coupons');
+
+    // Save the coupon details
+    Route::post('/coupons/save','AdminController@coupon_save')->name('save.coupon');
+
+    // Get the list of coupon details
+    Route::get('/coupons/list','AdminController@coupon_index')->name('coupon.list');
+
+    //Get the particular coupon details
+    Route::get('/coupons/view/{id}','AdminController@coupon_view')->name('coupon.view');
+
+    // Delete the coupon details
+    Route::get('/coupons/delete/{id}','AdminController@coupon_delete')->name('delete.coupon');
+
+    //Coupon approve and decline status
+    Route::get('/coupon/status','AdminController@coupon_status_change')->name('coupon.status');
+
+    //Redeems
+
+    Route::get('/redeems/{id?}', 'AdminController@user_redeem_requests')->name('users.redeems');
+
+    Route::post('/redeems/pay', 'AdminController@user_redeem_pay')->name('users.redeem.pay');
+
+    // Payment details
+
+    Route::get('revenues/dashboard' , 'AdminController@revenues')->name('revenues.dashboard');
+    
+    Route::get('revenues/ppv-payments' , 'AdminController@ppv_payments')->name('revenues.ppv_payments');
+
+    Route::get('/revenues/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('revenues.subscription-payments');
 
 
     // Settings
