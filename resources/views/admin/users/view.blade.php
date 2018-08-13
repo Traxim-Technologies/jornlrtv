@@ -257,15 +257,15 @@
                 <table class="table table-striped">
 	            	<tr>
 	            		<th>{{tr('total_earning')}}</th>
-	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->total : "0.00"}}</td>
+	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? number_format_short($user->userRedeem->total) : "0.00"}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('wallet_balance')}}</th>
-	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->remaining : "0.00"}}</td>
+	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? number_format_short($user->userRedeem->remaining) : "0.00"}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('paid_amount')}}</th>
-	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? $user->userRedeem->paid : "0.00"}}</td>
+	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? number_format_short($user->userRedeem->paid) : "0.00"}}</td>
 	            	</tr>
 	            	<tr>
 	            		<td>
@@ -283,11 +283,11 @@
 	          <div class="tab-pane" id="channels_id">
 
 	          	<blockquote>
-		                <p>{{tr('channels_short_notes')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.channels', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
-		            </blockquote>
+	                <p>{{tr('channels_short_notes')}}</p>
+	                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.channels', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+	            </blockquote>
 
-	          	<div class="row">
+	          		<div class="row">
 
 	          		@if(count($channels) > 0)
 
@@ -324,7 +324,7 @@
 			                <!-- /.col -->
 			                <div class="col-sm-4">
 			                  <div class="description-block">
-			                    <h5 class="description-header">{{$channel->currency}}{{$channel->earnings}}</h5>
+			                    <h5 class="description-header">{{$channel->currency}}{{number_format_short($channel->earnings)}}</h5>
 			                    <span class="description-text">{{tr('earnings')}}</span>
 			                  </div>
 			                  <!-- /.description-block -->
@@ -393,7 +393,7 @@
 
 	          		<blockquote>
 		                <p>{{tr('history_notes')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a target="_blank" href="{{route('admin.users.history', $user->id)}}">{{tr('click_here')}}</a></cite></small>
+		                <small>{{tr('to_view_more')}} <cite><a target="_blank" href="{{route('admin.reviews', $user->id)}}">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 
 	           		<table id="datatable-withoutpagination1" class="table table-bordered table-striped">

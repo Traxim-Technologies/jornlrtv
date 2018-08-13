@@ -85,10 +85,6 @@
 
 							      	<td><b>{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</b></td>
 
-							      	<!-- <td>{{number_format_short($video->getScopeLikeCount->count())}}</td> -->
-
-							      	<!-- <td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td> -->
-
 							      	@if(Setting::get('is_payper_view'))
 							      	<td class="text-center">
 							      		@if($video->ppv_amount > 0)

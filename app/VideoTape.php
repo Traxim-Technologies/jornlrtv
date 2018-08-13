@@ -125,7 +125,13 @@ class VideoTape extends Model
 
     public function getScopeUserRatings() {
 
-         return $this->hasMany('App\UserRating', 'video_tape_id', 'video_tape_id');
+         return $this->hasMany('App\UserRating', 'video_tape_id', 'video_tape_id')->count();
+
+    }
+
+     public function getUserWishlist() {
+
+         return $this->hasMany('App\Wishlist', 'video_tape_id', 'video_tape_id')->count();
 
     }
 
@@ -162,13 +168,13 @@ class VideoTape extends Model
 
     public function getScopeLikeCount() {
 
-        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('like_status', DEFAULT_TRUE);
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('like_status', DEFAULT_TRUE)->count();
 
     }
 
     public function getScopeDisLikeCount() {
 
-        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('dislike_status', DEFAULT_TRUE);
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('dislike_status', DEFAULT_TRUE)->count();
 
     }
 
@@ -194,7 +200,7 @@ class VideoTape extends Model
 
     public function getScopeUserFlags() {
 
-         return $this->hasMany('App\Flag', 'video_tape_id', 'video_tape_id');
+         return $this->hasMany('App\Flag', 'video_tape_id', 'video_tape_id')->count();
 
     }
 

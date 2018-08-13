@@ -4,15 +4,13 @@
 
 @section('content-header')
 
-{{tr('view_wishlist')}} - 
-
-<a href="{{route('admin.users.view' , $user_details->id)}}">{{$user_details->name}}</a>
+{{tr('view_wishlist')}} 
 
 @endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.users')}}"><i class="fa fa-user"></i> {{tr('users')}}</a></li>
+    <li><a href="{{route('admin.videos.list')}}"><i class="fa fa-user"></i> {{tr('videos')}}</a></li>
     <li class="active"> {{tr('view_wishlist')}}</li>
 @endsection
 
@@ -47,7 +45,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$wishlist->username}}</td>
 							      	<td>{{$wishlist->title}}</td>
-							      	<td>{{$wishlist->date}}</td>
+							      	<td>{{$wishlist->created_at}}</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
             								<li class="dropup">

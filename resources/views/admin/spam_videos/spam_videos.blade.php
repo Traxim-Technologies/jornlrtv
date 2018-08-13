@@ -39,7 +39,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td>{{($video->videoTape) ? $video->videoTape->channel_name : ''}}</td>
 							      	<td>{{$video->videoTape ? substr($video->videoTape->title , 0,25) : ''}}...</td>
-							      	<td><a target="_blank" href="{{route('admin.spam-videos.user-reports' , $video->video_tape_id)}}">{{$video->videoTape ? count($video->videoTape->getScopeUserFlags) : 0}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.spam-videos.user-reports' , $video->video_tape_id)}}">{{$video->videoTape ? $video->videoTape->getScopeUserFlags() : 0}}</a></td>
 							      	<td>
 							      		@if ($video->videoTape)
 							      		@if($video->videoTape->is_approved)

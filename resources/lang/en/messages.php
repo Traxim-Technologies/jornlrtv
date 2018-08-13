@@ -1301,4 +1301,12 @@ return array(
 	'videos_short_notes'=>'Recent Activities of Videos you can find here. To Find out more about Videos from this Channel.',
 	'subscribers_short_notes'=>'Recent Activities of subscribers in this channel. To Find out more about Subscribers from this Channel.',
 	'channel_subscribers'=>'Channel Subscribers',
+	'spam_count'=>'Flags',
+	'video_status'=>'Video Status',
+	'ppv_details'=>'PPV Details',
+	'video_info'=>'Video Information',
+	'spam_videos_notes'=>'Recent Activities of Spam Video Reports you can find here. To Find out more about User Reports from this Video.',
+	'spam_reports'=>'Spam Reports',
+	'reviews_notes'=>'Recent Activities of Video Reviews you can find here. To Find out more about User Reviews from this Video.',
+	'wishlist_notes'=>'Recent Activities of Wishlist you can find here. To Find out more about Wishlist from this Video.',
 );

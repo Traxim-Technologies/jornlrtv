@@ -1231,6 +1231,25 @@ class AdminController extends Controller {
         
         $admin_video_images = $video->getScopeVideoTapeImages;
 
+        // Spam Videos Reports
+
+        $spam_reports = Flag::select('users.name as user_name', 'flags.*')
+                ->leftjoin('users', 'users.id', '=', 'flags.user_id')
+                ->where('video_tape_id', $request->id)->paginate(12);
+
+        // User Reviews 
+
+        $reviews = UserRating::select('users.name as user_name', 'user_ratings.*')
+                ->leftjoin('users', 'users.id', '=', 'user_ratings.user_id')
+                ->where('video_tape_id', $request->id)->paginate(12);
+
+        // Wishlists
+
+        $wishlists = Wishlist::select( 'wishlists.*','users.name as user_name')
+                ->leftjoin('users', 'users.id', '=', 'wishlists.user_id')
+                ->where('video_tape_id', $request->id)->get(12);
+
+
         $page = 'videos';
         $sub_page = 'add-video';
 
@@ -1245,9 +1264,50 @@ class AdminController extends Controller {
                     ->with('sub_page',$sub_page)
                     ->with('videoPath', $videoPath)
                     ->with('video_pixels', $video_pixels)
-                    ->with('videoStreamUrl', $videoStreamUrl);
+                    ->with('videoStreamUrl', $videoStreamUrl)
+                    ->with('spam_reports', $spam_reports)
+                    ->with('reviews', $reviews)
+                    ->with('wishlists', $wishlists);
         }
     
+    }
+
+
+    /**
+     * Function Name : videos_wishlist
+     *
+     * To list out all the wishlist details based on user
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $request - Video id
+     * 
+     * @return - Response of wishlist based on id
+     *
+     */
+    public function videos_wishlist(Request $request) {
+
+        $wishlists = Wishlist::where('wishlists.video_tape_id' , $request->id)
+                        ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
+                        ->leftJoin('video_tapes' , 'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                        ->select(
+                            'users.name as username' , 
+                            'users.id as user_id' , 
+                            'wishlists.video_tape_id',
+                            'wishlists.id as wishlist_id',
+                            'video_tapes.title',
+                            'wishlists.created_at'
+                            )
+                        ->get();
+
+        return view('admin.videos.wishlists')
+                    ->with('data' , $wishlists)
+                    ->withPage('users')
+                    ->with('sub_page','users');
+
+       
     }
 
     /**
@@ -1848,6 +1908,7 @@ class AdminController extends Controller {
         if($request->video_tape_id) {
 
             $query->where('user_ratings.video_tape_id',$request->video_tape_id);
+
         }
 
         $user_reviews = $query->get();

@@ -47,7 +47,7 @@
                 <!-- /.col -->
                 <div class="col-sm-4">
                   <div class="description-block">
-                    <h5 class="description-header">{{Setting::get('currency')}} {{$channel_earnings}}</h5>
+                    <h5 class="description-header">{{Setting::get('currency')}} {{number_format_short($channel_earnings)}}</h5>
                     <span class="description-text">{{tr('earnings')}}</span>
                   </div>
                   <!-- /.description-block -->
