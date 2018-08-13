@@ -1847,34 +1847,6 @@ class AdminController extends Controller {
         }
     }
 
-    /**
-     * subscription_payments()
-     *
-     * Used to display the subscription payments details List or 
-     * 
-     * Based on the particuler subscriptions details
-     *
-     */
-
-    public function subscription_payments($id = "") {
-
-        $base_query = UserPayment::orderBy('created_at' , 'desc');
-
-        $subscription = [];
-
-        if($id) {
-
-            $subscription = Subscription::find($id);
-
-            $base_query = $base_query->where('subscription_id' , $id);
-
-        }
-
-        $payments = $base_query->get();
-
-        return view('admin.payments.subscription-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-subscriptions')->with('subscription' , $subscription); 
-    
-    }
 
 
     public function ad_create() {
@@ -2735,56 +2707,6 @@ class AdminController extends Controller {
 
 
     /**
-     *
-     *
-     *
-     *
-     *
-     */
-
-    public function revenues() {
-
-        $total  = total_revenue();
-
-        $ppv_total = PayPerView::sum('amount');
-
-        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
-
-        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
-
-        $subscription_total = UserPayment::sum('amount');
-
-        $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
-        
-        return view('admin.payments.revenues')
-                        ->with('total' , $total)
-                        ->with('ppv_total' , $ppv_total)
-                        ->with('ppv_admin_amount' , $ppv_admin_amount)
-                        ->with('ppv_user_amount' , $ppv_user_amount)
-                        ->with('subscription_total' , $subscription_total)
-                        ->with('total_subscribers' , $total_subscribers)
-                        ->withPage('payments')
-                        ->with('sub_page' , 'payments-dashboard');
-    }
-
-    /**
-     * used to display ppv payments
-     *
-     *
-     *
-     *
-     */
-
-    public function ppv_payments() {
-
-        $payments = PayPerView::orderBy('created_at' , 'desc')->get();
-    
-        return view('admin.payments.ppv-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-ppv');
-    }
-
-
-
-    /**
     * Function Name: coupon_create()
     *
     * Description: Get the coupon add form fields
@@ -3102,11 +3024,112 @@ class AdminController extends Controller {
                     ->with('sub_page','view_coupons');
             }
 
-        } else{
+        } else {
 
             return back()->with('flash_error',tr('coupon_id_not_found_error'));
+
         }
     
+    }
+
+   /**
+    * Function Name: revenues()
+    *
+    * Description: To list out the details of the revenue models
+    *
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @param -
+    *
+    * @return Html view page with revenues detail
+    */
+    public function revenues() {
+
+        $total  = total_revenue();
+
+        $ppv_total = PayPerView::sum('amount');
+
+        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
+
+        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
+
+        $subscription_total = UserPayment::sum('amount');
+
+        $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
+        
+        return view('admin.payments.revenues')
+                        ->with('total' , $total)
+                        ->with('ppv_total' , $ppv_total)
+                        ->with('ppv_admin_amount' , $ppv_admin_amount)
+                        ->with('ppv_user_amount' , $ppv_user_amount)
+                        ->with('subscription_total' , $subscription_total)
+                        ->with('total_subscribers' , $total_subscribers)
+                        ->withPage('payments')
+                        ->with('sub_page' , 'payments-dashboard');
+    }
+
+   /**
+    * Function Name: subscription_payments()
+    *
+    * Description: Used to display the subscription payments details List or 
+    * 
+    * Based on the particuler subscriptions details
+    *
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @param -
+    *
+    * @return Html view page with subscription detail
+    */
+    public function subscription_payments($id = "") {
+
+        $base_query = UserPayment::orderBy('created_at' , 'desc');
+
+        $subscription = [];
+
+        if($id) {
+
+            $subscription = Subscription::find($id);
+
+            $base_query = $base_query->where('subscription_id' , $id);
+
+        }
+
+        $payments = $base_query->get();
+
+        return view('admin.payments.subscription-payments')
+                ->with('data' , $payments)
+                ->withPage('payments')
+                ->with('sub_page','payments-subscriptions')
+                ->with('subscription' , $subscription); 
+    
+    }
+
+   /**
+    * Function Name: ppv_payments()
+    *
+    * Description: To list out ppv payment details
+    *     
+    * @created Shobana Chandrasekar
+    *
+    * @edited -
+    *
+    * @param -
+    *
+    * @return Html view page with ppv details
+    */
+    public function ppv_payments() {
+
+        $payments = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
+            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
+            ->leftJoin('users', 'users.id', '=', 'pay_per_views.user_id')
+            ->orderBy('pay_per_views.created_at' , 'desc')->get();
+    
+        return view('admin.payments.ppv-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-ppv');
     }
 
 

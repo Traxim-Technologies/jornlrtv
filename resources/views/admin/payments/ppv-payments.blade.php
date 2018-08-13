@@ -65,10 +65,10 @@
 
 							      	<td>
 
-							      		@if($payment->videoTapeDetails)
+							      		@if($payment->title)
 
-							      			<a href="{{route('admin.videos.view' , array('id' => $payment->videoTapeDetails->id))}}">
-							      				{{$payment->videoTapeDetails->title}}
+							      			<a href="{{route('admin.videos.view' , array('id' => $payment->video_id))}}">
+							      				{{$payment->title}}
 							      			</a>
 
 							      		@else
@@ -81,10 +81,10 @@
 
 							      	<td>
 
-							      		@if($payment->userDetails)
+							      		@if($payment->user_name)
 
 							      		<a href="{{route('admin.users.view' , $payment->user_id)}}"> 
-							      			{{$payment->userDetails ? $payment->userDetails->name : " "}} 
+							      			{{$payment->user_name ? $payment->user_name : " "}} 
 							      		</a>
 
 							      		@endif
@@ -131,10 +131,10 @@
 											<div class="modal-body">
 												<ul>
 													<li>
-														{{tr('video')}} : @if($payment->videoTapeDetails)
+														{{tr('video')}} : @if($payment->title)
 
-										      			<a href="{{route('admin.videos.view' , array('id' => $payment->videoTapeDetails->id))}}">
-										      				{{$payment->videoTapeDetails->title}}
+										      			<a href="{{route('admin.videos.view' , array('id' => $payment->video_id))}}">
+										      				{{$payment->title}}
 										      			</a>
 
 											      		@else
@@ -148,7 +148,7 @@
 										      			{{tr('username')}} :
 
 										      			<a href="{{route('admin.users.view' , $payment->user_id)}}"> 
-							      							{{$payment->userDetails ? $payment->userDetails->name : " "}} 
+							      							{{$payment->user_name ? $payment->user_name : "-"}} 
 							      						</a>
 
 										      		</li>
@@ -161,7 +161,11 @@
 
 										      		<li>{{tr('reason')}} : {{$payment->reason}}</li>
 
-										      		<li>{{tr('paid_date')}} : s{{date('d M Y',strtotime($payment->created_at))}}</li>
+										      		<li>{{tr('paid_date')}} : {{date('d M Y',strtotime($payment->created_at))}}</li>
+
+										      		<li>{{tr('type_of_subscription')}} : {{$payment->type_of_subscription}}</li>
+
+										      		<li>{{tr('type_of_user')}} : {{$payment->type_of_user}}</li>
 												</ul>
 											</div>
 
