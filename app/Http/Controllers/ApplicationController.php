@@ -166,18 +166,29 @@ class ApplicationController extends Controller {
 
         Log::info("Notification to User for Payment");
 
-        $time = date("Y-m-d");
-        // Get provious provider availability data
-        $query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
-                  FROM user_payments";
+         // Get provious provider availability data
 
-        $payments = DB::select(DB::raw($query));
+        $current_date = date('Y-m-d H:i:s');
 
-        Log::info(print_r($payments,true));
+        // Get Two days Payment Expiry users.
+
+        $compare_date = date('Y-m-d H:i:s', strtotime('-2 day', strtotime($current_date)));
+
+
+        $payments = UserPayment::select(DB::raw('max(user_payments.id) as payment_id'))->where('expiry_date' , '<=', $compare_date)
+            ->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
+            ->where('user_payments.status',1)
+            ->where('user_type' ,1)
+            ->orderBy('user_payments.created_at', 'desc')
+            ->groupBy('user_payments.user_id')
+            ->get();
 
         if($payments) {
             foreach($payments as $payment){
-                if($payment->date_difference <= 864000)
+
+                $payment = UserPayment::find($payment->payment_id);
+
+                if($payment)
                 {
                     // Delete provider availablity
                     Log::info('Send mail to user');
@@ -214,19 +225,27 @@ class ApplicationController extends Controller {
 
         Log::info("user_payment_expiry");
 
-        $time = date("Y-m-d");
-        // Get provious provider availability data
-        $query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
-                  FROM user_payments";
+        // Today's date
 
-        $payments = DB::select(DB::raw($query));
+        $current_time = date("Y-m-d H:i:s");
+        // $current_time = "2018-06-06 18:01:56";
 
-        Log::info(print_r($payments));
+        $payments = UserPayment::select(DB::raw('max(user_payments.id) as payment_id'))->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
+                                ->where('user_payments.status' , 1)
+                                ->where('user_payments.expiry_date' ,"<=" , $current_time)
+                                ->where('user_type' ,1)
+                                ->orderBy('user_payments.created_at', 'desc')
+                                ->groupBy('user_id')
+                                ->get();
 
         if($payments) {
+
             foreach($payments as $payment){
-                if($payment->date_difference < 0)
-                {
+
+                $payment = UserPayment::find($payment->payment_id);
+
+                if($payment) {
+
                     // Delete provider availablity
                     Log::info('Send mail to user');
 
