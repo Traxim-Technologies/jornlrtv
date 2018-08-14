@@ -1288,7 +1288,7 @@ class AdminController extends Controller {
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
-                    
+
             $videoPath = $video_pixels = $videoStreamUrl = '';
         // if ($video->video_type == 1) {
             if (\Setting::get('streaming_url')) {
@@ -2678,7 +2678,7 @@ class AdminController extends Controller {
 
             $index = 0;
 
-            $ads = AdsDetail::get(); 
+            $ads = AdsDetail::where('status', ADS_ENABLED)->get(); 
 
             return view('admin.video_ads.create')
                     ->with('vModel', $vModel)
@@ -2732,7 +2732,7 @@ class AdminController extends Controller {
 
         $video_pixels = '';
 
-        $ads = AdsDetail::get(); 
+        $ads = AdsDetail::where('status', ADS_ENABLED)->get(); 
 
         if ($vModel) {
 
@@ -2795,7 +2795,7 @@ class AdminController extends Controller {
 
         $b_ad = new AdsDetail;
 
-        $ads = AdsDetail::get(); 
+        $ads = AdsDetail::where('status', ADS_ENABLED)->get(); 
         
         return view('admin.video_ads._sub_form')->with('index' , $index)->with('b_ad', $b_ad)->with('ads', $ads);
     }

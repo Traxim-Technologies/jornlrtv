@@ -154,3 +154,9 @@ if(!defined('EXISTING_USER')) define('EXISTING_USER', 1);
 // Subscription user tpe
 if(!defined('SUBSCRIBED_USER')) define('SUBSCRIBED_USER', 1);
 if(!defined('NON_SUBSCRIBED_USER')) define('NON_SUBSCRIBED_USER', 0);
+
+
+// Ads status
+
+if(!defined('ADS_ENABLED')) define('ADS_ENABLED', 1);
+if(!defined('ADS_DISABLED')) define('ADS_DISABLED', 0);

@@ -278,7 +278,7 @@ function removeQuestion(index) {
 
     console.log("Remove Ad");
 
-    $('#adsDiv_'+index).hide();
+    $('#adsDiv_'+index).remove();
 
     $('#adsDiv_'+index).find('input:text').val('');
 
@@ -307,7 +307,9 @@ function getCheckBoxValue(id, ad_type,idx) {
 
             $('#pre_ad_time').val('');
 
-            $('#pre_parent_ad_id option:selected').remove();
+            // $('#pre_parent_ad_id option:selected').remove();
+
+            // $('#pre_parent_ad_id option[value=""]').attr("selected",true);
 
         } 
 
@@ -315,7 +317,7 @@ function getCheckBoxValue(id, ad_type,idx) {
 
             $('#post_ad_time').val('');
 
-            $('#post_parent_ad_id option:selected').remove();
+            // $('#post_parent_ad_id option:selected').remove();
 
         }
 
@@ -327,7 +329,7 @@ function getCheckBoxValue(id, ad_type,idx) {
 
             $("#between_ad_type_id_"+idx).val("");
 
-            $("#ad_id_"+idx+" option:selected").remove();
+            // $("#ad_id_"+idx+" option:selected").remove();
 
         }
 
@@ -348,6 +350,12 @@ function checkAd() {
 
     var between_ad_type = $("#between_ad_type_0").is(":checked");
 
+    $("#pre_parent_ad_id").attr('required', false);
+
+    $("#post_parent_ad_id").attr('required', false);
+
+    $("#ad_id_0").attr('required', false);
+
     if (pre_ad_type == false && post_ad_type == false && between_ad_type == false) {
 
         alert("Select any one of the Ad Type..!");
@@ -355,79 +363,153 @@ function checkAd() {
         return false;
     }
 
-    var pre_ad_time = $("#pre_ad_time").val();
+    if (pre_ad_type) {
 
-    var post_ad_time = $("#post_ad_time").val();
+        var pre_ad_time = $("#pre_ad_time").val();
 
-    if (parseInt(pre_ad_time) > minutes) {
+        if (pre_ad_time <= 0 || pre_ad_time == '' || pre_ad_time == undefined) {
 
-        alert("Pre Ad Time should be greater than "+minutes+" seconds..!");
-
-        return false;
-
-    }
-
-    if (parseInt(post_ad_time) > minutes) {
-
-        alert("Post Ad Time should be greater than "+minutes+" seconds..!");
-
-        return false;
-        
-    }
-
-    var betweenAd_length = $(".between_ads_class").length;
-
-    var first_between_video_seconds = 0;
-
-    for(var i = 0; i < betweenAd_length; i++) {
- 
-        var between_ad_time = $("#between_ad_time_"+i).val();  
-
-        var between_video_time = $("#between_ad_video_time_"+i).val();  
-
-        if (parseInt(between_ad_time) > minutes) {
-
-            alert("Between Ad Time should be greater than "+minutes+" seconds..!");
+            alert("Pre Ad Time should not be empty");
 
             return false;
+
         }
 
-        var a = between_video_time.split(':'); // split it at the colons
+        if (!jQuery.isNumeric(pre_ad_time)) {
 
-        // minutes are worth 60 seconds. Hours are worth 60 minutes.
-        var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
+            alert("Pre Ad Time should not be Text");
 
+            return false;
+
+        }
+
+        $("#pre_parent_ad_id").attr('required', true);
+
+        if (parseInt(pre_ad_time) > minutes) {
+
+            alert("Pre Ad Time should be greater than "+minutes+" seconds..!");
+
+            return false;
+
+        }
+    }
+
+    if (post_ad_type) {
     
-        if (parseInt(seconds) > duration_in_seconds) {
+        var post_ad_time = $("#post_ad_time").val();
 
-            alert("Between Ad - Video Time should not be greater than Video Duration..!");
+        if (post_ad_time <= 0 || post_ad_time == '' || post_ad_time == undefined) {
 
-            return false;
-        }
-
-        if(i > 0 && parseInt(seconds) <= first_between_video_seconds) {
-
-            alert("Between Ad - Video Time should be greater than Above Row");
+            alert("Post Ad Time should not be empty");
 
             return false;
+
         }
 
-        var betweenAd_end_length = betweenAd_length - 1;
+        if (!jQuery.isNumeric(post_ad_time)) {
 
-        if(betweenAd_end_length == i) {
+            alert("Post Ad Time should not be Text");
 
-            if(parseInt(seconds) == duration_in_seconds) {
+            return false;
 
-                alert("Between Ad - Last Row Video Time should be equal to Video Duration");
+        }
+
+
+        $("#post_parent_ad_id").attr('required', true);
+
+        if (parseInt(post_ad_time) > minutes) {
+
+            alert("Post Ad Time should be greater than "+minutes+" seconds..!");
+
+            return false;
+            
+        }
+
+    }
+
+    if (between_ad_type) {
+
+        var betweenAd_length = $(".between_ads_class").length;
+
+        var first_between_video_seconds = 0;
+
+        for(var i = 0; i < betweenAd_length; i++) {
+
+            $("#ad_id_"+i).attr('required', true);
+     
+            var between_ad_time = $("#between_ad_time_"+i).val(); 
+
+            if (between_ad_time <= 0 || between_ad_time == '' || between_ad_time == undefined) {
+
+                alert("Between Ad Time should not be empty");
+
+                return false;
+
+            } 
+
+            if (!jQuery.isNumeric(between_ad_time)) {
+
+                alert("Between Ad Time should not be Text");
 
                 return false;
 
             }
-        
-        }
 
-        first_between_video_seconds = parseInt(seconds);
-    }  
+            var between_video_time = $("#between_ad_video_time_"+i).val(); 
+
+            var a = between_video_time.split(':'); // split it at the colons
+
+            // minutes are worth 60 seconds. Hours are worth 60 minutes.
+            var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
+
+            
+            if (seconds <= 0 || seconds == '' || seconds == undefined) {
+
+                alert("Between Ad Time should not be empty");
+
+                return false;
+
+            } 
+
+            if (parseInt(seconds) > minutes) {
+
+                alert("Between Ad Time should be greater than "+minutes+" seconds..!");
+
+                return false;
+            }
+
+            if (parseInt(seconds) > duration_in_seconds) {
+
+                alert("Between Ad - Video Time should not be greater than Video Duration..!");
+
+                return false;
+            }
+
+            if(i > 0 && parseInt(seconds) <= first_between_video_seconds) {
+
+                alert("Between Ad - Video Time should be greater than Above Row");
+
+                return false;
+            }
+
+            var betweenAd_end_length = betweenAd_length - 1;
+
+            if(betweenAd_end_length == i) {
+
+                if(parseInt(seconds) == duration_in_seconds) {
+
+                    alert("Between Ad - Last Row Video Time should be equal to Video Duration");
+
+                    return false;
+
+                }
+            
+            }
+
+            first_between_video_seconds = parseInt(seconds);
+        }  
+
+    }
 
 }
 
