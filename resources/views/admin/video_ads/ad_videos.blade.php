@@ -38,11 +38,29 @@
 						</thead>
 						<tbody>
 							@foreach($model as $i => $data)
+
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td>{{$data->name}}</td>
-							      	<td>{{substr($data->title , 0,25)}}...</td>
 							      	
+							      		
+							      	<td>
+
+							      		@if($data->name) 
+							      		
+							      			<a href="{{route('admin.channels.view', $data->channel_id)}}" target="_blank">{{$data->name}}</a>
+
+							      		@endif
+
+							      	</td>
+							      	<td>
+
+							      		@if($data->title)
+
+							      			<a href="{{route('admin.videos.view', array('id'=>$data->video_tape_id))}}" target="_blank">{{substr($data->title , 0,25)}}</a>
+							      		@endif
+
+							      	</td>
+
 							      	<td>
 
 							      		<?php $types = getTypeOfAds($data->types_of_ad);?>

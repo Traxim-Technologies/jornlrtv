@@ -1288,7 +1288,7 @@ class AdminController extends Controller {
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
-
+                    
             $videoPath = $video_pixels = $videoStreamUrl = '';
         // if ($video->video_type == 1) {
             if (\Setting::get('streaming_url')) {

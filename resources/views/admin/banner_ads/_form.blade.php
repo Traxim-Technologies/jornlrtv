@@ -20,7 +20,7 @@
 
                     <div class="form-group">
                         <label for="title">{{tr('title')}}</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="{{tr('enter_title')}}" value="{{$model->title}}">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="{{tr('enter_title')}}" value="{{$model->title}}" required>
                     </div>
 
                     <div class="form-group">
