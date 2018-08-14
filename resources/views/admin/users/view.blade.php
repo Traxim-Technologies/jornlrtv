@@ -120,8 +120,12 @@
 		            <li class="list-group-item">
 		              <b>{{tr('histories')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_history_count}}</a>
 		            </li>
-		            <li class="list-group-item">
-		              <b>{{tr('videos')}}</b> <a class="pull-right" target="_blank">{{$user->get_channel_videos_count}}</a>
+		            
+		             <li class="list-group-item">
+		              <b>{{tr('reviews')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_rating_count}}</a>
+		            </li>
+		             <li class="list-group-item">
+		              <b>{{tr('spam_reports')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_flag_count}}</a>
 		            </li>
 		            <!-- <li class="list-group-item">
 		              <b>{{tr('earnings')}}</b> <a class="pull-right">13,287</a>
@@ -213,6 +217,8 @@
 	          <li class=""><a href="#channels_id" data-toggle="tab" aria-expanded="false">{{tr('channels')}}</a></li>
 	          <li class=""><a href="#wishlist_list" data-toggle="tab" aria-expanded="false">{{tr('favourties')}}</a></li>
 	          <li class=""><a href="#history_list" data-toggle="tab" aria-expanded="false">{{tr('history')}}</a></li>
+	          <li class=""><a href="#reviews_list" data-toggle="tab" aria-expanded="false">{{tr('reviews')}}</a></li>
+	          <li class=""><a href="#spam_reports_list" data-toggle="tab" aria-expanded="false">{{tr('spam_reports')}}</a></li>
 	        </ul>
 	        <div class="tab-content">
 	          <div class="tab-pane active" id="activity">
@@ -428,6 +434,87 @@
 						</tbody>
 					</table>
 	          </div>
+
+	          <div class="tab-pane" id="spam_reports_list">
+
+	          		<blockquote>
+		                <p>{{tr('spam_reports_notes')}}</p>
+		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.spam-videos.per-user-reports', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+		            </blockquote>
+
+	           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
+						<thead>
+						    <tr>
+						      <th>{{tr('id')}}</th>
+						      <th>{{tr('video')}}</th>
+						      <th>{{tr('reason')}}</th>
+						      <th>{{tr('date')}}</th>
+						      <th>{{tr('action')}}</th>
+						    </tr>
+						</thead>
+
+						<tbody>
+
+							@foreach($spam_reports as $i => $spam_report)
+
+							    <tr>
+							      	<td>{{$i+1}}</td>
+							      	<td>{{$spam_report->title}}</td>
+							      	<td>{{$spam_report->reason}}</td>
+							      	<td>{{$spam_report->created_at->diffForHumans()}}</td>
+								    <td>
+            							
+								        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.spam-videos.unspam-video' , $spam_report->id)}}"><i class="fa fa-trash"></i></a>
+								              
+								    </td>
+							    </tr>					
+
+							@endforeach
+
+						</tbody>
+					</table>
+	          </div>
+
+	          <div class="tab-pane" id="reviews_list">
+
+	          		<blockquote>
+		                <p>{{tr('reviews_notes_list')}}</p>
+		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.reviews', array('user_id'=>$user->id))}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+		            </blockquote>
+
+	           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
+						<thead>
+						    <tr>
+						      <th>{{tr('id')}}</th>
+						      <th>{{tr('video')}}</th>
+						      <th>{{tr('comments')}}</th>
+						      <th>{{tr('date')}}</th>
+						      <th>{{tr('action')}}</th>
+						    </tr>
+						</thead>
+
+						<tbody>
+
+							@foreach($user_ratings as $i => $user_rating)
+
+							    <tr>
+							      	<td>{{$i+1}}</td>
+							      	<td>{{$user_rating->title}}</td>
+							      	<td>{{$user_rating->comment}}</td>
+							      	<td>{{$user_rating->created_at->diffForHumans()}}</td>
+								    <td>
+            							
+								        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.reviews.delete' , array('id'=>$user_rating->id))}}"><i class="fa fa-trash"></i></a>
+								              
+								    </td>
+							    </tr>					
+
+							@endforeach
+
+						</tbody>
+					</table>
+	          </div>
+
 	          <!-- /.tab-pane -->
 	        </div>
 	        <!-- /.tab-content -->

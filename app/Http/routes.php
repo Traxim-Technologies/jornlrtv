@@ -225,6 +225,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/spam-videos/user-reports/{id}', 'AdminController@spam_videos_user_reports')->name('spam-videos.user-reports');
 
+    Route::get('/spam/per-user-reports/{id}', 'AdminController@spam_videos_each_user_reports')->name('spam-videos.per-user-reports');
+
     Route::get('/unspam-video/{id}', 'AdminController@spam_videos_unspam')->name('spam-videos.unspam-video');
 
 

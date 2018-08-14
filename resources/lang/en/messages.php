@@ -1309,4 +1309,6 @@ return array(
 	'spam_reports'=>'Spam Reports',
 	'reviews_notes'=>'Recent Activities of Video Reviews you can find here. To Find out more about User Reviews from this Video.',
 	'wishlist_notes'=>'Recent Activities of Wishlist you can find here. To Find out more about Wishlist from this Video.',
+	'spam_reports_notes'=>'Recent Activities of Spam Reports you can find here. To Find out more about Spam Reports of this User.',
+	'reviews_notes_list'=>'Recent Activities of Review Reports you can find here. To Find out more about Review Reports of this User.',
 );

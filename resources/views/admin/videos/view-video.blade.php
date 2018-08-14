@@ -335,7 +335,7 @@ hr {
 
           <div class="tab-pane" id="reviews_list">
                 <blockquote>
-                    <p>{{tr('reviews_notes')}}</p>
+                    <p>{{tr('reviews_notes_list')}}</p>
                     <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.reviews', array('video_tape_id'=>$video->video_tape_id))}}" target="_blank">{{tr('click_here')}}</a></cite></small>
                 </blockquote>
 

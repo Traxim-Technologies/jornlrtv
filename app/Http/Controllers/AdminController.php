@@ -399,6 +399,8 @@ class AdminController extends Controller {
                     ->withCount('getChannelVideos')
                     ->withCount('userWishlist')
                     ->withCount('userHistory')
+                    ->withCount('userRating')
+                    ->withCount('userFlag')
                     ->first();
 
         if($user) {
@@ -467,6 +469,18 @@ class AdminController extends Controller {
                     ->orderBy('user_histories.created_at', 'desc')
                     ->paginate(12);
 
+            $spam_reports = Flag::select('flags.*', 'video_tapes.title as title')
+                    ->where('flags.user_id', $id)
+                    ->leftJoin('video_tapes', 'video_tapes.id', '=', 'flags.video_tape_id')
+                    ->orderBy('flags.created_at', 'desc')
+                    ->paginate(12);
+
+            $user_ratings = UserRating::select('user_ratings.*', 'video_tapes.title as title')
+                    ->where('user_ratings.user_id', $id)
+                    ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')
+                    ->orderBy('user_ratings.created_at', 'desc')
+                    ->paginate(12);
+
             return view('admin.users.view')
                         ->with('user' , $user)
                         ->withPage('users')
@@ -474,7 +488,9 @@ class AdminController extends Controller {
                         ->with('channels', $channel_datas)
                         ->with('videos', $videos)
                         ->with('wishlists', $wishlist)
-                        ->with('histories', $history);
+                        ->with('histories', $history)
+                        ->with('spam_reports', $spam_reports)
+                        ->with('user_ratings', $user_ratings);
         } else {
 
             return back()->with('flash_error',tr('user_not_found'));
@@ -1696,6 +1712,7 @@ class AdminController extends Controller {
             }
         }
         return back()->with('flash_error' , tr('admin_published_video_failure'));
+    
     }
 
 
@@ -1847,6 +1864,28 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : spam_videos_each_user_reports()
+     *
+     * Load all the flags based on the user id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id Video id
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos_each_user_reports($id) {
+        // Load all the users
+        $model = Flag::where('user_id', $id)->get();
+        // Return array of values
+        return view('admin.spam_videos.user_report')->with('model' , $model)
+                        ->with('page' , 'videos')
+                        ->with('sub_page' , 'spam_videos');   
+    }
+
+    /**
      * Function Name : spam_videos_unspam()
      *
      * Unsapm video based on flag id
@@ -1908,6 +1947,12 @@ class AdminController extends Controller {
         if($request->video_tape_id) {
 
             $query->where('user_ratings.video_tape_id',$request->video_tape_id);
+
+        }
+
+        if($request->user_id) {
+
+            $query->where('user_ratings.user_id',$request->user_id);
 
         }
 
