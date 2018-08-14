@@ -1,4 +1,4 @@
-<div class="col-md-12 form-group" style="margin-top: 10px;" id="adsDiv_{{$index}}">
+<div class="col-md-12 form-group between_ads_class" style="margin-top: 10px;" id="adsDiv_{{$index}}">
 
      <div class="row">
 
@@ -19,7 +19,7 @@
 
                <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
-               <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time_{{$index}}" class="form-control" value="{{$b_ad->ad_time}}">
+               <input type="text" name="between_ad_time[{{$index}}]" id="between_ad_time_{{$index}}" class="form-control" value="{{$b_ad->ad_time}}"  title="Enter Minimum 1 Character to Maximum 3 Character" maxlength="3" minlength="1">
 
           </div>
 
@@ -27,7 +27,7 @@
 
                <label>{{tr('video_time')}}</label>
 
-               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time_{{$index}}" value="{{$b_ad->video_time}}" placeholder="00:00:00" />
+               <input type="text" class="form-control" name="between_ad_video_time[{{$index}}]" id="between_ad_video_time_{{$index}}" value="{{$b_ad->video_time}}" placeholder="00:00:00" maxlength="8" minlength="8" />
 
           </div>
 

@@ -279,6 +279,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('video-ads/edit/{id}','AdminController@video_ads_edit')->name('video_ads.edit');
 
+    Route::get('video-ads/create','AdminController@video_ads_create')->name('video_ads.create');
+
     Route::get('video-ads/view','AdminController@video_ads_view')->name('video-ads.view');
 
 

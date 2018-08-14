@@ -2070,7 +2070,7 @@ class AdminController extends Controller {
 
         $model = new AdsDetail;
 
-        return view('admin.video_ads.create')
+        return view('admin.ads_details.create')
             ->with('model', $model)
             ->with('page', 'videos_ads')
             ->with('sub_page','create-ad-videos');
@@ -2094,7 +2094,15 @@ class AdminController extends Controller {
 
         $model = AdsDetail::find($request->id);
 
-        return view('admin.video_ads.edit')->with('model', $model)->with('page', 'videos_ads')->with('sub_page','create-ad-videos');
+        if ($model) {
+
+            return view('admin.ads_details.edit')->with('model', $model)->with('page', '    videos_ads')->with('sub_page','create-ad-videos');
+
+        } else {
+
+            return back()->with('flash_error', tr('ad_not_found'));
+
+        }
 
     }
 
@@ -2144,7 +2152,7 @@ class AdminController extends Controller {
 
         $response = AdminRepo::ads_details_index()->getData();
 
-        return view('admin.video_ads.index')->with('model', $response)->with('page', 'videos_ads')->with('sub_page', 'view-ads');        
+        return view('admin.ads_details.index')->with('model', $response)->with('page', 'videos_ads')->with('sub_page', 'view-ads');        
 
     }
 
@@ -2165,7 +2173,15 @@ class AdminController extends Controller {
 
         $model = AdsDetail::find($request->id);
 
-        return view('admin.video_ads.view')->with('model', $model)->with('page', 'videos_ads')->with('sub_page', 'view-ads');
+        if ($model) {
+
+            return view('admin.ads_details.view')->with('model', $model)->with('page', 'videos_ads')->with('sub_page', 'view-ads');
+
+        } else {
+
+            return back()->with('flash_error', tr('ad_not_found'));
+
+        }
 
     }
 
@@ -2189,17 +2205,6 @@ class AdminController extends Controller {
         $model->status = $request->status;
 
         $model->save();
-
-        /*if ($request->status == 0) {
-           
-            foreach($channel->videoTape as $video)
-            {                
-                $video->is_approved = $request->status;
-
-                $video->save();
-            } 
-
-        }*/
 
         $message = tr('ad_status_decline');
 
@@ -2252,9 +2257,11 @@ class AdminController extends Controller {
 
             }
 
-        }
+        } else {
 
-        return back()->with('flash_error', tr('something_error'));
+            return back()->with('flash_error', tr('ad_not_found'));
+
+        }
 
     }
 
@@ -2279,13 +2286,6 @@ class AdminController extends Controller {
 
             if($data->save()) {
 
-                /*if($data->getVideoAds) {
-
-                    $data->getVideoAds->status = $data->ad_status;
-
-                    $data->getVideoAds->save();
-                }*/
-
                 if($data->ad_status) {
 
                     return back()->with('flash_success', tr('ad_status_enable_success'));
@@ -2305,6 +2305,38 @@ class AdminController extends Controller {
             
         }
     }
+
+
+    /**
+     * Function Name : video_assign_ad()
+     *
+     * To assign singl/multiple based on ads with video details
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function video_assign_ad(Request $request) {
+
+        $model = AdsDetail::find($request->id);
+
+        if (!$model) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        }
+
+        $videos = VideoTape::where('status', DEFAULT_TRUE)->where('publish_status', DEFAULT_TRUE)
+            ->where('is_approved', DEFAULT_TRUE)->where('ad_status',DEFAULT_TRUE)->paginate(12);
+       
+        return view('admin.ads_details.assign_ad')->with('page', 'videos_ads')->with('sub_page', 'view-ads')
+            ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
+    }
+
 
     /**
      * Function Name : video_ads_list()
@@ -2339,30 +2371,6 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function Name : video_assign_ad()
-     *
-     * To assign singl/multiple based on ads with video details
-     *
-     * @created By - shobana
-     *
-     * @updated by - 
-     *
-     * @param Integer $request->id : Ads Details Id
-     *
-     * @return response of Ad Details Object
-     */
-    public function video_assign_ad(Request $request) {
-
-        $model = AdsDetail::find($request->id);
-
-        $videos = VideoTape::where('status', DEFAULT_TRUE)->where('publish_status', DEFAULT_TRUE)
-            ->where('is_approved', DEFAULT_TRUE)->where('ad_status',DEFAULT_TRUE)->paginate(12);
-       
-        return view('admin.video_ads.assign_ad')->with('page', 'videos_ads')->with('sub_page', 'view-ads')
-            ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
-    }
-
-    /**
      * Function Name : video_ads_view()
      *
      * To get ads with video (Single video based on id)
@@ -2379,7 +2387,7 @@ class AdminController extends Controller {
 
         $model = AdminRepo::video_ads_view($request)->getData();
 
-        return view('admin.ads.view')->with('ads', $model)
+        return view('admin.video_ads.view')->with('ads', $model)
                 ->with('page', 'videos_ads')->with('sub_page', 'ad-videos');
 
     }
@@ -2631,6 +2639,69 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : video_ads_create()
+     *
+     * To create a video ads based on video id
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request : Video ad id with video ad details
+     *
+     * @return response of succes/failure response of details
+     */
+    public function video_ads_create(Request $request) {
+
+        $vModel = VideoTape::find($request->video_tape_id);
+
+        if ($vModel) {
+
+            $videoPath = '';
+
+            $video_pixels = '';
+
+            $preAd = new AdsDetail;
+
+            $postAd = new AdsDetail;
+
+            $betweenAd = new AdsDetail;
+
+            $model = new VideoAd;
+
+            if ($vModel) {
+
+                $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
+                $video_pixels = $vModel->video_resolutions ? 'original,'.$vModel->video_resolutions : 'original';
+
+            }
+
+            $index = 0;
+
+            $ads = AdsDetail::get(); 
+
+            return view('admin.video_ads.create')
+                    ->with('vModel', $vModel)
+                    ->with('videoPath', $videoPath)
+                    ->with('video_pixels', $video_pixels)
+                    ->with('page', 'videos')
+                    ->with('sub_page', 'videos')
+                    ->with('index', $index)
+                    ->with('model', $model)
+                    ->with('preAd', $preAd)
+                    ->with('postAd', $postAd)
+                    ->with('betweenAd', $betweenAd)
+                    ->with('ads', $ads);
+
+        } else {
+
+            return back()->with('flash_error', tr('video_not_found'));
+            
+        }
+    }
+
+
+    /**
      * Function Name : video_ads_edit()
      *
      * To edit a assigned ad videos edit details
@@ -2670,7 +2741,7 @@ class AdminController extends Controller {
 
         }
 
-        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('sub_page', 'ad-videos')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index)->with('ads', $ads);
+        return view('admin.video_ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('sub_page', 'ad-videos')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index)->with('ads', $ads);
     }
 
     /**
@@ -2726,7 +2797,7 @@ class AdminController extends Controller {
 
         $ads = AdsDetail::get(); 
         
-        return view('admin.ads._sub_form')->with('index' , $index)->with('b_ad', $b_ad)->with('ads', $ads);
+        return view('admin.video_ads._sub_form')->with('index' , $index)->with('b_ad', $b_ad)->with('ads', $ads);
     }
 
 

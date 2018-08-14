@@ -12,10 +12,7 @@
 
 @section('content')
 
-@include('admin.video_ads._form')
+@include('admin.ads_details._form')
     
 @endsection
-
-
-
 

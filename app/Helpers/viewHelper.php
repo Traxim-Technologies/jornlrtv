@@ -1262,3 +1262,27 @@ function get_commission_percentage($total , $actual_amount) {
 
     return $percentage;
 }
+
+
+/**
+ * Function Name : convertDurationIntoSeconds()
+ *
+ * Convert duration into seconds
+ *
+ * @param - duration
+ *
+ * @return response of seconds
+ */
+function convertDurationIntoSeconds($str_time) {
+
+    $time = explode(':', $str_time);
+
+    if(count($time) == 3) {
+
+        return ($time[0]*3600) + ($time[1]*60) + $time[2];
+
+    }
+
+    return 0;
+
+}

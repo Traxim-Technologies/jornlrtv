@@ -12,7 +12,6 @@
 @section('content')
 
     @include('notification.notify')
-
 	<div class="row">
         <div class="col-xs-12">
           <div class="box box-primary">
@@ -30,10 +29,9 @@
 						<thead>
 						    <tr>
 						      <th>{{tr('id')}}</th>
-						      <th>{{tr('name')}}</th>
-						      <th>{{tr('url')}}</th>
-						      <th>{{tr('ad_time')}} ({{tr('in_sec')}})</th>
-						      <th>{{tr('image')}}</th>
+						      <th>{{tr('channel')}}</th>
+						      <th>{{tr('title')}}</th>
+						      <th>{{tr('type_of_ads')}}</th>
 						      <th>{{tr('status')}}</th>
 						      <th>{{tr('action')}}</th>
 						    </tr>
@@ -43,19 +41,31 @@
 
 							@foreach($model as $i => $data)
 							    <tr>
-							      	<td><a href="{{route('admin.ads-details.view' , array('id' => $data->id))}}">{{$i+1}}</a></td>
-							      	<td><a href="{{route('admin.ads-details.view' , array('id' => $data->id))}}">{{$data->name}}</a></td>
-							      	<td>{{$data->ad_url}}</td>
-							      	<td>{{$data->ad_time}}</td>
+							      	<td>{{$i+1}}</td>
+							      	<td>{{isset($data->get_video_tape->channel_details->name) ? 
+							      	$data->get_video_tape->channel_details->name : '-'}}</td>
+							      	<td>{{isset($data->get_video_tape->title) ? 
+							      	substr($data->get_video_tape->title , 0,25) : '-'}}...</td>
+							      	
 							      	<td>
-							      		<img src="{{$data->file}}" style="width: 30px;height: 30px;" />
+
+
+							      		@if($data->ads_types)
+
+								      		@foreach($data->ads_types as $type)
+									      		
+									      		<span class="label label-success">{{$type}}</span>
+
+									       	@endforeach
+
+								       	@endif
 							      	</td>
 							      	<td>
 							      		
 							      		@if($data->status)
 							      			<span class="label label-success">{{tr('approved')}}</span>
 							       		@else
-							       			<span class="label label-danger">{{tr('pending')}}</span>
+							       			<span class="label label-danger">{{tr('user_disabled')}}</span>
 							       		@endif
 							      	</td>
 								    <td>
@@ -70,23 +80,12 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
-
-								                  	@if($data->status)
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
-								                  	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
-								                  	@endif
-
-								                  	@if($data->status)
-
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="#" data-toggle="modal" data-target="#myModal_{{$i}}">{{tr('assign_ad')}}</a></li>
-								                  	@endif
-								              
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
+								               
 														
 								                  	<li class="divider" role="presentation"></li>
 
@@ -96,7 +95,7 @@
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.ads-details.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video-ads.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 								                </ul>
@@ -104,44 +103,6 @@
             							</ul>
 								    </td>
 							    </tr>
-
-							    <!-- Modal -->
-							      <div id="myModal_{{$i}}" class="modal fade" role="dialog">
-							        <div class="modal-dialog">
-
-							        <form method="get" action="{{route('admin.videos.assign_ad')}}">
-							        	<div class="modal-content">
-								            <div class="modal-header">
-								              <button type="button" class="close" data-dismiss="modal">&times;</button>
-								              <h4 class="modal-title">{{tr('assign_ad')}}</h4>
-								            </div>
-								            <div class="modal-body">
-
-								            	<div class="row">
-
-									            	<div class="col-lg-12">
-
-									            		<input type="hidden" name="id" value="{{$data->id}}">
-
-									            		<input type="radio" name="type" value="1" id="video_type"> {{tr('single')}}
-
-									            		<input type="radio" name="type" value="2" id="video_type"> {{tr('multiple')}}
-
-									            	</div>
-
-								            	</div>
-
-								            </div>
-
-								            <div class="modal-footer">
-								              <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
-								              <button type="submit" class="btn btn-success" id="submit-btn">{{tr('assign')}}</button>
-								            </div>
-								        </div>
-								     </form>
-							          
-							        </div>
-							      </div>
 
 								<!-- Modal -->
 								
@@ -155,23 +116,5 @@
           </div>
         </div>
     </div>
-
-@endsection
-
-
-@section('scripts')
-
-
-<script type="text/javascript">
-	
-function redirectView() {
-
-	var value = $('input[name=type]:checked').val();;
-
-	alert(value);
-
-}
-
-</script>
 
 @endsection

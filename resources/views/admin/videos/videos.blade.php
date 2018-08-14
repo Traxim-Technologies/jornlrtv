@@ -160,7 +160,7 @@
 
 								                  	@if($video->ad_status && !$video->getScopeVideoAds) 
 
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_create', $video->video_tape_id)}}">{{tr('video_ad')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.create', array('video_tape_id'=>$video->video_tape_id))}}">{{tr('video_ad')}}</a></li>
 
 								                  	@else
 

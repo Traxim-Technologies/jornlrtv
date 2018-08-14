@@ -100,7 +100,7 @@
 
                 <ul class="treeview-menu">
                     <li id="create-ad-videos"><a href="{{route('admin.ads-details.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
-                    <li id="view-ads"><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li>
+                    <li id="view-ads"><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_and_assign_ad')}}</a></li>
                     <li id="ad-videos"><a href="{{route('admin.video_ads.list')}}"><i class="fa fa-circle-o"></i>{{tr('assigned_ads')}}</a></li>
                 </ul>
 

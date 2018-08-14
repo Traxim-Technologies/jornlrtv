@@ -1318,5 +1318,7 @@ return array(
 	'no_assigned_ads_found'=>'No assigned ads found. To Assign Ad - Under Ads > View Ads > Action Button > Assign Ad',
 	'edit_video_ad'=>'Edit Video Ad',
 	'view_assigned_ad'=>'View Assigned Ad',
-
+	'view_and_assign_ad'=>'View & Assign Ad',
+	'ad_not_found'=>'You are searching Ad not found..!',
+	'duration_in_seconds'=>'Duration In Seconds',
 );
