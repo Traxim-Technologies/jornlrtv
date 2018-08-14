@@ -9,10 +9,10 @@
 
             <div class="box-header label-primary">
                 <b style="font-size:18px;">@yield('title')</b>
-                <a href="{{route('admin.ad_index')}}" class="btn btn-default pull-right">{{tr('video_ads')}}</a>
+                <a href="{{route('admin.ads-details.index')}}" class="btn btn-default pull-right">{{tr('video_ads')}}</a>
             </div>
 
-            <form  action="{{route('admin.save_ad')}}" method="POST" enctype="multipart/form-data" role="form">
+            <form  action="{{route('admin.ads-details.save')}}" method="POST" enctype="multipart/form-data" role="form">
 
                 <input type="hidden" name="id" id="id" value="{{$model->id}}">
 
@@ -24,31 +24,63 @@
 
                             <div class="col-md-3">
 
-                                <label>{{tr('name')}}</label>
+                                <label>{{tr('image')}}</label>
 
-                                <input type="text" name="name" id="name" class="form-control" value="{{$model->name}}" required>
+                                <input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')" required>
+
+                                <br>
+
+                                <img src="{{$model->file ? $model->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="ad_preview"/>
+
+                            </div>
+
+                            <div class="col-md-9">
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+
+                                        <label>{{tr('name')}}</label>
+
+                                        <input type="text" name="name" id="name" class="form-control" value="{{$model->name}}" required>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
+
+                                        <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}" required>
+
+                                    </div>
+
+                                    <div class="clearfix"></div>
+
+                                </div>
+
+                                <br>
+
+                                <div class="row">
+
+                                    <div class="col-md-12">
+
+                                        <label>{{tr('url')}}</label>
+
+                                        <input type="text" name="ad_url" id="ad_url" class="form-control" value="{{$model->ad_url}}" required>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
-                            <div class="col-md-6">
-
-                                <label>{{tr('url')}}</label>
-
-                                <input type="text" name="ad_url" id="ad_url" class="form-control" value="{{$model->ad_url}}" required>
-
-                            </div>
+                           
 
                             <div class="clearfix"></div>
 
                             <br>
 
-                    		<div class="col-md-3">
-
-                    			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
-
-                    			<input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}">
-
-                    		</div>
+                    		
 
                             <?php /* <div class="col-md-3" id="video_time_div" style="display: none">
 
@@ -59,17 +91,7 @@
                             </div> */?>
 
 
-                    		<div class="col-md-8">
-
-                    			<label>{{tr('image')}}</label>
-
-                    			<input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')">
-
-                                <br>
-
-                                <img src="{{$model->file ? $model->file : asset('images/default-ad.jpg')}}" style="width:100px;height: 100px;" id="ad_preview"/>
-
-                    		</div>
+                    		
 
 
                     	</div>

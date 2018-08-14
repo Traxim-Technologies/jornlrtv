@@ -127,4 +127,50 @@ class BackupController extends Controller {
         return back()->with('flash_success', $message);
     
     }
+
+    public function ads_index() {
+
+        $response = AdminRepo::ads_details_index()->getData();
+
+        return view('admin.ads-details.index')->with('model', $response)->with('page', 'videos_ads')->with('sub_page', 'view-ads');        
+
+    }
+
+
+
+
+    // @ads_create - TODO Check
+
+    public function ads_create_duplicate(Request $request) {
+
+        $vModel = VideoTape::find($request->video_tape_id);
+
+        $videoPath = '';
+
+        $video_pixels = '';
+
+        $preAd = new AdsDetail;
+
+        $postAd = new AdsDetail;
+
+        $betweenAd = new AdsDetail;
+
+        $model = new VideoAd;
+
+        if ($vModel) {
+
+            $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
+            $video_pixels = $vModel->video_resolutions ? 'original,'.$vModel->video_resolutions : 'original';
+
+        }
+
+        $index = 0;
+
+        $ads = AdsDetail::get(); 
+
+        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos')->with('sub_page', 'videos')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('ads', $ads);
+    }
+
+
+
 }

@@ -43,8 +43,8 @@
 
 							@foreach($model as $i => $data)
 							    <tr>
-							      	<td><a href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{$i+1}}</a></td>
-							      	<td><a href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{$data->name}}</a></td>
+							      	<td><a href="{{route('admin.ads-details.view' , array('id' => $data->id))}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.ads-details.view' , array('id' => $data->id))}}">{{$data->name}}</a></td>
 							      	<td>{{$data->ad_url}}</td>
 							      	<td>{{$data->ad_time}}</td>
 							      	<td>
@@ -70,16 +70,16 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.ad_edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ad_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
 
 								                  	@if($data->status)
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ad_status' , array('id' => $data->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
 								                  	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ad_status' , array('id' => $data->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
 								                  	@if($data->status)
@@ -96,7 +96,7 @@
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.ad_delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.ads-details.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 								                </ul>
@@ -109,7 +109,7 @@
 							      <div id="myModal_{{$i}}" class="modal fade" role="dialog">
 							        <div class="modal-dialog">
 
-							        <form method="get" action="{{route('admin.assign_ad')}}">
+							        <form method="get" action="{{route('admin.videos.assign_ad')}}">
 							        	<div class="modal-content">
 								            <div class="modal-header">
 								              <button type="button" class="close" data-dismiss="modal">&times;</button>

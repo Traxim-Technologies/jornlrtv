@@ -17,7 +17,7 @@ hr {
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.ad_index')}}"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</a></li>
+    <li><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</a></li>
     <li class="active">{{tr('view_ads')}}</li>
 @endsection 
 
@@ -30,7 +30,7 @@ hr {
       <li class="active"><a href="#preview_ad" data-toggle="tab" aria-expanded="true">{{tr('preview_ad')}}</a></li>
 
       <li class="pull-right clearfix">
-        <a href="{{route('admin.ad_edit' , array('id' => $model->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+        <a href="{{route('admin.ads-details.edit' , array('id' => $model->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
       </li>
  
     </ul>

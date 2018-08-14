@@ -18,7 +18,20 @@ use App\Language;
 
 class AdminRepository {
 
-    public static function save_ad($request) {
+    /**
+     * Function Name : video_ads_save()
+     *
+     * To save the video ads when edit by the admin
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request : Video ad id with video ad details
+     *
+     * @return response of succes/failure response of details
+     */
+    public static function video_ads_save($request) {
 
     	try {
 
@@ -311,7 +324,20 @@ class AdminRepository {
 
     }*/
 
-    public static function ad_index() {
+    /**
+     * Function Name : ads_details_index()
+     *
+     * To List out all the ads which is created by admin
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param -
+     *
+     * @return response of Ad Details array of objects
+     */
+    public static function ads_details_index() {
 
         $model = AdsDetail::orderBy('created_at', 'desc')->get();
 
@@ -320,7 +346,20 @@ class AdminRepository {
     }
 
 
-    public static function ad_view($request) {
+    /**
+     * Function Name : video_ads_view()
+     *
+     * To get ads with video (Single video based on id)
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Video id
+     *
+     * @return response of Ad Details Object with video details
+     */
+    public static function video_ads_view($request) {
 
         $model = VideoAd::with('getVideoTape')->find($request->id);
 
@@ -328,7 +367,20 @@ class AdminRepository {
 
     }
 
-    public static function ad_save($request) {
+    /**
+     * Function Name : ads_details_save()
+     *
+     * To save the ad for new & old object details
+     *
+     * @created By - shobana
+     *
+     * @updated by - Ad Details
+     *
+     * @param - 
+     *
+     * @return response of Ad Details Object
+     */
+    public static function ads_details_save($request) {
 
         try {
 

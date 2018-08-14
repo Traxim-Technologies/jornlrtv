@@ -1311,4 +1311,12 @@ return array(
 	'wishlist_notes'=>'Recent Activities of Wishlist you can find here. To Find out more about Wishlist from this Video.',
 	'spam_reports_notes'=>'Recent Activities of Spam Reports you can find here. To Find out more about Spam Reports of this User.',
 	'reviews_notes_list'=>'Recent Activities of Review Reports you can find here. To Find out more about Review Reports of this User.',
+	'ad_status_enable_success'=>'Ads status has been Enabled successfully',
+	'ad_status_disable_success'=>'Ads status has been Disabled successfully',
+	'ad_status_change_failure'=>'Ads status has not been changed..!',
+	'assigned_ads'=>'Assigned ADS',
+	'no_assigned_ads_found'=>'No assigned ads found. To Assign Ad - Under Ads > View Ads > Action Button > Assign Ad',
+	'edit_video_ad'=>'Edit Video Ad',
+	'view_assigned_ad'=>'View Assigned Ad',
+
 );

@@ -77,7 +77,7 @@ class UserController extends Controller {
                 'single_video',
                 'contact',
                 'trending', 
-                'channel_videos', 
+                'channels', 
                 'add_history', 
                 'page_view', 
                 'channel_list', 
@@ -93,6 +93,10 @@ class UserController extends Controller {
      * Function Name : master_login()
      *
      * To Activate Super user by admin
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
      *
      * @param Object $request - User Details
      *
@@ -209,11 +213,14 @@ class UserController extends Controller {
      *
      * Show the user dashboard.
      * 
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     * 
      * @param Object $request - User Details
      *
      * @return \Illuminate\Http\Response
      */
-    
     public function index(Request $request) {
 
         $database = config('database.connections.mysql.database');
@@ -297,6 +304,10 @@ class UserController extends Controller {
      *
      * To list out videos based on the watching count
      *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
      * @param object $request - User Details
      *
      * @return video details
@@ -311,16 +322,18 @@ class UserController extends Controller {
                 'device_token' => \Auth::user()->device_token,
                 'age'=>\Auth::user()->age_limit,
             ]);
+
         }
 
         $trending = $this->UserAPI->trending_list($request)->getData();
 
         return view('user.trending')->with('page', 'trending')
                                     ->with('videos',$trending);
+    
     }
 
     /**
-     * Function Name : channel_list()
+     * Function Name : channels()
      *
      * To list out channels which is created by all the users
      *
@@ -328,7 +341,7 @@ class UserController extends Controller {
      *
      * @return channel details details
      */
-    public function channel_list(Request $request){
+    public function channels(Request $request){
 
         if(Auth::check()) {
 

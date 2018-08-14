@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', tr('view_ads'))
+@section('title', tr('view_assigned_ad'))
 
-@section('content-header', tr('view_ads'))
+@section('content-header', tr('view_assigned_ad'))
 
 @section('styles')
 
@@ -17,8 +17,8 @@ hr {
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.ad_videos')}}"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</a></li>
-    <li class="active">{{tr('view_ads')}}</li>
+    <li><a href="{{route('admin.video_ads.list')}}"><i class="fa fa-bullhorn"></i> {{tr('assigned_ads')}}</a></li>
+    <li class="active">{{tr('view_assigned_ad')}}</li>
 @endsection 
 
 @section('content')
@@ -30,7 +30,7 @@ hr {
       <li class="active"><a href="#preview_ad" data-toggle="tab" aria-expanded="true">{{tr('preview_ad')}}</a></li>
 
       <li class="pull-right clearfix">
-        <a href="{{route('admin.ads_edit' , array('id' => $ads->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+        <a href="{{route('admin.video_ads.edit' , array('id' => $ads->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
       </li>
  
     </ul>

@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', tr('view_ads'))
+@section('title', tr('assigned_ads'))
 
-@section('content-header', tr('view_ads'))
+@section('content-header', tr('assigned_ads'))
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</li>
+    <li class="active"><i class="fa fa-bullhorn"></i> {{tr('assigned_ads')}}</li>
 @endsection
 
 @section('content')
@@ -17,7 +17,7 @@
           <div class="box box-primary">
 
           	<div class="box-header label-primary">
-                <b style="font-size:18px;">{{tr('view_ads')}}</b>
+                <b style="font-size:18px;">{{tr('assigned_ads')}}</b>
             </div>
 
             <div class="box-body">
@@ -73,11 +73,11 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.ads_edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.ads_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video-ads.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
 								               
 														
 								                  	<li class="divider" role="presentation"></li>
@@ -88,7 +88,7 @@
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.ads_delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video-ads.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 								                </ul>
@@ -103,7 +103,7 @@
 						</tbody>
 					</table>
 				@else
-					<h3 class="no-result">{{tr('no_ads_found')}}</h3>
+					<h3 class="no-result">{{tr('no_assigned_ads_found')}}</h3>
 				@endif
             </div>
           </div>

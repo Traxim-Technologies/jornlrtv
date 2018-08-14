@@ -66,7 +66,6 @@ class ApplicationController extends Controller {
      * Used to generate index.php file to avoid uploads folder access
      *
      */
-
     public function generate_index(Request $request) {
 
         if($request->has('folder')) {
@@ -76,23 +75,6 @@ class ApplicationController extends Controller {
         }
 
         return response()->json(['success' => true , "message" => 'successfully']);
-
-    }
-
-
-    public $expiry_date = "";
-
-    public function test() {
-
-        Log::info("MAIN VIDEO MOBILE");
-
-        // $subject = tr('user_welcome_title' , Setting::get('site_name'));
-        // $email_data = User::find(3);
-        // $page = "emails.welcome";
-        // $email = "test@mail.com";
-
-        // return view($page)->with('email_data' , $email_data);
-        // $result = Helper::send_email($page,$subject,$email,$email_data);
 
     }
 

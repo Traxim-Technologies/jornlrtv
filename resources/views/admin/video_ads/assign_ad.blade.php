@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.ad_index')}}"><i class="fa fa-bullhorn"></i>{{tr('video_ads')}}</a></li>
+    <li><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-bullhorn"></i>{{tr('video_ads')}}</a></li>
     <li class="active"><i class="fa fa-bullhorn"></i> {{tr('assign_ad')}}</li>
 @endsection
 
@@ -58,7 +58,7 @@
 
                           <div id="myModal_{{$i}}" class="modal fade" role="dialog">
                             <div class="modal-dialog">
-                              <form method="post" action="{{route('admin.assign_ads')}}" id="assing_ad_form">
+                              <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -154,7 +154,7 @@
 
       <div id="multiple_ad" class="modal fade" role="dialog">
         <div class="modal-dialog">
-          <form method="post" action="{{route('admin.assign_ads')}}" id="assing_ad_form">
+          <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
                 <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -290,7 +290,7 @@ $("#assign_ad").click(function(event){
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.ad_index')}}"><i class="fa fa-bullhorn"></i>{{tr('video_ads')}}</a></li>
+    <li><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-bullhorn"></i>{{tr('video_ads')}}</a></li>
     <li class="active"><i class="fa fa-bullhorn"></i> {{tr('assign_ad')}}</li>
 @endsection
 
@@ -360,7 +360,7 @@ $("#assign_ad").click(function(event){
       <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
-          <form method="post" action="{{route('admin.assign_ads')}}" id="assing_ad_form">
+          <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
 
           <!-- Modal content-->
           <div class="modal-content">

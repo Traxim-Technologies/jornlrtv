@@ -52,11 +52,11 @@
 
 							      		@if($data->ads_types)
 
-							      		@foreach($data->ads_types as $type)
-								      		
-								      		<span class="label label-success">{{$type}}</span>
+								      		@foreach($data->ads_types as $type)
+									      		
+									      		<span class="label label-success">{{$type}}</span>
 
-								       	@endforeach
+									       	@endforeach
 
 								       	@endif
 							      	</td>
@@ -80,11 +80,11 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.ads_edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
 								               
 														
 								                  	<li class="divider" role="presentation"></li>
@@ -95,7 +95,7 @@
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.ads_delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video-ads.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 								                </ul>

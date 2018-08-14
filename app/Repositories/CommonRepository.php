@@ -776,7 +776,20 @@ class CommonRepository {
     }
 
 
-
+    /**
+     * Function Name : users_subscription_save
+     *
+     * To save subscription details based on user id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $s_id - Subscription id, $u_id - User id
+     * 
+     * @return - response of array of subscription details
+     *
+     */
     public static function save_subscription($s_id, $u_id) {
 
         $load = UserPayment::where('user_id', $u_id)->orderBy('created_at', 'desc')->first();

@@ -166,7 +166,7 @@
 
 								                  		@if ($video->getScopeVideoAds)
 
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_view' , array('id' => $video->getScopeVideoAds->id))}}">{{tr('view_ad')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $video->getScopeVideoAds->id))}}">{{tr('view_ad')}}</a></li>
 
 								                  		@endif
 
@@ -185,6 +185,9 @@
 									                  		@endif
 									                  	</li>
 								                  	@endif
+
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.ad-status-change',$video->video_tape_id)}}">{{ ($video->ad_status) ? tr('disable_ad') : tr('enable_ad')}}</a></li>
+
 								                </ul>
               								</li>
             							</ul>

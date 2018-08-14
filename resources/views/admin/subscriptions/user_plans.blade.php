@@ -120,7 +120,7 @@
 											<p>
 												<span class="btn btn-danger pull-left" style="cursor: default;">{{ Setting::get('currency')}} {{$subscription->amount}} / {{$subscription->plan}} M</span>
 
-												<a href="{{route('admin.subscription.save' , ['s_id' => $subscription->id, 'u_id'=>$id])}}" class="btn btn-success pull-right" onclick="return confirm('Are You Sure ?')">{{tr('choose')}}</a>
+												<a href="{{route('admin.users.subscription.save' , ['s_id' => $subscription->id, 'u_id'=>$id])}}" class="btn btn-success pull-right" onclick="return confirm('Are You Sure ?')">{{tr('choose')}}</a>
 
 											</p>
 

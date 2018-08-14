@@ -202,7 +202,7 @@
                 <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>
            
 
-            	<p><a target="_blank" href="{{route('admin.subscriptions.plans' , $user->id)}}" class="btn btn-xs btn-success"><i class="fa fa-hand-pointer-o"></i>&nbsp;{{tr('subscribe')}}</a></p>
+            	<p><a target="_blank" href="{{route('admin.users.subscriptions.plans' , $user->id)}}" class="btn btn-xs btn-success"><i class="fa fa-hand-pointer-o"></i>&nbsp;{{tr('subscribe')}}</a></p>
 
 	        </div>
 	        <!-- /.box-body -->

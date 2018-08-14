@@ -23,25 +23,25 @@ Route::get('/clear-cache', function() {
 
 })->name('clear-cache');
 
+// Unused Sample Routes
+
 Route::post('angelo/in-app-purchase' , 'SampleController@angelo_in_app_purchase');
 
+Route::get('/addIndex', 'ApplicationController@addIndex')->name('addIndex');
+
+Route::get('/addAll', 'ApplicationController@addAllVideoToEs')->name('addAll');
+
+Route::post('select/sub_category' , 'ApplicationController@select_sub_category')->name('select.sub_category');
+
+Route::post('select/genre' , 'ApplicationController@select_genre')->name('select.genre');
+
+
+
+// Application Routes
 
 Route::get('/generate/index' , 'ApplicationController@generate_index');
 
 Route::get('/payment/failure' , 'ApplicationController@payment_failure')->name('payment.failure');
-
-Route::get('/message/save' , 'ApplicationController@message_save');
-
-// Route::get('/subscriptions' , 'ApplicationController@subscriptions')->name('subscriptions.index');
-
-// Route::get('/subscriptions/view' , 'ApplicationController@subscription_view')->name('subscriptions.view');
-
-// Route::get('/videos/create' , 'ApplicationController@video_create')->name('videos.create');
-
-
-Route::get('/test' , 'ApplicationController@test')->name('test');
-
-Route::post('/test' , 'ApplicationController@test')->name('test');
 
 Route::get('/email/verification' , 'ApplicationController@email_verify')->name('email.verify');
 
@@ -55,14 +55,29 @@ Route::post('/install/theme', 'InstallationController@theme_check_process')->nam
 
 Route::post('/install/settings', 'InstallationController@settings_process')->name('install.settings');
 
-// Elastic Search Test
-
-Route::get('/addIndex', 'ApplicationController@addIndex')->name('addIndex');
-
-Route::get('/addAll', 'ApplicationController@addAllVideoToEs')->name('addAll');
-
-
 Route::get('/user_session_language/{lang}', 'ApplicationController@set_session_language')->name('user_session_language');
+
+Route::get('admin-control', 'ApplicationController@admin_control')->name('control');
+
+Route::post('admin-control', 'ApplicationController@save_admin_control')->name('admin.save.control');
+
+Route::get('/user/searchall' , 'ApplicationController@search_video')->name('search');
+
+Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
+
+// Social Login
+
+Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthController@redirect'));
+
+Route::get('/callback/{provider}', 'SocialAuthController@callback');
+
+// Embed Links
+
+Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
+
+// Admin to users login
+
+Route::get('/master/login', 'UserController@master_login')->name('master.login');
 
 // CRON
 
@@ -72,6 +87,7 @@ Route::get('/notification/payment', 'ApplicationController@send_notification_use
 
 Route::get('/payment/expiry', 'ApplicationController@user_payment_expiry')->name('user.payment.expiry');
 
+
 // Static Pages
 
 Route::get('/privacy', 'UserApiController@privacy')->name('user.privacy');
@@ -80,21 +96,12 @@ Route::get('/help', 'UserApiController@help')->name('user.help');
 
 Route::get('/terms_condition', 'UserApiController@terms')->name('user.terms');
 
-Route::get('/privacy_policy', 'ApplicationController@privacy')->name('user.privacy_policy');
-
-Route::get('/terms', 'ApplicationController@terms')->name('user.terms-condition');
 
 Route::get('/about', 'ApplicationController@about')->name('user.about');
 
-// Video upload 
+Route::get('/privacy_policy', 'ApplicationController@privacy')->name('user.privacy_policy');
 
-Route::post('select/sub_category' , 'ApplicationController@select_sub_category')->name('select.sub_category');
-
-Route::post('select/genre' , 'ApplicationController@select_genre')->name('select.genre');
-
-Route::get('admin-control', 'ApplicationController@admin_control')->name('control');
-
-Route::post('admin-control', 'ApplicationController@save_admin_control')->name('admin.save.control');
+Route::get('/terms', 'ApplicationController@terms')->name('user.terms-condition');
 
 Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
 
@@ -153,7 +160,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/users/wishlist/delete/{id}', 'AdminController@users_wishlist_delete')->name('users.wishlist.delete');
 
-    
+    //User Subscriptions
+
+    Route::get('/users/subscriptions/{id}', 'AdminController@users_subscriptions')->name('users.subscriptions.plans');
+
+    Route::get('/users/subscriptions/save/{s_id}/u_id/{u_id}', 'AdminController@users_subscription_save')->name('users.subscription.save');
 
 
     // Channel CRUD Operations
@@ -239,46 +250,44 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Ads
 
-    Route::get('ad_create','AdminController@ad_create')->name('ad_create');
+    Route::get('ads-details/create','AdminController@ads_details_create')->name('ads-details.create');
 
-    Route::get('ad_edit','AdminController@ad_edit')->name('ad_edit');
+    Route::get('ads-details/edit','AdminController@ads_details_edit')->name('ads-details.edit');
 
-    Route::post('save_ad','AdminController@save_ad')->name('save_ad');
+    Route::post('ads-details/save','AdminController@ads_details_save')->name('ads-details.save');
 
-    Route::get('ad_index','AdminController@ad_index')->name('ad_index');
+    Route::get('ads-details/index','AdminController@ads_details_index')->name('ads-details.index');
 
-    Route::get('ad_status','AdminController@ad_status')->name('ad_status');
+    Route::get('ads-details/view','AdminController@ads_details_view')->name('ads-details.view');
 
-    Route::get('ad_delete','AdminController@ad_delete')->name('ad_delete');
+    Route::get('ads-details/status','AdminController@ads_details_status')->name('ads-details.status');
 
-    Route::get('ad_view','AdminController@ad_view')->name('ad_view');
+    Route::get('ads-details/delete','AdminController@ads_details_delete')->name('ads-details.delete');
 
-    Route::get('assign_ad', 'AdminController@assign_ad')->name('assign_ad');
+    Route::get('ads-details/ad-status/{id?}', 'AdminController@ads_details_ad_status_change')->name('ads-details.ad-status-change');
 
-    Route::post('assign_ad', 'AdminController@save_assign_ad')->name('assign_ads');
+    // Assign Ads
+
+    Route::post('video-ads/assign/ads', 'AdminController@video_ads_assign_ad')->name('video-ads.assign.ads');
+
+    Route::get('videos/assign-ad', 'AdminController@video_assign_ad')->name('videos.assign_ad');
 
 
-    Route::get('ads_create/{video_tape_id}','AdminController@ads_create')->name('ads_create');
+    // Video Ads
 
-    Route::post('save_ads','AdminController@save_ads')->name('save_ads');
+    Route::get('/video-ads/list', 'AdminController@video_ads_list')->name('video_ads.list');
 
-    Route::get('ads_edit/{id}','AdminController@ads_edit')->name('ads_edit');
+    Route::get('video-ads/edit/{id}','AdminController@video_ads_edit')->name('video_ads.edit');
 
-    Route::get('ads_delete','AdminController@ads_delete')->name('ads_delete');
+    Route::get('video-ads/view','AdminController@video_ads_view')->name('video-ads.view');
 
-    // Route::get('ads_index','AdminController@ads_index')->name('ads_index');
 
-    Route::get('ads_view','AdminController@ads_view')->name('ads_view');
+    Route::get('video-ads/delete','AdminController@video_ads_delete')->name('video-ads.delete');
 
-    Route::post('add_between_ads', 'AdminController@add_between_ads')->name('add.between_ads');
+    Route::post('video-ads/save','AdminController@video_ads_save')->name('video-ads.save');
 
-    Route::get('/ad_videos', 'AdminController@ad_videos')->name('ad_videos');
+    Route::post('video-ads/inter-ads', 'AdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
 
-    // Subscriptions
-
-    Route::get('/user_subscriptions/{id}', 'AdminController@user_subscriptions')->name('subscriptions.plans');
-
-    Route::get('/subscription/save/{s_id}/u_id/{u_id}', 'AdminController@user_subscription_save')->name('subscription.save');
 
 
 
@@ -422,33 +431,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 });
 
 
-Route::get('/user/searchall' , 'ApplicationController@search_video')->name('search');
-
-Route::any('/user/search' , 'ApplicationController@search_all')->name('search-all');
-
-
-// Social Login
-
-Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthController@redirect'));
-
-Route::get('/callback/{provider}', 'SocialAuthController@callback');
-
-// Embed Links
-
-Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
-
-// Admin to users login
-
-Route::get('/master/login', 'UserController@master_login')->name('master.login');
-
-
 Route::group(['as' => 'user.'], function(){
 
     Route::get('/', 'UserController@index')->name('dashboard');
 
     Route::get('/trending', 'UserController@trending')->name('trending');
 
-    Route::get('channel_list', 'UserController@channel_list')->name('channel.list');
+    Route::get('channels', 'UserController@channels')->name('channel.list');
 
     Route::get('history', 'UserController@history')->name('history');
 

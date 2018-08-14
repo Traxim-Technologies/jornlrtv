@@ -10,10 +10,10 @@
 
             <div class="box-header label-primary">
                 <b style="font-size:18px;">@yield('title')</b>
-                <a href="{{route('admin.ad_index')}}" class="btn btn-default pull-right">{{tr('video_ads')}}</a>
+                <a href="{{route('admin.video_ads.list')}}" class="btn btn-default pull-right">{{tr('assigned_ads')}}</a>
             </div>
 
-            <form  action="{{route('admin.save_ads')}}" method="POST" enctype="multipart/form-data" role="form">
+            <form  action="{{route('admin.video-ads.save')}}" method="POST" enctype="multipart/form-data" role="form">
 
                 <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{$vModel->id}}">
 
@@ -239,7 +239,7 @@ function addQuestion(index) {
 
     $.ajax({
         type : "post",
-        url : "{{route('admin.add.between_ads')}}",
+        url : "{{route('admin.video-ads.inter-ads')}}",
         data : {index:index},
         success : function(data) {
 

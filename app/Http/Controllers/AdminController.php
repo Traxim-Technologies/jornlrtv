@@ -769,6 +769,71 @@ class AdminController extends Controller {
   
 
     /**
+     * Function Name : users_subscriptions
+     *
+     * To subscribe a new plans based on users
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id - User id (Optional)
+     * 
+     * @return - response of array of subscription details
+     *
+     */
+    public function users_subscriptions($id) {
+
+        $data = Subscription::orderBy('created_at','desc')->get();
+
+        $payments = []; 
+
+        if($id) {
+
+            $payments = UserPayment::orderBy('created_at' , 'desc')
+                        ->where('user_id' , $id)->get();
+
+        }
+
+        return view('admin.subscriptions.user_plans')->withPage('users')
+                        ->with('subscriptions' , $data)
+                        ->with('id', $id)
+                        ->with('sub_page','users')->with('payments', $payments);        
+
+    }
+
+    /**
+     * Function Name : users_subscription_save
+     *
+     * To save subscription details based on user id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $s_id - Subscription id, $u_id - User id
+     * 
+     * @return - response of array of subscription details
+     *
+     */
+    public function users_subscription_save($s_id, $u_id) {
+
+        $response = CommonRepo::save_subscription($s_id, $u_id)->getData();
+
+        if($response->success) {
+
+            return back()->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->message);
+
+        }
+
+    }
+
+
+    /**
      * Function Name : channels_create
      *
      * To create a new channel
@@ -1988,16 +2053,44 @@ class AdminController extends Controller {
     
     }
 
-    public function ad_create() {
+    /**
+     * Function Name : ads_details_create()
+     *
+     * To create ad 
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param - 
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_create() {
 
         $model = new AdsDetail;
 
-        return view('admin.video_ads.create')->with('model', $model)->with('page', 'videos_ads')->with('sub_page','create-ad-videos');
+        return view('admin.video_ads.create')
+            ->with('model', $model)
+            ->with('page', 'videos_ads')
+            ->with('sub_page','create-ad-videos');
 
     }
 
-
-    public function ad_edit(Request $request) {
+    /**
+     * Function Name : ads_details_edit()
+     *
+     * To Edit ad 
+     *
+     * @created By - shobana
+     *
+     * @updated by - Ad Details
+     *
+     * @param - 
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_edit(Request $request) {
 
         $model = AdsDetail::find($request->id);
 
@@ -2005,13 +2098,26 @@ class AdminController extends Controller {
 
     }
 
-    public function save_ad(Request $request) {
+    /**
+     * Function Name : ads_details_save()
+     *
+     * To save the ad for new & old object details
+     *
+     * @created By - shobana
+     *
+     * @updated by - Ad Details
+     *
+     * @param - 
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_save(Request $request) {
 
-        $response = AdminRepo::ad_save($request)->getData();
+        $response = AdminRepo::ads_details_save($request)->getData();
 
         if($response->success) {
 
-            return redirect(route('admin.ad_view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
+            return redirect(route('admin.ads-details.view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
 
         } else {
 
@@ -2021,39 +2127,62 @@ class AdminController extends Controller {
 
     }
 
+    /**
+     * Function Name : ads_details_index()
+     *
+     * To List out all the ads which is created by admin
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param -
+     *
+     * @return response of Ad Details array of objects
+     */
+    public function ads_details_index() {
 
-    public function ad_index() {
-
-        $response = AdminRepo::ad_index()->getData();
+        $response = AdminRepo::ads_details_index()->getData();
 
         return view('admin.video_ads.index')->with('model', $response)->with('page', 'videos_ads')->with('sub_page', 'view-ads');        
 
     }
 
+    /**
+     * Function Name : ads_details_view()
+     *
+     * To Find the object of Ad details based on ad details id
+     *
+     * @created By - shobana
+     *
+     * @updated by - Ad Details
+     *
+     * @param - 
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_view(Request $request) {
 
+        $model = AdsDetail::find($request->id);
 
-    public function ad_videos() {
+        return view('admin.video_ads.view')->with('model', $model)->with('page', 'videos_ads')->with('sub_page', 'view-ads');
 
-        $videos = VideoAd::select('channels.id as channel_id', 'channels.name', 'video_tapes.id as video_tape_id', 'video_tapes.title', 'video_tapes.default_image', 'video_tapes.ad_status',
-            'video_ads.*','video_tapes.channel_id')
-                    ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
-                    ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
-                    ->where('video_tapes.ad_status', DEFAULT_TRUE)
-                    ->where('video_tapes.publish_status', DEFAULT_TRUE)
-                    ->where('video_tapes.is_approved', DEFAULT_TRUE)
-                    ->where('video_tapes.status', DEFAULT_TRUE)
-                    ->orderBy('video_tapes.created_at' , 'asc')
-                    ->get();
-
-        return view('admin.video_ads.ad_videos')->with('model' , $videos)
-                    ->withPage('videos_ads')
-                    ->with('sub_page','ad-videos');
-   
     }
 
-
-
-    public function ad_status(Request $request) {
+    /**
+     * Function Name : ads_details_status()
+     *
+     * To change the status of approve/decline status
+     *
+     * @created By - shobana
+     *
+     * @updated by - Ad Details
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_status(Request $request) {
 
         $model = AdsDetail::find($request->id);
 
@@ -2083,16 +2212,20 @@ class AdminController extends Controller {
     
     }
 
-     public function ad_view(Request $request) {
-
-        $model = AdsDetail::find($request->id);
-
-        return view('admin.video_ads.view')->with('model', $model)->with('page', 'videos_ads')->with('sub_page', 'view-ads');
-
-    }
-
-
-    public function ad_delete(Request $request) {
+    /**
+     * Function Name : ads_details_delete()
+     *
+     * To delete the ads based on Ad id
+     *
+     * @created By - shobana
+     *
+     * @updated by - Ad Details
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_delete(Request $request) {
 
         $model = AdsDetail::find($request->id);
 
@@ -2125,8 +2258,100 @@ class AdminController extends Controller {
 
     }
 
+    /**
+     * Function Name : ads_details_ad_status_change()
+     *
+     * To change the status of the ad details (Video Ad enable/disable)
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_ad_status_change(Request $request) {
 
-    public function assign_ad(Request $request) {
+        if($data = VideoTape::find($request->id)) {
+
+            $data->ad_status  = $data->ad_status ? 0 : 1;
+
+            if($data->save()) {
+
+                /*if($data->getVideoAds) {
+
+                    $data->getVideoAds->status = $data->ad_status;
+
+                    $data->getVideoAds->save();
+                }*/
+
+                if($data->ad_status) {
+
+                    return back()->with('flash_success', tr('ad_status_enable_success'));
+                        
+                } else {
+
+                    return back()->with('flash_success', tr('ad_status_disable_success'));
+                }
+
+            }
+
+            return back()->with('flash_success', tr('ad_status_change_failure'));
+
+        } else {
+
+            return back()->with('flash_error', tr('ad_status_change_failure'));
+            
+        }
+    }
+
+    /**
+     * Function Name : video_ads_list()
+     *
+     * To List out all the videos ads list with videos
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function video_ads_list() {
+
+        $videos = VideoAd::select('channels.id as channel_id', 'channels.name', 'video_tapes.id as video_tape_id', 'video_tapes.title', 'video_tapes.default_image', 'video_tapes.ad_status',
+            'video_ads.*','video_tapes.channel_id')
+                    ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
+                    ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
+                    ->where('video_tapes.ad_status', DEFAULT_TRUE)
+                    ->where('video_tapes.publish_status', DEFAULT_TRUE)
+                    ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                    ->where('video_tapes.status', DEFAULT_TRUE)
+                    ->orderBy('video_tapes.created_at' , 'asc')
+                    ->get();
+
+        return view('admin.video_ads.ad_videos')->with('model' , $videos)
+                    ->withPage('videos_ads')
+                    ->with('sub_page','ad-videos');
+   
+    }
+
+    /**
+     * Function Name : video_assign_ad()
+     *
+     * To assign singl/multiple based on ads with video details
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function video_assign_ad(Request $request) {
 
         $model = AdsDetail::find($request->id);
 
@@ -2137,8 +2362,81 @@ class AdminController extends Controller {
             ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
     }
 
+    /**
+     * Function Name : video_ads_view()
+     *
+     * To get ads with video (Single video based on id)
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Video id
+     *
+     * @return response of Ad Details Object with video details
+     */
+    public function video_ads_view(Request $request) {
 
-    public function save_assign_ad(Request $request) {
+        $model = AdminRepo::video_ads_view($request)->getData();
+
+        return view('admin.ads.view')->with('ads', $model)
+                ->with('page', 'videos_ads')->with('sub_page', 'ad-videos');
+
+    }
+
+    /**
+     * Function Name : video_ads_delete()
+     *
+     * To delete assigned video ads based on video ad
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Video ad id
+     *
+     * @return response of succes//failure response of details
+     */
+    public function video_ads_delete(Request $request) {
+
+        $model = VideoAd::find($request->id);
+
+        if($model) {
+
+            /*if($model->getVideoTape) {
+
+                $model->getVideoTape->ad_status = DEFAULT_FALSE;
+
+                $model->getVideoTape->save();
+
+            } */
+
+            if($model->delete()) {
+
+                return back()->with('flash_success', tr('ad_delete_success'));
+
+            }
+
+        }
+
+        return back()->with('flash_error', tr('something_error'));
+
+    }
+
+    /**
+     * Function Name : video_ads_assign_ad()
+     *
+     * To assign a add based on input details
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request : Video ad id with video ad details
+     *
+     * @return response of succes//failure response of details
+     */
+    public function video_ads_assign_ad(Request $request) {
 
         try {
 
@@ -2332,39 +2630,20 @@ class AdminController extends Controller {
 
     }
 
-
-    public function ads_create(Request $request) {
-
-        $vModel = VideoTape::find($request->video_tape_id);
-
-        $videoPath = '';
-
-        $video_pixels = '';
-
-        $preAd = new AdsDetail;
-
-        $postAd = new AdsDetail;
-
-        $betweenAd = new AdsDetail;
-
-        $model = new VideoAd;
-
-        if ($vModel) {
-
-            $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
-            $video_pixels = $vModel->video_resolutions ? 'original,'.$vModel->video_resolutions : 'original';
-
-        }
-
-        $index = 0;
-
-        $ads = AdsDetail::get(); 
-
-        return view('admin.ads.create')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos')->with('sub_page', 'videos')->with('index', $index)->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('ads', $ads);
-    }
-
-
-    public function ads_edit(Request $request) { 
+    /**
+     * Function Name : video_ads_edit()
+     *
+     * To edit a assigned ad videos edit details
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request : Video ad id with video ad details
+     *
+     * @return response of succes//failure response of details
+     */
+    public function video_ads_edit(Request $request) { 
 
         $model = VideoAd::find($request->id);
 
@@ -2391,11 +2670,55 @@ class AdminController extends Controller {
 
         }
 
-        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('sub_page', 'view-ads')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index)->with('ads', $ads);
+        return view('admin.ads.edit')->with('vModel', $vModel)->with('videoPath', $videoPath)->with('video_pixels', $video_pixels)->with('page', 'videos_ads')->with('sub_page', 'ad-videos')->with('model', $model)->with('preAd', $preAd)->with('postAd', $postAd)->with('betweenAd', $betweenAd)->with('index', $index)->with('ads', $ads);
+    }
+
+    /**
+     * Function Name : video_ads_save()
+     *
+     * To save the video ads when edit by the admin
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request : Video ad id with video ad details
+     *
+     * @return response of succes/failure response of details
+     */
+    public function video_ads_save(Request $request) {
+
+        $response = AdminRepo::video_ads_save($request)->getData();
+
+       // dd($response);
+
+        if($response->success) {
+
+            return redirect(route('admin.video-ads.view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->message);
+
+        }
+        
     }
 
 
-    public function add_between_ads(Request $request) {
+    /**
+     * Function Name : video_ads_inter_ads()
+     *
+     * To add between ads details based on video details
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param -
+     *
+     * @return response of Ad Between Form
+     */
+    public function video_ads_inter_ads(Request $request) {
 
         $index = $request->index + 1;
 
@@ -2405,108 +2728,6 @@ class AdminController extends Controller {
         
         return view('admin.ads._sub_form')->with('index' , $index)->with('b_ad', $b_ad)->with('ads', $ads);
     }
-
-
-    public function save_ads(Request $request) {
-
-        $response = AdminRepo::save_ad($request)->getData();
-
-       // dd($response);
-
-        if($response->success) {
-
-            return redirect(route('admin.ads_view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
-
-        } else {
-
-            return back()->with('flash_error', $response->message);
-
-        }
-        
-    }
-
-    public function ads_index() {
-
-        $response = AdminRepo::ad_index()->getData();
-
-        return view('admin.ads.index')->with('model', $response)->with('page', 'videos_ads')->with('sub_page', 'view-ads');        
-
-    }
-
-
-    public function ads_delete(Request $request) {
-
-        $model = VideoAd::find($request->id);
-
-        if($model) {
-
-            /*if($model->getVideoTape) {
-
-                $model->getVideoTape->ad_status = DEFAULT_FALSE;
-
-                $model->getVideoTape->save();
-
-            } */
-
-            if($model->delete()) {
-
-                return back()->with('flash_success', tr('ad_delete_success'));
-
-            }
-
-        }
-
-        return back()->with('flash_error', tr('something_error'));
-
-    }
-
-    public function ads_view(Request $request) {
-
-        $model = AdminRepo::ad_view($request)->getData();
-
-        return view('admin.ads.view')->with('ads', $model)->with('page', 'videos_ads')->with('sub_page', 'view-ads');
-
-    }
-
-
-    public function user_subscriptions($id) {
-
-        $data = Subscription::orderBy('created_at','desc')->get();
-
-        $payments = []; 
-
-        if($id) {
-
-            $payments = UserPayment::orderBy('created_at' , 'desc')
-                        ->where('user_id' , $id)->get();
-
-        }
-
-        return view('admin.subscriptions.user_plans')->withPage('users')
-                        ->with('subscriptions' , $data)
-                        ->with('id', $id)
-                        ->with('sub_page','users')->with('payments', $payments);        
-
-    }
-
-    public function user_subscription_save($s_id, $u_id) {
-
-        $response = CommonRepo::save_subscription($s_id, $u_id)->getData();
-
-        if($response->success) {
-
-            return back()->with('flash_success', $response->message);
-
-        } else {
-
-            return back()->with('flash_error', $response->message);
-
-        }
-
-    }
-
-
-
 
 
    /**
