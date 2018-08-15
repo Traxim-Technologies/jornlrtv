@@ -2211,6 +2211,55 @@ class AdminController extends Controller {
         if($model->status == DEFAULT_TRUE){
 
             $message = tr('ad_status_approve');
+            
+        }
+
+        // Load Assigned video ads
+
+        $assigned_video_ad = AssignVideoAd::where('ad_id', $model->id)->get();
+
+        foreach ($assigned_video_ad as $key => $value) {
+           
+            // Load video ad
+
+            $video_ad = VideoAd::find($value->video_ad_id);
+
+            $ad_type = $value->ad_type;
+
+            if($video_ad) {
+
+                $exp_video_ad = explode(',', $video_ad->types_of_ad);
+
+                if (count($exp_video_ad) == 1) {
+
+                    $video_ad->delete();
+
+                } else {
+
+                    $type_of_ad = [];
+
+                    foreach ($exp_video_ad as $key => $exp_ad) {
+                            
+                        if ($exp_ad == $ad_type) {
+
+
+
+                        } else {
+
+                            $type_of_ad[] = $exp_ad;
+
+                        }
+ 
+                    }
+
+                    $video_ad->types_of_ad = is_array($type_of_ad) ? implode(',', $type_of_ad) : '';
+
+                    $video_ad->save();
+
+                }
+
+            }
+
         }
 
         return back()->with('flash_success', $message);
@@ -2330,11 +2379,18 @@ class AdminController extends Controller {
 
         }
 
-        $videos = VideoTape::where('status', DEFAULT_TRUE)->where('publish_status', DEFAULT_TRUE)
-            ->where('is_approved', DEFAULT_TRUE)->where('ad_status',DEFAULT_TRUE)->paginate(12);
+        $videos = VideoTape::where('status', DEFAULT_TRUE)
+            ->where('publish_status', DEFAULT_TRUE)
+            ->where('is_approved', DEFAULT_TRUE)
+            ->where('ad_status',DEFAULT_TRUE)
+            ->get();
        
-        return view('admin.ads_details.assign_ad')->with('page', 'videos_ads')->with('sub_page', 'view-ads')
-            ->with('model', $model)->with('videos', $videos)->with('type', $request->type);
+        return view('admin.ads_details.assign_ad')
+                ->with('page', 'videos_ads')
+                ->with('sub_page', 'view-ads')
+                ->with('model', $model)
+                ->with('videos', $videos)
+                ->with('type', $request->type);
     }
 
 
@@ -2386,6 +2442,12 @@ class AdminController extends Controller {
     public function video_ads_view(Request $request) {
 
         $model = AdminRepo::video_ads_view($request)->getData();
+
+        if(!$model) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        }
 
         return view('admin.video_ads.view')->with('ads', $model)
                 ->with('page', 'videos_ads')->with('sub_page', 'ad-videos');

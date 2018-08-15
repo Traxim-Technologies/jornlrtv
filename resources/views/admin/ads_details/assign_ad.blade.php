@@ -35,7 +35,7 @@
               <tr>
                 <th>{{tr('id')}}</th>
                 <th>{{tr('title')}}</th>
-                <th>{{tr('image')}}</th>
+                <th>{{tr('ads')}}</th>
                 <th> 
                     {{tr('action')}}
                 </th>
@@ -47,9 +47,24 @@
           @foreach($videos as $i => $data)
               <tr>
                   <td>{{$i+1}}</td>
-                  <td>{{$data->title}}</td>
+                  <td><a href="{{route('admin.videos.view', array('id' => $data->id))}}" target="_blank">{{$data->title}}</a></td>
                   <td>
-                    <img src="{{$data->default_image}}" style="width: 30px;height: 30px;" />
+
+                      <?php $types = getVideoAdsTpe($data->id); ?>
+
+                      @if($types)
+
+                        @foreach($types as $val)
+                          
+                          <span class="label label-success">{{$val}}</span>
+
+                        @endforeach
+
+                      @else
+
+                        -
+
+                      @endif
                   </td>
                   <td>
                       @if($type == 1) 

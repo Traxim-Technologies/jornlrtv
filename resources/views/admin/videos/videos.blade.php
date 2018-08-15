@@ -158,6 +158,20 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.publish-video',$video->video_tape_id)}}">{{tr('publish')}}</a></li>
 								                  	@endif
 
+								                  	@if ($video->compress_status == 1)
+									                  	<li role="presentation">
+									                  		@if(Setting::get('admin_delete_control'))
+
+										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
+
+										                  	@else
+									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.videos.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
+									                  		@endif
+									                  	</li>
+								                  	@endif
+
+								                  	<li class="divider" role="presentation"></li>
+
 								                  	@if($video->ad_status && !$video->getScopeVideoAds) 
 
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.create', array('video_tape_id'=>$video->video_tape_id))}}">{{tr('video_ad')}}</a></li>
@@ -170,20 +184,6 @@
 
 								                  		@endif
 
-								                  	@endif
-
-								                  	@if ($video->compress_status == 1)
-									                  	<li class="divider" role="presentation"></li>
-
-									                  	<li role="presentation">
-									                  		@if(Setting::get('admin_delete_control'))
-
-										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
-
-										                  	@else
-									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.videos.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
-									                  		@endif
-									                  	</li>
 								                  	@endif
 
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.ad-status-change',$video->video_tape_id)}}">{{ ($video->ad_status) ? tr('disable_ad') : tr('enable_ad')}}</a></li>

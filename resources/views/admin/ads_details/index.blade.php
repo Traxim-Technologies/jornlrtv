@@ -76,10 +76,13 @@
                                                     
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
 
+
+								                  	<?php $confirm_message = tr('are_you_sure_ad_status'); ?>
+
 								                  	@if($data->status)
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' =>0))}}" onclick="return confirm('{{$confirm_message}}')">{{tr('decline')}}</a></li>
 								                  	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.status' , array('id' => $data->id , 'status' => 1))}}" onclick="return confirm('{{$confirm_message}}')">{{tr('approve')}}</a></li>
 								                  	@endif
 
 								                  	@if($data->status)

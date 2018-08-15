@@ -38,6 +38,8 @@ use App\Language;
 
 use App\PayPerView;
 
+use App\VideoAd;
+
 function tr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
@@ -1284,5 +1286,34 @@ function convertDurationIntoSeconds($str_time) {
     }
 
     return 0;
+
+}
+
+
+/**
+ * Function Name getVideoAdsTpe()
+ *
+ * To list out the types of ad
+ *
+ * @param integer $id - Video Id
+ *
+ * @return response of types of ad
+ */
+function getVideoAdsTpe($video_id) {
+
+    $video_ads = VideoAd::where('video_tape_id', $video_id)->first();
+
+    $types = [];
+
+    if ($video_ads) {
+
+        $ads = $video_ads->types_of_ad;
+
+        $types = getTypeOfAds($ads);
+
+
+    }
+
+    return $types;
 
 }

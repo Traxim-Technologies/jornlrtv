@@ -363,6 +363,8 @@ class AdminRepository {
 
         $model = VideoAd::with('getVideoTape')->find($request->id);
 
+        $model = $model ? $model : '';
+
         return response()->json($model);
 
     }
