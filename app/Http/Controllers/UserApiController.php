@@ -4389,6 +4389,8 @@ class UserApiController extends Controller {
 
                     if(count($videos) > 0) {
 
+                        $videos = is_array($videos) ? $videos : explode(',', $videos);
+
                         foreach ($videos as $key => $value) {
 
                             $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
