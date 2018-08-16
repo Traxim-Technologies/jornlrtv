@@ -754,7 +754,7 @@ jQuery(document).ready(function(){
 
                 } else {
 
-                    console.log('Wrong...!');
+                    // console.log('Wrong...!');
 
                 }
             }
@@ -853,7 +853,7 @@ jQuery(document).ready(function(){
                             jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a><h5 style="float:left">{{Auth::user()->name}}</h5></a><a><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                         @endif
                     } else {
-                        console.log('Wrong...!');
+                        // console.log('Wrong...!');
                     }
                 }
             });
@@ -884,7 +884,7 @@ jQuery(document).ready(function(){
 
             $('#mainVideo').show();
 
-            console.log('You are using a mobile device!');
+            // console.log('You are using a mobile device!');
 
             path.push({file : "{{$hls_video}}", label : "Original"});
 
@@ -899,6 +899,14 @@ jQuery(document).ready(function(){
         }
 
     @endif
+
+    var pre_ad_status = 1;
+
+    var post_ad_status = 1;
+
+    var between_ad_status = 0;
+
+    var OnPlayStatus = 0;
 
     playerInstance.setup({
 
@@ -923,49 +931,193 @@ jQuery(document).ready(function(){
         },
         events : {
 
+            onReady : function(event) {
+
+                console.log("onready");
+
+            },
+
+            onTime:function(event) {
+
+                // Between Ad Play
+
+                var video_time = Math.round(playerInstance.getPosition());
+
+                @if($ads)
+
+                    @if(count($ads->between_ad) > 0)
+
+                        @foreach($ads->between_ad as $i => $obj) 
+
+                            var video_timing = "{{$obj->video_time}}";
+
+                            // console.log("Video Timing "+video_timing);
+
+                            var a = video_timing.split(':'); // split it at the colons
+
+                            if (a.length == 3) {
+                                var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+                            } else {
+                                var seconds = parseInt(a[0]) * 60 + parseInt(a[1]);
+                            }
+
+                            // console.log("Seconds "+seconds);
+
+                            if (video_time == seconds && between_ad_status != video_time) {
+
+                                between_ad_status = video_time;
+
+                                jwplayer().pause();
+
+                                stop();
+
+                                $("#ad_image").attr("src","{{$obj->assigned_ad->file}}");
+
+                                $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
+
+                                $('#main_video_ad').show();
+
+                                @if($obj->assigned_ad->ad_url)
+
+                                    $('.click_here_ad').html("<a target='_blank' href='{{$obj->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+
+                                    $('.click_here_ad').show();
+
+                                @endif
+
+
+                                adsPage("{{$obj->ad_time}}");
+
+                            }
+
+                        @endforeach
+
+                    @endif
+
+
+                   
+
+                @endif
+            },
+
+            onBeforePlay : function(event) {
+
+
+            },
+            onPlay : function(event) {
+
+                console.log("onPlay");
+
+            },
+
             onComplete : function(event) {
 
-                console.log(jwplayer().getPosition());
+                console.log("onComplete Fn");
 
                 @if(Auth::check())
 
-                    if (playerInstance.getState() == 'complete') {
+                    jQuery.ajax({
+                        url: "{{route('user.add.history')}}",
+                        type: 'post',
+                        data: {'video_tape_id' : "{{$video->video_tape_id}}"},
+                        success: function(data) {
+                            if(data.success == true) {
 
-                        jQuery.ajax({
-                            url: "{{route('user.add.history')}}",
-                            type: 'post',
-                            data: {'video_tape_id' : "{{$video->video_tape_id}}"},
-                            success: function(data) {
-                                if(data.success == true) {
+                                if (data.navigateback) {
 
-                                    if (data.navigateback) {
+                                    window.location.reload(true);
 
-                                        window.location.reload(true);
-
-                                    }
-
-                                    console.log('Added to history');
-
-                                } else {
-                                       
-                                     console.log('Wrong...!');
                                 }
+
+                            } else {
+                                   
                             }
-                        });
-
-                    }
-
+                        }
+                    });
+                    
                 @endif
+
+                if (post_ad_status) {
+
+                    @if($ads->post_ad)
+
+                        $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
+
+                        $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
+
+                        $('#main_video_ad').show();
+
+                        @if($ads->post_ad->assigned_ad->ad_url)
+
+                            $('.click_here_ad').html("<a target='_blank' href='{{$ads->post_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+
+                            $('.click_here_ad').show();
+
+                        @endif
+
+                        stop();
+
+                        post_ad_status = 0;
+
+                        adsPage("{{$ads->post_ad->ad_time}}");
+                        
+                    @endif
+
+                }
 
             }
 
         },
 
         tracks : [{
-            file : "{{$video->subtitle}}",
+            file : "{{$video->subtitle ? $video->subtitle : ''}}",
             kind : "captions",
             default : true,
-        }]
+        }],
+
+    });
+
+    // For Pre Ad , Every first frame the ad will execute
+
+    playerInstance.on('firstFrame', function() {
+
+        console.log("firstFrame");
+
+        post_ad_status = 1;
+
+       // OnPlayStatus += 1;
+
+        // if (pre_ad_status) {
+
+            @if($ads)
+
+                @if($ads->pre_ad)
+
+                    $("#ad_image").attr("src","{{$ads->pre_ad->assigned_ad->file}}");
+
+                    $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
+
+                    $('#main_video_ad').show();
+
+                    @if($ads->pre_ad->assigned_ad->ad_url)
+
+                        $('.click_here_ad').html("<a target='_blank' href='{{$ads->pre_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
+
+                        $(".click_here_ad").show();
+
+                    @endif
+
+                    jwplayer().pause();
+
+                    pre_ad_status = 0;
+
+                    adsPage("{{$ads->pre_ad->ad_time}}");
+
+                @endif
+
+            @endif
+
+        // }
 
     });
 
@@ -1003,7 +1155,7 @@ jQuery(document).ready(function(){
 
     jQuery("#main-video-player").show();
 
-    console.log(jwplayer().getPosition());
+    // console.log(jwplayer().getPosition());
 
     var intervalId;
 
@@ -1015,94 +1167,7 @@ jQuery(document).ready(function(){
 
         intervalId = setInterval(function(){
 
-            var video_time = Math.round(playerInstance.getPosition());
-
-
-            console.log("Video Timing out"+video_time);
-
-            @if($ads)
-
-                @if(count($ads->between_ad) > 0)
-
-                    @foreach($ads->between_ad as $i => $obj) 
-
-                        var video_timing = "{{$obj->video_time}}";
-
-                        console.log("Video Timing "+video_timing);
-
-                        var a = video_timing.split(':'); // split it at the colons
-
-                        if (a.length == 3) {
-                        var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-                        } else {
-                        var seconds = parseInt(a[0]) * 60 + parseInt(a[1]);
-                        }
-
-                        console.log("Seconds "+seconds);
-
-                        if (video_time == seconds && time != video_time) {
-
-                            jwplayer().pause();
-
-                            time = video_time;
-
-                            stop();
-
-                            // $('#main-video-player').hide();
-
-                            // jQuery("#main-video-player").css("display", "none");
-
-                            $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
-
-                            $('#main_video_ad').show();
-
-                            $("#ad_image").attr("src","{{$obj->assigned_ad->file}}");
-
-                            @if($obj->assigned_ad->ad_url)
-
-                                $('.click_here_ad').html("<a target='_blank' href='{{$obj->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
-
-                                $('.click_here_ad').show();
-
-                            @endif
-
-
-                            adsPage("{{$obj->ad_time}}");
-
-                        }
-
-                    @endforeach
-
-                @endif
-
-
-                @if($ads->post_ad)
-
-                    if (playerInstance.getState() == "complete") {
-
-                        $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
-
-                        $('#main_video_ad').show();
-
-                        $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
-
-                        @if($ads->post_ad->assigned_ad->ad_url)
-
-                            $('.click_here_ad').html("<a target='_blank' href='{{$ads->post_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
-
-                            $('.click_here_ad').show();
-
-                        @endif
-
-                        stop();
-
-                        adsPage("{{$ads->post_ad->ad_time}}");
-
-                    }
-                @endif
-
-            @endif
-
+            //
 
         }, 1000);
 
@@ -1117,6 +1182,8 @@ jQuery(document).ready(function(){
 
     function adsPage(adtimings){
 
+        // alert("timings..!");
+
         $(".seconds").html(adtimings+" sec");
 
         $("#progress").html('<div class="progress-bar-div">'+
@@ -1127,9 +1194,10 @@ jQuery(document).ready(function(){
 
         $('.progress-bar-fill-div').delay(1000).queue(function () {
 
-        console.log("playig");
+            // console.log("playig");
 
-        $(this).css('width', '100%')
+            $(this).css('width', '100%');
+
         });
 
 
@@ -1139,7 +1207,9 @@ jQuery(document).ready(function(){
 
             $(".seconds").html((adtimings - adCount) +" sec");
 
-            console.log("Ad Count " +adCount);
+            // console.log("Ad Count " +adCount);
+
+            // console.log("Ad Timings "+adtimings);
 
             if (adCount == adtimings) {
 
@@ -1151,6 +1221,8 @@ jQuery(document).ready(function(){
 
                 $(".click_here_ad").hide();
 
+                $("#ad_image").attr("src", "");
+
                 $('#main_video_ad').hide();
 
                 $("#main-video-player").css({'visibility':'visible', 'width' : '100%'});
@@ -1159,7 +1231,7 @@ jQuery(document).ready(function(){
 
                     jwplayer().play();
 
-                    timer();
+                   // timer();
 
                 }
 
@@ -1169,47 +1241,19 @@ jQuery(document).ready(function(){
 
     }
 
-    jwplayer().on('displayClick', function(e) {
-
-        console.log("state pos "+jwplayer().getState());
-
-        if (jwplayer().getState() == 'idle') {
-
-            @if($ads)
-
-                @if($ads->pre_ad)
-
-                    $("#main-video-player").css({'visibility':'hidden', 'width' : '0%'});
-
-                    $('#main_video_ad').show();
-
-                    $("#ad_image").attr("src","{{$ads->pre_ad->assigned_ad->file}}");
-
-                    @if($ads->pre_ad->assigned_ad->ad_url)
-
-                        $('.click_here_ad').html("<a target='_blank' href='{{$ads->pre_ad->assigned_ad->ad_url}}'>{{tr('click_here_url')}}</a>");
-
-                        $(".click_here_ad").show();
-
-                    @endif
-
-                    jwplayer().pause();
-
-                    adsPage("{{$ads->pre_ad->ad_time}}");
-
-                @endif
-
-            @endif
-
-        }
+   /* jwplayer().on('displayClick', function(e) {
 
         @if($ads)
             @if (((count($ads->between_ad) > 0) || !empty($ads->post_ad)) && empty($ads->pre_ad)) 
+
+                console.log("displayClick Function executing");
+
                 timer();
+
             @endif
         @endif
 
-    })
+    })*/
 
 });
 
@@ -1224,12 +1268,12 @@ function copyTextToClipboard() {
 
         var msg = successful ? 'successful' : 'unsuccessful';
 
-        console.log('Copying text command was ' + msg);
+        // console.log('Copying text command was ' + msg);
 
         addToast();
         // alert('Copied Embedded Link');
     } catch (err) {
-        console.log('Oops, unable to copy');
+        // console.log('Oops, unable to copy');
     }
 
 }
@@ -1249,7 +1293,7 @@ function likeVideo(video_id) {
 
             } else {
 
-                console.log(data.error_messages);
+                // console.log(data.error_messages);
 
             }
         },
@@ -1274,7 +1318,7 @@ function dislikeVideo(video_id) {
 
             } else {
 
-                console.log(data.error_messages);
+                // console.log(data.error_messages);
 
             }
         },
