@@ -76,7 +76,7 @@
 							      		@if($data->status)
 							      			<span class="label label-success">{{tr('approved')}}</span>
 							       		@else
-							       			<span class="label label-danger">{{tr('user_disabled')}}</span>
+							       			<span class="label label-danger">{{tr('pending')}}</span>
 							       		@endif
 							      	</td>
 								    <td>

@@ -2335,6 +2335,16 @@ class AdminController extends Controller {
 
             if($data->save()) {
 
+                $video_ad = VideoAd::where('video_tape_id', $data->id)->first();
+
+                if ($video_ad) {
+
+                    $video_ad->status = $data->ad_status;
+
+                    $video_ad->save();
+
+                }
+
                 if($data->ad_status) {
 
                     return back()->with('flash_success', tr('ad_status_enable_success'));
@@ -2413,10 +2423,6 @@ class AdminController extends Controller {
             'video_ads.*','video_tapes.channel_id')
                     ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
                     ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
-                    ->where('video_tapes.ad_status', DEFAULT_TRUE)
-                    ->where('video_tapes.publish_status', DEFAULT_TRUE)
-                    ->where('video_tapes.is_approved', DEFAULT_TRUE)
-                    ->where('video_tapes.status', DEFAULT_TRUE)
                     ->orderBy('video_tapes.created_at' , 'asc')
                     ->get();
 

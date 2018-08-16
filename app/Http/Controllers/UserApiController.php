@@ -320,10 +320,13 @@ class UserApiController extends Controller {
 
             $navigateback = 0;
 
-            if ($video->type_of_subscription == RECURRING_PAYMENT) {
+            if ($request->id != $video->user_id) {
 
-                $navigateback = 1;
+                if ($video->type_of_subscription == RECURRING_PAYMENT) {
 
+                    $navigateback = 1;
+
+                }
             }
 
             // navigateback = used to handle the replay in mobile for recurring payments
