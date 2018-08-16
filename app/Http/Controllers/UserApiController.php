@@ -320,10 +320,13 @@ class UserApiController extends Controller {
 
             $navigateback = 0;
 
-            if ($video->type_of_subscription == RECURRING_PAYMENT) {
+            if ($request->id != $video->user_id) {
 
-                $navigateback = 1;
+                if ($video->type_of_subscription == RECURRING_PAYMENT) {
 
+                    $navigateback = 1;
+
+                }
             }
 
             // navigateback = used to handle the replay in mobile for recurring payments
@@ -2041,15 +2044,18 @@ class UserApiController extends Controller {
 
         $channel_id = [];
 
-        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+        $query = Channel::select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 // ->where('channels.status', DEFAULT_TRUE)
                 ->groupBy('channels.id')
                 ->where('channels.user_id',$request->id);
 
-        /*if($request->id) {
+        /*
+
+        where('channels.is_approved', DEFAULT_TRUE)
+
+        if($request->id) {
 
             $user = User::find($request->id);
 
@@ -2092,7 +2098,7 @@ class UserApiController extends Controller {
                     'title'=>$value->name,
                     'description'=>$value->description, 
                     'created_at'=>$value->created_at->diffForHumans(),
-                    'no_of_videos'=>videos_count($value->id),
+                    'no_of_videos'=>videos_count($value->id, MY_CHANNEL),
                     'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
                     'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
             ];
@@ -4020,20 +4026,39 @@ class UserApiController extends Controller {
      */
     public function channel_videos($channel_id, $skip , $request = null) {
 
-        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+        $videos_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
 
-        $u_id = '';
+        $u_id = $request->id;
 
-        if (Auth::check()) {
+        $channel = Channel::find($channel_id);
 
-            $u_id = Auth::user()->id;
+        if ($channel) {
 
-                            
-            $videos_query->where('video_tapes.age_limit','<=', checkAge($request));
+            if ($u_id == $channel->user_id) {
+
+                if ($u_id) {
+
+                    $videos_query->where('video_tapes.age_limit','<=', checkAge($request)); 
+                }
+
+            } else {
+
+                $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
+                    ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS);
+
+            }
+
+        } else {
+
+            $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
+                ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS);
+            
+        }
+
+        if ($u_id) {
 
             // Check any flagged videos are present
             $flagVideos = getFlagVideos($u_id);
@@ -4044,24 +4069,6 @@ class UserApiController extends Controller {
 
             }
 
-        }
-
-        $channel = Channel::find($channel_id);
-
-        if ($channel) {
-
-            if ($u_id == $channel->user_id) {
-
-            } else {
-
-                $videos_query->where('video_tapes.status' , 1);
-
-            }
-
-        } else {
-
-            $videos_query->where('video_tapes.status' , 1);
-            
         }
 
         if ($skip >= 0) {
@@ -4188,10 +4195,8 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
-                        ->where('channel_id', $id)
-                        ->whereRaw('user_ppv_amount > 0 or amount > 0')
                         ->orderby('amount' , 'desc')
-                        ->where('channels.user_id', $u_id);
+                        ->whereRaw("channel_id = '{$id}' and channels.user_id = '{$u_id}' and (user_ppv_amount > 0 or amount > 0)");
 
         if($skip >= 0) {
 
@@ -4232,14 +4237,32 @@ class UserApiController extends Controller {
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->videoResponse()
-                    ->where('video_tapes.status' , 1)
-                    ->where('video_tapes.is_approved' , 1)
-                    ->where('video_tapes.publish_status' , 1)
-                    ->where('channels.is_approved', 1)
-                    ->where('channels.status', 1)
+                    // ->where('video_tapes.status' , 1)
+                    // ->where('video_tapes.is_approved' , 1)
+                    // ->where('video_tapes.publish_status' , 1)
+                    // ->where('channels.is_approved', 1)
+                    // ->where('channels.status', 1)
                     ->first();
-
         if ($video) {
+
+            if ($request->id != $video->channel_created_by) {
+
+                // Channel / video is declined by admin /user
+
+                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED_STATUS || $video->channel_status == USER_CHANNEL_DECLINED_STATUS) {
+
+                    return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
+
+                }
+
+                // Video if not published
+
+                if ($video->publish_status != PUBLISH_NOW) {
+
+                    return response()->json(['success'=>false, 'error_messages'=>tr('video_not_yet_publish')]);
+                }
+
+            }
 
             if (Setting::get('is_payper_view')) {
 

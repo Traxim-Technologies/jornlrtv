@@ -61,11 +61,11 @@ class Channel extends Model
         {
 
             if($model->picture) {
-                Helper::delete_picture($model->picture, "/uploads/channel/picture/");
+                Helper::delete_picture($model->picture, "/uploads/channels/picture/");
             }
 
             if($model->cover) {
-                Helper::delete_picture($model->cover, "/uploads/channel/cover/");
+                Helper::delete_picture($model->cover, "/uploads/channels/cover/");
             }
 
             if (count($model->getVideoTape) > 0) {

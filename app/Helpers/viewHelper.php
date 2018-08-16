@@ -650,14 +650,11 @@ function getChannels($id = null) {
 
 function getAmountBasedChannel($id) {
 
-    $model = VideoTape::where('channel_id', $id)->sum('user_ppv_amount');
+    $ppv_amount = VideoTape::where('channel_id', $id)->sum('user_ppv_amount');
 
-    $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->videoResponse()
-                        ->where('channel_id', $id)
-                        ->orderby('user_ppv_amount' , 'desc')->get();
+    $ad_amount = VideoTape::where('channel_id', $id)->sum('amount');
 
-    $payment = 0;
+    /*$payment = 0;
 
     foreach ($videos as $key => $value) {
 
@@ -665,9 +662,9 @@ function getAmountBasedChannel($id) {
 
         // $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('user_ppv_amount');
 
-    }
+    }*/
 
-    $amount = $payment+$model;
+    $amount = $ppv_amount+$ad_amount;
 
     return $amount;
 
@@ -896,11 +893,9 @@ function checkSize() {
 }
 
 
-function videos_count($channel_id) {
+function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
 
-    $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+    $videos_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('video_tapes.channel_id' , $channel_id)
                         ->videoResponse()
                         ->orderby('video_tapes.created_at' , 'asc');
@@ -911,6 +906,12 @@ function videos_count($channel_id) {
         if($flagVideos) {
             $videos_query->whereNotIn('video_tapes.id', $flagVideos);
         }
+    }
+
+    if ($channel_type == OTHERS_CHANNEL) {
+
+        $videos_query->where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.status' , 1);
     }
 
     $cnt = $videos_query->count();

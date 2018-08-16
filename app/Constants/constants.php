@@ -108,9 +108,6 @@ if(!defined('SYSTEM_CHECK')) define('SYSTEM_CHECK' , 1);
 if(!defined('INSTALL_COMPLETE')) define('INSTALL_COMPLETE' , 2);
 
 
-if(!defined('ADMIN')) define('ADMIN', 'admin');
-if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
-
 // Payment Constants
 if(!defined('COD')) define('COD',   'cod');
 if(!defined('PAYPAL')) define('PAYPAL', 'paypal');
@@ -160,3 +157,31 @@ if(!defined('NON_SUBSCRIBED_USER')) define('NON_SUBSCRIBED_USER', 0);
 
 if(!defined('ADS_ENABLED')) define('ADS_ENABLED', 1);
 if(!defined('ADS_DISABLED')) define('ADS_DISABLED', 0);
+
+
+// Admin status
+
+// Video status
+
+if(!defined('ADMIN_VIDEO_APPROVED_STATUS')) define('ADMIN_VIDEO_APPROVED_STATUS', 1);
+if(!defined('ADMIN_VIDEO_DECLINED_STATUS')) define('ADMIN_VIDEO_DECLINED_STATUS', 0);
+
+// Channel status
+
+if(!defined('ADMIN_CHANNEL_APPROVED_STATUS')) define('ADMIN_CHANNEL_APPROVED_STATUS', 1);
+if(!defined('ADMIN_CHANNEL_DECLINED_STATUS')) define('ADMIN_CHANNEL_DECLINED_STATUS', 0);
+
+
+// User status
+
+if(!defined('USER_VIDEO_APPROVED_STATUS')) define('USER_VIDEO_APPROVED_STATUS', 1);
+if(!defined('USER_VIDEO_DECLINED_STATUS')) define('USER_VIDEO_DECLINED_STATUS', 0);
+
+// Channel status
+
+if(!defined('USER_CHANNEL_APPROVED_STATUS')) define('USER_CHANNEL_APPROVED_STATUS', 1);
+if(!defined('USER_CHANNEL_DECLINED_STATUS')) define('USER_CHANNEL_DECLINED_STATUS', 0);
+
+
+if(!defined('MY_CHANNEL')) define('MY_CHANNEL', 1);
+if(!defined('OTHERS_CHANNEL')) define('OTHERS_CHANNEL', 0);

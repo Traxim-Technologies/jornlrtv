@@ -925,7 +925,7 @@ jQuery(document).ready(function(){
         "enableMute": true,
         "enableVolume": true
         },
-        // autostart : true,
+        autostart : true,
         "sharing": {
         "sites": ["reddit","facebook","twitter"]
         },
@@ -1036,6 +1036,8 @@ jQuery(document).ready(function(){
                     });
                     
                 @endif
+
+                // For post ad, once video completed the ad will execute
 
                 if (post_ad_status) {
 

@@ -403,7 +403,7 @@ hr {
                                 <td>{{$wishlist->created_at->diffForHumans()}}</td>
                                 <td>
                                     
-                                    <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('users.wishlist.delete' , $wishlist->id)}}" title="Unspam Video"><i class="fa fa-trash"></i></a>
+                                    <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.users.wishlist.delete' , $wishlist->id)}}" title="Unspam Video"><i class="fa fa-trash"></i></a>
                                           
                                 </td>
                             </tr>                   

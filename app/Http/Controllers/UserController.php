@@ -84,7 +84,8 @@ class UserController extends Controller {
                 'watch_count', 
                 'partialVideos', 
                 'payment_mgmt_videos', 
-                'forgot_password' 
+                'forgot_password' ,
+                'channel_videos'
         ]]);
     }
 
@@ -430,15 +431,24 @@ class UserController extends Controller {
      */
     public function channel_videos($id , Request $request) {
 
-        $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->where('id', $id)
-                ->first();
+        $channel = Channel::where('id', $id)->first();
 
         if ($channel) {
 
             $request->request->add([ 
                 'age' => \Auth::check() ? \Auth::user()->age_limit : "",
+                'id'=> \Auth::check() ? \Auth::user()->id : "",
             ]);
+
+            if ($request->id != $channel->user_id) {
+
+                if ($channel->status == USER_CHANNEL_DECLINED_STATUS || $channel->is_approved == ADMIN_CHANNEL_DECLINED_STATUS) {
+
+                    return back()->with('flash_error', tr('channel_declined'));
+
+                }
+ 
+            }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
 
@@ -448,13 +458,11 @@ class UserController extends Controller {
 
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
-            $user_id = Auth::check() ? Auth::user()->id : '';
-
             $subscribe_status = false;
 
-            if ($user_id) {
+            if ($request->id) {
 
-                $subscribe_status = check_channel_status($user_id, $id);
+                $subscribe_status = check_channel_status($request->id, $id);
 
             }
 
@@ -516,7 +524,11 @@ class UserController extends Controller {
 
             // Video is autoplaying ,so we are incrementing the watch count 
 
-            $this->watch_count($request);
+            if ($request->id != $response->video->channel_created_by) {
+
+                $this->watch_count($request);
+
+            }
         
             return view('user.single-video')
                         ->with('page' , '')
@@ -741,6 +753,8 @@ class UserController extends Controller {
 
             \Log::info("ADD History - Watch Count Start");
 
+            $user_id = Auth::check() ? Auth::user()->id : 0;
+
             if($video->getVideoAds) {
 
                 \Log::info("getVideoAds Relation Checked");
@@ -750,9 +764,6 @@ class UserController extends Controller {
                     \Log::info("getVideoAds Status Checked");
 
                     // User logged in or not
-
-
-                    $user_id = Auth::check() ? Auth::user()->id : 0;
 
                     if ($user_id) {
 
@@ -991,7 +1002,7 @@ class UserController extends Controller {
      */
     public function save_channel(Request $request) {
 
-         $request->request->add([ 
+        $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'channel_id' =>$request->id,
@@ -1184,7 +1195,7 @@ class UserController extends Controller {
      */
     public function spam_videos(Request $request) {
 
-         $request->request->add([ 
+        $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token,
