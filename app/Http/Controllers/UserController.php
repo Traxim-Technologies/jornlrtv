@@ -84,7 +84,8 @@ class UserController extends Controller {
                 'watch_count', 
                 'partialVideos', 
                 'payment_mgmt_videos', 
-                'forgot_password' 
+                'forgot_password' ,
+                'channel_videos'
         ]]);
     }
 
@@ -991,7 +992,7 @@ class UserController extends Controller {
      */
     public function save_channel(Request $request) {
 
-         $request->request->add([ 
+        $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'channel_id' =>$request->id,
@@ -1184,7 +1185,7 @@ class UserController extends Controller {
      */
     public function spam_videos(Request $request) {
 
-         $request->request->add([ 
+        $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'device_token' => \Auth::user()->device_token,

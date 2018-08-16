@@ -1037,6 +1037,8 @@ jQuery(document).ready(function(){
                     
                 @endif
 
+                // For post ad, once video completed the ad will execute
+
                 if (post_ad_status) {
 
                     @if($ads)
