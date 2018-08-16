@@ -492,7 +492,7 @@
 	padding: 10px !important;
 	font-size: 16px;
 }
-.invoice-desc{
+.invoice-desc p{
 	font-size: 16px;
 }
 .payment-failure h4{
@@ -685,6 +685,16 @@
 }
 .copy-embed .modal-title, .video-title1{
 	font-size: 22px;
+}
+.new-subcription-history .space{
+	padding: 15px;
+}
+.new-subcription-history .space h4{
+	font-size: 20px;
+}
+.new-subcription-history .link, .new-subcription-history .price .period, .new-subcription-history h5,
+.subscription-desc-list p{
+	font-size:14px;
 }
 }
 
@@ -983,7 +993,7 @@
 	padding: 10px !important;
 	font-size: 18px;
 }
-.invoice-desc{
+.invoice-desc p{
 	font-size: 18px;
 }
 .payment-failure h4{
@@ -1179,6 +1189,23 @@
 }
 .copy-embed .modal-title, .video-title1{
 	font-size: 24px;
+}
+.coupon-code{
+	height: 45px;
+	margin-bottom: 25px;
+}
+.new-subcription-history .space{
+	padding: 17px;
+}
+.new-subcription-history .space h4{
+	font-size: 22px;
+}
+.new-subcription-history .link, .new-subcription-history .price .period, .new-subcription-history h5,
+.subscription-desc-list p{
+	font-size:16px;
+}
+.new-subcription-history .subscription-height{
+	height: 280px;
 }
 }
 
@@ -1486,7 +1513,7 @@
 	padding:14px !important;
 	font-size: 20px;
 }
-.invoice-desc{
+.invoice-desc p{
 	font-size:20px;
 }
 .invoice1 .black-clr{
@@ -1684,6 +1711,23 @@
 }
 .copy-embed .modal-title, .video-title1{
 	font-size: 26px;
+}
+.coupon-code{
+	height: 50px;
+	margin-bottom: 25px;
+}
+.new-subcription-history .space{
+	padding: 19px;
+}
+.new-subcription-history .space h4{
+	font-size: 24px;
+}
+.new-subcription-history .link, .new-subcription-history .price .period, .new-subcription-history h5,
+.subscription-desc-list p{
+	font-size:18px;
+}
+.new-subcription-history .subscription-height{
+	height: 300px;
 }
 }
 
@@ -2011,7 +2055,7 @@
 	padding:16px !important;
 	font-size: 20px;
 }
-.invoice-desc{
+.invoice-desc p{
 	font-size:22px;
 }
 .invoice1 .black-clr{
@@ -2206,6 +2250,23 @@
 }
 .copy-embed .modal-title, .video-title1{
 	font-size: 28px;
+}
+.coupon-code{
+	height: 55px;
+	margin-bottom: 25px;
+}
+.new-subcription-history .space{
+	padding: 19px;
+}
+.new-subcription-history .space h4{
+	font-size: 24px;
+}
+.new-subcription-history .link, .new-subcription-history .price .period, .new-subcription-history h5,
+.subscription-desc-list p{
+	font-size:18px;
+}
+.new-subcription-history .subscription-height{
+	height: 300px;
 }
 }
 
