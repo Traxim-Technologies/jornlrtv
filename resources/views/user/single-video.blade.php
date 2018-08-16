@@ -1039,6 +1039,8 @@ jQuery(document).ready(function(){
 
                 if (post_ad_status) {
 
+                    @if($ads)
+
                     @if($ads->post_ad)
 
                         $("#ad_image").attr("src","{{$ads->post_ad->assigned_ad->file}}");
@@ -1061,6 +1063,8 @@ jQuery(document).ready(function(){
 
                         adsPage("{{$ads->post_ad->ad_time}}");
                         
+                    @endif
+
                     @endif
 
                 }
