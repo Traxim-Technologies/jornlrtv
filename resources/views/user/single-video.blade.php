@@ -925,7 +925,7 @@ jQuery(document).ready(function(){
         "enableMute": true,
         "enableVolume": true
         },
-        // autostart : true,
+        autostart : true,
         "sharing": {
         "sites": ["reddit","facebook","twitter"]
         },
