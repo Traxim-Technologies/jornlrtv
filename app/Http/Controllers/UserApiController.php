@@ -4242,10 +4242,10 @@ class UserApiController extends Controller {
         if ($video) {
 
             if ($request->id != $video->channel_created_by) {
-
+                
                 // Channel / video is declined by admin /user
 
-                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_APPROVED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED_STATUS || $video->channel_status == USER_CHANNEL_DECLINED_STATUS) {
+                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED_STATUS || $video->channel_status == USER_CHANNEL_DECLINED_STATUS) {
 
                     return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
 
