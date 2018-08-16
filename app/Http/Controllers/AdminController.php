@@ -4055,26 +4055,26 @@ class AdminController extends Controller {
 
                 } else if($setting->key == 'streaming_url') {
 
-                    if($request->has('streaming_url') && $request->streaming_url != $setting->value) {
+                    if(check_nginx_configure()) {
 
-                        if(check_nginx_configure()) {
-                            $setting->value = $request->streaming_url;
-                        } else {
-                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
-                        }
-                    }  
+                        $setting->value = $request->streaming_url;
+
+                    } else {
+
+                        $setting->value = "";
+
+                        $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                    }
 
                 } else if($setting->key == 'HLS_STREAMING_URL') {
 
-                    if($request->has('HLS_STREAMING_URL') && $request->HLS_STREAMING_URL != $setting->value) {
-
-                        if(check_nginx_configure()) {
-                            $setting->value = $request->HLS_STREAMING_URL;
-                        } else {
-                            $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
-                        }
-                    }  
-
+                    if(check_nginx_configure()) {
+                        $setting->value = $request->HLS_STREAMING_URL;
+                    } else {
+                        $check_streaming_url = " !! ====> Please Configure the Nginx Streaming Server.";
+                        $setting->value = "";
+                    }
+                    
                 } else if($setting->key == 'multi_channel_status') {
 
                     $setting->value = ($request->multi_channel_status) ? (($request->multi_channel_status == 'on') ? DEFAULT_TRUE : DEFAULT_FALSE) : DEFAULT_FALSE;
@@ -4096,9 +4096,13 @@ class AdminController extends Controller {
                     }
 
 
-                } else if($request->$key!='') {
+                } else {
 
-                    $setting->value = $request->$key;
+                    if (isset($_REQUEST[$key])) {
+
+                        $setting->value = $request->$key;
+
+                    }
 
                 }
 
