@@ -335,7 +335,7 @@ footer{
         padding: 2px 5px;
         margin-top: 2px;
         position: relative;
-        left: -28px;
+        left: -33px;
         /* IE7-8 doesn't have border-radius, so don't indent the padding */
         margin-bottom: 0;
         -webkit-border-radius: 3px;
@@ -691,7 +691,7 @@ videos (single page) css
 	padding: 0;
 }
 .stars i{
-	font-size: 14px;
+	font-size: 13px;
 	color: #b8b8b8;
 }
 .stars i:active{
@@ -770,9 +770,13 @@ input[type="checkbox"], input[type="radio"]{
     border-bottom: 1px solid #999;
     position: relative;
     margin-bottom: -9px;
+    border-radius: 0 !important;
 }
 .video-desc{
 	line-height: 1.4;
+}
+#comment_form textarea:focus{
+	border-color: transparent !important;
 }
 #comment_form textarea:focus+.underline {
   transform: scale(1);
@@ -844,6 +848,8 @@ input[type="checkbox"], input[type="radio"]{
 .display-comhead{
 	margin-top: 10px;
 	min-height: 50px;
+	width: 90%;
+	margin-left: 10%;
 }
 .com-image{
 	margin-right: 1%;
@@ -2291,14 +2297,17 @@ changes
 .copy-embed textarea{
 	resize: none;
 	border:0;
-	border-radius: 0;
+	border-radius: 0 !important;
 	border-bottom: 1px solid #999;
 	box-shadow: none;
 	height: 110px;
+	padding-left: 0;
+	padding-right: 0;
 	margin-bottom: -14px;
 }
 .copy-embed textarea:focus{
 	box-shadow: none;
+	border-color: transparent !important;
 }
 .copy-embed textarea:focus+.underline1 {
   transform: scale(1);
@@ -2322,11 +2331,12 @@ changes
     background-color: #286090 !important;
 }
 .copy-embed .modal-body{
-	height: 235px;
+	/*height: 235px;*/
 	overflow: auto;
 }
 .copy-embed .modal-footer{
 	padding: 10px 0 ;
+	border: 0;
 }
 .modal-footer .btn-danger{
 	border-radius: 4px;
@@ -3103,4 +3113,9 @@ changes
 	color: #fff;
 	font-size: 11px;
 	padding: 4px;
+	display: none;
+}
+.comment-stars{
+	margin:5px 2px 5px 0 !important;
+	font-size:11px !important;
 }

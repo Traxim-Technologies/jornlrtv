@@ -575,15 +575,15 @@ if(count($ads) > 0 && $ads != null) {
 <div>
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal">&times;</button>
-<h4 class="modal-title">{{tr('share')}}</h4>
+<h4 class="modal-title share-title">{{tr('share')}}</h4>
 </div>
 <div class="modal-body">
 <div>
-<a class="share-fb" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->video_tape_id)}}">
+<a class="share-fb btn btn-primary btn-sm" target="_blank" href="http://www.facebook.com/sharer.php?u={{route('user.single',$video->video_tape_id)}}">
 <i class="fa fa-facebook"></i>
 </a>
 
-<a class="share-twitter" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->video_tape_id)}}">
+<a class="share-twitter btn btn-info btn-sm" style="margin-left: 8px;" target="_blank" href="http://twitter.com/share?text={{$video->title}}...&url={{route('user.single',$video->video_tape_id)}}">
 <i class="fa fa-twitter"></i>
 </a> 
 
@@ -625,7 +625,7 @@ if(count($ads) > 0 && $ads != null) {
 </form>
 </div> 
 <div class="modal-footer">
-<button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" style="border-radius: 0">{{tr('copy')}}</button>
+<button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" >{{tr('copy')}}</button>
 </div>
 </div>
 </div>
@@ -832,11 +832,11 @@ jQuery(document).ready(function(){
                             var fifth_star = data.comment.rating >= 5 ? "color:#ff0000" : "";
 
                             var stars = '<span class="stars">'+
-                            '<a><i style="'+first_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                            '<a><i style="'+second_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                            '<a><i style="'+third_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                            '<a><i style="'+fourth_star+'" class="fa fa-star" aria-hidden="true"></i></a>'+
-                            '<a><i style="'+fifth_star+'" class="fa fa-star" aria-hidden="true"></i></a></span>';   
+                            '<a><i style="'+first_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
+                            '<a><i style="'+second_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
+                            '<a><i style="'+third_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
+                            '<a><i style="'+fourth_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
+                            '<a><i style="'+fifth_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a></span>';   
 
                             /**
                             <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="'+data.comment.rating+'"></p>
