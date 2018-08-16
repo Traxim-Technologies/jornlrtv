@@ -201,7 +201,7 @@
 							<div class="feed-item-main feed-item-no-author">
 								<div class="feed-item-main-content">
 									<div class="shelf-wrapper clearfix">
-										<div class="big-section-main">
+										<div class="big-section-main new-history1">
 
 											<h2 class="branded-page-module-title">
 										        <span class="branded-page-module-title-text">

@@ -20,13 +20,14 @@
 			@include('notification.notify')
 
 			<div class="invoice">
+				<h3 class="no-margin text-center mb-20 mt-0">Invoice</h3>	
 				<div class="row" > 
 					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 " >
 						<div class="text-center invoice1 white-bg">
 						 	<div class="row">
 						 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 invoice-img" style="background-image: url({{asset('images/invoice-bg.jpg')}});">
 							 		<div class="invoice-overlay">
-							 			<div>
+							 			<div class="invoice-desc">
 										 	<h3 class="no-margin black-clr">{{$subscription->title}}</h3>
 										 	<p class="invoice-desc"><?= $subscription->description ?></p>
 									 	</div>
@@ -44,12 +45,19 @@
 											        <td>Tax</td>
 											        <td> $9.99</td>
 											    </tr> -->
-											    <tr>
+											    <tr class="active">
 											        <td>{{tr('total')}}</td>
 											        <td>{{Setting::get('currency')}} {{$subscription->amount}}</td>
 											    </tr> 
 										    </tbody>
 										</table>
+
+										<!-- coupon code -->
+										<div class="input-group coupon-code">
+										    <input id="msg" type="text" class="form-control" name="msg" placeholder="Coupon amount">
+										    <span class="input-group-addon btn-danger" type="button">Apply</span>
+										</div>
+										<!-- coupon code -->
 
 										@if($subscription->amount > 0)
 
