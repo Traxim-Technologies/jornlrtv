@@ -680,6 +680,12 @@
     font-size: 14px;
     min-width: 175px;
 }
+.share-title,{
+	font-size: 20px;	
+}
+.copy-embed .modal-title, .video-title1{
+	font-size: 22px;
+}
 }
 
 @media (min-width: 1680px) and (max-width: 1919px) {
@@ -1167,6 +1173,12 @@
     left: -160px;
     font-size: 16px;
     min-width: 200px;
+}
+.share-title{
+	font-size: 22px;	
+}
+.copy-embed .modal-title, .video-title1{
+	font-size: 24px;
 }
 }
 
@@ -1666,6 +1678,12 @@
     left: -195px;
     font-size: 18px;
     min-width: 225px;
+}
+.share-title{
+	font-size: 24px;	
+}
+.copy-embed .modal-title, .video-title1{
+	font-size: 26px;
 }
 }
 
@@ -2182,6 +2200,12 @@
     left: -195px;
     font-size: 18px;
     min-width: 225px;
+}
+.share-title{
+	font-size: 26px;	
+}
+.copy-embed .modal-title, .video-title1{
+	font-size: 28px;
 }
 }
 
