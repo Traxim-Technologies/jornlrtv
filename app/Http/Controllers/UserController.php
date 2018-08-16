@@ -439,6 +439,7 @@ class UserController extends Controller {
 
             $request->request->add([ 
                 'age' => \Auth::check() ? \Auth::user()->age_limit : "",
+                'id'=> \Auth::check() ? \Auth::user()->id : "",
             ]);
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();

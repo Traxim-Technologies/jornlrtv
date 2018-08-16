@@ -1322,4 +1322,6 @@ return array(
 	'ad_not_found'=>'You are searching Ad not found..!',
 	'duration_in_seconds'=>'Duration In Seconds',
 	'are_you_sure_ad_status'=>'Are you sure want to change the status of the Ad?',
+	'video_is_declined'=>'Video is declined by Admin / Channel Owner',
+	'video_not_yet_publish'=>'Video not yet published..!',
 );
