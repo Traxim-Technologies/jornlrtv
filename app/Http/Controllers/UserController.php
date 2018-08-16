@@ -431,9 +431,7 @@ class UserController extends Controller {
      */
     public function channel_videos($id , Request $request) {
 
-        $channel = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->where('id', $id)
-                ->first();
+        $channel = Channel::where('id', $id)->first();
 
         if ($channel) {
 
@@ -441,6 +439,16 @@ class UserController extends Controller {
                 'age' => \Auth::check() ? \Auth::user()->age_limit : "",
                 'id'=> \Auth::check() ? \Auth::user()->id : "",
             ]);
+
+            if ($request->id != $channel->user_id) {
+
+                if ($channel->status == USER_CHANNEL_DECLINED_STATUS || $channel->is_approved == ADMIN_CHANNEL_DECLINED_STATUS) {
+
+                    return back()->with('flash_error', tr('channel_declined'));
+
+                }
+ 
+            }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
 

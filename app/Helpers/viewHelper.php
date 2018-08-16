@@ -896,11 +896,9 @@ function checkSize() {
 }
 
 
-function videos_count($channel_id) {
+function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
 
-    $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+    $videos_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('video_tapes.channel_id' , $channel_id)
                         ->videoResponse()
                         ->orderby('video_tapes.created_at' , 'asc');
@@ -911,6 +909,12 @@ function videos_count($channel_id) {
         if($flagVideos) {
             $videos_query->whereNotIn('video_tapes.id', $flagVideos);
         }
+    }
+
+    if ($channel_type == OTHERS_CHANNEL) {
+
+        $videos_query->where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.status' , 1);
     }
 
     $cnt = $videos_query->count();

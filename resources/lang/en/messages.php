@@ -1324,4 +1324,5 @@ return array(
 	'are_you_sure_ad_status'=>'Are you sure want to change the status of the Ad?',
 	'video_is_declined'=>'Video is declined by Admin / Channel Owner',
 	'video_not_yet_publish'=>'Video not yet published..!',
+	'channel_declined'=>'Channel is declined by Admin / Channel Owner',
 );

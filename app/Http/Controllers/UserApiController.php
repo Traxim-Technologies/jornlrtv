@@ -2041,15 +2041,18 @@ class UserApiController extends Controller {
 
         $channel_id = [];
 
-        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+        $query = Channel::select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 // ->where('channels.status', DEFAULT_TRUE)
                 ->groupBy('channels.id')
                 ->where('channels.user_id',$request->id);
 
-        /*if($request->id) {
+        /*
+
+        where('channels.is_approved', DEFAULT_TRUE)
+
+        if($request->id) {
 
             $user = User::find($request->id);
 
@@ -2092,7 +2095,7 @@ class UserApiController extends Controller {
                     'title'=>$value->name,
                     'description'=>$value->description, 
                     'created_at'=>$value->created_at->diffForHumans(),
-                    'no_of_videos'=>videos_count($value->id),
+                    'no_of_videos'=>videos_count($value->id, MY_CHANNEL),
                     'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
                     'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
             ];
@@ -4242,7 +4245,7 @@ class UserApiController extends Controller {
         if ($video) {
 
             if ($request->id != $video->channel_created_by) {
-                
+
                 // Channel / video is declined by admin /user
 
                 if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED_STATUS || $video->channel_status == USER_CHANNEL_DECLINED_STATUS) {
