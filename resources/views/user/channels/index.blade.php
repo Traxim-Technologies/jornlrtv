@@ -182,8 +182,8 @@
 										@if($channel->user_id == Auth::user()->id)
 											<li role="presentation" id="payment_managment_sec">
 												<a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
-												<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ({{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->total : "0.00"}})</span> 
-												<span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;($ {{getAmountBasedChannel($channel->id)}})</span>
+												<span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ({{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}})</span> 
+												<span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;({{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}})</span>
 												</a>
 											</li>
 										@endif

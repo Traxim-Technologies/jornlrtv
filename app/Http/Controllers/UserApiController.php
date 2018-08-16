@@ -4192,10 +4192,8 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
-                        ->where('channel_id', $id)
-                        ->whereRaw('user_ppv_amount > 0 or amount > 0')
                         ->orderby('amount' , 'desc')
-                        ->where('channels.user_id', $u_id);
+                        ->whereRaw("channel_id = '{$id}' and channels.user_id = '{$u_id}' and (user_ppv_amount > 0 or amount > 0)");
 
         if($skip >= 0) {
 

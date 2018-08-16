@@ -458,13 +458,11 @@ class UserController extends Controller {
 
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
-            $user_id = Auth::check() ? Auth::user()->id : '';
-
             $subscribe_status = false;
 
-            if ($user_id) {
+            if ($request->id) {
 
-                $subscribe_status = check_channel_status($user_id, $id);
+                $subscribe_status = check_channel_status($request->id, $id);
 
             }
 
