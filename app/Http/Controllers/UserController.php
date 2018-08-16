@@ -524,7 +524,11 @@ class UserController extends Controller {
 
             // Video is autoplaying ,so we are incrementing the watch count 
 
-            $this->watch_count($request);
+            if ($request->id != $response->video->channel_created_by) {
+
+                $this->watch_count($request);
+
+            }
         
             return view('user.single-video')
                         ->with('page' , '')
@@ -749,6 +753,8 @@ class UserController extends Controller {
 
             \Log::info("ADD History - Watch Count Start");
 
+            $user_id = Auth::check() ? Auth::user()->id : 0;
+
             if($video->getVideoAds) {
 
                 \Log::info("getVideoAds Relation Checked");
@@ -758,9 +764,6 @@ class UserController extends Controller {
                     \Log::info("getVideoAds Status Checked");
 
                     // User logged in or not
-
-
-                    $user_id = Auth::check() ? Auth::user()->id : 0;
 
                     if ($user_id) {
 
