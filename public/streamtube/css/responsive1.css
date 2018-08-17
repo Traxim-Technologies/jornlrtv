@@ -696,6 +696,9 @@
 .subscription-desc-list p{
 	font-size:14px;
 }
+.upload-video-sec{
+	font-size: 16px;
+}
 }
 
 @media (min-width: 1680px) and (max-width: 1919px) {
@@ -1206,6 +1209,9 @@
 }
 .new-subcription-history .subscription-height{
 	height: 280px;
+}
+.upload-video-sec{
+	font-size: 18px;
 }
 }
 
@@ -1728,6 +1734,9 @@
 }
 .new-subcription-history .subscription-height{
 	height: 300px;
+}
+.upload-video-sec{
+	font-size: 20px;
 }
 }
 
@@ -2267,6 +2276,9 @@
 }
 .new-subcription-history .subscription-height{
 	height: 300px;
+}
+.upload-video-sec{
+	font-size: 22px;
 }
 }
 

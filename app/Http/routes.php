@@ -23,6 +23,11 @@ Route::get('/clear-cache', function() {
 
 })->name('clear-cache');
 
+// UI
+
+Route::get('/video_notification' , 'SampleController@video_notification');
+
+Route::get('/upload_videoUI' , 'SampleController@upload_video');
 // Unused Sample Routes
 
 Route::post('angelo/in-app-purchase' , 'SampleController@angelo_in_app_purchase');

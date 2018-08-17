@@ -3262,3 +3262,35 @@ changes
 tr.active{
 	color: #333;
 }
+.upload-video-sec{
+	font-size: 14px;
+}
+.upload-video-spacing{
+	padding:2.14em;
+}
+.upload-line{
+	border-bottom: 1px solid #ddd;
+	margin: 0;
+}
+.upload-video-sec .upload-sub-head{
+	margin-top:15px;
+	text-transform: capitalize;
+	margin-bottom: 15px;
+	color: #666;
+}
+.upload-video-sec .upload-sec{
+	height: 17em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border:1px solid #ddd;
+	background-color: #eee;
+	width: 100%;
+	margin-top: 1.5em;
+}
+.upload-video-sec .upload-sec img{
+	height: 9em;
+	width: 100%;
+	object-fit: contain;
+	object-position: center;
+}

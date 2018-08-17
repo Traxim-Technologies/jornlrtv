@@ -14,4 +14,12 @@ class SampleController extends Controller
 
     	return response()->json(['success' => true]);
     }
+
+    public function video_notification(Request $request) {
+    	return view('emails.video_notification');
+    }
+
+    public function upload_video(Request $request) {
+    	return view('user.videos.upload_video');
+    }
 }
