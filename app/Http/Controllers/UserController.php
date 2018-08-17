@@ -1789,6 +1789,19 @@ class UserController extends Controller {
         return back()->with($type, $message);
     }
 
+    /**
+     * Function Name : stripe_payment()
+     *
+     * To pay the payment of subscription through stripe 
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param object $request - user and subscription details
+     *
+     * @return json response details
+     */
     public function stripe_payment(Request $request) {
 
         $request->request->add([ 
@@ -1954,6 +1967,19 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * Function Name : subscribed_channels()
+     *
+     * To list otu  subscribed channels based on logged in users
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param object $request - user details
+     *
+     * @return json response details
+     */
     public function subscribed_channels(Request $request) {
 
         $request->request->add([ 
@@ -1979,7 +2005,19 @@ class UserController extends Controller {
 
     }
 
-
+    /**
+     * Function Name : partialVideos()
+     *
+     * To get video details of channels videos using skip & take
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param object $request - user and channel details
+     *
+     * @return json response details
+     */
     public function partialVideos(Request $request) {
 
         $request->request->add([ 
@@ -2003,6 +2041,19 @@ class UserController extends Controller {
     }
 
 
+    /**
+     * Function Name : payment_mgmt_videos()
+     *
+     * To get payment video details of logged in user using skip & Take
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param object $request - user and channel details
+     *
+     * @return json response details
+     */
     public function payment_mgmt_videos(Request $request) {
 
         // Get Videos
@@ -2020,6 +2071,19 @@ class UserController extends Controller {
         return response()->json(['view'=>$view, 'length'=>$payment_videos->count]);
     }
 
+    /**
+     * Function Name : invoice()
+     *
+     * To Display subscription invoice page based on subscription id
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param integer $id - subscription id
+     *
+     * @return json response details
+     */
     public function invoice(Request $request) {
 
         $model = $request->all();
@@ -2040,6 +2104,20 @@ class UserController extends Controller {
         return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)->with('model',$model);
     }
 
+
+    /**
+     * Function Name : ppv_invoice()
+     *
+     * To Display ppv invoice page based on video id
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param integer $id - video id
+     *
+     * @return json response details
+     */
     public function ppv_invoice($id) {
 
         $video = VideoTape::find($id);
@@ -2057,6 +2135,19 @@ class UserController extends Controller {
         }
     }
 
+    /**
+     * Function Name : pay_per_view()
+     *
+     * To Display ppv video page
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - video with user Details
+     *
+     * @return json response details
+     */
     public function pay_per_view($id) {
 
         $video = VideoTape::find($id);
@@ -2097,7 +2188,19 @@ class UserController extends Controller {
                         ->with('subPage' , 'Payper Videos');
     }
 
-
+    /**
+     * Function Name : payment_type()
+     *
+     * To Check whether the user is going to pay through paypal / stripe payment (For PPV)
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function payment_type($id, Request $request) {
 
         if($request->payment_type == 1) {
@@ -2110,6 +2213,19 @@ class UserController extends Controller {
         }
     }
 
+    /**
+     * Function Name : subscription_payment()
+     *
+     * To Check whether the user is going to pay through paypal / stripe payment (For subscription)
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function subscription_payment(Request $request) {
 
         if($request->payment_type == 1) {
@@ -2122,6 +2238,19 @@ class UserController extends Controller {
         }
     }
 
+    /**
+     * Function Name : ppv_stripe_payment()
+     *
+     * To Pay PPV amount through stripe payment gateway
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function ppv_stripe_payment(Request $request) {
 
         $request->request->add([
@@ -2148,11 +2277,37 @@ class UserController extends Controller {
         }
     }
 
+    /**
+     * Function Name : payment_success()
+     *
+     * To displaye subscription success message
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function payment_success() {
 
         return view('user.subscription');
     }
 
+    /**
+     * Function Name : video_success()
+     *
+     * To displaye video success messae
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function video_success($id = "") {
 
         if(!$id) {
@@ -2217,6 +2372,19 @@ class UserController extends Controller {
         return back()->with('flash_error' , tr('admin_published_video_failure'));
     }
 
+    /**
+     * Function Name : my_channels()
+     *
+     * To list out channels based on logged in users
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function my_channels(Request $request) {
 
         $request->request->add([
@@ -2232,6 +2400,19 @@ class UserController extends Controller {
     }
 
 
+    /**
+     * Function Name : forgot_password()
+     *
+     * To send password to the requested users
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function forgot_password(Request $request) {
 
         $response = $this->UserAPI->forgot_password($request)->getData();
@@ -2247,7 +2428,19 @@ class UserController extends Controller {
         }
     }
 
-
+    /**
+     * Function Name : subscription_history()
+     *
+     * To list out subscribed history based on id
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function subscription_history(Request $request) {
 
         $request->request->add([ 
@@ -2272,7 +2465,19 @@ class UserController extends Controller {
 
     }
 
-
+    /**
+     * Function Name : ppv_history()
+     *
+     * To list out ppv history based on id
+     *
+     * @created_by Shobana
+     *
+     * @updated_by - 
+     *
+     * @param Object $request - User Details
+     *
+     * @return json response details
+     */
     public function ppv_history(Request $request) {
 
         $request->request->add([ 
