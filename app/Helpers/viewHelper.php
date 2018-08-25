@@ -40,6 +40,8 @@ use App\PayPerView;
 
 use App\VideoAd;
 
+use App\Category;
+
 function tr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
@@ -1227,6 +1229,9 @@ function displayVideoDetails($data,$userId) {
         'currency'=>Setting::get('currency'),
         'share_url'=>route('user.single' , $data->video_tape_id),
         'ppv_notes'=>$ppv_notes,
+        'category_id'=>$data->category_id,
+        'category_name'=>$data->category_name,
+        'tags'=>$data->tags
     ];
 
 
@@ -1318,3 +1323,4 @@ function getVideoAdsTpe($video_id) {
     return $types;
 
 }
+

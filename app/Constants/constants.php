@@ -185,3 +185,14 @@ if(!defined('USER_CHANNEL_DECLINED_STATUS')) define('USER_CHANNEL_DECLINED_STATU
 
 if(!defined('MY_CHANNEL')) define('MY_CHANNEL', 1);
 if(!defined('OTHERS_CHANNEL')) define('OTHERS_CHANNEL', 0);
+
+
+// Category Status
+
+if(!defined('CATEGORY_APPROVE_STATUS')) define('CATEGORY_APPROVE_STATUS', 1);
+if(!defined('CATEGORY_DECLINE_STATUS')) define('CATEGORY_DECLINE_STATUS', 0);
+
+// Tag Status
+
+if(!defined('TAG_APPROVE_STATUS')) define('TAG_APPROVE_STATUS', 1);
+if(!defined('TAG_DECLINE_STATUS')) define('TAG_DECLINE_STATUS', 0);

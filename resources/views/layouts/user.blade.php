@@ -19,6 +19,10 @@
 
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive1.css')}}">
+
+
+    <link rel="stylesheet" href="{{ asset('admin-css/plugins/select2/select2.min.css')}}">
+
     
     <link rel="shortcut icon" type="image/png" href="{{Setting::get('site_icon' , asset('img/favicon.png'))}}"/>
     <style type="text/css">
@@ -80,6 +84,8 @@
     <script type="text/javascript" src="{{asset('streamtube/js/slick.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('streamtube/js/script.js')}}"></script>
 
+    <script src="{{asset('admin-css/plugins/select2/select2.full.min.js')}}"></script>
+
     <script>
 
         $(window).load(function(){
@@ -129,6 +135,12 @@
     </script>
 
     <script type="text/javascript">
+
+         $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+
+        });
 
         jQuery(document).ready( function () {
             //autocomplete

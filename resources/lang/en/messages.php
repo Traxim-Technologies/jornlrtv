@@ -1325,4 +1325,47 @@ return array(
 	'video_is_declined'=>'Video is declined by Admin / Channel Owner',
 	'video_not_yet_publish'=>'Video not yet published..!',
 	'channel_declined'=>'Channel is declined by Admin / Channel Owner',
+	'category_not_found'=>'Category has not been found..!',
+	'create_category'=>'Create Category',
+
+	'category_update_success'=>'Category has been updated successfully',
+
+	'category_create_success'=>'Category has been created successfully',
+
+	'category_delete_success'=>'Category has been deleted successfully',
+
+	'category_approve_success'=>'Category has been approved successfully',
+
+	'category_decline_success'=>'Category has been declined successfully',
+
+	'vertial_square'=>'Upload Vertical images 3:4 Ratio Ex: 300 * 400',
+
+	'category_not_saved'=>'Category has not been saved..!',
+	'category_not_deleted'=>'Category has not been deleted..!',
+	'categories'=>'Categories',
+	'view_categories'=>'View Categories',
+	'no_of_uploads'=>'No of Uploads',
+	'no_of_lives'=>'No of Lives',
+	'edit_category'=>'Edit Category',
+	'category_name'=>'Category Name',
+	'category_allocated'=>'You are selected category having uploaded videos, Assign those videos into someother category and then assign to this category.',
+	'category'=>'Category',
+	'category_not_found'=>'Category has been not found..!',
+	'no_category_videos'=>'No category videos found',
+	'create_tag'=>'Create Tag',
+
+	'tag_update_success'=>'Tag has been updated successfully',
+
+	'tag_create_success'=>'Tag has been created successfully',
+
+	'tag_delete_success'=>'Tag has been deleted successfully',
+
+	'tag_approve_success'=>'Tag has been approved successfully',
+
+	'tag_decline_success'=>'Tag has been declined successfully',
+	'tags'=>'Tags',
+	'count'=>'Count',
+	'tag_not_found'=>'Tag details not found',
+	'select_category'=>'Select Category',
+	'select_tags'=>'Select Tags',
 );

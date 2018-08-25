@@ -435,6 +435,31 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('help' , 'AdminController@help')->name('help');
 
+     // Tags
+
+    Route::get('/tags', 'AdminController@tags')->name('tags');
+
+    Route::post('/save/tag', 'AdminController@save_tag')->name('save.tag');
+
+    Route::get('/delete/tag', 'AdminController@delete_tag')->name('tags.delete');
+
+    Route::get('/status/tag', 'AdminController@tag_status')->name('tags.status');
+
+
+    // Categories CRUD operations
+
+    Route::post('/categories/save', 'AdminController@categories_save')->name('categories.save');
+
+    Route::get('/categories/delete', 'AdminController@categories_delete')->name('categories.delete');
+
+    Route::get('/categories/status', 'AdminController@categories_status')->name('categories.status');
+
+    Route::get('/categories/create', 'AdminController@categories_create')->name('categories.create');
+
+    Route::get('/categories/edit', 'AdminController@categories_edit')->name('categories.edit');
+
+    Route::get('/categories/list', 'AdminController@categories_list')->name('categories.list');
+
 });
 
 
@@ -656,6 +681,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('ppv/history', 'UserController@ppv_history')->name('ppv.history');
 
+    Route::get('/categories/list/{id?}', 'UserController@categories_videos')->name('categories.videos');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
@@ -793,4 +820,11 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('channel/delete', 'UserApiController@channel_delete');
 
+    //categories
+
+    Route::post('categories/list', 'UserApiController@categories_list');
+
+    Route::post('categories/view', 'UserApiController@categories_view');
+
+    Route::post('categories/videos', 'UserApiController@categories_videos');
 });

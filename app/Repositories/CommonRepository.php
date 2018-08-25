@@ -24,6 +24,8 @@ use App\Jobs\SubscriptionMail;
 
 use App\Jobs\sendPushNotification;
 
+use App\Category;
+
 class CommonRepository {
 
 
@@ -301,6 +303,8 @@ class CommonRepository {
 
             $validator = Validator::make( $request->all(), array(
                         'title'         => 'required|max:255',
+                        'category_id'=>'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                        'tag_id'=>'required',
                         'description'   => 'required',
                         'channel_id'   => 'required|integer|exists:channels,id',
                         'video'     => 'required|mimes:mkv,mp4,qt',
@@ -717,7 +721,63 @@ class CommonRepository {
         $video->publish_time = $request->has('publish_time') 
                         ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : $video->publish_time;
 
-        $video->save();
+        if($request->hasFile('subtitle')) {
+
+            if ($video->id) {
+
+                if ($video->subtitle) {
+
+                    Helper::delete_picture($video->subtitle, "/uploads/subtitles/");  
+
+                }  
+            }
+
+            $video->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
+
+        }
+
+         // Save Category
+
+        $new_category = 1;
+
+        $old_category = "";
+
+        if ($video->category_id) {
+
+            $old_category = Category::find($video->category_id);
+
+        }
+
+        if ($request->category_id == $video->category_id) {
+
+            $new_category = 0;
+
+        }
+
+        $video->category_id = $request->category_id;
+
+        $category = Category::find($request->category_id);
+
+        $video->category_name = $category->name;
+
+        $video->tags = $request->tags ? (is_array($request->tags) ? implode(',', $request->tags) : $request->tags) : '';
+
+       $video->save();
+
+        if ($new_category) {
+
+            $category->no_of_uploads += 1;
+
+            $category->save(); 
+
+        } 
+
+        if ($old_category) {
+
+            $old_category->no_of_uploads =  $old_category->no_of_uploads > 0 ? $old_category->no_of_uploads - 1  : 0;
+
+            $old_category->save();
+        }
 
         if ($request->banner_image)  {
 

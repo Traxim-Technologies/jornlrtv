@@ -56,6 +56,8 @@ use App\ChannelSubscription;
 
 use App\UserPayment;
 
+use App\Category;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -1261,19 +1263,54 @@ class UserController extends Controller {
 
         $id = $request->id;
 
+        $channel = '';
+
+        if (Auth::check()) {
+
+            $channel = Channel::where('user_id', Auth::user()->id)->where('id', $id)->first();
+
+        }
+
+        if (!$channel) {
+
+            return back()->with('flash_error', tr('not_authorized_person'));
+        }
+
+        $categories_list = $this->UserAPI->categories_list($request)->getData();
+
+        $tags = $this->UserAPI->tags($request)->getData()->data;
+
         return view('user.videos.create')->with('model', $model)->with('page', 'videos')
-            ->with('subPage', 'upload_video')->with('id', $id);
+            ->with('subPage', 'upload_video')->with('id', $id)
+            ->with('categories', $categories_list)
+            ->with('tags', $tags);
     }
 
 
-    public function video_edit($id) {
+    public function video_edit(Request $request) {
 
-        $model = VideoTape::find($id);
+        $model = VideoTape::find($request->id);
 
-        $model->publish_time = $model->publish_time ? (($model->publish_time != '0000-00-00 00:00:00') ? date('d-m-Y H:i:s', strtotime($model->publish_time)) : null) : null;
+        if($model) {
 
-        return view('user.videos.edit')->with('model', $model)->with('page', 'videos')
-            ->with('subPage', 'upload_video');
+            $model->publish_time = $model->publish_time ? (($model->publish_time != '0000-00-00 00:00:00') ? date('d-m-Y H:i:s', strtotime($model->publish_time)) : null) : null;
+
+            $categories_list = $this->UserAPI->categories_list($request)->getData();
+
+            $tags = $this->UserAPI->tags($request)->getData()->data;
+
+            $model->tags = $model->tags ? explode(',', $model->tags) : [];
+
+            return view('user.videos.edit')->with('model', $model)->with('page', 'videos')
+                ->with('subPage', 'upload_video')
+                ->with('categories', $categories_list)
+                ->with('tags', $tags);
+
+        } else {
+
+            return back()->with('flash_error', tr('video_not_found'));
+
+        }
     }
 
 
@@ -2502,4 +2539,54 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * Function Name : categories_videos()
+     *
+     * To list out category videos based on category
+     * 
+     * @created_by - Shobana Chandrasekar
+     *
+     * @updated_by - -
+     *
+     * @param integer $request->id - Category Id
+     *
+     * @return response of success/failure message
+     */
+    public function categories_videos(Request $request) {
+
+        $category = Category::find($request->id);
+
+        if ($category) {
+
+            if (Auth::check()) {
+
+                $request->request->add([ 
+                    'category_id'=>$request->id,
+                    'id' => \Auth::user()->id,
+                    'token' => \Auth::user()->token,
+                    'device_token' => \Auth::user()->device_token,
+                    'age'=>\Auth::user()->age_limit,
+                    'device_type'=>DEVICE_WEB
+                ]);
+            }
+
+            $data = $this->UserAPI->categories_videos($request)->getData();
+
+            if($data->success) {
+
+                return view('user.category.category_videos')->with('page', 'category_name_'.$category->id)
+                                        ->with('videos',$data)
+                                        ->with('category', $category);
+
+            } else {
+
+                return back()->with('flash_error', $data->error_messages);
+
+            }
+        } else {
+
+            return back()->with('flash_error', tr('category_not_found'));
+
+        }
+    }
 }

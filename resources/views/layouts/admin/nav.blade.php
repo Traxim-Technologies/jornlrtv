@@ -35,7 +35,6 @@
                     <li id="add-user"><a href="{{route('admin.users.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_user')}}</a></li>
                     <li id="view-user"><a href="{{route('admin.users')}}"><i class="fa fa-circle-o"></i>{{tr('view_users')}}</a></li>
                 </ul>
-    
             </li>
 
             <li class="treeview" id="channels">
@@ -49,6 +48,18 @@
                      <li id="subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
                 </ul>
 
+            </li>
+
+            <li id="categories">
+                <a href="{{route('admin.categories.list')}}">
+                    <i class="fa fa-list"></i> <span>{{tr('categories')}}</span> 
+                </a>
+            </li>
+
+            <li id="tags">
+                <a href="{{route('admin.tags')}}">
+                    <i class="fa fa-tag"></i> <span>{{tr('tags')}}</span> 
+                </a>
             </li>
 
             <li class="treeview" id="videos">

@@ -82,6 +82,10 @@ use App\Jobs\NormalPushNotification;
 
 use App\ChannelSubscription; 
 
+use App\Category;
+
+use App\Tag;
+
 class AdminController extends Controller {
 
     /**
@@ -4694,4 +4698,366 @@ class AdminController extends Controller {
 
     }
 
+
+    /**
+     * Function Name : categories_create()
+     * 
+     * To create a category 
+     *
+     * @param - $request - As of now no attribute
+     *
+     * @return response of html page with details
+     *
+     */
+    public function categories_create(Request $request) {
+
+        $model = new Category;
+
+        return view('admin.categories.create')->with('page', 'categories')
+                    ->with('sub_page', 'create_category')
+                    ->with('model', $model);
+    }
+
+
+    /**
+     * Function Name : categories_edit()
+     * 
+     * To edit a category based on id 
+     *
+     * @param integer $request - Category id
+     *
+     * @return response of html page with details
+     *
+     */
+    public function categories_edit(Request $request) {
+
+        $model = Category::where('id', $request->id)->first();
+
+        if ($model) {
+
+            return view('admin.categories.edit')->with('page', 'categories')
+                    ->with('sub_page', 'create_category')
+                    ->with('model', $model);
+
+        } else {
+
+            return back()->with('flash_error', tr('category_not_found'));
+
+        }
+        
+    }
+
+
+    /**
+     * Function Name : categories_list()
+     *
+     * To list out all the categories
+     *
+     * @param -
+     * 
+     * @return response of array list
+     */
+    public function categories_list(Request $request) {
+
+        $datas = Category::orderBy('updated_at', 'desc')->get();
+
+        return view('admin.categories.index')
+                    ->with('page', 'categories')
+                    ->with('sub_page', 'categories')
+                    ->with('datas', $datas);
+    }
+
+    /**
+     * Function Name : categories_save()
+     *
+     * To save the category
+     *
+     * @param - category object 
+     *
+     * @return response of success/failure message
+     */
+    public function categories_save(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'name' => $request->id ? 'required|unique:categories,name,'.$request->id.',id|max:128|min:2' : 'required|unique:categories,name,NULL,id|max:128|min:2',
+            'id' => 'exists:categories,id', 
+            'image' => $request->id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+            ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , implode(',',$validator->messages()->all()));
+
+        } else {
+
+            $model = $request->id ? Category::find($request->id) : new Category;
+
+            $model->name = $request->name;
+
+            $model->status = DEFAULT_TRUE;
+
+            if($request->hasFile('image')) {
+
+                if ($request->id) {
+
+                    Helper::delete_avatar('uploads/categories' ,$model->image);
+
+                }
+
+                $model->image = Helper::upload_avatar('uploads/categories',$request->file('image'), 0);
+            }
+
+            if ($model->save()) {
+
+
+                if ($request->id) {
+
+                    return redirect(route('admin.categories.list'))->with('flash_success',tr('category_update_success'));
+
+                } else {
+
+                    return back()->with('flash_success',tr('category_create_success'));
+
+                }
+
+            } else {
+
+                return back()->with('flash_error', tr('category_not_saved'));
+            }
+
+        }
+
+    }
+
+    /**
+     * Function Name : categories_delete()
+     *
+     * To delete the category based on id
+     *
+     * @param integer $request - category id 
+     *
+     * @return response of success/failure message
+     */
+    public function categories_delete(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'id' => 'required|exists:categories,id', 
+        ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , $validator->messages()->all())->withInput();
+
+        } else {
+
+            $model = Category::find($request->id);
+
+            $model_img = $model->image;
+
+            /*if ($model->no_of_uploads > 0) {
+
+                return back()->with('flash_error', tr('category_allocated'));
+
+            }*/
+
+            if ($model->delete()) {                
+
+                Helper::delete_avatar('uploads/categories' ,$model_img);
+
+                return back()->with('flash_success', tr('category_delete_success'));
+
+            } else {
+
+                return back()->with('flash_error', tr('category_not_deleted'));
+
+            }
+
+        }
+    }
+
+    /**
+     * Function Name : categories_status()
+     *
+     * To change the category status approve/decline
+     *
+     * @param integer $request - category id 
+     *
+     * @return response of success/failure message
+     */
+    public function categories_status(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'id' => 'required|exists:categories,id', 
+        ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , $validator->messages()->all())->withInput();
+
+        } else {
+
+            $model = Category::find($request->id);
+
+            $model->status = $model->status == 1 ? DEFAULT_FALSE : DEFAULT_TRUE;
+
+            /*
+            if ($model->status == 0 && $model->no_of_uploads > 0) {
+
+                return back()->with('flash_error', tr('category_allocated'));
+
+            }*/
+
+            if ($model->save()) {
+
+                return back()->with('flash_success', $model->status ? tr('category_approve_success') : tr('category_decline_success'));
+
+           } else {
+
+                return back()->with('flash_error', tr('category_not_saved'));
+
+           }
+
+        }
+    }
+
+    /**
+     * Function Name : create_tag()
+     *
+     * To create tag, displayed form
+     *
+     * @param object $request - As of now no attribute
+     *
+     * @return response of json
+     */
+    public function tags(Request $request) {
+
+        $model = $request->id ? Tag::find($request->id) : new Tag;
+
+        if (!$model) {
+
+            $model = new Tag;
+
+        }
+
+        $datas = Tag::orderBy('created_at', 'desc')->get();
+
+        return view('admin.tags.index')
+                ->with('model', $model)
+                ->with('datas', $datas)
+                ->with('page', 'tags')
+                ->with('sub_page', '');
+    }
+
+    /**
+     * Function Name : save_tag()
+     *
+     * To save the tag
+     *
+     * @param - tag object 
+     *
+     * @return response of success/failure message
+     */
+    public function save_tag(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'name' => 'required|max:128|min:2|unique:tags,name',
+            'id' => $request->id ? 'exists:tags,id' : '', 
+        ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , implode(',',$validator->messages()->all()));
+
+        } else {
+
+            $model = $request->id ? Tag::find($request->id) : new Tag;
+
+            $model->name = $request->name;
+
+            $model->status = DEFAULT_TRUE;
+
+            $model->search_count = 0;
+
+            if ($model->save()) {
+
+                if ($request->id) {
+
+                    return redirect(route('admin.tags'))->with('flash_success',tr('tag_update_success'));
+
+                } else {
+
+                    return back()->with('flash_success',tr('tag_create_success'));
+
+                }
+
+            } else {
+
+                return back()->with('flash_error', tr('something_error'));
+            }
+
+        }
+
+    }
+
+    /**
+     * Function Name : delete_tag()
+     *
+     * To save the tag
+     *
+     * @param integer $request - tag id 
+     *
+     * @return response of success/failure message
+     */
+    public function delete_tag(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'id' => 'required|exists:tags,id', 
+        ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , $validator->messages()->all())->withInput();
+
+        } else {
+
+            $model = Tag::find($request->id);
+
+            $model->delete();
+
+            return back()->with('flash_success', tr('tag_delete_success'));
+
+        }
+    }
+
+     /**
+     * Function Name : tag_status()
+     *
+     * To save the tag
+     *
+     * @param integer $request - tag id 
+     *
+     * @return response of success/failure message
+     */
+    public function tag_status(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'id' => 'required|exists:tags,id', 
+        ]);
+
+        if($validator->fails()) {
+
+            return back()->with('flash_error' , $validator->messages()->all())->withInput();
+
+        } else {
+
+            $model = Tag::find($request->id);
+
+            $model->status = $model->status == 1 ? DEFAULT_FALSE : DEFAULT_TRUE;
+
+            $model->save();
+
+            return back()->with('flash_success', $model->status ? tr('tag_approve_success') : tr('tag_decline_success'));
+
+        }
+    }
 }

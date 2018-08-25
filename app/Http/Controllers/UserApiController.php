@@ -64,11 +64,33 @@ use Exception;
 
 use App\PayPerView;
 
+use App\Category;
+
+use App\Tag;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons' ,'search_video', 'video_detail']));
+        $this->middleware('UserApiVal' , array('except' => [
+                'register' , 
+                'login' , 
+                'forgot_password',
+                'search_video' , 
+                'privacy',
+                'about' , 
+                'terms',
+                'contact', 
+                'home', 
+                'trending' , 
+                'getSingleVideo', 
+                'get_channel_videos' ,  
+                'help', 
+                'single_video', 
+                'reasons' ,
+                'search_video', 
+                'video_detail',
+                'categories_videos']));
 
     }
 
@@ -5041,5 +5063,228 @@ class UserApiController extends Controller {
             return response()->json($response_array , 200);
         }
    
+    }
+
+
+    /**
+     * Function Name : tags
+     *
+     * To list out all active tags
+     *
+     * @param object $request - ''
+     *
+     * @return response of array values
+     */
+    public function tags(Request $request) {
+
+        $take = $request->take ? $request->take : Setting::get('admin_take_count');
+
+        $query = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                    ->where('status', DEFAULT_TRUE)
+                    ->orderBy('created_at', 'desc');
+
+        if ($request->skip){
+
+            $query->skip($request->skip)
+                    ->take($take);
+        }
+
+        $tags = $query->get();
+
+        return response()->json(['success'=>true, 'data'=>$tags]);
+    }
+
+
+    /**
+     * Function Name : tag_details
+     *
+     * To get any one of the tag details
+     *
+     * @param object $request - tag id
+     *
+     * @return response of object values
+     */
+    public function tag_details(Request $request) {
+
+        $model = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')->where('tags.status', DEFAULT_TRUE)
+                ->where('id', $request->tag_id)
+                ->first();
+
+        if ($model) {
+
+            return response()->json(['success'=>true, 'data'=>$model]);
+
+        } else {
+
+            return response()->json(['success'=>false, 'error_messages'=>tr('tag_not_found')]);
+        }
+
+    }
+
+
+    /**
+     * Function Name : categories_list()
+     *
+     * Load all the active categories
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @param -
+     *
+     * @return response of json
+     */
+    public function categories_list(Request $request) {
+
+        $model = Category::select('id as category_id', 'name as category_name')->where('status', CATEGORY_APPROVE_STATUS)->orderBy('created_at', 'desc')
+                ->get();
+
+        return response()->json($model);
+    }
+
+    /**
+     * Function Name ; categories_view()
+     *
+     * category details based on id
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @param - 
+     * 
+     * @return response of json
+     */
+    public function categories_view(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];              
+
+        } else {
+
+            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
+                ->where('id', $request->category_id)
+                ->first();
+
+            $response_array = ['success'=>true, 'data'=>$model];
+
+        }
+
+        return response()->json($response_array);
+    }
+
+
+    /**
+     * Function Name : categories_videos()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * To display based on category
+     *
+     * @param object $request - User Details
+     *
+     * @return Response of videos list
+     */
+    public function categories_videos(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                            ->where('video_tapes.publish_status' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
+                            ->videoResponse()
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('category_id', $request->category_id)
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
+                            ->orderby('video_tapes.updated_at' , 'desc');
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+                    
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+                }
+                
+            }
+
+            if ($request->device_type == DEVICE_WEB) { 
+
+                $videos = $base_query->paginate(16);
+
+                $items = [];
+
+                $pagination = 0;
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos->items() as $key => $value) {
+                        
+                        $items[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                    $pagination = (string) $videos->links();
+
+                }
+
+                $response_array = ['success'=>true, 'items'=>$items, 'pagination'=>$pagination];
+
+            } else {
+
+                $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count'))->get();
+
+                $data = [];
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos as $key => $value) {
+                        
+                        $data[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                }
+
+                $response_array = ['success'=>true, 'data'=>$data];
+            }
+
+        }
+
+        return response()->json($response_array);        
+    
     }
 }

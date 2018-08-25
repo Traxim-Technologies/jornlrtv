@@ -3294,3 +3294,15 @@ tr.active{
 	object-fit: contain;
 	object-position: center;
 }
+
+.category {
+  color: #777;
+  font-size: 12px;
+}
+
+.category a {
+
+	font-size: 12px;	
+  	color: #167ac6;
+  	text-decoration: underline;
+}
