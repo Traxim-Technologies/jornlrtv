@@ -4953,10 +4953,10 @@ class UserApiController extends Controller {
 
                     if ($video->ppv_amount > 0) {
 
-                        $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $video)->getData() : false;
+                        $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $video)->getData()->success : false;
 
 
-                        if ($ppv_status->success) {
+                        if ($ppv_status) {
                             
 
                         } else {

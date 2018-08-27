@@ -511,9 +511,9 @@ class ApplicationController extends Controller {
 
                 if ($model->is_pay_per_view == PPV_ENABLED) {
 
-                    $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $model)->getData() : false;
+                    $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $model)->getData()->success : false;
 
-                    if ($ppv_status->success) {
+                    if ($ppv_status) {
                         
 
                     } else {

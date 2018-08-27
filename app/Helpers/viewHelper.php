@@ -1124,9 +1124,10 @@ function displayVideoDetails($data,$userId) {
 
             if ($data->ppv_amount > 0) {
 
-                $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $data)->getData() : false;
+                $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $data)->getData()->success : false;
 
-                if ($ppv_status->success) {
+               
+                if ($ppv_status) {
 
                     $url = route('user.single', $data->video_tape_id);
 
