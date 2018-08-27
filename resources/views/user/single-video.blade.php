@@ -912,7 +912,15 @@ jQuery(document).ready(function(){
 
         } else {
 
-            path = "{{$videoPath}}";
+        	@if(count($videoPath) > 0 && $videoPath != '')
+
+            @foreach($videoPath as $path)
+
+                path.push({file : "{{$path->file}}", label : "{{$path->label}}"});
+
+            @endforeach
+
+            @endif
 
         }
 

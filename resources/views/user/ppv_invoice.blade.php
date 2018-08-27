@@ -77,18 +77,33 @@
 												    <td>{{tr('amount')}}</td>
 												    <td> {{Setting::get('currency')}} {{$video->ppv_amount}}</td>
 											    </tr>
-											    <!-- <tr>
-											        <td>Tax</td>
-											        <td> $9.99</td>
-											    </tr> -->
+											    <tr id="coupon_value_tr" style="display: none">
+											        <td>{{tr('coupon_value')}}</td>
+											        <td id="coupon_value"></td>
+											    </tr>
+
+											    <tr id="coupon_amount_tr" style="display: none">
+											        <td>{{tr('coupon_amount')}}</td>
+											        <td> {{Setting::get('currency')}}<span id="coupon_amount_val"></span></td>
+											    </tr>
 											    <tr>
 											        <td>{{tr('total')}}</td>
-											        <td> {{Setting::get('currency')}} {{$video->ppv_amount}}</td>
+											        <td> {{Setting::get('currency')}} <span id="remaining_amount">{{$video->ppv_amount}}</span></td>
 											    </tr> 
 										    </tbody>
 										</table>
-										<h3 class="no-margin black-clr top">{{tr('payment_options')}}</h3>
+										
 									    <form action="{{route('user.payment-type', $video->id)}}" method="post">
+
+									    	<!-- coupon code -->
+											<div class="input-group coupon-code">
+											    <input id="coupon_code" type="text" class="form-control" name="coupon_code" placeholder="{{tr('coupon_code')}}">
+											    <span class="input-group-addon btn-danger" type="button" onclick="applyCouponPPV()">{{tr('apply')}}</span>
+											</div>
+											<!-- coupon code -->
+
+											<h3 class="no-margin black-clr top">{{tr('payment_options')}}</h3>
+
 									    	<div>
 												<label class="radio1">
 												    <input id="radio1" type="radio" name="payment_type" checked value="1">
@@ -127,4 +142,64 @@
 	</div>
 
 </div>
+@endsection
+
+@section('scripts')
+
+<script type="text/javascript">
+
+    function applyCouponPPV() {
+
+    	var coupon_code = $("#coupon_code").val();
+
+    	var video_tape_id = "{{$video->id}}";
+
+    	var user_id = "{{Auth::check() ? Auth::user()->id : ''}}";
+
+    	var token = "{{Auth::check() ? Auth::user()->token : ''}}";
+
+    	$.ajax({
+
+    		type : "post",
+
+    		url : "{{url('userApi/apply/coupon/videos')}}",
+
+    		data : {coupon_code : coupon_code, video_tape_id : video_tape_id,
+    				id : user_id, token : token},
+
+    		success : function(data) {
+
+				$("#coupon_amount_tr").hide();
+
+				$("#coupon_value_tr").hide();
+
+				$("#coupon_amount_val").text("");
+
+				$("#coupon_value").text("");
+
+				$("#remaining_amount").text("{{$video->ppv_amount}}");
+
+    			if(data.success) {
+
+    				$("#coupon_amount_tr").show();
+
+    				$("#coupon_value_tr").show();
+
+    				$("#coupon_amount_val").text(data.data.coupon_amount);
+
+					$("#coupon_value").text(data.data.original_coupon_amount);
+
+					$("#remaining_amount").text(data.data.remaining_amount);
+    			}
+
+    		},
+
+    		error : function(data) {
+
+
+    		},
+    	});
+    }
+</script>
+
 @endsection

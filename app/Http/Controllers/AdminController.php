@@ -86,6 +86,8 @@ use App\Category;
 
 use App\Tag;
 
+use App\VideoTapeTag;
+
 class AdminController extends Controller {
 
     /**
@@ -1455,11 +1457,22 @@ class AdminController extends Controller {
 
             $channels = getChannels();
 
+            $categories_list = Category::select('id as category_id', 'name as category_name')->where('status', CATEGORY_APPROVE_STATUS)->orderBy('created_at', 'desc')
+                ->get();
+
+            $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                    ->where('status', TAG_APPROVE_STATUS)
+                    ->orderBy('created_at', 'desc')->get();
+
+            $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->get()->pluck('tag_id')->toArray();
+
             return view('admin.videos.edit-video')
                     ->with('channels' , $channels)
                     ->with('video' ,$video)
                     ->with('page' ,$page)
-                    ->with('sub_page' ,$sub_page);
+                    ->with('sub_page' ,$sub_page)
+                    ->with('tags', $tags)
+                    ->with('categories', $categories_list);
 
         } else {
 
@@ -1732,6 +1745,7 @@ class AdminController extends Controller {
 
                  $request->request->add([ 
                     'ppv_created_by'=> 0 ,
+                    'is_pay_per_view'=>PPV_ENABLED
                 ]); 
 
                 if ($data = $request->all()) {
@@ -1773,6 +1787,7 @@ class AdminController extends Controller {
         $model = VideoTape::find($id);
         if ($model) {
             $model->ppv_amount = 0;
+            $model->is_pay_per_view = PPV_DISABLED;
             $model->type_of_subscription = 0;
             $model->type_of_user = 0;
             $model->save();

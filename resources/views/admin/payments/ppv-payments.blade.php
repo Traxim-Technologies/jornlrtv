@@ -46,6 +46,7 @@
 								<th>{{tr('video')}}</th>
 								<th>{{tr('username')}}</th>
 								<th>{{tr('payment_id')}}</th>
+								<th>{{tr('payment_mode')}}</th>
 								<th>{{tr('amount')}}</th>
 								<!-- <th>{{tr('admin_amount')}}</th> -->
 								<!-- <th>{{tr('user_amount')}}</th> -->
@@ -92,6 +93,9 @@
 									</td>
 
 							      	<td>{{$payment->payment_id}}</td>
+
+
+							      	<td>{{$payment->payment_mode}}</td>
 
 							      	<td>{{Setting::get('currency')}} {{$payment->amount}}</td>
 
@@ -166,6 +170,18 @@
 										      		<li>{{tr('type_of_subscription')}} : {{$payment->type_of_subscription}}</li>
 
 										      		<li>{{tr('type_of_user')}} : {{$payment->type_of_user}}</li>
+
+										      		<li>{{tr('coupon_code')}} : {{$payment->coupon_code}}</li>
+											      <li>{{tr('coupon_amount')}} : {{Setting::get('currency')}} {{$payment->coupon_amount? $payment->coupon_amount : "0.00"}}</li>
+											      <li>{{tr('plan_amount')}} : {{Setting::get('currency')}} {{$payment->ppv_amount ? $payment->ppv_amount : "0.00"}}</li>
+											      <li>{{tr('final_amount')}} : {{Setting::get('currency')}} {{$payment->amount ? $payment->amount : "0.00" }}</li>
+											      <li>{{tr('is_coupon_applied')}} : @if($payment->is_coupon_applied)
+										<span class="label label-success">{{tr('yes')}}</span>
+										@else
+										<span class="label label-danger">{{tr('no')}}</span>
+										@endif</li>
+											      <li>{{tr('coupon_reason')}} : {{$payment->coupon_reason ? $payment->coupon_reason : '-'}}</li>
+
 												</ul>
 											</div>
 

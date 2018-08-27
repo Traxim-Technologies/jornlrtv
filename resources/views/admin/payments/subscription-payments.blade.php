@@ -28,7 +28,7 @@
 	                <a href="{{route('admin.users')}}" style="float:right" class="btn btn-default">{{tr('view_users')}}</a>
 	            </div>
 
-	            <div class="box-body">
+	            <div class="box-body table-responsive">
 
 	              	<table id="example1" class="table table-bordered table-striped">
 
@@ -40,7 +40,15 @@
 								<th>{{tr('username')}}</th>
 								<th>{{tr('plan')}}</th>
 								<th>{{tr('amount')}}</th>
-						      	<th>{{tr('expiry_date')}}</th>
+								<th>{{tr('expiry_date')}}</th>
+								<th>{{tr('payment_mode')}}</th>
+								<th>{{tr('coupon_code')}}</th>
+								<th>{{tr('coupon_amount')}}</th>
+								<th>{{tr('plan_amount')}}</th>
+								<th>{{tr('final_amount')}}</th>
+								<th>{{tr('expiry_date')}}</th>
+								<th>{{tr('is_coupon_applied')}}</th>
+								<th>{{tr('coupon_reason')}}</th>
 								<th>{{tr('status')}}</th>
 						    </tr>
 						</thead>
@@ -81,7 +89,26 @@
 								      	<td class="text-red"><b>{{Setting::get('currency')}} {{$payment->amount}}</b></td>
 
 							      		<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>
+							      		<td class="text-capitalize">{{$payment->payment_mode}}</td>
+								      	<td>{{$payment->coupon_code}}</td>
 
+								      	<td>{{Setting::get('currency')}} {{$payment->coupon_amount? $payment->coupon_amount : "0.00"}}</td>
+
+								      	<td>{{Setting::get('currency')}} {{$payment->subscription_amount ? $payment->subscription_amount : "0.00"}}</td>
+
+								      	<td>{{Setting::get('currency')}} {{$payment->amount ? $payment->amount : "0.00" }}</td>
+								      	
+								      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>
+								      	<td>
+								      		@if($payment->is_coupon_applied)
+											<span class="label label-success">{{tr('yes')}}</span>
+											@else
+											<span class="label label-danger">{{tr('no')}}</span>
+											@endif
+								      	</td>
+								      	<td>
+								      		{{$payment->coupon_reason ? $payment->coupon_reason : '-'}}
+								      	</td>
 								      	<td>
 								      		@if($payment->status) 
 								      			<span style="color: green;"><b>{{tr('paid')}}</b></span>

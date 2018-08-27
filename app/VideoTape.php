@@ -64,6 +64,7 @@ class VideoTape extends Model
             'video_tapes.publish_time',
             'video_tapes.category_id',
             'video_tapes.category_name',
+            'video_tapes.is_pay_per_view',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date'),
             \DB::raw('(CASE WHEN (user_ratings = 0) THEN ratings ELSE user_ratings END) as ratings')
         );

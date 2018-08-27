@@ -4,6 +4,8 @@ use App\Helpers\Helper;
 
 use App\Helpers\EnvEditorHelper;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
 use Carbon\Carbon;
 
 use App\Wishlist;
@@ -1122,9 +1124,9 @@ function displayVideoDetails($data,$userId) {
 
             if ($data->ppv_amount > 0) {
 
-                $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+                $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $data)->getData() : false;
 
-                if ($ppv_status) {
+                if ($ppv_status->success) {
 
                     $url = route('user.single', $data->video_tape_id);
 
@@ -1192,9 +1194,9 @@ function displayVideoDetails($data,$userId) {
         $like_status = Helper::like_status($user->id,$data->video_tape_id);
     }
 
-    $pay_per_view_status = watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data);
+    $pay_per_view_status = VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $data)->getData();
 
-    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+    $ppv_notes = !$pay_per_view_status->success ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
 
     $tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
                 ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
@@ -1221,7 +1223,7 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
-        'pay_per_view_status'=>$pay_per_view_status,
+        'pay_per_view_status'=>$pay_per_view_status->success,
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
         // 'publish_time'=>date('F Y', strtotime($data->publish_time)),

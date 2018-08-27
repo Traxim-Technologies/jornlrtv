@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Requests;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
 use App\Helpers\Helper;
 
 use App\VideoTape;
@@ -507,11 +509,11 @@ class ApplicationController extends Controller {
 
                 $user = User::find($user_id);
 
-                if ($model->ppv_amount > 0) {
+                if ($model->is_pay_per_view == PPV_ENABLED) {
 
-                    $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $model) : false;
+                    $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $model)->getData() : false;
 
-                    if ($ppv_status) {
+                    if ($ppv_status->success) {
                         
 
                     } else {

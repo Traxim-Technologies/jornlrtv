@@ -363,6 +363,10 @@
                     $string = tr('payment_not_completed_pay_again');
                     break;
 
+                 case 906:
+                    $string = tr('video_data_not_found');
+                    break;
+
                 case 162:
                     $string = tr('failed_to_upload');
                     break;
@@ -475,6 +479,19 @@
                     break;
                 case 121:
                     $string = tr('history_deleted_successfully');
+                    break;
+
+                case 122:
+                    $string = tr('autorenewal_enable_success');
+                    break;
+                case 123:
+                    $string = tr('ppv_not_set');
+                    break;
+                case 124:
+                    $string = tr('watch_video_success');
+                    break;
+                case 125:
+                    $string = tr('pay_and_watch_video');
                     break;
                 default:
                     $string = "";

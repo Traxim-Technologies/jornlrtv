@@ -221,3 +221,25 @@ if(!defined('PAID_STATUS')) define('PAID_STATUS', 1);
 if (!defined('VIDEO_PUBLISHED')) define('VIDEO_PUBLISHED', 1);
 
 if (!defined('VIDEO_NOT_YET_PUBLISHED')) define('VIDEO_NOT_YET_PUBLISHED', 0);
+
+
+// Coupons applied status
+if(!defined('COUPON_APPLIED')) define('COUPON_APPLIED',1);
+if(!defined('COUPON_NOT_APPLIED')) define('COUPON_NOT_APPLIED', 0);
+
+
+// Coupons status
+if(!defined('COUPON_ACTIVE')) define('COUPON_ACTIVE',1);
+if(!defined('COUPON_INACTIVE')) define('COUPON_INACTIVE', 0);
+
+// watched status
+if(!defined('NOT_YET_WATCHED')) define('NOT_YET_WATCHED', 0);
+if(!defined('WATCHED')) define('WATCHED', 1);
+
+
+
+// PPV Status
+
+if(!defined('PPV_ENABLED')) define('PPV_ENABLED', 1);
+
+if(!defined('PPV_DISABLED')) define('PPV_DISABLED', 0);

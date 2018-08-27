@@ -1849,162 +1849,19 @@ class UserController extends Controller {
         $request->request->add([ 
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
-            'subscription_id' => $request->subscription_id
+            'subscription_id' => $request->subscription_id,
+            'coupon_code'=>$request->coupon_code
         ]);        
 
+        $response = $this->UserAPI->stripe_payment($request)->getData();
 
-        $validator = Validator::make($request->all(), [
-           // 'tour_id' => 'required|exists:tours,id',
+        if ($response->success) {
 
-            'subscription_id' => 'required|exists:subscriptions,id',
-            ]);
-
-        if($validator->fails()) {
-
-            $error_messages = implode(',', $validator->messages()->all());
-
-            // $response_array = array('success' => false , 'error' => $error_messages , 'error_code' => 101);
-
-             return back()->with('flash_errors', $error_messages);
+            return redirect(route('user.subscription.success'))->with('flash_success', $response->message);
 
         } else {
 
-            $subscription = Subscription::find($request->subscription_id);
-
-            if($subscription) {
-
-                $total = $subscription->amount;
-
-                if ($subscription->amount <= 0) {
-
-                    return back()->with('flash_error', tr('cannot_pay_zero_amount'));
-
-                }
-
-                $user = User::find($request->id);
-
-                $check_card_exists = User::where('users.id' , $request->id)
-                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
-                                    ->where('cards.id' , $user->card_id)
-                                    ->where('cards.is_default' , DEFAULT_TRUE);
-
-                if($check_card_exists->count() != 0) {
-
-                    $user_card = $check_card_exists->first();
-
-                    // Get the key from settings table
-                    $stripe_secret_key = Setting::get('stripe_secret_key');
-
-                    $customer_id = $user_card->customer_id;
-                
-                    if($stripe_secret_key) {
-
-                        \Stripe\Stripe::setApiKey($stripe_secret_key);
-                    } else {
-
-                        // $response_array = array('success' => false, 'error' => Helper::error_message(902) , 'error_code' => 902);
-
-                       // return response()->json($response_array , 200);
-
-                        return back()->with('flash_error', Helper::get_error_message(902));
-                    }
-
-                    try {
-
-                       $user_charge =  \Stripe\Charge::create(array(
-                          "amount" => $total * 100,
-                          "currency" => "usd",
-                          "customer" => $customer_id,
-                        ));
-
-                       $payment_id = $user_charge->id;
-                       $amount = $user_charge->amount/100;
-                       $paid_status = $user_charge->paid;
-
-                       if($paid_status) {
-
-
-                            $last_payment = UserPayment::where('user_id' , $request->id)
-                                    ->where('status', DEFAULT_TRUE)
-                                    ->orderBy('created_at', 'desc')
-                                    ->first();
-
-                            $user_payment = new UserPayment;
-
-                            if($last_payment) {
-
-                                if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
-
-                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
-
-                                } else {
-
-                                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
-                                }    
-
-                            } else {
-                                
-                                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
-                            }
-
-
-                            $user_payment->payment_id  = $payment_id;
-                            $user_payment->user_id = $request->id;
-                            $user_payment->subscription_id = $request->subscription_id;
-                            $user_payment->status = 1;
-                            $user_payment->amount = $amount;
-                            $user_payment->save();
-
-
-                            $user->user_type = 1;
-                            $user->save();
-                            
-
-                            // $response_array = ['success' => true, 'message'=>tr('payment_success')];
-
-                            return back()->with('flash_success',tr('payment_success'));
-
-                        } else {
-
-                            // $response_array = array('success' => false, 'error' => Helper::get_error_message(903) , 'error_code' => 903);
-
-                            // return response()->json($response_array , 200);
-
-                            return back()->with('flash_error', Helper::get_error_message(903));
-
-                        }
-                    
-                    } catch (\Stripe\StripeInvalidRequestError $e) {
-
-                        Log::info(print_r($e,true));
-
-                        /*$response_array = array('success' => false , 'error' => Helper::get_error_message(903) ,'error_code' => 903);*/
-
-                        return back()->with('flash_error', Helper::get_error_message(903));
-
-                       // return response()->json($response_array , 200);
-                    
-                    }
-
-                } else {
-
-                    // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
-
-                    return back()->with('flash_error', Helper::get_error_message(901).tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>Add Card</a>');
-                    
-                    //return response()->json($response_array , 200);
-                }
-
-            } else {
-
-                // $response_array = array('success' => false, 'error' => Helper::get_error_message(901) , 'error_code' => 901);
-                return back()->with('flash_error', Helper::get_error_message(901).'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>Add Card</a>');
-                
-                // return response()->json($response_array , 200);
-            }
-
-
-
+            return back()->with('flash_error', $response->error_messages);
         }
 
     }
@@ -2166,6 +2023,19 @@ class UserController extends Controller {
 
         if ($video) {
 
+            if (Auth::check()) {
+
+                $video->video_tape_id = $video->id;
+
+                $ppv_status = VideoRepo::pay_per_views_status_check(Auth::user()->id, Auth::user()->user_type, $video)->getData();
+
+                if ($ppv_status->success) {
+
+                    return redirect(route('user.single', $video->video_tape_id));
+                }
+
+            }
+
             return view('user.ppv_invoice')
                 ->with('page', 'ppv-invoice')
                 ->with('video',$video)
@@ -2251,7 +2121,7 @@ class UserController extends Controller {
 
         } else {
 
-            return redirect(route('user.card.ppv-stripe-payment', ['video_tape_id'=>$id]));
+            return redirect(route('user.card.ppv-stripe-payment', ['video_tape_id'=>$id, 'coupon_code'=>$request->coupon_code]));
         }
     }
 
@@ -2276,7 +2146,7 @@ class UserController extends Controller {
 
         } else {
 
-            return redirect(route('user.card.stripe_payment' , ['subscription_id' => $request->s_id]));
+            return redirect(route('user.card.stripe_payment' , ['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
         }
     }
 
@@ -2378,6 +2248,7 @@ class UserController extends Controller {
 
             $request->request->add([ 
                 'ppv_created_by'=> Auth::user()->id ,
+                'is_pay_per_view'=>PPV_ENABLED
             ]); 
 
             if ($data = $request->all()) {
@@ -2404,6 +2275,7 @@ class UserController extends Controller {
         $model = VideoTape::find($id);
         if ($model) {
             $model->ppv_amount = 0;
+            $model->is_pay_per_view = PPV_DISABLED;
             $model->type_of_subscription = 0;
             $model->type_of_user = 0;
             $model->save();

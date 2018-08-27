@@ -41,29 +41,36 @@
 												    <td>{{tr('amount')}}</td>
 												    <td> {{Setting::get('currency')}} {{$subscription->amount}}</td>
 											    </tr>
-											   <!--  <tr>
-											        <td>Tax</td>
-											        <td> $9.99</td>
-											    </tr> -->
+
+											    <tr id="coupon_value_tr" style="display: none">
+											        <td>{{tr('coupon_value')}}</td>
+											        <td id="coupon_value"></td>
+											    </tr>
+
+											    <tr id="coupon_amount_tr" style="display: none">
+											        <td>{{tr('coupon_amount')}}</td>
+											        <td> {{Setting::get('currency')}}<span id="coupon_amount_val"></span></td>
+											    </tr>
 											    <tr class="active">
 											        <td>{{tr('total')}}</td>
-											        <td>{{Setting::get('currency')}} {{$subscription->amount}}</td>
+											        <td>{{Setting::get('currency')}} <span id="remaining_amount">{{$subscription->amount}}</span></td>
 											    </tr> 
 										    </tbody>
 										</table>
 
-										<!-- coupon code -->
-										<div class="input-group coupon-code">
-										    <input id="msg" type="text" class="form-control" name="msg" placeholder="Coupon amount">
-										    <span class="input-group-addon btn-danger" type="button">Apply</span>
-										</div>
-										<!-- coupon code -->
-
 										@if($subscription->amount > 0)
 
-										<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
+										<form method="post" action="{{route('user.subscription.payment')}}">
 
-									    <form method="post" action="{{route('user.subscription.payment')}}">
+											<!-- coupon code -->
+											<div class="input-group coupon-code">
+											    <input id="coupon_code" type="text" class="form-control" name="coupon_code" placeholder="{{tr('coupon_code')}}">
+											    <span class="input-group-addon btn-danger" type="button" onclick="applyCouponSubscription()">{{tr('apply')}}</span>
+											</div>
+											<!-- coupon code -->
+
+										
+											<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
 
 
 									    	<input type="hidden" name="u_id" value="{{$model['u_id']}}">
@@ -92,7 +99,9 @@
 													<i class="fa fa-credit-card"></i> &nbsp; {{tr('pay_now')}}
 												</button>
 											</div>
-				 						</form>
+
+										</form>
+				 						
 				 						@else
 
 											<div class="clear-fix"></div>
@@ -102,6 +111,8 @@
 												</a>
 											</div>
 										@endif
+
+
 			 						</div>
 								</div>
 							 </div>
@@ -124,5 +135,58 @@
         // alert('paypal action');
         $('#my_button').attr("disabled", true);
     });
+
+    function applyCouponSubscription() {
+
+    	var coupon_code = $("#coupon_code").val();
+
+    	var subscription_id = "{{$subscription->id}}";
+
+    	var user_id = "{{Auth::check() ? Auth::user()->id : ''}}";
+
+    	var token = "{{Auth::check() ? Auth::user()->token : ''}}";
+
+    	$.ajax({
+
+    		type : "post",
+
+    		url : "{{url('userApi/apply/coupon/subscription')}}",
+
+    		data : {coupon_code : coupon_code, subscription_id : subscription_id,
+    				id : user_id, token : token},
+
+    		success : function(data) {
+
+				$("#coupon_amount_tr").hide();
+
+				$("#coupon_value_tr").hide();
+
+				$("#coupon_amount_val").text("");
+
+				$("#coupon_value").text("");
+
+				$("#remaining_amount").text("{{$subscription->amount}}");
+
+    			if(data.success) {
+
+    				$("#coupon_amount_tr").show();
+
+    				$("#coupon_value_tr").show();
+
+    				$("#coupon_amount_val").text(data.data.coupon_amount);
+
+					$("#coupon_value").text(data.data.original_coupon_amount);
+
+					$("#remaining_amount").text(data.data.remaining_amount);
+    			}
+
+    		},
+
+    		error : function(data) {
+
+
+    		},
+    	});
+    }
 </script>
 @endsection

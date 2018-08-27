@@ -182,6 +182,48 @@
                             </div>
                             <div class="clearfix"></div>
 
+                             <div class="form-data">
+
+                                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                         
+                                          <label for="video" class="control-label">{{tr('category')}}</label>
+                                          <div class="clearfix"></div>
+                                          <div>
+
+                                            <select id="category_id" name="category_id" class="form-control select2" required data-placeholder="{{tr('select_category')}}*" style="width: 100% !important">
+                                                @foreach($categories as $category)
+                                                      <option value="{{$category->category_id}}" @if($category->category_id ==  $video->category_id) selected @endif>{{$category->category_name}}</option>
+                                                    @endforeach
+                                            </select>
+
+                                          </div>
+                                       
+                                      </div>
+
+                                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                         
+                                          <label for="video" class="control-label">{{tr('tags')}}</label>
+                                          <div class="clearfix"></div>
+                                          <div>
+                                              
+                                            <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
+                                                @foreach($tags as $tag)
+                                                      <option value="{{$tag->tag_id}}" {{in_array($tag->tag_id, $video->tag_id) ? 'selected' : ''}}>{{$tag->tag_name}}</option>
+                                                @endforeach
+                                            </select>
+
+
+                                          </div>
+                                       
+                                      </div>
+
+                                      <div class="clearfix"></div>
+
+                                      <br>
+                            </div>
+
+
+
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="description" class="">{{tr('description')}} * </label>
