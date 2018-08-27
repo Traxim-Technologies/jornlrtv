@@ -676,6 +676,28 @@ function getAmountBasedChannel($id) {
 
 }
 
+function getAmountBasedCategory($id) {
+
+    $ppv_amount = VideoTape::where('category_id', $id)->sum('user_ppv_amount');
+
+    $ad_amount = VideoTape::where('category_id', $id)->sum('amount');
+
+    /*$payment = 0;
+
+    foreach ($videos as $key => $value) {
+
+        $payment += $value->sum('user_ppv_amount') ? $value->sum('user_ppv_amount') : 0;
+
+        // $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('user_ppv_amount');
+
+    }*/
+
+    $amount = $ppv_amount+$ad_amount;
+
+    return $amount;
+
+}
+
 // changes by vidhya
 
 

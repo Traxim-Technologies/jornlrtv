@@ -4,7 +4,7 @@
 
 @section('content-header')
 
-@if(isset($channel)) <span class="text-green"> {{$channel->name}} </span>- @endif {{tr('videos')}}
+"{{$category->name}}" {{tr('category')}} {{tr('videos')}}
 
 @endsection
 
@@ -22,7 +22,7 @@
           <div class="box box-primary">
 
           	<div class="box-header label-primary">
-                <b style="font-size:18px;">{{tr('videos')}}</b>
+                <b style="font-size:18px;">"{{$category->name}}" {{tr('category')}} {{tr('videos')}}</b>
                 <a href="{{route('admin.videos.create')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
             </div>
 

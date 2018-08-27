@@ -5113,10 +5113,13 @@ class AdminController extends Controller {
             ->where('category_id', $request->category_id)
             ->get();
 
+            $category = Category::find($request->category_id);
+
             return view('admin.categories.videos')
                         ->with('videos', $videos)
                         ->with('page', 'categories')
-                        ->with('sub_page', 'categories');
+                        ->with('sub_page', 'categories')
+                        ->with('category', $category);
                 
         }
     
@@ -5140,7 +5143,7 @@ class AdminController extends Controller {
         $basicValidator = Validator::make(
                 $request->all(),
                 array(
-                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                    'category_id' => 'required|exists:categories,id'
                 )
         );
 
@@ -5148,39 +5151,62 @@ class AdminController extends Controller {
 
             $error_messages = implode(',', $basicValidator->messages()->all());
 
-            $response_array = ['success'=>false, 'error_messages'=>$error_messages];              
+            return back()->with('flash_error', $error_messages);                
 
         } else {
 
             $model = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
                 ->where('id', $request->category_id)
+                ->withCount('getVideos')
+                ->withCount('getChannels')
                 ->first();
 
-            $channels_list = $this->categories_channels_list($request)->getData();
+            dd($model);
 
-            $channels = [];
+            $channels_list = Channel::select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                        'video_tapes.status', 'video_tapes.channel_id')
+                    ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                    ->where('video_tapes.category_id', $request->category_id)
+                    ->groupBy('video_tapes.channel_id')->skip(0)->take(Setting::get('admin_take_count', 12))->get();
 
-            if ($channels_list->success) {
+            $channel_lists = [];
 
-                $channels = $channels_list->data;
+            foreach ($channels as $key => $value) {
+
+                $channel_lists[] = [
+                        'channel_id'=>$value->id, 
+                        'user_id'=>$value->user_id,
+                        'picture'=> $value->picture, 
+                        'title'=>$value->name,
+                        'description'=>$value->description, 
+                        'created_at'=>$value->created_at->diffForHumans(),
+                        'no_of_videos'=>videos_count($value->id),
+                        'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
+                        'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+                ];
 
             }
 
-            $category_list = $this->categories_videos($request)->getData();
+            $category_list = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                            ->videoResponse()
+                            ->where('category_id', $request->category_id)
+                            ->orderby('video_tapes.updated_at' , 'desc')
+                            ->skip(0)->take(Setting::get('admin_take_count', 12))->get();
 
-            $categories = [];
+            $category_earnings = getAmountBasedChannel($channel->id);
 
-            if ($category_list->success) {
-
-                $categories = $category_list->data;
-
-            }
-
-            $response_array = ['success'=>true, 'category'=>$model, 'category_videos'=>$categories,'channels_list'=>$channels];
+            return view('admin.categories.view')
+                    ->with('category_list', $category_list)
+                    ->with('channel_lists', $channel_lists)
+                    ->with('model', $model)
+                    ->with('category_earnings', $category_earnings)
+                    ->with('page', 'categories')
+                    ->with('sub_page', 'categories');
 
         }
 
-        return response()->json($response_array);
+        
     }
 
 }

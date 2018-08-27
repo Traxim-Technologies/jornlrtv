@@ -821,11 +821,10 @@ class CommonRepository {
 
             $category->save(); 
 
-        } else {
-
             $old_category->no_of_uploads =  $old_category->no_of_uploads > 0 ? $old_category->no_of_uploads - 1  : 0;
 
             $old_category->save();
+            
         }
 
         if ($request->banner_image)  {
