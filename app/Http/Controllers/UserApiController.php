@@ -3163,7 +3163,7 @@ class UserApiController extends Controller {
 
                                         if ($user->save()) {
 
-                                             $data = ['id' => $user->id , 'token' => $user->token, 'no_of_account'=>$subscription->no_of_account , 'payment_id' => $user_payment->payment_id];
+                                             $data = ['id' => $user->id , 'token' => $user->token, 'payment_id' => $user_payment->payment_id];
 
                                             $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
 
@@ -3283,7 +3283,7 @@ class UserApiController extends Controller {
 
                                                 if ($user->save()) {
 
-                                                     $data = ['id' => $user->id , 'token' => $user->token, 'no_of_account'=>$subscription->no_of_account , 'payment_id' => $user_payment->payment_id];
+                                                     $data = ['id' => $user->id , 'token' => $user->token,'payment_id' => $user_payment->payment_id];
 
                                                     $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
 
