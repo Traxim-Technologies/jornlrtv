@@ -74,6 +74,11 @@ border-radius: 3px;
 /*transition : width 10s ease-in-out;*/
 
 }
+
+th {
+
+	border-top: none;
+}
 </style>
 
 @endsection

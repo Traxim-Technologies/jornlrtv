@@ -93,7 +93,8 @@ class UserApiController extends Controller {
                 'search_video', 
                 'video_detail',
                 'categories_videos',
-                'tags_videos']));
+                'tags_videos',
+                'categories_channels_list']));
 
     }
 
@@ -5376,6 +5377,12 @@ class UserApiController extends Controller {
 
         } else {
 
+            $category = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
+                ->where('id', $request->category_id)
+                ->first();
+
+            $channels_list = $this->categories_channels_list($request);
+
             $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
                             ->where('video_tapes.publish_status' , 1)
@@ -5439,14 +5446,134 @@ class UserApiController extends Controller {
                     }
 
                 }
+                
+                $response_array = ['success'=>true, 'data'=>$data, 'category'=>$category,
+                        'channels_list'=>$channels_list];
 
-                $response_array = ['success'=>true, 'data'=>$data];
             }
 
         }
 
         return response()->json($response_array);        
     
+    }
+
+
+    /**
+     * Function Name : categories_channels_list
+     *
+     * To list out all the channels which is in active status
+     *
+     * @created_by Shobana 
+     *
+     * @updated_by Shobana
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list
+     */
+    public function categories_channels_list(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            return $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $age = 0;
+
+            $channel_id = [];
+
+            $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                    ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                        'video_tapes.status', 'video_tapes.channel_id')
+                    ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                    ->where('video_tapes.category_id', $request->category_id)
+                    ->where('channels.status', DEFAULT_TRUE)
+                    ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                    ->where('video_tapes.publish_status', DEFAULT_TRUE)
+                    ->where('video_tapes.status', DEFAULT_TRUE)
+                    ->groupBy('video_tapes.channel_id');
+
+
+            if($request->id) {
+
+                $user = User::find($request->id);
+
+                $age = $user->age_limit;
+
+                $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+                if ($request->has('channel_id')) {
+
+                    $query->whereIn('channels.id', $request->channel_id);
+                }
+
+
+                $query->where('video_tapes.age_limit','<=', $age);
+
+            }
+
+            if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+                $channels = $query->skip($request->skip)->take(Setting::get('admin_take_count', 12))->get();
+
+            } else {
+
+                $channels = $query->paginate(16);
+
+            }
+
+            $lists = [];
+
+            $pagination = 0;
+
+            if(count($channels) > 0) {
+
+                foreach ($channels as $key => $value) {
+                    $lists[] = ['channel_id'=>$value->id, 
+                            'user_id'=>$value->user_id,
+                            'picture'=> $value->picture, 
+                            'title'=>$value->name,
+                            'description'=>$value->description, 
+                            'created_at'=>$value->created_at->diffForHumans(),
+                            'no_of_videos'=>videos_count($value->id),
+                            'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
+                            'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+                    ];
+
+                }
+
+                if ($request->device_type != DEVICE_ANDROID && $request->device_type != DEVICE_IOS) {
+
+                    $pagination = (string) $channels->links();
+
+                }
+
+            }
+
+            if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+                $response_array = ['success'=>true, 'data'=>$lists];
+
+            } else {
+
+                $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+            }
+
+            return response()->json($response_array);
+
+        }
     }
 
 
