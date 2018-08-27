@@ -655,6 +655,7 @@ if(count($ads) > 0 && $ads != null) {
 </div>
 </div>
 
+
 @endsection
 
 @section('scripts')
@@ -911,11 +912,7 @@ jQuery(document).ready(function(){
 
         } else {
 
-            @foreach($videoPath as $path)
-
-                path.push({file : "{{$path->file}}", label : "{{$path->label}}"});
-
-            @endforeach
+            path = "{{$videoPath}}";
 
         }
 
