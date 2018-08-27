@@ -116,9 +116,9 @@
                                           <label for="video" class="control-label">{{tr('tags')}}</label>
                                           <div class="clearfix"></div>
                                           <div>
-                                            <select id="tags" name="tags[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
+                                            <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
                                                 @foreach($tags as $tag)
-                                                      <option value="{{$tag->tag_name}}" {{in_array($tag->tag_name, $model->tags) ? 'selected' : ''}}>{{$tag->tag_name}}</option>
+                                                      <option value="{{$tag->tag_id}}" {{in_array($tag->tag_id, $model->tag_id) ? 'selected' : ''}}>{{$tag->tag_name}}</option>
                                                 @endforeach
                                             </select>
 

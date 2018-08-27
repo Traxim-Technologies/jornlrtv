@@ -42,6 +42,8 @@ use App\VideoAd;
 
 use App\Category;
 
+use App\VideoTapeTag;
+
 function tr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
@@ -1194,6 +1196,10 @@ function displayVideoDetails($data,$userId) {
 
     $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
 
+    $tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                ->where('video_tape_id', $data->video_tape_id)->get()->toArray();
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1231,7 +1237,7 @@ function displayVideoDetails($data,$userId) {
         'ppv_notes'=>$ppv_notes,
         'category_id'=>$data->category_id,
         'category_name'=>$data->category_name,
-        'tags'=>$data->tags
+        'tags'=>$tags
     ];
 
 

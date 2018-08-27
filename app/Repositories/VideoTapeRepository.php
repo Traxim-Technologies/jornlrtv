@@ -31,6 +31,8 @@ use App\UserRating;
 
 use App\User;
 
+use App\VideoTapeTag;
+
 class VideoTapeRepository {
 
 
@@ -522,6 +524,10 @@ class VideoTapeRepository {
             $data['share_url'] = route('user.single' , $video_tape_id);
 
             $data['embed_link'] = route('embed_video', array('u_id'=>$video_tape_details->unique_id));
+
+            $data['tags'] = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                ->where('video_tape_id', $video_tape_id)->get()->toArray();
 
             $video_url = $video_tape_details->video;
 

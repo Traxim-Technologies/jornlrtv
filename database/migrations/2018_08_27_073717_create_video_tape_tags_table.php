@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTagFieldsInVideoTapes extends Migration
+class CreateVideoTapeTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,11 @@ class AddTagFieldsInVideoTapes extends Migration
      */
     public function up()
     {
-        Schema::table('video_tapes', function (Blueprint $table) {
-            $table->text('tags')->after('amount');
+        Schema::create('video_tape_tags', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('video_tape_id');
+            $table->integer('tag_id');
+            $table->timestamps();
         });
     }
 
@@ -24,8 +27,6 @@ class AddTagFieldsInVideoTapes extends Migration
      */
     public function down()
     {
-        Schema::table('video_tapes', function (Blueprint $table) {
-            $table->dropColumn('tags');
-        });
+        Schema::drop('video_tape_tags');
     }
 }

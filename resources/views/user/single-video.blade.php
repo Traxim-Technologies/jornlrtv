@@ -193,10 +193,14 @@ border-radius: 3px;
 	<th>{{tr('category_name')}}</th>
 	<td><a href="{{route('user.categories.videos', $video->category_id)}}" target="_blank">{{$video->category_name}}</a></td>
 	</tr>
+	
+	@if(count($tags) > 0)
 	<tr>
 	<th>{{tr('tags')}}</th>
-	<td><a href="{{route('user.tags.videos', $video->tag)}}" target="_blank">{{$video->tags}}</a></td>
+	<td>@foreach($tags as $tag)<a href="{{route('user.tags.videos', $tag->tag_id)}}" target="_blank">{{$tag->tag_name}}</a>,&nbsp;@endforeach</td>
 	</tr>
+	@endif
+	
 </table>
 <!-- <h4 class="video-desc">{{$video->description}}</h4> -->
 <hr>

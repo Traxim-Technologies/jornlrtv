@@ -683,6 +683,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/categories/list/{id?}', 'UserController@categories_videos')->name('categories.videos');
 
+    Route::get('/tags/list/{id?}', 'UserController@tags_videos')->name('tags.videos');
+
     Route::post('/subscriptions/enable', 'UserController@subscriptions_autorenewal_enable')->name('subscriptions.enable-subscription');
 
     Route::post('/subscriptions/pause', 'UserController@subscriptions_autorenewal_pause')->name('subscriptions.pause-subscription');

@@ -12,7 +12,7 @@
 
                 <div class="slide-area recom-area">
                     <div class="box-head recom-head">
-                        <h3>"{{$category->name}}" {{tr('videos')}}</h3>
+                        <h3>"{{$tag->name}}" {{tr('videos')}}</h3>
                     </div>
 
                     @if(count($videos->items) > 0)

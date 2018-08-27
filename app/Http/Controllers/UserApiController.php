@@ -68,6 +68,8 @@ use App\Category;
 
 use App\Tag;
 
+use App\VideoTapeTag;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -4535,8 +4537,14 @@ class UserApiController extends Controller {
             $subscriberscnt = subscriberscnt($video->channel_id);
 
             $embed_link  = "<iframe width='560' height='315' src='".route('embed_video', array('u_id'=>$video->unique_id))."' frameborder='0' allowfullscreen></iframe>";
-            
-            $response_array = ['video'=>$video, 'comments'=>$comments, 
+
+            $tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                ->where('video_tape_id', $request->video_tape_id)->get()->toArray();
+
+            $response_array = [
+                'tags'=>$tags,
+                'video'=>$video, 'comments'=>$comments, 
                 'channels' => $channels, 'suggestions'=>$suggestions,
                 'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
                 'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
@@ -4544,7 +4552,8 @@ class UserApiController extends Controller {
                 'like_count'=>$like_count,'dislike_count'=>$dislike_count,
                 'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
                 'subscriberscnt'=>$subscriberscnt,'comment_rating_status'=>$comment_rating_status,
-                'embed_link' => $embed_link];
+                'embed_link' => $embed_link,
+                ];
 
             return response()->json(['success'=>true, 'response_array'=>$response_array], 200);
 
@@ -5202,6 +5211,7 @@ class UserApiController extends Controller {
 
             $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                            ->leftJoin('video_tape_tags' , 'video_tape_tags.video_tape_id' , '=' , 'video_tapes.id')
                             ->where('video_tapes.publish_status' , 1)
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.is_approved' , 1)
@@ -5209,7 +5219,7 @@ class UserApiController extends Controller {
                             ->where('channels.is_approved', 1)
                             ->videoResponse()
                             ->where('video_tapes.age_limit','<=', checkAge($request))
-                            ->whereRaw("find_in_set('{$tag->name}',tags)")
+                            ->where('video_tape_tags.tag_id', $request->tag_id)
                             ->orderby('video_tapes.updated_at' , 'desc');
 
             if ($request->id) {

@@ -26,6 +26,8 @@ use App\Jobs\sendPushNotification;
 
 use App\Category;
 
+use App\VideoTapeTag;
+
 class CommonRepository {
 
 
@@ -760,9 +762,52 @@ class CommonRepository {
 
         $video->category_name = $category->name;
 
-        $video->tags = $request->tags ? (is_array($request->tags) ? implode(',', $request->tags) : $request->tags) : '';
+       /* $video->tags = $request->tags ? (is_array($request->tags) ? implode(',', $request->tags) : $request->tags) : '';*/
 
-       $video->save();
+        $video->save();
+
+        if ($request->tag_id) {
+
+            $tag = VideoTapeTag::select('tag_id')->where('video_tape_id', $video->id)->get()->pluck('tag_id')->toArray();
+
+            foreach ($tag as $key => $video_tag_id) {
+               
+                if(in_array($video_tag_id, $request->tag_id)) {
+ 
+
+                } else {
+
+                    $video_tag = VideoTapeTag::find($video_tag_id);
+
+                    if ($video_tag) {
+
+                        $video_tag->delete();
+                        
+                    }
+
+                }
+
+            }
+
+            foreach ($request->tag_id as $key => $tag_id) {
+                
+                $tag = VideoTapeTag::find($tag_id);
+
+                if (!$tag) {
+
+                    $tag = new VideoTapeTag;
+
+                }
+
+                $tag->video_tape_id = $video->id;
+
+                $tag->tag_id = $tag_id;
+
+                $tag->save();
+
+            }
+
+        }
 
         if ($new_category) {
 

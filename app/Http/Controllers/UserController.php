@@ -58,6 +58,10 @@ use App\UserPayment;
 
 use App\Category;
 
+use App\VideoTapeTag;
+
+use App\Tag;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -555,7 +559,8 @@ class UserController extends Controller {
                         ->with('dislike_count',$response->dislike_count)
                         ->with('subscriberscnt', $response->subscriberscnt)
                         ->with('comment_rating_status', $response->comment_rating_status)
-                        ->with('embed_link', $response->embed_link);
+                        ->with('embed_link', $response->embed_link)
+                        ->with('tags', $response->tags);
        
         } else {
 
@@ -1278,7 +1283,7 @@ class UserController extends Controller {
 
         $categories_list = $this->UserAPI->categories_list($request)->getData();
 
-        $tags = $this->UserAPI->tags($request)->getData()->data;
+        $tags = $this->UserAPI->tags_list($request)->getData()->data;
 
         return view('user.videos.create')->with('model', $model)->with('page', 'videos')
             ->with('subPage', 'upload_video')->with('id', $id)
@@ -1297,9 +1302,9 @@ class UserController extends Controller {
 
             $categories_list = $this->UserAPI->categories_list($request)->getData();
 
-            $tags = $this->UserAPI->tags($request)->getData()->data;
+            $tags = $this->UserAPI->tags_list($request)->getData()->data;
 
-            $model->tags = $model->tags ? explode(',', $model->tags) : [];
+            $model->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->get()->pluck('tag_id')->toArray();
 
             return view('user.videos.edit')->with('model', $model)->with('page', 'videos')
                 ->with('subPage', 'upload_video')
@@ -2607,7 +2612,7 @@ class UserController extends Controller {
 
         $tag = Tag::find($request->id);
 
-        if ($category) {
+        if ($tag) {
 
             if (Auth::check()) {
 
@@ -2625,9 +2630,9 @@ class UserController extends Controller {
 
             if($data->success) {
 
-                return view('user.tags.tags_videos')->with('page', 'tag_name'.$category->id)
+                return view('user.tags.tags_videos')->with('page', 'tag_name'.$tag->id)
                                         ->with('videos',$data)
-                                        ->with('tags', $tag);
+                                        ->with('tag', $tag);
 
             } else {
 
