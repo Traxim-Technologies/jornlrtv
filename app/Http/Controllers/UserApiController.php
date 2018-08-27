@@ -5339,7 +5339,27 @@ class UserApiController extends Controller {
                 ->where('id', $request->category_id)
                 ->first();
 
-            $response_array = ['success'=>true, 'data'=>$model];
+            $channels_list = $this->categories_channels_list($request)->getData();
+
+            $channels = [];
+
+            if ($channels_list->success) {
+
+                $channels = $channels_list->data;
+
+            }
+
+            $category_list = $this->categories_videos($request)->getData();
+
+            $categories = [];
+
+            if ($category_list->success) {
+
+                $categories = $category_list->data;
+
+            }
+
+            $response_array = ['success'=>true, 'category'=>$model, 'category_videos'=>$categories,'channels_list'=>$channels];
 
         }
 
@@ -5380,8 +5400,6 @@ class UserApiController extends Controller {
             $category = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
                 ->where('id', $request->category_id)
                 ->first();
-
-            $channels_list = $this->categories_channels_list($request);
 
             $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
@@ -5447,8 +5465,7 @@ class UserApiController extends Controller {
 
                 }
                 
-                $response_array = ['success'=>true, 'data'=>$data, 'category'=>$category,
-                        'channels_list'=>$channels_list];
+                $response_array = ['success'=>true, 'data'=>$data];
 
             }
 
