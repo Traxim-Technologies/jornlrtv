@@ -166,6 +166,19 @@ class VideoTape extends Model
 
     }
 
+    public function getVideoTags() {
+
+         return $this->hasMany('App\VideoTapeTag', 'video_tape_id', 'id');
+
+    }
+
+    public function getScopeVideoTags() {
+
+         return $this->hasMany('App\VideoTapeTag', 'video_tape_id', 'video_tape_id');
+
+    }
+
+
     public function getScopeVideoTapeImages() {
 
          return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'video_tape_id');

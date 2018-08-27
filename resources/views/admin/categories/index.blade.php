@@ -41,7 +41,6 @@
 					    <tr>
 					      	<th>{{tr('id')}}</th>
 					      	<th>{{tr('name')}}</th>
-					      	<th>{{tr('no_of_lives')}}</th>
 					      	<th>{{tr('no_of_uploads')}}</th>
 					      	<th>{{tr('picture')}}</th>
 					      	<th>{{tr('status')}}</th>
@@ -56,8 +55,7 @@
 						    <tr>
 						      	<td>{{$i+1}}</td>
 						      	<td>{{$data->name}}</td>
-						      	<td>{{$data->no_of_lives}}</td>
-						      	<td>{{$data->no_of_uploads}}</td>
+						      	<td><a target="_blank" href="{{route('admin.categories.videos', ['category_id'=>$data->id])}}">{{$data->no_of_uploads}}</a></td>
 
 						      	<td><img src="{{$data->image}}" style="width: 25px;height: 35px"></td>
 						      

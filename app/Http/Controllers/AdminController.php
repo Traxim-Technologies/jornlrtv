@@ -1415,10 +1415,19 @@ class AdminController extends Controller {
 
         $channels = getChannels();
 
+        $categories_list = Category::select('id as category_id', 'name as category_name')->where('status', CATEGORY_APPROVE_STATUS)->orderBy('created_at', 'desc')
+                ->get();
+
+        $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                    ->where('status', TAG_APPROVE_STATUS)
+                    ->orderBy('created_at', 'desc')->get();
+
         return view('admin.videos.video_upload')
                 ->with('channels' , $channels)
                 ->with('page' ,'videos')
-                ->with('sub_page' ,'add-video');
+                ->with('sub_page' ,'add-video')
+                ->with('categories', $categories_list)
+                ->with('tags', $tags);
 
     }
 
@@ -5068,4 +5077,110 @@ class AdminController extends Controller {
 
         }
     }
+
+    /**
+     * Function Name : categories_videos()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * To display based on category
+     *
+     * @param object $request - User Details
+     *
+     * @return Response of videos list
+     */
+    public function categories_videos(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id'
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            return back()->with('flash_error', $error_messages);
+
+        } else {
+
+            $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+            ->videoResponse()
+            ->where('category_id', $request->category_id)
+            ->get();
+
+            return view('admin.categories.videos')
+                        ->with('videos', $videos)
+                        ->with('page', 'categories')
+                        ->with('sub_page', 'categories');
+                
+        }
+    
+    }
+
+    /**
+     * Function Name ; categories_view()
+     *
+     * category details based on id
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @param - 
+     * 
+     * @return response of json
+     */
+    public function categories_view(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];              
+
+        } else {
+
+            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
+                ->where('id', $request->category_id)
+                ->first();
+
+            $channels_list = $this->categories_channels_list($request)->getData();
+
+            $channels = [];
+
+            if ($channels_list->success) {
+
+                $channels = $channels_list->data;
+
+            }
+
+            $category_list = $this->categories_videos($request)->getData();
+
+            $categories = [];
+
+            if ($category_list->success) {
+
+                $categories = $category_list->data;
+
+            }
+
+            $response_array = ['success'=>true, 'category'=>$model, 'category_videos'=>$categories,'channels_list'=>$channels];
+
+        }
+
+        return response()->json($response_array);
+    }
+
 }

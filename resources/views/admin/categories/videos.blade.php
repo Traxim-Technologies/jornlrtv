@@ -10,6 +10,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-list"></i> {{tr('category')}} </a></li>
     <li class="active"><i class="fa fa-video-camera"></i> {{tr('videos')}}</li>
 @endsection
 
@@ -36,7 +37,6 @@
 						    <tr>
 								<th>{{tr('id')}}</th>
 								<th>{{tr('channel')}}</th>
-								<th>{{tr('category')}}</th>
 								<th>{{tr('title')}}</th>
 
 								<?php /*@if(Setting::get('is_banner_video'))
@@ -66,11 +66,8 @@
 							      	
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
 							      	
-
 							      	<td><a href="{{route('admin.channels.view', $video->channel_id)}}">{{$video->channel_name}}</a></td>
-							      		
-							      	<td><a href="{{route('admin.categories.view', $video->category_id)}}">{{$video->category_name}}</a></td>
-
+							      	
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 							      	<?php /*@if(Setting::get('theme') == 'default')

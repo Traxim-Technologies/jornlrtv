@@ -190,6 +190,26 @@ hr {
                         <td>{{$video->channel_name}}</td>
                     </tr>
                     <tr>
+                        <th>{{tr('category')}}</th>
+                        <td>{{$video->category_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{tr('tags')}}</th>
+                        <td>@if($video->getScopeVideoTags) 
+
+                            @foreach($video->getScopeVideoTags as $tags)
+
+                            @if($tags->getTag)
+
+                            <span class="label label-success"> {{$tags->getTag->name}} </span>&nbsp;
+
+                            @endif
+
+                            @endforeach
+
+                            @endif</td>
+                    </tr>
+                    <tr>
                         <th>{{tr('duration')}}</th>
                         <td>{{$video->duration}}</td>
                     </tr>
@@ -236,6 +256,7 @@ hr {
                         <th>{{tr('dislikes')}}</th>
                         <td>{{number_format_short($video->getScopeDisLikeCount())}}</td>
                     </tr>
+
                 </table>
                 <h4 class="h4-header">
                     {{tr('description')}}

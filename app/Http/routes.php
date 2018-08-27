@@ -460,6 +460,10 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/categories/list', 'AdminController@categories_list')->name('categories.list');
 
+    Route::get('categories/videos', 'AdminController@categories_videos')->name('categories.videos');
+
+    Route::get('categories/view', 'AdminController@categories_view')->name('categories.view');
+
 });
 
 

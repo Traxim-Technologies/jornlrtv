@@ -6075,7 +6075,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name ; categories_view()
+     * Function Name : categories_view()
      *
      * category details based on id
      *
@@ -6151,6 +6151,7 @@ class UserApiController extends Controller {
      */
     public function categories_videos(Request $request) {
 
+
         $basicValidator = Validator::make(
                 $request->all(),
                 array(
@@ -6165,10 +6166,6 @@ class UserApiController extends Controller {
             $response_array = ['success'=>false, 'error_messages'=>$error_messages];
 
         } else {
-
-            $category = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
-                ->where('id', $request->category_id)
-                ->first();
 
             $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')

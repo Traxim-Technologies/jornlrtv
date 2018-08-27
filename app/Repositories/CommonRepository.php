@@ -768,7 +768,11 @@ class CommonRepository {
 
         if ($request->tag_id) {
 
-            $tag = VideoTapeTag::select('tag_id')->where('video_tape_id', $video->id)->get()->pluck('tag_id')->toArray();
+            $tag = VideoTapeTag::select('tag_id')
+                    ->where('video_tape_id', $video->id)
+                    ->get()
+                    ->pluck('tag_id')
+                    ->toArray();
 
             foreach ($tag as $key => $video_tag_id) {
                
@@ -777,7 +781,8 @@ class CommonRepository {
 
                 } else {
 
-                    $video_tag = VideoTapeTag::find($video_tag_id);
+                    $video_tag = VideoTapeTag::where('tag_id', $video_tag_id)
+                            ->where('video_tape_id', $video->id)->first();
 
                     if ($video_tag) {
 
@@ -791,7 +796,8 @@ class CommonRepository {
 
             foreach ($request->tag_id as $key => $tag_id) {
                 
-                $tag = VideoTapeTag::find($tag_id);
+                $tag = VideoTapeTag::where('tag_id', $tag_id)
+                            ->where('video_tape_id', $video->id)->first();
 
                 if (!$tag) {
 
@@ -815,9 +821,7 @@ class CommonRepository {
 
             $category->save(); 
 
-        } 
-
-        if ($old_category) {
+        } else {
 
             $old_category->no_of_uploads =  $old_category->no_of_uploads > 0 ? $old_category->no_of_uploads - 1  : 0;
 
