@@ -211,3 +211,7 @@ if(!defined('ACTIVE_PLAN')) define('ACTIVE_PLAN', 1);
 
 if(!defined('NOT_ACTIVE_PLAN')) define('NOT_ACTIVE_PLAN',0);
 
+
+// Paid status
+
+if(!defined('PAID_STATUS')) define('PAID_STATUS', 1);

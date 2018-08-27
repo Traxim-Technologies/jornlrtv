@@ -961,7 +961,6 @@ return array(
 	'link'=>'Link',
 	'banner_notes'=>'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
 
-	'enabled' => 'Enabled',
 	'disabled' => 'Disabled',
 	
 	'create_channel_by_user' => 'Create Channel By User',
@@ -1368,4 +1367,16 @@ return array(
 	'tag_not_found'=>'Tag details not found',
 	'select_category'=>'Select Category',
 	'select_tags'=>'Select Tags',
+	'enable_autorenewal'=>'Enable AutoRenewal',
+	'pause_autorenewal'=>'Pause AutoRenewal',
+	'enable_autorenewal_notes'=>'Your subscription autorenewal is paused. Please activate autorenewal and enjoy your videos',
+	'pause_autorenewal_notes'=>'Pause your subscription autorenewal to take a break on the payment',
+	'enable'=>'Enable',
+	'user_payment_details_not_found'=>'User payment details not found',
+	'cancel_subscription_success'=>'Subscription has been cancelled successfully',
+	'autorenewal_enable_success' => 'The subscription autorenewal enabled.',
+	'subscription_autorenewal_already_enabled' => 'The SubScription is already enabled.',
+	'subscription_autorenewal_already_cancelled' => 'The SubScription is already paused.',
+	'cancel_reason'=>'Cancel Reason',
+	'pause'=>'Pause'
 );

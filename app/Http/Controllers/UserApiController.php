@@ -258,7 +258,7 @@ class UserApiController extends Controller {
                 
                 $user->save();
 
-                $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_message(102)));
+                $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_error_message(102)));
 
             } else {
 
@@ -1049,7 +1049,7 @@ class UserApiController extends Controller {
                     $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
 
                     $response_array['success'] = true;
-                    $response_array['message'] = Helper::get_message(106);
+                    $response_array['message'] = Helper::get_error_message(106);
                     $user->save();
 
                 } else {
@@ -2550,7 +2550,6 @@ class UserApiController extends Controller {
                                 'user_payments.cancel_reason')
                         ->orderBy('user_payments.updated_at', 'desc');
                         
-
             if ($request->device_type == DEVICE_WEB) {
 
                 $model = $query->paginate(16);
@@ -2565,11 +2564,11 @@ class UserApiController extends Controller {
 
                 $data = [];
 
-                foreach ($model as $key => $value) {
-                    
+                foreach ($model as $key => $value) { 
+
                     $data[] = [
 
-                        'id'=>$value->user_id,
+                        'id'=>$value->id,
                         'subscription_id'=>$value->subscription_id,
                         'user_subscription_id'=>$value->user_subscription_id,
                         'title'=>$value->title,
@@ -2589,12 +2588,13 @@ class UserApiController extends Controller {
                         'is_cancelled'=>$value->is_cancelled,
                         'payment_id'=>$value->payment_id,
                         'cancel_reason'=>$value->cancel_reason,
-                        'active_plan'=>strtotime($value->expiry_date) >= strtotime('Y-m-d') ? ACTIVE_PLAN : NOT_ACTIVE_PLAN,
+                        'active_plan'=>($key == 0 && $value->status) ? ACTIVE_PLAN : NOT_ACTIVE_PLAN,
                     ];
+
 
                 }
 
-                $response_array = ['success'=>true, 'data'=>$model];
+                $response_array = ['success'=>true, 'data'=>$data];
             }
 
         }
@@ -5440,5 +5440,164 @@ class UserApiController extends Controller {
     }
 
 
+   /**
+    * Function Name : autorenewal_cancel
+    *
+    * To cancel automatic subscription
+    *
+    * @created Shobana C
+    *
+    * @edited -
+    *
+    * @param object $request - USer details & payment details
+    *
+    * @return boolean response with message
+    */
+    public function autorenewal_cancel(Request $request) {
 
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'cancel_reason' => 'required',
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $user_payment = UserPayment::where('user_id', $request->id)
+                    ->where('status', PAID_STATUS)
+                    ->orderBy('created_at', 'desc')->first();
+
+            if($user_payment) {
+
+                // Check the subscription is already cancelled
+
+                if($user_payment->is_cancelled == AUTORENEWAL_CANCELLED) {
+
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(165) , 'error_code' => 165];
+
+                    return response()->json($response_array , 200);
+
+                }
+
+                $user_payment->is_cancelled = AUTORENEWAL_CANCELLED;
+
+                $user_payment->cancel_reason = $request->cancel_reason;
+
+                $user_payment->save();
+
+                $subscription = $user_payment->subscription;
+
+                $data = ['id'=>$request->id, 
+                    'subscription_id'=>$user_payment->subscription_id,
+                    'user_subscription_id'=>$user_payment->id,
+                    'title'=>$subscription ? $subscription->title : '',
+                    'description'=>$subscription ? $subscription->description : '',
+                    'plan'=>$subscription ? $subscription->plan : '',
+                    'amount'=>$user_payment->amount,
+                    'status'=>$user_payment->status,
+                    'expiry_date'=>date('d M Y', strtotime($user_payment->expiry_date)),
+                    'created_at'=>$user_payment->created_at->diffForHumans(),
+                    'currency'=>Setting::get('currency'),
+                    'payment_mode'=>$user_payment->payment_mode,
+                    'is_coupon_applied'=>$user_payment->is_coupon_applied,
+                    'coupon_code'=>$user_payment->coupon_code,
+                    'coupon_amount'=>$user_payment->coupon_amount,
+                    'subscription_amount'=>$user_payment->subscription_amount,
+                    'coupon_reason'=>$user_payment->coupon_reason,
+                    'is_cancelled'=>$user_payment->is_cancelled,
+                    'cancel_reason'=>$user_payment->cancel_reason
+                ];
+
+                $response_array = ['success'=> true, 'message'=>tr('cancel_subscription_success'), 'data'=>$data];
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
+
+            }
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+   /**
+    * Function Name : autorenewal_enable
+    *
+    * To enable automatic subscription
+    *
+    * @created Shobana C
+    *
+    * @edited -
+    *
+    * @param object $request - USer details & payment details
+    *
+    * @return boolean response with message
+    */
+    public function autorenewal_enable(Request $request) {
+
+        $user_payment = UserPayment::where('user_id', $request->id)
+                ->where('status', PAID_STATUS)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+        if($user_payment) {
+
+            // Check the subscription is already cancelled
+
+            if($user_payment->is_cancelled == AUTORENEWAL_ENABLED) {
+        
+                $response_array = ['success' => 'false' , 'error_messages' => Helper::get_error_message(166) , 'error_code' => 166];
+
+                return response()->json($response_array , 200);
+            
+            }
+
+            $user_payment->is_cancelled = AUTORENEWAL_ENABLED;
+          
+            $user_payment->save();
+
+            $subscription = $user_payment->subscription;
+
+            $data = ['id'=>$request->id, 
+                'subscription_id'=>$user_payment->subscription_id,
+                'user_subscription_id'=>$user_payment->id,
+                'title'=>$subscription ? $subscription->title : '',
+                'description'=>$subscription ? $subscription->description : '',
+                'popular_status'=>$subscription ? $subscription->popular_status : '',
+                'plan'=>$subscription ? $subscription->plan : '',
+                'amount'=>$user_payment->amount,
+                'status'=>$user_payment->status,
+                'expiry_date'=>date('d M Y', strtotime($user_payment->expiry_date)),
+                'created_at'=>$user_payment->created_at->diffForHumans(),
+                'currency'=>Setting::get('currency'),
+                'payment_mode'=>$user_payment->payment_mode,
+                'is_coupon_applied'=>$user_payment->is_coupon_applied,
+                'coupon_code'=>$user_payment->coupon_code,
+                'coupon_amount'=>$user_payment->coupon_amount,
+                'subscription_amount'=>$user_payment->subscription_amount,
+                'coupon_reason'=>$user_payment->coupon_reason,
+                'is_cancelled'=>$user_payment->is_cancelled,
+                'cancel_reason'=>$user_payment->cancel_reason
+            ];
+
+            $response_array = ['success'=> true, 'data'=>$data, 'message'=>tr('autorenewal_enable_success')];
+
+        } else {
+
+            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
+
+        }
+
+        return response()->json($response_array);
+
+    }
 }

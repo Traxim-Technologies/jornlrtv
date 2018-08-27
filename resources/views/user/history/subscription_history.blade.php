@@ -101,7 +101,7 @@
 				<div class="row">
 				@if(count($response->data) > 0)
 
-					@foreach($response->data as $temp)
+					@foreach($response->data as  $key => $temp)
 
 					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 						<div class="new-subcription-history">
@@ -109,9 +109,19 @@
 								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 									<h4>{{$temp->title}}</h4>
 								</div>
-								<div class="col-lg-6">
-									<a href="#" class="link" data-toggle="modal" data-target="#enable">Enable Autorenewal</a>
-								</div>
+								@if($key == 0 && $temp->status == PAID_STATUS)
+
+									@if ($temp->is_cancelled == AUTORENEWAL_ENABLED)
+										<div class="col-lg-6">
+											<a href="#" class="link" data-toggle="modal" data-target="#disable">{{tr('pause_autorenewal')}}</a>
+										</div>
+									@else 
+										<div class="col-lg-6">
+											<a href="#" class="link" data-toggle="modal" data-target="#enable">{{tr('enable_autorenewal')}}</a>
+										</div>
+									@endif
+								
+								@endif
 							</div>
 							<p class="subscriptions-line"></p>
 							<div class="space">
@@ -130,10 +140,10 @@
 							</div>
 							<p class="subscriptions-line"></p>
 							<div class="space white-bg subscription-height">
-								<h5 class=""><span class="head">expiry date:</span>&nbsp;{{$temp->expiry_date}}</h5>
+								<h5 class=""><span class="head">{{tr('expiry_date')}}:</span>&nbsp;{{$temp->expiry_date}}</h5>
 								@if($temp->cancel_reason)
-								<h5 class=""><span class="head">cancel reason:</span>&nbsp;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et </h5>
+
+								<h5 class=""><span class="head">{{tr('cancel_reason')}}:</span>&nbsp;{{$temp->cancel_reason}} </h5>
 
 								@endif
 								<div class="subscription-desc-list">
@@ -167,14 +177,17 @@
 					  	<div class="modal-content autorenewal">
 					    	<div class="modal-header">
 					      		<button type="button" class="close" data-dismiss="modal">&times;</button>
-					      		<h4 class="modal-title">enable autorenewal</h4>
+					      		<h4 class="modal-title">{{tr('enable_autorenewal')}}</h4>
 					    	</div>
 					    	<div class="modal-body">
-					      		<p class="note grey-clr text-left">Your subscription autorenewal is paused. Please activate autorenewal and enjoy your videos</p>
-					      		<div class="text-right">
-					      			<button type="button" class="btn btn-primary mr-10">enable</button>
-					      			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					      		</div>
+
+					    		<form method="post" action="{{route('user.subscriptions.enable-subscription')}}">
+						      		<p class="note grey-clr text-left">{{tr('enable_autorenewal_notes')}}</p>
+						      		<div class="text-right">
+						      			<button type="submit" class="btn btn-primary mr-10">{{tr('enable')}}</button>
+						      			<button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
+						      		</div>
+						      	</form>
 					    	</div>
 					  </div>
 					  
@@ -187,20 +200,23 @@
 					  	<div class="modal-content autorenewal">
 					    	<div class="modal-header">
 					      		<button type="button" class="close" data-dismiss="modal">&times;</button>
-					      		<h4 class="modal-title">disable autorenewal</h4>
+					      		<h4 class="modal-title">{{tr('pause_autorenewal')}}</h4>
 					    	</div>
 					    	<div class="modal-body">
-					      		<p class="note grey-clr text-left">Pause your subscription autorenewal to take a break on the payment</p>
-					      		<form>
-					      			<div class="form-group" id="disable_form">
-									  	<textarea class="form-control" rows="4" id="comment" placeholder="Enter cancel reason"></textarea>
-									  	<p class="underline2"></p>
-									</div>
+
+					    		<form method="post" action="{{route(
+					    		'user.subscriptions.pause-subscription')}}">
+						      		<p class="note grey-clr text-left">{{tr('pause_autorenewal_notes')}}</p>
+						      			<div class="form-group" id="disable_form">
+										  	<textarea class="form-control" rows="4" id="comment" placeholder="{{tr('cancel_reason')}}" name="cancel_reason"></textarea>
+										  	<p class="underline2"></p>
+										</div>
+						      		
+						      		<div class="text-right">
+						      			<button type="submit" class="btn btn-primary mr-10">{{tr('pause')}}</button>
+						      			<button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
+						      		</div>
 					      		</form>
-					      		<div class="text-right">
-					      			<button type="button" class="btn btn-primary mr-10">disable</button>
-					      			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					      		</div>
 					    	</div>
 					  </div>
 					  

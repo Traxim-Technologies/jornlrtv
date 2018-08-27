@@ -2640,4 +2640,76 @@ class UserController extends Controller {
 
         }
     }
+
+   /**
+    * Function Name : subscriptions_autorenewal_enable
+    *
+    * To enable automatic subscription
+    *
+    * @created Shobana C
+    *
+    * @edited -
+    *
+    * @param object $request - USer details & payment details
+    *
+    * @return boolean response with message
+    */
+    public function subscriptions_autorenewal_enable(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'device_type'=>DEVICE_WEB
+        ]);
+
+        $response = $this->UserAPI->autorenewal_enable($request)->getData();
+
+        if ($response->success) {
+
+            return back()->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
+
+   /**
+    * Function Name : subscriptions_autorenewal_pause
+    *
+    * To cancel automatic subscription
+    *
+    * @created Shobana C
+    *
+    * @edited -
+    *
+    * @param object $request - USer details & payment details
+    *
+    * @return boolean response with message
+    */
+    public function subscriptions_autorenewal_pause(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'device_type'=>DEVICE_WEB
+        ]);
+
+        $response = $this->UserAPI->autorenewal_cancel($request)->getData();
+
+        if ($response->success) {
+
+            return back()->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
 }

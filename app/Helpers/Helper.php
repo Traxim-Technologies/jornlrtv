@@ -376,6 +376,17 @@
                     $string = tr('subscription_error');
 
                     break;
+
+                case 165:
+                    $string = tr('subscription_autorenewal_already_cancelled');
+                    break;
+                case 166:
+                    $string = tr('subscription_autorenewal_already_enabled');
+                    break;
+                case 167:
+                    $string = tr('user_payment_details_not_found');
+                    break;
+
                 case 1000:
                     $string = tr('video_is_in_flag_list');
                     break;

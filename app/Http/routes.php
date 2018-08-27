@@ -683,6 +683,10 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/categories/list/{id?}', 'UserController@categories_videos')->name('categories.videos');
 
+    Route::post('/subscriptions/enable', 'UserController@subscriptions_autorenewal_enable')->name('subscriptions.enable-subscription');
+
+    Route::post('/subscriptions/pause', 'UserController@subscriptions_autorenewal_pause')->name('subscriptions.pause-subscription');
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){
@@ -835,4 +839,11 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('tags/view', 'UserApiController@tags_view');
 
     Route::post('tags/videos', 'UserApiController@tags_videos');
+
+
+    // Automatic subscription with cancel
+
+    Route::post('/cancel/subscription', 'UserApiController@autorenewal_cancel');
+
+    Route::post('/autorenewal/enable', 'UserApiController@autorenewal_enable');
 });
