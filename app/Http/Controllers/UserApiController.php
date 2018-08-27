@@ -5071,8 +5071,6 @@ class UserApiController extends Controller {
 
                                 }
 
-                                dd($videoPath);
-
                                 $videoPath = json_decode(json_encode($videoPath));
 
                             }
