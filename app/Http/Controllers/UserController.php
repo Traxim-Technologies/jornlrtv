@@ -2589,4 +2589,55 @@ class UserController extends Controller {
 
         }
     }
+
+    /**
+     * Function Name : tags_videos()
+     *
+     * To list out tags videos based on tag id
+     * 
+     * @created_by - Shobana Chandrasekar
+     *
+     * @updated_by - -
+     *
+     * @param integer $request->id - Category Id
+     *
+     * @return response of success/failure message
+     */
+    public function tags_videos(Request $request) {
+
+        $tag = Tag::find($request->id);
+
+        if ($category) {
+
+            if (Auth::check()) {
+
+                $request->request->add([ 
+                    'tag_id'=>$request->id,
+                    'id' => \Auth::user()->id,
+                    'token' => \Auth::user()->token,
+                    'device_token' => \Auth::user()->device_token,
+                    'age'=>\Auth::user()->age_limit,
+                    'device_type'=>DEVICE_WEB
+                ]);
+            }
+
+            $data = $this->UserAPI->tags_videos($request)->getData();
+
+            if($data->success) {
+
+                return view('user.tags.tags_videos')->with('page', 'tag_name'.$category->id)
+                                        ->with('videos',$data)
+                                        ->with('tags', $tag);
+
+            } else {
+
+                return back()->with('flash_error', $data->error_messages);
+
+            }
+        } else {
+
+            return back()->with('flash_error', tr('tag_not_found'));
+
+        }
+    }
 }

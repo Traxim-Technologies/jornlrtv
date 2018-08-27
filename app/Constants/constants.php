@@ -196,3 +196,18 @@ if(!defined('CATEGORY_DECLINE_STATUS')) define('CATEGORY_DECLINE_STATUS', 0);
 
 if(!defined('TAG_APPROVE_STATUS')) define('TAG_APPROVE_STATUS', 1);
 if(!defined('TAG_DECLINE_STATUS')) define('TAG_DECLINE_STATUS', 0);
+
+
+// AUTORENEWAL STATUS
+
+if(!defined('AUTORENEWAL_ENABLED')) define('AUTORENEWAL_ENABLED',0);
+
+if(!defined('AUTORENEWAL_CANCELLED')) define('AUTORENEWAL_CANCELLED',1);
+
+
+// Active plan
+
+if(!defined('ACTIVE_PLAN')) define('ACTIVE_PLAN', 1);
+
+if(!defined('NOT_ACTIVE_PLAN')) define('NOT_ACTIVE_PLAN',0);
+

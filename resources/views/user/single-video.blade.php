@@ -186,6 +186,18 @@ border-radius: 3px;
 </div>
 <!--  <h3>Channel Name</h3> -->
 <div class="clearfix"></div>
+
+
+<table class="table">
+	<tr>
+	<th>{{tr('category_name')}}</th>
+	<td><a href="{{route('user.categories.videos', $video->category_id)}}" target="_blank">{{$video->category_name}}</a></td>
+	</tr>
+	<tr>
+	<th>{{tr('tags')}}</th>
+	<td><a href="{{route('user.tags.videos', $video->tag)}}" target="_blank">{{$video->tags}}</a></td>
+	</tr>
+</table>
 <!-- <h4 class="video-desc">{{$video->description}}</h4> -->
 <hr>
 </div>

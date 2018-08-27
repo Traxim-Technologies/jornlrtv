@@ -90,7 +90,8 @@ class UserApiController extends Controller {
                 'reasons' ,
                 'search_video', 
                 'video_detail',
-                'categories_videos']));
+                'categories_videos',
+                'tags_videos']));
 
     }
 
@@ -2533,11 +2534,20 @@ class UserApiController extends Controller {
                                 'subscriptions.description as description',
                                 'subscriptions.plan',
                                 'user_payments.amount as amount',
+                                'user_payments.status as status',
                                 // 'user_payments.expiry_date as expiry_date',
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
                                 'user_payments.created_at as created_at',
                                 DB::raw("'$' as currency"),
-                                'user_payments.status')
+                                'user_payments.payment_mode',
+                                'user_payments.is_coupon_applied',
+                                'user_payments.coupon_code',
+                                'user_payments.coupon_amount',
+                                'user_payments.subscription_amount',
+                                'user_payments.coupon_reason',
+                                'user_payments.is_cancelled',
+                                'user_payments.payment_id',
+                                'user_payments.cancel_reason')
                         ->orderBy('user_payments.updated_at', 'desc');
                         
 
@@ -2552,6 +2562,37 @@ class UserApiController extends Controller {
                 $model = $query->skip($request->skip)
                         ->take(Setting::get('admin_take_count' ,12))
                         ->get();
+
+                $data = [];
+
+                foreach ($model as $key => $value) {
+                    
+                    $data[] = [
+
+                        'id'=>$value->user_id,
+                        'subscription_id'=>$value->subscription_id,
+                        'user_subscription_id'=>$value->user_subscription_id,
+                        'title'=>$value->title,
+                        'description'=>$value->description,
+                        'plan'=>$value->plan,
+                        'amount'=>$value->amount,
+                        'status'=>$value->status,
+                        'expiry_date'=>$value->expiry_date,
+                        'created_at'=>$value->created_at->diffForHumans(),
+                        'currency'=>$value->currency,
+                        'payment_mode'=>$value->payment_mode,
+                        'is_coupon_applied'=>$value->is_coupon_applied,
+                        'coupon_code'=>$value->coupon_code,
+                        'coupon_amount'=>$value->coupon_amount,
+                        'subscription_amount'=>$value->subscription_amount,
+                        'coupon_reason'=>$value->coupon_reason,
+                        'is_cancelled'=>$value->is_cancelled,
+                        'payment_id'=>$value->payment_id,
+                        'cancel_reason'=>$value->cancel_reason,
+                        'active_plan'=>strtotime($value->expiry_date) >= strtotime('Y-m-d') ? ACTIVE_PLAN : NOT_ACTIVE_PLAN,
+                    ];
+
+                }
 
                 $response_array = ['success'=>true, 'data'=>$model];
             }
@@ -4935,7 +4976,6 @@ class UserApiController extends Controller {
      * 
      * @return
      */
-
     public function cards_add(Request $request) {
 
         try {
@@ -5067,24 +5107,27 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : tags
+     * Function Name : tags_list
      *
      * To list out all active tags
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
      *
      * @param object $request - ''
      *
      * @return response of array values
      */
-    public function tags(Request $request) {
+    public function tags_list(Request $request) {
 
         $take = $request->take ? $request->take : Setting::get('admin_take_count');
 
         $query = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
-                    ->where('status', DEFAULT_TRUE)
+                    ->where('status', TAG_APPROVE_STATUS)
                     ->orderBy('created_at', 'desc');
 
         if ($request->skip){
-
             $query->skip($request->skip)
                     ->take($take);
         }
@@ -5096,17 +5139,21 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : tag_details
+     * Function Name : tags_view
      *
      * To get any one of the tag details
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
      *
      * @param object $request - tag id
      *
      * @return response of object values
      */
-    public function tag_details(Request $request) {
+    public function tags_view(Request $request) {
 
-        $model = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')->where('tags.status', DEFAULT_TRUE)
+        $model = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')->where('tags.status', TAG_APPROVE_STATUS)
                 ->where('id', $request->tag_id)
                 ->first();
 
@@ -5121,6 +5168,109 @@ class UserApiController extends Controller {
 
     }
 
+    /**
+     * Function Name : tags_videos()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * To display based on tag
+     *
+     * @param object $request - User Details
+     *
+     * @return Response of videos list
+     */
+    public function tags_videos(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'tag_id' => 'required|exists:tags,id,status,'.TAG_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $tag = Tag::find($request->tag_id);
+
+            $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                            ->where('video_tapes.publish_status' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
+                            ->videoResponse()
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->whereRaw("find_in_set('{$tag->name}',tags)")
+                            ->orderby('video_tapes.updated_at' , 'desc');
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+                    
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+                }
+                
+            }
+
+            if ($request->device_type == DEVICE_WEB) { 
+
+                $videos = $base_query->paginate(16);
+
+                $items = [];
+
+                $pagination = 0;
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos->items() as $key => $value) {
+                        
+                        $items[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                    $pagination = (string) $videos->links();
+
+                }
+
+                $response_array = ['success'=>true, 'items'=>$items, 'pagination'=>$pagination];
+
+            } else {
+
+                $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count'))->get();
+
+                $data = [];
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos as $key => $value) {
+                        
+                        $data[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                }
+
+                $response_array = ['success'=>true, 'data'=>$data];
+            }
+
+        }
+
+        return response()->json($response_array);        
+    
+    }
 
     /**
      * Function Name : categories_list()
@@ -5141,6 +5291,7 @@ class UserApiController extends Controller {
                 ->get();
 
         return response()->json($model);
+    
     }
 
     /**
@@ -5287,4 +5438,7 @@ class UserApiController extends Controller {
         return response()->json($response_array);        
     
     }
+
+
+
 }

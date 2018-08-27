@@ -827,4 +827,12 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('categories/view', 'UserApiController@categories_view');
 
     Route::post('categories/videos', 'UserApiController@categories_videos');
+
+    //Tags
+
+    Route::post('tags/list', 'UserApiController@tags_list');
+
+    Route::post('tags/view', 'UserApiController@tags_view');
+
+    Route::post('tags/videos', 'UserApiController@tags_videos');
 });

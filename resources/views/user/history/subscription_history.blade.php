@@ -122,7 +122,7 @@
 								</h1>
 								<h5>Payment status:&nbsp;
 									@if($temp->status)
-										<span class="gold-clr">Success</span>
+										<span class="gold-clr">{{tr('success')}}</span>
 									@else
 										<span class="red-clr">{{tr('failed')}}</span>
 									@endif
@@ -131,8 +131,11 @@
 							<p class="subscriptions-line"></p>
 							<div class="space white-bg subscription-height">
 								<h5 class=""><span class="head">expiry date:</span>&nbsp;{{$temp->expiry_date}}</h5>
+								@if($temp->cancel_reason)
 								<h5 class=""><span class="head">cancel reason:</span>&nbsp;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 								tempor incididunt ut labore et </h5>
+
+								@endif
 								<div class="subscription-desc-list">
 									<?= $temp->description;?>
 								</div>
