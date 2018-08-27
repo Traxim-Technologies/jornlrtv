@@ -3470,29 +3470,16 @@ class AdminController extends Controller {
     */
     public function coupon_save(Request $request){
         
-        if($request->id !=''){
-
-            $validator = Validator::make($request->all(),array(
-
-                'id'=>'required|exists:coupons,id',
-                'title'=>'required',
-                'coupon_code' => 'required|max:10|min:1|unique:coupons,coupon_code,'.$request->id,
-                'amount'=>'required|numeric|min:1|max:5000',
-                'amount_type'=>'required',
-                'expiry_date'=>'required|date_format:d-m-Y|after:today',  
-            )
-        );
-
-        } else{
-
-                $validator = Validator::make($request->all(),[
-                'title'=>'required',
-                'coupon_code'=>'required|unique:coupons,coupon_code|min:1|max:10',
-                'amount'=>'required|numeric|min:1|max:5000',
-                'amount_type'=>'required',
-                'expiry_date'=>'required|date_format:d-m-Y|after:today',
-            ]);
-        }
+        $validator = Validator::make($request->all(),[
+            'id'=>'exists:coupons,id',
+            'title'=>'required',
+            'coupon_code'=>$request->id ? 'required|max:10|min:1|unique:coupons,coupon_code,'.$request->id : 'required|unique:coupons,coupon_code|min:1|max:10',
+            'amount'=>'required|numeric|min:1|max:5000',
+            'amount_type'=>'required',
+            'expiry_date'=>'required|date_format:d-m-Y|after:today',
+            'no_of_users_limit'=>'required|numeric|min:1|max:1000',
+            'per_users_limit'=>'required|numeric|min:1|max:100',
+        ]);
 
         if($validator->fails()){
 
@@ -3559,6 +3546,12 @@ class AdminController extends Controller {
         $coupon_detail->expiry_date = date('Y-m-d',strtotime($request->expiry_date));
       
         $coupon_detail->description = $request->has('description')? $request->description : '' ;
+
+        // Based no users limit need to apply coupons
+        
+        $coupon_detail->no_of_users_limit = $request->no_of_users_limit;
+
+        $coupon_detail->per_users_limit = $request->per_users_limit;
 
         if($coupon_detail){
 

@@ -850,4 +850,10 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/cancel/subscription', 'UserApiController@autorenewal_cancel');
 
     Route::post('/autorenewal/enable', 'UserApiController@autorenewal_enable');
+
+    // Coupons
+
+    Route::post('/apply/coupon/subscription', 'UserApiController@apply_coupon_subscription');
+
+    Route::post('apply/coupon/videos', 'UserApiController@apply_coupon_video_tapes');
 });

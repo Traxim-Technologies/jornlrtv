@@ -1330,3 +1330,24 @@ function getVideoAdsTpe($video_id) {
 
 }
 
+
+
+/**
+ * Function Name : amount_convertion()
+ *
+ * To change the amount based on percentafe (Percentage/absolute)
+ *
+ * @created_by - Shobana Chandrasekar
+ *
+ * @updated_by - - 
+ *
+ * @param - Percentage and amount
+ *
+ * @return response of converted amount
+ */
+function amount_convertion($percentage, $amt) {
+
+    $converted_amt = $amt * ($percentage/100);
+
+    return $converted_amt;
+}

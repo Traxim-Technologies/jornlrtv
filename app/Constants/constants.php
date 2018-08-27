@@ -215,3 +215,9 @@ if(!defined('NOT_ACTIVE_PLAN')) define('NOT_ACTIVE_PLAN',0);
 // Paid status
 
 if(!defined('PAID_STATUS')) define('PAID_STATUS', 1);
+
+// Published Status
+
+if (!defined('VIDEO_PUBLISHED')) define('VIDEO_PUBLISHED', 1);
+
+if (!defined('VIDEO_NOT_YET_PUBLISHED')) define('VIDEO_NOT_YET_PUBLISHED', 0);

@@ -70,6 +70,10 @@ use App\Tag;
 
 use App\VideoTapeTag;
 
+use App\Coupon;
+
+use App\UserCoupon;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -4454,7 +4458,7 @@ class UserApiController extends Controller {
                                     $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
 
                                 }
-                                
+
                                 $videoPath = json_decode(json_encode($videoPath));
 
                             }
@@ -5748,6 +5752,304 @@ class UserApiController extends Controller {
         } else {
 
             $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(167), 'error_code'=>167];
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Function Name : check_coupon_applicable_to_user()
+     *
+     * To check the coupon code applicable to the user or not
+     *
+     * @created_by - Shobana Chandrasekar
+     *
+     * @updated_by - 
+     *
+     * @param objects $coupon - Coupon details
+     *
+     * @param objects $user - User details
+     *
+     * @return response of success/failure message
+     */
+    public function check_coupon_applicable_to_user($user, $coupon) {
+
+        try {
+
+            $sum_of_users = UserCoupon::where('coupon_code', $coupon->coupon_code)->sum('no_of_times_used');
+
+            if ($sum_of_users < $coupon->no_of_users_limit) {
+
+
+            } else {
+
+                throw new Exception(tr('total_no_of_users_maximum_limit_reached'));
+                
+            }
+
+            $user_coupon = UserCoupon::where('user_id', $user->id)
+                ->where('coupon_code', $coupon->coupon_code)
+                ->first();
+
+            // If user coupon not exists, create a new row
+
+            if ($user_coupon) {
+
+                if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                   // $user_coupon->no_of_times_used += 1;
+
+                   // $user_coupon->save();
+
+                    $response_array = ['success'=>true, 'message'=>tr('add_no_of_times_used_coupon'), 'code'=>2002];
+
+                } else {
+
+                    throw new Exception(tr('per_users_limit_exceed'));
+                }
+
+            } else {
+
+                $response_array = ['success'=>true, 'message'=>tr('create_a_new_coupon_row'), 'code'=>2001];
+
+            }
+
+            return response()->json($response_array);
+
+        } catch (Exception $e) {
+
+            $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+
+            return response()->json($response_array);
+        }
+
+    }
+
+    /**
+     * Function Name : apply_coupon_subscription()
+     *
+     * Apply coupon to subscription if the user having coupon codes
+     *
+     * @created By - Shobana Chandrasekar
+     *
+     * @edited_by - -
+     *
+     * @param object $request - User details, subscription details
+     *
+     * @return response of coupon details with amount
+     *
+     */
+    public function apply_coupon_subscription(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'coupon_code' => 'required|exists:coupons,coupon_code',  
+            'subscription_id'=>'required|exists:subscriptions,id'          
+        ], array(
+            'coupon_code.exists' => tr('coupon_code_not_exists'),
+            'subscription_id.exists' => tr('subscription_not_exists'),
+        ));
+        
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json($response_array);
+        }
+        
+
+        $model = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+        if ($model) {
+
+            if ($model->status) {
+
+                $user = User::find($request->id);
+
+                $check_coupon = $this->check_coupon_applicable_to_user($user, $model)->getData();
+
+                if ($check_coupon->success) {
+
+                    if(strtotime($model->expiry_date) >= strtotime(date('Y-m-d'))) {
+
+                        $subscription = Subscription::find($request->subscription_id);
+
+                        if($subscription) {
+
+                            if($subscription->status) {
+
+                                $amount_convertion = $model->amount;
+
+                                if ($model->amount_type == PERCENTAGE) {
+
+                                    $amount_convertion = amount_convertion($model->amount, $subscription->amount);
+
+                                }
+
+                                if ($subscription->amount > $amount_convertion && $amount_convertion > 0) {
+
+                                    $amount = $subscription->amount - $amount_convertion;
+
+                                    $response_array = ['success'=> true, 'data'=>['remaining_amount'=>$amount,
+                                    'coupon_amount'=>$amount_convertion,
+                                    'coupon_code'=>$model->coupon_code,
+                                    'original_coupon_amount'=>$model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount]];
+
+                                } else {
+
+                                    // $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(156), 'error_code'=>156];
+                                    $amount = 0;
+                                    $response_array = ['success'=> true, 'data'=>['remaining_amount'=>$amount,
+                                    'coupon_amount'=>$amount_convertion,
+                                    'coupon_code'=>$model->coupon_code,
+                                    'original_coupon_amount'=> $model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount]];
+
+                                }
+
+                            } else {
+
+                                $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(170), 'error_code'=>170];
+
+                            }
+
+                        } else {
+
+                            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(173), 'error_code'=>173];
+                        }
+
+                    } else {
+
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(159), 'error_code'=>159];
+
+                    }
+
+                } else {
+
+                    $response_array = ['success'=> false, 'error_messages'=>$check_coupon->error_messages];
+                }
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(168), 'error_code'=>168];
+            }
+
+
+
+        } else {
+
+            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(167), 'error_code'=>167];
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Function Name : apply_coupon_video_tapes()
+     *
+     * Apply coupon to PPV if the user having coupon codes
+     *
+     * @created By - Shobana Chandrasekar
+     *
+     * @edited_by - -
+     *
+     * @param object $request - User details, ppv video details
+     *
+     * @return response of coupon details with amount
+     *
+     */
+    public function apply_coupon_video_tapes(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'coupon_code' => 'required|exists:coupons,coupon_code',  
+            'video_tape_id'=>'required|exists:video_tapes,id,publish_status,'.VIDEO_PUBLISHED.',is_approved,'.ADMIN_VIDEO_APPROVED_STATUS.',status,'.USER_VIDEO_APPROVED_STATUS,     
+        ], array(
+                'coupon_code.exists' => tr('coupon_code_not_exists'),
+                'video_id.exists' => tr('video_not_exists'),
+            ));
+        
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json($response_array);
+        }
+        
+        $model = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+        if ($model) {
+
+            if ($model->status) {
+
+                $user = User::find($request->id);
+
+                $vod_video = VideoTape::where('id', $request->video_tape_id)->first();
+
+                $check_coupon = $this->check_coupon_applicable_to_user($user, $model)->getData();
+
+                if ($check_coupon->success) {
+
+                    if(strtotime($model->expiry_date) >= strtotime(date('Y-m-d'))) {
+
+                        $amount_convertion = $vod_video->ppv_amount;
+
+                        if ($model->amount_type == PERCENTAGE) {
+
+                            $amount_convertion = amount_convertion($model->amount, $vod_video->ppv_amount);
+
+                        }
+
+                        if ($vod_video->ppv_amount > $amount_convertion && $amount_convertion > 0) {
+
+                            $amount = $vod_video->ppv_amount - $amount_convertion;
+
+                            $response_array = ['success'=> true, 'data'=>[
+                                'remaining_amount'=>$amount,
+                                'coupon_amount'=>$amount_convertion,
+                                'coupon_code'=>$model->coupon_code,
+                                'original_coupon_amount'=> $model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount
+                                ]];
+
+                        } else {
+
+                            $amount = $vod_video->ppv_amount - $amount_convertion;
+
+                            $response_array = ['success'=> true, 'data'=>[
+                                'remaining_amount'=>0,
+                                'coupon_amount'=>$amount_convertion,
+                                'coupon_code'=>$model->coupon_code,
+                                'original_coupon_amount'=> $model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount
+                                ]];
+
+                        }
+                       
+
+                    } else {
+
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(173), 'error_code'=>173];
+
+                    }
+
+                } else {
+
+                    $response_array = ['success'=> false, 'error_messages'=>$check_coupon->error_messages];
+
+                }
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(168), 'error_code'=>168];
+            }            
+
+        } else {
+
+            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(167), 'error_code'=>167];
 
         }
 
