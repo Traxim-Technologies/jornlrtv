@@ -88,6 +88,8 @@ use App\Tag;
 
 use App\VideoTapeTag;
 
+use App\CustomLiveVideo;
+
 class AdminController extends Controller {
 
     /**
@@ -5278,4 +5280,168 @@ class AdminController extends Controller {
         
     }
 
+
+    /**
+     *  Function : custom_live_videos()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return Live videos details with view page
+     */
+    public function custom_live_videos() {
+
+        $model = CustomLiveVideo::orderBy('created_at','desc')->get();
+
+        return view('admin.custom_live_videos.index')
+                        ->withPage('custom_live_videos')
+                        ->with('model' , $model)
+                        ->with('sub_page','custom_live_videos_index');
+    }
+
+    /**
+     * Function : create_live_video()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return create live video page
+     */
+
+    public function custom_live_videos_create() {
+
+        $model = new CustomLiveVideo;
+
+        return view('admin.custom_live_videos.create')->withModel($model)->with('page' , 'custom_live_videos')->with('sub_page','create_live_video');
+    }
+
+    /**
+     * Function : custom_live_videos_edit()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return edit live video page with selected record
+     */
+    public function custom_live_videos_edit(Request $request) {
+
+        $model = CustomLiveVideo::find($request->id);
+
+        if(count($model) == 0) {
+            return redirect()->route('admin.custom_live_videos')->with('flash_error' , tr('custom_live_video_not_found'));
+        }
+
+        return view('admin.custom_live_videos.edit')->withModel($model)->with('sub_page','custom_live_videos')->with('page' , 'create_live_video');
+    }
+
+    /**
+     * Function : custom_live_videos_save()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return Save the form data of the live video
+     */
+    public function custom_live_videos_save(Request $request) {
+
+        $response = AdminRepo::save_custom_live_video($request)->getData();
+
+        if($response->success) {
+
+            return redirect(route('admin.custom_live_videos_view', $response->data->id))->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->message);
+
+        }
+
+    }
+
+    /**
+     * Function : custom_live_videos_change_status()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return Update the status of the live video.
+     */
+    public function custom_live_videos_change_status(Request $request) {
+
+        $model = CustomLiveVideo::find($request->id);
+
+        if(count($model) == 0) {
+
+            return redirect()->route('admin.custom_live_videos')->with('flash_error' , tr('custom_live_video_not_found'));
+        }
+
+        $model->status = $model->status ?  DEFAULT_FALSE : DEFAULT_TRUE;
+
+        $model->save();
+
+        if($model->status ==1) {
+
+            $message = tr('live_custom_video_approved_success');
+
+        } else {
+
+            $message = tr('live_custom_video_declined_success');
+
+        }
+
+        return back()->with('flash_success', $message);
+
+    }
+
+    /**
+     * Function : custom_live_videos_delete()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return delete the selected record
+     */
+    public function custom_live_videos_delete(Request $request) {
+        
+        if($model = CustomLiveVideo::where('id',$request->id)->first()) {
+
+            if ($model->delete()) {
+                return back()->with('flash_success',tr('live_video_delete_success'));   
+            }
+        }
+        return back()->with('flash_error',tr('something_error'));
+    }
+
+    /**
+     * Function : custom_live_videos_view()
+     *     
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return view the selected record
+     */
+
+    public function custom_live_videos_view($id) {
+
+        if($model = CustomLiveVideo::find($id)) {
+
+            return view('admin.custom_live_videos.view')
+                        ->with('video' , $model)
+                        ->withPage('custom_live_videos')
+                        ->with('sub_page','custom_live_videos');
+
+        } else {
+
+            return back()->with('flash_error',tr('custom_live_video_not_found'));
+
+        }
+        
+    }
 }

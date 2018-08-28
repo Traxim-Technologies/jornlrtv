@@ -1415,5 +1415,20 @@ return array(
 	'category_short_notes'=>'Recent Activities of Category Based channels Reports you can find here. To Find out more about channels of this Category.',
 	'about_category'=>'About Category',
 	'no_of_subscribers'=>'No of Subscribers',
-	'view_category'=>'View Category'
+	'view_category'=>'View Category',
+	'custom_live_videos' => 'Live Videos',
+	'custom_live_video' => 'Live Video',
+	'create_custom_live_video'=> 'Create Live Video',
+	'edit_custom_live_video'=> 'Edit Live Video',
+	'view_custom_live_video'=> 'View Live Video',
+	'video_url'=> 'Video Url',
+	'live_custom_video_delete_success'=>'Live Video has been deleted successfully',
+	'live_custom_video_approved_success' => 'Live Video has been Approved successfully',
+	'live_custom_video_declined_success' => 'Live Video has been Declined successfully',
+	'live_custom_video_create_success' => 'Live Video has been added successfully',
+	'live_custom_video_update_success'	=>	'Live Video has been updated Successfully',
+	'custom_live_video_not_found' => 'Live video details not found',
+
+	'hls_video_url' => 'HLS Video URL',
+	'rtmp_video_url' => 'RTMP Video URL',
 );

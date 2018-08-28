@@ -74,6 +74,8 @@ use App\Coupon;
 
 use App\UserCoupon;
 
+use App\CustomLiveVideo;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -6818,4 +6820,63 @@ class UserApiController extends Controller {
         return response()->json($response_array);
 
     }
+
+
+    /**
+     * Function : custom_live_videos()
+     *
+     * Created By : shobana 
+     *
+     * Edited By : None
+     *
+     * @usage used to return list of live videos
+     */
+    public function custom_live_videos(Request $request) {
+
+        $model = CustomLiveVideo::where('status', DEFAULT_TRUE)->liveVideoResponse()->orderBy('created_at', 'desc');
+
+        if ($request->has('custom_live_video_id')) {
+
+            $model->whereNotIn('id', [$request->custom_live_video_id]);
+
+        }
+
+        $take = $request->has('take') ? $request->take : Setting::get('admin_take_count' ,12);
+
+        $response = $model->skip($request->skip)->take($take)->get();
+
+        $response_array = ['success' => true , 'live' => $response];
+
+        return response()->json($response_array , 200);
+
+    }
+
+    /**
+     * Function : single_live_video()
+     *
+     * Created By : shobana
+     *
+     * Edited By : None
+     *
+     * @usage used to return single live video details
+     */
+
+    public function single_custom_live_video(Request $request) {
+
+        $model = CustomLiveVideo::where('id', $request->custom_live_video_id)->where('status' , 1)->liveVideoResponse()->first();
+
+        $suggestions = CustomLiveVideo::where('id','!=', $request->custom_live_video_id)->where('status' , 1)->liveVideoResponse()->get();
+
+        if ($model) {
+
+            $response_array = ['success'=>true, 'model'=>$model , 'suggestions' => $suggestions];
+
+        } else {
+
+            $response_array = ['success' => false, 'message' => tr('custom_live_video_not_found')];
+        }
+
+        return response()->json($response_array,200);
+    } 
+
 }

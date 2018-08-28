@@ -15,6 +15,7 @@ use App\AdsDetail;
 use App\VideoTape;
 use App\AssignVideoAd;
 use App\Language;
+use App\CustomLiveVideo;
 
 class AdminRepository {
 
@@ -619,5 +620,87 @@ class AdminRepository {
         return $response_array;
     }
 
-    
+    /**
+     * Function : custom_live_videos_save()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return Save the form data of the live video
+     */
+    public static function save_custom_live_video($request) {
+
+        if ($request->id) {
+
+            $validator = Validator::make($request->all(),array(
+                    'title' => 'required|max:255',
+                    'description' => 'required',
+                    'rtmp_video_url'=>'required|max:255',
+                    'hls_video_url'=>'required|max:255',
+                    'image' => 'mimes:jpeg,jpg,png'
+                )
+            );
+
+         } else {
+
+             $validator = Validator::make($request->all(),array(
+                'title' => 'max:255|required',
+                'description' => 'required',
+                'rtmp_video_url'=>'required|max:255',
+                'hls_video_url'=>'required|max:255',
+                'image' => 'required|mimes:jpeg,jpg,png'
+                )
+            );
+
+         }
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'message'=>$error_messages];
+
+        } else {
+            
+            $model = ($request->id) ? CustomLiveVideo::find($request->id) : new CustomLiveVideo;
+            
+            $model->title = $request->has('title') ? $request->title : $model->title;
+
+            $model->description = $request->has('description') ? $request->description : $model->description;
+
+            $model->rtmp_video_url = $request->has('rtmp_video_url') ? $request->rtmp_video_url : $model->rtmp_video_url;
+
+            $model->hls_video_url = $request->has('hls_video_url') ? $request->hls_video_url : $model->hls_video_url;
+
+
+            if($request->hasFile('image')) {
+
+                if($request->id) {
+
+                    Helper::delete_picture($model->image, "/uploads/images/");
+
+                }
+
+                $model->image = Helper::normal_upload_picture($request->image , "/uploads/images/");
+            }
+                
+            $model->status = DEFAULT_TRUE;
+
+            if ($model->save()) {
+
+                $response_array = ['success'=>true, 'message'=> ($request->id) ? tr('live_custom_video_update_success') : tr('live_custom_video_create_success'), 'data' => $model];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('something_error')];
+
+            }
+            
+        }
+
+        return response()->json($response_array);
+
+    }
+
 }

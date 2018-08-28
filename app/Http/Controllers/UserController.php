@@ -94,7 +94,9 @@ class UserController extends Controller {
                 'channel_videos',
                 'categories_view',
                 'categories_videos',
-                'categories_channels'
+                'categories_channels',
+                'custom_live_videos',
+                'single_custom_live_video'
         ]]);
     }
 
@@ -2672,4 +2674,60 @@ class UserController extends Controller {
         }
 
     }   
+
+        /**
+     *
+     * Function : custom_live_videos()
+     *
+     * @description return list of live videos created by admin
+     *
+     * @author Shobana , Edited By - shobana
+     *
+     * @return list page for live videos
+     */
+
+    public function custom_live_videos(Request $request) {
+
+        $request->request->add([
+            'paginate' => 1
+        ]);
+
+        $response = $this->UserAPI->custom_live_videos($request)->getData();
+
+        // dd($response->live);
+
+        return view('user.custom_live_videos.index')->with('page', 'custom_live_videos')
+                ->with('subPage', 'custom_live_videos')
+                ->with('data', isset($response->live) ? $response->live : []);
+
+    }
+
+    /**
+     *
+     * Function : single_live_rtmp_videos()
+     *
+     * @description return view details of live video
+     *
+     * @author Shobana , Edited By - shobana
+     *
+     * @return view page for selected live video
+     */
+    public function single_custom_live_video($id = "" , Request $request) {
+
+        $request->request->add([
+            'custom_live_video_id'=> $id,
+        ]);
+
+        $response = $this->UserAPI->single_custom_live_video($request)->getData();
+
+        if(!$response->success) {
+            return redirect()->to('/')->with('flash_error' , "Details not found");
+        } 
+
+        return view('user.custom_live_videos.view')->with('page', 'custom_live_videos')
+                ->with('subPage', 'custom_live_videos')
+                ->with('suggestions', isset($response->suggestions) ? $response->suggestions : [])
+                ->with('video', isset($response->model) ? $response->model : []);
+
+    }
 }
