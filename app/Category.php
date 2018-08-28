@@ -14,11 +14,6 @@ class Category extends Model
 
     }
 
-    public function getChannels() {
-
-        return $this->hasMany('App\VideoTape', 'category_id', 'id')->groupBy('channel_id');
-
-    }
 
   
 }

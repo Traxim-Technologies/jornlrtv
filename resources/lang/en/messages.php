@@ -1412,4 +1412,8 @@ return array(
 	'coupon_inactive_reason'=>'The coupon was deactivated by admin.',
 	'coupon_delete_reason'=>'The coupon was deleted by admin',
 	'already_paid_amount_to_video'=>'You already paid to this video',	
+	'category_short_notes'=>'Recent Activities of Category Based channels Reports you can find here. To Find out more about channels of this Category.',
+	'about_category'=>'About Category',
+	'no_of_subscribers'=>'No of Subscribers',
+	'view_category'=>'View Category'
 );

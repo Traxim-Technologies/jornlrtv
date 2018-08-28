@@ -464,6 +464,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('categories/view', 'AdminController@categories_view')->name('categories.view');
 
+     Route::get('categories/channels', 'AdminController@categories_channels')->name('categories.channels');
+
 });
 
 

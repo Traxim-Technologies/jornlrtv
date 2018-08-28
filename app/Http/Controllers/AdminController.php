@@ -5155,13 +5155,15 @@ class AdminController extends Controller {
 
         } else {
 
-            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
+            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image', 'created_at')->where('status', CATEGORY_APPROVE_STATUS)
                 ->where('id', $request->category_id)
                 ->withCount('getVideos')
-                ->withCount('getChannels')
                 ->first();
 
-            dd($model);
+            // No of channels count
+
+            $no_of_channels = Channel::leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                    ->where('video_tapes.category_id', $request->category_id)->count();
 
             $channels_list = Channel::select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                         'video_tapes.status', 'video_tapes.channel_id')
@@ -5171,7 +5173,7 @@ class AdminController extends Controller {
 
             $channel_lists = [];
 
-            foreach ($channels as $key => $value) {
+            foreach ($channels_list as $key => $value) {
 
                 $channel_lists[] = [
                         'channel_id'=>$value->id, 
@@ -5187,6 +5189,8 @@ class AdminController extends Controller {
 
             }
 
+            $channel_lists = json_decode(json_encode($channel_lists));
+
             $category_list = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
                             ->videoResponse()
@@ -5194,13 +5198,14 @@ class AdminController extends Controller {
                             ->orderby('video_tapes.updated_at' , 'desc')
                             ->skip(0)->take(Setting::get('admin_take_count', 12))->get();
 
-            $category_earnings = getAmountBasedChannel($channel->id);
+            $category_earnings = getAmountBasedChannel($model->id);
 
             return view('admin.categories.view')
-                    ->with('category_list', $category_list)
+                    ->with('category_videos', $category_list)
                     ->with('channel_lists', $channel_lists)
-                    ->with('model', $model)
+                    ->with('category', $model)
                     ->with('category_earnings', $category_earnings)
+                    ->with('no_of_channels', $no_of_channels)
                     ->with('page', 'categories')
                     ->with('sub_page', 'categories');
 
