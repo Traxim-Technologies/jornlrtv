@@ -5129,6 +5129,62 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : categories_channels
+     *
+     * To list out channels based on category
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of user channel details
+     *
+     */
+    public function categories_channels(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id'
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            return back()->with('flash_error', $error_messages);                
+
+        } else {
+
+            $category = Category::find($request->category_id);
+
+            $channels_id = Channel::leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                        ->where('video_tapes.category_id', $request->category_id)->get()
+                        ->pluck('channel_id')
+                        ->toArray();
+
+            $channels = Channel::orderBy('channels.created_at', 'desc')
+                            ->distinct('channels.id')
+                            ->withCount('getChannelSubscribers')
+                            ->withCount('getVideoTape')
+                            ->whereIn('id', $channels_id)
+                            ->get();
+
+            return view('admin.categories.channels')
+                ->with('channels' , $channels)
+                ->withPage('categories')
+                ->with('category', $category)
+                ->with('sub_page','categories');
+
+        }
+    
+    }
+
+
+    /**
      * Function Name ; categories_view()
      *
      * category details based on id

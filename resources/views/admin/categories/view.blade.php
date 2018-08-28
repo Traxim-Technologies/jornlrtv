@@ -31,7 +31,7 @@
               <div class="row">
                 <div class="col-sm-4 border-right">
                   <div class="description-block">
-                    <h5 class="description-header"><a target="_blank" href="{{route('admin.channels.videos', array('id'=> $category->id))}}">{{$category->get_videos_count}}</a></h5>
+                    <h5 class="description-header"><a target="_blank" href="{{route('admin.categories.videos', array('category_id'=> $category->id))}}">{{$category->get_videos_count}}</a></h5>
                     <span class="description-text">{{tr('videos')}}</span>
                   </div>
                   <!-- /.description-block -->
@@ -39,7 +39,7 @@
                 <!-- /.col -->
                 <div class="col-sm-4 border-right">
                   <div class="description-block">
-                    <h5 class="description-header"><a  target="_blank" href="{{route('admin.channels.subscribers', array('id'=> $category->id))}}">{{$no_of_channels}}</a></h5>
+                    <h5 class="description-header"><a  target="_blank" href="{{route('admin.categories.channels', array('category_id'=> $category->id))}}">{{$no_of_channels}}</a></h5>
                     <span class="description-text">{{tr('channels')}}</span>
                   </div>
                   <!-- /.description-block -->
