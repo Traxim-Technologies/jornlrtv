@@ -199,6 +199,8 @@
 
                 @if(count($recent_videos->items) > 0)
 
+                <hr>
+                
                     <div class="slide-area">
                         <div class="box-head">
                             <h3>{{tr('recent_videos')}}</h3>
