@@ -111,20 +111,20 @@ border-radius: 3px;
 <div class="pull-right">
 
 @if (Auth::check())
-<a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-up fa"></i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
+<a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="material-icons">thumb_up</i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
 
-<a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
+<a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
 
 @else 
 
-<a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="fa fa-thumbs-up"></i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
+<a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons">thumb_up</i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
 
-<a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="fa fa-thumbs-down"></i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
+<a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
 
 @endif
 
 <a  class="share-new" data-toggle="modal" data-target="#popup1">
-<i class="material-icons">share</i>
+<i class="material-icons">share</i>&nbsp;Share
 <!--  <p class="hidden-xs">share</p> -->
 </a>
 
@@ -198,7 +198,7 @@ border-radius: 3px;
 <img src="{{$video->channel_picture}}" class="img-responsive img-circle" style="height: 100%;width: 100%">
 </div>
 <div class="username"><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
-<h5 class="rating no-margin top">
+<h5 class="rating no-margin mt-5">
 <span class="rating1"><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
 <span class="rating1"><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
 <span class="rating1"><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
@@ -382,9 +382,7 @@ border-radius: 3px;
 
 <div class="pull-left"> 
 @if(count($comments) > 0) 
-<h3>{{tr('comments')}}
-<span class="c-380" id="comment_count">{{count($comments)}}</span>
-</h3> 
+<h3 class="mb-15"><span class="c-380" id="comment_count">{{count($comments)}}</span>&nbsp;{{tr('comments')}}</h3> 
 @endif
 </div>
 
@@ -392,7 +390,7 @@ border-radius: 3px;
 
 @if(count($comments) > 0) 
 
-<p class="small">{{tr('comment_note')}}</p>
+<p class="small mb-15">{{tr('comment_note')}}</p>
 
 @endif
 
@@ -404,7 +402,7 @@ border-radius: 3px;
 <div class="image-form">
 <div class="comment-box1">
 <div class="com-image">
-<img style="width:48px;height:48px; border-radius:24px;" src="{{Auth::user()->picture}}">                                    
+<img style="width:50px;height:50px; border-radius:25px;object-fit: cover;object-position: center;" src="{{Auth::user()->picture}}">                                    
 </div><!--end od com-image-->
 
 <div id="comment_form">
@@ -419,7 +417,7 @@ border-radius: 3px;
 
 <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
 <p class="underline"></p>
-<button class="btn pull-right btn-sm btn-success top-btn-space" type="submit" id="comment_btn">{{tr('comment')}}</button>
+<button class="btn pull-right btn-sm btn-info btn-lg top-btn-space" type="submit" id="comment_btn">{{tr('comment')}}</button>
 
 <div class="clearfix"></div>
 </form>
@@ -443,7 +441,7 @@ border-radius: 3px;
 
 <div class="display-com">
 <div class="com-image">
-<img style="width:48px;height:48px; border-radius: 24px !important;" src="{{$comment->picture}}">                                    
+<img style="width:50px;height:50px; border-radius:25px;object-fit: cover;object-position: center;" src="{{$comment->picture}}">                                    
 </div><!--end od com-image-->
 
 <div class="display-comhead">

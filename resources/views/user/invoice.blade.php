@@ -52,13 +52,6 @@
 										    </tbody>
 										</table>
 
-										<!-- coupon code -->
-										<div class="input-group coupon-code">
-										    <input id="msg" type="text" class="form-control" name="msg" placeholder="Coupon amount">
-										    <span class="input-group-addon btn-danger" type="button">Apply</span>
-										</div>
-										<!-- coupon code -->
-
 										@if($subscription->amount > 0)
 
 										<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
