@@ -4799,6 +4799,7 @@ class AdminController extends Controller {
             'name' => $request->id ? 'required|unique:categories,name,'.$request->id.',id|max:128|min:2' : 'required|unique:categories,name,NULL,id|max:128|min:2',
             'id' => 'exists:categories,id', 
             'image' => $request->id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+                'description'=>'required',
             ]);
 
         if($validator->fails()) {
@@ -4810,6 +4811,8 @@ class AdminController extends Controller {
             $model = $request->id ? Category::find($request->id) : new Category;
 
             $model->name = $request->name;
+
+            $model->description = $request->description;
 
             $model->status = DEFAULT_TRUE;
 
@@ -4829,7 +4832,7 @@ class AdminController extends Controller {
 
                 if ($request->id) {
 
-                    return redirect(route('admin.categories.list'))->with('flash_success',tr('category_update_success'));
+                    return redirect(route('admin.categories.view', ['category_id'=>$model->id]))->with('flash_success',tr('category_update_success'));
 
                 } else {
 
@@ -5155,21 +5158,25 @@ class AdminController extends Controller {
 
         } else {
 
-            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image', 'created_at')->where('status', CATEGORY_APPROVE_STATUS)
+            $model = Category::where('status', CATEGORY_APPROVE_STATUS)
                 ->where('id', $request->category_id)
                 ->withCount('getVideos')
                 ->first();
 
-            // No of channels count
-
             $no_of_channels = Channel::leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
-                    ->where('video_tapes.category_id', $request->category_id)->count();
+                    ->where('video_tapes.category_id', $request->category_id)
+                    ->groupBy('video_tapes.channel_id')
+                    ->get();
+
+            // No of videos count
 
             $channels_list = Channel::select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                         'video_tapes.status', 'video_tapes.channel_id')
                     ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                     ->where('video_tapes.category_id', $request->category_id)
-                    ->groupBy('video_tapes.channel_id')->skip(0)->take(Setting::get('admin_take_count', 12))->get();
+                    ->groupBy('video_tapes.channel_id')
+                    ->skip(0)->take(Setting::get('admin_take_count', 12))->get();
+
 
             $channel_lists = [];
 
@@ -5191,21 +5198,22 @@ class AdminController extends Controller {
 
             $channel_lists = json_decode(json_encode($channel_lists));
 
-            $category_list = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+            $category_videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
                             ->videoResponse()
                             ->where('category_id', $request->category_id)
                             ->orderby('video_tapes.updated_at' , 'desc')
                             ->skip(0)->take(Setting::get('admin_take_count', 12))->get();
 
+
             $category_earnings = getAmountBasedChannel($model->id);
 
             return view('admin.categories.view')
-                    ->with('category_videos', $category_list)
+                    ->with('category_videos', $category_videos)
                     ->with('channel_lists', $channel_lists)
                     ->with('category', $model)
                     ->with('category_earnings', $category_earnings)
-                    ->with('no_of_channels', $no_of_channels)
+                    ->with('no_of_channels', count($no_of_channels))
                     ->with('page', 'categories')
                     ->with('sub_page', 'categories');
 

@@ -6104,7 +6104,7 @@ class UserApiController extends Controller {
 
         } else {
 
-            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image')->where('status', CATEGORY_APPROVE_STATUS)
+            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image', 'description')->where('status', CATEGORY_APPROVE_STATUS)
                 ->where('id', $request->category_id)
                 ->first();
 

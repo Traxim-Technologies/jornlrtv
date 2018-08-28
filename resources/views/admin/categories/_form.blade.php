@@ -39,6 +39,12 @@
                             <img src="{{$model->image ? $model->image : asset('images/default-ad.jpg')}}" id="picture_preview" style="width: 75px;height: 75px;" />
                         </div>
 
+                        <div class="form-group">
+                            <label for = "description">{{tr('description')}}</label>
+                            
+                            <textarea name="description" class="form-control" required>{{$model->description}}</textarea>
+                        </div>
+
                         </div>
 
                          <div class="box-footer">
