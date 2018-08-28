@@ -196,7 +196,7 @@ th {
 <table class="table">
 	<tr>
 	<th>{{tr('category_name')}}</th>
-	<td><a href="{{route('user.categories.videos', $video->category_id)}}" target="_blank">{{$video->category_name}}</a></td>
+	<td><a href="{{route('user.categories.view',['id'=>$video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
 	</tr>
 	
 	@if(count($tags) > 0)
