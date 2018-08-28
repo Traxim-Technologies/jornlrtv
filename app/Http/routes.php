@@ -687,13 +687,21 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('ppv/history', 'UserController@ppv_history')->name('ppv.history');
 
-    Route::get('/categories/list/{id?}', 'UserController@categories_videos')->name('categories.videos');
 
     Route::get('/tags/list/{id?}', 'UserController@tags_videos')->name('tags.videos');
 
     Route::post('/subscriptions/enable', 'UserController@subscriptions_autorenewal_enable')->name('subscriptions.enable-subscription');
 
     Route::post('/subscriptions/pause', 'UserController@subscriptions_autorenewal_pause')->name('subscriptions.pause-subscription');
+
+    // Category view
+
+    Route::get('categories/view', 'UserController@categories_view')->name('categories.view');
+
+    Route::post('/categories/videos', 'UserController@categories_videos')->name('categories.videos');
+
+    Route::post('/categories/channels', 'UserController@categories_channels')->name('categories.channels');
+
 
 });
 
