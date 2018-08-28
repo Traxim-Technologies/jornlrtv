@@ -28,11 +28,11 @@
     					</div>
     					<div class="col-sm-12 col-md-6 col-lg-6">
     						<div class="progress">
-							  	<div class="progress-bar progress-bar-striped  progress-bar-danger" role="progressbar"
-							  	aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-							    	40%
+							  	  <div class="progress-bar progress-bar-striped  progress-bar-primary" role="progressbar"
+							  	  aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+							    	
 							  	</div>
-							</div>
+							   </div>
     					</div>
     				</div>
     			</div>
