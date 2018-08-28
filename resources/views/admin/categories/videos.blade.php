@@ -10,7 +10,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-list"></i> {{tr('category')}} </a></li>
+    <li><a href="{{route('admin.categories.list')}}"><i class="fa fa-list"></i> {{tr('category')}} </a></li>
     <li class="active"><i class="fa fa-video-camera"></i> {{tr('videos')}}</li>
 @endsection
 
