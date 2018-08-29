@@ -279,10 +279,30 @@
 .new-card-expiry{
 	text-align: left;
 }
+.new-profile-left{
+	width:100%;
+	float:unset;
+	margin-right:unset;
+	text-align: center;
+}
+.new-profile-right{
+	width:100%;
+	float: unset;
+}
 }
 
 /*small devices*/
 @media (min-width: 480px) and (max-width: 767px) {
+.new-profile-left{
+	width:100%;
+	float:unset;
+	margin-right:unset;
+	text-align: center;
+}
+.new-profile-right{
+	width:100%;
+	float: unset;
+}
 .new-card-expiry{
 	text-align: left;
 }

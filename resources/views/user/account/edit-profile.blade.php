@@ -31,10 +31,11 @@
                     @include('notification.notify')
 
                     <div class="col-sm-12 col-md-7 col-lg-6 profile-view">
+                        <h4 class="mylist-head">{{tr('edit_profile')}}</h4>
                         <div class="edit-profile profile-view">
-                            <div class="edit-form">
+                            <div class="edit-form profile-bg">
 
-                                <h4 class="edit-head">{{tr('edit_profile')}}</h4>
+                                <!-- <h4 class="edit-head">{{tr('edit_profile')}}</h4> -->
                                 
                                 <div class="image-profile edit-image">
                                     @if(Auth::user()->picture)
@@ -108,11 +109,11 @@
                                         </div>
                                               
                                         <div class="change-pwd save-pro-btn">
-                                            <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                            <button type="submit" class="btn btn-info">{{tr('submit')}}</button>
 
-                                            @if (Auth::user()->login_by == 'manual')
+                                            <!-- @if (Auth::user()->login_by == 'manual')
                                             <a href="{{route('user.change.password')}}" class="btn btn-danger">{{tr('change_password')}}</a>
-                                            @endif
+                                            @endif -->
 
                                         </div>                                              
 

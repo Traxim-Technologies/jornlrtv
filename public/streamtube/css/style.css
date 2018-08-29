@@ -3633,7 +3633,7 @@ tr.active{
 	margin-bottom: 25px;
 }
 .menu-profile-left{
-	padding:5px 0;
+	padding:10px 0 5px 0;
 	width: 60px;
 	float: left;
 }
@@ -3654,8 +3654,12 @@ tr.active{
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	margin-top: 6px;
+	margin-top: 11px;
     margin-bottom: 4px;
+    color: #333;
+}
+.menu-profile-right h4::first-letter{
+	text-transform: capitalize;
 }
 .menu-profile-right p{
 	color: #999;
@@ -3671,6 +3675,7 @@ tr.active{
 	margin-top: 2px;
 	margin-bottom: 7px;
 	color: #999;
+	text-transform: capitalize;
 }
 .menu-link:hover, .menu-link:focus, .menu-link:active{
 	color: #999;
@@ -3682,4 +3687,45 @@ tr.active{
 	background-color: #fff;
 	border-radius: 4px;
 	padding: 1em;
+}
+.new-profile-left{
+	width:150px;
+	float: left;
+	margin-right:20px;
+}
+.new-profile-left img{
+	height: 150px;
+	width: 150px;
+	object-position: center;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-bottom: 1em;
+}
+.new-profile-right{
+	width: calc(100% - 170px);
+	float: left;
+}
+.profile-title h4{
+	font-weight: normal;
+	font-size: 1.14em;
+	margin-top: 0;
+	margin-bottom: 1em;
+	color: #999;
+	line-height: 1.4;
+}
+.profile-title h4 i{
+	margin-right: 10px;
+}
+.profile-bg{
+	background-color: #fff;
+    box-shadow: none !important;
+}
+.settings{
+	text-transform: capitalize;
+}
+.st_video_upload_btn{
+	color: #666 !important; 
+}
+.st_video_upload_btn:hover, .st_video_upload_btn:focus, .st_video_upload_btn:active{
+	color: #666;
 }

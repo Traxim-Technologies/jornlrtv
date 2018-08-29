@@ -44,15 +44,17 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <div class="display-inline">
-                                <div class="menu-profile-left">
-                                    <img src="{{Auth::user()->picture}}">
+                            <a href="{{route('user.profile')}}">
+                                <div class="display-inline">
+                                    <div class="menu-profile-left">
+                                        <img src="{{Auth::user()->picture}}">
+                                    </div>
+                                    <div class="menu-profile-right">
+                                        <h4>user</h4>
+                                        <p>user@gmail.com</p>
+                                    </div>
                                 </div>
-                                <div class="menu-profile-right">
-                                    <h4>user</h4>
-                                    <p>user@gmail.com</p>
-                                </div>
-                            </div>
+                            </a>
                             <li role="separator" class="divider"></li>
                             <div class="row">
                                 <div class="col-xs-6">
@@ -227,15 +229,17 @@
                         </button>
                         
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <div class="display-inline">
-                                <div class="menu-profile-left">
-                                    <img src="{{Auth::user()->picture}}">
+                            <a href="{{route('user.profile')}}">
+                                <div class="display-inline">
+                                    <div class="menu-profile-left">
+                                        <img src="{{Auth::user()->picture}}">
+                                    </div>
+                                    <div class="menu-profile-right">
+                                        <h4>user</h4>
+                                        <p>user@gmail.com</p>
+                                    </div>
                                 </div>
-                                <div class="menu-profile-right">
-                                    <h4>user</h4>
-                                    <p>user@gmail.com</p>
-                                </div>
-                            </div>
+                            </a>
                             <li role="separator" class="divider"></li>
                             <div class="row">
                                 <div class="col-xs-6">

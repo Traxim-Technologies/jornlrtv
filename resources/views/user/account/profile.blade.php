@@ -21,7 +21,7 @@
             <div class="profile-content slide-area1">
                 <div class="row no-margin">
                     <!--profile-view end-->
-                     
+                    <?php /* 
                     <div class="col-md-7 col-lg-7 profile-view">
                         <div class="edit-profile ">
                             <div class="profile-details">
@@ -83,21 +83,56 @@
                             </div><!--end of profile-details-->                           
                         </div><!--end of edit-profile-->
                     </div>
-                     
+                     */ ?>
                     <!--profile-view end--> 
 
                     <!-- new ui -->
-                    <!-- <div class="col-md-7 col-lg-7 profile-view">
+                    <div class="col-md-7 col-lg-7 profile-view">
                         <h4 class="mylist-head">Profile</h4>
                         <div class="new-profile-sec">
-                            <div class="row">
-                                <div class="col-sm-4 col-md-4 col-lg-4">
-                                    <img src="">
+                            <div class="display-inline">
+                                <div class="new-profile-left">
+                                    @if(Auth::user()->picture)
+                                        <img src="{{Auth::user()->picture}}">
+                                    @else
+                                        <img src="{{asset('placeholder.png')}}">
+                                    @endif     
                                 </div>
-                                <div class="col-sm-4 col-md-4 col-lg-4"></div>
+                                <div class="new-profile-right">
+                                    <div class="profile-title">
+                                        <h4><i class="fa fa-user"></i>{{Auth::user()->name}}</h4>
+                                        
+                                        @if(Auth::user()->login_by == 'manual')
+                                            <h4><i class="fa fa-envelope"></i>{{Auth::user()->email}}</h4>
+                                        @endif
+                                       
+                                        <h4><i class="fa fa-phone"></i>{{Auth::user()->mobile}}</h4>  
+
+                                        <h4><i class="fa fa-calendar"></i>
+                                        <?php 
+
+                                        if (!empty(Auth::user()->dob) && Auth::user()->dob != "0000-00-00") {
+
+                                            $dob = date('d-m-Y', strtotime(Auth::user()->dob));
+
+                                        } else {
+
+                                            $dob = "00-00-0000";
+                                        }
+
+                                        echo $dob;
+
+                                        ?></h4>
+                                        <h4><i class="fa fa-file"></i>{{Auth::user()->description}}</h4>
+
+                                        <div class="text-right">
+                                            <a href="{{route('user.update.profile')}}" class="btn btn-info">{{tr('edit_profile')}}</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                     <!-- new ui -->
 
                     <?php // $wishlist = wishlist(Auth::user()->id); ?>

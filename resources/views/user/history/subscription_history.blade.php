@@ -20,18 +20,22 @@
 
 			@include('notification.notify')
 
-			<div class="spacing1 text-center">
+			<div class="spacing1 top">
+				<div class="pull-right">
+                	
+                	<a href="{{route('user.subscriptions')}}"><button class="btn btn-sm btn-info mb-20">{{tr('view_plans')}}</button></a>
+
+                </div>
+
 				<h3 class="no-margin">{{tr('subscription_history')}}</h3>	
 
 				<?php $subscription_details = get_expiry_days(Auth::user()->id);?>
 
-                <p style="color:#cc181e;margin-top: 10px;">{{tr('no_of_days_expiry')}} <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p>
+                <!-- <p style="color:#cc181e;margin-top: 10px;">{{tr('no_of_days_expiry')}} <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p> -->
+                <h4 class="autorenewal-head">cancel reason</h4>
+                <h4 class="autorenewal-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500</h4>
 
-                <div class="pull-right">
-                	
-                	<a href="{{route('user.subscriptions')}}"><button class="btn btn-sm btn-primary mb-20">{{tr('view_plans')}}</button></a>
-
-                </div>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#disable">enable autorenewal</button>
 
                 <div class="clearfix"></div>
 				
@@ -97,7 +101,7 @@
 				</div>
 				*/ ?>
 
-				<!-- new UI -->
+				<?php /*
 				<div class="row">
 				@if(count($response->data) > 0)
 
@@ -167,7 +171,53 @@
 
 				@endif			
 				</div>
-				<!-- new UI -->
+				*/ ?>
+
+				<div class="row">
+					@if(count($response->data) > 0)
+						@foreach($response->data as $temp)
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+							<div class="new-subs-card">
+								<div class="new-subs-card-img">
+									<img src="{{asset('images/subscriptions2.png')}}">
+									<div class="new-subs-card-title">
+										<div>
+											<div class="text-right">
+													<img src="{{asset('images/guarantee.png')}}" class="active-plan">
+												@if($temp->status)
+													<span class="label label-info">success</span>
+												@else
+													<span class="label label-warning">failure</span>
+												@endif
+											</div>
+											<h3 class="amount">
+												<span class="sign">{{$temp->currency}}</span>
+												<span class="cash">{{$temp->amount}}</span>
+												<span class="period">/ {{$temp->plan}} month</span>
+											</h3>
+											<h4 class="title">{{$temp->title}}</h4>
+										</div>
+									</div>
+								</div>
+								<div class="new-subs-card-details">
+									<?= $temp->description;?>
+								</div>
+								<div>
+									<a class="subscribe-btn"><i class="fa fa-clock-o"></i>&nbsp;{{$temp->expiry_date}}</a>
+								</div>
+							</div>
+						</div>
+						@endforeach
+
+						<div class="row">
+	                        <div class="col-md-12">
+	                            <div align="center" id="paglink"><?php echo $response->pagination; ?></div>
+	                        </div>
+	                    </div>
+	                    @else
+						<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+					@endif	
+				</div>
 
 				<!--enable modal -->
 				<div class="modal fade" id="enable" role="dialog">

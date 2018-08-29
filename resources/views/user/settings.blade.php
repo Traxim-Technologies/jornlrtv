@@ -41,7 +41,7 @@
 	                			</div>
 	                		</div>
                 		</a>
-                		<a href="#">
+                		<a href="{{route('user.subscription.history')}}">
 	                		<div class="settings-card">
 	                			<div class="display-inline">
 	                				<div class="settings-left">
