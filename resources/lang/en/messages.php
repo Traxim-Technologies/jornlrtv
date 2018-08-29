@@ -1415,5 +1415,6 @@ return array(
 	'category_short_notes'=>'Recent Activities of Category Based channels Reports you can find here. To Find out more about channels of this Category.',
 	'about_category'=>'About Category',
 	'no_of_subscribers'=>'No of Subscribers',
-	'view_category'=>'View Category'
+	'view_category'=>'View Category',
+	'settings' => 'settings'
 );

@@ -32,6 +32,13 @@
                     <span>{{tr('history')}}</span>
                 </a>
             </li>
+            <li id="settings">
+                <a href="/settings">
+                    <img src="{{asset('images/settings-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/settings-red.png')}}" class="red-img">
+                    <span>{{tr('settings')}}</span>
+                </a>
+            </li>
             <li id="wishlist">
                 <a href="{{route('user.wishlist')}}">
                     <img src="{{asset('images/heart-grey.png')}}" class="grey-img">

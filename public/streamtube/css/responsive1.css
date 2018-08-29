@@ -696,7 +696,7 @@
 .subscription-desc-list p{
 	font-size:14px;
 }
-.upload-video-sec, .new-subs-card{
+.upload-video-sec, .new-subs-card, .settings-card{
 	font-size: 16px;
 }
 }
@@ -1210,7 +1210,7 @@
 .new-subcription-history .subscription-height{
 	height: 280px;
 }
-.upload-video-sec, .new-subs-card{
+.upload-video-sec, .new-subs-card, .settings-card{
 	font-size: 18px;
 }
 }
@@ -1735,7 +1735,7 @@
 .new-subcription-history .subscription-height{
 	height: 300px;
 }
-.upload-video-sec, .new-subs-card{
+.upload-video-sec, .new-subs-card, .settings-card{
 	font-size: 20px;
 }
 }
@@ -2277,7 +2277,7 @@
 .new-subcription-history .subscription-height{
 	height: 300px;
 }
-.upload-video-sec, .new-subs-card{
+.upload-video-sec, .new-subs-card, .settings-card{
 	font-size: 22px;
 }
 }

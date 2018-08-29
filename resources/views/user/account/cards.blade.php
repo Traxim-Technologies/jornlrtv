@@ -114,7 +114,7 @@
 
 								                <div class="input-group-signup">
 
-								                  <button class="btn btn-success" type="submit">{{tr('submit')}}</button>
+								                  <button class="btn btn-info" type="submit">{{tr('submit')}}</button>
 
 								                </div>
 
@@ -143,7 +143,57 @@
 
 					           	<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 
-					           		<p class="note-sec"><small><b>Note : </b>{{tr('card_notes')}}</small></p>
+					           		<h4 class="cards-head top">My Cards</h4>
+
+					           		<p class="note-sec grey-clr"><small><b>Note : </b>{{tr('card_notes')}}</small></p>
+
+					           		@foreach($cards as $card)
+
+						           	@if(!$card->is_default)
+
+					           		<div class="new-card">
+						           		<div class="row">
+						           			<div class="col-xs-12 col-sm-5 col-md-2 col-lg-2">
+						           				<h4 class="new-card-name overflow">{{$card->card_name ? $card->card_name : tr('card_name')}}</h4>
+						           			</div>
+						           			<div class="col-xs-12 col-sm-7 col-md-4 col-lg-4">
+						           				<h4 class="new-card-number overflow">PERSONAL*********{{$card->last_four}}</h4>
+						           			</div>
+						           			<div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+						           				<h4 class="new-card-expiry">{{$card->month}} / {{$card->year}}</h4>
+						           			</div>
+						           			<div class="col-xs-8 col-sm-9 col-md-4 col-lg-4">
+						           				<h4 class="new-card-close">
+						           					<a href="#"><span class="link-clr">Make as default</span></a><i class="fa fa-trash"></i>
+						           				</h4>
+						           			</div>
+						           		</div>
+					           		</div>
+
+					           		@else
+
+					           		<div class="new-card">
+						           		<div class="row">
+						           			<div class="col-xs-12 col-sm-5 col-md-2 col-lg-2">
+						           				<h4 class="new-card-name overflow">{{$card->card_name ? $card->card_name : tr('card_name')}}</h4>
+						           			</div>
+						           			<div class="col-xs-12 col-sm-7 col-md-4 col-lg-4">
+						           				<h4 class="new-card-number overflow">PERSONAL*********{{$card->last_four}}</h4>
+						           			</div>
+						           			<div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+						           				<h4 class="new-card-expiry">{{$card->month}} / {{$card->year}}</h4>
+						           			</div>
+						           			<div class="col-xs-8 col-sm-9 col-md-4 col-lg-4">
+						           				<div class="text-right">
+						           					<img src="{{asset('images/success.png')}}" class="default-card-img">
+						           				</div>
+						           			</div>
+						           		</div>
+					           		</div>
+
+					           		@endif
+
+						           	@endforeach
 
 						           	<div class="row">
 
@@ -200,9 +250,9 @@
 
 						           	</div>
 					           	</div>
-					          @else
+					          	@else
 
-					            {{tr('no_card_details_found')}}
+					          	{{tr('no_card_details_found')}}
 
 
 					        @endif

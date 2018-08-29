@@ -212,54 +212,52 @@
 
 @if(count($trending_videos) == 0)
 
-<!-- <p>{{tr('no_video_found')}}</p> -->
 <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
 @endif
 <div class="lohp-shelf-content row">
-<div class="lohp-large-shelf-container col-md-6">
+<!-- <div class="lohp-large-shelf-container col-md-6">
 
 @if(count($trending_videos) > 0)
 <div class="slide-box recom-box big-box-slide">
-<div class="slide-image recom-image hbb">
-	<a href="{{$trending_videos[0]->url}}">
-		<img src="{{$trending_videos[0]->video_image}}">
-		<!-- <div class="slide-img1" style="background-image: url({{$trending_videos[0]->url}});"></div> -->
-	</a>
-	@if($trending_videos[0]->ppv_amount > 0)
-        @if(!$trending_videos[0]->ppv_status)
-            <div class="video_amount">
+	<div class="slide-image recom-image hbb">
+		<a href="{{$trending_videos[0]->url}}">
+			<img src="{{$trending_videos[0]->video_image}}">
+		</a>
+		@if($trending_videos[0]->ppv_amount > 0)
+	        @if(!$trending_videos[0]->ppv_status)
+	            <div class="video_amount">
 
-            {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_videos[0]->ppv_amount}}
+	            {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_videos[0]->ppv_amount}}
 
-            </div>
-        @endif
-    @endif
-	<div class="video_duration">
-        {{$trending_videos[0]->duration}}
-    </div>
-</div>
-<div class="video-details recom-details">
-	<div class="video-head">
-		<a href="{{$trending_videos[0]->url}}"> {{$trending_videos[0]->title}}</a>
+	            </div>
+	        @endif
+	    @endif
+		<div class="video_duration">
+	        {{$trending_videos[0]->duration}}
+	    </div>
 	</div>
-	
-     <span class="video_views">
-        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
-        {{$trending_videos[0]->created_at}}
-    </span>
-</div>
+	<div class="video-details recom-details">
+		<div class="video-head">
+			<a href="{{$trending_videos[0]->url}}"> {{$trending_videos[0]->title}}</a>
+		</div>
+		
+	     <span class="video_views">
+	        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
+	        {{$trending_videos[0]->created_at}}
+	    </span>
+	</div>
 </div>
 @endif
-</div>
-<div class="lohp-medium-shelves-container col-md-6">
+</div> -->
+<div class="lohp-medium-shelves-container col-md-12">
 <div class="row">
 @if(count($trending_videos) > 1)
 
 @foreach($trending_videos as $index => $trending_video)
 
 @if ($index > 0)
-<div class="col-md-6 col-sm-6 col-xs-6">
+<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 
 <div class="slide-box recom-box big-box-slide">
 	<div class="slide-image recom-image hbbb">
@@ -277,9 +275,8 @@
             {{$trending_video->duration}}
         </div>
 	</div>
-	<!--end of slide-image-->
-
-	<div class="video-details recom-details">
+	
+	<div class="video-details">
 		<div class="video-head">
 			<a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
 		</div>
@@ -289,7 +286,7 @@
             {{$trending_video->created_at}}
         </span>
 	</div>
-	<!--end of video-details-->
+	
 </div>
 </div>
 
@@ -525,7 +522,7 @@
     </div> <!--end of history-head--> 
 
     <div class="description">
-    	<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.videos', $video->category_id)}}" target="_blank">{{$video->category_name}}</a></div>
+    	<!-- <div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.videos', $video->category_id)}}" target="_blank">{{$video->category_name}}</a></div> -->
         <p>{{$video->description}}</p>
     </div><!--end of description--> 
 

@@ -276,10 +276,16 @@
 .video_mobile_views{
 	display: block;
 }
+.new-card-expiry{
+	text-align: left;
+}
 }
 
 /*small devices*/
 @media (min-width: 480px) and (max-width: 767px) {
+.new-card-expiry{
+	text-align: left;
+}
 .wizard-container{
 	padding-top: 15px;
 }
