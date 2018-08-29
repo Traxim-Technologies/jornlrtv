@@ -15,17 +15,24 @@ $(document).ready(function () {
     $(".next-step").click(function (e) {
 
         var $active = $('.wizard .nav-tabs li.active');
+
         $active.next().removeClass('disabled');
+
         nextTab($active);
 
     });
+
     $(".prev-step").click(function (e) {
 
         var $active = $('.wizard .nav-tabs li.active');
+
         prevTab($active);
+
+       // enablePrevTab()
 
     });
 });
+
 
 function nextTab(elem) {
     $(elem).next().find('a[data-toggle="tab"]').click();
@@ -33,6 +40,57 @@ function nextTab(elem) {
 function prevTab(elem) {
     $(elem).prev().find('a[data-toggle="tab"]').click();
 }
+
+
+/**
+ * Function Name : saveVideoType()
+ * To save second step of the job details
+ * 
+ * @var category_id Category Id (Dynamic values)
+ * @var step        Step Position 2
+ *
+ * @return Json response
+ */
+function saveVideoType(video_type, step) {
+
+    $("#video_type").val(video_type);
+
+    if (video_type != 1) {
+
+      $("#duration_div").show();
+
+    }
+
+    display_fields();
+
+    $("#"+step).click();
+
+    $("#next_btn").click();
+}
+
+function display_fields() {
+
+    var video_type = $("#video_type").val();
+
+    $('.ctn').show();
+
+    $('.finish').show();
+
+    if (video_type == 1) {
+
+        $('.finish').hide();
+
+    } else {
+
+        $('.ctn').hide();
+
+        $("#duration_div").show();
+
+    }
+
+
+}
+
 
 /**
  * Function Name : saveVideoDetails()
@@ -48,7 +106,9 @@ function saveVideoDetails(step) {
    var rating = $("#rating").val();
    var description = $("#description").val();
    var reviews = $("#reviews_textarea").val();
+   var duration = $("#duration").val();
 
+   var rating = $('input[name=ratings]:checked').val();
 
    var video_publish_type = $("#video_publish_type").val();
 
@@ -61,7 +121,7 @@ function saveVideoDetails(step) {
         return false;
    }
 
-   if (rating == '') {
+   if (rating <= 0 || rating == undefined) {
         alert('Ratings Should not be blank');
         return false;
    }
@@ -73,6 +133,34 @@ function saveVideoDetails(step) {
         alert('Reviews Should not be blank');
         return false;
    }
+    var video_type = $('#video_type').val();
+
+    console.log('video_type - '+video_type);
+
+    if(parseInt(video_type) == 1) {
+
+        console.log('video_type - YES');
+
+        $('#others_video_upload_section').hide();
+
+        $('#file_video_upload_section').show();
+    
+    } else {
+
+        $('#others_video_upload_section').show();
+
+        $('#file_video_upload_section').hide();
+
+        if (duration == '') {
+
+          alert('Duration Should not be blank');
+
+          return false;
+
+        }
+
+    }
+
    $("#"+step).click();
 }
 
@@ -87,11 +175,29 @@ function saveVideoDetails(step) {
  * @return Json response
  */
 function saveCategory(channel_id, step) {
+
+    var video_type = $("#video_type").val();
+
+    $('.ctn').show();
+
+    $('.finish').show();
+
+    if (video_type == 1) {
+
+        $('.finish').hide();
+
+    } else {
+
+        $('.ctn').hide();
+
+    }
+
     $("#channel_id").val(channel_id);
+
     // displaySubCategory(category_id, step);
+
     $("#"+step).click();
 }
-
 
 var bar = $('.bar');
 var percent = $('.percent');
@@ -125,7 +231,6 @@ $('form').ajaxForm({
         $(".overlay").hide();
         $("#btn-next").text("Redirecting...");
         $("#btn-next").attr('disabled', false);
-        console.log(xhr);
     },
     error : function(xhr) {
         alert(xhr);
@@ -136,17 +241,24 @@ $('form').ajaxForm({
 
         if(xhr.data) {
 
-            console.log("Inside " +xhr.data);
+            if (xhr.path) {
 
-            $("#select_image_div").html(xhr.path);
+              $("#select_image_div").html(xhr.path);
 
-            $("#btn-next").val("Next");
+              $("#btn-next").val("Next");
 
-            $("#btn-next").attr('disabled', false);
+              $("#btn-next").attr('disabled', false);
 
-            $("#main_id").val(xhr.data.id);
+              $("#main_id").val(xhr.data.id);
 
-            $("#btn-next").click();
+              $("#btn-next").click();
+
+            } else {
+
+               window.location.href = '/admin/videos/view?id='+xhr.data.id;
+
+            }
+
 
         } else {
             console.log(xhr);
@@ -173,11 +285,11 @@ function redirect() {
           contentType: false,
           processData: false,
           success : function(data) {
-              if (data.id)  {
+             if (data.success)  {
                   console.log(data);
-                  window.location.href = '/admin/videos/view?id='+data.id;
+                  window.location.href = '/admin/view/video?id='+data.default_image_id;
               } else {
-                  console.log(data);
+                  alert(data.error_messages);
               }
           }
       });

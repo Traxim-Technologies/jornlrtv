@@ -51,6 +51,16 @@
                 <ul class="nav nav-tabs" role="tablist">
 
                     <li role="presentation" class="active">
+
+                        <a href="#pre-step1" data-toggle="tab" aria-controls="pre-step1" role="tab" title="{{tr('choose_video_type')}}">
+                            <span class="round-tab">
+                                <i class="fa fa-file-video-o"></i>
+                            </span>
+                        </a>
+                       
+                    </li>
+
+                    <li role="presentation" class="disabled">
                         <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="{{tr('video_details')}}">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-book"></i>
@@ -85,7 +95,77 @@
 
             <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.videos.save')}}">
                 <div class="tab-content">
-                    <div class="tab-pane active" role="tabpanel" id="step1">
+                    <div class="tab-pane active" role="tabpanel" id="pre-step1">
+
+                            <h3>{{tr('choose')}} {{tr('video_upload_type')}}</h3>
+                            <hr>
+
+                            <div id="category">
+
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+
+                                    <a onclick="saveVideoType({{VIDEO_TYPE_UPLOAD}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
+
+                                        <div style="background-image: url({{asset('assets/img/file-upload-icon.jpg')}})" class="category-img bg-img"></div>
+
+                                        <h3 class="category-tit">File Upload</h3>
+
+                                    </a>
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+
+                                    <a onclick="saveVideoType({{VIDEO_TYPE_YOUTUBE}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
+
+                                        <div style="background-image: url({{asset('assets/img/upload-to-youtube.png')}})" class="category-img bg-img"></div>
+
+                                        <h3 class="category-tit">YouTube Link</h3>
+
+                                    </a>
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+
+                                    <a onclick="saveVideoType({{VIDEO_TYPE_OTHERS}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
+
+                                        <div style="background-image: url({{asset('assets/img/others.png')}})" class="category-img bg-img"></div>
+
+                                        <h3 class="category-tit">Others</h3>
+
+                                    </a>
+
+                                </div>
+
+                                <input type="hidden" name="video_type" id="video_type" />
+
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <ul class="list-inline">
+
+                                <!-- <li class="pull-left">
+
+                                    <button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button>
+
+                                </li> -->
+
+                                <li class="pull-right" style="display: none;">
+
+                                    <button type="button" class="btn btn-primary next-step" id="{{REQUEST_STEP_PRE_1}}">{{tr('next')}}</button>
+
+                                </li>
+
+                                <div class="clearfix"></div>
+
+                            </ul>
+
+                    </div>
+
+                    <div class="tab-pane" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
                         <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
                         <hr>
@@ -213,6 +293,15 @@
                               <br>
                             </div>
 
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="form-group" style="display: none;" id="publish_time_div">
+                                    <label for="datepicker" class="">{{tr('publish_time')}} * </label>
+
+                                    <input type="text" name="publish_time" placeholder="Select the Publish Time i.e YYYY-MM-DD" class="form-control pull-right" id="datepicker">
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="description" class="">{{tr('description')}} * </label>
@@ -226,11 +315,21 @@
                                 </div>
                             </div>
                         </div>
-                        <ul class="list-inline pull-right">
-                            <li>
-                                <button type="button" style="display: none;" id="{{REQUEST_STEP_1}}" class="btn btn-primary next-step">{{tr('next')}}</button>
-                                <button type="button" class="btn btn-primary" onclick="saveVideoDetails({{REQUEST_STEP_1}})">{{tr('next')}}</button>
-                            </li>
+                        <ul class="list-inline">
+                             <li class="pull-left">
+
+                                    <button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button>
+
+                                </li>
+
+                                <li class="pull-right">
+
+                                    <button type="button" style="display: none;" id="{{REQUEST_STEP_1}}" class="btn btn-primary next-step">{{tr('next')}}</button>
+
+                                    <button type="button" class="btn btn-primary" onclick="saveVideoDetails({{REQUEST_STEP_1}})">{{tr('next')}}</button>
+                                </li>
+
+                                <div class="clearfix"></div>
                         </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="step2">
@@ -257,21 +356,53 @@
 
                     <div class="tab-pane" role="tabpanel" id="step3">
 
-                         <div class="">
-                            <div class="dropify-wrapper" onclick="$('#video_file').click();return false;">
-                              <div class="dropify-message">
-                                <span class="file-icon">
-                                  <i class="fa fa-cloud-upload"></i>
-                                </span>
-                                <p>{{tr('click_here')}}</p>
-                              </div>
-                              <div class="dropify-preview">
-                                  <span class="dropify-render">
-                                  </span>
-                              </div>
+                        <div id="others_video_upload_section" style="display: none;">
+
+                            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <p>{{tr('video_type')}} - <span id="selected_video_type"></span></p>
+
+                            </div> -->
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <div class="form-group">
+
+                                    <label for="other_video" class="">{{tr('video')}} * </label>
+
+                                    <input type="url" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}">
+
+                                </div>
+
                             </div>
 
-                            <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();" required>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <label>Choose Image</label>
+
+                                <input type="file" name="other_image" id="other_image" class="form-control" accept="image/png, image/jpeg">
+
+                            </div>
+
+                        </div>
+
+                         <div class="" id="file_video_upload_section">
+                            <div class="dropify-wrapper" onclick="VideoFile({{Setting::get('admin_delete_control')}});">
+                                  <div class="dropify-message">
+                                    <span class="file-icon">
+                                      <i class="fa fa-cloud-upload"></i>
+                                    </span>
+                                    <p>{{tr('click_here')}}</p>
+                                  </div>
+                                  <div class="dropify-preview">
+                                      <span class="dropify-render">
+                                      </span>
+                                  </div>
+                            </div>
+
+                            <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();">
 
                             <br>
                             <div class="progress" class="col-sm-12">
@@ -279,15 +410,29 @@
                                 <div class="percent">0%</div >
                             </div>
 
-                            <input type="submit" name="submit" id="submit_btn" style="display: none">
+                           
                         </div>
+
+                         <button type="submit" name="submit" id="submit_btn" style="display: none">{{tr('submit')}}</button>
+
                         <div class="clearfix"></div>
 
-                        <ul class="list-inline">
-                            <li class="pull-left"><button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button></li>
-                            <li class="pull-right">
-                                <button type="button" class="btn btn-primary next-step"  id="btn-next">{{tr('save_continue')}}</button>
-                            </li>
+                         <ul class="list-inline">
+                            <li class="pull-left">
+                                    <button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button>
+                                </li>
+
+                                <li class="pull-right">
+
+                                    @if(Setting::get('admin_delete_control') == 1) 
+                                        <button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full finish">{{tr('finish')}}</button>
+                                    @else
+                                        <button id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full finish" onclick="$('#submit_btn').click();">{{tr('finish')}}</button>
+                                    @endif
+
+                                    <button type="button" onchange="$('#submit_btn').click();" class="btn btn-primary next-step ctn" id="btn-next">{{tr('save_continue')}}</button>
+                                    
+                                </li>
                             <div class="clearfix"></div>
                         </ul>
 
@@ -410,6 +555,21 @@
         var save_img_url = "{{route('admin.videos.save.default_img')}}";
 
         var upload_video_image_url ="{{route('admin.videos.upload_image')}}";
+
+        function VideoFile(admin_delete_control) {
+
+            if (admin_delete_control) {
+
+
+            } else {
+
+                $('#video_file').click();return false;
+
+            }
+
+            return false;
+
+        }
     </script>
  
 @endsection

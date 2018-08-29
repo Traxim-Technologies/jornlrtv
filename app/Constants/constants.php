@@ -71,7 +71,7 @@ if(!defined('ONE_TIME_PAYMENT')) define('ONE_TIME_PAYMENT', 1);
 if(!defined('RECURRING_PAYMENT')) define('RECURRING_PAYMENT', 2);
 
 // REQUEST STATE
-
+if(!defined('REQUEST_STEP_PRE_1')) define('REQUEST_STEP_PRE_1', 5);
 if(!defined('REQUEST_STEP_1')) define('REQUEST_STEP_1', 1);
 if(!defined('REQUEST_STEP_2')) define('REQUEST_STEP_2', 2);
 if(!defined('REQUEST_STEP_3')) define('REQUEST_STEP_3', 3);
@@ -94,8 +94,17 @@ if(!defined('DEFAULT_FALSE')) define('DEFAULT_FALSE', 0);
 if(!defined('ADMIN')) define('ADMIN', 'admin');
 if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
 
+// VIDEO UPLOAD TYPES
+
 if(!defined('VIDEO_TYPE_UPLOAD')) define('VIDEO_TYPE_UPLOAD', 1);
+
 if(!defined('VIDEO_TYPE_LIVE')) define('VIDEO_TYPE_LIVE', 2);
+
+if(!defined('VIDEO_TYPE_YOUTUBE')) define('VIDEO_TYPE_YOUTUBE', 3);
+
+if(!defined('VIDEO_TYPE_OTHERS')) define('VIDEO_TYPE_OTHERS', 4);
+
+
 
 
 if(!defined('VIDEO_UPLOAD_TYPE_s3')) define('VIDEO_UPLOAD_TYPE_s3', 1);

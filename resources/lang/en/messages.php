@@ -1431,4 +1431,5 @@ return array(
 
 	'hls_video_url' => 'HLS Video URL',
 	'rtmp_video_url' => 'RTMP Video URL',
+	'choose_video_type'=>'Choose Video Type',
 );

@@ -1330,15 +1330,21 @@ class UserController extends Controller {
 
         if ($response->success) {
 
-            $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+            $view = '';
 
-            $view = \View::make('user.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
+            if ($response->data->video_type == VIDEO_TYPE_UPLOAD) {
+
+                $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+
+                $view = \View::make('user.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
+
+            }
 
             return response()->json(['path'=>$view, 'data'=>$response->data], 200);
 
         } else {
 
-            return response()->json(['message'=>$response->message], 400);
+            return response()->json(['message'=>$response->message], 200);
 
         }
 
@@ -1398,7 +1404,11 @@ class UserController extends Controller {
 
         $response = CommonRepo::upload_video_image($request)->getData();
 
-        return response()->json(['id'=>$response]);
+        if ($response->success) {
+
+            return response()->json($response);
+
+        }
 
     }
 
