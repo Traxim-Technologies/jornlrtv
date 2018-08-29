@@ -1432,4 +1432,8 @@ return array(
 	'hls_video_url' => 'HLS Video URL',
 	'rtmp_video_url' => 'RTMP Video URL',
 	'choose_video_type'=>'Choose Video Type',
+		'manual_upload'=>'Manual Upload',
+	'youtube_links'=>'Youtube Links',
+	'other_links'=>'Other Links',
+	'video_type'=>'Video Type',
 );

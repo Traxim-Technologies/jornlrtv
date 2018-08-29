@@ -193,6 +193,27 @@ hr {
                         <th>{{tr('category')}}</th>
                         <td>{{$video->category_name}}</td>
                     </tr>
+
+                    <tr>
+                        <th>{{tr('video_type')}}</th>
+                        <td>
+                            @if($video->video_type == VIDEO_TYPE_UPLOAD) 
+                                        
+                                {{tr('manual_upload')}}
+
+                            @elseif($video->video_type == VIDEO_TYPE_YOUTUBE)
+
+                                {{tr('youtube_links')}}
+
+                            @else
+
+                                {{tr('other_links')}}
+
+                            @endif
+
+                        </td>
+                    </tr>
+
                     <tr>
                         <th>{{tr('tags')}}</th>
                         <td>@if($video->getScopeVideoTags) 

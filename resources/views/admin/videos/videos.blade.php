@@ -37,6 +37,7 @@
 								<th>{{tr('id')}}</th>
 								<th>{{tr('channel')}}</th>
 								<th>{{tr('category')}}</th>
+								<th>{{tr('video_type')}}</th>
 								<th>{{tr('title')}}</th>
 
 								<?php /*@if(Setting::get('is_banner_video'))
@@ -70,6 +71,23 @@
 							      	<td><a href="{{route('admin.channels.view', $video->channel_id)}}">{{$video->channel_name}}</a></td>
 							      		
 							      	<td><a href="{{route('admin.categories.view', ['category_id'=>$video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
+
+							      	<td>
+							      		
+							      		@if($video->video_type == VIDEO_TYPE_UPLOAD) 
+                                            
+                                            {{tr('manual_upload')}}
+
+                                        @elseif($video->video_type == VIDEO_TYPE_YOUTUBE)
+
+                                            {{tr('youtube_links')}}
+
+                                        @else
+
+                                            {{tr('other_links')}}
+
+                                        @endif
+							      	</td>
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 							      	<?php /*@if(Setting::get('theme') == 'default')
