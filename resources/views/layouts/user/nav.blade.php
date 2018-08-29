@@ -15,6 +15,13 @@
             </a>
         </li>
 
+         <li id="custom_live_videos">
+            <a href="{{route('user.custom_live_videos.index')}}">
+                <img src="{{asset('images/trending-grey.png')}}" class="grey-img">
+                <img src="{{asset('images/trending-grey.png')}}" class="red-img">{{tr('custom_live_videos')}}
+            </a>
+        </li>
+
         <li id="channels">
             <a href="{{route('user.channel.list')}}">
                 <img src="{{asset('images/search-grey.png')}}" class="grey-img">

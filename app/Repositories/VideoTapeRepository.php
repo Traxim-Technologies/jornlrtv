@@ -509,7 +509,7 @@ class VideoTapeRepository {
             }
 
 
-            $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
+            $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details)->getData()->success;
 
             $ppv_notes = !$pay_per_view_status ? ($video_tape_details->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
 

@@ -91,7 +91,12 @@ class UserController extends Controller {
                 'partialVideos', 
                 'payment_mgmt_videos', 
                 'forgot_password' ,
-                'channel_videos'
+                'channel_videos',
+                'categories_view',
+                'categories_videos',
+                'categories_channels',
+                'custom_live_videos',
+                'single_custom_live_video'
         ]]);
     }
 
@@ -1325,15 +1330,21 @@ class UserController extends Controller {
 
         if ($response->success) {
 
-            $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+            $view = '';
 
-            $view = \View::make('user.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
+            if ($response->data->video_type == VIDEO_TYPE_UPLOAD) {
+
+                $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+
+                $view = \View::make('user.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
+
+            }
 
             return response()->json(['path'=>$view, 'data'=>$response->data], 200);
 
         } else {
 
-            return response()->json(['message'=>$response->message], 400);
+            return response()->json(['message'=>$response->message], 200);
 
         }
 
@@ -1393,7 +1404,11 @@ class UserController extends Controller {
 
         $response = CommonRepo::upload_video_image($request)->getData();
 
-        return response()->json(['id'=>$response]);
+        if ($response->success) {
+
+            return response()->json($response);
+
+        }
 
     }
 
@@ -2416,56 +2431,6 @@ class UserController extends Controller {
 
     }
 
-    /**
-     * Function Name : categories_videos()
-     *
-     * To list out category videos based on category
-     * 
-     * @created_by - Shobana Chandrasekar
-     *
-     * @updated_by - -
-     *
-     * @param integer $request->id - Category Id
-     *
-     * @return response of success/failure message
-     */
-    public function categories_videos(Request $request) {
-
-        $category = Category::find($request->id);
-
-        if ($category) {
-
-            if (Auth::check()) {
-
-                $request->request->add([ 
-                    'category_id'=>$request->id,
-                    'id' => \Auth::user()->id,
-                    'token' => \Auth::user()->token,
-                    'device_token' => \Auth::user()->device_token,
-                    'age'=>\Auth::user()->age_limit,
-                    'device_type'=>DEVICE_WEB
-                ]);
-            }
-
-            $data = $this->UserAPI->categories_videos($request)->getData();
-
-            if($data->success) {
-
-                return view('user.category.category_videos')->with('page', 'category_name_'.$category->id)
-                                        ->with('videos',$data)
-                                        ->with('category', $category);
-
-            } else {
-
-                return back()->with('flash_error', $data->error_messages);
-
-            }
-        } else {
-
-            return back()->with('flash_error', tr('category_not_found'));
-
-        }
-    }
 
     /**
      * Function Name : tags_videos()
@@ -2587,6 +2552,192 @@ class UserController extends Controller {
             return back()->with('flash_error', $response->error_messages);
 
         }
+
+    }
+
+
+   /**
+    * Function Name : categories_view()
+    *
+    * category details based on id
+    *
+    * @created_by shobana
+    *
+    * @updated_by -
+    *
+    * @param - 
+    * 
+    * @return response of json
+    */
+    public function categories_view(Request $request) {
+
+        $request->request->add([ 
+            'category_id'=>$request->id,
+            'id' => \Auth::check() ? \Auth::user()->id : '',
+            'token' => \Auth::check() ? \Auth::user()->token : '',
+            'device_token' => \Auth::check() ? \Auth::user()->device_token : '',
+            'device_type'=>DEVICE_ANDROID
+        ]);
+
+        $response = $this->UserAPI->categories_view($request)->getData();
+
+        if ($response->success) {
+
+            $category = $response->category;
+
+            $videos = $response->category_videos;
+
+            $channels = $response->channels_list;
+
+
+            return view('user.categories.view')
+                        ->with('page' , 'categories_'.$request->category_id)
+                        ->with('subPage' , 'categories')
+                        ->with('category' , $category)
+                        ->with('videos', $videos)
+                        ->with('channels', $channels);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+    }
+
+    /**
+     * Function Name : categories_videos()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * To display based on category
+     *
+     * @param object $request - User Details
+     *
+     * @return Response of videos list
+     */
+    public function categories_videos(Request $request) {
+        
+        $request->request->add([ 
+            'id' => \Auth::check() ? \Auth::user()->id : '',
+            'token' => \Auth::check() ? \Auth::user()->token : '',
+            'device_token' => \Auth::check() ? \Auth::user()->device_token : '',
+            'device_type'=>DEVICE_ANDROID
+        ]);
+
+        $response = $this->UserAPI->categories_videos($request)->getData();
+
+        if ($response->success) {
+
+            $view = View::make('user.categories.videos')
+                    ->with('videos',$response->data)
+                    ->render();
+
+            return response()->json(['success'=>true, 'view'=>$view]);
+
+        } else {
+
+            return response()->json(['success'=>false, 'data'=>$response->error_messages]);
+
+        }
+
+    } 
+
+
+    /**
+     * Function Name : categories_channels
+     *
+     * To list out all the channels which is in active status
+     *
+     * @created_by Shobana 
+     *
+     * @updated_by Shobana
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list
+     */
+    public function categories_channels(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::check() ? \Auth::user()->id : '',
+            'token' => \Auth::check() ? \Auth::user()->token : '',
+            'device_token' => \Auth::check() ? \Auth::user()->device_token : '',
+            'device_type'=>DEVICE_ANDROID
+        ]);
+
+        $response = $this->UserAPI->categories_channels_list($request)->getData();
+
+        if ($response->success) {
+
+            $view = View::make('user.categories.channels')
+                    ->with('channels',$response->data)
+                    ->render();
+
+            return response()->json(['success'=>true, 'view'=>$view]);
+
+        } else {
+
+            return response()->json(['success'=>false, 'data'=>$response->error_messages]);
+
+        }
+
+    }   
+
+        /**
+     *
+     * Function : custom_live_videos()
+     *
+     * @description return list of live videos created by admin
+     *
+     * @author Shobana , Edited By - shobana
+     *
+     * @return list page for live videos
+     */
+
+    public function custom_live_videos(Request $request) {
+
+        $request->request->add([
+            'paginate' => 1
+        ]);
+
+        $response = $this->UserAPI->custom_live_videos($request)->getData();
+
+        // dd($response->live);
+
+        return view('user.custom_live_videos.index')->with('page', 'custom_live_videos')
+                ->with('subPage', 'custom_live_videos')
+                ->with('data', isset($response->live) ? $response->live : []);
+
+    }
+
+    /**
+     *
+     * Function : single_live_rtmp_videos()
+     *
+     * @description return view details of live video
+     *
+     * @author Shobana , Edited By - shobana
+     *
+     * @return view page for selected live video
+     */
+    public function single_custom_live_video($id = "" , Request $request) {
+
+        $request->request->add([
+            'custom_live_video_id'=> $id,
+        ]);
+
+        $response = $this->UserAPI->single_custom_live_video($request)->getData();
+
+        if(!$response->success) {
+            return redirect()->to('/')->with('flash_error' , "Details not found");
+        } 
+
+        return view('user.custom_live_videos.view')->with('page', 'custom_live_videos')
+                ->with('subPage', 'custom_live_videos')
+                ->with('suggestions', isset($response->suggestions) ? $response->suggestions : [])
+                ->with('video', isset($response->model) ? $response->model : []);
 
     }
 }
