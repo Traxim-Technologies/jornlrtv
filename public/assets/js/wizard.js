@@ -287,7 +287,7 @@ function redirect() {
           success : function(data) {
              if (data.success)  {
                   console.log(data);
-                  window.location.href = '/admin/view/video?id='+data.default_image_id;
+                  window.location.href = '/admin/videos/view?id='+data.default_image_id;
               } else {
                   alert(data.error_messages);
               }

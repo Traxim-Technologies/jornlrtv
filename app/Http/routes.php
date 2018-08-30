@@ -29,8 +29,6 @@ Route::get('/video_notification' , 'SampleController@video_notification');
 
 Route::get('/upload_videoUI' , 'SampleController@upload_video');
 
-Route::get('/settings' , 'SampleController@settings');
-
 // Unused Sample Routes
 
 Route::post('angelo/in-app-purchase' , 'SampleController@angelo_in_app_purchase');
@@ -726,6 +724,12 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/single_custom_live_video/{id?}' , 'UserController@single_custom_live_video')->name('custom_live_videos.view');
 
     Route::get('/custom_live_videos' , 'UserController@custom_live_videos')->name('custom_live_videos.index');
+
+    // Settings page
+
+    Route::get('/settings' , 'UserController@settings');
+
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){

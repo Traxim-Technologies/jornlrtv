@@ -2740,4 +2740,31 @@ class UserController extends Controller {
                 ->with('video', isset($response->model) ? $response->model : []);
 
     }
+
+
+    /**
+     *
+     * Function : settings()
+     *
+     * @description Display all the portion of the logged in user
+     *
+     * @author Shobana , Edited By - shobana
+     *
+     * @return list of options
+     */
+    public function settings(Request $request) {
+
+        $user_id = Auth::check() ? Auth::user()->id : "";
+
+        $subscriptions = Subscription::where('status', ACTIVE_PLANS)->count();
+
+        $wishlist = Wishlist::where('user_id', $user_id)->count();
+
+        return view('user.settings')
+                ->with('page', 'settings')
+                ->with('subPage', '')
+                ->with('subscriptions', $subscriptions)
+                ->with('wishlist', $wishlist);
+    }
+    
 }

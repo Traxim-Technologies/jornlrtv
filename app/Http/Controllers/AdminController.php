@@ -1696,36 +1696,6 @@ class AdminController extends Controller {
 
         if($video = VideoTape::where('id' , $id)->first())  {
 
-            Helper::delete_picture($video->video, "/uploads/videos/");
-
-            Helper::delete_picture($video->subtitle, "/uploads/subtitles/"); 
-
-            if ($video->banner_image) {
-
-                Helper::delete_picture($video->banner_image, "/uploads/images/");
-            }
-
-            Helper::delete_picture($video->default_image, "/uploads/images/");
-
-            if ($video->video_path) {
-
-                $explode = explode(',', $video->video_path);
-
-                if (count($explode) > 0) {
-
-
-                    foreach ($explode as $key => $exp) {
-
-
-                        Helper::delete_picture($exp, "/uploads/videos/");
-
-                    }
-
-                }
-        
-
-            }
-
             $video->delete();
 
             return back()->with('flash_success', tr('video_delete_success'));

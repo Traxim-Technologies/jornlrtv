@@ -90,6 +90,11 @@
                                   </div>
 
                                   <input type="hidden" name="video_type" id="video_type" required value="{{$model->video_type}}" />
+
+                                   <button type='button' class='btn btn-fill btn-danger btn-next pull-right' name='next' value='Next' id="first_btn">{{tr('next')}}</button>
+
+                                   <div class="clearfix"></div>
+
                               </div>
 
                                 <div class="tab-pane" id="details">
@@ -356,19 +361,24 @@
                             <div class="wizard-footer" style="display: none">
                                 <div class="pull-right">
 
-                                    <input type='button' class='btn btn-abort btn-fill btn-warning btn-wd' name='abort' value="{{tr('abort')}}" id="abort_btn" onclick="abortVideo();"/>
+                                      <input type='button' class='btn btn-abort btn-fill btn-warning btn-wd' name='abort' value="{{tr('abort')}}" id="abort_btn" onclick="abortVideo();"/>
 
                                       @if (Setting::get('admin_delete_control'))
-                                      <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next'/>
-                                      @else
-                                      <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next' id="next_btn"/>
-                                      @endif
-                                      
 
-                                      <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Finish' onclick="redirect()" />
+                                      <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' disabled />
+
+                                      @else
+
+                                      <input type='button' class='btn btn-next btn-fill btn-danger btn-wd ctn' name='next' value='Next' id="click"/>
+                                      
+                                      @endif
+
+                                    
+
+                                      <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd final' name='finish' value='Finish' onclick="redirect()" />
                                   </div>
                                   <div class="pull-left">
-                                      <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
+                                      <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' id="previous"/>
                                   </div>
                                   <div class="clearfix"></div>
                             </div>
@@ -704,6 +714,7 @@ function saveVideoType(video_type, step) {
 
     $("#duration").attr('required', false);
 
+
     if (video_type != 1) {
 
       $("#duration_div").show();
@@ -730,7 +741,6 @@ function countNext() {
   $("#manual_finish").hide();
 
   if (video_type == 1) {
-
 
     $('#others_video_upload_section').hide();
 

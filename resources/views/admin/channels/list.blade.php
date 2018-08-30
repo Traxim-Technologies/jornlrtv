@@ -24,7 +24,7 @@
                 <b style="font-size:18px;">{{tr('channels')}}</b>
                 <a href="{{route('admin.channels.create')}}" class="btn btn-default pull-right">{{tr('add_channel')}}</a>
             </div>
-            <div class="box-body">
+            <div class="box-body table-responsive">
 
             	@if(count($channels) > 0)
 

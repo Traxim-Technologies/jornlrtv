@@ -21,9 +21,9 @@
                 		<div class="settings-card carg-lg">
                 			<div class="text-center">
                 				<img src="{{asset('images/bg-blue2.jpg')}}" class="settings-card-img">
-                				<h4 class="settings-head">user</h4>
-                				<p class="settings-subhead">user@streamtube.com</p>
-                				<a href="{{route('user.profile')}}" class="settings-link">view profile</a>
+                				<h4 class="settings-head">{{Auth::user()->name}}</h4>
+                				<p class="settings-subhead">{{Auth::user()->email}}</p>
+                				<a href="{{route('user.profile')}}" class="settings-link">{{tr('view_profile')}}</a>
                 			</div>
                 		</div>
                 	</div>
@@ -35,8 +35,8 @@
 	                					<img src="{{asset('images/subscription.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">subscription</h4>
-	                					<p class="settings-subhead">5 plans</p>
+	                					<h4 class="settings-head">{{tr('subscriptions')}}</h4>
+	                					<p class="settings-subhead">{{$subscriptions}} {{tr('plans')}}</p>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -48,7 +48,7 @@
 	                					<img src="{{asset('images/subscription-history.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">my subscription</h4>
+	                					<h4 class="settings-head">{{tr('my_plans')}}</h4>
 	                					<p class="settings-subhead">valid upto <span>18 Mar 2018</span></p>
 	                				</div>
 	                			</div>
@@ -63,8 +63,8 @@
 	                					<img src="{{asset('images/heart.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">wishlist</h4>
-	                					<p class="settings-subhead">15 videos</p>
+	                					<h4 class="settings-head">{{tr('wishlists')}}</h4>
+	                					<p class="settings-subhead">{{$wishlist}} {{tr('videos')}}</p>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -76,7 +76,7 @@
 	                					<img src="{{asset('images/spam.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">spam</h4>
+	                					<h4 class="settings-head">{{tr('spam')}}</h4>
 	                					<p class="settings-subhead">10 videos</p>
 	                				</div>
 	                			</div>
@@ -91,7 +91,7 @@
 	                					<img src="{{asset('images/computer.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">subscribed channel</h4>
+	                					<h4 class="settings-head">{{tr('subscribed_channels')}}</h4>
 	                					<p class="settings-subhead">1 channel</p>
 	                				</div>
 	                			</div>
@@ -106,7 +106,7 @@
 	                					<img src="{{asset('images/history1.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">history</h4>
+	                					<h4 class="settings-head">{{tr('history')}}</h4>
 	                					<p class="settings-subhead">15 videos</p>
 	                				</div>
 	                			</div>
@@ -121,7 +121,7 @@
 	                					<img src="{{asset('images/dollar.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">PPV history</h4>
+	                					<h4 class="settings-head">{{tr('ppv_history')}}</h4>
 	                					<p class="settings-subhead">15 videos</p>
 	                				</div>
 	                			</div>
@@ -136,7 +136,7 @@
 	                					<img src="{{asset('images/card.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">cards</h4>
+	                					<h4 class="settings-head">{{tr('cards')}}</h4>
 	                					<p class="settings-subhead">2 cards added</p>
 	                				</div>
 	                			</div>
@@ -151,7 +151,7 @@
 	                					<img src="{{asset('images/redeems.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">redeem</h4>
+	                					<h4 class="settings-head">{{tr('redeem')}}</h4>
 	                					<p class="settings-subhead">total amount $120</p>
 	                				</div>
 	                			</div>
@@ -166,7 +166,7 @@
 	                					<img src="{{asset('images/change.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head settings-mt-1">change password</h4>
+	                					<h4 class="settings-head settings-mt-1">{{tr('change_password')}}</h4>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -180,7 +180,7 @@
 	                					<img src="{{asset('images/trash.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head settings-mt-1">delete account</h4>
+	                					<h4 class="settings-head settings-mt-1">{{tr('delete_account')}}</h4>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -194,7 +194,7 @@
 	                					<img src="{{asset('images/logout.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head settings-mt-1">logout</h4>
+	                					<h4 class="settings-head settings-mt-1">{{tr('logout')}}</h4>
 	                				</div>
 	                			</div>
 	                		</div>

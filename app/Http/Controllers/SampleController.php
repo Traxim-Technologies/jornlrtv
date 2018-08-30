@@ -23,7 +23,4 @@ class SampleController extends Controller
     	return view('user.videos.upload_video');
     }
 
-    public function settings(Request $request) {
-        return view('user.settings');
-    }
 }

@@ -8,6 +8,8 @@ use Auth;
 
 use App\Helpers\Helper;
 
+use App\Category;
+
 class VideoTape extends Model
 {
 
@@ -254,6 +256,54 @@ class VideoTape extends Model
         //delete your related models here, for example
         static::deleting(function($model)
         {
+
+            if ($model) {
+
+                Helper::delete_picture($model->video, "/uploads/videos/");
+
+                Helper::delete_picture($model->subtitle, "/uploads/subtitles/"); 
+
+                if ($model->banner_image) {
+
+                    Helper::delete_picture($model->banner_image, "/uploads/images/");
+                }
+
+                Helper::delete_picture($model->default_image, "/uploads/images/");
+
+                if ($model->video_path) {
+
+                    $explode = explode(',', $model->video_path);
+
+                    if (count($explode) > 0) {
+
+
+                        foreach ($explode as $key => $exp) {
+
+
+                            Helper::delete_picture($exp, "/uploads/videos/");
+
+                        }
+
+                    }
+        
+                }
+
+                if ($model->category_id) {
+
+                    $category = Category::find($model->category_id);
+
+                    if ($category) {
+
+                        $category->no_of_uploads = $category->no_of_uploads > 0 ? $category->no_of_uploads - 1 : 0;
+
+                        $category->save();
+
+                    }
+
+                }
+
+            }
+
             if (count($model->getVideoTapeImages) > 0) {
 
                 foreach ($model->getVideoTapeImages as $key => $value) {
@@ -280,7 +330,7 @@ class VideoTape extends Model
 
             }
 
-             if (count($model->getUserFlags) > 0) {
+            if (count($model->getUserFlags) > 0) {
 
                 foreach ($model->getUserFlags as $key => $value) {
 
@@ -320,6 +370,7 @@ class VideoTape extends Model
                 }               
 
             }
+
 
         }); 
 

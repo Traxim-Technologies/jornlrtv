@@ -252,3 +252,10 @@ if(!defined('WATCHED')) define('WATCHED', 1);
 if(!defined('PPV_ENABLED')) define('PPV_ENABLED', 1);
 
 if(!defined('PPV_DISABLED')) define('PPV_DISABLED', 0);
+
+
+// Subscription Status
+
+if(!defined('ACTIVE_PLANS')) define('ACTIVE_PLANS', 1);
+
+if(!defined('INACTIVE_PLANS')) define('INACTIVE_PLANS', 0);

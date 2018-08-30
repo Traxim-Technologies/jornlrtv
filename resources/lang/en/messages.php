@@ -1437,4 +1437,8 @@ return array(
 	'youtube_links'=>'Youtube Links',
 	'other_links'=>'Other Links',
 	'video_type'=>'Video Type',
+	'my_plans'=>'My Plans',
+	'spam'=>'Spam',
+	'view_profile'=>'View Profile',
+	'plans'=>'Plans'
 );

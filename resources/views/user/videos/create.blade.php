@@ -79,7 +79,7 @@
 
                                     <input type="hidden" name="video_type" id="video_type" required />
 
-                                    <button type='button' class='btn btn-fill btn-danger btn-next' name='next' value='Next' id="first_btn">{{tr('next')}}</button>
+                                   
 
                                 </div>
 

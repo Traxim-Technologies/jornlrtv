@@ -171,7 +171,7 @@ $(window).resize(function(){
 });
 
 function refreshAnimation($wizard, index){
-    // total_steps = $wizard.find('li').length; // 4
+    //total_steps = $wizard.find('li').length; // 4
     total_steps = 4; // 4
     move_distance = $wizard.width() / total_steps;
     step_width = move_distance;
