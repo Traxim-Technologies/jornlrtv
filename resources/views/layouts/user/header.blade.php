@@ -235,18 +235,18 @@
                                         <img src="{{Auth::user()->picture}}">
                                     </div>
                                     <div class="menu-profile-right">
-                                        <h4>user</h4>
-                                        <p>user@gmail.com</p>
+                                        <h4>{{Auth::user()->name}}</h4>
+                                        <p>{{Auth::user()->email}}</p>
                                     </div>
                                 </div>
                             </a>
                             <li role="separator" class="divider"></li>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <a href="/settings" class="menu-link"><i class="fa fa-cog"></i>settings</a>
+                                    <a href="/settings" class="menu-link"><i class="fa fa-cog"></i>{{tr('settings')}}</a>
                                 </div>
                                 <div class="col-xs-6">
-                                    <a href="{{route('user.logout')}}" class="menu-link"><i class="fa fa-sign-out"></i>logout</a>
+                                    <a href="{{route('user.logout')}}" class="menu-link"><i class="fa fa-sign-out"></i>{{tr('logout')}}</a>
                                 </div>
                             </div>
                             <!-- <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
