@@ -130,7 +130,7 @@
 					              			</a>
 				              			@endif
 
-			              				<a href="{{route('admin.videos.list' ,['tag_id'=>$data->id])}}" class="btn  btn-xs btn-success" title="Tagged Videos">
+			              				<a href="{{route('admin.tags.videos' ,['tag_id'=>$data->id])}}" class="btn  btn-xs btn-success" title="Tagged Videos">
 
 				              				<i class="fa fa-video-camera"></i>
 

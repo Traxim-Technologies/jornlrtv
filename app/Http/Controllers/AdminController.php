@@ -4947,6 +4947,49 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : tags_videos
+     *
+     * List of videos displayed and also based on tags
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param --
+     * 
+     * @return response of videos details
+     *
+     */
+    public function tags_videos(Request $request) {
+
+        $tag = Tag::find($request->id);
+
+        if ($tag) {
+
+            $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
+                        ->where('video_tape_tags.tag_id', $request->id)
+                        ->orderBy('video_tapes.created_at' , 'desc')
+                        ->groupBy('video_tape_tags.video_tape_id')
+                        ->get();
+
+
+            return view('admin.tags.videos')
+                        ->with('videos' , $videos)
+                        ->with('tag', $tag)
+                        ->withPage('tags')
+                        ->with('sub_page','tags');
+
+        } else {
+
+            return back()->with('flash_error', tr('tag_not_found'));
+
+        }
+   
+    }
+
+    /**
      * Function Name : save_tag()
      *
      * To save the tag
