@@ -104,20 +104,20 @@
             </li>
 
             <li class="treeview" id="custom_live_videos">
-                <a href="{{route('admin.custom_live_videos')}}">
+                <a href="{{route('admin.custom.live')}}">
                     <i class="fa fa-wifi"></i> <span>{{tr('custom_live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
 
                     <li id="create_live_video">
-                        <a href="{{route('admin.custom_live_videos_create')}}">
+                        <a href="{{route('admin.custom.live.create')}}">
                             <i class="fa fa-circle-o"></i>{{tr('create_custom_live_video')}}
                         </a>
                     </li>
 
                     <li id="custom_live_videos_index">
-                        <a href="{{route('admin.custom_live_videos')}}">
+                        <a href="{{route('admin.custom.live')}}">
                             <i class="fa fa-circle-o"></i>{{tr('custom_live_videos')}}
                         </a>
                     </li>

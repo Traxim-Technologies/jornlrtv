@@ -115,7 +115,7 @@
                                             <div class="main-video">
                                                  <div class="video-image">
                                                     <div class="video-image-outer">
-                                                        <a href="{{route('user.custom_live_videos.view' , $suggestion->custom_live_video_id)}}"><img src="{{$suggestion->image}}"></a>
+                                                        <a href="{{route('user.custom.live.view' , $suggestion->custom_live_video_id)}}"><img src="{{$suggestion->image}}"></a>
                                                     </div>  
                                                     
                                                     <div class="video_duration">
@@ -125,7 +125,7 @@
 
                                                 <div class="sugg-head">
                                                     <div class="suggn-title">                                          
-                                                        <h5><a href="{{route('user.custom_live_videos.view' , $suggestion->custom_live_video_id)}}">{{$suggestion->title}}</a></h5>
+                                                        <h5><a href="{{route('user.custom.live.view' , $suggestion->custom_live_video_id)}}">{{$suggestion->title}}</a></h5>
                                                     </div><!--end of sugg-title-->
 
                                                     <span class="video_views">

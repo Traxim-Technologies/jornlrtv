@@ -471,19 +471,19 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Custom Live Videos
 
-    Route::get('custom_live_videos', 'AdminController@custom_live_videos')->name('custom_live_videos');
+    Route::get('custom/live/videos', 'AdminController@custom_live_videos')->name('custom.live');
 
-    Route::get('custom_live_videos_create', 'AdminController@custom_live_videos_create')->name('custom_live_videos_create');
+    Route::get('custom/live/create', 'AdminController@custom_live_videos_create')->name('custom.live.create');
 
-    Route::get('custom_live_videos_edit', 'AdminController@custom_live_videos_edit')->name('custom_live_videos_edit');
+    Route::get('custom/live/edit', 'AdminController@custom_live_videos_edit')->name('custom.live.edit');
 
-    Route::post('custom_live_videos_save', 'AdminController@custom_live_videos_save')->name('custom_live_videos_save');
+    Route::post('custom/live/save', 'AdminController@custom_live_videos_save')->name('custom.live.save');
 
-    Route::get('custom_live_videos_delete', 'AdminController@custom_live_videos_delete')->name('custom_live_videos_delete');
+    Route::get('custom/live/delete', 'AdminController@custom_live_videos_delete')->name('custom.live.delete');
 
-    Route::get('custom_live_videos_view/{id}', 'AdminController@custom_live_videos_view')->name('custom_live_videos_view');
+    Route::get('custom/live/view/{id}', 'AdminController@custom_live_videos_view')->name('custom.live.view');
 
-    Route::get('custom_live_videos_change_status', 'AdminController@custom_live_videos_change_status')->name('custom_live_videos_change_status');
+    Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change-status');
 });
 
 
@@ -723,9 +723,9 @@ Route::group(['as' => 'user.'], function(){
 
     // Live Streaming video
 
-    Route::get('/single_custom_live_video/{id?}' , 'UserController@single_custom_live_video')->name('custom_live_videos.view');
+    Route::get('/single/live/video/{id?}' , 'UserController@single_custom_live_video')->name('custom.live.view');
 
-    Route::get('/custom_live_videos' , 'UserController@custom_live_videos')->name('custom_live_videos.index');
+    Route::get('/custom/live/videos' , 'UserController@custom_live_videos')->name('custom.live.index');
 
     // Settings page
 

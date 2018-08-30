@@ -16,7 +16,7 @@
         </li>
 
          <li id="custom_live_videos">
-            <a href="{{route('user.custom_live_videos.index')}}">
+            <a href="{{route('user.custom.live.index')}}">
                 <img src="{{asset('images/trending-grey.png')}}" class="grey-img">
                 <img src="{{asset('images/trending-grey.png')}}" class="red-img">{{tr('custom_live_videos')}}
             </a>

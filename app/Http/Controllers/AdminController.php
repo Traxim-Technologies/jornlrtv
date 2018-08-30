@@ -5350,7 +5350,7 @@ class AdminController extends Controller {
         $model = CustomLiveVideo::find($request->id);
 
         if(count($model) == 0) {
-            return redirect()->route('admin.custom_live_videos')->with('flash_error' , tr('custom_live_video_not_found'));
+            return redirect()->route('admin.custom.live')->with('flash_error' , tr('custom_live_video_not_found'));
         }
 
         return view('admin.custom_live_videos.edit')->withModel($model)->with('sub_page','custom_live_videos')->with('page' , 'create_live_video');
@@ -5371,7 +5371,7 @@ class AdminController extends Controller {
 
         if($response->success) {
 
-            return redirect(route('admin.custom_live_videos_view', $response->data->id))->with('flash_success', $response->message);
+            return redirect(route('admin.custom.live.view', $response->data->id))->with('flash_success', $response->message);
 
         } else {
 
@@ -5396,7 +5396,7 @@ class AdminController extends Controller {
 
         if(count($model) == 0) {
 
-            return redirect()->route('admin.custom_live_videos')->with('flash_error' , tr('custom_live_video_not_found'));
+            return redirect()->route('admin.custom.live')->with('flash_error' , tr('custom_live_video_not_found'));
         }
 
         $model->status = $model->status ?  DEFAULT_FALSE : DEFAULT_TRUE;

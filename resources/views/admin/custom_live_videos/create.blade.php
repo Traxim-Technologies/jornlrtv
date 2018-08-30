@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.custom_live_videos')}}"><i class="fa fa-camera-video"></i> {{tr('custom_live_videos')}}</a></li>
+    <li><a href="{{route('admin.custom.live')}}"><i class="fa fa-camera-video"></i> {{tr('custom_live_videos')}}</a></li>
     <li class="active"><i class="fa fa-camera-video"></i> {{tr('create_custom_live_video')}}</li>
 @endsection
 

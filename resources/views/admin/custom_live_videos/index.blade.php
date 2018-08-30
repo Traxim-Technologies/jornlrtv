@@ -18,7 +18,7 @@
 
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('custom_live_videos')}}</b>
-                <a href="{{route('admin.custom_live_videos_create')}}" class="btn btn-default pull-right">{{tr('create_custom_live_video')}}</a>
+                <a href="{{route('admin.custom.live.create')}}" class="btn btn-default pull-right">{{tr('create_custom_live_video')}}</a>
             </div>
 
             <div class="box-body">
@@ -67,17 +67,17 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.custom_live_videos_edit' , array('id' => $video->id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.custom.live.edit' , array('id' => $video->id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.custom_live_videos_view' , array('id' => $video->id))}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.custom.live.view' , array('id' => $video->id))}}">{{tr('view')}}</a></li>
 
 								                  	@if($video->status)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.custom_live_videos_change_status', array('id'=>$video->id))}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.custom.live.change_status', array('id'=>$video->id))}}">{{tr('decline')}}</a></li>
 								                	@else
 								                		
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.custom_live_videos_change_status', array('id'=>$video->id))}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.custom.live.change_status', array('id'=>$video->id))}}">{{tr('approve')}}</a></li>
 								                  		
 								                  	@endif
 								                  
@@ -89,7 +89,7 @@
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.custom_live_videos_delete' , array('id' => $video->id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.custom.live.delete' , array('id' => $video->id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 								                  	

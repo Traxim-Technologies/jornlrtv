@@ -17,7 +17,7 @@ hr {
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.custom_live_videos')}}"><i class="fa fa-video-camera"></i> {{tr('custom_live_videos')}}</a></li>
+    <li><a href="{{route('admin.custom.live')}}"><i class="fa fa-video-camera"></i> {{tr('custom_live_videos')}}</a></li>
     <li class="active">{{tr('view_custom_live_video')}}</li>
 @endsection 
 
@@ -36,7 +36,7 @@ hr {
                 </div>
                 <div class='pull-right'>
                    
-                    <a href="{{route('admin.custom_live_videos_edit' , array('id' => $video->id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+                    <a href="{{route('admin.custom.live.edit' , array('id' => $video->id))}}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
                 
                 </div>
                 <div class="clearfix"></div>

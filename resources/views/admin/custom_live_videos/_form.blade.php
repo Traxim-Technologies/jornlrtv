@@ -8,10 +8,10 @@
 
             <div class="box-header label-primary">
                 <b style="font-size:18px;">@yield('title')</b>
-                <a href="{{route('admin.custom_live_videos')}}" class="btn btn-default pull-right">{{tr('custom_live_videos')}}</a>
+                <a href="{{route('admin.custom.live')}}" class="btn btn-default pull-right">{{tr('custom_live_videos')}}</a>
             </div>
 
-            <form action="{{route('admin.custom_live_videos_save')}}" method="POST" enctype="multipart/form-data" role="form">
+            <form action="{{route('admin.custom.live.save')}}" method="POST" enctype="multipart/form-data" role="form">
 
                 <div class="box-body">
 

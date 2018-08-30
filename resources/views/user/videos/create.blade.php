@@ -79,7 +79,7 @@
 
                                     <input type="hidden" name="video_type" id="video_type" required />
 
-                                   
+                                    <input type='button' class='btn btn-fill btn-danger btn-next' name='next' value='Next'  style="display: none" id="first_btn"/>
 
                                 </div>
 
