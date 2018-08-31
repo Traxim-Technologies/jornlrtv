@@ -1938,7 +1938,7 @@ class UserApiController extends Controller {
             $response_array = ['success' => true , 'data' => $data];
 
         } else {
-            $response_array = ['success' => false , 'error_messages' => Helper::error_message(147) , 'error_code' => 147];
+            $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(147) , 'error_code' => 147];
         }
 
         return response()->json($response_array , 200);
@@ -3185,7 +3185,7 @@ class UserApiController extends Controller {
                                    
                                 } else {
 
-                                    throw new Exception(tr(Helper::error_message(902)), 902);
+                                    throw new Exception(tr(Helper::get_error_message(902)), 902);
 
                                 }
 
@@ -3202,7 +3202,7 @@ class UserApiController extends Controller {
 
                                 } else {
 
-                                    throw new Exception(Helper::error_message(902), 902);
+                                    throw new Exception(Helper::get_error_message(902), 902);
 
                                 }
 
@@ -3306,16 +3306,16 @@ class UserApiController extends Controller {
 
                                         } else {
 
-                                             throw new Exception(tr(Helper::error_message(902)), 902);
+                                             throw new Exception(tr(Helper::get_error_message(902)), 902);
 
                                         }
 
 
                                     } else {
 
-                                        $response_array = array('success' => false, 'error_messages' => Helper::error_message(903) , 'error_code' => 903);
+                                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
 
-                                        throw new Exception(Helper::error_message(903), 903);
+                                        throw new Exception(Helper::get_error_message(903), 903);
 
                                     }
 
@@ -3369,7 +3369,7 @@ class UserApiController extends Controller {
 
                         } else {
      
-                            throw new Exception(Helper::error_message(901), 901);
+                            throw new Exception(Helper::get_error_message(901), 901);
                             
                         }
 
@@ -3381,7 +3381,7 @@ class UserApiController extends Controller {
 
                 } else {
 
-                    throw new Exception(Helper::error_message(901), 901);
+                    throw new Exception(Helper::get_error_message(901), 901);
 
                 }         
 
@@ -5879,7 +5879,7 @@ class UserApiController extends Controller {
 
             $error_code = $e->getCode();
 
-            $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
             return response()->json($response_array , 200);
         }
@@ -6675,18 +6675,18 @@ class UserApiController extends Controller {
 
                             } else {
 
-                                $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(170), 'error_code'=>170];
+                                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(170), 'error_code'=>170];
 
                             }
 
                         } else {
 
-                            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(173), 'error_code'=>173];
+                            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(173), 'error_code'=>173];
                         }
 
                     } else {
 
-                        $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(159), 'error_code'=>159];
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(159), 'error_code'=>159];
 
                     }
 
@@ -6697,14 +6697,14 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(168), 'error_code'=>168];
+                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(168), 'error_code'=>168];
             }
 
 
 
         } else {
 
-            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(167), 'error_code'=>167];
+            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(174), 'error_code'=>174];
 
         }
 
@@ -6796,7 +6796,7 @@ class UserApiController extends Controller {
 
                     } else {
 
-                        $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(173), 'error_code'=>173];
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(173), 'error_code'=>173];
 
                     }
 
@@ -6808,12 +6808,12 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(168), 'error_code'=>168];
+                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(168), 'error_code'=>168];
             }            
 
         } else {
 
-            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(167), 'error_code'=>167];
+            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(174), 'error_code'=>174];
 
         }
 

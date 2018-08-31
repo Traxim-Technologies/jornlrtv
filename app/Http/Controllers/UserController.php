@@ -1028,7 +1028,7 @@ class UserController extends Controller {
                 ->with('flash_success', $response->message);
         } else {
             
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
 
     }

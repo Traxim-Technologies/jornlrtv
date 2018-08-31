@@ -159,11 +159,11 @@
                     $error = NULL;
                     return $row;
                 } else {
-                    $error = array('success' => false, 'error' => Helper::get_error_message(103), 'error_code' => 103);
+                    $error = array('success' => false, 'error_messages' => Helper::get_error_message(103), 'error_code' => 103);
                     return FALSE;
                 }
             }
-            $error = array('success' => false, 'error' => Helper::get_error_message(104), 'error_code' => 104);
+            $error = array('success' => false, 'error_messages' => Helper::get_error_message(104), 'error_code' => 104);
             return FALSE;
         }
 
@@ -389,6 +389,35 @@
                     break;
                 case 167:
                     $string = tr('user_payment_details_not_found');
+                    break;
+
+               
+                case 168:
+                    $string = tr('coupon_inactive_status');
+                    break;
+
+                case 169:
+                    $string = tr('subscription_not_found');
+                    break;
+
+                case 170:
+                    $string = tr('subscription_inactive_status');
+                    break;
+
+                case 171:
+                    $string = tr('subscription_amount_should_be_grater');
+                    break;
+
+                case 172:
+                    $string = tr('video_amount_should_be_grater');
+                    break;
+
+                case 173:
+                    $string = tr('expired_coupon_code');
+                    break;
+
+                 case 174:
+                    $string = tr('coupon_not_found');
                     break;
 
                 case 1000:

@@ -752,7 +752,7 @@ class ApplicationController extends Controller {
 
                                         $error_code = $e->getCode();
 
-                                        $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+                                        $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
                                         $pending_payment_details->reason_auto_renewal_cancel = $error_message;
 
@@ -766,7 +766,7 @@ class ApplicationController extends Controller {
 
                                         $error_code = $e->getCode();
 
-                                        $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+                                        $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
                                         $pending_payment_details->reason_auto_renewal_cancel = $error_message;
 
@@ -787,7 +787,7 @@ class ApplicationController extends Controller {
 
                                         $error_code = $e->getCode();
 
-                                        $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+                                        $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
                                         $pending_payment_details->reason_auto_renewal_cancel = $error_message;
 
@@ -810,7 +810,7 @@ class ApplicationController extends Controller {
 
                                         $error_code = $e->getCode();
 
-                                        $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+                                        $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
                                         $pending_payment_details->reason_auto_renewal_cancel = $error_message;
 
@@ -832,7 +832,7 @@ class ApplicationController extends Controller {
 
                                         $error_code = $e->getCode();
 
-                                        $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+                                        $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
                                         $pending_payment_details->reason_auto_renewal_cancel = $error_message;
 
@@ -853,7 +853,7 @@ class ApplicationController extends Controller {
 
                                         $error_code = $e->getCode();
 
-                                        $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+                                        $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
                                         $pending_payment_details->reason_auto_renewal_cancel = $error_message;
 
@@ -874,7 +874,7 @@ class ApplicationController extends Controller {
 
                                         $error_code = $e->getCode();
 
-                                        $response_array = ['success'=>false, 'error'=> $error_message , 'error_code' => $error_code];
+                                        $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
                                         $pending_payment_details->reason_auto_renewal_cancel = $error_message;
 
