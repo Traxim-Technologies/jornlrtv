@@ -1456,4 +1456,6 @@ return array(
 	'user_video_status'=>'User Stauts',
 	'tag_approve_notes'=>'Are you sure want to approve this tag ?',
 	'tag_decline_notes'=>'Are you sure want to decline this tag ? Once you declined, tag will be remove from all the depends videos',
+	'category_decline_notes'=>'Are you sure want to decline this category? Once you declined, based on this category videos will be decline.',
+	'category_approve_notes'=>'Are you sure want to approve this category? Once you approved, need to approve videos by manually',
 );

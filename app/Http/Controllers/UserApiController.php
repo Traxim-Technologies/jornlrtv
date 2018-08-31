@@ -1597,20 +1597,21 @@ class UserApiController extends Controller {
 
                 $data = VideoRepo::single_response($request->video_tape_id , $request->id , $login_by);
 
-                if($data['is_approved'] == ADMIN_VIDEO_DECLINED_STATUS || $data['status'] == USER_VIDEO_DECLINED_STATUS || $data['channel_approved_status'] == ADMIN_CHANNEL_DECLINED_STATUS || $data['channel_status'] == USER_CHANNEL_DECLINED_STATUS) {
-
-                    return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
-
-                }
-
-                // Video if not published
-
-                if ($data['publish_status'] != PUBLISH_NOW) {
-
-                    return response()->json(['success'=>false, 'error_messages'=>tr('video_not_yet_publish')]);
-                }
-
                 if(count($data) > 0) {
+
+                    if($data['is_approved'] == ADMIN_VIDEO_DECLINED_STATUS || $data['status'] == USER_VIDEO_DECLINED_STATUS || $data['channel_approved_status'] == ADMIN_CHANNEL_DECLINED_STATUS || $data['channel_status'] == USER_CHANNEL_DECLINED_STATUS) {
+
+                        return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
+
+                    }
+
+                    // Video if not published
+
+                    if ($data['publish_status'] != PUBLISH_NOW) {
+
+                        return response()->json(['success'=>false, 'error_messages'=>tr('video_not_yet_publish')]);
+                    }
+
 
                     // Comments Section
 

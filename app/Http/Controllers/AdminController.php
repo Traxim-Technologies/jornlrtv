@@ -4848,11 +4848,11 @@ class AdminController extends Controller {
 
             $model_img = $model->image;
 
-            /*if ($model->no_of_uploads > 0) {
+            if ($model->no_of_uploads > 0) {
 
                 return back()->with('flash_error', tr('category_allocated'));
 
-            }*/
+            }
 
             if ($model->delete()) {                
 
@@ -4892,14 +4892,14 @@ class AdminController extends Controller {
 
             $model = Category::find($request->id);
 
-            $model->status = $model->status == 1 ? DEFAULT_FALSE : DEFAULT_TRUE;
+            $model->status = $model->status == CATEGORY_APPROVE_STATUS ? CATEGORY_DECLINE_STATUS : CATEGORY_APPROVE_STATUS;
 
-            /*
-            if ($model->status == 0 && $model->no_of_uploads > 0) {
+            
+            if ($model->status == CATEGORY_DECLINE_STATUS) {
 
-                return back()->with('flash_error', tr('category_allocated'));
+                VideoTape::where('category_id', $model->id)->update(['is_approved'=>ADMIN_VIDEO_DECLINED_STATUS]);
 
-            }*/
+            }
 
             if ($model->save()) {
 
