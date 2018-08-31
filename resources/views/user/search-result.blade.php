@@ -54,7 +54,7 @@
                                             </div> <!--end of history-head--> 
 
                                             <div class="description">
-                                                <p>{{$video->description}}</p>
+                                                <div><?= $video->description?></div>
                                             </div><!--end of description--> 
 
                                             <span class="stars">

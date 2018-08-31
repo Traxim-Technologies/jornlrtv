@@ -7,7 +7,7 @@
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.users')}}"><i class="fa fa-user"></i> {{tr('users')}}</a></li>
-    <li class="active"><i class="fa fa-user"></i> {{tr('redeems')}}</li>
+    <li class="active"><i class="fa fa-trophy"></i> {{tr('redeems')}}</li>
 @endsection
 
 @section('content')
@@ -54,7 +54,7 @@
 
 							      	<td>
 
-							      		<a href="{{route('admin.view.user' , $value->user_id)}}">
+							      		<a href="{{route('admin.users.view' , $value->user_id)}}">
 							      			{{$value->user ? $value->user->name : ""}}
 							      		</a>
 

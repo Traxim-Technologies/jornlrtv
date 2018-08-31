@@ -21,7 +21,7 @@ class VideoAd extends Model
     }
 
 
-    public function getAssingAds() {
+    public function getAssignAds() {
 
         return $this->hasMany('App\AssignVideoAd', 'video_ad_id', 'id')->orderBy('video_time', 'asc');
 
@@ -51,7 +51,7 @@ class VideoAd extends Model
     {
         $array = parent::toArray();
 
-        $array['ad_details'] = $this->getAssingAds;
+        $array['ad_details'] = $this->getAssignAds;
 
         $array['post_ad'] = $this->getPostAdDetail;
 
@@ -79,9 +79,9 @@ class VideoAd extends Model
         //delete your related models here, for example
         static::deleting(function($model)
         {
-            if (count($model->getAssingAds) > 0) {
+            if (count($model->getAssignAds) > 0) {
 
-                foreach ($model->getAssingAds as $key => $value) {
+                foreach ($model->getAssignAds as $key => $value) {
 
                    $value->delete();    
 

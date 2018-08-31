@@ -102,7 +102,7 @@ thead>tr>th {
 
                     <div class="content-head">
 
-                        <div><h4 class="no-margin-top">{{tr('redeems')}}</h4></div>
+                        <div><h4 class="top">{{tr('redeems')}}</h4></div>
 
                     </div>
 
@@ -177,7 +177,7 @@ thead>tr>th {
                                                     <td>{{$redeem_request->created_at->diffForHumans()}}</td>
 
                                                     <td>
-                                                        <span class="btn btn-primary btn-xs"> <b>
+                                                        <span class="label label-primary"> <b>
 
                                                             {{redeem_request_status($redeem_request->status)}}
 

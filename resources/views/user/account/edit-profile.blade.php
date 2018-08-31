@@ -24,17 +24,18 @@
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
 
 
-            <div class="profile-content">
+            <div class="profile-content slide-area1">
                
                 <div class="row no-margin">
 
                     @include('notification.notify')
 
-                    <div class="col-sm-7 profile-view">
+                    <div class="col-sm-12 col-md-7 col-lg-6 profile-view">
+                        <h4 class="mylist-head">{{tr('edit_profile')}}</h4>
                         <div class="edit-profile profile-view">
-                            <div class="edit-form">
+                            <div class="edit-form profile-bg">
 
-                                <h4 class="edit-head">{{tr('edit_profile')}}</h4>
+                                <!-- <h4 class="edit-head">{{tr('edit_profile')}}</h4> -->
                                 
                                 <div class="image-profile edit-image">
                                     @if(Auth::user()->picture)
@@ -42,12 +43,12 @@
                                     @else
                                         <img src="{{asset('placeholder.png')}}" id="img_profile">
                                     @endif    
-                                  <!--  <div class="edit-image-change">
+                                    <!--  <div class="edit-image-change">
                                         <span class="fa-stack fa-lg">
                                             <i class="fa fa-square fa-stack-2x"></i>
                                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                         </span>
-                                   </div>  -->
+                                    </div>  -->
                                    <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
                                 </div><!--end of image-profile-->
 
@@ -78,7 +79,7 @@
                                         <div class="form-group">
                                             <label for="mobile">{{tr('mobile')}}</label>
                                             <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="{{tr('enter_mobile')}}" maxlength="13">
-                                            <small style="color:brown">{{tr('mobile_note')}}</small>
+                                            <p class="mobile-note"><small style="color:brown">{{tr('mobile_note')}}</small></p>
                                         </div>
 
                                         <?php
@@ -108,11 +109,11 @@
                                         </div>
                                               
                                         <div class="change-pwd save-pro-btn">
-                                            <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                            <button type="submit" class="btn btn-info">{{tr('submit')}}</button>
 
-                                            @if (Auth::user()->login_by == 'manual')
+                                            <!-- @if (Auth::user()->login_by == 'manual')
                                             <a href="{{route('user.change.password')}}" class="btn btn-danger">{{tr('change_password')}}</a>
-                                            @endif
+                                            @endif -->
 
                                         </div>                                              
 
@@ -127,7 +128,7 @@
                     
                     @if(count($wishlist->items) > 0)
                         
-                        <div class="mylist-profile col-sm-5">
+                        <div class="mylist-profile col-sm-12 col-md-5 col-lg-6">
                             
                             <h4 class="mylist-head">{{tr('wishlist')}}</h4>
 

@@ -37,14 +37,14 @@
                 <li class="dropdown user user-menu">
 
                     <a href="{{route('admin.profile')}}" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="@if(Auth::guard('admin')->user()->picture){{Auth::guard('admin')->user()->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" class="user-image" alt="User Image">
+                      <img src="@if(Auth::guard('admin')->user()->picture) {{Auth::guard('admin')->user()->picture}} @else {{asset('placeholder.png')}} @endif" class="user-image" alt="User Image">
                       <span class="hidden-xs">{{Auth::guard('admin')->user()->name}}</span>
                     </a>
                     
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="@if(Auth::guard('admin')->user()->picture){{Auth::guard('admin')->user()->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" class="img-circle" alt="User Image">
+                            <img src="@if(Auth::guard('admin')->user()->picture) {{Auth::guard('admin')->user()->picture}} @else {{asset('placeholder.png')}} @endif" class="img-circle" alt="User Image">
 
                             <p>
                               {{Auth::guard('admin')->user()->name}}

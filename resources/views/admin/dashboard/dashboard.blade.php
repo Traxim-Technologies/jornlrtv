@@ -104,7 +104,7 @@ use  Carbon\Carbon;
               		<i class="fa fa-video-camera"></i>
             	</div>
 
-            	<a href="{{route('admin.videos')}}" class="small-box-footer">
+            	<a href="{{route('admin.videos.list')}}" class="small-box-footer">
               		{{tr('more_info')}}
               		<i class="fa fa-arrow-circle-right"></i>
             	</a>
@@ -124,7 +124,7 @@ use  Carbon\Carbon;
                     <i class="ion ion-bag"></i>
                 </div>
 
-                <a href="{{route('admin.revenues')}}" class="small-box-footer">
+                <a href="{{route('admin.revenues.dashboard')}}" class="small-box-footer">
                     {{tr('more_info')}}
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
@@ -278,7 +278,7 @@ use  Carbon\Carbon;
 
                             <li>
                                 <img style="width:60px;height:60px" src="@if($user->picture) {{$user->picture}} @else {{asset('placeholder.png')}} @endif" alt="User Image">
-                                <a class="users-list-name" href="{{route('admin.view.user' , $user->id)}}" target="_blank">{{$user->name}}</a>
+                                <a class="users-list-name" href="{{route('admin.users.view' , $user->id)}}" target="_blank">{{$user->name}}</a>
                                 <span class="users-list-date">
                                 {{$user->created_at->diffForHumans()}}</span>
                             </li>
@@ -331,7 +331,7 @@ use  Carbon\Carbon;
                                             <img src="{{$video->default_image}}" alt="Product Image">
                                         </div>
                                         <div class="product-info">
-                                            <a href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}" class="product-title">{{substr($video->title, 0,50)}}
+                                            <a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}" class="product-title">{{substr($video->title, 0,50)}}
                                                 <span class="label label-warning pull-right">{{$video->duration}}</span>
                                             </a>
                                             <span class="product-description">
@@ -348,7 +348,7 @@ use  Carbon\Carbon;
 
                     <!-- /.box-body -->
                     <div class="box-footer text-center">
-                        <a href="{{route('admin.videos')}}" class="uppercase">{{tr('view_all')}}</a>
+                        <a href="{{route('admin.videos.list')}}" class="uppercase">{{tr('view_all')}}</a>
                     </div>
                     <!-- /.box-footer -->
                 </div>

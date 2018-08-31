@@ -49,6 +49,10 @@
 
             <th >{{tr('channel')}}</th>
 
+            <th >{{tr('category')}}</th>
+
+            <th >{{tr('video_type')}} </th>
+
             <th >{{tr('title')}}</th>
 
             <th >{{tr('ppv')}}</th>
@@ -101,6 +105,25 @@
                 <td>{{$i+1}}</td>
 
                 <td>{{$video_details->getChannel ? $video_details->getChannel->name : "-"}}</td>
+                
+                <td>{{$video_details->category_name}}</td>
+
+                <td>
+                                        
+                    @if($video_details->video_type == VIDEO_TYPE_UPLOAD) 
+                        
+                        {{tr('manual_upload')}}
+
+                    @elseif($video_details->video_type == VIDEO_TYPE_YOUTUBE)
+
+                        {{tr('youtube_links')}}
+
+                    @else
+
+                        {{tr('other_links')}}
+
+                    @endif
+                </td>
 
                 <td>{{substr($video_details->title , 0,25)}}...</td>
 
@@ -127,7 +150,7 @@
                 <td>{{$video_details->duration}}</td>
 
 
-                <td>{{$video_details->age_limit}}</td>
+                <td>{{$video_details->age_limit ? '18+' :  'All Users'}}</td>
 
                 <td>
                     @if($video_details->publish_status)
@@ -145,15 +168,15 @@
                 </td>
 
                 <td>
-                    {{Setting::get('currency')}} {{$video_details->amount}}
+                    {{Setting::get('currency')}} {{number_format_short($video_details->amount)}}
                 </td>
 
                 <td>
-                    {{number_format_short($video_details->getScopeLikeCount->count())}}
+                    {{number_format_short($video_details->getLikeCount->count())}}
                 </td>
 
                 <td>
-                    {{number_format_short($video_details->getScopeDisLikeCount->count())}}
+                    {{number_format_short($video_details->getDisLikeCount->count())}}
                 </td>
 
 
@@ -166,7 +189,8 @@
                 </td>
 
                 <td>
-                    {{$video_details->getScopeUserRatings()->count()}}.
+                    {{number_format_short($video_details->getUserRatings->count())}}
+
                 </td>
 
                 <td>

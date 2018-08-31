@@ -29,7 +29,7 @@
 	padding:0 30px;
 }
 .page-inner{
-	margin-top: 109px;
+	margin-top: 103px;
 	/*z-index:0;*/
 	position: relative;
 }
@@ -40,11 +40,12 @@
 	position: fixed;
 	z-index:999;
 	width: 100%;
+	top:0;
 }
 .logo-img{
-	width: 87px;
-	height: 29px;
-	vertical-align: middle;
+	height: 28px;
+    vertical-align: middle;
+    margin-top: 2px;
 }
 .cross-mark {
     width:15%;
@@ -59,7 +60,7 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
 	margin-top: 15px;
 }
 .play-video{
@@ -71,9 +72,9 @@
 	margin-top: 10px;
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -81,8 +82,8 @@
 	display: inline-block;
 	font-size: 11px;
 	font-weight: normal;
-	height: 29px;
-	line-height: 29px;
+	height: 21px;
+	line-height: 21px;
 	padding: 3px 7px;
 	vertical-align: bottom;
 	margin : 10px 7px 5px 8px;
@@ -138,7 +139,7 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
+	padding: 15px;
 }
 .invoice-img{
 	background-size: cover;
@@ -146,11 +147,11 @@
 	background-position: center;
 }
 .video-desc{
-	margin-top:5px;
+	margin-top:0px;
 	color:#999;
 	font-size: 12px !important;
 	font-weight:normal !important;
-	margin-left: 70px;
+	margin-left: 65px;
 }
 .hidden-xxs{
 	display: none !important;
@@ -176,15 +177,147 @@
 }
 .banner-slider{
 	padding: 0 15px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 .carousel-caption p{
 	display:none !important;
+}
+.history-image{
+	width: 30%;
+}
+.history-title{
+	width: 68%;
+}
+.new-history{
+	padding:0;
+}
+.recommend-list{
+	padding:10px 0;
+}
+.recom-head h3{
+	padding-left: 0;
+	padding-right: 0;
+}
+.profile-view{
+	padding-left: 0;
+	padding-right: 0;
+}
+.mylist-profile {
+	padding-left: 0;
+	padding-right: 0;
+}
+.cards-head{
+	margin-left:-15px;
+}
+.content-head h4{
+	padding-top: 15px;
+}
+.cards-head{
+	margin-top: 15px;
+}
+.sub-history h3{
+	padding-top: 10px;
+}
+.sub-history{
+	margin-bottom: 10px;
+}
+.common-form{
+	margin-top: 125px !important;
+}
+.channel-header.yt-card{
+	margin-top: -10px;
+}
+.st_photo_div{
+	margin-left: 0 !important;
+}
+.slide-area{
+	padding: 0 !important;
+}
+.slide-image {
+    height: 180px !important;
+}
+.slick-initialized .slick-slide{
+	padding: 0;
+}
+.slick-prev::before, .slick-next::before {
+    font-size: 32px;
+    color: #fff;
+}
+.slick-prev, .slick-prev:hover, .slick-prev:active, .slick-prev:focus {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,.5), transparent) !important;
+}
+.slick-next, .slick-next:hover, .slick-next:active, .slick-next:focus {
+	right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,.5), transparent) !important;
+}
+.slick-prev, .slick-next {
+    font-weight: bold;
+    padding: 0;
+    display: inline-block;
+    width: 42px;
+    height: 180px;
+    transition: all .3s linear;
+    background-color: unset;
+    line-height: 7px;
+    box-shadow: none;
+    top: 0%;
+    border-radius: 0% !important;
+    z-index: 100;
+    margin-top: 90px;
+}
+.video-head a {
+    max-height: 20px !important;
+    min-height: 20px !important;
+}
+.hidden-mobile{
+	display: none;
+}
+.video_mobile_views{
+	display: block;
+}
+.new-card-expiry{
+	text-align: left;
+}
+.new-profile-left{
+	width:100%;
+	float:unset;
+	margin-right:unset;
+	text-align: center;
+}
+.new-profile-right{
+	width:100%;
+	float: unset;
 }
 }
 
 /*small devices*/
 @media (min-width: 480px) and (max-width: 767px) {
+.new-profile-left{
+	width:100%;
+	float:unset;
+	margin-right:unset;
+	text-align: center;
+}
+.new-profile-right{
+	width:100%;
+	float: unset;
+}
+.new-card-expiry{
+	text-align: left;
+}
+.wizard-container{
+	padding-top: 15px;
+}
+.common-form{
+	margin-top: 125px !important;
+}
+.history-image{
+	width: 25%;
+}
+.history-title{
+	width: 73%;
+}
 .bottom{
 	height: 95px;
 }
@@ -216,7 +349,7 @@
 	padding:0 30px;
 }
 .page-inner{
-	margin-top: 120px;
+	margin-top:93px;
 	/*z-index: 0;
 */
 	position: relative;
@@ -229,6 +362,7 @@
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .logo-img{
 	width: 120px;
@@ -248,16 +382,16 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
-	margin-top: 15px;
+	/*padding: 15px;*/
+	/*margin-top: 15px;*/
 }
 .profile-view{
-	padding: 0;
+	/*padding: 0;*/
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -265,11 +399,11 @@
 	display: inline-block;
 	font-size: 13px;
 	font-weight: normal;
-	height: 29px;
-	line-height: 29px;
+	height: 21px;
+	line-height:21px;
 	padding: 3px 10px;
 	vertical-align: bottom;
-	margin : 15px 7px 5px 8px;
+	margin :8px 7px 5px 8px;
 }
 .play-video{
 	padding: 0;
@@ -323,7 +457,7 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
+	padding: 15px;
 }
 .invoice-img{
 	background-size: cover;
@@ -331,11 +465,11 @@
 	background-position: center;
 }
 .video-desc{
-	margin-top:5px;
+	margin-top:0px;
 	color:#999;
 	font-size: 14px !important;
 	font-weight:normal !important;
-	margin-left: 70px;
+	margin-left: 65px;
 }
 .y-signin{
 	background-color: #fff;
@@ -362,12 +496,18 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
+}
+.recom-box{
+	width: 32%;
 }
 }
 
 /* Tablets */
 @media (min-width: 768px) and (max-width: 991px) {
+.recom-box{
+	width: 32%;
+}
 .y-menu{
 	border-right: 1px solid #f1f1f1;
     background-color: #f1f1f1;
@@ -392,36 +532,41 @@
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .page-inner{
-	margin-top: 65px;
+	margin-top:60px;
+	overflow-x: hidden;
 }
 .logo-img{
-	width: 120px;
-	height: 35px;
-	vertical-align: middle;
+	width: 117px;
+    height: 27px;
+    vertical-align: middle;
+    margin-top: 5px;
 }
 .cross-mark {
-    width:35%;
+    width:40%;
     float: left;
     text-align: right;
 }
 .cross-title {
-    width: 65%;
+    width:60%;
     float: left;
     text-transform: capitalize;
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
+	margin-top: 20px;
+	/*margin-bottom: 20px;*/
 }
 .profile-view{
-	padding-left: 0;
+	/*padding-left: 0;*/
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -429,11 +574,11 @@
 	display: inline-block;
 	font-size: 13px;
 	font-weight: normal;
-	height: 29px;
-	line-height: 29px;
+	height: 21px;
+    line-height: 21px;
 	padding: 3px 10px;
 	vertical-align: bottom;
-	margin : 15px 7px 0px 8px;
+	/*margin : 15px 7px 0px 8px;*/
 }
 .play-video{
 	padding-left: 0;
@@ -486,24 +631,24 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
-	display: flex;
+	padding: 15px;
+	/*display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 330px;
+	align-items: center;*/
+	height: 394px;
 }
 .invoice-img{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 330px;
+	height:394px;
 }
 .video-desc{
-	margin-top:5px;
+	margin-top:0px;
 	color:#999;
 	font-size: 15px !important;
 	font-weight:normal !important;
-	margin-left: 70px;
+	margin-left: 65px;
 }
 .payment-section{
 	margin-top: 75px;
@@ -511,12 +656,15 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 }
 
 /* Medium Devices, */
 @media (min-width : 992px) and (max-width: 1199px){
+.recom-box{
+	width: 24%;
+}
 .y-menu{
 	border-right: 1px solid #f1f1f1;
     background-color: #f1f1f1;
@@ -535,7 +683,7 @@
 	padding-right:30px;
 }
 .page-inner{
-	margin-top: 65px;
+	margin-top: 60px;
 }
 .streamtube-nav{
 	padding:10px 20px;
@@ -545,11 +693,13 @@
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .logo-img{
-	width: 120px;
-	height: 35px;
-	vertical-align: middle;
+	width: 128px;
+    height: 30px;
+    vertical-align: middle;
+    margin-top: 4px;
 }
 .cross-mark {
     width:35%;
@@ -563,15 +713,15 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
 }
 .profile-view{
-	padding-left: 0;
+	/*padding-left: 0;*/
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius: 4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -583,7 +733,7 @@
 	line-height: 29px;
 	padding: 3px 10px;
 	vertical-align: bottom;
-	margin : 15px 7px 0px 8px;
+	/*margin : 15px 7px 0px 8px;*/
 }
 .play-video{
 	padding-left: 0;
@@ -636,24 +786,24 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
-	display: flex;
+	padding: 15px;
+	/*display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 330px;
+	align-items: center;*/
+	height: 394px;
 }
 .invoice-img{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 330px;
+	height: 394px;
 }
 .video-desc{
-	margin-top:5px;
+	margin-top:0px;
 	color:#999;
 	font-size: 15px !important;
 	font-weight:normal !important;
-	margin-left: 70px;
+	margin-left: 65px;
 }
 .payment-section{
 	margin-top: 75px;
@@ -661,7 +811,7 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 }
 
@@ -672,7 +822,7 @@
     background-color: #f1f1f1;
     padding-bottom: 15px;
     padding-top: 15px;
-    margin-top: 58px;
+    margin-top: 60px;
     min-height: 700px;
     /*height: calc(100% - 60px) !important;*/
     overflow: auto;
@@ -685,22 +835,24 @@
 	padding-right:30px;
 }
 .page-inner{
-	margin: 65px 0 0 0;
+	margin:60px 0 0 0;
 
 }
 .streamtube-nav{
-	padding:10px 20px;
+	padding:10px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
 	position: fixed;
 	z-index:100;
 	width: 100%;
 	z-index: 999;
+	top:0;
 }
 .logo-img{
-	width: 120px;
-	height: 35px;
+	max-width: 128px;
+	height:30px;
 	vertical-align: middle;
+	margin-top: 4px;
 }
 .cross-mark {
     width:35%;
@@ -714,15 +866,15 @@
 }
 .mylist-profile{
 	/*background-color: #fff;*/
-	padding: 15px;
+	/*padding: 15px;*/
 }
 .profile-view{
-	padding-left: 0;
+	/*padding-left: 0;*/
 }
 .st_video_upload_btn {
-	border-color: #d3d3d3 !important;
-	background: #f8f8f8;
-	border-radius: 0;
+	border-color: #e1e1e1 !important;
+	background: #e1e1e1;
+	border-radius:4px;
 	border: solid 1px transparent;
 	box-sizing: content-box;
 	color: #333;
@@ -734,7 +886,7 @@
 	line-height: 29px;
 	padding: 3px 10px;
 	vertical-align: bottom;
-	margin : 15px 7px 0px 8px;
+	/*margin : 15px 7px 0px 8px;*/
 }
 .play-video{
 	padding-left: 0;
@@ -787,24 +939,24 @@
 }
 .invoice-overlay{
 	background-color: rgba(255,255,255,.8);
-	padding: 15px 0;
-	display: flex;
+	padding: 15px;
+	/*display: flex;
 	justify-content: center;
-	align-items: center;
-	height: 330px;
+	align-items: center;*/
+	height: 394px;
 }
 .invoice-img{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	height: 330px;
+	height: 394px;
 }
 .video-desc{
-	margin-top:5px;
+	margin-top:0px;
 	color:#999;
 	font-size: 15px !important;
 	font-weight:normal !important;
-	margin-left: 70px;
+	margin-left: 65px;
 }
 .payment-section{
 	margin-top: 75px;
@@ -812,7 +964,7 @@
 }
 .banner-slider{
 	padding: 0 50px;
-	margin-top: 6px;
+	margin-top:15px;
 }
 }
 /*index.html responsive*/
@@ -823,10 +975,6 @@
 	.about{
 		padding: 0;
 	}
-	.term{
-		padding: 0;
-		text-align: center;
-	}
 }
 @media screen and (max-width: 767px){
 	.foot-content ul{
@@ -834,8 +982,7 @@
 	}
 	.foot-content {
 	    padding: 0 !important;
-	}
-	
+	}	
 }
 @media screen and (max-width:651px){
 	.foot-content {
@@ -879,9 +1026,6 @@
 	}*/
 }
 @media screen and (max-width: 467px){
-	.term li a {
-	    font-size: 14px !important;
-	}
 	.about li a{
 		font-size: 10px !important;
 	}
@@ -892,12 +1036,6 @@
 	}
 	.foot-content {
 	    margin-left: 16px !important;
-	}
-	.terms li a {
-	    font-size: 14px !important;
-	}
-	.foot-content ul {
-	    margin: 0 !important;
 	}
 }
 
@@ -921,10 +1059,10 @@ videos.html responsive
 		margin-right: 0;
 		margin-left: 0;
 	}
-	.lohp-medium-shelves-container.col-md-6{
+	/*.lohp-medium-shelves-container.col-md-6{
 		margin: 0;
 		padding: 0;
-	}
+	}*/
 }
 @media screen and (max-width: 935px){
 	.watch-video .container{
@@ -992,7 +1130,7 @@ videos.html responsive
 		margin-left:13%; 
 	}
 	.com-image {
-	    margin-right: 3%;
+	    margin-right: 1%;
 	    width: 9%;
 	}
 }
@@ -1235,16 +1373,8 @@ category.html css
 		margin: 5px 5px 5px 21px !important;
 		padding: 4px !important;
 	}
-	.tube-image{
-		height: 36px !important;
-		padding: 0 !important;
-		margin:0 auto;
-	}
 	.about li a{
 		font-size: 11px;
-	}
-	.term li a{
-		font-size: 14px;
 	}
 	.profile-next{
 		margin: 0;
@@ -1281,8 +1411,8 @@ recommend.html css
 		margin-top: 15px;
 	}
 	.profile-view{
-		padding-right: 0;
-		padding-left: 0;
+		/*padding-right: 0;
+		padding-left: 0;*/
 	}
 }
 

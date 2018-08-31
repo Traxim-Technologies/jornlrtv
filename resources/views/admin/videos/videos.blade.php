@@ -22,7 +22,9 @@
 
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('videos')}}</b>
-                <a href="{{route('admin.add.video')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
+
+                <a href="{{route('admin.videos.create')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
+                
                 <!-- EXPORT OPTION START -->
 
 					@if(count($videos) > 0 )
@@ -52,7 +54,6 @@
 					@endif
 
 	            <!-- EXPORT OPTION END -->
-
             </div>
 
             <div class="box-body">
@@ -66,6 +67,8 @@
 						    <tr>
 								<th>{{tr('id')}}</th>
 								<th>{{tr('channel')}}</th>
+								<th>{{tr('category')}}</th>
+								<th>{{tr('video_type')}}</th>
 								<th>{{tr('title')}}</th>
 
 								<?php /*@if(Setting::get('is_banner_video'))
@@ -90,14 +93,33 @@
 						<tbody>
 
 							@foreach($videos as $i => $video)
-
+							
 							    <tr>
 							      	
-							      	<td><a href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
 							      	
-							      	<td><a href="{{route('admin.channel.videos', $video->channel_id)}}">{{$video->channel_name}}</a></td>
-							      	
-							      	<td><a href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
+
+							      	<td><a href="{{route('admin.channels.view', $video->channel_id)}}">{{$video->channel_name}}</a></td>
+							      		
+							      	<td><a href="{{route('admin.categories.view', ['category_id'=>$video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
+
+							      	<td>
+							      		
+							      		@if($video->video_type == VIDEO_TYPE_UPLOAD) 
+                                            
+                                            {{tr('manual_upload')}}
+
+                                        @elseif($video->video_type == VIDEO_TYPE_YOUTUBE)
+
+                                            {{tr('youtube_links')}}
+
+                                        @else
+
+                                            {{tr('other_links')}}
+
+                                        @endif
+							      	</td>
+							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 							      	<?php /*@if(Setting::get('theme') == 'default')
 							      	
@@ -114,10 +136,6 @@
 							      	@endif */?>
 
 							      	<td><b>{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</b></td>
-
-							      	<!-- <td>{{number_format_short($video->getScopeLikeCount->count())}}</td> -->
-
-							      	<!-- <td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td> -->
 
 							      	@if(Setting::get('is_payper_view'))
 							      	<td class="text-center">
@@ -162,11 +180,11 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.edit.video' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.videos.edit' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
                                                     @endif
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.view.video' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 
 								               		@if(Setting::get('is_payper_view'))
 
@@ -179,12 +197,12 @@
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@if($video->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.decline',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
 								                	@else
 								                		@if ($video->compress_status == 0)
 								                			<li role="presentation"><a role="menuitem" tabindex="-1">{{tr('compress')}}</a></li>
 								                		@else 
-								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.approve',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
 								                  		@endif
 								                  	@endif
 
@@ -192,33 +210,36 @@
 								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.publish-video',$video->video_tape_id)}}">{{tr('publish')}}</a></li>
 								                  	@endif
 
-								                  	@if($video->ad_status && !$video->getScopeVideoAds) 
-
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_create', $video->video_tape_id)}}">{{tr('video_ad')}}</a></li>
-
-								                  	@else
-
-								                  		@if ($video->getScopeVideoAds)
-
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads_view' , array('id' => $video->getScopeVideoAds->id))}}">{{tr('view_ad')}}</a></li>
-
-								                  		@endif
-
-								                  	@endif
-
 								                  	@if ($video->compress_status == 1)
-									                  	<li class="divider" role="presentation"></li>
-
 									                  	<li role="presentation">
 									                  		@if(Setting::get('admin_delete_control'))
 
 										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 										                  	@else
-									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.delete.video' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
+									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.videos.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
 									                  		@endif
 									                  	</li>
 								                  	@endif
+
+								                  	<li class="divider" role="presentation"></li>
+
+								                  	@if($video->ad_status && !$video->getScopeVideoAds) 
+
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.create', array('video_tape_id'=>$video->video_tape_id))}}">{{tr('video_ad')}}</a></li>
+
+								                  	@else
+
+								                  		@if ($video->getScopeVideoAds)
+
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $video->getScopeVideoAds->id))}}">{{tr('view_ad')}}</a></li>
+
+								                  		@endif
+
+								                  	@endif
+
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.ad-status-change',$video->video_tape_id)}}">{{ ($video->ad_status) ? tr('disable_ad') : tr('enable_ad')}}</a></li>
+
 								                </ul>
               								</li>
             							</ul>
@@ -227,7 +248,7 @@
 
 							    <div id="{{$video->video_tape_id}}" class="modal fade" role="dialog">
 								  <div class="modal-dialog">
-								  <form action="{{route('admin.save.video-payment', $video->video_tape_id)}}" method="POST">
+								  <form action="{{route('admin.videos.set-ppv', $video->video_tape_id)}}" method="POST">
 									    <!-- Modal content-->
 									   	<div class="modal-content">
 									      <div class="modal-header">
@@ -277,7 +298,7 @@
 									      <div class="modal-footer">
 									      	<div class="pull-left">
 									      		@if($video->ppv_amount > 0)
-									       			<a class="btn btn-danger" href="{{route('admin.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
+									       			<a class="btn btn-danger" href="{{route('admin.videos.remove-ppv', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
 									       		@endif
 									       	</div>
 									        <div class="pull-right">

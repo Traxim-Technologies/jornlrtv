@@ -2,9 +2,9 @@
 
 @section('content')
 
-<div class="form-background">
+<div class="login-space">
 
-    <div class="common-form login-common">
+    <div class="common-form login-common text-center">
 
 
 
@@ -123,7 +123,8 @@
             </form>
         </div><!--end of sign-up-->
 
-    </div><!--end of common-form-->     
+    </div><!--end of common-form-->  
+
 </div><!--end of form-background-->
 
 @endsection

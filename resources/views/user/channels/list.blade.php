@@ -19,7 +19,7 @@
 
 			@include('notification.notify')
 
-				<div class="slide-area recom-area abt-sec">
+				<div class="slide-area1 recom-area abt-sec">
 					<div class="abt-sec-head">
 						
 						 <div class="new-history">
@@ -85,7 +85,7 @@
 				                                <div class="history-title">
 				                                    <div class="history-head row">
 				                                        <div class="cross-title">
-				                                            <h5 class="payment_class" style="padding: 0px;"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
+				                                            <h5 class="payment_class mb-3" style="padding: 0px;"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
 				                                            
 				                                            <span class="video_views">
 				                                            	 <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}} <b>.</b> 
@@ -129,7 +129,7 @@
 				                                    </div> <!--end of history-head--> 
 
 				                                    <div class="description hidden-xs">
-				                                        <p>{{$channel->description}}</p>
+				                                        <?= $channel->description?>
 				                                    </div><!--end of description--> 
 
 				                                   	                                                  

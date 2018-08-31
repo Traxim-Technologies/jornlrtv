@@ -4,6 +4,8 @@ use App\Helpers\Helper;
 
 use App\Helpers\EnvEditorHelper;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
 use Carbon\Carbon;
 
 use App\Wishlist;
@@ -37,6 +39,12 @@ use App\ChannelSubscription;
 use App\Language;
 
 use App\PayPerView;
+
+use App\VideoAd;
+
+use App\Category;
+
+use App\VideoTapeTag;
 
 function tr($key , $otherkey = "") {
 
@@ -517,7 +525,7 @@ function user_type_check($user) {
 
 function get_expiry_days($id) {
     
-    $data = UserPayment::where('user_id' , $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
+    $data = UserPayment::where('user_id' , $id)->where('status', 1)->orderBy('created_at', 'desc')->first();
 
     // User Amount
 
@@ -648,14 +656,11 @@ function getChannels($id = null) {
 
 function getAmountBasedChannel($id) {
 
-    $model = VideoTape::where('channel_id', $id)->sum('user_ppv_amount');
+    $ppv_amount = VideoTape::where('channel_id', $id)->sum('user_ppv_amount');
 
-    $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->videoResponse()
-                        ->where('channel_id', $id)
-                        ->orderby('user_ppv_amount' , 'desc')->get();
+    $ad_amount = VideoTape::where('channel_id', $id)->sum('amount');
 
-    $payment = 0;
+    /*$payment = 0;
 
     foreach ($videos as $key => $value) {
 
@@ -663,9 +668,31 @@ function getAmountBasedChannel($id) {
 
         // $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('user_ppv_amount');
 
-    }
+    }*/
 
-    $amount = $payment+$model;
+    $amount = $ppv_amount+$ad_amount;
+
+    return $amount;
+
+}
+
+function getAmountBasedCategory($id) {
+
+    $ppv_amount = VideoTape::where('category_id', $id)->sum('user_ppv_amount');
+
+    $ad_amount = VideoTape::where('category_id', $id)->sum('amount');
+
+    /*$payment = 0;
+
+    foreach ($videos as $key => $value) {
+
+        $payment += $value->sum('user_ppv_amount') ? $value->sum('user_ppv_amount') : 0;
+
+        // $payment += PayPerView::where('video_id', $value->video_tape_id)->sum('user_ppv_amount');
+
+    }*/
+
+    $amount = $ppv_amount+$ad_amount;
 
     return $amount;
 
@@ -894,11 +921,9 @@ function checkSize() {
 }
 
 
-function videos_count($channel_id) {
+function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
 
-    $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+    $videos_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('video_tapes.channel_id' , $channel_id)
                         ->videoResponse()
                         ->orderby('video_tapes.created_at' , 'asc');
@@ -909,6 +934,12 @@ function videos_count($channel_id) {
         if($flagVideos) {
             $videos_query->whereNotIn('video_tapes.id', $flagVideos);
         }
+    }
+
+    if ($channel_type == OTHERS_CHANNEL) {
+
+        $videos_query->where('video_tapes.is_approved' , 1)
+                        ->where('video_tapes.status' , 1);
     }
 
     $cnt = $videos_query->count();
@@ -1000,6 +1031,7 @@ function subscriberscnt($id = null) {
 
 
 function number_format_short( $n, $precision = 1 ) {
+   
     if ($n < 900) {
         // 0 - 900
         $n_format = number_format($n, $precision);
@@ -1115,8 +1147,9 @@ function displayVideoDetails($data,$userId) {
 
             if ($data->ppv_amount > 0) {
 
-                $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $data) : false;
+                $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $data)->getData()->success : false;
 
+               
                 if ($ppv_status) {
 
                     $url = route('user.single', $data->video_tape_id);
@@ -1185,9 +1218,13 @@ function displayVideoDetails($data,$userId) {
         $like_status = Helper::like_status($user->id,$data->video_tape_id);
     }
 
-    $pay_per_view_status = watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $data);
+    $pay_per_view_status = VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $data)->getData();
 
-    $ppv_notes = !$pay_per_view_status ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+    $ppv_notes = !$pay_per_view_status->success ? ($data->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
+
+    $tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                ->where('video_tape_id', $data->video_tape_id)->get()->toArray();
 
     $model = [
         'video_tape_id'=>$data->video_tape_id,
@@ -1210,7 +1247,7 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
-        'pay_per_view_status'=>$pay_per_view_status,
+        'pay_per_view_status'=>$pay_per_view_status->success,
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
         // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
@@ -1224,6 +1261,9 @@ function displayVideoDetails($data,$userId) {
         'currency'=>Setting::get('currency'),
         'share_url'=>route('user.single' , $data->video_tape_id),
         'ppv_notes'=>$ppv_notes,
+        'category_id'=>$data->category_id,
+        'category_name'=>$data->category_name,
+        'tags'=>$tags
     ];
 
 
@@ -1286,5 +1326,80 @@ function routefreestring($string) {
     $string = str_replace($search, $replace, $string);
 
     return $string;
-    
+   
+}
+
+/**
+ * Function Name : convertDurationIntoSeconds()
+ *
+ * Convert duration into seconds
+ *
+ * @param - duration
+ *
+ * @return response of seconds
+ */
+function convertDurationIntoSeconds($str_time) {
+
+    $time = explode(':', $str_time);
+
+    if(count($time) == 3) {
+
+        return ($time[0]*3600) + ($time[1]*60) + $time[2];
+
+    }
+
+    return 0;
+
+}
+
+
+/**
+ * Function Name getVideoAdsTpe()
+ *
+ * To list out the types of ad
+ *
+ * @param integer $id - Video Id
+ *
+ * @return response of types of ad
+ */
+function getVideoAdsTpe($video_id) {
+
+    $video_ads = VideoAd::where('video_tape_id', $video_id)->first();
+
+    $types = [];
+
+    if ($video_ads) {
+
+        $ads = $video_ads->types_of_ad;
+
+        $types = getTypeOfAds($ads);
+
+
+    }
+
+    return $types;
+
+}
+
+
+
+/**
+ * Function Name : amount_convertion()
+ *
+ * To change the amount based on percentafe (Percentage/absolute)
+ *
+ * @created_by - Shobana Chandrasekar
+ *
+ * @updated_by - - 
+ *
+ * @param - Percentage and amount
+ *
+ * @return response of converted amount
+ */
+function amount_convertion($percentage, $amt) {
+
+    $converted_amt = $amt * ($percentage/100);
+
+    return $converted_amt;
+
 }

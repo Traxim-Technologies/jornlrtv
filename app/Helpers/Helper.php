@@ -159,11 +159,11 @@
                     $error = NULL;
                     return $row;
                 } else {
-                    $error = array('success' => false, 'error' => Helper::get_error_message(103), 'error_code' => 103);
+                    $error = array('success' => false, 'error_messages' => Helper::get_error_message(103), 'error_code' => 103);
                     return FALSE;
                 }
             }
-            $error = array('success' => false, 'error' => Helper::get_error_message(104), 'error_code' => 104);
+            $error = array('success' => false, 'error_messages' => Helper::get_error_message(104), 'error_code' => 104);
             return FALSE;
         }
 
@@ -363,6 +363,10 @@
                     $string = tr('payment_not_completed_pay_again');
                     break;
 
+                 case 906:
+                    $string = tr('video_data_not_found');
+                    break;
+
                 case 162:
                     $string = tr('failed_to_upload');
                     break;
@@ -376,6 +380,46 @@
                     $string = tr('subscription_error');
 
                     break;
+
+                case 165:
+                    $string = tr('subscription_autorenewal_already_cancelled');
+                    break;
+                case 166:
+                    $string = tr('subscription_autorenewal_already_enabled');
+                    break;
+                case 167:
+                    $string = tr('user_payment_details_not_found');
+                    break;
+
+               
+                case 168:
+                    $string = tr('coupon_inactive_status');
+                    break;
+
+                case 169:
+                    $string = tr('subscription_not_found');
+                    break;
+
+                case 170:
+                    $string = tr('subscription_inactive_status');
+                    break;
+
+                case 171:
+                    $string = tr('subscription_amount_should_be_grater');
+                    break;
+
+                case 172:
+                    $string = tr('video_amount_should_be_grater');
+                    break;
+
+                case 173:
+                    $string = tr('expired_coupon_code');
+                    break;
+
+                 case 174:
+                    $string = tr('coupon_not_found');
+                    break;
+
                 case 1000:
                     $string = tr('video_is_in_flag_list');
                     break;
@@ -464,6 +508,19 @@
                     break;
                 case 121:
                     $string = tr('history_deleted_successfully');
+                    break;
+
+                case 122:
+                    $string = tr('autorenewal_enable_success');
+                    break;
+                case 123:
+                    $string = tr('ppv_not_set');
+                    break;
+                case 124:
+                    $string = tr('watch_video_success');
+                    break;
+                case 125:
+                    $string = tr('pay_and_watch_video');
                     break;
                 default:
                     $string = "";

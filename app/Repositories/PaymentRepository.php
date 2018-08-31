@@ -246,7 +246,7 @@ class PaymentRepository {
 
         }
 
-        $total = $video_tape_details->ppv_amount;
+        $total = $ppv_details->amount;
 
         // Commission split 
 

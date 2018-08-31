@@ -57,6 +57,18 @@
 
             <th >{{tr('plan')}}</th>
 
+            <th>{{tr('payment_mode')}}</th>
+
+            <th>{{tr('coupon_code')}}</th>
+
+            <th>{{tr('coupon_amount')}}</th>
+
+            <th>{{tr('plan_amount')}}</th>
+
+            <th>{{tr('final_amount')}}</th>
+
+            <th>{{tr('is_coupon_applied')}}</th>
+
             <th >{{tr('reason')}}</th>
 
             <th >{{tr('expiry_date')}}</th>
@@ -71,7 +83,7 @@
         <!--- HEADER END  -->
 
         @foreach($data as $i => $subscription_details)
-
+           
             <tr @if($i % 2 == 0) class="row_col_design" @endif >
 
                 <td>{{$i+1}}</td>
@@ -90,7 +102,25 @@
 
                 <td>{{$subscription_details->getSubscription ? $subscription_details->getSubscription->plan : ""}} </td>
 
-                <td>{{$subscription_details->reason}}</td>
+                <td >{{$subscription_details->payment_mode}}</td>
+                <td>{{$subscription_details->coupon_code}}</td>
+
+                <td>{{Setting::get('currency')}} {{$subscription_details->coupon_amount? $subscription_details->coupon_amount : "0.00"}}</td>
+
+                <td>{{Setting::get('currency')}} {{$subscription_details->subscription_amount ? $subscription_details->subscription_amount : "0.00"}}</td>
+
+                <td>{{Setting::get('currency')}} {{$subscription_details->amount ? $subscription_details->amount : "0.00" }}</td>
+                                        
+                        
+                <td>
+                    @if($subscription_details->is_coupon_applied)
+                    <span class="label label-success">{{tr('yes')}}</span>
+                    @else
+                    <span class="label label-danger">{{tr('no')}}</span>
+                    @endif
+                </td>
+                            
+                <td>{{$subscription_details->coupon_reason ? $subscription_details->coupon_reason : '-'}}</td>
 
                 <td>{{convertTimeToUSERzone($subscription_details->expiry_date, Auth::guard('admin')->user()->timezone, 'd-m-Y H:i a')}}</td>
 

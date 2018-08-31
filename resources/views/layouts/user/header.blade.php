@@ -14,9 +14,9 @@
     <div class="row">
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
-            <a href="#" class="hidden-xs"><i class="fa fa-align-justify toggle-icon" aria-hidden="true"></i></a>
-
-            <a href="{{route('user.dashboard')}}">
+            <!-- <a href="#" class="hidden-xs"><i class="fa fa-bars toggle-icon" aria-hidden="true"></i></a> -->
+            <a href="#" class="hidden-xs"><img src="{{asset('images/menu.png')}}" class="toggle-icon"></a>
+            <a href="{{route('user.dashboard')}}"> 
                 @if(Setting::get('site_logo'))
                     <img src="{{Setting::get('site_logo')}}" class="logo-img">
                 @else
@@ -44,8 +44,27 @@
                         </button>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-
-                            <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
+                            <a href="{{route('user.profile')}}">
+                                <div class="display-inline">
+                                    <div class="menu-profile-left">
+                                        <img src="{{Auth::user()->picture}}">
+                                    </div>
+                                    <div class="menu-profile-right">
+                                        <h4>user</h4>
+                                        <p>user@gmail.com</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <li role="separator" class="divider"></li>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <a href="/settings" class="menu-link"><i class="fa fa-cog"></i>settings</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a href="{{route('user.logout')}}" class="menu-link"><i class="fa fa-sign-out"></i>logout</a>
+                                </div>
+                            </div>
+                            <!-- <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
 
                             <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
 
@@ -84,7 +103,7 @@
 
                             <li role="separator" class="divider"></li>
                             
-                            <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
+                            <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li> -->
                         </ul>
                     
                     </div>
@@ -210,8 +229,27 @@
                         </button>
                         
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-
-                            <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
+                            <a href="{{route('user.profile')}}">
+                                <div class="display-inline">
+                                    <div class="menu-profile-left">
+                                        <img src="{{Auth::user()->picture}}">
+                                    </div>
+                                    <div class="menu-profile-right">
+                                        <h4>{{Auth::user()->name}}</h4>
+                                        <p>{{Auth::user()->email}}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <li role="separator" class="divider"></li>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <a href="/settings" class="menu-link"><i class="fa fa-cog"></i>{{tr('settings')}}</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a href="{{route('user.logout')}}" class="menu-link"><i class="fa fa-sign-out"></i>{{tr('logout')}}</a>
+                                </div>
+                            </div>
+                            <!-- <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
 
                             <li><a href="{{route('user.wishlist')}}">{{tr('wishlist')}}</a></li>
 
@@ -256,7 +294,7 @@
 
                             <li role="separator" class="divider"></li>
                            
-                            <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li>
+                            <li><a href="{{route('user.logout')}}">{{tr('logout')}}</a></li> -->
 
                         </ul>
                     </div>

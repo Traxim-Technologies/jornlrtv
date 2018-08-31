@@ -57,11 +57,19 @@
 
             <th >{{tr('type_of_user')}}</th>
 
-            <th >{{tr('admin_amount')}}</th>
+            <th >{{tr('admin_ppv_commission')}}</th>
 
-            <th >{{tr('user_amount')}}</th>
+            <th >{{tr('user_ppv_commission')}}</th>
 
-            <th >{{tr('amount')}}</th>
+            <th >{{tr('coupon_code')}} </th>
+
+            <th > {{tr('coupon_amount')}}</th>
+
+            <th > {{tr('plan_amount')}} </th>
+
+            <th > {{tr('final_amount')}} </th>
+
+            <th > {{tr('is_coupon_applied')}} </th>
 
             <th >{{tr('reason')}}</th>
 
@@ -91,38 +99,36 @@
                 <td>{{$ppv_details->payment_id}}</td>
 
                 <td> 
-                    @if($ppv_details->type_of_subscription == ONE_TIME_PAYMENT)
-
-                        {{tr('one_time_payment')}}
-
-                    @else 
-
-                        {{tr('recurring_payment')}}
-
-                    @endif
+                   {{$ppv_details->type_of_subscription}}
                 </td>
 
                 <td> 
-                    @if($ppv_details->type_user == NORMAL_USER)
-
-                        {{tr('normal_user')}}
-
-                    @elseif($ppv_details->type_user == PAID_USER) 
-
-                        {{tr('paid_users')}}
-
-                    @else
-
-                        {{tr('both_users')}}
-
-                    @endif
+                    {{$ppv_details->type_of_user}}
                 </td>
 
                 <td>{{Setting::get('currency')}} {{$ppv_details->admin_ppv_amount}}</td>
 
                 <td>{{Setting::get('currency')}} {{$ppv_details->user_ppv_amount}}</td>
 
-                <td>{{Setting::get('currency')}} {{$ppv_details->amount}}</td>
+
+                <td>{{$ppv_details->coupon_code}}</td>
+
+                <td>
+                    {{Setting::get('currency')}} {{$ppv_details->coupon_amount? $ppv_details->coupon_amount : "0.00"}}
+                </td>
+
+                <td> {{Setting::get('currency')}} {{$ppv_details->ppv_amount ? $ppv_details->ppv_amount : "0.00"}}
+                </td>
+
+                <td> {{Setting::get('currency')}} {{$ppv_details->amount ? $ppv_details->amount : "0.00" }}</td>
+
+                <td>
+                    @if($ppv_details->is_coupon_applied)
+                        {{tr('yes')}}
+                    @else
+                        {{tr('no')}}
+                    @endif
+                </td>
 
                 <td>{{$ppv_details->reason}}</td>
 
