@@ -1440,5 +1440,12 @@ return array(
 	'my_plans'=>'My Plans',
 	'spam'=>'Spam',
 	'view_profile'=>'View Profile',
-	'plans'=>'Plans'
+	'plans'=>'Plans',
+	'cancel_subscription'=>'Cancel Subscription',
+	'enable_subscription'=>'Enable SubScription',
+	'enable_subscription_notes'=>'Are you sure want to enable the automatic subscription ?',
+	'subscription_name'=>'Subscription Name',
+	'automatic_subscribers'=>'Automatic Subscribers',
+	'cancelled_subscribers'=>'Cancelled Subscribers',
+	'no_pending_payments'=>'No Pending Payments',
 );

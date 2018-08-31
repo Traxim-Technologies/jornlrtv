@@ -5463,4 +5463,210 @@ class AdminController extends Controller {
         }
         
     }
+
+   /**
+     * Function Name : user_subscription_pause
+     *
+     * To prevent automatic subscriptioon, user have option to cancel subscription
+     *
+     * @param object $request - USer details & payment details
+     *
+     * @return boolean response with message
+     */
+    public function user_subscription_pause(Request $request) {
+
+        $user_payment = UserPayment::where('user_id', $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+
+        if($user_payment) {
+
+            $user_payment->is_cancelled = AUTORENEWAL_CANCELLED;
+
+            $user_payment->cancel_reason = $request->cancel_reason;
+
+            $user_payment->save();
+
+            return back()->with('flash_success', tr('cancel_subscription_success'));
+
+        } else {
+
+            return back()->with('flash_error', Helper::get_error_message(163));
+
+        }        
+
+    }
+
+    /**
+     * Function Name : user_subscription_enable
+     *
+     * To prevent automatic subscriptioon, user have option to cancel subscription
+     *
+     * @created shobana Chandrasekar
+     *
+     * @edited
+     *
+     * @param object $request - USer details & payment details
+     *
+     * @return boolean response with message
+     */
+    public function user_subscription_enable(Request $request) {
+
+        $user_payment = UserPayment::where('user_id', $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')
+            ->where('is_cancelled', AUTORENEWAL_CANCELLED)
+            ->first();
+
+        if($user_payment) {
+
+            $user_payment->is_cancelled = AUTORENEWAL_ENABLED;
+
+            $user_payment->save();
+
+            return back()->with('flash_success', tr('autorenewal_enable_success'));
+
+        } else {
+
+            return back()->with('flash_error', Helper::error_message(163));
+
+        }        
+
+    }  
+
+    /**
+     * Function Name : automatic_subscribers
+     *
+     * To list out automatic subscribers
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id - User id (Optional)
+     * 
+     * @return - response of array of automatic subscribers
+     *
+     */
+    public function automatic_subscribers() {
+
+        $datas = UserPayment::select(DB::raw('max(user_payments.id) as id'),'user_payments.*')
+                        ->leftjoin('users', 'users.id','=' ,'user_payments.user_id')
+                        ->leftjoin('subscriptions', 'subscriptions.id','=' ,'subscription_id')
+                        ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                        ->where('cards.is_default' , DEFAULT_TRUE)
+                        ->where('subscriptions.amount', '>', 0)
+                        ->where('user_payments.status', PAID_STATUS)
+                        ->where('user_payments.is_cancelled', AUTORENEWAL_ENABLED)
+                        ->groupBy('user_payments.user_id')
+                        ->orderBy('user_payments.created_at' , 'desc')
+                        ->get();
+
+        $payments = [];
+
+        $amount = 0;
+
+        foreach ($datas as $key => $value) {
+
+            if ($value->getSubscription) {
+
+                $amount += $value->getSubscription ? $value->getSubscription->amount : 0;
+
+            }
+            
+            $payments[] = [
+
+                'id'=> $value->user_payment_id,
+
+                'user_id'=>$value->user_id,
+
+                'subscription_id'=>$value->subscription_id,
+
+                'payment_id'=>$value->payment_id,
+
+                'amount'=>$value->getSubscription ? $value->getSubscription->amount : '',
+
+                'payment_mode'=>$value->payment_mode,
+
+                'expiry_date'=>date('d-m-Y H:i a', strtotime($value->expiry_date)),
+
+                'user_name' => $value->user ? $value->user->name : '',
+
+                'subscription_name'=>$value->getSubscription ? $value->getSubscription->title : '',
+
+                'unique_id'=>$value->getSubscription ? $value->getSubscription->unique_id : '',
+
+            ];
+
+        }
+
+        $payments =json_decode(json_encode($payments));
+
+        return view('admin.subscriptions.subscribers.automatic')
+                        ->withPage('subscriptions')
+                        ->with('amount', $amount)
+                        ->with('sub_page','automatic')->with('payments', $payments);        
+
+    }
+
+    /**
+     * Function Name : cancelled_subscribers
+     *
+     * To list out cancelled subscribers
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $id - User id (Optional)
+     * 
+     * @return - response of array of cancelled subscribers
+     *
+     */
+    public function cancelled_subscribers() {
+
+        $datas = UserPayment::select(DB::raw('max(user_payments.id) as id'),'user_payments.*')
+                        ->where('user_payments.status', PAID_STATUS)
+                        ->leftjoin('subscriptions', 'subscriptions.id','=' ,'subscription_id')
+                        ->where('user_payments.is_cancelled', AUTORENEWAL_CANCELLED)
+                        ->groupBy('user_payments.user_id')
+                        ->orderBy('user_payments.created_at' , 'desc')
+                        ->get();
+
+        $payments = [];
+
+        foreach ($datas as $key => $value) {
+            
+            $payments[] = [
+
+                'id'=> $value->user_payment_id,
+
+                'user_id'=>$value->user_id,
+
+                'subscription_id'=>$value->subscription_id,
+
+                'payment_id'=>$value->payment_id,
+
+                'amount'=>$value->getSubscription ? $value->getSubscription->amount : '',
+
+                'payment_mode'=>$value->payment_mode,
+
+                'expiry_date'=>date('d-m-Y H:i a', strtotime($value->expiry_date)),
+
+                'user_name' => $value->user ? $value->user->name : '',
+
+                'subscription_name'=>$value->getSubscription ? $value->getSubscription->title : '',
+
+                'unique_id'=>$value->getSubscription ? $value->getSubscription->unique_id : '',
+
+                'cancel_reason'=>$value->cancel_reason
+
+            ];
+
+        }
+
+        $payments =json_decode(json_encode($payments));
+
+        return view('admin.subscriptions.subscribers.cancelled')
+                        ->withPage('subscriptions')
+                        ->with('sub_page','cancelled')->with('payments', $payments);      
+
+    }
+
 }

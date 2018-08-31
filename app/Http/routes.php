@@ -484,6 +484,19 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('custom/live/view/{id}', 'AdminController@custom_live_videos_view')->name('custom.live.view');
 
     Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change-status');
+
+        // Cancel Subscription
+
+    Route::post('/user/subscription/pause', 'AdminController@user_subscription_pause')->name('cancel.subscription');
+
+    Route::get('/user/subscription/enable', 'AdminController@user_subscription_enable')->name('enable.subscription');
+
+    // Subscribers
+
+    Route::get('automatic/subscribers', 'AdminController@automatic_subscribers')->name('automatic.subscribers');
+
+    Route::get('cancelled/subscribers', 'AdminController@cancelled_subscribers')->name('cancelled.subscribers');
+
 });
 
 
