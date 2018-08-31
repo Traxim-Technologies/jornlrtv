@@ -5089,9 +5089,15 @@ class AdminController extends Controller {
 
             $model = Tag::find($request->id);
 
-            $model->status = $model->status == 1 ? DEFAULT_FALSE : DEFAULT_TRUE;
+            $model->status = $model->status == TAG_APPROVE_STATUS ? TAG_DECLINE_STATUS : TAG_APPROVE_STATUS;
 
             $model->save();
+
+            if ($model->status == TAG_DECLINE_STATUS) {
+
+                VideoTapeTag::where('tag_id', $model->id)->delete();
+
+            }
 
             return back()->with('flash_success', $model->status ? tr('tag_approve_success') : tr('tag_decline_success'));
 

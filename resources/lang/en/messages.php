@@ -1454,4 +1454,6 @@ return array(
 	'channel_decline_notes'=>'Are you sure want to decline the channel? Once you declined, based on channels records will decline.',
 	'admin_video_status'=>'Admin Status',
 	'user_video_status'=>'User Stauts',
+	'tag_approve_notes'=>'Are you sure want to approve this tag ?',
+	'tag_decline_notes'=>'Are you sure want to decline this tag ? Once you declined, tag will be remove from all the depends videos',
 );
