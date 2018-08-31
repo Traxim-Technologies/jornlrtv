@@ -1277,4 +1277,32 @@ return array(
 	'user_decline_success'=>'User Declined Successfully',
 	'add_ppv_amount'=>'Add PPV Amount',
 
+
+	//Export 
+	'created'=>'Joined',
+	'updated'=>'Updated',
+	'excel_sheet'=>'Excel Sheet',
+	'csv'=>'CSV',
+	'export'=>'Export',
+	'users_management'=>'USERS MANAGEMENT',
+	'channels_management'=>'CHANNEL MANAGEMENT',
+	'video_management'=>'VIDEO MANAGEMENT',
+	'subscription_management'=>'SUBSCRIPTION MANAGEMENT',
+	'payperview_management'=>'PAYPERVIEW MANAGEMENT',
+	'export_success'=>'Success..!!!',
+	's_no'=>'S.NO',
+	'push_status'=>'push_status',
+	'device_type'=>'Device Type',
+	'login_by'=>'Login By',
+	'timezone'=>'TimeZone',
+	'paid_users'=>'Paid Users',
+	'both_users'=>'Both Users',
+	'admin_ppv_amount'=>'Admin PPV Amount',
+	'user_ppv_amount'=>'User PPV Amount',
+	'subscription_payment_not_found'=>'Subscription Payment Details Not Found',
+	'ppv_payment_not_found'=>'PayPerView Payment Details Not Found',
+
+
+
+
 );

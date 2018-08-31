@@ -36,6 +36,36 @@
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('users')}}</b>
                 <a href="{{route('admin.add.user')}}" class="btn btn-default pull-right">{{tr('add_user')}}</a>
+
+                <!-- EXPORT OPTION START -->
+
+					@if(count($users) > 0 )
+	                
+		                <ul class="admin-action btn btn-default pull-right" style="margin-right: 20px">
+		                 	
+							<li class="dropdown">
+				                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				                  {{tr('export')}} <span class="caret"></span>
+				                </a>
+				                <ul class="dropdown-menu">
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.users.export' , ['format' => 'xls'])}}">
+				                  			<span class="text-red"><b>{{tr('excel_sheet')}}</b></span>
+				                  		</a>
+				                  	</li>
+
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.users.export' , ['format' => 'csv'])}}">
+				                  			<span class="text-blue"><b>{{tr('csv')}}</b></span>
+				                  		</a>
+				                  	</li>
+				                </ul>
+							</li>
+						</ul>
+
+					@endif
+
+	            <!-- EXPORT OPTION END -->
             </div>
             <div class="box-body">
 
@@ -83,7 +113,7 @@
 							      	</td>
 							      	<td>{{$user->email}}</td>
 							      	<td>{{$user->mobile}}</td>
-							      	
+							      
 									<td>
 										@if($user->user_type)
 											{{get_expiry_days($user->id)['days']}} days

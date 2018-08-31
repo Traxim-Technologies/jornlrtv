@@ -26,6 +26,37 @@
           		<div class="box-header label-primary">
 	                <b style="font-size: 18px;">{{tr('subscription_payments')}}</b>
 	                <a href="{{route('admin.users')}}" style="float:right" class="btn btn-default">{{tr('view_users')}}</a>
+
+	                <!-- EXPORT OPTION START -->
+
+					@if(count($data) > 0 )
+	                
+		                <ul class="admin-action btn btn-default pull-right" style="margin-right: 40px">
+		                 	
+							<li class="dropdown">
+				                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				                  {{tr('export')}} <span class="caret"></span>
+				                </a>
+				                <ul class="dropdown-menu">
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.subscription.export' , ['format' => 'xls'])}}">
+				                  			<span class="text-red"><b>{{tr('excel_sheet')}}</b></span>
+				                  		</a>
+				                  	</li>
+
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.subscription.export' , ['format' => 'csv'])}}">
+				                  			<span class="text-blue"><b>{{tr('csv')}}</b></span>
+				                  		</a>
+				                  	</li>
+				                </ul>
+							</li>
+						</ul>
+
+					@endif
+
+	            <!-- EXPORT OPTION END -->
+
 	            </div>
 
 	            <div class="box-body">

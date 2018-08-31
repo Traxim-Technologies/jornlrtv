@@ -343,6 +343,19 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/channel/videos/{id?}', 'AdminController@channel_videos')->name('channel.videos');
 
+
+    // Exports tables
+
+    Route::get('/users/export/', 'AdminExportController@users_export')->name('users.export');
+
+    Route::get('/channels/export/', 'AdminExportController@channels_export')->name('channels.export');
+
+    Route::get('/videos/export/', 'AdminExportController@videos_export')->name('videos.export');
+
+    Route::get('/subscription/payment/export/', 'AdminExportController@subscription_export')->name('subscription.export');
+
+    Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
+
     
 
     // Videos

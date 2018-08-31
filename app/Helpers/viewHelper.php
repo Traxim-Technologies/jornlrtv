@@ -1262,3 +1262,29 @@ function get_commission_percentage($total , $actual_amount) {
 
     return $percentage;
 }
+
+/**
+ * function routefreestring()
+ * 
+ * @uses used for remove the route parameters from the string
+ *
+ * @created Maheswari S
+ *
+ * @edited Maheswari S
+ *
+ * @param string $string
+ *
+ * @return Route parameters free string
+ */
+
+function routefreestring($string) {
+
+    $search = array(' ', '&', '%', "?",'=','{','}','$');
+
+    $replace = array('-', '-', '-' , '-', '-', '-' , '-','-');
+
+    $string = str_replace($search, $replace, $string);
+
+    return $string;
+    
+}
