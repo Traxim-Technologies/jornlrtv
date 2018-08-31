@@ -6,13 +6,13 @@
 <meta property="og:locale" content="en_US" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="{{$video->title}}" />
-<meta property="og:description" content="{{$video->description}}" />
+<meta property="og:description" content="<?= $video->description ?>" />
 <meta property="og:url" content="" />
 <meta property="og:site_name" content="@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif" />
 <meta property="og:image" content="{{$video->default_image}}" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:description" content="{{$video->description}}"/>
+<meta name="twitter:description" content="<?= $video->description ?>"/>
 <meta name="twitter:title" content="{{$video->title}}"/>
 <meta name="twitter:image:src" content="{{$video->default_image}}"/>
 
@@ -191,7 +191,7 @@ th {
 </div>
 <!--  <h3>Channel Name</h3> -->
 <div class="clearfix"></div>
-
+<br>
 
 <table class="table">
 	<tr>
@@ -290,7 +290,7 @@ th {
 <div class="clearfix"></div>
 
 <div>
-<h4 class="video-desc">{{$video->description}}</h4>
+<h4 class="video-desc"><?= $video->description?></h4>
 </div>
 <div class="clearfix"></div>
 

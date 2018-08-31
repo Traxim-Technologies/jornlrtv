@@ -524,7 +524,7 @@
     <div class="description">
 
     	<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', ['id'=>$video->category_id])}}" target="_blank">{{$video->category_name}}</a></div>
-        <p>{{$video->description}}</p>
+        <?= $video->description?>
     </div><!--end of description--> 
 
    	<span class="stars">
@@ -577,7 +577,7 @@
 
 <div class="recom-area abt-sec">
 <div class="abt-sec-head">
-<h5>{{$channel->description}}</h5>
+<h5><?= $channel->description?></h5>
 </div>
 </div>
 
@@ -637,7 +637,7 @@
     </div> <!--end of history-head--> 
 
     <div class="description">
-        <p>{{$video->description}}</p>
+        <?= $video->description?>
     </div><!--end of description--> 
 
 

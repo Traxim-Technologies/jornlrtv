@@ -1404,12 +1404,7 @@ class UserController extends Controller {
 
         $response = CommonRepo::upload_video_image($request)->getData();
 
-        if ($response->success) {
-
-            return response()->json($response);
-
-        }
-
+        return response()->json($response);
     }
 
 

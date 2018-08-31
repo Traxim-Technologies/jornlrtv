@@ -3788,7 +3788,7 @@ class UserApiController extends Controller {
             DB::beginTransaction();
 
              $validator = Validator::make($request->all(), [
-                'coupon_code' => 'required|exists:coupons,coupon_code,status,'.COUPON_ACTIVE,  
+                'coupon_code' => 'exists:coupons,coupon_code,status,'.COUPON_ACTIVE,  
                 'video_tape_id'=>'required|exists:video_tapes,id,publish_status,'.VIDEO_PUBLISHED.',is_approved,'.ADMIN_VIDEO_APPROVED_STATUS.',status,'.USER_VIDEO_APPROVED_STATUS          
             ], array(
                     'coupon_code.exists' => tr('coupon_code_not_exists'),
