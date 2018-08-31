@@ -1036,7 +1036,7 @@ history (single page) css
 	/*background-color: #fff;*/
 }
 .content-head {
-	border-bottom:  1px solid #b8b8b8;
+	border-bottom:  0px solid #b8b8b8;
 }
 .history-list{
 	padding: 0;
@@ -3326,6 +3326,7 @@ tr.active{
 .category {
   color: #777;
   font-size: 12px;
+  margin:2px 0;
 }
 
 .category a {
@@ -3627,10 +3628,11 @@ tr.active{
 	margin-top: .2em;
 }
 .settings{
-	font-size: 18px;
+	font-size: 1.14em;
 	font-weight: bold;
 	margin-top: 15px;
 	margin-bottom: 25px;
+	text-transform: capitalize;
 }
 .menu-profile-left{
 	padding:10px 0 5px 0;
@@ -3686,7 +3688,7 @@ tr.active{
 .new-profile-sec{
 	background-color: #fff;
 	border-radius: 4px;
-	padding: 1em;
+	padding: 1.5em;
 }
 .new-profile-left{
 	width:150px;
@@ -3728,4 +3730,149 @@ tr.active{
 }
 .st_video_upload_btn:hover, .st_video_upload_btn:focus, .st_video_upload_btn:active{
 	color: #666;
+}
+.new-redeem-sec{
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 1.5em;
+	border:1px solid #eee;
+	height: 26em;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin-bottom: 1.2em;
+}
+/*.redeem-content{
+	color: #999;
+}*/
+.timeline{
+    padding-top: 1em;
+}
+.timeline-item{
+    border-left: 2px solid #ddd;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-left: 8px;
+}
+.timeline-bar{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: 20px;
+}
+.timeline-item .version{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-top: 15px;
+	background-color: #fff;
+	border:2px solid #ddd;
+    margin-left: -8px;
+    font-size: 1em;
+    width: 14px;
+    height:14px;
+    border-radius: 2em;
+    color: #ffffff;
+}
+.timeline-item .redeem-content1{
+    padding-top: 11px;
+    padding-bottom: 2em;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+.timeline-item .redeem-content1 .redeem-amount{
+	color: #3398E6;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.redeem-content1 img{
+	height: 45px;
+	margin-top:10px;
+}
+.timeline-item .redeem-content1 ul{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+}
+.timeline-item .redeem-content1 ul li{
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    width: 50%;
+    font-size: 1em;
+    font-weight: 300;
+    padding: 0 1.5em .5em 0;
+    color: #999;
+}
+h1::first-letter, h2::first-letter, h3::first-letter, h4::first-letter, h5::first-letter, h6::first-letter,
+span::first-letter, div::first-letter, label::first-letter, .label::first-letter{
+	text-transform: capitalize;
+}
+.branded-page-module-title-text{
+	font-size: 18px;
+}
+.abt-sec-head h5{
+	line-height: 1.6 !important;
+}
+.border-0{
+	border:0 !important;
+}
+.unset-height{
+	max-height: unset !important;
+}
+.bold{
+	font-weight: bold;
+}
+.con-head{
+	font-weight: bold;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	color: #000;
+}
+.channel-header.yt-card{
+	overflow: hidden;
+}
+.mt-35{
+	margin-top: 35px !important;
+}
+.slider::before{
+	left: 4px !important;
+}
+input:checked + .slider::before{
+	transform: translateX(22px) !important;
+}
+input:checked + .slider{
+	background-color:#2E93E0 !important; 
 }

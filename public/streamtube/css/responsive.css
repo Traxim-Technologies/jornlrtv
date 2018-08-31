@@ -289,6 +289,12 @@
 	width:100%;
 	float: unset;
 }
+.timeline-item .redeem-content1 ul li{
+    width: 100%;
+}
+.new-redeem-sec{
+	height: unset;
+}
 }
 
 /*small devices*/
@@ -501,6 +507,9 @@
 .recom-box{
 	width: 32%;
 }
+.new-redeem-sec{
+	height: unset;
+}
 }
 
 /* Tablets */
@@ -657,6 +666,9 @@
 .banner-slider{
 	padding: 0 50px;
 	margin-top:15px;
+}
+.new-redeem-sec{
+	height: unset;
 }
 }
 

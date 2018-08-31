@@ -203,12 +203,9 @@
 <div class="shelf-wrapper clearfix">
 <div class="big-section-main new-history1">
 
-<h2 class="branded-page-module-title">
-<span class="branded-page-module-title-text">
-{{tr('watch_to_next')}}
-</span>
-
-</h2>
+<h4 class="content-head con-head">
+	{{tr('watch_to_next')}}
+</h4>
 
 @if(count($trending_videos) == 0)
 
@@ -331,7 +328,7 @@
 @foreach($videos as $i => $video)
 
 
-<li class="sub-list row">
+<li class="sub-list row border-0">
 <div class="main-history">
 <div class="history-image">
     <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>
@@ -352,7 +349,7 @@
 <div class="history-title">
     <div class="history-head row">
         <div class="cross-title2">
-            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
+            <h5 class="payment_class unset-height"><a href="{{$video->url}}">{{$video->title}}</a></h5>
            	
             <span class="video_views">
                 <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
@@ -553,7 +550,7 @@
 <div class="clearfix"></div>
 
 
-<button class="pull-right st_video_upload_btn subscribe_btn" onclick="getVideos()" style="color: #fff">{{tr('view_more')}}</button>
+<button class="pull-right btn btn-info mb-15" onclick="getVideos()" style="color: #fff">{{tr('view_more')}}</button>
 
 <div class="clearfix"></div>
 
@@ -601,7 +598,7 @@
 @foreach($payment_videos->data as $i => $video)
 
 
-<li class="sub-list row">
+<li class="sub-list row border-0">
 <div class="main-history">
  <div class="history-image">
     <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a> 
@@ -622,7 +619,7 @@
 <div class="history-title">
     <div class="history-head row">
         <div class="cross-title">
-            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
+            <h5 class="payment_class unset-height"><a href="{{$video->url}}">{{$video->title}}</a></h5>
             
 
             <span class="video_views">
