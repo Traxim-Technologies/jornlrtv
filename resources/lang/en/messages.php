@@ -1301,6 +1301,8 @@ return array(
 	'user_ppv_amount'=>'User PPV Amount',
 	'subscription_payment_not_found'=>'Subscription Payment Details Not Found',
 	'ppv_payment_not_found'=>'PayPerView Payment Details Not Found',
+	'mobile_settings'=>'Mobile Settings',
+	'company_site_settings'=>'Company Site Url\'s',
 
 
 
