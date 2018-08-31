@@ -293,27 +293,47 @@
                               <br>
                             </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                <div class="form-group" style="display: none;" id="publish_time_div">
+
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="display: none;" id="publish_time_div">
+                                <div class="form-group" >
                                     <label for="datepicker" class="">{{tr('publish_time')}} * </label>
 
                                     <input type="text" name="publish_time" placeholder="Select the Publish Time i.e YYYY-MM-DD" class="form-control pull-right" id="datepicker">
                                 </div>
                             </div>
+
+                            
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="display: none;" id="duration_div">
+                                    <div class="form-group">
+                                        <label>{{tr('duration')}} * : </label><small> {{tr('duration_note')}}</small>
+
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration">
+                                        </div>
+                                    </div>
+                                </div>
+
+                             
+
                             <div class="clearfix"></div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="description" class="">{{tr('description')}} * </label>
-                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="reviews" class="">{{tr('reviews')}} * </label>
                                     <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews_textarea" name="reviews"></textarea>
                                 </div>
                             </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="description" class="">{{tr('description')}} * </label>
+                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description"></textarea>
+                                </div>
+                            </div>
+                            
                         </div>
                         <ul class="list-inline">
                              <li class="pull-left">
@@ -570,6 +590,12 @@
             return false;
 
         }
+    </script>
+
+    <script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'description' );
+        //CKEDITOR.replace( 'reviews' );
     </script>
  
 @endsection

@@ -91,7 +91,7 @@
                         </tr>
                         <tr>
                           <th>{{tr('description')}}</th>
-                          <td>{{$category->description}}</td>
+                          <td><?= $category->description ?></td>
                         </tr>
                       </table>
 
@@ -119,7 +119,7 @@
                                   <a href="{{route('admin.videos.view', array('id' => $video->id))}}" target="_blank">{{$video->title}}</a>
                                   <span class="text-muted pull-right">{{$video->created_at->diffForHumans()}}</span>
                                 </span><!-- /.username -->
-                          {{$video->description}}
+                              <div class="description"><?= $video->description?></div>
                           </div>
                           <!-- /.comment-text -->
                         </div>
@@ -168,7 +168,7 @@
 
                                                 <h4 style="margin-top: 0;text-align:nowrap;overflow: hidden;text-overflow: ellipsis;">{{tr('no_of_subscribers')}} - {{$channel_list->no_of_subscribers}}</h4>
 
-                                                <p style="max-height: 80px;overflow-y: hidden;">{{$channel_list->description}}</p>
+                                                <div style="max-height: 80px;overflow-y: hidden;"><?= $channel_list->description ?></div>
                                                 <!-- <p style="margin-bottom: 0">
                                                     <i class="fa fa-shopping-cart margin-r5"></i> 12+ purchases
                                                 </p> -->

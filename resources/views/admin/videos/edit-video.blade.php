@@ -330,19 +330,20 @@
 
                             <div class="clearfix"></div>
 
-
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="description" class="">{{tr('description')}} * </label>
-                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description">{{$video->description}}</textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="reviews" class="">{{tr('reviews')}} * </label>
                                     <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews_textarea" name="reviews">{{$video->reviews}}</textarea>
                                 </div>
                             </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="description" class="">{{tr('description')}} * </label>
+                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description">{{$video->description}}</textarea>
+                                </div>
+                            </div>
+                            
                         </div>
                         <ul class="list-inline">
                              <li class="pull-left">
@@ -625,5 +626,9 @@
 
         display_fields();
     </script>
- 
+     <script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'description' );
+        //CKEDITOR.replace( 'reviews' );
+    </script>
 @endsection

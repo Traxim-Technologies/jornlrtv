@@ -434,8 +434,8 @@ videos (single page) css
 .title p{
 	font-weight: bold;
 	font-size: 10px;
-	float: right;
-	text-align: center;
+	/*float: right;
+	text-align: center;*/
 }
 .watch-button{
     background-color: green;
@@ -1131,6 +1131,22 @@ history (single page) css
     margin-bottom: 3px;
 }
 .description p{
+	color: #767676;
+    margin-top: 3px;
+    font-size: 12px;
+    line-height: 16px;
+    margin-bottom:4px;
+    display: block;
+  	display: -webkit-box;
+  /* Fallback for non-webkit */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height:33px;
+
+}
+.description {
 	color: #767676;
     margin-top: 3px;
     font-size: 12px;

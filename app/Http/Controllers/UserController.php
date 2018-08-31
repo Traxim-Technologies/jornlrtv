@@ -1028,7 +1028,7 @@ class UserController extends Controller {
                 ->with('flash_success', $response->message);
         } else {
             
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
 
     }
@@ -1404,12 +1404,7 @@ class UserController extends Controller {
 
         $response = CommonRepo::upload_video_image($request)->getData();
 
-        if ($response->success) {
-
-            return response()->json($response);
-
-        }
-
+        return response()->json($response);
     }
 
 

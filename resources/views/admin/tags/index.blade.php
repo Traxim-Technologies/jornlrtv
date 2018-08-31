@@ -110,11 +110,20 @@
 
 				              				<i class="fa fa-trash"></i>
 
-				              			</a>
+				              			</a>	
+
+				              			<?php 
+
+				              				$tag_approve_notes = tr('tag_approve_notes');
+
+				              				$tag_decline_notes = tr('tag_decline_notes');
+				              				
+
+				              			?>
 
 				              			@if($data->status)
 
-				              				<a href="{{route('admin.tags.status' ,['id'=>$data->id])}}" class="btn  btn-xs btn-warning" title="Decline this Category" >
+				              				<a href="{{route('admin.tags.status' ,['id'=>$data->id])}}" class="btn  btn-xs btn-warning" title="Decline this Category"  onclick='return confirm("{{$tag_decline_notes}}")'>
 
 					              				<i class="fa fa-times"></i>
 
@@ -123,7 +132,7 @@
 
 				              			@else
 
-					              			<a href="{{route('admin.tags.status' ,['id'=>$data->id])}}" class="btn  btn-xs btn-success" title="Approve this Category">
+					              			<a href="{{route('admin.tags.status' ,['id'=>$data->id])}}" class="btn  btn-xs btn-success" title="Approve this Category" onclick='return confirm("{{$tag_approve_notes}}")'>
 
 					              				<i class="fa fa-check"></i>
 

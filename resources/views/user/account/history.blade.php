@@ -73,7 +73,7 @@
                                             </div> <!--end of history-head--> 
 
                                             <div class="description">
-                                                <p>{{$history->description}}</p>
+                                                <?= $history->description ?>
                                             </div><!--end of description--> 
 
                                             <span class="stars">

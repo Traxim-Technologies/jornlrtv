@@ -163,6 +163,9 @@ span.round-tab:hover {
     font-weight: bold;
     margin-bottom: 15px;
     color: #333;  
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .category-item-active {
     border: 0 none;

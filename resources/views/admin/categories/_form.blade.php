@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for = "description">{{tr('description')}}</label>
                             
-                            <textarea name="description" class="form-control" required>{{$model->description}}</textarea>
+                            <textarea name="description" class="form-control" required id="description">{{$model->description}}</textarea>
                         </div>
 
                         </div>
@@ -77,4 +77,8 @@ function loadFile(event, id){
 }
 </script>
 
+    <script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'description' );
+    </script>
 @endsection

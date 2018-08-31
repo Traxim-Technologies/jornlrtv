@@ -200,7 +200,7 @@ class CommonRepository {
 
                 $error_messages = implode(',', $validator->messages()->all());
 
-                $response_array = ['success'=> false, 'error'=>$error_messages];
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
             }
 
         } else {
@@ -227,7 +227,7 @@ class CommonRepository {
 
                 $error_messages = implode(',', $validator->messages()->all());
 
-                $response_array = ['success'=> false, 'error'=>$error_messages];
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
 
                 // return back()->with('flash_errors', $error_messages);
 
@@ -287,7 +287,7 @@ class CommonRepository {
                     $response_array = ['success'=>true, 'message'=>$message, 'data'=>$channel];
                 } else {
                     // return back()->with('flash_error', tr('admin_not_error'));
-                    $response_array = ['success'=>false, 'error'=>tr('something_error')];
+                    $response_array = ['success'=>false, 'error_messages'=>tr('something_error')];
                 }
 
             }
@@ -509,6 +509,7 @@ class CommonRepository {
 
                 $model->category_name = $category->name;
 
+                $model->unique_id = $model->title;
 
                 if(in_array($request->video_type , [ VIDEO_TYPE_YOUTUBE , VIDEO_TYPE_OTHERS] )) {
 
@@ -579,8 +580,6 @@ class CommonRepository {
                             $seconds = 10;
 
                         }
-
-                        $model->unique_id = $model->title;
 
                         $img = time();
 
