@@ -12,6 +12,7 @@
 @endsection
 
 
+
 @section('content')
 
   @include('notification.notify')
@@ -90,7 +91,7 @@
                         </tr>
                         <tr>
                           <th>{{tr('description')}}</th>
-                          <td>{{$channel->description}}</td>
+                          <td><?= $channel->description?></td>
                         </tr>
                       </table>
 
@@ -118,7 +119,7 @@
                                   <a href="{{route('admin.videos.view', array('id' => $video->id))}}" target="_blank">{{$video->title}}</a>
                                   <span class="text-muted pull-right">{{$video->created_at->diffForHumans()}}</span>
                                 </span><!-- /.username -->
-                          {{$video->description}}
+                              <div class="description"><?=$video->description?></div>
                           </div>
                           <!-- /.comment-text -->
                         </div>

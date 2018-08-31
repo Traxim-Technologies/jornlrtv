@@ -208,7 +208,7 @@
 
                                       <div class="clearfix"></div>
                                     <div class="col-sm-12">
-                                        <label for="name" class="control-label">{{tr('description')}}</label>
+                                       <!--  <label for="name" class="control-label">{{tr('description')}}</label> -->
                                         <div>
                                             <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description" >{{$model->description}}</textarea>
                                         </div>
@@ -226,7 +226,7 @@
 
                                           <div class="pull-right">  
 
-                                              <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' onclick="countNext()" />
+                                              <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' onclick="countNext('description')" />
 
                                           </div>
 
@@ -405,6 +405,13 @@
 <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script> 
 
 <script src="{{asset('streamtube/js/jquery-form.js')}}"></script>
+
+<script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace( 'description' );
+
+</script>
+
 
 <script>
 
@@ -732,13 +739,31 @@ function saveVideoType(video_type, step) {
 
 
 
-function countNext() {
+function countNext(desc_present) {
 
   var video_type = $("#video_type").val();
 
   $("#next_btn").hide();
 
   $("#manual_finish").hide();
+
+  if(desc_present == 'description') {
+
+    var description = CKEDITOR.instances['description'].getData();
+
+    if (description == '') {
+
+      alert("Description should not be blank");
+
+      return false;
+
+    } else {
+
+        $("#description").val(description);
+
+    }
+  }
+
 
   if (video_type == 1) {
 

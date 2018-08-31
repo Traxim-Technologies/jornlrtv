@@ -157,10 +157,17 @@
 
 								                  	</li>
 
+								                  	<?php 
+
+								                  		$approve_notes = tr('approve_notes');
+
+								                  		$decline_notes = tr('decline_notes');
+
+								                  	?>
 								                  	@if($user->status==0)
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.status',array('id'=>$user->id,'status'=>1))}}">{{tr('approve')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.status',array('id'=>$user->id,'status'=>1))}}" onclick='return confirm("{{$approve_notes}}")'>{{tr('approve')}}</a></li>
 								                  	@else
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.status',array('id'=>$user->id,'status'=>0))}}">{{tr('decline')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.status',array('id'=>$user->id,'status'=>0))}}"  onclick='return confirm("{{$decline_notes}}")'>{{tr('decline')}}</a></li>
 								                  	@endif
 								                  	
 								                </ul>

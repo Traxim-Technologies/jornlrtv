@@ -97,10 +97,18 @@
 
 													<li class="divider" role="presentation"></li>
 
+													<?php 
+
+								                  		$channel_approve_notes = tr('channel_approve_notes');
+
+								                  		$channel_decline_notes = tr('channel_decline_notes');
+
+								                  	?>
+
 								                  	@if($channel->is_approved)
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' =>0))}}" onclick='return confirm("{{$channel_decline_notes}}")'>{{tr('decline')}}</a></li>
 								                  	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' => 1))}}" onclick='return confirm("{{$channel_approve_notes}}")'>{{tr('approve')}}</a></li>
 								                  	@endif
 
 								                </ul>

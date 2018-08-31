@@ -98,3 +98,11 @@
     </div>
 
 </div>
+
+
+@section('scripts')
+    <script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'description' );
+    </script>
+@endsection

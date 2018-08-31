@@ -1064,15 +1064,11 @@ class AdminController extends Controller {
 
             $channel->save();
 
-            if ($request->status == 0) {
-               
-                foreach($channel->videoTape as $video)
-                {                
-                    $video->is_approved = $request->status;
+            if ($request->status == ADMIN_CHANNEL_DECLINED_STATUS) {
 
-                    $video->save();
-                } 
-
+                VideoTape::where('channel_id', $channel->id)
+                            ->update(['is_approved'=>ADMIN_CHANNEL_DECLINED_STATUS]);
+            
             }
 
             $message = tr('channel_decline_success');

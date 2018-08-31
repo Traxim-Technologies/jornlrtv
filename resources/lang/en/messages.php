@@ -1448,4 +1448,10 @@ return array(
 	'automatic_subscribers'=>'Automatic Subscribers',
 	'cancelled_subscribers'=>'Cancelled Subscribers',
 	'no_pending_payments'=>'No Pending Payments',
+	'approve_notes'=>'Are you sure want to approve ?',
+	'decline_notes'=>'Are you sure want to decline ?',
+	'channel_approve_notes'=>'Are you sure want to approve the channel? Once you approved, need to approve videos manually.',
+	'channel_decline_notes'=>'Are you sure want to decline the channel? Once you declined, based on channels records will decline.',
+	'admin_video_status'=>'Admin Status',
+	'user_video_status'=>'User Stauts',
 );

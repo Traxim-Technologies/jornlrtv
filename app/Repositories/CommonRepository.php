@@ -509,6 +509,7 @@ class CommonRepository {
 
                 $model->category_name = $category->name;
 
+                $model->unique_id = $model->title;
 
                 if(in_array($request->video_type , [ VIDEO_TYPE_YOUTUBE , VIDEO_TYPE_OTHERS] )) {
 
@@ -579,8 +580,6 @@ class CommonRepository {
                             $seconds = 10;
 
                         }
-
-                        $model->unique_id = $model->title;
 
                         $img = time();
 

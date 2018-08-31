@@ -104,7 +104,7 @@ function saveVideoDetails(step) {
    var title = $("#title").val();
    var datepicker = $("#datepicker").val();
    var rating = $("#rating").val();
-   var description = $("#description").val();
+   var description = CKEDITOR.instances['description'].getData();
    var reviews = $("#reviews_textarea").val();
    var duration = $("#duration").val();
 
@@ -128,6 +128,10 @@ function saveVideoDetails(step) {
    if (description == '') {
         alert('Description Should not be blank');
         return false;
+   } else {
+
+    $("#description").val(description);
+    
    }
    if (reviews == '') {
         alert('Reviews Should not be blank');
