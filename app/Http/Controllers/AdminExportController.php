@@ -41,11 +41,11 @@ class AdminExportController extends Controller
     /**
 	 * Function Name: users_export()
 	 *
-	 * @usage used export the users details into the selected format
+	 * @uses used export the users details into the selected format
 	 *
-	 * @created Vidhya R
+	 * @created Maheswari S
 	 *
-	 * @edited Vidhya R
+	 * @edited Maheswari S
 	 *
 	 * @param string format (xls, csv or pdf)
 	 *
@@ -122,9 +122,9 @@ class AdminExportController extends Controller
 	 *
 	 * @uses used export the channels details into the selected format
 	 *
-	 * @created Maheswari
+	 * @created Maheswari S
 	 *
-	 * @edited Maheswari
+	 * @edited Maheswari S
 	 *
 	 * @param string format (xls, csv or pdf)
 	 *
@@ -197,11 +197,11 @@ class AdminExportController extends Controller
     /**
 	 * Function Name: videos_export()
 	 *
-	 * @usage used export the videos details into the selected format
+	 * @uses used export the videos details into the selected format
 	 *
-	 * @created Maheswari
+	 * @created Maheswari S
 	 *
-	 * @edited Maheswari
+	 * @edited Maheswari S
 	 *
 	 * @param string format (xls, csv or pdf)
 	 *
@@ -274,11 +274,11 @@ class AdminExportController extends Controller
     /**
 	 * Function Name: subscription_export()
 	 *
-	 * @usage used export the subscription details into the selected format
+	 * @uses used export the subscription details into the selected format
 	 *
-	 * @created Maheswari
+	 * @created Maheswari S
 	 *
-	 * @edited Maheswari
+	 * @edited Maheswari S
 	 *
 	 * @param string format (xls, csv or pdf)
 	 *
@@ -351,11 +351,11 @@ class AdminExportController extends Controller
     /**
 	 * Function Name: payperview_export()
 	 *
-	 * @usage used export the video payperview details into the selected format
+	 * @uses used export the video payperview details into the selected format
 	 *
-	 * @created Maheswari
+	 * @created Maheswari S
 	 *
-	 * @edited Maheswari
+	 * @edited Maheswari S
 	 *
 	 * @param string format (xls, csv or pdf)
 	 *
