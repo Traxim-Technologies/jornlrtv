@@ -77,7 +77,7 @@
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12">
 
-                                                    <h4 class="">{{$video->description}}</h4>
+                                                    <div class="">{{$video->description}}</div>
                                                 </div>                                                
                                             </div>
                                           
