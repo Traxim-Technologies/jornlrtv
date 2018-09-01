@@ -202,7 +202,23 @@ th {
 	@if(count($tags) > 0)
 	<tr>
 	<th>{{tr('tags')}}</th>
-	<td>@foreach($tags as $tag)<a href="{{route('user.tags.videos', $tag->tag_id)}}" target="_blank">{{$tag->tag_name}}</a>,&nbsp;@endforeach</td>
+	<td>
+
+		<?php 
+
+			$tags_list = [];
+
+			foreach($tags as $i => $tag) {
+
+				$tags_list[] = '<a href="'.route('user.tags.videos', $tag->tag_id).'" target="_blank">'.$tag->tag_name.'</a>';
+
+			}
+
+		?>
+				
+		<?= $tags_list ? implode(', ', $tags_list) : '' ?>
+			
+	</td>
 	</tr>
 	@endif
 	

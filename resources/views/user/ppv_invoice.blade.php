@@ -28,7 +28,7 @@
 							 		<div class="invoice-overlay">
 							 			<div>
 										 	<h3 class="no-margin black-clr">{{$video->title}}</h3>
-										 	<p class="invoice-desc"> {{$video->description}}</p>
+										 	<p class="invoice-desc"> <?= $video->description ?></p>
 									 	</div>
 									</div>
 								</div>
