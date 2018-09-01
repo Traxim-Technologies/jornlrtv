@@ -237,6 +237,12 @@ $('form').ajaxForm({
         if(error == "") {
           $("#btn-next").text("Redirecting...");
           $("#btn-next").attr('disabled', false);
+        } else {
+
+          var percentVal = '0%';
+          bar.width(percentVal)
+          percent.html(percentVal);
+          
         }
     },
     error : function(xhr) {

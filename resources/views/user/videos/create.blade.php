@@ -617,7 +617,13 @@
                 console.log(xhr);
                 $("#abort_btn").hide();
 
-            } 
+            }  else {
+
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+                
+            }
         },
         error : function(xhr, result) {
 

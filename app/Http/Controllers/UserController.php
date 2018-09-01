@@ -77,7 +77,7 @@ class UserController extends Controller {
     {
         $this->UserAPI = $API;
         
-        $this->middleware('auth', ['except' => [
+        $this->middleware(['auth'], ['except' => [
                 'master_login',
                 'index',
                 'single_video',
@@ -97,6 +97,11 @@ class UserController extends Controller {
                 'categories_channels',
                 'custom_live_videos',
                 'single_custom_live_video'
+        ]]);
+
+        $this->middleware(['verifyUser'], ['except' => [
+                
+                'forgot_password'
         ]]);
     }
 
