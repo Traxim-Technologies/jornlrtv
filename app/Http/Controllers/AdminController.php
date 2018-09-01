@@ -4750,7 +4750,7 @@ class AdminController extends Controller {
      */
     public function categories_list(Request $request) {
 
-        $datas = Category::orderBy('updated_at', 'desc')->get();
+        $datas = Category::orderBy('updated_at', 'desc')->withCount('getVideos')->get();
 
         return view('admin.categories.index')
                     ->with('page', 'categories')
