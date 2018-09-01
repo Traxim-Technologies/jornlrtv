@@ -1343,7 +1343,7 @@ class UserController extends Controller {
 
             }
 
-            return response()->json(['success'=>false, 'path'=>$view, 'data'=>$response->data], 200);
+            return response()->json(['success'=>true, 'path'=>$view, 'data'=>$response->data], 200);
 
         } else {
 
