@@ -207,6 +207,7 @@ var bar = $('.bar');
 var percent = $('.percent');
 
 
+var error = "";
 
 $('form').ajaxForm({
     beforeSend: function() {
@@ -233,8 +234,10 @@ $('form').ajaxForm({
         bar.width("100%");
         percent.html("100%");
         $(".overlay").hide();
-        $("#btn-next").text("Redirecting...");
-        $("#btn-next").attr('disabled', false);
+        if(error == "") {
+          $("#btn-next").text("Redirecting...");
+          $("#btn-next").attr('disabled', false);
+        }
     },
     error : function(xhr) {
         alert(xhr);
@@ -243,29 +246,39 @@ $('form').ajaxForm({
 
         $(".overlay").hide();
 
-        if(xhr.data) {
+        if (xhr.success) {
 
-            if (xhr.path) {
+          if(xhr.data) {
 
-              $("#select_image_div").html(xhr.path);
+              if (xhr.path) {
 
-              $("#btn-next").val("Next");
+                $("#select_image_div").html(xhr.path);
 
-              $("#btn-next").attr('disabled', false);
+                $("#btn-next").val("Next");
 
-              $("#main_id").val(xhr.data.id);
+                $("#btn-next").attr('disabled', false);
 
-              $("#btn-next").click();
+                $("#main_id").val(xhr.data.id);
 
-            } else {
+                $("#btn-next").click();
 
-               window.location.href = '/admin/videos/view?id='+xhr.data.id;
+              } else {
 
-            }
+                 window.location.href = '/admin/videos/view?id='+xhr.data.id;
 
+              }
+
+          } else {
+              console.log(xhr);
+          }
 
         } else {
-            console.log(xhr);
+
+            error = 1;
+
+            alert(xhr.error_messages);
+
+            return false;
         }
     }
 }); 

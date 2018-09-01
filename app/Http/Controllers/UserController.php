@@ -1336,15 +1336,18 @@ class UserController extends Controller {
 
                 $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
 
-                $view = \View::make('user.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
+                $view = \View::make('user.videos.select_image')
+                        ->with('model', $response)
+                        ->with('tape_images', $tape_images)
+                        ->render();
 
             }
 
-            return response()->json(['path'=>$view, 'data'=>$response->data], 200);
+            return response()->json(['success'=>false, 'path'=>$view, 'data'=>$response->data], 200);
 
         } else {
 
-            return response()->json(['message'=>$response->message], 200);
+            return response()->json($response);
 
         }
 

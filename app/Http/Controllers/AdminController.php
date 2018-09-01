@@ -1519,11 +1519,11 @@ class AdminController extends Controller {
 
             }
 
-            return response()->json(['path'=>$view, 'data'=>$response->data], 200);
+            return response()->json(['success'=>true, 'path'=>$view, 'data'=>$response->data], 200);
 
         } else {
 
-            return response()->json(['message'=>$response->message], 400);
+            return response()->json($response);
 
         }
 
@@ -5671,4 +5671,32 @@ class AdminController extends Controller {
 
     }
 
+    /**
+     * Function Name : videos_compression_complete()
+     *
+     * @uses To complete the compressing videos
+     *
+     * @param integer video id - Video id
+     *
+     * @created: shobana chandrasekar
+     *
+     * @updated: -
+     *
+     * @return response of success/failure message
+     */
+    public function videos_compression_complete(Request $request) {
+
+        $response = CommonRepo::videos_compression_complete($request)->getData();
+
+        if ($response->success) {
+
+            return back()->with('flash_success', $response->success);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
 }

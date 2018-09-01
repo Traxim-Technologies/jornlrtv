@@ -225,6 +225,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/videos/wishlist/{id}', 'AdminController@videos_wishlist')->name('videos.wishlist');
 
+    // Video compression status
+
+    Route::get('/videos/compression/complete','AdminController@videos_compression_complete')->name('compress.status');
+
+
     // Banner Videos
 
     Route::get('/banner/videos/set/{id}', 'AdminController@banner_videos_set')->name('banner.videos.set');

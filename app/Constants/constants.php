@@ -259,3 +259,10 @@ if(!defined('PPV_DISABLED')) define('PPV_DISABLED', 0);
 if(!defined('ACTIVE_PLANS')) define('ACTIVE_PLANS', 1);
 
 if(!defined('INACTIVE_PLANS')) define('INACTIVE_PLANS', 0);
+
+
+
+// FFMPEG Status
+
+if(!defined('FFMPEG_INSTALLED')) define('FFMPEG_INSTALLED', 1);
+if(!defined('FFMPEG_NOT_INSTALLED')) define('FFMPEG_NOT_INSTALLED', 0);
