@@ -525,7 +525,7 @@ function user_type_check($user) {
 
 function get_expiry_days($id) {
     
-    $data = UserPayment::where('user_id' , $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
+    $data = UserPayment::where('user_id' , $id)->where('status', 1)->orderBy('created_at', 'desc')->first();
 
     // User Amount
 
@@ -1031,6 +1031,7 @@ function subscriberscnt($id = null) {
 
 
 function number_format_short( $n, $precision = 1 ) {
+   
     if ($n < 900) {
         // 0 - 900
         $n_format = number_format($n, $precision);
@@ -1302,6 +1303,31 @@ function get_commission_percentage($total , $actual_amount) {
     return $percentage;
 }
 
+/**
+ * function routefreestring()
+ * 
+ * @uses used for remove the route parameters from the string
+ *
+ * @created Maheswari S
+ *
+ * @edited Maheswari S
+ *
+ * @param string $string
+ *
+ * @return Route parameters free string
+ */
+
+function routefreestring($string) {
+
+    $search = array(' ', '&', '%', "?",'=','{','}','$');
+
+    $replace = array('-', '-', '-' , '-', '-', '-' , '-','-');
+
+    $string = str_replace($search, $replace, $string);
+
+    return $string;
+   
+}
 
 /**
  * Function Name : convertDurationIntoSeconds()
@@ -1375,4 +1401,5 @@ function amount_convertion($percentage, $amt) {
     $converted_amt = $amt * ($percentage/100);
 
     return $converted_amt;
+
 }

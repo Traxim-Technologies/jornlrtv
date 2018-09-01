@@ -23,6 +23,7 @@
           <div class="box box-primary">
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">"{{$category->name}}" {{tr('category')}} {{tr('channels')}}</b>
+
                 <a href="{{route('admin.channels.create')}}" class="btn btn-default pull-right">{{tr('add_channel')}}</a>
             </div>
             <div class="box-body">

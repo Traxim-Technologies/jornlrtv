@@ -284,6 +284,18 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('videos/assign-ad', 'AdminController@video_assign_ad')->name('videos.assign_ad');
 
 
+    // Exports tables
+
+    Route::get('/users/export/', 'AdminExportController@users_export')->name('users.export');
+
+    Route::get('/channels/export/', 'AdminExportController@channels_export')->name('channels.export');
+
+    Route::get('/videos/export/', 'AdminExportController@videos_export')->name('videos.export');
+
+    Route::get('/subscription/payment/export/', 'AdminExportController@subscription_export')->name('subscription.export');
+
+    Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
+
     // Video Ads
 
     Route::get('/video-ads/list', 'AdminController@video_ads_list')->name('video_ads.list');

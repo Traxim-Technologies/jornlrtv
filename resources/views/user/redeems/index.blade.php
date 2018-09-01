@@ -98,6 +98,7 @@ thead>tr>th {
 
                 @include('notification.notify')
 
+                <?php /*
                 <div class="new-history">
 
                     <div class="content-head">
@@ -208,7 +209,89 @@ thead>tr>th {
                     @endif
             
                 </div>
-                
+                */ ?>
+
+                <!-- new ui @ranjitha -->
+                <div class="new-history">
+                    <h4 class="settings">redeems</h4>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <div class="new-redeem-sec">
+                                <div class="circle">
+                                    <div class="circle__content"><b>{{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining : "0.00"}}</b></div>
+                                </div>
+                                <p class="redeem-content">{{tr('redeem_content')}}</p>
+
+                                <?php 
+
+                                    $remaining = Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining: 0;
+
+                                    $min_status = Setting::get('minimum_redeem') < $remaining;
+                                ?>
+                              
+                                @if(count(Auth::user()->userRedeem) > 0 && $min_status)
+                                <div class="text-right">
+                                    <a href="{{route('user.redeems.send.request')}}" class="btn btn-info">{{tr('send_redeem')}}</a>
+                                </div>
+
+                                @else
+                                <div class="text-right">
+                                    <a href="javascript:void(0);" disabled class="btn btn-info">{{tr('send_redeem')}}</a>
+                                </div>
+                                @endif
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-8">
+                            <div class="new-redeem-sec">
+                                <!-- redeems -->
+                                <div class="timeline">
+                                    <!-- 1 -->
+                                    <div class="timeline-item" *ngFor="let redeem_request of redeem_requests">
+                                        <div class="timeline-bar">
+                                            <div class="version"></div>
+                                        </div>
+                                        <div class="redeem-content1">
+                                            <ul>
+                                                <li>
+                                                    <p class="text-grey-clr m-0">Sent date: 18 Aug 2018</p>
+                                                    <h4 class="redeem-amount">Redeem amount: <span class="bold">$250</span></h4>
+                                                    <p class="text-grey-clr mt-0">Requested Amount: $250</p>
+                                                    <p class="text-grey-clr mt-0">paid date: 20 Aug 2018</p>
+                                                    <p class="text-grey-clr mt-0">Status:</p>
+                                                    <button class="btn btn-danger">cancel</button>
+                                                </li>
+                                                <li><img src="{{asset('images/paid.png')}}"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- 2 -->
+                                    <div class="timeline-item" *ngFor="let redeem_request of redeem_requests">
+                                        <div class="timeline-bar">
+                                            <div class="version"></div>
+                                        </div>
+                                        <div class="redeem-content1">
+                                            <ul>
+                                                <li>
+                                                    <p class="text-grey-clr m-0">Sent date: 18 Aug 2018</p>
+                                                    <h4 class="redeem-amount">Redeem amount: <span class="bold">$250</span></h4>
+                                                    <p class="text-grey-clr mt-0">Requested Amount: $250</p>
+                                                    <p class="text-grey-clr mt-0">paid date: 20 Aug 2018</p>
+                                                    <p class="text-grey-clr mt-0">Status:</p>
+                                                    <button class="btn btn-danger">cancel</button>
+                                                </li>
+                                                <li><img src="{{asset('images/pending.png')}}"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- redeems --> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- new ui @ranjitha -->
+
                 <div class="sidebar-back"></div> 
             </div>
     

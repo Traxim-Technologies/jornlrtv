@@ -110,6 +110,17 @@
 </div> -->
 
 <div class="channel-content-spacing">
+	<div class="branded-page-v2-header channel-header yt-card"> 
+		<div id="gh-banner">
+			<div id="c4-header-bg-container" class="c4-visible-on-hover-container  has-custom-banner" style="background-image: url('{{asset('images/category1.jpg')}}');background-position: bottom;">
+				<!-- <div class="hd-banner">
+					<div class="hd-banner-image" ></div>
+				</div> -->
+			</div>
+		</div>
+	</div>
+
+
 <div>
 <div class="pull-left">
 <a class="channel-header-profile-image spf-link" href="">
@@ -117,7 +128,7 @@
 </a>
 </div>
 <div class="pull-left">
-<h1 class="st_channel_heading text-uppercase">{{$category->category_name}}</h1>
+<h1 class="st_channel_heading text-uppercase mt-35">{{$category->category_name}}</h1>
 <?php /*<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p> */?>
 </div>
 
@@ -187,7 +198,7 @@
 		@foreach($videos as $i => $video)
 
 
-		<li class="sub-list row">
+		<li class="sub-list row border-0">
 		<div class="main-history">
 		<div class="history-image">
 		    <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>
@@ -208,7 +219,7 @@
 		<div class="history-title">
 		    <div class="history-head row">
 		        <div class="cross-title2">
-		            <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
+		            <h5 class="payment_class unset-height"><a href="{{$video->url}}">{{$video->title}}</a></h5>
 		           	
 		            <span class="video_views">
 		                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
@@ -408,7 +419,7 @@
 		<div class="clearfix"></div>
 
 
-		<button class="pull-right st_video_upload_btn subscribe_btn" onclick="getVideos()" style="color: #fff">{{tr('view_more')}}</button>
+		<button class="pull-right btn btn-info mb-15" onclick="getVideos()" style="color: #fff">{{tr('view_more')}}</button>
 
 		<div class="clearfix"></div>
 
@@ -448,7 +459,7 @@
 		@foreach($channels as $i => $channel)
 
 
-		<li class="sub-list row">
+		<li class="sub-list row border-0">
 		<div class="main-history">
 		<div class="history-image">
 		    <a href="{{route('user.channel', $channel->channel_id)}}" target="_blank"><img src="{{$channel->picture}}"></a>
@@ -462,7 +473,7 @@
 		<div class="history-title">
 		    <div class="history-head row">
 		        <div class="cross-title2">
-		            <h5 class="payment_class"><a href="{{route('user.channel', $channel->channel_id)}}" target="_blank">{{$channel->title}}</a></h5>
+		            <h5 class="payment_class unset-height"><a href="{{route('user.channel', $channel->channel_id)}}" target="_blank">{{$channel->title}}</a></h5>
 		           	
 		            <span class="video_views">
 		                <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}} <b>.</b> 
@@ -497,7 +508,7 @@
 		<div class="clearfix"></div>
 
 
-		<button class="pull-right st_video_upload_btn subscribe_btn" onclick="getChannels()" style="color: #fff">{{tr('view_more')}}</button>
+		<button class="pull-right btn btn-info mb-15" onclick="getChannels()" style="color: #fff">{{tr('view_more')}}</button>
 
 		<div class="clearfix"></div>
 

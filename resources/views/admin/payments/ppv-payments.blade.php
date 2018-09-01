@@ -33,9 +33,40 @@
 
 	<div class="row">
         <div class="col-xs-12">
-          <div class="box box-info">
-            <div class="box-body">
+          <div class="box box-info">            
+         		<div class="box-header label-primary">
 
+                <!-- EXPORT OPTION START -->
+
+					@if(count($data) > 0 )
+	                
+		                <ul class="admin-action btn btn-default pull-right" style="margin-right: 50px">
+		                 	
+							<li class="dropdown">
+				                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				                  {{tr('export')}} <span class="caret"></span>
+				                </a>
+				                <ul class="dropdown-menu">
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.payperview.export' , ['format' => 'xls'])}}">
+				                  			<span class="text-red"><b>{{tr('excel_sheet')}}</b></span>
+				                  		</a>
+				                  	</li>
+
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.payperview.export' , ['format' => 'csv'])}}">
+				                  			<span class="text-blue"><b>{{tr('csv')}}</b></span>
+				                  		</a>
+				                  	</li>
+				                </ul>
+							</li>
+						</ul>
+
+					@endif
+
+	            <!-- EXPORT OPTION END -->
+            	</div>
+            	<div class="box-body">
             	@if(count($data) > 0)
 
 	              	<table id="example1" class="table table-bordered table-striped">
@@ -203,8 +234,8 @@
 					<h3 class="no-result">{{tr('no_result_found')}}</h3>
 				@endif
             </div>
-          </div>
-        </div>
+          	</div>
+      	</div>
     </div>
 
 @endsection

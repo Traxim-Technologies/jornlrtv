@@ -58,6 +58,7 @@ hr {
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-yellow">
               <h3 class="widget-user-username text-ellipsis text-capitalize">{{$video->title}}</h3>
+              
               <h5 class="widget-user-desc">{{$video->video_date}}</h5>
             </div>
             <div class="widget-user-image">
@@ -75,7 +76,9 @@ hr {
                 <!-- /.col -->
                 <div class="col-sm-4 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">{{number_format_short($video->getScopeUserRatings())}}</h5>
+                    <h5 class="description-header">
+
+                    {{number_format_short($video->getScopeUserRatings())}}</h5>
                     <span class="description-text">{{tr('reviews')}}</span>
                   </div>
                   <!-- /.description-block -->
@@ -286,8 +289,10 @@ hr {
                         <th>{{tr('ads_view_revenue')}}</th>
                         <td>{{Setting::get('currency')}} {{number_format_short($video->amount)}}</td>
                     </tr>
+
                     <tr>
                         <th>{{tr('likes')}}</th>
+
                         <td>{{number_format_short($video->getScopeLikeCount())}}</td>
                     </tr>
                     <tr>

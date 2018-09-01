@@ -22,7 +22,38 @@
 
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('videos')}}</b>
+
                 <a href="{{route('admin.videos.create')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
+                
+                <!-- EXPORT OPTION START -->
+
+					@if(count($videos) > 0 )
+	                
+		                <ul class="admin-action btn btn-default pull-right" style="margin-right: 20px">
+		                 	
+							<li class="dropdown">
+				                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				                  {{tr('export')}} <span class="caret"></span>
+				                </a>
+				                <ul class="dropdown-menu">
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.videos.export' , ['format' => 'xls'])}}">
+				                  			<span class="text-red"><b>{{tr('excel_sheet')}}</b></span>
+				                  		</a>
+				                  	</li>
+
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.videos.export' , ['format' => 'csv'])}}">
+				                  			<span class="text-blue"><b>{{tr('csv')}}</b></span>
+				                  		</a>
+				                  	</li>
+				                </ul>
+							</li>
+						</ul>
+
+					@endif
+
+	            <!-- EXPORT OPTION END -->
             </div>
 
             <div class="box-body">
@@ -62,7 +93,7 @@
 						<tbody>
 
 							@foreach($videos as $i => $video)
-
+							
 							    <tr>
 							      	
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
