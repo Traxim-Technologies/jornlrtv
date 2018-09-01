@@ -167,7 +167,7 @@
 	<li role="tabpanel" class="tab-pane active" id="about_home">
 		<div class="recom-area abt-sec">
 			<div class="abt-sec-head">
-			<h5>{{$category->description}}</h5>
+			<h5><?= $category->description ?></h5>
 			</div>
 		</div>
 	</li>

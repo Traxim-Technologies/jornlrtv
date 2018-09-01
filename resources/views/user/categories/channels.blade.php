@@ -26,7 +26,7 @@
 		    </div> <!--end of history-head--> 
 
 		    <div class="description">
-		        <p>{{$channel->description}}</p>
+		        <p><?= $channel->description ?></p>
 		    </div><!--end of description--> 
 
 		                                               
