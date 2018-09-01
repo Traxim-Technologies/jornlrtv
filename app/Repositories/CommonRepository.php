@@ -1069,6 +1069,8 @@ class CommonRepository {
 
                 $video->category_name = $category->name;
 
+                $video->status = DEFAULT_TRUE;
+
                /* $video->tags = $request->tags ? (is_array($request->tags) ? implode(',', $request->tags) : $request->tags) : '';*/
 
                 $video->save();
