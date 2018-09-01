@@ -116,7 +116,7 @@ hr {
                         </span>
                     </a>
                 </li>
-                <li><a href="#">{{tr('admin_video_status')}} 
+                <li><a href="#">{{tr('user_video_status')}} 
                     @if ($video->compress_status == 0) 
 
                         <span class="pull-right badge bg-red">{{tr('compress')}}</span> 
@@ -133,7 +133,7 @@ hr {
                         @endif
 
                     @endif</a></li>
-                    <li><a href="#">{{tr('user_video_status')}} 
+                    <li><a href="#">{{tr('admin_video_status')}} 
                         @if ($video->compress_status == 0) 
 
                             <span class="pull-right badge bg-red">{{tr('compress')}}</span> 

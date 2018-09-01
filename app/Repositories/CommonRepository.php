@@ -718,6 +718,8 @@ class CommonRepository {
 
                              // To start compression process, based on the main video duration
 
+                            Log::info(print_r($main_video_duration, true));
+
                             if($main_video_duration) {
 
                                 $inputFile = $main_video_duration['baseUrl'];
@@ -729,6 +731,14 @@ class CommonRepository {
                                     dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
                                     Log::info("Main queue completed : ".'Success');
                                 }
+                            } else {
+
+                                $model->status = DEFAULT_TRUE;
+
+                                $model->compress_status = DEFAULT_TRUE;
+
+                                $model->save();
+
                             }
                         }
 
