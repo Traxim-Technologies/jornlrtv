@@ -576,6 +576,10 @@ class AdminController extends Controller {
 
             if($request->status==DEFAULT_FALSE){
 
+                Channel::where('user_id', $users_status->id)->update(['is_approved'=>ADMIN_CHANNEL_DECLINED_STATUS]);
+
+                VideoTape::where('user_id', $users_status->id)->update(['is_approved'=>ADMIN_VIDEO_DECLINED_STATUS]);
+
                 return back()->with('flash_success',tr('user_decline_success'));
 
             } else{
