@@ -500,7 +500,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('custom/live/view/{id}', 'AdminController@custom_live_videos_view')->name('custom.live.view');
 
-    Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change-status');
+    Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change_status');
 
         // Cancel Subscription
 
