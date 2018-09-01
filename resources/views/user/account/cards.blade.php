@@ -90,6 +90,10 @@
 								        <div class="row" id="card-payment">
 								            <div>
 
+								            	<input type="hidden" name="video_id" value="{{$video_id}}">
+
+								            	<input type="hidden" name="subscription_id" value="{{$subscription_id}}">
+
 								                <input id="id" name="id" type="hidden" required>
 
 								                <div class="input-group-signup">

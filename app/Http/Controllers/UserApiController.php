@@ -5386,7 +5386,8 @@ class UserApiController extends Controller {
                      )
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
                     ->where('pay_per_views.user_id', $request->id)
-                    ->where('pay_per_views.amount', '>', 0);
+                    ->where('pay_per_views.amount', '>', 0)
+                    ->orderby('pay_per_views.created_at', 'desc');
 
             $user = User::find($request->id);
 

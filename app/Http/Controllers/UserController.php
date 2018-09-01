@@ -1673,13 +1673,19 @@ class UserController extends Controller {
 
         $cards = Card::where('user_id', Auth::user()->id)->get();
 
-        return view('user.account.cards')->with('page', 'account')->with('subPage', 'cards')->with('cards', $cards);
+        $video_id = $request->v_id ? $request->v_id : '';
+
+        $subscription_id = $request->s_id ? $request->s_id : '';
+
+        return view('user.account.cards')->with('page', 'account')
+            ->with('subPage', 'cards')
+            ->with('cards', $cards)
+            ->with('video_id', $video_id)
+            ->with('subscription_id', $subscription_id);
     }
 
 
-
-
-        /**
+    /**
      * Show the payment methods.
      *
      * @return \Illuminate\Http\Response
@@ -1766,7 +1772,17 @@ class UserController extends Controller {
             return back()->with('flash_error' , $e->getMessage());
 
         }
-        
+            
+        if ($request->video_id) {
+
+            return redirect(route('user.subscription.ppv_invoice', $request->video_id))->with('flash_success', tr('successfully_created'));
+
+        } else if($request->subscription_id) {
+
+            return redirect(route('user.subscription.invoice', ['s_id'=>$request->subscription_id]))->with('flash_success', tr('successfully_created'));
+
+        }
+
         return back()->with('flash_success', tr('successfully_created'));
     }
 
@@ -1878,6 +1894,12 @@ class UserController extends Controller {
             return redirect(route('user.subscription.success'))->with('flash_success', $response->message);
 
         } else {
+
+            if ($response->error_code == 901) {
+
+                return back()->with('flash_error', $response->error_messages.'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details', ['s_id'=>$request->subscription_id]).'>'.tr('add_card').'</a>');
+
+            }
 
             return back()->with('flash_error', $response->error_messages);
         }
@@ -2003,6 +2025,10 @@ class UserController extends Controller {
      */
     public function invoice(Request $request) {
 
+        $request->request->add([ 
+            'u_id'=>Auth::check() ? \Auth::user()->id : '',
+        ]);
+
         $model = $request->all();
 
         if (!$request->s_id) {
@@ -2018,7 +2044,8 @@ class UserController extends Controller {
             return redirect(route('user.dashboard'))->with('flash_error', tr('no_subscription_found'));
         }
 
-        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)->with('model',$model);
+        return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)
+            ->with('model',$model);
     }
 
 
@@ -2199,7 +2226,7 @@ class UserController extends Controller {
 
             if ($payment->error_code == 901) {
 
-                return back()->with('flash_error', $payment->error_messages.'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details').'>'.tr('add_card').'</a>');
+                return back()->with('flash_error', $payment->error_messages.'. '.tr('default_card_add_message').'  <a href='.route('user.card.card_details', ['v_id'=>$request->video_tape_id]).'>'.tr('add_card').'</a>');
 
             }
 
