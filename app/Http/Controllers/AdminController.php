@@ -576,6 +576,10 @@ class AdminController extends Controller {
 
             if($request->status==DEFAULT_FALSE){
 
+                Channel::where('user_id', $users_status->id)->update(['is_approved'=>ADMIN_CHANNEL_DECLINED_STATUS]);
+
+                VideoTape::where('user_id', $users_status->id)->update(['is_approved'=>ADMIN_VIDEO_DECLINED_STATUS]);
+
                 return back()->with('flash_success',tr('user_decline_success'));
 
             } else{
@@ -1519,11 +1523,11 @@ class AdminController extends Controller {
 
             }
 
-            return response()->json(['path'=>$view, 'data'=>$response->data], 200);
+            return response()->json(['success'=>true, 'path'=>$view, 'data'=>$response->data], 200);
 
         } else {
 
-            return response()->json(['message'=>$response->message], 400);
+            return response()->json($response);
 
         }
 
@@ -4750,7 +4754,7 @@ class AdminController extends Controller {
      */
     public function categories_list(Request $request) {
 
-        $datas = Category::orderBy('updated_at', 'desc')->get();
+        $datas = Category::orderBy('updated_at', 'desc')->withCount('getVideos')->get();
 
         return view('admin.categories.index')
                     ->with('page', 'categories')
@@ -5671,4 +5675,32 @@ class AdminController extends Controller {
 
     }
 
+    /**
+     * Function Name : videos_compression_complete()
+     *
+     * @uses To complete the compressing videos
+     *
+     * @param integer video id - Video id
+     *
+     * @created: shobana chandrasekar
+     *
+     * @updated: -
+     *
+     * @return response of success/failure message
+     */
+    public function videos_compression_complete(Request $request) {
+
+        $response = CommonRepo::videos_compression_complete($request)->getData();
+
+        if ($response->success) {
+
+            return back()->with('flash_success', $response->success);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
 }

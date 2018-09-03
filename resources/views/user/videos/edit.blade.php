@@ -589,6 +589,8 @@
     var bar = $('.bar');
     var percent = $('.percent');
 
+    var error = "";
+
     $('form').ajaxForm({
         beforeSend: function() {
             // alert("BeforeSend");
@@ -619,11 +621,22 @@
             bar.width("100%");
             percent.html("100%");
             //  $(".overlay").show();
-            $("#next_btn").val("Next");
-            $("#next_btn").attr('disabled', false);
+
             $("#video_file").removeAttr('disabled');
-            console.log(xhr);
-            $("#abort_btn").hide();
+
+            if (error == "") {
+              $("#next_btn").val("Next");
+              $("#next_btn").attr('disabled', false);
+              
+              console.log(xhr);
+              $("#abort_btn").hide();
+
+            } else {
+
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            }
 
         },
         error : function(xhr) {
@@ -638,36 +651,47 @@
         success : function(xhr) {
             // $(".overlay").hide();
 
+            if (xhr.success) {
 
-            if(typeof xhr.data != 'undefined') {
+              if(typeof xhr.data != 'undefined') {
 
-                if (xhr.path) {
+                  if (xhr.path) {
 
-                  console.log("inside " +xhr.data);
+                    console.log("inside " +xhr.data);
 
-                  $("#select_image_div").html(xhr.path);
+                    $("#select_image_div").html(xhr.path);
 
-                  $("#main_id").val(xhr.data.id);
+                    $("#main_id").val(xhr.data.id);
 
-                  $("#abort_btn").hide();
+                    $("#abort_btn").hide();
 
-                  $(".btn-next").click();
+                    $(".btn-next").click();
 
-                  $(".final").show();
+                    $(".final").show();
 
-                } else {
+                  } else {
 
-                    console.log(xhr);
+                      console.log(xhr);
 
-                    window.location.href = '/channel/'+$("#channel_id").val();
+                      window.location.href = '/channel/'+$("#channel_id").val();
 
-                }
+                  }
+
+              } else {
+
+                  alert(xhr.message);
+
+                  $(".finish").show();
+
+              }
+
             } else {
 
-                alert(xhr.message);
+                error = 1;
 
-                $(".finish").show();
+                alert(xhr.error_messages);
 
+                return false;
             }
         }
     }); 

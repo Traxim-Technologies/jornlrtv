@@ -170,11 +170,11 @@
 							      	</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
-            								<li class="dropup">
+            								<li class="{{ $i <= 2 ? 'dropdown' : 'dropup' }} ">
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
-								                <ul class="dropdown-menu">
+								                <ul class="dropdown-menu dropdown-menu-right">
 								                	@if ($video->compress_status == 1)
 								                  	<li role="presentation">
                                                         @if(Setting::get('admin_delete_control'))
@@ -183,6 +183,11 @@
                                                             <a role="menuitem" tabindex="-1" href="{{route('admin.videos.edit' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
+
+                                                    @else
+
+                                                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.compress.status' , array('id' => $video->video_tape_id))}}">{{tr('do_compression_in_background')}}</a></li>
+
                                                     @endif
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 

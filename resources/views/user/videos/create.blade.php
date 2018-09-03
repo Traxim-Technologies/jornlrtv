@@ -576,6 +576,8 @@
     var bar = $('.bar');
     var percent = $('.percent');
 
+    var error = "";
+
     $('form').ajaxForm({
         beforeSend: function() {
             // alert("BeforeSend");
@@ -606,11 +608,22 @@
             bar.width("100%");
             percent.html("100%");
            //  $(".overlay").show();
-            $("#next_btn").val("Next");
-            $("#next_btn").attr('disabled', false);
             $("#video_file").removeAttr('disabled');
-            console.log(xhr);
-            $("#abort_btn").hide();
+
+            if (error == "") {
+
+                $("#next_btn").val("Next");
+                $("#next_btn").attr('disabled', false);
+                console.log(xhr);
+                $("#abort_btn").hide();
+
+            }  else {
+
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+                
+            }
         },
         error : function(xhr, result) {
 
@@ -619,34 +632,46 @@
 
           console.log(xhr);
 
-            if(typeof xhr.data != 'undefined') {
+            if (xhr.success) {
 
-                if (xhr.path) {
+              if(typeof xhr.data != 'undefined') {
 
-                  console.log("inside " +xhr.data);
+                  if (xhr.path) {
 
-                  $("#select_image_div").html(xhr.path);
+                    console.log("inside " +xhr.data);
 
-                  $("#main_id").val(xhr.data.id);
+                    $("#select_image_div").html(xhr.path);
 
-                  $("#abort_btn").hide();
+                    $("#main_id").val(xhr.data.id);
 
-                  $(".btn-next").click();
+                    $("#abort_btn").hide();
 
-                  $(".final").show();
+                    $(".btn-next").click();
 
-                } else {
+                    $(".final").show();
 
-                    console.log(xhr);
+                  } else {
 
-                    window.location.href = '/channel/'+$("#channel_id").val();
+                      console.log(xhr);
 
-                }
+                      window.location.href = '/channel/'+$("#channel_id").val();
+
+                  }
+              } else {
+
+                  alert(xhr.message);
+
+                  $(".finish").show();
+
+              }
+
             } else {
 
-                alert(xhr.message);
+                error = 1;
 
-                $(".finish").show();
+                alert(xhr.error_messages);
+
+                return false;
 
             }
         },

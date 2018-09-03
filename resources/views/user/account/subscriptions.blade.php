@@ -108,7 +108,7 @@
 												<?php echo $subscription->description; ?>
 											</div>
 											<div>
-												<a href="{{route('user.subscription.invoice' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}" class="subscribe-btn">{{tr('choose_plan')}}</a>
+												<a href="{{route('user.subscription.invoice' , ['s_id' => $subscription->id])}}" class="subscribe-btn">{{tr('choose_plan')}}</a>
 											</div>
 										</div>
 									</div>

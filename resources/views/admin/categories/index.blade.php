@@ -55,7 +55,7 @@
 						    <tr>
 						      	<td>{{$i+1}}</td>
 						      	<td><a target="_blank" href="{{route('admin.categories.view', ['category_id'=>$data->id])}}">{{$data->name}}</a></td>
-						      	<td><a target="_blank" href="{{route('admin.categories.videos', ['category_id'=>$data->id])}}">{{$data->no_of_uploads}}</a></td>
+						      	<td><a target="_blank" href="{{route('admin.categories.videos', ['category_id'=>$data->id])}}">{{$data->get_videos_count}}</a></td>
 
 						      	<td><img src="{{$data->image}}" style="width: 25px;height: 35px"></td>
 						      

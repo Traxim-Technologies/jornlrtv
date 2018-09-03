@@ -972,7 +972,6 @@ return array(
 	'total_earning'=>'Total Earning',
 	'total_views'=>'Total views of this video',
 	'view_redeem'=>'View Redeems',
-	'video_not_found'=>'Video Not found, Please try again later',
 	'only_for_normal_users'=>'Only for normal users',
 	'only_for_paid_users'=>'Only for Paid Users',
 	'all_users'=>'For all users',
@@ -1486,5 +1485,10 @@ return array(
 	'tag_decline_notes'=>'Are you sure want to decline this tag ? Once you declined, tag will be remove from all the depends videos',
 	'category_decline_notes'=>'Are you sure want to decline this category? Once you declined, based on this category videos will be decline.',
 	'category_approve_notes'=>'Are you sure want to approve this category? Once you approved, need to approve videos by manually',
-	
+	'ffmpeg_installed'=>'In FFmpeg Installed?',
+	'ffmpeg_need_to_configure'=>'Kindly configure ffmpeg and upload manual videos..!',
+	'already_video_compressed'=>'Already video has been compressed',
+	'video_compress_success'=>'Video has been compressed successfully',
+	'do_compression_in_background'=>'Do Compression In Background',
+	'video_not_saved'=>'Video has been not saved, please try again later',
 );

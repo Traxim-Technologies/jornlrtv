@@ -154,6 +154,20 @@
                             </label>
                         </div>
 
+                        <div class="form-group">
+                            <label>{{ tr('ffmpeg_installed') }}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="ffmpeg_installed" value="1" class="flat-red" @if(Setting::get('ffmpeg_installed') == 1) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="ffmpeg_installed" class="flat-red"  value="0" @if(Setting::get('ffmpeg_installed') == 0) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+                        
                     
                   </div>
                   <!-- /.box-body -->

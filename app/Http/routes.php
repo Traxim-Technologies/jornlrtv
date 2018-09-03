@@ -225,6 +225,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/videos/wishlist/{id}', 'AdminController@videos_wishlist')->name('videos.wishlist');
 
+    // Video compression status
+
+    Route::get('/videos/compression/complete','AdminController@videos_compression_complete')->name('compress.status');
+
+
     // Banner Videos
 
     Route::get('/banner/videos/set/{id}', 'AdminController@banner_videos_set')->name('banner.videos.set');
@@ -495,7 +500,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('custom/live/view/{id}', 'AdminController@custom_live_videos_view')->name('custom.live.view');
 
-    Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change-status');
+    Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change_status');
 
         // Cancel Subscription
 

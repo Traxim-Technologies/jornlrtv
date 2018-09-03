@@ -358,8 +358,14 @@ class CommonRepository {
 
                 } else {
 
+                    if (Setting::get('ffmpeg_installed') == FFMPEG_NOT_INSTALLED) {
+
+                        throw new Exception(tr('ffmpeg_need_to_configure'));
+                        
+                    }
+
                     $uploadVideovalidator = Validator::make( $request->all(), array(
-                        'video'=>$request->id ? '' : 'required',
+                        'video'=>$request->id ? 'mimes:mp4' : 'required|mimes:mp4',
                     ));
                     if($uploadVideovalidator->fails()) {
 
@@ -378,7 +384,7 @@ class CommonRepository {
                     if ($request->video_type == VIDEO_TYPE_UPLOAD) {
 
                         $uploadVideovalidator = Validator::make( $request->all(), array(
-                            'video'=>'required',
+                            'video'=>'required|mimes:mp4',
                         ));
 
                         if($uploadVideovalidator->fails()) {
@@ -608,6 +614,7 @@ class CommonRepository {
                             } else {
 
                                 $model->compress_status = DEFAULT_TRUE;
+
                                 $model->status = DEFAULT_TRUE;
                             }
 
@@ -698,7 +705,7 @@ class CommonRepository {
 
                         // Check the redis enable status - If no redis, remove compression video queue
                         
-                        if (envfile('QUEUE_DRIVER') != 'redis') {
+                        if (envfile('QUEUE_DRIVER') != 'redis' || Setting::get('ffmpeg_installed') == FFMPEG_NOT_INSTALLED) {
 
                             \Log::info("Queue Driver : ".envfile('QUEUE_DRIVER'));
 
@@ -711,6 +718,8 @@ class CommonRepository {
 
                              // To start compression process, based on the main video duration
 
+                            Log::info(print_r($main_video_duration, true));
+
                             if($main_video_duration) {
 
                                 $inputFile = $main_video_duration['baseUrl'];
@@ -722,6 +731,14 @@ class CommonRepository {
                                     dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
                                     Log::info("Main queue completed : ".'Success');
                                 }
+                            } else {
+
+                                $model->status = DEFAULT_TRUE;
+
+                                $model->compress_status = DEFAULT_TRUE;
+
+                                $model->save();
+
                             }
                         }
 
@@ -801,7 +818,7 @@ class CommonRepository {
 
                     dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
 
-                    $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
+                    
                    
                 } else {
                     
@@ -814,11 +831,13 @@ class CommonRepository {
 
             DB::commit();
 
+            $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
+
         } catch (Exception $e) {
 
             DB::rollBack();
 
-            $response_array = ['success'=>false, 'message'=>$e->getMessage()];
+            $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
 
         }
 
@@ -1050,6 +1069,8 @@ class CommonRepository {
 
                 $video->category_name = $category->name;
 
+                $video->status = DEFAULT_TRUE;
+
                /* $video->tags = $request->tags ? (is_array($request->tags) ? implode(',', $request->tags) : $request->tags) : '';*/
 
                 $video->save();
@@ -1247,5 +1268,66 @@ class CommonRepository {
         return response()->json(['success'=> false, 'message'=>tr('something_error')]);
     }
 
+    /**
+     * Function Name : videos_compression_complete()
+     *
+     * @uses To complete the compressing videos
+     *
+     * @param integer video id - Video id
+     *
+     * @created: shobana chandrasekar
+     *
+     * @updated: -
+     *
+     * @return response of success/failure message
+     */
+    public static function videos_compression_complete(Request $request) {
+
+        try {
+
+            $video = VideoTape::find($request->id);
+
+            if ($video) {
+
+                // Check the video has compress state or not
+
+                if ($video->compress_status <= DEFAULT_FALSE) {
+
+                    $video->status = DEFAULT_TRUE;
+
+                    $video->compress_status = DEFAULT_TRUE;
+
+                    if($video->save()){
+
+                    
+                    } else {
+
+                        throw new Exception(tr('video_not_saved'));
+                    
+                    }
+
+                } else {
+
+                    throw new Exception(tr('already_video_compressed'));
+                    
+                }
+
+            } else {
+
+                throw new Exception(tr('video_not_found'));
+                
+            }
+
+            $response_array = ['success'=>true, 'message'=> tr('video_compress_success')];
+
+            return response()->json($response_array);
+
+        } catch(Exception $e) {
+
+            $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+
+            return response()->json($response_array);
+        }
+    }
 
 }
