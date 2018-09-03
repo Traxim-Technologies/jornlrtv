@@ -59,6 +59,8 @@
 
             <th >{{tr('subscribers')}}</th>
 
+            <th >{{tr('no_of_videos')}}</th>
+
             <th >{{tr('amount')}}</th>
 
             <th >{{tr('description')}}</th>
@@ -94,9 +96,11 @@
 
                 <td>{{$channel_details->getChannelSubscribers()->count()}}</td>
 
+                <td >{{$channel_details->getVideoTape->count()}} </td>
+
                 <td>{{Setting::get('currency')}} {{getAmountBasedChannel($channel_details->id)}}</td>
 
-                <td>{{$channel_details->description}}</td>
+                <td><?php echo $channel_details->description ?></td>
 
                 <td>{{convertTimeToUSERzone($channel_details->created_at, Auth::guard('admin')->user()->timezone, 'd-m-Y H:i a')}}</td>
 
