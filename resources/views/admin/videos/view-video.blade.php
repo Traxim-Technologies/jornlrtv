@@ -248,7 +248,8 @@ hr {
 
                             @endforeach
 
-                            @endif</td>
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <th>{{tr('duration')}}</th>

@@ -76,7 +76,7 @@
 
 						<tbody>
 							@foreach($channels as $i => $channel)
-
+							 
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td><a target="_blank" href="{{route('admin.channels.view', $channel->id)}}">{{$channel->name}}</a></td>

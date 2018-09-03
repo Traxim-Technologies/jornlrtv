@@ -65,9 +65,15 @@
 
             <th >{{tr('publish_type')}}</th>
 
+            <th >{{tr('admin_video_status')}}</th>
+
+            <th >{{tr('user_video_status')}}</th>
+
             <th >{{tr('ratings')}}</th>
 
             <th >{{tr('views')}}</th>
+
+            <th >{{tr('tags')}}</th>
 
             <th >{{tr('ads_view_revenue')}}</th>
 
@@ -125,7 +131,7 @@
                     @endif
                 </td>
 
-                <td>{{substr($video_details->title , 0,25)}}...</td>
+                <td>{{$video_details->title}}</td>
 
                 <td>
                     @if($video_details->ppv_amount > 0)
@@ -160,6 +166,42 @@
                     @endif
 
                 </td>
+                <td>@if ($video_details->compress_status == 0) 
+
+                        {{tr('compress')}}
+                    @else 
+
+                        @if($video_details->status)
+
+                            {{tr('approved')}}
+
+                        @else
+
+                            {{tr('pending')}}
+
+                        @endif
+
+                    @endif
+                </td>
+
+                <td>
+                    @if ($video_details->compress_status == 0) 
+
+                            {{tr('compress')}} 
+                    @else 
+
+                        @if($video_details->is_approved)
+
+                            {{tr('approved')}}
+
+                        @else
+
+                           {{tr('pending')}}
+
+                        @endif
+
+                    @endif
+                </td>
 
                 <td> {{$video_details->ratings}} </td>
 
@@ -167,6 +209,22 @@
                     {{number_format_short($video_details->watch_count)}}
                 </td>
 
+                <td>    
+                    
+                    @if($video_details->getVideoTags) 
+
+                        @foreach($video_details->getVideoTags as $tags)
+
+                            @if($tags->getTag)
+
+                            {{$tags->getTag->name}},
+
+                            @endif
+
+                        @endforeach
+
+                    @endif
+                </td>
                 <td>
                     {{Setting::get('currency')}} {{number_format_short($video_details->amount)}}
                 </td>
@@ -181,11 +239,11 @@
 
 
                 <td>
-                    {{$video_details->description}}
+                    <?php echo $video_details->description ?>
                 </td>
 
                 <td>
-                    {{$video_details->reviews}}.
+                    {{$video_details->reviews}}
                 </td>
 
                 <td>
