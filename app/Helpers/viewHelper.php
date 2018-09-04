@@ -350,7 +350,7 @@ function convertMegaBytes($bytes) {
  */
 function get_video_attributes($video) {
 
-    $command = 'ffmpeg -i ' . $video . ' -vstats 2>&1';
+    $command = 'ffmpeg -i ' . $video;
 
     Log::info("Path ".$video);
 

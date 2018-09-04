@@ -633,21 +633,24 @@
 
             } else {
 
+                $("#next_btn").val("Next");
+
+                $("#next_btn").attr('disabled', false);
+                $("#video_file").attr('disabled', false);
+
                 var percentVal = '0%';
                 bar.width(percentVal)
                 percent.html(percentVal);
             }
 
+            $(".finish").show();
+            
         },
         error : function(xhr) {
             console.log(xhr);
         },
 
-        complete : function(xhr) {
-
-          $(".finish").show();
-
-        },
+      
         success : function(xhr) {
             // $(".overlay").hide();
 
@@ -727,6 +730,7 @@ function checksrt(e,id) {
     return false;
 }
 
+var edit_video_type = "{{$model->video_type}}";
 
 /**
  * Function Name : saveVideoType()
@@ -745,12 +749,19 @@ function saveVideoType(video_type, step) {
 
     $("#duration").attr('required', false);
 
+    $("#other_video").val("{{$model->video}}");
 
     if (video_type != 1) {
 
       $("#duration_div").show();
 
       $("#duration").attr('required', true);
+
+      if (video_type != edit_video_type) {
+
+          $("#other_video").val("");
+
+      }
     }
 
    // display_fields();

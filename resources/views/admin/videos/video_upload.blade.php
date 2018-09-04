@@ -559,6 +559,10 @@
             $("#resolution").hide();
         });
 
+        var main_video = "";
+        
+        var edit_video_type = "";
+
     </script>
 
 

@@ -15,6 +15,10 @@ use App\Helpers\Helper;
 
 use Log; 
 
+use App\Jobs\SubscriptionMail;
+
+use App\Jobs\sendPushNotification;
+
 class CompressVideo extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
@@ -131,6 +135,20 @@ class CompressVideo extends Job implements ShouldQueue
               }
 
               $video->save();
+
+              if ($video) {
+
+                   // Channel Subscription email
+
+                    dispatch(new SubscriptionMail($video->channel_id, $video->id));
+
+                    $push_message = $video->title;
+
+                    dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $video->id, $video->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+
+              }
+
+              Log::info("Video status saved..!");
 
           } else {
 

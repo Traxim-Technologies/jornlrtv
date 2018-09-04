@@ -165,6 +165,115 @@ hr {
     <script>jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";</script>
 
     <script type="text/javascript">
+
+        function getBrowser() {
+
+            // Opera 8.0+
+            var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+            // Firefox 1.0+
+            var isFirefox = typeof InstallTrigger !== 'undefined';
+
+            // Safari 3.0+ "[object HTMLElementConstructor]" 
+            var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+
+            // Internet Explorer 6-11
+            var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+            // Edge 20+
+            var isEdge = !isIE && !!window.StyleMedia;
+
+            // Chrome 1+
+            var isChrome = (!!window.chrome && !!window.chrome.webstore) || navigator.userAgent.indexOf("Chrome") !== -1;
+
+            // Blink engine detection
+            var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+            var b_n = '';
+
+            switch(true) {
+
+                case isFirefox :
+
+                        b_n = "Firefox";
+
+                        break;
+                case isChrome :
+
+                        b_n = "Chrome";
+
+                        break;
+
+                case isSafari :
+
+                        b_n = "Safari";
+
+                        break;
+                case isOpera :
+
+                        b_n = "Opera";
+
+                        break;
+
+                case isIE :
+
+                        b_n = "IE";
+
+                        break;
+
+                case isEdge : 
+
+                        b_n = "Edge";
+
+                        break;
+
+                case isBlink : 
+
+                        b_n = "Blink";
+
+                        break;
+
+                default :
+
+                        b_n = "Unknown";
+
+                        break;
+
+            }
+
+            return b_n;
+
+        }
+
+        var mobile_type = "";
+
+        function getMobileOperatingSystem() {
+
+          var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+          if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) )
+          {
+            mobile_type =  'ios';
+
+          }
+          else if( userAgent.match( /Android/i ) )
+          {
+
+            mobile_type =  'andriod';
+          }
+          else
+          {
+            mobile_type =  'unknown'; 
+          }
+
+          return mobile_type;
+        
+        }
+
+        var browser = getBrowser();
+
+        var m_type = getMobileOperatingSystem();
+
         
         jQuery(document).ready(function(){
 
@@ -178,34 +287,63 @@ hr {
 
                 var playerInstance = jwplayer("main-video-player");
 
-                playerInstance.setup({
-                    sources: [
-                {
-                    file: "{{$video->rtmp_video_url}}"
-                }, 
-                {
-                    file : "{{$video->hls_video_url}}"
+                if(m_type != "unknown") {
+
+                    playerInstance.setup({
+
+                        file: mobile_type == 'ios' ? "{{$video->hls_video_url}}" : "{{$video->rtmp_video_url}}",
+                        image: "{{$video->image}}",
+                        width: "100%",
+                        aspectratio: "16:9",
+                        primary: "flash",
+                        controls : true,
+                        "controlbar.idlehide" : false,
+                        controlBarMode:'floating',
+                        "controls": {
+                          "enableFullscreen": false,
+                          "enablePlay": false,
+                          "enablePause": false,
+                          "enableMute": true,
+                          "enableVolume": true
+                        },
+                        // autostart : true,
+                        "sharing": {
+                            "sites": ["reddit","facebook","twitter"]
+                          }
+                    });
+
+                } else {
+
+                    playerInstance.setup({
+                        sources: [
+                    {
+                        file: "{{$video->rtmp_video_url}}"
+                    }, 
+                    {
+                        file : "{{$video->hls_video_url}}"
+                    }
+                    ],
+                        image: "{{$video->image}}",
+                        width: "100%",
+                        aspectratio: "16:9",
+                        primary: "flash",
+                        controls : true,
+                        "controlbar.idlehide" : false,
+                        controlBarMode:'floating',
+                        "controls": {
+                          "enableFullscreen": false,
+                          "enablePlay": false,
+                          "enablePause": false,
+                          "enableMute": true,
+                          "enableVolume": true
+                        },
+                        // autostart : true,
+                        "sharing": {
+                            "sites": ["reddit","facebook","twitter"]
+                          }
+                    });
+
                 }
-                ],
-                    image: "{{$video->image}}",
-                    width: "100%",
-                    aspectratio: "16:9",
-                    primary: "flash",
-                    controls : true,
-                    "controlbar.idlehide" : false,
-                    controlBarMode:'floating',
-                    "controls": {
-                      "enableFullscreen": false,
-                      "enablePlay": false,
-                      "enablePause": false,
-                      "enableMute": true,
-                      "enableVolume": true
-                    },
-                    // autostart : true,
-                    "sharing": {
-                        "sites": ["reddit","facebook","twitter"]
-                      }
-                });
                     
                 
         });

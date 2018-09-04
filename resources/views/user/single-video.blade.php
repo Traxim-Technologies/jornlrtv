@@ -882,6 +882,14 @@
                                } else {
                                    var seconds = parseInt(a[0]) * 60 + parseInt(a[1]);
                                }
+
+
+                               // If the user again clicked in between seconds, it wil check whether ad is present or not. if it is enable the ad
+                               if (video_time < seconds) {
+
+                                  between_ad_status = 0;
+
+                               }
    
                                // console.log("Seconds "+seconds);
    
@@ -911,13 +919,12 @@
                                    adsPage("{{$obj->ad_time}}");
    
                                }
-   
+
+
                            @endforeach
    
                        @endif
-   
-   
-                      
+                
    
                    @endif
                },
@@ -928,13 +935,15 @@
                },
                onPlay : function(event) {
    
-                   console.log("onPlay");
+                   // between_ad_status = 0;
    
                },
    
                onComplete : function(event) {
    
                    console.log("onComplete Fn");
+
+                   between_ad_status = 0;
    
                    @if(Auth::check())
    

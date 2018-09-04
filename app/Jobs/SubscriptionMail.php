@@ -57,12 +57,19 @@ class SubscriptionMail extends Job implements ShouldQueue
                 $user = $subscriber->getUser;
 
                 $subject = tr('uploaded_new_video');
+
                 $email_data['subscriber'] = $subscriber;
+
                 $email_data['video_id'] = $this->video_id;
+
                 $email_data['channel'] = $subscriber->getChannel;
+
                 $email_data['user'] = $subscriber->getChannel ? $subscriber->getChannel->getUser : '';
+
                 $email_data['subscribed_user'] = $user;
+
                 $page = "emails.subscription_mail";
+                
                 $email = $user->email;
 
                 if ($user) {
