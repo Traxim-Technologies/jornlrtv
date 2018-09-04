@@ -5554,14 +5554,11 @@ class AdminController extends Controller {
      */
     public function automatic_subscribers() {
 
-        $datas = UserPayment::select(DB::raw('max(user_payments.id) as id'),'user_payments.*')
-                        ->leftjoin('users', 'users.id','=' ,'user_payments.user_id')
+        $datas = UserPayment::select(DB::raw('max(user_payments.id) as user_payment_id'),'user_payments.*')
                         ->leftjoin('subscriptions', 'subscriptions.id','=' ,'subscription_id')
-                        ->leftJoin('cards' , 'users.id','=','cards.user_id')
-                        ->where('cards.is_default' , DEFAULT_TRUE)
                         ->where('subscriptions.amount', '>', 0)
                         ->where('user_payments.status', PAID_STATUS)
-                        ->where('user_payments.is_cancelled', AUTORENEWAL_ENABLED)
+                        //->where('user_payments.is_cancelled', AUTORENEWAL_ENABLED)
                         ->groupBy('user_payments.user_id')
                         ->orderBy('user_payments.created_at' , 'desc')
                         ->get();
@@ -5571,36 +5568,46 @@ class AdminController extends Controller {
         $amount = 0;
 
         foreach ($datas as $key => $value) {
+    
+            $value = UserPayment::find($value->user_payment_id);
 
-            if ($value->getSubscription) {
+            if ($value->is_cancelled == AUTORENEWAL_ENABLED) {
 
-                $amount += $value->getSubscription ? $value->getSubscription->amount : 0;
+                if ($value->getSubscription) {
+
+                    $amount += $value->getSubscription ? $value->getSubscription->amount : 0;
+
+                }
+                
+                $payments[] = [
+
+                    'id'=> $value->user_payment_id,
+
+                    'user_id'=>$value->user_id,
+
+                    'subscription_id'=>$value->subscription_id,
+
+                    'payment_id'=>$value->payment_id,
+
+                    'amount'=>$value->getSubscription ? $value->getSubscription->amount : '',
+
+                    'payment_mode'=>$value->payment_mode,
+
+                    'expiry_date'=>date('d-m-Y H:i a', strtotime($value->expiry_date)),
+
+                    'user_name' => $value->user ? $value->user->name : '',
+
+                    'subscription_name'=>$value->getSubscription ? $value->getSubscription->title : '',
+
+                    'unique_id'=>$value->getSubscription ? $value->getSubscription->unique_id : '',
+
+                ];
+
+            } else {
+
+                Log::info('Subscription not found');
 
             }
-            
-            $payments[] = [
-
-                'id'=> $value->user_payment_id,
-
-                'user_id'=>$value->user_id,
-
-                'subscription_id'=>$value->subscription_id,
-
-                'payment_id'=>$value->payment_id,
-
-                'amount'=>$value->getSubscription ? $value->getSubscription->amount : '',
-
-                'payment_mode'=>$value->payment_mode,
-
-                'expiry_date'=>date('d-m-Y H:i a', strtotime($value->expiry_date)),
-
-                'user_name' => $value->user ? $value->user->name : '',
-
-                'subscription_name'=>$value->getSubscription ? $value->getSubscription->title : '',
-
-                'unique_id'=>$value->getSubscription ? $value->getSubscription->unique_id : '',
-
-            ];
 
         }
 
@@ -5629,7 +5636,7 @@ class AdminController extends Controller {
      */
     public function cancelled_subscribers() {
 
-        $datas = UserPayment::select(DB::raw('max(user_payments.id) as id'),'user_payments.*')
+        $datas = UserPayment::select(DB::raw('max(user_payments.id) as user_payment_id'),'user_payments.*')
                         ->where('user_payments.status', PAID_STATUS)
                         ->leftjoin('subscriptions', 'subscriptions.id','=' ,'subscription_id')
                         ->where('user_payments.is_cancelled', AUTORENEWAL_CANCELLED)
@@ -5640,6 +5647,8 @@ class AdminController extends Controller {
         $payments = [];
 
         foreach ($datas as $key => $value) {
+
+            $value = UserPayment::find($value->user_payment_id);
             
             $payments[] = [
 

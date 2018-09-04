@@ -1491,5 +1491,6 @@ return array(
 	'video_compress_success'=>'Video has been compressed successfully',
 	'do_compression_in_background'=>'Do Compression In Background',
 	'video_not_saved'=>'Video has been not saved, please try again later',
-	'ppv_revenue' => 'PPV Revenue'	
+	'ppv_revenue' => 'PPV Revenue'	,
+	'automatic_renewal_notification'=>'Automatic Renewal Notification',
 );

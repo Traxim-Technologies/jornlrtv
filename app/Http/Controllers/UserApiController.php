@@ -5404,7 +5404,6 @@ class UserApiController extends Controller {
             
                 foreach ($model->items() as $key => $value) {
 
-
                     $is_ppv_status = DEFAULT_TRUE;
 
                     if ($user) {
@@ -5433,7 +5432,7 @@ class UserApiController extends Controller {
                             'payment_id'=>$value->payment_id,
                             'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
-                            'ppv_notes'=>$ppv_notes
+                            'ppv_notes'=>$ppv_notes,
                             ];
 
                 }
@@ -5461,6 +5460,10 @@ class UserApiController extends Controller {
                     $videoDetails = $value->videoTapeResponse ? $value->videoTapeResponse : '';
 
                     $pay_per_view_status = $videoDetails ? (VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)->getData()->success) : true;
+
+                    $spam = Flag::where('video_tape_id', $value->video_id)->first();
+
+                    $spam_status = $spam ? true : false;
     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
                             'video_tape_id'=>$value->video_id,
@@ -5475,6 +5478,7 @@ class UserApiController extends Controller {
                             'payment_id'=>$value->payment_id,
                             'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ 
+                            'is_spam'=>$spam_status
                             ];
 
                 }

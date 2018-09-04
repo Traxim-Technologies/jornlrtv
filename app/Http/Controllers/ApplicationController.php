@@ -942,7 +942,7 @@ class ApplicationController extends Controller {
 
                 } else {
 
-                    Log::info("No payment found....:-) ".$data->id);
+                    Log::info("No payment found....:-) ".$data->user_payment_id);
 
                 }
                             
