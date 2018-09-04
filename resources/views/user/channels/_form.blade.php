@@ -57,7 +57,7 @@
 					<div class="des-box">
 
 						<div>
-							<p><small><b>{{tr('note')}} :</b>&nbsp;{{tr('profile_picture')}} - {{tr('image_square')}}, {{tr('cover_picture')}} - {{tr('rectangle_image')}}</small></p>
+							<p><small><b>{{tr('note')}} :</b>&nbsp;<span class="dark-grey">{{tr('profile_picture')}} - {{tr('image_square')}}, {{tr('cover_picture')}} - {{tr('rectangle_image')}}</span></small></p>
 						</div>
 
 						<div>
@@ -74,7 +74,7 @@
 						<br>
 						<div>
 							<button type="reset" name="reset" class="btn btn-danger pull-left">{{tr('reset')}}</button>
-							<button id="done-create" name="submit" class="btn btn-primary pull-right" @if(!$model->id) onclick="return checkImage();" @endif>{{tr('submit')}}</button>
+							<button id="done-create" name="submit" class="btn btn-info pull-right" @if(!$model->id) onclick="return checkImage();" @endif>{{tr('submit')}}</button>
 							<div class="clearfix"></div>
 						</div>
 

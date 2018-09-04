@@ -412,7 +412,7 @@
                </div>
                <!--end of col-sm-8 and play-video-->
                <div class="col-sm-12 col-md-4 side-video custom-side">
-                  <div class="up-next">
+                  <div class="up-next pt-0">
                      <h4 class="sugg-head1">{{tr('suggestions')}}</h4>
                      <ul class="video-sugg">
                         @if(count($suggestions->items) > 0)
