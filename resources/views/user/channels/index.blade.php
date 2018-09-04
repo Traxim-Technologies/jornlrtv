@@ -203,10 +203,13 @@
 <div class="shelf-wrapper clearfix">
 <div class="big-section-main new-history1">
 
-<h4 class="content-head con-head">
+<!-- <h4 class="content-head con-head">
 	{{tr('watch_to_next')}}
-</h4>
+</h4> -->
 
+<div class="content-head">
+	<h4 style="color: #000;">{{tr('watch_to_next')}}</h4>
+</div>
 @if(count($trending_videos) == 0)
 
 <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
@@ -255,8 +258,8 @@
 
 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 
-<div class="slide-box recom-box big-box-slide">
-	<div class="slide-image recom-image hbbb">
+<div class="slide-box recom-box big-box-slide mt-0 mb-15">
+	<div class="slide-image">
 		<a href="{{$trending_video->url}}"><img src="{{$trending_video->video_image}}"></a>
 		@if($trending_video->ppv_amount > 0)
             @if(!$trending_video->ppv_status)

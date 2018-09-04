@@ -333,14 +333,12 @@
 }
 .video_duration, .video_amount{
 	font-size: 13px;
-	padding: 6px;
+	padding: 3px 6px;
 }
 .video-head a{
 	font-size: 1.2em !important;
 	line-height:24px;
-	max-height: 44px;
-	min-height: 44px;
-	margin-bottom: 8px;
+	margin-bottom: 6px;
 }
 .video_views{
 	font-size: 14px;
@@ -842,8 +840,6 @@
 .video-head a{
 	font-size: 1.4em !important;
 	line-height:26px;
-	max-height: 51px;
-	min-height: 51px;
 	margin-bottom:10px;
 }
 .video_views{
@@ -1360,14 +1356,12 @@
 }
 .video_duration, .video_amount{
 	font-size: 17px;
-	padding:10px;
+	padding:5px 10px;
 }
 .video-head a{
 	font-size: 1.6em !important;
 	line-height:28px;
-	max-height: 56px;
-	min-height: 56px;
-	margin-bottom:15px;
+	margin-bottom:13px;
 }
 .video_views{
 	font-size: 20px;
@@ -1905,14 +1899,12 @@
 }
 .video_duration, .video_amount{
 	font-size: 17px;
-	padding:10px;
+	padding:5px 10px;
 }
 .video-head a{
 	font-size: 1.6em !important;
-	line-height:28px;
-	max-height: 56px;
-	min-height: 56px;
-	margin-bottom:15px;
+	line-height:27px;
+	margin-bottom:13px;
 }
 .video_views{
 	font-size: 20px;

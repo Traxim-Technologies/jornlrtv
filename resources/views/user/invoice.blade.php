@@ -70,7 +70,7 @@
 											<!-- coupon code -->
 
 										
-											<h4 class="no-margin black-clr top">{{tr('payment_options')}}</h4>
+											<h4 class="no-margin black-clr top mb-15">{{tr('payment_options')}}</h4>
 
 
 									    	<input type="hidden" name="u_id" value="{{$model['u_id']}}">

@@ -38,7 +38,7 @@
 
 					                    <div class="pull-right" style="margin-bottom: 10px;">
 
-					                    	<a class="st_video_upload_btn " href="{{route('user.create_channel')}}"><i class="fa fa-tv"></i>&nbsp;{{tr('create_channel')}}</a>
+					                    	<a class="st_video_upload_btn " href="{{route('user.create_channel')}}"><i class="fa fa-tv"></i>&nbsp;&nbsp;{{tr('create_channel')}}</a>
 
 					                    	
 

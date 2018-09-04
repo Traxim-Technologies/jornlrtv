@@ -929,7 +929,7 @@ input[type="checkbox"], input[type="radio"]{
 }
 .sugg-head1{
 	font-weight: bold;
-	border-bottom: 1px solid #e8e8e8;
+	border-bottom: 0px solid #e8e8e8;
 	padding-bottom: 10px;
 	margin-bottom: 15px;
 	margin-top: 0;
@@ -2449,8 +2449,9 @@ changes
 	border: 0;
 }
 .earning-content .modal-header h3{
-	margin-top: -6px;
+	margin-top:0px;
 	color: #333;
+	font-size: 18px;
 }
 .earning-content .modal-body p{
 	margin-top: 20px;
@@ -3292,7 +3293,7 @@ changes
 	width:100%;
 }
 .mt-0{
-	margin-top: 0;
+	margin-top: 0 !important;
 }
 .input-group .form-control:first-child{
 	border-top-right-radius: 0 !important;
@@ -3446,6 +3447,9 @@ tr.active{
 }
 .label.label-info{
 	background-color: #2E93E0;	
+}
+.st-button{
+	background: #2E93E0 none repeat scroll 0 0;
 }
 .active-plan{
 	height: 25px !important;
@@ -3752,7 +3756,9 @@ tr.active{
 	text-transform: capitalize;
 }
 .st_video_upload_btn{
-	color: #666 !important; 
+	color: #626567 !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
 }
 .st_video_upload_btn:hover, .st_video_upload_btn:focus, .st_video_upload_btn:active{
 	color: #666;
@@ -4024,4 +4030,23 @@ input:checked + .slider{
 }
 .blue-link, .blue-link:hover, .blue-link:focus, .blue-link:active{
 	color: #2E93E0;
+}
+.st_video_upload_btn{
+	border:0 !important;
+	border-radius: 2px !important;
+}
+.pt-0{
+	padding-top: 0;
+}
+.page-inner{
+	overflow-x: hidden !important;
+}
+.abt-sec-head.description-create h5{
+	margin-bottom: 8px;
+}
+.des-box{
+	margin-top: 10px;
+}
+.dark-grey{
+	color: #666;
 }
