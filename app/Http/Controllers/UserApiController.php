@@ -1146,7 +1146,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
                                // ->orderby('video_tapes.publish_time' , 'desc')
-                                ->shortVideoResponse();
+                                ->videoResponse();
 
             if ($request->id) {
 
@@ -1280,7 +1280,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
                                 ->orderby('video_tapes.publish_time' , 'desc')
-                                ->shortVideoResponse();
+                                ->videoResponse();
 
             if ($request->id) {
 
@@ -5374,7 +5374,7 @@ class UserApiController extends Controller {
             $currency = Setting::get('currency');
 
             $query = PayPerView::select('pay_per_views.id as pay_per_view_id',
-                    'video_id as video_tape_id',
+                    'video_id',
                     'video_tapes.title',
                     'pay_per_views.amount',
                     'pay_per_views.status as video_status',
@@ -5409,7 +5409,7 @@ class UserApiController extends Controller {
 
                     } 
 
-                    $videoDetails = $value->video ? $value->video : '';
+                    $videoDetails = $value->videoTapeResponse ? $value->videoTapeResponse : '';
 
                     $pay_per_view_status = $videoDetails ? (VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)->getData()->success) : true;
 
@@ -5417,7 +5417,7 @@ class UserApiController extends Controller {
                     
                     $data[] = [
                             'pay_per_view_id'=>$value->pay_per_view_id,
-                            'video_tape_id'=>$value->video_tape_id,
+                            'video_tape_id'=>$value->video_id,
                             'title'=>$value->title,
                             'amount'=>$value->amount,
                             'video_status'=>$value->video_status,
@@ -5454,10 +5454,12 @@ class UserApiController extends Controller {
 
                     } 
 
-                    $videoDetails = $value->video ? $value->video : '';
+                    $videoDetails = $value->videoTapeResponse ? $value->videoTapeResponse : '';
+
+                    $pay_per_view_status = $videoDetails ? (VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)->getData()->success) : true;
     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
-                            'video_tape_id'=>$value->video_tape_id,
+                            'video_tape_id'=>$value->video_id,
                             'title'=>$value->title,
                             'amount'=>$value->amount,
                             'video_status'=>$value->video_status,
@@ -5467,7 +5469,7 @@ class UserApiController extends Controller {
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
                             'payment_id'=>$value->payment_id,
-                            'pay_per_view_status'=>$videoDetails ? (VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)->getData()->success) : true,
+                            'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ 
                             ];
 
