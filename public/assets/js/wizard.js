@@ -55,9 +55,17 @@ function saveVideoType(video_type, step) {
 
     $("#video_type").val(video_type);
 
+    $("#other_video").val(main_video);
+
     if (video_type != 1) {
 
       $("#duration_div").show();
+
+      if (video_type != edit_video_type) {
+
+          $("#other_video").val("");
+
+      }
 
     }
 
@@ -66,6 +74,7 @@ function saveVideoType(video_type, step) {
     $("#"+step).click();
 
     $("#next_btn").click();
+
 }
 
 function display_fields() {
