@@ -5174,6 +5174,10 @@ class UserApiController extends Controller {
                 ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
                 ->where('video_tape_id', $request->video_tape_id)->get()->toArray();
 
+            $category = Category::find($video->category_id);
+
+            $video['category_unique_id'] = $category ? $category->unique_id : '';
+
             $response_array = [
                 'tags'=>$tags,
                 'video'=>$video, 'comments'=>$comments, 

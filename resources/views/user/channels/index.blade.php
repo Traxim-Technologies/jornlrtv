@@ -312,10 +312,10 @@
 <div><h4 style="color: #000;">{{tr('videos')}}&nbsp;&nbsp;
 @if(Auth::check())
 
-@if(Auth::user()->id == $channel->user_id)
+<!-- @if(Auth::user()->id == $channel->user_id)
 <small style="font-size: 12px">({{tr('note')}}:{{tr('ad_note')}} )</small>
 
-@endif
+@endif -->
 
 @endif
 </h4></div>              
@@ -362,17 +362,17 @@
 		@if($video->status)
 		<div class="cross-mark2">
 	        
-            <label style="float:none; margin-top: 6px;" class="switch hidden-xs" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
+            <!-- <label style="float:none; margin-top: 6px;" class="switch hidden-xs" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
                 <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
                 <div class="slider round"></div>
-            </label>
+            </label> -->
 
             <div class="btn-group show-on-hover">
-	          	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	          	<button type="button" class="video-menu dropdown-toggle" data-toggle="dropdown">
 
-		            <span class="hidden-xs">{{tr('action')}}</span>
-		            <span class="caret"></span>
-
+		            <!-- <span class="hidden-xs">{{tr('action')}}</span>
+		            <span class="caret"></span> -->
+		            <i class="fa fa-ellipsis-v"></i>
 	          	</button>
 
 	          	<?php $total_amount = $video->amount + ppv_amount($video->video_tape_id); ?>
@@ -391,7 +391,7 @@
 		            
 		            <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
 		            <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
-		            <li class="visible-xs">
+		            <li>
             			<a onclick="change_adstatus({{$video->ad_status}}, {{$video->video_tape_id}})" style="cursor: pointer;" id="ad_status_{{$video->video_tape_id}}">@if($video->ad_status) {{tr('disable_ad')}} @else {{tr('enable_ad')}} @endif</a>
 
             		</li>
@@ -434,7 +434,7 @@
 											<button type="button" class="close" data-dismiss="modal">&times;</button>
 											<h4 class="modal-title text-left" style="color: #000;">{{tr('pay_per_view')}}</h4>
 										</div>
-										<div class="modal-body">
+										<div class="modal-body pay-perview">
 										   
 										    	<h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
 										    	<div>
@@ -487,15 +487,15 @@
 										<div class="clearfix"></div>
 									</div>
 
-									 <div class="modal-footer">
+									 <div class="modal-footer border-0">
 								      	<div class="pull-left">
 								      		@if($video->ppv_amount > 0)
 								       			<a class="btn btn-danger" href="{{route('user.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a>
 								       		@endif
 								       	</div>
 								        <div class="pull-right">
-									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									        <button type="submit" class="btn btn-primary">Submit</button>
+									        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+									        <button type="submit" class="btn btn-info">Submit</button>
 									    </div>
 									    <div class="clearfix"></div>
 								      </div>
@@ -517,10 +517,10 @@
 
                             <!--end of cross-mark-->                       
     </div> <!--end of history-head--> 
-
+    
+    <div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', ['id'=>$video->category_unique_id])}}" target="_blank">{{$video->category_name}}</a></div>
+    
     <div class="description">
-
-    	<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', ['id'=>$video->category_unique_id])}}" target="_blank">{{$video->category_name}}</a></div>
         <?= $video->description?>
     </div><!--end of description--> 
 
@@ -588,15 +588,55 @@
 <div class="abt-sec-head">
 
 <div class="new-history1">
-<div class="content-head">
-<div><h4 style="color: #000;">{{tr('payment_videos')}}</h4></div>              
-</div><!--end of content-head-->
+	<div class="content-head">
+		<div>
+			<h4 style="color: #000;">{{tr('payment_videos')}}</h4>
+		</div>              
+	</div><!--end of content-head-->
+
+	<!-- dashboard -->
+	<div class="row">
+		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+			<div class="ppv-dashboard">
+				<div class="ppv-dashboard-left">
+					<img src="{{asset('images/video-camera.png')}}">
+				</div>
+				<div class="ppv-dashboard-right">
+					<p>Total videos</p>
+					<h2 class="">150</h2>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+			<div class="ppv-dashboard">
+				<div class="ppv-dashboard-left">
+					<img src="{{asset('images/video-cash.png')}}">
+				</div>
+				<div class="ppv-dashboard-right">
+					<p>paid videos</p>
+					<h2 class="">100</h2>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+			<div class="ppv-dashboard">
+				<div class="ppv-dashboard-left">
+					<img src="{{asset('images/dollar.png')}}">
+				</div>
+				<div class="ppv-dashboard-right">
+					<p>revenue</p>
+					<h2 class="">$1500</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- dashboard -->
+
 @if($payment_videos->count > 0)
 
 <ul class="history-list">
 
 @foreach($payment_videos->data as $i => $video)
-
 
 <li class="sub-list row border-0">
 <div class="main-history">
@@ -611,9 +651,15 @@
             </div>
         @endif
     @endif
+
+    <div class="video_amount">
+        $10.00
+    </div>  
+
     <div class="video_duration">
         {{$video->duration}}
-    </div>                          
+    </div>  
+
 </div><!--history-image-->
 
 <div class="history-title">
@@ -643,7 +689,7 @@
     	<span class="label label-success">{{tr('ad_amount')}} - ${{$video->amount}}</span>
     	@endif
     	@if($video->user_ppv_amount > 0)
-    	<span class="label label-primary">{{tr('ppv_amount')}} - ${{$video->user_ppv_amount}}</span>
+    	<span class="label label-info">{{tr('ppv_revenue')}} - ${{$video->user_ppv_amount}}</span>
     	@endif
     </div>
    	<span class="stars">
@@ -671,7 +717,7 @@
 <div class="clearfix"></div>
 
 
-<button class="pull-right st_video_upload_btn subscribe_btn" onclick="getPaymentVideos()" style="color: #fff">{{tr('view_more')}}</button>
+<button class="pull-right btn btn-info mb-15" onclick="getPaymentVideos()" style="color: #fff">{{tr('view_more')}}</button>
 
 <div class="clearfix"></div>
 

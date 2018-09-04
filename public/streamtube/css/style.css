@@ -230,6 +230,8 @@ a:hover{
 .video_views a {
 	color: #777;
 	text-decoration: none;
+	display: inline-block;
+	margin-bottom: 4px;
 }
 
 .publish a{
@@ -1008,6 +1010,7 @@ input[type="checkbox"], input[type="radio"]{
     font-size: 12px;
     min-width: 250px;
 	border-radius: 3px;
+	border:1px solid #ddd;
 }
 .profile-button .open > .dropdown-toggle.btn-default{
 	background-color: transparent;
@@ -1072,7 +1075,7 @@ history (single page) css
 	float: left;
 	margin-right: 2%;
 	width: 20%;
-	max-height: 100px;
+	max-height: 130px;
     overflow: hidden;
     position: relative;
 }
@@ -1180,7 +1183,7 @@ history (single page) css
 	margin-bottom: 0px;
 }
 .sub-list{
-	border-bottom: 1px solid #e8e8e8;
+	/*border-bottom: 1px solid #e8e8e8;*/
 	padding-bottom: 15px;
 }
 .sub-list:last-child{
@@ -1235,11 +1238,11 @@ signup.html css
 .common-form{
 	max-width: 400px;
 	margin: 62px auto 50px;
-	background-color: #fafafa;
+	background-color: #f6f6f6;
 	padding: 15px;
-	border: 1px solid transparent;
+	border: 1px solid #ddd;
 	border-radius:4px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
+	/*box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);*/
 }
 .sign-up{
 	margin-top: 15px;
@@ -1344,7 +1347,7 @@ login.html css
 .login-common{
 	overflow: hidden;
 	padding: 15px;
-	border-top: none;
+	/*border-top: none;*/
 	margin: 0 auto;
 	/*margin-top: 106px;
     margin-bottom:50px;*/
@@ -1435,7 +1438,7 @@ profile.html css
 }
 .mylist-head{
 	font-weight: bold;
-	border-bottom: 1px solid #e8e8e8;
+	border-bottom: 0px solid #e8e8e8;
 	padding-bottom: 10px;
     margin-bottom: 15px;
     margin-top: 0;
@@ -1968,7 +1971,7 @@ changes
 
 .close:hover {
 	padding:0;
-	color: rgb(255, 255, 255);
+	/*color: rgb(255, 255, 255);*/
 	border-radius: 4px;
 }
 
@@ -2061,7 +2064,7 @@ changes
     bottom: 6px;
     position: absolute;
     color: #fff;
-    font-size: 11px;
+    font-size: 12px;
     padding: 2px 4px;
     border-radius: 2px;
 }
@@ -2069,12 +2072,14 @@ changes
 .video_amount {
 	background-color: #000;
 	opacity: 0.7;
-	left: 0;
-	bottom: 0;
+	left:6px;
+	bottom: 6px;
 	position: absolute;
 	color: #fff;
-	font-size: 11px;
+	font-size: 12px;
 	padding: 4px;
+	padding: 2px 4px;
+    border-radius: 2px;
 }
 
 .unmark {
@@ -2514,7 +2519,7 @@ changes
 .radio1 {
 	display: inline-block;
 	padding-right: 20px;
-	font-size: 16px;
+	font-size: 14px;
 	/*line-height: 49px;*/
 	cursor: pointer;
 	font-weight: normal;
@@ -2555,11 +2560,11 @@ changes
 }
 
 .radio1 .outer {
-	width: 18px;
-	height:18px;
+	width: 16px;
+	height:16px;
 	display: block;
 	float: left;
-	margin: 1px 9px 10px 10px;
+	margin: 1px 9px 10px 0px;
 	border: 2px solid #cc181e;
 	border-radius: 50%;
 	background-color: #fff;
@@ -2568,8 +2573,8 @@ changes
 .radio1 .inner {
 	-webkit-transition: all 0.25s ease-in-out;
 	transition: all 0.25s ease-in-out;
-	width: 10px;
-	height: 10px;
+	width: 8px;
+	height: 8px;
 	-webkit-transform: scale(0);
 	-ms-transform: scale(0);
 	transform: scale(0);
@@ -2983,12 +2988,13 @@ changes
 	white-space: nowrap;
 }
 .ppv-card{
-	background-color: #fff;
+	background-color: #f6f6f6;
 	border-radius: 5px;
-	box-shadow: 1px 2px 3px rgba(0,0,0,.1);
+	/*box-shadow: 1px 2px 3px rgba(0,0,0,.1);*/
 	overflow:hidden;
 	margin-top: 1.3em;
 	text-align: left;
+	border:1px solid #eee;
 }
 .ppv-video-card{
 	height: 120px;
@@ -3139,6 +3145,7 @@ changes
 }
 .circle{
 	margin: auto auto 20px auto !important;
+	background-color: #eee !important; 
 }
 .mb-0{
 	margin-bottom: 0;
@@ -3532,11 +3539,11 @@ tr.active{
 	background-color:#2E93E0 !important;
 }
 .new-card{
-	background-color: #fff;
+	background-color: #f6f6f6;
 	border-radius: 4px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.03), 0 0 4px rgba(0, 0, 0, 0.03);
 	padding: 1em;
 	margin-top: 1.4em;
+	border:1px solid #eee;
 }
 .new-card-name{
 	color: #999;
@@ -3568,14 +3575,15 @@ tr.active{
 	margin-top: 3px;
 }
 .settings-card{
-	background-color: #fff;
+	background-color: #f6f6f6;
 	border-radius: 4px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, 0.03), 0 0 4px rgba(0, 0, 0, 0.03);
+	/*box-shadow: 0 4px 4px rgba(0, 0, 0, 0.03), 0 0 4px rgba(0, 0, 0, 0.03);*/
 	padding: 1.2em;
 	margin-bottom: 1.2em;
 	height: 6.5em;
 	display: flex;
     align-items: center;
+    border:1px solid #eee;
 }
 .settings-card-img{
 	height: 5.2em;
@@ -3702,9 +3710,10 @@ tr.active{
 	margin-right: 5px;
 }
 .new-profile-sec{
-	background-color: #fff;
+	background-color: #f6f6f6;
 	border-radius: 4px;
 	padding: 1.5em;
+	border:1px solid #ddd;
 }
 .new-profile-left{
 	width:150px;
@@ -3735,8 +3744,9 @@ tr.active{
 	margin-right: 10px;
 }
 .profile-bg{
-	background-color: #fff;
+	background-color: #f6f6f6;
     box-shadow: none !important;
+    border:1px solid #eee;
 }
 .settings{
 	text-transform: capitalize;
@@ -3748,7 +3758,7 @@ tr.active{
 	color: #666;
 }
 .new-redeem-sec{
-	background-color: #fff;
+	background-color: #f6f6f6;
 	border-radius: 5px;
 	padding: 1.5em;
 	border:1px solid #eee;
@@ -3853,7 +3863,7 @@ tr.active{
     color: #999;
 }
 h1::first-letter, h2::first-letter, h3::first-letter, h4::first-letter, h5::first-letter, h6::first-letter,
-span::first-letter, div::first-letter, label::first-letter, .label::first-letter{
+span::first-letter, div::first-letter, label::first-letter, .label::first-letter, a::first-letter, span{
 	text-transform: capitalize;
 }
 .branded-page-module-title-text{
@@ -3891,4 +3901,127 @@ input:checked + .slider::before{
 }
 input:checked + .slider{
 	background-color:#2E93E0 !important; 
+}
+.video-menu{
+	color: #333;
+	background: transparent;
+    border: 0;
+    color: #333;
+    border: 0;
+    height: 1.8em;
+    width: 1.8em;
+    border-radius: 50%;
+}
+.video-menu i{
+	vertical-align: -10%;
+}
+.video-menu:hover, .video-menu:active, .video-menu:focus{
+	background-color: #eee;
+}
+.pay-perview h4{
+	font-size: 16px;
+}
+.btn.btn-default{
+	background-color: #e1e1e1;
+	border-color: #e1e1e1;
+}
+.ppv-dashboard{
+	display: inline-block;
+	width: 100%;
+	background-color: #f6f6f6;
+	border:1px solid #eee;
+	padding: 1em;
+	border-radius: 4px;
+	margin-bottom: 1em;
+}
+.ppv-dashboard-left{
+	width:3.5em;
+	height: 3.5em;
+	float: left;
+}
+.ppv-dashboard-left img{
+	width:100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+.ppv-dashboard-right{
+	float: left;
+	width: calc(100% - 4.5em);
+	margin-left: 1em;
+	color: #333;
+}
+.ppv-dashboard-right p{
+	font-size: 1em;
+	color: #999;
+	margin:0;
+}
+.ppv-dashboard-right h2{
+	font-size: 1.5em;
+	margin:.4em 0 0 0;
+}
+.dropdown .btn.btn-default{
+	background-color: transparent;
+	border-color: transparent;
+}
+.channelsearch-img{
+	height: 130px;
+	width: 130px !important;
+	margin:0 auto;
+	border-radius: 50%;
+}
+.subscribe_btn {
+    border-color: #e62117 !important;
+    background: #e62117 !important;
+    border-radius: 2px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    border:solid 0px transparent !important;
+}
+.mt-15{
+	margin-top: 15px;
+}
+.mb-5{
+	margin-bottom: 5px !important;
+}
+.heart {
+	cursor: pointer;
+	height: 60px;
+	width: 60px;
+	background-position: left;
+	background-repeat:no-repeat;
+	background-size:2900%;
+	display: inline-block;
+	position: absolute;
+    right: -60px;
+    top: -10px;
+}
+.heart:hover, .heart:active, .heart:focus {
+  	background-position:right;
+}
+.is_animating {
+  	animation: heart-burst .8s steps(28) 1;
+}
+@keyframes heart-burst {
+  from {background-position:left;}
+  to { background-position:right;}
+}
+.relative{
+	position: relative;
+}
+.mr-50{
+	margin-right:50px;
+}
+.p-0{
+	padding: 0;
+}
+.category-name{
+	font-size: 15px !important;
+	margin-bottom: 5px;
+}
+.mt-10{
+	margin-top: 10px;
+}
+.blue-link, .blue-link:hover, .blue-link:focus, .blue-link:active{
+	color: #2E93E0;
 }
