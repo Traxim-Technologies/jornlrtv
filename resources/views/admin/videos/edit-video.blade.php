@@ -592,6 +592,9 @@
 
          $("#"+"{{$video->channel_id}}"+"_i").show();
 
+         var main_video = "{{$video->video}}";
+         var edit_video_type = "{{$video->video_type}}";
+
     </script>
 
 

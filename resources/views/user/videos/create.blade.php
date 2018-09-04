@@ -619,11 +619,19 @@
 
             }  else {
 
+              $("#next_btn").val("Next");
+
+                $("#next_btn").attr('disabled', false);
+                $("#video_file").attr('disabled', false);
+
                 var percentVal = '0%';
                 bar.width(percentVal)
                 percent.html(percentVal);
                 
             }
+
+            $(".finish").show();
+
         },
         error : function(xhr, result) {
 
