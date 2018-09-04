@@ -249,11 +249,10 @@
 </div> -->
 <div class="lohp-medium-shelves-container col-md-12">
 <div class="row">
-@if(count($trending_videos) > 1)
+@if(count($trending_videos) > 0)
 
 @foreach($trending_videos as $index => $trending_video)
 
-@if ($index > 0)
 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
 
 <div class="slide-box recom-box big-box-slide">
@@ -287,9 +286,11 @@
 </div>
 </div>
 
-@endif
-
 @endforeach
+
+@else
+
+<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
 @endif
 </div>
