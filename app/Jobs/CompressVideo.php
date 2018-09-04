@@ -148,6 +148,8 @@ class CompressVideo extends Job implements ShouldQueue
 
               }
 
+              Log::info("Video status saved..!");
+
           } else {
 
               Log::info("Atttributes not present...!".print_r($attributes, true));
