@@ -33,17 +33,17 @@
 }
 
 .card {
-  background-color: #FFFFFF;
+  background-color: #F6F6F6;
   padding: 10px 0;
   width: 100%;
   border-radius: 6px;
   color: rgba(0,0,0, 0.87);
-  background: #fff;
+  border:1px solid #eee;
 }
 
 .wizard-card {
   min-height: 410px;
-  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  /*box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);*/
 }
 .wizard-card .picture-container {
   position: relative;
@@ -487,4 +487,7 @@ background-image: -webkit-linear-gradient(135deg, #F6F6F6 25%, transparent 25%, 
     background-repeat: no-repeat;
     background-size: cover;
     margin-bottom: 10px;
+}
+.active{
+  background-color: transparent;
 }

@@ -16,7 +16,7 @@
 
     <div class="page-inner">
         <!--      Wizard container        -->
-          <div class="col-sm-10">
+          <div class="col-sm-12">
                 <div class="wizard-container">
                     <div class="card wizard-card" data-color="red" id="wizard">
                         <form action="{{Setting::get('admin_delete_control') ? '' : route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">
@@ -45,7 +45,7 @@
 
                                       <a onclick="saveVideoType({{VIDEO_TYPE_UPLOAD}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
 
-                                          <div style="background-image: url({{asset('assets/img/file-upload-icon.jpg')}})" class="category-img bg-img"></div>
+                                          <div style="background-image: url({{asset('images/folder.png')}})" class="category-img bg-img1"></div>
 
                                           <h3 class="category-tit">File Upload</h3>
 
@@ -57,7 +57,7 @@
 
                                         <a onclick="saveVideoType({{VIDEO_TYPE_YOUTUBE}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
 
-                                            <div style="background-image: url({{asset('assets/img/upload-to-youtube.png')}})" class="category-img bg-img"></div>
+                                            <div style="background-image: url({{asset('images/down-arrow.png')}})" class="category-img bg-img1"></div>
 
                                             <h3 class="category-tit">YouTube Link</h3>
 
@@ -69,7 +69,7 @@
 
                                         <a onclick="saveVideoType({{VIDEO_TYPE_OTHERS}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
 
-                                            <div style="background-image: url({{asset('assets/img/others.png')}})" class="category-img bg-img"></div>
+                                            <div style="background-image: url({{asset('images/link.png')}})" class="category-img bg-img1"></div>
 
                                             <h3 class="category-tit">Others</h3>
 
@@ -260,7 +260,7 @@
                                     </div>
 
 
-                                    <div class="row" id="file_video_upload_section">
+                                    <div class="" id="file_video_upload_section">
                                         <div class="dropify-wrapper" onclick="VideoFile({{Setting::get('admin_delete_control')}});">
                                           <div class="dropify-message">
                                             <span class="file-icon">

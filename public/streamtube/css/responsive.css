@@ -295,7 +295,14 @@
 .new-redeem-sec{
 	height: unset;
 }
+.width-60{
+	width: 100%;
 }
+.width-40{
+	width:calc(100% - 95px);
+}
+}
+
 
 /*small devices*/
 @media (min-width: 480px) and (max-width: 767px) {
@@ -510,6 +517,12 @@
 .new-redeem-sec{
 	height: unset;
 }
+.width-60{
+	width: 100%;
+}
+.width-40{
+	width:calc(100% - 95px);
+}
 }
 
 /* Tablets */
@@ -670,6 +683,12 @@
 .new-redeem-sec{
 	height: unset;
 }
+.width-60{
+	width: 100%;
+}
+.width-40{
+	width:calc(100% - 115px);
+}
 }
 
 /* Medium Devices, */
@@ -824,6 +843,12 @@
 .banner-slider{
 	padding: 0 50px;
 	margin-top:15px;
+}
+.width-60{
+	width: 100%;
+}
+.width-40{
+	width:calc(100% - 115px);
 }
 }
 

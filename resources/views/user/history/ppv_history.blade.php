@@ -44,8 +44,7 @@
 										</p>
 
 										<p>{{tr('payment_id')}}: &nbsp;<span class="grey-clr">{{$temp->payment_id}}</span></p>
-										<p class="no-margin">{{tr('paid_at')}}: &nbsp;<span class="grey-clr">{{$temp->paid_date}}</span></p>
- -->
+										<p class="no-margin">{{tr('paid_at')}}: &nbsp;<span class="grey-clr">{{$temp->paid_date}}</span></p>-->
 										<p>
 											<span class="ppv-small-head">paid status</span>
 											@if($temp->amount > 0) 
@@ -54,10 +53,18 @@
 											<span class="label label-warning pull-right">{{tr('pending')}}</span> 
 											@endif
 										</p>
+										<p class="ppv-small-head">coupon code</p>
+										<h4 class="ppv-text overflow">NEWUSER12</h4>
+										<p class="ppv-small-head">coupon amount</p>
+										<h4 class="ppv-text overflow">$10.00</h4>
+										<p class="ppv-small-head">video amount</p>
+										<h4 class="ppv-text overflow">$100.00</h4>
 										<p class="ppv-small-head">payment ID</p>
 										<h4 class="ppv-text overflow">{{$temp->payment_id}}</h4>
 										<p class="ppv-small-head">paid at</p>
 										<h4 class="ppv-text">{{$temp->paid_date}}</h4>
+										<p class="ppv-small-head">coupon reason</p>
+										<h4 class="ppv-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</h4>
 									</div>
 								</div>
 							</div>
