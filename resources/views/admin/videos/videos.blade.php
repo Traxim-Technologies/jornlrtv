@@ -212,7 +212,7 @@
 								                  	@endif
 
 								                  	@if($video->publish_status == 0 && $video->compress_status == 1)
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video.publish-video',$video->video_tape_id)}}">{{tr('publish')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.publish',$video->video_tape_id)}}">{{tr('publish')}}</a></li>
 								                  	@endif
 
 								                  	@if ($video->compress_status == 1)
