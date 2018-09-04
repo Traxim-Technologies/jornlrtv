@@ -1226,6 +1226,10 @@ function displayVideoDetails($data,$userId) {
                 ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
                 ->where('video_tape_id', $data->video_tape_id)->get()->toArray();
 
+    $category = Category::find($data->category_id);
+
+    $category_unique_id = $category ? $category->unique_id : '';
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1262,6 +1266,7 @@ function displayVideoDetails($data,$userId) {
         'share_url'=>route('user.single' , $data->video_tape_id),
         'ppv_notes'=>$ppv_notes,
         'category_id'=>$data->category_id,
+        'category_unique_id'=>$category_unique_id,
         'category_name'=>$data->category_name,
         'tags'=>$tags
     ];
@@ -1402,4 +1407,29 @@ function amount_convertion($percentage, $amt) {
 
     return $converted_amt;
 
+}
+
+/**
+ * Function Name : seoUrl()
+ *
+ * To change the string/ sentance into seo url
+ *
+ * @created_by - Shobana Chandrasekar
+ *
+ * @updated_by - - 
+ *
+ * @param - String
+ *
+ * @return response of string url
+ */
+function seoUrl($string) {
+    //Lower case everything
+    $string = strtolower($string);
+    //Make alphanumeric (removes all other characters)
+    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+    //Clean up multiple dashes or whitespaces
+    $string = preg_replace("/[\s-]+/", " ", $string);
+    //Convert whitespaces and underscore to dash
+    $string = preg_replace("/[\s_]/", "-", $string);
+    return $string;
 }

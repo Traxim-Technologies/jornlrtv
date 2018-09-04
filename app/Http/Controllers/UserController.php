@@ -2609,6 +2609,21 @@ class UserController extends Controller {
             'device_type'=>DEVICE_ANDROID
         ]);
 
+        $category = Category::where('unique_id', $request->category_id)->first();
+
+        if ($category) {
+
+             $request->request->add([ 
+                'category_id'=>$category->id,
+            ]);
+
+
+        } else {
+
+            return back()->with('flash_error', tr('category_not_found'));
+
+        }
+
         $response = $this->UserAPI->categories_view($request)->getData();
 
         if ($response->success) {

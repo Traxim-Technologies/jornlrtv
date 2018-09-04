@@ -4790,6 +4790,8 @@ class AdminController extends Controller {
 
             $model->name = $request->name;
 
+            $model->unique_id = seoUrl($model->name);
+
             $model->description = $request->description;
 
             $model->status = DEFAULT_TRUE;
