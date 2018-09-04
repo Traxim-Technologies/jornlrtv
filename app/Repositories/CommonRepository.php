@@ -729,6 +729,12 @@ class CommonRepository {
 
                                 if (file_exists($inputFile)) {
 
+                                    $model->status = DEFAULT_FALSE;
+
+                                    $model->compress_status = DEFAULT_FALSE;
+
+                                    $model->save();
+
                                     Log::info("Main queue Videos : ".'Success');
 
                                     dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
@@ -814,13 +820,17 @@ class CommonRepository {
 
                     $model->save();
 
-                    // Channel Subscription email
+                    if ($model->status && $model->compress_status) {
 
-                    dispatch(new SubscriptionMail($model->channel_id, $model->id));
+                        // Channel Subscription email
 
-                    $push_message = $model->title;
+                        dispatch(new SubscriptionMail($model->channel_id, $model->id));
 
-                    dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+                        $push_message = $model->title;
+
+                        dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+
+                    }
                    
                 } else {
                     
