@@ -714,6 +714,7 @@ class CommonRepository {
                             $model->compress_status = DEFAULT_TRUE;
 
                             $model->save();
+
                         } else {
 
                              // To start compression process, based on the main video duration
@@ -727,8 +728,11 @@ class CommonRepository {
                                 $file_name = $main_video_duration['file_name'];
 
                                 if (file_exists($inputFile)) {
+
                                     Log::info("Main queue Videos : ".'Success');
+
                                     dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
+
                                     Log::info("Main queue completed : ".'Success');
                                 }
                             } else {
@@ -817,8 +821,6 @@ class CommonRepository {
                     $push_message = $model->title;
 
                     dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
-
-                    
                    
                 } else {
                     

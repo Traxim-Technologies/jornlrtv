@@ -46,68 +46,101 @@ class CompressVideo extends Job implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("Inside Queue Videos : ". 'Success');
         // Load Video Model
         $video = VideoTape::where('id', $this->videoId)->first();
-        $attributes = readFileName($this->inputFile); 
-        Log::info("attributes : ". print_r($attributes, true));
-        if($attributes) {
-            // Get Video Resolutions
-            $resolutions = getVideoResolutions();
-            $array_resolutions = $video_resize_path = $pathnames = [];
-            foreach ($resolutions as $key => $solution) {
-                $exp = explode('x', $solution->value);
-                Log::info("Resoltuion : ". print_r($exp, true));
-                // Explode $solution value
-                $getwidth = (count($exp) == 2) ? $exp[0] : 0;
-                if ($getwidth < $attributes['width']) {
-                    $FFmpeg = new \FFmpeg;
-                    $FFmpeg
-                    ->input($this->inputFile)
-                    ->size($solution->value)
-                    ->vcodec('h264')
-                    ->constantRateFactor('28')
-                    ->output(public_path().'/uploads/videos/'.$solution->value.$this->local_url)
-                    ->ready();
 
-                    Log::info('Output'.public_path().'/uploads/videos/'.$solution->value.$this->local_url);
-                    $array_resolutions[] = $solution->value;
-                    Log::info('Url'.Helper::web_url().'/uploads/videos/'.$solution->value.$this->local_url);
-                    $video_resize_path[] = Helper::web_url().'/uploads/videos/'.$solution->value.$this->local_url;
-                    $pathnames[] = $solution->value.$this->local_url;
-                }
-            }
+        if ($video) {
 
-            $video->video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
-            $video->video_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
+          $attributes = readFileName($this->inputFile); 
+        
+          if($attributes) {
 
-            $video->status = DEFAULT_TRUE;
+              // Get Video Resolutions
+              $resolutions = getVideoResolutions();
 
-            $video->compress_status = DEFAULT_TRUE; 
+              $array_resolutions = $video_resize_path = $pathnames = [];
 
-            Log::info("Array Resolutions : ".print_r($array_resolutions, true));
-            if ($array_resolutions) {
-                $myfile = fopen(public_path().'/uploads/smil/'.$this->file_name.'.smil', "w");
-                $txt = '<smil>
-                  <head>
-                    <meta base="'.\Setting::get('streaming_url').'" />
-                  </head>
-                  <body>
-                    <switch>';
-                    $txt .= '<video src="'.$this->local_url.'" height="'.$attributes['height'].'" width="'.$attributes['width'].'" />';
-                    foreach ($pathnames as $i => $value) {
-                        $resoltionsplit = explode('x', $array_resolutions[$i]);
-                        if (count($resoltionsplit))
-                        $txt .= '<video src="'.$value.'" height="'.$resoltionsplit[1].'" width="'.$resoltionsplit[0].'" />';
-                    }
-                 $txt .= '</switch>
-                  </body>
-                </smil>';
-                fwrite($myfile, $txt);
-                fclose($myfile);
-            }
+              foreach ($resolutions as $key => $solution) {
 
-            $video->save();
+                  $exp = explode('x', $solution->value);
+
+                  // Explode $solution value
+                  $getwidth = (count($exp) == 2) ? $exp[0] : 0;
+
+                  if ($getwidth < $attributes['width']) {
+
+                      $FFmpeg = new \FFmpeg;
+                      $FFmpeg
+                      ->input($this->inputFile)
+                      ->size($solution->value)
+                      ->vcodec('h264')
+                      ->constantRateFactor('28')
+                      ->output(public_path().'/uploads/videos/'.$solution->value.$this->local_url)
+                      ->ready();
+
+                      
+                      $array_resolutions[] = $solution->value;
+                      
+                      $video_resize_path[] = Helper::web_url().'/uploads/videos/'.$solution->value.$this->local_url;
+
+                      $pathnames[] = $solution->value.$this->local_url;
+
+                  }
+              
+              }
+
+              $video->video_resolutions = ($array_resolutions) ? implode(',', $array_resolutions) : null;
+
+              $video->video_path = ($video_resize_path) ? implode(',', $video_resize_path) : null;
+
+              $video->status = DEFAULT_TRUE;
+
+              $video->compress_status = DEFAULT_TRUE; 
+
+              if ($array_resolutions) {
+
+                  File::isDirectory(public_path().'/uploads/smil') or File::makeDirectory(public_path().'/uploads/smil', 0777, true, true);
+
+                  if (\Setting::get('streaming_url')) {
+
+                    $myfile = fopen(public_path().'/uploads/smil/'.$this->file_name.'.smil', "w");
+                    $txt = '<smil>
+                      <head>
+                        <meta base="'.\Setting::get('streaming_url').'" />
+                      </head>
+                      <body>
+                        <switch>';
+                        $txt .= '<video src="'.$this->local_url.'" height="'.$attributes['height'].'" width="'.$attributes['width'].'" />';
+                        foreach ($pathnames as $i => $value) {
+                            $resoltionsplit = explode('x', $array_resolutions[$i]);
+                            if (count($resoltionsplit))
+                            $txt .= '<video src="'.$value.'" height="'.$resoltionsplit[1].'" width="'.$resoltionsplit[0].'" />';
+                        }
+                     $txt .= '</switch>
+                      </body>
+                    </smil>';
+                    fwrite($myfile, $txt);
+                    fclose($myfile);
+
+                  } else {
+
+                      Log::info("Streaming file url not configured...!");
+
+                  }
+
+              }
+
+              $video->save();
+
+          } else {
+
+              Log::info("Atttributes not present...!".print_r($attributes, true));
+
+          }
+
+        } else {
+
+            Log::info("Video not found...!".$this->videoId);
         }
     }
 }

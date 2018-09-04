@@ -341,6 +341,8 @@ use  Carbon\Carbon;
                                     </li>
 
                                 @endif
+
+                                <div class="clearfix"></div>
                             @endforeach
                             <!-- /.item -->
                         </ul>
