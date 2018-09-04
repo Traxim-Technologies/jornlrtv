@@ -1146,7 +1146,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
                                // ->orderby('video_tapes.publish_time' , 'desc')
-                                ->scopeVideoResponse();
+                                ->videoResponse();
 
             if ($request->id) {
 
@@ -1280,7 +1280,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
                                 ->orderby('video_tapes.publish_time' , 'desc')
-                                ->scopeVideoResponse();
+                                ->videoResponse();
 
             if ($request->id) {
 
