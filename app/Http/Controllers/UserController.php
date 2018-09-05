@@ -470,7 +470,7 @@ class UserController extends Controller {
 
             $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
 
-            $trending_videos = $this->UserAPI->channel_trending($id, 5 , $channel_owner_id , $request)->getData();
+            $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
 
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
@@ -1234,7 +1234,7 @@ class UserController extends Controller {
         $query = Subscription::where('status', DEFAULT_TRUE);
 
         if(Auth::check()) {
-            
+
             if(Auth::user()->zero_subscription_status) {
 
                 $query->whereNotIn('amount', [0]);
@@ -2800,17 +2800,49 @@ class UserController extends Controller {
      */
     public function settings(Request $request) {
 
-        $user_id = Auth::check() ? Auth::user()->id : "";
+        /*$user_id = Auth::check() ? Auth::user()->id : "";
 
-        $subscriptions = Subscription::where('status', ACTIVE_PLANS)->count();
+        $query = Subscription::where('status', ACTIVE_PLANS);
 
-        $wishlist = Wishlist::where('user_id', $user_id)->count();
+        if(Auth::check()) {
+
+            if(Auth::user()->zero_subscription_status) {
+
+                $query->where('amount', '>', 0);
+
+            }
+
+        }
+
+        $subscriptions = $query->count();
+
+        $wishlist_query = Wishlist::where('user_id', $user_id);
+
+        if ($user_id) {
+
+            $flag_videos = flag_videos($user_id);
+
+            if($flag_videos) {
+
+                $wishlist_query
+                    ->whereNotIn('video_tape_id',$flag_videos);
+
+            }
+
+        }
+
+        $wishlist = $wishlist_query->count();
+
+        $plans_valid_upto = get_expiry_days($user_id);
+
+        $spam_videos_query = */
 
         return view('user.settings')
                 ->with('page', 'settings')
-                ->with('subPage', '')
-                ->with('subscriptions', $subscriptions)
-                ->with('wishlist', $wishlist);
+                ->with('subPage', '');
+                //->with('subscriptions', $subscriptions)
+               // ->with('wishlist', $wishlist)
+                // ->with('plans_valid_upto', $plans_valid_upto);
     }
     
 }

@@ -14,35 +14,54 @@
                     </div><!--end of content-head-->
 
                     <ul class="history-list">
-                        <li class="sub-list search-list row">
-                            <div class="main-history">
-                                <div class="history-image text-center">
-                                    <a href="#" class="">
-                                        <img src="{{asset('images/default.png')}}" class="channelsearch-img">
-                                    </a> 
-                                </div>
-                                <div class="history-title mt-15">
-                                    <div class="history-head row">
-                                        <div class="cross-title">
-                                            <h5 class="mb-5"><a href="http://localhost:8000/video/198">5 - minute Crafts</a></h5>
-                                            <span class="video_views">
-                                                <div>
-                                                    <i class="fa fa-eye"></i>&nbsp;100 Subscribers&nbsp;<b>.</b>&nbsp;990 videos
-                                                </div>
-                                            </span> 
-                                        </div> 
-                                        <div class="pull-right upload_a">
-                                            <a class="st_video_upload_btn subscribe_btn" href="#" style="color: #fff !important;text-decoration: none">
-                                                <i class="fa fa-users"></i>&nbsp;Subscribe&nbsp;25</a>
-                                        </div>
-                                    </div> <!--end of history-head--> 
 
-                                    <div class="description">
-                                        <div>Subscribe to 5-Minute Crafts KIDS: https://goo.gl/PEuLVt Our Social Media: Facebook: https://www.facebook.com/5min.crafts/ Instagram: https://www.instagram.com/5.min.crafts/ Have you ever seen a talking slime? Here he is – Slick Slime Sam: https://goo.gl/zarVZo The Bright Side of Youtube: https://goo.gl/rQTJZz SMART Youtube: https://goo.gl/JTfP6L For more videos and articles visit: http://www.brightside.me/</div>
-                                    </div><!--end of description-->                                                     
+                        @if (count($channels) > 0)
+
+                            @foreach($channels as $channel)
+
+                            <li class="sub-list search-list row">
+                                <div class="main-history">
+                                    <div class="history-image text-center">
+                                        <a href="#" class="">
+                                            <img src="{{$channel->picture}}" class="channelsearch-img">
+                                        </a> 
+                                    </div>
+                                    <div class="history-title mt-15">
+                                        <div class="history-head row">
+                                            <div class="cross-title">
+                                                <h5 class="mb-5"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
+                                                <span class="video_views">
+                                                    <div>
+                                                        <i class="fa fa-eye"></i>&nbsp;{{$channel->no_of_subscribers}} Subscribers&nbsp;<b>.</b>&nbsp;{{$channel->no_of_videos}} videos
+                                                    </div>
+                                                </span> 
+                                            </div> 
+                                            <div class="pull-right upload_a">
+
+                                                @if (!$channel->subscribe_status)
+
+                                                    <a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->channel_id))}}" style="color: #fff !important;text-decoration: none">
+                                                    <i class="fa fa-users"></i>&nbsp;{{tr('subscribe')}}&nbsp;{{$channel->no_of_subscribers}}</a>
+
+                                                @else 
+
+                                                    <a class="st_video_upload_btn " href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
+
+                                                @endif
+                                            </div>
+                                        </div> <!--end of history-head--> 
+
+                                        <div class="description">
+                                            <div>
+                                                <?= $channel->description?>
+                                            </div>
+                                        </div><!--end of description-->                                                     
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                            @endforeach
+
+                        @endif
                     </ul>
 
                     <ul class="history-list">

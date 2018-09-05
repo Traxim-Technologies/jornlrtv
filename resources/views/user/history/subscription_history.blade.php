@@ -32,10 +32,34 @@
 				<?php $subscription_details = get_expiry_days(Auth::user()->id);?>
 
                 <!-- <p style="color:#cc181e;margin-top: 10px;">{{tr('no_of_days_expiry')}} <b>{{$subscription_details['days']}} days (Paid ${{$subscription_details['amount']}})</b></p> -->
-                <h4 class="autorenewal-head">cancel reason</h4>
-                <h4 class="autorenewal-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500</h4>
+<!--             <h4 class="autorenewal-head">cancel reason</h4>
+                <h4 class="autorenewal-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500</h4> -->
 
-                <button class="btn btn-danger" data-toggle="modal" data-target="#disable">enable autorenewal</button>
+                <br>
+
+
+                @if(count($response->data) > 0)
+
+					@foreach($response->data as  $key => $temp)
+
+	               	 	@if($key == 0 && $temp->status == PAID_STATUS && $temp->current_subscription_amount > 0)
+
+							@if ($temp->is_cancelled == AUTORENEWAL_ENABLED)
+
+								<button class="btn btn-danger" data-toggle="modal" data-target="#disable">{{tr('pause_autorenewal')}}</button>
+
+
+							@else 
+								
+								<button class="btn btn-danger" data-toggle="modal" data-target="#enable">{{tr('enable_autorenewal')}}</button>
+
+							@endif
+						
+						@endif
+
+					@endforeach
+
+				@endif
 
                 <div class="clearfix"></div>
 				
@@ -185,9 +209,9 @@
 											<div class="text-right">
 													<img src="{{asset('images/guarantee.png')}}" class="active-plan">
 												@if($temp->status)
-													<span class="label label-info">success</span>
+													<span class="label label-info">{{tr('success')}}</span>
 												@else
-													<span class="label label-warning">failure</span>
+													<span class="label label-warning">{{tr('failure')}}</span>
 												@endif
 											</div>
 											<h3 class="amount">
@@ -203,29 +227,54 @@
 								<div class="new-subs-card-details">
 									<div class="new-sub-payment-details">
 										<h4>
-											<span class="bold-text">coupon code:&nbsp;</span>
-											<span>NEWUSER12</span>
+											<span class="bold-text">{{tr('is_coupon_applied')}}:&nbsp;</span>
+											<span>{{$temp->is_coupon_applied ? tr('yes') : tr('no')}}</span>
+										</h4>
+										@if($temp->coupon_code)
+										<h4>
+											<span class="bold-text">{{tr('coupon_code')}}:&nbsp;</span>
+											<span>{{$temp->coupon_code}}</span>
+										</h4>
+										@endif
+										@if($temp->coupon_code)
+										<h4>
+											<span class="bold-text">{{tr('coupon_amount')}}:&nbsp;</span>
+											<span>{{$temp->currency}} {{$temp->coupon_amount}}</span>
+										</h4>
+										@endif
+										<h4>
+											<span class="bold-text">{{tr('subscription_amount')}}:&nbsp;</span>
+											<span>{{$temp->currency}} {{$temp->subscription_amount}}</span>
 										</h4>
 										<h4>
-											<span class="bold-text">coupon amount:&nbsp;</span>
-											<span>$10.00</span>
+											<span class="bold-text">{{tr('transaction_id')}}:&nbsp;</span>
+											<span>{{$temp->payment_id}}</span>
 										</h4>
+
 										<h4>
-											<span class="bold-text">subscription amount:&nbsp;</span>
-											<span>$100.00</span>
+											<span class="bold-text">{{tr('payment_mode')}}:&nbsp;</span>
+											<span>{{$temp->payment_mode}}</span>
 										</h4>
+										@if($temp->status)
 										<h4>
-											<span class="bold-text">payment id:&nbsp;</span>
-											<span>Ch_1D56HOK3Y96PKCCvqnFCEye</span>
+											<span class="bold-text">{{tr('paid_at')}}:&nbsp;</span>
+											<span>{{date('d M, Y', strtotime($temp->created_at))}}</span>
 										</h4>
+										@endif
+
+										@if($temp->coupon_code)
 										<h4>
-											<span class="bold-text">paid at:&nbsp;</span>
-											<span>31 Aug 18</span>
+											<span class="bold-text">{{tr('coupon_reason')}}:&nbsp;</span>
+											<span>{{$temp->coupon_reason}}</span>
 										</h4>
+										@endif
+
+										@if($temp->is_cancelled)
 										<h4>
-											<span class="bold-text">payment reason:&nbsp;</span>
-											<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</span>
+											<span class="bold-text">{{tr('cancel_reason')}}:&nbsp;</span>
+											<span>{{$temp->cancel_reason}}</span>
 										</h4>
+										@endif
 									</div>
 									<div>
 										<?= $temp->description;?>

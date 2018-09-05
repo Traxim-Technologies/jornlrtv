@@ -97,11 +97,11 @@
                                        </a>
 
                                        <!-- wishlist added by @ranjitha -->
-                                       <a class="heart" style="background-image:url( '{{asset('images/web_heart_animation.png')}}');"></a>
+                                       <!-- <a class="heart" style="background-image:url( '{{asset('images/web_heart_animation.png')}}');"></a> -->
                                         <!-- wishlist added by @ranjitha -->
 
                                        <!-- <div class="wishlist_form"> 'color' : '#b31217' -->
-                                       <!-- <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
+                                       <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
                                           @if(Auth::check())
                                           
                                           <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
@@ -126,6 +126,7 @@
                                           </button> 
                                           </div>
                                           @endif
+                                          
                                           @else
                                           
                                           <input type="hidden" id="status" value="1" name="status">
@@ -150,7 +151,7 @@
                                           
                                           @endif
                                           
-                                          </form> -->
+                                          </form>
                                        <!-- </div>    -->
                                     </div>
                                     <!--  <h3>Channel Name</h3> -->

@@ -1493,4 +1493,7 @@ return array(
 	'video_not_saved'=>'Video has been not saved, please try again later',
 	'ppv_revenue' => 'PPV Revenue'	,
 	'automatic_renewal_notification'=>'Automatic Renewal Notification',
+	'subscription_amount'=>'Subscription Amount',
+	'video_amount'=>'Video Amount',
+	'valid_upto'=>'Valid Upto',
 );

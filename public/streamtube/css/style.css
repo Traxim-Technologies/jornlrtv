@@ -3777,9 +3777,9 @@ tr.active{
 	border-radius: 5px;
 	padding: 1.5em;
 	border:1px solid #eee;
-	height: 26em;
-	overflow-y: auto;
-	overflow-x: hidden;
+	/*height: 26em;*/
+	/*overflow-y: auto;
+	overflow-x: hidden;*/
 	margin-bottom: 1.2em;
 }
 /*.redeem-content{

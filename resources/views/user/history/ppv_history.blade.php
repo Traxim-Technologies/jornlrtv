@@ -53,18 +53,28 @@
 											<span class="label label-warning pull-right">{{tr('pending')}}</span> 
 											@endif
 										</p>
-										<p class="ppv-small-head">coupon code</p>
-										<h4 class="ppv-text overflow">NEWUSER12</h4>
-										<p class="ppv-small-head">coupon amount</p>
-										<h4 class="ppv-text overflow">$10.00</h4>
-										<p class="ppv-small-head">video amount</p>
-										<h4 class="ppv-text overflow">$100.00</h4>
-										<p class="ppv-small-head">payment ID</p>
+										<p class="ppv-small-head">{{tr('is_coupon_applied')}}</p>
+										<h4 class="ppv-text overflow">{{$temp->is_coupon_applied ? tr('yes') : tr('no')}}</h4>
+										@if($temp->coupon_code)
+										<p class="ppv-small-head">{{tr('coupon_code')}}</p>
+										<h4 class="ppv-text overflow">{{$temp->coupon_code}}</h4>
+										@endif
+										@if($temp->coupon_code)
+										<p class="ppv-small-head">{{tr('coupon_amount')}}</p>
+										<h4 class="ppv-text overflow">{{$temp->currency}}{{$temp->coupon_amount}}</h4>
+										@endif
+										<p class="ppv-small-head">{{tr('video_amount')}}</p>
+										<h4 class="ppv-text overflow">{{$temp->currency}}{{$temp->ppv_amount}}</h4>
+										<p class="ppv-small-head">{{tr('transaction_id')}}</p>
 										<h4 class="ppv-text overflow">{{$temp->payment_id}}</h4>
-										<p class="ppv-small-head">paid at</p>
+										<p class="ppv-small-head">{{tr('payment_mode')}}</p>
+										<h4 class="ppv-text overflow">{{$temp->payment_mode}}</h4>
+										<p class="ppv-small-head">{{tr('paid_at')}}</p>
 										<h4 class="ppv-text">{{$temp->paid_date}}</h4>
-										<p class="ppv-small-head">coupon reason</p>
-										<h4 class="ppv-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</h4>
+										@if($temp->coupon_reason)
+										<p class="ppv-small-head">{{tr('coupon_reason')}}</p>
+										<h4 class="ppv-text">{{$temp->coupon_reason}}</h4>
+										@endif
 									</div>
 								</div>
 							</div>

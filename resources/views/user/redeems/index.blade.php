@@ -246,6 +246,10 @@ thead>tr>th {
                             <div class="new-redeem-sec">
                                 <!-- redeems -->
                                 <div class="timeline">
+
+                                    @if(count($redeem_requests = Auth::user()->userRedeemRequests) > 0)
+
+                                    @foreach($redeem_requests as $rr => $redeem_request)
                                     <!-- 1 -->
                                     <div class="timeline-item" *ngFor="let redeem_request of redeem_requests">
                                         <div class="timeline-bar">
@@ -254,36 +258,36 @@ thead>tr>th {
                                         <div class="redeem-content1">
                                             <ul>
                                                 <li>
-                                                    <p class="text-grey-clr m-0">Sent date: 18 Aug 2018</p>
-                                                    <h4 class="redeem-amount">Redeem amount: <span class="bold">$250</span></h4>
-                                                    <p class="text-grey-clr mt-0">Requested Amount: $250</p>
-                                                    <p class="text-grey-clr mt-0">paid date: 20 Aug 2018</p>
-                                                    <p class="text-grey-clr mt-0">Status:</p>
-                                                    <button class="btn btn-danger">cancel</button>
+                                                    <p class="text-grey-clr m-0">{{tr('sent_date')}} : {{$redeem_request->created_at->diffForHumans()}}</p>
+                                                    <h4 class="redeem-amount">{{tr('redeem_amount')}} <span class="bold">{{Setting::get('currency')}} {{$redeem_request->request_amount}}</span></h4>
+                                                    <p class="text-grey-clr mt-0">{{tr('paid_amount')}}: {{Setting::get('currency')}} {{$redeem_request->paid_amount}}</p>
+                                                    <p class="text-grey-clr mt-0">{{tr('paid_date')}}: {{$redeem_request->created_at->diffForHumans()}}</p>
+                                                    <p class="text-grey-clr mt-0">{{tr('status')}} : {{redeem_request_status($redeem_request->status)}}</p>
+                                                    
+
+                                                     @if(in_array($redeem_request->status, [REDEEM_REQUEST_SENT , REDEEM_REQUEST_PROCESSING]))
+                                                            <a href="{{route('user.redeems.request.cancel' , ['redeem_request_id' => $redeem_request->id])}}" class="btn btn-danger">{{tr('cancel')}}</a>
+                                                        @else
+                                                            <span class="text-center">-</span>
+                                                        @endif
+
                                                 </li>
-                                                <li><img src="{{asset('images/paid.png')}}"></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- 2 -->
-                                    <div class="timeline-item" *ngFor="let redeem_request of redeem_requests">
-                                        <div class="timeline-bar">
-                                            <div class="version"></div>
-                                        </div>
-                                        <div class="redeem-content1">
-                                            <ul>
                                                 <li>
-                                                    <p class="text-grey-clr m-0">Sent date: 18 Aug 2018</p>
-                                                    <h4 class="redeem-amount">Redeem amount: <span class="bold">$250</span></h4>
-                                                    <p class="text-grey-clr mt-0">Requested Amount: $250</p>
-                                                    <p class="text-grey-clr mt-0">paid date: 20 Aug 2018</p>
-                                                    <p class="text-grey-clr mt-0">Status:</p>
-                                                    <button class="btn btn-danger">cancel</button>
+
+                                                    @if($redeem_request->paid_amount > 0)
+                                                        <img src="{{asset('images/paid.png')}}">
+                                                    @else
+                                                        <img src="{{asset('images/pending.png')}}">
+                                                    @endif
+
                                                 </li>
-                                                <li><img src="{{asset('images/pending.png')}}"></li>
                                             </ul>
                                         </div>
                                     </div>
+                                    @endforeach
+
+                                    @endif
+                                   
                                 </div>
                                 <!-- redeems --> 
                             </div>

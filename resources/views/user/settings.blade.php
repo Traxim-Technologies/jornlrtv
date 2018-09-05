@@ -20,7 +20,7 @@
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<div class="settings-card carg-lg">
                 			<div class="text-center">
-                				<img src="{{asset('images/bg-blue2.jpg')}}" class="settings-card-img">
+                				<img src="{{Auth::user()->picture}}" class="settings-card-img">
                 				<h4 class="settings-head">{{Auth::user()->name}}</h4>
                 				<p class="settings-subhead">{{Auth::user()->email}}</p>
                 				<a href="{{route('user.profile')}}" class="settings-link">{{tr('view_profile')}}</a>
@@ -36,7 +36,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('subscriptions')}}</h4>
-	                					<p class="settings-subhead">{{$subscriptions}} {{tr('plans')}}</p>
+	                					<?php /*<p class="settings-subhead">{{$subscriptions}} {{tr('plans')}}</p> */?>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -49,7 +49,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('my_plans')}}</h4>
-	                					<p class="settings-subhead">valid upto <span>18 Mar 2018</span></p>
+	                					<?php /*<p class="settings-subhead">{{tr('valid_upto')}} <span>{{$plans_valid_upto['days']}} days</span></p>*/?>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -64,7 +64,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('wishlists')}}</h4>
-	                					<p class="settings-subhead">{{$wishlist}} {{tr('videos')}}</p>
+	                					<?php /*<p class="settings-subhead">{{$wishlist}} {{tr('videos')}}</p> */?>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -77,7 +77,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('spam')}}</h4>
-	                					<p class="settings-subhead">10 videos</p>
+	                					<?php /*<p class="settings-subhead">10 videos</p>*/?>
 	                				</div>
 	                			</div>
 	                		</div>
@@ -92,7 +92,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('subscribed_channels')}}</h4>
-	                					<p class="settings-subhead">1 channel</p>
+	                					<!-- <p class="settings-subhead">1 channel</p> -->
 	                				</div>
 	                			</div>
 	                		</div>
@@ -107,7 +107,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('history')}}</h4>
-	                					<p class="settings-subhead">15 videos</p>
+	                					<!-- <p class="settings-subhead">15 videos</p> -->
 	                				</div>
 	                			</div>
 	                		</div>
@@ -122,7 +122,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('ppv_history')}}</h4>
-	                					<p class="settings-subhead">15 videos</p>
+	                					<!-- <p class="settings-subhead">15 videos</p> -->
 	                				</div>
 	                			</div>
 	                		</div>
@@ -137,7 +137,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('cards')}}</h4>
-	                					<p class="settings-subhead">2 cards added</p>
+	                					<!-- <p class="settings-subhead">2 cards added</p> -->
 	                				</div>
 	                			</div>
 	                		</div>
@@ -152,7 +152,7 @@
 	                				</div>
 	                				<div class="settings-right">
 	                					<h4 class="settings-head">{{tr('redeem')}}</h4>
-	                					<p class="settings-subhead">total amount $120</p>
+	                					<!-- <p class="settings-subhead">total amount $120</p> -->
 	                				</div>
 	                			</div>
 	                		</div>

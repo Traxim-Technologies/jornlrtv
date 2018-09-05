@@ -2727,6 +2727,7 @@ class UserApiController extends Controller {
                                 'subscriptions.title as title',
                                 'subscriptions.description as description',
                                 'subscriptions.plan',
+                                'subscriptions.amount as current_subscription_amount',
                                 'user_payments.amount as amount',
                                 'user_payments.status as status',
                                 // 'user_payments.expiry_date as expiry_date',
@@ -3783,6 +3784,103 @@ class UserApiController extends Controller {
 
         return response()->json(['items'=>$items, 'pagination'=>isset($model['pagination']) ? $model['pagination'] : 0]);
 
+    }
+
+
+    /**
+     * Function Name : search_channels_list
+     *
+     * @usage_place : WEB
+     *
+     * To list out all the channels which based on search
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list
+     */
+    public function search_channels_list(Request $request) {
+
+        $age = 0;
+
+        $channel_id = [];
+
+        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                ->where('channels.status', DEFAULT_TRUE)
+                ->where('name','like', '%'.$request->key.'%')
+                ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                ->where('video_tapes.status', DEFAULT_TRUE)
+                ->groupBy('video_tapes.channel_id');
+
+        if($request->id) {
+
+            $user = User::find($request->id);
+
+            $age = $user->age_limit;
+
+            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+            if ($request->has('channel_id')) {
+
+                $query->whereIn('channels.id', $request->channel_id);
+            }
+
+
+            $query->where('video_tapes.age_limit','<=', $age);
+
+        }
+
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+            $channels = $query->skip($request->skip)->take(Setting::get('admin_take_count', 12))->get();
+
+        } else {
+
+            $channels = $query->paginate(6);
+
+        }
+
+        $lists = [];
+
+        $pagination = 0;
+
+        if(count($channels) > 0) {
+
+            foreach ($channels as $key => $value) {
+                $lists[] = ['channel_id'=>$value->id, 
+                        'user_id'=>$value->user_id,
+                        'picture'=> $value->picture, 
+                        'title'=>$value->name,
+                        'description'=>$value->description, 
+                        'created_at'=>$value->created_at->diffForHumans(),
+                        'no_of_videos'=>videos_count($value->id),
+                        'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
+                        'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+                ];
+
+            }
+
+            if ($request->device_type != DEVICE_ANDROID && $request->device_type != DEVICE_IOS) {
+
+                $pagination = (string) $channels->links();
+
+            }
+
+        }
+
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+            $response_array = ['success'=>true, 'data'=>$lists];
+
+        } else {
+
+            $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+        }
+
+        return response()->json($response_array);
     }
 
 
@@ -5384,8 +5482,14 @@ class UserApiController extends Controller {
                     'pay_per_views.status as video_status',
                     'video_tapes.default_image as picture',
                     'pay_per_views.type_of_subscription',
+                    'pay_per_views.is_coupon_applied',
+                    'pay_per_views.coupon_reason',
                     'pay_per_views.type_of_user',
                     'pay_per_views.payment_id',
+                    'pay_per_views.ppv_amount',
+                    'pay_per_views.coupon_amount',
+                    'pay_per_views.coupon_code',
+                    'pay_per_views.payment_mode',
                      DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date')
                      )
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
@@ -5433,6 +5537,12 @@ class UserApiController extends Controller {
                             'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
                             'ppv_notes'=>$ppv_notes,
+                            'coupon_code'=>$value->coupon_code,
+                            'payment_mode'=>$value->payment_mode,
+                            'coupon_amount'=>$value->coupon_amount,
+                            'ppv_amount'=>$value->ppv_amount,
+                            'is_coupon_applied'=>$value->is_coupon_applied,
+                            'coupon_reason'=>$value->coupon_reason,
                             ];
 
                 }
@@ -5478,7 +5588,13 @@ class UserApiController extends Controller {
                             'payment_id'=>$value->payment_id,
                             'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ 
-                            'is_spam'=>$spam_status
+                            'is_spam'=>$spam_status,
+                            'coupon_code'=>$value->coupon_code,
+                            'payment_mode'=>$value->payment_mode,
+                            'coupon_amount'=>$value->coupon_amount,
+                            'ppv_amount'=>$value->ppv_amount,
+                            'is_coupon_applied'=>$value->is_coupon_applied,
+                            'coupon_reason'=>$value->coupon_reason,
                             ];
 
                 }

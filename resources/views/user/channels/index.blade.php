@@ -600,7 +600,7 @@
 
 	<!-- dashboard -->
 	<div class="row">
-		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		<!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			<div class="ppv-dashboard">
 				<div class="ppv-dashboard-left">
 					<img src="{{asset('images/video-camera.png')}}">
@@ -610,8 +610,8 @@
 					<h2 class="">150</h2>
 				</div>
 			</div>
-		</div>
-		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		</div> -->
+		<!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			<div class="ppv-dashboard">
 				<div class="ppv-dashboard-left">
 					<img src="{{asset('images/video-cash.png')}}">
@@ -621,15 +621,15 @@
 					<h2 class="">100</h2>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			<div class="ppv-dashboard">
 				<div class="ppv-dashboard-left">
 					<img src="{{asset('images/dollar.png')}}">
 				</div>
 				<div class="ppv-dashboard-right">
-					<p>revenue</p>
-					<h2 class="">$1500</h2>
+					<p>{{tr('revenue')}}</p>
+					<h2 class="">{{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}}</h2>
 				</div>
 			</div>
 		</div>
@@ -655,10 +655,6 @@
             </div>
         @endif
     @endif
-
-    <div class="video_amount">
-        $10.00
-    </div>  
 
     <div class="video_duration">
         {{$video->duration}}

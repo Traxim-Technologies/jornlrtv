@@ -361,7 +361,10 @@ class ApplicationController extends Controller {
 
             $videos = $this->UserAPI->search_list($request, $q,1)->getData();
 
-            return view('user.search-result')->with('key' , $q)->with('videos' , $videos)->with('page' , "")->with('subPage' , "");
+            $channels = $this->UserAPI->search_channels_list($request)->getData()->channels;
+
+            return view('user.search-result')->with('key' , $q)->with('videos' , $videos)->with('page' , "")->with('subPage' , "")
+            ->with('channels', $channels);
         }     
     
     }
