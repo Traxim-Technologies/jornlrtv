@@ -199,8 +199,37 @@
 										</div>
 									</div>
 								</div>
+
 								<div class="new-subs-card-details">
-									<?= $temp->description;?>
+									<div class="new-sub-payment-details">
+										<h4>
+											<span class="bold-text">coupon code:&nbsp;</span>
+											<span>NEWUSER12</span>
+										</h4>
+										<h4>
+											<span class="bold-text">coupon amount:&nbsp;</span>
+											<span>$10.00</span>
+										</h4>
+										<h4>
+											<span class="bold-text">subscription amount:&nbsp;</span>
+											<span>$100.00</span>
+										</h4>
+										<h4>
+											<span class="bold-text">payment id:&nbsp;</span>
+											<span>Ch_1D56HOK3Y96PKCCvqnFCEye</span>
+										</h4>
+										<h4>
+											<span class="bold-text">paid at:&nbsp;</span>
+											<span>31 Aug 18</span>
+										</h4>
+										<h4>
+											<span class="bold-text">payment reason:&nbsp;</span>
+											<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</span>
+										</h4>
+									</div>
+									<div>
+										<?= $temp->description;?>
+									</div>
 								</div>
 								<div>
 									<a class="subscribe-btn"><i class="fa fa-clock-o"></i>&nbsp;{{$temp->expiry_date}}</a>

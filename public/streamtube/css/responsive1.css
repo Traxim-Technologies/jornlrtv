@@ -34,7 +34,7 @@
 	font-size: 12px;
 }
 .btn-space{
-	margin:0px 10px 10px 10px;
+	margin:-7px 10px 10px 10px;
 }
 .yt-card{
 	margin-right: -15px !important;
@@ -72,7 +72,7 @@
 	font-size: 1.2em !important;
 }
 .btn-space{
-	margin:0px 10px 20px 10px;
+	margin:-10px 10px 20px 10px;
 }
 .yt-card{
 	margin-right: -30px !important;
@@ -111,7 +111,7 @@
 	margin:22px 0 0 0;
 }
 .btn-space{
-	margin:0px 10px 20px 10px;
+	margin:-10px 10px 20px 10px;
 }
 .yt-card{
 	margin-right: -30px !important;
@@ -150,7 +150,7 @@
 	margin:22px 0 0 0;
 }
 .btn-space{
-	margin:25px 10px 15px 10px;
+	margin:-10px 10px 15px 10px;
 }
 .yt-card{
 	margin-right: -30px !important;

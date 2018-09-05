@@ -112,19 +112,19 @@
 
 </div>
 
-<div class="channel-content-spacing">
+<div class="channel-content-spacing display-inline">
 <div>
 <div class="pull-left">
 <a class="channel-header-profile-image spf-link" href="">
 <div style="background-image:url({{$channel->picture}});" class="channel-header-profile-image1"></div>
 </a>
 </div>
-<div class="pull-left">
+<div class="pull-left width-40">
 <h1 class="st_channel_heading text-uppercase">{{$channel->name}}</h1>
 <p class="subscriber-count">{{$subscriberscnt}} Subscribers</p>
 <?php /*<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p> */?>
 </div>
-<div class="pull-right upload_a btn-space">
+<div class="pull-right upload_a btn-space width-60 text-right">
 @if(Auth::check())
 @if($channel->user_id == Auth::user()->id)
 <a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
