@@ -29,7 +29,7 @@
                         <input type="text" required name="title" class="form-control" id="title" value="{{$data->title ? $data->title : old('title')}}" placeholder="{{tr('title')}}">
                     </div>
 
-                    <div class="form-group">
+                    <?php /*<div class="form-group">
 
                         <label for="image" class="">
                             {{tr('image')}} 
@@ -41,7 +41,7 @@
                         <br>
 
                         <img id="image_preview" style="width:100px;height:100px;" src="{{$data->picture ? $data->picture : asset('images/default-ad.jpg')}}">
-                    </div>
+                    </div> */?>
 
                     <div class="form-group">
                     

@@ -48,13 +48,15 @@
 
                         <div class="row margin-bottom">
 
+                            <?php /*
+
                             <div class="col-sm-4">
 
                             <img src="{{$data->picture}}" class="img-responsive">
                                 
-                            </div>
+                            </div> */?>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-12">
 
                                 <div class="row">
 

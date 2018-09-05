@@ -105,7 +105,7 @@
 											</div>
 											<div class="new-subs-card-details">
 												
-												<?php echo $subscription->description; ?>
+												<?= $subscription->description; ?>
 											</div>
 											<div>
 												<a href="{{route('user.subscription.invoice' , ['s_id' => $subscription->id])}}" class="subscribe-btn">{{tr('choose_plan')}}</a>

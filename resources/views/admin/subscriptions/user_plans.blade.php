@@ -171,7 +171,7 @@
 
 									<div class="thumbnail">
 
-										<img alt="{{$subscription->title}}" src="{{$subscription->picture ?  $subscription->picture : asset('common/img/landing-9.png')}}" class="subscription-image" />
+										<?php /*<img alt="{{$subscription->title}}" src="{{$subscription->picture ?  $subscription->picture : asset('common/img/landing-9.png')}}" class="subscription-image" /> */?>
 
 										<div class="caption">
 

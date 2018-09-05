@@ -1234,6 +1234,7 @@ class UserController extends Controller {
         $query = Subscription::where('status', DEFAULT_TRUE);
 
         if(Auth::check()) {
+            
             if(Auth::user()->zero_subscription_status) {
 
                 $query->whereNotIn('amount', [0]);
