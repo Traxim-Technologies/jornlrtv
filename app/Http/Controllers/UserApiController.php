@@ -6904,7 +6904,7 @@ class UserApiController extends Controller {
 
                     if(strtotime($model->expiry_date) >= strtotime(date('Y-m-d'))) {
 
-                        $amount_convertion = $model->ppv_amount;
+                        $amount_convertion = $model->amount;
 
                         if ($model->amount_type == PERCENTAGE) {
 
