@@ -552,7 +552,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('delete-video/{id}/{user_id}', 'UserController@delete_video')->name('delete_video');
 
-    Route::get('ppv-video','PaypalController@videoSubscriptionPay')->name('ppv-video-payment');
+    Route::get('ppv-video/{id}/{coupon_code?}','PaypalController@videoSubscriptionPay')->name('ppv-video-payment');
 
     Route::get('user/payment/video-status','PaypalController@getVideoPaymentStatus')->name('paypalstatus');
 
@@ -634,7 +634,7 @@ Route::group(['as' => 'user.'], function(){
 
 
     // Paypal Payment
-    Route::get('/paypal/{id}','PaypalController@pay')->name('paypal');
+    Route::get('/paypal/{id}/{coupon_code?}','PaypalController@pay')->name('paypal');
 
     Route::get('/user/payment/status','PaypalController@getPaymentStatus')->name('paypalstatus');
 

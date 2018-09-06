@@ -82,7 +82,11 @@ class PaypalController extends Controller {
 
         $subscription = Subscription::find($request->id);
 
-        if(count($subscription) == 0) {
+        $u_id = Auth::check() ? Auth::user()->id : '';
+
+        $user = User::find($u_id);
+
+        if(count($subscription) == 0 && $user) {
 
             Log::info("Subscription Details Not Found");
 
@@ -486,7 +490,11 @@ class PaypalController extends Controller {
 
         $video = VideoTape::where('id', $request->id)->first();
 
-        if(count($video) == 0 ) {
+        $u_id = Auth::check() ? Auth::user()->id : '';
+
+        $user = User::find($u_id);
+
+        if(count($video) == 0 && $user) {
 
             Log::info("Video Details Not Found");
 
@@ -500,47 +508,100 @@ class PaypalController extends Controller {
 
         $coupon_amount = 0;
 
-        $is_coupon_applied = DEFAULT_FALSE;
+        $coupon_reason = '';
 
-        $coupon_reason = "";
+        $is_coupon_applied = COUPON_NOT_APPLIED;
 
         if ($request->coupon_code) {
 
             $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
 
             if ($coupon) {
+                
+                if ($coupon->status == COUPON_INACTIVE) {
 
-                $is_coupon_applied = DEFAULT_TRUE;
-
-                if (!$coupon->status) {
-
-                    $coupon_reason = tr('coupon_code_declined');
+                    $coupon_reason = tr('coupon_inactive_reason');
 
                 } else {
 
-                    $amount_convertion = $coupon->amount;
+                    $check_coupon = $this->check_coupon_applicable_to_user($user, $coupon)->getData();
 
-                    if ($coupon->amount_type == PERCENTAGE) {
+                    if ($check_coupon->success) {
 
-                        $amount_convertion = amount_convertion($coupon->amount, $video->amount);
+                        $is_coupon_applied = COUPON_APPLIED;
 
+                        $amount_convertion = $coupon->amount;
+
+                        if ($coupon->amount_type == PERCENTAGE) {
+
+                            $amount_convertion = amount_convertion($coupon->amount, $video->ppv_amount);
+
+                        }
+
+                        if ($amount_convertion < $video->ppv_amount  && $amount_convertion > 0) {
+
+                            $total = $video->ppv_amount - $amount_convertion;
+
+                            $coupon_amount = $amount_convertion;
+
+                        } else {
+
+                            // throw new Exception(Helper::get_error_message(156),156);
+
+                            $total = 0;
+
+                            $coupon_amount = $amount_convertion;
+                            
+                        }
+
+                        // Create user applied coupon
+
+                        if($check_coupon->code == 2002) {
+
+                            $user_coupon = UserCoupon::where('user_id', $user->id)
+                                    ->where('coupon_code', $request->coupon_code)
+                                    ->first();
+
+                            // If user coupon not exists, create a new row
+
+                            if ($user_coupon) {
+
+                                if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                    $user_coupon->no_of_times_used += 1;
+
+                                    $user_coupon->save();
+
+                                }
+
+                            }
+
+                        } else {
+
+                            $user_coupon = new UserCoupon;
+
+                            $user_coupon->user_id = $user->id;
+
+                            $user_coupon->coupon_code = $request->coupon_code;
+
+                            $user_coupon->no_of_times_used = 1;
+
+                            $user_coupon->save();
+
+                        }
+
+                    } else {
+
+                        $coupon_reason = $check_coupon->error_messages;
+                        
                     }
 
-                    if ($amount_convertion <= $video->ppv_amount) {
-
-                        $total = $video->ppv_amount - $amount_convertion;
-
-                        $coupon_amount = $amount_convertion;
-
-                    }
                 }
 
             } else {
 
-                $coupon_reason = tr('coupon_code_not_exists');
-
+                $coupon_reason = tr('coupon_delete_reason');
             }
-
         }
 
         $item = new Item();
