@@ -196,6 +196,7 @@ class PaypalController extends Controller {
 
         }
 
+
 		$item = new Item();
 
 		$item->setName(Setting::get('site_name')) // item name
@@ -524,7 +525,7 @@ class PaypalController extends Controller {
 
                 } else {
 
-                    $check_coupon = $this->check_coupon_applicable_to_user($user, $coupon)->getData();
+                    $check_coupon = $this->UserAPI->check_coupon_applicable_to_user($user, $coupon)->getData();
 
                     if ($check_coupon->success) {
 

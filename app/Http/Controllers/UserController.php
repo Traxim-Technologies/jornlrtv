@@ -2163,7 +2163,7 @@ class UserController extends Controller {
 
         if($request->payment_type == 1) {
 
-            return redirect(route('user.ppv-video-payment', ['id'=>$id]));
+            return redirect(route('user.ppv-video-payment', ['id'=>$id, 'coupon_code'=>$request->coupon_code]));
 
         } else {
 
@@ -2188,7 +2188,7 @@ class UserController extends Controller {
 
         if($request->payment_type == 1) {
 
-            return redirect(route('user.paypal' , $request->s_id));
+            return redirect(route('user.paypal' , $request->s_id, 'coupon_code', $request->coupon_code));
 
         } else {
 
