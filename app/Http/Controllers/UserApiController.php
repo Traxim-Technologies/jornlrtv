@@ -6794,7 +6794,7 @@ class UserApiController extends Controller {
 
                                 }
 
-                                if ($subscription->amount > $amount_convertion && $amount_convertion > 0) {
+                                if ($subscription->amount >= $amount_convertion && $amount_convertion > 0) {
 
                                     $amount = $subscription->amount - $amount_convertion;
 
@@ -6910,7 +6910,7 @@ class UserApiController extends Controller {
 
                         }
 
-                        if ($vod_video->ppv_amount > $amount_convertion && $amount_convertion > 0) {
+                        if ($vod_video->ppv_amount >= $amount_convertion && $amount_convertion > 0) {
 
                             $amount = $vod_video->ppv_amount - $amount_convertion;
 
