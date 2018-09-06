@@ -132,7 +132,7 @@ class PaypalController extends Controller {
 
                         }
 
-                        if ($amount_convertion < $subscription->amount) {
+                        if ($amount_convertion <= $subscription->amount) {
 
                             $total = $subscription->amount - $amount_convertion;
 
@@ -526,7 +526,7 @@ class PaypalController extends Controller {
 
                     }
 
-                    if ($amount_convertion < $video->amount) {
+                    if ($amount_convertion <= $video->amount) {
 
                         $total = $video->amount - $amount_convertion;
 
