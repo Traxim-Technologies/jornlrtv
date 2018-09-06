@@ -5571,7 +5571,9 @@ class UserApiController extends Controller {
 
                     $pay_per_view_status = $videoDetails ? (VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)->getData()->success) : true;
 
-                    $spam = Flag::where('video_tape_id', $value->video_id)->first();
+                    $spam = Flag::where('video_tape_id', $value->video_id)
+                            ->where('user_id', $user->id)
+                            ->first();
 
                     $spam_status = $spam ? true : false;
     
@@ -6902,7 +6904,7 @@ class UserApiController extends Controller {
 
                     if(strtotime($model->expiry_date) >= strtotime(date('Y-m-d'))) {
 
-                        $amount_convertion = $vod_video->ppv_amount;
+                        $amount_convertion = $model->ppv_amount;
 
                         if ($model->amount_type == PERCENTAGE) {
 
