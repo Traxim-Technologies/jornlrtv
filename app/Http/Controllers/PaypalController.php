@@ -40,14 +40,20 @@ use App\PayPerView;
 
 use App\Subscription;
 
- 
+ use App\Coupon;
+use App\UserCoupon;
+
 class PaypalController extends Controller {
    
     private $_api_context;
+
+    protected $UserAPI;
  
-    public function __construct() {
+    public function __construct(UserApiController $API) {
 
         $this->middleware('PaypalCheck');
+
+        $this->UserAPI = $API;
        
         // setup PayPal api context
 
@@ -93,6 +99,98 @@ class PaypalController extends Controller {
         }
 
         $total = $subscription ? $subscription->amount : "1.00" ;
+
+        $coupon_amount = 0;
+
+        $coupon_reason = '';
+
+        $is_coupon_applied = COUPON_NOT_APPLIED;
+
+        if ($request->coupon_code) {
+
+            $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+            if ($coupon) {
+
+                $is_coupon_applied = DEFAULT_TRUE;
+
+                if ($coupon->status == COUPON_INACTIVE) {
+
+                    $coupon_reason = tr('coupon_code_declined');
+
+                } else {
+
+                    $check_coupon = $this->UserAPI->check_coupon_applicable_to_user($user, $coupon)->getData();
+
+                    if ($check_coupon->success) {
+
+                        $amount_convertion = $coupon->amount;
+
+                        if ($coupon->amount_type == PERCENTAGE) {
+
+                            $amount_convertion = amount_convertion($coupon->amount, $subscription->amount);
+
+                        }
+
+                        if ($amount_convertion < $subscription->amount) {
+
+                            $total = $subscription->amount - $amount_convertion;
+
+                            $coupon_amount = $amount_convertion;
+
+                        }
+
+                        // Create user applied coupon
+
+                        if($check_coupon->code == 2002) {
+
+                            $user_coupon = UserCoupon::where('user_id', $user->id)
+                                    ->where('coupon_code', $request->coupon_code)
+                                    ->first();
+
+                            // If user coupon not exists, create a new row
+
+                            if ($user_coupon) {
+
+                                if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                    $user_coupon->no_of_times_used += 1;
+
+                                    $user_coupon->save();
+
+                                }
+
+                            }
+
+                        } else {
+
+                            $user_coupon = new UserCoupon;
+
+                            $user_coupon->user_id = $user->id;
+
+                            $user_coupon->coupon_code = $request->coupon_code;
+
+                            $user_coupon->no_of_times_used = 1;
+
+                            $user_coupon->save();
+
+                        }
+
+                    } else {
+
+                        $coupon_reason = $check_coupon->error_messages;
+
+                    }
+
+                }
+
+            } else {
+
+                $coupon_reason = tr('coupon_code_not_exists');
+
+            }
+
+        }
 
 		$item = new Item();
 
@@ -214,6 +312,22 @@ class PaypalController extends Controller {
             $user_payment->payment_id  = $payment->getId();
             $user_payment->subscription_id  = $subscription->id;
             $user_payment->user_id = Auth::user()->id;
+
+            $user_payment->payment_mode = PAYPAL;
+
+            // Coupon details
+
+            $user_payment->is_coupon_applied = $is_coupon_applied;
+
+            $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+            $user_payment->coupon_amount = $coupon_amount;
+
+            $user_payment->subscription_amount = $subscription->amount;
+
+            $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+
             $user_payment->save();
 
             $response_array = array('success' => true); 
@@ -319,7 +433,7 @@ class PaypalController extends Controller {
 
                 $user_payment_details->status = 1;
 
-                $user_payment_details->amount = $user_payment_details->getSubscription ? $user_payment_details->getSubscription->amount : 0;
+                $user_payment_details->amount = $payment->subscription_amount - $payment->coupon_amount;
 
                 $user_payment_details->save();
 
@@ -383,6 +497,51 @@ class PaypalController extends Controller {
         }
 
         $total = $video->ppv_amount;
+
+        $coupon_amount = 0;
+
+        $is_coupon_applied = DEFAULT_FALSE;
+
+        $coupon_reason = "";
+
+        if ($request->coupon_code) {
+
+            $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+            if ($coupon) {
+
+                $is_coupon_applied = DEFAULT_TRUE;
+
+                if (!$coupon->status) {
+
+                    $coupon_reason = tr('coupon_code_declined');
+
+                } else {
+
+                    $amount_convertion = $coupon->amount;
+
+                    if ($coupon->amount_type == PERCENTAGE) {
+
+                        $amount_convertion = amount_convertion($coupon->amount, $video->amount);
+
+                    }
+
+                    if ($amount_convertion < $video->amount) {
+
+                        $total = $video->amount - $amount_convertion;
+
+                        $coupon_amount = $amount_convertion;
+
+                    }
+                }
+
+            } else {
+
+                $coupon_reason = tr('coupon_code_not_exists');
+
+            }
+
+        }
 
         $item = new Item();
 
@@ -491,6 +650,20 @@ class PaypalController extends Controller {
             $ppv_payment_details->user_id = Auth::user()->id;
 
             $ppv_payment_details->video_id = $request->id;
+
+            $ppv_payment_details->payment_mode = PAYPAL;
+
+            Log::info("User Payment ".print_r($ppv_payment_details, true));
+
+            $ppv_payment_details->coupon_amount = $coupon_amount;
+
+            $ppv_payment_details->coupon_code = $request->coupon_code ? $request->coupon_code : "";
+
+            $ppv_payment_details->ppv_amount = $video->amount;
+
+            $ppv_payment_details->is_coupon_applied = $is_coupon_applied;
+
+            $ppv_payment_details->coupon_reason = $is_coupon_applied ? $coupon_reason : '';
 
             $ppv_payment_details->save();
 
@@ -615,34 +788,40 @@ class PaypalController extends Controller {
 
             }
 
-            $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
+           // $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
+
+            $ppv_details->amount = $ppv_details->ppv_amount - $ppv_details->coupon_amount;
 
             Log::info("$ppv_details->amount".$ppv_details->amount);
 
-            if ($video_tape_details->type_of_user == 1) {
+             if ($video_tape_details->type_of_user == NORMAL_USER) {
 
-                $ppv_details->type_of_user = "Normal User";
+                $ppv_details->type_of_user = tr('normal_users');
 
-            } else if($video_tape_details->type_of_user == 2) {
+            } else if($video_tape_details->type_of_user == PAID_USER) {
 
-                $ppv_details->type_of_user = "Paid User";
+                $ppv_details->type_of_user = tr('paid_users');
 
-            } else if($video_tape_details->type_of_user == 3) {
+            } else if($video_tape_details->type_of_user == BOTH_USERS) {
 
-                $ppv_details->type_of_user = "Both Users";
+                $ppv_details->type_of_user = tr('both_users');
             }
 
 
-            if ($video_tape_details->type_of_subscription == 1) {
+            if ($video_tape_details->type_of_subscription == ONE_TIME_PAYMENT) {
 
-                $ppv_details->type_of_subscription = "One Time Payment";
+                $ppv_details->type_of_subscription = tr('one_time_payment');
 
-            } else if($video_tape_details->type_of_subscription == 2) {
+            } else if($video_tape_details->type_of_subscription == RECURRING_PAYMENT) {
 
-                $ppv_details->type_of_subscription = "Recurring Payment";
+                $ppv_details->type_of_subscription = tr('recurring_payment');
 
             }
             
+            $payment->status = PAID_STATUS;
+
+            $payment->is_watched = NOT_YET_WATCHED;
+
             $ppv_details->save();
 
             if($ppv_details->amount > 0) {
