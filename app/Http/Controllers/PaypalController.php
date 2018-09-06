@@ -526,9 +526,9 @@ class PaypalController extends Controller {
 
                     }
 
-                    if ($amount_convertion <= $video->amount) {
+                    if ($amount_convertion <= $video->ppv_amount) {
 
-                        $total = $video->amount - $amount_convertion;
+                        $total = $video->ppv_amount - $amount_convertion;
 
                         $coupon_amount = $amount_convertion;
 
