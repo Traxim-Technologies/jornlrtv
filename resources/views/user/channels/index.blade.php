@@ -210,11 +210,11 @@
 <div class="content-head">
 	<h4 style="color: #000;">{{tr('watch_to_next')}}</h4>
 </div>
-@if(count($trending_videos) == 0)
+<?php /*@if(count($trending_videos) == 0)
 
 <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
-@endif
+@endif */?>
 <div class="lohp-shelf-content row">
 <!-- <div class="lohp-large-shelf-container col-md-6">
 

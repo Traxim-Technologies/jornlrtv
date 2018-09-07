@@ -4862,6 +4862,7 @@ class UserApiController extends Controller {
 
             } else {
 
+
                 $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
                     ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS)
                         ->where('video_tapes.publish_status' , 1)   
