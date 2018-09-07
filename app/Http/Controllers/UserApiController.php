@@ -2467,6 +2467,8 @@ class UserApiController extends Controller {
 
     public function pay_now(Request $request) {
 
+        Log::info("Pay Now");
+        
         try {
 
             DB::beginTransaction();
