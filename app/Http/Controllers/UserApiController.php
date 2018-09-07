@@ -1676,11 +1676,13 @@ class UserApiController extends Controller {
 
             $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                                 ->videoResponse()
-                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')     
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                                ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('channels.is_approved', 1)
                                 ->where('channels.status', 1)
+                                ->where('categories.status', CATEGORY_APPROVE_STATUS)
                                 ->where('title', 'like', "%".$request->key."%")
                                 ->orderby('video_tapes.watch_count' , 'desc');
                                //  ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
