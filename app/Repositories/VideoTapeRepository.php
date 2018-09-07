@@ -567,9 +567,14 @@ class VideoTapeRepository {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.watch_count' , 'desc')
+                            st))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->videoResponse();
 
         if ($request->id) {
@@ -583,6 +588,17 @@ class VideoTapeRepository {
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
 
             }
+
+            $user = User::find($request->id);
+
+            if ($user) {
+
+                $request->request->add([
+                    'age_limit'=>$user->age_limit
+                ]);
+
+            }
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request))
         
         }
 
