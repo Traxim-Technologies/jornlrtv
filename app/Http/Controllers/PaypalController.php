@@ -440,6 +440,8 @@ class PaypalController extends Controller {
 
                 $user_payment_details->amount = $payment->subscription_amount - $payment->coupon_amount;
 
+                Log::info("Amount ".$user_payment_details->amount);
+
                 $user_payment_details->save();
 
                 if($user = User::find($user_payment_details->user_id)) {
