@@ -30,6 +30,8 @@ use Auth;
 
 use Setting;
 
+use App\UserPayment;
+
 class ApplicationController extends Controller {
 
     protected $UserAPI;
@@ -618,9 +620,9 @@ class ApplicationController extends Controller {
         $current_time = date("Y-m-d H:i:s");
 
 
-        $datas = UserPayment::select(DB::raw('max(user_payments.id) as user_payment_id'),'user_payments.*')
-                        ->where('cards.is_default' , DEFAULT_TRUE)
-                        ->where('subscriptions.amount', '>', 0)
+        $datas = UserPayment::select(DB::raw('max(user_payments.id) as user_payment_id'), 'subscriptions.amount as sub_amt')
+                    ->leftJoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                        //->where('subscriptions.amount', '>', 0)
                         ->where('user_payments.status', PAID_STATUS)
                         ->groupBy('user_payments.user_id')
                         ->orderBy('user_payments.created_at' , 'desc')
@@ -632,323 +634,260 @@ class ApplicationController extends Controller {
 
             $s_data = $data = [];
 
-            foreach($datas as $data){
+            foreach($datas as $payment_id){
 
-                $payment = UserPayment::find($data->user_payment_id);
+                if ($payment_id->sub_amt > 0) {
 
-                if ($payment) {
+                    $payment = UserPayment::find($payment_id->user_payment_id);
 
-                    if ($payment->is_cancelled == AUTORENEWAL_ENABLED) {
+                    if ($payment) {
 
-                        // Check the pending payments expiry date
+                        if ($payment->is_cancelled == AUTORENEWAL_ENABLED) {
 
-                        if(strtotime($payment->expiry_date) <= strtotime($current_time)) {
+                            // Check the pending payments expiry date
 
-                            // Delete provider availablity
+                            if(strtotime($payment->expiry_date) <= strtotime($current_time)) {
 
-                            Log::info('Send mail to user');
+                                // Delete provider availablity
 
-                            $email_data = array();
-                            
-                            if($user_details = User::find($payment->user_id)) {
+                                Log::info('Send mail to user');
 
-                                Log::info("the User exists....:-)");
-
-                                $check_card_exists = User::where('users.id' , $payment->user_id)
-                                                ->leftJoin('cards' , 'users.id','=','cards.user_id')
-                                                ->where('cards.id' , $payment->card_id)
-                                                ->where('cards.is_default' , DEFAULT_TRUE);
-
-                                if($check_card_exists->count() != 0) {
-
-                                    $user_card = $check_card_exists->first();
+                                $email_data = array();
                                 
-                                    $subscription = Subscription::find($payment->subscription_id);
+                                if($user_details = User::find($payment->user_id)) {
 
-                                    if ($subscription) {
+                                    Log::info("the User exists....:-)");
 
-                                        $stripe_secret_key = Setting::get('stripe_secret_key');
+                                    $check_card_exists = User::where('users.id' , $payment->user_id)
+                                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                                    ->where('cards.id' , $payment->card_id)
+                                                    ->where('cards.is_default' , DEFAULT_TRUE);
 
-                                        $customer_id = $user_card->customer_id;
+                                    if($check_card_exists->count() != 0) {
 
-                                        if($stripe_secret_key) {
+                                        $user_card = $check_card_exists->first();
+                                    
+                                        $subscription = Subscription::find($payment->subscription_id);
 
-                                            \Stripe\Stripe::setApiKey($stripe_secret_key);
+                                        if ($subscription) {
 
+                                            $stripe_secret_key = Setting::get('stripe_secret_key');
 
-                                        } else {
+                                            $customer_id = $user_card->customer_id;
 
-                                            Log::info(Helper::get_error_message(902));
-                                        }
+                                            if($stripe_secret_key) {
 
-                                        $total = $subscription->amount;
+                                                \Stripe\Stripe::setApiKey($stripe_secret_key);
 
-                                        try {
-
-                                            $user_charge =  \Stripe\Charge::create(array(
-                                                "amount" => $total * 100,
-                                                "currency" => "usd",
-                                                "customer" => $customer_id,
-                                            ));
-
-                                           $payment_id = $user_charge->id;
-                                           $amount = $user_charge->amount/100;
-                                           $paid_status = $user_charge->paid;
-
-                                            if($paid_status) {
-
-                                                $previous_payment = UserPayment::where('user_id' , $payment->user_id)
-                                                    ->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
-
-                                                $user_payment = new UserPayment;
-
-                                                if($previous_payment) {
-
-                                                    $expiry_date = $previous_payment->expiry_date;
-
-                                                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
-
-                                                } else {
-                                                    
-                                                    $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
-                                                }
-
-                                                $user_payment->payment_id  = $payment_id;
-
-                                                $user_payment->user_id = $payment->user_id;
-
-                                                $user_payment->subscription_id = $subscription->id;
-
-                                                $user_payment->status = 1;
-
-                                               // $user_payment->from_auto_renewed = 1;
-
-                                                $user_payment->amount = $amount;
-
-                                                if ($user_payment->save()) {
-
-                                                    $user_details->user_type = 1;
-                                                    
-                                                    $user_details->expiry_date = $user_payment->expiry_date;
-
-                                                    $user_details->save();
-                                                
-                                                    Log::info(tr('payment_success'));
-
-                                                    $total_renewed = $total_renewed + 1;
-
-                                                } else {
-
-                                                    Log::info(Helper::get_error_message(902));
-
-                                                }
 
                                             } else {
 
-                                               Log::info(Helper::get_error_message(903));
-
+                                                Log::info(Helper::get_error_message(902));
                                             }
 
-                                        
-                                        } catch(\Stripe\Error\RateLimit $e) {
+                                            $total = $subscription->amount;
 
-                                            $error_message = $e->getMessage();
+                                            try {
 
-                                            $error_code = $e->getCode();
+                                                $user_charge =  \Stripe\Charge::create(array(
+                                                    "amount" => $total * 100,
+                                                    "currency" => "usd",
+                                                    "customer" => $customer_id,
+                                                ));
 
-                                            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
+                                               $payment_id = $user_charge->id;
+                                               $amount = $user_charge->amount/100;
+                                               $paid_status = $user_charge->paid;
 
-                                            // $pending_payment_details->reason_auto_renewal_cancel = $error_message;
+                                                if($paid_status) {
 
-                                            // $pending_payment_details->save();
+                                                    $user_payment = new UserPayment;
 
-                                            Log::info("response array".print_r($response_array , true));
+                                                    if (strtotime($payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
 
-                                        } catch(\Stripe\Error\Card $e) {
+                                                        $expiry_date = $payment->expiry_date;
 
-                                            $error_message = $e->getMessage();
+                                                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
 
-                                            $error_code = $e->getCode();
+                                                    } else {
+                                                        
+                                                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                                                    }
 
-                                            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
+                                                    $user_payment->payment_id  = $payment_id;
 
-                                           // $pending_payment_details->reason_auto_renewal_cancel = $error_message;
+                                                    $user_payment->user_id = $payment->user_id;
 
-                                            // $pending_payment_details->save();
+                                                    $user_payment->subscription_id = $subscription->id;
 
-                                            $user_details->user_type = 0;
+                                                    $user_payment->status = 1;
 
-                                            //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
+                                                    $user_payment->amount = $amount;
+
+                                                    $user_payment->subscription_amount = $amount;
+
+                                                    $user_payment->coupon_code = "";
+
+                                                    $user_payment->coupon_amount = 0;
+
+                                                    if ($user_payment->save()) {
+
+                                                        $user_details->user_type = 1;
+                                                        
+                                                        $user_details->expiry_date = $user_payment->expiry_date;
+
+                                                        $user_details->save();
+                                                    
+                                                        Log::info(tr('payment_success'));
+
+                                                        $total_renewed = $total_renewed + 1;
+
+                                                    } else {
+
+                                                        Log::info(Helper::get_error_message(902));
+
+                                                    }
+
+                                                } else {
+
+                                                   Log::info(Helper::get_error_message(903));
+
+                                                }
+
                                             
-                                            $user_details->save();
+                                            } catch(\Stripe\Error\RateLimit $e) {
 
-                                            Log::info("response array".print_r($response_array , true));
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
 
-                                        } catch (\Stripe\Error\InvalidRequest $e) {
-                                            // Invalid parameters were supplied to Stripe's API
+                                                Log::info("response array".print_r($response_array , true));
+
+                                                $user_details->user_type = 0;
+                                                
+                                                $user_details->save();
+
+                                            } catch(\Stripe\Error\Card $e) {
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+                                                
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\InvalidRequest $e) {
+                                                // Invalid parameters were supplied to Stripe's API
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
+                                                
+                                                $user_details->save();
+
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\Authentication $e) {
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\ApiConnection $e) {
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
+                                                
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\Base $e) {
+                                              // Display a very generic error to the user, and maybe send
+                                                
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (Exception $e) {
+                                                // Something else happened, completely unrelated to Stripe
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
                                            
-                                            $error_message = $e->getMessage();
+                                            }
 
-                                            $error_code = $e->getCode();
-
-                                            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
-
-                                           // $pending_payment_details->reason_auto_renewal_cancel = $error_message;
-
-                                            // $pending_payment_details->save();
-
-                                            $user_details->user_type = 0;
-
-                                            //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
-                                            
-                                            $user_details->save();
-
-
-                                            Log::info("response array".print_r($response_array , true));
-
-                                        } catch (\Stripe\Error\Authentication $e) {
-
-                                            // Authentication with Stripe's API failed
-
-                                            $error_message = $e->getMessage();
-
-                                            $error_code = $e->getCode();
-
-                                            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
-
-                                            // $pending_payment_details->reason_auto_renewal_cancel = $error_message;
-
-                                            // $pending_payment_details->save();
-
-                                            $user_details->user_type = 0;
-
-                                            // $user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
-                                            
-                                            $user_details->save();
-
-                                            Log::info("response array".print_r($response_array , true));
-
-                                        } catch (\Stripe\Error\ApiConnection $e) {
-
-                                            // Network communication with Stripe failed
-
-                                            $error_message = $e->getMessage();
-
-                                            $error_code = $e->getCode();
-
-                                            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
-
-                                           // $pending_payment_details->reason_auto_renewal_cancel = $error_message;
-
-                                           // $pending_payment_details->save();
-
-                                            $user_details->user_type = 0;
-
-                                            //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
-                                            
-                                            $user_details->save();
-
-                                            Log::info("response array".print_r($response_array , true));
-
-                                        } catch (\Stripe\Error\Base $e) {
-                                          // Display a very generic error to the user, and maybe send
-                                            
-                                            $error_message = $e->getMessage();
-
-                                            $error_code = $e->getCode();
-
-                                            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
-
-                                            //$pending_payment_details->reason_auto_renewal_cancel = $error_message;
-
-                                            //$pending_payment_details->save();
-
-                                            $user_details->user_type = 0;
-
-                                           // $user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
-                                            
-                                            $user_details->save();
-
-                                            Log::info("response array".print_r($response_array , true));
-
-                                        } catch (Exception $e) {
-                                            // Something else happened, completely unrelated to Stripe
-
-                                            $error_message = $e->getMessage();
-
-                                            $error_code = $e->getCode();
-
-                                            $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
-
-                                            // $pending_payment_details->reason_auto_renewal_cancel = $error_message;
-
-                                            // $pending_payment_details->save();
-
-                                            $user_details->user_type = 0;
-
-                                            //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
-                                            
-                                            $user_details->save();
-
-                                            Log::info("response array".print_r($response_array , true));
-                                       
                                         }
 
+                                        // Send welcome email to the new user:
+
+                                        $subject = tr('automatic_renewal_notification');
+
+                                        $email_data['id'] = $user_details->id;
+                                        $email_data['username'] = $user_details->name;
+                                        $email_data['expiry_date'] = $payment->expiry_date;
+                                        $email_data['status'] = 1;
+
+                                        $page = "emails.automatic-renewal";
+
+                                        $email = $user_details->email;
+
+                                        $result = Helper::send_email($page,$subject,$email,$email_data);
+
+
+                                    } else {
+
+                                        $payment->reason = "NO CARD";
+
+                                        $payment->save();
+
+                                        $user_details->user_type = 0;
+                                        
+                                        $user_details->save();
+
+                                        Log::info("No card available....:-)");
+
                                     }
-
-                                    // Send welcome email to the new user:
-
-                                    $subject = tr('automatic_renewal_notification');
-
-                                    $email_data['id'] = $user_details->id;
-                                    $email_data['username'] = $user_details->name;
-                                    $email_data['expiry_date'] = $payment->expiry_date;
-                                    $email_data['status'] = 1;
-
-                                    $page = "emails.automatic-renewal";
-
-                                    $email = $user_details->email;
-
-                                    $result = Helper::send_email($page,$subject,$email,$email_data);
-
-                                    // \Log::info("Email".$result);
-
-                                } else {
-
-                                   /* $payment->reason = "NO CARD";
-
-                                    $payment->save();*/
-
-                                    $user_details->user_type = 0;
-
-                                    // $user_details->user_type_change_by = "AUTO-RENEW-NO-CARD";
-                                    
-                                    $user_details->save();
-
-                                    Log::info("No card available....:-)");
-
+                               
                                 }
-                           
+
+                                $data['user_payment_id'] = $payment->id;
+
+                                $data['user_id'] = $payment->user_id;
+
+                                array_push($s_data , $data);
                             }
 
-                            $data['user_payment_id'] = $payment->id;
+                        } else {
 
-                            $data['user_id'] = $payment->user_id;
-
-                            array_push($s_data , $data);
+                            Log::info("Cancelled Status ....:-) ");
                         }
 
                     } else {
 
-                        Log::info("Cancelled Status ....:-) ");
+                        Log::info("No payment found....:-) ".$data->user_payment_id);
+
                     }
 
-                } else {
-
-                    Log::info("No payment found....:-) ".$data->user_payment_id);
-
                 }
-                            
             
             }
             
@@ -963,6 +902,7 @@ class ApplicationController extends Controller {
             Log::info(" records not found ....:-(");
 
             $response_array = ['success' => false , 'error_messages' => tr('no_pending_payments')];
+
         }
 
         return response()->json($response_array , 200);
