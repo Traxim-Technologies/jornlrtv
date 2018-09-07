@@ -925,6 +925,7 @@ function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
 
     $videos_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('video_tapes.channel_id' , $channel_id)
+                        ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                         ->videoResponse()
                         ->orderby('video_tapes.created_at' , 'asc');
     if (Auth::check()) {
@@ -939,7 +940,11 @@ function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
     if ($channel_type == OTHERS_CHANNEL) {
 
         $videos_query->where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1);
+                        ->where('video_tapes.status' , 1)
+                        ->where('video_tapes.publish_status' , 1)
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS);
     }
 
     $cnt = $videos_query->count();

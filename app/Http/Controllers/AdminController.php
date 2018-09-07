@@ -5243,8 +5243,7 @@ class AdminController extends Controller {
 
         } else {
 
-            $model = Category::where('status', CATEGORY_APPROVE_STATUS)
-                ->where('id', $request->category_id)
+            $model = Category::where('id', $request->category_id)
                 ->withCount('getVideos')
                 ->first();
 

@@ -445,10 +445,11 @@ class VideoTapeRepository {
 
         $video_tape_details = VideoTape::where('video_tapes.id' , $video_tape_id)
                                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
-                                    
+                                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                                     ->where('video_tapes.status' , 1)
                                     ->where('video_tapes.publish_status' , 1)
                                     ->where('video_tapes.is_approved' , 1)
+                                    ->where('categories.status', CATEGORY_APPROVE_STATUS)
                                     ->videoResponse()
                                     ->first();
         if($video_tape_details) {

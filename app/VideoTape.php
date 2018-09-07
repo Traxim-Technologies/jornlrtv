@@ -208,6 +208,12 @@ class VideoTape extends Model
 
     }
 
+    public function getCategory() {
+
+        return $this->hasOne('App\Category', 'id', 'category_id');
+
+    }
+
     public function getDisLikeCount() {
 
         return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'id')->where('dislike_status', DEFAULT_TRUE);

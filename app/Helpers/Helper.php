@@ -802,6 +802,7 @@
 
             $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
                         ->where('video_tapes.publish_status' , 1)
@@ -809,6 +810,7 @@
                         ->where('channels.is_approved', 1)
                         ->where('channels.status', 1)
                         ->where('video_tapes.age_limit','<=', checkAge($request))
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS)
                         ->orderBy('video_tapes.created_at' , 'desc');
             if($web) {
                 $videos = $videos_query->paginate(16);

@@ -13,17 +13,7 @@
 
 	@include('notification.notify')
 
-	<div class="row">
 
-        <div class="col-xs-12 text-right">        	
-
-        	<a href="{{route('admin.categories.create')}}" class="btn btn-success">{{tr('create_category')}}</a>
-
-        </div>
-
-    </div>
-
-    <br>
 
 	<div class="row">
         <div class="col-xs-12">        	
@@ -31,6 +21,7 @@
 
           	<div class="box-header label-primary">
                 <b>{{tr('categories')}}</b>
+                <a href="{{route('admin.categories.create')}}" class="btn btn-default pull-right">{{tr('create_category')}}</a>
             </div>
             
             <div class="box-body">

@@ -1142,9 +1142,13 @@ class UserApiController extends Controller {
 
             $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
+                                ->where('channels.is_approved', 1)
+                                ->where('channels.status', 1)
+                                ->where('categories.status', CATEGORY_APPROVE_STATUS)
                                // ->orderby('video_tapes.publish_time' , 'desc')
                                 ->videoResponse();
 
@@ -1398,11 +1402,13 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->where('channels.is_approved', 1)
                             ->where('channels.status', 1)
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
         if ($request->id) {
@@ -1449,10 +1455,12 @@ class UserApiController extends Controller {
         $data = [];
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.watch_count' , 'desc')
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
         if ($request->id) {
@@ -3751,6 +3759,7 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                     ->where('title','like', '%'.$key.'%')
                     ->where('video_tapes.status' , 1)
                     ->where('video_tapes.publish_status' , 1)
@@ -3758,6 +3767,7 @@ class UserApiController extends Controller {
                     ->where('channels.is_approved', 1)
                     ->where('channels.status', 1)
                     ->where('video_tapes.age_limit','<=', checkAge($request))
+                    ->where('categories.status', CATEGORY_APPROVE_STATUS)
                     ->orderBy('video_tapes.created_at' , 'desc');
         if($web) {
 
@@ -4339,6 +4349,7 @@ class UserApiController extends Controller {
         $base_query = Wishlist::where('wishlists.user_id' , $request->id)
                             ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
                             ->where('wishlists.status' , 1)
@@ -4365,6 +4376,7 @@ class UserApiController extends Controller {
                                     'video_tapes.type_of_subscription',
                                     'wishlists.created_at')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderby('wishlists.created_at' , 'desc');
 
         if ($request->id) {
@@ -4419,6 +4431,7 @@ class UserApiController extends Controller {
 
         $base_query = UserHistory::where('user_histories.user_id' , $request->id)
                             ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
@@ -4443,6 +4456,7 @@ class UserApiController extends Controller {
                                     'channels.name as channel_name', 
                                     'user_histories.created_at')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderby('user_histories.created_at' , 'desc');
         
         if ($request->id) {
@@ -4501,8 +4515,10 @@ class UserApiController extends Controller {
                             ->where('channels.status', 1)
                             ->where('channels.is_approved', 1)
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
         if ($request->id) {
@@ -4564,6 +4580,8 @@ class UserApiController extends Controller {
                         ->where('video_tapes.is_approved' , 1)
                         ->where('channels.status', 1)
                         ->where('channels.is_approved', 1)
+                        ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS)
                         ->videoResponse()
                         ->where('video_tapes.age_limit','<=', checkAge($request))
                         ->orderby('watch_count' , 'desc');
@@ -4617,7 +4635,8 @@ class UserApiController extends Controller {
     public function suggestion_videos($request) {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
@@ -4625,6 +4644,7 @@ class UserApiController extends Controller {
                             ->where('channels.is_approved', 1)
                             ->where('channels.status', 1)
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderByRaw('RAND()');
 
         if($request->video_tape_id) {
@@ -4822,6 +4842,7 @@ class UserApiController extends Controller {
     public function channel_videos($channel_id, $skip , $request = null) {
 
         $videos_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
@@ -4842,14 +4863,22 @@ class UserApiController extends Controller {
             } else {
 
                 $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
-                    ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS);
+                    ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS)
+                        ->where('video_tapes.publish_status' , 1)   
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS);
 
             }
 
         } else {
 
             $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
-                ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS);
+                ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS)
+                        ->where('video_tapes.publish_status' , 1)
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS);
             
         }
 
@@ -4916,6 +4945,7 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('watch_count' , '>' , 0)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                         ->videoResponse()
                         ->where('channel_id', $id)
                         ->orderby('watch_count' , 'desc');
@@ -4924,7 +4954,10 @@ class UserApiController extends Controller {
 
             $base_query = $base_query->where('video_tapes.status' , 1)
                         ->where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.publish_status' , 1);
+                        ->where('video_tapes.publish_status' , 1)
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS);
 
         }
 
@@ -5031,6 +5064,7 @@ class UserApiController extends Controller {
 
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                     ->videoResponse()
                     // ->where('video_tapes.status' , 1)
                     // ->where('video_tapes.is_approved' , 1)
@@ -5055,6 +5089,15 @@ class UserApiController extends Controller {
                 if ($video->publish_status != PUBLISH_NOW) {
 
                     return response()->json(['success'=>false, 'error_messages'=>tr('video_not_yet_publish')]);
+                }
+
+                if ($video->getCategory) {
+
+                    if ($video->getCategory->status == CATEGORY_DECLINE_STATUS) {
+
+                        return response()->json(['success'=>false, 'error_messages'=>tr('category_declined_by_admin')]);
+
+                    } 
                 }
 
             }
