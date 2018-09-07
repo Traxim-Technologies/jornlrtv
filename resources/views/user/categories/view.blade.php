@@ -140,7 +140,7 @@
 <ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
 <li role="presentation" class="active">
 <a href="#about_home" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab">
-<span class="yt-uix-button-content hidden-xs">{{tr('about')}}</span>
+<span class="yt-uix-button-content hidden-xs">{{tr('about_category')}}</span>
 <span class="visible-xs"><i class="fa fa-home channel-tab-icon"></i></span>
 </a>
 </li>
@@ -389,7 +389,7 @@
 		    </div> <!--end of history-head--> 
 
 		    <div class="description">
-		    	<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', ['id'=>$video->category_id])}}" target="_blank">{{$video->category_name}}</a></div>
+		    	<?php /*<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view',$video->category_id)}}" target="_blank">{{$video->category_name}}</a></div> */?>
 		        <div><?= $video->description ?></div>
 		    </div><!--end of description--> 
 

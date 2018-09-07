@@ -2608,10 +2608,10 @@ class UserController extends Controller {
     * 
     * @return response of json
     */
-    public function categories_view(Request $request) {
+    public function categories_view($id, Request $request) {
 
         $request->request->add([ 
-            'category_id'=>$request->id,
+            'category_id'=>$id,
             'id' => \Auth::check() ? \Auth::user()->id : '',
             'token' => \Auth::check() ? \Auth::user()->token : '',
             'device_token' => \Auth::check() ? \Auth::user()->device_token : '',

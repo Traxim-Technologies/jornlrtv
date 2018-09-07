@@ -1495,5 +1495,6 @@ return array(
 	'subscription_amount'=>'Subscription Amount',
 	'video_amount'=>'Video Amount',
 	'valid_upto'=>'Valid Upto',
-	'category_declined_by_admin'=>'This category has been declined by admin'
+	'category_declined_by_admin'=>'This category has been declined by admin',
+	'about_category'=>'About'
 );

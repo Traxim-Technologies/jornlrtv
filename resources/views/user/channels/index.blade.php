@@ -522,7 +522,7 @@
                             <!--end of cross-mark-->                       
     </div> <!--end of history-head--> 
     
-    <div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', ['id'=>$video->category_unique_id])}}" target="_blank">{{$video->category_name}}</a></div>
+    <?php /*<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank">{{$video->category_name}}</a></div> */?>
     
     <div class="description">
         <?= $video->description?>

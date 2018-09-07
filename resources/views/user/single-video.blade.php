@@ -220,7 +220,7 @@
 	                                    		<p class="category-name">category</p>
 	                                    	</div>
 	                                    	<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 p-0 mt-10">
-	                                    		<a href="{{route('user.categories.view',['id'=>$video->category_unique_id])}}" target="_blank" class="category-name blue-link">{{$video->category_name}}</a>
+	                                    		<a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank" class="category-name blue-link">{{$video->category_name}}</a>
 	                                    	</div>
 	                                    </div>
 	                                    @if(count($tags) > 0)
@@ -343,7 +343,7 @@
                            </div>
                            <div class="clearfix"></div>
                            @if(count($comments) > 0) 
-                           <p class="small mb-15">{{tr('comment_note')}}</p>
+                           <!-- <p class="small mb-15">{{tr('comment_note')}}</p> -->
                            @endif
                            <div class="com-content">
                               @if(Auth::check())

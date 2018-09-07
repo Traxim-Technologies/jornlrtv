@@ -744,7 +744,7 @@ Route::group(['as' => 'user.'], function(){
 
     // Category view
 
-    Route::get('categories/view', 'UserController@categories_view')->name('categories.view');
+    Route::get('category/{id}', 'UserController@categories_view')->name('categories.view');
 
     Route::post('/categories/videos', 'UserController@categories_videos')->name('categories.videos');
 

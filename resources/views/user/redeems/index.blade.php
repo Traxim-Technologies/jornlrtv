@@ -286,6 +286,10 @@ thead>tr>th {
                                     </div>
                                     @endforeach
 
+                                    @else
+
+                                        <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+
                                     @endif
                                    
                                 </div>
