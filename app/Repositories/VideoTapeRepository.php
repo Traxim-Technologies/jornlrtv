@@ -597,7 +597,7 @@ class VideoTapeRepository {
                 ]);
 
             }
-            $base_query->where('video_tapes.age_limit','<=', checkAge($request))
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
         
         }
 
