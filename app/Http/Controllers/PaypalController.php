@@ -438,7 +438,7 @@ class PaypalController extends Controller {
 
                 $user_payment_details->status = 1;
 
-                $user_payment_details->amount = $payment->subscription_amount - $payment->coupon_amount;
+                $user_payment_details->amount = $user_payment_details->subscription_amount - $user_payment_details->coupon_amount;
 
                 Log::info("Amount ".$user_payment_details->amount);
 
