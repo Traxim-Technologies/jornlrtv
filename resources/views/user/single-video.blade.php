@@ -234,7 +234,7 @@
                                                 
                                                 foreach($tags as $i => $tag) {
                                                 
-                                                	$tags_list[] = '<a href="'.route('user.tags.videos', $tag->tag_id).'" target="_blank" class="category-name blue-link">'.$tag->tag_name.'</a>';
+                                                	$tags_list[] = '<a href="'.route('user.tags.videos', array('id'=>$tag->tag_id)).'" target="_blank" class="category-name blue-link">'.$tag->tag_name.'</a>';
                                                 
                                                 }
                                                 

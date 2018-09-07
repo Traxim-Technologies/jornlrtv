@@ -96,7 +96,8 @@ class UserController extends Controller {
                 'categories_videos',
                 'categories_channels',
                 'custom_live_videos',
-                'single_custom_live_video'
+                'single_custom_live_video',
+                'tags_videos'
         ]]);
 
         $this->middleware(['verifyUser'], ['except' => [
@@ -2492,9 +2493,16 @@ class UserController extends Controller {
                     'age'=>\Auth::user()->age_limit,
                     'device_type'=>DEVICE_WEB
                 ]);
+            } else {
+
+                $request->request->add([ 
+                    'tag_id'=>$request->id,
+                    'device_type'=>DEVICE_WEB
+                ]);
             }
 
             $data = $this->UserAPI->tags_videos($request)->getData();
+
 
             if($data->success) {
 

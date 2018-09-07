@@ -736,7 +736,7 @@ Route::group(['as' => 'user.'], function(){
     Route::get('ppv/history', 'UserController@ppv_history')->name('ppv.history');
 
 
-    Route::get('/tags/list/{id?}', 'UserController@tags_videos')->name('tags.videos');
+    Route::get('/tags/list', 'UserController@tags_videos')->name('tags.videos');
 
     Route::post('/subscriptions/enable', 'UserController@subscriptions_autorenewal_enable')->name('subscriptions.enable-subscription');
 
