@@ -571,7 +571,6 @@ class VideoTapeRepository {
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.watch_count' , 'desc')
-                            st))
                             ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->where('channels.is_approved', 1)
                             ->where('channels.status', 1)
