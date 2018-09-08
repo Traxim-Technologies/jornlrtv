@@ -24,7 +24,7 @@
 						
 						 <div class="new-history">
 				                <div class="content-head">
-				                    <div class="pull-left"><h4 style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
+				                    <div class="pull-left"><h4 class="bold" style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
 				  
 				                    </h4></div>      
 

@@ -157,7 +157,7 @@
 
 					           		<div class="new-card">
 						           		<div class="row">
-						           			<div class="col-xs-12 col-sm-5 col-md-2 col-lg-2">
+						           			<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
 						           				<h4 class="new-card-name overflow">{{$card->card_name ? $card->card_name : tr('card_name')}}</h4>
 						           			</div>
 						           			<div class="col-xs-12 col-sm-7 col-md-4 col-lg-6">
@@ -166,20 +166,20 @@
 						           			<!-- <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
 						           				<h4 class="new-card-expiry">{{$card->month}} / {{$card->year}}</h4>
 						           			</div> -->
-						           			<div class="col-xs-8 col-sm-9 col-md-4 col-lg-4">
+						           			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
 
 						           				<form action="{{ route('user.card.default') }}" method="POST">
 									                      <input type="hidden" name="_method" value="PATCH">
 									                      <input type="hidden" name="card_id" value="{{ $card->id }}">
 
 								           				<!-- <h4 class="new-card-close">
-								           					<a href="#"><span class="link-clr">Make as default</span></a><i class="fa fa-trash"></i>
+								           					<a href="#" type="submit" id="default-card"><span class="link-clr" title="{{tr('set_as_default')}}">{{tr('set_as_default')}}</span></a>
 								           				</h4> -->
 
 								           				<div class=" pull-right">
-						           						<button type="submit" class="btn btn-warning" id="default-card" style="margin-right: 5px;"><i class="fa fa-check"  title="{{tr('set_as_default')}}"></i> {{tr('set_as_default')}}</button>
+						           						<button type="submit" class="btn btn-link shadow-0" id="default-card" style="margin-right: 5px;"><i class="fa fa-check"  title="{{tr('set_as_default')}}"></i> {{tr('set_as_default')}}</button>
 
-						           						<img src="{{asset('images/error.png')}}" class="card-delete" onclick="$('#delete-card').click()" style="cursor: pointer;" title="{{tr('delete_card')}}">
+						           						<img src="{{asset('images/error.png')}}" class="default-card-img" onclick="$('#delete-card').click()" style="cursor: pointer;" title="{{tr('delete_card')}}">
 
 						           					</div>
 						           						<div class="clearfix"></div>
@@ -202,7 +202,7 @@
 
 					           		<div class="new-card">
 						           		<div class="row">
-						           			<div class="col-xs-12 col-sm-5 col-md-2 col-lg-2">
+						           			<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
 						           				<h4 class="new-card-name overflow">{{$card->card_name ? $card->card_name : tr('card_name')}}</h4>
 						           			</div>
 						           			<div class="col-xs-12 col-sm-7 col-md-4 col-lg-6">
@@ -211,7 +211,7 @@
 						           			<!-- <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
 						           				<h4 class="new-card-expiry">{{$card->month}} / {{$card->year}}</h4>
 						           			</div> -->
-						           			<div class="col-xs-8 col-sm-9 col-md-4 col-lg-4">
+						           			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
 						           				<div class="text-right">
 						           					<img src="{{asset('images/success.png')}}" class="default-card-img" title="Default Card">
 						           				</div>

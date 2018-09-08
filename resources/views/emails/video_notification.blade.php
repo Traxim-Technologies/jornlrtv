@@ -185,7 +185,8 @@
     	.mobile-img{
     		display: none;
     	}
-        @media (-webkit-min-device-pixel-ratio: 0) and (max-device-width:720px) {
+        /*@media (-webkit-min-device-pixel-ratio: 0) and (max-device-width:720px) {*/
+        @media (max-width: 720px) {
         	.width-610{
         		width: 100%;
         	}
@@ -199,7 +200,7 @@
 	        	display: none;
 	        }
         }
-        @media (-webkit-min-device-pixel-ratio: 0) and (min-device-width:0px) {
+        @media (min-width: 0px)  {
         
 	        .video-wrapper { display:block !important; line-height: inherit !important; overflow: visible !important; visibility: visible !important; max-height: inherit !important;}
 	        .video-fallback { display:none !important; }

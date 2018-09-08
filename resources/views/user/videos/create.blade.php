@@ -30,10 +30,19 @@
                           </div>
                           <div class="wizard-navigation">
                               <ul>
-                                  <li id="1"><a href="#video_type_upload" data-toggle="tab">{{tr('video_type')}}</a></li>
-                                  <li id="2"><a href="#details" data-toggle="tab">{{tr('video_details')}}</a></li>
-                                  <li id="3"><a href="#captain" data-toggle="tab">{{tr('upload_video')}}</a></li>
-                                  <li id="4"><a href="#select_image" data-toggle="tab">{{tr('select_image')}}</a></li>
+                                  <li id="1">
+                                    <a href="#video_type_upload" data-toggle="tab" class="dis-all">{{tr('video_type')}}</a>
+                                    <a href="#video_type_upload" data-toggle="tab" class="dis-mob">type</a>
+                                  </li>
+                                  <li id="2">
+                                    <a href="#details" data-toggle="tab">{{tr('video_details')}}</a>
+                                  </li>
+                                  <li id="3">
+                                    <a href="#captain" data-toggle="tab">{{tr('upload_video')}}</a>
+                                  </li>
+                                  <li id="4">
+                                    <a href="#select_image" data-toggle="tab">{{tr('select_image')}}</a>
+                                  </li>
                               </ul>
                           </div>
 
@@ -143,7 +152,6 @@
                                       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                          
                                           <label for="video" class="control-label">{{tr('category')}}</label>
-                                          <div class="clearfix"></div>
                                           <div>
 
                                             <select id="category_id" name="category_id" class="form-control select2" required data-placeholder="{{tr('select_category')}}*" style="width: 100% !important">
@@ -159,7 +167,6 @@
                                       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                          
                                           <label for="video" class="control-label">{{tr('tags')}}</label>
-                                          <div class="clearfix"></div>
                                           <div>
                                               
                                             <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
