@@ -41,7 +41,9 @@ Route::post('select/sub_category' , 'ApplicationController@select_sub_category')
 
 Route::post('select/genre' , 'ApplicationController@select_genre')->name('select.genre');
 
+// Cron jobs
 
+Route::get('/automatic/renewal', 'ApplicationController@automatic_renewal')->name('automatic.renewal');
 
 // Application Routes
 
