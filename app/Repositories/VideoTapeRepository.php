@@ -527,6 +527,8 @@ class VideoTapeRepository {
 
             $data['share_url'] = route('user.single' , $video_tape_id);
 
+            $data['my_channel']= $video_tape_details->channel_created_by == $request->id ? DEFAULT_TRUE : DEFAULT_FALSE;
+
             $data['embed_link'] = route('embed_video', array('u_id'=>$video_tape_details->unique_id));
 
             $data['tags'] = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
