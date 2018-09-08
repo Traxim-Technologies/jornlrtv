@@ -72,20 +72,6 @@
             @include('notification.notify')
             <div class="row no-margin">
                <div class="col-sm-12 col-md-8 play-video">
-                  <!-- <div class="scroll">
-                     <div class="scroll-content">
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                        <h1>hiii helo</h1>
-                     </div>
-                  </div> -->
-
                   @include('user.videos.streaming')
                   <div class="main-content">
                      <div class="video-content">

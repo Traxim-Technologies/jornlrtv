@@ -668,9 +668,6 @@ a:focus {
 	text-decoration: none;
 
 	font-weight: bold;
-	font-size: 1.2em;
+	font-size: 1em;
 	font-family: arial;
-}
-.control-label{
-	font-weight: normal !important;
 }

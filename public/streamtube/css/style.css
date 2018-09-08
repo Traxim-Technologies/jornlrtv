@@ -1887,9 +1887,9 @@ changes
 	color: #333;
 }
 .suggn-title a {
-
+	font-weight: normal !important;
 	color: #333;
-	font-size: 1em;
+	font-size: 1.2em;
 	text-decoration: none;
 }
 .edit-pro-btn a{
