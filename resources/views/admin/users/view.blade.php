@@ -144,8 +144,6 @@
 
 		          <a href="{{route('admin.users.edit', array('id' => $user->id))}}" class="btn btn-primary btn-block"><b>{{tr('edit_user')}}</b></a>
 
-
-
 		        </div>
 		        <!-- /.box-body -->
 	      </div>

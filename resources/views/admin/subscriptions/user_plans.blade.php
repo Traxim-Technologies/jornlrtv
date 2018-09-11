@@ -7,6 +7,9 @@
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.users')}}"><i class="fa fa-users"></i>{{tr('users')}}</a></li>
+    @if($id)
+    	<li><a href="{{route('admin.users.view', $id)}}"><i class="fa fa-users"></i>{{tr('view_user')}}</a></li>
+    @endif
     <li class="active"><i class="fa fa-key"></i> {{tr('subscriptions')}}</li>
 @endsection
 
@@ -54,7 +57,7 @@
 								<thead>
 								    <tr>
 								      <th>{{tr('id')}}</th>
-								      <th>{{tr('username')}}</th>
+								      <th>{{tr('subscription')}}</th>
 								      <th>{{tr('payment_id')}}</th>
 								      <th>{{tr('amount')}}</th>
 								      <th>{{tr('expiry_date')}}</th>
@@ -69,7 +72,7 @@
 
 									    <tr>
 									      	<td>{{$i+1}}</td>
-									      	<td><a href="{{route('admin.users.view' , $payment->user_id)}}"> {{($payment->user) ? $payment->user->name : ''}} </a></td>
+									      	<td>{{$payment->title}}</td>
 									      	<td>{{$payment->payment_id}}</td>
 									      	<td>{{Setting::get('currency')}} {{$payment->amount}}</td>
 									      	<td>{{date('d M Y',strtotime($payment->expiry_date))}}</td>

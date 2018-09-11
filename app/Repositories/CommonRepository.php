@@ -28,6 +28,8 @@ use App\Category;
 
 use App\VideoTapeTag;
 
+use App\Subscription;
+
 class CommonRepository {
 
 
@@ -1142,9 +1144,13 @@ class CommonRepository {
 
                     $category->save(); 
 
-                    $old_category->no_of_uploads =  $old_category->no_of_uploads > 0 ? $old_category->no_of_uploads - 1  : 0;
+                    if ($old_category) {
 
-                    $old_category->save();
+                        $old_category->no_of_uploads =  $old_category->no_of_uploads > 0 ? $old_category->no_of_uploads - 1  : 0;
+
+                        $old_category->save();
+
+                    }
                     
                 }
 
@@ -1240,44 +1246,55 @@ class CommonRepository {
      */
     public static function save_subscription($s_id, $u_id) {
 
-        $load = UserPayment::where('user_id', $u_id)->orderBy('created_at', 'desc')->first();
+        $subscription = Subscription::find($s_id);
 
-        $payment = new UserPayment();
+        if ($subscription) {
 
-        $payment->subscription_id = $s_id;
+            $load = UserPayment::where('user_id', $u_id)->orderBy('created_at', 'desc')->first();
 
-        $payment->user_id = $u_id;
+            $payment = new UserPayment();
 
-        $payment->amount = ($payment->getSubscription) ? $payment->getSubscription->amount  : 0;
+            $payment->subscription_id = $s_id;
 
-        $payment->payment_id = ($payment->amount > 0) ? uniqid(str_replace(' ', '-', 'PAY')) : 'Free Plan'; 
+            $payment->user_id = $u_id;
 
-        if ($load) {
-            $payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$payment->getSubscription->plan} months", strtotime($load->expiry_date)));
+            $payment->amount =   $subscription->amount ;
+
+            $payment->subscription_amount =  $subscription->amount;
+
+            $payment->payment_id = ($payment->amount > 0) ? uniqid(str_replace(' ', '-', 'PAY')) : 'Free Plan'; 
+
+            if ($load) {
+                $payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($load->expiry_date)));
+            } else {
+                $payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+            }
+
+            $payment->status = DEFAULT_TRUE;
+
+            if ($payment->save())  {
+
+                $payment->user->user_type = DEFAULT_TRUE;
+
+                if($payment->amount == 0) {
+
+                    $payment->user->zero_subscription_status = DEFAULT_TRUE;
+                }
+
+                if ($payment->user->save()) {
+
+                    return response()->json(['success'=> true, 'message'=>tr('subscription_applied_success')]);
+
+                }
+
+            }
+
+            return response()->json(['success'=> false, 'message'=>tr('something_error')]);
+
         } else {
-            $payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$payment->getSubscription->plan} months"));
+
+            return response()->json(['success'=> false, 'message'=>tr('subscription_not_found')]);
         }
-
-        $payment->status = DEFAULT_TRUE;
-
-        if ($payment->save())  {
-
-            $payment->user->user_type = DEFAULT_TRUE;
-
-            if($payment->amount == 0) {
-
-                $payment->user->zero_subscription_status = DEFAULT_TRUE;
-            }
-
-            if ($payment->user->save()) {
-
-                return response()->json(['success'=> true, 'message'=>tr('subscription_applied_success')]);
-
-            }
-
-        }
-
-        return response()->json(['success'=> false, 'message'=>tr('something_error')]);
     }
 
     /**

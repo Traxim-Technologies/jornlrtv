@@ -802,8 +802,10 @@ class AdminController extends Controller {
 
         if($id) {
 
-            $payments = UserPayment::orderBy('created_at' , 'desc')
-                        ->where('user_id' , $id)->get();
+            $payments = UserPayment::select('user_payments.*', 'subscriptions.title')
+                        ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                        ->orderBy('user_payments.created_at' , 'desc')
+                        ->where('user_payments.user_id' , $id)->get();
 
         }
 
@@ -5438,7 +5440,7 @@ class AdminController extends Controller {
         if($model = CustomLiveVideo::where('id',$request->id)->first()) {
 
             if ($model->delete()) {
-                return back()->with('flash_success',tr('live_video_delete_success'));   
+                return back()->with('flash_success',tr('live_custom_video_delete_success'));   
             }
         }
         return back()->with('flash_error',tr('something_error'));

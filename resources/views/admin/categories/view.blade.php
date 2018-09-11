@@ -63,12 +63,21 @@
           <!-- Box Comment -->
           <div class="box box-widget">
             <div class="box-header with-border">
-              <div class="user-block">
-                <img class="img-circle" src="{{$category->image}}" alt="{{$category->name}}">
-                <span class="username"><a target="_blank" href="{{route('admin.users.view', $category->user_id)}}">{{$category->name}}</a></span>
-                <span class="description">{{tr('shared_publicly')}} - {{$category->created_at->diffForHumans()}}</span>
+
+              <div class="pull-left">
+                  <div class="user-block">
+                    <img class="img-circle" src="{{$category->image}}" alt="{{$category->name}}">
+                    <span class="username"><a target="_blank" href="{{route('admin.users.view', $category->user_id)}}">{{$category->name}}</a></span>
+                    <span class="description">{{tr('shared_publicly')}} - {{$category->created_at->diffForHumans()}}</span>
+                  </div>
               </div>
-             
+
+              <div class="pull-right">
+                  <a href="{{route('admin.categories.edit' ,['id'=>$category->id])}}" class="btn btn-xs btn-warning" title="Edit">
+                      <i class="fa fa-edit"></i>
+                    </a>
+              </div>
+              <div class="clearfix"></div>
               <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
