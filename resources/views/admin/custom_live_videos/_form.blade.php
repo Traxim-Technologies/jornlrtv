@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <label for="hls_video_url">{{tr('hls_video_url')}} *</label>
 
-                        <input type="text" required name="hls_video_url" class="form-control" id="hls_video_url" placeholder="{{tr('hls_video_url')}}" value="{{$model->rtmp_video_url}}">
+                        <input type="text" required name="hls_video_url" class="form-control" id="hls_video_url" placeholder="{{tr('hls_video_url')}}" value="{{$model->hls_video_url}}">
                     </div>
 
                     <div class="form-group">

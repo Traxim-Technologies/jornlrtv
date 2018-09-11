@@ -26,7 +26,7 @@
 
                                 <label>{{tr('image')}}</label>
 
-                                <input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')" required>
+                                <input type="file" name="file" id="file" accept="image/png,image/jpeg" onchange="loadFile(this, 'ad_preview')" @if(!$model->id) required @endif>
 
                                 <br>
 
