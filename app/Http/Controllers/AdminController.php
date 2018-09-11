@@ -3908,23 +3908,35 @@ class AdminController extends Controller {
 
         $total  = total_revenue();
 
-        $ppv_total = PayPerView::sum('amount');
-
-        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
-
-        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
-
         $subscription_total = UserPayment::sum('amount');
 
-        $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
+        $total_subscribers = UserPayment::where('status' ,  PAID_STATUS)->count();
+
+        $admin_ppv_amount = VideoTape::sum('admin_ppv_amount');
+
+        $user_ppv_amount = VideoTape::sum('user_ppv_amount');
+
+        $total_ppv_amount = $admin_ppv_amount + $user_ppv_amount;
+
+
+        $admin_live_amount = LiveVideoPayment::sum('admin_amount');
+
+        $user_live_amount = LiveVideoPayment::sum('user_amount');
+
+        $total_live_amount = $admin_live_amount + $user_live_amount;
+
+
         
         return view('admin.payments.revenues')
                         ->with('total' , $total)
-                        ->with('ppv_total' , $ppv_total)
-                        ->with('ppv_admin_amount' , $ppv_admin_amount)
-                        ->with('ppv_user_amount' , $ppv_user_amount)
                         ->with('subscription_total' , $subscription_total)
                         ->with('total_subscribers' , $total_subscribers)
+                        ->with('ppv_admin_amount', $admin_ppv_amount)
+                        ->with('ppv_user_amount', $user_ppv_amount)
+                        ->with('ppv_total', $total_ppv_amount)
+                        ->with('admin_live_amount', $admin_live_amount)
+                        ->with('user_live_amount', $user_live_amount)
+                        ->with('total_live_amount', $total_live_amount)
                         ->withPage('payments')
                         ->with('sub_page' , 'payments-dashboard');
     
@@ -5359,7 +5371,6 @@ class AdminController extends Controller {
         $model = new CustomLiveVideo;
 
         return view('admin.custom_live_videos.create')->withModel($model)->with('page' , 'custom_live_videos')->with('sub_page','create_live_video');
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
     }
 
     /**
@@ -5748,7 +5759,7 @@ class AdminController extends Controller {
     }
 
 
-    public function videos_list(Request $request) {
+    public function live_videos_history(Request $request) {
 
         $live_videos = LiveVideo::orderBy('created_at' , 'desc')->get();
 
@@ -5756,7 +5767,7 @@ class AdminController extends Controller {
     }
 
 
-    public function videos_view($id,Request $request) {
+    public function live_videos_view($id,Request $request) {
 
         $video = LiveVideo::find($id);
 

@@ -126,26 +126,10 @@
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 
-							      	<?php /*@if(Setting::get('theme') == 'default')
-							      	
-								      	<td>
-								      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
-								      			<a href="{{route('admin.slider.video' , $video['video_tape_id'])}}"><span class="label label-danger">{{tr('set_slider')}}</span></a>
-								      		@elseif($video['is_home_slider'])
-								      			<span class="label label-success">{{tr('slider')}}</span>
-								      		@else
-								      			-
-								      		@endif
-								      	</td>
-
-							      	@endif */?>
 
 							      	<td><b>{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</b></td>
 
-							      	<!-- <td>{{number_format_short($video->getScopeLikeCount->count())}}</td> -->
-
-							      	<!-- <td>{{number_format_short($video->getScopeDisLikeCount->count())}}</td> -->
-
+							     
 							      	@if(Setting::get('is_vod'))
 							      	<td>@if($video->video_type == 1) 
 

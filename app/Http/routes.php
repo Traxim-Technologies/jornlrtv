@@ -237,6 +237,15 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/videos/compression/complete','AdminController@videos_compression_complete')->name('compress.status');
 
 
+    // Videos
+
+    Route::get('/live_videos', 'AdminController@live_videos')->name('live-videos.index');
+
+    Route::get('/live-videos/list', 'AdminController@live_videos_history')->name('live-videos.history');
+
+    Route::get('/live-videos/view/{id}', 'AdminController@live_videos_view')->name('live-videos.view');
+
+
     // Banner Videos
 
     Route::get('/banner/videos/set/{id}', 'AdminController@banner_videos_set')->name('banner.videos.set');

@@ -54,7 +54,9 @@
 
         <div id="preloader">
 
-        <div class="cssload-box-loading">
+            <div class="cssload-box-loading">
+            </div>
+
         </div>
 
         @include('layouts.user.header')
