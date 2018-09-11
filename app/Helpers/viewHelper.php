@@ -630,7 +630,9 @@ function loadChannels() {
                 ->where('channels.status', DEFAULT_TRUE)
                 ->where('video_tapes.is_approved', DEFAULT_TRUE)
                 ->where('video_tapes.status', DEFAULT_TRUE)
+                ->where('video_tapes.publish_status', DEFAULT_TRUE)
                 ->where('video_tapes.age_limit','<=', $age)
+                ->havingRaw('COUNT(video_tapes.id) > 0')
                 ->groupBy('video_tapes.channel_id')
                 ->get();
     
