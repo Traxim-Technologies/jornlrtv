@@ -49,7 +49,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$review->name}}</td>
 							      	<td>
-							      		<a href="{{route('admin.view.video' , array('id' => $review->video_id))}}" target="_blank">{{$review->title}}</a>
+							      		<a href="{{route('admin.videos.view' , array('id' => $review->video_id))}}" target="_blank">{{$review->title}}</a>
 							      	</td>
 
 							      	<td>
@@ -60,7 +60,7 @@
 							      	<td>{{$review->comment}}</td>
 
 							      	<td>{{$review->created_at->diffForHumans()}}</td>
-							      	<td><a href="{{route('admin.delete_user_ratings', array('id'=>$review->rating_id))}}" title="{{tr('delete')}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+							      	<td><a href="{{route('admin.reviews.delete', array('id'=>$review->rating_id))}}" title="{{tr('delete')}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
 							    </tr>
 							@endforeach
 						</tbody>

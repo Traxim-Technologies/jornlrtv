@@ -57,7 +57,7 @@
 					<div class="des-box">
 
 						<div>
-							<p><small><b>{{tr('note')}} :</b>&nbsp;{{tr('profile_picture')}} - {{tr('image_square')}}, {{tr('cover_picture')}} - {{tr('rectangle_image')}}</small></p>
+							<p><small><b>{{tr('note')}} :</b>&nbsp;<span class="dark-grey">{{tr('profile_picture')}} - {{tr('image_square')}}, {{tr('cover_picture')}} - {{tr('rectangle_image')}}</span></small></p>
 						</div>
 
 						<div>
@@ -66,15 +66,15 @@
 
 						<h5>{{tr('title')}}</h5>
 
-						<input type="text" name="name" id="title" class="form-control" value="{{$model->name}}" required/>
+						<input type="text" name="name" id="title" class="form-control" value="{{$model->name}}" required minlength="6" maxlength="64" title="Enter minimum 6 character and maximum 64 character..!" />
 
 						<h5>{{tr('description')}}</h5>
 
-						<textarea class="form-control description" id="description" name="description" required>{{$model->description}}</textarea>
+						<textarea class="form-control description" id="ckeditor" name="description" required>{{$model->description}}</textarea>
 						<br>
 						<div>
 							<button type="reset" name="reset" class="btn btn-danger pull-left">{{tr('reset')}}</button>
-							<button id="done-create" name="submit" class="btn btn-primary pull-right" @if(!$model->id) onclick="return checkImage();" @endif>{{tr('submit')}}</button>
+							<button id="done-create" name="submit" class="btn btn-info pull-right" @if(!$model->id) onclick="return checkImage();" @endif>{{tr('submit')}}</button>
 							<div class="clearfix"></div>
 						</div>
 
@@ -134,4 +134,8 @@ function checkImage() {
 }
 </script>
 
+<script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace( 'ckeditor' );
+</script>
 @endsection

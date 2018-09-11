@@ -69,7 +69,7 @@ class UserApiValidation
 
                 if(!$user_details) {
                     
-                    $response = array('success' => false , 'error' => Helper::get_error_message(504) , 'error_code' => 504);
+                    $response = array('success' => false , 'error_messages' => Helper::get_error_message(504) , 'error_code' => 504);
                     return response()->json($response, 200);
                 }
 
@@ -81,7 +81,7 @@ class UserApiValidation
 
                         Helper::check_email_verification("" , $user_details, $error, USER);
                     
-                        $response = array('success' => false , 'error' => Helper::get_error_message(503) , 'error_code' => 503);
+                        $response = array('success' => false , 'error_messages' => Helper::get_error_message(503) , 'error_code' => 503);
 
                         return response()->json($response, 200);
 
@@ -90,7 +90,7 @@ class UserApiValidation
 
                 if($user_details->status == USER_DECLINED) {
                     
-                    $response = array('success' => false , 'error' => Helper::get_error_message(502) , 'error_code' => 502);
+                    $response = array('success' => false , 'error_messages' => Helper::get_error_message(502) , 'error_code' => 502);
                     return response()->json($response, 200);
                 }
 

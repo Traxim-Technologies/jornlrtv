@@ -37,7 +37,7 @@
             </div> <!--end of history-head--> 
 
             <div class="description">
-                <p>{{$video->description}}</p>
+                <?= $video->description ?>
             </div><!--end of description--> 
 
 

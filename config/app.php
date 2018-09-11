@@ -156,6 +156,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         anlutro\LaravelSettings\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         Aws\Laravel\AwsServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         vidhyar2612\Enveditor\EnveditorServiceProvider::class
@@ -207,6 +208,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Setting' => anlutro\LaravelSettings\Facade::class,
         'AWS' => Aws\Laravel\AwsFacade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Enveditor' => 'vidhyar2612\Enveditor\Facade',
     ],

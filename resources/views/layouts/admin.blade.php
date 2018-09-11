@@ -178,6 +178,8 @@
             format : 'dd-mm-yyyy',
             startDate: 'today',
         });
+
+        
     });
 
     </script>

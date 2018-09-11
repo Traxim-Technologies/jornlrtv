@@ -19,12 +19,12 @@
 
 			@include('notification.notify')
 
-				<div class="slide-area recom-area abt-sec">
+				<div class="slide-area1 recom-area abt-sec">
 					<div class="abt-sec-head">
 						
 						 <div class="new-history">
 				                <div class="content-head">
-				                    <div class="pull-left"><h4 style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
+				                    <div class="pull-left"><h4 class="bold" style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
 				  
 				                    </h4></div>      
 
@@ -38,7 +38,7 @@
 
 					                    <div class="pull-right" style="margin-bottom: 10px;">
 
-					                    	<a class="st_video_upload_btn " href="{{route('user.create_channel')}}"><i class="fa fa-tv"></i>&nbsp;{{tr('create_channel')}}</a>
+					                    	<a class="st_video_upload_btn " href="{{route('user.create_channel')}}"><i class="fa fa-tv"></i>&nbsp;&nbsp;{{tr('create_channel')}}</a>
 
 					                    	
 
@@ -85,7 +85,7 @@
 				                                <div class="history-title">
 				                                    <div class="history-head row">
 				                                        <div class="cross-title">
-				                                            <h5 class="payment_class" style="padding: 0px;"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
+				                                            <h5 class="payment_class mb-3" style="padding: 0px;"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
 				                                            
 				                                            <span class="video_views">
 				                                            	 <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}} <b>.</b> 
@@ -129,7 +129,7 @@
 				                                    </div> <!--end of history-head--> 
 
 				                                    <div class="description hidden-xs">
-				                                        <p>{{$channel->description}}</p>
+				                                        <?= $channel->description?>
 				                                    </div><!--end of description--> 
 
 				                                   	                                                  

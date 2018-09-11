@@ -48,13 +48,15 @@
 
                         <div class="row margin-bottom">
 
+                            <?php /*
+
                             <div class="col-sm-4">
 
                             <img src="{{$data->picture}}" class="img-responsive">
                                 
-                            </div>
+                            </div> */?>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-12">
 
                                 <div class="row">
 
@@ -119,7 +121,7 @@
 
                                             <h4><b>{{tr('total_subscription')}}</b></h4>
 
-                                            <a href="{{route('admin.subscription.payments' , $data->id)}}" class="btn btn-success btn-xs">{{count($data->getUserPayments)}}</a>
+                                            <a href="{{route('admin.revenues.subscription-payments' , $data->id)}}" class="btn btn-success btn-xs">{{count($data->getUserPayments)}}</a>
 
                                         </div>
                                     

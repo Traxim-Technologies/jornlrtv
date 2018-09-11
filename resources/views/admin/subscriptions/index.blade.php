@@ -69,7 +69,7 @@
 						      	</td>
 
 						      	<td>
-						      		<a href="{{route('admin.subscription.payments' , $value->id)}}" class="btn btn-success btn-xs">
+						      		<a href="{{route('admin.revenues.subscription-payments' , $value->id)}}" class="btn btn-success btn-xs">
 						      			{{tr('subscribers')}}
 						      		</a>
 						      	</td>

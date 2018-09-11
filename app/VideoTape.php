@@ -8,6 +8,8 @@ use Auth;
 
 use App\Helpers\Helper;
 
+use App\Category;
+
 class VideoTape extends Model
 {
 
@@ -27,6 +29,8 @@ class VideoTape extends Model
             'channels.user_id as channel_created_by',
             'channels.name as channel_name',
             'channels.picture as channel_picture',
+            'channels.status as channel_status',
+            'channels.is_approved as channel_approved_status',
             'channels.status as channel_status',
             'video_tapes.title',
             'video_tapes.description',
@@ -60,6 +64,10 @@ class VideoTape extends Model
             'video_tapes.admin_ppv_amount',
             'video_tapes.user_ppv_amount',
             'video_tapes.publish_time',
+            'video_tapes.category_id',
+            'video_tapes.category_name',
+            'video_tapes.is_pay_per_view',
+            'video_tapes.video_type',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as video_date'),
             \DB::raw('(CASE WHEN (user_ratings = 0) THEN ratings ELSE user_ratings END) as ratings')
         );
@@ -95,6 +103,9 @@ class VideoTape extends Model
             'video_tapes.type_of_subscription',
             'video_tapes.ppv_amount',
             'video_tapes.created_at as created_at',
+            'video_tapes.category_id',
+            'video_tapes.category_name',
+            'video_tapes.video_type',
             \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as publish_time')
             
         );
@@ -107,6 +118,15 @@ class VideoTape extends Model
 
     }
 
+    public function userHistory()
+    {
+        return $this->hasMany('App\UserHistory', 'video_tape_id', 'id');
+    }
+
+    public function userWishlist()
+    {
+        return $this->hasMany('App\Wishlist', 'video_tape_id', 'id');
+    }
 
     public function getUserRatings() {
 
@@ -116,7 +136,13 @@ class VideoTape extends Model
 
     public function getScopeUserRatings() {
 
-         return $this->hasMany('App\UserRating', 'video_tape_id', 'video_tape_id');
+         return $this->hasMany('App\UserRating', 'video_tape_id', 'video_tape_id')->count();
+
+    }
+
+     public function getUserWishlist() {
+
+         return $this->hasMany('App\Wishlist', 'video_tape_id', 'video_tape_id')->count();
 
     }
 
@@ -144,6 +170,19 @@ class VideoTape extends Model
 
     }
 
+    public function getVideoTags() {
+
+         return $this->hasMany('App\VideoTapeTag', 'video_tape_id', 'id');
+
+    }
+
+    public function getScopeVideoTags() {
+
+         return $this->hasMany('App\VideoTapeTag', 'video_tape_id', 'video_tape_id');
+
+    }
+
+
     public function getScopeVideoTapeImages() {
 
          return $this->hasMany('App\VideoTapeImage', 'video_tape_id', 'video_tape_id');
@@ -153,19 +192,25 @@ class VideoTape extends Model
 
     public function getScopeLikeCount() {
 
-        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('like_status', DEFAULT_TRUE);
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('like_status', DEFAULT_TRUE)->count();
 
     }
 
     public function getScopeDisLikeCount() {
 
-        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('dislike_status', DEFAULT_TRUE);
+        return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'video_tape_id')->where('dislike_status', DEFAULT_TRUE)->count();
 
     }
 
     public function getLikeCount() {
 
         return $this->hasMany('App\LikeDislikeVideo', 'video_tape_id', 'id')->where('like_status', DEFAULT_TRUE);
+
+    }
+
+    public function getCategory() {
+
+        return $this->hasOne('App\Category', 'id', 'category_id');
 
     }
 
@@ -185,7 +230,7 @@ class VideoTape extends Model
 
     public function getScopeUserFlags() {
 
-         return $this->hasMany('App\Flag', 'video_tape_id', 'video_tape_id');
+         return $this->hasMany('App\Flag', 'video_tape_id', 'video_tape_id')->count();
 
     }
 
@@ -217,6 +262,54 @@ class VideoTape extends Model
         //delete your related models here, for example
         static::deleting(function($model)
         {
+
+            if ($model) {
+
+                Helper::delete_picture($model->video, "/uploads/videos/");
+
+                Helper::delete_picture($model->subtitle, "/uploads/subtitles/"); 
+
+                if ($model->banner_image) {
+
+                    Helper::delete_picture($model->banner_image, "/uploads/images/");
+                }
+
+                Helper::delete_picture($model->default_image, "/uploads/images/");
+
+                if ($model->video_path) {
+
+                    $explode = explode(',', $model->video_path);
+
+                    if (count($explode) > 0) {
+
+
+                        foreach ($explode as $key => $exp) {
+
+
+                            Helper::delete_picture($exp, "/uploads/videos/");
+
+                        }
+
+                    }
+        
+                }
+
+                if ($model->category_id) {
+
+                    $category = Category::find($model->category_id);
+
+                    if ($category) {
+
+                        $category->no_of_uploads = $category->no_of_uploads > 0 ? $category->no_of_uploads - 1 : 0;
+
+                        $category->save();
+
+                    }
+
+                }
+
+            }
+
             if (count($model->getVideoTapeImages) > 0) {
 
                 foreach ($model->getVideoTapeImages as $key => $value) {
@@ -243,7 +336,7 @@ class VideoTape extends Model
 
             }
 
-             if (count($model->getUserFlags) > 0) {
+            if (count($model->getUserFlags) > 0) {
 
                 foreach ($model->getUserFlags as $key => $value) {
 
@@ -254,16 +347,36 @@ class VideoTape extends Model
 
             }
 
-             if (count($model->getUserRatings) > 0) {
+            if (count($model->getUserRatings) > 0) {
 
                 foreach ($model->getUserRatings as $key => $value) {
 
                    $value->delete();    
 
                 }               
-            
 
             }
+
+            if (count($model->userHistory) > 0) {
+
+                foreach ($model->userHistory as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+
+            }
+
+            if (count($model->userWishlist) > 0) {
+
+                foreach ($model->userWishlist as $key => $value) {
+
+                   $value->delete();    
+
+                }               
+
+            }
+
 
         }); 
 

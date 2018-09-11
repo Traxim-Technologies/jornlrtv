@@ -58,6 +58,22 @@
 							
 						</h5>
 					<hr>
+					<strong>{{tr('no_of_users_limit')}}</strong>
+
+						<h5 class="pull-right">
+							
+							 {{$view_coupon->no_of_users_limit}} 
+							
+						</h5>
+					<hr>
+					<strong>{{tr('per_users_limit')}}</strong>
+
+						<h5 class="pull-right">
+							
+							 {{$view_coupon->per_users_limit}} 
+							
+						</h5>
+					<hr>
 					<strong>{{tr('status')}}</strong>
 						@if($view_coupon->status == 0)
 						<span class="label label-warning pull-right">{{tr('inactive')}}</span>

@@ -43,7 +43,7 @@
 							<label for = "title" class="col-sm-2 control-label"> * {{tr('title')}}</label>
 
 							<div class="col-sm-10">
-								<input type="text" name="title" role="title" min="5" max="20" class="form-control" placeholder="{{tr('enter_title')}}" value="{{$edit_coupon->title ?$edit_coupon->title : old('title') }}">
+								<input type="text" name="title" role="title" min="5" max="20" class="form-control" placeholder="{{tr('enter_coupon_title')}}" value="{{$edit_coupon->title ?$edit_coupon->title : old('title') }}">
 							</div>
 
 						</div> 
@@ -77,6 +77,20 @@
 							<label for="expiry_date" class="col-sm-2 control-label"> * {{tr('expiry_date')}}</label>
 							<div class="col-sm-10">
 								<input type="text" id="expiry_date" name="expiry_date"  class="form-control" placeholder="{{tr('expiry_date_coupon')}}" value="{{ $edit_coupon->expiry_date ? date('d-m-Y',strtotime($edit_coupon->expiry_date)) : old('expiry_date')}}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="no_of_users_limit" class="col-sm-2 control-label"> * {{tr('no_of_users_limit')}}</label>
+							<div class="col-sm-10">
+								<input type="text" pattern="[0-9]{1,4}" name="no_of_users_limit" class="form-control" placeholder="{{tr('no_of_users_limit')}}" value="{{$edit_coupon->no_of_users_limit}}" required title="{{tr('no_of_users_limit_notes')}}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="amount" class="col-sm-2 control-label"> * {{tr('per_users_limit')}}</label>
+							<div class="col-sm-10">
+								<input type="text" pattern="[0-9]{1,2}" name="per_users_limit" class="form-control" placeholder="{{tr('per_users_limit')}}" value="{{$edit_coupon->per_users_limit}}" required title="{{tr('per_users_limit_notes')}}">
 							</div>
 						</div>
 

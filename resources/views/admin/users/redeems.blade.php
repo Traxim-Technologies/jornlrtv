@@ -54,7 +54,7 @@
 
 							      	<td>
 
-							      		<a href="{{route('admin.view.user' , $value->user_id)}}">
+							      		<a href="{{route('admin.users.view' , $value->user_id)}}">
 							      			{{$value->user ? $value->user->name : ""}}
 							      		</a>
 
