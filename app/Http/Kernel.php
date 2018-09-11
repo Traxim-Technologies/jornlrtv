@@ -55,5 +55,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'UserApiVal' => \App\Http\Middleware\UserApiValidation::class,
         'PaypalCheck' => \App\Http\Middleware\PaypalCheckMiddleware::class,
+        'verifyUser' => \App\Http\Middleware\CheckUserVerification::class,
     ];
 }

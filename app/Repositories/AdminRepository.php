@@ -15,10 +15,24 @@ use App\AdsDetail;
 use App\VideoTape;
 use App\AssignVideoAd;
 use App\Language;
+use App\CustomLiveVideo;
 
 class AdminRepository {
 
-    public static function save_ad($request) {
+    /**
+     * Function Name : video_ads_save()
+     *
+     * To save the video ads when edit by the admin
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request : Video ad id with video ad details
+     *
+     * @return response of succes/failure response of details
+     */
+    public static function video_ads_save($request) {
 
     	try {
 
@@ -311,7 +325,20 @@ class AdminRepository {
 
     }*/
 
-    public static function ad_index() {
+    /**
+     * Function Name : ads_details_index()
+     *
+     * To List out all the ads which is created by admin
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param -
+     *
+     * @return response of Ad Details array of objects
+     */
+    public static function ads_details_index() {
 
         $model = AdsDetail::orderBy('created_at', 'desc')->get();
 
@@ -320,15 +347,43 @@ class AdminRepository {
     }
 
 
-    public static function ad_view($request) {
+    /**
+     * Function Name : video_ads_view()
+     *
+     * To get ads with video (Single video based on id)
+     *
+     * @created By - shobana
+     *
+     * @updated by - 
+     *
+     * @param Integer $request->id : Video id
+     *
+     * @return response of Ad Details Object with video details
+     */
+    public static function video_ads_view($request) {
 
         $model = VideoAd::with('getVideoTape')->find($request->id);
+
+        $model = $model ? $model : '';
 
         return response()->json($model);
 
     }
 
-    public static function ad_save($request) {
+    /**
+     * Function Name : ads_details_save()
+     *
+     * To save the ad for new & old object details
+     *
+     * @created By - shobana
+     *
+     * @updated by - Ad Details
+     *
+     * @param - 
+     *
+     * @return response of Ad Details Object
+     */
+    public static function ads_details_save($request) {
 
         try {
 
@@ -565,5 +620,87 @@ class AdminRepository {
         return $response_array;
     }
 
-    
+    /**
+     * Function : custom_live_videos_save()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @return Save the form data of the live video
+     */
+    public static function save_custom_live_video($request) {
+
+        if ($request->id) {
+
+            $validator = Validator::make($request->all(),array(
+                    'title' => 'required|max:255',
+                    'description' => 'required',
+                    'rtmp_video_url'=>'required|max:255',
+                    'hls_video_url'=>'required|max:255',
+                    'image' => 'mimes:jpeg,jpg,png'
+                )
+            );
+
+         } else {
+
+             $validator = Validator::make($request->all(),array(
+                'title' => 'max:255|required',
+                'description' => 'required',
+                'rtmp_video_url'=>'required|max:255',
+                'hls_video_url'=>'required|max:255',
+                'image' => 'required|mimes:jpeg,jpg,png'
+                )
+            );
+
+         }
+        
+        if($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = ['success'=>false, 'message'=>$error_messages];
+
+        } else {
+            
+            $model = ($request->id) ? CustomLiveVideo::find($request->id) : new CustomLiveVideo;
+            
+            $model->title = $request->has('title') ? $request->title : $model->title;
+
+            $model->description = $request->has('description') ? $request->description : $model->description;
+
+            $model->rtmp_video_url = $request->has('rtmp_video_url') ? $request->rtmp_video_url : $model->rtmp_video_url;
+
+            $model->hls_video_url = $request->has('hls_video_url') ? $request->hls_video_url : $model->hls_video_url;
+
+
+            if($request->hasFile('image')) {
+
+                if($request->id) {
+
+                    Helper::delete_picture($model->image, "/uploads/images/");
+
+                }
+
+                $model->image = Helper::normal_upload_picture($request->image , "/uploads/images/");
+            }
+                
+            $model->status = DEFAULT_TRUE;
+
+            if ($model->save()) {
+
+                $response_array = ['success'=>true, 'message'=> ($request->id) ? tr('live_custom_video_update_success') : tr('live_custom_video_create_success'), 'data' => $model];
+
+            } else {
+
+                $response_array = ['success'=>false, 'message'=>tr('something_error')];
+
+            }
+            
+        }
+
+        return response()->json($response_array);
+
+    }
+
 }

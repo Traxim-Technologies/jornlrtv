@@ -53,7 +53,7 @@
                                     <button type="reset" class="btn btn-primary signup-submit">{{tr('reset')}}</button>
                                 @else
 
-                                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                                    <button type="submit" class="btn btn-info">{{tr('submit')}}</button>
                                     <button type="reset" class="btn btn-primary signup-submit">{{tr('reset')}}</button>
                                 @endif
 

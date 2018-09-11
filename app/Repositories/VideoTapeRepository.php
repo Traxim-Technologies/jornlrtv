@@ -33,6 +33,10 @@ use App\UserRating;
 
 use App\User;
 
+use App\VideoTapeTag;
+
+use App\PayPerView;
+
 class VideoTapeRepository {
 
 
@@ -506,9 +510,11 @@ class VideoTapeRepository {
 
         $video_tape_details = VideoTape::where('video_tapes.id' , $video_tape_id)
                                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                                     ->where('video_tapes.status' , 1)
                                     ->where('video_tapes.publish_status' , 1)
                                     ->where('video_tapes.is_approved' , 1)
+                                    ->where('categories.status', CATEGORY_APPROVE_STATUS)
                                     ->videoResponse()
                                     ->first();
         if($video_tape_details) {
@@ -570,7 +576,7 @@ class VideoTapeRepository {
             }
 
 
-            $pay_per_view_status = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
+            $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details)->getData()->success;
 
             $ppv_notes = !$pay_per_view_status ? ($video_tape_details->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
 
@@ -586,7 +592,13 @@ class VideoTapeRepository {
 
             $data['share_url'] = route('user.single' , $video_tape_id);
 
+            $data['my_channel']= $video_tape_details->channel_created_by == $user_id ? DEFAULT_TRUE : DEFAULT_FALSE;
+
             $data['embed_link'] = route('embed_video', array('u_id'=>$video_tape_details->unique_id));
+
+            $data['tags'] = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                ->where('video_tape_id', $video_tape_id)->get()->toArray();
 
             $video_url = $video_tape_details->video;
 
@@ -622,9 +634,13 @@ class VideoTapeRepository {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.watch_count' , 'desc')
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
+                            ->where('channels.is_approved', 1)
+                            ->where('channels.status', 1)
                             ->videoResponse();
 
         if ($request->id) {
@@ -638,6 +654,17 @@ class VideoTapeRepository {
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
 
             }
+
+            $user = User::find($request->id);
+
+            if ($user) {
+
+                $request->request->add([
+                    'age_limit'=>$user->age_limit
+                ]);
+
+            }
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
         
         }
 
@@ -675,4 +702,146 @@ class VideoTapeRepository {
         return $url;
     }
 
+
+    /**
+     * Function Name : pay_per_views_status_check
+     *
+     * To check the status of the pay per view in each video
+     *
+     * @created_by - Shobana Chandrasekar
+     * 
+     * @updated_by - - 
+     *
+     * @param object $request - Video related details, user related details
+     *
+     * @return response of success/failure response of datas
+     */
+    public static function pay_per_views_status_check($user_id, $user_type, $video_data) {
+
+        // Check video details present or not
+
+        if ($video_data) {
+
+            // Check the video having ppv or not
+
+            if ($video_data->is_pay_per_view) {
+
+                $is_ppv_applied_for_user = DEFAULT_FALSE; // To check further steps , the user is applicable or not
+
+                // Check Type of User, 1 - Normal User, 2 - Paid User, 3 - Both users
+
+                switch ($video_data->type_of_user) {
+
+                    case NORMAL_USER:
+                        
+                        if (!$user_type) {
+
+                            $is_ppv_applied_for_user = DEFAULT_TRUE;
+                        }
+
+                        break;
+
+                    case PAID_USER:
+                        
+                        if ($user_type) {
+
+                            $is_ppv_applied_for_user = DEFAULT_TRUE;
+                        }
+                        
+                        break;
+                    
+                    default:
+
+                        // By default it will taks as Both Users
+
+                        $is_ppv_applied_for_user = DEFAULT_TRUE;
+
+                        break;
+                }
+
+                if ($is_ppv_applied_for_user) {
+
+                    // Check the user already paid or not
+
+                    $ppv_model = PayPerView::where('status', DEFAULT_TRUE)
+                        ->where('user_id', $user_id)
+                        ->where('video_id', $video_data->video_tape_id)
+                        ->orderBy('id','desc')
+                        ->first();
+
+                    $watch_video_free = DEFAULT_FALSE;
+
+                    if ($ppv_model) {
+
+                        // Check the type of payment , based on that user will watch the video 
+
+                        switch ($video_data->type_of_subscription) {
+
+                            case ONE_TIME_PAYMENT:
+                                
+                                $watch_video_free = DEFAULT_TRUE;
+                                
+                                break;
+
+                            case RECURRING_PAYMENT:
+
+                                // If the video is recurring payment, then check the user already watched the paid video or not 
+                                
+                                if (!$ppv_model->is_watched) {
+
+                                    $watch_video_free = DEFAULT_TRUE;
+                                }
+                                
+                                break;
+                            
+                            default:
+
+                                // By default it will taks as true
+
+                                $watch_video_free = DEFAULT_TRUE;
+
+                                break;
+                        }
+
+                        if ($watch_video_free) {
+
+                            $response_array = ['success'=>true, 'message'=>Helper::get_message(124), 'code'=>124];
+
+                        } else {
+
+                            $response_array = ['success'=>false, 'message'=>Helper::get_message(125), 'code'=>125];
+
+                        }
+
+                    } else {
+
+                        // 125 - User pay and watch the video
+
+                        $response_array = ['success'=>false, 'message'=>Helper::get_message(125), 'code'=>125];
+                    }
+
+                } else {
+
+                    $response_array = ['success'=>true, 'message'=>Helper::get_message(124), 'code'=>124];
+
+                }
+
+            } else {
+
+                // 124 - User can watch the video
+                
+                $response_array = ['success'=>true, 'message'=>Helper::get_message(123), 'code'=>124];
+
+            }
+
+        } else {
+
+            $response_array = ['success'=>false, 'error_messages'=>Helper::get_error_message(906), 
+                'error_code'=>906];
+
+        }
+
+        return response()->json($response_array);
+    
+    }
 }

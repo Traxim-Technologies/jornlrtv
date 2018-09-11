@@ -23,30 +23,40 @@
 	            
 	            <h3 class="box-title">{{tr('subscription_payments')}}</h3>
 
-	            <div class="box-tools pull-right">
-	                
-	                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-	                </button>
-	                
-	                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-	            </div>
-	        </div>
+
+				<a href="{{route('admin.revenues.ppv_payments')}}" class="small-box-footer">
+					{{tr('more_info')}}
+					<i class="fa fa-arrow-circle-right"></i>
+				</a>
+			</div>
 
 	        <!-- /.box-header -->
 
 	        <div class="box-body">
 	            <div class="row">
+	<div class="small-box bg-red">
+				<div class="inner">
+					<h3>{{Setting::get('currency')}} {{$subscription_total}}</h3>
+					<p>{{tr('subscription_payments')}}</p>
+				</div>
 
-	                <div class="col-md-12">
-	                    <p class="text-center">
-	                        <strong></strong>
-	                    </p>
-	                    
-	                    <div class="chart-responsive">
-	                        <canvas id="user_subscription" height="200px"></canvas>
-	                    </div>
-	                </div>
-	            </div>
+				<div class="icon">
+					<i class="fa fa-money"></i>
+				</div>
+
+				<a href="{{route('admin.revenues.subscription-payments')}}" class="small-box-footer">
+					{{tr('more_info')}}
+					<i class="fa fa-arrow-circle-right"></i>
+				</a>
+			</div>
+
+		</div>
+
+    </div>
+
+    <section id="ppv-section">
+
+		<div class="col-md-6" style="box-shadow: 1px -3px 10px 2px #dddddd;background-color: white">
 	        
 	        </div>
 

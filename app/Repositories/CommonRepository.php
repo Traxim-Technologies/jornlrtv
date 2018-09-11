@@ -24,6 +24,12 @@ use App\Jobs\SubscriptionMail;
 
 use App\Jobs\sendPushNotification;
 
+use App\Category;
+
+use App\VideoTapeTag;
+
+use App\Subscription;
+
 class CommonRepository {
 
 
@@ -196,7 +202,7 @@ class CommonRepository {
 
                 $error_messages = implode(',', $validator->messages()->all());
 
-                $response_array = ['success'=> false, 'error'=>$error_messages];
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
             }
 
         } else {
@@ -223,7 +229,7 @@ class CommonRepository {
 
                 $error_messages = implode(',', $validator->messages()->all());
 
-                $response_array = ['success'=> false, 'error'=>$error_messages];
+                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
 
                 // return back()->with('flash_errors', $error_messages);
 
@@ -283,7 +289,7 @@ class CommonRepository {
                     $response_array = ['success'=>true, 'message'=>$message, 'data'=>$channel];
                 } else {
                     // return back()->with('flash_error', tr('admin_not_error'));
-                    $response_array = ['success'=>false, 'error'=>tr('something_error')];
+                    $response_array = ['success'=>false, 'error_messages'=>tr('something_error')];
                 }
 
             }
@@ -302,11 +308,14 @@ class CommonRepository {
 
             $validator = Validator::make( $request->all(), array(
                         'title'         => 'required|max:255',
+                        'category_id'=>'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                        'tag_id'=>'required',
                         'description'   => 'required',
                         'channel_id'   => 'required|integer|exists:channels,id',
-                        'video'     => 'required|mimes:mkv,mp4,qt',
+                       // 'video'     => 'required|mimes:mkv,mp4,qt',
                         //'subtitle'=>'mimes:text/str',
                         'video_publish_type'=>'required',
+                        'video_type'=>'required|in:'.VIDEO_TYPE_UPLOAD.','.VIDEO_TYPE_YOUTUBE.','.VIDEO_TYPE_OTHERS
                         // 'age_limit'=>'required|numeric'
                         ));
 
@@ -325,6 +334,76 @@ class CommonRepository {
                 Log::info("Success validation and navigated to create new object");
 
                 $model = $request->has('id') ? VideoTape::find($request->id) : new VideoTape;
+
+                $required = 0;
+
+                if ($model->video_type != $request->video_type) {
+
+                    $required = 1;
+
+                }
+
+                if (in_array($request->video_type , [ VIDEO_TYPE_YOUTUBE , VIDEO_TYPE_OTHERS] )) {
+
+                    $OtherVideovalidator = Validator::make( $request->all(), array(
+                        'other_video'=> $required ? 'required|url' : 'url',
+                        'other_image' => $required ? 'required| mimes:jpeg,jpg,bmp,png' : 'mimes:jpeg,jpg,bmp,png',
+                    ));
+                    if($OtherVideovalidator->fails()) {
+
+                        $error_messages = implode(',', $OtherVideovalidator->messages()->all());
+
+                        Log::info("Video SAVE - Validation Fails".$error_messages);
+
+                        throw new Exception($error_messages);
+
+                    }
+
+                } else {
+
+                    if (Setting::get('ffmpeg_installed') == FFMPEG_NOT_INSTALLED) {
+
+                        throw new Exception(tr('ffmpeg_need_to_configure'));
+                        
+                    }
+
+                    $uploadVideovalidator = Validator::make( $request->all(), array(
+                        'video'=>$request->id ? 'mimes:mp4' : 'required|mimes:mp4',
+                    ));
+                    if($uploadVideovalidator->fails()) {
+
+                        $error_messages = implode(',', $uploadVideovalidator->messages()->all());
+
+                        Log::info("Video SAVE - Validation Fails".$error_messages);
+
+                        throw new Exception($error_messages);
+
+                    }
+
+                }
+
+                if ($model->id) {
+
+                    if ($request->video_type == VIDEO_TYPE_UPLOAD) {
+
+                        $uploadVideovalidator = Validator::make( $request->all(), array(
+                            'video'=>'required|mimes:mp4',
+                        ));
+
+                        if($uploadVideovalidator->fails()) {
+
+                            $error_messages = implode(',', $uploadVideovalidator->messages()->all());
+
+                            Log::info("Video SAVE - Validation Fails".$error_messages);
+
+                            throw new Exception($error_messages);
+
+                        }
+                        
+
+                    }
+
+                }
 
                 $model->title = $request->has('title') ? $request->title : $model->title;
 
@@ -352,74 +431,6 @@ class CommonRepository {
 
                 $model->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
 
-                if($model->id) {
-
-                    Helper::delete_picture($model->video, "/uploads/videos/");
-
-                }
-
-                if($request->hasFile('subtitle')) {
-
-                    if ($model->id) {
-
-                        if ($model->subtitle) {
-
-                            Helper::delete_picture($model->subtitle, "/uploads/subtitles/");  
-
-                        }  
-                    }
-
-                    $model->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
-
-                }
-
-                        
-                $main_video_duration = Helper::video_upload($request->video);
-
-                $model->video = $main_video_duration['db_url'];
-
-                $model->is_banner = $request->has('is_banner') ? $request->is_banner : DEFAULT_FALSE;
-
-                $getDuration = readFileName($main_video_duration['baseUrl']);
-
-                $seconds = 10;
-
-                Log::info('seconds : '.$seconds);
-
-                if ($getDuration) {
-
-                    $model->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
-
-                    $seconds = $getDuration['hours'] * 3600 + $getDuration['mins'] * 60 + $getDuration['secs'];
-
-                }
-
-                if ($seconds <= 0) {
-
-                    $seconds = 10;
-
-                }
-
-                $model->unique_id = $model->title;
-
-                $img = time();
-
-                $FFmpeg = new \FFmpeg;
-
-                $frames = ($model->is_banner == DEFAULT_TRUE) ? 4 : 3;
-
-                Log::info('frames : ' .$frames);
-
-                Log::info('seconds with frames : '.($seconds/$frames));
-
-                $FFmpeg
-                    ->input($main_video_duration['baseUrl'])
-                    ->constantVideoFrames($frames)
-                    ->customVideoFrames(1 / ($seconds/$frames))
-                    ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
-                    ->ready();
-
-
                 $model->publish_time = $request->has('publish_time') 
                             ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : '';
                 
@@ -443,16 +454,175 @@ class CommonRepository {
                     
                 }
 
-                if ($request->video->getClientSize()) {
 
-                    $bytes = convertMegaBytes($request->video->getClientSize());
+                if($request->hasFile('subtitle')) {
 
-                    if ($bytes > Setting::get('video_compress_size')) {
+                    if ($model->id) {
 
-                    } else {
+                        if ($model->subtitle) {
 
-                        $model->compress_status = DEFAULT_TRUE;
-                        $model->status = DEFAULT_TRUE;
+                            Helper::delete_picture($model->subtitle, "/uploads/subtitles/");  
+
+                        }  
+                    }
+
+                    $model->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
+
+                }
+
+                /**
+                 | Step 1: check the video type = VIDEO_TYPE_UPLOAD , VIDEO_TYPE_YOUTUBE , VIDEO_TYPE_OTHERS
+                 |
+                 | Step 2: video_type == VIDEO_TYPE_YOUTUBE || VIDEO_TYPE_OTHERS
+                 |
+                 |          - save the video details and image
+                 |
+                 | Step 3: video_type = VIDEO_TYPE_UPLOAD
+                 |
+                 |          - Based on the comporession status and video size, convert the video by different
+                 |          - solutions.
+                 |
+                 */
+
+                $model->video_type = $request->video_type;
+
+                $main_video_duration = "";
+
+                $frames = 0;
+
+                Log::info("video_type".$request->video_type);
+
+                $model->is_banner = $request->has('is_banner') ? $request->is_banner : DEFAULT_FALSE;
+
+                // Save Category
+
+                $new_category = 1;
+
+                $old_category = "";
+
+                if ($model->category_id) {
+
+                    $old_category = Category::find($model->category_id);
+
+                }
+
+                if ($request->category_id == $model->category_id) {
+
+                    $new_category = 0;
+
+                }
+
+                $model->category_id = $request->category_id;
+
+                $category = Category::find($request->category_id);
+
+                $model->category_name = $category->name;
+
+                $model->unique_id = $model->title;
+
+                if(in_array($request->video_type , [ VIDEO_TYPE_YOUTUBE , VIDEO_TYPE_OTHERS] )) {
+
+                    Log::info("INSIDE".$request->video_type);
+
+                    $model->compress_status = DEFAULT_TRUE;
+                    
+                    $model->status = DEFAULT_TRUE;
+
+                    // Check the previous video upload type and delete the video, if file upload 
+
+                    if($model->id) {
+
+                        Helper::delete_picture($model->video, "/uploads/videos/");
+
+                        self::deleteVideoTapeImage($model->id);
+                    }
+
+                    $model->video = $model->id ? ($request->other_video ? $request->other_video : $model->video) : $request->other_video;
+
+
+                    if($request->hasFile('other_image')) {
+
+
+                        if ($model->id) {
+
+                            Helper::delete_picture($model->default_image, "/uploads/images/");
+
+                        }
+
+                        $model->default_image = Helper::normal_upload_picture($request->file('other_image') , '/uploads/images/');
+                    }
+
+                    $model->duration = $request->duration ? $request->duration : $model->duration;
+
+                } else {
+                        
+                    // Delete previous videos
+
+                    if($request->hasFile('video')) {
+            
+                        if($model->id) {
+
+                            Helper::delete_picture($model->video, "/uploads/videos/");
+
+                        }
+
+                        $main_video_duration = Helper::video_upload($request->video);
+
+                        $model->video = $main_video_duration['db_url'];
+
+                        $getDuration = readFileName($main_video_duration['baseUrl']);
+
+                        $seconds = 10;
+
+                        Log::info('seconds : '.$seconds);
+
+                        if ($getDuration) {
+
+                            $model->duration = $getDuration['hours'].':'.$getDuration['mins'].':'.$getDuration['secs'];
+
+                            $seconds = $getDuration['hours'] * 3600 + $getDuration['mins'] * 60 + $getDuration['secs'];
+
+                        }
+
+                        if ($seconds <= 0) {
+
+                            $seconds = 10;
+
+                        }
+
+                        $img = time();
+
+                        $FFmpeg = new \FFmpeg;
+
+                        $frames = ($model->is_banner == DEFAULT_TRUE) ? 4 : 3;
+
+                        Log::info('frames : ' .$frames);
+
+                        Log::info('seconds with frames : '.($seconds/$frames));
+
+                        $FFmpeg
+                            ->input($main_video_duration['baseUrl'])
+                            ->constantVideoFrames($frames)
+                            ->customVideoFrames(1 / ($seconds/$frames))
+                            ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
+                            ->ready();
+
+
+                        if ($request->video->getClientSize()) {
+
+                            $bytes = convertMegaBytes($request->video->getClientSize());
+
+                            if ($bytes > Setting::get('video_compress_size')) {
+
+                            } else {
+
+                                $model->compress_status = DEFAULT_TRUE;
+
+                                $model->status = DEFAULT_TRUE;
+                            }
+
+                        }
+
                     }
 
                 }
@@ -465,104 +635,207 @@ class CommonRepository {
 
                 if($model->save()) {
 
-                    if($main_video_duration) {
+                    if ($request->tag_id) {
 
-                        $inputFile = $main_video_duration['baseUrl'];
-                        $local_url = $main_video_duration['local_url'];
-                        $file_name = $main_video_duration['file_name'];
+                        $tag = VideoTapeTag::select('tag_id')
+                                ->where('video_tape_id', $model->id)
+                                ->get()
+                                ->pluck('tag_id')
+                                ->toArray();
 
-                        if (file_exists($inputFile)) {
-                            Log::info("Main queue Videos : ".'Success');
-                            dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
-                            Log::info("Main queue completed : ".'Success');
-                        }
-                    }
+                        foreach ($tag as $key => $video_tag_id) {
+                           
+                            if(in_array($video_tag_id, $request->tag_id)) {
+             
 
+                            } else {
 
-                    if (envfile('QUEUE_DRIVER') != 'redis') {
+                                $video_tag = VideoTapeTag::where('tag_id', $video_tag_id)
+                                        ->where('video_tape_id', $model->id)->first();
 
-                        \Log::info("Queue Driver : ".envfile('QUEUE_DRIVER'));
+                                if ($video_tag) {
 
-                        $model->status = DEFAULT_TRUE;
-
-                        $model->compress_status = DEFAULT_TRUE;
-
-                        $model->save();
-                    }
-
-                   $video_path = [];
-                    
-                   Log::info('Video Id Ajax : '.$model->id);
-
-                    $get_image_model = ($request->id) ? self::deleteVideoTapeImage($model->id) : []; 
-
-                    $img_status = DEFAULT_FALSE;
-
-                    for ($i = 0 ; $i < $frames; $i++) {
-         
-                        // Create a thunail images
-
-                        $pos = $i+1;
-
-                        $video_path[] = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
-
-
-                        if($model->is_banner && $i == 0) {
-
-                            if($model->banner_image) {
-
-                                Helper::delete_picture($model->banner_image, "/uploads/images/");
+                                    $video_tag->delete();
+                                    
+                                }
 
                             }
 
-                            $model->banner_image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+                        }
 
-                            // print_r($model->banner_image);
+                        foreach ($request->tag_id as $key => $tag_id) {
+                            
+                            $tag = VideoTapeTag::where('tag_id', $tag_id)
+                                        ->where('video_tape_id', $model->id)->first();
 
-                            $img_status = DEFAULT_TRUE;
+                            if (!$tag) {
+
+                                $tag = new VideoTapeTag;
+
+                            }
+
+                            $tag->video_tape_id = $model->id;
+
+                            $tag->tag_id = $tag_id;
+
+                            $tag->save();
+
+                        }
+
+                    }
+
+
+                    if ($new_category) {
+
+                        $category->no_of_uploads += 1;
+
+                        $category->save(); 
+
+                        if($old_category) {
+
+                            $old_category->no_of_uploads =  $old_category->no_of_uploads > 0 ? $old_category->no_of_uploads - 1  : 0;
+
+                            $old_category->save();
+
+                        }
                         
+                    }
+
+                    $video_path = [];
+
+
+                    // Start queues for videos 
+
+                    if($model->video_type == VIDEO_TYPE_UPLOAD) {
+
+                        // Check the redis enable status - If no redis, remove compression video queue
+                        
+                        if (envfile('QUEUE_DRIVER') != 'redis' || Setting::get('ffmpeg_installed') == FFMPEG_NOT_INSTALLED) {
+
+                            \Log::info("Queue Driver : ".envfile('QUEUE_DRIVER'));
+
+                            $model->status = DEFAULT_TRUE;
+
+                            $model->compress_status = DEFAULT_TRUE;
+
+                            $model->save();
+
+                        } else {
+
+                             // To start compression process, based on the main video duration
+
+                            Log::info(print_r($main_video_duration, true));
+
+                            if($main_video_duration) {
+
+                                $inputFile = $main_video_duration['baseUrl'];
+                                $local_url = $main_video_duration['local_url'];
+                                $file_name = $main_video_duration['file_name'];
+
+                                if (file_exists($inputFile)) {
+
+                                    $model->status = DEFAULT_FALSE;
+
+                                    $model->compress_status = DEFAULT_FALSE;
+
+                                    $model->save();
+
+                                    Log::info("Main queue Videos : ".'Success');
+
+                                    dispatch(new CompressVideo($inputFile, $local_url, $model->id, $file_name));
+
+                                    Log::info("Main queue completed : ".'Success');
+                                }
+                            } else {
+
+                                $model->status = DEFAULT_TRUE;
+
+                                $model->compress_status = DEFAULT_TRUE;
+
+                                $model->save();
+
+                            }
                         }
 
-                        if ($i == $img_status) {
+                        if ($frames > 0) {
 
-                            if($model->default_image) {
+                           Log::info('Video Id Ajax : '.$model->id);
 
-                                Helper::delete_picture($model->default_image, "/uploads/images/");
+                            $get_image_model = ($request->id) ? self::deleteVideoTapeImage($model->id) : []; 
+
+                            $img_status = DEFAULT_FALSE;
+
+                            for ($i = 0 ; $i < $frames; $i++) {
+                 
+                                // Create a thunail images
+
+                                $pos = $i+1;
+
+                                $video_path[] = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+
+                                if($model->is_banner && $i == 0) {
+
+                                    if($model->banner_image) {
+
+                                        Helper::delete_picture($model->banner_image, "/uploads/images/");
+
+                                    }
+
+                                    $model->banner_image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+                                    // print_r($model->banner_image);
+
+                                    $img_status = DEFAULT_TRUE;
+                                
+                                }
+
+                                if ($i == $img_status) {
+
+                                    if($model->default_image) {
+
+                                        Helper::delete_picture($model->default_image, "/uploads/images/");
+
+                                    }
+
+                                    $model->default_image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+                                }
+
+                                if($i > $img_status) {
+
+                                    $video_img = new VideoTapeImage();
+
+                                    $video_img->video_tape_id = $model->id;
+
+                                    $video_img->image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
+
+                                    $video_img->is_default = 0;
+
+                                    $video_img->position = $pos;
+
+                                    $video_img->save();
+                                }
 
                             }
 
-                            $model->default_image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
-
-                        }
-
-                        if($i > $img_status) {
-
-                            $video_img = new VideoTapeImage();
-
-                            $video_img->video_tape_id = $model->id;
-
-                            $video_img->image = Helper::web_url().'/uploads/images/'.$model->channel_id.'_'.$img.'_00'.$pos.'.png';
-
-                            $video_img->is_default = 0;
-
-                            $video_img->position = $pos;
-
-                            $video_img->save();
                         }
 
                     }
 
                     $model->save();
 
-                    // Channel Subscription email
+                    if ($model->status && $model->compress_status) {
 
-                    dispatch(new SubscriptionMail($model->channel_id, $model->id));
+                        // Channel Subscription email
 
-                    $push_message = $model->title;
+                        dispatch(new SubscriptionMail($model->channel_id, $model->id));
 
-                    dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+                        $push_message = $model->title;
 
-                    $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
+                        dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+
+                    }
                    
                 } else {
                     
@@ -575,11 +848,13 @@ class CommonRepository {
 
             DB::commit();
 
+            $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
+
         } catch (Exception $e) {
 
             DB::rollBack();
 
-            $response_array = ['success'=>false, 'message'=>$e->getMessage()];
+            $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
 
         }
 
@@ -701,141 +976,391 @@ class CommonRepository {
 
     public static function upload_video_image($request) {
 
-        $video = VideoTape::find($request->default_image_id);
+        try {
 
-        $video->title = $request->has('title') ? $request->title : $video->title;
+            DB::beginTransaction();
 
-        $video->description = $request->has('description') ? $request->description : $video->description;
+            $video = VideoTape::find($request->default_image_id);
 
-        $video->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
+            if ($video) {
 
-        $video->channel_id = $request->has('channel_id') ? $request->channel_id : $video->channel_id;
+                $required = 0;
 
-        $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;
+                if ($video->video_type != $request->video_type) {
 
-        $video->ratings = $request->has('ratings') ? $request->ratings : $video->ratings;
+                    $required = 1;
 
-        $video->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $video->video_publish_type;
+                }
 
-        $video->publish_time = $request->has('publish_time') 
-                        ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : $video->publish_time;
+                if (in_array($request->video_type , [ VIDEO_TYPE_YOUTUBE , VIDEO_TYPE_OTHERS] )) {
+                    $OtherVideovalidator = Validator::make( $request->all(), array(
+                        'other_video'=>'required|url',
+                        'other_image' => $required ? 'required|mimes:jpeg,jpg,bmp,png' : 'mimes:jpeg,jpg,bmp,png',
+                    ));
+                    if($OtherVideovalidator->fails()) {
 
-         if($request->hasFile('subtitle')) {
 
-            if ($video->id) {
+                        $error_messages = implode(',', $OtherVideovalidator->messages()->all());
 
-                if ($video->subtitle) {
+                        Log::info("Video SAVE - Validation Fails".$error_messages);
 
-                    Helper::delete_picture($video->subtitle, "/uploads/subtitles/");  
+                        throw new Exception($error_messages);
 
-                }  
+                    }
+
+                    self::deleteVideoTapeImage($video->id);
+
+                    Helper::delete_picture($video->video, "/uploads/videos/");
+
+                } else {
+
+                    $uploadVideovalidator = Validator::make( $request->all(), array(
+                        'video'=>$required ? 'required' : '',
+                    ));
+                    if($uploadVideovalidator->fails()) {
+
+                        $error_messages = implode(',', $uploadVideovalidator->messages()->all());
+
+                        Log::info("Video SAVE - Validation Fails".$error_messages);
+
+                        throw new Exception($error_messages);
+
+                    }
+
+                }
+
+                $video->video_type =  $request->video_type;
+
+                $video->title = $request->has('title') ? $request->title : $video->title;
+
+                $video->description = $request->has('description') ? $request->description : $video->description;
+
+                $video->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
+
+                $video->channel_id = $request->has('channel_id') ? $request->channel_id : $video->channel_id;
+
+                $video->reviews = $request->has('reviews') ? $request->reviews : $video->reviews;
+
+                $video->ratings = $request->has('ratings') ? $request->ratings : $video->ratings;
+
+                $video->video_publish_type = $request->has('video_publish_type') ? $request->video_publish_type : $video->video_publish_type;
+
+                $video->publish_time = $request->has('publish_time') 
+                                ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : $video->publish_time;
+
+                if($request->hasFile('subtitle')) {
+
+                    if ($video->id) {
+
+                        if ($video->subtitle) {
+
+                            Helper::delete_picture($video->subtitle, "/uploads/subtitles/");  
+
+                        }  
+                    }
+
+                    $video->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
+
+                }
+
+                 // Save Category
+
+                $new_category = 1;
+
+                $old_category = "";
+
+                if ($video->category_id) {
+
+                    $old_category = Category::find($video->category_id);
+
+                }
+
+                if ($request->category_id == $video->category_id) {
+
+                    $new_category = 0;
+
+                }
+
+                $video->category_id = $request->category_id;
+
+                $category = Category::find($request->category_id);
+
+                $video->category_name = $category->name;
+
+                $video->status = DEFAULT_TRUE;
+
+               /* $video->tags = $request->tags ? (is_array($request->tags) ? implode(',', $request->tags) : $request->tags) : '';*/
+
+                $video->save();
+
+                if ($request->tag_id) {
+
+                    $tag = VideoTapeTag::select('tag_id')
+                            ->where('video_tape_id', $video->id)
+                            ->get()
+                            ->pluck('tag_id')
+                            ->toArray();
+
+                    foreach ($tag as $key => $video_tag_id) {
+                       
+                        if(in_array($video_tag_id, $request->tag_id)) {
+         
+
+                        } else {
+
+                            $video_tag = VideoTapeTag::where('tag_id', $video_tag_id)
+                                    ->where('video_tape_id', $video->id)->first();
+
+                            if ($video_tag) {
+
+                                $video_tag->delete();
+                                
+                            }
+
+                        }
+
+                    }
+
+                    foreach ($request->tag_id as $key => $tag_id) {
+                        
+                        $tag = VideoTapeTag::where('tag_id', $tag_id)
+                                    ->where('video_tape_id', $video->id)->first();
+
+                        if (!$tag) {
+
+                            $tag = new VideoTapeTag;
+
+                        }
+
+                        $tag->video_tape_id = $video->id;
+
+                        $tag->tag_id = $tag_id;
+
+                        $tag->save();
+
+                    }
+
+                }
+
+                if ($new_category) {
+
+                    $category->no_of_uploads += 1;
+
+                    $category->save(); 
+
+                    if ($old_category) {
+
+                        $old_category->no_of_uploads =  $old_category->no_of_uploads > 0 ? $old_category->no_of_uploads - 1  : 0;
+
+                        $old_category->save();
+
+                    }
+                    
+                }
+
+                if ($request->banner_image)  {
+
+                    $model = VideoTape::find($request->default_image_id);
+
+                    if($model->banner_image)  {
+                        Helper::delete_picture($model->banner_image, "/uploads/images/");
+                    }
+                    $model->banner_image = Helper::normal_upload_picture($request->file('banner_image'), "/uploads/images/");
+
+                    $model->save();
+
+                }
+                if ($request->default_image)  {
+
+                    $model = VideoTape::find($request->default_image_id);
+
+                    if($model->default_image)  {
+                        Helper::delete_picture($model->default_image, "/uploads/images/");
+                    }
+                    $model->default_image = Helper::normal_upload_picture($request->file('default_image'), "/uploads/images/");
+
+                    $model->save();
+
+                }
+
+                if ($request->other_image_1)  {
+
+                    $model = VideoTapeImage::find($request->other_image_id_1);
+
+                    if($model->image)  {
+                        Helper::delete_picture($model->image, "/uploads/images/");
+                    }
+                    $model->image = Helper::normal_upload_picture($request->file('other_image_1'), "/uploads/images/");
+
+                    $model->save();
+                    
+                }
+
+
+                if ($request->other_image_2)  {
+
+                    $model = VideoTapeImage::find($request->other_image_id_2);
+
+                    if($model->image)  {
+                        Helper::delete_picture($model->image, "/uploads/images/");
+                    }
+                    $model->image = Helper::normal_upload_picture($request->file('other_image_2'), "/uploads/images/");
+
+                    $model->save();
+                    
+                }
+
+                DB::commit();
+
+                $response_array = ['success'=>true, 'default_image_id'=>$request->default_image_id];
+
+            } else {
+
+
+                throw new Exception(tr('video_not_found'));
+                
+
             }
 
-            $video->subtitle =  Helper::subtitle_upload($request->file('subtitle'));
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            $response_array = ['success'=>false, 'error_messages'=> $e->getMessage()];
 
         }
 
-        $video->save();
-
-        if ($request->banner_image)  {
-
-            $model = VideoTape::find($request->default_image_id);
-
-            if($model->banner_image)  {
-                Helper::delete_picture($model->banner_image, "/uploads/images/");
-            }
-            $model->banner_image = Helper::normal_upload_picture($request->file('banner_image'), "/uploads/images/");
-
-            $model->save();
-
-        }
-        if ($request->default_image)  {
-
-            $model = VideoTape::find($request->default_image_id);
-
-            if($model->default_image)  {
-                Helper::delete_picture($model->default_image, "/uploads/images/");
-            }
-            $model->default_image = Helper::normal_upload_picture($request->file('default_image'), "/uploads/images/");
-
-            $model->save();
-
-        }
-
-        if ($request->other_image_1)  {
-
-            $model = VideoTapeImage::find($request->other_image_id_1);
-
-            if($model->image)  {
-                Helper::delete_picture($model->image, "/uploads/images/");
-            }
-            $model->image = Helper::normal_upload_picture($request->file('other_image_1'), "/uploads/images/");
-
-            $model->save();
-            
-        }
-
-
-        if ($request->other_image_2)  {
-
-            $model = VideoTapeImage::find($request->other_image_id_2);
-
-            if($model->image)  {
-                Helper::delete_picture($model->image, "/uploads/images/");
-            }
-            $model->image = Helper::normal_upload_picture($request->file('other_image_2'), "/uploads/images/");
-
-            $model->save();
-            
-        }
-
-        return response()->json($request->default_image_id);
-
+        return response()->json($response_array);
     }
 
 
-
+    /**
+     * Function Name : users_subscription_save
+     *
+     * To save subscription details based on user id
+     *
+     * @created By - shobana
+     *
+     * @updated by - -
+     *
+     * @param integer $s_id - Subscription id, $u_id - User id
+     * 
+     * @return - response of array of subscription details
+     *
+     */
     public static function save_subscription($s_id, $u_id) {
 
-        $load = UserPayment::where('user_id', $u_id)->orderBy('created_at', 'desc')->first();
+        $subscription = Subscription::find($s_id);
 
-        $payment = new UserPayment();
+        if ($subscription) {
 
-        $payment->subscription_id = $s_id;
+            $load = UserPayment::where('user_id', $u_id)->orderBy('created_at', 'desc')->first();
 
-        $payment->user_id = $u_id;
+            $payment = new UserPayment();
 
-        $payment->amount = ($payment->getSubscription) ? $payment->getSubscription->amount  : 0;
+            $payment->subscription_id = $s_id;
 
-        $payment->payment_id = ($payment->amount > 0) ? uniqid(str_replace(' ', '-', 'PAY')) : 'Free Plan'; 
+            $payment->user_id = $u_id;
 
-        if ($load) {
-            $payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$payment->getSubscription->plan} months", strtotime($load->expiry_date)));
+            $payment->amount =   $subscription->amount ;
+
+            $payment->subscription_amount =  $subscription->amount;
+
+            $payment->payment_id = ($payment->amount > 0) ? uniqid(str_replace(' ', '-', 'PAY')) : 'Free Plan'; 
+
+            if ($load) {
+                $payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($load->expiry_date)));
+            } else {
+                $payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+            }
+
+            $payment->status = DEFAULT_TRUE;
+
+            if ($payment->save())  {
+
+                $payment->user->user_type = DEFAULT_TRUE;
+
+                if($payment->amount == 0) {
+
+                    $payment->user->zero_subscription_status = DEFAULT_TRUE;
+                }
+
+                if ($payment->user->save()) {
+
+                    return response()->json(['success'=> true, 'message'=>tr('subscription_applied_success')]);
+
+                }
+
+            }
+
+            return response()->json(['success'=> false, 'message'=>tr('something_error')]);
+
         } else {
-            $payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$payment->getSubscription->plan} months"));
+
+            return response()->json(['success'=> false, 'message'=>tr('subscription_not_found')]);
         }
-
-        $payment->status = DEFAULT_TRUE;
-
-        if ($payment->save())  {
-
-            $payment->user->user_type = DEFAULT_TRUE;
-
-            if($payment->amount == 0) {
-
-                $payment->user->zero_subscription_status = DEFAULT_TRUE;
-            }
-
-            if ($payment->user->save()) {
-
-                return response()->json(['success'=> true, 'message'=>tr('subscription_applied_success')]);
-
-            }
-
-        }
-
-        return response()->json(['success'=> false, 'message'=>tr('something_error')]);
     }
 
+    /**
+     * Function Name : videos_compression_complete()
+     *
+     * @uses To complete the compressing videos
+     *
+     * @param integer video id - Video id
+     *
+     * @created: shobana chandrasekar
+     *
+     * @updated: -
+     *
+     * @return response of success/failure message
+     */
+    public static function videos_compression_complete(Request $request) {
+
+        try {
+
+            $video = VideoTape::find($request->id);
+
+            if ($video) {
+
+                // Check the video has compress state or not
+
+                if ($video->compress_status <= DEFAULT_FALSE) {
+
+                    $video->status = DEFAULT_TRUE;
+
+                    $video->compress_status = DEFAULT_TRUE;
+
+                    if($video->save()){
+
+                    
+                    } else {
+
+                        throw new Exception(tr('video_not_saved'));
+                    
+                    }
+
+                } else {
+
+                    throw new Exception(tr('already_video_compressed'));
+                    
+                }
+
+            } else {
+
+                throw new Exception(tr('video_not_found'));
+                
+            }
+
+            $response_array = ['success'=>true, 'message'=> tr('video_compress_success')];
+
+            return response()->json($response_array);
+
+        } catch(Exception $e) {
+
+            $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+
+            return response()->json($response_array);
+        }
+    }
 
 }

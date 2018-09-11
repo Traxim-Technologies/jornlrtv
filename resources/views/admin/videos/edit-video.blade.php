@@ -16,7 +16,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.videos')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
+    <li><a href="{{route('admin.videos.list')}}"><i class="fa fa-video-camera"></i>{{tr('videos')}}</a></li>
     <li class="active"><i class="fa fa-video-camera"></i> {{tr('edit_video')}}</li>
 @endsection 
 
@@ -51,6 +51,16 @@
                 <ul class="nav nav-tabs" role="tablist">
 
                     <li role="presentation" class="active">
+
+                        <a href="#pre-step1" data-toggle="tab" aria-controls="pre-step1" role="tab" title="{{tr('choose_video_type')}}">
+                            <span class="round-tab">
+                                <i class="fa fa-file-video-o"></i>
+                            </span>
+                        </a>
+                   
+                    </li>
+
+                    <li role="presentation" class="disabled">
                         <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="{{tr('video_details')}}">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-book"></i>
@@ -83,9 +93,92 @@
                 </ul>
             </div>
 
-            <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.video_save')}}">
+            <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.videos.save')}}">
                 <div class="tab-content">
-                    <div class="tab-pane active" role="tabpanel" id="step1">
+
+                    <div class="tab-pane active" role="tabpanel" id="pre-step1">
+
+                        <h3>{{tr('choose')}} {{tr('video_upload_type')}}</h3>
+                        <hr>
+
+                        <div id="category">
+
+                            <?php
+                                $u_css = ($video->video_type == VIDEO_TYPE_UPLOAD) ? 'category-item-active' : '';
+                            ?>
+
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+
+                                <a onclick="saveVideoType({{VIDEO_TYPE_UPLOAD}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center {{$u_css}}">
+
+                                    <div style="background-image: url({{asset('assets/img/file-upload-icon.jpg')}})" class="category-img bg-img"></div>
+
+                                    <h3 class="category-tit">@if($u_css)<i class="fa fa-check-circle" style="color:#51af33" aria-hidden="true"></i>@endif File Upload</h3>
+
+                                </a>
+
+                            </div>
+
+                            <?php
+                                $y_css = ($video->video_type == VIDEO_TYPE_YOUTUBE) ? 'category-item-active' : '';
+                            ?>
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+
+                                <a onclick="saveVideoType({{VIDEO_TYPE_YOUTUBE}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center {{$y_css}}">
+
+                                    <div style="background-image: url({{asset('assets/img/upload-to-youtube.png')}})" class="category-img bg-img"></div>
+
+                                    <h3 class="category-tit">@if($y_css)<i class="fa fa-check-circle" style="color:#51af33" aria-hidden="true"></i>@endif YouTube Link</h3>
+
+                                </a>
+
+                            </div>
+
+                            <?php
+                                $o_css = ($video->video_type == VIDEO_TYPE_OTHERS) ? 'category-item-active' : '';
+                            ?>
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+
+                                <a onclick="saveVideoType({{VIDEO_TYPE_OTHERS}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center {{$o_css}}">
+
+                                    <div style="background-image: url({{asset('assets/img/others.png')}})" class="category-img bg-img"></div>
+
+                                    <h3 class="category-tit">@if($o_css)<i class="fa fa-check-circle" style="color:#51af33" aria-hidden="true"></i>@endif Others</h3>
+
+                                </a>
+
+                            </div>
+
+                            <input type="hidden" name="video_type" id="video_type" value="{{$video->video_type}}" />
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <ul class="list-inline">
+
+                            <!-- <li class="pull-left">
+
+                                <button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button>
+
+                            </li> -->
+
+                            <li class="pull-right">
+
+                                <button type="button" class="btn btn-primary next-step" id="{{REQUEST_STEP_PRE_1}}">{{tr('next')}}</button>
+
+                            </li>
+
+                            <div class="clearfix"></div>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="tab-pane" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
 
                         <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
@@ -183,23 +276,89 @@
                             </div>
                             <div class="clearfix"></div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                             <div class="form-data">
+
+                                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                         
+                                          <label for="video" class="control-label">{{tr('category')}}</label>
+                                          <div class="clearfix"></div>
+                                          <div>
+
+                                            <select id="category_id" name="category_id" class="form-control select2" required data-placeholder="{{tr('select_category')}}*" style="width: 100% !important">
+                                                @foreach($categories as $category)
+                                                      <option value="{{$category->category_id}}" @if($category->category_id ==  $video->category_id) selected @endif>{{$category->category_name}}</option>
+                                                    @endforeach
+                                            </select>
+
+                                          </div>
+                                       
+                                      </div>
+
+                                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                         
+                                          <label for="video" class="control-label">{{tr('tags')}}</label>
+                                          <div class="clearfix"></div>
+                                          <div>
+                                              
+                                            <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
+                                                @foreach($tags as $tag)
+                                                      <option value="{{$tag->tag_id}}" {{in_array($tag->tag_id, $video->tag_id) ? 'selected' : ''}}>{{$tag->tag_name}}</option>
+                                                @endforeach
+                                            </select>
+
+
+                                          </div>
+                                       
+                                      </div>
+
+                                      <div class="clearfix"></div>
+
+                                      <br>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="display: none;" id="duration_div">
                                 <div class="form-group">
-                                    <label for="description" class="">{{tr('description')}} * </label>
-                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description">{{$video->description}}</textarea>
+                                    <label>{{tr('duration')}} * : </label><small> {{tr('duration_note')}}</small>
+
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration" value="{{$video->duration}}">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="reviews" class="">{{tr('reviews')}} * </label>
                                     <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews_textarea" name="reviews">{{$video->reviews}}</textarea>
                                 </div>
                             </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="description" class="">{{tr('description')}} * </label>
+                                    <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description">{{$video->description}}</textarea>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <ul class="list-inline pull-right">
-                            <li>
+                        <ul class="list-inline">
+                             <li class="pull-left">
+                                <button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button>
+
+                            </li>
+
+                            <li class="pull-right">
+
                                 <button type="button" style="display: none;" id="{{REQUEST_STEP_1}}" class="btn btn-primary next-step">{{tr('next')}}</button>
+
                                 <button type="button" class="btn btn-primary" onclick="saveVideoDetails({{REQUEST_STEP_1}})">{{tr('next')}}</button>
+
+                                
                             </li>
                         </ul>
                     </div>
@@ -231,7 +390,46 @@
 
                     <div class="tab-pane" role="tabpanel" id="step3">
 
-                         <div class="">
+                         <div id="others_video_upload_section" style="display: none;">
+
+                            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <p>{{tr('video_type')}} - <span id="selected_video_type"></span></p>
+
+                            </div> -->
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <div class="form-group">
+
+                                    <label for="other_video" class="">{{tr('video')}} * </label>
+
+                                    <input type="url" required class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}" value="{{$video->video}}">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <label>Choose Image</label>
+
+                                <input type="file" name="other_image" id="other_image" class="form-control" accept="image/png, image/jpeg">
+
+                                <div class="clearfix"></div>
+
+                                <br>
+
+                                <img src="{{$video->default_image}}" style="width: 200px;height: 150px;">
+
+                            </div>
+
+                        </div>
+
+
+                         <div class="" id="file_video_upload_section">
                             <div class="dropify-wrapper" onclick="$('#video_file').click();return false;">
                               <div class="dropify-message">
                                 <span class="file-icon">
@@ -245,7 +443,7 @@
                               </div>
                             </div>
 
-                            <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();" required>
+                            <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();">
 
                             <br>
                             <div class="progress" class="col-sm-12">
@@ -253,14 +451,26 @@
                                 <div class="percent">0%</div >
                             </div>
 
-                            <input type="submit" name="submit" id="submit_btn" style="display: none">
+                           
                         </div>
+
+                        <button type="submit" name="submit" id="submit_btn" style="display: none">{{tr('submit')}}</button>
+
                         <div class="clearfix"></div>
 
                         <ul class="list-inline">
                             <li class="pull-left"><button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button></li>
                             <li class="pull-right">
-                            <button type="button" class="btn btn-primary next-step"  id="btn-next">{{tr('save_continue')}}</button>
+
+                            @if(Setting::get('admin_delete_control') == 1) 
+                                <button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full finish">{{tr('finish')}}</button>
+                            @else
+                                <button id="{{REQUEST_STEP_FINAL}}" type="submit" class="btn btn-primary btn-info-full finish">{{tr('finish')}}</button>
+                            @endif
+
+
+                            <button type="button" class="btn btn-primary next-step ctn"  id="btn-next">{{tr('save_continue')}}</button>
+
                             </li>
                             <div class="clearfix"></div>
                         </ul>
@@ -382,13 +592,16 @@
 
          $.ajax({
               method : 'get',
-              url : "{{route('admin.get_images', $video->video_tape_id)}}",
+              url : "{{route('admin.videos.images', $video->video_tape_id)}}",
               success : function(data) {
                 $("#select_image_div").html(data.path);
               }
           });   
 
          $("#"+"{{$video->channel_id}}"+"_i").show();
+
+         var main_video = "{{$video->video}}";
+         var edit_video_type = "{{$video->video_type}}";
 
     </script>
 
@@ -403,9 +616,30 @@
              return "Data will be lost if you leave the page, are you sure?";
         };
 
-        var save_img_url = "{{route('admin.save_default_img')}}";
+        var save_img_url = "{{route('admin.videos.save.default_img')}}";
 
-        var upload_video_image_url ="{{route('admin.upload_video_image')}}";
+        var upload_video_image_url ="{{route('admin.videos.upload_image')}}";
+
+        function VideoFile(admin_delete_control) {
+
+            if (admin_delete_control) {
+
+
+            } else {
+
+                $('#video_file').click();return false;
+
+            }
+
+            return false;
+
+        }
+
+        display_fields();
     </script>
- 
+     <script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'description' );
+        //CKEDITOR.replace( 'reviews' );
+    </script>
 @endsection
