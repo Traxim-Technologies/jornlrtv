@@ -1,4 +1,4 @@
-<div class="y-menu col-sm-3 col-md-2">
+<div class="y-menu col-sm-3 col-md-2 scroll">
     <ul class="y-home menu1">
         <li id="home">
             <a href="{{route('user.dashboard')}}">
@@ -18,7 +18,8 @@
          <li id="custom_live_videos">
             <a href="{{route('user.custom.live.index')}}">
                 <img src="{{asset('images/video-camera1.png')}}" class="grey-img">
-                <img src="{{asset('images/video-camera-red.png')}}" class="red-img">{{tr('custom_live_videos')}}
+                <img src="{{asset('images/video-camera-red.png')}}" class="red-img">
+                <span>{{tr('custom_live_videos')}}</span>
             </a>
         </li>
 

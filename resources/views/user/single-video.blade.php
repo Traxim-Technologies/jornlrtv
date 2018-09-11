@@ -83,7 +83,7 @@
                                     <div class="views pull-left">
                                        {{number_format_short($video->watch_count)}} {{tr('views')}}
                                     </div>
-                                    <div class="pull-right relative mr-50">
+                                    <div class="pull-right relative">
                                        @if (Auth::check())
                                        <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="material-icons">thumb_up</i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
                                        <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
@@ -187,7 +187,7 @@
                                              <i class="fa fa-flag"></i> 
                                              </button>
                                              @else 
-                                             <a href="{{route('user.remove.report_video', $flaggedVideo->video_tape_id)}}" class="btn btn-warning unmark bottom-space" title="{{tr('remove_report')}}">
+                                             <a href="{{route('user.remove.report_video', $flaggedVideo->video_tape_id)}}" class="btn btn-info unmark bottom-space" title="{{tr('remove_report')}}">
                                              <i class="fa fa-flag"></i> 
                                              </a>
                                              @endif
@@ -217,7 +217,7 @@
                                     <div class="tag-and-category">
 	                                    <div class="row m-0">
 	                                    	<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 p-0 mt-10">
-	                                    		<p class="category-name">category</p>
+	                                    		<p class="category-name" style="float: none !important;font-size: 15px !important;">category</p>
 	                                    	</div>
 	                                    	<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 p-0 mt-10">
 	                                    		<a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank" class="category-name blue-link">{{$video->category_name}}</a>
@@ -226,7 +226,7 @@
 	                                    @if(count($tags) > 0)
                                        	<div class="row m-0">
                                        		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 p-0 mt-10">
-                                          		<p class="category-name">{{tr('tags')}}</p>
+                                          		<p class="category-name" style="float: none !important;font-size: 15px !important;">{{tr('tags')}}</p>
                                           	</div>
                                           	<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 p-0 mt-10">
                                             <?php 
@@ -252,15 +252,26 @@
                                     <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
                                        <b>{{tr('report_this_video')}}</b>
                                        <br>
-                                       @foreach($report_video as $report) 
+                                       <!-- @foreach($report_video as $report) 
                                        <div class="report_list">
                                           <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
                                        </div>
+                                       @endforeach -->
+
+                                       @foreach($report_video as $report) 
+                                       <div class="report_list">
+                                          <label class="radio1">
+                                             <input id="radio1" type="radio" name="reason" checked="" value="{{$report->value}}" required>
+                                             <span class="outer"><span class="inner"></span></span>{{$report->value}}
+                                          </label>
+                                       </div>
+                                       <!-- <div class="clearfix"></div> -->
                                        @endforeach
+
                                        <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
                                        <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
                                        <div class="pull-right">
-                                          <button class="btn btn-success btn-sm">{{tr('submit')}}</button>
+                                          <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
                                        </div>
                                        <div class="clearfix"></div>
                                     </form>
@@ -282,15 +293,26 @@
                                                 <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
                                                    <!--  <b>Report this Video ?</b>
                                                       <br> -->
-                                                   @foreach($report_video as $report) 
+                                                  <!--  @foreach($report_video as $report) 
                                                    <div class="report_list">
                                                       <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
                                                    </div>
                                                    @endforeach
+ -->
+                                                   @foreach($report_video as $report)  
+                                                   <div class="report_list">
+                                                      <label class="radio1">
+                                                         <input id="radio1" type="radio" name="reason" checked="" value="{{$report->value}}" required>
+                                                         <span class="outer"><span class="inner"></span></span>{{$report->value}}
+                                                      </label>
+                                                   </div>
+                                                   <div class="clearfix"></div>
+                                                   @endforeach
+
                                                    <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
                                                    <p class="help-block"><small>{{tr('single_video_content')}}</small></p>
                                                    <div class="pull-right">
-                                                      <button class="btn btn-success btn-sm">{{tr('submit')}}</button>
+                                                      <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
                                                    </div>
                                                    <div class="clearfix"></div>
                                                 </form>
