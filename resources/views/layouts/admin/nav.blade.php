@@ -103,7 +103,7 @@
 
             </li>
 
-            <li class="treeview" id="custom_live_videos">
+           <?php /* <li class="treeview" id="custom_live_videos">
                 <a href="{{route('admin.custom.live')}}">
                     <i class="fa fa-wifi"></i> <span>{{tr('custom_live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -123,8 +123,8 @@
                     </li>
                 </ul>
 
-            </li>
-
+            </li> */?>
+ 
             <li class="treeview" id="videos_ads">
 
                 <a href="{{route('admin.ads-details.index')}}">

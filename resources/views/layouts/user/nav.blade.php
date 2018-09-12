@@ -15,13 +15,13 @@
             </a>
         </li>
 
-         <li id="custom_live_videos">
+       <?php /*  <li id="custom_live_videos">
             <a href="{{route('user.custom.live.index')}}">
                 <img src="{{asset('images/video-camera1.png')}}" class="grey-img">
                 <img src="{{asset('images/video-camera-red.png')}}" class="red-img">
                 <span>{{tr('custom_live_videos')}}</span>
             </a>
-        </li>
+        </li> */?>
 
         <li id="channels">
             <a href="{{route('user.channel.list')}}">
