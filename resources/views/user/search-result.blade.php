@@ -36,6 +36,7 @@
                                                     </div>
                                                 </span> 
                                             </div> 
+                                            @if(Auth::check())
                                             <div class="pull-right upload_a">
 
                                                 @if (!$channel->subscribe_status)
@@ -49,6 +50,7 @@
 
                                                 @endif
                                             </div>
+                                            @endif
                                         </div> <!--end of history-head--> 
 
                                         <div class="description">
