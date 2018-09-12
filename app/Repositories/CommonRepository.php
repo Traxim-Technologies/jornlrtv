@@ -176,6 +176,11 @@ class CommonRepository {
 
         $validator = [];
 
+        $request->request->add([
+
+            'user_id'=>$request->id
+        ]);
+
         if($request->channel_id != '') {
 
             if ($request->has('picture')) {
