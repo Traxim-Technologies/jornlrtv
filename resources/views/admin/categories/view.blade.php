@@ -122,10 +122,10 @@
                         <div class="box-comment">
                           <!-- User image -->
                           <img class="img-circle img-sm" src="{{$video->default_image}}" alt="{{$category->user_name}}">
-
+                         
                           <div class="comment-text">
                                 <span class="username">
-                                  <a href="{{route('admin.videos.view', array('id' => $video->id))}}" target="_blank">{{$video->title}}</a>
+                                  <a href="{{route('admin.videos.view', array('id' => $video->video_tape_id))}}" target="_blank">{{$video->title}}</a>
                                   <span class="text-muted pull-right">{{$video->created_at->diffForHumans()}}</span>
                                 </span><!-- /.username -->
                               <div class="description"><?= $video->description?></div>

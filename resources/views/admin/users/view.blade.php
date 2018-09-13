@@ -122,10 +122,10 @@
 		            </li>
 		            
 		             <li class="list-group-item">
-		              <b>{{tr('reviews')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_rating_count}}</a>
+		              <b>{{tr('reviews')}}</b> <a href="{{route('admin.reviews',array('user_id'=>$user->id))}}" class="pull-right" target="_blank">{{$user->user_rating_count}}</a>
 		            </li>
 		             <li class="list-group-item">
-		              <b>{{tr('spam_reports')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_flag_count}}</a>
+		              <b>{{tr('spam_reports')}}</b> <a href="{{route('admin.spam-videos.per-user-reports',$user->id)}}" class="pull-right" target="_blank">{{$user->user_flag_count}}</a>
 		            </li>
 		            <!-- <li class="list-group-item">
 		              <b>{{tr('earnings')}}</b> <a class="pull-right">13,287</a>
@@ -375,7 +375,7 @@
 						<tbody>
 
 							@foreach($wishlists as $i => $wishlist)
-
+								
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$wishlist->title}}</td>

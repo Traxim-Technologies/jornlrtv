@@ -58,7 +58,7 @@
 								                </a>
 
 								                <ul class="dropdown-menu">
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.history' , $history->user_history_id)}}">{{tr('delete_history')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.users.history.delete' , $history->user_history_id)}}">{{tr('delete_history')}}</a></li>
 								                </ul>
 
               								</li>

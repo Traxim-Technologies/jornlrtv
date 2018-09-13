@@ -178,7 +178,7 @@ class CommonRepository {
 
         $request->request->add([
 
-            'user_id'=>$request->id
+            'user_id'=>$request->user_id
         ]);
 
         if($request->channel_id != '') {
@@ -267,7 +267,7 @@ class CommonRepository {
 
                 $channel->description = $request->has('description') ? $request->description : '';
 
-                $channel->user_id = $request->has('id') ? $request->id : '';
+                $channel->user_id = $request->has('user_id') ? $request->user_id : '';
 
                 $channel->status = DEFAULT_TRUE;
 
@@ -286,7 +286,7 @@ class CommonRepository {
                     }
                     $channel->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channels/cover/");
                 }
-
+                
                 $channel->save();
 
                 if($channel) {

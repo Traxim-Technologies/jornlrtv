@@ -51,7 +51,7 @@
 
 						      	<td>
 
-						      		<a href="{{$video->user ? route('admin.view.user' , $video->user_id) : '#'}}"> {{$video->user ? $video->user->name : "-"}}</a>
+						      		<a href="{{$video->user ? route('admin.users.view' , $video->user_id) : '#'}}"> {{$video->user ? $video->user->name : "-"}}</a>
 
 						      	</td>
 
@@ -80,7 +80,7 @@
 						      		@endif
 
 						      	</td>
-
+						      	
 						      	<td>
 						      		@if($video->is_streaming && !$video->status)
 
@@ -93,7 +93,7 @@
 
 						      	<td>{{convertTimeToUSERzone($video->created_at, Auth::guard('admin')->user()->timezone, 'd-m-Y h:i A')}}</td>
 
-						      	<td><a href="{{route('admin.videos.view' , $video->id)}}" class="btn btn-success"><b>{{tr('view')}}</b></a></td>
+						      	<td><a href="{{route('admin.live-videos.view' , $video->id)}}" class="btn btn-success"><b>{{tr('view')}}</b></a></td>
 						      
 
 						    </tr>

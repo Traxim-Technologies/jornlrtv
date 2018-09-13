@@ -68,6 +68,11 @@
                 <span class="username"><a target="_blank" href="{{route('admin.users.view', $channel->user_id)}}">{{$channel->user_name}}</a></span>
                 <span class="description">{{tr('shared_publicly')}} - {{$channel->created_at->diffForHumans()}}</span>
               </div>
+                <div class="pull-right">
+                  <a href="{{route('admin.channels.edit' ,['id'=>$channel->id])}}" class="btn btn-xs btn-warning" title="Edit">
+                      <i class="fa fa-edit"></i>
+                  </a>
+                </div>
              
               <!-- /.box-tools -->
             </div>

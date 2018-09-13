@@ -1016,15 +1016,16 @@ class AdminController extends Controller {
      */
     public function channels_save(Request $request) {
 
-        $response = CommonRepo::channel_save($request)->getData();
 
+        $response = CommonRepo::channel_save($request)->getData();
+        
         if($response->success) {
 
             return back()->with('flash_success', $response->message);
 
         } else {
             
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
         
     }
@@ -1945,6 +1946,7 @@ class AdminController extends Controller {
      * @return all the spam videos
      */
     public function spam_videos_user_reports($id) {
+
         // Load all the users
         $model = Flag::where('video_tape_id', $id)->get();
         // Return array of values
@@ -1967,6 +1969,7 @@ class AdminController extends Controller {
      * @return all the spam videos
      */
     public function spam_videos_each_user_reports($id) {
+   
         // Load all the users
         $model = Flag::where('user_id', $id)->get();
         // Return array of values
