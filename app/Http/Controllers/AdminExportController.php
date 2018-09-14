@@ -14,6 +14,10 @@ use App\UserPayment;
 
 use App\VideoTape;
 
+use App\LiveVideo;
+
+use App\LiveVideoPayment;
+
 use App\Channel;
 
 use App\PayPerView;
@@ -420,6 +424,160 @@ class AdminExportController extends Controller
             $error = $e->getMessage();
 
             return redirect()->route('admin.revenues.ppv_payments')->with('flash_error' , $error);
+
+        }
+
+    }
+
+    /**
+	 * Function Name: livevideos_export()
+	 *
+	 * @usage used export the video details into the selected format
+	 *
+	 * @created Maheswari
+	 *
+	 * @edited Maheswari
+	 *
+	 * @param string format (xls, csv or pdf)
+	 *
+	 * @return redirect users page with success or error message 
+	 */
+    public function livevideos_export(Request $request) {
+
+    	try {
+
+    		// Get the admin selected format for download
+
+    		$format = $request->format ? $request->format : 'xls';
+
+	    	$download_filename = routefreestring(Setting::get('site_name'))."-".date('Y-m-d-h-i-s')."-".uniqid();
+
+	    	$result = LiveVideo::orderBy('created_at' , 'desc')->get();
+
+	    	// Check the result is not empty
+
+	    	if(count($result) == 0) {
+            	
+            	return redirect()->route('admin.live-videos.history')->with('flash_error' , tr('no_results_found'));
+
+	    	}
+
+	    	Excel::create($download_filename, function($excel) use($result)
+		    {
+		        $excel->sheet('LIVEVIDEO', function($sheet) use($result) 
+		        {
+
+	 				$sheet->row(1, function($first_row) {
+	                    $first_row->setAlignment('center');
+
+	                });
+
+	                $sheet->setHeight(50);
+
+					$sheet->setAutoSize(true);
+
+					$sheet->setAllBorders('thin');
+			        
+			        $sheet->setFontFamily('Comic Sans MS');
+
+					$sheet->setFontSize(15);
+				
+					// Set height for a single row
+
+		    		$sheet->setAutoFilter();
+
+		    		$title = tr('live_videos_management');
+
+			        $sheet->loadView('exports.live-videos')->with('data' , $result)->with('title' , $title);
+
+			    });
+		    
+		    })->export($format);
+
+            return redirect()->route('admin.live-videos.history')->with('flash_success' , tr('export_success'));
+
+		} catch(\Exception $e) {
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.live-videos.history')->with('flash_error' , $error);
+
+        }
+
+    }
+
+    /**
+	 * Function Name: livevideo_paymet_export()
+	 *
+	 * @usage used export the video details into the selected format
+	 *
+	 * @created Maheswari
+	 *
+	 * @edited Maheswari
+	 *
+	 * @param string format (xls, csv or pdf)
+	 *
+	 * @return redirect users page with success or error message 
+	 */
+    public function livevideo_paymet_export(Request $request) {
+
+    	try {
+
+    		// Get the admin selected format for download
+
+    		$format = $request->format ? $request->format : 'xls';
+
+	    	$download_filename = routefreestring(Setting::get('site_name'))."-".date('Y-m-d-h-i-s')."-".uniqid();
+
+	    	$result = LiveVideoPayment::orderBy('created_at' , 'desc')->get();
+
+	    	// Check the result is not empty
+
+	    	if(count($result) == 0) {
+            	
+            	return redirect()->route('admin.live.videos.payments')->with('flash_error' , tr('no_results_found'));
+
+	    	}
+
+	    	Excel::create($download_filename, function($excel) use($result)
+		    {
+		        $excel->sheet('LIVEVIDEO', function($sheet) use($result) 
+		        {
+
+	 				$sheet->row(1, function($first_row) {
+	                    $first_row->setAlignment('center');
+
+	                });
+
+	                $sheet->setHeight(50);
+
+					$sheet->setAutoSize(true);
+
+					$sheet->setAllBorders('thin');
+			        
+			        $sheet->setFontFamily('Comic Sans MS');
+
+					$sheet->setFontSize(15);
+				
+					// Set height for a single row
+
+		    		$sheet->setAutoFilter();
+
+		    		$title = tr('live_videos_management');
+
+			        $sheet->loadView('exports.livevideo-payments')->with('data' , $result)->with('title' , $title);
+
+			    });
+		    
+		    })->export($format);
+
+            return redirect()->route('admin.live.videos.payments')->with('flash_success' , tr('export_success'));
+
+		} catch(\Exception $e) {
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.live.videos.payments')->with('flash_error' , $error);
 
         }
 

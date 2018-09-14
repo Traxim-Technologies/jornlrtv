@@ -3998,12 +3998,11 @@ class AdminController extends Controller {
     * @return Html view page with ppv details
     */
     public function ppv_payments() {
-
-        $payments = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
+             $payments = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
             ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
             ->leftJoin('users', 'users.id', '=', 'pay_per_views.user_id')
             ->orderBy('pay_per_views.created_at' , 'desc')->get();
-    
+
         return view('admin.payments.ppv-payments')->with('data' , $payments)->withPage('payments')->with('sub_page','payments-ppv');
     }
 
@@ -5886,5 +5885,34 @@ class AdminController extends Controller {
                     ->with('videoStreamUrl', $videoStreamUrl);
     }
      */
+
+    /**
+    * Function Name: live_video_payments
+    *
+    * @uses Get the live video payment details
+    *
+    * @created Maheswari
+    *
+    * @edited Maheswari
+    *
+    * @param Get the live video payment list in table
+    *
+    * @return Html table from payment list page
+    */
+    public function live_video_payments(){
+
+        $live_video_payments = LiveVideoPayment::orderby('created_at','desc')->get();
+
+        if($live_video_payments){
+
+            return view('admin.payments.video-payments')
+                ->with('data',$live_video_payments)
+                ->with('page','payments')
+                ->with('sub_page','video-payments');
+        } else {
+
+            return back()->with('flash_error',tr('live_video_payment_not_found'));
+        }
+    }
 
 }

@@ -28,8 +28,9 @@ class PayPerView extends Model
      */
     public function userDetails()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User','id');
     }
+
 
     /**
      * Get the video record associated with the flag.

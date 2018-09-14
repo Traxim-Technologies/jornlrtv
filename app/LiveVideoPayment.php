@@ -23,4 +23,8 @@ class LiveVideoPayment extends Model
      public function getVideo() {
     	return $this->belongsTo('App\LiveVideo' , 'live_video_id');
     }
+
+      public function getVideoPayment() {
+        return $this->belongsTo('App\LiveVideo' , 'id');
+    }
 }

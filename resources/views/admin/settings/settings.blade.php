@@ -455,7 +455,7 @@ hr {
                             <div class="col-md-12">
 
                                 <h3 class="settings-sub-header text-uppercase"><b>{{tr('social_settings')}}</b></h3>
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
+
 
                                 <hr>
 
@@ -688,9 +688,7 @@ hr {
                                 <div class="form-group">
                                     <label for="MAIL_ENCRYPTION">{{tr('MAIL_ENCRYPTION')}}</label>
                                     <input type="text" class="form-control" value="{{$result['MAIL_ENCRYPTION'] }}" name="MAIL_ENCRYPTION" id="MAIL_ENCRYPTION" placeholder="{{tr('MAIL_ENCRYPTION')}}">
-                                </div>
-
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
+                                </div>  
                             </div>
 
                         </div>

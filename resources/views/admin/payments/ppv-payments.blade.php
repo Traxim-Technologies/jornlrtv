@@ -95,11 +95,10 @@
 							      	</td>
 
 							      	<td>
-
-							      		@if($payment->user_name)
+							      		@if($payment->userDetails)
 
 							      		<a href="{{route('admin.users.view' , $payment->user_id)}}"> 
-							      			{{$payment->user_name ? $payment->user_name : " "}} 
+							      			{{$payment->userDetails ? $payment->userDetails->name : " - "}} 
 							      		</a>
 
 							      		@endif

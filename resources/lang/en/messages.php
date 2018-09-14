@@ -1755,5 +1755,15 @@ return array(
 	'valid_upto'=>'Valid Upto',
 	'category_declined_by_admin'=>'This category has been declined by admin',
 	'about_category'=>'About',
-	'failure'=>'Failure'
+	'failure'=>'Failure',
+	'live_videos_management'=>'LIVE VIDEO MANAGEMENT',
+	'start_time'=>'Start Time',
+	'end_time'=>'End Time',
+	'no_of_minuts'=>'No Of Minuts',
+	'video_call_started'=>'Video Call Started',
+	'video_call_ended'=>'Video Call Ended',
+	'video_call_initiated'=>'Video Call Initiated',
+	'live_video_payments'=>'Live Video Payments',
+	'live_video_payment_not_found'=>'Live Video Payment Details Not Found',
+
 );

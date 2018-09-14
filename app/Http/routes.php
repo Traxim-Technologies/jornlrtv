@@ -308,9 +308,17 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/videos/export/', 'AdminExportController@videos_export')->name('videos.export');
 
+
+    Route::get('/live-videos/export/', 'AdminExportController@livevideos_export')->name('live-videos.export');
+
     Route::get('/subscription/payment/export/', 'AdminExportController@subscription_export')->name('subscription.export');
 
     Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
+
+     Route::get('/live-video/payment/export/', 'AdminExportController@livevideo_paymet_export')->name('livevideo-payment.export');
+
+    
+
 
     // Video Ads
 
@@ -405,11 +413,12 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/revenues/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('revenues.subscription-payments');
 
+    Route::get('live-video/payments', 'AdminController@live_video_payments')->name('live.videos.payments');
+
 
     // Settings
 
-    Route::get('video/payments', 'AdminController@video_payments')->name('videos.payments');
-
+    
     Route::get('settings' , 'AdminController@settings')->name('settings');
 
     Route::post('save_common_settings' , 'AdminController@save_common_settings')->name('save.common-settings');
