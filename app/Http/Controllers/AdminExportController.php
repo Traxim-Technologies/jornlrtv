@@ -432,7 +432,7 @@ class AdminExportController extends Controller
     /**
 	 * Function Name: livevideos_export()
 	 *
-	 * @usage used export the video details into the selected format
+	 * @usage used export the live  video details into the selected format
 	 *
 	 * @created Maheswari
 	 *
@@ -507,9 +507,9 @@ class AdminExportController extends Controller
     }
 
     /**
-	 * Function Name: livevideo_paymet_export()
+	 * Function Name: livevideo_payment_export()
 	 *
-	 * @usage used export the video details into the selected format
+	 * @usage used export the live video payment details into the selected format
 	 *
 	 * @created Maheswari
 	 *
@@ -519,7 +519,7 @@ class AdminExportController extends Controller
 	 *
 	 * @return redirect users page with success or error message 
 	 */
-    public function livevideo_paymet_export(Request $request) {
+    public function livevideo_payment_export(Request $request) {
 
     	try {
 

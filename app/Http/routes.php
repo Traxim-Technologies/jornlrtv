@@ -315,7 +315,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
 
-     Route::get('/live-video/payment/export/', 'AdminExportController@livevideo_paymet_export')->name('livevideo-payment.export');
+     Route::get('/live-video/payment/export/', 'AdminExportController@livevideo_payment_export')->name('livevideo-payment.export');
 
     
 
