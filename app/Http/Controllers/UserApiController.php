@@ -5318,7 +5318,9 @@ class UserApiController extends Controller {
 
             $tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
                 ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
-                ->where('video_tape_id', $request->video_tape_id)->get()->toArray();
+                ->where('video_tape_id', $request->video_tape_id)
+                ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
+                ->get()->toArray();
 
             $category = Category::find($video->category_id);
 

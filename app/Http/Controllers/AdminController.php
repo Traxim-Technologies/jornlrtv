@@ -1477,7 +1477,7 @@ class AdminController extends Controller {
                     ->where('status', TAG_APPROVE_STATUS)
                     ->orderBy('created_at', 'desc')->get();
 
-            $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->get()->pluck('tag_id')->toArray();
+            $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
 
             return view('admin.videos.edit-video')
                     ->with('channels' , $channels)
@@ -5103,8 +5103,12 @@ class AdminController extends Controller {
 
             if ($model->status == TAG_DECLINE_STATUS) {
 
-                VideoTapeTag::where('tag_id', $model->id)->delete();
+                VideoTapeTag::where('tag_id', $model->id)->update(['status'=>TAG_DECLINE_STATUS]);
 
+            } else {
+
+                VideoTapeTag::where('tag_id', $model->id)->update(['status'=>TAG_APPROVE_STATUS]);
+                
             }
 
             return back()->with('flash_success', $model->status ? tr('tag_approve_success') : tr('tag_decline_success'));

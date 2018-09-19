@@ -1316,7 +1316,7 @@ class UserController extends Controller {
 
             $tags = $this->UserAPI->tags_list($request)->getData()->data;
 
-            $model->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->get()->pluck('tag_id')->toArray();
+            $model->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
 
             return view('user.videos.edit')->with('model', $model)->with('page', 'videos')
                 ->with('subPage', 'upload_video')

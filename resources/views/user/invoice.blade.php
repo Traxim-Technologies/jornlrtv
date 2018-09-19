@@ -178,6 +178,9 @@
 					$("#coupon_value").text(data.data.original_coupon_amount);
 
 					$("#remaining_amount").text(data.data.remaining_amount);
+    			} else {
+
+    				alert(data.error_messages);
     			}
 
     		},
