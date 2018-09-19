@@ -238,15 +238,15 @@ hr {
                         <th>{{tr('tags')}}</th>
                         <td>@if($video->getScopeVideoTags) 
 
-                            @foreach($video->getScopeVideoTags as $tags)
+                                @foreach($video->getScopeVideoTags as $tags)
 
-                            @if($tags->getTag)
+                                    @if($tags->getTag)
 
-                            <span class="label label-success"> {{$tags->getTag->name}} </span>&nbsp;
+                                    <span class="label label-success"> {{$tags->getTag->name}} </span>&nbsp;
 
-                            @endif
+                                    @endif
 
-                            @endforeach
+                                @endforeach
 
                             @endif
                         </td>

@@ -533,6 +533,7 @@ class VideoTapeRepository {
 
             $data['tags'] = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
                 ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
                 ->where('video_tape_id', $video_tape_id)->get()->toArray();
 
             $video_url = $video_tape_details->video;

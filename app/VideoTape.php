@@ -178,7 +178,7 @@ class VideoTape extends Model
 
     public function getScopeVideoTags() {
 
-         return $this->hasMany('App\VideoTapeTag', 'video_tape_id', 'video_tape_id');
+         return $this->hasMany('App\VideoTapeTag', 'video_tape_id', 'video_tape_id')->where('status', TAG_APPROVE_STATUS);
 
     }
 

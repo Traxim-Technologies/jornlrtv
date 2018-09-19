@@ -140,6 +140,19 @@
 			       		@endif
 		              </a>
 		            </li>
+
+		             <li class="list-group-item">
+		              <b>{{tr('is_verified')}}</b> <a class="pull-right">
+		              	@if(!$user->is_verified) 
+
+			      			<a href="{{route('admin.users.verify' , $user->id)}}" class="btn btn-xs btn-warning">{{tr('verify')}}</a>
+
+			       		@else 
+			       			<span class="label label-success">{{tr('verified')}}</span>
+			       		@endif
+		              </a>
+		            </li>
+
 		          </ul>
 
 		          <a href="{{route('admin.users.edit', array('id' => $user->id))}}" class="btn btn-primary btn-block"><b>{{tr('edit_user')}}</b></a>
@@ -171,28 +184,7 @@
 
 	          <hr>
 
-	          <p><strong><i class="fa fa-check-circle margin-r-5"></i> {{tr('is_verified')}}</strong></p>
-
-
-
-	          <p>
-	
-	            	@if(!$user->is_verified)
-
-			      		<a href="{{route('admin.users.verify' , $user->id)}}" class="btn btn-xs btn-success">{{tr('verify')}}</a>
-
-			      	@else
-
-
-			      		<span class="label label-success">{{tr('verified')}}</span>
-
-			      	
-
-			      	@endif
-
-	          </p>
-
-	          <hr>
+	         
 
 	          <p><strong><i class="fa fa-bell margin-r-5"></i> {{tr('validity_days')}}</strong></p>
 
