@@ -440,7 +440,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('/pages/create', 'AdminController@pages_save')->name('pages.save');
 
-    Route::get('/pages/delete/{id}', 'AdminController@page_delete')->name('pages.delete');
+    Route::get('/pages/delete/{id}', 'AdminController@pages_delete')->name('pages.delete');
 
 
     // Admin profile pages
