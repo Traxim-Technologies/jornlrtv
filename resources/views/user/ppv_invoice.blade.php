@@ -123,7 +123,7 @@
 											@endif
 											<div class="clear-fix"></div>
 											<div class="text-right top">
-												<button class="btn btn-danger">
+												<button class="btn btn-danger" id="my_button">
 													<i class="fa fa-credit-card"></i> &nbsp; {{tr('pay_now')}}
 												</button>
 											</div>
@@ -146,8 +146,18 @@
 
 @section('scripts')
 
-<script type="text/javascript">
+<script>
+	
+    $('#my_button').on('click', function(){
 
+    	setTimeout(function(){
+
+    		$('#my_button').attr("disabled", true);
+
+    	}, 1000);
+        // alert('paypal action');
+        
+    });
     function applyCouponPPV() {
 
     	var coupon_code = $("#coupon_code").val();
