@@ -11,7 +11,7 @@
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
-        <li><b>{{tr('ads_view_revenue')}} - </b> {{tr('watch_revenue_count')}}{{tr('ad_status')}} </li>
+        <li><b>{{tr('ads_view_revenue')}} - </b> {{tr('watch_revenue_count')}}&nbsp;{{tr('ad_status')}} </li>
         <li><b>{{tr('age_limit')}} - </b>{{tr('video_marked_age')}}</li>
         <li><b>{{tr('ppv_created_by')}} - </b>{{tr('admin_user')}}</li>
     </ul>
