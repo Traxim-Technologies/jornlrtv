@@ -271,7 +271,7 @@ class UserApiController extends Controller {
 
             } else {
 
-                $response_array = array('success' => false , 'error' => Helper::get_error_message(131),'error_messages' => Helper::get_error_message(131) ,'error_code' => 131);
+                $response_array = array('success' => false , 'error' => '','error_messages' => Helper::get_error_message(131) ,'error_code' => 131);
             }
 
         }
