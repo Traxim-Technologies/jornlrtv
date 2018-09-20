@@ -98,11 +98,12 @@ thead>tr>th {
 
                 @include('notification.notify')
 
+                <?php /*
                 <div class="new-history">
 
                     <div class="content-head">
 
-                        <div><h4 class="no-margin-top">{{tr('redeems')}}</h4></div>
+                        <div><h4 class="top">{{tr('redeems')}}</h4></div>
 
                     </div>
 
@@ -177,7 +178,7 @@ thead>tr>th {
                                                     <td>{{$redeem_request->created_at->diffForHumans()}}</td>
 
                                                     <td>
-                                                        <span class="btn btn-primary btn-xs"> <b>
+                                                        <span class="label label-primary"> <b>
 
                                                             {{redeem_request_status($redeem_request->status)}}
 
@@ -208,7 +209,97 @@ thead>tr>th {
                     @endif
             
                 </div>
-                
+                */ ?>
+
+                <!-- new ui @ranjitha -->
+                <div class="new-history">
+                    <h4 class="settings">redeems</h4>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <div class="new-redeem-sec">
+                                <div class="circle">
+                                    <div class="circle__content"><b>{{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining : "0.00"}}</b></div>
+                                </div>
+                                <p class="redeem-content">{{tr('redeem_content')}}</p>
+
+                                <?php 
+
+                                    $remaining = Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining: 0;
+
+                                    $min_status = Setting::get('minimum_redeem') < $remaining;
+                                ?>
+                              
+                                @if(count(Auth::user()->userRedeem) > 0 && $min_status)
+                                <div class="text-right">
+                                    <a href="{{route('user.redeems.send.request')}}" class="btn btn-info">{{tr('send_redeem')}}</a>
+                                </div>
+
+                                @else
+                                <div class="text-right">
+                                    <a href="javascript:void(0);" disabled class="btn btn-info">{{tr('send_redeem')}}</a>
+                                </div>
+                                @endif
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-8">
+                            <div class="new-redeem-sec">
+                                <!-- redeems -->
+                                <div class="timeline">
+
+                                    @if(count($redeem_requests = Auth::user()->userRedeemRequests) > 0)
+
+                                    @foreach($redeem_requests as $rr => $redeem_request)
+                                    <!-- 1 -->
+                                    <div class="timeline-item" *ngFor="let redeem_request of redeem_requests">
+                                        <div class="timeline-bar">
+                                            <div class="version"></div>
+                                        </div>
+                                        <div class="redeem-content1">
+                                            <ul>
+                                                <li>
+                                                    <p class="text-grey-clr m-0">{{tr('sent_date')}} : {{$redeem_request->created_at->diffForHumans()}}</p>
+                                                    <h4 class="redeem-amount">{{tr('redeem_amount')}} <span class="bold">{{Setting::get('currency')}} {{$redeem_request->request_amount}}</span></h4>
+                                                    <p class="text-grey-clr mt-0">{{tr('paid_amount')}}: {{Setting::get('currency')}} {{$redeem_request->paid_amount}}</p>
+                                                    <p class="text-grey-clr mt-0">{{tr('paid_date')}}: {{$redeem_request->created_at->diffForHumans()}}</p>
+                                                    <p class="text-grey-clr mt-0">{{tr('status')}} : {{redeem_request_status($redeem_request->status)}}</p>
+                                                    
+
+                                                     @if(in_array($redeem_request->status, [REDEEM_REQUEST_SENT , REDEEM_REQUEST_PROCESSING]))
+                                                            <a href="{{route('user.redeems.request.cancel' , ['redeem_request_id' => $redeem_request->id])}}" class="btn btn-danger">{{tr('cancel')}}</a>
+                                                        @else
+                                                            <span class="text-center">-</span>
+                                                        @endif
+
+                                                </li>
+                                                <li>
+
+                                                    @if($redeem_request->paid_amount > 0)
+                                                        <img src="{{asset('images/paid.png')}}">
+                                                    @else
+                                                        <img src="{{asset('images/pending.png')}}">
+                                                    @endif
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    @endforeach
+
+                                    @else
+
+                                        <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+
+                                    @endif
+                                   
+                                </div>
+                                <!-- redeems --> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- new ui @ranjitha -->
+
                 <div class="sidebar-back"></div> 
             </div>
     

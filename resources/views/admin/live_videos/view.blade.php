@@ -157,7 +157,7 @@ video {
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.videos.index')}}"><i class="fa fa-video-camera"></i> {{tr('videos')}}</a></li>
+    <li><a href="{{route('admin.live-videos.index')}}"><i class="fa fa-video-camera"></i> {{tr('videos')}}</a></li>
     <li class="active"><i class="fa fa-video-o"></i> {{tr('view_video')}}</li>
 @endsection
 
@@ -178,7 +178,7 @@ video {
                             <img class="img-circle img-bordered-sm" src="{{$data->user ?  $data->user->chat_picture : asset('placeholder.png') }}" alt="User Image">
 
                             <span class="username">
-                                <a href="{{$data->user ? route('admin.view.user' , $data->user->id ): '#' }}">{{$data->user ? $data->user->name : ""}}</a>
+                                <a href="{{$data->user ? route('admin.users.view' , $data->user->id ): '#' }}">{{$data->user ? $data->user->name : ""}}</a>
                                 <!-- <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a> -->
                             </span>
 

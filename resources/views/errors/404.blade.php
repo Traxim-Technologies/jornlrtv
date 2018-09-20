@@ -34,7 +34,7 @@
                                 </div>
                             </div>
                             <h1>{{tr('page_not_found')}}</h1>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+                            <p>We can't find the page you're looking for</p>
                             <a href="{{route('user.dashboard')}}" class="button">{{tr('go_back_home')}}</a>
                         </div>
                     </div>

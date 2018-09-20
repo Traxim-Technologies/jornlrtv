@@ -75,6 +75,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Channel', 'user_id', 'id');
     }
 
+    /**
+     * Get the flag record associated with the user.
+     */
+    public function getChannelSubscription()
+    {
+        return $this->hasMany('App\ChannelSubscription', 'user_id', 'id');
+    }
+
      /**
      * Get the flag record associated with the user.
      */
@@ -152,6 +160,15 @@ class User extends Authenticatable
 
             }
 
+            if (count($user->getChannelSubscription) > 0) {
+
+                foreach($user->getChannelSubscription as $subscripton_user)
+                {
+                    $subscripton_user->delete();
+                } 
+
+            }
+
             if (count($user->userWishlist) > 0) {
 
                 foreach($user->userWishlist as $wishlist)
@@ -180,23 +197,11 @@ class User extends Authenticatable
             }
         
 
-            if (count($user->userHistory) > 0) {
-
-                foreach($user->userHistory as $history)
-                {
-                    $history->delete();
-                } 
-
-            }
-
-
             if (count($user->getChannel) > 0) {
 
                 foreach($user->getChannel as $channel) {
 
-
                     $channel->delete();
-
 
                 } 
 

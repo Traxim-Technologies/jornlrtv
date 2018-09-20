@@ -23,7 +23,7 @@
 
 						<div class="col-lg-12">
 
-                    		<h4>{{tr('cards')}}</h4>
+                    		<h4 class="cards-head">{{tr('cards')}}</h4>
 
                     		@include('notification.notify')
 
@@ -32,7 +32,7 @@
                     				
                     				<div class="card-wrapper row">
 
-				            			<div class="jp-card-container">
+				            			<div class="jp-card-container jp-card-container1">
 
 					            			<div class="jp-card jp-card-visa jp-card-identified  top">
 
@@ -90,6 +90,10 @@
 								        <div class="row" id="card-payment">
 								            <div>
 
+								            	<input type="hidden" name="video_id" value="{{$video_id}}">
+
+								            	<input type="hidden" name="subscription_id" value="{{$subscription_id}}">
+
 								                <input id="id" name="id" type="hidden" required>
 
 								                <div class="input-group-signup">
@@ -114,7 +118,7 @@
 
 								                <div class="input-group-signup">
 
-								                  <button class="btn btn-success" type="submit">{{tr('submit')}}</button>
+								                  <button class="btn btn-info" type="submit">{{tr('submit')}}</button>
 
 								                </div>
 
@@ -141,16 +145,91 @@
 
 					        @if(count($cards) > 0)
 
-					        	<p><small><b>Note : </b>{{tr('card_notes')}}</small></p>
+					           	<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 
-					           	<div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
-						           	<div class="row">
+					           		<h4 class="cards-head top">My Cards</h4>
+
+					           		<p class="note-sec grey-clr"><small><b>Note : </b>{{tr('card_notes')}}</small></p>
+
+					           		@foreach($cards as $card)
+
+						           	@if(!$card->is_default)
+
+					           		<div class="new-card">
+						           		<div class="row">
+						           			<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+						           				<h4 class="new-card-name overflow">{{$card->card_name ? $card->card_name : tr('card_name')}}</h4>
+						           			</div>
+						           			<div class="col-xs-12 col-sm-7 col-md-4 col-lg-6">
+						           				<h4 class="new-card-number overflow">PERSONAL*********{{$card->last_four}}</h4>
+						           			</div>
+						           			<!-- <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+						           				<h4 class="new-card-expiry">{{$card->month}} / {{$card->year}}</h4>
+						           			</div> -->
+						           			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+
+						           				<form action="{{ route('user.card.default') }}" method="POST">
+									                      <input type="hidden" name="_method" value="PATCH">
+									                      <input type="hidden" name="card_id" value="{{ $card->id }}">
+
+								           				<!-- <h4 class="new-card-close">
+								           					<a href="#" type="submit" id="default-card"><span class="link-clr" title="{{tr('set_as_default')}}">{{tr('set_as_default')}}</span></a>
+								           				</h4> -->
+
+								           				<div class=" pull-right">
+						           						<button type="submit" class="btn btn-link shadow-0" id="default-card" style="margin-right: 5px;"><i class="fa fa-check"  title="{{tr('set_as_default')}}"></i> {{tr('set_as_default')}}</button>
+
+						           						<img src="{{asset('images/error.png')}}" class="default-card-img" onclick="$('#delete-card').click()" style="cursor: pointer;" title="{{tr('delete_card')}}">
+
+						           					</div>
+						           						<div class="clearfix"></div>
+						           				</form>
+
+						           					<form action="{{ route('user.card.delete') }}" method="POST" style="display: none">
+
+									                    <input type="hidden" name="_method" value="DELETE">
+									                    
+									                    <input type="hidden" name="card_id" value="{{ $card->id }}">
+
+									                    <button type="submit" class="text-white" id="delete-card"><i class="fa fa-times" title="{{tr('delete_card')}}"></i> {{tr('delete_card')}}</button>
+									                </form>
+
+						           			</div>
+						           		</div>
+					           		</div>
+
+					           		@else
+
+					           		<div class="new-card">
+						           		<div class="row">
+						           			<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+						           				<h4 class="new-card-name overflow">{{$card->card_name ? $card->card_name : tr('card_name')}}</h4>
+						           			</div>
+						           			<div class="col-xs-12 col-sm-7 col-md-4 col-lg-6">
+						           				<h4 class="new-card-number overflow">PERSONAL*********{{$card->last_four}}</h4>
+						           			</div>
+						           			<!-- <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
+						           				<h4 class="new-card-expiry">{{$card->month}} / {{$card->year}}</h4>
+						           			</div> -->
+						           			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+						           				<div class="text-right">
+						           					<img src="{{asset('images/success.png')}}" class="default-card-img" title="Default Card">
+						           				</div>
+						           			</div>
+						           		</div>
+					           		</div>
+
+					           		@endif
+
+						           	@endforeach
+
+						           	<?php /*<div class="row">
 
 						           		@foreach($cards as $card)
 
 						           		@if(!$card->is_default)
 
-						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
+						           		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 top1">
 						           			<div>
 						           				<div class="card-title text-center">{{$card->card_name ? $card->card_name : tr('card_name')}}
 						           					<img src="{{asset('images/success.png')}}" class="set-default" onclick="$('#default-card').click()" style="cursor: pointer;" title="{{tr('set_as_default')}}">
@@ -185,7 +264,7 @@
 
 						           		@else
 
-						           		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 top1">
+						           		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 top1">
 						           			<div>
 						           				<div class="card-title text-center">{{$card->card_name ? $card->card_name : tr('card_name')}}</div>
 						           				<div class="card-details">
@@ -197,11 +276,11 @@
 
 						           		@endforeach
 
-						           	</div>
+						           	</div> */?>
 					           	</div>
-					          @else
+					          	@else
 
-					            {{tr('no_card_details_found')}}
+					          	{{tr('no_card_details_found')}}
 
 
 					        @endif

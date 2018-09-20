@@ -74,11 +74,46 @@ use Exception;
 
 use App\PayPerView;
 
+use App\Category;
+
+use App\Tag;
+
+use App\VideoTapeTag;
+
+use App\Coupon;
+
+use App\UserCoupon;
+
+use App\CustomLiveVideo;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal' , array('except' => ['register' , 'login' , 'forgot_password','search_video' , 'privacy','about' , 'terms','contact', 'home', 'trending' , 'getSingleVideo', 'get_channel_videos' ,  'help', 'single_video', 'reasons', 'get_live_url', 'video_detail', 'live_videos']));
+         $this->middleware('UserApiVal' , array('except' => [
+                'register' , 
+                'login' , 
+                'forgot_password',
+                'search_video' , 
+                'privacy',
+                'about' , 
+                'terms',
+                'contact', 
+                'home', 
+                'trending' , 
+                'getSingleVideo', 
+                'get_channel_videos' ,  
+                'help', 
+                'single_video', 
+                'reasons' ,
+                'search_video', 
+                'video_detail',
+                'categories_videos',
+                'tags_videos',
+                'categories_channels_list',
+                'get_live_url',
+                'live_videos'
+                ]));
 
     }
 
@@ -833,7 +868,6 @@ class UserApiController extends Controller {
     }
 
 
-
     public function stripe_payment_video(Request $request) {
 
         $userModel = User::find($request->id);
@@ -1115,11 +1149,7 @@ class UserApiController extends Controller {
 
         return response()->json($response_array);
 
-
     }
-    
-
-
 
     /**
      * Function Name : update_profile()
@@ -1283,11 +1313,11 @@ class UserApiController extends Controller {
                 
                 $user->save();
 
-                $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_message(102)));
+                $response_array = Helper::null_safe(array('success' => true , 'message' => Helper::get_error_message(102)));
 
             } else {
 
-                $response_array = array('success' => false , 'error' => Helper::get_error_message(131),'error_messages' => Helper::get_error_message(131) ,'error_code' => 131);
+                $response_array = array('success' => false , 'error' => '','error_messages' => Helper::get_error_message(131) ,'error_code' => 131);
             }
 
         }
@@ -1334,12 +1364,14 @@ class UserApiController extends Controller {
 
             $payperview = PayPerView::where('user_id', $request->id)
                             ->where('video_id',$request->video_tape_id)
-                            ->orderby('created_at', 'desc')
-                            ->where('status',0)->first();
+                            ->where('is_watched', '!=', WATCHED)
+                            ->orderBy('ppv_date', 'desc')
+                            ->where('status', PAID_STATUS)
+                            ->first();
 
             if ($payperview) {
 
-                $payperview->status = DEFAULT_TRUE;
+                $payperview->is_watched = WATCHED;
 
                 $payperview->save();
 
@@ -1370,10 +1402,13 @@ class UserApiController extends Controller {
 
             $navigateback = 0;
 
-            if ($video->type_of_subscription == RECURRING_PAYMENT) {
+            if ($request->id != $video->user_id) {
 
-                $navigateback = 1;
+                if ($video->type_of_subscription == RECURRING_PAYMENT) {
 
+                    $navigateback = 1;
+
+                }
             }
 
             // navigateback = used to handle the replay in mobile for recurring payments
@@ -2073,7 +2108,7 @@ class UserApiController extends Controller {
                     $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
 
                     $response_array['success'] = true;
-                    $response_array['message'] = Helper::get_message(106);
+                    $response_array['message'] = Helper::get_error_message(106);
                     $user->save();
 
                 } else {
@@ -2155,11 +2190,15 @@ class UserApiController extends Controller {
 
             $base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)   
                                 ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                                ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
+                                ->where('channels.is_approved', 1)
+                                ->where('channels.status', 1)
+                                ->where('categories.status', CATEGORY_APPROVE_STATUS)
                                // ->orderby('video_tapes.publish_time' , 'desc')
-                                ->shortVideoResponse();
+                                ->videoResponse();
 
             if ($request->id) {
 
@@ -2200,7 +2239,7 @@ class UserApiController extends Controller {
 
                     $value['is_ppv_subscribe_page'] = $is_ppv_status;
 
-                    $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
+                    $value['pay_per_view_status'] = VideoRepo::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value)->getData()->success;
 
                     $value['currency'] = Setting::get('currency');
 
@@ -2290,7 +2329,7 @@ class UserApiController extends Controller {
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('video_tapes.is_approved' , 1)
                                 ->orderby('video_tapes.publish_time' , 'desc')
-                                ->shortVideoResponse();
+                                ->videoResponse();
 
             if ($request->id) {
 
@@ -2335,7 +2374,7 @@ class UserApiController extends Controller {
 
                     $value['currency'] = Setting::get('currency');
 
-                    $value['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
+                    $value['pay_per_view_status'] = VideoRepo::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value)->getData()->success;
 
                     $value['watch_count'] = number_format_short($value->watch_count);
 
@@ -2409,11 +2448,13 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->where('channels.is_approved', 1)
                             ->where('channels.status', 1)
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
         if ($request->id) {
@@ -2460,10 +2501,12 @@ class UserApiController extends Controller {
         $data = [];
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.watch_count' , 'desc')
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
         if ($request->id) {
@@ -2607,8 +2650,22 @@ class UserApiController extends Controller {
             if(!$check_flag_video) {
 
                 $data = VideoRepo::single_response($request->video_tape_id , $request->id , $login_by);
-                
+
                 if(count($data) > 0) {
+
+                    if($data['is_approved'] == ADMIN_VIDEO_DECLINED_STATUS || $data['status'] == USER_VIDEO_DECLINED_STATUS || $data['channel_approved_status'] == ADMIN_CHANNEL_DECLINED_STATUS || $data['channel_status'] == USER_CHANNEL_DECLINED_STATUS) {
+
+                        return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
+
+                    }
+
+                    // Video if not published
+
+                    if ($data['publish_status'] != PUBLISH_NOW) {
+
+                        return response()->json(['success'=>false, 'error_messages'=>tr('video_not_yet_publish')]);
+                    }
+
 
                     // Comments Section
 
@@ -2624,7 +2681,7 @@ class UserApiController extends Controller {
 
                     $data['suggestions'] = VideoRepo::suggestions($request);
                     
-                    $response_array = ['success' => true , 'data' => $data ];
+                    $response_array = ['success' => true , 'data' => $data];
 
                 } else {
                     $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(1001) , 'error_code' => 1001];
@@ -2665,11 +2722,13 @@ class UserApiController extends Controller {
 
             $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
                                 ->videoResponse()
-                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')     
+                                ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                                ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                                 ->where('video_tapes.status' , 1)
                                 ->where('video_tapes.publish_status' , 1)
                                 ->where('channels.is_approved', 1)
                                 ->where('channels.status', 1)
+                                ->where('categories.status', CATEGORY_APPROVE_STATUS)
                                 ->where('title', 'like', "%".$request->key."%")
                                 ->orderby('video_tapes.watch_count' , 'desc');
                                //  ->select('video_tapes.id as video_tape_id' , 'video_tapes.title');
@@ -2718,7 +2777,7 @@ class UserApiController extends Controller {
 
                     $is_ppv_subscribe_page = $is_ppv_status;
 
-                    $pay_per_view_status = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value);
+                    $pay_per_view_status = VideoRepo::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value)->getData()->success;
 
                     $amount = $value->ppv_amount;
 
@@ -2949,7 +3008,7 @@ class UserApiController extends Controller {
             $response_array = ['success' => true , 'data' => $data];
 
         } else {
-            $response_array = ['success' => false , 'error_messages' => Helper::error_message(147) , 'error_code' => 147];
+            $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(147) , 'error_code' => 147];
         }
 
         return response()->json($response_array , 200);
@@ -3089,15 +3148,18 @@ class UserApiController extends Controller {
 
         $channel_id = [];
 
-        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+        $query = Channel::select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 // ->where('channels.status', DEFAULT_TRUE)
                 ->groupBy('channels.id')
                 ->where('channels.user_id',$request->id);
 
-        /*if($request->id) {
+        /*
+
+        where('channels.is_approved', DEFAULT_TRUE)
+
+        if($request->id) {
 
             $user = User::find($request->id);
 
@@ -3140,7 +3202,7 @@ class UserApiController extends Controller {
                     'title'=>$value->name,
                     'description'=>$value->description, 
                     'created_at'=>$value->created_at->diffForHumans(),
-                    'no_of_videos'=>videos_count($value->id),
+                    'no_of_videos'=>videos_count($value->id, MY_CHANNEL),
                     'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
                     'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
             ];
@@ -3453,77 +3515,248 @@ class UserApiController extends Controller {
 
     public function pay_now(Request $request) {
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'subscription_id'=>'required|exists:subscriptions,id',
-                'payment_id'=>'required',
+        Log::info("Pay Now");
+        
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                $request->all(),
+                array(
+                    'subscription_id'=>'required|exists:subscriptions,id',
+                    'payment_id'=>'required',
+                    'coupon_code'=>'exists:coupons,coupon_code',
+                ), array(
+                    'coupon_code.exists' => tr('coupon_code_not_exists'),
+                    'subscription_id.exists' => tr('subscription_not_exists'),
             ));
 
-        if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $errors = implode(',',$validator->messages()->all());
+            if ($validator->fails()) {
+                // Error messages added in response for debugging
+                $errors = implode(',',$validator->messages()->all());
 
-            $response_array = ['success' => false,'error_messages' => $errors,'error_code' => 101];
+                throw new Exception($errors, 101);
 
-        } else {
+            } else {
 
-            $model = UserPayment::where('user_id' , $request->id)
-                        ->where('status', DEFAULT_TRUE)
-                        ->orderBy('id', 'desc')->first();
+                $user = User::find($request->id);
 
-            $subscription = Subscription::find($request->subscription_id);
+                $subscription = Subscription::find($request->subscription_id);
 
-            $user_payment = new UserPayment();
+                $total = $subscription->amount;
 
-            if ($model) {
-    
-                if (strtotime($model->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+                $coupon_amount = 0;
 
-                    $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+                $coupon_reason = '';
+
+                $is_coupon_applied = COUPON_NOT_APPLIED;
+
+                if ($request->coupon_code) {
+
+                    $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+                    if ($coupon) {
+                        
+                        if ($coupon->status == COUPON_INACTIVE) {
+
+                            $coupon_reason = tr('coupon_inactive_reason');
+
+                        } else {
+
+                            $check_coupon = $this->check_coupon_applicable_to_user($user, $coupon)->getData();
+
+                            if ($check_coupon->success) {
+
+                                $is_coupon_applied = COUPON_APPLIED;
+
+                                $amount_convertion = $coupon->amount;
+
+                                if ($coupon->amount_type == PERCENTAGE) {
+
+                                    $amount_convertion = amount_convertion($coupon->amount, $subscription->amount);
+
+                                }
+
+
+                                if ($amount_convertion < $subscription->amount) {
+
+                                    $total = $subscription->amount - $amount_convertion;
+
+                                    $coupon_amount = $amount_convertion;
+
+                                } else {
+
+                                    // throw new Exception(Helper::get_error_message(156),156);
+
+                                    $total = 0;
+
+                                    $coupon_amount = $amount_convertion;
+                                    
+                                }
+
+                                // Create user applied coupon
+
+                                if($check_coupon->code == 2002) {
+
+                                    $user_coupon = UserCoupon::where('user_id', $user->id)
+                                            ->where('coupon_code', $request->coupon_code)
+                                            ->first();
+
+                                    // If user coupon not exists, create a new row
+
+                                    if ($user_coupon) {
+
+                                        if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                            $user_coupon->no_of_times_used += 1;
+
+                                            $user_coupon->save();
+
+                                        }
+
+                                    }
+
+                                } else {
+
+                                    $user_coupon = new UserCoupon;
+
+                                    $user_coupon->user_id = $user->id;
+
+                                    $user_coupon->coupon_code = $request->coupon_code;
+
+                                    $user_coupon->no_of_times_used = 1;
+
+                                    $user_coupon->save();
+
+                                }
+
+                            } else {
+
+                                $coupon_reason = $check_coupon->error_messages;
+                                
+                            }
+
+                        }
+
+                    } else {
+
+                        $coupon_reason = tr('coupon_delete_reason');
+                    }
+                }
+
+                $model = UserPayment::where('user_id' , $request->id)
+                            ->where('status', DEFAULT_TRUE)
+                            ->orderBy('id', 'desc')->first();
+
+                $user_payment = new UserPayment();
+
+                if ($model) {
+
+                    if (strtotime($model->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                         $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($model->expiry_date)));
+
+                    } else {
+
+                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
+
+                    }
 
                 } else {
 
                     $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
 
-                }    
-
-
-            } else {
-                $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
-            }
-
-            $user_payment->payment_id  = $request->payment_id;
-            $user_payment->user_id = $request->id;
-            $user_payment->amount = $subscription->amount;
-            $user_payment->subscription_id = $request->subscription_id;
-            $user_payment->status = DEFAULT_TRUE;
-            $user_payment->save();
-
-            if($user_payment) {
-
-                $user =  User::find($request->id);
-
-                if ($user_payment->amount <= 0) {
-
-                    $user->zero_subscription_status = DEFAULT_TRUE;
-
                 }
 
-                $user->user_type = DEFAULT_TRUE;
+                $user_payment->payment_id  = $request->payment_id;
+                $user_payment->user_id = $request->id;
+                $user_payment->subscription_id = $request->subscription_id;
 
-                $user->save();
+                $user_payment->status = PAID_STATUS;
+
+
+                $user_payment->payment_mode = PAYPAL;
+
+                // Coupon details
+
+                $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+                $user_payment->coupon_amount = $coupon_amount;
+
+                $user_payment->subscription_amount = $subscription->amount;
+
+                $user_payment->amount = $total;
+
+                $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+ 
+                if($user_payment->save()) {
+
+                    if ($user) {
+
+                        $user->user_type = 1;
+
+                        /*$user->amount_paid += $total;*/
+
+                        $user->expiry_date = $user_payment->expiry_date;
+
+                        /*$now = time(); // or your date as well
+
+                        $end_date = strtotime($user->expiry_date);
+
+                        $datediff =  $end_date - $now;
+
+                        $user->no_of_days = ($user->expiry_date) ? floor($datediff / (60 * 60 * 24)) + 1 : 0;*/
+
+                        if ($user_payment->amount <= 0) {
+
+                            $user->zero_subscription_status = 1;
+                        }
+
+                        if ($user->save()) {
+
+                            $response_array = ['success'=>true, 
+                                    'message'=>tr('payment_success'), 
+                                    'data'=>[
+                                        'id'=>$request->id,
+                                        'token'=>$user_payment->user ? $user_payment->user->token : '',
+                                ]];
+
+                        } else {
+
+
+                            throw new Exception(tr('user_details_not_saved'));
+                            
+                        }
+
+                    } else {
+
+                        throw new Exception(tr('user_not_found'));
+                        
+                    }
+                }
+
             }
 
-            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
-                    'data'=>[
-                        'id'=>$request->id,
-                        'token'=>$user_payment->user ? $user_payment->user->token : '',
-                        ]];
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $message = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success'=>false, 'error_messages'=>$message, 'error_code'=>$code];
+
+            return response()->json($response_array);
 
         }
-
-        return response()->json($response_array, 200);
 
     }
 
@@ -3553,15 +3786,24 @@ class UserApiController extends Controller {
                                 \DB::raw('IFNULL(subscriptions.title,"") as title'),
                                 \DB::raw('IFNULL(subscriptions.description,"") as description'),
                                 \DB::raw('IFNULL(subscriptions.plan,"") as plan'),
+                                'subscriptions.amount as current_subscription_amount',
                                 'user_payments.amount as amount',
+                                'user_payments.status as status',
                                 // 'user_payments.expiry_date as expiry_date',
                                 \DB::raw('DATE_FORMAT(user_payments.expiry_date , "%e %b %Y") as expiry_date'),
                                 'user_payments.created_at as created_at',
                                 DB::raw("'$' as currency"),
-                                'user_payments.status')
+                                'user_payments.payment_mode',
+                                'user_payments.is_coupon_applied',
+                                'user_payments.coupon_code',
+                                'user_payments.coupon_amount',
+                                'user_payments.subscription_amount',
+                                'user_payments.coupon_reason',
+                                'user_payments.is_cancelled',
+                                'user_payments.payment_id',
+                                'user_payments.cancel_reason')
                         ->orderBy('user_payments.updated_at', 'desc');
                         
-
             if ($request->device_type == DEVICE_WEB) {
 
                 $model = $query->paginate(16);
@@ -3574,7 +3816,39 @@ class UserApiController extends Controller {
                         ->take(Setting::get('admin_take_count' ,12))
                         ->get();
 
-                $response_array = ['success'=>true, 'data'=>$model];
+                $data = [];
+
+                foreach ($model as $key => $value) { 
+
+                    $data[] = [
+
+                        'id'=>$value->id,
+                        'subscription_id'=>$value->subscription_id,
+                        'user_subscription_id'=>$value->user_subscription_id,
+                        'title'=>$value->title,
+                        'description'=>$value->description,
+                        'plan'=>$value->plan,
+                        'amount'=>$value->amount,
+                        'status'=>$value->status,
+                        'expiry_date'=>$value->expiry_date,
+                        'created_at'=>$value->created_at->diffForHumans(),
+                        'currency'=>$value->currency,
+                        'payment_mode'=>$value->payment_mode,
+                        'is_coupon_applied'=>$value->is_coupon_applied,
+                        'coupon_code'=>$value->coupon_code,
+                        'coupon_amount'=>$value->coupon_amount,
+                        'subscription_amount'=>$value->subscription_amount,
+                        'coupon_reason'=>$value->coupon_reason,
+                        'is_cancelled'=>$value->is_cancelled,
+                        'payment_id'=>$value->payment_id,
+                        'cancel_reason'=>$value->cancel_reason,
+                        'active_plan'=>($key == 0 && $value->status) ? ACTIVE_PLAN : NOT_ACTIVE_PLAN,
+                    ];
+
+
+                }
+
+                $response_array = ['success'=>true, 'data'=>$data];
             }
 
         }
@@ -3746,242 +4020,464 @@ class UserApiController extends Controller {
 
     public function stripe_payment(Request $request) {
 
-        $validator = Validator::make($request->all(), 
-            array(
-                'subscription_id' => 'required|exists:subscriptions,id',
-            )
-            );
+        try {
 
-        if($validator->fails()) {
+            DB::beginTransaction();
 
-            $errors = implode(',', $validator->messages()->all());
-            
-            $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+            $validator = Validator::make($request->all(), 
+                array(
+                    'subscription_id' => 'required|exists:subscriptions,id',
+                    'coupon_code'=>'exists:coupons,coupon_code',
+                ), array(
+                    'coupon_code.exists' => tr('coupon_code_not_exists'),
+                    'subscription_id.exists' => tr('subscription_not_exists'),
+            ));
 
+            if($validator->fails()) {
 
-        } else {
+                $error_messages = implode(',', $validator->messages()->all());
 
-            $subscription = Subscription::find($request->subscription_id);
+                throw new Exception($error_messages, 101);
 
+            } else {
 
-            if ($subscription) {
-
-                $total = $subscription->amount;
+                $subscription = Subscription::find($request->subscription_id);
 
                 $user = User::find($request->id);
 
-                if ($total > 0) {
+                if ($subscription) {
 
-                    $check_card_exists = User::where('users.id' , $request->id)
-                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
-                                    ->where('cards.id' , $user->card_id)
-                                    ->where('cards.is_default' , DEFAULT_TRUE);
+                    $total = $subscription->amount;
 
-                    if($check_card_exists->count() != 0) {
+                    $coupon_amount = 0;
 
-                        $user_card = $check_card_exists->first();
+                    $coupon_reason = '';
 
-                        $stripe_secret_key = Setting::get('stripe_secret_key');
+                    $is_coupon_applied = COUPON_NOT_APPLIED;
 
-                        // print_r("User Card Details ".print_r($user_card, true));
+                    if ($request->coupon_code) {
 
-                        $customer_id = $user_card->customer_id;
+                        $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
 
-                        if($stripe_secret_key) {
-                            \Stripe\Stripe::setApiKey($stripe_secret_key);
+                        if ($coupon) {
+                            
+                            if ($coupon->status == COUPON_INACTIVE) {
+
+                                $coupon_reason = tr('coupon_inactive_reason');
+
+
+                            } else {
+
+                                $check_coupon = $this->check_coupon_applicable_to_user($user, $coupon)->getData();
+
+                                if ($check_coupon->success) {
+
+                                    $is_coupon_applied = COUPON_APPLIED;
+
+                                    $amount_convertion = $coupon->amount;
+
+                                    if ($coupon->amount_type == PERCENTAGE) {
+
+                                        $amount_convertion = amount_convertion($coupon->amount, $subscription->amount);
+
+                                    }
+
+
+                                    if ($amount_convertion < $subscription->amount) {
+
+                                        $total = $subscription->amount - $amount_convertion;
+
+                                        $coupon_amount = $amount_convertion;
+
+                                    } else {
+
+                                        // throw new Exception(Helper::get_error_message(156),156);
+
+                                        $total = 0;
+
+                                        $coupon_amount = $amount_convertion;
+                                        
+                                    }
+
+                                    // Create user applied coupon
+
+                                    if($check_coupon->code == 2002) {
+
+                                        $user_coupon = UserCoupon::where('user_id', $user->id)
+                                                ->where('coupon_code', $request->coupon_code)
+                                                ->first();
+
+                                        // If user coupon not exists, create a new row
+
+                                        if ($user_coupon) {
+
+                                            if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                                $user_coupon->no_of_times_used += 1;
+
+                                                $user_coupon->save();
+
+                                            }
+
+                                        }
+
+                                    } else {
+
+                                        $user_coupon = new UserCoupon;
+
+                                        $user_coupon->user_id = $user->id;
+
+                                        $user_coupon->coupon_code = $request->coupon_code;
+
+                                        $user_coupon->no_of_times_used = 1;
+
+                                        $user_coupon->save();
+
+                                    }
+
+                                } else {
+
+                                    $coupon_reason = $check_coupon->error_messages;
+                                    
+                                }
+
+                            }
+
                         } else {
 
-                            $response_array = array('success' => false, 'error_messages' =>Helper::get_error_message(902), 'error_code' => 902);
-
-                            return response()->json($response_array , 200);
+                            $coupon_reason = tr('coupon_delete_reason');
                         }
+                    }
 
-                        try{
+                    if ($user) {
 
-                            $user_charge =  \Stripe\Charge::create(array(
-                                "amount" => $total * 100,
-                                "currency" => "usd",
-                                "customer" => $customer_id,
-                            ));
+                        $check_card_exists = User::where('users.id' , $request->id)
+                                        ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                        ->where('cards.id' , $user->card_id)
+                                        ->where('cards.is_default' , DEFAULT_TRUE);
 
-                            $payment_id = $user_charge->id;
-                            $amount = $user_charge->amount/100;
-                            $paid_status = $user_charge->paid;
+                        if($check_card_exists->count() != 0) {
 
-                            if($paid_status) {
+                            $user_card = $check_card_exists->first();
 
-                                $last_payment = UserPayment::where('user_id' , $request->id)
-                                    ->where('status', DEFAULT_TRUE)
-                                    ->orderBy('created_at', 'desc')
-                                    ->first();
+                            if ($total <= 0) {
+
+                                
+                                $previous_payment = UserPayment::where('user_id' , $request->id)
+                                            ->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
+
 
                                 $user_payment = new UserPayment;
 
-                                if($last_payment) {
+                                if($previous_payment) {
 
-                                    if (strtotime($last_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+                                    if (strtotime($previous_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
 
-                                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($last_payment->expiry_date)));
+                                     $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription->plan} months", strtotime($previous_payment->expiry_date)));
 
                                     } else {
 
                                         $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription->plan} months"));
-                                    }    
+
+                                    }
 
                                 } else {
-                                    
+                                   
                                     $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
                                 }
 
+                                $user_payment->payment_id = "free plan";
 
-                                $user_payment->payment_id  = $payment_id;
                                 $user_payment->user_id = $request->id;
+
                                 $user_payment->subscription_id = $request->subscription_id;
+
                                 $user_payment->status = 1;
-                                $user_payment->amount = $amount;
-                                $user_payment->save();
+
+                                $user_payment->amount = $total;
+
+                                $user_payment->payment_mode = CARD;
+
+                                // Coupon details
+
+                                $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                                $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+                                $user_payment->coupon_amount = $coupon_amount;
+
+                                $user_payment->subscription_amount = $subscription->amount;
+
+                                $user_payment->amount = $total;
+
+                                $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
 
 
+                                if ($user_payment->save()) {
 
-                                $user->user_type = 1;
-
-                                $user->save();
                                 
-                                $data = ['id' => $user->id , 'token' => $user->token,'paymentid'=>$payment_id];
+                                    if ($user) {
 
-                                Log::info("Stripe Payment".print_r($data, true));
+                                        $user->user_type = 1;
 
-                                $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+                                        // $user->amount_paid += $total;
 
-                                return response()->json($response_array, 200);
+                                        $user->expiry_date = $user_payment->expiry_date;
+
+                                        /*$now = time(); // or your date as well
+
+                                        $end_date = strtotime($user->expiry_date);
+
+                                        $datediff =  $end_date - $now;
+
+                                        $user->no_of_days = ($user->expiry_date) ? floor($datediff / (60 * 60 * 24)) + 1 : 0;*/
+
+                                        if ($user_payment->amount <= 0) {
+
+                                            $user->zero_subscription_status = 1;
+                                        }
+
+                                        if ($user->save()) {
+
+                                             $data = ['id' => $user->id , 'token' => $user->token, 'payment_id' => $user_payment->payment_id];
+
+                                            $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+
+                                        } else {
+
+
+                                            throw new Exception(tr('user_details_not_saved'));
+                                            
+                                        }
+
+                                    } else {
+
+                                        throw new Exception(tr('user_not_found'));
+                                        
+                                    }
+                                    
+                                   
+                                } else {
+
+                                    throw new Exception(tr(Helper::get_error_message(902)), 902);
+
+                                }
+
 
                             } else {
 
-                                $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+                                $stripe_secret_key = Setting::get('stripe_secret_key');
 
-                                return response()->json($response_array, 200);
+                                $customer_id = $user_card->customer_id;
+
+                                if($stripe_secret_key) {
+
+                                    \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+                                } else {
+
+                                    throw new Exception(Helper::get_error_message(902), 902);
+
+                                }
+
+                                try{
+
+                                   $user_charge =  \Stripe\Charge::create(array(
+                                      "amount" => $total * 100,
+                                      "currency" => "usd",
+                                      "customer" => $customer_id,
+                                    ));
+
+                                   $payment_id = $user_charge->id;
+                                   $amount = $user_charge->amount/100;
+                                   $paid_status = $user_charge->paid;
+
+                                    if($paid_status) {
+
+                                        $previous_payment = UserPayment::where('user_id' , $request->id)
+                                            ->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+
+                                        $user_payment = new UserPayment;
+
+                                        if($previous_payment) {
+
+                                            $expiry_date = $previous_payment->expiry_date;
+                                            $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                                        } else {
+                                            
+                                            $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                                        }
+
+
+                                        $user_payment->payment_id  = $payment_id;
+
+                                        $user_payment->user_id = $request->id;
+
+                                        $user_payment->subscription_id = $request->subscription_id;
+
+                                        $user_payment->status = PAID_STATUS;
+
+                                        $user_payment->payment_mode = CARD;
+
+
+                                        // Coupon details
+
+                                        $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                                        $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+                                        $user_payment->coupon_amount = $coupon_amount;
+
+                                        $user_payment->subscription_amount = $subscription->amount;
+
+                                        $user_payment->amount = $total;
+
+                                        $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+
+                                        if ($user_payment->save()) {
+
+                                            if ($user) {
+
+                                                $user->user_type = SUBSCRIBED_USER;
+
+                                                $user->expiry_date = $user_payment->expiry_date;
+/*
+                                                $now = time(); // or your date as well
+
+                                                $end_date = strtotime($user->expiry_date);
+
+                                                $datediff =  $end_date - $now;
+
+                                                $user->no_of_days = ($user->expiry_date) ? floor($datediff / (60 * 60 * 24)) + 1 : 0;*/
+
+                                                if ($user_payment->amount <= 0) {
+
+                                                    $user->zero_subscription_status = 1;
+                                                }
+
+                                                if ($user->save()) {
+
+                                                     $data = ['id' => $user->id , 'token' => $user->token,'payment_id' => $user_payment->payment_id];
+
+                                                    $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
+
+                                                } else {
+
+
+                                                    throw new Exception(tr('user_details_not_saved'));
+                                                    
+                                                }
+
+                                            } else {
+
+                                                throw new Exception(tr('user_not_found'));
+                                                
+                                            }
+
+                                        
+
+                                        } else {
+
+                                             throw new Exception(tr(Helper::get_error_message(902)), 902);
+
+                                        }
+
+
+                                    } else {
+
+                                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                                        throw new Exception(Helper::get_error_message(903), 903);
+
+                                    }
+
+                                
+                                } catch(\Stripe\Error\RateLimit $e) {
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch(\Stripe\Error\Card $e) {
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\InvalidRequest $e) {
+                                    // Invalid parameters were supplied to Stripe's API
+                                   
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\Authentication $e) {
+
+                                    // Authentication with Stripe's API failed
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\ApiConnection $e) {
+
+                                    // Network communication with Stripe failed
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\Base $e) {
+                                  // Display a very generic error to the user, and maybe send
+                                    
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (Exception $e) {
+                                    // Something else happened, completely unrelated to Stripe
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                                        Log::info(print_r($e,true));
+
+                                    throw new Exception($e->getMessage(), 903);
+                                    
+                                
+                                }
+
 
                             }
-                        
-                        }  catch(Stripe_CardError $e) {
 
-                            $error1 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error1 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_InvalidRequestError $e) {
-
-                            // Invalid parameters were supplied to Stripe's API
-                            $error2 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error2 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_AuthenticationError $e) {
-
-                            // Authentication with Stripe's API failed
-                            $error3 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error3 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_ApiConnectionError $e) {
-                            // Network communication with Stripe failed
-                            $error4 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error4 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Stripe_Error $e) {
-                            // Display a very generic error to the user, and maybe send
-                            // yourself an email
-                            $error5 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error5 ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
-
-                        } catch (Exception $e) {
-                            // Something else happened, completely unrelated to Stripe
-                            $error6 = $e->getMessage();
-
-                            $response_array = array('success' => false , 'error_messages' => $error6 ,'error_code' => 903);
-
-
-                        } catch (\Stripe\StripeInvalidRequestError $e) {
-
-                            // Log::info(print_r($e,true));
-
-                            $response_array = array('success' => false , 'error_messages' => Helper::get_error_message(903) ,'error_code' => 903);
-
-                            return response()->json($response_array , 200);
+                        } else {
+     
+                            throw new Exception(Helper::get_error_message(901), 901);
+                            
                         }
 
                     } else {
 
-                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(901) , 'error_code' => 901);
-                        return response()->json($response_array , 200);
+                        throw new Exception(tr('no_user_detail_found'));
+                        
                     }
 
                 } else {
 
-                   
+                    throw new Exception(Helper::get_error_message(901), 901);
 
-                    $user_payment = UserPayment::where('user_id' , $request->id)->first();
+                }         
 
-                    if($user_payment) {
+                
+            }
 
-                        $expiry_date = $user_payment->expiry_date;
-                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+            DB::commit();
 
-                    } else {
-                        $user_payment = new UserPayment;
-                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
-                    }
+            return response()->json($response_array , 200);
 
+        } catch (Exception $e) {
 
-                    $user_payment->payment_id  = "free_plan";
-                    $user_payment->user_id = $request->id;
-                    $user_payment->subscription_id = $request->subscription_id;
-                    $user_payment->status = 1;
-                    $user_payment->amount = $subscription->amount;
-                    $user_payment->save();
+            DB::rollback();
 
+            $error = $e->getMessage();
 
+            $code = $e->getCode();
 
-                    $user->user_type = 1;
+            $response_array = ['success'=>false, 'error_messages'=>$error, 'error_code'=>$code];
 
-                    $user->zero_subscription_status = 1;
-
-                    $user->save();
-                    
-                    $data = ['id' => $user->id , 'token' => $user->token, 'paymentid'=>$user_payment->payment_id];
-
-                    Log::info("Stripe Payment".print_r($data, true));
-
-                    $response_array = ['success' => true, 'message'=>tr('payment_success') , 'data' => $data];
-
-                    return response()->json($response_array, 200);
-
-                    
-                }
-
-            } else {
-
-                $response_array = array('success' => false ,'error_messages' => Helper::get_error_message(901) , 'error_code' => 901);
-
-            }    
-
-            
+            return response()->json($response_array);
         }
-
-        return response()->json($response_array , 200);
-    
     }
 
     public function subscribe_channel(Request $request) {
@@ -4113,7 +4609,7 @@ class UserApiController extends Controller {
 
                 $data['is_ppv_subscribe_page'] = $is_ppv_status;
                 
-                $data['pay_per_view_status'] = watchFullVideo($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details);
+                $data['pay_per_view_status'] = VideoRepo::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details)->getData()->success;
 
 
             }
@@ -4316,6 +4812,7 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                     ->where('title','like', '%'.$key.'%')
                     ->where('video_tapes.status' , 1)
                     ->where('video_tapes.publish_status' , 1)
@@ -4323,6 +4820,7 @@ class UserApiController extends Controller {
                     ->where('channels.is_approved', 1)
                     ->where('channels.status', 1)
                     ->where('video_tapes.age_limit','<=', checkAge($request))
+                    ->where('categories.status', CATEGORY_APPROVE_STATUS)
                     ->orderBy('video_tapes.created_at' , 'desc');
         if($web) {
 
@@ -4353,6 +4851,103 @@ class UserApiController extends Controller {
 
 
     /**
+     * Function Name : search_channels_list
+     *
+     * @usage_place : WEB
+     *
+     * To list out all the channels which based on search
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list
+     */
+    public function search_channels_list(Request $request) {
+
+        $age = 0;
+
+        $channel_id = [];
+
+        $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                    'video_tapes.status', 'video_tapes.channel_id')
+                ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                ->where('channels.status', DEFAULT_TRUE)
+                ->where('name','like', '%'.$request->key.'%')
+                ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                ->where('video_tapes.status', DEFAULT_TRUE)
+                ->groupBy('video_tapes.channel_id');
+
+        if($request->id) {
+
+            $user = User::find($request->id);
+
+            $age = $user->age_limit;
+
+            $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+            if ($request->has('channel_id')) {
+
+                $query->whereIn('channels.id', $request->channel_id);
+            }
+
+
+            $query->where('video_tapes.age_limit','<=', $age);
+
+        }
+
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+            $channels = $query->skip($request->skip)->take(Setting::get('admin_take_count', 12))->get();
+
+        } else {
+
+            $channels = $query->paginate(6);
+
+        }
+
+        $lists = [];
+
+        $pagination = 0;
+
+        if(count($channels) > 0) {
+
+            foreach ($channels as $key => $value) {
+                $lists[] = ['channel_id'=>$value->id, 
+                        'user_id'=>$value->user_id,
+                        'picture'=> $value->picture, 
+                        'title'=>$value->name,
+                        'description'=>$value->description, 
+                        'created_at'=>$value->created_at->diffForHumans(),
+                        'no_of_videos'=>videos_count($value->id),
+                        'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
+                        'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+                ];
+
+            }
+
+            if ($request->device_type != DEVICE_ANDROID && $request->device_type != DEVICE_IOS) {
+
+                $pagination = (string) $channels->links();
+
+            }
+
+        }
+
+        if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+            $response_array = ['success'=>true, 'data'=>$lists];
+
+        } else {
+
+            $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+        }
+
+        return response()->json($response_array);
+    }
+
+
+    /**
      * Function Name : stripe_ppv()
      * 
      * Pay the payment for Pay per view through stripe
@@ -4367,11 +4962,12 @@ class UserApiController extends Controller {
 
             DB::beginTransaction();
 
-            $validator = Validator::make($request->all(), 
-                array(
-                    'video_tape_id' => 'required|exists:video_tapes,id',
-                ),  array(
-                    'exists' => 'The :attribute doesn\'t exists',
+             $validator = Validator::make($request->all(), [
+                'coupon_code' => 'exists:coupons,coupon_code,status,'.COUPON_ACTIVE,  
+                'video_tape_id'=>'required|exists:video_tapes,id,publish_status,'.VIDEO_PUBLISHED.',is_approved,'.ADMIN_VIDEO_APPROVED_STATUS.',status,'.USER_VIDEO_APPROVED_STATUS          
+            ], array(
+                    'coupon_code.exists' => tr('coupon_code_not_exists'),
+                    'video_id.exists' => tr('video_not_exists'),
                 ));
 
             if($validator->fails()) {
@@ -4384,8 +4980,6 @@ class UserApiController extends Controller {
 
             } else {
 
-                // Check stripe is enabled by admin and stripe configuration
-
                 $userModel = User::find($request->id);
 
                 if ($userModel) {
@@ -4396,14 +4990,190 @@ class UserApiController extends Controller {
 
                         if ($user_card && $user_card->is_default) {
 
-                            $video_tape_details = VideoTape::find($request->video_tape_id);
+                            $video = VideoTape::find($request->video_tape_id);
 
-                            if($video_tape_details) {
+                            if($video) {
 
-                                $total = $video_tape_details->ppv_amount;
+                                $total = $video->ppv_amount;
 
-                                if ($total > 0) {
-                                    
+                                $coupon_amount = 0;
+
+                                $coupon_reason = '';
+
+                                $is_coupon_applied = COUPON_NOT_APPLIED;
+
+                                if ($request->coupon_code) {
+
+                                    $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+                                    if ($coupon) {
+                                        
+                                        if ($coupon->status == COUPON_INACTIVE) {
+
+                                            $coupon_reason = tr('coupon_inactive_reason');
+
+                                        } else {
+
+                                            $check_coupon = $this->check_coupon_applicable_to_user($userModel, $coupon)->getData();
+
+                                            if ($check_coupon->success) {
+
+                                                $is_coupon_applied = COUPON_APPLIED;
+
+                                                $amount_convertion = $coupon->amount;
+
+                                                if ($coupon->amount_type == PERCENTAGE) {
+
+                                                    $amount_convertion = amount_convertion($coupon->amount, $video->ppv_amount);
+
+                                                }
+
+                                                if ($amount_convertion < $video->ppv_amount  && $amount_convertion > 0) {
+
+                                                    $total = $video->ppv_amount - $amount_convertion;
+
+                                                    $coupon_amount = $amount_convertion;
+
+                                                } else {
+
+                                                    // throw new Exception(Helper::get_error_message(156),156);
+
+                                                    $total = 0;
+
+                                                    $coupon_amount = $amount_convertion;
+                                                    
+                                                }
+
+                                                // Create user applied coupon
+
+                                                if($check_coupon->code == 2002) {
+
+                                                    $user_coupon = UserCoupon::where('user_id', $userModel->id)
+                                                            ->where('coupon_code', $request->coupon_code)
+                                                            ->first();
+
+                                                    // If user coupon not exists, create a new row
+
+                                                    if ($user_coupon) {
+
+                                                        if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                                            $user_coupon->no_of_times_used += 1;
+
+                                                            $user_coupon->save();
+
+                                                        }
+
+                                                    }
+
+                                                } else {
+
+                                                    $user_coupon = new UserCoupon;
+
+                                                    $user_coupon->user_id = $userModel->id;
+
+                                                    $user_coupon->coupon_code = $request->coupon_code;
+
+                                                    $user_coupon->no_of_times_used = 1;
+
+                                                    $user_coupon->save();
+
+                                                }
+
+                                            } else {
+
+                                                $coupon_reason = $check_coupon->error_messages;
+                                                
+                                            }
+
+                                        }
+
+                                    } else {
+
+                                        $coupon_reason = tr('coupon_delete_reason');
+                                    }
+                                
+                                }
+
+                                if ($total <= 0) {
+
+                                    $user_payment = new PayPerView;
+
+                                    $user_payment->payment_id = $is_coupon_applied ? 'COUPON-DISCOUNT' : FREE_PLAN;
+
+                                    $user_payment->user_id = $request->id;
+                                    $user_payment->video_id = $request->video_tape_id;
+
+                                    $user_payment->status = PAID_STATUS;
+
+                                    $user_payment->is_watched = NOT_YET_WATCHED;
+
+                                    $user_payment->ppv_date = date('Y-m-d H:i:s');
+
+                                    if ($video->type_of_user == NORMAL_USER) {
+
+                                        $user_payment->type_of_user = tr('normal_users');
+
+                                    } else if($video->type_of_user == PAID_USER) {
+
+                                        $user_payment->type_of_user = tr('paid_users');
+
+                                    } else if($video->type_of_user == BOTH_USERS) {
+
+                                        $user_payment->type_of_user = tr('both_users');
+                                    }
+
+
+                                    if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+
+                                        $user_payment->type_of_subscription = tr('one_time_payment');
+
+                                    } else if($video->type_of_subscription == RECURRING_PAYMENT) {
+
+                                        $user_payment->type_of_subscription = tr('recurring_payment');
+
+                                    }
+
+                                    $user_payment->payment_mode = CARD;
+
+                                    // Coupon details
+
+                                    $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                                    $user_payment->coupon_code = $request->coupon_code ? $request->coupon_code : '';
+
+                                    $user_payment->coupon_amount = $coupon_amount;
+
+                                    $user_payment->ppv_amount = $video->ppv_amount;
+
+                                    $user_payment->amount = $total;
+
+                                    $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+                                    $user_payment->save();
+
+                                    // Commission Spilit 
+
+                                    if($video->amount > 0) { 
+
+                                        // Do Commission spilit  and redeems for moderator
+
+                                        Log::info("ppv_commission_spilit started");
+
+                                        UserRepo::ppv_commission_split($video->id , $user_payment->id , "");
+
+                                        Log::info("ppv_commission_spilit END"); 
+                                        
+                                    }
+
+                                    \Log::info("ADD History - add_to_redeem");
+
+                                    $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $user_payment->payment_id];
+
+                                    $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
+
+                                } else {
+
                                     // Get the key from settings table
 
                                     $stripe_secret_key = Setting::get('stripe_secret_key');
@@ -4431,85 +5201,135 @@ class UserApiController extends Controller {
                                         ));
 
                                        $payment_id = $user_charge->id;
-
                                        $amount = $user_charge->amount/100;
-
                                        $paid_status = $user_charge->paid;
-
+                                       
                                        if($paid_status) {
 
-                                            $ppv_details = new PayPerView;
-                                            $ppv_details->payment_id  = $payment_id;
-                                            $ppv_details->user_id = $request->id;
-                                            $ppv_details->video_id = $request->video_tape_id;
-                                            $ppv_details->status = DEFAULT_FALSE;
-                                            $ppv_details->amount = $amount;
+                                            $user_payment = new PayPerView;
+                                            $user_payment->payment_id  = $payment_id;
+                                            $user_payment->user_id = $request->id;
+                                            $user_payment->video_id = $request->video_tape_id;
+                                            $user_payment->payment_mode = CARD;
+                                        
+
+                                            $user_payment->status = PAID_STATUS;
+
+                                            $user_payment->is_watched = NOT_YET_WATCHED;
+
+                                            $user_payment->ppv_date = date('Y-m-d H:i:s');
+
+                                            if ($video->type_of_user == NORMAL_USER) {
+
+                                                $user_payment->type_of_user = tr('normal_users');
+
+                                            } else if($video->type_of_user == PAID_USER) {
+
+                                                $user_payment->type_of_user = tr('paid_users');
+
+                                            } else if($video->type_of_user == BOTH_USERS) {
+
+                                                $user_payment->type_of_user = tr('both_users');
+                                            }
 
 
-                                        if ($video_tape_details->type_of_user == 1) {
+                                            if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
 
-                                            $ppv_details->type_of_user = "Normal User";
+                                                $user_payment->type_of_subscription = tr('one_time_payment');
 
-                                        } else if($video_tape_details->type_of_user == 2) {
+                                            } else if($video->type_of_subscription == RECURRING_PAYMENT) {
 
-                                            $ppv_details->type_of_user = "Paid User";
+                                                $user_payment->type_of_subscription = tr('recurring_payment');
 
-                                        } else if($video_tape_details->type_of_user == 3) {
+                                            }
 
-                                            $ppv_details->type_of_user = "Both Users";
-                                        }
+                                            // Coupon details
 
+                                            $user_payment->is_coupon_applied = $is_coupon_applied;
 
-                                        if ($video_tape_details->type_of_subscription == 1) {
+                                            $user_payment->coupon_code = $request->coupon_code ? $request->coupon_code : '';
 
-                                            $ppv_details->type_of_subscription = "One Time Payment";
+                                            $user_payment->coupon_amount = $coupon_amount;
 
-                                        } else if($video_tape_details->type_of_subscription == 2) {
+                                            $user_payment->ppv_amount = $video->ppv_amount;
 
-                                            $ppv_details->type_of_subscription = "Recurring Payment";
+                                            $user_payment->amount = $total;
 
-                                        }
+                                            $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+                                                                  
+                                            $user_payment->save();
 
-                                        $ppv_details->save();
+                                            // Commission Spilit 
 
-                                        if($ppv_details->amount > 0) {
+                                            if($video->ppv_amount > 0) { 
 
-                                            // Do Commission spilit  and redeems for moderator
+                                                // Do Commission spilit  and redeems for moderator
 
-                                            Log::info("ppv_commission_spilit started");
+                                                Log::info("ppv_commission_spilit started");
 
-                                            PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id);
+                                                PaymentRepo::ppv_commission_split($video->id , $user_payment->id , "");
 
-                                            Log::info("ppv_commission_spilit END");
-
-                                        }
+                                                Log::info("ppv_commission_spilit END");
+                                                
+                                            }
 
                                         
-                                        $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id, 'video_tape_id'=> $video_tape_details->id];
+                                            $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
 
-                                        $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
+                                            $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
 
                                         } else {
 
                                             $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(902) , 'error_code' => 902);
 
-                                            throw new Exception(tr('no_video_found'));
+                                            throw new Exception(tr('no_vod_video_found'));
 
                                         }
                                     
+                                    } catch(\Stripe\Error\RateLimit $e) {
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch(\Stripe\Error\Card $e) {
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\InvalidRequest $e) {
+                                        // Invalid parameters were supplied to Stripe's API
+                                       
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\Authentication $e) {
+
+                                        // Authentication with Stripe's API failed
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\ApiConnection $e) {
+
+                                        // Network communication with Stripe failed
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\Base $e) {
+                                      // Display a very generic error to the user, and maybe send
+                                        
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (Exception $e) {
+                                        // Something else happened, completely unrelated to Stripe
+
+                                        throw new Exception($e->getMessage(), 903);
+
                                     } catch (\Stripe\StripeInvalidRequestError $e) {
 
-                                        Log::info(print_r($e,true));
+                                            Log::info(print_r($e,true));
 
-                                        $response_array = array('success' => false , 'error_messages' => $e->getMessage() ,'error_code' => 903);
-
-                                       return response()->json($response_array , 200);
+                                        throw new Exception($e->getMessage(), 903);
+                                        
                                     
                                     }
 
-                                } else {
-
-                                     throw new Exception(tr('check_with_ppv_amount'));
 
                                 }
 
@@ -4524,15 +5344,13 @@ class UserApiController extends Controller {
 
                         } else {
 
-                            $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
-
+                        
                             throw new Exception(tr('no_default_card_available'), 901);
 
                         }
 
                     } else {
 
-                        $response_array = array('success' => false , 'error_messages' => tr('no_default_card_available'));
 
                         throw new Exception(tr('no_default_card_available'), 901);
 
@@ -4542,6 +5360,7 @@ class UserApiController extends Controller {
 
                     throw new Exception(tr('no_user_detail_found'));
                     
+
                 }
 
             }
@@ -4554,11 +5373,11 @@ class UserApiController extends Controller {
 
             DB::rollback();
 
+            $message = $e->getMessage();
+
             $code = $e->getCode();
 
-            $e = $e->getMessage();
-
-            $response_array = ['success'=>false, 'error_messages'=>$e, 'error_code'=>$code];
+            $response_array = ['success'=>false, 'error_messages'=>$message, 'error_code'=>$code];
 
             return response()->json($response_array);
 
@@ -4583,6 +5402,7 @@ class UserApiController extends Controller {
         $base_query = Wishlist::where('wishlists.user_id' , $request->id)
                             ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
                             ->where('wishlists.status' , 1)
@@ -4609,6 +5429,7 @@ class UserApiController extends Controller {
                                     'video_tapes.type_of_subscription',
                                     'wishlists.created_at')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderby('wishlists.created_at' , 'desc');
 
         if ($request->id) {
@@ -4663,6 +5484,7 @@ class UserApiController extends Controller {
 
         $base_query = UserHistory::where('user_histories.user_id' , $request->id)
                             ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->leftJoin('channels' ,'video_tapes.channel_id' , '=' , 'channels.id')
                             ->where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
@@ -4687,6 +5509,7 @@ class UserApiController extends Controller {
                                     'channels.name as channel_name', 
                                     'user_histories.created_at')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderby('user_histories.created_at' , 'desc');
         
         if ($request->id) {
@@ -4740,8 +5563,10 @@ class UserApiController extends Controller {
                             ->where('channels.status', 1)
                             ->where('channels.is_approved', 1)
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
         if ($request->id) {
@@ -4803,6 +5628,8 @@ class UserApiController extends Controller {
                         ->where('video_tapes.is_approved' , 1)
                         ->where('channels.status', 1)
                         ->where('channels.is_approved', 1)
+                        ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS)
                         ->videoResponse()
                         ->where('video_tapes.age_limit','<=', checkAge($request))
                         ->orderby('watch_count' , 'desc');
@@ -4856,7 +5683,8 @@ class UserApiController extends Controller {
     public function suggestion_videos($request) {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)   
-                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
@@ -4864,6 +5692,7 @@ class UserApiController extends Controller {
                             ->where('channels.is_approved', 1)
                             ->where('channels.status', 1)
                             ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderByRaw('RAND()');
 
         if($request->video_tape_id) {
@@ -5060,20 +5889,49 @@ class UserApiController extends Controller {
      */
     public function channel_videos($channel_id, $skip , $request = null) {
 
-        $videos_query = VideoTape::where('video_tapes.is_approved' , 1)
-                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+        $videos_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
 
-        $u_id = '';
+        $u_id = $request->id;
 
-        if (Auth::check()) {
+        $channel = Channel::find($channel_id);
 
-            $u_id = Auth::user()->id;
+        if ($channel) {
 
-                            
-            $videos_query->where('video_tapes.age_limit','<=', checkAge($request));
+            if ($u_id == $channel->user_id) {
+
+                if ($u_id) {
+
+                    $videos_query->where('video_tapes.age_limit','<=', checkAge($request)); 
+                }
+
+            } else {
+
+
+                $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
+                    ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS)
+                        ->where('video_tapes.publish_status' , 1)   
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS);
+
+            }
+
+        } else {
+
+            $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
+                ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS)
+                        ->where('video_tapes.publish_status' , 1)
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS);
+            
+        }
+
+        if ($u_id) {
 
             // Check any flagged videos are present
             $flagVideos = getFlagVideos($u_id);
@@ -5084,24 +5942,6 @@ class UserApiController extends Controller {
 
             }
 
-        }
-
-        $channel = Channel::find($channel_id);
-
-        if ($channel) {
-
-            if ($u_id == $channel->user_id) {
-
-            } else {
-
-                $videos_query->where('video_tapes.status' , 1);
-
-            }
-
-        } else {
-
-            $videos_query->where('video_tapes.status' , 1);
-            
         }
 
         if ($skip >= 0) {
@@ -5154,6 +5994,7 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('watch_count' , '>' , 0)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                         ->videoResponse()
                         ->where('channel_id', $id)
                         ->orderby('watch_count' , 'desc');
@@ -5162,7 +6003,10 @@ class UserApiController extends Controller {
 
             $base_query = $base_query->where('video_tapes.status' , 1)
                         ->where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.publish_status' , 1);
+                        ->where('video_tapes.publish_status' , 1)
+                        ->where('channels.status', 1)
+                        ->where('channels.is_approved', 1)
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS);
 
         }
 
@@ -5228,10 +6072,8 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
-                        ->where('channel_id', $id)
-                        ->whereRaw('user_ppv_amount > 0 or amount > 0')
                         ->orderby('amount' , 'desc')
-                        ->where('channels.user_id', $u_id);
+                        ->whereRaw("channel_id = '{$id}' and channels.user_id = '{$u_id}' and (user_ppv_amount > 0 or amount > 0)");
 
         if($skip >= 0) {
 
@@ -5274,15 +6116,43 @@ class UserApiController extends Controller {
 
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
                     ->videoResponse()
-                    ->where('video_tapes.status' , 1)
-                    ->where('video_tapes.is_approved' , 1)
-                    ->where('video_tapes.publish_status' , 1)
-                    ->where('channels.is_approved', 1)
-                    ->where('channels.status', 1)
+                    // ->where('video_tapes.status' , 1)
+                    // ->where('video_tapes.is_approved' , 1)
+                    // ->where('video_tapes.publish_status' , 1)
+                    // ->where('channels.is_approved', 1)
+                    // ->where('channels.status', 1)
                     ->first();
-
         if ($video) {
+
+            if ($request->id != $video->channel_created_by) {
+
+                // Channel / video is declined by admin /user
+
+                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED_STATUS || $video->channel_status == USER_CHANNEL_DECLINED_STATUS) {
+
+                    return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
+
+                }
+
+                // Video if not published
+
+                if ($video->publish_status != PUBLISH_NOW) {
+
+                    return response()->json(['success'=>false, 'error_messages'=>tr('video_not_yet_publish')]);
+                }
+
+                if ($video->getCategory) {
+
+                    if ($video->getCategory->status == CATEGORY_DECLINE_STATUS) {
+
+                        return response()->json(['success'=>false, 'error_messages'=>tr('category_declined_by_admin')]);
+
+                    } 
+                }
+
+            }
 
             if (Setting::get('is_payper_view')) {
 
@@ -5292,7 +6162,8 @@ class UserApiController extends Controller {
 
                     if ($video->ppv_amount > 0) {
 
-                        $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $video) : false;
+                        $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $video)->getData()->success : false;
+
 
                         if ($ppv_status) {
                             
@@ -5436,17 +6307,14 @@ class UserApiController extends Controller {
 
                         $video_pixels = is_array($video_pixels) ? $video_pixels : explode(',', $video_pixels);
 
-                        if (is_array($videos)) {
 
-                            foreach ($videos as $key => $value) {
+                        foreach ($videos as $key => $value) {
 
-                                $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+                            $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => isset($video_pixels[$key]) ? $video_pixels[$key] : "HD"];
 
 
-                                array_push($videoPath, $videoPathData);
-                           
-                            }
-
+                            $videoPath[] = $videoPathData;
+                       
                         }
                     }
 
@@ -5460,7 +6328,6 @@ class UserApiController extends Controller {
 
                 $hls_video = $video->video;
             }
-
 
             $subscribe_status = DEFAULT_FALSE;
 
@@ -5496,8 +6363,20 @@ class UserApiController extends Controller {
             $subscriberscnt = subscriberscnt($video->channel_id);
 
             $embed_link  = "<iframe width='560' height='315' src='".route('embed_video', array('u_id'=>$video->unique_id))."' frameborder='0' allowfullscreen></iframe>";
-            
-            $response_array = ['video'=>$video, 'comments'=>$comments, 
+
+            $tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                ->where('video_tape_id', $request->video_tape_id)
+                ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
+                ->get()->toArray();
+
+            $category = Category::find($video->category_id);
+
+            $video['category_unique_id'] = $category ? $category->unique_id : '';
+
+            $response_array = [
+                'tags'=>$tags,
+                'video'=>$video, 'comments'=>$comments, 
                 'channels' => $channels, 'suggestions'=>$suggestions,
                 'wishlist_status'=> $wishlist_status, 'history_status' => $history_status, 'main_video'=>$main_video,
                 'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
@@ -5505,7 +6384,8 @@ class UserApiController extends Controller {
                 'like_count'=>$like_count,'dislike_count'=>$dislike_count,
                 'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
                 'subscriberscnt'=>$subscriberscnt,'comment_rating_status'=>$comment_rating_status,
-                'embed_link' => $embed_link];
+                'embed_link' => $embed_link,
+                ];
 
             return response()->json(['success'=>true, 'response_array'=>$response_array], 200);
 
@@ -5694,19 +6574,26 @@ class UserApiController extends Controller {
             $currency = Setting::get('currency');
 
             $query = PayPerView::select('pay_per_views.id as pay_per_view_id',
-                    'video_id as video_tape_id',
+                    'video_id',
                     'video_tapes.title',
                     'pay_per_views.amount',
                     'pay_per_views.status as video_status',
                     'video_tapes.default_image as picture',
                     'pay_per_views.type_of_subscription',
+                    'pay_per_views.is_coupon_applied',
+                    'pay_per_views.coupon_reason',
                     'pay_per_views.type_of_user',
                     'pay_per_views.payment_id',
+                    'pay_per_views.ppv_amount',
+                    'pay_per_views.coupon_amount',
+                    'pay_per_views.coupon_code',
+                    'pay_per_views.payment_mode',
                      DB::raw('DATE_FORMAT(pay_per_views.created_at , "%e %b %y") as paid_date')
                      )
                     ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
                     ->where('pay_per_views.user_id', $request->id)
-                    ->where('pay_per_views.amount', '>', 0);
+                    ->where('pay_per_views.amount', '>', 0)
+                    ->orderby('pay_per_views.created_at', 'desc');
 
             $user = User::find($request->id);
 
@@ -5719,7 +6606,6 @@ class UserApiController extends Controller {
             
                 foreach ($model->items() as $key => $value) {
 
-
                     $is_ppv_status = DEFAULT_TRUE;
 
                     if ($user) {
@@ -5728,15 +6614,15 @@ class UserApiController extends Controller {
 
                     } 
 
-                    $videoDetails = $value->video ? $value->video : '';
+                    $videoDetails = $value->videoTapeResponse ? $value->videoTapeResponse : '';
 
-                    $pay_per_view_status = $videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true;
+                    $pay_per_view_status = $videoDetails ? (VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)->getData()->success) : true;
 
                     $ppv_notes = !$pay_per_view_status ? ($videoDetails->type_of_user == 1 ? tr('normal_user_note') : tr('paid_user_note')) : ''; 
                  
                     $data[] = [
                             'pay_per_view_id'=>$value->pay_per_view_id,
-                            'video_tape_id'=>$value->video_tape_id,
+                            'video_tape_id'=>$value->video_id,
                             'title'=>$value->title,
                             'amount'=>$value->amount,
                             'video_status'=>$value->video_status,
@@ -5748,7 +6634,13 @@ class UserApiController extends Controller {
                             'payment_id'=>$value->payment_id,
                             'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
-                            'ppv_notes'=>$ppv_notes
+                            'ppv_notes'=>$ppv_notes,
+                            'coupon_code'=>$value->coupon_code,
+                            'payment_mode'=>$value->payment_mode,
+                            'coupon_amount'=>$value->coupon_amount,
+                            'ppv_amount'=>$value->ppv_amount,
+                            'is_coupon_applied'=>$value->is_coupon_applied,
+                            'coupon_reason'=>$value->coupon_reason,
                             ];
 
                 }
@@ -5773,10 +6665,18 @@ class UserApiController extends Controller {
 
                     } 
 
-                    $videoDetails = $value->video ? $value->video : '';
+                    $videoDetails = $value->videoTapeResponse ? $value->videoTapeResponse : '';
+
+                    $pay_per_view_status = $videoDetails ? (VideoRepo::pay_per_views_status_check($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)->getData()->success) : true;
+
+                    $spam = Flag::where('video_tape_id', $value->video_id)
+                            ->where('user_id', $user->id)
+                            ->first();
+
+                    $spam_status = $spam ? true : false;
     
                     $data[] = ['pay_per_view_id'=>$value->pay_per_view_id,
-                            'video_tape_id'=>$value->video_tape_id,
+                            'video_tape_id'=>$value->video_id,
                             'title'=>$value->title,
                             'amount'=>$value->amount,
                             'video_status'=>$value->video_status,
@@ -5786,8 +6686,15 @@ class UserApiController extends Controller {
                             'type_of_subscription'=>$value->type_of_subscription,
                             'type_of_user'=>$value->type_of_user,
                             'payment_id'=>$value->payment_id,
-                            'pay_per_view_status'=>$videoDetails ? (watchFullVideo($user ? $user->id : '', $user ? $user->user_type : '', $videoDetails)) : true,
+                            'pay_per_view_status'=>$pay_per_view_status,
                             'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ 
+                            'is_spam'=>$spam_status,
+                            'coupon_code'=>$value->coupon_code,
+                            'payment_mode'=>$value->payment_mode,
+                            'coupon_amount'=>$value->coupon_amount,
+                            'ppv_amount'=>$value->ppv_amount,
+                            'is_coupon_applied'=>$value->is_coupon_applied,
+                            'coupon_reason'=>$value->coupon_reason,
                             ];
 
                 }
@@ -5820,12 +6727,14 @@ class UserApiController extends Controller {
             $validator = Validator::make(
                 $request->all(),
                 array(
-                    'video_tape_id'=>'required|exists:video_tapes,id',
+                    'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED_STATUS.',is_approved,'.ADMIN_VIDEO_APPROVED_STATUS.',publish_status,'.VIDEO_PUBLISHED,
                     'payment_id'=>'required',
-
+                    'coupon_code'=>'exists:coupons,coupon_code',
                 ),  array(
-                    'exists' => 'The :attribute doesn\'t exists',
+                    'coupon_code.exists' => tr('coupon_code_not_exists'),
+                    'video_tape_id.exists' => tr('livevideo_not_exists'),
                 ));
+
 
             if ($validator->fails()) {
                 // Error messages added in response for debugging
@@ -5837,72 +6746,223 @@ class UserApiController extends Controller {
 
             } else {
 
-                $video_tape_details = VideoTape::find($request->video_tape_id);
+                $video = VideoTape::find($request->video_tape_id);
 
-                $ppv_details = new PayPerView;
-                
-                $ppv_details->payment_id  = $request->payment_id;
+                $user = User::find($request->id);
 
-                $ppv_details->user_id = $request->id;
+                $total = $video->ppv_amount;
 
-                $ppv_details->video_id = $request->video_tape_id;
+                $coupon_amount = 0;
 
-                $ppv_details->status = DEFAULT_FALSE;
+                $coupon_reason = '';
 
-                $ppv_details->expiry_date = date('Y-m-d H:i:s');
+                $is_coupon_applied = COUPON_NOT_APPLIED;
 
-                $ppv_details->amount = $ppv_details->videoTape ? $ppv_details->videoTape->ppv_amount : "0.00";
+                if ($request->coupon_code) {
 
-                if ($video_tape_details->type_of_user == 1) {
+                    $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
 
-                    $ppv_details->type_of_user = "Normal User";
+                    if ($coupon) {
+                        
+                        if ($coupon->status == COUPON_INACTIVE) {
 
-                } else if($video_tape_details->type_of_user == 2) {
+                            $coupon_reason = tr('coupon_inactive_reason');
 
-                    $ppv_details->type_of_user = "Paid User";
+                        } else {
 
-                } else if($video_tape_details->type_of_user == 3) {
+                            $check_coupon = $this->check_coupon_applicable_to_user($user, $coupon)->getData();
 
-                    $ppv_details->type_of_user = "Both Users";
+                            if ($check_coupon->success) {
+
+                                $is_coupon_applied = COUPON_APPLIED;
+
+                                $amount_convertion = $coupon->amount;
+
+                                if ($coupon->amount_type == PERCENTAGE) {
+
+                                    $amount_convertion = amount_convertion($coupon->amount, $video->ppv_amount);
+
+                                }
+
+                                if ($amount_convertion < $video->ppv_amount  && $amount_convertion > 0) {
+
+                                    $total = $video->ppv_amount - $amount_convertion;
+
+                                    $coupon_amount = $amount_convertion;
+
+                                } else {
+
+                                    // throw new Exception(Helper::get_error_message(156),156);
+
+                                    $total = 0;
+
+                                    $coupon_amount = $amount_convertion;
+                                    
+                                }
+
+                                // Create user applied coupon
+
+                                if($check_coupon->code == 2002) {
+
+                                    $user_coupon = UserCoupon::where('user_id', $user->id)
+                                            ->where('coupon_code', $request->coupon_code)
+                                            ->first();
+
+                                    // If user coupon not exists, create a new row
+
+                                    if ($user_coupon) {
+
+                                        if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                            $user_coupon->no_of_times_used += 1;
+
+                                            $user_coupon->save();
+
+                                        }
+
+                                    }
+
+                                } else {
+
+                                    $user_coupon = new UserCoupon;
+
+                                    $user_coupon->user_id = $user->id;
+
+                                    $user_coupon->coupon_code = $request->coupon_code;
+
+                                    $user_coupon->no_of_times_used = 1;
+
+                                    $user_coupon->save();
+
+                                }
+
+                            } else {
+
+                                $coupon_reason = $check_coupon->error_messages;
+                                
+                            }
+
+                        }
+
+                    } else {
+
+                        $coupon_reason = tr('coupon_delete_reason');
+                    }
                 }
 
+                $payment = PayPerView::where('user_id', $request->id)
+                            ->where('video_id', $request->video_tape_id)
+                            ->where('status', PAID_STATUS)
+                            ->orderBy('ppv_date', 'desc')
+                            ->first();
 
-                if ($video_tape_details->type_of_subscription == 1) {
+                $payment_status = DEFAULT_FALSE;
 
-                    $ppv_details->type_of_subscription = "One Time Payment";
+                if ($payment) {
 
-                } else if($video_tape_details->type_of_subscription == 2) {
+                    if ($video->type_of_subscription == RECURRING_PAYMENT && $payment->is_watched == WATCHED) {
 
-                    $ppv_details->type_of_subscription = "Recurring Payment";
+                        $payment_status = DEFAULT_FALSE;
+
+                    } else {
+
+                        $payment_status = DEFAULT_TRUE;
+
+                    }
+
+                } else {
+
+                    $payment_status = DEFAULT_FALSE;
 
                 }
 
-                $ppv_details->save();
+                if ($video->is_pay_per_view == PPV_ENABLED) {
 
-                if($ppv_details) {
+                    if ($payment_status) {
 
-                    if($video_tape_details->ppv_amount > 0) { 
+                        throw new Exception(tr('already_paid_amount_to_video'));
 
-                        // Do Commission spilit  and redeems for user
+                    }
+
+                    $user_payment = new PayPerView;
+                    
+                    $user_payment->payment_id  = $request->payment_id;
+
+                    $user_payment->user_id = $request->id;
+
+                    $user_payment->video_id = $request->video_tape_id;
+
+                    $user_payment->status = PAID_STATUS;
+
+                    $user_payment->is_watched = NOT_YET_WATCHED;
+
+                    $user_payment->payment_mode = PAYPAL;
+
+                    $user_payment->ppv_date = date('Y-m-d H:i:s');
+
+                    if ($video->type_of_user == NORMAL_USER) {
+
+                        $user_payment->type_of_user = tr('normal_users');
+
+                    } else if($video->type_of_user == PAID_USER) {
+
+                        $user_payment->type_of_user = tr('paid_users');
+
+                    } else if($video->type_of_user == BOTH_USERS) {
+
+                        $user_payment->type_of_user = tr('both_users');
+                    }
+
+
+                    if ($video->type_of_subscription == ONE_TIME_PAYMENT) {
+
+                        $user_payment->type_of_subscription = tr('one_time_payment');
+
+                    } else if($video->type_of_subscription == RECURRING_PAYMENT) {
+
+                        $user_payment->type_of_subscription = tr('recurring_payment');
+
+                    }
+                    // Coupon details
+
+                    $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                    $user_payment->coupon_code = $request->coupon_code ? $request->coupon_code : '';
+
+                    $user_payment->coupon_amount = $coupon_amount;
+
+                    $user_payment->ppv_amount = $video->ppv_amount;
+
+                    $user_payment->amount = $total;
+
+                    $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+                    $user_payment->save();
+
+                    if($user_payment) {
+
+                        // Do Commission spilit  and redeems for moderator
 
                         Log::info("ppv_commission_spilit started");
 
-                        PaymentRepo::ppv_commission_split($video_tape_details->id , $ppv_details->id);
+                        PaymentRepo::ppv_commission_split($video->id , $user_payment->id , "");
 
-                        Log::info("ppv_commission_spilit END");
-                        
-                    }
+                        Log::info("ppv_commission_spilit END"); 
+   
 
-                    \Log::info("ADD History - add_to_redeem");
+                    } 
 
-                } 
 
-                $viewerModel = User::find($request->id);
+                    $user = User::find($request->id);
 
-                $response_array = [
-                                    'success' => true, 'message' => tr('payment_success'), 
-                                    'data' => ['id' => $request->id,'token' => $viewerModel ? $viewerModel->token : '','video_tape_id' => $video_tape_details->id]
-                                ];
+                    $response_array = ['success'=>true, 'message'=>tr('payment_success'),
+                            'data'=>['id'=>$user->id ,'token'=>$user->token]];
+
+                } else {
+
+                    throw new Exception(tr('ppv_not_set'));
+                    
+                }
 
             }
 
@@ -5920,6 +6980,7 @@ class UserApiController extends Controller {
 
             return response()->json($response_array);
         }
+    
 
     }    
    
@@ -6084,7 +7145,6 @@ class UserApiController extends Controller {
      * 
      * @return
      */
-
     public function cards_add(Request $request) {
 
         Log::info("CARDS ADD".print_r($request->all() , true) );
@@ -6273,13 +7333,1003 @@ class UserApiController extends Controller {
 
             $error_code = $e->getCode();
 
-            Log::info("catch FUNCTION INSIDE".$error_message);
-
             $response_array = ['success'=>false, 'error_messages'=> $error_message , 'error_code' => $error_code];
 
             return response()->json($response_array , 200);
         }
    
     }
+
+    /**
+     * Function Name : tags_list
+     *
+     * To list out all active tags
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @param object $request - ''
+     *
+     * @return response of array values
+     */
+    public function tags_list(Request $request) {
+
+        $take = $request->take ? $request->take : Setting::get('admin_take_count');
+
+        $query = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                    ->where('status', TAG_APPROVE_STATUS)
+                    ->orderBy('created_at', 'desc');
+
+        if ($request->skip){
+            $query->skip($request->skip)
+                    ->take($take);
+        }
+
+        $tags = $query->get();
+
+        return response()->json(['success'=>true, 'data'=>$tags]);
+    }
+
+
+    /**
+     * Function Name : tags_view
+     *
+     * To get any one of the tag details
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @param object $request - tag id
+     *
+     * @return response of object values
+     */
+    public function tags_view(Request $request) {
+
+        $model = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')->where('tags.status', TAG_APPROVE_STATUS)
+                ->where('id', $request->tag_id)
+                ->first();
+
+        if ($model) {
+
+            return response()->json(['success'=>true, 'data'=>$model]);
+
+        } else {
+
+            return response()->json(['success'=>false, 'error_messages'=>tr('tag_not_found')]);
+        }
+
+    }
+
+    /**
+     * Function Name : tags_videos()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * To display based on tag
+     *
+     * @param object $request - User Details
+     *
+     * @return Response of videos list
+     */
+    public function tags_videos(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'tag_id' => 'required|exists:tags,id,status,'.TAG_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $tag = Tag::find($request->tag_id);
+
+            $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                            ->leftJoin('video_tape_tags' , 'video_tape_tags.video_tape_id' , '=' , 'video_tapes.id')
+                            ->where('video_tapes.publish_status' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
+                            ->videoResponse()
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('video_tape_tags.tag_id', $request->tag_id)
+                            ->orderby('video_tapes.updated_at' , 'desc');
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+                    
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+                }
+                
+            }
+
+            if ($request->device_type == DEVICE_WEB) { 
+
+                $videos = $base_query->paginate(16);
+
+                $items = [];
+
+                $pagination = 0;
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos->items() as $key => $value) {
+                        
+                        $items[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                    $pagination = (string) $videos->links();
+
+                }
+
+                $response_array = ['success'=>true, 'items'=>$items, 'pagination'=>$pagination];
+
+            } else {
+
+                $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count'))->get();
+
+                $data = [];
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos as $key => $value) {
+                        
+                        $data[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                }
+
+                $response_array = ['success'=>true, 'data'=>$data];
+            }
+
+        }
+
+        return response()->json($response_array);        
+    
+    }
+
+    /**
+     * Function Name : categories_list()
+     *
+     * Load all the active categories
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @param -
+     *
+     * @return response of json
+     */
+    public function categories_list(Request $request) {
+
+        $model = Category::select('id as category_id', 'name as category_name')->where('status', CATEGORY_APPROVE_STATUS)->orderBy('created_at', 'desc')
+                ->get();
+
+        return response()->json($model);
+    
+    }
+
+    /**
+     * Function Name : categories_view()
+     *
+     * category details based on id
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * @param - 
+     * 
+     * @return response of json
+     */
+    public function categories_view(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];              
+
+        } else {
+
+            $model = Category::select('id as category_id', 'name as category_name', 'image as category_image', 'description')->where('status', CATEGORY_APPROVE_STATUS)
+                ->where('id', $request->category_id)
+                ->first();
+
+            $channels_list = $this->categories_channels_list($request)->getData();
+
+            $channels = [];
+
+            if ($channels_list->success) {
+
+                $channels = $channels_list->data;
+
+            }
+
+            $category_list = $this->categories_videos($request)->getData();
+
+            $categories = [];
+
+            if ($category_list->success) {
+
+                $categories = $category_list->data;
+
+            }
+
+            $response_array = ['success'=>true, 'category'=>$model, 'category_videos'=>$categories,'channels_list'=>$channels];
+
+        }
+
+        return response()->json($response_array);
+    }
+
+
+    /**
+     * Function Name : categories_videos()
+     *
+     * @created_by shobana
+     *
+     * @updated_by -
+     *
+     * To display based on category
+     *
+     * @param object $request - User Details
+     *
+     * @return Response of videos list
+     */
+    public function categories_videos(Request $request) {
+
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                            ->leftJoin('categories' , 'video_tapes.category_id' , '=' , 'categories.id')
+                            ->where('video_tapes.publish_status' , 1)
+                            ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.is_approved' , 1)
+                            ->where('channels.status', 1)
+                            ->where('channels.is_approved', 1)
+                            ->videoResponse()
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->where('category_id', $request->category_id)
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
+                            ->orderby('video_tapes.updated_at' , 'desc');
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+
+                $flag_videos = flag_videos($request->id);
+
+                if($flag_videos) {
+                    
+                    $base_query->whereNotIn('video_tapes.id',$flag_videos);
+                }
+                
+            }
+
+            if ($request->device_type == DEVICE_WEB) { 
+
+                $videos = $base_query->paginate(16);
+
+                $items = [];
+
+                $pagination = 0;
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos->items() as $key => $value) {
+                        
+                        $items[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                    $pagination = (string) $videos->links();
+
+                }
+
+                $response_array = ['success'=>true, 'items'=>$items, 'pagination'=>$pagination];
+
+            } else {
+
+                $videos = $base_query->skip($request->skip)->take(Setting::get('admin_take_count'))->get();
+
+                $data = [];
+
+                if (count($videos) > 0) {
+
+                    foreach ($videos as $key => $value) {
+                        
+                        $data[] = displayVideoDetails($value, $request->id);
+
+                    }
+
+                }
+                
+                $response_array = ['success'=>true, 'data'=>$data];
+
+            }
+
+        }
+
+        return response()->json($response_array);        
+    
+    }
+
+
+    /**
+     * Function Name : categories_channels_list
+     *
+     * To list out all the channels which is in active status
+     *
+     * @created_by Shobana 
+     *
+     * @updated_by Shobana
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list
+     */
+    public function categories_channels_list(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            return $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $age = 0;
+
+            $channel_id = [];
+
+            $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
+                    ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                        'video_tapes.status', 'video_tapes.channel_id')
+                    ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                    ->where('video_tapes.category_id', $request->category_id)
+                    ->where('channels.status', DEFAULT_TRUE)
+                    ->where('video_tapes.is_approved', DEFAULT_TRUE)
+                    ->where('video_tapes.publish_status', DEFAULT_TRUE)
+                    ->where('video_tapes.status', DEFAULT_TRUE)
+                    ->groupBy('video_tapes.channel_id');
+
+
+            if($request->id) {
+
+                $user = User::find($request->id);
+
+                $age = $user->age_limit;
+
+                $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
+
+                if ($request->has('channel_id')) {
+
+                    $query->whereIn('channels.id', $request->channel_id);
+                }
+
+
+                $query->where('video_tapes.age_limit','<=', $age);
+
+            }
+
+            if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+                $channels = $query->skip($request->skip)->take(Setting::get('admin_take_count', 12))->get();
+
+            } else {
+
+                $channels = $query->paginate(16);
+
+            }
+
+            $lists = [];
+
+            $pagination = 0;
+
+            if(count($channels) > 0) {
+
+                foreach ($channels as $key => $value) {
+                    $lists[] = ['channel_id'=>$value->id, 
+                            'user_id'=>$value->user_id,
+                            'picture'=> $value->picture, 
+                            'title'=>$value->name,
+                            'description'=>$value->description, 
+                            'created_at'=>$value->created_at->diffForHumans(),
+                            'no_of_videos'=>videos_count($value->id),
+                            'subscribe_status'=>$request->id ? check_channel_status($request->id, $value->id) : '',
+                            'no_of_subscribers'=>$value->getChannelSubscribers()->count(),
+                    ];
+
+                }
+
+                if ($request->device_type != DEVICE_ANDROID && $request->device_type != DEVICE_IOS) {
+
+                    $pagination = (string) $channels->links();
+
+                }
+
+            }
+
+            if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
+
+                $response_array = ['success'=>true, 'data'=>$lists];
+
+            } else {
+
+                $response_array = ['success'=>true, 'channels'=>$lists, 'pagination'=>$pagination];
+
+            }
+
+            return response()->json($response_array);
+
+        }
+    }
+
+
+   /**
+    * Function Name : autorenewal_cancel
+    *
+    * To cancel automatic subscription
+    *
+    * @created Shobana C
+    *
+    * @edited -
+    *
+    * @param object $request - USer details & payment details
+    *
+    * @return boolean response with message
+    */
+    public function autorenewal_cancel(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'cancel_reason' => 'required',
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];
+
+        } else {
+
+            $user_payment = UserPayment::where('user_id', $request->id)
+                    ->where('status', PAID_STATUS)
+                    ->orderBy('created_at', 'desc')->first();
+
+            if($user_payment) {
+
+                // Check the subscription is already cancelled
+
+                if($user_payment->is_cancelled == AUTORENEWAL_CANCELLED) {
+
+                    $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(175) , 'error_code' => 175];
+
+                    return response()->json($response_array , 200);
+
+                }
+
+                $user_payment->is_cancelled = AUTORENEWAL_CANCELLED;
+
+                $user_payment->cancel_reason = $request->cancel_reason;
+
+                $user_payment->save();
+
+                $subscription = $user_payment->subscription;
+
+                $data = ['id'=>$request->id, 
+                    'subscription_id'=>$user_payment->subscription_id,
+                    'user_subscription_id'=>$user_payment->id,
+                    'title'=>$subscription ? $subscription->title : '',
+                    'description'=>$subscription ? $subscription->description : '',
+                    'plan'=>$subscription ? $subscription->plan : '',
+                    'amount'=>$user_payment->amount,
+                    'status'=>$user_payment->status,
+                    'expiry_date'=>date('d M Y', strtotime($user_payment->expiry_date)),
+                    'created_at'=>$user_payment->created_at->diffForHumans(),
+                    'currency'=>Setting::get('currency'),
+                    'payment_mode'=>$user_payment->payment_mode,
+                    'is_coupon_applied'=>$user_payment->is_coupon_applied,
+                    'coupon_code'=>$user_payment->coupon_code,
+                    'coupon_amount'=>$user_payment->coupon_amount,
+                    'subscription_amount'=>$user_payment->subscription_amount,
+                    'coupon_reason'=>$user_payment->coupon_reason,
+                    'is_cancelled'=>$user_payment->is_cancelled,
+                    'cancel_reason'=>$user_payment->cancel_reason
+                ];
+
+                $response_array = ['success'=> true, 'message'=>tr('cancel_subscription_success'), 'data'=>$data];
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(177), 'error_code'=>177];
+
+            }
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+   /**
+    * Function Name : autorenewal_enable
+    *
+    * To enable automatic subscription
+    *
+    * @created Shobana C
+    *
+    * @edited -
+    *
+    * @param object $request - USer details & payment details
+    *
+    * @return boolean response with message
+    */
+    public function autorenewal_enable(Request $request) {
+
+        $user_payment = UserPayment::where('user_id', $request->id)
+                ->where('status', PAID_STATUS)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+        if($user_payment) {
+
+            // Check the subscription is already cancelled
+
+            if($user_payment->is_cancelled == AUTORENEWAL_ENABLED) {
+        
+                $response_array = ['success' => 'false' , 'error_messages' => Helper::get_error_message(176) , 'error_code' => 176];
+
+                return response()->json($response_array , 200);
+            
+            }
+
+            $user_payment->is_cancelled = AUTORENEWAL_ENABLED;
+          
+            $user_payment->save();
+
+            $subscription = $user_payment->subscription;
+
+            $data = ['id'=>$request->id, 
+                'subscription_id'=>$user_payment->subscription_id,
+                'user_subscription_id'=>$user_payment->id,
+                'title'=>$subscription ? $subscription->title : '',
+                'description'=>$subscription ? $subscription->description : '',
+                'popular_status'=>$subscription ? $subscription->popular_status : '',
+                'plan'=>$subscription ? $subscription->plan : '',
+                'amount'=>$user_payment->amount,
+                'status'=>$user_payment->status,
+                'expiry_date'=>date('d M Y', strtotime($user_payment->expiry_date)),
+                'created_at'=>$user_payment->created_at->diffForHumans(),
+                'currency'=>Setting::get('currency'),
+                'payment_mode'=>$user_payment->payment_mode,
+                'is_coupon_applied'=>$user_payment->is_coupon_applied,
+                'coupon_code'=>$user_payment->coupon_code,
+                'coupon_amount'=>$user_payment->coupon_amount,
+                'subscription_amount'=>$user_payment->subscription_amount,
+                'coupon_reason'=>$user_payment->coupon_reason,
+                'is_cancelled'=>$user_payment->is_cancelled,
+                'cancel_reason'=>$user_payment->cancel_reason
+            ];
+
+            $response_array = ['success'=> true, 'data'=>$data, 'message'=>tr('autorenewal_enable_success')];
+
+        } else {
+
+            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(177), 'error_code'=>177];
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Function Name : check_coupon_applicable_to_user()
+     *
+     * To check the coupon code applicable to the user or not
+     *
+     * @created_by - Shobana Chandrasekar
+     *
+     * @updated_by - 
+     *
+     * @param objects $coupon - Coupon details
+     *
+     * @param objects $user - User details
+     *
+     * @return response of success/failure message
+     */
+    public function check_coupon_applicable_to_user($user, $coupon) {
+
+        try {
+
+            $sum_of_users = UserCoupon::where('coupon_code', $coupon->coupon_code)->sum('no_of_times_used');
+
+            if ($sum_of_users < $coupon->no_of_users_limit) {
+
+
+            } else {
+
+                throw new Exception(tr('total_no_of_users_maximum_limit_reached'));
+                
+            }
+
+            $user_coupon = UserCoupon::where('user_id', $user->id)
+                ->where('coupon_code', $coupon->coupon_code)
+                ->first();
+
+            // If user coupon not exists, create a new row
+
+            if ($user_coupon) {
+
+                if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                   // $user_coupon->no_of_times_used += 1;
+
+                   // $user_coupon->save();
+
+                    $response_array = ['success'=>true, 'message'=>tr('add_no_of_times_used_coupon'), 'code'=>2002];
+
+                } else {
+
+                    throw new Exception(tr('per_users_limit_exceed'));
+                }
+
+            } else {
+
+                $response_array = ['success'=>true, 'message'=>tr('create_a_new_coupon_row'), 'code'=>2001];
+
+            }
+
+            return response()->json($response_array);
+
+        } catch (Exception $e) {
+
+            $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+
+            return response()->json($response_array);
+        }
+
+    }
+
+    /**
+     * Function Name : apply_coupon_subscription()
+     *
+     * Apply coupon to subscription if the user having coupon codes
+     *
+     * @created By - Shobana Chandrasekar
+     *
+     * @edited_by - -
+     *
+     * @param object $request - User details, subscription details
+     *
+     * @return response of coupon details with amount
+     *
+     */
+    public function apply_coupon_subscription(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'coupon_code' => 'required|exists:coupons,coupon_code',  
+            'subscription_id'=>'required|exists:subscriptions,id'          
+        ], array(
+            'coupon_code.exists' => tr('coupon_code_not_exists'),
+            'subscription_id.exists' => tr('subscription_not_exists'),
+        ));
+        
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json($response_array);
+        }
+        
+
+        $model = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+        if ($model) {
+
+            if ($model->status) {
+
+                $user = User::find($request->id);
+
+                $check_coupon = $this->check_coupon_applicable_to_user($user, $model)->getData();
+
+                if ($check_coupon->success) {
+
+                    if(strtotime($model->expiry_date) >= strtotime(date('Y-m-d'))) {
+
+                        $subscription = Subscription::find($request->subscription_id);
+
+                        if($subscription) {
+
+                            if($subscription->status) {
+
+                                $amount_convertion = $model->amount;
+
+                                if ($model->amount_type == PERCENTAGE) {
+
+                                    $amount_convertion = amount_convertion($model->amount, $subscription->amount);
+
+                                }
+
+                                if ($subscription->amount >= $amount_convertion && $amount_convertion > 0) {
+
+                                    $amount = $subscription->amount - $amount_convertion;
+
+                                    $response_array = ['success'=> true, 'data'=>['remaining_amount'=>$amount,
+                                    'coupon_amount'=>$amount_convertion,
+                                    'coupon_code'=>$model->coupon_code,
+                                    'original_coupon_amount'=>$model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount]];
+
+                                } else {
+
+                                    // $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(156), 'error_code'=>156];
+                                    $amount = 0;
+                                    $response_array = ['success'=> true, 'data'=>['remaining_amount'=>$amount,
+                                    'coupon_amount'=>$amount_convertion,
+                                    'coupon_code'=>$model->coupon_code,
+                                    'original_coupon_amount'=> $model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount]];
+
+                                }
+
+                            } else {
+
+                                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(180), 'error_code'=>180];
+
+                            }
+
+                        } else {
+
+                            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(179), 'error_code'=>179];
+                        }
+
+                    } else {
+
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(173), 'error_code'=>173];
+
+                    }
+
+                } else {
+
+                    $response_array = ['success'=> false, 'error_messages'=>$check_coupon->error_messages];
+                }
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(178), 'error_code'=>178];
+            }
+
+
+
+        } else {
+
+            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(174), 'error_code'=>174];
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Function Name : apply_coupon_video_tapes()
+     *
+     * Apply coupon to PPV if the user having coupon codes
+     *
+     * @created By - Shobana Chandrasekar
+     *
+     * @edited_by - -
+     *
+     * @param object $request - User details, ppv video details
+     *
+     * @return response of coupon details with amount
+     *
+     */
+    public function apply_coupon_video_tapes(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'coupon_code' => 'required|exists:coupons,coupon_code',  
+            'video_tape_id'=>'required|exists:video_tapes,id,publish_status,'.VIDEO_PUBLISHED.',is_approved,'.ADMIN_VIDEO_APPROVED_STATUS.',status,'.USER_VIDEO_APPROVED_STATUS,     
+        ], array(
+                'coupon_code.exists' => tr('coupon_code_not_exists'),
+                'video_id.exists' => tr('video_not_exists'),
+            ));
+        
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json($response_array);
+        }
+        
+        $model = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+        if ($model) {
+
+            if ($model->status) {
+
+                $user = User::find($request->id);
+
+                $vod_video = VideoTape::where('id', $request->video_tape_id)->first();
+
+                $check_coupon = $this->check_coupon_applicable_to_user($user, $model)->getData();
+
+                if ($check_coupon->success) {
+
+                    if(strtotime($model->expiry_date) >= strtotime(date('Y-m-d'))) {
+
+                        $amount_convertion = $model->amount;
+
+                        if ($model->amount_type == PERCENTAGE) {
+
+                            $amount_convertion = amount_convertion($model->amount, $vod_video->ppv_amount);
+
+                        }
+
+                        if ($vod_video->ppv_amount >= $amount_convertion && $amount_convertion > 0) {
+
+                            $amount = $vod_video->ppv_amount - $amount_convertion;
+
+                            $response_array = ['success'=> true, 'data'=>[
+                                'remaining_amount'=>$amount,
+                                'coupon_amount'=>$amount_convertion,
+                                'coupon_code'=>$model->coupon_code,
+                                'original_coupon_amount'=> $model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount
+                                ]];
+
+                        } else {
+
+                            $amount = $vod_video->ppv_amount - $amount_convertion;
+
+                            $response_array = ['success'=> true, 'data'=>[
+                                'remaining_amount'=>0,
+                                'coupon_amount'=>$amount_convertion,
+                                'coupon_code'=>$model->coupon_code,
+                                'original_coupon_amount'=> $model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount
+                                ]];
+
+                        }
+                       
+
+                    } else {
+
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(173), 'error_code'=>173];
+
+                    }
+
+                } else {
+
+                    $response_array = ['success'=> false, 'error_messages'=>$check_coupon->error_messages];
+
+                }
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(178), 'error_code'=>178];
+            }            
+
+        } else {
+
+            $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(174), 'error_code'=>174];
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+
+    /**
+     * Function : custom_live_videos()
+     *
+     * Created By : shobana 
+     *
+     * Edited By : None
+     *
+     * @usage used to return list of live videos
+     */
+    public function custom_live_videos(Request $request) {
+
+        $model = CustomLiveVideo::where('status', DEFAULT_TRUE)->liveVideoResponse()->orderBy('created_at', 'desc');
+
+        if ($request->has('custom_live_video_id')) {
+
+            $model->whereNotIn('id', [$request->custom_live_video_id]);
+
+        }
+
+        $take = $request->has('take') ? $request->take : Setting::get('admin_take_count' ,12);
+
+        $response = $model->skip($request->skip)->take($take)->get();
+
+        $response_array = ['success' => true , 'live' => $response];
+
+        return response()->json($response_array , 200);
+
+    }
+
+    /**
+     * Function : single_live_video()
+     *
+     * Created By : shobana
+     *
+     * Edited By : None
+     *
+     * @usage used to return single live video details
+     */
+
+    public function single_custom_live_video(Request $request) {
+
+        $model = CustomLiveVideo::where('id', $request->custom_live_video_id)->where('status' , 1)->liveVideoResponse()->first();
+
+        $suggestions = CustomLiveVideo::where('id','!=', $request->custom_live_video_id)->where('status' , 1)->liveVideoResponse()->get();
+
+        if ($model) {
+
+            $response_array = ['success'=>true, 'model'=>$model , 'suggestions' => $suggestions];
+
+        } else {
+
+            $response_array = ['success' => false, 'message' => tr('custom_live_video_not_found')];
+        }
+
+        return response()->json($response_array,200);
+    } 
 
 }

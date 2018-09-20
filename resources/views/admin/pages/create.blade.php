@@ -31,8 +31,7 @@
 	                	<div class="form-group floating-label">
 	                     	<label for="select2">{{tr('page_type')}}</label>
                             <select id="select2" name="type" class="form-control">
-                                <option value="">&nbsp;</option>
-                                <option value="about" selected="true">{{tr('about')}}</option>
+                                <option value="about">{{tr('about')}}</option>
                                 <option value="terms">{{tr('terms')}}</option>
                                 <option value="privacy">{{tr('privacy')}}</option>
                                 <option value="contact">{{tr('contact')}}</option>

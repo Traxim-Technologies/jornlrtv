@@ -36,7 +36,7 @@
 						      <th>{{tr('channel')}}</th>
 						      <th>{{tr('picture')}}</th>
 						      <th>{{tr('subscriber_name')}}</th>
-						     <!--  <th>{{tr('action')}}</th> -->
+						  	  <th>{{tr('action')}}</th>
 						    </tr>
 						</thead>
 
@@ -45,7 +45,7 @@
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a href="{{route('admin.channels', $subscriber->channel_id)}}">{{$subscriber->getChannel ? $subscriber->getChannel->name : ''}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.channels.view', $subscriber->channel_id)}}">{{$subscriber->getChannel ? $subscriber->getChannel->name : ''}}</a></td>
 							      	
 							      	<td>
 							      		@if($subscriber->getChannel)
@@ -53,14 +53,21 @@
 	                                	@endif
 	                            	</td>	                           
 
-	                            	<td>{{$subscriber->getUser ? $subscriber->getUser->name : ''}}</td>
+	                            	<td>{{$subscriber->getUser ? $subscriber->getUser->name : ''}}</a></td>
 
 	                            	
-							     	<!-- <td>
+							     	<td>	
 
-							     		<a href="{{route('admin.channels.unsubscribe')}}">{{tr('delete')}}</a>
+							     		@if($subscriber->getUser)
+
+							     		<a href="{{route('admin.users.view', $subscriber->getUser ? $subscriber->getUser-> id: '')}}" class="btn btn-success">{{tr('view_user')}}</a>
+							     		@else
+
+							     			-
+
+							     		@endif
             							
-							      	</td> -->
+							      	</td>
 							    </tr>
 							@endforeach
 						</tbody>

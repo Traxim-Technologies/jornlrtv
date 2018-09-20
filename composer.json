@@ -13,6 +13,7 @@
         "laravel/socialite": "^2.0",
         "paypal/rest-api-sdk-php": "*",
         "vidhyar2612/enveditor": "^1.1",
+        "maatwebsite/excel": "~2.1.0",
         "predis/predis": "^1.1",
         "stripe/stripe-php": "^3.13",
         "firebase/php-jwt": "^3.0",
@@ -39,7 +40,8 @@
         },
         "files": [
             "app/Helpers/viewHelper.php",
-            "app/Helpers/tracker.php"
+            "app/Helpers/tracker.php",
+            "app/Constants/constants.php"
         ]
     },
     "autoload-dev": {

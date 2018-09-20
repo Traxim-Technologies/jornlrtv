@@ -41,7 +41,7 @@
 							<label for = "title" class="col-sm-2 control-label"> * {{tr('title')}}</label>
 
 							<div class="col-sm-10">
-								<input type="text" name="title" role="title" min="5" max="20" class="form-control" value="{{ old('title') }}" required placeholder="{{tr('enter_title')}}">
+								<input type="text" name="title" role="title" min="5" max="20" class="form-control" value="{{ old('title') }}" required placeholder="{{tr('enter_coupon_title')}}">
 							</div>
 
 						</div> 
@@ -80,6 +80,20 @@
 							</div>
 						</div>
 
+						<div class="form-group">
+							<label for="no_of_users_limit" class="col-sm-2 control-label"> * {{tr('no_of_users_limit')}}</label>
+							<div class="col-sm-10">
+								<input type="text" pattern="[0-9]{1,4}" name="no_of_users_limit" class="form-control" placeholder="{{tr('no_of_users_limit')}}" value="{{old('no_of_users_limit')}}" required title="{{tr('no_of_users_limit_notes')}}">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="amount" class="col-sm-2 control-label"> * {{tr('per_users_limit')}}</label>
+							<div class="col-sm-10">
+								<input type="text" pattern="[0-9]{1,2}" name="per_users_limit" class="form-control" placeholder="{{tr('per_users_limit')}}" value="{{old('per_users_limit')}}" required title="{{tr('per_users_limit_notes')}}">
+							</div>
+						</div>
+						
 						<div class="form-group">
 							<label for = "description" class="col-sm-2 control-label">{{tr('description')}}</label>
 							<div class="col-sm-10">

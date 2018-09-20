@@ -169,6 +169,7 @@ All notable changes to this project will be documented in this file.
 - Payper view issues fixed
 
 
+
 ## 28.04.2018
 
 - Admin Panel - Language files text changed in all overall text
@@ -182,3 +183,31 @@ All notable changes to this project will be documented in this file.
 - Admin Panel - Coupon code added
 
 - Admin Panel - Email Template issue fixed.
+
+
+## V2.0 - Release
+
+ - Category feature
+
+ - Video encryption
+
+ - Auto play when you click on the video page
+
+ - Tag feature
+
+ - Export the user table from admin panel in excel sheet or PDF or CSV format.
+
+ - Export moderator, video and transaction - Have this feature in all the table list.
+
+ - Subscription auto-renewal - If the user cancel the subscription get the reason from user and display in admin panel in separate tab.
+
+ - New video notifications proper email
+
+ - YouTube video upload option
+
+ - Coupon code feature
+
+ - Live TV (YouTube TV)
+
+ - Admin Panel - All the features displayed in depth details.
+

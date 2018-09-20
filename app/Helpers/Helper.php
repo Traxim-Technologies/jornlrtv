@@ -162,11 +162,11 @@
                     $error = NULL;
                     return $row;
                 } else {
-                    $error = array('success' => false, 'error' => Helper::get_error_message(103), 'error_code' => 103);
+                    $error = array('success' => false, 'error_messages' => Helper::get_error_message(103), 'error_code' => 103);
                     return FALSE;
                 }
             }
-            $error = array('success' => false, 'error' => Helper::get_error_message(104), 'error_code' => 104);
+            $error = array('success' => false, 'error_messages' => Helper::get_error_message(104), 'error_code' => 104);
             return FALSE;
         }
 
@@ -356,16 +356,7 @@
                 case 151:
                     $string = tr('redeem_not_found');
                     break;
-                 case 901:
-                    $string = tr('default_card_not_available');
-                    break;
-                case 902:
-                    $string = tr('something_went_payment_configuration');
-                    break;
-                case 903:
-                    $string = tr('payment_not_completed_try_again');
-                    break;
-
+                
                 case 162:
                     $string = tr('failed_to_upload');
 
@@ -396,7 +387,6 @@
 
                     $string = tr('user_not_subscribed');
 
-
                     break;
 
                 case 168 :
@@ -413,6 +403,57 @@
 
                     $string = tr('already_you_have_video');
 
+                case 171:
+                    $string = tr('subscription_amount_should_be_grater');
+                    break;
+
+                case 172:
+                    $string = tr('video_amount_should_be_grater');
+                    break;
+
+                case 173:
+                    $string = tr('expired_coupon_code');
+                    break;
+
+                 case 174:
+                    $string = tr('coupon_not_found');
+                    break;
+
+                case 175:
+                    $string = tr('subscription_autorenewal_already_cancelled');
+                    break;
+                case 176:
+                    $string = tr('subscription_autorenewal_already_enabled');
+                    break;
+                case 177:
+                    $string = tr('user_payment_details_not_found');
+                    break;
+
+               
+                case 178:
+                    $string = tr('coupon_inactive_status');
+                    break;
+
+                case 179:
+                    $string = tr('subscription_not_found');
+                    break;
+
+                case 180:
+                    $string = tr('subscription_inactive_status');
+                    break;
+
+                case 901:
+                    $string = tr('default_card_not_available');
+                    break;
+                case 902:
+                    $string = tr('something_went_payment_configuration');
+                    break;
+                case 903:
+                    $string = tr('payment_not_completed_try_again');
+                    break;
+
+                case 906:
+                    $string = tr('video_data_not_found');
                     break;
 
                 case 1000:
@@ -504,6 +545,19 @@
                     break;
                 case 121:
                     $string = tr('history_deleted_successfully');
+                    break;
+
+                case 122:
+                    $string = tr('autorenewal_enable_success');
+                    break;
+                case 123:
+                    $string = tr('ppv_not_set');
+                    break;
+                case 124:
+                    $string = tr('watch_video_success');
+                    break;
+                case 125:
+                    $string = tr('pay_and_watch_video');
                     break;
                 default:
                     $string = "";
@@ -801,6 +855,7 @@
 
             $videos_query = VideoTape::where('video_tapes.is_approved' ,'=', 1)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                         ->where('title','like', '%'.$key.'%')
                         ->where('video_tapes.status' , 1)
                         ->where('video_tapes.publish_status' , 1)
@@ -808,6 +863,7 @@
                         ->where('channels.is_approved', 1)
                         ->where('channels.status', 1)
                         ->where('video_tapes.age_limit','<=', checkAge($request))
+                        ->where('categories.status', CATEGORY_APPROVE_STATUS)
                         ->orderBy('video_tapes.created_at' , 'desc');
             if($web) {
                 $videos = $videos_query->paginate(16);

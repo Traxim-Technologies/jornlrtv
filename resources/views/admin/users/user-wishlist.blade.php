@@ -6,7 +6,7 @@
 
 {{tr('view_wishlist')}} - 
 
-<a href="{{route('admin.view.user' , $user_details->id)}}">{{$user_details->name}}</a>
+<a href="{{route('admin.users.view' , $user_details->id)}}">{{$user_details->name}}</a>
 
 @endsection
 
@@ -58,7 +58,7 @@
 								                </a>
 
 								                <ul class="dropdown-menu">
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.wishlist' , $wishlist->wishlist_id)}}">{{tr('delete_wishlist')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.users.wishlist.delete' , $wishlist->wishlist_id)}}">{{tr('delete_wishlist')}}</a></li>
 								                </ul>
 
               								</li>

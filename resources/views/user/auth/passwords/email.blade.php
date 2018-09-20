@@ -15,8 +15,8 @@
     ?>
 
     
-    <div class="form-background forgot-password-reset">
-        <div class="common-form login-common forgot">
+    <div class="login-space">
+        <div class="common-form login-common">
 
             <div class="social-form">
                 <div class="signup-head">
@@ -33,7 +33,7 @@
 
                      @if($disabled)
 
-                        <p><small>{{tr('forgot_password_note')}}</small></p>    
+                        <p>{{tr('forgot_password_note')}}</p>    
 
                      @endif
 

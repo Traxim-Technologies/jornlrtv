@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Requests;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
 use App\Helpers\Helper;
 
 use App\VideoTape;
@@ -72,7 +74,6 @@ class ApplicationController extends Controller {
      * Used to generate index.php file to avoid uploads folder access
      *
      */
-
     public function generate_index(Request $request) {
 
         if($request->has('folder')) {
@@ -82,23 +83,6 @@ class ApplicationController extends Controller {
         }
 
         return response()->json(['success' => true , "message" => 'successfully']);
-
-    }
-
-
-    public $expiry_date = "";
-
-    public function test() {
-
-        Log::info("MAIN VIDEO MOBILE");
-
-        // $subject = tr('user_welcome_title' , Setting::get('site_name'));
-        // $email_data = User::find(3);
-        // $page = "emails.welcome";
-        // $email = "test@mail.com";
-
-        // return view($page)->with('email_data' , $email_data);
-        // $result = Helper::send_email($page,$subject,$email,$email_data);
 
     }
 
@@ -172,18 +156,29 @@ class ApplicationController extends Controller {
 
         Log::info("Notification to User for Payment");
 
-        $time = date("Y-m-d");
-        // Get provious provider availability data
-        $query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
-                  FROM user_payments";
+         // Get provious provider availability data
 
-        $payments = DB::select(DB::raw($query));
+        $current_date = date('Y-m-d H:i:s');
 
-        Log::info(print_r($payments,true));
+        // Get Two days Payment Expiry users.
+
+        $compare_date = date('Y-m-d H:i:s', strtotime('-2 day', strtotime($current_date)));
+
+
+        $payments = UserPayment::select(DB::raw('max(user_payments.id) as payment_id'))->where('expiry_date' , '<=', $compare_date)
+            ->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
+            ->where('user_payments.status',1)
+            ->where('user_type' ,1)
+            ->orderBy('user_payments.created_at', 'desc')
+            ->groupBy('user_payments.user_id')
+            ->get();
 
         if($payments) {
             foreach($payments as $payment){
-                if($payment->date_difference <= 864000)
+
+                $payment = UserPayment::find($payment->payment_id);
+
+                if($payment)
                 {
                     // Delete provider availablity
                     Log::info('Send mail to user');
@@ -220,30 +215,27 @@ class ApplicationController extends Controller {
 
         Log::info("user_payment_expiry");
 
-        $time = date("Y-m-d");
-        // Get provious provider availability data
-        /*$query = "SELECT *, TIMESTAMPDIFF(SECOND, '$time',expiry_date) AS date_difference
-                  FROM user_payments";
+        // Today's date
 
-        $payments = DB::select(DB::raw($query));*/
         $current_time = date("Y-m-d H:i:s");
         // $current_time = "2018-06-06 18:01:56";
 
-        $payments = UserPayment::select('user_payments.*', DB::raw('max(user_payments.id) as payment_auto_id'))->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
+        $payments = UserPayment::select(DB::raw('max(user_payments.id) as payment_id'))->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
                                 ->where('user_payments.status' , 1)
-                                // ->where('user_payments.expiry_date' ,"<=" , $current_time)
+                                ->where('user_payments.expiry_date' ,"<=" , $current_time)
                                 ->where('user_type' ,1)
                                 ->orderBy('user_payments.created_at', 'desc')
                                 ->groupBy('user_id')
                                 ->get();
 
         if($payments) {
+
             foreach($payments as $payment){
 
-                $payment = UserPayment::find($payment->payment_auto_id);
+                $payment = UserPayment::find($payment->payment_id);
 
-                if(strtotime($payment->expiry_date) <= strtotime($current_time))
-                {
+                if($payment) {
+
                     // Delete provider availablity
                     Log::info('Send mail to user '.$payment->id);
 
@@ -405,13 +397,15 @@ class ApplicationController extends Controller {
 
             $videos = $this->UserAPI->search_list($request, $q,1)->getData();
 
+            $channels = $this->UserAPI->search_channels_list($request)->getData()->channels;
+
             $live_videos = Helper::live_video_search($request, $q,1);
 
             return view('user.search-result')->with('key' , $q)
                     ->with('videos' , $videos)
                     ->with('live_videos', $live_videos)
-                    ->with('page' , "")
-                    ->with('subPage' , "");
+                    ->with('page' , "")->with('subPage' , "")
+            ->with('channels', $channels);
         }     
     
     }
@@ -516,8 +510,11 @@ class ApplicationController extends Controller {
                 $value->value = $request->broadcast_by_user;
             } else if ($value->key == 'admin_language_control') {
                 $value->value = $request->admin_language_control;
-            
-            } else if ($value->key == 'email_verify_control') {
+            } else if($value->key == 'ffmpeg_installed') {
+
+                $value->value = $request->ffmpeg_installed;
+
+            }else if ($value->key == 'email_verify_control') {
 
                 if ($request->email_verify_control == 1) {
 
@@ -565,9 +562,9 @@ class ApplicationController extends Controller {
 
                 $user = User::find($user_id);
 
-                if ($model->ppv_amount > 0) {
+                if ($model->is_pay_per_view == PPV_ENABLED) {
 
-                    $ppv_status = $user ? watchFullVideo($user->id, $user->user_type, $model) : false;
+                    $ppv_status = $user ? VideoRepo::pay_per_views_status_check($user->id, $user->user_type, $model)->getData()->success : false;
 
                     if ($ppv_status) {
                         
@@ -649,6 +646,313 @@ class ApplicationController extends Controller {
         return back()->with('flash_success' , tr('session_success'));
     }
 
+    /**
+     * Function Name : automatic_renewal()
+     *
+     * @usage - Used to change the paid user to normal user based on the expiry date
+     *
+     * @created SHOBANA C 
+     *
+     * @edited 
+     *
+     * @param -
+     *
+     * @return JSON RESPONSE
+     */
+    public function automatic_renewal() {
+
+        $current_time = date("Y-m-d H:i:s");
+
+
+        $datas = UserPayment::select(DB::raw('max(user_payments.id) as user_payment_id'), 'subscriptions.amount as sub_amt')
+                    ->leftJoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                        //->where('subscriptions.amount', '>', 0)
+                        ->where('user_payments.status', PAID_STATUS)
+                        ->groupBy('user_payments.user_id')
+                        ->orderBy('user_payments.created_at' , 'desc')
+                        ->get();
+
+        if($datas) {
+
+            $total_renewed = 0;
+
+            $s_data = $data = [];
+
+            foreach($datas as $payment_id){
+
+                if ($payment_id->sub_amt > 0) {
+
+                    $payment = UserPayment::find($payment_id->user_payment_id);
+
+                    if ($payment) {
+
+                        if ($payment->is_cancelled == AUTORENEWAL_ENABLED) {
+
+                            // Check the pending payments expiry date
+
+                            if(strtotime($payment->expiry_date) <= strtotime($current_time)) {
+
+                                // Delete provider availablity
+
+                                Log::info('Send mail to user');
+
+                                $email_data = array();
+                                
+                                if($user_details = User::find($payment->user_id)) {
+
+                                    Log::info("the User exists....:-)");
+
+                                    $check_card_exists = User::where('users.id' , $payment->user_id)
+                                                    ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                                    ->where('cards.id' , $payment->card_id)
+                                                    ->where('cards.is_default' , DEFAULT_TRUE);
+
+                                    if($check_card_exists->count() != 0) {
+
+                                        $user_card = $check_card_exists->first();
+                                    
+                                        $subscription = Subscription::find($payment->subscription_id);
+
+                                        if ($subscription) {
+
+                                            $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                                            $customer_id = $user_card->customer_id;
+
+                                            if($stripe_secret_key) {
+
+                                                \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+
+                                            } else {
+
+                                                Log::info(Helper::get_error_message(902));
+                                            }
+
+                                            $total = $subscription->amount;
+
+                                            try {
+
+                                                $user_charge =  \Stripe\Charge::create(array(
+                                                    "amount" => $total * 100,
+                                                    "currency" => "usd",
+                                                    "customer" => $customer_id,
+                                                ));
+
+                                               $payment_id = $user_charge->id;
+                                               $amount = $user_charge->amount/100;
+                                               $paid_status = $user_charge->paid;
+
+                                                if($paid_status) {
+
+                                                    $user_payment = new UserPayment;
+
+                                                    if (strtotime($payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                                                        $expiry_date = $payment->expiry_date;
+
+                                                        $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$subscription->plan." months"));
+
+                                                    } else {
+                                                        
+                                                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
+                                                    }
+
+                                                    $user_payment->payment_id  = $payment_id;
+
+                                                    $user_payment->user_id = $payment->user_id;
+
+                                                    $user_payment->subscription_id = $subscription->id;
+
+                                                    $user_payment->status = 1;
+
+                                                    $user_payment->amount = $amount;
+
+                                                    $user_payment->subscription_amount = $amount;
+
+                                                    $user_payment->coupon_code = "";
+
+                                                    $user_payment->coupon_amount = 0;
+
+                                                    if ($user_payment->save()) {
+
+                                                        $user_details->user_type = 1;
+                                                        
+                                                        $user_details->expiry_date = $user_payment->expiry_date;
+
+                                                        $user_details->save();
+                                                    
+                                                        Log::info(tr('payment_success'));
+
+                                                        $total_renewed = $total_renewed + 1;
+
+                                                    } else {
+
+                                                        Log::info(Helper::get_error_message(902));
+
+                                                    }
+
+                                                } else {
+
+                                                   Log::info(Helper::get_error_message(903));
+
+                                                }
+
+                                            
+                                            } catch(\Stripe\Error\RateLimit $e) {
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                                $user_details->user_type = 0;
+                                                
+                                                $user_details->save();
+
+                                            } catch(\Stripe\Error\Card $e) {
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+                                                
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\InvalidRequest $e) {
+                                                // Invalid parameters were supplied to Stripe's API
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
+                                                
+                                                $user_details->save();
+
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\Authentication $e) {
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\ApiConnection $e) {
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                //$user_details->user_type_change_by = "AUTO-RENEW-PAYMENT-ERROR";
+                                                
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (\Stripe\Error\Base $e) {
+                                              // Display a very generic error to the user, and maybe send
+                                                
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+
+                                            } catch (Exception $e) {
+                                                // Something else happened, completely unrelated to Stripe
+
+                                                $response_array = ['success'=>false, 'error_messages'=> $e->getMessage() , 'error_code' => $e->getCode()];
+
+                                                $user_details->user_type = 0;
+
+                                                $user_details->save();
+
+                                                Log::info("response array".print_r($response_array , true));
+                                           
+                                            }
+
+                                        }
+
+                                        // Send welcome email to the new user:
+
+                                        $subject = tr('automatic_renewal_notification');
+
+                                        $email_data['id'] = $user_details->id;
+                                        $email_data['username'] = $user_details->name;
+                                        $email_data['expiry_date'] = $payment->expiry_date;
+                                        $email_data['status'] = 1;
+
+                                        $page = "emails.automatic-renewal";
+
+                                        $email = $user_details->email;
+
+                                        $result = Helper::send_email($page,$subject,$email,$email_data);
+
+
+                                    } else {
+
+                                        $payment->reason = "NO CARD";
+
+                                        $payment->save();
+
+                                        $user_details->user_type = 0;
+                                        
+                                        $user_details->save();
+
+                                        Log::info("No card available....:-)");
+
+                                    }
+                               
+                                }
+
+                                $data['user_payment_id'] = $payment->id;
+
+                                $data['user_id'] = $payment->user_id;
+
+                                array_push($s_data , $data);
+                            }
+
+                        } else {
+
+                            Log::info("Cancelled Status ....:-) ");
+                        }
+
+                    } else {
+
+                        Log::info("No payment found....:-) ".$data->user_payment_id);
+
+                    }
+
+                }
+            
+            }
+            
+            Log::info("Notification to the User successfully....:-)");
+
+            $response_array = ['success' => true, 'total_renewed' => $total_renewed , 'data' => $s_data];
+
+            return response()->json($response_array , 200);
+
+        } else {
+
+            Log::info(" records not found ....:-(");
+
+            $response_array = ['success' => false , 'error_messages' => tr('no_pending_payments')];
+
+        }
+
+        return response()->json($response_array , 200);
+
+
+    }
 
     public function message_save(Request $request) {
 
@@ -672,7 +976,6 @@ class ApplicationController extends Controller {
         return response()->json(['success' => 'true']);
     
     }
-
 
     public function cron_delete_video() {
         
@@ -708,6 +1011,9 @@ class ApplicationController extends Controller {
             $video->status = 1;
             $video->save();
         }
-    
+
     }
+    
+
+
 }

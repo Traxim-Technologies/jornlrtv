@@ -103,7 +103,7 @@
                             <div class="carousel-inner">
                                 @foreach($banner_ads as $key => $banner_ad)
 
-                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}" style="width: 100%;height:250px;background-image: url({{$banner_ad->image}});background-size: cover;background-position: center;">
+                                <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}" style="background-image: url({{$banner_ad->image}});">
                                     <a href="{{$banner_ad->link}}" target="_blank">
 
                                         <div class="carousel-caption">
@@ -154,7 +154,10 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$wishlist->url}}"><img src="{{$wishlist->video_image}}" /></a>
+                                    <a href="{{$wishlist->url}}">
+                                        <!-- <img src="{{$wishlist->video_image}}" /> -->
+                                        <div style="background-image: url({{$wishlist->video_image}});" class="slide-img1"></div>
+                                    </a>
 
                                     @if($wishlist->ppv_amount > 0)
                                         @if(!$wishlist->ppv_status)
@@ -165,6 +168,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$wishlist->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$wishlist->duration}}
                                     </div>
@@ -176,8 +182,8 @@
                                     </div>
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$wishlist->channel_id)}}">{{$wishlist->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$wishlist->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$wishlist->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$wishlist->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$wishlist->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -194,6 +200,8 @@
 
                 @if(count($recent_videos->items) > 0)
 
+                <hr>
+                
                     <div class="slide-area">
                         <div class="box-head">
                             <h3>{{tr('recent_videos')}}</h3>
@@ -204,7 +212,10 @@
                             @foreach($recent_videos->items as $recent_video)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$recent_video->url}}"><img src="{{$recent_video->video_image}}" /></a>
+                                    <a href="{{$recent_video->url}}">
+                                        <!-- <img src="{{$recent_video->video_image}}" /> -->
+                                        <div style="background-image: url({{$recent_video->video_image}});" class="slide-img1"></div>
+                                    </a>
                                     @if($recent_video->ppv_amount > 0)
                                         @if(!$recent_video->ppv_status)
                                             <div class="video_amount">
@@ -214,6 +225,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$recent_video->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$recent_video->duration}}
                                     </div>
@@ -226,8 +240,8 @@
 
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$recent_video->channel_id)}}">{{$recent_video->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$recent_video->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$recent_video->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$recent_video->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$recent_video->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -256,7 +270,10 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$trending->url}}"><img src="{{$trending->video_image}}" /></a>
+                                    <a href="{{$trending->url}}">
+                                        <!-- <img src="{{$trending->video_image}}" /> -->
+                                        <div style="background-image: url({{$trending->video_image}});" class="slide-img1"></div>
+                                    </a>
                                     @if($trending->ppv_amount > 0)
                                         @if(!$trending->ppv_status)
                                             <div class="video_amount">
@@ -266,6 +283,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$trending->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$trending->duration}}
                                     </div>
@@ -278,8 +298,8 @@
                                     
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$trending->channel_id)}}">{{$trending->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$trending->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$trending->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$trending->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$trending->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -305,7 +325,10 @@
                             @foreach($suggestions->items as $suggestion)
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$suggestion->url}}"><img src="{{$suggestion->video_image}}" /></a>
+                                    <a href="{{$suggestion->url}}">
+                                        <!-- <img src="{{$suggestion->video_image}}" /> -->
+                                        <div style="background-image: url({{$suggestion->video_image}});" class="slide-img1"></div>
+                                    </a>
 
                                     @if($suggestion->ppv_amount > 0)
                                         @if(!$suggestion->ppv_status)
@@ -316,6 +339,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$suggestion->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$suggestion->duration}}
                                     </div>
@@ -328,8 +354,8 @@
                                    
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$suggestion->channel_id)}}">{{$suggestion->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$suggestion->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$suggestion->created_at}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -368,6 +394,9 @@
                                             </div>
                                         @endif
                                     @endif
+                                    <div class="video_mobile_views">
+                                        {{$watch_list->watch_count}} {{tr('views')}}
+                                    </div>
                                     <div class="video_duration">
                                         {{$watch_list->duration}}
                                     </div>
@@ -379,8 +408,8 @@
                                     </div>
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$watch_list->channel_id)}}">{{$watch_list->channel_name}}</a></div>
-                                        <i class="fa fa-eye"></i> {{$watch_list->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$watch_list->created_at}}
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$watch_list->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$watch_list->created_at}}</div>
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->

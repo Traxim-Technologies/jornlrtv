@@ -23,6 +23,37 @@
 
           	<div class="box-header label-primary">
                 <b>{{tr('videos')}}</b>
+
+                <!-- EXPORT OPTION START -->
+
+				@if(count($data) > 0 )
+                
+	                <ul class="admin-action btn btn-default pull-right" style="margin-right: 20px">
+	                 	
+						<li class="dropdown">
+			                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			                  {{tr('export')}} <span class="caret"></span>
+			                </a>
+			                <ul class="dropdown-menu">
+			                  	<li role="presentation">
+			                  		<a role="menuitem" tabindex="-1" href="{{route('admin.live-videos.export' , ['format' => 'xls'])}}">
+			                  			<span class="text-red"><b>{{tr('excel_sheet')}}</b></span>
+			                  		</a>
+			                  	</li>
+
+			                  	<li role="presentation">
+			                  		<a role="menuitem" tabindex="-1" href="{{route('admin.live-videos.export' , ['format' => 'csv'])}}">
+			                  			<span class="text-blue"><b>{{tr('csv')}}</b></span>
+			                  		</a>
+			                  	</li>
+			                </ul>
+						</li>
+					</ul>
+
+				@endif
+
+                <!-- EXPORT OPTION END -->
+                
             </div>
             
             <div class="box-body">
@@ -51,7 +82,7 @@
 
 						      	<td>
 
-						      		<a href="{{$video->user ? route('admin.view.user' , $video->user_id) : '#'}}"> {{$video->user ? $video->user->name : "-"}}</a>
+						      		<a href="{{$video->user ? route('admin.users.view' , $video->user_id) : '#'}}"> {{$video->user ? $video->user->name : "-"}}</a>
 
 						      	</td>
 
@@ -80,7 +111,7 @@
 						      		@endif
 
 						      	</td>
-
+						      	
 						      	<td>
 						      		@if($video->is_streaming && !$video->status)
 
@@ -93,7 +124,7 @@
 
 						      	<td>{{convertTimeToUSERzone($video->created_at, Auth::guard('admin')->user()->timezone, 'd-m-Y h:i A')}}</td>
 
-						      	<td><a href="{{route('admin.videos.view' , $video->id)}}" class="btn btn-success"><b>{{tr('view')}}</b></a></td>
+						      	<td><a href="{{route('admin.live-videos.view' , $video->id)}}" class="btn btn-success"><b>{{tr('view')}}</b></a></td>
 						      
 
 						    </tr>

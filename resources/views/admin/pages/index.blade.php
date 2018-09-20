@@ -31,7 +31,6 @@
                         <tr>
                           <th>#{{tr('id')}}</th>
                           <th>{{tr('heading')}}</th>
-                          <th>{{tr('description')}}</th>
                           <th>{{tr('page_type')}}</th>
                           <th>{{tr('action')}}</th>
                         </tr>
@@ -44,7 +43,6 @@
                             <tr>
                                 <td>{{$i+1}}</td>
                                 <td>{{$result->heading}}</td>
-                                <td><?= $result->description ?></td>
                                 <td>{{$result->type}}</td>
                                 
                                 <td>
@@ -57,6 +55,13 @@
                                         </button>
 
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+
+
+                                            <li>
+                                               
+                                                <a href="{{route('admin.pages.view', array('id' => $result->id))}}"><b>{{tr('view')}}</b></a>
+                                            </li>
+
                                             <li>
                                                 @if(Setting::get('admin_delete_control'))
                                                     <a href="javascript:;" class="btn disabled"><b>{{tr('edit')}}</b></a>

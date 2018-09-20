@@ -18,14 +18,19 @@
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/style.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive1.css')}}">
 
+
+    <link rel="stylesheet" href="{{ asset('admin-css/plugins/select2/select2.min.css')}}">
+
+    
     <link rel="shortcut icon" type="image/png" href="{{Setting::get('site_icon' , asset('img/favicon.png'))}}"/>
     <style type="text/css">
+        
         .ui-autocomplete{
-          z-index: 99999;
+            z-index: 99999;
         }
 
-       
     </style>
 
     @yield('header-scripts')
@@ -47,27 +52,24 @@
 
     <div class="wrapper_content">
 
+        <div id="preloader">
 
-    <div id="preloader">
+            <div class="cssload-box-loading">
+            </div>
 
-
-        <div class="cssload-box-loading">
         </div>
 
+        @include('layouts.user.header')
+
+        <div class="common-streamtube">
+
+            @yield('content')
+
+        </div>
+
+        @include('layouts.user.footer')
 
     </div>
-
-    @include('layouts.user.header')
-
-    <div class="common-streamtube">
-
-        @yield('content')
-
-    </div>
-
-    </div>
-
-    @include('layouts.user.footer')
     
     <script src="{{asset('streamtube/js/jquery.min.js')}}"></script>
     <script src="{{asset('streamtube/js/bootstrap.min.js')}}"></script>
@@ -75,6 +77,8 @@
     <script type="text/javascript" src="{{asset('streamtube/js/jquery-migrate-1.2.1.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('streamtube/js/slick.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('streamtube/js/script.js')}}"></script>
+
+    <script src="{{asset('admin-css/plugins/select2/select2.full.min.js')}}"></script>
 
     <script>
 
@@ -125,6 +129,12 @@
     </script>
 
     <script type="text/javascript">
+
+         $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+
+        });
 
         jQuery(document).ready( function () {
             //autocomplete

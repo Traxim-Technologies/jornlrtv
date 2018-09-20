@@ -59,7 +59,7 @@
                                     </div> <!--end of history-head--> 
 
                                     <div class="description">
-                                        <p>{{$spamvideo->description}}</p>
+                                        <?= $spamvideo->description?>
                                     </div><!--end of description--> 
 
                                     <span class="stars">

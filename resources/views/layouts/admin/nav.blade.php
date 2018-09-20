@@ -6,7 +6,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="@if(Auth::guard('admin')->user()->picture){{Auth::guard('admin')->user()->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" class="img-circle" alt="User Image">
+                <img src="@if(Auth::guard('admin')->user()->picture) {{Auth::guard('admin')->user()->picture}} @else {{asset('placeholder.png')}} @endif" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>{{Auth::guard('admin')->user()->name}}</p>
@@ -32,10 +32,9 @@
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="add-user"><a href="{{route('admin.add.user')}}"><i class="fa fa-circle-o"></i>{{tr('add_user')}}</a></li>
+                    <li id="add-user"><a href="{{route('admin.users.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_user')}}</a></li>
                     <li id="view-user"><a href="{{route('admin.users')}}"><i class="fa fa-circle-o"></i>{{tr('view_users')}}</a></li>
                 </ul>
-    
             </li>
 
             <li class="treeview" id="channels">
@@ -44,29 +43,41 @@
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="add-channel"><a href="{{route('admin.add.channel')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
+                    <li id="add-channel"><a href="{{route('admin.channels.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
                     <li id="view-channels"><a href="{{route('admin.channels')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
-                     <li id="subscribers"><a href="{{route('admin.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('subscribers')}}</a></li>
+                     <li id="subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
                 </ul>
 
             </li>
 
+            <li id="categories">
+                <a href="{{route('admin.categories.list')}}">
+                    <i class="fa fa-list"></i> <span>{{tr('categories')}}</span> 
+                </a>
+            </li>
+
+            <li id="tags">
+                <a href="{{route('admin.tags')}}">
+                    <i class="fa fa-tag"></i> <span>{{tr('tags')}}</span> 
+                </a>
+            </li>
+
             <li class="treeview" id="videos">
                 
-                <a href="{{route('admin.videos')}}">
+                <a href="{{route('admin.videos.list')}}">
                     <i class="fa fa-video-camera"></i> <span>{{tr('videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
 
                     <li id="add-video">
-                        <a href="{{route('admin.add.video')}}">
+                        <a href="{{route('admin.videos.create')}}">
                             <i class="fa fa-circle-o"></i>{{tr('add_video')}}
                         </a>
                     </li>
 
                     <li id="view-videos">
-                        <a href="{{route('admin.videos')}}">
+                        <a href="{{route('admin.videos.list')}}">
                             <i class="fa fa-circle-o"></i>{{tr('view_videos')}}
                         </a>
                     </li>
@@ -92,29 +103,51 @@
 
             </li>
 
-             <li class="treeview" id="live_videos">
-
+            <li class="treeview" id="live_videos">
+               
                 <a href="#">
                     <i class="fa fa-video-camera"></i> <span>{{tr('live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
+
                 </a>
 
                 <ul class="treeview-menu">
-
-                    <li id="live_videos_idx"><a href="{{route('admin.videos.index')}}"><i class="fa fa-circle-o"></i>{{tr('live_videos')}}</a></li>
-                    <li id="list_videos"><a href="{{route('admin.videos.videos_list')}}"><i class="fa fa-circle-o"></i>{{tr('videos_list')}}</a></li>
+                    <li id="live_videos_idx"><a href="{{route('admin.live-videos.index')}}"><i class="fa fa-circle-o"></i>{{tr('live_videos')}}</a></li>
+                    <li id="list_videos"><a href="{{route('admin.live-videos.history')}}"><i class="fa fa-circle-o"></i>{{tr('videos_list')}}</a></li>
                 </ul>
-          </li>
+            </li>
+                
+            <li class="treeview" id="custom_live_videos">
 
+                <a href="{{route('admin.custom.live')}}">
+                    <i class="fa fa-wifi"></i> <span>{{tr('custom_live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+                <ul class="treeview-menu">
+                    <li id="create_live_video">
+                        <a href="{{route('admin.custom.live.create')}}">
+                            <i class="fa fa-circle-o"></i>{{tr('create_custom_live_video')}}
+                        </a>
+                    </li>
+
+                    <li id="custom_live_videos_index">
+                        <a href="{{route('admin.custom.live')}}">
+                            <i class="fa fa-circle-o"></i>{{tr('custom_live_videos')}}
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+ 
             <li class="treeview" id="videos_ads">
 
-                <a href="{{route('admin.ad_index')}}">
+                <a href="{{route('admin.ads-details.index')}}">
                     <i class="fa fa-bullhorn"></i> <span>{{tr('ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="create-ad-videos"><a href="{{route('admin.ad_create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
-                    <li id="view-ads"><a href="{{route('admin.ad_index')}}"><i class="fa fa-circle-o"></i>{{tr('view_ads')}}</a></li>
-                    <li id="ad-videos"><a href="{{route('admin.ad_videos')}}"><i class="fa fa-circle-o"></i>{{tr('ads')}}</a></li>
+                    <li id="create-ad-videos"><a href="{{route('admin.ads-details.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
+                    <li id="view-ads"><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_and_assign_ad')}}</a></li>
+                    <li id="ad-videos"><a href="{{route('admin.video_ads.list')}}"><i class="fa fa-circle-o"></i>{{tr('assigned_ads')}}</a></li>
                 </ul>
 
             </li>
@@ -122,7 +155,7 @@
             @if(Setting::get('is_banner_ad'))
 
                 <li class="treeview" id="bannerads_nav">
-                    <a href="{{route('admin.banner-ads.index')}}">
+                    <a href="{{route('admin.banner-ads.list')}}">
                         <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
 
@@ -130,7 +163,7 @@
                        
                         <li id="bannerads-create"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
                     
-                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.list')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
 
                     </ul>
 
@@ -166,6 +199,8 @@
 
                     <li id="subscriptions-add"><a href="{{route('admin.subscriptions.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_subscription')}}</a></li>
                     <li id="subscriptions-view"><a href="{{route('admin.subscriptions.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_subscriptions')}}</a></li>
+                    <li id="automatic"><a href="{{route('admin.automatic.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('automatic_subscribers')}}</a></li>
+                    <li id="cancelled"><a href="{{route('admin.cancelled.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('cancelled_subscribers')}}</a></li>
                 </ul>
             </li>
 
@@ -202,27 +237,27 @@
                 <ul class="treeview-menu">
 
                     <li id="payments-dashboard">
-                        <a href="{{route('admin.revenues')}}">
+                        <a href="{{route('admin.revenues.dashboard')}}">
                             <i class="fa fa-circle-o"></i>
                             {{tr('revenues')}}
                         </a>
                     </li>
 
                     <li id="payments-subscriptions">
-                        <a href="{{route('admin.subscription.payments')}}">
-                            <i class="fa fa-credit-card"></i>
+                        <a href="{{route('admin.revenues.subscription-payments')}}">
+                            <i class="fa fa-circle-o"></i>
                             {{tr('subscription_payments')}}
                         </a>
                     </li>
 
                     <li id="payments-ppv">
-                        <a href="{{route('admin.ppv_payments')}}">
+                        <a href="{{route('admin.revenues.ppv_payments')}}">
                             <i class="fa fa-circle-o"></i>
                             {{tr('ppv_payments')}}
                         </a>
                     </li>
 
-                     <li id="video_payments"><a href="{{route('admin.videos.payments')}}"><i class="fa fa-circle-o"></i>{{tr('live_payments')}}</a></li>
+                     <li id="video_payments"><a href="{{route('admin.live.videos.payments')}}"><i class="fa fa-circle-o"></i>{{tr('live_payments')}}</a></li>
                 </ul>
             </li>
 

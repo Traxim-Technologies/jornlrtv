@@ -8,12 +8,12 @@
 
 @section('content')
 
-<div class="form-background">
-        <div class="common-form">
+<div class="login-space">
+        <div class="common-form login-common">
 
             @include('notification.notify')
         
-            <div class="signup-head">
+            <div class="signup-head text-center">
                 <h3>{{tr('signup')}}</h3>
             </div><!--end  of signup-head-->
 
@@ -123,7 +123,7 @@
 
                     <div class="form-group">
                         <label for="dob">{{tr('dob')}}</label>
-                        <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off">
+                        <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off" readonly>
                     </div>
 
                     <div class="form-group">
@@ -141,7 +141,7 @@
                     <div class="change-pwd">
                         <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
                     </div>  
-                    <p>{{tr('already_account')}} <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
+                    <p class="text-right">{{tr('already_account')}} <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
                 </form>
             </div><!--end of sign-up-->
         </div><!--end of common-form-->     

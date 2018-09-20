@@ -3,6 +3,7 @@
 @section( 'styles' )
 
 <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/custom-style.css')}}"> 
+<link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/responsive1.css')}}"> 
 
 <style>
 	
@@ -30,15 +31,15 @@
 
 				<div class="row"> 
 
-					<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
 
 						<img src="{{asset('payment-failure.png')}}">
 
 					</div>
 
-					<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 payment-failure">
 
-						<div class="text-center" style="margin-top: 10%">
+						<div class="text-center" style="margin-top: 25px;">
 
 							<h4>{{tr('payment_failed')}}</h4>
 

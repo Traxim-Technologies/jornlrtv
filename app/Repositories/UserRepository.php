@@ -75,11 +75,11 @@ class UserRepository {
                 \Auth::loginUsingId($user->id);
 
             } else {
-                $response_array = array( 'success' => false, 'error' => tr('invalid_email_password'), 'error_code' => 105 );
+                $response_array = array( 'success' => false, 'error_messages' => tr('invalid_email_password'), 'error_code' => 105 );
             }
         
         } else {
-            $response_array = array('success' => false , 'error' => tr('account_disabled'),'error_code' => 144);
+            $response_array = array('success' => false , 'error_messages' => tr('account_disabled'),'error_code' => 144);
         }
 
         return $response_array;
