@@ -87,7 +87,7 @@
 
 					                   <div class="modal-content">
 
-					                   		<form method="post" action="{{route('admin.cancel.subscription', ['id'=>$payment->user_id])}}">
+					                   		<form method="post" action="{{route('admin.cancel.subscription', ['id'=>$payment->id])}}">
 
 					                       <div class="modal-body">
 

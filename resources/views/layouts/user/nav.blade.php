@@ -114,9 +114,13 @@
 
     @endif
 
+    @if(Setting::get('facebook_link') || Setting::get('twitter_link') || Setting::get('linkedin_link') || Setting::get('pinterest_link') || Setting::get('google_link'))
+
     <h3 class="menu-foot-head">{{tr('contact')}}</h3>
 
     <div class="nav-space">
+
+        @if(Setting::get('facebook_link'))
 
         <a href="{{Setting::get('facebook_link')}}" target="_blank">
             <span class="fa-stack fa-lg">
@@ -125,12 +129,20 @@
             </span>
         </a>
 
+        @endif
+
+        @if(Setting::get('twitter_link'))
+
         <a href="{{Setting::get('twitter_link')}}" target="_blank">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x social-twitter"></i>
                 <i class="fa fa-twitter fa-stack-1x fa-inverse foot-share2"></i>
             </span>
         </a>
+
+        @endif
+
+        @if(Setting::get('linkedin_link'))
 
         <a href="{{Setting::get('linkedin_link')}}" target="_blank">
             <span class="fa-stack fa-lg">
@@ -139,21 +151,30 @@
             </span>
         </a>
 
+        @endif
+
+        @if(Setting::get('pinterest_link'))
+
         <a href="{{Setting::get('pinterest_link')}}" target="_blank">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x social-pinterest"></i>
                 <i class="fa fa fa-pinterest fa-stack-1x fa-inverse foot-share2"></i>
             </span>
         </a>
+        @endif
 
+        @if(Setting::get('google_link'))
         <a href="{{Setting::get('google_link')}}" target="_blank">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x social-google"></i>
                 <i class="fa fa fa-google fa-stack-1x fa-inverse foot-share2"></i>
             </span>
         </a>
+        @endif
 
     </div>
+
+    @endif
     
     @if(Auth::check())
 

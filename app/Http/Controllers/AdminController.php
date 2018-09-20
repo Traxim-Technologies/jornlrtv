@@ -3455,7 +3455,7 @@ class AdminController extends Controller {
 
        return view('admin.coupons.create')
                 ->with('page','coupons')
-                ->with('sub_page','create');
+                ->with('sub_page','add-coupons');
     
     }
 
@@ -3622,7 +3622,7 @@ class AdminController extends Controller {
             return view('admin.coupons.edit')
                         ->with('edit_coupon',$edit_coupon)
                         ->with('page','coupons')
-                        ->with('sub_page','edit_coupons');
+                        ->with('sub_page','add-coupons');
 
         } else{
 
@@ -5488,7 +5488,7 @@ class AdminController extends Controller {
      */
     public function user_subscription_pause(Request $request) {
 
-        $user_payment = UserPayment::where('user_id', $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+        $user_payment = UserPayment::find($request->id);
 
         if($user_payment) {
 
@@ -5586,7 +5586,7 @@ class AdminController extends Controller {
                 
                 $payments[] = [
 
-                    'id'=> $value->user_payment_id,
+                    'id'=> $value->id,
 
                     'user_id'=>$value->user_id,
 

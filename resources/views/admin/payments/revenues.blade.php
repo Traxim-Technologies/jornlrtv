@@ -31,9 +31,9 @@
 					<i class="fa fa-money"></i>
 				</div>
 
-				<a href="javascript:void(0);" class="small-box-footer">
-					{{tr('more_info')}}
-					<i class="fa fa-arrow-circle-right"></i>
+				<a class="small-box-footer">
+					{{tr('total_revenue')}}
+					<!-- <i class="fa fa-arrow-circle-right"></i> -->
 				</a>
 			</div>
 
