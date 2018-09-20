@@ -12,10 +12,9 @@
 <div id="help-content" style="display: none">
 
     <ul class="popover-list">
-        <li><b>{{tr('ads_view_revenue')}} - </b> {{tr('watch_count_revenue')}} {{tr('ad_status')}} </li>
-        <li><b>{{tr('age_limit')}} - </b>{{tr('video_marked_only_18_years')}}</li>
-        <li><b>{{tr('ppv_created_by')}} - </b> {{tr('admin_or_user')}} </li>
-
+        <li><b>{{tr('ads_view_revenue')}} - </b> {{tr('watch_revenue_count')}}&nbsp;{{tr('ad_status')}} </li>
+        <li><b>{{tr('age_limit')}} - </b>{{tr('video_marked_age')}}</li>
+        <li><b>{{tr('ppv_created_by')}} - </b>{{tr('admin_user')}}</li>
     </ul>
     
 </div>
@@ -240,15 +239,15 @@ hr {
                         <th>{{tr('tags')}}</th>
                         <td>@if($video->getScopeVideoTags) 
 
-                            @foreach($video->getScopeVideoTags as $tags)
+                                @foreach($video->getScopeVideoTags as $tags)
 
-                            @if($tags->getTag)
+                                    @if($tags->getTag)
 
-                            <span class="label label-success"> {{$tags->getTag->name}} </span>&nbsp;
+                                    <span class="label label-success"> {{$tags->getTag->name}} </span>&nbsp;
 
-                            @endif
+                                    @endif
 
-                            @endforeach
+                                @endforeach
 
                             @endif
                         </td>

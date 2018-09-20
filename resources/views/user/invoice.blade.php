@@ -132,8 +132,14 @@
 @section('scripts')
 <script>
     $('#my_button').on('click', function(){
+
+    	setTimeout(function(){
+
+    		$('#my_button').attr("disabled", true);
+
+    	}, 1000);
         // alert('paypal action');
-        $('#my_button').attr("disabled", true);
+        
     });
 
     function applyCouponSubscription() {
@@ -178,6 +184,9 @@
 					$("#coupon_value").text(data.data.original_coupon_amount);
 
 					$("#remaining_amount").text(data.data.remaining_amount);
+    			} else {
+
+    				alert(data.error_messages);
     			}
 
     		},

@@ -664,6 +664,7 @@ class CommonRepository {
                                 ->where('video_tape_id', $model->id)
                                 ->get()
                                 ->pluck('tag_id')
+                                ->where('status', TAG_APPROVE_STATUS)
                                 ->toArray();
 
                         foreach ($tag as $key => $video_tag_id) {

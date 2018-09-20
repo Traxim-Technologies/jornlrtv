@@ -271,7 +271,7 @@
                                 <div class="form-group" style="display: none;" id="publish_time_div">
                                     <label for="datepicker" class="">{{tr('publish_time')}} * </label>
 
-                                    <input type="text" name="publish_time" placeholder="{{tr('select_publish_time')}}" class="form-control pull-right" id="datepicker">
+                                    <input type="text" name="publish_time" placeholder="{{tr('select_publish_time')}}" class="form-control pull-right" id="datepicker" readonly>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
