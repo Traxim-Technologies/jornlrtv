@@ -1002,14 +1002,14 @@ class AdminController extends Controller {
     public function channels_save(Request $request) {
 
         $response = CommonRepo::channel_save($request)->getData();
-
+       
         if($response->success) {
 
             return back()->with('flash_success', $response->message);
 
         } else {
             
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
         
     }
@@ -1352,7 +1352,7 @@ class AdminController extends Controller {
         return view('admin.videos.view-video')->with('video' , $video)
                     ->with('video_images' , $admin_video_images)
                     ->withPage($page)
-                    ->with('sub_page',$sub_page)
+                    ->with('sub_page','view-videos')
                     ->with('videoPath', $videoPath)
                     ->with('video_pixels', $video_pixels)
                     ->with('videoStreamUrl', $videoStreamUrl)

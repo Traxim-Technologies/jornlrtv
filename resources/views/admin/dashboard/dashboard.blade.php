@@ -335,7 +335,7 @@ use  Carbon\Carbon;
                                                 <span class="label label-warning pull-right">{{$video->duration}}</span>
                                             </a>
                                             <span class="product-description">
-                                              <?= substr($video->description , 0 , 75) ?>
+                                              <?= substr($video->description , 0 , 70) ?>
                                             </span>
                                       </div>
                                     </li>

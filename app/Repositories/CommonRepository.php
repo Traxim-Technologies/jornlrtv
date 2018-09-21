@@ -173,13 +173,24 @@ class CommonRepository {
 
 
 	public static function channel_save($request) {
-
+        
         $validator = [];
 
-        $request->request->add([
+        if($request->device_type == DEVICE_WEB) {
 
-            'user_id'=>$request->id
-        ]);
+            $request->request->add([
+
+                'user_id'=>$request->user_id
+            ]);
+
+         } else{
+
+             $request->request->add([
+
+                'user_id'=>$request->id
+            ]);
+
+         }
 
         if($request->channel_id != '') {
 
@@ -266,8 +277,17 @@ class CommonRepository {
                 $channel->name = $request->has('name') ? $request->name : '';
 
                 $channel->description = $request->has('description') ? $request->description : '';
+                
 
-                $channel->user_id = $request->has('user_id') ? $request->user_id : '';
+                if($request->device_type == DEVICE_WEB) {
+
+                    $channel->user_id = $request->has('user_id') ? $request->user_id : '';
+
+                 } else{
+
+                    $channel->user_id = $request->has('id') ? $request->id : '';
+
+                 }
 
                 $channel->status = DEFAULT_TRUE;
 

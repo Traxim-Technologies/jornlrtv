@@ -49,7 +49,7 @@
 
                                 <div class="col-lg-6">
 
-                                    <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}} *" id="dob" required autocomplete="off" value="{{$user->dob ? $user->dob : old('dob')}}">
+                                    <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}} *" id="dob" required autocomplete="off" value="{{$user->dob ? $user->dob : old('dob')}}" readonly>
 
                                 </div>
 
