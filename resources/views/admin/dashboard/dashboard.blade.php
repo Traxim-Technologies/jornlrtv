@@ -218,7 +218,7 @@ use  Carbon\Carbon;
                 <div class="box-footer no-padding">
                     <ul class="nav nav-pills nav-stacked">
                         <li>
-                            <a href="{{route('admin.users.type','web')}}">
+                            <a href="{{route('admin.users.type',DEVICE_WEB)}}">
                                 <strong class="text-red">{{tr('total_web')}}</strong>
                                 <span class="pull-right text-red">
                                     <i class="fa fa-angle-right"></i> {{$get_registers['web']}}
@@ -227,7 +227,7 @@ use  Carbon\Carbon;
                         </li>
 
                         <li>
-                            <a href="{{route('admin.users.type','android')}}">
+                            <a href="{{route('admin.users.type',DEVICE_ANDROID)}}">
                                 <strong class="text-green">{{tr('total_android')}} </strong>
                                 <span class="pull-right text-green">
                                     <i class="fa fa-angle-right"></i> {{$get_registers['android']}}
@@ -236,7 +236,7 @@ use  Carbon\Carbon;
                         </li>
 
                         <li>
-                            <a href="{{route('admin.users.type','ios')}}">
+                            <a href="{{route('admin.users.type',DEVICE_IOS)}}">
                                 <strong class="text-yellow">{{tr('total_ios')}}</strong>
                                 <span class="pull-right text-yellow">
                                     <i class="fa fa-angle-right"></i> {{$get_registers['ios']}}

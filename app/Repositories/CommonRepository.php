@@ -277,17 +277,8 @@ class CommonRepository {
                 $channel->name = $request->has('name') ? $request->name : '';
 
                 $channel->description = $request->has('description') ? $request->description : '';
-                
 
-                if($request->device_type == DEVICE_WEB) {
-
-                    $channel->user_id = $request->has('user_id') ? $request->user_id : '';
-
-                 } else{
-
-                    $channel->user_id = $request->has('id') ? $request->id : '';
-
-                 }
+                $channel->user_id = $request->has('user_id') ? $request->user_id : '';
 
                 $channel->status = DEFAULT_TRUE;
 
