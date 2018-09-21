@@ -99,7 +99,7 @@
 
                                         <div class="form-group">
                                             <label for="dob">{{tr('dob')}}</label>
-                                            <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob">
+                                            <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob" readonly>
                                         </div>
 
                                               

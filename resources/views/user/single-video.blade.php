@@ -872,7 +872,7 @@
            },
            autostart : true,
            "sharing": {
-           "sites": ["reddit","facebook","twitter"]
+            "sites": ["facebook","twitter"]
            },
            events : {
    
