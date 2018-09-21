@@ -180,6 +180,42 @@ class AdminController extends Controller {
     }
 
     /**
+     * Function Name : users_type_list
+     *
+     * To get the based on type users list in ios , andriod , web
+     *
+     * @created By - Maheswari
+     *
+     * @updated by - -
+     *
+     * @param - device type
+     * 
+     * @return response of users list
+     *
+     */
+    public function users_type_list($type) {
+
+        $user_type_list= User::where('device_type',$type)
+                            ->orderBy('created_at','desc')
+                            ->withCount('getChannel')
+                            ->withCount('getChannelVideos')
+                            ->get();
+
+        if($user_type_list){
+
+            return view('admin.users.list')->withPage('users')
+                ->with('users' , $user_type_list)
+                ->with('sub_page','view-user');
+        } else{
+
+            return back()->with('flash_error',tr('user_not_found'));
+        }
+        
+    
+    }
+
+
+    /**
      * Function Name : users_create
      *
      * To create a new user
