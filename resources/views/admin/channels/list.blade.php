@@ -96,7 +96,7 @@
 							     	<td>
             							<ul class="admin-action btn btn-default">
             								
-            								<li class="dropup">
+            								<li class="{{$i <=2 ? 'dropdown' : 'dropup'}}">
             								
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>

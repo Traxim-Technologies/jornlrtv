@@ -388,7 +388,7 @@ var url = "<?= url('/');?>";
 
 var video_details = <?= $data; ?>;
 
-var routeUrl = "<?= route('admin.videos.index') ?>";
+var routeUrl = "<?= route('admin.live-videos.index') ?>";
 
 var socket_url = "<?= Setting::get('SOCKET_URL');?>";
 
