@@ -20,7 +20,7 @@
             <div class="form-inputs">
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 
-                    <input type="email" class="form-control input-lg" name="email" placeholder="{{tr('email')}}" value="{{Setting::get('admin_login')}}">
+                    <input type="email" class="form-control input-lg" pattern="[a-z0-9]+@[a-z0-9]+\.[a-z]{2,6}$"  name="email" placeholder="{{tr('email')}}" value="{{Setting::get('admin_login')}}">
 
                     @if ($errors->has('email'))
                         <span class="help-block">

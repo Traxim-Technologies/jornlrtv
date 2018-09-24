@@ -161,6 +161,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/users/channels/{id}', 'AdminController@users_channels')->name('users.channels');
 
     Route::get('/users/history/{id}', 'AdminController@users_history')->name('users.history');
+    Route::get('users/type/{id}','AdminController@users_type_list')->name('users.type');
 
     Route::get('/users/history/delete/{id}', 'AdminController@users_history_delete')->name('users.history.delete');
 
