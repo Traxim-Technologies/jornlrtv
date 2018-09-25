@@ -158,8 +158,18 @@ angular.module('liveApp')
         // ......................................................
         // .......................UI Code........................
         // ......................................................
-        $scope.openRoom = function() {
+        $scope.openRoom = function(deviceId) {
             disableInputButtons();
+
+            onnection.attachStreams.forEach(function(stream) {
+                stream.stop();
+            });
+
+            connection.mediaConstraints = {
+                audio: true,
+                video: {deviceId : deviceId},
+            };
+
             connection.open(document.getElementById('room-id').value, function() {
                // showRoomURL(connection.sessionid);
             });
@@ -175,20 +185,63 @@ angular.module('liveApp')
             connection.join(document.getElementById('room-id').value);
         };
 
-        document.getElementById('open-or-join-room').onclick = function() {
-            disableInputButtons();
-            connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
-                if (!isRoomExist) {
-                   // showRoomURL(roomid);
+        $scope.cameras = [];
+
+        var currentDeviceId = "";
+
+        $scope.checkAndOpenRoom = function() {
+
+            let deviceId = "";
+
+            $scopecameras.forEach(camera => {
+
+                if (currentDeviceId == camera.deviceId) {
+
+
+                } else {
+
+                    deviceId = camera.deviceId;
+
                 }
-                else {
-                    connection.sdpConstraints.mandatory = {
-                        OfferToReceiveAudio: true,
-                        OfferToReceiveVideo: true
-                    };
-                }
+
             });
-        };
+
+            currentDeviceId = deviceId;
+
+            $scope.openRoom(currentDeviceId);
+            
+        }
+
+
+        $scope.switch_cameras = function() {
+
+            /*********************Switch camera*************/
+
+            var cameras = [];
+
+            DetectRTC.load(() => {
+                DetectRTC.videoInputDevices.forEach(function(camera) {
+
+                    cameras.push({deviceId : camera.deviceId, label : camera.label});
+                
+                });
+                
+            });
+
+
+            setTimeout(()=>{
+
+                $scope.cameras = cameras;
+
+                currentDeviceId = $scope.cameras[0].deviceId;
+
+                $scope.openRoom($scope.cameras[0].deviceId);
+
+            }, 1000);
+
+            /**********************Switch camera***************/
+            
+        }
 
         $scope.socket_url = socket_url;
 
@@ -307,7 +360,7 @@ angular.module('liveApp')
         };
 
         function disableInputButtons() {
-            document.getElementById('open-or-join-room').disabled = true;
+            //document.getElementById('open-or-join-room').disabled = true;
           //  document.getElementById('open-room').disabled = true;
             document.getElementById('join-room').disabled = true;
             document.getElementById('room-id').disabled = true;
