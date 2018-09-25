@@ -205,7 +205,7 @@
 	        <ul class="nav nav-tabs">
 	          <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">{{tr('profile')}}</a></li>
 	          <li class=""><a href="#channels_id" data-toggle="tab" aria-expanded="false">{{tr('channels')}}</a></li>
-	          <li class=""><a href="#wishlist_list" data-toggle="tab" aria-expanded="false">{{tr('favourties')}}</a></li>
+	          <li class=""><a href="#wishlist_list" data-toggle="tab" aria-expanded="false">{{tr('favourites')}}</a></li>
 	          <li class=""><a href="#history_list" data-toggle="tab" aria-expanded="false">{{tr('history')}}</a></li>
 	          <li class=""><a href="#reviews_list" data-toggle="tab" aria-expanded="false">{{tr('reviews')}}</a></li>
 	          <li class=""><a href="#spam_reports_list" data-toggle="tab" aria-expanded="false">{{tr('spam_reports')}}</a></li>
@@ -350,7 +350,7 @@
 	          <div class="tab-pane" id="wishlist_list">
 
 	          		<blockquote>
-		                <p>{{tr('favourties_notes')}}</p>
+		                <p>{{tr('favourites_notes')}}</p>
 		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.wishlist', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 

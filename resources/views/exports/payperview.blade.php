@@ -57,6 +57,8 @@
 
             <th >{{tr('type_of_user')}}</th>
 
+            <th >{{tr('payment_mode')}}</th>
+
             <th >{{tr('admin_ppv_commission')}}</th>
 
             <th >{{tr('user_ppv_commission')}}</th>
@@ -105,6 +107,8 @@
                 <td> 
                     {{$ppv_details->type_of_user}}
                 </td>
+
+                <td>{{$ppv_details->payment_mode}}</td>
 
                 <td>{{Setting::get('currency')}} {{$ppv_details->admin_ppv_amount}}</td>
 

@@ -239,7 +239,7 @@
 
 
                 <td>
-                    <?php echo $video_details->description ?>
+                    {{ $video_details->description }}
                 </td>
 
                 <td>
