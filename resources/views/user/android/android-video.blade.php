@@ -180,7 +180,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 <script type="text/javascript">
 
-	var video_details = "<?= $data; ?>";
+	var video_details = <?= $data; ?>;
 
 	var apiUrl = "<?= url('/');?>";
 
