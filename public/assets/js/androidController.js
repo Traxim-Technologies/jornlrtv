@@ -340,7 +340,7 @@ angular.module('liveApp')
 
                     capture();
 
-                }, 6000);
+                }, 6 * 1000);
 
             }
         };
@@ -352,11 +352,11 @@ angular.module('liveApp')
             }
 
 
-            window.setTimeout(function(){
+           /* window.setTimeout(function(){
 
                 alert("Streaming stopped unfortunately..!");
 
-            }, 2000);
+            }, 2000);*/
         };
 
         function disableInputButtons() {

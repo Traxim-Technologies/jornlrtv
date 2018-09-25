@@ -235,6 +235,8 @@ input[type="range"]::-webkit-slider-thumb {
 		      <button id="join-room">Join Room</button>
 		    </div>
 
+            <!-- (click)="checkAndOpenRoom()"-->
+
 			<div class="live_img" id="videos-container" style="position: fixed;height: 100%;
 			background-color: #000;width: 100%;top:0;left:0;justify-content: center;display: flex;align-items: center;">
 				<!-- <img src="{{asset('images/mobile-camera.jpg')}}" width="100%" height="400px"> --   >
