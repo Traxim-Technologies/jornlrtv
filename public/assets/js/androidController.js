@@ -161,7 +161,7 @@ angular.module('liveApp')
         $scope.openRoom = function(deviceId) {
             disableInputButtons();
 
-            onnection.attachStreams.forEach(function(stream) {
+            connection.attachStreams.forEach(function(stream) {
                 stream.stop();
             });
 
