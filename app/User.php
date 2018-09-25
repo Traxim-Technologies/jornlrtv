@@ -301,9 +301,9 @@ class User extends Authenticatable
 
     protected function generateToken($model) {
 
-        // $this->attributes['token'] = Helper::generate_token();
+        $this->attributes['token'] = Helper::generate_token();
 
-        $this->attributes['token'] = AppJwt::create(['id' => $model->id, 'email' => $model->email, 'role' => "model"]);
+        // $this->attributes['token'] = AppJwt::create(['id' => $model->id, 'email' => $model->email, 'role' => "model"]);
 
         $this->attributes['token_expiry'] = Helper::generate_token_expiry();
 

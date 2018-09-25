@@ -1906,9 +1906,11 @@ class UserApiController extends Controller {
 
                 $user->save();
 
-                $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
+               // $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
 
-                $user->save();
+
+
+               // $user->save();
 
 
                 // Send welcome email to the new user:
@@ -2029,7 +2031,10 @@ class UserApiController extends Controller {
             if($operation) {
 
                 // Generate new tokens
-                $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
+               // $user->token = AppJwt::create(['id' => $user->id, 'email' => $user->email, 'role' => "model"]);
+                
+                $user->token = Helper::generate_token();
+
                 $user->token_expiry = Helper::generate_token_expiry();
 
                 // Save device details

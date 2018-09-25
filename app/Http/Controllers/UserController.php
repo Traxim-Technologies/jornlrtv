@@ -112,7 +112,9 @@ class UserController extends Controller {
                 'all_categories',
                 'category_videos',
                 'sub_category_videos',
-                'android_web_page'
+                'android_web_page',
+                'live_videos',
+                'broadcasting'
 
         ]]);
 
@@ -807,7 +809,9 @@ class UserController extends Controller {
 
                     if($check_admin_user_details) {
 
-                        $check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
+                        //$check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
+
+                        $check_admin_user_details->token = Helper::generate_token();
 
                         $check_admin_user_details->is_master_user = 1;
 
@@ -854,7 +858,9 @@ class UserController extends Controller {
                             $admin->save();
                         }   
 
-                        $check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
+                        //$check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
+
+                        $check_admin_user_details->token = Helper::generate_token();
                         
                         $check_admin_user_details->save();
 

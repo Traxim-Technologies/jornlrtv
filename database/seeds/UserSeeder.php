@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
 		        'password' => \Hash::make('123456'),
 		        'picture' =>"https://tubenow.streamhash.com/placeholder.png",
                 'chat_picture' =>"https://tubenow.streamhash.com/placeholder.png",
-                'token'=>AppJwt::create(['id' => 1, 'email' => 'user@tubenow.com', 'role' => "model"]),
+                'token'=>Helper::generate_token(),
                 'token_expiry'=>Helper::generate_token_expiry(),
                 'dob'=>'1992-01-01',
                 'age_limit'=>25,
