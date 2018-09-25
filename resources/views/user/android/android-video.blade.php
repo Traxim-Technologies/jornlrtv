@@ -2,23 +2,21 @@
 <html>
 
 <head>
-    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>
+<title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>
 
-    <script src="{{asset('streamtube/js/jquery.min.js')}}"></script>
+<script src="{{asset('streamtube/js/jquery.min.js')}}"></script>
 
 
-	<script src="{{asset('lib/angular/angular.min.js')}}"></script>
-	<script src="{{asset('lib/angular-socket-io/socket.min.js')}}"></script>
-	<script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
-	<script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
-	<style type="text/css">
-		video{
-			height:100%;
-			width: 100%;
-            max-height: unset;
-		}
-
-		
+<script src="{{asset('lib/angular/angular.min.js')}}"></script>
+<script src="{{asset('lib/angular-socket-io/socket.min.js')}}"></script>
+<script src="{{asset('lib/socketio/socket.io-1.4.5.js')}}"></script>
+<script src="{{asset('lib/rtc-multi-connection/RTCMultiConnection.js')}}"></script>
+<style type="text/css">
+	video{
+		height:100%;
+		width: 100%;
+        max-height: unset;
+	}
 
 /**
  * Live stream css
@@ -178,8 +176,9 @@ input[type="range"]::-webkit-slider-thumb {
     height: 26px;
 }
 
-	</style>
-	<script type="text/javascript">
+</style>
+
+<script type="text/javascript">
 
 	var video_details = <?= $data; ?>;
 
@@ -211,10 +210,11 @@ input[type="range"]::-webkit-slider-thumb {
 	        function ($rootScope,$window, $timeout) {
 	            
 	            $rootScope.videoDetails = video_details;
+
 	        }
 	]);
 	    
-	</script>
+</script>
 
 <script src="{{asset('assets/js/stream-controller.js')}}"></script>
 
@@ -233,12 +233,13 @@ input[type="range"]::-webkit-slider-thumb {
 			<div>
 		      <input type="text" id="room-id">
 		      <button id="join-room">Join Room</button>
-		      <button id="open-or-join-room">Auto Open Or Join Room</button>
 		    </div>
+
+            <!-- (click)="checkAndOpenRoom()"-->
 
 			<div class="live_img" id="videos-container" style="position: fixed;height: 100%;
 			background-color: #000;width: 100%;top:0;left:0;justify-content: center;display: flex;align-items: center;">
-				<!-- <img src="{{asset('images/mobile-camera.jpg')}}" width="100%" height="400px"> -->
+				<!-- <img src="{{asset('images/mobile-camera.jpg')}}" width="100%" height="400px"> --   >
 
 				<!-- <img src="{{asset('images/preview_img.jpg')}}" width="100%" id="default_image"> -->
 				<div style="background-image: url({{asset('images/mobile-camera.jpg')}});background-size: cover;background-position: center;background-repeat: no-repeat;height: 100%;"></div>

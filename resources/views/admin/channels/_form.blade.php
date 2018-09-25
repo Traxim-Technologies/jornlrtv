@@ -20,6 +20,8 @@
 
                     <input type="hidden" name="user_id" value="{{$channel->user_id}}" >
 
+                    <input type="hidden" name="device_type" value="{{DEVICE_WEB}}" >
+
                    
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">{{tr('user_name')}} *</label>

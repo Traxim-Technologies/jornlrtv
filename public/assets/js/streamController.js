@@ -335,14 +335,15 @@ liveAppCtrl
                 mediaElement.parentNode.removeChild(mediaElement);
             }
 
+            window.location.reload(true);
 
-            window.setTimeout(function(){
+            /*window.setTimeout(function(){
 
                 alert("Streaming stopped unfortunately..!");
 
                 window.location.reload(true);
 
-            }, 2000);
+            }, 2000);*/
         };
 
         function disableInputButtons() {

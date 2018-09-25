@@ -173,7 +173,7 @@ class CommonRepository {
 
 
 	public static function channel_save($request) {
-
+        
         $validator = [];
 
         if($request->device_type == DEVICE_WEB) {
@@ -189,7 +189,6 @@ class CommonRepository {
 
                 'user_id'=>$request->id
             ]);
-
          }
 
         if($request->channel_id != '') {

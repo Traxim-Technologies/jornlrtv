@@ -403,6 +403,8 @@
 
                     $string = tr('already_you_have_video');
 
+                    break;
+
                 case 171:
                     $string = tr('subscription_amount_should_be_grater');
                     break;
