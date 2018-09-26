@@ -172,6 +172,9 @@ angular.module('liveApp')
 
             connection.open(document.getElementById('room-id').value, function() {
                // showRoomURL(connection.sessionid);
+
+               $("#cameras-selection-container").show();
+               
             });
         };
 

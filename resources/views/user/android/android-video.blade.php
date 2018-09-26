@@ -269,7 +269,7 @@ input[type="range"]::-webkit-slider-thumb {
 		
 	</div>
 
-    <div id="cameras-selection-container">
+    <div id="cameras-selection-container" style="display: none">
         <img src="../../../assets/img/rotate-camera.png" ng-click="checkAndOpenRoom()">
     </div>
     	 
