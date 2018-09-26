@@ -1887,11 +1887,13 @@ class UserApiController extends Controller {
 
                 $user->picture = asset('placeholder.png');
 
+                $user->chat_picture = $user->picture;
+
                 // Upload picture
                 if($request->login_by == "manual") {
 
                     if($request->hasFile('picture')) {
-                        $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/");
+                        $user->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/", $user);
                     }
                 } else {
                     if($request->has('picture')) {
@@ -1901,9 +1903,9 @@ class UserApiController extends Controller {
                     $user->is_verified = 1;
                 }
 
-                // $user->is_activated = 1;
+                $user->chat_picture = $user->chat_picture ? $user->chat_picture : $user->picture;
 
-                $user->chat_picture = $request->picture;
+                // $user->is_activated = 1;
 
                 $user->save();
 
