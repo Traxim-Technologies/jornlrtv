@@ -155,6 +155,19 @@
     outline: none;
 }
 
+
+#cameras-selection-container{
+  position: absolute;
+    top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#cameras-selection-container img{
+  height: 30px;
+    width: 30px;
+}
+
 input[type=range] {
     -webkit-appearance: none;
     -moz-appearance: none;
