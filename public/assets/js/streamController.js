@@ -597,7 +597,7 @@ liveAppCtrl
 
 	            if(socketState && chatMessage != '') {
 	                message = {};
-	                message.type = (appSettings.USER == null)  ? ViewerToUser : userToViewer;
+	                message.type = (appSettings.USER == null)  ? viewerToUser : userToViewer;
 	                message.live_video_viewer_id = liveVideoViewerID;
 	                message.live_video_id = liveVideoID;
 	                message.user_id = userID;
