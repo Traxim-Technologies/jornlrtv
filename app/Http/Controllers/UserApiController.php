@@ -6428,7 +6428,7 @@ class UserApiController extends Controller {
                    
                 } else {
                     
-                    $response_array = ['success'=>false, 'error_messages'=>$response->error];
+                    $response_array = ['success'=>false, 'error_messages'=>$response->error_messages];
 
                 }
 
@@ -6485,7 +6485,7 @@ class UserApiController extends Controller {
                    
                 } else {
                     
-                    $response_array = ['success'=>false, 'error_messages'=>$response->error];
+                    $response_array = ['success'=>false, 'error_messages'=>$response->error_messages];
 
                 }
 
