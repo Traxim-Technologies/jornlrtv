@@ -45,7 +45,7 @@ Route::post('select/genre' , 'ApplicationController@select_genre')->name('select
 // Chat Message save
 
 
-Route::post('message/save' , 'ApplicationController@message_save')->name('message.save');
+Route::get('message/save' , 'ApplicationController@message_save')->name('message.save');
 
 
 // Cron jobs
