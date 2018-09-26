@@ -362,11 +362,7 @@ angular.module('liveApp')
             }, 2000);*/
         };
 
-        setTimeout(function() {
-
-            $scope.switch_cameras();
-            
-        }, 1000);
+        
 
         function disableInputButtons() {
             //document.getElementById('open-or-join-room').disabled = true;
@@ -419,6 +415,12 @@ angular.module('liveApp')
             console.log("room...");
 
             $scope.openRoom();
+
+            setTimeout(function() {
+
+                $scope.switch_cameras();
+                
+            }, 1000);
 
         } else {
 
