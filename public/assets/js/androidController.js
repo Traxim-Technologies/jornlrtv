@@ -174,7 +174,7 @@ angular.module('liveApp')
                // showRoomURL(connection.sessionid);
 
                $("#cameras-selection-container").show();
-               
+
             });
         };
 
@@ -279,7 +279,7 @@ angular.module('liveApp')
             event.mediaElement.removeAttribute('srcObject');
 
             var video = document.createElement('video');
-            video.controls = true;
+            video.controls = false;
             if(event.type === 'local') {
                 video.muted = true;
             }
@@ -288,7 +288,7 @@ angular.module('liveApp')
             var width = parseInt(connection.videosContainer.clientWidth / 2) - 20;
             var mediaElement = getHTMLMediaElement(video, {
                 title: event.userid,
-                buttons: ['full-screen'],
+                buttons: [],
                 width: width,
                 showOnMouseEnter: false
             });
