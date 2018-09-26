@@ -250,7 +250,7 @@ liveAppCtrl
             event.mediaElement.removeAttribute('srcObject');
 
             var video = document.createElement('video');
-            video.controls = true;
+            video.controls = false;
             if(event.type === 'local') {
                 video.muted = true;
             }
