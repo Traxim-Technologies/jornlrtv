@@ -235,8 +235,6 @@ input[type="range"]::-webkit-slider-thumb {
 		      <button id="join-room">Join Room</button>
 		    </div>
 
-            <button id="check-and-openroom" ng-click="checkAndOpenRoom()">Switch</button>
-
             <!-- (click)="checkAndOpenRoom()"-->
 
 			<div class="live_img" id="videos-container" style="position: fixed;height: 100%;
@@ -257,7 +255,11 @@ input[type="range"]::-webkit-slider-thumb {
 
 		
 	</div>
-	 
+
+    <div id="cameras-selection-container">
+        <img src="../../../assets/img/rotate-camera.png" ng-click="checkAndOpenRoom()">
+    </div>
+    	 
 </div>
 
 
