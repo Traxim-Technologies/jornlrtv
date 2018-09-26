@@ -196,7 +196,7 @@ angular.module('liveApp')
 
             let deviceId = "";
 
-            $scopecameras.forEach(camera => {
+            $scope.cameras.forEach(camera => {
 
                 if (currentDeviceId == camera.deviceId) {
 
