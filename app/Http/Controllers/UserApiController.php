@@ -1896,13 +1896,14 @@ class UserApiController extends Controller {
                 } else {
                     if($request->has('picture')) {
                         $user->picture = $request->picture;
-                        $user->chat_picture = $request->picture;
                     }
 
                     $user->is_verified = 1;
                 }
 
                 // $user->is_activated = 1;
+
+                $user->chat_picture = $request->picture;
 
                 $user->save();
 
