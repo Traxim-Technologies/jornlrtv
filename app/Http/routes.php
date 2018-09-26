@@ -41,6 +41,13 @@ Route::post('select/sub_category' , 'ApplicationController@select_sub_category')
 
 Route::post('select/genre' , 'ApplicationController@select_genre')->name('select.genre');
 
+
+// Chat Message save
+
+
+Route::post('message/save' , 'ApplicationController@message_save')->name('message.save');
+
+
 // Cron jobs
 
 Route::get('/automatic/renewal', 'ApplicationController@automatic_renewal')->name('automatic.renewal');
