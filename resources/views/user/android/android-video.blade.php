@@ -164,8 +164,8 @@
     justify-content: center;
 }
 #cameras-selection-container img{
-  height: 100%;
-    width: 100%;
+  height: 70px;
+    width: 70px;
 }
 
 input[type=range] {
