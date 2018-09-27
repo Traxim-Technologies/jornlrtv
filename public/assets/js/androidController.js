@@ -360,7 +360,7 @@ angular.module('liveApp')
 
                 if (video_details.user_id != live_user_id) {
 
-                    $("#join-room").click();
+                    window.location.reload(true);
 
                 }
 
