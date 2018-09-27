@@ -49,7 +49,7 @@
 
 	            <!-- EXPORT OPTION END -->
 	           	</div>
-            <div class="box-body">
+            <div class="box-body table-responsive">
             	@if(count($data) > 0)
 
 	              	<table id="example1" class="table table-bordered table-striped">
@@ -57,38 +57,64 @@
 						<thead>
 						    <tr>
 						      <th>{{tr('id')}}</th>
-						      <th>{{tr('video')}}</th>
-						      <th>{{tr('username')}}</th>
-						      <th>{{tr('payment_id')}}</th>
-						      <th>{{tr('amount')}}</th>
-							  <th>{{tr('admin_live_commission')}}</th>
-						      <th>{{tr('user_live_commission')}}</th>
-						      <th>{{tr('paid_date')}}</th>
-						      <th>{{tr('status')}}</th>
+								<th>{{tr('title')}}</th>
+								<th>{{tr('user_name')}}</th>
+								<th>{{tr('payment_id')}}</th>
+								<th>{{tr('amount')}}</th>
+								<th>{{tr('admin_commission')}}</th>
+								<th>{{tr(('user_commission'))}}</th>
+								<th>{{tr(('payment_mode'))}}</th>
+								<th>{{tr('coupon_code')}}</th>
+						      	<th>{{tr('coupon_amount')}}</th>
+						      	<th>{{tr('plan_amount')}}</th>
+						      	<th>{{tr('final_amount')}}</th>
+						      	<th>{{tr('is_coupon_applied')}}</th>
+						      	<th>{{tr('coupon_reason')}}</th>
+								<th>{{tr('status')}}</th>
 						    </tr>
 						</thead>
 
 						<tbody>
 
-							@foreach($data as $i => $payment)
+							@foreach($data as $i => $value)
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td><a target="_blank" href="{{route('admin.live-videos.view' , $payment->id)}}">{{$payment->getVideoPayment ? $payment->getVideoPayment->title : ''}}</a></td>
+							      	<td><a target="_blank" href="{{route('admin.live-videos.view' , $value->id)}}">{{$value->getVideoPayment ? $value->getVideoPayment->title : ''}}</a></td>
 
-							      	<td><a target="_blank" href="{{route('admin.users.view' , $payment->user_id)}}"> {{$payment->user ? $payment->user->name : '-'}} </a></td>
-							      	<td>{{$payment->payment_id}}</td>
-							      	<td>$ {{$payment->amount}}</td>
-							      	<td>$ {{$payment->admin_amount}}</td>
-							      	<td>$ {{$payment->user_amount}}</td>
-							      	<td>{{$payment->created_at->diffForHumans()}}</td>
+							      	<td><a target="_blank" href="{{route('admin.users.view' , $value->user_id)}}"> {{$value->user ? $value->user->name : '-'}} </a></td>
+							      	<td>{{$value->payment_id}}</td>
+							      	<td>{{Setting::get('currency')}}{{$value->amount ? $value->amount : 0}}</td>
+
+										<td>{{Setting::get('currency')}}{{$value->admin_amount ? $value->admin_amount : 0}}</td>
+
+										<td>{{Setting::get('currency')}}{{$value->user_amount ? $value->user_amount : 0}}</td>
+										<td class="text-capitalize">{{$value->payment_mode}}</td>
+										<td>{{$value->coupon_code}}</td>
+
+							      	<td>{{Setting::get('currency')}} {{$value->coupon_amount? $value->coupon_amount : "0.00"}}</td>
+
+							      	<td>{{Setting::get('currency')}} {{$value->live_video_amount ? $value->live_video_amount : "0.00"}}</td>
+
+							      	<td>{{Setting::get('currency')}} {{$value->amount ? $value->amount : "0.00" }}</td>
+							      	
 							      	<td>
-							      	@if($payment->status)
-							      		<label class="text-green">{{tr('paid')}}</label>
-							      	@else
-							      		<label class="text-red">{{tr('not_paid')}}</label>
-							      	@endif
+							      		@if($value->is_coupon_applied)
+										<span class="label label-success">{{tr('yes')}}</span>
+										@else
+										<span class="label label-danger">{{tr('no')}}</span>
+										@endif
 							      	</td>
+							      	<td>
+							      		{{$value->coupon_reason ? $value->coupon_reason : '-'}}
+							      	</td>
+										<td>
+											@if($value->amount > 0)
+												<span class="label label-success">{{tr('paid')}}</span>
+											@else
+												<span class="label label-danger">{{tr('not_paid')}}</span>
+											@endif
+										</td>
 							    </tr>					
 
 							@endforeach

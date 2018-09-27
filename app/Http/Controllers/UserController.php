@@ -440,30 +440,92 @@ class UserController extends Controller {
 
         } else {
 
-            $video_payment = LiveVideoPayment::where('live_video_viewer_id' , $user_id)->where('live_video_id' , $id)->first();
+            $video_payment = LiveVideoPayment::where('live_video_viewer_id' , $user_id)->where('live_video_id' , $id)->where('status', DEFAULT_TRUE)->first();
 
             if ($video_payment) {
-
 
                 return redirect(route('user.live_video.start_broadcasting', array('id'=>$video_payment->getVideo->unique_id, 'c_id'=>$video_payment->getVideo->channel_id)));
 
 
-
             }
 
-            if (Setting::get('payment_type') == 'stripe') {
+            return redirect(route('user.live-video.invoice', array('id'=>$id)));
+
+           /* if (Setting::get('payment_type') == 'stripe') {
 
                 return redirect(route('user.stripe_payment_video', array('id'=>$id, 'user_id'=>$user_id)));
 
             } else {
 
                 return redirect(route('user.live_video_paypal', array('id'=>$id, 'user_id'=>$user_id)));
+            }*/
+        }
+
+    }
+
+    public function live_videos_payment_url(Request $request) {
+
+        $id = $request->id;
+
+        $user_id = Auth::check() ? Auth::user()->id : '';
+
+        if (!Auth::check() || !$user_id) {
+
+            return redirect(route('user.login.form'));
+
+        } else {
+
+            $video_payment = LiveVideoPayment::where('live_video_viewer_id' , $user_id)->where('live_video_id' , $id)->where('status', DEFAULT_TRUE)->first();
+
+            if ($video_payment) {
+
+                return redirect(route('user.live_video.start_broadcasting', array('id'=>$video_payment->getVideo->unique_id, 'c_id'=>$video_payment->getVideo->channel_id)));
+
+
+            }
+
+            $coupon_code = $request->coupon_code ?  $request->coupon_code : '';
+            //return redirect(route('user.live-video.invoice', array('id'=>$id)));
+
+            if ($request->payment_type == 2) {
+
+                return redirect(route('user.stripe_payment_video', array('id'=>$id, 'user_id'=>$user_id, 'coupon_code'=>$coupon_code)));
+
+            } else {
+
+                return redirect(route('user.live_video_paypal', array('id'=>$id, 'user_id'=>$user_id, 'coupon_code'=>$coupon_code)));
             }
         }
 
     }
 
+
     public function stripe_payment_video(Request $request) {
+
+
+        $request->request->add([
+
+            'video_id'=>$request->id,
+
+            'id'=>Auth::check() ? Auth::user()->id : '',
+
+        ]);
+
+        $response = $this->UserAPI->stripe_live_ppv($request)->getData();
+
+        if ($response->success) {
+
+
+            $video_payment = LiveVideoPayment::where('live_video_viewer_id' , $request->id)->where('live_video_id' , $request->video_id)->where('status', DEFAULT_TRUE)->first();
+
+            return redirect(route('user.live_video.start_broadcasting', array('id'=>$video_payment->getVideo->unique_id, 'c_id'=>$video_payment->getVideo->channel_id)));
+
+            //return redirect(route(''));
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+        }
 
         if (\Auth::user()->card_id) {
 
@@ -3545,5 +3607,50 @@ class UserController extends Controller {
                 ->with('page', 'settings')
                 ->with('subPage', '');
     }
-    
+
+
+    /**
+     * Function Name : live_videos_invoice()
+     *
+     * To view the live video invoice page
+     *
+     * @created_by shobana
+     *
+     * @updated by --
+     *
+     * @param integer $request - video id 
+     *
+     * @return response of json
+     */
+    public function live_videos_invoice(Request $request){
+
+        $video = LiveVideo::find($request->id);
+
+        if ($video) {
+
+            if (Auth::check()) {
+
+               $live_video_payment =  LiveVideoPayment::where('live_video_id', $video->id)
+                                ->where('live_video_viewer_id', Auth::user()->id)
+                                ->where('status',DEFAULT_TRUE)->first();
+
+                if ($live_video_payment) {
+
+                    return redirect(route('user.single', $video->video_tape_id));
+
+                } 
+
+            }
+
+            return view('user.live-videos.invoice')
+                ->with('page', 'live-video-invoice')
+                ->with('video',$video)
+                ->with('subPage', 'live-video-invoice');
+                
+        } else {
+
+            return back()->with('flash_error', tr('video_not_found'));
+        }
+
+    }
 }

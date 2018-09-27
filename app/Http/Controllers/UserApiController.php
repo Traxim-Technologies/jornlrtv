@@ -571,8 +571,12 @@ class UserApiController extends Controller {
             $request->all(),
             array(
                 'video_tape_id'=>'required|exists:live_videos,id',
+                'coupon_code'=>'exists:coupons,coupon_code',
                 'payment_id'=>'required',
 
+            ), array(
+                    'coupon_code.exists' => tr('coupon_code_not_exists'),
+                    'video_tape_id.exists' => tr('livevideo_not_exists'),
             ));
 
         if ($validator->fails()) {
@@ -583,73 +587,188 @@ class UserApiController extends Controller {
 
         } else {
 
-            $subscription = LiveVideo::find($request->video_tape_id);
+            $live_video = LiveVideo::find($request->video_tape_id);
 
-            $user_payment = new LiveVideoPayment;
+            $viewerModel = User::find($request->id);
 
-            $check_live_video_payment = LiveVideoPayment::where('live_video_viewer_id' , $request->id)->where('live_video_id' , $request->video_tape_id)->first();
+            if ($live_video->status) {
 
-            if($check_live_video_payment) {
-                $user_payment = $check_live_video_payment;
-            }
+               $response_array = ['success'=>false, 'error_messages'=>tr('stream_stopped')]; 
 
-            // $user_payment->expiry_date = date('Y-m-d H:i:s');
-            $user_payment->payment_id  = $request->payment_id;
-            $user_payment->live_video_viewer_id = $request->id;
-            $user_payment->live_video_id = $request->video_tape_id;
-            
-            $user_payment->user_id = $subscription->user_id;
+            } else {
 
-            $user_payment->status = DEFAULT_TRUE;
+                $total = $live_video->amount;
 
-            $user_payment->amount = $subscription->amount;
+                $coupon_amount = 0;
 
-            $user_payment->save();
+                $coupon_reason = '';
 
-            if($user_payment) {
+                $is_coupon_applied = COUPON_NOT_APPLIED;
 
-                $total = $subscription->amount;
+                if ($request->coupon_code) {
 
-                // Commission Spilit 
+                    $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
 
-                $admin_commission = Setting::get('admin_commission')/100;
+                    if ($coupon) {
+                        
+                        if ($coupon->status == COUPON_INACTIVE) {
 
-                $admin_amount = $total * $admin_commission;
+                            $coupon_reason = tr('coupon_inactive_reason');
 
-                $user_amount = $total - $admin_amount;
+                        } else {
 
-                $user_payment->admin_amount = $admin_amount;
+                            $check_coupon = $this->check_coupon_applicable_to_user($viewerModel, $coupon)->getData();
 
-                $user_payment->user_amount = $user_amount;
+                            if ($check_coupon->success) {
 
-                $user_payment->save();
+                                $is_coupon_applied = COUPON_APPLIED;
 
-                // Commission Spilit Completed
+                                $amount_convertion = $coupon->amount;
 
-                if($user = User::find($user_payment->user_id)) {
+                                if ($coupon->amount_type == PERCENTAGE) {
 
-                    $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
+                                    $amount_convertion = round(amount_convertion($coupon->amount, $live_video->amount), 2);
 
-                    $user->total_user_amount = $user->total_user_amount + $user_amount;
+                                }
 
-                    $user->remaining_amount = $user->remaining_amount + $user_amount;
+                                if ($amount_convertion < $live_video->amount) {
 
-                    $user->total_amount = $user->total_amount + $total;
+                                    $total = $live_video->amount - $amount_convertion;
 
-                    $user->save();
+                                    $coupon_amount = $amount_convertion;
 
-                    add_to_redeem($user->id, $user_amount, $admin_amount);
+                                } else {
+
+                                    // throw new Exception(Helper::get_error_message(156),156);
+
+                                    $total = 0;
+
+                                    $coupon_amount = $amount_convertion;
+                                    
+                                }
+
+                                // Create user applied coupon
+
+                                if($check_coupon->code == 2002) {
+
+                                    $user_coupon = UserCoupon::where('user_id', $viewerModel->id)
+                                            ->where('coupon_code', $request->coupon_code)
+                                            ->first();
+
+                                    // If user coupon not exists, create a new row
+
+                                    if ($user_coupon) {
+
+                                        if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                            $user_coupon->no_of_times_used += 1;
+
+                                            $user_coupon->save();
+
+                                        }
+
+                                    }
+
+                                } else {
+
+                                    $user_coupon = new UserCoupon;
+
+                                    $user_coupon->user_id = $viewerModel->id;
+
+                                    $user_coupon->coupon_code = $request->coupon_code;
+
+                                    $user_coupon->no_of_times_used = 1;
+
+                                    $user_coupon->save();
+
+                                }
+
+                            } else {
+
+                                $coupon_reason = $check_coupon->error_messages;
+                                
+                            }
+
+                        }
+
+                    } else {
+
+                        $coupon_reason = tr('coupon_delete_reason');
+                    }
                 
                 }
 
+                $user_payment = new LiveVideoPayment;
+
+                $check_live_video_payment = LiveVideoPayment::where('live_video_viewer_id' , $request->id)->where('live_video_id' , $request->video_id)->first();
+
+                if($check_live_video_payment) {
+                    $user_payment = $check_live_video_payment;
+                }
+
+                $user_payment->payment_id  = $request->payment_id;
+                $user_payment->live_video_viewer_id = $request->id;
+                $user_payment->live_video_id = $request->video_tape_id;
+                $user_payment->user_id = $live_video->user_id;
+                $user_payment->status = DEFAULT_TRUE;
+                $user_payment->payment_mode = PAYPAL;
+                $user_payment->currency = Setting::get('currency');
+
+                 // Coupon details
+
+                $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                $user_payment->coupon_code = $request->coupon_code ? $request->coupon_code : '';
+
+                $user_payment->coupon_amount = $coupon_amount;
+
+                $user_payment->live_video_amount = $live_video->amount;
+
+                $user_payment->amount = $total;
+
+                $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+                if($user_payment->save()) {
+
+                    // Commission Spilit 
+
+                    $admin_commission = Setting::get('admin_commission')/100;
+
+                    $admin_amount = $total * $admin_commission;
+
+                    $user_amount = $total - $admin_amount;
+
+                    $user_payment->admin_amount = $admin_amount;
+
+                    $user_payment->user_amount = $user_amount;
+
+                    $user_payment->save();
+
+                    // Commission Spilit Completed
+
+                    if($user = User::find($user_payment->user_id)) {
+
+                        $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
+
+                        $user->total_user_amount = $user->total_user_amount + $user_amount;
+
+                        $user->remaining_amount = $user->remaining_amount + $user_amount;
+
+                        $user->total_amount = $user->total + $total;
+
+                        $user->save();
+
+                        add_to_redeem($user->id , $user_amount);
+                    
+                    }
+
+                }
+
+                $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
+                            'data'=>['id'=>$request->id,
+                                     'token'=>$viewerModel ? $viewerModel->token : '']];
+           
             }
-
-            $viewerModel = User::find($request->id);
-         
-
-            $response_array = ['success'=>true, 'message'=>tr('payment_success'), 
-                        'data'=>['id'=>$request->id,
-                                 'token'=>$viewerModel ? $viewerModel->token : '']];
 
         }
 
@@ -868,7 +987,7 @@ class UserApiController extends Controller {
     }
 
 
-    public function stripe_payment_video(Request $request) {
+   /* public function stripe_payment_video(Request $request) {
 
         $userModel = User::find($request->id);
 
@@ -1004,6 +1123,396 @@ class UserApiController extends Controller {
         return response()->json($response_array,200);
         
 
+    } */
+
+
+
+
+    /**
+     * Function Name : stripe_live_ppv()
+     * 
+     * Pay the payment for Pay per view through stripe
+     *
+     * @param object $request - Admin video id
+     * 
+     * @return response of success/failure message
+     */
+    public function stripe_live_ppv(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(), 
+                array(
+                    'video_id' => 'required|exists:live_videos,id,status,'.VIDEO_STREAMING_ONGOING,
+                    'coupon_code'=>'exists:coupons,coupon_code,status,'.COUPON_ACTIVE,
+                  //  'total_amount'=>'numeric',
+                ), array(
+                    'coupon_code.exists' => tr('coupon_code_not_exists'),
+                    'video_id.exists' => tr('livevideo_not_exists'),
+            ));
+
+            if($validator->fails()) {
+
+                $errors = implode(',', $validator->messages()->all());
+                
+                $response_array = ['success' => false, 'error_messages' => $errors, 'error_code' => 101];
+
+                throw new Exception($errors);
+
+            } else {
+
+                $userModel = User::find($request->id);
+
+                if ($userModel) {
+
+                    if ($userModel->card_id) {
+
+                        $user_card = Card::find($userModel->card_id);
+
+                        if ($user_card && $user_card->is_default) {
+
+                            $video = LiveVideo::find($request->video_id);
+
+                            if($video) {
+
+                                $total = $video->amount;
+
+                                $coupon_amount = 0;
+
+                                $coupon_reason = '';
+
+                                $is_coupon_applied = COUPON_NOT_APPLIED;
+
+                                if ($request->coupon_code) {
+
+                                    $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+                                    if ($coupon) {
+                                        
+                                        if ($coupon->status == COUPON_INACTIVE) {
+
+                                            $coupon_reason = tr('coupon_inactive_reason');
+
+                                        } else {
+
+                                            $check_coupon = $this->check_coupon_applicable_to_user($userModel, $coupon)->getData();
+
+                                            if ($check_coupon->success) {
+
+                                                $is_coupon_applied = COUPON_APPLIED;
+
+                                                $amount_convertion = $coupon->amount;
+
+                                                if ($coupon->amount_type == PERCENTAGE) {
+
+                                                    $amount_convertion = round(amount_convertion($coupon->amount, $video->amount), 2);
+
+                                                }
+
+
+                                                if ($amount_convertion < $video->amount) {
+
+                                                    $total = $video->amount - $amount_convertion;
+
+                                                    $coupon_amount = $amount_convertion;
+
+                                                } else {
+
+                                                    // throw new Exception(Helper::get_error_message(156),156);
+
+                                                    $total = 0;
+
+                                                    $coupon_amount = $amount_convertion;
+                                                    
+                                                }
+
+                                                // Create user applied coupon
+
+                                                if($check_coupon->code == 2002) {
+
+                                                    $user_coupon = UserCoupon::where('user_id', $userModel->id)
+                                                            ->where('coupon_code', $request->coupon_code)
+                                                            ->first();
+
+                                                    // If user coupon not exists, create a new row
+
+                                                    if ($user_coupon) {
+
+                                                        if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                                            $user_coupon->no_of_times_used += 1;
+
+                                                            $user_coupon->save();
+
+                                                        }
+
+                                                    }
+
+                                                } else {
+
+                                                    $user_coupon = new UserCoupon;
+
+                                                    $user_coupon->user_id = $userModel->id;
+
+                                                    $user_coupon->coupon_code = $request->coupon_code;
+
+                                                    $user_coupon->no_of_times_used = 1;
+
+                                                    $user_coupon->save();
+
+                                                }
+
+                                            } else {
+
+                                                $coupon_reason = $check_coupon->error_messages;
+                                                
+                                            }
+                                        }
+
+                                    } else {
+
+                                        $coupon_reason = tr('coupon_delete_reason');
+                                    }
+                                
+                                }
+
+                                if ($total <= 0) {
+
+                                    $user_payment = new LiveVideoPayment;
+                                    $user_payment->payment_id = $is_coupon_applied ? 'COUPON-DISCOUNT' : FREE_PLAN;
+                                    $user_payment->user_id = $video->user_id;
+                                    $user_payment->live_video_viewer_id = $request->id;
+                                    $user_payment->live_video_id = $request->video_id;
+                                    $user_payment->status = PAID_STATUS;
+                                  
+                                    $user_payment->admin_amount = 0;
+
+                                    $user_payment->user_amount = 0;
+
+                                    $user_payment->payment_mode = CARD;
+
+                                    $user_payment->currency = Setting::get('currency');
+
+                                    // Coupon details
+
+                                    $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                                    $user_payment->coupon_code = $request->coupon_code ? $request->coupon_code : '';
+
+                                    $user_payment->coupon_amount = $coupon_amount;
+
+                                    $user_payment->live_video_amount = $video->amount;
+
+                                    $user_payment->amount = $total;
+
+                                    $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+                                    $user_payment->save();
+
+
+                                    $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $user_payment->payment_id];
+
+                                    $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
+
+                                } else {
+
+                                    // Get the key from settings table
+
+                                    $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                                    $customer_id = $user_card->customer_id;
+                                    
+                                    if($stripe_secret_key) {
+
+                                        \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+                                    } else {
+
+                                        $response_array = array('success' => false, 'error_messages' => Helper::error_message(902) , 'error_code' => 902);
+
+                                        throw new Exception(Helper::error_message(902));
+                                        
+                                    }
+
+                                    try {
+
+                                       $user_charge =  \Stripe\Charge::create(array(
+                                          "amount" => $total * 100,
+                                          "currency" => "usd",
+                                          "customer" => $customer_id,
+                                        ));
+
+                                       $payment_id = $user_charge->id;
+                                       $amount = $user_charge->amount/100;
+                                       $paid_status = $user_charge->paid;
+                                       
+                                       if($paid_status) {
+
+                                            $user_payment = new LiveVideoPayment;
+                                            $user_payment->payment_id  = $payment_id;
+                                            $user_payment->user_id = $video->user_id;
+                                            $user_payment->live_video_viewer_id = $request->id;
+                                            $user_payment->live_video_id = $request->video_id;
+                                            $user_payment->status = PAID_STATUS;
+                                            $user_payment->payment_mode = CARD;
+
+                                            $user_payment->currency = Setting::get('currency');
+
+                                             // Coupon details
+
+                                            $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                                            $user_payment->coupon_code = $request->coupon_code ? $request->coupon_code : '';
+
+                                            $user_payment->coupon_amount = $coupon_amount;
+
+                                            $user_payment->live_video_amount = $video->amount;
+
+                                            $user_payment->amount = $total;
+
+                                            $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+
+                                            // Commission Spilit 
+
+                                            $admin_commission = Setting::get('admin_commission')/100;
+
+                                            $admin_amount = $total * $admin_commission;
+
+                                            $user_amount = $total - $admin_amount;
+
+                                            $user_payment->admin_amount = $admin_amount;
+
+                                            $user_payment->user_amount = $user_amount;
+
+                                            $user_payment->save();
+
+                                            // Commission Spilit Completed
+
+                                            if($user = User::find($user_payment->user_id)) {
+
+                                                $user->total_admin_amount = $user->total_admin_amount + $admin_amount;
+
+                                                $user->total_user_amount = $user->total_user_amount + $user_amount;
+
+                                                $user->remaining_amount = $user->remaining_amount + $user_amount;
+
+                                                $user->total_amount = $user->total + $total;
+
+                                                $user->save();
+
+                                                add_to_redeem($user->id , $user_amount);
+                                            
+                                            }
+
+                                            $data = ['id'=> $request->id, 'token'=> $userModel->token , 'payment_id' => $payment_id];
+
+                                            $response_array = array('success' => true, 'message'=>tr('payment_success'),'data'=> $data);
+
+                                        } else {
+
+                                            $response_array = array('success' => false, 'error_messages' => Helper::error_message(902) , 'error_code' => 902);
+
+                                            throw new Exception(tr('no_vod_video_found'));
+
+                                        }
+                                    
+                                    } catch(\Stripe\Error\RateLimit $e) {
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch(\Stripe\Error\Card $e) {
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\InvalidRequest $e) {
+                                        // Invalid parameters were supplied to Stripe's API
+                                       
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\Authentication $e) {
+
+                                        // Authentication with Stripe's API failed
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\ApiConnection $e) {
+
+                                        // Network communication with Stripe failed
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\Error\Base $e) {
+                                      // Display a very generic error to the user, and maybe send
+                                        
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (Exception $e) {
+                                        // Something else happened, completely unrelated to Stripe
+
+                                        throw new Exception($e->getMessage(), 903);
+
+                                    } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                                            Log::info(print_r($e,true));
+
+                                        throw new Exception($e->getMessage(), 903);
+                                        
+                                    
+                                    }
+
+                                }
+
+                            
+                            } else {
+
+                                $response_array = array('success' => false , 'error_messages' => tr('no_vod_video_found'));
+
+                                throw new Exception(tr('no_vod_video_found'));
+                                
+                            }
+
+                        } else {
+
+                            throw new Exception(tr('no_default_card_available'), 901);
+
+                        }
+
+                    } else {
+
+                        throw new Exception(tr('no_default_card_available'), 901);
+
+                    }
+
+                } else {
+
+                    throw new Exception(tr('no_user_detail_found'));
+                    
+
+                }
+
+            }
+
+            DB::commit();
+
+            return response()->json($response_array,200);
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $message = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success'=>false, 'error_messages'=>$message, 'error_code'=>$code];
+
+            return response()->json($response_array);
+
+        }
+        
     }
 
     public function get_live_url(Request $request) {
@@ -8339,5 +8848,132 @@ class UserApiController extends Controller {
 
         return response()->json($response_array,200);
     } 
+
+    /**
+     * Function Name : apply_coupon_live_videos()
+     *
+     * Apply coupon to live videos if the user having coupon codes
+     *
+     * @created By - Shobana Chandrasekar
+     *
+     * @edited_by - -
+     *
+     * @param object $request - User details, livevideo details
+     *
+     * @return response of coupon details with amount
+     *
+     */
+    public function apply_coupon_live_videos(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'coupon_code' => 'required|exists:coupons,coupon_code',  
+            'live_video_id'=>'required|exists:live_videos,id'          
+        ], array(
+            'coupon_code.exists' => tr('coupon_code_not_exists'),
+            'live_video_id.exists' => tr('livevideo_not_exists'),
+        ));
+        
+        if ($validator->fails()) {
+
+            $error_messages = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages'=>$error_messages , 'error_code' => 101);
+
+            return response()->json($response_array);
+        }
+        
+
+        $model = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+        if ($model) {
+
+            if ($model->status) {
+
+                $user = User::find($request->id);
+
+                $check_coupon = $this->check_coupon_applicable_to_user($user, $model)->getData();
+
+                if ($check_coupon->success) {
+
+                    if(strtotime($model->expiry_date) >= strtotime(date('Y-m-d'))) {
+
+                        $live_video = LiveVideo::find($request->live_video_id);
+
+                        if($live_video) {
+
+                            if($live_video->status == VIDEO_STREAMING_ONGOING) {
+
+                                $amount_convertion = $model->amount;
+
+                                if ($model->amount_type == PERCENTAGE) {
+
+                                    $amount_convertion = round(amount_convertion($model->amount, $live_video->amount), 2);
+
+                                }
+
+                                if ($live_video->amount > $amount_convertion && $amount_convertion > 0) {
+
+                                    $amount = $live_video->amount - $amount_convertion;
+
+                                    $response_array = ['success'=> true, 
+                                    'data'=>[
+                                        'remaining_amount'=>(string) $amount,
+                                        'coupon_amount'=>(string) $amount_convertion,
+                                        'coupon_code'=>$model->coupon_code,
+                                        'original_coupon_amount'=>(string) ($model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount)
+                                    ]];
+
+                                } else {
+
+                                    // $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(156), 'error_code'=>156];
+                                    $amount = 0;
+                                    $response_array = ['success'=> true, 
+                                    'data'=>[
+                                            'remaining_amount'=>(string) $amount,
+                                            'coupon_amount'=>(string) $amount_convertion,
+                                            'coupon_code'=>$model->coupon_code,
+                                            'original_coupon_amount'=>(string) ($model->amount_type == PERCENTAGE ? $model->amount.'%' : Setting::get('currency').$model->amount)
+                                    ]];
+
+                                }
+
+                            } else {
+
+                                $response_array = ['success'=> false, 'error_messages'=>tr('streaming_stopped')];
+
+                            }
+
+                        } else {
+
+                            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(173), 'error_code'=>173];
+                        }
+
+                    } else {
+
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(173), 'error_code'=>173];
+
+                    }
+
+                } else {
+
+                    $response_array = ['success'=> false, 'error_messages'=>$check_coupon->error_messages];
+                }
+
+            } else {
+
+                $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(178), 'error_code'=>178];
+            }
+
+
+
+        } else {
+
+            $response_array = ['success'=> false, 'error_messages'=>Helper::error_message(174), 'error_code'=>174];
+
+        }
+
+        return response()->json($response_array);
+
+    }  
 
 }

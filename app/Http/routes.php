@@ -665,6 +665,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('payment-video', 'UserController@payment_url')->name('payment_url');
 
+    Route::post('live-videos/payment', 'UserController@live_videos_payment_url')->name('live-videos.payment-url');
+
     Route::get('stripe-payment-video', 'UserController@stripe_payment_video')->name('stripe_payment_video');
     
 
@@ -807,6 +809,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/settings' , 'UserController@settings');
 
+    Route::get('/live/video/invoice', 'UserController@live_videos_invoice')->name('live-video.invoice');
+
 
 });
 
@@ -836,7 +840,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('close_streaming', 'UserApiController@close_streaming');
 
-    Route::post('stripe_payment_video', 'UserApiController@stripe_payment_video');
+    Route::post('stripe/live/ppv', 'UserApiController@stripe_live_ppv');
 
     Route::post('ppv_paypal', 'UserApiController@ppv_paypal');
 
@@ -1008,4 +1012,6 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/apply/coupon/subscription', 'UserApiController@apply_coupon_subscription');
 
     Route::post('apply/coupon/videos', 'UserApiController@apply_coupon_video_tapes');
+
+    Route::post('apply/coupon/live-videos', 'UserApiController@apply_coupon_live_videos');    
 });
