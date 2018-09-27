@@ -358,12 +358,16 @@ angular.module('liveApp')
 
                 console.log("Streaming Ended timeout.");
 
-                // $("#join-room").click();
+                if (video_details.user_id != live_user_id) {
+
+                    $("#join-room").click();
+
+                }
 
                // this.router.reload();
-                window.location.reload(true);
+                // window.location.reload(true);
 
-            }, 1000);
+            }, 2000);
 
            /* window.setTimeout(function(){
 
