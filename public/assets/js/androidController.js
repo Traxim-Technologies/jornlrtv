@@ -358,10 +358,10 @@ angular.module('liveApp')
 
                 console.log("Streaming Ended timeout.");
 
-                $("#join-room").click();
+                // $("#join-room").click();
 
                // this.router.reload();
-                // window.location.reload(true);
+                window.location.reload(true);
 
             }, 1000);
 
