@@ -343,7 +343,7 @@ liveAppCtrl
 
             connection.autoCloseEntireSession = true;
              
-            $scope.connectionNow.close();
+           // $scope.connectionNow.close();
                         
             window.setTimeout(function(){
 
