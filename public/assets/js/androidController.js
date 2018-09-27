@@ -354,6 +354,16 @@ angular.module('liveApp')
                 mediaElement.parentNode.removeChild(mediaElement);
             }
 
+            setTimeout(() => {
+
+                console.log("Streaming Ended timeout.");
+
+                $("#join-room").click();
+
+               // this.router.reload();
+                // window.location.reload(true);
+
+            }, 1000);
 
            /* window.setTimeout(function(){
 
