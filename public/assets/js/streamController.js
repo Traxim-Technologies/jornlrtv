@@ -250,7 +250,7 @@ liveAppCtrl
             event.mediaElement.removeAttribute('srcObject');
 
             var video = document.createElement('video');
-            video.controls = false;
+            video.controls = true;
             if(event.type === 'local') {
                 video.muted = true;
             }
@@ -335,15 +335,23 @@ liveAppCtrl
                 mediaElement.parentNode.removeChild(mediaElement);
             }
 
-            window.location.reload(true);
+            connection.attachStreams.forEach(function (stream) {
+                stream.stop();
+            });
 
-            /*window.setTimeout(function(){
+            connection.videosContainer.innerHTML = '';
+
+            connection.autoCloseEntireSession = true;
+             
+            $scope.connectionNow.close();
+                        
+            window.setTimeout(function(){
 
                 alert("Streaming stopped unfortunately..!");
 
                 window.location.reload(true);
 
-            }, 2000);*/
+            }, 2000);
         };
 
         function disableInputButtons() {
