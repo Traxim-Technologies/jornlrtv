@@ -268,11 +268,11 @@ liveAppCtrl
 
                 connection.videosContainer.appendChild(mediaElement);
 
-                if (browser == 'Safari' || m_type =='ios') {
+                // if (browser == 'Safari' || m_type =='ios') {
 
                     append_already = 1;
 
-                }
+                // }
 
             }
 
@@ -347,7 +347,7 @@ liveAppCtrl
                         
             window.setTimeout(function(){
 
-                alert("Streaming stopped unfortunately..!");
+                // alert("Streaming stopped unfortunately..!");
 
                 window.location.reload(true);
 
