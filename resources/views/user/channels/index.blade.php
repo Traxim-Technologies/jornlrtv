@@ -675,80 +675,12 @@
                                     $url = ($live_video->amount > 0) ? route('user.payment_url', array('id'=>$live_video->id, 'user_id'=>$userId)): route('user.live_video.start_broadcasting' , array('id'=>$live_video->unique_id,'c_id'=>$live_video->channel_id));
                                 ?>
 
-                                <div class="modal fade cus-mod" id="paypal_{{$live_video->id}}" role="dialog">
-					                <div class="modal-dialog">
-					                
-					                  <!-- Modal content-->
-					                  <div class="modal-content">
-
-					                        <div class="modal-header">
-					                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-					                            <h4 class="modal-title text-center text-uppercase" style="color: #000 !important">{{tr('payment_options')}}</h4>
-					                        </div>
-
-
-					                        <div class="modal-body">
-					                            <!-- <p>Please Pay to see the full video</p>  -->
-					                                <div class="col-lg-6">
-					                                  <!-- small box -->
-					                                  <div class="small-box bg-green">
-					                                    <div class="inner">
-					                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
-					                                      <div class="clearfix"></div>
-					                                      <p style="float: none;" class="text-left">{{tr('paypal_payment')}}</p>
-					                                    </div>
-					                                    <div class="icon">
-					                                      <i class="fa fa-money"></i>
-					                                    </div>
-					                                     <div class="clearfix"></div>
-					                                    <a href="{{route('user.live_video_paypal', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
-					                                  </div>
-					                                </div>
-					                           
-					                                <div class="col-lg-6">
-					                                  <!-- small box -->
-					                                  <div class="small-box bg-aqua">
-					                                    <div class="inner">
-					                                      <h3>{{ Setting::get('currency')}} {{$live_video->amount}}</h3>
-					                                      <div class="clearfix"></div>
-					                                      <p style="float: none;" class="text-left">{{tr('stripe_payment')}}</p>
-					                                    </div>
-					                                    <div class="icon">
-					                                      <i class="fa fa-money"></i>
-					                                    </div>
-					                                     <div class="clearfix"></div>
-					                                    <a onclick="return confirm('Are you sure want pay through card?')" href="{{route('user.stripe_payment_video', array('id'=>$live_video->id, 'user_id'=>$userId))}}" class="small-box-footer">{{tr('to_view_video')}} <i class="fa fa-arrow-circle-right"></i></a>
-					                                  </div>
-					                                </div>
-					                            
-					                            
-					                            <div class="clearfix"></div>
-					                            
-					                        </div>
-					                        
-					                  	</div>
-					                  
-					                </div>
-					            
-					            </div>  
-
 
 		                        <li class="sub-list row">
 		                            <div class="main-history">
 		                                 <div class="history-image">
-		                                 	@if($live_video->amount > 0) 
 
-		                                 		@if (isPaidAmount($live_video->id))
-		                                 		
-													<a href="{{$url}}">					                                 	
-		                                 		@else
-	                                        		<a data-toggle="modal" data-target="#paypal_{{$live_video->id}}" style="cursor: pointer;">
-	                                        	@endif
-	                                        @else
-	                                    
 	                                        <a href="{{$url}}">
-
-	                                        @endif
 
 	                                            <img src="{{$live_video->snapshot}}" /> 
 
@@ -757,7 +689,7 @@
 		                                    <div class="video_duration text-uppercase">
 		                                         @if($live_video->amount > 0) 
 
-	                                                {{tr('paid')}} - ${{$live_video->amount}} 
+	                                                {{tr('pay')}} - ${{$live_video->amount}} 
 
 	                                            @else {{tr('free')}} @endif
 		                                    </div>                        

@@ -508,6 +508,7 @@ class CommonRepository {
 
                 $model->video_type = $request->video_type;
 
+
                 $main_video_duration = "";
 
                 $frames = 0;
@@ -649,7 +650,7 @@ class CommonRepository {
 
                 }
 
-                $model->video_type = VIDEO_TYPE_UPLOAD;
+                //$model->video_type = VIDEO_TYPE_UPLOAD;
 
                 $model->save();
 

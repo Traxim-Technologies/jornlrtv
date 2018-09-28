@@ -265,3 +265,11 @@ if(!defined('INACTIVE_PLANS')) define('INACTIVE_PLANS', 0);
 if(!defined('FFMPEG_INSTALLED')) define('FFMPEG_INSTALLED', 1);
 
 if(!defined('FFMPEG_NOT_INSTALLED')) define('FFMPEG_NOT_INSTALLED', 0);
+
+
+// VIDEO STATUS
+
+if (!defined('VIDEO_STREAMING_STOPPED')) define('VIDEO_STREAMING_STOPPED' , 1);
+
+if (!defined('VIDEO_STREAMING_ONGOING')) define('VIDEO_STREAMING_ONGOING' , 0);
+

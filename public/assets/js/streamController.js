@@ -268,11 +268,11 @@ liveAppCtrl
 
                 connection.videosContainer.appendChild(mediaElement);
 
-                if (browser == 'Safari' || m_type =='ios') {
+                // if (browser == 'Safari' || m_type =='ios') {
 
                     append_already = 1;
 
-                }
+                // }
 
             }
 
@@ -335,15 +335,23 @@ liveAppCtrl
                 mediaElement.parentNode.removeChild(mediaElement);
             }
 
-            window.location.reload(true);
+            connection.attachStreams.forEach(function (stream) {
+                stream.stop();
+            });
 
-            /*window.setTimeout(function(){
+            connection.videosContainer.innerHTML = '';
 
-                alert("Streaming stopped unfortunately..!");
+            connection.autoCloseEntireSession = true;
+             
+           // $scope.connectionNow.close();
+                        
+            window.setTimeout(function(){
+
+                // alert("Streaming stopped unfortunately..!");
 
                 window.location.reload(true);
 
-            }, 2000);*/
+            }, 2000);
         };
 
         function disableInputButtons() {
@@ -596,9 +604,8 @@ liveAppCtrl
 	            chatMessage = input.value.trim();
 
 	            if(socketState && chatMessage != '') {
-
 	                message = {};
-	                message.type = userToViewer;
+	                message.type = (appSettings.USER == null)  ? viewerToUser : userToViewer;
 	                message.live_video_viewer_id = liveVideoViewerID;
 	                message.live_video_id = liveVideoID;
 	                message.user_id = userID;

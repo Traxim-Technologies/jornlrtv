@@ -112,6 +112,8 @@ class SocialAuthController extends Controller
 				}
 
 			}
+
+			$user->chat_picture = $user->picture;
 	        
 	        $user->is_verified = 1;
 

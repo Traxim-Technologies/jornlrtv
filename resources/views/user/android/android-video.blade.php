@@ -155,6 +155,19 @@
     outline: none;
 }
 
+
+#cameras-selection-container{
+  position: absolute;
+    top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#cameras-selection-container img{
+  height: 70px;
+    width: 70px;
+}
+
 input[type=range] {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -255,7 +268,11 @@ input[type="range"]::-webkit-slider-thumb {
 
 		
 	</div>
-	 
+
+    <div id="cameras-selection-container" style="display: none">
+        <img src="../../../assets/img/rotate-camera.png" ng-click="checkAndOpenRoom()">
+    </div>
+    	 
 </div>
 
 

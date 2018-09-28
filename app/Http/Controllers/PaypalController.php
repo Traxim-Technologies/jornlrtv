@@ -940,9 +940,125 @@ class PaypalController extends Controller {
             return redirect(route('user.login.form'));
         }
 
-        $subscription = LiveVideo::find($id);
+        $paying_user_details = User::find($request->user_id);
+        
+        // Check the live video and user details are exists
 
-        $total =  $subscription ? $subscription->amount : "1.00" ;
+        $subscription = LiveVideo::where('id' ,$request->id)->where('is_streaming' , 1)->where('status',0)->where('payment_status' , 1)->first();
+
+        if($subscription && $paying_user_details) {
+
+            // Check the live video exists and streaming
+
+            $total =  $subscription ? $subscription->amount : "1.00" ;
+
+            $coupon_amount = 0;
+
+            $coupon_reason = '';
+
+            $is_coupon_applied = COUPON_NOT_APPLIED;
+
+            if ($request->coupon_code) {
+
+                $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+                if ($coupon) {
+                    
+                    if ($coupon->status == COUPON_INACTIVE) {
+
+                        $coupon_reason = tr('coupon_inactive_reason');
+
+                    } else {
+
+                        $check_coupon = $this->UserAPI->check_coupon_applicable_to_user($paying_user_details, $coupon)->getData();
+
+                        if ($check_coupon->success) {
+
+                            $is_coupon_applied = COUPON_APPLIED;
+
+                            $amount_convertion = $coupon->amount;
+
+                            if ($coupon->amount_type == PERCENTAGE) {
+
+                                $amount_convertion = amount_convertion($coupon->amount, $subscription->amount);
+
+                            }
+
+
+                            if ($amount_convertion < $subscription->amount) {
+
+                                $total = $subscription->amount - $amount_convertion;
+
+                                $coupon_amount = $amount_convertion;
+
+                            } else {
+
+                                // throw new Exception(Helper::get_error_message(156),156);
+
+                                $total = 0;
+
+                                $coupon_amount = $amount_convertion;
+                                
+                            }
+
+                            // Create user applied coupon
+
+                            if($check_coupon->code == 2002) {
+
+                                $user_coupon = UserCoupon::where('user_id', $paying_user_details->id)
+                                        ->where('coupon_code', $request->coupon_code)
+                                        ->first();
+
+                                // If user coupon not exists, create a new row
+
+                                if ($user_coupon) {
+
+                                    if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                        $user_coupon->no_of_times_used += 1;
+
+                                        $user_coupon->save();
+
+                                    }
+
+                                }
+
+                            } else {
+
+                                $user_coupon = new UserCoupon;
+
+                                $user_coupon->user_id = $paying_user_details->id;
+
+                                $user_coupon->coupon_code = $request->coupon_code;
+
+                                $user_coupon->no_of_times_used = 1;
+
+                                $user_coupon->save();
+
+                            }
+
+                        } else {
+
+                            $coupon_reason = $check_coupon->error_messages;
+                            
+                        }
+                    }
+
+                } else {
+
+                    $coupon_reason = tr('coupon_delete_reason');
+                }
+            
+            }
+
+
+        } else {
+
+            return redirect()->route('payment.failure')->with('flash_error' , tr('something_wrong'));
+
+        }
+
+
 
         $item = new Item();
 

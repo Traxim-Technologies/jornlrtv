@@ -36,7 +36,7 @@
                                         ?>
 
 
-            <div class="modal fade cus-mod" id="paypal_{{$video->id}}" role="dialog">
+          <?php /*  <div class="modal fade cus-mod" id="paypal_{{$video->id}}" role="dialog">
                 <div class="modal-dialog">
                 
                   <!-- Modal content-->
@@ -91,22 +91,11 @@
                   </div>
                   
                 </div>
-            
-            </div>  
-                                        @if($video->amount > 0) 
-
-                                            @if (isPaidAmount($video->id))
+             
+            </div>   */?>
                                                             
-                                                <a href="{{$url}}">                                                     
-                                            @else
-                                                <a data-toggle="modal" data-target="#paypal_{{$video->id}}" style="cursor: pointer;">
-                                            @endif
-                                        @else
-                                    
-                                        <a href="{{$url}}">
-
-                                        @endif
-
+                                        <a href="{{$url}}">                                                     
+                                       
                                             <div class="bg_img_video" style="background-image:url({{$video->snapshot}})"></div>
 
                                         </a>
@@ -114,7 +103,7 @@
                                         <div class="video_duration text-uppercase">
                                             @if($video->amount > 0) 
 
-                                                {{tr('paid')}} - ${{$video->amount}} 
+                                                {{tr('pay')}} - ${{$video->amount}} 
 
                                             @else {{tr('free')}} @endif
                                         </div>

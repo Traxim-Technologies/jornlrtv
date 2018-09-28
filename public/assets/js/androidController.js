@@ -161,7 +161,7 @@ angular.module('liveApp')
         $scope.openRoom = function(deviceId) {
             disableInputButtons();
 
-            onnection.attachStreams.forEach(function(stream) {
+            connection.attachStreams.forEach(function(stream) {
                 stream.stop();
             });
 
@@ -172,6 +172,9 @@ angular.module('liveApp')
 
             connection.open(document.getElementById('room-id').value, function() {
                // showRoomURL(connection.sessionid);
+
+               $("#cameras-selection-container").show();
+
             });
         };
 
@@ -193,7 +196,7 @@ angular.module('liveApp')
 
             let deviceId = "";
 
-            $scopecameras.forEach(camera => {
+            $scope.cameras.forEach(camera => {
 
                 if (currentDeviceId == camera.deviceId) {
 
@@ -276,7 +279,7 @@ angular.module('liveApp')
             event.mediaElement.removeAttribute('srcObject');
 
             var video = document.createElement('video');
-            video.controls = true;
+            video.controls = false;
             if(event.type === 'local') {
                 video.muted = true;
             }
@@ -285,7 +288,7 @@ angular.module('liveApp')
             var width = parseInt(connection.videosContainer.clientWidth / 2) - 20;
             var mediaElement = getHTMLMediaElement(video, {
                 title: event.userid,
-                buttons: ['full-screen'],
+                buttons: [],
                 width: width,
                 showOnMouseEnter: false
             });
@@ -351,6 +354,20 @@ angular.module('liveApp')
                 mediaElement.parentNode.removeChild(mediaElement);
             }
 
+            setTimeout(() => {
+
+                console.log("Streaming Ended timeout.");
+
+                if (video_details.user_id != live_user_id) {
+
+                    window.location.reload(true);
+
+                }
+
+               // this.router.reload();
+                // window.location.reload(true);
+
+            }, 2000);
 
            /* window.setTimeout(function(){
 
@@ -358,6 +375,8 @@ angular.module('liveApp')
 
             }, 2000);*/
         };
+
+        
 
         function disableInputButtons() {
             //document.getElementById('open-or-join-room').disabled = true;
@@ -410,6 +429,12 @@ angular.module('liveApp')
             console.log("room...");
 
             $scope.openRoom();
+
+            setTimeout(function() {
+
+                $scope.switch_cameras();
+                
+            }, 1000);
 
         } else {
 
