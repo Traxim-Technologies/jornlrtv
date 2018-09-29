@@ -457,7 +457,8 @@ class UserApiController extends Controller {
                                 ->where('status',DEFAULT_TRUE)->first();
 
                             $suggestions = [];
-    
+
+                            $is_streamer = $model->user_id == $request->id ? DEFAULT_TRUE : DEFAULT_FALSE;
 
                             $data = [
                                 "video_image"=> $model->snapshot,
@@ -484,6 +485,7 @@ class UserApiController extends Controller {
                                 'comments'=>$messages,  
                                 'suggestions'=>$suggestions,
                                 'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
+                                'is_streamer'=>$is_streamer
                             ];
 
                             $response_array = ['success'=>true, 'data'=>$data];
