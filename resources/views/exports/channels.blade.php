@@ -47,9 +47,9 @@
 
             <th>{{tr('s_no')}}</th>
 
-            <th >{{tr('username')}}</th>
-
             <th>{{tr('channel_name')}}</th>
+
+            <th >{{tr('username')}}</th>
 
             <th >{{tr('picture')}}</th>
 
@@ -65,7 +65,7 @@
 
             <th >{{tr('description')}}</th>
 
-            <th >{{tr('created')}}</th>
+            <th >{{tr('created_at')}}</th>
 
             <th >{{tr('updated')}}</th>
         </tr>
@@ -77,10 +77,10 @@
             <tr @if($i % 2 == 0) class="row_col_design" @endif >
 
                 <td>{{$i+1}}</td>
+                
+                <td>{{$channel_details->name}}</td>
 
                 <td>{{$channel_details->getUser ? $channel_details->getUser->name : ''}}</td>
-
-                <td>{{$channel_details->name}}</td>
 
                 <td>{{$channel_details->picture}}</td>
 

@@ -1024,6 +1024,7 @@ class UserController extends Controller {
             'id' => \Auth::user()->id,
             'token' => \Auth::user()->token,
             'channel_id' =>$request->id,
+            'device_type'=>DEVICE_WEB,
         ]);
 
         $response = CommonRepo::channel_save($request)->getData();
