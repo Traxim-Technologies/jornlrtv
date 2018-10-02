@@ -1497,5 +1497,6 @@ return array(
 	'valid_upto'=>'Valid Upto',
 	'category_declined_by_admin'=>'This category has been declined by admin',
 	'about_category'=>'About',
-	'failure'=>'Failure'
+	'failure'=>'Failure',
+	'subscribe_to_continue_video'=>'Your subscription has been expired, Please subscribe and continue to upload a video',
 );
