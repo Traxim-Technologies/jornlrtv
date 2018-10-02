@@ -1765,5 +1765,5 @@ return array(
 	'video_call_initiated'=>'Video Call Initiated',
 	'live_video_payments'=>'Live Video Payments',
 	'live_video_payment_not_found'=>'Live Video Payment Details Not Found',
-
+	'subscribe_to_continue_video'=>'Your subscription has been expired, Please subscribe and continue to upload a video',
 );

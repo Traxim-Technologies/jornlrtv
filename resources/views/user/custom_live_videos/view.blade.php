@@ -103,47 +103,50 @@
 
                         <div class="col-sm-12 col-md-4 side-video custom-side">
                             <div class="up-next">
-                                <h4 class="sugg-head1">{{tr('suggestions')}}</h4>
 
-                                <ul class="video-sugg"> 
+                                @if(count($suggestions) > 0)
+                                   
+                                    <h4 class="sugg-head1">{{tr('suggestions')}}</h4>
 
-                                    @if(count($suggestions) > 0)
-           
-                                    @foreach($suggestions as $suggestion)
-                                    
-                                        <li class="sugg-list row">
-                                            <div class="main-video">
-                                                 <div class="video-image">
-                                                    <div class="video-image-outer">
-                                                        <a href="{{route('user.custom.live.view' , $suggestion->custom_live_video_id)}}"><img src="{{$suggestion->image}}"></a>
-                                                    </div>  
-                                                    
-                                                    <div class="video_duration">
-                                                        LIVE
-                                                    </div> 
-                                                 </div><!--video-image-->
+                                    <ul class="video-sugg"> 
+               
+                                        @foreach($suggestions as $suggestion)
+                                        
+                                            <li class="sugg-list row">
+                                                <div class="main-video">
+                                                     <div class="video-image">
+                                                        <div class="video-image-outer">
+                                                            <a href="{{route('user.custom.live.view' , $suggestion->custom_live_video_id)}}"><img src="{{$suggestion->image}}"></a>
+                                                        </div>  
+                                                        
+                                                        <div class="video_duration">
+                                                            LIVE
+                                                        </div> 
+                                                     </div><!--video-image-->
 
-                                                <div class="sugg-head">
-                                                    <div class="suggn-title">                                          
-                                                        <h5><a href="{{route('user.custom.live.view' , $suggestion->custom_live_video_id)}}">{{$suggestion->title}}</a></h5>
-                                                    </div><!--end of sugg-title-->
+                                                    <div class="sugg-head">
+                                                        <div class="suggn-title">                                          
+                                                            <h5><a href="{{route('user.custom.live.view' , $suggestion->custom_live_video_id)}}">{{$suggestion->title}}</a></h5>
+                                                        </div><!--end of sugg-title-->
 
-                                                    <span class="video_views">
-                                                        <div></div>
-                                                        <!-- <i class="fa fa-eye"></i>  {{tr('views')}} <b>.</b>  -->
-                                                        {{$suggestion->created_at}} 
-                                                    </span> 
-                                                    <br>
-                                                                           
-                                                </div><!--end of sugg-head-->
-                                    
-                                            </div><!--end of main-video-->
-                                        </li><!--end of sugg-list-->
-                                    @endforeach
-                                    
-                                    @endif
-                                    
-                                </ul>
+                                                        <span class="video_views">
+                                                            <div></div>
+                                                            <!-- <i class="fa fa-eye"></i>  {{tr('views')}} <b>.</b>  -->
+                                                            {{$suggestion->created_at}} 
+                                                        </span> 
+                                                        <br>
+                                                                               
+                                                    </div><!--end of sugg-head-->
+                                        
+                                                </div><!--end of main-video-->
+                                            </li><!--end of sugg-list-->
+                                       
+                                        @endforeach
+                                        
+                                    </ul>
+
+                                @endif
+
                             </div><!--end of up-next-->
                                                 
                         </div><!--end of col-sm-4-->

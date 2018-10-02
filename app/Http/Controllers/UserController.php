@@ -2082,6 +2082,12 @@ class UserController extends Controller {
 
             $channel = Channel::where('user_id', Auth::user()->id)->where('id', $id)->first();
 
+            if(!Auth::user()->user_type) {
+
+                return redirect(route('user.dashboard'))->with('flash_error', tr('subscribe_to_continue_video'));
+
+            }
+            
         }
 
         if (!$channel) {
