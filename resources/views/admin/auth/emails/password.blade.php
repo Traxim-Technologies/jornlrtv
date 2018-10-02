@@ -641,11 +641,8 @@ h4 {
                             <table style="max-width:100%; min-width:100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                               <tbody>
                                 <tr>
-<<<<<<< HEAD
-                                  <td class="mcnTextContent" style="padding: 0px 18px 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-style: normal; font-weight: normal; line-height: 150%; text-align: center;" valign="top"><h2 class="null" style="text-align: center;"><span style="font-size:24px"><span style="color: #FFFFFF;"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif">"{{tr('recently_requested_password')}}{{Setting::get('site_name' , tr('site_name'))}} {{tr('click_reset_button')}}"</span></span></span></h2>
-=======
+
                                   <td class="mcnTextContent" style="padding: 0px 18px 9px; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-style: normal; font-weight: normal; line-height: 150%; text-align: center;" valign="top"><h2 class="null" style="text-align: center;"><span style="font-size:24px"><span style="color: #FFFFFF;"><span style="font-family:helvetica neue,helvetica,arial,verdana,sans-serif">"{{tr('you_recently_requested')}}{{Setting::get('site_name' , tr('site_name'))}}{{tr('click_reset_button')}}"</span></span></span></h2>
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
                                   <br>
                                   </td>
                                 </tr>
@@ -670,12 +667,8 @@ h4 {
                           <td style="padding-top:0; padding-right:18px; padding-bottom:18px; padding-left:18px;" class="mcnButtonBlockInner" valign="top" align="center"><table class="mcnButtonContentContainer" style="border-collapse: separate !important;border-radius: 3px;background-color: #BF0B00;" cellspacing="0" cellpadding="0" border="0">
                               <tbody>
                                 <tr>
-<<<<<<< HEAD
-                                  <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " href="{{ $link = url('/admin/password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}" target="_blank" style="font-weight: normal;letter-spacing: 2px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">>{{tr('reset_now')}}</a>
 
-=======
                                   <td class="mcnButtonContent" style="font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; padding: 15px;" valign="middle" align="center"><a class="mcnButton " href="{{ $link = url('/admin/password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}" target="_blank" style="font-weight: normal;letter-spacing: 2px;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">>{{tr('reset_Now')}}</a>
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
 
                                   </td>
                                 </tr>
