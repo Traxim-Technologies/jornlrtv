@@ -876,6 +876,30 @@ class UserApiController extends Controller {
                     Helper::send_email($page,$subject,$email,$email_data);
                 }
 
+                if($user->is_verified == USER_EMAIL_NOT_VERIFIED) {
+
+                    if(Setting::get('email_verify_control') && !in_array($user->login_by, ['facebook' , 'google'])) {
+
+                        // Check the verification code expiry
+
+                        Helper::check_email_verification("" , $user, $error, USER);
+                    
+                        $response = array('success' => false , 'error_messages' => Helper::get_error_message(503) , 'error_code' => 503);
+
+                        return response()->json($response, 200);
+
+                    }
+                
+                }
+
+                if($user->status == USER_DECLINED) {
+                    
+                    $response = array('success' => false , 'error_messages' => Helper::get_error_message(502) , 'error_code' => 502);
+
+                    return response()->json($response, 200);
+                
+                }
+
                 // Response with registered user details:
 
                 $response_array = array(
@@ -958,19 +982,39 @@ class UserApiController extends Controller {
 
                 if($user = User::where('email', '=', $request->email)->first()) {
 
-                    // if($user->is_activated) {
+                    if($user->is_verified == USER_EMAIL_NOT_VERIFIED) {
 
-                        if(Hash::check($request->password, $user->password)){
+                        if(Setting::get('email_verify_control') && !in_array($user->login_by, ['facebook' , 'google'])) {
 
-                            /* manual login success */
-                            $operation = true;
+                            // Check the verification code expiry
 
-                        } else {
-                            $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
+                            Helper::check_email_verification("" , $user, $error, USER);
+                        
+                            $response = array('success' => false , 'error_messages' => Helper::get_error_message(503) , 'error_code' => 503);
+
+                            return response()->json($response, 200);
+
                         }
-                    /*} else {
-                        $response_array = ['success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144];
-                    }*/
+                    
+                    }
+
+                    if($user->status == USER_DECLINED) {
+                        
+                        $response = array('success' => false , 'error_messages' => Helper::get_error_message(502) , 'error_code' => 502);
+
+                        return response()->json($response, 200);
+                    
+                    }
+
+                    if(Hash::check($request->password, $user->password)){
+
+                        /* manual login success */
+                        $operation = true;
+
+                    } else {
+                        $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
+                    }
+                    
 
                 } else {
                     $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
