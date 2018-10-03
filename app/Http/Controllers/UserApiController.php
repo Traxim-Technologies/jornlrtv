@@ -6024,6 +6024,8 @@ class UserApiController extends Controller {
                     
                 }
 
+                $stripe_secret_key = Setting::get('stripe_secret_key');
+
                 if($stripe_secret_key) {
 
                     \Stripe\Stripe::setApiKey($stripe_secret_key);
