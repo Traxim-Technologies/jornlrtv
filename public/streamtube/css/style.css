@@ -4,13 +4,13 @@
     src: url(../fonts/roboto.light.ttf);
     font-weight: 400;
     font-style: oblique;
-}
+}*/
 @font-face {
-    font-family: Roboto;
-    src: url(../fonts/roboto.rugular.ttf);
+    font-family: Roboto-Regular;
+    src: url(../fonts/roboto.regular.ttf);
     font-weight: 500;
     font-style: oblique;
-}*/
+}
 
 .theme-color {
 	color: #cc181e;
@@ -35,7 +35,7 @@ position: absolute; bottom: 0;width: 100%
 
 body{
 	/*font-family: 'Roboto', sans-serif;*/
-	font-family: Roboto, Arial, sans-serif;
+	font-family:  Roboto-Regular;
 	/*background-color: #F1F1F1;*/
 	background-color: #fafafa;
 	position: relative;
@@ -224,7 +224,6 @@ a:hover{
 	min-height: 40px;*/
 	line-height: 19px;
 	margin-bottom: 5px;
-	font-family: arial;
 }
 
 .video_views a {
@@ -1657,7 +1656,7 @@ recommended.html css
 }
 .recom-area{
 	margin: 0;
-	padding: 0
+	padding: 0 !important;
 }
 .recommend-list{
 	margin: 0;
@@ -1883,7 +1882,6 @@ changes
 	overflow: hidden;
 	white-space: nowrap;
 	line-height:1.4;
-	font-family: arial;
 	font-size: 1.2em;
 }
 .h-50{
@@ -2060,7 +2058,6 @@ changes
 }
 .video_views {
 	color: #777;
-    font-family: arial;
     font-size: 11px;
 }
 
@@ -2183,7 +2180,6 @@ changes
 
 .term {
 	margin-top: 10px !important;
-	font-family: arial;
 }
 
 .demo-container {
@@ -2225,7 +2221,7 @@ changes
 
 .start_brocadcast_form {
 
-	background: #E62118;
+	background: #d9534f;
 	color: #fff;
 
 }
@@ -2248,7 +2244,7 @@ changes
 
 	color: #fff;
 
-	background: #E62118;
+	background: #d9534f;
 
 	padding:7px 12px 12px 12px;
 
@@ -2299,7 +2295,7 @@ changes
 
 	border-radius: 0 !important;
 
-	background: #E62118 !important;
+	background: #d9534f !important;
 
 	width: 45px !important;
 
@@ -2315,13 +2311,19 @@ changes
 	border-radius: 0 !important;
 
 	font-size: 16px;;
-	height: 45px;
+	height: 45px !important;
+	border-top-color: #ddd !important;
+	border-left-color: transparent !important;
+	border-bottom-color: transparent !important; 
 
 }
 .item {
-	padding: 5px;
+	padding: 10px;
 
 	border-bottom: 1px solid #ddd;
+}
+.text-muted{
+	text-transform: capitalize;
 }
 .chat_img {
 	width: 60px;
@@ -2545,14 +2547,15 @@ changes
     overflow: hidden;
 }
 .modal-header{
-  	background-color:#E62118;
+  	background-color:#d9534f;
   	color: white; 
   	border-radius: 5px 5px 0 0;
   	border: 0;
+  	padding: 10px 15px;
     /*padding: 15px 15px 0 0;*/
 }
 .signup-form1{
-  	border:2px solid #e0e0e0;
+  	border:1px solid #e0e0e0;
   	box-shadow: none;
   	height: 45px;
   	color:#a59f9f;
@@ -2575,11 +2578,11 @@ changes
 	  color:#a59f9f;
 } 
 .signup-btn{
-  	background-color: #E62118;
+  	background-color: #d9534f;
   	color:white;
   	padding: 0px 40px;
   	height: 45px;
-  	border: 2px solid #E62118;
+  	border: 2px solid #d9534f;
   	border-radius: 5px;
 	-webkit-transition: all .5s;
     -moz-transition: all .5s;
@@ -2590,7 +2593,7 @@ changes
 }
 .signup-btn:hover, .signup-btn:focus , .signup-btn:active{
   	background-color:transparent;
-  	color: #E62118;
+  	color: #d9534f;
 }
 .submit{
 	  margin-top: 10px;
@@ -2629,7 +2632,7 @@ changes
     background: #9faab7;
 }
 .option-input:checked {
-    background:#E62118;
+    background:#d9534f;
 }
 .option-input:checked::before {
     content: '';
@@ -2705,7 +2708,6 @@ changes
 .body-modal{
     padding:45px 75px 30px 75px;
 }
->>>>>>> a6fd5d37123fa2ab7a6b3285c513fe1279377d5f
 }
 @media screen and (max-width: 767px) {
 .language-icon{
@@ -2918,7 +2920,7 @@ changes
 .mobile-header li{
 	display: inline-block !important;
 	padding-top: 10px;
-	width: 18.5%;
+	width: 15.5%;
 	text-align: center;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -3736,7 +3738,7 @@ changes
 }
 .coupon-code{
 	margin-bottom: 20px;
-	height: 40px;
+	/*height: 40px;*/
 }
 .coupon-code input{
 	height: 100%;
@@ -4614,3 +4616,22 @@ input:checked + .slider{
 /*.control-label{
 	font-weight: normal !important;
 }*/
+.chat-msg-sec{
+	display: inline-block !important;
+	width: 100% !important;
+}
+.chat-msg-sec .chat-left{
+	float: left !important;
+	width: 60px !important;
+}
+.chat-msg-sec .chat-left img{
+	width: 50px !important;
+	height: 50px !important;
+	object-fit: cover !important;
+	object-position: center !important;
+	margin-right: 10px !important;
+}
+.chat-msg-sec .chat-right{
+	float: left !important;
+	width: calc(100% - 60px) !important;
+}
