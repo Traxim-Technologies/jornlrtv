@@ -1499,4 +1499,6 @@ return array(
 	'about_category'=>'About',
 	'failure'=>'Failure',
 	'subscribe_to_continue_video'=>'Your subscription has been expired, Please subscribe and continue to upload a video',
+
+	'cards_add_failed' => "Add card failed.P Please try agin later."
 );
