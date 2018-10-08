@@ -1263,7 +1263,6 @@ function displayVideoDetails($data,$userId) {
         'currency'=>Setting::get('currency'),
         // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
         'publish_time'=>$data->created_at->diffForHumans(),
-        'user_ppv_amount'=>$data->user_ppv_amount,
         'is_liked'=>$like_status,
         'wishlist_status'=>$wishlist_status,
         'history_status'=>$history_status,

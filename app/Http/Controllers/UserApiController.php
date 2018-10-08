@@ -2877,9 +2877,9 @@ class UserApiController extends Controller {
             array(
                 'number' => 'required|numeric',
                 'card_token'=>'required',
-                'month'=>'required',
-                'year'=>'required',
-                'cvv'=>'required',
+               // 'month'=>'required',
+               // 'year'=>'required',
+               // 'cvv'=>'required',
                 'card_name'=>'required',
             )
             );
