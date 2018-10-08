@@ -532,7 +532,7 @@ class VideoTapeRepository {
             if (!$resolutions) {
 
 
-                $resolutions['original'] = $data->trailer_video;
+                $resolutions['original'] = $video_tape_details->video;
                 
             }
 
