@@ -510,6 +510,33 @@ class VideoTapeRepository {
 
             }
 
+            $resolutions = [];
+
+            if ($video_tape_details->video_resolutions) {
+
+                $exp_resolution = explode(',', $video_tape_details->video_resolutions);
+
+                $exp_resize_path = $video_tape_details->video_path ? explode(',', $video_tape_details->video_path) : [];
+
+                foreach ($exp_resolution as $key => $value) {
+                    
+                    $resolutions[$value] = isset($exp_resize_path[$key]) ? 
+                    $exp_resize_path[$key] : $video_tape_details->video;
+
+                }
+
+                $resolutions['original'] = $video_tape_details->video;
+
+            }
+
+            if (!$resolutions) {
+
+
+                $resolutions['original'] = $video_tape_details->video;
+                
+            }
+
+            $data['resolutions'] = $resolutions;
 
             $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details)->getData()->success;
 
