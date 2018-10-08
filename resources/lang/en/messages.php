@@ -1766,4 +1766,6 @@ return array(
 	'live_video_payments'=>'Live Video Payments',
 	'live_video_payment_not_found'=>'Live Video Payment Details Not Found',
 	'subscribe_to_continue_video'=>'Your subscription has been expired, Please subscribe and continue to upload a video',
+
+	'cards_add_failed' => "Add card failed.P Please try agin later."
 );
