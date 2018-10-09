@@ -78,7 +78,7 @@ video {
 
 						<div class="pull-left">						
 
-							<button class="btn btn-sm btn-primary text-uppercase">
+							<button class="btn btn-sm btn-info text-uppercase">
 								 @if(round($data->amount) > 0) 
 
                                     {{tr('paid')}} - ${{$data->amount}} 
@@ -90,7 +90,7 @@ video {
                                 @endif
 							</button>
 
-							<button class="btn btn-sm btn-success text-uppercase">
+							<button class="btn btn-sm btn-danger text-uppercase">
 								<i class="fa fa-eye"></i>&nbsp;<span id='viewers_cnt'>{{$data->viewer_cnt}}</span> {{tr('views')}}
 							</button>
 	
@@ -159,17 +159,17 @@ video {
 											$uid = ($comment->getUser)? $comment->user_id : $comment->live_video_viewer_id;
 										?>
 
-										<div class="item">
+										<div class="item chat-msg-sec">
 
 
-							                <div class="col-lg-2 col-md-2 col-xs-3 col-sm-2" style="padding: 0">
+							                <div class="Chat-left" style="padding: 0">
 
 							                	<a target="_blank" href="{{route('user.profile', array('id'=>$uid))}}" title="{{$name}}">  
 							                		<img src="{{$img}}" alt="user image" class="chat_img">
 							                	</a>
 
 							                </div>
-							                <div class="message col-lg-10 col-md-10 col-xs-9 col-sm-10">
+							                <div class="message Chat-right">
 
 							                  <a href="{{route('user.profile', array('id'=>$uid))}}" class="name clearfix" style="text-decoration: none">
 							                    <small class="text-muted pull-left">{{$name}}</small>

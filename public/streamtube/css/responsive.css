@@ -330,18 +330,17 @@
 	display: none !important;
 }
 }
-@media (min-width: 0px) and (max-width: 575px) {
+@media (min-width: 0px) and (max-width: 650px) {
 	.hidden-xxxs{
 		display: none;
 	}
 }
-@media (min-width: 576px) {
+@media (min-width: 650px) {
 	.hidden-xxxs{
 		display: inline-block;
 	}
 }	
 
->>>>>>> remotes/codegama/streamtube-v1.2-package/master
 /*small devices*/
 @media (min-width: 480px) and (max-width: 767px) {
 .wizard-card .nav-pills > li{
