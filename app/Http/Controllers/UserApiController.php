@@ -2440,6 +2440,30 @@ class UserApiController extends Controller {
                     Helper::send_email($page,$subject,$email,$email_data);
                 }
 
+                if($user->is_verified == USER_EMAIL_NOT_VERIFIED) {
+
+                    if(Setting::get('email_verify_control') && !in_array($user->login_by, ['facebook' , 'google'])) {
+
+                        // Check the verification code expiry
+
+                        Helper::check_email_verification("" , $user, $error, USER);
+                    
+                        $response = array('success' => false , 'error_messages' => Helper::get_error_message(503) , 'error_code' => 503);
+
+                        return response()->json($response, 200);
+
+                    }
+                
+                }
+
+                if($user->status == USER_DECLINED) {
+                    
+                    $response = array('success' => false , 'error_messages' => Helper::get_error_message(502) , 'error_code' => 502);
+
+                    return response()->json($response, 200);
+                
+                }
+
                 // Response with registered user details:
 
                 $response_array = array(
@@ -2522,19 +2546,39 @@ class UserApiController extends Controller {
 
                 if($user = User::where('email', '=', $request->email)->first()) {
 
-                    // if($user->is_activated) {
+                    if($user->is_verified == USER_EMAIL_NOT_VERIFIED) {
 
-                        if(Hash::check($request->password, $user->password)){
+                        if(Setting::get('email_verify_control') && !in_array($user->login_by, ['facebook' , 'google'])) {
 
-                            /* manual login success */
-                            $operation = true;
+                            // Check the verification code expiry
 
-                        } else {
-                            $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
+                            Helper::check_email_verification("" , $user, $error, USER);
+                        
+                            $response = array('success' => false , 'error_messages' => Helper::get_error_message(503) , 'error_code' => 503);
+
+                            return response()->json($response, 200);
+
                         }
-                    /*} else {
-                        $response_array = ['success' => false , 'error' => Helper::get_error_message(144),'error_code' => 144];
-                    }*/
+                    
+                    }
+
+                    if($user->status == USER_DECLINED) {
+                        
+                        $response = array('success' => false , 'error_messages' => Helper::get_error_message(502) , 'error_code' => 502);
+
+                        return response()->json($response, 200);
+                    
+                    }
+
+                    if(Hash::check($request->password, $user->password)){
+
+                        /* manual login success */
+                        $operation = true;
+
+                    } else {
+                        $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
+                    }
+                    
 
                 } else {
                     $response_array = [ 'success' => false, 'error_messages' => Helper::get_error_message(105), 'error_code' => 105 ];
@@ -4399,9 +4443,9 @@ class UserApiController extends Controller {
             array(
                 'number' => 'required|numeric',
                 'card_token'=>'required',
-                'month'=>'required',
-                'year'=>'required',
-                'cvv'=>'required',
+               // 'month'=>'required',
+               // 'year'=>'required',
+               // 'cvv'=>'required',
                 'card_name'=>'required',
             )
             );
@@ -7666,12 +7710,21 @@ class UserApiController extends Controller {
      */
     public function cards_add(Request $request) {
 
-        Log::info("CARDS ADD".print_r($request->all() , true) );
+        $stripe_secret_key = \Setting::get('stripe_secret_key');
+
+        if($stripe_secret_key) {
+
+            \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+        } else {
+
+            $response_array = ['success' => false, 'error_messages' => tr('add_card_is_not_enabled')];
+
+            return response()->json($response_array);
+        }
 
         try {
 
-            Log::info("TRY FUNCTION INSIDE");
-        
             $validator = Validator::make(
                     $request->all(),
                     [
@@ -7702,28 +7755,24 @@ class UserApiController extends Controller {
                     
                 }
 
-                if(Setting::get('stripe_secret_key')) {
-
-                    \Stripe\Stripe::setApiKey(Setting::get('stripe_secret_key'));
-
-                } else {
-
-                    throw new Exception(tr('add_card_is_not_enabled'));
-
-                }
-
-                Log::info("INSIDE CARDS ADD");
+                $stripe_gateway_details = [
+                    
+                    "card" => $request->card_token,
+                    
+                    "email" => $user_details->email,
+                    
+                    "description" => "Customer for ".Setting::get('site_name'),
+                    
+                ];
 
 
                 // Get the key from settings table
                 
-                $customer = \Stripe\Customer::create([
-                        "card" => $request->card_token,
-                        "email" => $user_details->email,
-                        "description" => "Customer for ".Setting::get('site_name'),
-                    ]);
+                $customer = \Stripe\Customer::create($stripe_gateway_details);
 
                 if($customer) {
+
+                    Log::info('Customer'.print_r($customer , true));
 
                     $customer_id = $customer->id;
 
@@ -7731,25 +7780,27 @@ class UserApiController extends Controller {
 
                     $card_details->user_id = $request->id;
 
-                    $card_details->customer_id = $customer_id;
+                    $card_details->customer_id = $customer->id;
 
                     $card_details->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
                     $card_details->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
 
-                    $card_details->last_four = $request->last_four;
+                    $card_details->last_four = $customer->sources->data[0]->last4 ? $customer->sources->data[0]->last4 : "";
 
                     // Check is any default is available
 
-                    $check_card_details = Card::where('user_id',$request->id)->count();
+                     // check the user having any cards 
 
-                    $card_details->is_default = $check_card_details ? 0 : 1;
+                    $check_user_cards = Card::where('user_id',$request->id)->count();
+
+                    $card_details->is_default = $check_user_cards ? 0 : 1;
 
                     if($card_details->save()) {
 
                         if($user_details) {
 
-                            $user_details->card_id = $check_card_details ? $user_details->card_id : $card_details->id;
+                            $user_details->card_id = $check_user_cards ? $user_details->card_id : $card_details->id;
 
                             $user_details->save();
                         }
@@ -7763,10 +7814,11 @@ class UserApiController extends Controller {
                                 'is_default' => $card_details->is_default
                                 ];
 
+
                         $response_array = ['success' => true, 'message' => tr('add_card_success'), 
                             'data'=> $data];
 
-                        return response()->json($response_array , 200);
+                            return response()->json($response_array , 200);
 
                     } else {
 
@@ -7776,21 +7828,11 @@ class UserApiController extends Controller {
                
                 } else {
 
-                    throw new Exception("Could not create client ID");
+                    throw new Exception(tr('cards_add_failed'));
                     
                 }
-            
+
             }
-
-        } catch(Stripe_CardError $e) {
-
-            Log::info("error1");
-
-            $error1 = $e->getMessage();
-
-            $response_array = array('success' => false , 'error_messages' => $error1 ,'error_code' => 903);
-
-            return response()->json($response_array , 200);
 
         } catch (Stripe_InvalidRequestError $e) {
 

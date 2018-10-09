@@ -6,6 +6,10 @@ use Closure;
 
 use App\Helpers\Helper;
 
+use Auth;
+
+use Setting;
+
 class CheckUserVerification
 {
     /**
@@ -19,28 +23,46 @@ class CheckUserVerification
     {
         if(\Auth::check()) {
 
-            $data = \Auth::user();
+            $token = Auth::user()->token;
 
-            if($data->status == USER_DECLINED) {
+            $user_id = Auth::user()->id;
 
-                \Auth::logout();
+            // 
+
+            if (!Helper::is_token_valid('USER', $user_id, $token, $error)) {
+
+                Auth::logout();
+                    
+                return back()->with('flash_error', $error);
+
+            }
+
+            // check the status of the user
+
+            if(Auth::user()->status == USER_DECLINED) {
+
+                Auth::logout();
                     
                 return back()->with('flash_error', Helper::get_error_message(502));
 
             }
 
-            if(!\Auth::user()->is_verified) {
+            // check the email verification
 
-                \Auth::logout();
+            if(Auth::user()->is_verified == USER_EMAIL_NOT_VERIFIED) {
 
-                // Check the verification code expiry
+                if(Setting::get('email_verify_control') && !in_array(Auth::user()->login_by, ['facebook' , 'google'])) {
 
-                Helper::check_email_verification("" , $data, $error , USER);
+                    Auth::logout();
 
-                \Log::info("Middleware USER");
+                    // Check the verification code expiry
 
-                return back()->with('flash_error', tr('email_verify_alert'));
+                    Helper::check_email_verification("" , Auth::user(), $error, USER);
+                
+                    return back()->with('flash_error', Helper::get_error_message(503));
 
+                }
+            
             }
         }
 

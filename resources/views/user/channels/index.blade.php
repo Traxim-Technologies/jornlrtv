@@ -127,7 +127,9 @@
 <div class="pull-right upload_a btn-space width-60 text-right">
 @if(Auth::check())
 @if($channel->user_id == Auth::user()->id)
+@if(Auth::user()->user_type)
 <a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
+
 @if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
 
 	<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast">
