@@ -908,4 +908,96 @@ class ApplicationController extends Controller {
         return response()->json($response_array , 200);
 
     }
+
+    /**
+     * Function Name : configuration_mobile()
+     *
+     * @uses used to get the configurations for base products
+     *
+     * @created Vidhya R 
+     *
+     * @edited Vidhya R
+     *
+     * @param - 
+     *
+     * @return JSON Response
+     */
+
+    public function configuration_site(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|exists:users,id',
+                'token' => 'required',
+
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            } else {
+
+                $config_data = $data = [];
+
+                $payment_data['is_stripe'] = 1;
+
+                $payment_data['stripe_publishable_key'] = Setting::get('stripe_publishable_key') ?: "";
+
+                $payment_data['stripe_secret_key'] = Setting::get('stripe_secret_key') ?: "";
+
+                $payment_data['stripe_secret_key'] = Setting::get('stripe_secret_key') ?: "";
+
+                $payment_data['is_paypal'] = 1;
+
+                $payment_data['PAYPAL_ID'] = envfile('PAYPAL_ID') ?: "";
+
+                $payment_data['PAYPAL_SECRET'] = envfile('PAYPAL_SECRET') ?: "";
+
+                $payment_data['PAYPAL_MODE'] = envfile('PAYPAL_MODE') ?: "sandbox";
+
+                $data['payments'] = $payment_data;
+
+                $data['urls']  = [];
+
+                $url_data['base_url'] = envfile("APP_URL") ?: "";
+
+                $url_data['socket_url'] = Setting::get("SOCKET_URL") ?: "";
+
+                $data['urls'] = $url_data;
+
+                $notification_data['FCM_SENDER_ID'] = "";
+
+                $notification_data['FCM_SERVER_KEY'] = $notification_data['FCM_API_KEY'] = "";
+
+                $notification_data['FCM_PROTOCOL'] = "";
+
+                $data['notification'] = $notification_data;
+
+                $data['site_name'] = Setting::get('site_name');
+
+                $data['site_logo'] = Setting::get('site_logo');
+
+                $data['currency'] = Setting::get('currency');
+
+                $response_array = ['success' => true , 'data' => $data];
+
+                return response()->json($response_array , 200);
+
+            }
+
+        } catch(Exception $e) {
+
+            $error_message = $e->getMessage();
+
+            $response_array = ['success' => false,'error' => $error_message,'error_code' => 101];
+
+            return response()->json($response_array , 200);
+
+        }
+   
+    }
 }
