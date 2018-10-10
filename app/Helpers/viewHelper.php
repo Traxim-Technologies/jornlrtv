@@ -1257,14 +1257,22 @@ function displayVideoDetails($data,$userId) {
 
                         Log::info(print_r($user, true));
 
-                        if ($user->user_type) {        
+                        if ($user) {
 
-                            $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+                            if ($user->user_type) {        
+
+                                $url = route('user.subscription.ppv_invoice', $data->video_tape_id);
+
+                            } else {
+
+                                $url = route('user.subscription.pay_per_view', $data->video_tape_id);
+                            }
 
                         } else {
 
                             $url = route('user.subscription.pay_per_view', $data->video_tape_id);
-                        }
+
+                        } 
 
                     } else {
 

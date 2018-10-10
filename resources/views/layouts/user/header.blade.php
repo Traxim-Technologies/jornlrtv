@@ -214,12 +214,12 @@
                     <span class="hidden-xxxs">{{tr('channels')}}</span>
                 </a></li>
                 <li><a href="{{route('user.channel.list')}}" class="mobile-menu">
-                    <i class="material-icons">videocam</i>
+                    <i class="material-icons">movie</i>
                     <span class="hidden-xxxs">{{tr('custom_live_videos')}}</span>
                 </a></li>
                 <li><a href="{{route('user.live_videos')}}" class="mobile-menu">
                     <i class="material-icons">videocam</i>
-                    <span class="hidden-xxs">Live videos</span>
+                    <span class="hidden-xxxs">Live videos</span>
                 </a></li>
 
                 @if(Auth::check())

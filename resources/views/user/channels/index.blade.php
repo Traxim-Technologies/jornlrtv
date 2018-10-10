@@ -127,7 +127,9 @@
 <div class="pull-right upload_a btn-space width-60 text-right">
 @if(Auth::check())
 @if($channel->user_id == Auth::user()->id)
+@if(Auth::user()->user_type)
 <a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a>
+
 @if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1)
 
 	<button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast">
@@ -166,7 +168,7 @@
                    	</div>
 
 
-					<div class="form-group radio-btn">
+					<div class="form-group radio-btn text-left">
 
 						<label class="control-label col-xs-4 col-sm-3 zero-padding" for="optradio">{{tr('payment')}}</label>
 
@@ -195,10 +197,10 @@
 					</div>
 
                 @if(Setting::get('broadcast_by_user') == 1 || Auth::user()->is_master_user == 1) 
-                  	<button class="signup-btn submit" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
+                  	<button class="btn btn-danger" type="submit" id="submitButton" name="submitButton">{{tr('broadcast')}}</button>
                 @else
 
-                  	<button class="signup-btn submit" type="button" onclick="return alert('Broadcast option is disabled by admin.');">{{tr('broadcast')}}</button>
+                  	<button class="btn btn-danger" type="button" onclick="return alert('Broadcast option is disabled by admin.');">{{tr('broadcast')}}</button>
 
                 @endif
 
@@ -213,7 +215,7 @@
 		
 		</div>
 
-	@endif
+@endif
 
 @endif
 
@@ -654,7 +656,7 @@
 	<div class="slide-area recom-area abt-sec">
 		<div class="abt-sec-head">
 			
-			 <div class="new-history">
+			 <div class="new-history1">
 	                <div class="content-head">
 	                    <div><h4 style="color: #000;">{{tr('live_videos')}}&nbsp;&nbsp;
 	                   
@@ -935,7 +937,7 @@
 	<div class="slide-area recom-area abt-sec">
 		<div class="abt-sec-head">
 			
-			 <div class="new-history">
+			 <div class="new-history1">
 	                <div class="content-head">
 	                    <div><h4 style="color: #000;">{{tr('live_history')}}</h4></div>              
 	                </div><!--end of content-head-->

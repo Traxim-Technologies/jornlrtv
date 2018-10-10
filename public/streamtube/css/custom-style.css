@@ -327,7 +327,7 @@ a:focus {
 
 	font-size: 1.2em;
 
-	font-family: arial;
+	/*font-family: arial;*/
 
 }
 .video-time {
@@ -578,7 +578,7 @@ a:focus {
 }
 
 .st_button {
-	background: #167ac6 none repeat scroll 0 0;
+	background: #2E93E0 none repeat scroll 0 0;
 	border: medium none;
 	border-radius: 0;
 	box-sizing: content-box;
@@ -662,12 +662,9 @@ a:focus {
 
 
 .payment_class a{
-
 	color: #333;
-
 	text-decoration: none;
-
 	font-weight: bold;
 	font-size: 1em;
-	font-family: arial;
+	/*font-family: arial;*/
 }
