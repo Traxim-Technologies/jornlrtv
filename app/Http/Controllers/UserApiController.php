@@ -7710,7 +7710,6 @@ class UserApiController extends Controller {
      */
     public function cards_add(Request $request) {
 
-
         $stripe_secret_key = \Setting::get('stripe_secret_key');
 
         if($stripe_secret_key) {
