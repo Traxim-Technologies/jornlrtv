@@ -219,6 +219,8 @@
 
 @endif
 
+@endif
+
 @if($channel->user_id != Auth::user()->id)
 
 @if (!$subscribe_status)
