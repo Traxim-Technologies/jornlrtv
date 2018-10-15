@@ -718,8 +718,6 @@ class CommonRepository {
                     $video_path = [];
 
 
-                    // Notification::save_notification($video->id);
-
                     // Start queues for videos 
 
                     if($model->video_type == VIDEO_TYPE_UPLOAD) {
