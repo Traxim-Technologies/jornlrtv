@@ -18,6 +18,8 @@ use App\Helpers\Helper;
 
 use Log; 
 
+use Notification;
+
 class SubscriptionMail extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
@@ -75,6 +77,8 @@ class SubscriptionMail extends Job implements ShouldQueue
                 if ($user) {
 
                     Helper::send_email($page,$subject,$email,$email_data);
+
+                   // Notification::save_notification($video->id, $user->id);
 
                 }
             }

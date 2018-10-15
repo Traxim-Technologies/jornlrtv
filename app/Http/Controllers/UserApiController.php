@@ -76,6 +76,8 @@ use App\UserCoupon;
 
 use App\CustomLiveVideo;
 
+use App\Notification;
+
 class UserApiController extends Controller {
 
     public function __construct(Request $request) {
@@ -7120,5 +7122,91 @@ class UserApiController extends Controller {
 
         return response()->json($response_array,200);
     } 
+
+
+    /**
+     * Function Name : notifications()
+     * 
+     * @uses Display New uploaded videos notification 
+     *
+     * @created : 
+     *
+     * @edited : 
+     *
+     * @param object $request - user id
+     * 
+     * @return response of searched videos
+     */
+    public function notifications(Request $request) {
+
+        $count = Notification::where('status', 0)->where('user_id', $request->id)->count();
+
+        $model = Notification::where('notifications.user_id', $request->id)
+                ->select('admin_videos.default_image', 'notifications.admin_video_id', 'admin_videos.title', 'notifications.updated_at', 'admin_videos.status', 'admin_videos.id')
+                ->leftJoin('admin_videos', 'admin_videos.id', '=', 'notifications.admin_video_id')
+                ->leftJoin('categories', 'categories.id', '=', 'admin_videos.category_id')
+                ->leftJoin('sub_categories', 'categories.id', '=', 'sub_categories.category_id')
+                ->where('admin_videos.status', 1)
+                ->where('admin_videos.is_approved', 1)
+                ->where('admin_videos.is_approved', 1)
+                ->where('categories.is_approved', 1)
+                ->where('sub_categories.is_approved', 1)
+                ->skip(0)->take(4)
+                ->orderBy('notifications.updated_at', 'desc')->get();
+
+        $datas = [];
+
+        $user = User::find($request->id);
+
+        if (!empty($model) && $model != null) {
+
+            foreach ($model as $key => $value) {
+
+                $ppv_status = VideoRepo::pay_per_views_status_check($request->id, $user ? $user->user_type : '', $value->adminVideo)->getData();
+                
+                $datas[] = ['admin_video_id'=>$value->admin_video_id, 
+                            'img'=>$value->default_image, 
+                            'title'=>$value->title, 
+                            'time'=>$value->updated_at->diffForHumans(),
+                            'pay_per_view_status'=>$ppv_status->success,
+                            'ppv_details'=>$ppv_status];
+
+            }
+        }
+
+        $response_array = ['success'=>true, 'count'=>$count, 'data'=>$datas];
+
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Function Name : red_notifications()
+     * 
+     * @uses Once click in bell all the notification status will change into read 
+     *
+     * @created : 
+     *
+     * @edited : 
+     *
+     * @param object $request - As of no attribute
+     * 
+     * @return response of boolean
+     */
+    public function red_notifications(Request $request) {
+
+        $model = Notification::where('status', 0)->where('user_id', $request->id)->get();
+
+        foreach ($model as $key => $value) {
+
+            $value->status = 1;
+
+            $value->save();
+
+        }
+
+        return response()->json(true);
+
+    }
 
 }
