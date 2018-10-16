@@ -218,7 +218,7 @@ class ApplicationController extends Controller {
 
         $payments = UserPayment::select(DB::raw('max(user_payments.id) as payment_id'))->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
                                 ->where('user_payments.status' , 1)
-                                ->where('user_payments.expiry_date' ,"<=" , $current_time)
+                               // ->where('user_payments.expiry_date' ,"<=" , $current_time)
                                 ->where('user_type' ,1)
                                 ->orderBy('user_payments.created_at', 'desc')
                                 ->groupBy('user_id')
@@ -232,26 +232,34 @@ class ApplicationController extends Controller {
 
                 if($payment) {
 
-                    // Delete provider availablity
-                    Log::info('Send mail to user');
+                    if (strtotime($payment->expiry_date) <= strtotime($current_time)) {
 
-                    $email_data = array();
-                    
-                    if($user = User::find($payment->user_id)) {
-                        $user->user_type = 0;
-                        $user->save();
-                        // Send welcome email to the new user:
-                        $subject = tr('payment_notification');
-                        $email_data['id'] = $user->id;
-                        $email_data['name'] = $user->name;
-                        $email_data['expiry_date'] = $payment->expiry_date;
-                        $email_data['status'] = 1;
-                        $page = "emails.payment-expiry";
-                        $email = $user->email;
-                        $email_data['content'] = tr('your_notification_expired');
-                        $result = Helper::send_email($page,$subject,$email,$email_data);
+                        // Delete provider availablity
+                        Log::info('Send mail to user');
 
-                        \Log::info("Email".$result);
+                        $email_data = array();
+                        
+                        if($user = User::find($payment->user_id)) {
+                            $user->user_type = 0;
+                            $user->save();
+                            // Send welcome email to the new user:
+                            $subject = tr('payment_notification');
+                            $email_data['id'] = $user->id;
+                            $email_data['name'] = $user->name;
+                            $email_data['expiry_date'] = $payment->expiry_date;
+                            $email_data['status'] = 1;
+                            $page = "emails.payment-expiry";
+                            $email = $user->email;
+                            $email_data['content'] = tr('your_notification_expired');
+                            $result = Helper::send_email($page,$subject,$email,$email_data);
+
+                            \Log::info("Email".$result);
+                        }
+                        
+                    } else {
+
+                        Log::info("Not expired....:-)");
+
                     }
                 }
             }
