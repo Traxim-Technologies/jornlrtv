@@ -23,6 +23,13 @@ Route::get('/clear-cache', function() {
 
 })->name('clear-cache');
 
+
+// Generral configuration routes 
+
+Route::post('project/configurations' , 'ApplicationController@configuration_site');
+
+
+
 // UI
 
 Route::get('/video_notification' , 'SampleController@video_notification');
