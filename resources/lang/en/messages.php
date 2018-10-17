@@ -1767,5 +1767,35 @@ return array(
 	'live_video_payment_not_found'=>'Live Video Payment Details Not Found',
 	'subscribe_to_continue_video'=>'Your subscription has been expired, Please subscribe and continue to upload a video',
 
-	'cards_add_failed' => "Add card failed.P Please try agin later."
+	'cards_add_failed' => "Add card failed.P Please try agin later.",
+		'streaming_type'=>'Streaming Type',
+	'wowza_app_name'=>'Wowza Application Name',
+	'wowza_port_number'=>'Wowza Port Number',
+	'example_wowza_port_number'=>'Ex : 1935',
+	'example_wowza_app_name'=>'Ex : live',
+	'wowza_username'=>'Wowza Username',
+	'wowza_password'=>'Wowza Password',
+	'example_wowza_username'=>'Ex : streamnow',
+	'example_wowza_password'=>'Ex : streamnow',
+	'wowza_gocoder_license_key'=>'Wowza Go-Coder Licence Key',
+	'example_license_key'=>'Ex : GOSK-FES8-010C-C962-ABB0-342S',
+	'wowza_server_url'=>'Wowza Server Url',
+	'example_ip_address_domain'=>'Ex : IP_ADDRESS_OR_DOMAIN:8443',
+
+	'example_ip_address_8007'=>'Ex : IP_ADDRESS_OR_DOMAIN:8087',
+
+	'cross_platform_url'=>"Cross Platform Url",
+
+	'example_ip_address_1935'=>'Ex : IP_ADDRESS_OR_DOMAIN:1935',
+
+	'wowza_ip_address'=>'Wowza IpAddress',
+
+	'example_127'=>'Ex : 127.0.0.1',
+
+	'mobile_rtmp'=>'Mobile RTMP',
+
+	'example_ip_address_3002'=>'Ex : http://IP_ADDRESS_OR_DOMAIN:3002/',
+
+	'wowza_license_key'=>'Wowza License Key',
+
 );
