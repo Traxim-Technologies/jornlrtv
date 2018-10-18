@@ -32,8 +32,10 @@ class CheckUserVerification
             if (!Helper::is_token_valid('USER', $user_id, $token, $error)) {
 
                 Auth::logout();
+
+                $messages = isset($error['error_messages']) ? $error['error_messages'] : tr('unauthroized_person');
                     
-                return back()->with('flash_error', $error);
+                return back()->with('flash_error', $messages);
 
             }
 

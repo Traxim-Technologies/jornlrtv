@@ -1054,6 +1054,20 @@ class UserController extends Controller {
 
         $model = Channel::find($id);
 
+        if (Auth::check()) {
+
+            if ($model) {
+
+                if (Auth::user()->id != $model->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+
+            }
+
+        }
+
         return view('user.channels.edit')->with('page', 'channels')
                     ->with('subPage', 'edit_channel')->with('model', $model);
 
@@ -1072,7 +1086,17 @@ class UserController extends Controller {
 
         $channel = Channel::where('id' , $request->id)->first();
 
-        if($channel) {       
+        if($channel) {  
+
+            if (Auth::check()) {
+
+                if (Auth::user()->id != $channel->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+                
+            }     
 
             $channel->delete();
 
@@ -1297,7 +1321,7 @@ class UserController extends Controller {
 
         if (!$channel) {
 
-            return back()->with('flash_error', tr('not_authorized_person'));
+            return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
         }
 
         $categories_list = $this->UserAPI->categories_list($request)->getData();
@@ -1316,6 +1340,16 @@ class UserController extends Controller {
         $model = VideoTape::find($request->id);
 
         if($model) {
+
+            if (Auth::check()) {
+
+                if (Auth::user()->id != $model->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+                
+            }    
 
             $model->publish_time = $model->publish_time ? (($model->publish_time != '0000-00-00 00:00:00') ? date('d-m-Y H:i:s', strtotime($model->publish_time)) : null) : null;
 
@@ -1370,6 +1404,16 @@ class UserController extends Controller {
     public function video_delete($id) {
 
         if($video = VideoTape::where('id' , $id)->first())  {
+
+            if (Auth::check()) {
+
+                if (Auth::user()->id != $video->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+                
+            }    
 
             Helper::delete_picture($video->video, "/uploads/videos/");
 

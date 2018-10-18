@@ -203,6 +203,8 @@ class AuthController extends Controller
 
                 }
 
+                $user->token_expiry = Helper::generate_token_expiry();
+
                 $user->login_by = 'manual';
                 $user->timezone = $request->has('timezone') ? $request->timezone : '';
                 $user->save();
