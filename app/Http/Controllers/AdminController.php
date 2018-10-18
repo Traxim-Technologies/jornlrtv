@@ -1353,7 +1353,7 @@ class AdminController extends Controller {
 
                 }
             } else {
-                $videoStreamUrl = $videos->video;
+                $videoStreamUrl = $video->video;
             }
         
         $admin_video_images = $video->getScopeVideoTapeImages;

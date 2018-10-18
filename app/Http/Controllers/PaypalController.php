@@ -432,6 +432,8 @@ class PaypalController extends Controller {
 
         if ($result->getState() == 'approved') { // payment made
 
+            Log::info("Paypal payment id ".$paypal_payment_id);
+
             $user_payment_details = UserPayment::where('payment_id',$paypal_payment_id)->first();
 
             if($user_payment_details) {
@@ -882,9 +884,9 @@ class PaypalController extends Controller {
 
             }
             
-            $payment->status = PAID_STATUS;
+            $ppv_details->status = PAID_STATUS;
 
-            $payment->is_watched = NOT_YET_WATCHED;
+            $ppv_details->is_watched = NOT_YET_WATCHED;
 
             $ppv_details->save();
 
