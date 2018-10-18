@@ -432,6 +432,8 @@ class PaypalController extends Controller {
 
         if ($result->getState() == 'approved') { // payment made
 
+            Log::info("Paypal payment id ".$paypal_payment_id);
+
             $user_payment_details = UserPayment::where('payment_id',$paypal_payment_id)->first();
 
             if($user_payment_details) {
