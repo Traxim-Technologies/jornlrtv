@@ -884,9 +884,9 @@ class PaypalController extends Controller {
 
             }
             
-            $payment->status = PAID_STATUS;
+            $ppv_details->status = PAID_STATUS;
 
-            $payment->is_watched = NOT_YET_WATCHED;
+            $ppv_details->is_watched = NOT_YET_WATCHED;
 
             $ppv_details->save();
 
