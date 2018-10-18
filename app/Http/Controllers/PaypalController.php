@@ -725,7 +725,7 @@ class PaypalController extends Controller {
 
             $ppv_payment_details->coupon_code = $request->coupon_code ? $request->coupon_code : "";
 
-            $ppv_payment_details->ppv_amount = $video->amount;
+            $ppv_payment_details->ppv_amount = $video->ppv_amount;
 
             $ppv_payment_details->is_coupon_applied = $is_coupon_applied;
 
