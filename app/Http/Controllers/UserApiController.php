@@ -798,6 +798,8 @@ class UserApiController extends Controller {
 
             $live_video = LiveVideo::find($request->video_tape_id);
 
+            Log::info("Live Video");
+
             if ($live_video) {
 
                 if ($live_video->user_id != $request->id) {
@@ -809,7 +811,6 @@ class UserApiController extends Controller {
                     $new_user = 0;
 
                     if(!$model) {
-
 
                         $new_user = 1;
 
@@ -828,6 +829,8 @@ class UserApiController extends Controller {
                     if ($new_user) {
 
                         if ($live_video) {
+
+                            Log::info("test");
 
                             $live_video->viewer_cnt += 1;
 
