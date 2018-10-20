@@ -239,13 +239,13 @@ class UserController extends Controller {
 
                                 if ($new_user) {
 
-                                    if ($live_video) {
+                                    if ($model) {
 
                                         Log::info("test");
 
-                                        $live_video->viewer_cnt += 1;
+                                        $model->viewer_cnt += 1;
 
-                                        $live_video->save();
+                                        $model->save();
                                         
                                     }
 
