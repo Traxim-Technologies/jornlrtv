@@ -794,40 +794,57 @@ class UserApiController extends Controller {
 
         } else {
 
+            $viewer_cnt = 0;
 
-        // Load Viewers model
+            $live_video = LiveVideo::find($request->video_tape_id);
 
-            $model = Viewer::where('video_id', $request->video_tape_id)->where('user_id', $request->id)->first();
+            if ($live_video) {
 
-            if(!$model) {
+                if ($live_video->user_id != $request->id) {
 
-                $model = new Viewer;
+                    // Load Viewers model
 
-                $model->video_id = $request->video_tape_id;
+                    $model = Viewer::where('video_id', $request->video_tape_id)->where('user_id', $request->id)->first();
 
-                $model->user_id = $request->id;
+                    $new_user = 0;
 
-            }
-
-            $model->count = ($model->count) ? $model->count + 1 : 1;
-
-            $model->save();
-
-            if ($model) {
+                    if(!$model) {
 
 
-                if ($model->getVideo) {
+                        $new_user = 1;
 
-                    $model->getVideo->viewer_cnt += 1;
+                        $model = new Viewer;
 
-                    $model->getVideo->save();
-                    
+                        $model->video_id = $request->video_tape_id;
+
+                        $model->user_id = $request->id;
+
+                    }
+
+                    $model->count = ($model->count) ? $model->count + 1 : 1;
+
+                    $model->save();
+
+                    if ($new_user) {
+
+                        if ($live_video) {
+
+                            $live_video->viewer_cnt += 1;
+
+                            $live_video->save();
+                            
+                        }
+
+                    }
+
                 }
+
+                $viewer_cnt = $live_video->viewer_cnt ? $live_video->viewer_cnt : 0;
 
             }
 
             $response_array  = ['success'=>true, 
-                'viewer_cnt'=> $model->getVideo ? $model->getVideo->viewer_cnt : 0];
+                'viewer_cnt'=> (int) $viewer_cnt];
 
         }
 
