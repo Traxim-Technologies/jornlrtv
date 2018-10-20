@@ -1079,6 +1079,8 @@ class ApplicationController extends Controller {
 
                 $url_data['socket_url'] = Setting::get("SOCKET_URL") ?: "";
 
+                $url_data['chat_socket_url'] = Setting::get("chat_socket_url") ?: "";
+
                 $data['urls'] = $url_data;
 
                 $notification_data['FCM_SENDER_ID'] = "";
