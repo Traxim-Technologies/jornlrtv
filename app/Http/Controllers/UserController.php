@@ -214,31 +214,43 @@ class UserController extends Controller {
 
                     if ($model->user_id != $userModel->id) {
 
-                            // Load Viewers model
 
-                            $viewer = Viewer::where('video_id', $model->id)->where('user_id', Auth::user()->id)->first();
 
-                            if(!$viewer) {
+                             // Load Viewers model
 
-                                $viewer = new Viewer;
+                                $viewer = Viewer::where('video_id', $model->id)->where('user_id',Auth::user()->id)->first();
 
-                                $viewer->video_id = $model->id;
+                                $new_user = 0;
 
-                                $viewer->user_id = Auth::user()->id;
+                                if(!$model) {
 
-                            }
+                                    $new_user = 1;
 
-                            $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
+                                    $model = new Viewer;
 
-                            $viewer->save();
+                                    $viewer->video_id = $model->id;
 
-                            if ($viewer) {
+                                    $viewer->user_id = Auth::user()->id;
+                                }
 
-                                $model->viewer_cnt += 1;
+                                $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
 
-                                $model->save();
+                                $viewer->save();
 
-                            }
+                                if ($new_user) {
+
+                                    if ($live_video) {
+
+                                        Log::info("test");
+
+                                        $live_video->viewer_cnt += 1;
+
+                                        $live_video->save();
+                                        
+                                    }
+
+                                }
+
                             // video payment 
 
                             $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
