@@ -222,11 +222,11 @@ class UserController extends Controller {
 
                                 $new_user = 0;
 
-                                if(!$model) {
+                                if(!$viewer) {
 
                                     $new_user = 1;
 
-                                    $model = new Viewer;
+                                    $viewer = new Viewer;
 
                                     $viewer->video_id = $model->id;
 
