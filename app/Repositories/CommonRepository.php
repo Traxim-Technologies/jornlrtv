@@ -692,6 +692,8 @@ class CommonRepository {
 
                             $tag->tag_id = $tag_id;
 
+                            $tag->status = TAG_APPROVE_STATUS;
+
                             $tag->save();
 
                         }
@@ -1108,6 +1110,8 @@ class CommonRepository {
 
                 if ($request->tag_id) {
 
+                    $request->tag_id = is_array($request->tag_id) ? $request->tag_id : explode(',', $request->tag_id);
+
                     $tag = VideoTapeTag::select('tag_id')
                             ->where('video_tape_id', $video->id)
                             ->get()
@@ -1148,6 +1152,8 @@ class CommonRepository {
                         $tag->video_tape_id = $video->id;
 
                         $tag->tag_id = $tag_id;
+
+                        $tag->status = TAG_APPROVE_STATUS;
 
                         $tag->save();
 
