@@ -400,30 +400,7 @@ liveAppCtrl
         };
 
 
-        var jwplayer_result = $.grep($rootScope.site_settings, function(e){ return e.key == 'jwplayer_key'; });
-
-        $scope.jwplayer_key = "";
-
-        if (jwplayer_result.length == 0) {
-            
-            console.log("not found");
-            
-        } else if (jwplayer_result.length == 1) {
-          // access the foo property using jwplayer_result[0].foo
-          $scope.jwplayer_key = jwplayer_result[0].value;
-
-          if ($scope.jwplayer_key != '' || $scope.jwplayer_key != null || $scope.jwplayer_key != undefined) {
-            
-          } else {
-
-            $scope.jwplayer_key = '';
-
-          }
-        
-        } else {
-          // multiple items found
-          $scope.jwplayer_key = "";
-        }
+       
 
         if (video_details.user_id == live_user_id) {
 
@@ -435,7 +412,7 @@ liveAppCtrl
 
             if(video_details.video_url != null && video_details.video_url != '') {
 
-                if (!$scope.jwplayer_key && video_details.video_url) {
+                if ("{{Setting::get('jwplayer_key')}}" && video_details.video_url) {
 
                     alert("Configure Jwplayer Key, Kindly contact Admin");
 
