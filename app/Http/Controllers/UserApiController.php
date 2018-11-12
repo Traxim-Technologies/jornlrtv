@@ -347,6 +347,42 @@ class UserApiController extends Controller {
 
                         if ($model) {
 
+                            $destination_ip = Setting::get('wowza_ip_address');
+
+                            if ($request->device_type == DEVICE_WEB || $request->device_type == DEVICE_ANDROID) {
+
+                                if (Setting::get('kurento_socket_url') && $destination_ip) {
+
+                                    $streamer_file = $user->id.'-'.$model->id.'.sdp';  
+
+                                } else {
+
+                                    $streamer_file = "";
+                                }
+
+                            } else {
+
+                                $streamer_file = $user->id.'_'.$model->id;  
+
+                            }
+
+                            Log::info("device type ".$request->device_type == DEVICE_IOS);
+
+                            if ($request->device_type == DEVICE_WEB) {
+
+                                // $model->video_url = $streamer_file ? 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                            } else if($request->device_type == DEVICE_IOS){
+
+                                // $model->video_url = 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                                $model->browser_name = $request->device_type;
+
+                            }
+
+                            $model->video_url = $streamer_file;
+
+
                            // $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
 
                             $model->save();
@@ -373,6 +409,14 @@ class UserApiController extends Controller {
                                 "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
                                 'is_streaming'=>$model->is_streaming,
                                 'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
+                                'hostAddress'=>Setting::get('wowza_ip_address'),
+                                'portNumber'=>Setting::get('wowza_port_number'),
+                                'applicationName'=>Setting::get('wowza_app_name'),
+                                'streamName'=>$streamer_file,
+                                'wowzaUsername'=>Setting::get('wowza_username'),
+                                'wowzaPassword'=>Setting::get('wowza_password'),
+                                'wowzaLicenseKey'=>Setting::get('wowza_license_key'),
+                                'video_url'=>$model->video_url,
                             ];
                         } else {
                             $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
@@ -460,6 +504,48 @@ class UserApiController extends Controller {
 
                             $is_streamer = $model->user_id == $request->id ? DEFAULT_TRUE : DEFAULT_FALSE;
 
+                            if (!$is_streamer) {
+
+                                $video_url = "";
+
+                                if ($model->unique_id == 'sample') {
+
+                                    $video_url = $model->video_url;
+
+                                } else {
+
+                                    if ($model->video_url) {
+
+                                        if ($request->device_type == DEVICE_IOS) {
+
+                                            $video_url = CommonRepo::iosUrl($model);
+
+                                        } else if($model->browser_name == DEVICE_IOS){
+
+                                           $video_url = CommonRepo::rtmpUrl($model);
+
+                                        }
+
+                                        if (($request->browser == IOS_BROWSER || $request->browser == WEB_SAFARI) && ($model->browser_name == DEVICE_IOS)) {
+
+                                            $video_url = CommonRepo::iosUrl($model);
+
+                                        }
+
+                                    } else {
+
+                                        $video_url = "";
+
+                                    }
+
+                                }
+
+                            } else {
+
+                                $video_url = "";
+                            }
+
+
                             $data = [
                                 "video_image"=> $model->snapshot,
                                 "channel_image"=> $model->channel?$model->channel->picture: '',
@@ -485,7 +571,8 @@ class UserApiController extends Controller {
                                 'comments'=>$messages,  
                                 'suggestions'=>$suggestions,
                                 'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
-                                'is_streamer'=>$is_streamer
+                                'is_streamer'=>$is_streamer,
+                                'video_url'=>$video_url,
                             ];
 
                             $response_array = ['success'=>true, 'data'=>$data];
