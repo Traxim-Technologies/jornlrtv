@@ -414,7 +414,7 @@ video {
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-<script>jwplayer.key="{{Setting::get('jwplayer_key')}}";</script>
+<script>jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";</script>
 
 <script src="{{asset('assets/js/getHTMLMediaElement.js')}}"></script>
 
@@ -424,7 +424,7 @@ video {
 setTimeout( function() { jQuery(".alert-success").fadeOut("slow") },5000);
 
 
-var jwplayer_key = "{{Setting::get('jwplayer_key')}}";
+var jwplayer_key = "{{Setting::get('JWPLAYER_KEY')}}";
 
 var video_details = <?= $data; ?>;
 
