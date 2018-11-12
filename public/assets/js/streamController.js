@@ -421,7 +421,7 @@ liveAppCtrl
                     return false;
                 }
 
-                jwplayer.key = $scope.jwplayer_key;
+                jwplayer.key = jwplayer_key;
 
                 var playerInstance1 = jwplayer("videos-container");
 
