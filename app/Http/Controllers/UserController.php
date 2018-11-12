@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
+use App\Repositories\CommonRepository as CommonRepo;
+
 use App\Http\Requests;
 
 use App\Helpers\Helper;
@@ -256,6 +258,9 @@ class UserController extends Controller {
                             $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
                                 ->where('live_video_viewer_id', Auth::user()->id)
                                 ->where('status',DEFAULT_TRUE)->first();
+
+
+
                         
                     }
 
@@ -309,6 +314,50 @@ class UserController extends Controller {
 
                 $videos = $query->paginate(15);
 
+
+
+                $is_streamer = $model->user_id == $request->id ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                if (!$is_streamer) {
+
+                    $video_url = "";
+
+                    if ($model->unique_id == 'sample') {
+
+                        $video_url = $model->video_url;
+
+                    } else {
+
+                        if ($model->video_url) {
+
+                            if ($request->device_type == DEVICE_IOS) {
+
+                                $video_url = CommonRepo::iosUrl($model);
+
+                            } else if($model->browser_name == DEVICE_IOS){
+
+                               $video_url = CommonRepo::rtmpUrl($model);
+
+                            }
+
+                            if (($request->browser == IOS_BROWSER || $request->browser == WEB_SAFARI) && ($model->browser_name == DEVICE_IOS)) {
+
+                                $video_url = CommonRepo::iosUrl($model);
+
+                            }
+
+                        } else {
+
+                            $video_url = "";
+
+                        }
+
+                    }
+
+                } else {
+
+                    $video_url = "";
+                }
 
                 return view('user.videos.live-video')->with('page', 'live-video')
                     ->with('subPage', 'broadcast')
