@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
-use App\Repositories\CommonRepository as CommonRepo;
-
 use App\Http\Requests;
 
 use App\Helpers\Helper;
