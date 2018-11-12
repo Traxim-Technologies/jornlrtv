@@ -479,7 +479,7 @@ liveAppCtrl
                     $('#main_video_setup_error').css('display', 'block');
 
                     if (hasFlash == false) {
-                        
+
                         $("#flash_error_display").show();  
 
                         $('#main_video_setup_error').show();      
@@ -519,15 +519,13 @@ liveAppCtrl
 
                     $('#main_video_setup_error').show();
 
-                   /* if (hasFlash == false) {
-                        $('#flash_error_display').show();
+                    if (hasFlash == false) {
+                        
+                        $("#flash_error_display").show();  
 
-                        confirm('Download Adobe Flash Player. Flash Player Fail to Load.');
+                        $('#main_video_setup_error').show();      
+                    }
 
-                        return false;
-                    }*/
-
-                    
 
                     alert("Video Setup Error...!");
 
