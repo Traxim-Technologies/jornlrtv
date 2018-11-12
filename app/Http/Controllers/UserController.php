@@ -357,6 +357,8 @@ class UserController extends Controller {
                     $video_url = "";
                 }
 
+                $model->video_url = $video_url;
+
                 return view('user.videos.live-video')->with('page', 'live-video')
                     ->with('subPage', 'broadcast')
                     ->with('data', $model)->with('appSettings', $appSettings)->with('comments',$comments)->with('videos', $videos);
