@@ -429,7 +429,7 @@ liveAppCtrl
 
                 playerInstance1.setup({
 
-                   file : $sce.trustAsResourceUrl(video_details.video_url),
+                   file : video_details.video_url,
                     width: "100%",
                     aspectratio: "16:9",
                     primary: "flash",
