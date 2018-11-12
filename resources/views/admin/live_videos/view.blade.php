@@ -381,6 +381,10 @@ video {
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
+<script>jwplayer.key="{{Setting::get('jwplayer_key')}}";</script>
+
+@if(!$data->video_url) 
+
 <script type="text/javascript">
 
 
@@ -427,7 +431,188 @@ liveAppCtrl
 </script>
 <!-- <script src="{{asset('common/js/factory.js')}}"></script> -->
 <script src="{{asset('lib/streamController.js')}}"></script>
+@else
 
+<script type="text/javascript">
+
+var is_mobile = false;
+
+var isMobile = {
+  Android: function() {
+      return navigator.userAgent.match(/Android/i);
+  },
+  BlackBerry: function() {
+      return navigator.userAgent.match(/BlackBerry/i);
+  },
+  iOS: function() {
+      return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+  },
+  Opera: function() {
+      return navigator.userAgent.match(/Opera Mini/i);
+  },
+  Windows: function() {
+      return navigator.userAgent.match(/IEMobile/i);
+  },
+  any: function() {
+      return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+  }
+};
+
+
+function getBrowser() {
+
+  // Opera 8.0+
+  var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+  // Firefox 1.0+
+  var isFirefox = typeof InstallTrigger !== 'undefined';
+
+  // Safari 3.0+ "[object HTMLElementConstructor]" 
+  var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+
+  // Internet Explorer 6-11
+  var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+  // Edge 20+
+  var isEdge = !isIE && !!window.StyleMedia;
+
+  // Chrome 1+
+  var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+  // Blink engine detection
+  var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+  var b_n = '';
+
+  switch(true) {
+
+      case isFirefox :
+
+              b_n = "Firefox";
+
+              break;
+      case isChrome :
+
+              b_n = "Chrome";
+
+              break;
+
+      case isSafari :
+
+              b_n = "Safari";
+
+              break;
+      case isOpera :
+
+              b_n = "Opera";
+
+              break;
+
+      case isIE :
+
+              b_n = "IE";
+
+              break;
+
+      case isEdge : 
+
+              b_n = "Edge";
+
+              break;
+
+      case isBlink : 
+
+              b_n = "Blink";
+
+              break;
+
+      default :
+
+              b_n = "Unknown";
+
+              break;
+
+  }
+
+  return b_n;
+
+}
+
+
+if(isMobile.any()) {
+
+  var is_mobile = true;
+
+}
+
+
+var browser = getBrowser();
+
+
+if ((browser == 'Safari') || (browser == 'Opera') || isMobile.iOS()) {
+
+    var video_url = "{{$ios_video_url}}";
+
+} else {
+
+    var video_url = "{{$data->video_url}}";
+
+}
+
+console.log(video_url);
+
+var playerInstance = jwplayer("videos-container");
+
+ playerInstance.setup({
+    file: video_url,
+    image: "{{$data->snapshot}}",
+    width: "100%",
+    aspectratio: "16:9",
+    primary: "flash5",
+    controls : true,
+    "controlbar.idlehide" : false,
+    controlBarMode:'floating',
+     autostart : true,
+});
+playerInstance.on('setupError', function(e) {
+
+    console.log(e);
+
+    jQuery('#videos-container').hide();
+
+    var hasFlash = false;
+    try {
+        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+        if (fo) {
+            hasFlash = true;
+        }
+    } catch (e) {
+        if (navigator.mimeTypes
+                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+            hasFlash = true;
+        }
+    }
+
+    if (hasFlash == false) {
+        
+        console.log("eerr");
+
+        $("#flash_error_display").show();  
+
+        $('#main_video_setup_error').show();      
+
+       // console.log('<a target="_blank" href="https://get.adobe.com/flashplayer/" class="underline">adobe</a>');
+        
+        return false;
+    }
+    $('#main_video_setup_error').show();
+
+    // $('#main_video_setup_error').show();    
+
+});
+</script>
+@endif
 @endsection
 
 @endif

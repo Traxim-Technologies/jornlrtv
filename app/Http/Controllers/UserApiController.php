@@ -152,6 +152,7 @@ class UserApiController extends Controller {
                 $model->type = $request->type ? $request->type : TYPE_PUBLIC;
                 $model->channel_id = $request->channel_id;
                 $model->amount = 0;
+                $model->browser_name = $request->browser ? $request->browser : '';
                 if($request->payment_status) {
 
                     $model->amount = ($request->amount > 0) ? $request->amount : 1;
@@ -337,6 +338,7 @@ class UserApiController extends Controller {
                         $model->user_id = $request->id;
                         $model->virtual_id = md5(time());
                         $model->unique_id = $model->title;
+                        $model->browser_name = $request->browser ? $request->browser : '';
                         $model->snapshot = asset("/images/live_stream.jpg");
                         $model->start_time = getUserTime(date('H:i:s'), ($user) ? $user->timezone : '', "H:i:s");
 

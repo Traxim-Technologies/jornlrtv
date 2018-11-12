@@ -1798,4 +1798,5 @@ return array(
 
 	'wowza_license_key'=>'Wowza License Key',
 
+	'live_videos_not_found'=>'Live video has not been found',
 );

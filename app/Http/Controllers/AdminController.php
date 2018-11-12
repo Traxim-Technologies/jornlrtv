@@ -5810,9 +5810,49 @@ class AdminController extends Controller {
 
     public function live_videos_view($id,Request $request) {
 
-        $video = LiveVideo::find($id);
+        $model = LiveVideo::find($id);
 
-        return view('admin.live_videos.view')->with('data' , $video)->with('page','live_videos')->with('sub_page','view_live_videos'); 
+
+        if($model){
+
+            $video_url = "";
+
+            $ios_video_url = "";
+
+            if ($model->unique_id == 'sample') {
+
+                $video_url = $model->video_url;
+
+            } else {
+
+                if ($model->video_url) {            
+
+                    if($model->browser_name == DEVICE_IOS){
+
+                       $video_url = CommonRepo::rtmpUrl($model);
+
+                    }
+
+                    //$video_url = CommonRepo::iosUrl($model);
+
+                    $ios_video_url = CommonRepo::iosUrl($model);
+
+                } else {
+
+                    $video_url = "";
+
+                }
+
+            }
+
+            $model->video_url = $video_url;
+
+            return view('admin.videos.view')->with('data' , $model)->with('page','live_videos')->with('sub_page','view_live_videos')->with('ios_video_url', $ios_video_url); 
+        } else{
+
+            return back()->with('flash_error',tr('live_videos_not_found'));
+        }
+
     }
 
 
