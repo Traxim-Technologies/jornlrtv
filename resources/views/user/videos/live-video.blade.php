@@ -404,7 +404,9 @@ video {
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-<script src="{{asset('assets/js/stream-controller.js')}}"></script>
+<script>jwplayer.key="{{Setting::get('jwplayer_key')}}";</script>
+
+<script src="{{asset('assets/js/getHTMLMediaElement.js')}}"></script>
 
 
 <script type="text/javascript">
@@ -462,7 +464,7 @@ liveAppCtrl
             $rootScope.appSettings = appSettings;
         }
 ]);
-    
+
 </script>
 
 <script src="{{asset('assets/js/streamController.js')}}"></script>

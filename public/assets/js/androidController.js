@@ -442,7 +442,15 @@ angular.module('liveApp')
 
             console.log("Join Room...");
 
-            $("#join-room").click();
+            if(video_details.video_url != null && video_details.video_url != '') {
+
+                console.log("video_url "+video_details.video_url);
+
+            } else {
+
+                $("#join-room").click();
+
+            }
         }
 
         /*if (roomid && roomid.length) {

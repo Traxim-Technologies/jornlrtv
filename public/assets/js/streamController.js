@@ -400,6 +400,31 @@ liveAppCtrl
         };
 
 
+        var jwplayer_result = $.grep($rootScope.site_settings, function(e){ return e.key == 'jwplayer_key'; });
+
+        $scope.jwplayer_key = "";
+
+        if (jwplayer_result.length == 0) {
+            
+            console.log("not found");
+            
+        } else if (jwplayer_result.length == 1) {
+          // access the foo property using jwplayer_result[0].foo
+          $scope.jwplayer_key = jwplayer_result[0].value;
+
+          if ($scope.jwplayer_key != '' || $scope.jwplayer_key != null || $scope.jwplayer_key != undefined) {
+            
+          } else {
+
+            $scope.jwplayer_key = '';
+
+          }
+        
+        } else {
+          // multiple items found
+          $scope.jwplayer_key = "";
+        }
+
         if (video_details.user_id == live_user_id) {
 
             console.log("room...");
@@ -408,11 +433,141 @@ liveAppCtrl
 
         } else {
 
-            //alert("Joining Room");
+            if(video_details.video_url != null && video_details.video_url != '') {
 
-            console.log("Join Room...");
+                if (!$scope.jwplayer_key && video_details.video_url) {
 
-            $("#join-room").click();
+                    alert("Configure Jwplayer Key, Kindly contact Admin");
+
+                    return false;
+                }
+
+                jwplayer.key = $scope.jwplayer_key;
+
+                var playerInstance1 = jwplayer("videos-container");
+
+                $("#loader_btn").hide();
+
+                playerInstance1.setup({
+
+                   file : $sce.trustAsResourceUrl(video_details.video_url),
+                    width: "100%",
+                    aspectratio: "16:9",
+                    primary: "flash",
+                    controls : true,
+                    "controlbar.idlehide" : false,
+                    controlBarMode:'floating',
+                    "controls": {
+                      "enableFullscreen": false,
+                      "enablePlay": false,
+                      "enablePause": false,
+                      "enableMute": true,
+                      "enableVolume": true
+                    },
+                    autostart : true,
+                   /* "sharing": {
+                        "sites": ["reddit","facebook","twitter"]
+                      }*/
+                });
+
+                playerInstance1.on('error', function() {
+
+                    console.log("setupError");
+
+                   
+
+                    $("#videos-container").hide();
+
+                    $("#loader_btn").hide();
+
+                    var hasFlash = false;
+                    
+                   try {
+                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                        if (fo) {
+                            hasFlash = true;
+                        }
+                    } catch (e) {
+                        if (navigator.mimeTypes
+                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                            hasFlash = true;
+                        }
+                    }
+
+                    console.log(hasFlash == false);
+
+                    $('#main_video_setup_error').css('display', 'block');
+
+                    /*if (hasFlash == false) {
+                        $('#flash_error_display').show();
+
+                        confirm('Download Adobe Flash Player. Flash Player Fail to Load.');
+
+                        return false;
+                    }*/
+
+                   
+                   alert("Video Setup Error...!");
+
+                    //$state.go('guest.home', {}, {reload : true});
+
+                });
+
+
+                playerInstance1.on('setupError', function() {
+
+                    console.log("setupError");
+
+             
+
+                    $("#videos-container").hide();
+
+                    $("#loader_btn").hide();
+
+                    var hasFlash = false;
+                   try {
+                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                        if (fo) {
+                            hasFlash = true;
+                        }
+                    } catch (e) {
+                        if (navigator.mimeTypes
+                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                            hasFlash = true;
+                        }
+                    }
+
+                    $('#main_video_setup_error').show();
+
+                   /* if (hasFlash == false) {
+                        $('#flash_error_display').show();
+
+                        confirm('Download Adobe Flash Player. Flash Player Fail to Load.');
+
+                        return false;
+                    }*/
+
+                    
+
+                    alert("Video Setup Error...!");
+
+                    //$state.go('guest.home', {}, {reload : true});
+                
+                });
+
+                $("#loader_btn").hide();
+
+            } else {
+
+                //alert("Joining Room");
+
+                console.log("Join Room...");
+
+                $("#join-room").click();
+
+            }
         }
 
 		$scope.stopStreaming = function(video_id) {
