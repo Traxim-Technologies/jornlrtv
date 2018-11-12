@@ -449,11 +449,11 @@ liveAppCtrl
                       }*/
                 });
 
-                playerInstance1.on('error', function() {
+                playerInstance1.on('error', function(e) {
 
-                    console.log("setupError");
+                    console.log("setupError1");
 
-                   
+                    console.log(e);
 
                     $("#videos-container").hide();
 
@@ -493,11 +493,11 @@ liveAppCtrl
                 });
 
 
-                playerInstance1.on('setupError', function() {
+                playerInstance1.on('setupError', function(e) {
 
                     console.log("setupError");
 
-             
+                    console.log(e);
 
                     $("#videos-container").hide();
 
