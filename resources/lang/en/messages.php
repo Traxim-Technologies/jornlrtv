@@ -1799,4 +1799,6 @@ return array(
 	'wowza_license_key'=>'Wowza License Key',
 
 	'live_videos_not_found'=>'Live video has not been found',
+
+	'flash_missing_error'=>'Flash is missing. Download it from',
 );

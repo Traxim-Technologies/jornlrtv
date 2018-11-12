@@ -478,13 +478,12 @@ liveAppCtrl
 
                     $('#main_video_setup_error').css('display', 'block');
 
-                    /*if (hasFlash == false) {
-                        $('#flash_error_display').show();
+                    if (hasFlash == false) {
+                        
+                        $("#flash_error_display").show();  
 
-                        confirm('Download Adobe Flash Player. Flash Player Fail to Load.');
-
-                        return false;
-                    }*/
+                        $('#main_video_setup_error').show();      
+                    }
 
                    
                    alert("Video Setup Error...!");
