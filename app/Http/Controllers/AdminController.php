@@ -5847,7 +5847,7 @@ class AdminController extends Controller {
 
             $model->video_url = $video_url;
 
-            return view('admin.videos.view')->with('data' , $model)->with('page','live_videos')->with('sub_page','view_live_videos')->with('ios_video_url', $ios_video_url); 
+            return view('admin.live_videos.view')->with('data' , $model)->with('page','live_videos')->with('sub_page','view_live_videos')->with('ios_video_url', $ios_video_url); 
         } else{
 
             return back()->with('flash_error',tr('live_videos_not_found'));
