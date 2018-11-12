@@ -1502,4 +1502,5 @@ return array(
 
 	'cards_add_failed' => "Add card failed.P Please try agin later.",
 	'unauthroized_person'=>'unauthorized actions has been detected...!',
+	'reason_for_cancellation'=>'Reason for Cancellation'
 );

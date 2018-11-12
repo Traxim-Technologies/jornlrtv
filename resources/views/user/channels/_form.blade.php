@@ -73,7 +73,7 @@
 						<textarea class="form-control description" id="ckeditor" name="description" required>{{$model->description}}</textarea>
 						<br>
 						<div>
-							<button type="reset" name="reset" class="btn btn-danger pull-left">{{tr('reset')}}</button>
+							<a href="" class="btn btn-danger pull-left">{{tr('reset')}}</a>
 							<button id="done-create" name="submit" class="btn btn-info pull-right" @if(!$model->id) onclick="return checkImage();" @endif>{{tr('submit')}}</button>
 							<div class="clearfix"></div>
 						</div>
