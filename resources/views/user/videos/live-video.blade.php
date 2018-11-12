@@ -426,6 +426,8 @@ setTimeout( function() { jQuery(".alert-success").fadeOut("slow") },5000);
 
 var jwplayer_key = "{{Setting::get('JWPLAYER_KEY')}}";
 
+consoel.log(jwplayer_key);
+
 var video_details = <?= $data; ?>;
 
 var appSettings = <?= $appSettings;?>
