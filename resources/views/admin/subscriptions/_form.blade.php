@@ -54,7 +54,7 @@
                         <label for="amount" class="">{{tr('amount')}}</label>
 
                         <!-- <div class="col-sm-10"> -->
-                            <input type="number" required name="amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" value="{{($data->amount) ? $data->amount : old('amount')}}">
+                            <input type="text" required name="amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" value="{{($data->amount) ? $data->amount : old('amount')}}" pattern="[0-9]{1,5}" maxlength="5">
                         <!-- </div> -->
                     </div>
 

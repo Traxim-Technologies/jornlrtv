@@ -86,7 +86,7 @@
 
 								      				<?php $enable_subscription_notes = tr('enable_subscription_notes') ; ?>
 								      			
-								      				<a onclick="return alert('{{$enable_subscription_notes}}')" href="{{route('admin.enable.subscription', ['id'=>$payment->user_id])}}" class="pull-right btn btn-sm btn-success">{{tr('enable_subscription')}}</a>
+								      				<a onclick="return confirm('{{$enable_subscription_notes}}')" href="{{route('admin.enable.subscription', ['id'=>$payment->user_id])}}" class="pull-right btn btn-sm btn-success">{{tr('enable_subscription')}}</a>
 
 
 								      			@else
