@@ -412,7 +412,7 @@ liveAppCtrl
 
             if(video_details.video_url != null && video_details.video_url != '') {
 
-                if ("{{Setting::get('jwplayer_key')}}" && video_details.video_url) {
+                if (jwplayer_key == '' && video_details.video_url) {
 
                     alert("Configure Jwplayer Key, Kindly contact Admin");
 
