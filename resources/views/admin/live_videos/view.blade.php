@@ -381,7 +381,7 @@ video {
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-<script>jwplayer.key="{{Setting::get('jwplayer_key')}}";</script>
+<script>jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";</script>
 
 @if(!$data->video_url) 
 

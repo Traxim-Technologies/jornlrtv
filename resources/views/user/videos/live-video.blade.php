@@ -79,7 +79,7 @@ video {
 
                             <div class="flash_display" id="flash_error_display" style="display: none;">
                                 <div class="flash_error_div">
-                                    <div class="flash_error">{{tr('flash_missing_error')}}<a target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{tr('adobe')}}</a>.</div>
+                                    <div class="flash_error">{{tr('flash_missing_error')}}<a style="background-color:none;margin-left:1%;display:inline;" target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{tr('adobe')}}</a>.</div>
                                 </div>
                             </div>
                         </div>
