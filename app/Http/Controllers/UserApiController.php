@@ -187,6 +187,40 @@ class UserApiController extends Controller {
 
                 if ($model) {
 
+
+                    $destination_ip = Setting::get('wowza_ip_address');
+
+                    if (Setting::get('kurento_socket_url') && $destination_ip) {
+
+                        $streamer_file = $model->user_id.'-'.$model->id.'.sdp';  
+
+                    } else {
+
+                        $streamer_file = "";
+                    }
+
+
+                    Log::info("device type ".$request->device_type);
+
+                    if ($request->device_type == DEVICE_WEB) {
+
+                        // $model->video_url = $streamer_file ? 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                    } else if($request->device_type == DEVICE_IOS){
+
+                        // $model->video_url = 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                        $model->browser_name = $request->device_type;
+
+                    }
+
+                    $model->video_url = $streamer_file;
+
+
+                   // $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+
+                    $model->save();
+
                     $response_array = [
                         'success' => true , 
 
