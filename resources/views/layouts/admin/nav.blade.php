@@ -201,7 +201,7 @@
                 <ul class="treeview-menu">
 
                     <li id="add-coupons"><a href="{{route('admin.add.coupons')}}"><i class="fa fa-circle-o"></i>{{tr('add_coupon')}}</a></li>
-                    <li id = "view-coupons"><a href="{{route('admin.coupon.list')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
+                    <li id = "view_coupons"><a href="{{route('admin.coupon.list')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
                 </ul>
             </li>
             

@@ -76,7 +76,7 @@
 						<div class="form-group">
 							<label for="expiry_date" class="col-sm-2 control-label"> * {{tr('expiry_date')}}</label>
 							<div class="col-sm-10">
-								<input type="text" id="expiry_date" name="expiry_date" class="form-control" placeholder="{{tr('expiry_date_coupon')}}" value="{{old('expiry_date')}}" required>
+								<input type="text" id="expiry_date" name="expiry_date" class="form-control" placeholder="{{tr('expiry_date_coupon')}}" value="{{old('expiry_date')}}" required readonly>
 							</div>
 						</div>
 
