@@ -404,6 +404,15 @@ class UserController extends Controller {
 
                 $message =  tr('streaming_stopped_success');
 
+
+                if (Setting::get('wowza_server_url')) {
+
+                    $this->UserAPI->disConnectStream($model->user_id.'-'.$model->id);
+
+                }
+
+                
+
                 $route = route('user.channel', ['id'=>$model->channel_id]);
 
             } else {

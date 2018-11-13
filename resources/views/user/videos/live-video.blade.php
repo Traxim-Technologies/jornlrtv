@@ -60,6 +60,21 @@ video {
                         <button id="open-or-join-room">Auto Open Or Join Room</button>
 
                       </div>
+
+
+                      <div style="display: none">
+                               <video id="videoInput" autoplay></video>
+
+
+                                <textarea id="rtpSdp">v=0
+                                  o=- 0 0 IN IP4 {{Setting::get('wowza_ip_address')}}
+                                  s=Kurento
+                                  c=IN IP4 {{Setting::get('wowza_ip_address')}}
+                                  t=0 0
+                                  m=video {{$data->port_no}} RTP/AVP 100
+                                  a=rtpmap:100 H264/90000
+                                </textarea>
+                        </div>
 						
 
 						<div class="live_img" id="videos-container" room="{{$data->id}}">
@@ -425,6 +440,11 @@ setTimeout( function() { jQuery(".alert-success").fadeOut("slow") },5000);
 
 
 var jwplayer_key = "{{Setting::get('JWPLAYER_KEY')}}";
+
+
+var kurento_socket_url = "{{Setting::get('kurento_socket_url')}}";
+
+var wowza_ip_address = "{{Setting::get('wowza_ip_address')}}";
 
 console.log(jwplayer_key);
 
