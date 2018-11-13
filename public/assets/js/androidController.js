@@ -484,6 +484,7 @@ angular.module('liveApp')
                 data.append('id', memoryStorage.user_id);
                 data.append('token', memoryStorage.access_token);
                 data.append('video_id', video_id);
+                data.append('device_type', 'web');
                 
                 $.ajax({
 

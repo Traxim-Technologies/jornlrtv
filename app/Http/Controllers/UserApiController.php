@@ -194,6 +194,49 @@ class UserApiController extends Controller {
 
                         $streamer_file = $model->user_id.'-'.$model->id.'.sdp';  
 
+                        $last = LiveVideo::orderBy('port_no', 'desc')->first();
+
+                        $destination_port = 44104;
+
+                        if ($last) {
+
+                            if ($last->port_no) {
+
+                                $destination_port = $last->port_no + 2;
+
+                            }
+
+                        }
+
+                        $model->port_no = $destination_port;
+
+
+                        File::isDirectory(public_path().'/uploads/sdp_files') or File::makeDirectory(public_path().'/uploads/sdp_files', 0777, true, true);
+
+                        if (!file_exists(public_path()."/uploads/sdp_files/".$model->user_id.'-'.$model->id.".sdp")) {
+
+                            $myfile = fopen(public_path()."/uploads/sdp_files/".$model->user_id.'-'.$model->id.".sdp", "w") or die("Unable to open file!");
+
+                            $data = "v=0\n"
+                                    ."o=- 0 0 IN IP4 " . $destination_ip . "\n"
+                                    . "s=Kurento\n"
+                                    . "c=IN IP4 " . $destination_ip . "\n"
+                                    . "t=0 0\n"
+                                    . "m=video " . $destination_port . " RTP/AVP 100\n"
+                                    . "a=rtpmap:100 H264/90000\n";
+
+                            fwrite($myfile, $data);
+
+                            fclose($myfile);
+
+                            $filepath = public_path()."/uploads/sdp_files/".$model->user_id.'-'.$model->id.".sdp";
+
+                            shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
+
+                            $this->connectStream($model->user_id.'-'.$model->id);
+
+                        }
+
                     } else {
 
                         $streamer_file = "";
@@ -1046,6 +1089,20 @@ class UserApiController extends Controller {
             $model->no_of_minutes = getMinutesBetweenTime($model->start_time, $model->end_time);
 
             if ($model->save()) {
+
+                if ($request->device_type == DEVICE_WEB) {
+
+                    if ($model->user_id == $request->id) {  
+
+                        if (Setting::get('wowza_server_url')) {
+
+                            $this->disConnectStream($model->user_id.'-'.$model->id);
+
+                        }
+
+                    }
+
+                }
 
                 $response_array = ['success'=>true, 'message'=>tr('streaming_stopped')];
             }
@@ -9162,5 +9219,75 @@ class UserApiController extends Controller {
         return response()->json($response_array);
 
     }  
+
+
+// Connect Stream
+    public function connectStream($file = null) {
+
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file/actions/connect?connectAppName=live&appInstance=_definst_&mediaCasterType=rtp";
+
+            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                    // echo 'I completed! ' . $response->getBody();
+                Log::info(print_r($response->getBody(), true));
+            });
+            $promise->wait();
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+           // dd($e->getResponse()->getBody()->getContents());
+        }
+
+    }
+
+    // Disconnect Stream
+    public function disConnectStream($file = null) {
+
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $sdp = $file.".sdp";
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/applications/live/instances/_definst_/incomingstreams/$sdp/actions/disconnectStream";
+
+            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                    //  echo 'I completed! ' . $response->getBody();
+
+                Log::info('I completed! ' . $response->getBody());
+                
+            });
+            $promise->wait();
+
+            $this->deleteStream($file);
+
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            // dd($e->getResponse()->getBody()->getContents());
+
+            Log::info($e->getResponse()->getBody()->getContents());
+        }
+
+    }
+
+    // Delete Stream
+    public function deleteStream($file = null) {
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file";
+
+            $request = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                     Log::info('I completed! ' . $response->getBody());
+            });
+            $promise->wait();
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            // dd($e->getResponse()->getBody()->getContents());
+
+            Log::info($e->getResponse()->getBody()->getContents());
+        }
+
+    }
 
 }

@@ -554,6 +554,7 @@ liveAppCtrl
 				data.append('id', live_user_id);
 				data.append('token',user_token);
 				data.append('video_id', video_details.id);
+                data.append('device_type', 'web');
 				
 				$.ajax({
 
