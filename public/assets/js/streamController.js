@@ -350,6 +350,11 @@ liveAppCtrl
             connection.open(document.getElementById('room-id').value, function() {
                // showRoomURL(connection.sessionid);
 
+                if (is_kurento_running) {
+
+                    $scope.start();
+
+                }
 
                    $("#default_image").hide();
 
@@ -753,6 +758,13 @@ liveAppCtrl
 					    connection.autoCloseEntireSession = true;
 					     
 					    $scope.connectionNow.close();
+
+                        if (is_kurento_running) {
+
+                            ws.close();
+
+                            $scope.stop();
+                        }
 
 		      			UIkit.notify({message : 'Your streaming has been ended successfully.', status : 'success', timeout:5000, pos : 'top-center'});
 
