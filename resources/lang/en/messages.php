@@ -1110,7 +1110,7 @@ return array(
 	'current_wallet_amt'=>'Current Wallet amount the user',
 	'expiry_date_subscription'=>'Expiry days of the subscription for the user.',
 	'video_fields_mandatory'=>'fields are mandatory. Please fill and click next.',
-	'select_publish_time'=>'DD-MM-YYYY H:i',
+	'select_publish_time'=>'DD-MM-YYYY hh:mm',
 	'flash_missing'=>'Flash is missing. Download it from',
 	'adobe'=>'Adobe',
 	'watch_revenue_count'=>'Watch Count revenue based on the ',
