@@ -1352,25 +1352,25 @@ class AdminController extends Controller {
                     ->first();
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
-        // if ($video->video_type == 1) {
-            if (\Setting::get('streaming_url')) {
-                $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
-                if ($video->is_approved == 1) {
-                    if ($video->video_resolutions) {
-                        $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+            if ($video->video_type == VIDEO_TYPE_UPLOAD) {
+
+                if (\Setting::get('streaming_url')) {
+                    $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
+                    if ($video->is_approved == 1) {
+                        if ($video->video_resolutions) {
+                            $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+                        }
                     }
+                } else {
+
+                    $videoPath = $video->video_resize_path ? $videos->video.','.$video->video_resize_path : $video->video;
+                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                    
+
                 }
             } else {
-
-                $videoPath = $video->video_resize_path ? $videos->video.','.$video->video_resize_path : $video->video;
-                $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
-                
-
+                $videoStreamUrl = $video->video;
             }
-        /*} else {
-            $trailerstreamUrl = $videos->trailer_video;
-            $videoStreamUrl = $videos->video;
-        }*/
         
         $admin_video_images = $video->getScopeVideoTapeImages;
 

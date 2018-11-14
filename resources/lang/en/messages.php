@@ -1768,7 +1768,7 @@ return array(
 	'subscribe_to_continue_video'=>'Your subscription has been expired, Please subscribe and continue to upload a video',
 
 	'cards_add_failed' => "Add card failed.P Please try agin later.",
-		'streaming_type'=>'Streaming Type',
+	'streaming_type'=>'Streaming Type',
 	'wowza_app_name'=>'Wowza Application Name',
 	'wowza_port_number'=>'Wowza Port Number',
 	'example_wowza_port_number'=>'Ex : 1935',
@@ -1801,4 +1801,5 @@ return array(
 	'live_videos_not_found'=>'Live video has not been found',
 
 	'flash_missing_error'=>'Flash is missing. Download it from',
+	'unauthroized_person'=>'unauthorized actions has been detected...!',
 );
