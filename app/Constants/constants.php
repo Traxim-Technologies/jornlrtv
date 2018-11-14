@@ -273,3 +273,26 @@ if (!defined('VIDEO_STREAMING_STOPPED')) define('VIDEO_STREAMING_STOPPED' , 1);
 
 if (!defined('VIDEO_STREAMING_ONGOING')) define('VIDEO_STREAMING_ONGOING' , 0);
 
+
+
+// BROWSERS
+
+if (!defined('WEB_SAFARI')) define('WEB_SAFARI', 'Safari');
+
+if (!defined('WEB_OPERA')) define('WEB_OPERA', 'Opera');
+
+if (!defined('WEB_FIREFOX')) define('WEB_FIREFOX', 'Firefox');
+
+if (!defined('WEB_CHROME')) define('WEB_CHROME', 'Chrome');
+
+if (!defined('WEB_IE')) define('WEB_IE', 'IE');
+
+if (!defined('WEB_EDGE')) define('WEB_EDGE', 'Edge');
+
+if (!defined('WEB_BLINK')) define('WEB_BLINK', 'Blink');
+
+if (!defined('UNKNOWN')) define('UNKNOWN', 'Unknown');
+
+if (!defined('ANDROID_BROWSER')) define('ANDROID_BROWSER', 'andriod');
+
+if (!defined('IOS_BROWSER')) define('IOS_BROWSER', 'ios');

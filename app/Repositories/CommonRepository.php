@@ -1387,4 +1387,67 @@ class CommonRepository {
         }
     }
 
+    public static function getUrl($video, $request) {
+
+
+        $sdp = $video->user_id.'-'.$video->id.'.sdp';
+
+        $device_type = $request->device_type;
+
+        $browser = $request->browser;
+
+        if ($device_type == DEVICE_ANDROID) {
+
+            $url = "rtmp://".Setting::get('cross_platform_url')."/live/".$sdp;
+
+        } else if($device_type == DEVICE_IOS) {
+
+            $url = "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";
+
+        } else {
+
+            $browser = $browser ? $browser : get_browser();
+
+            if (strpos($browser, 'safari') !== false) {
+                
+                $url = "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";  
+
+            } else {
+
+                $url = "rtmp://".Setting::get('cross_platform_url')."/live/".$sdp;
+            }
+
+        }
+
+        return $url;
+    }
+
+
+    public static function rtmpUrl($model) {
+
+        $RTMP_URL = 'rtmp://'.Setting::get('cross_platform_url').'/live/';
+
+        $url = $RTMP_URL.$model->user_id.'_'.$model->id;
+
+        return $url;
+    }
+
+
+    public static function iosUrl($model) {
+
+        $sdp = $model->video_url;
+
+        $url =  "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";
+
+        return $url;
+    }
+
+   public static function webIosUrl($model) {
+
+        $sdp = $model->user_id.'-'.$model->id.'.sdp';;
+
+        $url =  "http://".Setting::get('cross_platform_url')."/live/".$sdp."/playlist.m3u8";
+
+        return $url;
+    }
 }

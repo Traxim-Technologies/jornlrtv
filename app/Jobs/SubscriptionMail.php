@@ -78,7 +78,6 @@ class SubscriptionMail extends Job implements ShouldQueue
 
                 }   
 
-
             }
         }
     }

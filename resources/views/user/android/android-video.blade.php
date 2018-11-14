@@ -229,7 +229,7 @@ input[type="range"]::-webkit-slider-thumb {
 	    
 </script>
 
-<script src="{{asset('assets/js/stream-controller.js')}}"></script>
+<script src="{{asset('assets/js/getHTMLMediaElement.js')}}"></script>
 
 <script src="{{asset('assets/js/androidController.js')}}"></script>
 

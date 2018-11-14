@@ -152,6 +152,7 @@ class UserApiController extends Controller {
                 $model->type = $request->type ? $request->type : TYPE_PUBLIC;
                 $model->channel_id = $request->channel_id;
                 $model->amount = 0;
+                $model->browser_name = $request->browser ? $request->browser : '';
                 if($request->payment_status) {
 
                     $model->amount = ($request->amount > 0) ? $request->amount : 1;
@@ -185,6 +186,83 @@ class UserApiController extends Controller {
                 ]);*/
 
                 if ($model) {
+
+
+                    $destination_ip = Setting::get('wowza_ip_address');
+
+                    if (Setting::get('kurento_socket_url') && $destination_ip) {
+
+                        $streamer_file = $model->user_id.'-'.$model->id.'.sdp';  
+
+                        $last = LiveVideo::orderBy('port_no', 'desc')->first();
+
+                        $destination_port = 44104;
+
+                        if ($last) {
+
+                            if ($last->port_no) {
+
+                                $destination_port = $last->port_no + 2;
+
+                            }
+
+                        }
+
+                        $model->port_no = $destination_port;
+
+
+                        File::isDirectory(public_path().'/uploads/sdp_files') or File::makeDirectory(public_path().'/uploads/sdp_files', 0777, true, true);
+
+                        if (!file_exists(public_path()."/uploads/sdp_files/".$model->user_id.'-'.$model->id.".sdp")) {
+
+                            $myfile = fopen(public_path()."/uploads/sdp_files/".$model->user_id.'-'.$model->id.".sdp", "w") or die("Unable to open file!");
+
+                            $data = "v=0\n"
+                                    ."o=- 0 0 IN IP4 " . $destination_ip . "\n"
+                                    . "s=Kurento\n"
+                                    . "c=IN IP4 " . $destination_ip . "\n"
+                                    . "t=0 0\n"
+                                    . "m=video " . $destination_port . " RTP/AVP 100\n"
+                                    . "a=rtpmap:100 H264/90000\n";
+
+                            fwrite($myfile, $data);
+
+                            fclose($myfile);
+
+                            $filepath = public_path()."/uploads/sdp_files/".$model->user_id.'-'.$model->id.".sdp";
+
+                            shell_exec("mv $filepath /usr/local/WowzaStreamingEngine/content/");
+
+                            $this->connectStream($model->user_id.'-'.$model->id);
+
+                        }
+
+                    } else {
+
+                        $streamer_file = "";
+                    }
+
+
+                    Log::info("device type ".$request->device_type);
+
+                    if ($request->device_type == DEVICE_WEB) {
+
+                        // $model->video_url = $streamer_file ? 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                    } else if($request->device_type == DEVICE_IOS){
+
+                        // $model->video_url = 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                        $model->browser_name = $request->device_type;
+
+                    }
+
+                    $model->video_url = $streamer_file;
+
+
+                   // $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
+
+                    $model->save();
 
                     $response_array = [
                         'success' => true , 
@@ -337,6 +415,7 @@ class UserApiController extends Controller {
                         $model->user_id = $request->id;
                         $model->virtual_id = md5(time());
                         $model->unique_id = $model->title;
+                        $model->browser_name = $request->browser ? $request->browser : '';
                         $model->snapshot = asset("/images/live_stream.jpg");
                         $model->start_time = getUserTime(date('H:i:s'), ($user) ? $user->timezone : '', "H:i:s");
 
@@ -346,6 +425,42 @@ class UserApiController extends Controller {
                         $model->save();
 
                         if ($model) {
+
+                            $destination_ip = Setting::get('wowza_ip_address');
+
+                            if ($request->device_type == DEVICE_WEB || $request->device_type == DEVICE_ANDROID) {
+
+                                if (Setting::get('kurento_socket_url') && $destination_ip) {
+
+                                    $streamer_file = $user->id.'-'.$model->id.'.sdp';  
+
+                                } else {
+
+                                    $streamer_file = "";
+                                }
+
+                            } else {
+
+                                $streamer_file = $user->id.'_'.$model->id;  
+
+                            }
+
+                            Log::info("device type ".$request->device_type == DEVICE_IOS);
+
+                            if ($request->device_type == DEVICE_WEB) {
+
+                                // $model->video_url = $streamer_file ? 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                            } else if($request->device_type == DEVICE_IOS){
+
+                                // $model->video_url = 'http://'.Setting::get('cross_platform_url').'/'.Setting::get('wowza_app_name').'/'.$streamer_file.'/playlist.m3u8';
+
+                                $model->browser_name = $request->device_type;
+
+                            }
+
+                            $model->video_url = $streamer_file;
+
 
                            // $model->video_url = Setting::get('mobile_rtsp').$user->id.'_'.$model->id;
 
@@ -373,6 +488,14 @@ class UserApiController extends Controller {
                                 "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$model->unique_id,'c_id'=>$model->channel_id)),
                                 'is_streaming'=>$model->is_streaming,
                                 'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
+                                'hostAddress'=>Setting::get('wowza_ip_address'),
+                                'portNumber'=>Setting::get('wowza_port_number'),
+                                'applicationName'=>Setting::get('wowza_app_name'),
+                                'streamName'=>$streamer_file,
+                                'wowzaUsername'=>Setting::get('wowza_username'),
+                                'wowzaPassword'=>Setting::get('wowza_password'),
+                                'wowzaLicenseKey'=>Setting::get('wowza_license_key'),
+                                'video_url'=>$model->video_url,
                             ];
                         } else {
                             $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(003) , 'error_code' => 003];
@@ -460,6 +583,48 @@ class UserApiController extends Controller {
 
                             $is_streamer = $model->user_id == $request->id ? DEFAULT_TRUE : DEFAULT_FALSE;
 
+                            if (!$is_streamer) {
+
+                                $video_url = "";
+
+                                if ($model->unique_id == 'sample') {
+
+                                    $video_url = $model->video_url;
+
+                                } else {
+
+                                    if ($model->video_url) {
+
+                                        if ($request->device_type == DEVICE_IOS) {
+
+                                            $video_url = CommonRepo::iosUrl($model);
+
+                                        } else if($model->browser_name == DEVICE_IOS){
+
+                                           $video_url = CommonRepo::rtmpUrl($model);
+
+                                        }
+
+                                        if (($request->browser == IOS_BROWSER || $request->browser == WEB_SAFARI) && ($model->browser_name == DEVICE_IOS)) {
+
+                                            $video_url = CommonRepo::iosUrl($model);
+
+                                        }
+
+                                    } else {
+
+                                        $video_url = "";
+
+                                    }
+
+                                }
+
+                            } else {
+
+                                $video_url = "";
+                            }
+
+
                             $data = [
                                 "video_image"=> $model->snapshot,
                                 "channel_image"=> $model->channel?$model->channel->picture: '',
@@ -485,7 +650,8 @@ class UserApiController extends Controller {
                                 'comments'=>$messages,  
                                 'suggestions'=>$suggestions,
                                 'redirect_web_url'=>route('user.android.video',['u_id'=>$model->unique_id, 'id'=>$request->id, 'c_id'=>$model->channel_id]),
-                                'is_streamer'=>$is_streamer
+                                'is_streamer'=>$is_streamer,
+                                'video_url'=>$video_url,
                             ];
 
                             $response_array = ['success'=>true, 'data'=>$data];
@@ -794,40 +960,60 @@ class UserApiController extends Controller {
 
         } else {
 
+            $viewer_cnt = 0;
 
-        // Load Viewers model
+            $live_video = LiveVideo::find($request->video_tape_id);
 
-            $model = Viewer::where('video_id', $request->video_tape_id)->where('user_id', $request->id)->first();
+            Log::info("Live Video");
 
-            if(!$model) {
+            if ($live_video) {
 
-                $model = new Viewer;
+                if ($live_video->user_id != $request->id) {
 
-                $model->video_id = $request->video_tape_id;
+                    // Load Viewers model
 
-                $model->user_id = $request->id;
+                    $model = Viewer::where('video_id', $request->video_tape_id)->where('user_id', $request->id)->first();
 
-            }
+                    $new_user = 0;
 
-            $model->count = ($model->count) ? $model->count + 1 : 1;
+                    if(!$model) {
 
-            $model->save();
+                        $new_user = 1;
 
-            if ($model) {
+                        $model = new Viewer;
 
+                        $model->video_id = $request->video_tape_id;
 
-                if ($model->getVideo) {
+                        $model->user_id = $request->id;
 
-                    $model->getVideo->viewer_cnt += 1;
+                    }
 
-                    $model->getVideo->save();
-                    
+                    $model->count = ($model->count) ? $model->count + 1 : 1;
+
+                    $model->save();
+
+                    if ($new_user) {
+
+                        if ($live_video) {
+
+                            Log::info("test");
+
+                            $live_video->viewer_cnt += 1;
+
+                            $live_video->save();
+                            
+                        }
+
+                    }
+
                 }
+
+                $viewer_cnt = $live_video->viewer_cnt ? $live_video->viewer_cnt : 0;
 
             }
 
             $response_array  = ['success'=>true, 
-                'viewer_cnt'=> $model->getVideo ? $model->getVideo->viewer_cnt : 0];
+                'viewer_cnt'=> (int) $viewer_cnt];
 
         }
 
@@ -903,6 +1089,20 @@ class UserApiController extends Controller {
             $model->no_of_minutes = getMinutesBetweenTime($model->start_time, $model->end_time);
 
             if ($model->save()) {
+
+                if ($request->device_type == DEVICE_WEB) {
+
+                    if ($model->user_id == $request->id) {  
+
+                        if (Setting::get('wowza_server_url')) {
+
+                            $this->disConnectStream($model->user_id.'-'.$model->id);
+
+                        }
+
+                    }
+
+                }
 
                 $response_array = ['success'=>true, 'message'=>tr('streaming_stopped')];
             }
@@ -6806,83 +7006,92 @@ class UserApiController extends Controller {
 
             $main_video = $video->video; 
 
-            if ($video->publish_status == 1) {
+            if ($video->video_type == VIDEO_TYPE_UPLOAD) {
 
-                $hls_video = Helper::convert_hls_to_secure(get_video_end($video->video) , $video->video);
+                if ($video->publish_status == 1) {
+
+                    $hls_video = Helper::convert_hls_to_secure(get_video_end($video->video) , $video->video);
 
 
-                if (\Setting::get('streaming_url')) {
+                    if (\Setting::get('streaming_url')) {
 
-                    if ($video->is_approved == 1) {
+                        if ($video->is_approved == 1) {
 
-                        if ($video->video_resolutions) {
+                            if ($video->video_resolutions) {
 
-                            $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+                                $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
 
-                            \Log::info("video Stream url".$videoStreamUrl);
+                                \Log::info("video Stream url".$videoStreamUrl);
 
-                            \Log::info("Empty Stream url".empty($videoStreamUrl));
+                                \Log::info("Empty Stream url".empty($videoStreamUrl));
 
-                            \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
+                                \Log::info("File Exists Stream url".!file_exists($videoStreamUrl));
 
-                            if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
+                                if(empty($videoStreamUrl) || !file_exists($videoStreamUrl)) {
 
-                                $videos = $video->video_path ? $video->video.','.$video->video_path : $video->video;
+                                    $videos = $video->video_path ? $video->video.','.$video->video_path : $video->video;
 
-                                $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
 
-                                $videoPath = [];
+                                    $videoPath = [];
 
-                                $videos = $videos ? explode(',', $videos) : [];
+                                    $videos = $videos ? explode(',', $videos) : [];
 
-                                $video_pixels = $video_pixels ? explode(',', $video_pixels) : [];
+                                    $video_pixels = $video_pixels ? explode(',', $video_pixels) : [];
 
-                                foreach ($videos as $key => $value) {
+                                    foreach ($videos as $key => $value) {
 
-                                    $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+                                        $videoPath[] = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => $video_pixels[$key]];
+
+                                    }
+
+                                    $videoPath = json_decode(json_encode($videoPath));
 
                                 }
 
-                                $videoPath = json_decode(json_encode($videoPath));
+                            } else {
+     
+                                $videoStreamUrl = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
 
                             }
-
-                        } else {
- 
-                            $videoStreamUrl = Helper::convert_rtmp_to_secure(get_video_end($video->video) , $video->video);
-
                         }
+
+                    } else {
+
+                        $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
+
+                        $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : ['original'];
+
+                        $videoPath = [];
+
+                        Log::info("VIDEOS LIST".print_r($videos , true));
+
+                        if(count($videos) > 0) {
+
+                            $videos = is_array($videos) ? $videos : explode(',', $videos);
+
+                            $video_pixels = is_array($video_pixels) ? $video_pixels : explode(',', $video_pixels);
+
+
+                            foreach ($videos as $key => $value) {
+
+                                $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => isset($video_pixels[$key]) ? $video_pixels[$key] : "HD"];
+
+
+                                $videoPath[] = $videoPathData;
+                           
+                            }
+                        }
+
+                        $videoPath =  json_decode(json_encode($videoPath));
+                        
                     }
 
                 } else {
 
-                    $videos = $video->video_path ? $video->video.','.$video->video_path : [$video->video];
+                    $videoStreamUrl = $video->video;
 
-                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : ['original'];
-
-                    $videoPath = [];
-
-                    Log::info("VIDEOS LIST".print_r($videos , true));
-
-                    if(count($videos) > 0) {
-
-                        $videos = is_array($videos) ? $videos : explode(',', $videos);
-
-                        $video_pixels = is_array($video_pixels) ? $video_pixels : explode(',', $video_pixels);
-
-
-                        foreach ($videos as $key => $value) {
-
-                            $videoPathData = ['file' => Helper::convert_rtmp_to_secure(get_video_end($value) , $value), 'label' => isset($video_pixels[$key]) ? $video_pixels[$key] : "HD"];
-
-
-                            $videoPath[] = $videoPathData;
-                       
-                        }
-                    }
-
-                    $videoPath =  json_decode(json_encode($videoPath));
-                    
+                    $hls_video = $video->video;
                 }
 
             } else {
@@ -6890,6 +7099,7 @@ class UserApiController extends Controller {
                 $videoStreamUrl = $video->video;
 
                 $hls_video = $video->video;
+
             }
 
             $subscribe_status = DEFAULT_FALSE;
@@ -9019,5 +9229,75 @@ class UserApiController extends Controller {
         return response()->json($response_array);
 
     }  
+
+
+// Connect Stream
+    public function connectStream($file = null) {
+
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file/actions/connect?connectAppName=live&appInstance=_definst_&mediaCasterType=rtp";
+
+            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                    // echo 'I completed! ' . $response->getBody();
+                Log::info(print_r($response->getBody(), true));
+            });
+            $promise->wait();
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+           // dd($e->getResponse()->getBody()->getContents());
+        }
+
+    }
+
+    // Disconnect Stream
+    public function disConnectStream($file = null) {
+
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $sdp = $file.".sdp";
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/applications/live/instances/_definst_/incomingstreams/$sdp/actions/disconnectStream";
+
+            $request = new \GuzzleHttp\Psr7\Request('PUT', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                    //  echo 'I completed! ' . $response->getBody();
+
+                Log::info('I completed! ' . $response->getBody());
+                
+            });
+            $promise->wait();
+
+            $this->deleteStream($file);
+
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            // dd($e->getResponse()->getBody()->getContents());
+
+            Log::info($e->getResponse()->getBody()->getContents());
+        }
+
+    }
+
+    // Delete Stream
+    public function deleteStream($file = null) {
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $url  = Setting::get('wowza_server_url')."/v2/servers/_defaultServer_/vhosts/_defaultVHost_/sdpfiles/$file";
+
+            $request = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+            $promise = $client->sendAsync($request)->then(function ($response) {
+                     Log::info('I completed! ' . $response->getBody());
+            });
+            $promise->wait();
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            // dd($e->getResponse()->getBody()->getContents());
+
+            Log::info($e->getResponse()->getBody()->getContents());
+        }
+
+    }
 
 }

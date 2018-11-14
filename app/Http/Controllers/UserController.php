@@ -214,36 +214,51 @@ class UserController extends Controller {
 
                     if ($model->user_id != $userModel->id) {
 
-                            // Load Viewers model
 
-                            $viewer = Viewer::where('video_id', $model->id)->where('user_id', Auth::user()->id)->first();
 
-                            if(!$viewer) {
+                             // Load Viewers model
 
-                                $viewer = new Viewer;
+                                $viewer = Viewer::where('video_id', $model->id)->where('user_id',Auth::user()->id)->first();
 
-                                $viewer->video_id = $model->id;
+                                $new_user = 0;
 
-                                $viewer->user_id = Auth::user()->id;
+                                if(!$viewer) {
 
-                            }
+                                    $new_user = 1;
 
-                            $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
+                                    $viewer = new Viewer;
 
-                            $viewer->save();
+                                    $viewer->video_id = $model->id;
 
-                            if ($viewer) {
+                                    $viewer->user_id = Auth::user()->id;
+                                }
 
-                                $model->viewer_cnt += 1;
+                                $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
 
-                                $model->save();
+                                $viewer->save();
 
-                            }
+                                if ($new_user) {
+
+                                    if ($model) {
+
+                                        Log::info("test");
+
+                                        $model->viewer_cnt += 1;
+
+                                        $model->save();
+                                        
+                                    }
+
+                                }
+
                             // video payment 
 
                             $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
                                 ->where('live_video_viewer_id', Auth::user()->id)
                                 ->where('status',DEFAULT_TRUE)->first();
+
+
+
                         
                     }
 
@@ -298,6 +313,52 @@ class UserController extends Controller {
                 $videos = $query->paginate(15);
 
 
+
+                $is_streamer = $model->user_id == $request->id ? DEFAULT_TRUE : DEFAULT_FALSE;
+
+                if (!$is_streamer) {
+
+                    $video_url = "";
+
+                    if ($model->unique_id == 'sample') {
+
+                        $video_url = $model->video_url;
+
+                    } else {
+
+                        if ($model->video_url) {
+
+                            if ($request->device_type == DEVICE_IOS) {
+
+                                $video_url = CommonRepo::iosUrl($model);
+
+                            } else if($model->browser_name == DEVICE_IOS){
+
+                               $video_url = CommonRepo::rtmpUrl($model);
+
+                            }
+
+                            if (($request->browser == IOS_BROWSER || $request->browser == WEB_SAFARI) && ($model->browser_name == DEVICE_IOS)) {
+
+                                $video_url = CommonRepo::iosUrl($model);
+
+                            }
+
+                        } else {
+
+                            $video_url = "";
+
+                        }
+
+                    }
+
+                } else {
+
+                    $video_url = "";
+                }
+
+                $model->video_url = $video_url;
+
                 return view('user.videos.live-video')->with('page', 'live-video')
                     ->with('subPage', 'broadcast')
                     ->with('data', $model)->with('appSettings', $appSettings)->with('comments',$comments)->with('videos', $videos);
@@ -342,6 +403,15 @@ class UserController extends Controller {
                 $model->no_of_minutes = getMinutesBetweenTime($model->start_time, $model->end_time);
 
                 $message =  tr('streaming_stopped_success');
+
+
+                if (Setting::get('wowza_server_url')) {
+
+                    $this->UserAPI->disConnectStream($model->user_id.'-'.$model->id);
+
+                }
+
+                
 
                 $route = route('user.channel', ['id'=>$model->channel_id]);
 
@@ -1848,6 +1918,20 @@ class UserController extends Controller {
 
         $model = Channel::find($id);
 
+        if (Auth::check()) {
+
+            if ($model) {
+
+                if (Auth::user()->id != $model->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+
+            }
+
+        }
+
         return view('user.channels.edit')->with('page', 'channels')
                     ->with('subPage', 'edit_channel')->with('model', $model);
 
@@ -1866,7 +1950,17 @@ class UserController extends Controller {
 
         $channel = Channel::where('id' , $request->id)->first();
 
-        if($channel) {       
+        if($channel) {  
+
+            if (Auth::check()) {
+
+                if (Auth::user()->id != $channel->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+                
+            }     
 
             $channel->delete();
 
@@ -2092,7 +2186,7 @@ class UserController extends Controller {
 
         if (!$channel) {
 
-            return back()->with('flash_error', tr('not_authorized_person'));
+            return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
         }
 
         $categories_list = $this->UserAPI->categories_list($request)->getData();
@@ -2111,6 +2205,16 @@ class UserController extends Controller {
         $model = VideoTape::find($request->id);
 
         if($model) {
+
+            if (Auth::check()) {
+
+                if (Auth::user()->id != $model->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+                
+            }    
 
             $model->publish_time = $model->publish_time ? (($model->publish_time != '0000-00-00 00:00:00') ? date('d-m-Y H:i:s', strtotime($model->publish_time)) : null) : null;
 
@@ -2135,6 +2239,16 @@ class UserController extends Controller {
     public function video_delete($id) {
 
         if($video = VideoTape::where('id' , $id)->first())  {
+
+            if (Auth::check()) {
+
+                if (Auth::user()->id != $video->user_id) {
+
+                    return redirect(route('user.channel.mychannel'))->with('flash_error', tr('unauthroized_person'));
+
+                }
+                
+            }    
 
             Helper::delete_picture($video->video, "/uploads/videos/");
 

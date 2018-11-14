@@ -60,6 +60,21 @@ video {
                         <button id="open-or-join-room">Auto Open Or Join Room</button>
 
                       </div>
+
+
+                      <div style="display: none">
+                               <video id="videoInput" autoplay></video>
+
+
+                                <textarea id="rtpSdp">v=0
+                                  o=- 0 0 IN IP4 {{Setting::get('wowza_ip_address')}}
+                                  s=Kurento
+                                  c=IN IP4 {{Setting::get('wowza_ip_address')}}
+                                  t=0 0
+                                  m=video {{$data->port_no}} RTP/AVP 100
+                                  a=rtpmap:100 H264/90000
+                                </textarea>
+                        </div>
 						
 
 						<div class="live_img" id="videos-container" room="{{$data->id}}">
@@ -73,6 +88,16 @@ video {
 
 
 						</div>
+
+						<div class="main_video_error live_img" id="main_video_setup_error" style="display: none;">
+                            <img src="{{asset('error.jpg')}}" class="error-image" alt="Error" style="width: 100%;height: 250px;">
+
+                            <div class="flash_display" id="flash_error_display" style="display: none;">
+                                <div class="flash_error_div">
+                                    <div class="flash_error">{{tr('flash_missing_error')}}<a style="background-color:none;margin-left:1%;display:inline;" target="_blank" href="http://get.adobe.com/flashplayer/" class="underline">{{tr('adobe')}}</a>.</div>
+                                </div>
+                            </div>
+                        </div>
 
 						<hr>
 
@@ -404,13 +429,24 @@ video {
 
 <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
-<script src="{{asset('assets/js/stream-controller.js')}}"></script>
+<script>jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";</script>
+
+<script src="{{asset('assets/js/getHTMLMediaElement.js')}}"></script>
 
 
 <script type="text/javascript">
 
 setTimeout( function() { jQuery(".alert-success").fadeOut("slow") },5000);
 
+
+var jwplayer_key = "{{Setting::get('JWPLAYER_KEY')}}";
+
+
+var kurento_socket_url = "{{Setting::get('kurento_socket_url')}}";
+
+var wowza_ip_address = "{{Setting::get('wowza_ip_address')}}";
+
+console.log(jwplayer_key);
 
 var video_details = <?= $data; ?>;
 
@@ -462,7 +498,7 @@ liveAppCtrl
             $rootScope.appSettings = appSettings;
         }
 ]);
-    
+
 </script>
 
 <script src="{{asset('assets/js/streamController.js')}}"></script>

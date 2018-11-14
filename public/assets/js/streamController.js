@@ -118,6 +118,184 @@ liveAppCtrl
 			
 		}
 
+        $scope.wowza_ip_address = wowza_ip_address;
+
+        $scope.kurento_socket_url = kurento_socket_url;
+
+        var is_kurento_running = 0;
+
+        if (browser == 'Safari' || m_type =='ios') {
+
+            console.log("kurento not supported..!");
+
+        } else {
+
+            if ($scope.kurento_socket_url) {
+
+                is_kurento_running = 1;
+
+                var ws = new WebSocket('wss://'+$scope.kurento_socket_url+'/rtprelay');
+
+                console.log(ws);
+
+                var videoInput;
+                var videoOutput;
+                var webRtcPeer;
+                var state = null;
+                var destinationIp;
+                var destinationPort;
+                var rtpSdp;
+
+                console.log('Page loaded ...');
+                videoInput = document.getElementById('videoInput');
+                videoOutput = document.getElementById('videoOutput');
+                rtpSdp = document.getElementById('rtpSdp');
+
+                ws.onmessage = function(message) {
+                    var parsedMessage = JSON.parse(message.data);
+                    console.info('Received message: ' + message.data);
+
+                    switch (parsedMessage.id) {
+                    case 'startResponse':
+                        startResponse(parsedMessage);
+                        break;
+                    case 'error':
+                        onError('Error message from server: ' + parsedMessage.message);
+                        break;
+                    case 'iceCandidate':
+                        webRtcPeer.addIceCandidate(parsedMessage.candidate)
+                        break;
+                    default:
+                        onError('Unrecognized message', parsedMessage);
+                    }
+                }
+
+                $scope.start = function() {
+                    console.log('Starting video call ...')
+
+                    // showSpinner(videoInput);
+
+                    console.log('Creating WebRtcPeer and generating local sdp offer ...');
+
+                    var options = {
+                      localVideo: videoInput,
+                      onicecandidate : onIceCandidate
+                    }
+
+                    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+                        if(error) return onError(error);
+                        this.generateOffer(onOffer);
+                    });
+                }
+
+                function onIceCandidate(candidate) {
+                       console.log('Local candidate' + JSON.stringify(candidate));
+
+                       var message = {
+                          id : 'onIceCandidate',
+                          candidate : candidate
+                       };
+                       sendMessage(message);
+                }
+
+                function onOffer(error, offerSdp) {
+                    if(error) return onError(error);
+
+                    console.info('Invoking SDP offer callback function ' + location.host);
+                    var message = {
+                        id : 'start',
+                        sdpOffer : offerSdp,
+                        rtpSdp : rtpSdp.value
+                    }
+                    console.log("This is the offer sdp:");
+                    console.log(offerSdp);
+                    sendMessage(message);
+                }
+
+                function onError(error) {
+                    console.error(error);
+                }
+
+                function startResponse(message) {
+                    console.log('SDP answer received from server. Processing ...');
+                    webRtcPeer.processAnswer(message.sdpAnswer);
+                }
+
+                $scope.stop = function() {
+                    console.log('Stopping video call ...');
+                    if (webRtcPeer) {
+                        webRtcPeer.dispose();
+                        webRtcPeer = null;
+
+                        var message = {
+                            id : 'stop'
+                        }
+                        sendMessage(message);
+                    }
+                    // hideSpinner(videoInput, videoOutput);
+                }
+
+                function sendMessage(message) {
+                    var jsonMessage = JSON.stringify(message);
+                    console.log('Senging message: ' + jsonMessage);
+                    ws.send(jsonMessage);
+                }
+
+                /*function showSpinner() {
+                    for (var i = 0; i < arguments.length; i++) {
+                        arguments[i].poster = './img/transparent-1px.png';
+                        arguments[i].style.background = 'center transparent url("./img/spinner.gif") no-repeat';
+                    }
+                }
+
+                function hideSpinner() {
+                    for (var i = 0; i < arguments.length; i++) {
+                        arguments[i].src = '';
+                        arguments[i].poster = './img/webrtc.png';
+                        arguments[i].style.background = '';
+                    }
+                }*/
+
+                function forceEvenRtpPort(rtpPort) {
+                    if ((rtpPort > 0) && (rtpPort % 2 != 0))
+                        return rtpPort - 1;
+                    else return rtpPort;
+                }
+
+                function updateRtpSdp() {
+                    var destination_ip;
+                    var destination_port;
+
+                    if (!destinationIp.value)
+                        destination_ip= $scope.wowza_ip_address;
+                    else
+                        destination_ip = destinationIp.value.trim();
+
+                    if (!destinationPort.value)
+                        destination_port="33124";
+                    else
+                        destination_port = forceEvenRtpPort(destinationPort.value.trim());
+
+
+                    destination_ip= $scope.wowza_ip_address;
+
+                        rtpSdp.value = 'v=0\n'
+                        + 'o=- 0 0 IN IP4 ' + destination_ip + '\n'
+                        + 's=Kurento\n'
+                        + 'c=IN IP4 ' + destination_ip + '\n'
+                        + 't=0 0\n'
+                        + 'm=video ' + destination_port + ' RTP/AVP 100\n'
+                        + 'a=rtpmap:100 H264/90000\n';
+
+                    console.log(rtpSdp.value);
+                }
+
+
+
+            }
+
+        }
+
 
 		// This function will call, when the streaming started by user
 		$scope.live_status = function() {
@@ -172,6 +350,11 @@ liveAppCtrl
             connection.open(document.getElementById('room-id').value, function() {
                // showRoomURL(connection.sessionid);
 
+                if (is_kurento_running) {
+
+                    $scope.start();
+
+                }
 
                    $("#default_image").hide();
 
@@ -400,6 +583,8 @@ liveAppCtrl
         };
 
 
+       
+
         if (video_details.user_id == live_user_id) {
 
             console.log("room...");
@@ -408,11 +593,140 @@ liveAppCtrl
 
         } else {
 
-            //alert("Joining Room");
+            if(video_details.video_url != null && video_details.video_url != '') {
 
-            console.log("Join Room...");
+                console.log(video_details.video_url);
 
-            $("#join-room").click();
+                if (jwplayer_key == '' && video_details.video_url) {
+
+                    alert("Configure Jwplayer Key, Kindly contact Admin");
+
+                    return false;
+                }
+
+                jwplayer.key = jwplayer_key;
+
+                var playerInstance1 = jwplayer("videos-container");
+
+                $("#loader_btn").hide();
+
+                playerInstance1.setup({
+
+                   file : $sce.trustAsResourceUrl(video_details.video_url),
+                    width: "100%",
+                    aspectratio: "16:9",
+                    primary: "flash",
+                    controls : true,
+                    "controlbar.idlehide" : false,
+                    controlBarMode:'floating',
+                    "controls": {
+                      "enableFullscreen": false,
+                      "enablePlay": false,
+                      "enablePause": false,
+                      "enableMute": true,
+                      "enableVolume": true
+                    },
+                    autostart : true,
+                   /* "sharing": {
+                        "sites": ["reddit","facebook","twitter"]
+                      }*/
+                });
+
+                playerInstance1.on('error', function(e) {
+
+                    console.log("setupError1");
+
+                    console.log(e);
+
+                    $("#videos-container").hide();
+
+                    $("#loader_btn").hide();
+
+                    var hasFlash = false;
+                    
+                   try {
+                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                        if (fo) {
+                            hasFlash = true;
+                        }
+                    } catch (e) {
+                        if (navigator.mimeTypes
+                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                            hasFlash = true;
+                        }
+                    }
+
+                    console.log(hasFlash == false);
+
+                    $('#main_video_setup_error').css('display', 'block');
+
+                    if (hasFlash == false) {
+
+                        $("#flash_error_display").show();  
+
+                        $('#main_video_setup_error').show();      
+                    }
+
+                   
+                   alert("Video Setup Error...!");
+
+                    //$state.go('guest.home', {}, {reload : true});
+
+                });
+
+
+                playerInstance1.on('setupError', function(e) {
+
+                    console.log("setupError");
+
+                    console.log(e);
+
+                    $("#videos-container").hide();
+
+                    $("#loader_btn").hide();
+
+                    var hasFlash = false;
+                   try {
+                        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                        if (fo) {
+                            hasFlash = true;
+                        }
+                    } catch (e) {
+                        if (navigator.mimeTypes
+                                && navigator.mimeTypes['application/x-shockwave-flash'] != undefined
+                                && navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
+                            hasFlash = true;
+                        }
+                    }
+
+                    $('#main_video_setup_error').show();
+
+                    if (hasFlash == false) {
+                        
+                        $("#flash_error_display").show();  
+
+                        $('#main_video_setup_error').show();      
+                    }
+
+
+                    alert("Video Setup Error...!");
+
+                    //$state.go('guest.home', {}, {reload : true});
+                
+                });
+
+                $("#loader_btn").hide();
+
+            } else {
+
+                //alert("Joining Room");
+
+                console.log("Join Room...");
+
+                $("#join-room").click();
+
+            }
         }
 
 		$scope.stopStreaming = function(video_id) {
@@ -423,6 +737,7 @@ liveAppCtrl
 				data.append('id', live_user_id);
 				data.append('token',user_token);
 				data.append('video_id', video_details.id);
+                data.append('device_type', 'web');
 				
 				$.ajax({
 
@@ -443,6 +758,13 @@ liveAppCtrl
 					    connection.autoCloseEntireSession = true;
 					     
 					    $scope.connectionNow.close();
+
+                        if (is_kurento_running) {
+
+                            ws.close();
+
+                            $scope.stop();
+                        }
 
 		      			UIkit.notify({message : 'Your streaming has been ended successfully.', status : 'success', timeout:5000, pos : 'top-center'});
 
