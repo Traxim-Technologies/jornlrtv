@@ -5538,7 +5538,7 @@ class AdminController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', Helper::get_error_message(163));
+            return back()->with('flash_error', Helper::get_error_message(167));
 
         }        
 
@@ -5573,7 +5573,7 @@ class AdminController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', Helper::error_message(163));
+            return back()->with('flash_error', Helper::error_message(167));
 
         }        
 
