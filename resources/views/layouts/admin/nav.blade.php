@@ -167,7 +167,7 @@
 
                 <ul class="treeview-menu">
                     @if(get_banner_count() < 6)
-                        <li id="add-banner-video"><a href="{{route('admin.add.banner.video')}}"><i class="fa fa-circle-o"></i>{{tr('add_video')}}</a></li>
+                        <li id="add-banner-video"><a href="{{route('admin.banner.videos.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_video')}}</a></li>
                     @endif
                     <li id="view-banner-videos"><a href="{{route('admin.banner.videos')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
                 </ul>
@@ -201,7 +201,7 @@
                 <ul class="treeview-menu">
 
                     <li id="add-coupons"><a href="{{route('admin.add.coupons')}}"><i class="fa fa-circle-o"></i>{{tr('add_coupon')}}</a></li>
-                    <li id = "view-coupons"><a href="{{route('admin.coupon.list')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
+                    <li id = "view_coupons"><a href="{{route('admin.coupon.list')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
                 </ul>
             </li>
             

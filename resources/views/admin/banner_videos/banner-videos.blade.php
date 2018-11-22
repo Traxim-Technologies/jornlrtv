@@ -22,7 +22,7 @@
 
           	<div class="box-header label-primary">
                 <b style="font-size:18px;">{{tr('banner_videos')}}</b>
-                <a href="{{route('admin.add.banner.video')}}" class="btn btn-default pull-right">{{tr('add_banner_videos')}}</a>
+                <a href="{{route('admin.banner.videos.create')}}" class="btn btn-default pull-right">{{tr('add_banner_videos')}}</a>
             </div>
 
             <div class="box-body">

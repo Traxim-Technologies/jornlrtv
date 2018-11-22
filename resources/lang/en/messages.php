@@ -1099,7 +1099,7 @@ return array(
 	'twitter'=>'Twitter',
 	'skype'=>'Skype',
 	'message_100'=>'Message-100',
-	'help_content'=>'We have this team of innate developers and dedicated team of support to sort out the things for your benefits. Tell us what you like about StreamHash and we may suggest you the best solution for you :)',
+	'help_content'=>'We have this team of innate developers and dedicated team of support to sort out the things for your benefits. Tell us what you like about StreamHash and we may suggest the best solution for you :)',
 	'money_box'=>'Money Box-100',
 	'cheers'=>'Cheers!',
 	'custom_push_message'=>'Enter Custom Push Message',
@@ -1110,7 +1110,7 @@ return array(
 	'current_wallet_amt'=>'Current Wallet amount the user',
 	'expiry_date_subscription'=>'Expiry days of the subscription for the user.',
 	'video_fields_mandatory'=>'fields are mandatory. Please fill and click next.',
-	'select_publish_time'=>'DD-MM-YYYY H:i',
+	'select_publish_time'=>'DD-MM-YYYY hh:mm',
 	'flash_missing'=>'Flash is missing. Download it from',
 	'adobe'=>'Adobe',
 	'watch_revenue_count'=>'Watch Count revenue based on the ',
@@ -1502,4 +1502,6 @@ return array(
 
 	'cards_add_failed' => "Add card failed.P Please try agin later.",
 	'unauthroized_person'=>'unauthorized actions has been detected...!',
+	'reason_for_cancellation'=>'Reason for Cancellation',
+	'select_user_name'=>'Select Username',
 );

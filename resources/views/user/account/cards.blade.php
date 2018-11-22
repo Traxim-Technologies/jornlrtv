@@ -105,7 +105,7 @@
 								                    onkeyup="card_number_onkey(this.value)" maxlength="16">
 								                </div>
 								                <div class="input-group-signup ">
-								                    <input id="email" name="cvv" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)">
+								                    <input id="email" name="cvv" type="text" placeholder="{{tr('cvv')}}" class="form-control input-md" data-stripe="cvc" onkeyup="$('.jp-card-cvc').html(this.value)" maxlength="4" minlength="3" pattern="[0-9]{3,}">
 								                </div>
 
 								                <div class="input-group-signup">
