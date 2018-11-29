@@ -106,7 +106,7 @@
 				              			</a>
 
 
-						      			<a href="{{route('admin.tags.delete' ,['id'=>$data->id])}}" class="btn  btn-xs btn-danger" title="Delete" onclick="return alert('Are you sure want to delete ?')">
+						      			<a href="{{route('admin.tags.delete' ,['id'=>$data->id])}}" class="btn  btn-xs btn-danger" title="Delete" onclick="return confirm('Are you sure want to delete ?')">
 
 				              				<i class="fa fa-trash"></i>
 
