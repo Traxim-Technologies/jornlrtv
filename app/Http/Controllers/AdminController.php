@@ -5747,7 +5747,7 @@ class AdminController extends Controller {
 
         if ($response->success) {
 
-            return back()->with('flash_success', $response->success);
+            return back()->with('flash_success', $response->message);
 
         } else {
 
