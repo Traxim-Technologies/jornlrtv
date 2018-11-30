@@ -1431,8 +1431,8 @@ class AdminController extends Controller {
 
         return view('admin.videos.wishlists')
                     ->with('data' , $wishlists)
-                    ->withPage('users')
-                    ->with('sub_page','users');
+                    ->withPage('videos')
+                    ->with('sub_page','view-videos');
 
        
     }
@@ -5041,7 +5041,8 @@ class AdminController extends Controller {
     public function save_tag(Request $request) {
 
         $validator = Validator::make($request->all() , [
-            'name' => 'required|max:128|min:2|unique:tags,name',
+            'name' => $request->id ? 'required|max:128|min:2|unique:tags,name,'.$request->id.',id' : 
+            'required|max:128|min:2|unique:tags,name,NULL,id',
             'id' => $request->id ? 'exists:tags,id' : '', 
         ]);
 
@@ -5746,7 +5747,7 @@ class AdminController extends Controller {
 
         if ($response->success) {
 
-            return back()->with('flash_success', $response->success);
+            return back()->with('flash_success', $response->message);
 
         } else {
 
