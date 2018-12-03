@@ -38,5 +38,6 @@ class DatabaseSeeder extends Seeder
         $this->call(IosPaymentStatusSeeder::class);
         $this->call(PaymentTypeSeeder::class);
         $this->call(FfmpegSeeder::class);
+        $this->call(V3Seeder::class);
     }
 }
