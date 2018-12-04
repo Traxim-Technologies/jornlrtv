@@ -191,7 +191,7 @@
 
             \Log::info(envfile('MAIL_USERNAME')); \Log::info(envfile('MAIL_PASSWORD'));
 
-            if(Setting::get('email_notification') == YES)
+            if(Setting::get('email_notification') == YES) {
 
                 if(config('mail.username') && config('mail.password')) {
 
