@@ -265,3 +265,10 @@ if(!defined('INACTIVE_PLANS')) define('INACTIVE_PLANS', 0);
 if(!defined('FFMPEG_INSTALLED')) define('FFMPEG_INSTALLED', 1);
 
 if(!defined('FFMPEG_NOT_INSTALLED')) define('FFMPEG_NOT_INSTALLED', 0);
+
+
+// ON OFF STATUS
+
+if(!defined('YES')) define('YES', 1);
+
+if(!defined('NO')) define('NO', 0);

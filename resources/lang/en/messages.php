@@ -1037,7 +1037,7 @@ return array(
 	'hls_settings_note' => 'Ex : http://IP_ADDRESS_OR_DOMAIN:8080/',
 
 	'video_viewer_count_size_label'=>'Set Viewer Count Limit Per Video',
-	'video_viewer_count_size_label_note' => 'Usage : View count limit. Once the view count reaches the limit set by the admin, the moderator gets paid for each view.',
+	'video_viewer_count_size_label_note' => 'Usage : View count limit. Once the view count reaches the limit set by the admin, the user gets paid for each view.',
 	'amount_per_video_note' => "Usage : The amount set for each view once the count crosses the view limit.",
 	'HLS_STREAMING_URL' => 'HLS Streaming URL',
 	'amount_per_video'=>'Amount Per Video View',
