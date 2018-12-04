@@ -46,5 +46,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentTypeSeeder::class);
         $this->call(FfmpegSeeder::class);
         $this->call(WowzaDetailsSeeder::class);
+        $this->call(WowzaExistsSeeder::class);
     }
 }
