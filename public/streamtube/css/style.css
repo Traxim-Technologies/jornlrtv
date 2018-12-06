@@ -4202,3 +4202,11 @@ input:checked + .slider{
 .mt-30{
 	margin-top: 30px;
 }
+
+.text-green {
+	color: green;
+}
+
+.text-red {
+	color: red;
+}

@@ -62,9 +62,9 @@
             <th >{{tr('picture')}}</th>
 
             <th >{{tr('status')}}</th>
-
+            @if(Setting::get('email_verify_control'))
             <th >{{tr('email_verification')}}</th>
-
+            @endif
             <th >{{tr('validity_days')}}</th>
 
             <th >{{tr('redeems')}}</th>
@@ -129,14 +129,15 @@
                     @endif
                 </td>
 
-                <td>
-                    @if($user_details->is_verified)
-
-                        {{tr('verify')}}
-                    @else
-                        {{tr('verified')}}
-                    @endif
-                </td>
+                @if(Setting::get('email_verify_control'))
+                    <td>
+                        @if($user_details->is_verified)
+                            {{tr('verified')}}
+                        @else                      
+                            {{tr('verify')}}
+                        @endif
+                    </td>
+                @endif
 
                 <td>
                     @if($user_details->user_type)
