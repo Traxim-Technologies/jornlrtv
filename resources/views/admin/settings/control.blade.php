@@ -41,6 +41,34 @@
                             </label>
                         </div>
 
+                        <div class="form-group">
+                            <label>{{ tr('is_admin_needs_to_approve_channel_video') }}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_admin_needs_to_approve_channel_video" value="1" class="flat-red" @if(Setting::get('is_admin_needs_to_approve_channel_video') == 1) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_admin_needs_to_approve_channel_video" class="flat-red"  value="0" @if(Setting::get('is_admin_needs_to_approve_channel_video') == 0) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>{{ tr('is_direct_upload_button') }}</label>
+                            <br>
+                            <label>
+                                <input required type="radio" name="is_direct_upload_button" value="1" class="flat-red" @if(Setting::get('is_direct_upload_button') == 1) checked @endif>
+                                {{tr('yes')}}
+                            </label>
+
+                            <label>
+                                <input required type="radio" name="is_direct_upload_button" class="flat-red"  value="0" @if(Setting::get('is_direct_upload_button') == 0) checked @endif>
+                                {{tr('no')}}
+                            </label>
+                        </div>
+
                          <div class="form-group">
                             <label>{{ tr('admin_language_control') }}</label>
                             <br>

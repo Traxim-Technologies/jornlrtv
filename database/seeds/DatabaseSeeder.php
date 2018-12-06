@@ -39,5 +39,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentTypeSeeder::class);
         $this->call(FfmpegSeeder::class);
         $this->call(V3Seeder::class);
+        $this->call(V31Seeder::class);
     }
 }

@@ -10,6 +10,8 @@ use App\Helpers\Helper;
 
 use App\Category;
 
+use Setting;
+
 class VideoTape extends Model
 {
 
@@ -258,6 +260,20 @@ class VideoTape extends Model
     {
         //execute the parent's boot method 
         parent::boot();
+
+        static::created(function($model) {
+
+            // If the user uploaded video means check the whether admin needs to approve or direct approval
+
+            if( $model->uploaded_by == "user" && Setting::get('is_admin_needs_to_approve_channel_video') == YES) {
+
+                $model->is_approved = DEFAULT_FALSE;
+
+                $model->save();
+
+            }
+
+        });
 
         //delete your related models here, for example
         static::deleting(function($model)

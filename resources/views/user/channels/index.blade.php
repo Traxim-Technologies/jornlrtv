@@ -355,7 +355,21 @@
 <div class="history-title">
     <div class="history-head row">
         <div class="cross-title2">
-            <h5 class="payment_class unset-height"><a href="{{$video->url}}">{{$video->title}}</a></h5>
+            <h5 class="payment_class unset-height">
+            	@if(Auth::check())
+	            	@if($channel->user_id == Auth::user()->id)
+		            	@if($video->is_approved == YES)
+		            		<span class="text-green" title="Admin Approved"><i class="fa fa-check-circle"></i></span>
+		            	@else
+
+		            		<span class="text-red" title="Admin Declined"><i class="fa fa-times"></i></span>
+
+		            	@endif
+		            @endif
+	            @endif
+
+            	<a href="{{$video->url}}">{{$video->title}}</a>
+            </h5>
            	
             <span class="video_views">
                 <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 

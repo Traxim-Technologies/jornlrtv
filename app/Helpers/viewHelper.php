@@ -1258,6 +1258,7 @@ function displayVideoDetails($data,$userId) {
         'type_of_subscription'=>$data->type_of_subscription,
         'user_ppv_amount' => $data->user_ppv_amount,
         'status'=>$data->status,
+        'is_approved'=>$data->is_approved,
         'pay_per_view_status'=>$pay_per_view_status->success,
         'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
@@ -1438,4 +1439,34 @@ function seoUrl($string) {
     //Convert whitespaces and underscore to dash
     $string = preg_replace("/[\s_]/", "-", $string);
     return $string;
+}
+
+function userChannelId() {
+
+    $userId = Auth::user()->id;
+
+    $channel = Channel::where('user_id', $userId)->first();
+
+    $channelid = $channel ? $channel->id : '';
+
+    if($channelid) {
+
+        return route('user.video_upload', ['id'=>$channelid]);
+
+    } else {
+
+        if(Auth::check())  {
+
+            if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1) {
+
+                if(Auth::user()->user_type) {
+
+                    return route('user.create_channel');
+
+                }
+            }
+        }
+
+        return route('user.subscriptions');
+    }
 }

@@ -1504,4 +1504,8 @@ return array(
 	'unauthroized_person'=>'unauthorized actions has been detected...!',
 	'reason_for_cancellation'=>'Reason for Cancellation',
 	'select_user_name'=>'Select Username',
+
+	// Version 3.1 messages
+	'is_admin_needs_to_approve_channel_video' => 'Is admin approval required for user uploaded videos',
+	'is_direct_upload_button' => 'Direct Upload button like YouTube Upload',
 );
