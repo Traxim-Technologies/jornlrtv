@@ -1097,6 +1097,28 @@ class ApplicationController extends Controller {
 
                 $data['currency'] = Setting::get('currency');
 
+                // Streaming Keys
+
+                $data['stream'] = [];
+
+                $wowza['is_wowza'] = Setting::get('is_wowza_configured');
+
+                $details['wowza_port_number'] = Setting::get('wowza_port_number');
+
+                $details['wowza_app_name'] = Setting::get('wowza_app_name');
+
+                $details['wowza_username'] = Setting::get('wowza_username');
+
+                $details['wowza_password'] = Setting::get('wowza_password');
+
+                $details['wowza_license_key'] = Setting::get('wowza_license_key');
+
+                $details['wowza_ip_address'] = Setting::get('wowza_ip_address');
+
+                $wowza['wowza'] = $details;
+
+                $data['stream'] = $wowza;
+
                 $response_array = ['success' => true , 'data' => $data];
 
                 return response()->json($response_array , 200);

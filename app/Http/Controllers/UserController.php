@@ -868,7 +868,8 @@ class UserController extends Controller {
                             $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
                                 ->where('live_video_viewer_id', Auth::user()->id)
                                 ->where('status',DEFAULT_TRUE)->first();
-                        
+                            
+
                     }
 
                   
@@ -902,6 +903,8 @@ class UserController extends Controller {
 
 
         }
+
+        $model->video_url = "";
 
         return view('user.android.android-video')->with('data', $model)->with('page', '')->with('sub_page','');
     }
