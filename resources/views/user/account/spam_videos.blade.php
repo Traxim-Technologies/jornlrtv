@@ -25,7 +25,7 @@
                         <li class="sub-list row">
                             <div class="main-history">
                                  <div class="history-image">
-                                    <a href="{{$spamvideo->url}}"><img src="{{$spamvideo->video_image}}"></a>
+                                    <img src="{{$spamvideo->video_image}}">
 
                                     @if($spamvideo->ppv_amount > 0)
                                         @if(!$spamvideo->ppv_status)
@@ -44,7 +44,7 @@
                                 <div class="history-title">
                                     <div class="history-head row">
                                         <div class="cross-title1">
-                                            <h5><a href="{{$spamvideo->url}}">{{$spamvideo->title}}</a></h5>
+                                            <h5>{{$spamvideo->title}}</h5>
                                             <!-- <p class="duration">{{tr('duration')}}: {{$spamvideo->duration}}</p> -->
                                             <span class="video_views">
                                                 <div><a href="{{route('user.channel',$spamvideo->channel_id)}}">{{$spamvideo->channel_name}}</a></div>

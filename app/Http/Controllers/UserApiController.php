@@ -6938,7 +6938,7 @@ class UserApiController extends Controller {
 
                     } else {
 
-                        $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(159), 'error_code'=>159];
+                        $response_array = ['success'=> false, 'error_messages'=>Helper::get_error_message(173), 'error_code'=>173];
 
                     }
 
