@@ -3879,8 +3879,12 @@ tr.active{
     padding: 0 1.5em .5em 0;
     color: #999;
 }
-h1::first-letter, h2::first-letter, h3::first-letter, h4::first-letter, h5::first-letter, h6::first-letter,
-span::first-letter, p::first-letter, div::first-letter, label::first-letter, .label::first-letter, a::first-letter, span, li::first-letter{
+/*h1::first-letter, h2::first-letter, h3::first-letter, h4::first-letter, h5::first-letter, h6::first-letter, span::first-letter, p::first-letter,
+div::first-letter, a::first-letter, span, li::first-letter, .label::first-letter, label::first-letter{
+	text-transform: capitalize;
+}*/
+h1::first-letter, h2::first-letter, h3::first-letter, h4::first-letter, h5::first-letter, h6::first-letter, span::first-letter, p::first-letter,
+ a::first-letter, span, li::first-letter, .label::first-letter, label::first-letter{
 	text-transform: capitalize;
 }
 .branded-page-module-title-text{
@@ -4195,3 +4199,14 @@ input:checked + .slider{
 /*.control-label{
 	font-weight: normal !important;
 }*/
+.mt-30{
+	margin-top: 30px;
+}
+
+.text-green {
+	color: green;
+}
+
+.text-red {
+	color: red;
+}

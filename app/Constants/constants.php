@@ -80,8 +80,6 @@ if(!defined('REQUEST_STEP_FINAL')) define('REQUEST_STEP_FINAL', 4);
 
 if(!defined('USER')) define('USER', 0);
 
-if(!defined('Moderator')) define('Moderator',1);
-
 if(!defined('NONE')) define('NONE', 0);
 
 if(!defined('MAIN_VIDEO')) define('MAIN_VIDEO', 1);
@@ -92,7 +90,6 @@ if(!defined('DEFAULT_TRUE')) define('DEFAULT_TRUE', 1);
 if(!defined('DEFAULT_FALSE')) define('DEFAULT_FALSE', 0);
 
 if(!defined('ADMIN')) define('ADMIN', 'admin');
-if(!defined('MODERATOR')) define('MODERATOR', 'moderator');
 
 // VIDEO UPLOAD TYPES
 
@@ -265,3 +262,10 @@ if(!defined('INACTIVE_PLANS')) define('INACTIVE_PLANS', 0);
 if(!defined('FFMPEG_INSTALLED')) define('FFMPEG_INSTALLED', 1);
 
 if(!defined('FFMPEG_NOT_INSTALLED')) define('FFMPEG_NOT_INSTALLED', 0);
+
+
+// ON OFF STATUS
+
+if(!defined('YES')) define('YES', 1);
+
+if(!defined('NO')) define('NO', 0);
