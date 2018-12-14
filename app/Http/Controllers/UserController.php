@@ -834,7 +834,7 @@ class UserController extends Controller {
 
                     // $usrModel
 
-                    $userModel = User::find(Auth::user()->id);
+                    /*$userModel = User::find(Auth::user()->id);
 
                     if ($model->user_id != $userModel->id) {
 
@@ -870,7 +870,7 @@ class UserController extends Controller {
                                 ->where('status',DEFAULT_TRUE)->first();
                             
 
-                    }
+                    }*/
 
                   
 
