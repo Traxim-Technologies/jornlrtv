@@ -966,7 +966,7 @@ class UserApiController extends Controller {
 
             Log::info("Live Video");
 
-            Log::info(print_r($request->->all()));
+            Log::info(print_r($request->->all(), true));
 
             if ($live_video) {
 
