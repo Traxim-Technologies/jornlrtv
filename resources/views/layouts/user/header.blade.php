@@ -130,6 +130,16 @@
 
                 </div><!--y-button end-->
 
+                <!-- Version 3.1 feature -->
+
+                @if(Setting::get('is_direct_upload_button') == YES)
+
+                    <a href="{{userChannelId()}}" class="btn pull-right" style="margin-right: 10px;color: white;box-shadow: none;" title="{{tr('upload_video')}}">
+                        <i class="fa fa-upload fa-1x"></i>
+                    </a>
+
+                @endif
+
             @endif
 
             <section id="language-section">
@@ -332,6 +342,13 @@
                         </ul>
                     </div>
                 </div><!--y-button end-->
+
+                @if(Setting::get('is_direct_upload_button') == YES)
+
+                <a href="{{userChannelId()}}" class="btn pull-right" style="margin-right: 10px;color: gray" title="{{tr('upload_video')}}"><i class="fa fa-upload fa-1x"></i></a>
+
+                @endif
+
             @else
                 <div class="y-button">
                     <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
@@ -343,8 +360,6 @@
             <ul class="nav navbar-nav pull-right" style="margin: 3.5px 0px">
 
                 @if(Setting::get('admin_language_control'))
-
-                
                     
                     @if(count($languages = getActiveLanguages()) > 1) 
                        

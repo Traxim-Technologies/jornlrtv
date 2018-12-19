@@ -1282,11 +1282,11 @@ class UserController extends Controller {
                 'id'=> \Auth::check() ? \Auth::user()->id : "",
             ]);
 
-            if ($request->id != $channel->user_id) {
+            if ($request->id != $channel->user_id || !Auth::check()) {
 
                 if ($channel->status == USER_CHANNEL_DECLINED_STATUS || $channel->is_approved == ADMIN_CHANNEL_DECLINED_STATUS) {
 
-                    return back()->with('flash_error', tr('channel_declined'));
+                    return redirect()->to('/')->with('flash_error', tr('channel_declined'));
 
                 }
  

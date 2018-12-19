@@ -25,7 +25,7 @@
 	<div class="row">
         <div class="col-xs-12">
           <div class="box box-info">
-            <div class="box-body">
+            <div class="box-body table-responsive">
 
             	@if(count($reviews) > 0)
 
@@ -60,7 +60,7 @@
 							      	<td>{{$review->comment}}</td>
 
 							      	<td>{{$review->created_at->diffForHumans()}}</td>
-							      	<td><a href="{{route('admin.reviews.delete', array('id'=>$review->rating_id))}}" title="{{tr('delete')}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+							      	<td><a href="{{route('admin.reviews.delete', array('id'=>$review->rating_id))}}" title="{{tr('delete')}}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure want to delete ?')"><i class="fa fa-trash"></i></a></td>
 							    </tr>
 							@endforeach
 						</tbody>

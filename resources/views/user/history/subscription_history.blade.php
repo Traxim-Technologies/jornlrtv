@@ -336,7 +336,7 @@
 					    		'user.subscriptions.pause-subscription')}}">
 						      		<p class="note grey-clr text-left">{{tr('pause_autorenewal_notes')}}</p>
 						      			<div class="form-group" id="disable_form">
-										  	<textarea class="form-control" rows="4" id="comment" placeholder="{{tr('cancel_reason')}}" name="cancel_reason"></textarea>
+										  	<textarea class="form-control" rows="4" id="comment" placeholder="{{tr('reason_for_cancellation')}}" name="cancel_reason" required></textarea>
 										  	<p class="underline2"></p>
 										</div>
 						      		

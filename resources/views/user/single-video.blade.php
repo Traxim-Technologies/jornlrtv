@@ -1290,10 +1290,10 @@
    }
    
    function addToast(){
-       $.Toast("Embedded Link", "Link Cpoied Successfully.", "success", {
+       $.Toast("Embedded Link", "Link Copied Successfully.", "success", {
            has_icon:false,
            has_close_btn:true,
-           stack: true,
+           stack: false,
            fullscreen:true,
            timeout:1000,
            sticky:false,
