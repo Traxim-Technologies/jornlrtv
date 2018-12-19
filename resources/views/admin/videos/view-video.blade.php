@@ -428,7 +428,7 @@ hr {
                                 <td>{{$review->created_at->diffForHumans()}}</td>
                                 <td>
                                     
-                                    <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.reviews.delete' , $review->id)}}" title="Unspam Video"><i class="fa fa-trash"></i></a>
+                                    <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{route('admin.reviews.delete' ,['id'=>$review->id])}}" title="Unspam Video"><i class="fa fa-trash"></i></a>
                                           
                                 </td>
                             </tr>                   
