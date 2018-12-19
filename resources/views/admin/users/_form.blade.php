@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="box-footer">
-                    <a href="" class="btn btn-danger">{{tr('cancel')}}</a>
+                    <a href="" class="btn btn-danger">{{tr('reset')}}</a>
                     <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
                 </div>
                 <input type="hidden" name="timezone" value="" id="userTimezone">
