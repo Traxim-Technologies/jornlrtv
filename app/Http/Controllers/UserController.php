@@ -454,7 +454,9 @@ class UserController extends Controller {
         $videos = $query->paginate(15);
 
         return view('user.videos.live_videos_list')
-                ->with('videos', $videos);
+                ->with('videos', $videos)
+                ->with('page', 'live_videos')
+                ->with('subPage', 'live_videos');
 
     }
 
