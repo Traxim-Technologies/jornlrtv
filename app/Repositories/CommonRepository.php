@@ -420,6 +420,8 @@ class CommonRepository {
 
                 }
 
+                $model->uploaded_by = $request->uploaded_by ?: "user";
+
                 $model->title = $request->has('title') ? $request->title : $model->title;
 
                 $model->description = $request->has('description') ? $request->description : $model->description;

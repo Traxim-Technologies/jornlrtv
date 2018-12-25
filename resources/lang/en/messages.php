@@ -1435,7 +1435,7 @@ return array(
 	'subscription_inactive_status'=>'Subscription is inactive status',
 	'subscription_amount_should_be_grater'=>'Subscription amount should be greater than coupon amount',
 	'video_amount_should_be_grater'=>'Pay per view amount should be greater than coupon amount',
-	'expired_coupon_code'=>'Your are using promo code was expired',
+	'expired_coupon_code'=>'The coupon code entered has expired',
 	'coupon_inactive_reason'=>'The coupon was deactivated by admin.',
 	'coupon_delete_reason'=>'The coupon was deleted by admin',
 	'already_paid_amount_to_video'=>'You already paid to this video',	
@@ -1504,4 +1504,8 @@ return array(
 	'unauthroized_person'=>'unauthorized actions has been detected...!',
 	'reason_for_cancellation'=>'Reason for Cancellation',
 	'select_user_name'=>'Select Username',
+
+	// Version 3.1 messages
+	'is_admin_needs_to_approve_channel_video' => 'Is admin approval required for user uploaded videos',
+	'is_direct_upload_button' => 'Direct Upload button like YouTube Upload',
 );
