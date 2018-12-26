@@ -976,8 +976,8 @@ input[type="checkbox"], input[type="radio"]{
 	margin-bottom: 10px;
 }
 .profile-image{
-	width: 37px;
-    height: 37px;
+	width: 30px;
+    height: 30px;
     border: 1px solid transparent;
     border-radius: 50%;
     overflow: hidden;
@@ -1072,7 +1072,7 @@ history (single page) css
 	float: left;
 	margin-right: 2%;
 	width: 20%;
-	max-height: 120px;
+	height: 120px;
     overflow: hidden;
     position: relative;
 }
@@ -3034,13 +3034,14 @@ changes
 }
 .ppv-view{
 	background-color: rgba(0,0,0,.5);
-	padding: 7px 10px;
+	padding: 2px 7px;
 	color: white;
 	/*float: right;*/
 	/*margin-top: 52px;*/
 	position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 6px;
+    right: 6px;
+    border-radius: 2px;
 }
 .ppv-details{
 	padding:10px 15px;
@@ -3177,6 +3178,9 @@ changes
 	font-size: 11px;
 	padding: 4px;
 	display: none;
+	border-radius: 2px;
+    top: 6px;
+    left: 6px;
 }
 .comment-stars{
 	margin:5px 2px 5px 0 !important;
@@ -4209,4 +4213,10 @@ input:checked + .slider{
 
 .text-red {
 	color: red;
+}
+.mar-0{
+	margin: 0 !important;
+}
+#details input[type="checkbox"], #details input[type="radio"] {
+    vertical-align: -9%;
 }
