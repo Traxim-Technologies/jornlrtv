@@ -167,7 +167,7 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 
-								                <ul class="dropdown-menu">
+								                <ul class="dropdown-menu dropdown-menu-right">
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.edit' , array('id' => $user->id))}}">{{tr('edit')}}</a></li>
 
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.users.view' , $user->id)}}">{{tr('view')}}</a></li>

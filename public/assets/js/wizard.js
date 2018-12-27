@@ -244,7 +244,7 @@ $('form').ajaxForm({
         percent.html("100%");
         $(".overlay").hide();
         if(error == "") {
-          $("#btn-next").text("Redirecting...");
+          $("#btn-next").text("Next");
           $("#btn-next").attr('disabled', false);
         } else {
 

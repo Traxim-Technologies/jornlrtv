@@ -194,77 +194,83 @@
 
             \Log::info(envfile('MAIL_USERNAME')); \Log::info(envfile('MAIL_PASSWORD'));
 
-            if(config('mail.username') && config('mail.password')) {
+            if(Setting::get('email_notification') == YES) {
 
-                try {
+                if(config('mail.username') && config('mail.password')) {
 
-                   /* $mail_status = Mail::queue($page, array('email_data' => $email_data), function ($message) use ($email, $subject) {
+                    try {
 
-                        $message->to($email)->subject($subject);
-                        
-                    });*/
+                       /* $mail_status = Mail::queue($page, array('email_data' => $email_data), function ($message) use ($email, $subject) {
 
-                    $site_url=url('/');
+                            $message->to($email)->subject($subject);
+                            
+                        });*/
 
-                    $isValid = 1;
+                        $site_url=url('/');
 
-                    if(envfile('MAIL_DRIVER') == 'mailgun' && Setting::get('MAILGUN_PUBLIC_KEY')) {
+                        $isValid = 1;
 
-                        Log::info("isValid - STRAT");
+                        if(envfile('MAIL_DRIVER') == 'mailgun' && Setting::get('MAILGUN_PUBLIC_KEY')) {
 
-                        # Instantiate the client.
+                            Log::info("isValid - STRAT");
 
-                        $email_address = new Mailgun(Setting::get('MAILGUN_PUBLIC_KEY'));
+                            # Instantiate the client.
 
-                        $validateAddress = $email;
+                            $email_address = new Mailgun(Setting::get('MAILGUN_PUBLIC_KEY'));
 
-                        # Issue the call to the client.
-                        $result = $email_address->get("address/validate", array('address' => $validateAddress));
+                            $validateAddress = $email;
 
-                        # is_valid is 0 or 1
+                            # Issue the call to the client.
+                            $result = $email_address->get("address/validate", array('address' => $validateAddress));
 
-                        $isValid = $result->http_response_body->is_valid;
+                            # is_valid is 0 or 1
 
-                        Log::info("isValid FINAL STATUS - ".$isValid);
+                            $isValid = $result->http_response_body->is_valid;
 
-                    }
+                            Log::info("isValid FINAL STATUS - ".$isValid);
 
-                    if($isValid) {
+                        }
 
-                        if (Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), 
-                                function ($message) use ($email, $subject) {
+                        if($isValid) {
 
-                                    $message->to($email)->subject($subject);
-                                }
-                        )) {
+                            if (Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), 
+                                    function ($message) use ($email, $subject) {
 
-                           //  return Helper::get_message(106);
+                                        $message->to($email)->subject($subject);
+                                    }
+                            )) {
+
+                               //  return Helper::get_message(106);
+
+                            } else {
+
+                                throw new Exception(Helper::get_error_message(123));
+                                
+                            }
 
                         } else {
 
-                            throw new Exception(Helper::get_error_message(123));
-                            
+                           // throw new Exception(Helper::get_message(106), 106);
+
                         }
 
-                    } else {
+                    } catch(Exception $e) {
 
-                       // throw new Exception(Helper::get_message(106), 106);
+                        \Log::info($e);
+
+                        return Helper::get_error_message(123);
 
                     }
 
-                } catch(Exception $e) {
+                    return Helper::get_message(105);
 
-                    \Log::info($e);
+                } else {
 
                     return Helper::get_error_message(123);
-
                 }
 
-                return Helper::get_message(105);
-
             } else {
-
-                return Helper::get_error_message(123);
+                Log::info("email_notification OFF");
             }
         }
 

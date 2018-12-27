@@ -966,6 +966,8 @@ class UserApiController extends Controller {
 
             Log::info("Live Video");
 
+            Log::info(print_r($request->all(), true));
+
             if ($live_video) {
 
                 if ($live_video->user_id != $request->id) {
@@ -992,6 +994,8 @@ class UserApiController extends Controller {
 
                     $model->save();
 
+                    Log::info("new_user ".$new_user);
+
                     if ($new_user) {
 
                         if ($live_video) {
@@ -1012,6 +1016,9 @@ class UserApiController extends Controller {
 
             }
 
+
+            Log::info("viewer_cnt ".$viewer_cnt);
+            
             $response_array  = ['success'=>true, 
                 'viewer_cnt'=> (int) $viewer_cnt];
 

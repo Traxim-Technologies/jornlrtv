@@ -64,7 +64,7 @@
 
                                             <li>
                                                 @if(Setting::get('admin_delete_control'))
-                                                    <a href="javascript:;" class="btn disabled"><b>{{tr('edit')}}</b></a>
+                                                    <a href="javascript:;" class="btn disabled"  style="text-align: left"><b>{{tr('edit')}}</b></a>
                                                 @else
                                                     <a href="{{route('admin.pages.edit', array('id' => $result->id))}}"><b>{{tr('edit')}}</b></a>
                                                 @endif

@@ -23,7 +23,7 @@
                             
                             <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;display: none" accept="image/jpeg, image/png" />
 
-                            <img id="picture_preview" style="width: 150px;height: 150px;" src="{{$user->picture ? $user->picture : asset('placeholder.png')}}" onclick="return $('#picture').click()" />
+                            <img id="picture_preview" style="width: 150px;height: 150px;cursor: pointer;" src="{{$user->picture ? $user->picture : asset('placeholder.png')}}" onclick="return $('#picture').click()" />
 
                         </div>
 
@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="box-footer">
-                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
+                    <a href="" class="btn btn-danger">{{tr('reset')}}</a>
                     <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
                 </div>
                 <input type="hidden" name="timezone" value="" id="userTimezone">

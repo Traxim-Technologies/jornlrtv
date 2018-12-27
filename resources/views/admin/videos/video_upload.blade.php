@@ -94,6 +94,11 @@
             </div>
 
             <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.videos.save')}}">
+
+                <!-- Version 3.1 feature -->
+
+                <input type="hidden" name="uploaded_by" value="{{ADMIN}}">
+
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="pre-step1">
 

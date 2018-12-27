@@ -47,5 +47,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FfmpegSeeder::class);
         $this->call(WowzaDetailsSeeder::class);
         $this->call(WowzaExistsSeeder::class);
+        $this->call(V3Seeder::class);
+        $this->call(V31Seeder::class);
     }
 }

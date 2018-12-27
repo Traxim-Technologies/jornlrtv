@@ -29,6 +29,7 @@
                             
                             @if(!$channel->id)
                             <select id="user_id" name="user_id" class="form-control select2" required data-placeholder="{{tr('select_user')}}*">
+                                <option value="">{{tr('select_user_name')}}</option>
                                 @foreach($users as $user)
                                     <option value="{{$user->id}}">{{$user->name}}</option>
                                 @endforeach
@@ -90,7 +91,7 @@
                 </div>
 
                 <div class="box-footer">
-                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
+                    <a href="" class="btn btn-danger">{{tr('reset')}}</a>
                     <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
                 </div>
             </form>

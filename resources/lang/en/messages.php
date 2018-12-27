@@ -1119,7 +1119,7 @@ return array(
 	'hls_settings_note' => 'Ex : http://IP_ADDRESS_OR_DOMAIN:8080/',
 
 	'video_viewer_count_size_label'=>'Set Viewer Count Limit Per Video',
-	'video_viewer_count_size_label_note' => 'Usage : View count limit. Once the view count reaches the limit set by the admin, the moderator gets paid for each view.',
+	'video_viewer_count_size_label_note' => 'Usage : View count limit. Once the view count reaches the limit set by the admin, the user gets paid for each view.',
 	'amount_per_video_note' => "Usage : The amount set for each view once the count crosses the view limit.",
 	'HLS_STREAMING_URL' => 'HLS Streaming URL',
 	'amount_per_video'=>'Amount Per Video View',
@@ -1358,7 +1358,7 @@ return array(
 	'twitter'=>'Twitter',
 	'skype'=>'Skype',
 	'message_100'=>'Message-100',
-	'help_content'=>'We have this team of innate developers and dedicated team of support to sort out the things for your benefits. Tell us what you like about StreamHash and we may suggest you the best solution for you :)',
+	'help_content'=>'We have this team of innate developers and dedicated team of support to sort out the things for your benefits. Tell us what you like about StreamHash and we may suggest the best solution for you :)',
 	'money_box'=>'Money Box-100',
 	'cheers'=>'Cheers!',
 	'custom_push_message'=>'Enter Custom Push Message',
@@ -1369,7 +1369,7 @@ return array(
 	'current_wallet_amt'=>'Current Wallet amount the user',
 	'expiry_date_subscription'=>'Expiry days of the subscription for the user.',
 	'video_fields_mandatory'=>'fields are mandatory. Please fill and click next.',
-	'select_publish_time'=>'DD-MM-YYYY H:i',
+	'select_publish_time'=>'DD-MM-YYYY hh:mm',
 	'flash_missing'=>'Flash is missing. Download it from',
 	'adobe'=>'Adobe',
 	'watch_revenue_count'=>'Watch Count revenue based on the ',
@@ -1693,7 +1693,7 @@ return array(
 	'subscription_inactive_status'=>'Subscription is inactive status',
 	'subscription_amount_should_be_grater'=>'Subscription amount should be greater than coupon amount',
 	'video_amount_should_be_grater'=>'Pay per view amount should be greater than coupon amount',
-	'expired_coupon_code'=>'Your are using promo code was expired',
+	'expired_coupon_code'=>'The coupon code entered has expired',
 	'coupon_inactive_reason'=>'The coupon was deactivated by admin.',
 	'coupon_delete_reason'=>'The coupon was deleted by admin',
 	'already_paid_amount_to_video'=>'You already paid to this video',	
@@ -1737,7 +1737,7 @@ return array(
 	'channel_approve_notes'=>'Are you sure want to approve the channel? Once you approved, need to approve videos manually.',
 	'channel_decline_notes'=>'Are you sure want to decline the channel? Once you declined, based on channels records will decline.',
 	'admin_video_status'=>'Admin Status',
-	'user_video_status'=>'User Stauts',
+	'user_video_status'=>'User Status',
 	'tag_approve_notes'=>'Are you sure want to approve this tag ?',
 	'tag_decline_notes'=>'Are you sure want to decline this tag ? Once you declined, tag will be remove from all the depends videos',
 	'category_decline_notes'=>'Are you sure want to decline this category? Once you declined, based on this category videos will be decline.',
@@ -1802,4 +1802,10 @@ return array(
 
 	'flash_missing_error'=>'Flash is missing. Download it from',
 	'unauthroized_person'=>'unauthorized actions has been detected...!',
+	'reason_for_cancellation'=>'Reason for Cancellation',
+	'select_user_name'=>'Select Username',
+
+	// Version 3.1 messages
+	'is_admin_needs_to_approve_channel_video' => 'Is admin approval required for user uploaded videos',
+	'is_direct_upload_button' => 'Direct Upload button like YouTube Upload',
 );

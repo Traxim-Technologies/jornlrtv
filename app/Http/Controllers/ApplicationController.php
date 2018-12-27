@@ -521,7 +521,15 @@ class ApplicationController extends Controller {
 
                 $value->value = $request->ffmpeg_installed;
 
-            }else if ($value->key == 'email_verify_control') {
+            } else if($value->key == 'is_admin_needs_to_approve_channel_video') {
+
+                $value->value = $request->is_admin_needs_to_approve_channel_video;
+
+            } else if($value->key == 'is_direct_upload_button') {
+
+                $value->value = $request->is_direct_upload_button;
+
+            } else if ($value->key == 'email_verify_control') {
 
                 if ($request->email_verify_control == 1) {
 

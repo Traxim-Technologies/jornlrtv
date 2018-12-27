@@ -454,7 +454,9 @@ class UserController extends Controller {
         $videos = $query->paginate(15);
 
         return view('user.videos.live_videos_list')
-                ->with('videos', $videos);
+                ->with('videos', $videos)
+                ->with('page', 'live_videos')
+                ->with('subPage', 'live_videos');
 
     }
 
@@ -834,7 +836,7 @@ class UserController extends Controller {
 
                     // $usrModel
 
-                    $userModel = User::find(Auth::user()->id);
+                    /*$userModel = User::find(Auth::user()->id);
 
                     if ($model->user_id != $userModel->id) {
 
@@ -870,7 +872,7 @@ class UserController extends Controller {
                                 ->where('status',DEFAULT_TRUE)->first();
                             
 
-                    }
+                    }*/
 
                   
 
@@ -1282,11 +1284,11 @@ class UserController extends Controller {
                 'id'=> \Auth::check() ? \Auth::user()->id : "",
             ]);
 
-            if ($request->id != $channel->user_id) {
+            if ($request->id != $channel->user_id || !Auth::check()) {
 
                 if ($channel->status == USER_CHANNEL_DECLINED_STATUS || $channel->is_approved == ADMIN_CHANNEL_DECLINED_STATUS) {
 
-                    return back()->with('flash_error', tr('channel_declined'));
+                    return redirect()->to('/')->with('flash_error', tr('channel_declined'));
 
                 }
  

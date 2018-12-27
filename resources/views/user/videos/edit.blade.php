@@ -151,7 +151,7 @@
                                     <div class="col-sm-3">
                                       <div class="form-group" style="display: none;" id="publish_time_div">
                                           <label for="datepicker" class="">{{tr('publish_time')}} * </label>
-                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" value="{{$model->publish_time}}">
+                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" value="{{$model->publish_time}}" readonly>
                                       </div>
                                     </div>
                                     <div class="form-data">
