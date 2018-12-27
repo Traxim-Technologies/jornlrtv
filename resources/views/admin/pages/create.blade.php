@@ -35,6 +35,7 @@
                                 <option value="terms">{{tr('terms')}}</option>
                                 <option value="privacy">{{tr('privacy')}}</option>
                                 <option value="contact">{{tr('contact')}}</option>
+                                <option value="help">{{tr('help_1')}}</option>
                                 <option value="others">{{tr('others')}}</option>
                             </select>
                             
