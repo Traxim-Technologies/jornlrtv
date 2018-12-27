@@ -49,13 +49,13 @@
 
             <th >{{tr('subscription')}}</th>
 
-            <th>{{tr('username')}}</th>
-
             <th >{{tr('payment_id')}}</th>
 
-            <th >{{tr('amount')}}</th>
+            <th>{{tr('username')}}</th>
 
             <th >{{tr('plan')}}</th>
+
+            <th >{{tr('amount')}}</th>
 
             <th>{{tr('payment_mode')}}</th>
 
@@ -94,13 +94,14 @@
                    
                 </td>
 
-                <td> @if($subscription_details->user) {{$subscription_details->user->name}} @endif</td>
-
                 <td>{{$subscription_details->payment_id}}</td>
 
-                <td>{{Setting::get('currency')}} {{$subscription_details->amount}}</td>
+                <td> @if($subscription_details->user) {{$subscription_details->user->name}} @endif</td>
+
 
                 <td>{{$subscription_details->getSubscription ? $subscription_details->getSubscription->plan : ""}} </td>
+
+                <td>{{Setting::get('currency')}} {{$subscription_details->amount}}</td>
 
                 <td >{{$subscription_details->payment_mode}}</td>
                 <td>{{$subscription_details->coupon_code}}</td>

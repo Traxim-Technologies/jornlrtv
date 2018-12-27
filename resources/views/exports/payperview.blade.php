@@ -53,12 +53,18 @@
 
             <th >{{tr('payment_id')}}</th>
 
+            <th >{{tr('payment_mode')}}</th>
+
+            <th > {{tr('final_amount')}} </th>
+
+            <th >{{tr('reason')}}</th>
+
+            <th >{{tr('status')}}</th>
+
             <th >{{tr('type_of_subscription')}}</th>
 
             <th >{{tr('type_of_user')}}</th>
-
-            <th >{{tr('payment_mode')}}</th>
-
+        
             <th >{{tr('admin_ppv_commission')}}</th>
 
             <th >{{tr('user_ppv_commission')}}</th>
@@ -69,15 +75,9 @@
 
             <th > {{tr('plan_amount')}} </th>
 
-            <th > {{tr('final_amount')}} </th>
-
             <th > {{tr('is_coupon_applied')}} </th>
 
-            <th >{{tr('reason')}}</th>
-
             <th >{{tr('expiry_date')}}</th>
-
-            <th >{{tr('status')}}</th>
 
             <th >{{tr('description')}}</th>
 
@@ -100,6 +100,12 @@
 
                 <td>{{$ppv_details->payment_id}}</td>
 
+                <td>{{$ppv_details->payment_mode}}</td>
+
+                <td> {{Setting::get('currency')}} {{$ppv_details->amount ? $ppv_details->amount : "0.00" }}</td>
+
+                <td>{{$ppv_details->reason}}</td>
+
                 <td> 
                    {{$ppv_details->type_of_subscription}}
                 </td>
@@ -107,8 +113,6 @@
                 <td> 
                     {{$ppv_details->type_of_user}}
                 </td>
-
-                <td>{{$ppv_details->payment_mode}}</td>
 
                 <td>{{Setting::get('currency')}} {{$ppv_details->admin_ppv_amount}}</td>
 
@@ -124,8 +128,6 @@
                 <td> {{Setting::get('currency')}} {{$ppv_details->ppv_amount ? $ppv_details->ppv_amount : "0.00"}}
                 </td>
 
-                <td> {{Setting::get('currency')}} {{$ppv_details->amount ? $ppv_details->amount : "0.00" }}</td>
-
                 <td>
                     @if($ppv_details->is_coupon_applied)
                         {{tr('yes')}}
@@ -133,8 +135,6 @@
                         {{tr('no')}}
                     @endif
                 </td>
-
-                <td>{{$ppv_details->reason}}</td>
 
                 <td>{{convertTimeToUSERzone($ppv_details->expiry_date, Auth::guard('admin')->user()->timezone, 'd-m-Y H:i a')}}</td>
 

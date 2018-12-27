@@ -1104,7 +1104,7 @@ class UserApiController extends Controller {
                     $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
 
                     $response_array['success'] = true;
-                    $response_array['message'] = Helper::get_error_message(106);
+                    $response_array['message'] = Helper::get_message(106);
                     $user->save();
 
                 } else {
@@ -1871,7 +1871,7 @@ class UserApiController extends Controller {
 
         if($page) {
 
-            $page_data['type'] = "Terms";
+            $page_data['type'] = "help";
 
             $page_data['heading'] = $page->heading;
 
