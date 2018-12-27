@@ -51,6 +51,10 @@
 
             <th>{{tr('email')}}</th>
 
+            <th>{{tr('no_of_channels')}}</th>
+
+            <th>{{tr('no_of_videos')}}</th>
+
             <th>{{tr('mobile')}}</th>
 
             <th >{{tr('dob')}}</th>
@@ -103,6 +107,10 @@
                 <td>{{$user_details->name}}</td>
 
                 <td>{{$user_details->email}}</td>
+
+                <td>{{$user_details->getChannel ? $user_details->getChannel->count() :"0"}}</td>
+
+                <td>{{$user_details->getChannelVideos ? $user_details->getChannelVideos->count() : "0"}}</td>
 
                 <td>{{$user_details->mobile}}</td>
 

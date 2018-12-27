@@ -43,6 +43,19 @@
 .new-history1{
 	padding-top: 30px;
 }
+.history-image {
+    height:90px;
+}
+.recom-box .slide-image{
+	height: 110px !important;
+}
+.single-video-sec{
+	margin: 0 -15px;
+}
+.p-50{
+	padding-top: 50px !important;
+	padding-bottom: 50px !important; 
+}
 }
 
 @media (min-width: 480px) and (max-width: 767px) {
@@ -80,6 +93,16 @@
 }
 .new-history1{
 	padding-top: 30px;
+}
+.history-image {
+    height:90px;
+}
+.single-video-sec{
+	margin: 0 -15px;
+}
+.p-50{
+	padding-top: 50px !important;
+	padding-bottom: 50px !important; 
 }
 }
 
@@ -120,9 +143,15 @@
 .new-history1{
 	padding-top: 30px;
 }
+.history-image {
+    height:90px;
+}
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
+.history-image {
+    height: 100px;
+}
 .test img{
     height: 35px;
 }

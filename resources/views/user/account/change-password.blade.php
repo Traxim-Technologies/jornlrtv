@@ -9,7 +9,7 @@
 
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
 
-            <div class="form-background">
+            <div class="form-background p-50">
                 <div class="common-form login-common">
 
                     @include('notification.notify')
