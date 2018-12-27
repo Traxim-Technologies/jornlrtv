@@ -1871,7 +1871,7 @@ class UserApiController extends Controller {
 
         if($page) {
 
-            $page_data['type'] = "Terms";
+            $page_data['type'] = "help";
 
             $page_data['heading'] = $page->heading;
 
