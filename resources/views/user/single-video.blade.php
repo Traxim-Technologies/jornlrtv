@@ -69,11 +69,13 @@
    <div class="row y-content-row">
       @include('layouts.user.nav')
       <div class="page-inner col-sm-9 col-md-10 profile-edit">
-         <div class="profile-content">
+         <div class="profile-content mar-0">
             @include('notification.notify')
             <div class="row no-margin">
                <div class="col-sm-12 col-md-8 play-video">
-                  @include('user.videos.streaming')
+                  <div class="single-video-sec">
+                     @include('user.videos.streaming')
+                  </div>
                   <div class="main-content">
                      <div class="video-content">
                         <div class="details">

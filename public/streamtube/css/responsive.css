@@ -38,13 +38,13 @@
 	padding:0 30px;
 }
 .page-inner{
-	margin-top: 103px;
+	margin-top: 90px;
 	/*z-index:0;*/
 	position: relative;
 }
 .streamtube-nav{
 	padding:10px 0px;
-	border-bottom: 1px solid #e8e8e8;
+	border-bottom:0;
 	background-color:#e61b1b;
 	position: fixed;
 	z-index:999;
@@ -192,8 +192,8 @@
 	margin-bottom: 20px;
 }
 .banner-slider{
-	padding: 0 15px;
-	margin-top:15px;
+	padding: 0;
+	margin-top:0px;
 }
 .carousel-caption p{
 	display:none !important;
@@ -238,7 +238,7 @@
 	margin-bottom: 10px;
 }
 .common-form{
-	margin-top: 125px !important;
+	margin-top: 0px !important;
 }
 .channel-header.yt-card{
 	margin-top: -10px;
@@ -363,7 +363,7 @@
 	padding-top: 15px;
 }
 .common-form{
-	margin-top: 125px !important;
+	margin-top: 0px !important;
 }
 .history-image{
 	width: 25%;
@@ -409,7 +409,7 @@
 }
 .streamtube-nav{
 	padding:10px 0px;
-	border-bottom: 1px solid #e8e8e8;
+	border-bottom: 0;
 	background-color:#e61b1b;
 	position: fixed;
 	z-index: 100;
@@ -1464,7 +1464,7 @@ signup.html css
 	    text-align: left !important;
 	}
 	.profile-view{
-		margin-top: 40px;
+		/*margin-top: 40px;*/
 	}
 }
 

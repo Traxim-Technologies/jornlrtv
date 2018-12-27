@@ -10,7 +10,7 @@
 
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
 
-            <div class="form-background forgot-password-reset">
+            <div class="form-background p-50 forgot-password-reset">
 
                 <div class="common-form login-common">
 

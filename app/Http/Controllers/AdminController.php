@@ -387,7 +387,7 @@ class AdminController extends Controller {
 
                 $email = $user->email;
 
-                $user->is_verified = DEFAULT_TRUE;
+                $user->is_verified = USER_EMAIL_VERIFIED;
 
                 Helper::send_email($page,$subject,$email,$email_data);
 
