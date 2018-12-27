@@ -1867,7 +1867,7 @@ class UserApiController extends Controller {
 
         $page_data['type'] = $page_data['heading'] = $page_data['content'] = "";
 
-        $page = Page::where('type', 'others')->where('title', 'help')->first();
+        $page = Page::where('type', 'help')->first();
 
         if($page) {
 
