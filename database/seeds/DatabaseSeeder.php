@@ -49,5 +49,6 @@ class DatabaseSeeder extends Seeder
         $this->call(WowzaExistsSeeder::class);
         $this->call(V3Seeder::class);
         $this->call(V31Seeder::class);
+        $this->call(LiveurlSeeder::class);
     }
 }
