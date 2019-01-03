@@ -215,7 +215,7 @@
 
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="form-group">
-                                    <label for="datepicker" class="">{{tr('18_users')}} * </label>
+                                    <label for="datepicker" class="">{{tr('18_users')}}</label>
 
                                    <!--  <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1"> -->
 
@@ -230,7 +230,7 @@
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                 <div class="form-group">
 
-                                    <label for="publish_type" class="">{{tr('publish_type')}}</label>
+                                    <label for="publish_type" class="">{{tr('publish_type')}} * </label>
                                     <div class="clearfix"></div>
 
                                    
@@ -262,7 +262,7 @@
 
                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                  
-                                  <label for="video" class="control-label">{{tr('category')}}</label>
+                                  <label for="video" class="control-label">{{tr('category')}} * </label>
                                   <div class="clearfix"></div>
                                   <div>
 
@@ -282,7 +282,7 @@
                                   <div class="clearfix"></div>
                                   <div>
                                       
-                                    <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
+                                    <select id="tag_id" name="tag_id[]" class="form-control select2" data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
                                         @foreach($tags as $tag)
                                               <option value="{{$tag->tag_id}}">{{$tag->tag_name}}</option>
                                         @endforeach

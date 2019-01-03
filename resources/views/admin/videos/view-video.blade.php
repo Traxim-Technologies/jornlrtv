@@ -236,6 +236,7 @@ hr {
 
                     <tr>
                         <th>{{tr('tags')}}</th>
+                        
                         <td>@if($video->getScopeVideoTags) 
 
                                 @foreach($video->getScopeVideoTags as $tags)
