@@ -123,7 +123,7 @@
 
                     <div class="form-group">
                         <label for="dob">{{tr('dob')}}</label>
-                        <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off" readonly>
+                        <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off">
                     </div>
 
                     <div class="form-group">

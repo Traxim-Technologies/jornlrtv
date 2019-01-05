@@ -1081,7 +1081,7 @@ return array(
 	'any_help'=>'Any Help ?',
 	'paypal_'=>'PayPal - ',
 	'minimum_amount'=>'Minimum Accepted Amount - $ 0.01',
-	'stripe'=>'Stripe -',
+	'stripe'=>'Stripe',
 	'minimum_accepted'=>'Minimum Accepted Amount - $ 0.50 -',
 	'check_refrences'=>'Check References',
 	'checked'=>'Checked',
@@ -1514,5 +1514,7 @@ return array(
 	'logout_confirmation'=> 'Are you sure to logout?',
 	'approve_video'=>'Do you want approve the video?',
 	'decline_video'=>'Do you want decline the video?',
+	'ios_payment_subscription_status'=>'Do you want Enable the paymenet subscription',
+	'ios_settings'=>'iOS Settins',
 
 );
