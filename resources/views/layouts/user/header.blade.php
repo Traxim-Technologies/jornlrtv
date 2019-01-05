@@ -4,7 +4,7 @@
     
 .mobile-header li {
 
-    width: 24% !important;
+    width: 19% !important;
 
 }
 </style>
