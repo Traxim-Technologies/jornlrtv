@@ -1223,6 +1223,9 @@
 	height: 45px;
 	margin-bottom: 25px;
 }
+.coupon-code input{
+	height: 45px;
+}
 .new-subcription-history .space{
 	padding: 17px;
 }
@@ -1745,6 +1748,9 @@
 .coupon-code{
 	height: 50px;
 	margin-bottom: 25px;
+}
+.coupon-code input{
+	height: 50px;
 }
 .new-subcription-history .space{
 	padding: 19px;
@@ -2285,6 +2291,9 @@
 .coupon-code{
 	height: 55px;
 	margin-bottom: 25px;
+}
+.coupon-code input{
+	height: 55px;
 }
 .new-subcription-history .space{
 	padding: 19px;
