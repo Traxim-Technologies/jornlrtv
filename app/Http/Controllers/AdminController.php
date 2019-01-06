@@ -5812,9 +5812,9 @@ class AdminController extends Controller {
                     if($request->has($current_key)) {
 
                         $setting_details->value = $request->$current_key;
-
-                        $setting_details->save();
                     }
+
+                $setting_details->save();
             }
 
             return back()->with('flash_success',tr('settings_success'));
