@@ -1516,5 +1516,4 @@ return array(
 	'decline_video'=>'Do you want decline the video?',
 	'ios_payment_subscription_status'=>'Do you want Enable the paymenet subscription',
 	'ios_settings'=>'iOS Settins',
-
 );

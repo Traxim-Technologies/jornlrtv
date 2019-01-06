@@ -231,7 +231,7 @@
 
                                    <!--  <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1" value="{{$video->age_limit}}"> -->
 
-                                    <label for="datepicker" class="">{{tr('18_users')}} * </label>
+                                    <label for="datepicker" class="">{{tr('18_users')}} </label>
 
                                    <!--  <input type="number" name="age_limit" placeholder="{{tr('age_limit')}}" class="form-control" id="age_limit" required maxlength="2" minlength="1"> -->
 
@@ -299,7 +299,7 @@
                                           <div class="clearfix"></div>
                                           <div>
                                               
-                                            <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
+                                            <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
                                                 @foreach($tags as $tag)
                                                       <option value="{{$tag->tag_id}}" {{in_array($tag->tag_id, $video->tag_id) ? 'selected' : ''}}>{{$tag->tag_name}}</option>
                                                 @endforeach

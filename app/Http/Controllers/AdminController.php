@@ -5764,9 +5764,9 @@ class AdminController extends Controller {
     *
     * @param settings key value
     *
-    * @created: Maheswari
+    * @created Maheswari
     *
-    * @updated: - 
+    * @updated Maheswari
     *
     * @return response of success / failure message.
     */
@@ -5789,9 +5789,9 @@ class AdminController extends Controller {
     *
     * @param settings key value
     *
-    * @created: Maheswari
+    * @created Maheswari
     *
-    * @updated: - 
+    * @updated Maheswari
     *
     * @return response of success / failure message.
     */
@@ -5802,20 +5802,19 @@ class AdminController extends Controller {
             $settings = Settings::get();
 
             foreach ($settings as $key => $setting_details) {
+
                 # code...
 
+                $current_key = "";
+
                 $current_key = $setting_details->key;
+                
+                    if($request->has($current_key)) {
 
-                if($current_key == 'ios_payment_subscription_status') { 
+                        $setting_details->value = $request->$current_key;
 
-                    $setting_details->value = $request->ios_payment_subscription_status;
-
-                } else{
-                    
-                    $setting_details->value = $request->ios_payment_subscription_status;
-                }
-
-                $setting_details->save();
+                        $setting_details->save();
+                    }
             }
 
             return back()->with('flash_success',tr('settings_success'));
