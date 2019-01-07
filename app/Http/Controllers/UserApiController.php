@@ -6335,7 +6335,6 @@ class UserApiController extends Controller {
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->orderby('video_tapes.created_at' , 'desc')
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
@@ -6351,6 +6350,11 @@ class UserApiController extends Controller {
 
             }
 
+            $base_query = $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+        } else {
+
+            $base_query = $base_query->where('video_tapes.age_limit', '=' , 0);
         }
 
     
@@ -6401,7 +6405,7 @@ class UserApiController extends Controller {
                         ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                         ->where('categories.status', CATEGORY_APPROVE_STATUS)
                         ->videoResponse()
-                        ->where('video_tapes.age_limit','<=', checkAge($request))
+                        
                         ->orderby('watch_count' , 'desc');
 
         if ($request->id) {
@@ -6414,6 +6418,12 @@ class UserApiController extends Controller {
                 
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
             }
+
+            $base_query = $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+        } else {
+
+            $base_query = $base_query->where('video_tapes.age_limit','=', 0);
         }
 
         $videos = $base_query->paginate(16);
@@ -6461,7 +6471,6 @@ class UserApiController extends Controller {
                             ->videoResponse()
                             ->where('channels.is_approved', 1)
                             ->where('channels.status', 1)
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderByRaw('RAND()');
 
@@ -6480,6 +6489,12 @@ class UserApiController extends Controller {
 
                 $base_query->whereNotIn('video_tapes.id',$flag_videos);
             }
+
+            $base_query = $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+        } else {
+
+            $base_query = $base_query->where('video_tapes.age_limit','=', 0);
         }
 
     
