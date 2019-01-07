@@ -4565,7 +4565,6 @@ class UserApiController extends Controller {
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->orderby('video_tapes.created_at' , 'desc')
-                            ->where('video_tapes.age_limit','<=', checkAge($request))
                             ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->videoResponse();
 
@@ -4581,6 +4580,11 @@ class UserApiController extends Controller {
 
             }
 
+            $base_query = $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+        } else {
+            
+            $base_query = $base_query->where('video_tapes.age_limit', '=' , 0);
         }
 
     
