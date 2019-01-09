@@ -80,11 +80,17 @@
     <script src="{{asset('streamtube/js/jquery.min.js')}}"></script>
     <script src="{{asset('streamtube/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/bootstrap/js/jquery-ui.js')}}"></script>
+    <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.js')}}"></script>
     <script type="text/javascript" src="{{asset('streamtube/js/jquery-migrate-1.2.1.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('streamtube/js/slick.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('streamtube/js/script.js')}}"></script>
 
     <script src="{{asset('admin-css/plugins/select2/select2.full.min.js')}}"></script>
+    <!-- input Mask -->
+    <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.js')}}"></script>
+    <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.date.extensions.js')}}"></script>
+    <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
+
 
     <script>
 
@@ -139,6 +145,8 @@
          $(function () {
             //Initialize Select2 Elements
             $(".select2").select2();
+
+            $("[data-mask]").inputmask();
 
         });
 

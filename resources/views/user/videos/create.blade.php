@@ -102,7 +102,7 @@
                                   <div class="row">
                                     
                                     <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="name" class="control-label">{{tr('title')}}</label>
+                                        <label for="name" class="control-label">{{tr('title')}} * </label>
                                         <div>
                                             <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}">
                                         </div>
@@ -122,7 +122,7 @@
 
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            <label for="datepicker" class="">{{tr('18_users')}} * </label>
+                                            <label for="datepicker" class="">{{tr('18_users')}} </label>
 
                                             <div class="clearfix"></div>
 
@@ -154,7 +154,7 @@
 
                                       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                          
-                                          <label for="video" class="control-label">{{tr('category')}}</label>
+                                          <label for="video" class="control-label">{{tr('category')}} * </label>
                                           <div>
 
                                             <select id="category_id" name="category_id" class="form-control select2" required data-placeholder="{{tr('select_category')}}*" style="width: 100% !important">
@@ -172,7 +172,7 @@
                                           <label for="video" class="control-label">{{tr('tags')}}</label>
                                           <div>
                                               
-                                            <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}*" multiple style="width: 100% !important">
+                                            <select id="tag_id" name="tag_id[]" class="form-control select2" data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
                                                 @foreach($tags as $tag)
                                                       <option value="{{$tag->tag_id}}">{{$tag->tag_name}}</option>
                                                 @endforeach
@@ -181,13 +181,10 @@
 
                                           </div>
                                        
-                                      </div>
-
-                                      <div class="clearfix"></div>
-
-                                      
+                                      </div>       
                                     </div>
 
+                                    <div class="clearfix"></div> 
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="display: none;" id="duration_div">
                                       <div class="form-group">
                                           <label>{{tr('duration')}} * : </label><small> 
@@ -202,14 +199,14 @@
                                       </div>
                                     </div>
 
-                                      <div class="clearfix"></div>
-
-
-                                    <div class="col-sm-12 mt-30">
-                                        <!-- <label for="name" class="control-label">{{tr('description')}} *</label> -->
-                                        <div>
-                                            <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description" ></textarea>
-                                        </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-12">
+                                      <label for="name" class="control-label">{{tr('description')}} *</label>
+                                        
+                                      <div class="col-sm-12 col-lg-12">
+                                          
+                                              <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description" ></textarea>
+                                      </div>
                                     </div>
 
                                     <div class="clearfix"></div>
@@ -402,7 +399,6 @@
 <script type="text/javascript" src="{{asset('streamtube/js/jquery.validate.min.js')}}"></script>
 <script src="{{asset('streamtube/js/material-bootstrap-wizard.js')}}"></script>
 <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js')}}"></script> 
-
 <script src="{{asset('streamtube/js/jquery-form.js')}}"></script>
 
 <script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
@@ -412,7 +408,7 @@
 </script>
 
 <script>
-
+  
      $("#abort_btn").hide();
 
     function abortVideo() {
@@ -429,6 +425,7 @@
       //}
 
     }
+    
 
    function redirect() {
 

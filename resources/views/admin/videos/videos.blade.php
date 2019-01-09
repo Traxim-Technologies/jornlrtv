@@ -202,12 +202,12 @@
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@if($video->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}" onclick="return confirm('{{tr("decline_video")}}')">{{tr('decline')}}</a></li>
 								                	@else
 								                		@if ($video->compress_status == 0)
 								                			<li role="presentation"><a role="menuitem" tabindex="-1">{{tr('compress')}}</a></li>
 								                		@else 
-								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  			<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('{{tr("approve_video")}}')" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
 								                  		@endif
 								                  	@endif
 

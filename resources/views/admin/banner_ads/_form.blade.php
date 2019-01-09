@@ -20,7 +20,7 @@
 
                     <div class="form-group">
                         <label for="title">{{tr('title')}}</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="{{tr('enter_title')}}" value="{{$model->title}}" required>
+                        <input type="text" class="form-control" name="title" id="title" placeholder="{{tr('enter_title')}}" value="{{$model->title}}">
                     </div>
 
                     <div class="form-group">
@@ -46,7 +46,8 @@
                 </div>
 
               <div class="box-footer">
-                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
+                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button> 
+                    
                     @if(Setting::get('admin_delete_control'))
                         <button type="button" class="btn btn-success pull-right" disabled>{{tr('submit')}}</button>
                     @else

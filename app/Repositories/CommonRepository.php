@@ -324,7 +324,7 @@ class CommonRepository {
             $validator = Validator::make( $request->all(), array(
                         'title'         => 'required|max:255',
                         'category_id'=>'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
-                        'tag_id'=>'required',
+                        'tag_id'=>"",
                         'description'   => 'required',
                         'channel_id'   => 'required|integer|exists:channels,id',
                        // 'video'     => 'required|mimes:mkv,mp4,qt',

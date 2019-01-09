@@ -410,6 +410,14 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('settings/email' , 'AdminController@email_settings_process')->name('email.settings.save');
 
+    //ios control settings
+
+    // Get ios control page
+    Route::get('/ios-control','AdminController@ios_control')->name('ios_control');
+
+    //Save the ios control status
+    Route::post('/ios-control/save','AdminController@ios_control_save')->name('ios_control.save');
+
     // Languages
 
     Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 

@@ -115,8 +115,7 @@ function saveVideoDetails(step) {
    var rating = $("#rating").val();
    var description = CKEDITOR.instances['description'].getData();
    var reviews = $("#reviews_textarea").val();
-   var duration = $("#duration").val();
-
+   var duration = $("#duration").val();  
    var rating = $('input[name=ratings]:checked').val();
 
    var video_publish_type = $("#video_publish_type").val();
@@ -139,7 +138,7 @@ function saveVideoDetails(step) {
         return false;
    } else {
 
-    $("#description").val(description);
+      $("#description").val(description);
     
    }
    if (reviews == '') {
