@@ -13,7 +13,7 @@
     <ul class="popover-list">
 
         <li><b>{{tr('paypal_')}} </b>{{tr('minimum_amount')}}</li>
-
+        
         <li><b>{{tr('stripe')}}</b>{{tr('minimum_accepted')}}- <a target="_blank" href="https://stripe.com/docs/currencies">{{tr('check_refrences')}}</a></li>
 
         <li><b><span class="text-uppercase">{{tr('other_settings')}}</span> - {{tr('multi_channel_status')}} - </b> <span style="color: green">{{tr('checked')}}</span> -{{tr('user_create_n_channels')}}</li>
@@ -514,7 +514,7 @@ hr {
 
                                     <p class="example-note">{{tr('video_viewer_count_size_label_note')}}</p>
 
-                                    <input type="text" class="form-control" name="viewers_count_per_video" value="{{Setting::get('viewers_count_per_video')  }}" id="viewers_count_per_video" placeholder="{{tr('video_viewer_count_size_label')}}">
+                                    <input type="text" class="form-control" name="viewers_count_per_video" value="{{Setting::get('viewers_count_per_video')  }}" id="viewers_count_per_video" placeholder="{{tr('video_viewer_count_size_label')}}" pattern="[0-9]{0,}">
                                 </div>
                             </div>
 
@@ -526,7 +526,7 @@ hr {
                                     
                                     <p class="example-note">{{tr('amount_per_video_note')}}</p>
 
-                                    <input type="text" class="form-control" name="amount_per_video" value="{{Setting::get('amount_per_video')  }}" min="0.5" id="amount_per_video" placeholder="{{tr('amount_per_video')}}">
+                                    <input type="text" class="form-control" name="amount_per_video" value="{{Setting::get('amount_per_video')  }}" min="0.5" id="amount_per_video" pattern="[0-9]{0,}" placeholder="{{tr('amount_per_video')}}">
 
                                 </div>
                             </div>
@@ -536,7 +536,7 @@ hr {
 
                                     <label for="admin_ppv_commission">{{tr('admin_ppv_commission')}}</label>
 
-                                    <input type="text" class="form-control" name="admin_ppv_commission" value="{{Setting::get('admin_ppv_commission')  }}" id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
+                                    <input type="text" class="form-control" name="admin_ppv_commission" pattern="[0-9]{0,}" value="{{Setting::get('admin_ppv_commission')  }}" id="admin_ppv_commission" placeholder="{{tr('admin_ppv_commission')}}">
                                 </div>
                             </div>
 
@@ -1004,8 +1004,7 @@ hr {
 
                                         <?php $type = Setting::get('payment_type') ;?>
                                         <select id="payment_type" name="payment_type" class="form-control">
-                                            <option value="">{{tr('payment_type')}}</option>
-                                            
+                        
                                             <option value="paypal" @if($type == 'paypal') selected @endif>{{tr('paypal')}}</option>
 
                                             <option value="stripe" @if($type == 'stripe') selected @endif >{{tr('stripe')}}</option>

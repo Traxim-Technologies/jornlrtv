@@ -5786,7 +5786,6 @@ class AdminController extends Controller {
 
     }
 
-
     /**
      *
      *
@@ -5935,7 +5934,7 @@ class AdminController extends Controller {
                         ->withPage('payments')
 
                         ->with('sub_page' , 'payments-dashboard');
-=======
+
 
 
     public function secure(Request $request) {
@@ -5995,4 +5994,71 @@ class AdminController extends Controller {
         }
     }
 
+    /**
+    * Function Name: ios_control()
+    *
+    * @uses To update the ios payment subscription status
+    *
+    * @param settings key value
+    *
+    * @created Maheswari
+    *
+    * @updated Maheswari
+    *
+    * @return response of success / failure message.
+    */
+    public function ios_control(){
+
+        if(Auth::guard('admin')->check()){
+
+            return view('admin.settings.ios-control')->with('page','ios-control');
+
+        } else {
+
+            return back();
+        }
+    }
+
+    /**
+    * Function Name: ios_control()
+    *
+    * @uses To update the ios settings value
+    *
+    * @param settings key value
+    *
+    * @created Maheswari
+    *
+    * @updated Maheswari
+    *
+    * @return response of success / failure message.
+    */
+    public function ios_control_save(Request $request){
+
+        if(Auth::guard('admin')->check()){
+
+            $settings = Settings::get();
+
+            foreach ($settings as $key => $setting_details) {
+
+                # code...
+
+                $current_key = "";
+
+                $current_key = $setting_details->key;
+                
+                    if($request->has($current_key)) {
+
+                        $setting_details->value = $request->$current_key;
+                    }
+
+                $setting_details->save();
+            }
+
+            return back()->with('flash_success',tr('settings_success'));
+
+        } else {
+
+            return back();
+        }
+    }
 }

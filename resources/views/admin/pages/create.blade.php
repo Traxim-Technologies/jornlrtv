@@ -61,7 +61,7 @@
 	                </div>
 
 	              <div class="box-footer">
-	                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
+	                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button> 
 	                    <button type="submit" class="btn btn-success pull-right">{{tr('submit')}}</button>
 	              </div>
 

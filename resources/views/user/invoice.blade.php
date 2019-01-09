@@ -107,7 +107,7 @@
 											<div class="clear-fix"></div>
 											<div class="text-right top">
 												<a href="{{route('user.subscription.save' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}"" class="btn btn-danger" id="my_button">
-												<i class="fa fa-credit-card"></i> &nbsp; {{tr('pay_now')}}
+												<i class="fa fa-credit-card"></i> &nbsp; {{tr('free_subscribe_paynow')}}
 												</a>
 											</div>
 										@endif

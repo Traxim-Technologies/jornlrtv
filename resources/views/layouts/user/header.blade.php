@@ -286,7 +286,7 @@
                                     <a href="/settings" class="menu-link"><i class="fa fa-cog"></i>{{tr('settings')}}</a>
                                 </div>
                                 <div class="col-xs-6">
-                                    <a href="{{route('user.logout')}}" class="menu-link"><i class="fa fa-sign-out"></i>{{tr('logout')}}</a>
+                                    <a href="{{route('user.logout')}}" onclick="return confirm('{{tr("logout_confirmation")}}')" class="menu-link"><i class="fa fa-sign-out"></i>{{tr('logout')}}</a>
                                 </div>
                             </div>
                             <!-- <li><a href="{{route('user.profile')}}">{{tr('profile')}}</a></li>
