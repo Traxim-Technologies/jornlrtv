@@ -33,7 +33,7 @@
 
                                 <div class="col-lg-6">
 
-                                    <input type="text" required name="name" value="{{$user->name ? $user->name : old('name')}}" class="form-control" id="username" placeholder="{{tr('name')}} *" pattern="[a-zA-Z0-9\s]+" title="Only accepts alphanumeric with spaces">
+                                    <input type="text" required name="name" value="{{$user->name ? $user->name : old('name')}}" class="form-control" id="username" placeholder="{{tr('name')}} *" pattern="[a-zA-Z0-9\s]+" title="{{tr('username_notes')}}">
 
                                 </div>
 

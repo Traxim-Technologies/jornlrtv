@@ -1210,7 +1210,7 @@ return array(
 	'any_help'=>'Any Help ?',
 	'paypal_'=>'PayPal - ',
 	'minimum_amount'=>'Minimum Accepted Amount - $ 0.01',
-	'stripe'=>'Stripe -',
+	'stripe'=>'Stripe',
 	'minimum_accepted'=>'Minimum Accepted Amount - $ 0.50 -',
 	'check_refrences'=>'Check References',
 	'checked'=>'Checked',
@@ -1808,4 +1808,12 @@ return array(
 	// Version 3.1 messages
 	'is_admin_needs_to_approve_channel_video' => 'Is admin approval required for user uploaded videos',
 	'is_direct_upload_button' => 'Direct Upload button like YouTube Upload',
+	'username_notes'=>'Only accepts alphanumeric with spaces',
+	'free_subscribe_paynow'=>'Subscribe as Free',
+	'card_number_notes'=>'Only accept the 16 digit numbers',
+	'logout_confirmation'=> 'Are you sure to logout?',
+	'approve_video'=>'Do you want approve the video?',
+	'decline_video'=>'Do you want decline the video?',
+	'ios_payment_subscription_status'=>'Do you want Enable the payment subscription',
+	'ios_settings'=>'iOS Settings',
 );
