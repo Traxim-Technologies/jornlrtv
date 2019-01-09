@@ -1514,6 +1514,6 @@ return array(
 	'logout_confirmation'=> 'Are you sure to logout?',
 	'approve_video'=>'Do you want approve the video?',
 	'decline_video'=>'Do you want decline the video?',
-	'ios_payment_subscription_status'=>'Do you want Enable the payment subscription',
+	'ios_payment_subscription_status'=>'Do you want Disable the payment subscription',
 	'ios_settings'=>'iOS Settings',
 );
