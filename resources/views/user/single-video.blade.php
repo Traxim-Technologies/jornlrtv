@@ -446,7 +446,10 @@
                            <div class="main-video">
                               <div class="video-image">
                                  <div class="video-image-outer">
-                                    <a href="{{$suggestion->url}}"><img src="{{$suggestion->video_image}}"></a>
+                                    <a href="{{$suggestion->url}}">
+                                       <!-- <img src="{{$suggestion->video_image}}"> -->
+                                       <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$suggestion->video_image}}" class="placeholder" />
+                                    </a>
                                  </div>
                                  @if($suggestion->ppv_amount > 0)
                                  @if(!$suggestion->ppv_status)

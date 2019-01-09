@@ -2598,7 +2598,8 @@ changes
 .mobile-header li{
 	display: inline-block !important;
 	padding-top: 10px;
-	width: 18.5%;
+	/*width: 18.5%;*/
+	width: 24%;
 	text-align: center;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -3097,6 +3098,8 @@ changes
 	background-position: center;
 	height: 100%;
 	width: 100%;
+	object-fit: cover;
+	object-position: center;
 }
 .content-head h4{
 	margin-top:5px;
