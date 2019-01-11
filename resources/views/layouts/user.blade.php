@@ -50,20 +50,12 @@
 
     <div class="wrapper_content">
 
-        <div id="preloader">
+        <!-- <div id="preloader">
 
-       
-            <!-- <div class="cssload-container">
-                <ul class="cssload-flex-container">
-                    <li>
-                        <span class="cssload-loading"></span>
-                    </li>
-                </ul>
-            </div> --> 
-
+    
             <div class="loader3"></div>
         
-        </div>
+        </div> -->
 
         @include('layouts.user.header')
 
@@ -93,6 +85,15 @@
 
 
     <script>
+        $(window).load(function() {
+            
+           $('.placeholder').each(function () {
+              var imagex = jQuery(this);
+              var imgOriginal = imagex.data('src');
+                $(imagex).attr('src', imgOriginal);
+           });
+            
+        });
 
         $(window).load(function(){
             $('#preloader').fadeOut(2000);

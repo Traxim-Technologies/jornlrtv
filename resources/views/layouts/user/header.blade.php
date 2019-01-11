@@ -203,10 +203,10 @@
                     <i class="material-icons">live_tv</i>
                     <span class="hidden-xxxs">{{tr('channels')}}</span>
                 </a></li>
-                <li><a href="{{route('user.channel.list')}}" class="mobile-menu">
+               <!--  <li><a href="{{route('user.channel.list')}}" class="mobile-menu">
                     <i class="material-icons">videocam</i>
                     <span class="hidden-xxxs">{{tr('custom_live_videos')}}</span>
-                </a></li>
+                </a></li> -->
                 @if(Auth::check())
 
                     @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
