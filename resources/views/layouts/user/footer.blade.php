@@ -20,7 +20,7 @@
                         <li><a  href="{{route('page_view', $page->id)}}" style="text-transform: capitalize;">{{$page->title}}</a></li> | 
                     @endforeach
                 @endif
-                <li><a href="{{url('/')}}" >&#169; 2018 @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
+                <li><a href="{{url('/')}}" >&#169; {{date('Y')}} @if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</a></li>
             </ul>
         </div>   
     </div><!--end of footer1-->
