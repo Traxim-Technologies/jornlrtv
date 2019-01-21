@@ -704,9 +704,10 @@
 	height: 75px !important;
 }
 .profile-button .dropdown-menu {
-    left: -135px;
+    /*left: -135px;*/
     font-size: 14px;
     min-width: 175px;
+    right: 0;
 }
 .share-title,{
 	font-size: 20px;	
