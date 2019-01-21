@@ -4224,3 +4224,14 @@ input:checked + .slider{
 #details input[type="checkbox"], #details input[type="radio"] {
     vertical-align: -9%;
 }
+
+.user-upload-btn {
+	margin-right: 10px;
+	color: white;
+	background: red;
+}
+
+.user-upload-btn:hover, .user-upload-btn:active, .user-upload-btn:focus {
+	background: #d80606;
+	color: white;
+}

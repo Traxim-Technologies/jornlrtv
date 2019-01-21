@@ -160,6 +160,14 @@
                 <a href="{{route('user.login.form')}}" class="y-signin" style="margin-left: 0px;" title="{tr('login')}}"><i class="fa fa-sign-in"></i></a>
             </div><!--y-button end-->
 
+                @if(Setting::get('is_direct_upload_button') == YES)
+
+                    <a href="{{route('user.login.form')}}" class="btn pull-right" style="margin-right: 10px;color: red;background:white;box-shadow: none;" title="{{tr('upload_video')}}">
+                        <i class="fa fa-upload fa-1x"></i>
+                    </a>
+
+                @endif
+
             @endif
             
             <span class="search-cls pull-right" id="search-btn"><i class="fa fa-search top5"></i></span>
@@ -324,6 +332,12 @@
                 <div class="y-button">
                     <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
                 </div><!--y-button end-->
+
+                @if(Setting::get('is_direct_upload_button') == YES)
+
+                    <a href="{{route('user.login.form')}}" class="btn pull-right user-upload-btn" title="{{tr('upload_video')}}"> {{tr('upload')}} <i class="fa fa-upload fa-1x"></i></a>
+
+                @endif
 
             @endif
 
