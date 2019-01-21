@@ -1391,7 +1391,19 @@ class UserController extends Controller {
 
             }
 
-            return response()->json(['success'=>true, 'path'=>$view, 'data'=>$response->data], 200);
+            $message = tr('user_video_upload_success');
+
+            // Check the video status 
+
+            if($response->data->is_approved == DEFAULT_FALSE) {
+
+                $message = tr('user_video_upload_waiting_for_admin_approval');
+
+            }
+
+            \Session::set('flash_message_ajax' , $message);
+
+            return response()->json(['success'=>true, 'path'=>$view, 'data'=>$response->data , 'message' => 'Successfull uploaded'], 200);
 
         } else {
 
