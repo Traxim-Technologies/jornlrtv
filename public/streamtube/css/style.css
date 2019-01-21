@@ -1068,21 +1068,21 @@ history (single page) css
 .sub-list:last-child{
 	margin-bottom: 0;
 }
-.history-image{
-	float: left;
-	margin-right: 2%;
-	width: 20%;
-	height: 120px;
+.history-image {
+    float: left;
+    margin-right: 1em;
+    width: calc(20% - 2em);
+    height: 110px;
     overflow: hidden;
     position: relative;
-}
+ }
 .history-image img{
 	width: 100%;
 	min-height: 100%;
 }
 .history-title{
 	float: left;
-	width: 78%;
+	width: calc(80% + 1em);
 }
 .history-head{
 	margin: 0;
@@ -4234,4 +4234,7 @@ input:checked + .slider{
 .user-upload-btn:hover, .user-upload-btn:active, .user-upload-btn:focus {
 	background: #d80606;
 	color: white;
+}
+.channel-view.col-lg-3{
+	width: 20% !important;
 }
