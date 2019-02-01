@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
- 	<title>{{Setting::get('site_name')}}</title>
+ 	<title>{{Setting::get('site_name')}}</title>  
+    <meta name="robots" content="noindex">
   	<meta name="viewport" content="width=device-width,  initial-scale=1">
     <link rel="stylesheet" href="{{asset('install/css/bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}">
