@@ -49,7 +49,7 @@
 
                             <div class="form-group">
                                 <label for="password">{{tr('password')}}</label>
-                                <input type="password" required name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
+                                <input type="password" required name="password" class="form-control" id="password" placeholder="{{tr('password')}}" value="{{old('password')}}">
 
                                 <span class="form-error">
                                     @if ($errors->has('password'))

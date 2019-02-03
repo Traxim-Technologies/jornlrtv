@@ -66,11 +66,11 @@
 
 						<h5>{{tr('title')}}</h5>
 
-						<input type="text" name="name" id="title" class="form-control" value="{{$model->name}}" required minlength="6" maxlength="64" title="Enter minimum 6 character and maximum 64 character..!" />
+						<input type="text" name="name" id="title" class="form-control" value="{{old('name') ?: $model->name}}" required minlength="6" maxlength="64" title="Enter minimum 6 character and maximum 64 character..!" />
 
 						<h5>{{tr('description')}}</h5>
 
-						<textarea class="form-control description" id="ckeditor" name="description" required>{{$model->description}}</textarea>
+						<textarea class="form-control description" id="ckeditor" name="description" required>{{old('description') ?: $model->description}}</textarea>
 						<br>
 						<div>
 							<a href="" class="btn btn-danger pull-left">{{tr('reset')}}</a>
