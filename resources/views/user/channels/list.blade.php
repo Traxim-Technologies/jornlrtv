@@ -76,7 +76,10 @@
 				                        <li class="sub-list row">
 				                            <div class="main-history">
 				                                 <div class="history-image">
-				                                    <a href="{{route('user.channel',$channel->channel_id)}}"><img src="{{$channel->picture}}"></a>
+				                                    <a href="{{route('user.channel',$channel->channel_id)}}">
+				                                    	<!-- <img src="{{$channel->picture}}"> -->
+				                                    	<img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$channel->picture}}" class="slide-img1 placeholder" />
+				                                    </a>
 				                                    <div class="video_duration">
 				                                        {{$channel->no_of_videos}} {{tr('videos')}}
 				                                    </div>                        

@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>
+    <title>@if(Setting::get('site_name')) {{Setting::get('site_name') }} @else {{tr('site_name')}} @endif</title>  
+    <meta name="robots" content="noindex">
     
     <meta name="viewport" content="width=device-width,  initial-scale=1">
 
@@ -52,12 +53,18 @@
 
     <div class="wrapper_content">
 
-        <div id="preloader">
+        <!-- <div id="preloader">
 
             <div class="cssload-box-loading">
             </div>
 
-        </div>
+        </div> -->
+        <!-- <div id="preloader">
+
+    
+            <div class="loader3"></div>
+        
+        </div> -->
 
         @include('layouts.user.header')
 
@@ -87,6 +94,15 @@
 
 
     <script>
+        $(window).load(function() {
+            
+           $('.placeholder').each(function () {
+              var imagex = jQuery(this);
+              var imgOriginal = imagex.data('src');
+                $(imagex).attr('src', imgOriginal);
+           });
+            
+        });
 
         $(window).load(function(){
             $('#preloader').fadeOut(2000);
@@ -95,35 +111,44 @@
         $(document).ready(function(){
      
             $('.box').slick({
-                  dots: true,
-                  infinite: false,
-                  speed: 300,
-                  slidesToShow: 5,
-                    arrows: true,
-                  slidesToScroll: 5,
-                  responsive: [
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 5,
+                arrows: true,
+                slidesToScroll: 5,
+                responsive: [
                     {
-                      breakpoint: 1024,
-                      settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3,
-                        infinite: true,
-                        dots: true
-                      }
+                        breakpoint: 1200,
+                        settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 4,
+                            infinite: true,
+                            dots: true
+                        }
                     },
                     {
-                      breakpoint: 600,
-                      settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                      }
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: true
+                        }
                     },
                     {
-                      breakpoint: 480,
-                      settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1
-                      }
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        } 
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
                     }
                     // You can unslick at a given breakpoint now by adding:
                     // settings: "unslick"

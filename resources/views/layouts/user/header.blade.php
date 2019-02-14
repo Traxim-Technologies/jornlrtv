@@ -134,7 +134,7 @@
 
                 @if(Setting::get('is_direct_upload_button') == YES)
 
-                    <a href="{{userChannelId()}}" class="btn pull-right" style="margin-right: 10px;color: white;box-shadow: none;" title="{{tr('upload_video')}}">
+                    <a href="{{userChannelId()}}" class="btn pull-right" style="margin-right: 10px;color: red;background:white;box-shadow: none;" title="{{tr('upload_video')}}">
                         <i class="fa fa-upload fa-1x"></i>
                     </a>
 
@@ -148,7 +148,6 @@
 
                 @if(Setting::get('admin_language_control'))
 
-                    
                     @if(count($languages = getActiveLanguages()) > 1) 
                        
                         <li  class="dropdown">
@@ -179,6 +178,14 @@
             <div class="y-button pull-right" style="position: unset;">
                 <a href="{{route('user.login.form')}}" class="y-signin" style="margin-left: 0px;" title="{tr('login')}}"><i class="fa fa-sign-in"></i></a>
             </div><!--y-button end-->
+
+                @if(Setting::get('is_direct_upload_button') == YES)
+
+                    <a href="{{route('user.login.form')}}" class="btn pull-right" style="margin-right: 10px;color: red;background:white;box-shadow: none;" title="{{tr('upload_video')}}">
+                        <i class="fa fa-upload fa-1x"></i>
+                    </a>
+
+                @endif
 
             @endif
             
@@ -345,7 +352,10 @@
 
                 @if(Setting::get('is_direct_upload_button') == YES)
 
-                <a href="{{userChannelId()}}" class="btn pull-right" style="margin-right: 10px;color: gray" title="{{tr('upload_video')}}"><i class="fa fa-upload fa-1x"></i></a>
+                <a href="{{userChannelId()}}" class="btn pull-right user-upload-btn" title="{{tr('upload_video')}}">
+                     {{tr('upload')}} 
+                    <i class="fa fa-upload fa-1x"></i>
+                </a>
 
                 @endif
 
@@ -353,6 +363,15 @@
                 <div class="y-button">
                     <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
                 </div><!--y-button end-->
+
+                @if(Setting::get('is_direct_upload_button') == YES)
+
+                    <a href="{{route('user.login.form')}}" class="btn pull-right user-upload-btn" title="{{tr('upload_video')}}"> 
+                        {{tr('upload')}} 
+                        <i class="fa fa-upload fa-1x"></i>
+                    </a>
+
+                @endif
 
             @endif
 

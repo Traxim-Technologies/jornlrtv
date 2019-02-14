@@ -156,7 +156,9 @@
                                 <div class="slide-image">
                                     <a href="{{$wishlist->url}}">
                                         <!-- <img src="{{$wishlist->video_image}}" /> -->
-                                        <div style="background-image: url({{$wishlist->video_image}});" class="slide-img1"></div>
+                                        <!-- <div style="background-image: url({{$wishlist->video_image}});" class="slide-img1"></div> -->
+
+                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$wishlist->video_image}}"class="slide-img1 placeholder" />
                                     </a>
 
                                     @if($wishlist->ppv_amount > 0)
@@ -214,7 +216,8 @@
                                 <div class="slide-image">
                                     <a href="{{$recent_video->url}}">
                                         <!-- <img src="{{$recent_video->video_image}}" /> -->
-                                        <div style="background-image: url({{$recent_video->video_image}});" class="slide-img1"></div>
+                                        <!-- <div style="background-image: url({{$recent_video->video_image}});" class="slide-img1"></div> -->
+                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$recent_video->video_image}}"class="slide-img1 placeholder" />
                                     </a>
                                     @if($recent_video->ppv_amount > 0)
                                         @if(!$recent_video->ppv_status)
@@ -272,7 +275,8 @@
                                 <div class="slide-image">
                                     <a href="{{$trending->url}}">
                                         <!-- <img src="{{$trending->video_image}}" /> -->
-                                        <div style="background-image: url({{$trending->video_image}});" class="slide-img1"></div>
+                                        <!-- <div style="background-image: url({{$trending->video_image}});" class="slide-img1"></div> -->
+                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$trending->video_image}}" class="slide-img1 placeholder" />
                                     </a>
                                     @if($trending->ppv_amount > 0)
                                         @if(!$trending->ppv_status)
@@ -327,7 +331,8 @@
                                 <div class="slide-image">
                                     <a href="{{$suggestion->url}}">
                                         <!-- <img src="{{$suggestion->video_image}}" /> -->
-                                        <div style="background-image: url({{$suggestion->video_image}});" class="slide-img1"></div>
+                                       <!--  <div style="background-image: url({{$suggestion->video_image}});" class="slide-img1"></div> -->
+                                       <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$suggestion->video_image}}" class="slide-img1 placeholder" />
                                     </a>
 
                                     @if($suggestion->ppv_amount > 0)
@@ -384,7 +389,10 @@
 
                             <div class="slide-box">
                                 <div class="slide-image">
-                                    <a href="{{$watch_list->url}}"><img src="{{$watch_list->video_image}}" /></a>
+                                    <a href="{{$watch_list->url}}">
+                                        <!-- <img src="{{$watch_list->video_image}}" /> -->
+                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$watch_list->video_image}}" class="slide-img1 placeholder" />
+                                    </a>
                                     @if($watch_list->ppv_amount > 0)
                                         @if(!$watch_list->ppv_status)
                                             <div class="video_amount">
