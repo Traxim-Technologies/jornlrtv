@@ -6,6 +6,20 @@
  * Time: 11:58 AM
  */
 ?>
+
+@if(Session::has('flash_message_ajax'))
+
+<div class="alert alert-success"  >
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    {{Session::get('flash_message_ajax')}}
+</div>
+
+<?php \Session::forget('flash_message_ajax');  ?>
+
+@endif
+
+<div id="flash_message_ajax"></div>
+
 @if(Session::has('flash_errors'))
     @if(is_array(Session::get('flash_errors')))
         <div class="alert alert-danger" >

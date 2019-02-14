@@ -327,44 +327,44 @@ footer{
 /*search bar css*/
 
  #custom-search-input .search-query {
-        padding-right: 3px;
-        padding-right: 4px \9;
-        padding-left: 3px;
-        padding-left: 4px \9;
-        padding: 8px 10px;
-       
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
- 
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
- 
-    #custom-search-input button {
-        border: 0;
-        background: none;
-        /** belows styles are working good */
-        padding: 2px 5px;
-        margin-top: 2px;
-        position: relative;
-        left: -33px;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        color:#D9230F;
-    }
- 
-    .search-query:focus + button {
-        z-index: 3;   
-    }
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 3px;
+    padding-left: 4px \9;
+    padding: 8px 10px;
+   
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
 
-    .foot-content{
-    	/*padding: 20px 0;*/
-    	/*margin-left: 30px;*/
-    }
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -33px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color:#D9230F;
+}
+
+.search-query:focus + button {
+    z-index: 3;   
+}
+
+.foot-content{
+	/*padding: 20px 0;*/
+	/*margin-left: 30px;*/
+}
 .element, .outer-container {
  height: 200px;
 }
@@ -1081,21 +1081,21 @@ history (single page) css
 .sub-list:last-child{
 	margin-bottom: 0;
 }
-.history-image{
-	float: left;
-	margin-right: 2%;
-	width: 20%;
-	height: 120px;
+.history-image {
+    float: left;
+    margin-right: 1em;
+    width: calc(20% - 2em);
+    height: 110px;
     overflow: hidden;
     position: relative;
-}
+ }
 .history-image img{
 	width: 100%;
 	min-height: 100%;
 }
 .history-title{
 	float: left;
-	width: 78%;
+	width: calc(80% + 1em);
 }
 .history-head{
 	margin: 0;
@@ -2920,7 +2920,7 @@ changes
 .mobile-header li{
 	display: inline-block !important;
 	padding-top: 10px;
-	width: 15.5%;
+	width: 24%;
 	text-align: center;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -3518,6 +3518,8 @@ changes
 	background-position: center;
 	height: 100%;
 	width: 100%;
+	object-fit: cover;
+	object-position: center;
 }
 .content-head h4{
 	margin-top:5px;
@@ -4662,4 +4664,22 @@ input:checked + .slider{
 }
 #details input[type="checkbox"], #details input[type="radio"] {
     vertical-align: -9%;
+}
+
+.user-upload-btn {
+	margin-right: 10px;
+	color: white;
+	background: red;
+}
+
+.user-upload-btn:hover, .user-upload-btn:active, .user-upload-btn:focus {
+	background: #d80606;
+	color: white;
+}
+.channel-view.col-lg-3{
+	width: 20% !important;
+}
+
+.search-query {
+	padding-right: 45px !important;
 }

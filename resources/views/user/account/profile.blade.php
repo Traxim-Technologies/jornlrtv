@@ -166,7 +166,10 @@
                                 <li class="sub-list row no-margin">
                                     <div class="main-history">
                                         <div class="history-image">
-                                            <a href="{{$video->url}}"><img src="{{$video->video_image}}"></a>  
+                                            <a href="{{$video->url}}">
+                                                <!-- <img src="{{$video->video_image}}"> -->
+                                                <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video->video_image}}" class="placeholder" />
+                                            </a>  
                                             @if($video->ppv_amount > 0)
                                                 @if(!$video->ppv_status)
                                                     <div class="video_amount">

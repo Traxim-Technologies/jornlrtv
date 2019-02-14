@@ -447,6 +447,17 @@
           success : function(data) {
               if (data.success)  {
                   console.log(data);
+                  if(data.message) {
+
+                          var messages = $('#flash_message_ajax');
+
+                          var responseMessage = '<div class="alert alert-success">'+
+                        '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+                        '<strong><i class="glyphicon glyphicon-ok-sign push-5-r"></</strong> '+ data.message +
+                        '</div>';
+
+                        $(messages).html(responseMessage);
+                      }
                   window.location.href = '/channel/'+$("#channel_id").val();
               } else {
                   alert(data.error_messages);
@@ -676,6 +687,18 @@
                   } else {
 
                       console.log(xhr);
+
+                      if(xhr.message) {
+
+                          var messages = $('#flash_message_ajax');
+
+                          var responseMessage = '<div class="alert alert-success">'+
+                        '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+                        '<strong><i class="glyphicon glyphicon-ok-sign push-5-r"></</strong> '+ xhr.message +
+                        '</div>';
+
+                        $(messages).html(responseMessage);
+                      }
 
                       window.location.href = '/channel/'+$("#channel_id").val();
 

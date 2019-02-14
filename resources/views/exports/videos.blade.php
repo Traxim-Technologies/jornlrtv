@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <title>{{$title}}</title>
+    <title>{{$title}}</title>  
+    <meta name="robots" content="noindex">
 </head>
 <style type="text/css">
 

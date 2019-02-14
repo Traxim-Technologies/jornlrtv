@@ -25,7 +25,8 @@
                                     <div class="slide-image">
                                         <a href="{{$video->url}}">
                                             <!-- <img src="{{$video->video_image}}" /> -->
-                                            <div style="background-image: url({{$video->video_image}});" class="slide-img1"></div>
+                                            <!-- <div style="background-image: url({{$video->video_image}});" class="slide-img1"></div> -->
+                                            <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video->video_image}}" class="slide-img1 placeholder" />
                                         </a>
                                         @if($video->ppv_amount > 0)
                                             @if(!$video->ppv_status)
