@@ -799,7 +799,7 @@ class VideoTapeRepository {
 
     public static function video_tape_list($video_ids) {
 
-        $list = VideoTape::whereIn('video_tapes.id', [269, 262])->orderBy('updated_at', 'desc')->get();
+        $list = VideoTape::whereIn('video_tapes.id', $video_ids)->orderBy('updated_at', 'desc')->get();
 
         $video_tapes = [];
 
