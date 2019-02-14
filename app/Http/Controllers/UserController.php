@@ -2332,36 +2332,7 @@ class UserController extends Controller {
         }
 
         return back()->with('flash_success', tr('video_delete_success'));
-    }
-
-    public function video_save(Request $request) {
-
-        $response = CommonRepo::video_save($request)->getData();
-
-        if ($response->success) {
-
-            $view = '';
-
-            if ($response->data->video_type == VIDEO_TYPE_UPLOAD) {
-
-                $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
-
-                $view = \View::make('user.videos.select_image')
-                        ->with('model', $response)
-                        ->with('tape_images', $tape_images)
-                        ->render();
-
-            }
-
-            return response()->json(['success'=>true, 'path'=>$view, 'data'=>$response->data], 200);
-
-        } else {
-
-            return response()->json($response);
-
-        }
-
-    }   
+    }  
 
     public function save_default_img(Request $request) {
 
