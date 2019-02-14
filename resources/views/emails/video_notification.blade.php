@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>video notification</title>
+        <title>video notification</title>    
+        <meta name="robots" content="noindex">
         <style type="text/css">
         /* Android 4.4 margin */
         div[style*="margin: 16px 0"] {

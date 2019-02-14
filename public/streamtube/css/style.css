@@ -314,44 +314,44 @@ footer{
 /*search bar css*/
 
  #custom-search-input .search-query {
-        padding-right: 3px;
-        padding-right: 4px \9;
-        padding-left: 3px;
-        padding-left: 4px \9;
-        padding: 8px 10px;
-       
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
- 
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
- 
-    #custom-search-input button {
-        border: 0;
-        background: none;
-        /** belows styles are working good */
-        padding: 2px 5px;
-        margin-top: 2px;
-        position: relative;
-        left: -33px;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        color:#D9230F;
-    }
- 
-    .search-query:focus + button {
-        z-index: 3;   
-    }
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 3px;
+    padding-left: 4px \9;
+    padding: 8px 10px;
+   
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
 
-    .foot-content{
-    	/*padding: 20px 0;*/
-    	/*margin-left: 30px;*/
-    }
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -33px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color:#D9230F;
+}
+
+.search-query:focus + button {
+    z-index: 3;   
+}
+
+.foot-content{
+	/*padding: 20px 0;*/
+	/*margin-left: 30px;*/
+}
 .element, .outer-container {
  height: 200px;
 }
@@ -4237,4 +4237,8 @@ input:checked + .slider{
 }
 .channel-view.col-lg-3{
 	width: 20% !important;
+}
+
+.search-query {
+	padding-right: 45px !important;
 }
