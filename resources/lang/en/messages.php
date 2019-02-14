@@ -1519,4 +1519,12 @@ return array(
 
 	'user_video_upload_success' => 'Video uploaded successfully and ready for play',
 	'user_video_upload_waiting_for_admin_approval' => 'The video is being reviewed by the admin. If approved it will be added to your channel',
+
+	'playlist_not_found' => 'Playlist not found',
+	'playlist_video_not_found' => 'The video not found',
+	'playlist_added_video' => 'Added to Playlist',
+	'playlist_removed_video' => "Removed from Playlist",
+
+	'playlist_added' => 'Playlist created',
+	'playlist_updated' => 'Playlist updated',
 );

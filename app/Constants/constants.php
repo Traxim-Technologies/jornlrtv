@@ -269,3 +269,18 @@ if(!defined('FFMPEG_NOT_INSTALLED')) define('FFMPEG_NOT_INSTALLED', 0);
 if(!defined('YES')) define('YES', 1);
 
 if(!defined('NO')) define('NO', 0);
+
+// ON OFF STATUS
+
+if(!defined('APPROVED')) define('APPROVED', 1);
+
+if(!defined('DECLINED')) define('DECLINED', 0);
+
+
+if(!defined('PLAYLIST_DISPLAY_PUBLIC')) define('PLAYLIST_DISPLAY_PUBLIC', "PUBLIC");
+
+if(!defined('PLAYLIST_DISPLAY_PRIVATE')) define('PLAYLIST_DISPLAY_PRIVATE', "PRIVATE");
+
+if(!defined('PLAYLIST_TYPE_USER')) define('PLAYLIST_TYPE_USER', "USER");
+
+if(!defined('PLAYLIST_TYPE_CHANNEL')) define('PLAYLIST_TYPE_CHANNEL', "CHANNEL");

@@ -796,4 +796,35 @@ class VideoTapeRepository {
         return response()->json($response_array);
     
     }
+
+    public static function video_tape_list($video_ids) {
+
+        $list = VideoTape::whereIn('video_tapes.id', [269, 262])->orderBy('updated_at', 'desc')->get();
+
+        $video_tapes = [];
+
+        foreach ($list as $key => $value) {
+            
+            $video_tape_details = new \stdClass();
+
+            $video_tape_details->title = $value->title;
+
+            $video_tape_details->default_image = $value->default_image;
+
+            $video_tape_details->video_tape_id = $value->id;
+
+            $video_tape_details->duration = $value->duration;
+
+            $video_tape_details->watch_count = $value->watch_count;
+
+            $video_tape_details->wishlist_status = 1;
+
+            $video_tape_details->channel_name = "Valli's Kitchen";
+
+            array_push($video_tapes, $video_tape_details);
+
+        }
+
+        return $video_tapes;
+    }
 }

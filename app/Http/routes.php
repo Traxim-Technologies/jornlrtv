@@ -947,4 +947,16 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/apply/coupon/subscription', 'UserApiController@apply_coupon_subscription');
 
     Route::post('apply/coupon/videos', 'UserApiController@apply_coupon_video_tapes');
+
+    // User Playlists
+
+    Route::post('/playlists/', 'UserApiController@playlists');
+
+    Route::post('/playlists/save', 'UserApiController@playlists_save');
+
+    Route::post('/playlists/video_status', 'UserApiController@playlists_video_status');
+
+    Route::post('/playlists/view', 'UserApiController@playlists_view');
+
+    
 });
