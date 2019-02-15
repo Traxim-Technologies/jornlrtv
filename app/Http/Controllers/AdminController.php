@@ -5349,16 +5349,21 @@ class AdminController extends Controller {
         
     }
 
-
     /**
-     *  Function : custom_live_videos()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos()
      *
-     * @updated_by -
+     * @uses custom live videos
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
      *
      * @return Live videos details with view page
      */
+
     public function custom_live_videos() {
 
         $model = CustomLiveVideo::orderBy('created_at','desc')->get();
@@ -5370,11 +5375,16 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : create_live_video()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_create()
      *
-     * @updated_by -
+     * @uses custom live videos
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
      *
      * @return create live video page
      */
@@ -5387,11 +5397,16 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_edit()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_edit()
      *
-     * @updated_by -
+     * @uses edit live video page with selected record
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
      *
      * @return edit live video page with selected record
      */
@@ -5407,14 +5422,20 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_save()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_save()
      *
-     * @updated_by -
+     * @uses save the form data of the live video
      *
-     * @return Save the form data of the live video
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return success/error message 
      */
+
     public function custom_live_videos_save(Request $request) {
 
         $response = AdminRepo::save_custom_live_video($request)->getData();
@@ -5432,13 +5453,18 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_change_status()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_change_status()
      *
-     * @updated_by -
+     * @uses update the status of the live video.
      *
-     * @return Update the status of the live video.
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return success/error message 
      */
     public function custom_live_videos_change_status(Request $request) {
 
@@ -5468,14 +5494,20 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_delete()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_delete()
      *
-     * @updated_by -
+     * @uses delete the selected record
      *
-     * @return delete the selected record
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return success/error message 
      */
+
     public function custom_live_videos_delete(Request $request) {
         
         if($model = CustomLiveVideo::where('id',$request->id)->first()) {
@@ -5485,18 +5517,23 @@ class AdminController extends Controller {
             }
         }
         return back()->with('flash_error',tr('something_error'));
+    
     }
 
     /**
-     * Function : custom_live_videos_view()
-     *     
-     * @created_by shobana
      *
-     * @updated_by -
+     * Function name: custom_live_videos_view()
      *
-     * @return view the selected record
+     * @uses view the selected record
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return view page 
      */
-
     public function custom_live_videos_view($id) {
 
         if($model = CustomLiveVideo::find($id)) {
