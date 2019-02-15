@@ -660,9 +660,9 @@ class VideoTapeRepository {
      *
      * To check the status of the pay per view in each video
      *
-     * @created_by - Shobana Chandrasekar
+     * @created Vithya
      * 
-     * @updated_by - - 
+     * @updated
      *
      * @param object $request - Video related details, user related details
      *

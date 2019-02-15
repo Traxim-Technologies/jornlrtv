@@ -112,7 +112,7 @@ class UserController extends Controller {
      *
      * To Activate Super user by admin
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -231,7 +231,7 @@ class UserController extends Controller {
      *
      * Show the user dashboard.
      * 
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      * 
@@ -322,7 +322,7 @@ class UserController extends Controller {
      *
      * To list out videos based on the watching count
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -1935,7 +1935,7 @@ class UserController extends Controller {
      *
      * To pay the payment of subscription through stripe 
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -1976,7 +1976,7 @@ class UserController extends Controller {
      *
      * To list otu  subscribed channels based on logged in users
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2014,7 +2014,7 @@ class UserController extends Controller {
      *
      * To get video details of channels videos using skip & take
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2050,7 +2050,7 @@ class UserController extends Controller {
      *
      * To get payment video details of logged in user using skip & Take
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2080,7 +2080,7 @@ class UserController extends Controller {
      *
      * To Display subscription invoice page based on subscription id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2119,7 +2119,7 @@ class UserController extends Controller {
      *
      * To Display ppv invoice page based on video id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2162,7 +2162,7 @@ class UserController extends Controller {
      *
      * To Display ppv video page
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2215,7 +2215,7 @@ class UserController extends Controller {
      *
      * To Check whether the user is going to pay through paypal / stripe payment (For PPV)
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2240,7 +2240,7 @@ class UserController extends Controller {
      *
      * To Check whether the user is going to pay through paypal / stripe payment (For subscription)
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2265,7 +2265,7 @@ class UserController extends Controller {
      *
      * To Pay PPV amount through stripe payment gateway
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2304,7 +2304,7 @@ class UserController extends Controller {
      *
      * To displaye subscription success message
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2322,7 +2322,7 @@ class UserController extends Controller {
      *
      * To displaye video success messae
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2401,7 +2401,7 @@ class UserController extends Controller {
      *
      * To list out channels based on logged in users
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2429,7 +2429,7 @@ class UserController extends Controller {
      *
      * To send password to the requested users
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2457,7 +2457,7 @@ class UserController extends Controller {
      *
      * To list out subscribed history based on id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2494,7 +2494,7 @@ class UserController extends Controller {
      *
      * To list out ppv history based on id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
      * @updated_by - 
      *
@@ -2532,9 +2532,9 @@ class UserController extends Controller {
      *
      * To list out tags videos based on tag id
      * 
-     * @created_by - Shobana Chandrasekar
+     * @created Vithya 
      *
-     * @updated_by - -
+     * @updated
      *
      * @param integer $request->id - Category Id
      *
@@ -2590,9 +2590,9 @@ class UserController extends Controller {
     *
     * To enable automatic subscription
     *
-    * @created Shobana C
+    * @created Vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - USer details & payment details
     *
@@ -2626,9 +2626,9 @@ class UserController extends Controller {
     *
     * To cancel automatic subscription
     *
-    * @created Shobana C
+    * @created Vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - USer details & payment details
     *
@@ -2663,7 +2663,7 @@ class UserController extends Controller {
     *
     * category details based on id
     *
-    * @created_by shobana
+    * @created Vithya R
     *
     * @updated_by -
     *
@@ -2724,7 +2724,7 @@ class UserController extends Controller {
     /**
      * Function Name : categories_videos()
      *
-     * @created_by shobana
+     * @created Vithya R
      *
      * @updated_by -
      *
@@ -2767,9 +2767,9 @@ class UserController extends Controller {
      *
      * To list out all the channels which is in active status
      *
-     * @created_by Shobana 
+     * @created Vithya R 
      *
-     * @updated_by Shobana
+     * @updated Vithya R
      *
      * @param Object $request - USer Details
      *
@@ -2808,7 +2808,9 @@ class UserController extends Controller {
      *
      * @description return list of live videos created by admin
      *
-     * @author Shobana , Edited By - shobana
+     * @created Vithya
+     *
+     * @updated 
      *
      * @return list page for live videos
      */
@@ -2835,7 +2837,9 @@ class UserController extends Controller {
      *
      * @description return view details of live video
      *
-     * @author Shobana , Edited By - shobana
+     * @created Vithya
+     *
+     * @updated 
      *
      * @return view page for selected live video
      */
@@ -2865,7 +2869,9 @@ class UserController extends Controller {
      *
      * @description Display all the portion of the logged in user
      *
-     * @author Shobana , Edited By - shobana
+     * @created Vithya
+     *
+     * @updated 
      *
      * @return list of options
      */

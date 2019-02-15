@@ -24,9 +24,9 @@ class AdminRepository {
      *
      * To save the video ads when edit by the admin
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - 
+     * @updated
      *
      * @param Integer $request : Video ad id with video ad details
      *
@@ -330,9 +330,9 @@ class AdminRepository {
      *
      * To List out all the ads which is created by admin
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - 
+     * @updated
      *
      * @param -
      *
@@ -352,9 +352,9 @@ class AdminRepository {
      *
      * To get ads with video (Single video based on id)
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - 
+     * @updated
      *
      * @param Integer $request->id : Video id
      *
@@ -375,9 +375,9 @@ class AdminRepository {
      *
      * To save the ad for new & old object details
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - Ad Details
+     * @updatedAd Details
      *
      * @param - 
      *
@@ -623,9 +623,9 @@ class AdminRepository {
     /**
      * Function : custom_live_videos_save()
      *
-     * @created_by shobana
+     * @created Vithya R
      *
-     * @updated_by -
+     * @updated -
      *
      * @return Save the form data of the live video
      */

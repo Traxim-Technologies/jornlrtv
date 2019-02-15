@@ -1260,9 +1260,9 @@ class CommonRepository {
      *
      * To save subscription details based on user id
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - -
+     * @updated
      *
      * @param integer $s_id - Subscription id, $u_id - User id
      * 
@@ -1329,9 +1329,9 @@ class CommonRepository {
      *
      * @param integer video id - Video id
      *
-     * @created: shobana chandrasekar
+     * @created Vithya R
      *
-     * @updated: -
+     * @updated
      *
      * @return response of success/failure message
      */

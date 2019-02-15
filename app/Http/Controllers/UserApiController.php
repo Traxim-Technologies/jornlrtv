@@ -6017,7 +6017,7 @@ class UserApiController extends Controller {
      *
      * @created Vidhya R
      *
-     * @edited Vidhya R
+     * @updated Vidhya R
      *
      * @param 
      * 
@@ -6163,9 +6163,9 @@ class UserApiController extends Controller {
      *
      * To list out all active tags
      *
-     * @created_by shobana
+     * @created Vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * @param object $request - ''
      *
@@ -6195,9 +6195,9 @@ class UserApiController extends Controller {
      *
      * To get any one of the tag details
      *
-     * @created_by shobana
+     * @created Vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * @param object $request - tag id
      *
@@ -6223,9 +6223,9 @@ class UserApiController extends Controller {
     /**
      * Function Name : tags_videos()
      *
-     * @created_by shobana
+     * @created Vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * To display based on tag
      *
@@ -6330,9 +6330,9 @@ class UserApiController extends Controller {
      *
      * Load all the active categories
      *
-     * @created_by shobana
+     * @created Vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * @param -
      *
@@ -6352,9 +6352,9 @@ class UserApiController extends Controller {
      *
      * category details based on id
      *
-     * @created_by shobana
+     * @created Vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * @param - 
      * 
@@ -6412,9 +6412,9 @@ class UserApiController extends Controller {
     /**
      * Function Name : categories_videos()
      *
-     * @created_by shobana
+     * @created Vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * To display based on category
      *
@@ -6520,9 +6520,9 @@ class UserApiController extends Controller {
      *
      * To list out all the channels which is in active status
      *
-     * @created_by Shobana 
+     * @created Vithya 
      *
-     * @updated_by Shobana
+     * @updated 
      *
      * @param Object $request - USer Details
      *
@@ -6638,9 +6638,9 @@ class UserApiController extends Controller {
     *
     * To cancel automatic subscription
     *
-    * @created Shobana C
+    * @created Vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - USer details & payment details
     *
@@ -6727,9 +6727,9 @@ class UserApiController extends Controller {
     *
     * To enable automatic subscription
     *
-    * @created Shobana C
+    * @created Vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - USer details & payment details
     *
@@ -6799,9 +6799,9 @@ class UserApiController extends Controller {
      *
      * To check the coupon code applicable to the user or not
      *
-     * @created_by - Shobana Chandrasekar
+     * @created_by Vithya
      *
-     * @updated_by - 
+     * @updated - 
      *
      * @param objects $coupon - Coupon details
      *
@@ -6867,9 +6867,9 @@ class UserApiController extends Controller {
      *
      * Apply coupon to subscription if the user having coupon codes
      *
-     * @created By - Shobana Chandrasekar
+     * @created Vithya
      *
-     * @edited_by - -
+     * @updated - -
      *
      * @param object $request - User details, subscription details
      *
@@ -6988,9 +6988,9 @@ class UserApiController extends Controller {
      *
      * Apply coupon to PPV if the user having coupon codes
      *
-     * @created By - Shobana Chandrasekar
+     * @created Vithya
      *
-     * @edited_by - -
+     * @updated - -
      *
      * @param object $request - User details, ppv video details
      *
@@ -7096,9 +7096,9 @@ class UserApiController extends Controller {
     /**
      * Function : custom_live_videos()
      *
-     * Created By : shobana 
+     * @created Vithya R 
      *
-     * Edited By : None
+     * @updated 
      *
      * @usage used to return list of live videos
      */
@@ -7125,9 +7125,9 @@ class UserApiController extends Controller {
     /**
      * Function : single_live_video()
      *
-     * Created By : shobana
+     * @created vithya
      *
-     * Edited By : None
+     * @updated 
      *
      * @usage used to return single live video details
      */

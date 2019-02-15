@@ -1400,9 +1400,9 @@ function getVideoAdsTpe($video_id) {
  *
  * To change the amount based on percentafe (Percentage/absolute)
  *
- * @created_by - Shobana Chandrasekar
+ * @created Vithya R
  *
- * @updated_by - - 
+ * @updated
  *
  * @param - Percentage and amount
  *
@@ -1421,9 +1421,9 @@ function amount_convertion($percentage, $amt) {
  *
  * To change the string/ sentance into seo url
  *
- * @created_by - Shobana Chandrasekar
+ * @created Vithya R
  *
- * @updated_by - - 
+ * @updated
  *
  * @param - String
  *
