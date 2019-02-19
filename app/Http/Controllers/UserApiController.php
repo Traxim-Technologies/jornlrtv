@@ -7431,4 +7431,47 @@ class UserApiController extends Controller {
         }
     
     }
+
+        /**
+     * Function Name : delete_history()
+     *
+     * @usage_place : MOBILE & WEB
+     *
+     * To Delete a history based on user
+     *
+     * @param Integer $request - Video Id
+     *
+     * @return response of Boolean with message
+     */
+    public function playlist_delete(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'playlist_id' =>'required|exists:playlists,id',
+            ),
+            array(
+                'exists' => 'The :attribute doesn\'t exists please add to playlist',
+            )
+        );
+
+        if ($validator->fails()) {
+
+            $error = implode(',', $validator->messages()->all());
+
+            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
+
+        } else {
+
+
+            $playlist = Playlist::where('id',$request->playlist_id)->delete();
+
+            $PlaylistVideo = PlaylistVideo::where('playlist_id', $request->playlist_id)->delete();
+
+            $response_array = array('success' => true);
+        }
+
+        return response()->json($response_array, 200);
+    
+    }
 }
