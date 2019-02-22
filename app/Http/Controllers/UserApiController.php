@@ -7474,4 +7474,9 @@ class UserApiController extends Controller {
         return response()->json($response_array, 200);
     
     }
+
+    public function bell_notifications(Request $request) {
+
+        
+    }
 }
