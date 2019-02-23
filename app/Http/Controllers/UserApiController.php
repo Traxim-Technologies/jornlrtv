@@ -14,6 +14,8 @@ use App\Repositories\PaymentRepository as PaymentRepo;
 
 use App\Jobs\sendPushNotification;
 
+use App\Jobs\BellNotificationJob;
+
 use Log;
 
 use Hash;
@@ -3497,8 +3499,10 @@ class UserApiController extends Controller {
         } else {
 
             $model = ChannelSubscription::where('user_id', $request->id)
-            ->where('channel_id',$request->channel_id)
-            ->first();
+                        ->where('channel_id',$request->channel_id)
+                        ->first();
+
+            $channel_details = Channel::find($request->channel_id);
 
             if (!$model) {
 
@@ -3511,6 +3515,16 @@ class UserApiController extends Controller {
                 $model->status = DEFAULT_TRUE;
 
                 $model->save();
+
+                $notification_data['from_user_id'] = $request->id; 
+
+                $notification_data['to_user_id'] = $channel_details->user_id;
+
+                $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_SUBSCRIBER;
+
+                $notification_data['channel_id'] = $channel_details->id;
+
+                dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
 
                 $response_array = ['success'=>true, 'message'=>tr('channel_subscribed')];
 

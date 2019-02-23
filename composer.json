@@ -19,7 +19,8 @@
         "mailgun/mailgun-php": "^2.4",
         "php-http/curl-client": "^1.7",
         "guzzlehttp/psr7": "^1.4",
-        "vidhyar2612/ffmpeg-php-class": "1.0"
+        "vidhyar2612/ffmpeg-php-class": "1.0",
+        "alaouy/youtube": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

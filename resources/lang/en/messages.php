@@ -1527,4 +1527,8 @@ return array(
 
 	'playlist_added' => 'Playlist created',
 	'playlist_updated' => 'Playlist updated',
+
+	'BELL_NOTIFICATION_NEW_VIDEO' => 'New video upload - Notification',
+
+	'BELL_NOTIFICATION_NEW_SUBSCRIBER' => 'New Subscriber - Notification',
 );

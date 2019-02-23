@@ -849,6 +849,18 @@ class CommonRepository {
 
                         dispatch(new SubscriptionMail($model->channel_id, $model->id));
 
+                        $notification_data['from_user_id'] = $model->user_id; 
+
+                        $notification_data['to_user_id'] = 0;
+
+                        $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_VIDEO;
+
+                        $notification_data['channel_id'] = $model->channel_id;
+
+                        $notification_data['video_tape_id'] = $model->id;
+
+                        dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
+
                         $push_message = $model->title;
 
                         dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));

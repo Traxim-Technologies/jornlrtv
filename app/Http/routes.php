@@ -532,6 +532,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('cancelled/subscribers', 'AdminController@cancelled_subscribers')->name('cancelled.subscribers');
 
+    // YouTube Grapper 
+
+    Route::get('youtube/{youtube_channel_id}' , 'AdminController@videos_youtube_grabber_save')->name("youtube.video.save");
+
+
 });
 
 
