@@ -549,6 +549,9 @@
                 case 129:
                     $string = tr('playlist_updated');
                     break;
+                case 130:
+                    $string = tr('bell_notification_updated');
+                    break;
                 default:
                     $string = "";
             

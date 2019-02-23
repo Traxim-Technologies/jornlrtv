@@ -969,9 +969,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('bell_notifications/', 'UserApiController@bell_notifications');
 
-    Route::post('bell_notification/save', 'UserApiController@bell_notification_save');
-
-    Route::post('bell_notification/status', 'UserApiController@bell_notification_status');
+    Route::post('bell_notifications/update', 'UserApiController@bell_notifications_update');
 
     
 });

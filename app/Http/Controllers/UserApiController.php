@@ -82,6 +82,8 @@ use App\Playlist;
 
 use App\PlaylistVideo;
 
+use App\BellNotification;
+
 
 class UserApiController extends Controller {
 
@@ -7446,7 +7448,7 @@ class UserApiController extends Controller {
     
     }
 
-        /**
+    /**
      * Function Name : delete_history()
      *
      * @usage_place : MOBILE & WEB
@@ -7489,8 +7491,111 @@ class UserApiController extends Controller {
     
     }
 
+    /**
+     * Function Name : bell_notifications()
+     *
+     * @uses list of notifications for user
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $id
+     *
+     * @return JSON Response
+     */
+
     public function bell_notifications(Request $request) {
 
-        
+        try {
+
+            $bell_notifications = BellNotification::where('to_user_id', $request->id)
+                                        ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id')
+                                        ->get();
+
+            foreach ($bell_notifications as $key => $bell_notification_details) {
+
+                $picture = asset('placeholder.png');
+
+                if($bell_notification_details->notification_type == BELL_NOTIFICATION_NEW_SUBSCRIBER) {
+
+                    $user_details = User::find($bell_notification_details->from_user_id);
+
+                    $picture = $user_details ? $user_details->picture : $picture;
+
+                } else {
+
+                    $video_tape_details = VideoTape::find($bell_notification_details->video_tape_id);
+
+                    $picture = $video_tape_details ? $video_tape_details->picture : $picture;
+
+                }
+
+                $bell_notification_details->picture = $picture;
+
+                unset($bell_notification_details->from_user_id);
+
+                unset($bell_notification_details->to_user_id);
+            }
+
+            $response_array = ['success' => true, 'data' => $bell_notifications];
+
+            return response()->json($response_array);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }   
+    
+    }
+
+    /**
+     * Function Name : bell_notifications_update()
+     *
+     * @uses list of notifications for user
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $id
+     *
+     * @return JSON Response
+     */
+
+    public function bell_notifications_update(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $bell_notifications = BellNotification::where('to_user_id', $request->id)->update(['status' => BELL_NOTIFICATION_STATUS_READ]);
+
+            $response_array = ['success' => true, 'message' => Helper::get_message(130), 'code' => 130];
+
+            return response()->json($response_array, 200);
+
+            DB::commit();
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        } 
     }
 }
