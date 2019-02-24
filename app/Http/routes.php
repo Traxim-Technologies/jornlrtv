@@ -776,14 +776,13 @@ Route::group(['as' => 'user.'], function(){
 
     // Live Streaming video
 
-    Route::get('/single/live/video/{id?}' , 'UserController@single_custom_live_video')->name('custom.live.view');
+    Route::get('/livetv' , 'UserController@custom_live_videos')->name('custom_live_videos.index');
 
-    Route::get('/custom/live/videos' , 'UserController@custom_live_videos')->name('custom.live.index');
+    Route::get('/livetv/{id?}' , 'UserController@custom_live_videos_view')->name('custom_live_videos.view');
 
     // Settings page
 
     Route::get('/settings' , 'UserController@settings');
-
 
 });
 
@@ -959,11 +958,12 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/playlists/save', 'UserApiController@playlists_save');
 
-    Route::post('/playlists/video_status', 'UserApiController@playlists_video_status');
+    Route::post('/playlist/delete', 'UserApiController@playlist_delete');
 
     Route::post('/playlists/view', 'UserApiController@playlists_view');
 
-    Route::post('/playlist/delete', 'UserApiController@playlist_delete');
+    Route::post('/playlists/video_status', 'UserApiController@playlists_video_status');
+
 
     // Notification
 
@@ -971,5 +971,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('bell_notifications/update', 'UserApiController@bell_notifications_update');
 
-    
+    Route::post('bell_notifications/count', 'UserApiController@bell_notifications_count');
+
 });

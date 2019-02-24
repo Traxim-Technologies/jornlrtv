@@ -2802,7 +2802,7 @@ class UserController extends Controller {
 
     }   
 
-        /**
+    /**
      *
      * Function : custom_live_videos()
      *
@@ -2833,7 +2833,7 @@ class UserController extends Controller {
 
     /**
      *
-     * Function : single_live_rtmp_videos()
+     * Function : custom_live_videos_view()
      *
      * @description return view details of live video
      *
@@ -2843,13 +2843,13 @@ class UserController extends Controller {
      *
      * @return view page for selected live video
      */
-    public function single_custom_live_video($id = "" , Request $request) {
+    public function custom_live_videos_view($id = "" , Request $request) {
 
         $request->request->add([
             'custom_live_video_id'=> $id,
         ]);
 
-        $response = $this->UserAPI->single_custom_live_video($request)->getData();
+        $response = $this->UserAPI->custom_live_videos_view($request)->getData();
 
         if(!$response->success) {
             return redirect()->to('/')->with('flash_error' , "Details not found");

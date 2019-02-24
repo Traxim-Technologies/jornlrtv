@@ -434,6 +434,9 @@
                 case 179:
                     $string = tr('playlist_save_error');
                     break;
+                case 180:
+                    $string = tr('playlist_not_associated_to_user');
+                    break;
 
                 case 1000:
                     $string = tr('video_is_in_flag_list');
@@ -551,6 +554,9 @@
                     break;
                 case 130:
                     $string = tr('bell_notification_updated');
+                    break;
+                case 131:
+                    $string = tr('playlist_deleted');
                     break;
                 default:
                     $string = "";

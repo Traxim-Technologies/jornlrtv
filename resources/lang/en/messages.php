@@ -1521,12 +1521,17 @@ return array(
 	'user_video_upload_waiting_for_admin_approval' => 'The video is being reviewed by the admin. If approved it will be added to your channel',
 
 	'playlist_not_found' => 'Playlist not found',
+	'playlist_not_associated_to_user' => "Unauthorized playlist",
+	'playlist_deleted' => "The playlist deleted",
 	'playlist_video_not_found' => 'The video not found',
 	'playlist_added_video' => 'Added to Playlist',
 	'playlist_removed_video' => "Removed from Playlist",
 
+
 	'playlist_added' => 'Playlist created',
 	'playlist_updated' => 'Playlist updated',
+
+	'bell_notification_updated' => 'The notifications marked read',
 
 	'BELL_NOTIFICATION_NEW_VIDEO' => 'New video upload - Notification',
 

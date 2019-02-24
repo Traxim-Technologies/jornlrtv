@@ -7120,50 +7120,89 @@ class UserApiController extends Controller {
      */
     public function custom_live_videos(Request $request) {
 
-        $model = CustomLiveVideo::where('status', DEFAULT_TRUE)->liveVideoResponse()->orderBy('created_at', 'desc');
+        try {
 
-        if ($request->has('custom_live_video_id')) {
+            $base_query = CustomLiveVideo::liveVideoResponse()->where('status', APPROVED)->orderBy('created_at', 'desc');
 
-            $model->whereNotIn('id', [$request->custom_live_video_id]);
+            if ($request->has('custom_live_video_id')) {
 
-        }
+                $base_query->whereNotIn('id', [$request->custom_live_video_id]);
 
-        $take = $request->has('take') ? $request->take : Setting::get('admin_take_count' ,12);
+            }
 
-        $response = $model->skip($request->skip)->take($take)->get();
+            $take = $request->take ?: Setting::get('admin_take_count' ,12);
 
-        $response_array = ['success' => true , 'live' => $response];
+            $custom_live_videos = $base_query->skip($request->skip)->take($take)->get();
 
-        return response()->json($response_array , 200);
+            $response_array = ['success' => true , 'live' => $custom_live_videos];
+
+            return response()->json($response_array , 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $code];
+
+            return response()->json($response_array);
+
+        }  
 
     }
 
     /**
-     * Function : single_live_video()
      *
-     * @created vithya
+     * Function name: custom_live_videos_view()
      *
-     * @updated 
+     * @uses get the details of the selected custom video (Live TV)
      *
-     * @usage used to return single live video details
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer custom_live_video_id
+     *
+     * @return JSON Response
      */
 
-    public function single_custom_live_video(Request $request) {
+    public function custom_live_videos_view(Request $request) {
 
-        $model = CustomLiveVideo::where('id', $request->custom_live_video_id)->where('status' , 1)->liveVideoResponse()->first();
+        try {
 
-        $suggestions = CustomLiveVideo::where('id','!=', $request->custom_live_video_id)->where('status' , 1)->liveVideoResponse()->get();
+            $custom_live_video_details = CustomLiveVideo::where('id', $request->custom_live_video_id)
+                                            ->where('status' , APPROVED)
+                                            ->liveVideoResponse()
+                                            ->first();
 
-        if ($model) {
+            $suggestions = CustomLiveVideo::where('id','!=', $request->custom_live_video_id)
+                                    ->where('status' , APPROVED)
+                                    ->liveVideoResponse()
+                                    ->get();
 
-            $response_array = ['success'=>true, 'model'=>$model , 'suggestions' => $suggestions];
+            if (!$custom_live_video_details) {
 
-        } else {
+                throw new Exception(tr('custom_live_video_not_found'), 101);  
 
-            $response_array = ['success' => false, 'message' => tr('custom_live_video_not_found')];
-        }
+            }
 
-        return response()->json($response_array,200);
+            $response_array = ['success' => true, 'model' => $custom_live_video_details , 'suggestions' => $suggestions];
+
+            return response()->json($response_array,200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $code];
+
+            return response()->json($response_array);
+
+        }  
+    
     } 
 
     /**
@@ -7212,11 +7251,11 @@ class UserApiController extends Controller {
 
         } catch(Exception $e) {
 
-            $message = $e->getMessage();
+            $error_messages = $e->getMessage();
 
             $code = $e->getCode();
 
-            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $code];
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $code];
 
             return response()->json($response_array);
 
@@ -7297,11 +7336,11 @@ class UserApiController extends Controller {
 
         } catch(Exception $e) {
 
-            $message = $e->getMessage();
+            $error_messages = $e->getMessage();
 
             $code = $e->getCode();
 
-            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $code];
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $code];
 
             return response()->json($response_array);
 
@@ -7375,11 +7414,11 @@ class UserApiController extends Controller {
 
         } catch(Exception $e) {
 
-            $message = $e->getMessage();
+            $error_messages = $e->getMessage();
 
-            $code = $e->getCode();
+            $error_code = $e->getCode();
 
-            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $code];
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
             return response()->json($response_array);
 
@@ -7436,11 +7475,11 @@ class UserApiController extends Controller {
 
         } catch(Exception $e) {
 
-            $message = $e->getMessage();
+            $error_messages = $e->getMessage();
 
-            $code = $e->getCode();
+            $error_code = $e->getCode();
 
-            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $code];
+            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $error_code];
 
             return response()->json($response_array);
 
@@ -7449,46 +7488,70 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : delete_history()
+     * Function Name : playlists_delete()
      *
-     * @usage_place : MOBILE & WEB
+     * @uses used to delete the user selected playlist
      *
-     * To Delete a history based on user
+     * @created vithya R
      *
-     * @param Integer $request - Video Id
+     * @updated vithya R
      *
-     * @return response of Boolean with message
+     * @param integer $playlist_id
+     *
+     * @return JSON Response
      */
-    public function playlist_delete(Request $request) {
+    public function playlists_delete(Request $request) {
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'playlist_id' =>'required|exists:playlists,id',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists please add to playlist',
-            )
-        );
+        try {
 
-        if ($validator->fails()) {
+            DB::beginTransaction();
 
-            $error = implode(',', $validator->messages()->all());
+            $validator = Validator::make($request->all(),[
+                    'playlist_id' =>'required|exists:playlists,id',
+                ],
+                [
+                    'exists' => 'The :attribute doesn\'t exists please add to playlist',
+                ]
+            );
 
-            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
+            if ($validator->fails()) {
 
-        } else {
+                $error_messages = implode(',', $validator->messages()->all());
 
+                throw new Exception($error_messages, 101);
+                
+            }
 
-            $playlist = Playlist::where('id',$request->playlist_id)->delete();
+            $playlist_details = Playlist::where('id',$request->playlist_id)->where('user_id', $request->id)->first();
 
-            $PlaylistVideo = PlaylistVideo::where('playlist_id', $request->playlist_id)->delete();
+            if(!$playlist_details) {
 
-            $response_array = array('success' => true);
+                throw new Exception(Helper::get_error_message(180), 180);
+
+            }
+
+            $playlists_details->delete();
+
+            DB::commit();
+
+            $response_array = ['success' => true, 'message' => Helper::get_message(131), 'code' => 131];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
         }
 
-        return response()->json($response_array, 200);
-    
     }
 
     /**
@@ -7578,11 +7641,12 @@ class UserApiController extends Controller {
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)->update(['status' => BELL_NOTIFICATION_STATUS_READ]);
 
+            DB::commit();
+
             $response_array = ['success' => true, 'message' => Helper::get_message(130), 'code' => 130];
 
             return response()->json($response_array, 200);
 
-            DB::commit();
 
         } catch(Exception $e) {
 
@@ -7597,5 +7661,29 @@ class UserApiController extends Controller {
             return response()->json($response_array);
 
         } 
+    
+    }
+
+    /**
+     * Function Name : bell_notifications_count()
+     * 
+     * @uses Get the notification count
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param object $request - As of no attribute
+     * 
+     * @return response of boolean
+     */
+    public function bell_notifications_count(Request $request) {
+            
+        $bell_notifications_count = BellNotification::where('status', BELL_NOTIFICATION_STATUS_UNREAD)->where('to_user_id', $request->id)->count();
+
+        $response_array = ['success' => true, 'count'=>$bell_notifications_count];
+
+        return response()->json($response_array);
+
     }
 }
