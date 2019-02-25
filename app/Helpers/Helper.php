@@ -558,6 +558,9 @@
                 case 131:
                     $string = tr('playlist_deleted');
                     break;
+                case 132:
+                    $string = tr('playlist_video_add_empty');
+                    break;
                 default:
                     $string = "";
             

@@ -958,7 +958,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/playlists/save', 'UserApiController@playlists_save');
 
-    Route::post('/playlist/delete', 'UserApiController@playlist_delete');
+    Route::post('/playlists/delete', 'UserApiController@playlists_delete');
 
     Route::post('/playlists/view', 'UserApiController@playlists_view');
 
