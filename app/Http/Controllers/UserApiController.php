@@ -7282,6 +7282,8 @@ class UserApiController extends Controller {
 
         try {
 
+            DB::beginTransaction();
+
             $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
                 'playlist_id' => 'exists:playlists,id,user_id,'.$request->id,
@@ -7322,7 +7324,9 @@ class UserApiController extends Controller {
 
             if($playlist_details->save()) {
 
-                $playlist_details = $playlist_details->CommonResponse()->first();
+                DB::commit();
+
+                $playlist_details = $playlist_details->where('id', $playlist_details->id)->CommonResponse()->first();
 
                 $response_array = ['success' => true, 'message' => $message, 'data' => $playlist_details];
 
@@ -7335,6 +7339,8 @@ class UserApiController extends Controller {
             }
 
         } catch(Exception $e) {
+
+            DB::rollback();
 
             $error_messages = $e->getMessage();
 
