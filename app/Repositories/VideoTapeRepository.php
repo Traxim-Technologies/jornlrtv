@@ -797,6 +797,14 @@ class VideoTapeRepository {
     
     }
 
+    /**
+     *
+     * Function Name: video_tape_list()
+     *
+     * @uses common video response
+     *
+     */
+
     public static function video_tape_list($video_ids, $logged_in_user_id) {
 
         $list = VideoTape::whereIn('video_tapes.id', $video_ids)->orderBy('updated_at', 'desc')->get();
@@ -828,6 +836,10 @@ class VideoTapeRepository {
                 $video_tape_details->channel_id = $channel_details->id;
 
                 $video_tape_details->channel_name = $channel_details ? $channel_details->name : "";
+
+                // $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details)->getData()->success;
+
+                $video_tape_details->pay_per_view_status = 0;
 
                 array_push($video_tapes, $video_tape_details);
             }
