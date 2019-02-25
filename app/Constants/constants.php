@@ -269,3 +269,11 @@ if(!defined('FFMPEG_NOT_INSTALLED')) define('FFMPEG_NOT_INSTALLED', 0);
 if(!defined('YES')) define('YES', 1);
 
 if(!defined('NO')) define('NO', 0);
+
+if (!defined('APPROVED')) define('APPROVED',1);
+
+if (!defined('DECLINED')) define('DECLINED',0);
+
+
+// ========================new branch v4.0 admmin-coderevamp =================
+

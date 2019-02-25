@@ -21,37 +21,38 @@
             <li id="dashboard">
               <a href="{{route('admin.dashboard')}}">
                 <i class="fa fa-dashboard"></i> <span>{{tr('dashboard')}}</span>
-              </a>
-              
+              </a>              
             </li>
 
             <li class="treeview" id="users">
-
                 <a href="#">
                     <i class="fa fa-user"></i> <span>{{tr('users')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="add-user"><a href="{{route('admin.users.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_user')}}</a></li>
-                    <li id="view-user"><a href="{{route('admin.users')}}"><i class="fa fa-circle-o"></i>{{tr('view_users')}}</a></li>
+                    <li id="users-create"><a href="{{route('admin.users.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_user')}}</a></li>
+                    <li id="users-view"><a href="{{route('admin.users.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_users')}}</a></li>
                 </ul>
             </li>
 
             <li class="treeview" id="channels">
-                <a href="{{route('admin.channels')}}">
+                <a href="{{route('admin.channels.index')}}">
                     <i class="fa fa-tv"></i> <span>{{tr('channels')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="add-channel"><a href="{{route('admin.channels.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
-                    <li id="view-channels"><a href="{{route('admin.channels')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
-                     <li id="subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
+                    
+                    <li id="channels-create"><a href="{{route('admin.channels.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
+                    
+                    <li id="channels-view"><a href="{{route('admin.channels.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
+                    
+                    <li id="subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
+                
                 </ul>
-
             </li>
 
             <li id="categories">
-                <a href="{{route('admin.categories.list')}}">
+                <a href="{{route('admin.categories.index')}}">
                     <i class="fa fa-list"></i> <span>{{tr('categories')}}</span> 
                 </a>
             </li>
@@ -97,8 +98,7 @@
                             <i class="fa fa-star"></i>{{tr('reviews')}}
                         </a>
                     </li>
-
-
+                    
                 </ul>
 
             </li>
@@ -193,15 +193,13 @@
 
             <!-- Coupon Section-->
             <li class="treeview" id="coupons">
-
                 <a href="#">
                     <i class="fa fa-gift"></i><span>{{tr('coupons')}}</span><i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
-
-                    <li id="add-coupons"><a href="{{route('admin.add.coupons')}}"><i class="fa fa-circle-o"></i>{{tr('add_coupon')}}</a></li>
-                    <li id = "view_coupons"><a href="{{route('admin.coupon.list')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
+                    <li id="coupons-create"><a href="{{route('admin.coupons.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_coupon')}}</a></li>
+                    <li id = "coupons-view"><a href="{{route('admin.coupons.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
                 </ul>
             </li>
             

@@ -28,7 +28,7 @@ return array(
 	'mobile_recent_upload_heading' => 'Recent Uploads',
 	'ads'=>'ADS',
 	'mobile_watch_again_heading' => 'Watch It Again',
-	'add_card_success'=>'The card has been created successfully',
+	'add_card_success'=>'The card has been created successfully.',
 	'stripe_payment'=>'Card Payment',
 	'paypal_payment'=>'Paypal Payment',
 	'add_card_is_not_enabled'=>'Adding cards is not enabled on this application. Please contact administrator',
@@ -39,7 +39,7 @@ return array(
 	'subscribed_channels'=>'Subscribed Channels',
 	'no_default_card_available'=>'There is no default card available. Kindly check your card details',
 	'default_card_add_message'=>'Click here to ',
-	'admin_not_ur_del'=>'User Rating has been deleted Successfully',
+	'admin_not_ur_del'=>'User Rating has been deleted successfully.',
 	'enter_dob'=>'Enter DOB',
 	'no_subscription_found'=>'No Subscription details found',
 	'uploaded_new_video'=>'Uploaded New Video',
@@ -59,7 +59,7 @@ return array(
 	'stripe_secret_key'=>'Stripe Secret Key',
 	'failed_to_upload'=>'Failed To Upload, Your File length is different from original File Length',
 	'min_age_error'=>'Age should be minimum 10 Years Old',
-	'registration_success'=>'Registration completed successfully',
+	'registration_success'=>'Registration completed successfully.',
 	'compress'=>'Video Compressing...',
 	'click_here_url'=>'Click Here',
 	'age_error'=>'Sorry, You are not eligible to see the video',
@@ -82,12 +82,12 @@ return array(
 	'select_ad'=>'Select Ad',
 	'single'=>'Single',
 	'multiple'=>'Multiple',
-	'assign_ad_success'=>'Successfully, Assigned the ads in selected videos',
+	'assign_ad_success'=>'successfully, Assigned the ads in selected videos',
 	'view_ad'=>'View Ad',
 	'ad_note_for_video_time'=>'Please fill the video time, When the ad has to play in between video',
 	'create_ad'=>'Create Ad',
-	'ad_status_decline'=>'Ad has been Declined Successfully',
-	'ad_status_approve'=>'Ad has been Approved Successfully',
+	'ad_status_decline'=>'Ad has been Declined successfully.',
+	'ad_status_approve'=>'Ad has been Approved successfully.',
 	'views'=>'Views',
 	'video_ads_id_error'=>'Select any of the video and assign the ad',
 	'note'=>'Note',
@@ -100,7 +100,7 @@ return array(
 	'make_default'=>'Make Default',
 	'select_image_short_notes'=>'Select any one of the images which is given below. The selected Image will reflect as a thumbnail of your video',
 	'subscription_plans'=>'Plans',
-	'subscription_applied_success'=>'Subscription applied successfully',
+	'subscription_applied_success'=>'Subscription applied successfully.',
 	'edit_cover_photo'=>'Edit Cover Photo',
 	'terms'=>'Terms',
 	'total_channels'=>'Total Channels',
@@ -112,7 +112,7 @@ return array(
 	'preview_ad'=>'Preview Ad',
 	'in_min'=>'In Min',
 	'edit_ad'=>'Edit Ad',
-	'video_delete_success'=>'Video deleted successfully',
+	'video_delete_success'=>'Video deleted successfully.',
 	'multi_channel_status'=>'Multi Channel Status',
 	'enable_channel_status'=>'Enable MultiChannel',
 	'channel_create_error'=>'For a profile, You can create only one channel',
@@ -139,9 +139,9 @@ return array(
 	'paid_user'=>'Paid Users',
 	'both_user'=>'Both Users',
 	'common_settings'=>'Common Settings',
-	'video_edit_success'=>'Successfully updated the video details.',
-	'video_create_success'=>'Successfully created the video details.',
-	'removed_pay_per_view'=> 'Successfully, Removed Pay Per View',
+	'video_edit_success'=>'successfully updated the video details.',
+	'video_create_success'=>'successfully created the video details.',
+	'removed_pay_per_view'=> 'successfully, Removed Pay Per View',
 	'full_video'=>'Full Video',
 	'click_here_to_upload'=>'Click Here to upload a file',
 	'click_here'=>'Click Here',
@@ -175,74 +175,74 @@ return array(
 	'PAYPAL_SECRET'=>'Paypal Secret',
 	'PAYPAL_MODE'=>'Paypal Mode',
 
-	'login_success' => 'Successfully logged in',
+	'login_success' => 'successfully logged in',
 	'master_login_success' => 'You have logged in as Master user.',
 
 	// Global Variables
 
 	'admin' => 'Admin',
-	'users' 	=>	'Users',
+	'users'  => 'Users',
 	'user' => 'User',
 	'moderators' => 'Moderators',
 	'moderator' => 'Moderator',
-	'home'	=>	'Home',
-	'dashboard'	=> 	'Dashboard',
+	'home' => 'Home',
+	'dashboard' =>  'Dashboard',
 	'menu' => 'Menu',
 
-	'register'	=>	'Register',
-	'signup'	=>	'Signup',
-	'login'	=>	'Login',
-	'logout'	=>	'Logout',
+	'register' => 'Register',
+	'signup' => 'Signup',
+	'login' => 'Login',
+	'logout' => 'Logout',
 	'sign_out' => 'Sign out',
 
-	'profile'	=>	'Profile',
-	'account'	=> 	'Account',
+	'profile' => 'Profile',
+	'account' =>  'Account',
 	'edit_profile' => 'Edit Profile',
-	'update_profile'	=> 	'Update Profile',
-	'settings'	=>	'Settings',
+	'update_profile' =>  'Update Profile',
+	'settings' => 'Settings',
 	'delete_account' => 'Delete Account',
 
-	'forgot_password'	=>	'Forgot Password?',
-	'forgot'	=>	'Forgot Your Password?',
-	'remember'	=>	'Remember Me',
+	'forgot_password' => 'Forgot Password?',
+	'forgot' => 'Forgot Your Password?',
+	'remember' => 'Remember Me',
 
 	'reset_password' => 'Reset Password',
 	'reset'=>' Reset',
-	'change_password'	=> 	'Change Password',
-	'old_password'	=> 	'Old Password',
-	'new_password'	=> 	'New Password',
-	'confirm_password'	=> 	'Confirm Password',
+	'change_password' =>  'Change Password',
+	'old_password' =>  'Old Password',
+	'new_password' =>  'New Password',
+	'confirm_password' =>  'Confirm Password',
 	'password_confirmation' => 'Confirm Password',
 	'confirm_password' => 'Confirm Password',
 	'it_is_easy'=>'Its easy',
 	'visit_our_Website'=>'Visit our Website',
 	'reset_now'=>'Reset Now',
 
-	'help_1'	=>	'Help',
+	'help_1' => 'Help',
 	'contact' => 'Contact Us',
 	'about' => 'About Us',
 	'terms_conditions' => 'Terms and Conditions',
 	'privacy' => 'Privacy',
 	'go_home' => 'Go Home',
 	'select_ad_type_error'=>'Select any one of the Ad Type',
-	'action'	=>	'Action',
-	'view'	=> 	'View',
-	'edit'	=> 	'Edit',
-	'delete'	=>	'Delete',
-	'select'	=>	'Select',
-	'cancel'	=> 	'Cancel',
+	'action' => 'Action',
+	'view' =>  'View',
+	'edit' =>  'Edit',
+	'delete' => 'Delete',
+	'select' => 'Select',
+	'cancel' =>  'Cancel',
 	'disable' => 'Disable',
-	'remove'	=> 	'Remove',
-	'change'	=> 	'Change',
+	'remove' =>  'Remove',
+	'change' =>  'Change',
 	'upgrade' => 'Upgrade',
-	'submit'	=>	'Submit',
+	'submit' => 'Submit',
 
-	'status'	=>	'Status',
-	'upload'	=> 	'Upload',
-	'latitude'	=> 	'Latitude',
-	'logitude'	=> 	'Longitude',
+	'status' => 'Status',
+	'upload' =>  'Upload',
+	'latitude' =>  'Latitude',
+	'logitude' =>  'Longitude',
 
-	'paynow'	=> 'Paynow',
+	'paynow' => 'Paynow',
 	'duration' => 'Duration',
 	'duration_note' => 'Note : Format must be HH:MM:SS',
 	'close' => 'Close',
@@ -254,8 +254,8 @@ return array(
 	
 	'yes' => 'Yes',
 	'no' => 'No',
-	'from'	=>	'From',
-	'to'	=>	'To',
+	'from' => 'From',
+	'to' => 'To',
 	'date' => 'Date',
 	'current' => 'Current',
 	'previous' => 'Previous',
@@ -273,44 +273,44 @@ return array(
 	'upload_video_image' => 'Upload Video/Image',
 	'video_short_notes'=>"By submitting your videos to :otherkey, you acknowledge that you agree to :otherkey Terms of Service and Privacy Policy",
 	'upload_video'=>'Upload Video',
-	'amount'	=> 	'Amount',
-	'currency' 	=>	'Currency',
+	'amount' =>  'Amount',
+	'currency'  => 'Currency',
 
-	'approve'	=>	'Approve',
-	'decline'	=>	'Decline',
-	'approved'	=>	'Approved',
-	'pending'	=>	'Pending',
-	'unapproved'	=>	'Unapproved',
-	'added'	=> 	'Added',
+	'approve' => 'Approve',
+	'decline' => 'Decline',
+	'approved' => 'Approved',
+	'pending' => 'Pending',
+	'unapproved' => 'Unapproved',
+	'added' =>  'Added',
 	'type_of_subscription'=>'Subscription Type',
 	'subscription'=>'SubScription',
 	'one_time_payment'=> 'One Time Payment',
 	'recurring_payment'=> 'Recurring Payment',
-	'payment_added'=> 'Payment Added Successfully',
+	'payment_added'=> 'Payment Added successfully.',
 	'for_subscription'=>'Please click here to subscribe!',
 	'for_pay_per_view'=>'Please Pay to see the full video!',
 
 	// Form Elements
 
-	'id'	=>	'ID',
-	'name'	=>	'Name',
+	'id' => 'ID',
+	'name' => 'Name',
 	'username' => 'Username',
-	'email'	=>	'Email',
-	'password'	=>	'Password',
-	'mobile'	=>	'Mobile',
-	'picture'	=>	'Picture',
-	'first_name'	=>	'First Name',
-	'last_name'	=>	'Last Name',
+	'email' => 'Email',
+	'password' => 'Password',
+	'mobile' => 'Mobile',
+	'picture' => 'Picture',
+	'first_name' => 'First Name',
+	'last_name' => 'Last Name',
 	'dob' => 'DOB',
-	'gender'	=>	'Gender',
-	'male'	=>	'Male',
-	'female'	=>	'Female',
-	'others'	=>	'Others',
-	'address'	=>	'Address',
+	'gender' => 'Gender',
+	'male' => 'Male',
+	'female' => 'Female',
+	'others' => 'Others',
+	'address' => 'Address',
 	'validity_days'  =>  'Plan Validity',
 
 	'image' => 'Image',
-	'upload_message'	=>	'Upload only .png, .jpg or .jpeg image files only',
+	'upload_message' => 'Upload only .png, .jpg or .jpeg image files only',
 	'title' => 'Title',
 	'description' => 'Description',
 
@@ -320,12 +320,12 @@ return array(
 	'cover_picture'=>'Cover Picture',
 	
 	// Web Register 
-	'registration_form'	=>	'Registration Form',
-	'already_register'	=>	'Already Registered? Login',
+	'registration_form' => 'Registration Form',
+	'already_register' => 'Already Registered? Login',
 	'already_account' => 'Already Have an Account?',
 	
-	'login_form'	=>	'Login Form',
-	'password_ph'	=>	'Atleast 6 letters',
+	'login_form' => 'Login Form',
+	'password_ph' => 'Atleast 6 letters',
 	
 	// Theme
 	'select_theme' => 'Activate',
@@ -396,32 +396,32 @@ return array(
 	// Profile
 
 	'my_account' => 'My Account',
-	'welcome_user'	=> 	'Welcome',
+	'welcome_user' =>  'Welcome',
 
-	'payment_method'	=> 	'Payment Method',
+	'payment_method' =>  'Payment Method',
 
 	'pay_now_content' => 'Please Pay to see the full video',
 	'pay_now_login_content' => 'Please Login to watch Full Video',
 	'please_login' => 'Please Login',
 
-	'rating'	=> 	'Rating',
+	'rating' =>  'Rating',
 	
-	'select_image'	=> 	'Select Image',
+	'select_image' =>  'Select Image',
 	'img_upload' => 'Image preview only works in IE10+, FF3.6+, Safari6.0+, Chrome6.0+ and Opera11.1+.',
 
-	'user_mobile'	=>	'User Mobile',
+	'user_mobile' => 'User Mobile',
 
-	'profile_update'	=> 	'Profile Update',
+	'profile_update' =>  'Profile Update',
 
-	'you_are'	=>	'You are',
-	'payment_details'	=>	'Payment Details',
+	'you_are' => 'You are',
+	'payment_details' => 'Payment Details',
 
-	'profile_updated' 	=>	'Profile has been updated',
-	'password_success' 	=>	'Password has been updated. You can log in with the new password from next time.',
-	'profile_save'	=>	'Profile has been saved',
-	'password_save'	=>	'Password Updated',
+	'profile_updated'  => 'Profile has been updated',
+	'password_success'  => 'Password has been updated. You can log in with the new password from next time.',
+	'profile_save' => 'Profile has been saved',
+	'password_save' => 'Password Updated',
 
-	'payment_successful'	=> 'Payment Successfully completed',
+	'payment_successful' => 'Payment successfully completed',
 
 	'push_notification_enable' => 'Push Notification Enabled',
 	'push_notification_disable' => 'Push Notification Disabled',
@@ -442,70 +442,70 @@ return array(
 	'see_comments' => 'See Comments',
 	'no_comments' => 'No Comments',
 	'add_comment_msg' => 'Add a public comment here',
-	'comment_success' => 'Comment added successfully',
+	'comment_success' => 'Comment added successfully.',
 
 
 	// Common Errors
 
-	'unknown_error' 	=>	'Unknown error please try again later',
-	'something_error' 	=>	'Something went wrong! please try again later',
+	'unknown_error'  => 'Unknown error please try again later',
+	'something_error'  => 'Something went wrong! please try again later',
 
 	//Admin General
 
-	'view_history'	=>	'View History',
-	'copyright'	=>	'Copyright',
+	'view_history' => 'View History',
+	'copyright' => 'Copyright',
 	'copyright_message' => 'All rights reserved',
-	'paypal_email'	=>	'Paypal Email',
-	'default'	=>	'Default',
-	'default_lang'	=>	'Default Language',
-	'delete_confirmation'	=> 'Are you sure want to Delete?',
+	'paypal_email' => 'Paypal Email',
+	'default' => 'Default',
+	'default_lang' => 'Default Language',
+	'delete_confirmation' => 'Are you sure want to Delete?',
 
 
 	//Admin Notifications
 
-	'admin_not_profile'	=>	'Admin Details updated Successfully',
-	'admin_not_error'	=>	'Something Went Wrong, Try Again!',
+	'admin_not_profile' => 'Admin Details updated successfully.',
+	'admin_not_error' => 'Something Went Wrong, Try Again!',
 
-	'admin_add_user' => 'User added successfully',
-	'admin_not_user'	=>	'User updated Successfully',
-	'admin_not_user_del'	=>	'User deleted successfully',
+	'admin_add_user' => 'User added successfully!',
+	'admin_not_user' => 'User updated successfully!',
+	'admin_not_user_del' => 'User deleted successfully!',
 	'admin_user_upgrade' => 'User is upgraded as moderator',
 	'admin_user_upgrade_disable' => 'User upgrade is disabled',
 	'admin_user_upgrade_already' => 'User email is already exists as moderator',
 
-	'admin_not_history_del'	=>	'History deleted successfully',
+	'admin_not_history_del' => 'History deleted successfully!',
 
-	'admin_not_wishlist_del'	=>	'Wishlist deleted successfully',
+	'admin_not_wishlist_del' => 'Wishlist deleted successfully!',
 
-	'admin_not_moderator'	=>	'Moderator updated Successfully',
-	'admin_add_moderator'	=>	'Moderator added Successfully',
-	'admin_not_moderator_approve'	=>	'Moderator Approved Successfully',
-	'admin_not_moderator_decline'	=>	'Moderator Unapproved Successfully',
-	'admin_not_moderator_del'	=>	'Moderator deleted Successfully',
+	'admin_not_moderator' => 'Moderator updated successfully!',
+	'admin_add_moderator' => 'Moderator added successfully!',
+	'admin_not_moderator_approve' => 'Moderator Approved successfully!',
+	'admin_not_moderator_decline' => 'Moderator Unapproved successfully!',
+	'admin_not_moderator_del' => 'Moderator deleted successfully.',
 
-	'moderator_disable'	=>	'Your account is been disabled. Please contact administrator',
+	'moderator_disable' => 'Your account is been disabled. Please contact administrator',
 
 
 	// Moderator Notifications
 
-	'moderator_not_profile'	=>	'Moderator Details updated Successfully',
-	'moderator_not_error'	=>	'Something Went Wrong, Try Again!',
+	'moderator_not_profile' => 'Moderator Details updated successfully.',
+	'moderator_not_error' => 'Something Went Wrong, Try Again!',
 
 
 	//Admin Login
-	'welcome'	=>	'Welcome to :otherkey. Please sign in to your account',
-	'email_add'	=>	'E-mail Address',
+	'welcome' => 'Welcome to :otherkey. Please sign in to your account',
+	'email_add' => 'E-mail Address',
 	
-	'password_reset_msg'	=>	'Enter a new password and log in to your account',
-	'password_reset_email'	=>	'Lost your password? Please enter your email address. You will receive a link to create a new password.',
-	'password_reset_button'	=>	'Reset Password',
+	'password_reset_msg' => 'Enter a new password and log in to your account',
+	'password_reset_email' => 'Lost your password? Please enter your email address. You will receive a link to create a new password.',
+	'password_reset_button' => 'Reset Password',
 
 	// Admin Success & Errors
 	'back_profile' => 'Back Profile',
 
-	'password_change_success' => 'Password Changed successfully',
+	'password_change_success' => 'Password Changed successfully.',
 	'password_mismatch' =>  'Password is mismatched',
-	'push_send_success' => 'Push Notifications Sent Successfully',
+	'push_send_success' => 'Push Notifications Sent successfully.',
 
 	//Admin Dashboard
 	'total_users' => 'Total Users',
@@ -528,15 +528,15 @@ return array(
 	//Admin Users
 	'users' => 'Users',
 
-	'view_photo'	=>	'View Photo',
-	'view_users'	=>	'View Users',
-	'view_history'	=>	'View History',
-	'view_user'	=>	'View User',
-	'view_wishlist'	=>	'View Wishlist',
+	'view_photo' => 'View Photo',
+	'view_users' => 'View Users',
+	'view_history' => 'View History',
+	'view_user' => 'View User',
+	'view_wishlist' => 'View Wishlist',
 
-	'add_user'	=>	'Add User',
-	'edit_user'	=>	'Edit User',
-	'delete_user'	=>	'Delete User',
+	'add_user' => 'Add User',
+	'edit_user' => 'Edit User',
+	'delete_user' => 'Delete User',
 	'user_type' => 'User Type',
 	'premium' => 'Premium',
 	'normal' => 'Normal',
@@ -549,32 +549,32 @@ return array(
 	'delete_history' => 'Delete History',
 
 	'delete_wishlist' => 'Delete Wishlist',
-	'wishlist_removed' => 'Successfully removed from wishlist',
+	'wishlist_removed' => 'successfully removed from wishlist',
 	
 
 	//Admin moderators
 
 	
-	'view_moderators'	=>	'View Moderators',
-	'view_moderator'	=>	'View Moderator',
-	'add_moderator'	=>	'Add Moderator',
-	'edit_moderator'	=>	'Edit Moderator',
+	'view_moderators' => 'View Moderators',
+	'view_moderator' => 'View Moderator',
+	'add_moderator' => 'Add Moderator',
+	'edit_moderator' => 'Edit Moderator',
 	'ad_videos'=>'Ad Videos',
 
 	//Admin Categories
 	'channel' => 'Channel',
 	'channels' => 'Channels',
-	'view_channels'	=>	'View Channels',
-	'add_channel'	=>	'Add Channel',
-	'edit_channel'	=>	'Edit Channel',
-	'delete_channel'	=>	'Delete Channel',
+	'view_channels' => 'View Channels',
+	'add_channel' => 'Add Channel',
+	'edit_channel' => 'Edit Channel',
+	'delete_channel' => 'Delete Channel',
 	'is_series' => 'Is Series',
 	'category_name'=>'Category Name',
-	'channel_update_success'	=>	'Channel has been updated Successfully',
-	'channel_create_success'	=>	'Channel has been created Successfully',
-	'channel_delete_success'	=>	'Channel has been deleted Successfully',
-	'channel_approve_success' => 'Channel has been Approved Successfully',
-	'channel_decline_success' => 'Channel has been Declined Successfully',
+	'channel_update_success' => 'Channel has been updated successfully.',
+	'channel_create_success' => 'Channel has been created successfully.',
+	'channel_delete_success' => 'Channel has been deleted successfully.',
+	'channel_approve_success' => 'Channel has been Approved successfully.',
+	'channel_decline_success' => 'Channel has been Declined successfully.',
 
 	'image_validate' => 'Please enter .png .jpeg .jpg images only.',
 	'video_validate' => 'Please enter .mkv .mp4 .qt videos only.',
@@ -584,10 +584,10 @@ return array(
 	'video' => 'Video',
 	'trailer_video' => 'Trailer Video',
 	'add_video' => ' Upload Video ',
-	'view_videos'	=>	'View Videos',
-	'view_video'	=>	'View Video',
-	'edit_video'	=>	'Edit Video',
-	'delete_video'	=>	'Delete Video',
+	'view_videos' => 'View Videos',
+	'view_video' => 'View Video',
+	'edit_video' => 'Edit Video',
+	'delete_video' => 'Delete Video',
 	'select_channel' => 'Select Channel',
 	'publish' => 'Publish',
 	'view_images_video_note' => 'Note : Check the view video for video images',
@@ -613,14 +613,14 @@ return array(
 	'slider_video' => 'Slider Video',
 	'slider' => 'Current',
 
-	'admin_not_video_approve'	=>	'Video Approved Successfully',
-	'admin_not_video_decline'	=>	'Video Unapproved Successfully',
+	'admin_not_video_approve' => 'Video approved successfully.',
+	'admin_not_video_decline' => 'Video declined successfully.',
 
-	'admin_published_video_success'	=>	'Video Published Successfully',
-	'admin_published_video_failure'	=>	'Oops! Something went wrong. Try again later',
-	'report_video_success_msg'=> 'Successfully, Marked the video as spam',
+	'admin_published_video_success' => 'Video Published successfully.',
+	'admin_published_video_failure' => 'Oops! Something went wrong. Try again later',
+	'report_video_success_msg'=> 'successfully, Marked the video as spam',
 	'remove_report'=>'Mark as Unspam',
-	'unmark_report_video_success_msg'=> 'Successfully, Removed the video from spam',
+	'unmark_report_video_success_msg'=> 'successfully, Removed the video from spam',
 
 	'slider_success' => 'The video is added as slider video',
 	'no_video_found' => 'No videos found....!',
@@ -636,27 +636,27 @@ return array(
 	'remove_banner' => 'Remove Banner',
 
 	//Admin Documents
-	'document_list'	=>	'Documents List',
-	'edit_document'	=>	'Edit Document Type',
-	'create_document'	=>	'Create New Document Type',
-	'document_name'	=>	'Document Name',
+	'document_list' => 'Documents List',
+	'edit_document' => 'Edit Document Type',
+	'create_document' => 'Create New Document Type',
+	'document_name' => 'Document Name',
 
 	//Admin Reviews
-	'user_name'	=>	'User Name',
-	'provider_name'	=>	'Provider Name',
-	'rating'	=>	'Rating',
-	'date_time'	=>	'Date & Time',
-	'comments'	=>	'Comments',
+	'user_name' => 'User Name',
+	'provider_name' => 'Provider Name',
+	'rating' => 'Rating',
+	'date_time' => 'Date & Time',
+	'comments' => 'Comments',
 
 	//Admin Payment
-	'payment'	=>	'Payment',
+	'payment' => 'Payment',
 	'payment_id' => 'Payment ID',
-	'total_amount'	=>	'Total Amount',
-	'payment_mode'	=>	'Payment Mode',
-	'payment_status'	=>	'Payment Status',
-	'transaction_id'	=>	'Transaction Id',
-	'paid'	=>	'Paid',
-	'not_paid'	=>	'Not Paid',
+	'total_amount' => 'Total Amount',
+	'payment_mode' => 'Payment Mode',
+	'payment_status' => 'Payment Status',
+	'transaction_id' => 'Transaction Id',
+	'paid' => 'Paid',
+	'not_paid' => 'Not Paid',
 
 	// Admin Custom Push
 
@@ -665,7 +665,7 @@ return array(
 
 	//Admin Settings
 
-	'settings_success' => 'Settings Updated Successfully',
+	'settings_success' => 'Settings Updated successfully.',
 
 	'site_settings' => 'Site Settings',
 
@@ -675,12 +675,12 @@ return array(
 
 	'browser_key' => 'Browser Key',
 
-	'site_name'	=>	'Site Name',
-	'tag_name'	=>	'Tag Name',
-	'site_logo'	=>	'Site Logo',
-	'email_logo'	=>	'Email Logo',
-	'site_icon'	=>	'Site Favicon',
-	'paypal'	=>	'Paypal',
+	'site_name' => 'Site Name',
+	'tag_name' => 'Tag Name',
+	'site_logo' => 'Site Logo',
+	'email_logo' => 'Email Logo',
+	'site_icon' => 'Site Favicon',
+	'paypal' => 'Paypal',
 	'no_of_days_expiry' => 'The Subscription Pack will Expiry within ',
 
 	// S3 bucket 
@@ -722,9 +722,9 @@ return array(
 	'heading' => 'Heading',
 	'page_type' => 'Page Type',
 	'select_page_type' => 'Select Page Type',
-	'page_create_success' => 'Page added successfully',
+	'page_create_success' => 'Page added successfully.',
 	'page_already_alert' => 'Page already added',
-	'page_delete_success' => 'Page deleted successfully',
+	'page_delete_success' => 'Page deleted successfully.',
 
 	// Moderator dashboard
 
@@ -732,9 +732,9 @@ return array(
 	'sub_category_count' => 'Total Sub Category',
 	'today_videos' => 'Today Videos',
 
-	'email_settings_success' => 'Email Configuration Updated successfully',
+	'email_settings_success' => 'Email Configuration Updated successfully.',
 
-	'common_settings_success' => 'Common Configuration Updated successfully',
+	'common_settings_success' => 'Common Configuration Updated successfully.',
 
 	'MAIL_DRIVER' => 'MAIL DRIVER',
 	'MAIL_HOST' => 'MAIL HOST',
@@ -773,21 +773,21 @@ return array(
 	'choose_subscription' => 'Choose Subscription',
 	'select_continue' => 'Select & Continue',
 	'current' => 'Current',
-	'subscription_create_success' => 'Subscription added successfully',
-	'subscription_update_success'	=>	'Subscription updated Successfully',
-	'subscription_delete_success'	=>	'Subscription deleted successfully',
-	'subscription_approve_success' => 'Subscription Approved successfully',
-	'subscription_decline_success' => 'Subscription Declined successfully',
+	'subscription_create_success' => 'Subscription added successfully.',
+	'subscription_update_success' => 'Subscription updated successfully.',
+	'subscription_delete_success' => 'Subscription deleted successfully.',
+	'subscription_approve_success' => 'Subscription Approved successfully.',
+	'subscription_decline_success' => 'Subscription Declined successfully.',
 
 	'user_verify_success' => 'User Verification is done!',
 	'user_unverify_success' => 'User UnVerification is done!',
 
 
-	'ad_create_success' => 'Ad has been added successfully',
-	'ad_update_success'	=>	'Ad has been updated Successfully',
-	'ad_delete_success'	=>	'Ad deleted successfully',
-	'ad_approve_success' => 'Ad has been Approved successfully',
-	'ad_decline_success' => 'Ad has been Declined successfully',
+	'ad_create_success' => 'Ad has been added successfully.',
+	'ad_update_success' => 'Ad has been updated successfully.',
+	'ad_delete_success' => 'Ad deleted successfully.',
+	'ad_approve_success' => 'Ad has been Approved successfully.',
+	'ad_decline_success' => 'Ad has been Declined successfully.',
 
 	'select_user'=>'Select User',
 
@@ -869,7 +869,7 @@ return array(
 	'subtitle_validate'=>'The video subtitle must be a file of type: srt.',
 	'sub_title'=>'Sub Title',
 
-	'action_success' => 'Successfully Done!!',
+	'action_success' => 'successfully Done!!',
 
 	'redeem_pay_confirm' => 'Are You Sure ?',
 	'subscribe_note'=>'Subscribe to create your own channel and videos!',
@@ -882,13 +882,13 @@ return array(
 
 	'email_verification' => 'Email verification',
 
-	'channel_subscribed'=>'Successfully subscribed the channel',
+	'channel_subscribed'=>'successfully subscribed the channel',
 
 	'already_channel_subscribed'=>'Already subscribed the channel',
 
 	'not_found'=>'No Records found',
 
-	'channel_unsubscribed'=>'Successfully Unsubscribed the channel',
+	'channel_unsubscribed'=>'successfully Unsubscribed the channel',
 
 	'subscriber_name'=>'Subscriber Name',
 	'comment'=>'Comment',
@@ -903,11 +903,11 @@ return array(
 	'download_here'=>'Download',
 	'create_language'=>'Create Language',
 	'edit_language'=>'Edit Language',
-	'language_delete_success'=>'Successfully, deleted the language',
-	'language_active_success' => 'Language Activated successfully',
-	'language_inactive_success' => 'Language InActivated successfully',
-	'language_create_success' => 'Language added successfully',
-	'language_update_success'	=>	'Language updated Successfully',
+	'language_delete_success'=>'successfully, deleted the language',
+	'language_active_success' => 'Language Activated successfully.',
+	'language_inactive_success' => 'Language InActivated successfully.',
+	'language_create_success' => 'Language added successfully.',
+	'language_update_success' => 'Language updated successfully.',
 	'active'=>'Active',
 	'inactive'=>'Inactive',
 	'activate'=>'Activate',
@@ -915,11 +915,11 @@ return array(
 	'failed_to_upload'=>'Failed To Upload, Your File length is different from original File Length',
 
 	'set_default_language'=>'Set As Default Lang',
-	'set_default_language_success'=>'Successfully changed the language as Default Language',
-	'session_success'=>'Successfully changed the language',
+	'set_default_language_success'=>'successfully changed the language as Default Language',
+	'session_success'=>'successfully changed the language',
 
-	'default'	=>	'Default',
-	'default_lang'	=>	'Default Language',
+	'default' => 'Default',
+	'default_lang' => 'Default Language',
 	'create_banner_ad'=>'Create Banner Ad',
 	'banner_ads'=>'Banner Ads',
 	'edit_banner_ad'=>'Edit Banner Ad',
@@ -939,10 +939,10 @@ return array(
 	'set_as_default'=>'Set As Default',
 	'delete_card'=>'Delete Card',
 
-	'card_default_success' 	=>	'changed default payment method',
-	'card_deleted' 	=>	'Deleted card details',
-	'saved_card'	=> 	'Saved Cards',
-	'no_cards'	=> 	'No Cards Added',
+	'card_default_success'  => 'changed default payment method',
+	'card_deleted'  => 'Deleted card details',
+	'saved_card' =>  'Saved Cards',
+	'no_cards' =>  'No Cards Added',
 	'payment_success' => 'Payment completed!!',
 	'pay_now'=>'Pay Now',
 	'no_card_details_found'=>'No Card Details found. Please Add Card Details',
@@ -950,13 +950,13 @@ return array(
 	'video_is_in_flag_list' => 'Sorry!!.The video is in block list.',
 	'video_not_found' => 'Sorry!!.The video not found',
 
-	'banner_delete_success'=>'Banner Ad has been deleted successfully',
-	'banner_create_success'=>'Banner Ad has been created successfully',
-	'banner_update_success'=>'Banner Ad has been updated successfully',
-	'banner_approve_success'=>'Banner Ad has been approved successfully',
-	'banner_decline_success'=>'Banner Ad has been declined successfully',
+	'banner_delete_success'=>'Banner Ad has been deleted successfully.',
+	'banner_create_success'=>'Banner Ad has been created successfully.',
+	'banner_update_success'=>'Banner Ad has been updated successfully.',
+	'banner_approve_success'=>'Banner Ad has been approved successfully.',
+	'banner_decline_success'=>'Banner Ad has been declined successfully.',
 	'current_position_banner_ad_not_available'=>'Current Position Banner Ad Is Not Available',
-	'banner_position_success'=>'Banner Ad position has been changed successfully',
+	'banner_position_success'=>'Banner Ad position has been changed successfully.',
 	'enter_link'=>'Enter Link',
 	'link'=>'Link',
 	'banner_notes'=>'Upload Rectangle images 4:3 Ratio Ex: 400 * 300',
@@ -982,7 +982,7 @@ return array(
 	'pay_per_video'=>'Pay Per Video',
 	'click_here_subscription'=>'Click Here',
 	'watch_now'=>'Now you can watch video',
-	'payment_received'=>'Your payment is received Successfully !!!',
+	'payment_received'=>'Your payment is received successfully !!!',
 	'thank_you'=>'Thank You!',	
 	'admin_not_logged_in'=>'Admin not logged in , Please check with credentials',
 	'user_not_found'=>'The user you were looking for could not be found.',
@@ -1158,7 +1158,7 @@ return array(
 	'unexcepted_error'=>'Unexcepted errors',
 	'cannot_create_more_pages'=>'You cannot create more pages',
 	'adding_cards_not_enabled_application'=>'Adding cards is not enabled on this application. Please contact administrator',
-	'successfully_created'=>'Successfully Created',
+	'successfully_created'=>'successfully Created',
 	'subscription_expire_soon'=>'Your subscription will expire soon. Our records indicate that no payment method has been associated with this subscripton account. Go to the subscription plans and provide the required payment information to renew your subscription for channel creation & uploading video and continue using your profile uninterrupted.',
 
 	'your_notification_expired'=>'Your notification has expired. To keep using channel creation  & upload video without interruption, subscribe any one of our plans and continue to upload',
@@ -1199,27 +1199,27 @@ return array(
 	'payment_not_completed_pay_again'=>'Payment is not completed. Please try to pay Again',
 	'success'=>'Success',
 	'unknown_error_occured'=>'Unknown error occurred.',
-	'successfully_logged_in'=>'Successfully logged in.',
-	'successfully_logged_out'=>'Successfully logged out.',
-	'successfully_sign_up'=>'Successfully signed up.',
-	'mail_sent_successfully'=>'Mail sent successfully',
-	'favourite_provider_delete'=>'Favourite provider deleted successfully',
-	'payment_mode_changed'=>'Payment mode changed successfully',
+	'successfully_logged_in'=>'successfully logged in.',
+	'successfully_logged_out'=>'successfully logged out.',
+	'successfully_sign_up'=>'successfully signed up.',
+	'mail_sent_successfully.'=>'Mail sent successfully.',
+	'favourite_provider_delete'=>'Favourite provider deleted successfully.',
+	'payment_mode_changed'=>'Payment mode changed successfully.',
 	'service_accepted'=>'Service Accepted',
 	'provider_started'=>'provider started',
 	'arrived_service_location'=>'Arrived to service location',
 	'service_started'=>'Service started',
 	'service_completed'=>'Service completed',
 	'user_rating_done'=>'User rating done',
-	'request_cancelled_successfully'=>'Request cancelled successfully.',
+	'request_cancelled_successfully.'=>'Request cancelled successfully.',
 	'wishlist_added'=>'Wishlist added.',
-	'payment_confirmed_successfully'=>'Payment confirmed successfully.',
+	'payment_confirmed_successfully.'=>'Payment confirmed successfully.',
 	'history_added'=>'History added.',
-	'history_deleted_successfully'=>'History deleted Successfully.',
+	'history_deleted_successfully.'=>'History deleted successfully.',
 	'payment_successful_done'=>'Payment successfully done',
 	'no_provider_available'=>'No Provider Available',
 	'no_provider_available_take_service'=>'No provider available to take the Service.',
-	'request_complted_successfully'=>'Request completed successfully',
+	'request_complted_successfully.'=>'Request completed successfully.',
 	'new_request'=>'New Request',
 	'you_recently_requested'=>'You recently requested to reset password for your ',
 	'click_reset_button'=>' account. Click the reset button to reset password.',
@@ -1256,14 +1256,15 @@ return array(
 	'select_option'=>'Select Option',
 	'validation'=>'Please use Uppercase and numbers only 5 or 10',
 	'only_number'=>'Only use Number 1 between 5000',
-	'coupon_update_success'=>'Coupon Updated Successfully',
-	'coupon_add_success'=>'Coupon Added Successfully',
-	'coupon_delete_success'=>'Coupon Deleted Successfully',
-	'coupon_active_success'=>'Coupon Activated Successfully',
-	'coupon_inactive_success'=>'Coupon Inactivated Successfully',
+	'coupon_update_success'=>'Coupon Updated successfully.',
+	'coupon_add_success'=>'Coupon Added successfully.',
+	'coupon_delete_success'=>'Coupon Deleted successfully.',
+	'coupon_active_success'=>'Coupon Activated successfully.',
+	'coupon_inactive_success'=>'Coupon Inactivated successfully.',
 	'coupon_not_found_error'=>'Coupon Details  Not Found',
 	'coupon_id_not_found_error'=>'Coupon Id doesn’t Exists',
-	'coupon_amount_lessthan_100'=>'Amount type is % so amount should be lessthan or equal 100 only',
+
+
 	'coupon_amount_lessthan_5000'=>'Amount Should be lessthan or equal 5000 only',
 	'coupon_result_not_found_error'=>'Coupon List Not Found',
 	'coupon_code_not_found_error'=>'Coupon Code Not Found',
@@ -1272,8 +1273,8 @@ return array(
 	'coupon_code_note'=>'If Your giving lowercase and tab space means we will remove this things and giving Uppercase coupon code format without space.',
 	'video_not_found_error'=>'Video Details Not Found',
 	'ppv_not_found_error'=>'PPV Amount is Not Found you watch free video and status Unapproved',
-	'user_approved_success'=>'User Approved Successfully',
-	'user_decline_success'=>'User Declined Successfully',
+	'user_approved_success'=>'User Approved successfully.',
+	'user_decline_success'=>'User Declined successfully.',
 	'add_ppv_amount'=>'Add PPV Amount',
 
 
@@ -1337,8 +1338,8 @@ return array(
 	'wishlist_notes'=>'Recent Activities of Wishlist you can find here. To Find out more about Wishlist from this Video.',
 	'spam_reports_notes'=>'Recent Activities of Spam Reports you can find here. To Find out more about Spam Reports of this User.',
 	'reviews_notes_list'=>'Recent Activities of Review Reports you can find here. To Find out more about Review Reports of this User.',
-	'ad_status_enable_success'=>'Ads status has been Enabled successfully',
-	'ad_status_disable_success'=>'Ads status has been Disabled successfully',
+	'ad_status_enable_success'=>'Ads status has been enabled successfully.',
+	'ad_status_disable_success'=>'Ads status has been disabled successfully.',
 	'ad_status_change_failure'=>'Ads status has not been changed..!',
 	'assigned_ads'=>'Assigned ADS',
 	'no_assigned_ads_found'=>'No assigned ads found. To Assign Ad - Under Ads > View Ads > Action Button > Assign Ad',
@@ -1348,21 +1349,21 @@ return array(
 	'ad_not_found'=>'You are searching Ad not found..!',
 	'duration_in_seconds'=>'Duration In Seconds',
 	'are_you_sure_ad_status'=>'Are you sure want to change the status of the Ad?',
-	'video_is_declined'=>'Video is declined by Admin / Channel Owner',
+	'video_is_declined'=>'Video is declined by Admin/Channel Owner',
 	'video_not_yet_publish'=>'Video not yet published..!',
-	'channel_declined'=>'Channel is declined by Admin / Channel Owner',
+	'channel_declined'=>'Channel is declined by Admin/Channel Owner',
 	'category_not_found'=>'Category has not been found..!',
 	'create_category'=>'Create Category',
 
-	'category_update_success'=>'Category has been updated successfully',
+	'category_update_success'=>'Category has been updated successfully.',
 
-	'category_create_success'=>'Category has been created successfully',
+	'category_create_success'=>'Category has been created successfully.',
 
-	'category_delete_success'=>'Category has been deleted successfully',
+	'category_delete_success'=>'Category has been deleted successfully.',
 
-	'category_approve_success'=>'Category has been approved successfully',
+	'category_approve_success'=>'Category has been approved successfully.',
 
-	'category_decline_success'=>'Category has been declined successfully',
+	'category_decline_success'=>'Category has been declined successfully.',
 
 	'vertial_square'=>'Upload Vertical images 3:4 Ratio Ex: 300 * 400',
 
@@ -1380,15 +1381,15 @@ return array(
 	'no_category_videos'=>'No category videos found',
 	'create_tag'=>'Create Tag',
 
-	'tag_update_success'=>'Tag has been updated successfully',
+	'tag_update_success'=>'Tag has been updated successfully.',
 
-	'tag_create_success'=>'Tag has been created successfully',
+	'tag_create_success'=>'Tag has been created successfully.',
 
-	'tag_delete_success'=>'Tag has been deleted successfully',
+	'tag_delete_success'=>'Tag has been deleted successfully.',
 
-	'tag_approve_success'=>'Tag has been approved successfully',
+	'tag_approve_success'=>'Tag has been approved successfully.',
 
-	'tag_decline_success'=>'Tag has been declined successfully',
+	'tag_decline_success'=>'Tag has been declined successfully.',
 	'tags'=>'Tags',
 	'count'=>'Count',
 	'tag_not_found'=>'Tag details not found',
@@ -1400,7 +1401,7 @@ return array(
 	'pause_autorenewal_notes'=>'Pause your subscription autorenewal to take a break on the payment',
 	'enable'=>'Enable',
 	'user_payment_details_not_found'=>'User payment details not found',
-	'cancel_subscription_success'=>'Subscription has been cancelled successfully',
+	'cancel_subscription_success'=>'Subscription has been cancelled successfully.',
 	'autorenewal_enable_success' => 'The subscription autorenewal enabled.',
 	'subscription_autorenewal_already_enabled' => 'The SubScription is already enabled.',
 	'subscription_autorenewal_already_cancelled' => 'The SubScription is already paused.',
@@ -1449,11 +1450,11 @@ return array(
 	'edit_custom_live_video'=> 'Edit Live Video',
 	'view_custom_live_video'=> 'View Live Video',
 	'video_url'=> 'Video Url',
-	'live_custom_video_delete_success'=>'Live Video has been deleted successfully',
-	'live_custom_video_approved_success' => 'Live Video has been Approved successfully',
-	'live_custom_video_declined_success' => 'Live Video has been Declined successfully',
-	'live_custom_video_create_success' => 'Live Video has been added successfully',
-	'live_custom_video_update_success'	=>	'Live Video has been updated Successfully',
+	'live_custom_video_delete_success'=>'Live Video has been deleted successfully.',
+	'live_custom_video_approved_success' => 'Live Video has been Approved successfully.',
+	'live_custom_video_declined_success' => 'Live Video has been Declined successfully.',
+	'live_custom_video_create_success' => 'Live Video has been added successfully.',
+	'live_custom_video_update_success' => 'Live Video has been updated successfully.',
 	'custom_live_video_not_found' => 'Live video details not found',
 
 	'hls_video_url' => 'HLS Video URL',
@@ -1487,7 +1488,7 @@ return array(
 	'ffmpeg_installed'=>'In FFmpeg Installed?',
 	'ffmpeg_need_to_configure'=>'Kindly configure ffmpeg and upload manual videos..!',
 	'already_video_compressed'=>'Already video has been compressed',
-	'video_compress_success'=>'Video has been compressed successfully',
+	'video_compress_success'=>'Video has been compressed successfully.',
 	'do_compression_in_background'=>'Do Compression In Background',
 	'video_not_saved'=>'Video has been not saved, please try again later',
 	'ppv_revenue' => 'PPV Revenue'	,
@@ -1508,7 +1509,7 @@ return array(
 	// Version 3.1 messages
 	'is_admin_needs_to_approve_channel_video' => 'Is admin approval required for user uploaded videos',
 	'is_direct_upload_button' => 'Direct Upload button like YouTube Upload',
-	'username_notes'=>'Only accepts alphanumeric with spaces',
+	'username_notes'=>'Accepts only alphanumeric with spaces',
 	'free_subscribe_paynow'=>'Subscribe as Free',
 	'card_number_notes'=>'Only accept the 16 digit numbers',
 	'logout_confirmation'=> 'Are you sure to logout?',
@@ -1519,4 +1520,113 @@ return array(
 
 	'user_video_upload_success' => 'Video uploaded successfully and ready for play',
 	'user_video_upload_waiting_for_admin_approval' => 'The video is being reviewed by the admin. If approved it will be added to your channel',
+
+
+	// =============== branch v4.0-admin-coderevamp ===============
+	'minimum_6_characters' => 'Enter Minimum 6 Characters',
+
+
+	// new admin users 
+	'admin_user_min_age_error' => 'Can not create account for users below the age 10!',
+	
+	'admin_user_not_found' => 'Sorry!! User Details Not Found',
+	'admin_user_update_success' => 'User Details updated successfully!! ',
+	'admin_user_create_success' => 'User created successfully!!',
+	'admin_user_save_error' => 'Sorry!, something went wrong user details could not be saved. Please try again.',
+
+	'admin_user_delete_error' => 'Sorry!, something went wrong user details could not be deleted. Please try again.',
+	'admin_user_delete_success' =>'User deleted successfully.',
+
+	'admin_user_approve_success' => 'User approved successfully!!.',
+	'admin_user_declined_success' => 'User declined successfully!!.',
+	
+	'admin_user_delete_with_expiry_days_confirmation' => 'The user account is valid for :otherkey days, do you want to delete the user? This action cannot be undone.',
+
+	'admin_premium_user_delete_confirmation'=>":otherkey - Do you sure want to delete this premium user?",
+
+	'admin_user_delete_confirmation'=>' Do you  want delete this(:otherkey) user?',
+	'admin_user_decline_confirmation'=>' Do you want decline this(:otherkey) user?',
+	'admin_user_approve_confirmation'=>' Do you want approve this(:otherkey) user?',
+
+	'admin_user_history_delete_confirm'=>"Do you sure want to delete this(:otherkey) video from user history?",
+	'admin_user_history_delete_success' => 'User history deleted successfully!',
+	'admin_user_history_not_found' => 'Sorry!! history details not found',
+	'admin_user_history_delete_error' => 'Sorry!, something went wrong user history could not be deleted. Please try again.',
+	'admin_user_wishlist_delete_confirm'=>"Do you sure want to delete this(:otherkey) video from user wishlist?",
+	'admin_user_wishlist_not_found' => 'Sorry!! wishlist details not found',
+	'admin_user_wishlist_delete_success' => 'User wishlist deleted successfully!',
+	'admin_user_wishlist_delete_error' => 'Sorry!, something went wrong user wishlist could not be deleted. Please try again.',
+
+	'admin_user_verification_success' => 'User Verified successfully!',
+	'admin_user_unverification_success' => 'User Unverified successfully!!',
+	'admin_user_verification_save_error' => 'Sorry!, something went wrong user could not either verify/unverify. Please try again.',
+
+	// new Admin channels
+
+	'admin_channel_not_found' => 'Channel details not found!',
+	'admin_channel_update_success' => 'Channel has been updated successfully.',
+	'admin_channel_create_success' => 'Channel has been created successfully.',
+
+	'admin_channel_delete_success' => 'Channel has been deleted successfully.',
+	'admin_channel_approve_success' => 'Channel has been Approved successfully.',
+
+	'admin_channel_delete_confirmation' => 'Once you delete the channel corresponding videos will be deleted. Action can not be undone. Do you want delete this (:otherkey) channel?',
+
+	'admin_channel_decline_success' => 'Channel has been Declined successfully.',	
+	'admin_channel_save_error' => 'Sorry!, something went wrong Channel details could not be saved. Please try again.',
+
+	'admin_channel_approve_notes' => 'Do you want to approve this(:otherkey) channel? Once approved, need to approve videos manually.',
+
+	'admin_channel_decline_notes' => 'Do you want to decline this(:otherkey) channel? Once declined, related records will be declined.',
+
+	'admin_category_decline_confirmation'=>'Do you want to decline this category (:otherkey)? Once declined, related videos will be decline.',
+
+	'admin_category_approve_confirmation' => 'Do you want to approve this category (:otherkey)? Once approved, need to approve related videos by manually',
+
+	'admin_category_delete_confirmation' => 'Once the category (:otherkey) is deleted, corresponding videos will be deleted! Action can not be undone. Do you want to delete the category? ',
+
+	'admin_category_approve_success'=>'Category has been approved successfully.',
+
+	'admin_category_decline_success'=>'Category has been declined successfully.',
+
+	'admin_live_custom_video_delete_confirmation'=>'Once the video(:otherkey) has been deleted, action can not be undone. Do you want to delete the video?',
+
+	'admin_live_custom_video_decline_confirmation'=>'Do you want to decline this video (:otherkey)?',
+
+	// New Admin Tags
+
+	'admin_tag_update_success' => 'Tag has been updated successfully.',
+	'admin_tag_create_success' => 'Tag has been created successfully.',
+	'admin_tag_save_error' => 'Sorry!, something went wrong tag details could not be saved. Please try again.',
+
+
+	'admin_tag_approve_confirmation'=>'Do you want to approve this(:otherkey) tag?',
+	'admin_tag_decline_confirmation'=>'Tag will be removed from all the related videos, once the tag declined. Do you want to decline this(:otherkey) tag? ',
+
+	'admin_tag_approved_success' => 'The Tag approved successfully!!.',
+	'admin_tag_declined_success' => 'The Tag declined successfully!!.',
+	
+	'admin_tag_delete_confirmation'=>"Do you want to delete this (:otherkey) tag?",
+	'admin_tag_delete_success' => 'Tag has been deleted successfully.',
+
+	// New Admin Coupons
+
+	'admin_coupon_update_success' => 'Coupon has been updated successfully.',
+	'admin_coupon_create_success' => 'Coupon has been created successfully.',
+	'admin_coupon_save_error' => 'Sorry!, something went wrong coupon details could not be saved. Please try again.',
+
+	'admin_coupon_approve_confirmation'=>'Do you want to approve this(:otherkey) coupon?',
+	'admin_coupon_decline_confirmation'=>'Do you want to delete this(:otherkey) coupon?',
+
+	'admin_coupon_approved_success' => 'The Coupon approved successfully!!.',
+	'admin_coupon_declined_success' => 'The Coupon declined successfully!!.',
+	
+	'admin_coupon_delete_confirmation'=>"Do you want to delete this (:otherkey) coupon?",
+	'admin_coupon_delete_success' => 'Coupon has been deleted successfully.',
+
+	'admin_coupon_amount_lessthan_100'=>'Fot Amount type PERCENTAGE, the amount should be lessthan or equal to 100 only',
+	'admin_coupon_amount_lessthan_5000'=>'Amount Should be lessthan or equal 5000 only',
+
+
+
 );

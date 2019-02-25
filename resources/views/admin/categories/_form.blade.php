@@ -10,7 +10,7 @@
                 </div>
 
 
-             <form action="{{route('admin.categories.save')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('admin.categories.save')}}" method="post" enctype="multipart/form-data">
 
         		
 

@@ -55,9 +55,7 @@ function tr($key , $otherkey = "") {
     // return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
 
     return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
-
 }
-
 
 function envfile($key) {
 
@@ -88,14 +86,11 @@ function get_video_end_smil($video_url) {
     return $result;
 }
 
-
-
 function register_mobile($device_type) {
     if($reg = MobileRegister::where('type' , $device_type)->first()) {
         $reg->count = $reg->count + 1;
         $reg->save();
-    }
-    
+    }   
 }
 
 /**
@@ -955,9 +950,9 @@ function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
 }
 
 
-function check_channel_status($user_id, $id) {
+function check_channel_status($user_id, $channel_id) {
 
-    $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $id)->first();
+    $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $channel_id)->first();
 
     return $model ? $model->id : 0;
 

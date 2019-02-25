@@ -40,13 +40,6 @@
 								<th>{{tr('category')}}</th>
 								<th>{{tr('video_type')}}</th>
 								<th>{{tr('title')}}</th>
-
-								<?php /*@if(Setting::get('is_banner_video'))
-									<th>{{tr('slider_video')}}</th>
-								@endif */?>
-
-								<!-- <th>{{tr('likes')}}</th>
-								<th>{{tr('dislikes')}}</th> -->
 								<th>{{tr('amount')}}</th>
 
 								@if(Setting::get('is_payper_view'))
@@ -66,10 +59,9 @@
 
 							    <tr>
 							      	
-							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.videos.view' , ['id' => $video->video_tape_id] )}}">{{$i+1}}</a></td>
 							      	
-
-							      	<td><a href="{{route('admin.channels.view', $video->channel_id)}}">{{$video->channel_name}}</a></td>
+							      	<td><a href="{{route('admin.channels.view', ['channel_id' => $video->channel_id)}}">{{$video->channel_name}}</a></td>
 							      		
 							      	<td><a href="{{route('admin.categories.view', ['category_id'=>$video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
 
@@ -91,20 +83,6 @@
 							      	</td>
 							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
-							      	<?php /*@if(Setting::get('theme') == 'default')
-							      	
-								      	<td>
-								      		@if($video->is_home_slider == 0 && $video->is_approved && $video->status)
-								      			<a href="{{route('admin.slider.video' , $video['video_tape_id'])}}"><span class="label label-danger">{{tr('set_slider')}}</span></a>
-								      		@elseif($video['is_home_slider'])
-								      			<span class="label label-success">{{tr('slider')}}</span>
-								      		@else
-								      			-
-								      		@endif
-								      	</td>
-
-							      	@endif */?>
-
 							      	<td><b>{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</b></td>
 
 							      	@if(Setting::get('is_payper_view'))

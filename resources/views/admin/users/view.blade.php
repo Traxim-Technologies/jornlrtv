@@ -81,10 +81,10 @@
 	      <div class="box box-widget widget-user">
 
 	      	 	<div class="widget-user-header bg-black">
-	            	<h3 class="widget-user-username text-capitalize text-ellipsis">{{$user->name}}</h3>
+	            	<h3 class="widget-user-username text-capitalize text-ellipsis">{{$user_details->name}}</h3>
 	              	<h5 class="widget-user-desc">User 
 
-	              		@if($user->user_type)
+	              		@if($user_details->user_type)
 
 			      				<span class="text-white"><i class="fa fa-check-circle"></i></span>
 
@@ -97,7 +97,7 @@
 	              	</h5>
 	            </div>
 	            <div class="widget-user-image">
-	              <img class="img-circle" src="{{$user->picture}}" alt="{{$user->name}}" style="height: 90px">
+	              <img class="img-circle" src="{{$user_details->picture}}" alt="{{$user_details->name}}" style="height: 90px">
 	            </div>
 		        <div class="box-body box-profile">
 
@@ -109,23 +109,23 @@
 
 		          <ul class="list-group list-group-unbordered">
 		            <li class="list-group-item">
-		              <b>{{tr('channels')}}</b> <a target="_blank" class="pull-right" href="{{route('admin.users.channels' , $user->id)}}">{{$user->get_channel_count}}</a>
+		              <b>{{tr('channels')}}</b> <a target="_blank" class="pull-right" href="{{route('admin.users.channels' , $user_details->id)}}">{{$user_details->get_channel_count}}</a>
 		            </li>
 		            <li class="list-group-item">
-		              <b>{{tr('videos')}}</b> <a class="pull-right" target="_blank" href="{{route('admin.videos.list' , $user->id)}}">{{$user->get_channel_videos_count}}</a>
+		              <b>{{tr('videos')}}</b> <a class="pull-right" target="_blank" href="{{route('admin.videos.list' , $user_details->id)}}">{{$user_details->get_channel_videos_count}}</a>
 		            </li>
 		            <li class="list-group-item">
-		              <b>{{tr('wishlists')}}</b> <a href="{{route('admin.users.wishlist', $user->id)}}" class="pull-right" target="_blank">{{$user->user_wishlist_count}}</a>
+		              <b>{{tr('wishlists')}}</b> <a href="{{route('admin.users.wishlist', $user_details->id)}}" class="pull-right" target="_blank">{{$user_details->user_wishlist_count}}</a>
 		            </li>
 		            <li class="list-group-item">
-		              <b>{{tr('histories')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_history_count}}</a>
+		              <b>{{tr('histories')}}</b> <a href="{{route('admin.users.history', $user_details->id)}}" class="pull-right" target="_blank">{{$user_details->user_history_count}}</a>
 		            </li>
 		            
 		             <li class="list-group-item">
-		              <b>{{tr('reviews')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_rating_count}}</a>
+		              <b>{{tr('reviews')}}</b> <a href="{{route('admin.users.history', $user_details->id)}}" class="pull-right" target="_blank">{{$user_details->user_rating_count}}</a>
 		            </li>
 		             <li class="list-group-item">
-		              <b>{{tr('spam_reports')}}</b> <a href="{{route('admin.users.history', $user->id)}}" class="pull-right" target="_blank">{{$user->user_flag_count}}</a>
+		              <b>{{tr('spam_reports')}}</b> <a href="{{route('admin.users.history', $user_details->id)}}" class="pull-right" target="_blank">{{$user_details->user_flag_count}}</a>
 		            </li>
 		            <!-- <li class="list-group-item">
 		              <b>{{tr('earnings')}}</b> <a class="pull-right">13,287</a>
@@ -133,7 +133,7 @@
 
 		            <li class="list-group-item">
 		              <b>{{tr('status')}}</b> <a class="pull-right">
-		              	@if($user->status) 
+		              	@if($user_details->status) 
 			      			<span class="label label-success">{{tr('approved')}}</span>
 			       		@else 
 			       			<span class="label label-warning">{{tr('pending')}}</span>
@@ -143,9 +143,9 @@
 
 		             <li class="list-group-item">
 		              <b>{{tr('is_verified')}}</b> <a class="pull-right">
-		              	@if(!$user->is_verified) 
+		              	@if(!$user_details->is_verified) 
 
-			      			<a href="{{route('admin.users.verify' , $user->id)}}" class="btn btn-xs btn-warning">{{tr('verify')}}</a>
+			      			<a href="{{route('admin.users.verify' , $user_details->id)}}" class="btn btn-xs btn-warning">{{tr('verify')}}</a>
 
 			       		@else 
 			       			<span class="label label-success">{{tr('verified')}}</span>
@@ -155,7 +155,7 @@
 
 		          </ul>
 
-		          <a href="{{route('admin.users.edit', array('id' => $user->id))}}" class="btn btn-primary btn-block"><b>{{tr('edit_user')}}</b></a>
+		          <a href="{{route('admin.users.edit', array('id' => $user_details->id))}}" class="btn btn-primary btn-block"><b>{{tr('edit_user')}}</b></a>
 
 		        </div>
 		        <!-- /.box-body -->
@@ -173,14 +173,14 @@
 
 	          <p class="text-muted">
 
-	          		{{$user->description}}
+	          		{{$user_details->description}}
 	          </p>
 
 	          <hr>
 
 	          <strong><i class="fa fa-map-marker margin-r-5"></i> {{tr('location')}}</strong>
 
-	          <p class="text-muted">{{$user->timezone}}</p>
+	          <p class="text-muted">{{$user_details->timezone}}</p>
 
 	          <hr>
 
@@ -189,10 +189,10 @@
 	          <p><strong><i class="fa fa-bell margin-r-5"></i> {{tr('validity_days')}}</strong></p>
 
 
-                <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user->id)['days']}} days</b></p>
+                <p style="color:#cc181e">The Pack will Expiry within <b>{{get_expiry_days($user_details->id)['days']}} days</b></p>
            
 
-            	<p><a target="_blank" href="{{route('admin.users.subscriptions.plans' , $user->id)}}" class="btn btn-xs btn-success"><i class="fa fa-hand-pointer-o"></i>&nbsp;{{tr('subscribe')}}</a></p>
+            	<p><a target="_blank" href="{{route('admin.users.subscriptions.plans' , $user_details->id)}}" class="btn btn-xs btn-success"><i class="fa fa-hand-pointer-o"></i>&nbsp;{{tr('subscribe')}}</a></p>
 
 	        </div>
 	        <!-- /.box-body -->
@@ -219,31 +219,31 @@
 	            <table class="table table-striped">
 	            	<tr>
 	            		<th>{{tr('username')}}</th>
-	            		<td>{{$user->name}}</td>
+	            		<td>{{$user_details->name}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('email')}}</th>
-	            		<td>{{$user->email}}</td>
+	            		<td>{{$user_details->email}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('dob')}}</th>
-	            		<td>{{date('d-m-Y', strtotime($user->dob))}}</td>
+	            		<td>{{date('d-m-Y', strtotime($user_details->dob))}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('mobile')}}</th>
-	            		<td>{{$user->mobile}}</td>
+	            		<td>{{$user_details->mobile}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('device_type')}}</th>
-	            		<td>{{$user->device_type}}</td>
+	            		<td>{{$user_details->device_type}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('register_type')}}</th>
-	            		<td>{{$user->register_type}}</td>
+	            		<td>{{$user_details->register_type}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('login_type')}}</th>
-	            		<td>{{$user->login_type}}</td>
+	            		<td>{{$user_details->login_type}}</td>
 	            	</tr>
 	            </table>
 
@@ -253,19 +253,19 @@
                 <table class="table table-striped">
 	            	<tr>
 	            		<th>{{tr('total_earning')}}</th>
-	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? number_format_short($user->userRedeem->total) : "0.00"}}</td>
+	            		<td>{{Setting::get('currency')}} {{$user_details->userRedeem ? number_format_short($user_details->userRedeem->total) : "0.00"}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('wallet_balance')}}</th>
-	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? number_format_short($user->userRedeem->remaining) : "0.00"}}</td>
+	            		<td>{{Setting::get('currency')}} {{$user_details->userRedeem ? number_format_short($user_details->userRedeem->remaining) : "0.00"}}</td>
 	            	</tr>
 	            	<tr>
 	            		<th>{{tr('paid_amount')}}</th>
-	            		<td>{{Setting::get('currency')}} {{$user->userRedeem ? number_format_short($user->userRedeem->paid) : "0.00"}}</td>
+	            		<td>{{Setting::get('currency')}} {{$user_details->userRedeem ? number_format_short($user_details->userRedeem->paid) : "0.00"}}</td>
 	            	</tr>
 	            	<tr>
 	            		<td>
-	            			<a target="_blank" href="{{route('admin.users.redeems' , $user->id)}}" class="btn btn-success check-redeem" style="background-color: #00a65a !important; color: #fff !important" >	
+	            			<a target="_blank" href="{{route('admin.users.redeems' , $user_details->id)}}" class="btn btn-success check-redeem" style="background-color: #00a65a !important; color: #fff !important" >	
 
 		                	{{tr('check_redeem_requests')}}
 
@@ -280,7 +280,7 @@
 
 	          	<blockquote>
 	                <p>{{tr('channels_short_notes')}}</p>
-	                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.channels', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+	                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.channels', $user_details->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
 	            </blockquote>
 
 	          		<div class="row">
@@ -351,7 +351,7 @@
 
 	          		<blockquote>
 		                <p>{{tr('favourites_notes')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.wishlist', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.users.wishlist', $user_details->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 
 	           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
@@ -389,7 +389,7 @@
 
 	          		<blockquote>
 		                <p>{{tr('history_notes')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a target="_blank" href="{{route('admin.reviews', $user->id)}}">{{tr('click_here')}}</a></cite></small>
+		                <small>{{tr('to_view_more')}} <cite><a target="_blank" href="{{route('admin.reviews', $user_details->id)}}">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 
 	           		<table id="datatable-withoutpagination1" class="table table-bordered table-striped">
@@ -429,7 +429,7 @@
 
 	          		<blockquote>
 		                <p>{{tr('spam_reports_notes')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.spam-videos.per-user-reports', $user->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.spam-videos.per-user-reports', $user_details->id)}}" target="_blank">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 
 	           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
@@ -469,7 +469,7 @@
 
 	          		<blockquote>
 		                <p>{{tr('reviews_notes_list')}}</p>
-		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.reviews', array('user_id'=>$user->id))}}" target="_blank">{{tr('click_here')}}</a></cite></small>
+		                <small>{{tr('to_view_more')}} <cite><a href="{{route('admin.reviews', array('user_id'=>$user_details->id))}}" target="_blank">{{tr('click_here')}}</a></cite></small>
 		            </blockquote>
 
 	           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">

@@ -144,65 +144,65 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Admin Dashboard 
     
-    Route::get('/', 'AdminController@dashboard')->name('dashboard');
+    // Route::get('/', 'AdminController@dashboard')->name('dashboard');
 
 
     // User CRUD Operations
 
-    Route::get('/users/list', 'AdminController@users_list')->name('users');
+    // Route::get('/users/list', 'AdminController@users_list')->name('users');
 
-    Route::get('/users/create', 'AdminController@users_create')->name('users.create');
+    // Route::get('/users/create', 'AdminController@users_create')->name('users.create');
 
-    Route::get('/users/edit', 'AdminController@users_edit')->name('users.edit');
+    // Route::get('/users/edit', 'AdminController@users_edit')->name('users.edit');
     
-    Route::post('/users/save', 'AdminController@users_save')->name('users.save');
+    // Route::post('/users/save', 'AdminController@users_save')->name('users.save');
 
-    Route::get('/users/view/{id}', 'AdminController@users_view')->name('users.view');
+    // Route::get('/users/view/{id}', 'AdminController@users_view')->name('users.view');
 
-    Route::get('/users/delete', 'AdminController@users_delete')->name('users.delete');
+    // Route::get('/users/delete', 'AdminController@users_delete')->name('users.delete');
 
-    Route::get('/users/status','AdminController@users_status_change')->name('users.status');
+    // Route::get('/users/status','AdminController@users_status_change')->name('users.status');
 
-    Route::get('/users/verify/{id?}', 'AdminController@users_verify_status')->name('users.verify');
+    // Route::get('/users/verify/{id?}', 'AdminController@users_verify_status')->name('users.verify');
 
-    Route::get('/users/channels/{id}', 'AdminController@users_channels')->name('users.channels');
+    // Route::get('/users/channels/{id}', 'AdminController@users_channels')->name('users.channels');
 
-    Route::get('/users/history/{id}', 'AdminController@users_history')->name('users.history');
-    Route::get('users/type/{id}','AdminController@users_type_list')->name('users.type');
+    // Route::get('/users/history/{id}', 'AdminController@users_history')->name('users.history');
+    // Route::get('users/type/{id}','AdminController@users_type_list')->name('users.type');
 
-    Route::get('/users/history/delete/{id}', 'AdminController@users_history_delete')->name('users.history.delete');
+    // Route::get('/users/history/delete/{id}', 'AdminController@users_history_delete')->name('users.history.delete');
 
-    Route::get('/users/wishlist/{id}', 'AdminController@users_wishlist')->name('users.wishlist');
+    // Route::get('/users/wishlist/{id}', 'AdminController@users_wishlist')->name('users.wishlist');
 
-    Route::get('/users/wishlist/delete/{id}', 'AdminController@users_wishlist_delete')->name('users.wishlist.delete');
+    // Route::get('/users/wishlist/delete/{id}', 'AdminController@users_wishlist_delete')->name('users.wishlist.delete');
 
-    //User Subscriptions
+    // //User Subscriptions
 
-    Route::get('/users/subscriptions/{id}', 'AdminController@users_subscriptions')->name('users.subscriptions.plans');
+    // Route::get('/users/subscriptions/{id}', 'AdminController@users_subscriptions')->name('users.subscriptions.plans');
 
-    Route::get('/users/subscriptions/save/{s_id}/u_id/{u_id}', 'AdminController@users_subscription_save')->name('users.subscription.save');
+    // Route::get('/users/subscriptions/save/{s_id}/u_id/{u_id}', 'AdminController@users_subscription_save')->name('users.subscription.save');
 
 
     // Channel CRUD Operations
 
 
-    Route::get('/channels', 'AdminController@channels')->name('channels');
+    // Route::get('/channels', 'AdminController@channels')->name('channels');
 
-    Route::get('/channels/create', 'AdminController@channels_create')->name('channels.create');
+    // Route::get('/channels/create', 'AdminController@channels_create')->name('channels.create');
 
-    Route::get('/channels/edit/{id}', 'AdminController@channels_edit')->name('channels.edit');
+    // Route::get('/channels/edit/{id}', 'AdminController@channels_edit')->name('channels.edit');
 
-    Route::get('/channels/videos/{id?}', 'AdminController@channels_videos')->name('channels.videos');
+    // Route::get('/channels/videos/{id?}', 'AdminController@channels_videos')->name('channels.videos');
 
-    Route::post('/channels/save', 'AdminController@channels_save')->name('channels.save');
+    // Route::post('/channels/save', 'AdminController@channels_save')->name('channels.save');
 
-    Route::get('/channels/delete', 'AdminController@channels_delete')->name('channels.delete');
+    // Route::get('/channels/delete', 'AdminController@channels_delete')->name('channels.delete');
 
-    Route::get('/channels/view/{id}', 'AdminController@channels_view')->name('channels.view');
+    // Route::get('/channels/view/{id}', 'AdminController@channels_view')->name('channels.view');
 
-    Route::get('/channels/status/change', 'AdminController@channels_status_change')->name('channel.approve');
+    // Route::get('/channels/status/change', 'AdminController@channels_status_change')->name('channel.approve');
 
-    Route::get('/channels/subscribers', 'AdminController@channels_subscribers')->name('channels.subscribers');
+    // Route::get('/channels/subscribers', 'AdminController@channels_subscribers')->name('channels.subscribers');
 
 
     // Videos CRUD Operations
@@ -365,25 +365,25 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     // Coupons
 
     // Get the add coupon forms
-    Route::get('/coupons/add','AdminController@coupon_create')->name('add.coupons');
+    // Route::get('/coupons/add','AdminController@coupon_create')->name('add.coupons');
 
-    // Get the edit coupon forms
-    Route::get('/coupons/edit/{id}','AdminController@coupon_edit')->name('edit.coupons');
+    // // Get the edit coupon forms
+    // Route::get('/coupons/edit/{id}','AdminController@coupon_edit')->name('edit.coupons');
 
-    // Save the coupon details
-    Route::post('/coupons/save','AdminController@coupon_save')->name('save.coupon');
+    // // Save the coupon details
+    // Route::post('/coupons/save','AdminController@coupon_save')->name('save.coupon');
 
-    // Get the list of coupon details
-    Route::get('/coupons/list','AdminController@coupon_index')->name('coupon.list');
+    // // Get the list of coupon details
+    // Route::get('/coupons/list','AdminController@coupon_index')->name('coupon.list');
 
-    //Get the particular coupon details
-    Route::get('/coupons/view/{id}','AdminController@coupon_view')->name('coupon.view');
+    // //Get the particular coupon details
+    // Route::get('/coupons/view/{id}','AdminController@coupon_view')->name('coupon.view');
 
-    // Delete the coupon details
-    Route::get('/coupons/delete/{id}','AdminController@coupon_delete')->name('delete.coupon');
+    // // Delete the coupon details
+    // Route::get('/coupons/delete/{id}','AdminController@coupon_delete')->name('delete.coupon');
 
-    //Coupon approve and decline status
-    Route::get('/coupon/status','AdminController@coupon_status_change')->name('coupon.status');
+    // //Coupon approve and decline status
+    // Route::get('/coupon/status','AdminController@coupon_status_change')->name('coupon.status');
 
     //Redeems
 
@@ -473,36 +473,36 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
      // Tags
 
-    Route::get('/tags', 'AdminController@tags')->name('tags');
+    // Route::get('/tags', 'AdminController@tags')->name('tags');
 
-    Route::post('/save/tag', 'AdminController@save_tag')->name('save.tag');
+    // Route::post('/save/tag', 'AdminController@save_tag')->name('save.tag');
 
-    Route::get('/delete/tag', 'AdminController@delete_tag')->name('tags.delete');
+    // Route::get('/delete/tag', 'AdminController@delete_tag')->name('tags.delete');
 
-    Route::get('/status/tag', 'AdminController@tag_status')->name('tags.status');
+    // Route::get('/status/tag', 'AdminController@tag_status')->name('tags.status');
 
 
     // Categories CRUD operations
 
-    Route::post('/categories/save', 'AdminController@categories_save')->name('categories.save');
+    // Route::post('/categories/save', 'AdminController@categories_save')->name('categories.save');
 
-    Route::get('/categories/delete', 'AdminController@categories_delete')->name('categories.delete');
+    // Route::get('/categories/delete', 'AdminController@categories_delete')->name('categories.delete');
 
-    Route::get('/categories/status', 'AdminController@categories_status')->name('categories.status');
+    // Route::get('/categories/status', 'AdminController@categories_status')->name('categories.status');
 
-    Route::get('/categories/create', 'AdminController@categories_create')->name('categories.create');
+    // Route::get('/categories/create', 'AdminController@categories_create')->name('categories.create');
 
-    Route::get('/categories/edit', 'AdminController@categories_edit')->name('categories.edit');
+    // Route::get('/categories/edit', 'AdminController@categories_edit')->name('categories.edit');
 
-    Route::get('/categories/list', 'AdminController@categories_list')->name('categories.list');
+    // Route::get('/categories/list', 'AdminController@categories_list')->name('categories.list');
 
-    Route::get('categories/videos', 'AdminController@categories_videos')->name('categories.videos');
+    // Route::get('categories/videos', 'AdminController@categories_videos')->name('categories.videos');
 
-    Route::get('categories/view', 'AdminController@categories_view')->name('categories.view');
+    // Route::get('categories/view', 'AdminController@categories_view')->name('categories.view');
 
-    Route::get('categories/channels', 'AdminController@categories_channels')->name('categories.channels');
+    // Route::get('categories/channels', 'AdminController@categories_channels')->name('categories.channels');
 
-    Route::get('/tags/videos/{id?}', 'AdminController@tags_videos')->name('tags.videos');
+    // Route::get('/tags/videos/{id?}', 'AdminController@tags_videos')->name('tags.videos');
 
     // Custom Live Videos
 
@@ -531,6 +531,121 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('automatic/subscribers', 'AdminController@automatic_subscribers')->name('automatic.subscribers');
 
     Route::get('cancelled/subscribers', 'AdminController@cancelled_subscribers')->name('cancelled.subscribers');
+
+    // ============= branch v4.0-admin-coderevamp ================
+
+    Route::get('/', 'NewAdminController@dashboard')->name('dashboard');
+
+    // New Admin user methods
+
+    Route::get('/users/index', 'NewAdminController@users_index')->name('users.index');
+
+    Route::get('/users/create', 'NewAdminController@users_create')->name('users.create');
+
+    Route::get('/users/edit', 'NewAdminController@users_edit')->name('users.edit');
+    
+    Route::post('/users/save', 'NewAdminController@users_save')->name('users.save');
+
+    Route::get('/users/view', 'NewAdminController@users_view')->name('users.view');
+
+    Route::get('/users/delete', 'NewAdminController@users_delete')->name('users.delete');
+
+    Route::get('/users/status','NewAdminController@users_status_change')->name('users.status');
+
+    Route::get('/users/verify/', 'NewAdminController@users_verify_status')->name('users.verify');
+
+    Route::get('/users/channels/', 'NewAdminController@users_channels')->name('users.channels');
+
+    Route::get('/users/history/', 'NewAdminController@users_history')->name('users.history');
+
+    Route::get('users/type/','NewAdminController@users_type_list')->name('users.type');
+
+    Route::get('/users/history/delete/', 'NewAdminController@users_history_delete')->name('users.history.delete');
+
+    Route::get('/users/wishlist/', 'NewAdminController@users_wishlist')->name('users.wishlist');
+
+    Route::get('/users/wishlist/delete/', 'NewAdminController@users_wishlist_delete')->name('users.wishlist.delete');
+
+    //User Subscriptions
+
+    Route::get('/users/subscriptions/', 'NewAdminController@users_subscriptions')->name('users.subscriptions.plans');
+
+    Route::get('/users/subscriptions/save', 'NewAdminController@users_subscription_save')->name('users.subscription.save');
+
+    // New Admin Channeles methods begins
+
+    Route::get('/channels', 'NewAdminController@channels_index')->name('channels.index');
+
+    Route::get('/channels/create', 'NewAdminController@channels_create')->name('channels.create');
+
+    Route::get('/channels/edit', 'NewAdminController@channels_edit')->name('channels.edit');    
+    Route::post('/channels/save', 'NewAdminController@channels_save')->name('channels.save');
+
+    Route::get('/channels/videos', 'NewAdminController@channels_videos')->name('channels.videos');
+
+    Route::get('/channels/delete', 'NewAdminController@channels_delete')->name('channels.delete');
+
+    Route::get('/channels/view', 'NewAdminController@channels_view')->name('channels.view');
+
+    Route::get('/channels/status/change', 'NewAdminController@channels_status_change')->name('channels.status');
+
+    Route::get('/channels/subscribers', 'NewAdminController@channels_subscribers')->name('channels.subscribers');
+
+    // New Admin Channeles methods ends
+
+    // New Admin categories methods ends
+    
+    Route::get('/categories/index', 'NewAdminController@categories_index')->name('categories.index');
+
+    Route::get('/categories/create', 'NewAdminController@categories_create')->name('categories.create');
+
+    Route::get('/categories/edit', 'NewAdminController@categories_edit')->name('categories.edit');
+
+    Route::post('/categories/save', 'NewAdminController@categories_save')->name('categories.save');
+
+    Route::get('/categories/view', 'NewAdminController@categories_view')->name('categories.view');
+
+    Route::get('/categories/delete', 'NewAdminController@categories_delete')->name('categories.delete');
+
+    Route::get('/categories/status', 'NewAdminController@categories_status')->name('categories.status');
+
+    Route::get('categories/videos', 'NewAdminController@categories_videos')->name('categories.videos');
+
+    Route::get('categories/channels', 'NewAdminController@categories_channels')->name('categories.channels');
+
+    // New Admin categories methods ends
+
+    // New Admin tags methods begins
+
+    Route::get('/tags', 'NewAdminController@tags_index')->name('tags');
+
+    Route::post('/tags/save', 'NewAdminController@tags_save')->name('tags.save');
+
+    Route::get('/tags/delete', 'NewAdminController@tags_delete')->name('tags.delete');
+
+    Route::get('/tags/status', 'NewAdminController@tags_status_change')->name('tags.status');
+
+    Route::get('/tags/videos', 'NewAdminController@tags_videos')->name('tags.videos');
+
+    // New Admin tags methods ends
+
+    // New Admin coupons methods    
+
+    Route::get('/coupons/index', 'NewAdminController@coupons_index')->name('coupons.index');
+
+    Route::get('/coupons/create','NewAdminController@coupons_create')->name('coupons.create');
+
+    Route::get('/coupons/edit','NewAdminController@coupons_edit')->name('coupons.edit');
+
+    Route::post('/coupons/save','NewAdminController@coupons_save')->name('coupons.save');
+
+    Route::get('/coupons/view', 'NewAdminController@coupons_view')->name('coupons.view');
+
+    Route::get('/coupons/delete','NewAdminController@coupons_delete')->name('coupons.delete');
+
+    Route::get('/coupon/status', 'NewAdminController@coupons_status_change')->name('coupons.status');
+
+    // New Admin coupons methods ends
 
 });
 
