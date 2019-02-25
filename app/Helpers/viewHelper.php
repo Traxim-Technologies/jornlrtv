@@ -1289,7 +1289,7 @@ function displayVideoDetails($data,$userId) {
         'category_unique_id'=>$category_unique_id,
         'category_name'=>$data->category_name,
         'tags'=>$tags,
-        'playlists' => $playlists
+        // 'playlists' => $playlists
     ];
 
 

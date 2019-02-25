@@ -7234,6 +7234,8 @@ class UserApiController extends Controller {
 
             }
 
+            // handle video_tape_id - flag and exists
+
             $skip = $request->skip ?: 0;
 
             $take = Setting::get('admin_take_count') ?: 12;
@@ -7241,6 +7243,11 @@ class UserApiController extends Controller {
             $playlists = $base_query->CommonResponse()->skip($skip)->take($take)->get();
 
             foreach ($playlists as $key => $playlist_details) {
+
+                $check_video = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->where('video_tape_id', $request->video_tape_id)->count();
+
+
+                $playlist_details->is_selected = $check_video ? YES : NO;
 
                 $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
             }
