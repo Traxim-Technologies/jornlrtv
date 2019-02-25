@@ -399,7 +399,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/revenues/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('revenues.subscription-payments');
 
-
     // Settings
 
     Route::get('settings' , 'AdminController@settings')->name('settings');
@@ -535,6 +534,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     // YouTube Grapper 
 
     Route::get('youtube/{youtube_channel_id}' , 'AdminController@videos_youtube_grabber_save')->name("youtube.video.save");
+
+    // Redeems  payouts (Direct | PayPal)
+    Route::any('/redeems/payout/invoice', 'version4AdminController@redeems_payout_invoice')->name('users.payout.invoice');
+
+    Route::post('redeems/payout/direct', 'version4AdminController@redeems_payout_direct')->name('users.payout.direct');
+
+    Route::any('/redeems/payout/response', 'version4AdminController@redeems_payout_response')->name('users.payout.response');
 
 
 });

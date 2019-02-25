@@ -1527,6 +1527,8 @@ return array(
 	'playlist_added_video' => 'Added to Playlist',
 	'playlist_removed_video' => "Removed from Playlist",
 
+	'playlist_video_add_empty' => 'The video added in 0 playlist',
+
 
 	'playlist_added' => 'Playlist created',
 	'playlist_updated' => 'Playlist updated',
@@ -1537,5 +1539,8 @@ return array(
 
 	'BELL_NOTIFICATION_NEW_SUBSCRIBER' => 'New Subscriber - Notification',
 
-	'youtube_grabber_channel_id_not_found' => 'Channel ID doesnt exists'
+	'youtube_grabber_channel_id_not_found' => 'Channel ID doesnt exists',
+
+	'redeem_payout' => 'Redeem Payout',
+	'direct_payment' => 'Direct Payment',
 );
