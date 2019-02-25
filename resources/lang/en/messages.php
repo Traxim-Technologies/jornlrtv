@@ -1536,4 +1536,6 @@ return array(
 	'BELL_NOTIFICATION_NEW_VIDEO' => 'New video upload - Notification',
 
 	'BELL_NOTIFICATION_NEW_SUBSCRIBER' => 'New Subscriber - Notification',
+
+	'youtube_grabber_channel_id_not_found' => 'Channel ID doesnt exists'
 );

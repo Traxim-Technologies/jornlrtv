@@ -5879,123 +5879,137 @@ class AdminController extends Controller {
 
     public function videos_youtube_grapper_save($youtube_channel_id , Request $request) {
 
-        if(!$request->youtube_channel_id) {
+        try {
 
-            return back()->with('flash_error' , 'Please enter youtube channel ID');
+            DB::beginTransaction();
 
-        }
+            if(!$request->youtube_channel_id) {
 
-        // Check the channel is exists in YouTube
-
-        $channel = Youtube::getChannelById($request->youtube_channel_id);
-
-        if($channel == false) {
-            return back()->with('flash_error' , 'Channel ID doesnt exists');
-        }
-
-        $youtube_videos = Youtube::listChannelVideos($request->youtube_channel_id, 40);
-
-        foreach ($youtube_videos as $key => $youtube_video_details) {
-
-            $get_youtube_video = Youtube::getVideoInfo($youtube_video_details->id->videoId);
-
-            if($get_youtube_video) {
-
-                // dd($get_youtube_video);
-
-                // check the youtube video already exists
-
-                $check_video_tape_details = $video_tape_details = VideoTape::where('youtube_video_id' , $youtube_video_details->id->videoId)->first();
-
-                if(count($check_video_tape_details) == 0) {
-
-                    $video_tape_details = new VideoTape;
-
-                    $video_tape_details->publish_time = date('Y-m-d H:i:s');
-
-                    $video_tape_details->duration = "00:00:10";
-
-                    $master_user_details = User::where('is_master_user' , 1)->first();
-
-                    $video_tape_details->user_id = $master_user_details ? $master_user_details->id : 1;
-
-                    $video_tape_details->publish_status = $video_tape_details->is_approved = 1;
-
-                    $video_tape_details->reviews = "YOUTUBE";
-
-                    $video_tape_details->video = "https://youtu.be/".$get_youtube_video->id;
-
-                    $video_tape_details->ratings = 5;
-
-                    $video_tape_details->video_publish_type = 1;
-
-                    $video_tape_details->channel_id = 1;
-                    
-                    $video_tape_details->status = 1;
-                
-                }
-
-                $video_tape_details->title = $get_youtube_video->snippet->title;
-
-                $video_tape_details->description = $get_youtube_video->snippet->description;
-
-                $video_tape_details->youtube_channel_id = $get_youtube_video->snippet->channelId;
-
-                $video_tape_details->youtube_video_id = $get_youtube_video->id;
-
-                $default_image = isset($get_youtube_video->snippet->thumbnails->maxres) ? $get_youtube_video->snippet->thumbnails->maxres->url : $get_youtube_video->snippet->thumbnails->default->url;
-
-                $video_tape_details->default_image = $default_image;
-
-                $video_tape_details->compress_status = 1;
-
-                $video_tape_details->watch_count = $get_youtube_video->statistics->viewCount;
-
-                $video_tape_details->save();
-
-
-                $second_image = $get_youtube_video->snippet->thumbnails->default->url;
-
-                $third_image = $get_youtube_video->snippet->thumbnails->high->url;
-
-                $check_video_image_2 = $video_image_2 = VideoTapeImage::where('position' , 2)->where('video_tape_id' , $video_tape_details->id)->first();
-
-                if(!$check_video_image_2) {
-
-                    $video_image_2 = new VideoTapeImage;
-
-                }
-
-                $video_image_2->image = $second_image;
-
-                $video_image_2->is_default = 0;
-
-                $video_image_2->position = 2;
-
-                $video_image_2->save();
-
-                $check_video_image_3 = $video_image_3 = VideoTapeImage::where('position' , 3)->where('video_tape_id' , $video_tape_details->id)->first();
-
-                if(!$check_video_image_3) {
-
-                    $video_image_3 = new VideoTapeImage;
-
-                }
-
-                $video_image_3->image = $second_image;
-
-                $video_image_3->is_default = 0;
-
-                $video_image_3->position = 3;
-
-                $video_image_3->save();
-
+                throw new Exception(tr('youtube_grabber_channel_id_not_found'), 101);
 
             }
-            
-        }
 
-        return back()->with('flash_success' , "videos grpped from youtube");
+            // Check the channel is exists in YouTube
+
+            $channel = Youtube::getChannelById($request->youtube_channel_id);
+
+            if($channel == false) {
+
+                throw new Exception(tr('youtube_grabber_channel_id_not_found'), 101);
+                
+            }
+
+            $youtube_videos = Youtube::listChannelVideos($request->youtube_channel_id, 40);
+
+            foreach ($youtube_videos as $key => $youtube_video_details) {
+
+                $youtube_video_details = Youtube::getVideoInfo($youtube_video_details->id->videoId);
+
+                if($youtube_video_details) {
+
+                    // check the youtube video already exists
+
+                    $check_video_tape_details = $video_tape_details = VideoTape::where('youtube_video_id' , $youtube_video_details->id->videoId)->first();
+
+                    if(count($check_video_tape_details) == 0) {
+
+                        $video_tape_details = new VideoTape;
+
+                        $video_tape_details->publish_time = date('Y-m-d H:i:s');
+
+                        $video_tape_details->duration = "00:00:10";
+
+                        $master_user_details = User::where('is_master_user' , 1)->first();
+
+                        $video_tape_details->user_id = $master_user_details ? $master_user_details->id : 1;
+
+                        $video_tape_details->publish_status = $video_tape_details->is_approved = 1;
+
+                        $video_tape_details->reviews = "YOUTUBE";
+
+                        $video_tape_details->video = "https://youtu.be/".$youtube_video_details->id;
+
+                        $video_tape_details->ratings = 5;
+
+                        $video_tape_details->video_publish_type = PUBLISH_NOW;
+
+                        $video_tape_details->channel_id = 1;
+                        
+                        $video_tape_details->status = USER_VIDEO_APPROVED_STATUS;
+                    
+                    }
+
+                    $video_tape_details->title = $youtube_video_details->snippet->title;
+
+                    $video_tape_details->description = $youtube_video_details->snippet->description;
+
+                    $video_tape_details->youtube_channel_id = $youtube_video_details->snippet->channelId;
+
+                    $video_tape_details->youtube_video_id = $youtube_video_details->id;
+
+                    $default_image = isset($youtube_video_details->snippet->thumbnails->maxres) ? $youtube_video_details->snippet->thumbnails->maxres->url : $youtube_video_details->snippet->thumbnails->default->url;
+
+                    $video_tape_details->default_image = $default_image;
+
+                    $video_tape_details->compress_status = 1;
+
+                    $video_tape_details->watch_count = $youtube_video_details->statistics->viewCount;
+
+                    $video_tape_details->save();
+
+
+                    $second_image = $youtube_video_details->snippet->thumbnails->default->url;
+
+                    $third_image = $youtube_video_details->snippet->thumbnails->high->url;
+
+                    $check_video_image_2 = $video_image_2 = VideoTapeImage::where('position' , 2)->where('video_tape_id' , $video_tape_details->id)->first();
+
+                    if(!$check_video_image_2) {
+
+                        $video_image_2 = new VideoTapeImage;
+
+                    }
+
+                    $video_image_2->image = $second_image;
+
+                    $video_image_2->is_default = 0;
+
+                    $video_image_2->position = 2;
+
+                    $video_image_2->save();
+
+                    $check_video_image_3 = $video_image_3 = VideoTapeImage::where('position' , 3)->where('video_tape_id' , $video_tape_details->id)->first();
+
+                    if(!$check_video_image_3) {
+
+                        $video_image_3 = new VideoTapeImage;
+
+                    }
+
+                    $video_image_3->image = $second_image;
+
+                    $video_image_3->is_default = 0;
+
+                    $video_image_3->position = 3;
+
+                    $video_image_3->save();
+
+                }
+                
+            }
+
+            return back()->with('flash_success' , "videos grpped from youtube");
+
+        } catch(Exception $e) {
+
+            DB::rollBack();
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            return back()->with('flash_error', $error_messages);
+        }
 
 
     }
