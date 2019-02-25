@@ -7469,6 +7469,8 @@ class UserApiController extends Controller {
 
             $video_tapes = VideoRepo::video_tape_list($video_tape_ids, $request->id);
 
+            $playlist_details->total_videos = count($video_tapes);
+
             $playlist_details->video_tapes = $video_tapes;
 
             $data = $playlist_details;

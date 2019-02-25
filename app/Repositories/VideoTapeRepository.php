@@ -844,6 +844,7 @@ class VideoTapeRepository {
                 $video_tape_details->pay_per_view_status = $pay_per_view_status;
 
                 array_push($video_tapes, $video_tape_details);
+            
             }
 
         }
