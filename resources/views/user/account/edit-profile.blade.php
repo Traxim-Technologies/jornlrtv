@@ -34,21 +34,14 @@
                         <h4 class="mylist-head">{{tr('edit_profile')}}</h4>
                         <div class="edit-profile profile-view">
                             <div class="edit-form profile-bg">
-
-                                <!-- <h4 class="edit-head">{{tr('edit_profile')}}</h4> -->
                                 
                                 <div class="image-profile edit-image">
                                     @if(Auth::user()->picture)
-                                    <img src="{{Auth::user()->picture}}" id="img_profile">
+                                        <img src="{{Auth::user()->picture}}" id="img_profile">
                                     @else
                                         <img src="{{asset('placeholder.png')}}" id="img_profile">
                                     @endif    
-                                    <!--  <div class="edit-image-change">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </div>  -->
+                                   
                                    <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
                                 </div><!--end of image-profile-->
 
@@ -63,14 +56,14 @@
 
                                         <div class="form-group">
                                             <label for="username">{{tr('username')}}</label>
-                                            <input required value="{{Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}">
+                                            <input required value="{{old('name') ?: Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}">
                                         </div>
 
                                         @if(Auth::user()->login_by == 'manual')
 
                                             <div class="form-group">
                                                 <label for="email">{{tr('email')}}</label>
-                                                <input type="email" value="{{Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
+                                                <input type="email" value="{{old('email') ?: Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
                                             
                                             </div>
 
@@ -78,7 +71,7 @@
 
                                         <div class="form-group">
                                             <label for="mobile">{{tr('mobile')}}</label>
-                                            <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="{{tr('enter_mobile')}}" maxlength="13">
+                                            <input type="mobile" value="{{old('mobile') ?: Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="{{tr('enter_mobile')}}" maxlength="13">
                                             <p class="mobile-note"><small style="color:brown">{{tr('mobile_note')}}</small></p>
                                         </div>
 
@@ -99,22 +92,17 @@
 
                                         <div class="form-group">
                                             <label for="dob">{{tr('dob')}}</label>
-                                            <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob" readonly>
+                                            <input type="text" value="{{old('dob') ?: $dob }}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob" readonly>
                                         </div>
 
                                               
                                         <div class="form-group">
                                             <label for="about">{{tr('about_me')}}</label>
-                                            <textarea name="description" class="form-control" id="about" rows="3">{{Auth::user()->description}}</textarea>
+                                            <textarea name="description" class="form-control" id="about" rows="3">{{old('description') ?: Auth::user()->description}}</textarea>
                                         </div>
                                               
                                         <div class="change-pwd save-pro-btn">
                                             <button type="submit" class="btn btn-info">{{tr('submit')}}</button>
-
-                                            <!-- @if (Auth::user()->login_by == 'manual')
-                                            <a href="{{route('user.change.password')}}" class="btn btn-danger">{{tr('change_password')}}</a>
-                                            @endif -->
-
                                         </div>                                              
 
                                     </form>

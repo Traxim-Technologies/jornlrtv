@@ -104,7 +104,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <label for="name" class="control-label">{{tr('title')}} * </label>
                                         <div>
-                                            <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}">
+                                            <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}" value="{{old('title')}}">
                                         </div>
                                     </div>
 
@@ -144,7 +144,7 @@
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                       <div class="form-group" style="display: none;" id="publish_time_div">
                                           <label for="datepicker" class="">{{tr('publish_time')}} * </label>
-                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" readonly>
+                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" readonly value="{{old('publish_time')}}">
                                       </div>
                                     </div>
 
@@ -194,7 +194,7 @@
                                               <div class="input-group-addon">
                                                   <i class="fa fa-calendar"></i>
                                               </div>
-                                              <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration">
+                                              <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration" value="{{old('duration')}}">
                                           </div>
                                       </div>
                                     </div>
@@ -205,7 +205,7 @@
                                         
                                       <div class="col-sm-12 col-lg-12">
                                           
-                                              <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description" ></textarea>
+                                              <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description">{{old('description')}}</textarea>
                                       </div>
                                     </div>
 
