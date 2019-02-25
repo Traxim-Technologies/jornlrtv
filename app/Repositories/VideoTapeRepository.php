@@ -817,6 +817,8 @@ class VideoTapeRepository {
 
             if($check_flag_video == 0) {
 
+                $user_details = User::find($logged_in_user_id);
+
                 $video_tape_details = new \stdClass();
 
                 $video_tape_details->title = $value->title;
@@ -837,9 +839,9 @@ class VideoTapeRepository {
 
                 $video_tape_details->channel_name = $channel_details ? $channel_details->name : "";
 
-                // $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $video_tape_details)->getData()->success;
+                $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value)->getData()->success;
 
-                $video_tape_details->pay_per_view_status = 0;
+                $video_tape_details->pay_per_view_status = $pay_per_view_status;
 
                 array_push($video_tapes, $video_tape_details);
             }
