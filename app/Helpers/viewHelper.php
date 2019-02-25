@@ -46,6 +46,10 @@ use App\Category;
 
 use App\VideoTapeTag;
 
+use App\Playlist;
+
+use App\PlaylistVideo;
+
 function tr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
@@ -1237,6 +1241,15 @@ function displayVideoDetails($data,$userId) {
 
     $category_unique_id = $category ? $category->unique_id : '';
 
+    $playlists = Playlist::where('playlists.status', APPROVED)->where('user_id', $userId)->select('playlists.id as playlist_id', 'title', 'user_id')->get();
+
+    foreach ($playlists as $key => $playlist_details) {
+
+        $check_video = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->where('video_tape_id', $data->video_tape_id)->count();
+
+        $playlist_details->is_selected = $check_video ? YES : NO;
+    }
+
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1275,7 +1288,8 @@ function displayVideoDetails($data,$userId) {
         'category_id'=>$data->category_id,
         'category_unique_id'=>$category_unique_id,
         'category_name'=>$data->category_name,
-        'tags'=>$tags
+        'tags'=>$tags,
+        'playlists' => $playlists
     ];
 
 
