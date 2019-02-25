@@ -7582,7 +7582,7 @@ class UserApiController extends Controller {
 
             }
 
-            $playlists_details->delete();
+            $playlist_details->delete();
 
             DB::commit();
 
