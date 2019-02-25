@@ -2083,7 +2083,7 @@ class NewAdminController extends Controller {
      *
      * @return success/failure message
      */
-    public function coupons_save(Request $request){
+    public function coupons_save(Request $request) {
 
         try {
         
@@ -2132,7 +2132,7 @@ class NewAdminController extends Controller {
      
                     $coupon_detail->amount = $request->has('amount') ?  $request->amount : '';
 
-                } else{
+                } else {
 
                     throw new Exception(tr('admin_coupon_amount_lessthan_100'), 101);
                 }
@@ -2213,17 +2213,17 @@ class NewAdminController extends Controller {
 
         try {
 
-            $coupon_details = Coupon::find($id);
+            $coupon_details = Coupon::find($request->coupon_id);
 
-            if (count($channel_details) == 0) {
+            if (count($coupon_details) == 0) {
 
                 throw new Exception(tr('admin_coupon_not_found'), 101);
             }
 
-            return view('admin.coupons.view')
-                ->with('view_coupon',$view_coupon)
-                ->with('page','coupons')
-                ->with('sub_page','view_coupons');        
+            return view('new_admin.coupons.view')
+                    ->with('page','coupons')
+                    ->with('sub_page','coupons-view')
+                    ->with('coupon_details',$coupon_details);        
             
         } catch (Exception $e) {
             

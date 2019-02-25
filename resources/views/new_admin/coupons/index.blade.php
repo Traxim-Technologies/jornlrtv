@@ -40,7 +40,7 @@
 							<tr>
 								<td>{{ $i+1 }}</td>
 
-								<td><a href=""></a> href="{{ route('admin.coupons.view', ['coupon_id' => $coupon_details->id] ) }}">{{ $coupon_details->title }}</a></td>
+								<td><a href="{{ route('admin.coupons.view', ['coupon_id' => $coupon_details->id] ) }}">{{ $coupon_details->title }}</a></td>
 
 								<td>{{ $coupon_details->coupon_code }}</td>
 
@@ -82,25 +82,40 @@
 										
 											<ul class="dropdown-menu">
 
+
+											<li role="presentation">
+												<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.view', ['coupon_id' => $coupon_details->id] ) }}">{{ tr('view') }}</a>
+											</li>
+
+											@if(Setting::get('admin_delete_control') == YES )
+												<li role="presentation">
+													<a class = "menuitem"  tabindex= "-1" href="javascript:;">{{ tr('edit') }}</a>
+												</li>											
+
+												<li role="presentation">
+													<a class="menuitem" tabindex="-1" href="javascript:;" onclick="return confirm(&quot;{{ tr('admin_coupon_delete_confirmation', $coupon_details->title ) }}&quot;);" >{{ tr('delete') }}</a>
+												</li>
+											@else
+
 												<li role="presentation">
 													<a class = "menuitem"  tabindex= "-1" href="{{ route('admin.coupons.edit', ['coupon_id' => $coupon_details->id] ) }}">{{ tr('edit') }}</a>
-												</li>
+												</li>											
 
 												<li role="presentation">
-													<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.view', ['coupon_id' => $coupon_details->id] ) }}">{{ tr('view') }}</a>
+													<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.delete', ['coupon_id' => $coupon_details->id]) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_delete_confirmation', $coupon_details->title ) }}&quot;);" >{{ tr('delete') }}</a>
 												</li>
 
-												<li role="presentation">
-													<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.delete', ['coupon_id' => $coupon_details->id]) }}" onclick="return confirm('Are You Sure?')">{{ tr('delete') }}</a>
-												</li>
+											@endif
 
 												<li role="presentation">
 													@if($coupon_details->status == DECLINED)
-													<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm('Are You Sure?')">{{ tr('active') }} </a>
+													<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_approve_confirmation', $coupon_details->title) }}&quot;)" >{{ tr('approve') }} </a>
 													@else
-													<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm('Are You Sure')">{{ tr('inactive') }}</a>
+													<a class="menuitem" tabindex="-1" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_decline_confirmation', $coupon_details->title) }}&quot;)" >{{ tr('decline') }}</a>
 													@endif
 												</li>
+											
+
 											</ul>
 
 										</li>

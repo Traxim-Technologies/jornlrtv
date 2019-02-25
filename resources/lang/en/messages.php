@@ -1568,11 +1568,11 @@ return array(
 	'admin_channel_create_success' => 'Channel has been created successfully.',
 
 	'admin_channel_delete_success' => 'Channel has been deleted successfully.',
-	'admin_channel_approve_success' => 'Channel has been Approved successfully.',
+	'admin_channel_approve_success' => 'Channel has been approved successfully.',
 
 	'admin_channel_delete_confirmation' => 'Once you delete the channel corresponding videos will be deleted. Action can not be undone. Do you want delete this (:otherkey) channel?',
 
-	'admin_channel_decline_success' => 'Channel has been Declined successfully.',	
+	'admin_channel_decline_success' => 'Channel has been declined successfully.',	
 	'admin_channel_save_error' => 'Sorry!, something went wrong Channel details could not be saved. Please try again.',
 
 	'admin_channel_approve_notes' => 'Do you want to approve this(:otherkey) channel? Once approved, need to approve videos manually.',
@@ -1611,12 +1611,13 @@ return array(
 
 	// New Admin Coupons
 
+	'admin_coupon_not_found' => 'Coupon details not found.',
 	'admin_coupon_update_success' => 'Coupon has been updated successfully.',
 	'admin_coupon_create_success' => 'Coupon has been created successfully.',
 	'admin_coupon_save_error' => 'Sorry!, something went wrong coupon details could not be saved. Please try again.',
 
 	'admin_coupon_approve_confirmation'=>'Do you want to approve this(:otherkey) coupon?',
-	'admin_coupon_decline_confirmation'=>'Do you want to delete this(:otherkey) coupon?',
+	'admin_coupon_decline_confirmation'=>'Do you want to decline this(:otherkey) coupon?',
 
 	'admin_coupon_approved_success' => 'The Coupon approved successfully!!.',
 	'admin_coupon_declined_success' => 'The Coupon declined successfully!!.',
