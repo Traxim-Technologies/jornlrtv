@@ -797,7 +797,7 @@ class VideoTapeRepository {
     
     }
 
-    public static function video_tape_list($video_ids) {
+    public static function video_tape_list($video_ids, $logged_in_user_id) {
 
         $list = VideoTape::whereIn('video_tapes.id', $video_ids)->orderBy('updated_at', 'desc')->get();
 
@@ -805,23 +805,32 @@ class VideoTapeRepository {
 
         foreach ($list as $key => $value) {
             
-            $video_tape_details = new \stdClass();
+            $check_flag_video = Flag::where('video_tape_id' , $value->video_tape_id)->where('user_id' ,$logged_in_user_id)->count();
 
-            $video_tape_details->title = $value->title;
+            if($check_flag_video == 0) {
 
-            $video_tape_details->default_image = $value->default_image;
+                $video_tape_details = new \stdClass();
 
-            $video_tape_details->video_tape_id = $value->id;
+                $video_tape_details->title = $value->title;
 
-            $video_tape_details->duration = $value->duration;
+                $video_tape_details->default_image = $value->default_image;
 
-            $video_tape_details->watch_count = $value->watch_count;
+                $video_tape_details->video_tape_id = $value->id;
 
-            $video_tape_details->wishlist_status = 1;
+                $video_tape_details->duration = $value->duration;
 
-            $video_tape_details->channel_name = "Valli's Kitchen";
+                $video_tape_details->watch_count = $value->watch_count;
 
-            array_push($video_tapes, $video_tape_details);
+                $video_tape_details->wishlist_status = Helper::check_wishlist_status($logged_in_user_id,$value->id) ? 1 : 0;
+
+                $channel_details = $value->getChannel;
+
+                $video_tape_details->channel_id = $channel_details->id;
+
+                $video_tape_details->channel_name = $channel_details ? $channel_details->name : "";
+
+                array_push($video_tapes, $video_tape_details);
+            }
 
         }
 

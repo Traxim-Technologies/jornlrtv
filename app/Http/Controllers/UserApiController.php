@@ -7461,7 +7461,7 @@ class UserApiController extends Controller {
 
             $video_tape_ids = PlaylistVideo::where('playlist_id', $request->playlist_id)->pluck('playlist_videos.video_tape_id')->toArray();
 
-            $video_tapes = VideoRepo::video_tape_list($video_tape_ids);
+            $video_tapes = VideoRepo::video_tape_list($video_tape_ids, $request->id);
 
             $playlist_details->video_tapes = $video_tapes;
 
@@ -7479,7 +7479,7 @@ class UserApiController extends Controller {
 
             $error_code = $e->getCode();
 
-            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $error_code];
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
             return response()->json($response_array);
 
@@ -7546,7 +7546,7 @@ class UserApiController extends Controller {
 
             $error_code = $e->getCode();
 
-            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $error_code];
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
             return response()->json($response_array);
 
