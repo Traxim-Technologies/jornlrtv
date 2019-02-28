@@ -970,7 +970,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/playlists/video_status', 'UserApiController@playlists_video_status');
 
-    Route::post('/playlists/songs/remove', 'UserApiController@playlist_song_remove');
+    Route::post('/playlists/video_remove', 'UserApiController@playlists_video_remove');
 
 
     // Notification
