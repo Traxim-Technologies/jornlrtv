@@ -7542,20 +7542,20 @@ class UserApiController extends Controller {
 
         /**
      *
-     * Function name: playlists_view()
+     * Function name: playlists_video_remove()
      *
-     * @uses get the playlists
+     * @uses Remove the video from playlist
      *
-     * @created vithya R
+     * @created Aravinth R
      *
      * @updated vithya R
      *
-     * @param integer channel_id (Optional)
+     * @param integer video_tape_id (Optional)
      *
      * @return JSON Response
      */
 
-    public function playlist_song_remove(Request $request) {
+    public function playlists_video_remove(Request $request) {
 
         try {
 
@@ -7590,7 +7590,7 @@ class UserApiController extends Controller {
 
             DB::commit();
 
-            $response_array = ['success' => true, 'message' => Helper::get_message(131), 'code' => 131];
+            $response_array = ['success' => true, 'message' => Helper::get_message(127), 'code' => 127];
 
             return response()->json($response_array, 200);
 
