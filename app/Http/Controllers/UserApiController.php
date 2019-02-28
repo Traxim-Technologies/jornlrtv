@@ -7539,6 +7539,75 @@ class UserApiController extends Controller {
     
     }
 
+
+        /**
+     *
+     * Function name: playlists_view()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlist_song_remove(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(),[
+                    'playlist_id' =>'required|exists:playlists,id',
+                    'video_tape_id' => 'required|exists:playlist_videos,video_tape_id',
+                ],
+                [
+                    'exists' => 'The :attribute doesn\'t exists please add to playlist',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            $playlist_video_details = PlaylistVideo::where('playlist_id',$request->playlist_id)->where('user_id', $request->id)->where('video_tape_id',$request->video_tape_id)->first();
+
+            if(!$playlist_video_details) {
+
+                throw new Exception(Helper::get_error_message(180), 180);
+
+            }
+
+            $playlist_video_details->delete();
+
+            DB::commit();
+
+            $response_array = ['success' => true, 'message' => Helper::get_message(131), 'code' => 131];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
     /**
      * Function Name : playlists_delete()
      *
