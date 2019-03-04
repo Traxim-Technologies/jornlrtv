@@ -484,9 +484,10 @@ class PaypalController extends Controller {
      *
      * @return redirect to success/faiture pages, depends on the payment status
      * 
-     * @author shobanacs
+     * @created vithya R
      *
-     * @edited : vidhyar2612
+     * @updated vithya R
+     *
      */
 
     public function videoSubscriptionPay(Request $request) {
@@ -752,9 +753,9 @@ class PaypalController extends Controller {
      *
      * @return redirect to angular pages, depends on the 
      * 
-     * @author shobanacs
+     * @created Vithya R
      *
-     * @edited : vidhyar2612
+     * @updated Vithya R
      */
 
     public function getVideoPaymentStatus(Request $request) {
