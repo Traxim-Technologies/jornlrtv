@@ -7799,6 +7799,8 @@ class UserApiController extends Controller {
      * @return response of boolean
      */
     public function bell_notifications_count(Request $request) {
+
+        // TODO
             
         $bell_notifications_count = BellNotification::where('status', BELL_NOTIFICATION_STATUS_UNREAD)->where('to_user_id', $request->id)->count();
 
