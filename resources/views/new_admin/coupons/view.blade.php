@@ -24,33 +24,37 @@
 			<div class="box ">
 
 				<div class="box-header label-primary">
-				
+				<b style="font-size: 18px;">{{ tr('coupons') }}</b>
+
+					<div class="pull-right">
 					
-					@if(Setting::get('admin_delete_control') == YES )
-						
-						<a class="btn btn-warning" class="btn btn-warning" href="javascript:;" title="{{ tr('edit') }}"><b><i class="fa fa-edit"></i></a>
-									
+						@if(Setting::get('admin_delete_control') == YES )
+							
+							<a class="btn btn-warning" class="btn btn-warning" href="javascript:;" title="{{ tr('edit') }}"><b><i class="fa fa-edit"></i></a>
+										
 
-						<a class="btn btn-danger" class="btn btn-warning" href="javascript:;" onclick="return confirm(&quot;{{ tr('admin_coupon_delete_confirmation', $coupon_details->title ) }}&quot;);" title="{{ tr('delete') }}" ><b><i class="fa fa-trash"></i></b></a>
+							<a class="btn btn-danger" class="btn btn-warning" href="javascript:;" onclick="return confirm(&quot;{{ tr('admin_coupon_delete_confirmation', $coupon_details->title ) }}&quot;);" title="{{ tr('delete') }}" ><b><i class="fa fa-trash"></i></b></a>
 
-					@else
+						@else
 
-						<a class="btn btn-warning" href="{{ route('admin.coupons.edit', ['coupon_id' => $coupon_details->id] ) }}" title="{{ tr('edit') }}"><b><i class="fa fa-edit"></i></a>									
+							<a class="btn btn-warning" href="{{ route('admin.coupons.edit', ['coupon_id' => $coupon_details->id] ) }}" title="{{ tr('edit') }}"><b><i class="fa fa-edit"></i></a>									
 
-						<a class="btn btn-danger" href="{{ route('admin.coupons.delete', ['coupon_id' => $coupon_details->id]) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_delete_confirmation', $coupon_details->title ) }}&quot;);" title="{{ tr('delete') }}" ><b><i class="fa fa-trash"></i></b></a>
+							<a class="btn btn-danger" href="{{ route('admin.coupons.delete', ['coupon_id' => $coupon_details->id]) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_delete_confirmation', $coupon_details->title ) }}&quot;);" title="{{ tr('delete') }}" ><b><i class="fa fa-trash"></i></b></a>
 
-					@endif
+						@endif
 
-					@if($coupon_details->status == DECLINED)
+						@if($coupon_details->status == DECLINED)
 
-						<a class="btn btn-success" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_approve_confirmation', $coupon_details->title) }}&quot;)" title="{{ tr('approve') }}"><b><i class="fa fa-check" ></i></b></a>
+							<a class="btn btn-success" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_approve_confirmation', $coupon_details->title) }}&quot;)" title="{{ tr('approve') }}"><b><i class="fa fa-check" ></i></b></a>
 
-					@else
+						@else
 
-						<a class="btn btn-warning" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_decline_confirmation', $coupon_details->title) }}&quot;)" title="{{ tr('decline') }}"><b><i class="fa fa-close"></i></b></a>
+							<a class="btn btn-warning" href="{{ route('admin.coupons.status',['coupon_id' => $coupon_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_coupon_decline_confirmation', $coupon_details->title) }}&quot;)" title="{{ tr('decline') }}"><b><i class="fa fa-close"></i></b></a>
 
-					@endif
-				
+						@endif
+
+					</div>
+
 				</div>
 
 				<div class="box box-body">

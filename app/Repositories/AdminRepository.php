@@ -390,6 +390,7 @@ class AdminRepository {
             DB::beginTransaction();
 
              $validator = Validator::make( $request->all(),array(
+                    'ads_detail_id' => 'exists:ads_details,id' ,
                     'name' => 'required',
                     'ad_time' => 'required|integer',
                     'file' => 'mimes:jpeg,jpg,png',
@@ -399,46 +400,43 @@ class AdminRepository {
             
             if($validator->fails()) {
 
-                $error_messages = implode(',', $validator->messages()->all());
+                $error = implode(',', $validator->messages()->all());
                 
-                throw new Exception($error_messages);
+                throw new Exception($error);
 
             } else {
+                
+                $ads_detail_details = ($request->has('ads_detail_id')) ? AdsDetail::find($request->ads_detail_id) : new AdsDetail();
 
-                $model = ($request->has('id')) ? AdsDetail::find($request->id) : new AdsDetail();
+                $ads_detail_details->status = DEFAULT_TRUE;
 
-                $model->status = DEFAULT_TRUE;
+                $ads_detail_details->name = $request->has('name') ? $request->name : $ads_detail_details->name;
 
-                $model->name = $request->has('name') ? $request->name : $model->name;
+                $ads_detail_details->ad_time = $request->has('ad_time') ? $request->ad_time : $ads_detail_details->ad_time;
 
-                $model->ad_time = $request->has('ad_time') ? $request->ad_time : $model->ad_time;
-
-                $model->ad_url = $request->has('ad_url') ? $request->ad_url : $model->ad_url;
+                $ads_detail_details->ad_url = $request->has('ad_url') ? $request->ad_url : $ads_detail_details->ad_url;
 
                 if ($request->file) {
 
                     if($request->has('id')) {
 
-                        Helper::delete_picture($model->file, "/uploads/ad/");
-
+                        Helper::delete_picture($ads_detail_details->file, "/uploads/ad/");
                     }
 
-                    $model->file = Helper::normal_upload_picture($request->file, "/uploads/ad/");
+                    $ads_detail_details->file = Helper::normal_upload_picture($request->file, "/uploads/ad/");
                 }
 
-                if ($model->save()) {
-
+                if ($ads_detail_details->save()) {
 
                 } else {
 
                     throw new Exception(tr('something_error'));
-
                 }
             }
 
             DB::commit();
 
-            $response_array = ['success' => true,'message' => ($request->id) ? tr('ad_update_success') : tr('ad_create_success'), 'data'=>$model];
+            $response_array = ['success' => true,'message' => ($request->id) ? tr('ad_update_success') : tr('ad_create_success'), 'data'=>$ads_detail_details];
 
         } catch(Exception $e) {
 

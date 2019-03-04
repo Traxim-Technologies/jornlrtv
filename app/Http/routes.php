@@ -271,19 +271,19 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Ads
 
-    Route::get('ads-details/create','AdminController@ads_details_create')->name('ads-details.create');
+    // Route::get('ads-details/create','AdminController@ads_details_create')->name('ads-details.create');
 
-    Route::get('ads-details/edit','AdminController@ads_details_edit')->name('ads-details.edit');
+    // Route::get('ads-details/edit','AdminController@ads_details_edit')->name('ads-details.edit');
 
-    Route::post('ads-details/save','AdminController@ads_details_save')->name('ads-details.save');
+    // Route::post('ads-details/save','AdminController@ads_details_save')->name('ads-details.save');
 
-    Route::get('ads-details/index','AdminController@ads_details_index')->name('ads-details.index');
+    // Route::get('ads-details/index','AdminController@ads_details_index')->name('ads-details.index');
 
-    Route::get('ads-details/view','AdminController@ads_details_view')->name('ads-details.view');
+    // Route::get('ads-details/view','AdminController@ads_details_view')->name('ads-details.view');
 
-    Route::get('ads-details/status','AdminController@ads_details_status')->name('ads-details.status');
+    // Route::get('ads-details/status','AdminController@ads_details_status')->name('ads-details.status');
 
-    Route::get('ads-details/delete','AdminController@ads_details_delete')->name('ads-details.delete');
+    // Route::get('ads-details/delete','AdminController@ads_details_delete')->name('ads-details.delete');
 
     Route::get('ads-details/ad-status/{id?}', 'AdminController@ads_details_ad_status_change')->name('ads-details.ad-status-change');
 
@@ -444,32 +444,32 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('/custom/push', 'AdminController@custom_push_process')->name('send.push');
 
 
-    // Pages
+    // // Pages
 
-    Route::get('/pages', 'AdminController@pages')->name('pages.index');
+    // Route::get('/pages', 'AdminController@pages')->name('pages.index');
 
-    Route::get('/pages/edit/{id}', 'AdminController@pages_edit')->name('pages.edit');
+    // Route::get('/pages/edit/{id}', 'AdminController@pages_edit')->name('pages.edit');
 
-    Route::get('/pages/view/{id}', 'AdminController@pages_view')->name('pages.view');
+    // Route::get('/pages/view/{id}', 'AdminController@pages_view')->name('pages.view');
 
-    Route::get('/pages/create', 'AdminController@pages_create')->name('pages.create');
+    // Route::get('/pages/create', 'AdminController@pages_create')->name('pages.create');
 
-    Route::post('/pages/create', 'AdminController@pages_save')->name('pages.save');
+    // Route::post('/pages/create', 'AdminController@pages_save')->name('pages.save');
 
-    Route::get('/pages/delete/{id}', 'AdminController@pages_delete')->name('pages.delete');
+    // Route::get('/pages/delete/{id}', 'AdminController@pages_delete')->name('pages.delete');
 
 
     // Admin profile pages
 
-    Route::get('/profile', 'AdminController@profile')->name('profile');
+    // Route::get('/profile', 'AdminController@profile')->name('profile');
 
-    Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
+    // Route::post('/profile/save', 'AdminController@profile_process')->name('save.profile');
 
-    Route::post('/change/password', 'AdminController@change_password')->name('change.password');
+    // Route::post('/change/password', 'AdminController@change_password')->name('change.password');
 
     // Admin Help, account pages
 
-    Route::get('help' , 'AdminController@help')->name('help');
+    // Route::get('help' , 'AdminController@help')->name('help');
 
      // Tags
 
@@ -593,7 +593,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // New Admin Channeles methods ends
 
-    // New Admin categories methods ends
+    // New Admin Categories methods ends
     
     Route::get('/categories/index', 'NewAdminController@categories_index')->name('categories.index');
 
@@ -645,7 +645,54 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/coupon/status', 'NewAdminController@coupons_status_change')->name('coupons.status');
 
+    // New Admin Coupons methods ends
+
+    // New Admin AdsDetail methods begins
+    
+    Route::get('ads-details/create','NewAdminController@ads_details_create')->name('ads-details.create');
+
+    Route::get('ads-details/edit','NewAdminController@ads_details_edit')->name('ads-details.edit');
+
+    Route::post('ads-details/save','NewAdminController@ads_details_save')->name('ads-details.save');
+
+    Route::get('ads-details/index','NewAdminController@ads_details_index')->name('ads-details.index');
+
+    Route::get('ads-details/view','NewAdminController@ads_details_view')->name('ads-details.view');
+
+    Route::get('ads-details/status','NewAdminController@ads_details_status')->name('ads-details.status');
+
+    Route::get('ads-details/delete','NewAdminController@ads_details_delete')->name('ads-details.delete');
+
     // New Admin coupons methods ends
+    
+    // New Admin Account methods begins
+
+    Route::get('help' , 'NewAdminController@help')->name('help');
+
+    Route::get('/profile', 'NewAdminController@profile')->name('profile');
+
+    Route::post('/profile/save', 'NewAdminController@profile_save')->name('profile.save');
+
+    Route::post('/change/password', 'NewAdminController@change_password')->name('change.password');
+
+    // New Admin Account methods ends
+
+    // New Admin Pages methods begins
+
+    Route::get('/pages', 'NewAdminController@pages_index')->name('pages.index');
+
+    Route::get('/pages/edit/', 'NewAdminController@pages_edit')->name('pages.edit');
+
+    Route::get('/pages/view/', 'NewAdminController@pages_view')->name('pages.view');
+
+    Route::get('/pages/create', 'NewAdminController@pages_create')->name('pages.create');
+
+    Route::post('/pages/create', 'NewAdminController@pages_save')->name('pages.save');
+
+    Route::get('/pages/delete/', 'NewAdminController@pages_delete')->name('pages.delete');
+
+    // New Admin Pages methods ends
+
 
 });
 

@@ -4,24 +4,24 @@
 
 	<div class="box-body">
 
-		<div class="form-group">
+	<div class="col-sm-6">
 
-			<label for = "title" class="col-sm-2 control-label"> * {{tr('title')}}</label>
+		<div class="form-group">
+			<label for = "title" class=" control-label"> * {{tr('title')}}</label>
 			<div class="col-sm-10">
 				<input type="text" name="title" role="title" min="5" max="20" class="form-control" placeholder="{{tr('enter_coupon_title')}}" value="{{old('title') ?: $coupon_details->title }}">
 			</div>
-
 		</div> 
 
 		<div class="form-group">
-			<label for = "coupon_code" class="col-sm-2 control-label"> * {{tr('coupon_code')}}</label>
+			<label for = "coupon_code" class=" control-label"> {{tr('coupon_code')}} *</label>
 			<div class="col-sm-10">
 				<input type="text" name="coupon_code" min="5" max="10" class="form-control" pattern="[A-Z0-9]+" placeholder="{{tr('enter_coupon_code')}}" value="{{ old('coupon_code') ?: $coupon_details->coupon_code }}"><p class="help-block">{{tr('note')}} : {{tr('coupon_code_note')}}</p>
 			</div>
 		</div>
 
 		<div class="form-group floating-label">
-			<label for = "amount_type" class="col-sm-2 control-label"> * {{tr('amount_type')}}</label>
+			<label for = "amount_type" class=" control-label"> * {{tr('amount_type')}}</label>
 			<div class="col-sm-10">
 			<select id ="amount_type" name="amount_type" class="form-control">
 
@@ -32,11 +32,14 @@
 		</div>
 
 		<div class="form-group">
-			<label for="amount" class="col-sm-2 control-label"> * {{tr('amount')}}</label>
+			<label for="amount" class=" control-label"> * {{tr('amount')}}</label>
 			<div class="col-sm-10">
 				<input type="number" name="amount" min="1" max="5000" step="any" class="form-control" placeholder="{{tr('amount')}}" value="{{old('amount') ?: $coupon_details->amount }}">
 			</div>
 		</div>
+	</div>
+
+	<div class="col-sm-6">
 
 		<div class="form-group">
 			<label for="expiry_date" class="col-sm-2 control-label"> * {{tr('expiry_date')}}</label>
@@ -66,7 +69,7 @@
 			</div>
 		</div>
 	</div> 
-
+	</div>
 	<div class="box-footer">
         <a href="" class="btn btn-danger">{{ tr('reset') }}</a>
         <button type="submit" class="btn btn-success pull-right" @if(Setting::get('admin_delete_control') == YES) disabled @endif>{{ tr('submit') }}</button>

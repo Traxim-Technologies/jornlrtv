@@ -125,6 +125,20 @@
 
             </li> */?>
  
+            <!--   <li class="treeview" id="videos_ads">
+
+                <a href="{{route('admin.ads-details.index')}}">
+                    <i class="fa fa-bullhorn"></i> <span>{{tr('ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+                <ul class="treeview-menu">
+                    <li id="create-ad-videos"><a href="{{--route('admin.ads-details.create')--}}"><i class="fa fa-circle-o"></i>{{--tr('create_ad')--}}</a></li>
+                    <li id="view-ads"><a href="{{--route('admin.ads-details.index')--}}"><i class="fa fa-circle-o"></i>{{--tr('view_and_assign_ad')--}}</a></li>
+                    <li id="ad-videos"><a href="{{--route('admin.video_ads.list')--}}"><i class="fa fa-circle-o"></i>{{--tr('assigned_ads')--}}</a></li>
+                </ul>
+
+            </li> -->
+
             <li class="treeview" id="videos_ads">
 
                 <a href="{{route('admin.ads-details.index')}}">
@@ -251,7 +265,7 @@
                 </a>
             </li>
 
-            @if(Setting::get('admin_language_control'))
+            @if(Setting::get('admin_language_control') == YES )
             <li id="languages">
                 <a href="{{route('admin.languages.index')}}">
                     <i class="fa fa-globe"></i> <span>{{tr('languages')}}</span>

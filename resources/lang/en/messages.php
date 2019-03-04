@@ -1628,6 +1628,38 @@ return array(
 	'admin_coupon_amount_lessthan_100'=>'Fot Amount type PERCENTAGE, the amount should be lessthan or equal to 100 only',
 	'admin_coupon_amount_lessthan_5000'=>'Amount Should be lessthan or equal 5000 only',
 
+	// New Admin AdsDetails
 
+	'admin_ads_detail_not_found' => 'Ad details not found.',
+	'admin_ads_detail_update_success' => 'Ad has been updated successfully.',
+	'admin_ads_detail_create_success' => 'Ad has been created successfully.',
+	'admin_ads_detail_save_error' => 'Sorry!, something went wrong Ad details could not be saved. Please try again.',
+
+	'admin_ads_detail_approve_confirmation'=>'Do you want to approve this(:otherkey) Ad?',
+	'admin_ads_detail_decline_confirmation'=>'Do you want to decline this(:otherkey) Ad?',
+
+	'admin_ads_detail_approved_success' => 'The Ad approved successfully!!.',
+	'admin_ads_detail_declined_success' => 'The Ad declined successfully!!.',
+	
+	'admin_ads_detail_delete_confirmation'=>"Do you want to delete this (:otherkey) Ad?",
+	'admin_ads_detail_delete_success' => 'Ad has been deleted successfully.',
+	'admin_video_ad_delete_error' => 'videos Ad delete deleted unsuccessfull.',
+
+	// New Admin Pages
+
+	'admin_page_exists' => 'You have already created the page - ',
+	'admin_page_limit_exceed' => 'Sorry!, The Page creation limit exceeds! ',
+
+	'admin_page_not_found' => 'Page details not found',
+	'admin_page_create_success' => 'Page added successfully',
+	'admin_page_already_alert' => 'Page already added',
+	
+	'admin_page_save_error' => 'Sorry!, something went wrong Page details could not be saved.Please try again . Please try again.',
+
+	'admin_page_delete_success' => 'Page deleted successfully',
+	'admin_page_delete_error' => 'Sorry!, something went wrong Page details could not be deleted. Please try again.',
+
+	'enter_type' => 'Choose the Page type',
+	'page_delete_confirmation'=>':otherkey - Do you want delete this page.',
 
 );

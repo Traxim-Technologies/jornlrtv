@@ -1171,8 +1171,7 @@ class NewAdminController extends Controller {
             $error = $e->getMessage();
 
             return back()->with('flash_error',$error);
-        }
-    
+        }    
     }
 
     /**
@@ -2333,6 +2332,853 @@ class NewAdminController extends Controller {
             return back()->with('flash_error',$error);
         }
     }
+
+    /**
+     * Function Name : ads_details_index()
+     *
+     * @uses To list out ads_details object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return View page
+     */
+    public function ads_details_index() {
+
+        $ads_details = AdminRepo::ads_details_index()->getData();
+
+        return view('new_admin.ads_details.index')
+                    ->withPage('ads_details')
+                    // ->with('sub_page','ads_details-view')
+                    ->with('sub_page','videos_ads')
+                    ->with('ads_details' , $ads_details);
+    }
+
+    /**
+     * Function Name : ads_details_create()
+     *
+     * @uses To create a ads_detail object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return View page
+     */
+    public function ads_details_create(Request $request) {
+
+        $ads_detail_details = new AdsDetail;
+
+        return view('new_admin.ads_details.create')
+                    ->with('page' , 'ads_details')
+                    ->with('sub_page','videos_ads')
+                    ->with('ads_detail_details', $ads_detail_details);
+    }
+
+    /**
+     * Function Name : ads_details_view
+     *
+     * @uses To view the ads_detail based on the ads_detail id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $ads_detail_id
+     * 
+     * @return view page
+     *
+     */
+    public function ads_details_view(Request $request) {
+
+        try {
+
+            $ads_detail_details = AdsDetail::find($request->ads_detail_id);
+
+            if (count($ads_detail_details) == 0) {
+
+                throw new Exception(tr('admin_ads_detail_not_found'), 101);
+            }
+
+            return view('new_admin.ads_details.view')
+                    ->with('page','ads_details')
+                    ->with('sub_page','ads_details-view')
+                    ->with('ads_detail_details',$ads_detail_details);        
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+    public function ads_details_save(Request $request) {
+
+        try {
+
+            $response = AdminRepo::ads_details_save($request)->getData();
+
+            if($response->success) {
+
+                return redirect()->route('admin.ads-details.view', ['ads_detail_id'=>$response->data->id])->with('flash_success', $response->message);
+
+            } else {
+
+                throw new Exception($response->message, 101);                
+            }
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function Name : ads_details_edit
+     *
+     * @uses To edit a ads_detail based on their id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - ads_detail_id
+     * 
+     * @return response of new ads_detail object
+     *`
+     */
+    public function ads_details_edit(Request $request) {
+        
+        try {
+          
+            $ads_detail_details = AdsDetail::find($request->ads_detail_id);
+
+            if( count($ads_detail_details) == 0 ) {
+
+                throw new Exception( tr('admin_ads_detail_not_found'), 101);
+
+            } else {
+
+                $ads_detail_details->dob = ($ads_detail_details->dob) ? date('d-m-Y', strtotime($ads_detail_details->dob)) : '';
+
+                return view('new_admin.ads_details.edit')
+                            ->with('page' , 'ads_details')
+                            ->with('sub_page','ads_details-view')
+                            ->with('ads_detail_details',$ads_detail_details);
+            }
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.users.index')->with('flash_error',$error);
+        }
+    
+    }
+
+
+    /**
+     * Function Name : ads_details_delete
+     *
+     * @uses To delete the ads_details based on ads_details id
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param integer (request) $ads_details_id
+     * 
+     * @return response of ads_details edit
+     *
+     */
+    public function ads_details_delete(Request $request) {
+
+        try {
+        
+            $ads_detail_details = AdsDetail::find($request->ads_detail_id);
+
+            if (count($ads_detail_details) == 0) {
+
+                throw new Exception(tr('admin_ads_detail_not_found'), 101);
+            }
+
+            DB::beginTransaction();
+
+            foreach ($ads_detail_details->getAssignedVideo as $key => $value) {
+
+                if ($value->videoAd) {
+
+                    if ($value->videoAd->delete()) {  
+                        // do nothing
+                    } else {
+
+                        throw new Exception(tr('admin_video_ad_delete_error'), 101);
+                    }
+                }
+
+                if ($value->delete()) {  
+                    // do nothing
+                } else {
+
+                    throw new Exception(tr('admin_ads_detail_delete_error'), 101);
+                } 
+            } 
+        
+            if ($ads_detail_details->delete()) {  
+
+                DB::commit();
+                
+                return back()->with('flash_success',tr('admin_ads_detail_delete_success'));
+
+            } else {
+
+                throw new Exception(tr('admin_ads_detail_delete_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }    
+    }
+
+    /**
+     * Function Name : ads_details_status
+     *
+     * @uses To delete the ads_details based on ads_details id
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param integer (request) $ads_details_id
+     * 
+     * @return response of ads_details edit
+     *
+     */
+    public function ads_details_status(Request $request) {
+        
+        try {
+
+            $ads_detail_details = AdsDetail::find($request->ads_detail_id);
+
+            if (count($ads_detail_details) == 0) {
+
+                throw new Exception(tr('admin_ads_detail_not_found'), 101);
+            }
+
+            DB::beginTransaction();
+
+            $ads_detail_details->status = $ads_detail_details->status == DEFAULT_TRUE ? DEFAULT_FALSE : DEFAULT_TRUE ;
+
+            $message = $ads_detail_details->status == DEFAULT_TRUE ?  tr('admin_ads_detail_approved_success') : tr('admin_ads_detail_declined_success') ;
+
+            if( $ads_detail_details->save()) {
+
+                DB::commit();
+                
+            } else {
+
+                throw new Exception(tr('admin_ad_status_save_error'), 101);                
+            }
+
+            // Load Assigned video ads
+
+            $assigned_video_ad = AssignVideoAd::where('ad_id', $ads_detail_details->id)->get();
+
+            foreach ($assigned_video_ad as $key => $value) {
+               
+                // Load video ad
+                $video_ad = VideoAd::find($value->video_ad_id);
+
+                $ad_type = $value->ad_type;
+
+                if($video_ad) {
+
+                    $exp_video_ad = explode(',', $video_ad->types_of_ad);
+
+                    if (count($exp_video_ad) == 1) {
+
+                        $video_ad->delete();
+
+                    } else {
+
+                        $type_of_ad = [];
+
+                        foreach ($exp_video_ad as $key => $exp_ad) {
+                                
+                            if ($exp_ad == $ad_type) {
+
+                            } else {
+
+                                $type_of_ad[] = $exp_ad;
+                            }     
+                        }
+
+                        $video_ad->types_of_ad = is_array($type_of_ad) ? implode(',', $type_of_ad) : '';
+
+                        $video_ad->save();
+
+                    }
+                }
+            }
+
+            return back()->with('flash_success', $message);
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+    * Function Name: help()
+    *
+    * @uses To delete the ads_details based on ads_details id
+    *
+    * @created
+    *
+    * @edited
+    *
+    * @param 
+    *
+    * @return view page
+    */
+    public function help() {
+
+        return view('new_admin.static_pages.help')
+                ->withPage('help')
+                ->with('sub_page' , "");
+
+    }
+
+    /**
+    * Function Name: profile()
+    *
+    * @uses To display Admin details 
+    *
+    * @created
+    *
+    * @edited
+    *
+    * @param
+    *
+    * @return view page
+    */
+    public function profile() {
+
+        $admin = Admin::first();
+
+        return view('new_admin.account.profile')
+                ->withPage('profile')
+                ->with('sub_page','')
+                ->with('admin' , $admin);
+    
+    }
+
+    /**
+     * Function Name: profile_process()
+     *
+     * @uses To save admin account datails  
+     *
+     * @created
+     *
+     * @edited
+     *
+     * @param 
+     *
+     * @return view page
+     */
+    public function profile_process(Request $request) {
+        try {
+
+            $validator = Validator::make( $request->all(),array(
+                    'name' => 'max:255',
+                    'email' => $request->id ? 'email|max:255|unique:admins,email,'.$request->id : 'email|max:255|unique:admins,email,NULL',
+                    'mobile' => 'digits_between:6,13',
+                    'address' => 'max:300',
+                    'id' => 'required|exists:admins,id',
+                    'picture' => 'mimes:jpeg,jpg,png'
+                )
+            );
+            
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                return back()->with('flash_errors', $error);
+
+            } else {
+                
+                $admin_details = Admin::find($request->id);
+                
+                $admin_details->name = $request->has('name') ? $request->name : $admin_details->name;
+
+                $admin_details->email = $request->has('email') ? $request->email : $admin_details->email;
+
+                $admin_details->mobile = $request->has('mobile') ? $request->mobile : $admin_details->mobile;
+
+                $admin_details->gender = $request->has('gender') ? $request->gender : $admin_details->gender;
+
+                $admin_details->address = $request->has('address') ? $request->address : $admin_details->address;
+
+                if($request->hasFile('picture')) {
+
+                    Helper::delete_picture($admin_details->picture, "/uploads/images/");
+
+                    $admin_details->picture = Helper::normal_upload_picture($request->picture, "/uploads/images/");
+                }
+                    
+                $admin_details->remember_token = Helper::generate_token();
+                
+                $admin_details->save();
+
+                return back()->with('flash_success', tr('admin_not_profile'));
+                
+            }
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name: profile_save()
+     *
+     * @uses To save Admin profile details 
+     *
+     * @created Anjana H
+     *
+     * @edited Anjan H
+     *
+     * @param Integer (request) $id
+     *
+     * @return view page
+     */
+    public function profile_save(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make( $request->all(),array(
+                    'name' => 'max:255',
+                    'email' => $request->id ? 'email|max:255|unique:admins,email,'.$request->id : 'email|max:255|unique:admins,email,NULL',
+                    'mobile' => 'digits_between:6,13',
+                    'address' => 'max:300',
+                    'id' => 'required|exists:admins,id',
+                    'picture' => 'mimes:jpeg,jpg,png'
+                )
+            );
+            
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                return back()->with('flash_errors', $error);
+
+            } else {
+                
+                $admin_details = Admin::find($request->id);
+                
+                $admin_details->name = $request->has('name') ? $request->name : $admin_details->name;
+
+                $admin_details->email = $request->has('email') ? $request->email : $admin_details->email;
+
+                $admin_details->mobile = $request->has('mobile') ? $request->mobile : $admin_details->mobile;
+
+                $admin_details->gender = $request->has('gender') ? $request->gender : $admin_details->gender;
+
+                $admin_details->address = $request->has('address') ? $request->address : $admin_details->address;
+
+                if($request->hasFile('picture')) {
+
+                    Helper::delete_picture($admin_details->picture, "/uploads/images/");
+
+                    $admin_details->picture = Helper::normal_upload_picture($request->picture, "/uploads/images/");
+                }
+                    
+                $admin_details->remember_token = Helper::generate_token();
+                
+                if ($admin_details->save()) {
+                            
+                    DB::commit();
+
+                    return back()->with('flash_success', tr('admin_not_profile'));
+
+                } else {
+
+                    throw new Exception(tr('admin_profile_save_error'), 101);
+                }                
+            }
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.categories.index')->with('flash_error',$error);
+        }
+    
+    }
+
+
+    /**
+     * Function: change_password()
+     * 
+     * @uses change the admin password 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param - 
+     *
+     * @return redirect with success/ error message
+     */
+    public function change_password(Request $request) {
+        
+        try {
+ 
+            $validator = Validator::make($request->all(), [ 
+                    'id' => 'required|exists:admins,id',             
+                    'old_password' => 'required',
+                    'password' => 'required|confirmed|min:6',
+                    'confirm_password' => 'required|min:6'
+            ]);
+           
+            if( $validator->fails() ) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            } else {
+
+                $old_password = $request->old_password;
+
+                $new_password = $request->password;
+
+                $confirm_password = $request->confirm_password;
+
+                $admin_details = Admin::find($request->id);
+
+                if( Hash::check($old_password,$admin_details->password) ) {
+                    
+                    $admin_details->password = Hash::make( $new_password );
+                   
+                    if( $admin_details->save() ) {
+
+                        return back()->with('flash_success', tr('admin_password_change_success'));
+                    
+                    } else {
+                    
+                        throw new Exception(tr('admin_password_save_error'), 101);
+                    }
+                    
+                } else {
+
+                    throw new Exception(tr('admin_password_mismatch'), 101);
+                }
+            }
+
+            $response = response()->json($response_array,$response_code);
+
+            return $response;
+            
+        } catch (Exception $e) {  
+            
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.profile')->with('flash_error',$error);
+        }
+    
+    }
+
+      /**
+     * Function: pages_index()
+     * 
+     * @uses To list the static_pages
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return view page
+     */
+    public function pages_index() {
+
+        $pages = Page::orderBy('created_at' , 'desc')->paginate(10);
+
+        return view('new_admin.pages.index')
+                    ->with('page','pages')
+                    ->with('sub_page','pages-view')
+                    ->with('pages',$pages);
+    }
+
+    /**
+     * Function Name : pages_create()
+     *
+     * @uses To list out pages object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return View page
+     */
+    public function pages_create() {
+
+        $page_details = new Page;
+
+        return view('new_admin.pages.create')
+                    ->with('page' , 'pages')
+                    ->with('sub_page',"pages-create")
+                    ->with('page_details', $page_details);
+    }
+      
+    /**
+     * Function Name : pages_edit()
+     *
+     * @uses To display and update pages object details based on the pages id
+     *
+     * @created  Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $static_page_id
+     *
+     * @return View page
+     */
+    public function pages_edit(Request $request) {
+
+        try {
+          
+            $page_details = Page::find($request->page_id);
+
+            if( count($page_details) == 0 ) {
+
+                throw new Exception( tr('admin_page_not_found'), 101);
+
+            } else {
+
+                return view('new_admin.pages.edit')
+                        ->with('page' , 'pages')
+                        ->with('sub_page','pages-view')
+                        ->with('page_details',$page_details);
+            }
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.pages.index')->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name : pages_save()
+     *
+     * @uses To save the page object details of new/existing based on details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $page_id , (request) page details
+     *
+     * @return success/error message
+     */
+    public function pages_save(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all() , array(
+                'type' => $request->page_id ? '' : 'required',
+                'heading' => 'required|max:255',
+                'description' => 'required',
+            ));
+
+            if( $validator->fails() ) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+                
+            } else {
+
+                if( $request->has('page_id') ) {
+
+                    $page_details = Page::find($request->page_id);
+
+                } else {
+
+                    if(Page::count() < Setting::get('no_of_static_pages')) {
+
+                        if( $request->type != 'others' ) {
+
+                            $check_page_type = Page::where('type',$request->type)->first();
+                            
+                            if($check_page_type){
+
+                                throw new Exception(tr('admin_page_exists').$request->type , 101);
+                            }
+                        }
+                        
+                        $page_details = new Page;
+                        
+                    } else {
+
+                        throw new Exception(tr('admin_page_exists').$request->type , 101);
+                    }                    
+                }
+
+                if( $page_details ) {
+
+                    $page_details->type = $request->type ? $request->type : $page_details->type;
+
+                    $page_details->heading = $request->heading ? $request->heading : $page_details->heading;
+
+                    $page_details->description = $request->description ? $request->description : $page_details->description;
+
+                    if( $page_details->save() ) {
+
+                        DB::commit();
+
+                        return back()->with('flash_success',tr('admin_page_create_success'));
+
+                    } else {
+
+                        throw new Exception(tr('admin_page_save_error'), 101);
+                    }
+                }
+            }            
+                
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.pages.index')->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function: pages_view()
+     * 
+     * @uses To display pages details based on pages id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $page_id
+     *
+     * @return view page
+     */
+    public function pages_view(Request $request) {
+
+        try {
+
+            $page_details = Page::find($request->page_id);
+            
+            if( count($page_details) == 0 ) {
+
+                throw new Exception(tr('admin_page_not_found'), 101);
+            }
+
+            return view('new_admin.pages.view')
+                    ->with('page' ,'pages')
+                    ->with('sub_page' ,'pages-view')
+                    ->with('page_details' ,$page_details);
+
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.pages.index')->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function: pages_delete()
+     * 
+     * @uses To delete the page object based on page id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return success/failure message
+     */
+    public function pages_delete(Request $request) {
+
+        try {
+            DB::beginTransaction();
+            
+            $page_details = Page::where('id' , $request->page_id)->first();
+
+            if( count($page_details) == 0 ) {  
+
+                throw new Exception(tr('admin_page_not_found'), 101);
+            }
+
+            Helper::delete_picture($page_details->picture, "/uploads/images/pages/");
+            
+            if( $page_details->delete() ) {
+
+                DB::commit();
+
+                return redirect()->route('admin.pages.index')->with('flash_success',tr('admin_page_delete_success'));
+
+            } else {
+
+                throw new Exception(tr('admin_page_delete_error'), 101);               
+            }
+
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    }
+
+
+
+
+
 
 
 
