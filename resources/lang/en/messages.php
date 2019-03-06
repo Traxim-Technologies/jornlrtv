@@ -1662,4 +1662,26 @@ return array(
 	'enter_type' => 'Choose the Page type',
 	'page_delete_confirmation'=>':otherkey - Do you want delete this page.',
 
+
+	// New Admin banner_ad
+
+	'admin_banner_ad_not_found' => 'Banner Ad not found.',
+	'admin_banner_ad_update_success' => 'Banner Ad has been updated successfully.',
+	'admin_banner_ad_create_success' => 'Banner Ad has been created successfully.',
+	'admin_banner_ad_save_error' => 'Sorry!, something went wrong Banner Ad could not be saved. Please try again.',
+
+	'admin_banner_ad_approve_confirmation'=>'Do you want to approve this(:otherkey) Banner Ad?',
+	'admin_banner_ad_decline_confirmation'=>'Do you want to decline this(:otherkey) Banner Ad?',
+
+	'admin_banner_ad_approved_success' => 'The Banner Ad approved successfully!!.',
+	'admin_banner_ad_declined_success' => 'The Banner Ad declined successfully!!.',
+	'admin_banner_ad_status_error' => 'Sorry!, something went wrong, Banner Ad status could not be changed either Approved/Declined. Please try again.',
+
+	'admin_banner_ad_delete_confirmation'=>"Do you want to delete this (:otherkey) Banner Ad?",
+	'admin_banner_ad_delete_success' => 'Banner Ad has been deleted successfully.',
+	'admin_banner_ad_delete_error' => 'Banner Ad delete deleted unsuccessfull.',
+	'admin_banner_ad_position_change_success'=>'Banner Ad position has been changed successfully.',
+	'admin_banner_ad_position_change_error'=>'Sorry!, something went wrong, Banner Ad position could not be changed. Please try again.',
+
+
 );

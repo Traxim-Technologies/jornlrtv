@@ -146,7 +146,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     
     // Route::get('/', 'AdminController@dashboard')->name('dashboard');
 
-
     // User CRUD Operations
 
     // Route::get('/users/list', 'AdminController@users_list')->name('users');
@@ -184,7 +183,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
 
     // Channel CRUD Operations
-
 
     // Route::get('/channels', 'AdminController@channels')->name('channels');
 
@@ -326,23 +324,23 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
 
 
-    // Banner Ads
+    // // Banner Ads
 
-    Route::get('banner-ads/create','AdminController@banner_ads_create')->name('banner-ads.create');
+    // Route::get('banner-ads/create','AdminController@banner_ads_create')->name('banner-ads.create');
 
-    Route::get('banner-ads/edit','AdminController@banner_ads_edit')->name('banner-ads.edit');
+    // Route::get('banner-ads/edit','AdminController@banner_ads_edit')->name('banner-ads.edit');
 
-    Route::post('banner-ads/save','AdminController@banner_ads_save')->name('banner-ads.save');
+    // Route::post('banner-ads/save','AdminController@banner_ads_save')->name('banner-ads.save');
 
-    Route::get('banner-ads/list','AdminController@banner_ads')->name('banner-ads.list');
+    // Route::get('banner-ads/list','AdminController@banner_ads')->name('banner-ads.list');
 
-    Route::get('banner-ads/status/{id}','AdminController@banner_ads_status')->name('banner-ads.status');
+    // Route::get('banner-ads/status/{id}','AdminController@banner_ads_status')->name('banner-ads.status');
 
-    Route::get('banner-ads/delete','AdminController@banner_ads_delete')->name('banner-ads.delete');
+    // Route::get('banner-ads/delete','AdminController@banner_ads_delete')->name('banner-ads.delete');
 
-    Route::get('banner-ads/view','AdminController@banner_ads_view')->name('banner-ads.view');
+    // Route::get('banner-ads/view','AdminController@banner_ads_view')->name('banner-ads.view');
 
-    Route::post('banner-ads/position','AdminController@banner_ads_position')->name('banner-ads.position');
+    // Route::post('banner-ads/position','AdminController@banner_ads_position')->name('banner-ads.position');
 
 
     // Subscriptions
@@ -692,6 +690,26 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/pages/delete/', 'NewAdminController@pages_delete')->name('pages.delete');
 
     // New Admin Pages methods ends
+
+    // New Admin Banner Ads methods ends    
+
+    Route::get('banner-ads/index','NewAdminController@banner_ads_index')->name('banner-ads.index');
+
+    Route::get('banner-ads/create','NewAdminController@banner_ads_create')->name('banner-ads.create');
+
+    Route::get('banner-ads/edit','NewAdminController@banner_ads_edit')->name('banner-ads.edit');
+
+    Route::post('banner-ads/save','NewAdminController@banner_ads_save')->name('banner-ads.save');
+
+    Route::get('banner-ads/view','NewAdminController@banner_ads_view')->name('banner-ads.view');
+
+    Route::get('banner-ads/delete','NewAdminController@banner_ads_delete')->name('banner-ads.delete');
+
+    Route::get('banner-ads/status','NewAdminController@banner_ads_status_change')->name('banner-ads.status');
+
+    Route::post('banner-ads/position','NewAdminController@banner_ads_position')->name('banner-ads.position');
+
+    // New Admin Banner Ads methods ends
 
 
 });

@@ -123,7 +123,7 @@
                     </li>
                 </ul>
 
-            </li> */?>
+            </li> */ ?>
  
             <!--   <li class="treeview" id="videos_ads">
 
@@ -155,8 +155,8 @@
 
             @if(Setting::get('is_banner_ad'))
 
-                <li class="treeview" id="bannerads_nav">
-                    <a href="{{route('admin.banner-ads.list')}}">
+                <li class="treeview" id="banner-ads">
+                    <a href="{{route('admin.banner-ads.index')}}">
                         <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
 
@@ -164,7 +164,7 @@
                        
                         <li id="bannerads-create"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
                     
-                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.list')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
 
                     </ul>
 

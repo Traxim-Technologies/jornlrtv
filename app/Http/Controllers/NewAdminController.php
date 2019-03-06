@@ -2281,6 +2281,7 @@ class NewAdminController extends Controller {
         }
 
     }
+
     /**
      * Function Name : coupons_status_change
      *
@@ -3174,6 +3175,413 @@ class NewAdminController extends Controller {
             return back()->with('flash_error',$error);
         }
     }
+
+    /**
+     * Function Name : banner_ads_index()
+     *
+     * @uses To list out banner_ads object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return View page
+     */
+    public function banner_ads_index() {
+
+        $banner_ads = BannerAd::orderBy('position' , 'asc')->get();
+
+        return view('new_admin.banner_ads.index')
+                    ->with('page', 'bannerads_nav')
+                    ->with('sub_page', 'bannerads-index')
+                    ->with('banner_ads', $banner_ads);
+    }
+
+    /**
+     * Function Name : banner_ads_create()
+     *
+     * @uses To create a banner_ads object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return View page
+     */
+    public function banner_ads_create(Request $request) {
+
+        $banner_ad_details = new BannerAd;
+
+        $banner_position = BannerAd::orderBy('position', 'desc')->first();
+
+        $banner_ad_details->position = $banner_position ? $banner_position->position + DEFAULT_TRUE : DEFAULT_TRUE;
+
+        return view('new_admin.banner_ads.create')
+                    ->with('page', 'banner-ads')
+                    ->with('sub_page', 'banner-ads-create')
+                    ->with('banner_ad_details', $banner_ad_details);
+    }
+
+    /**
+     * Function Name : banner_ads_edit
+     *
+     * @uses To edit a banner_ads based on their id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - banner_ads_id
+     * 
+     * @return response of new User object
+     *`
+     */
+    public function banner_ads_edit(Request $request) {
+        
+        try {
+          
+            $banner_ad_details = BannerAd::find($request->banner_ad_id);
+
+            if( count($banner_ad_details) == 0 ) {
+
+                throw new Exception( tr('admin_banner_ad_not_found'), 101);
+
+            } else {
+
+                return view('new_admin.banner_ads.edit')
+                        ->with('page' , 'banner-ads')
+                        ->with('sub_page','banner-ads-view')
+                        ->with('banner_ad_details',$banner_ad_details);
+            }
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.banner_ads.index')->with('flash_error',$error);
+        }
+    
+    }
+     /**
+     * Function Name : banner_ad_save
+     *
+     * @uses To save/update banner_ad object based on banner_ad id or details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - banner_ad_id, (request) details
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function banner_ads_save(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),[
+                    'title' => 'max:255',
+                    'description' => '',
+                    'position'=>$request->banner_ad_id ? 'required' :'required|unique:banner_ads',
+                    'link'=>'required|url',
+                    'file' => $request->banner_ad_id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
+            ]);
+            
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                return back()->with('flash_errors', $error);
+            } 
+
+            DB::beginTransaction();
+            
+            $banner_ad_details = $request->banner_ad_id ? BannerAd::find($request->banner_ad_id) : new BannerAd;
+
+            $banner_ad_details->title = $request->title ? $request->title : "";
+
+            $banner_ad_details->description = $request->description ? $request->description : "";
+
+            $banner_ad_details->position = $request->position;
+
+            $banner_ad_details->link = $request->link;
+
+            if($request->hasFile('file')) {
+
+                if ($request->banner_ad_id) {
+
+                    Helper::delete_picture($banner_ad_details->file, '/uploads/banners/');
+                } 
+
+                $banner_ad_details->file = Helper::normal_upload_picture($request->file('file'), '/uploads/banners/');
+            }
+
+            $banner_ad_details->status = DEFAULT_TRUE;
+
+            if( $banner_ad_details->save()) {
+            
+                DB::commit();
+
+                $message = $request->banner_ad_id ? tr('admin_banner_ad_update_success') : tr('admin_banner_ad_create_success');
+
+                return redirect()->route('admin.banner-ads.view', ['banner_ad_id' => $banner_ad_details->id])->with('flash_success', $message);
+
+            } else {
+
+                throw new Exception(tr('admin_banner_ad_save_error'), 101);
+            }
+           
+        } catch( Exception $e) {
+            
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.banner_ads.index')->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function Name : banner_ads_delete
+     *
+     * @uses To delete banner_ad details based on banner_ad id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - banner_ad_id
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function banner_ads_delete(Request $request) {
+
+        try {
+        
+            $banner_ad_details = BannerAd::find($request->banner_ad_id);
+
+            if (count($banner_ad_details) == 0) {
+
+                throw new Exception(tr('admin_banner_ad_not_found'), 101);
+            }
+            
+            DB::beginTransaction();
+            
+            // Check the current position 
+
+            $current_position = $banner_ad_details->position;
+
+            $banner = BannerAd::orderBy('position', 'desc')->first();
+
+            $last_position = $banner ? $banner->position : "";
+
+            if($last_position == $current_position) {
+
+                // Do nothing
+
+            } else if($current_position < $last_position) {
+
+                // Update remaining records positions
+
+                DB::update("UPDATE banner_ads SET position =  position-1 WHERE position > $current_position");
+            }
+
+            Helper::delete_picture($banner_ad_details->file, '/uploads/banners/');
+
+            if ( $banner_ad_details->delete()) {  
+
+                DB::commit();
+                
+                return redirect()->route('admin.banner-ads.index')->with('flash_success', tr('admin_banner_ad_delete_success'));
+
+            } else {
+
+                throw new Exception(tr('admin_banner_ad_delete_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function Name :  banner_ads_status_change
+     *
+     * @uses To update the banner_ad status to APPROVE/DECLINE based on banner_ad id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - coupon_id
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function  banner_ads_status_change(Request $request) {
+
+        try {
+
+            $banner_ads_details = BannerAd::find($request->banner_ad_id);
+
+            if ( count($banner_ads_details) == 0 ) {
+
+               throw new Exception(tr('admin_banner_ad_not_found'), 101);
+            }
+
+            DB::beginTransaction();
+
+            $banner_ads_details->status = $banner_ads_details->status == DEFAULT_TRUE ? DEFAULT_FALSE : DEFAULT_TRUE ;
+
+            if( $banner_ads_details->save() ) {
+                
+                $message = $banner_ads_details->status == DEFAULT_TRUE ? tr('admin_banner_ad_approved_success') : tr('admin_banner_ad_declined_success') ;
+                
+                DB::commit();                
+
+                return back()->with('flash_success',$message );
+
+            } else {
+                
+                throw new Exception(tr('admin_banner_ad_status_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    }
+
+        /**
+     * Function Name : banner_ads_view
+     *
+     * @uses To view the banner_ad based on the banner_ad id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $banner_ad_id
+     * 
+     * @return view page
+     *
+     */
+    public function banner_ads_view(Request $request) {
+
+        try {
+
+            $banner_ad_details = BannerAd::find($request->banner_ad_id);
+
+            if (count($banner_ad_details) == 0) {
+
+                throw new Exception(tr('admin_banner_ad_not_found'), 101);
+            }
+
+            return view('new_admin.banner_ads.view')
+                        ->with('page','banner-ads')
+                        ->with('sub_page','banner-ads-view')
+                        ->with('banner_ad_details',$banner_ad_details);        
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name: banner_ads_position()
+     *
+     * @uses To change the banner_ad position 
+     *
+     * @created anjana H
+     *
+     * @edited Anjana H
+     *
+     * @param Object $request - banner_ad Id 
+     *
+     * @return banner_ad response of success/failure response
+     */
+    public function banner_ads_position(Request $request) {
+        
+        try {
+
+            $banner_ads_details = BannerAd::find($request->banner_ad_id);
+
+            if ( count($banner_ads_details) == 0 ) {
+
+                throw new Exception(tr('admin_banner_ad_not_found'), 101);
+            } 
+
+            $position = $banner_ads_details->position;
+
+            $current_position = $request->position;
+
+            // Load Current Position Banner
+
+            $current_position_banner = BannerAd::where('position', $current_position)->first();
+
+            if ( count($current_position_banner) == 0 ) {
+
+                throw new Exception(tr('current_position_banner_ad_not_available'), 101);
+            }
+
+            $current_position_banner->position = $position;
+
+            $current_position_banner->save();
+
+            if ($current_position_banner) {
+
+                $banner_ads_details->position = $current_position;
+
+                if( $banner_ads_details->save() ) {
+                                                        
+                    DB::commit();                
+
+                    return back()->with('flash_success',tr('admin_banner_ad_position_change_success') );
+
+                } else {
+                    
+                    throw new Exception(tr('admin_banner_ad_position_change_error'), 101);
+                }
+
+            } else {
+
+                return back()->with('flash_error', tr('something_error'));
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+
+
 
 
 
