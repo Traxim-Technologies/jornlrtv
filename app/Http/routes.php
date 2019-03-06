@@ -397,7 +397,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/revenues/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('revenues.subscription-payments');
 
-
     // Settings
 
     Route::get('settings' , 'AdminController@settings')->name('settings');
@@ -529,6 +528,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('automatic/subscribers', 'AdminController@automatic_subscribers')->name('automatic.subscribers');
 
     Route::get('cancelled/subscribers', 'AdminController@cancelled_subscribers')->name('cancelled.subscribers');
+
 
     // ============= branch v4.0-admin-coderevamp ================
 
@@ -740,8 +740,16 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('custom/live/status', 'NewAdminController@custom_live_videos_status_change')->name('custom.live.status');
 
     // New Admin Custom Live Videos methods ends
+    // YouTube Grapper 
 
+    Route::get('youtube/{youtube_channel_id}' , 'AdminController@videos_youtube_grabber_save')->name("youtube.video.save");
 
+    // Redeems  payouts (Direct | PayPal)
+    Route::any('/redeems/payout/invoice', 'version4AdminController@redeems_payout_invoice')->name('users.payout.invoice');
+
+    Route::post('redeems/payout/direct', 'version4AdminController@redeems_payout_direct')->name('users.payout.direct');
+
+    Route::any('/redeems/payout/response', 'version4AdminController@redeems_payout_response')->name('users.payout.response');
 });
 
 
@@ -981,14 +989,13 @@ Route::group(['as' => 'user.'], function(){
 
     // Live Streaming video
 
-    Route::get('/single/live/video/{id?}' , 'UserController@single_custom_live_video')->name('custom.live.view');
+    Route::get('/livetv' , 'UserController@custom_live_videos')->name('custom_live_videos.index');
 
-    Route::get('/custom/live/videos' , 'UserController@custom_live_videos')->name('custom.live.index');
+    Route::get('/livetv/{id?}' , 'UserController@custom_live_videos_view')->name('custom_live_videos.view');
 
     // Settings page
 
     Route::get('/settings' , 'UserController@settings');
-
 
 });
 
@@ -1157,4 +1164,28 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/apply/coupon/subscription', 'UserApiController@apply_coupon_subscription');
 
     Route::post('apply/coupon/videos', 'UserApiController@apply_coupon_video_tapes');
+
+    // User Playlists
+
+    Route::post('/playlists/', 'UserApiController@playlists');
+
+    Route::post('/playlists/save', 'UserApiController@playlists_save');
+
+    Route::post('/playlists/delete', 'UserApiController@playlists_delete');
+
+    Route::post('/playlists/view', 'UserApiController@playlists_view');
+
+    Route::post('/playlists/video_status', 'UserApiController@playlists_video_status');
+
+    Route::post('/playlists/video_remove', 'UserApiController@playlists_video_remove');
+
+
+    // Notification
+
+    Route::post('bell_notifications/', 'UserApiController@bell_notifications');
+
+    Route::post('bell_notifications/update', 'UserApiController@bell_notifications_update');
+
+    Route::post('bell_notifications/count', 'UserApiController@bell_notifications_count');
+
 });

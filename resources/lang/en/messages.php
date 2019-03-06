@@ -1704,7 +1704,30 @@ return array(
 	'admin_custom_live_video_delete_success' => 'Live video has been deleted successfully.',
 	'admin_custom_live_video_delete_error' => 'Live video delete deleted unsuccessfull.',
 	
+	// Playlist
+
+	'playlist_not_found' => 'Playlist not found',
+	'playlist_not_associated_to_user' => "Unauthorized playlist",
+	'playlist_deleted' => "The playlist deleted",
+	'playlist_video_not_found' => 'The video not found',
+	'playlist_added_video' => 'Added to Playlist',
+	'playlist_removed_video' => "Removed from Playlist",
+
+	'playlist_video_add_empty' => 'The video added in 0 playlist',
 
 
+	'playlist_added' => 'Playlist created',
+	'playlist_updated' => 'Playlist updated',
+
+	'bell_notification_updated' => 'The notifications marked read',
+
+	'BELL_NOTIFICATION_NEW_VIDEO' => 'New video upload - Notification',
+
+	'BELL_NOTIFICATION_NEW_SUBSCRIBER' => 'New Subscriber - Notification',
+
+	'youtube_grabber_channel_id_not_found' => 'Channel ID doesnt exists',
+
+	'redeem_payout' => 'Redeem Payout',
+	'direct_payment' => 'Direct Payment',
 
 );

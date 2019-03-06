@@ -34,7 +34,7 @@
 
                                     <div class="slide-image recom-image">
 
-                                        <a href="{{route('user.custom.live.view' , $video->custom_live_video_id)}}">
+                                        <a href="{{route('user.custom_live_videos.view' , $video->custom_live_video_id)}}">
                                         	<img src="{{$video->image}}" />
                                        	</a>
                                         
@@ -45,7 +45,7 @@
 
                                     <div class="video-details recom-details">
                                         <div class="video-head">
-                                            <a href="{{route('user.custom.live.view' , $video->custom_live_video_id)}}">{{$video->title}}</a>
+                                            <a href="{{route('user.custom_live_videos.view' , $video->custom_live_video_id)}}">{{$video->title}}</a>
                                         </div>
                                        
 

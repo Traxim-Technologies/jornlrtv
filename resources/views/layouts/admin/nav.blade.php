@@ -19,10 +19,13 @@
         <ul class="sidebar-menu">
 
             <li id="dashboard">
-              <a href="{{route('admin.dashboard')}}">
-                <i class="fa fa-dashboard"></i> <span>{{tr('dashboard')}}</span>
-              </a>              
+                <a href="{{route('admin.dashboard')}}">
+                    <i class="fa fa-dashboard"></i> <span>{{tr('dashboard')}}</span>
+                </a>
+              
             </li>
+
+            <li class="header">LABELS</li>
 
             <li class="treeview" id="users">
                 <a href="#">
@@ -34,6 +37,8 @@
                     <li id="users-view"><a href="{{route('admin.users.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_users')}}</a></li>
                 </ul>
             </li>
+
+            <li class="header">LABELS</li>
 
             <li class="treeview" id="channels">
                 <a href="{{route('admin.channels.index')}}">
