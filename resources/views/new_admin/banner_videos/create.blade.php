@@ -15,7 +15,7 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.banner.videos')}}"><i class="fa fa-university"></i>{{tr('banner_videos')}}</a></li>
+    <li><a href="{{route('admin.banner.videos.index')}}"><i class="fa fa-university"></i>{{tr('banner_videos')}}</a></li>
     <li class="active"><i class="fa fa-university"></i> {{tr('add_banner_videos')}}</li>
 @endsection 
 
@@ -81,6 +81,7 @@
                         <div style="margin-left: 15px"><small>{{tr('note')}} : <span style="color:red">*</span>{{tr('video_fields_mandatory')}}</small></div> 
                         <hr>
                         <div class="">
+
                             <input type="hidden" name="id" id="main_id">
                             <input type="hidden" name="is_banner" id="is_banner" value="{{DEFAULT_TRUE}}">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -133,7 +134,6 @@
                                 </div>
                             </div>
 
-
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <div class="form-group" style="display: none;" id="publish_time_div">
                                     <label for="datepicker" class="">{{tr('publish_time')}} * </label>
@@ -149,56 +149,66 @@
                                     <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="description" name="description"></textarea>
                                 </div>
                             </div>
+
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label for="reviews" class="">{{tr('reviews')}} * </label>
                                     <textarea  style="overflow:auto;resize:none" class="form-control" required rows="4" cols="50" id="reviews" name="reviews"></textarea>
                                 </div>
                             </div>
+
                         </div>
+
                         <ul class="list-inline pull-right">
                             <li>
                                 <button type="button" style="display: none;" id="{{REQUEST_STEP_1}}" class="btn btn-primary next-step">{{tr('next')}}</button>
                                 <button type="button" class="btn btn-primary" onclick="saveVideoDetails({{REQUEST_STEP_1}})">{{tr('next')}}</button>
                             </li>
                         </ul>
+
                     </div>
+
                     <div class="tab-pane" role="tabpanel" id="step2">
+                        
                         <h3>{{tr('channel')}}</h3>
                         <hr>
+                        
                         <div id="category">
                             @foreach($channels as $channel)
-                            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
-                                <a onclick="saveCategory({{$channel->id}}, {{REQUEST_STEP_2}})" class="category-item text-center">
-                                    <div style="background-image: url({{$channel->picture}})" class="category-img bg-img"></div>
-                                    <h3 class="category-tit">{{$channel->name}}</h3>
-                                </a>
-                            </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+                                    <a onclick="saveCategory({{$channel->id}}, {{REQUEST_STEP_2}})" class="category-item text-center">
+                                        <div style="background-image: url({{$channel->picture}})" class="category-img bg-img"></div>
+                                        <h3 class="category-tit">{{$channel->name}}</h3>
+                                    </a>
+                                </div>
                             @endforeach
                             <input type="hidden" name="channel_id" id="channel_id" />
                         </div>
+                        
                         <div class="clearfix"></div>
+                        
                         <ul class="list-inline">
                             <li class="pull-left"><button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button></li>
                             <li class="pull-right" style="display: none"><button type="button" class="btn btn-primary next-step" id="{{REQUEST_STEP_2}}">{{tr('save_continue')}}</button></li>
                             <div class="clearfix"></div>
                         </ul>
+
                     </div>
 
                     <div class="tab-pane" role="tabpanel" id="step3">
 
                          <div class="">
+
                             <div class="dropify-wrapper" onclick="$('#video_file').click();return false;">
                               <div class="dropify-message">
-                                <span class="file-icon">
-                                  <i class="fa fa-cloud-upload"></i>
-                                </span>
+                                <span class="file-icon"><i class="fa fa-cloud-upload"></i></span>
                                 <p>{{tr('click_here')}}</p>
                               </div>
+
                               <div class="dropify-preview">
-                                  <span class="dropify-render">
-                                  </span>
+                                  <span class="dropify-render"></span>
                               </div>
+
                             </div>
 
                             <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();" required>
@@ -211,6 +221,7 @@
 
                             <input type="submit" name="submit" id="submit_btn" style="display: none">
                         </div>
+
                         <div class="clearfix"></div>
 
                         <ul class="list-inline">
@@ -224,34 +235,43 @@
                     </div>
                     
                     <div class="tab-pane" role="tabpanel" id="complete">
-                        <!-- <h3>{{tr('upload_video_image')}}</h3> -->
+
                         <div style="margin-left: 15px"><small>{{tr('note')}} : {{tr('select_image_short_notes')}}</small></div> 
                         <hr>
                         <div class="row">
-                           <!--  <h4 class="info-text">{{tr('select_image_short_notes')}}</h4> -->
                             <div class="col-sm-12" id="select_image_div">
-
                             </div>
                         </div>
+
                         <div class="clearfix"></div>
                         <hr>
+
                         <ul class="list-inline">
                             <li><button type="button" class="btn btn-danger prev-step">{{tr('previous')}}</button></li>
-                            <!-- <li><button type="button" class="btn btn-default next-step">Skip</button></li> -->
-                            @if(Setting::get('admin_delete_control') == 1) 
-                            <li class="pull-right"><button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full">{{tr('finish')}}</button></li>
+
+                            @if(Setting::get('admin_delete_control') == YES) 
+
+                                <li class="pull-right"><button disabled id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full">{{tr('finish')}}</button></li>
                             @else
                                 <li class="pull-right"><button id="{{REQUEST_STEP_FINAL}}" type="button" class="btn btn-primary btn-info-full" onclick="redirect()">{{tr('finish')}}</button></li>
                             @endif
                             <div class="clearfix"></div>
                         </ul>
+
                     </div>
+                
                     <div class="clearfix"></div>
+                
                 </div>
+
             </form>
+
         </div>
+
     </section>
-   </div>
+
+    </div>
+
 </div>
 
 
@@ -262,6 +282,10 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdn.ckeditor.com/4.5.5/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'description' );
+    </script>
 
     <script src="{{asset('admin-css/plugins/bootstrap-datetimepicker/js/moment.min.js')}}"></script> 
 
@@ -271,7 +295,6 @@
 
     <script src="{{asset('streamtube/js/jquery-form.js')}}"></script>
 
-    
     <script type="text/javascript">
 
         function checkPublishType(val){
@@ -325,7 +348,6 @@
         });
 
     </script>
-
 
     <script src="{{asset('assets/js/wizard.js')}}"></script>
 

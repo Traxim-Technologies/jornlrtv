@@ -103,27 +103,28 @@
 
             </li>
 
-           <?php /* <li class="treeview" id="custom_live_videos">
-                <a href="{{route('admin.custom.live')}}">
+
+            <li class="treeview" id="custom_live_videos">
+                <a href="{{route('admin.custom.live.index')}}">
                     <i class="fa fa-wifi"></i> <span>{{tr('custom_live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
 
-                    <li id="create_live_video">
+                    <li id="create_live_videos-create">
                         <a href="{{route('admin.custom.live.create')}}">
                             <i class="fa fa-circle-o"></i>{{tr('create_custom_live_video')}}
                         </a>
                     </li>
 
-                    <li id="custom_live_videos_index">
-                        <a href="{{route('admin.custom.live')}}">
+                    <li id="custom_live_videos-view">
+                        <a href="{{route('admin.custom.live.index')}}">
                             <i class="fa fa-circle-o"></i>{{tr('custom_live_videos')}}
                         </a>
                     </li>
                 </ul>
 
-            </li> */ ?>
+            </li>  
  
             <!--   <li class="treeview" id="videos_ads">
 
@@ -175,7 +176,7 @@
             @if(Setting::get('is_banner_video'))
 
             <li class="treeview" id="banner-videos">
-                <a href="{{route('admin.banner.videos')}}">
+                <a href="{{route('admin.banner.videos.index')}}">
                     <i class="fa fa-university"></i> <span>{{tr('banner_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
@@ -183,7 +184,7 @@
                     @if(get_banner_count() < 6)
                         <li id="add-banner-video"><a href="{{route('admin.banner.videos.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_video')}}</a></li>
                     @endif
-                    <li id="view-banner-videos"><a href="{{route('admin.banner.videos')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
+                    <li id="view-banner-videos"><a href="{{route('admin.banner.videos.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_videos')}}</a></li>
                 </ul>
 
             </li>

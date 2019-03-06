@@ -581,8 +581,7 @@
 
         @endif
 
-
-         $.ajax({
+        $.ajax({
               method : 'get',
               url : "{{route('admin.videos.images', $video->video_tape_id)}}",
               success : function(data) {

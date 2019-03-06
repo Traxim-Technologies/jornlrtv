@@ -698,7 +698,6 @@ class AdminRepository {
         }
 
         return response()->json($response_array);
-
     }
 
 }

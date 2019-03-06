@@ -1662,7 +1662,6 @@ return array(
 	'enter_type' => 'Choose the Page type',
 	'page_delete_confirmation'=>':otherkey - Do you want delete this page.',
 
-
 	// New Admin banner_ad
 
 	'admin_banner_ad_not_found' => 'Banner Ad not found.',
@@ -1682,6 +1681,30 @@ return array(
 	'admin_banner_ad_delete_error' => 'Banner Ad delete deleted unsuccessfull.',
 	'admin_banner_ad_position_change_success'=>'Banner Ad position has been changed successfully.',
 	'admin_banner_ad_position_change_error'=>'Sorry!, something went wrong, Banner Ad position could not be changed. Please try again.',
+
+	// banner videos 
+	
+	'admin_slider_video_update_success' => 'Success! The video is updated as slider video',
+
+	// New Admin custom_live_video
+
+	'admin_custom_live_video_not_found' => 'Live video not found.',
+	'admin_custom_live_video_update_success' => 'Live video has been updated successfully.',
+	'admin_custom_live_video_create_success' => 'Live video has been created successfully.',
+	'admin_custom_live_video_save_error' => 'Sorry!, something went wrong Live video could not be saved. Please try again.',
+
+	'admin_custom_live_video_approve_confirmation'=>'Do you want to approve this(:otherkey) Live video?',
+	'admin_custom_live_video_decline_confirmation'=>'Do you want to decline this(:otherkey) Live video?',
+
+	'admin_custom_live_video_approved_success' => 'The Live video approved successfully!!.',
+	'admin_custom_live_video_declined_success' => 'The Live video declined successfully!!.',
+	'admin_custom_live_video_status_error' => 'Sorry!, something went wrong, Live video status could not be changed either Approved/Declined. Please try again.',
+
+	'admin_custom_live_video_delete_confirmation'=>"Do you want to delete this (:otherkey) Live video?",
+	'admin_custom_live_video_delete_success' => 'Live video has been deleted successfully.',
+	'admin_custom_live_video_delete_error' => 'Live video delete deleted unsuccessfull.',
+	
+
 
 
 );

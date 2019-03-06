@@ -219,8 +219,7 @@ class NewAdminController extends Controller {
             $error = $e->getMessage();
 
             return redirect()->route('admin.users.index')->with('flash_error',$error);
-        }
-    
+        }    
     }
 
     /**
@@ -1131,9 +1130,9 @@ class NewAdminController extends Controller {
      *
      * @uses To delete the channel based on channel id
      *
-     * @created 
+     * @created Anjana H
      *
-     * @updated 
+     * @updated Anjana H
      *
      * @param integer (request) $channel_id
      * 
@@ -3579,12 +3578,418 @@ class NewAdminController extends Controller {
         }
     
     }
+    
+    /**
+     * Function Name : banner_videos_create()
+     *
+     * To create a banner video based on id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return view Page 
+     *
+     */
+    public function banner_videos_create(Request $request) {
+
+        $channels = getChannels();
+
+        return view('new_admin.banner_videos.create')
+                    ->with('page' ,'banner-videos')
+                    ->with('sub_page' ,'banner-video-create')
+                    ->with('channels' , $channels);
+
+    }
+
+    /**
+     * Function Name : banner_videos_set()
+     *
+     * @uses To set a video as banner based on video id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function banner_videos_set(Request $request) {
+
+        try {
+            
+            $video_details = VideoTape::find($request->id);
+            
+            DB::beginTransaction();
+
+            if(count($video_details) == 0) {
+
+                throw new Exception(tr('admin_banner_video_not_found'), 101);
+            }
+
+            $current_slider_video = VideoTape::where('is_home_slider' , DEFAULT_TRUE )->update(['is_home_slider' => DEFAULT_FALSE]); 
+
+            DB::commit();
+
+            $video_details = VideoTape::where('id' , $request->id)->update(['is_home_slider' => DEFAULT_TRUE] );
+
+            return back()->with('flash_success', tr('admin_slider_video_update_success'));
+
+        } catch (Exception $e) {
+            
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name : banner_videos()
+     *
+     * @uses To list out all the banner videos 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     * 
+     * @return View Page
+     *
+     */
+    public function banner_videos_index(Request $request) {
+
+        $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->where('video_tapes.is_banner' , DEFAULT_TRUE )
+                    ->videoResponse()
+                    ->orderBy('video_tapes.created_at' , 'desc')
+                    ->get();
+
+        return view('admin.banner_videos.index')
+                    ->withPage('banner-videos')
+                    ->with('sub_page','view-banner-videos')
+                    ->with('videos' , $videos);   
+    }
 
 
+    /**
+     * Function Name : banner_videos_remove()
+     *
+     * @uses To remove a banner video based on id
+     *
+     * @created  Anjana  H
+     *
+     * @updated Anjana  H
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return succes/failure message
+     *
+     */
+    public function banner_videos_remove(Request $request) {
+        
+        try {
+            
+            $video_details = VideoTape::find($request->id);
+            
+            DB::beginTransaction();
 
+            if(count($video_details) == 0) {
 
+                throw new Exception(tr('admin_banner_video_not_found'), 101);
+            }
 
+            $video_details->is_banner = DEFAULT_FALSE ;
 
+            $video_details->save();
+
+            if( $video_details->save() ) {
+                                                        
+                DB::commit();                
+
+                return back()->with('flash_success',tr('admin_banner_video_change_success') );
+
+            } else {
+                
+                throw new Exception(tr('admin_banner_video_change_error'), 101);
+            }
+
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+        /**
+     * Function Name : custom_live_videos_index()
+     *
+     * @uses To list out custom_live_videos object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return View page
+     */
+    public function custom_live_videos_index() {
+
+        $custom_live_videos = CustomLiveVideo::orderBy('created_at','desc')->get();
+
+        return view('new_admin.custom_live_videos.index')
+                        ->withPage('custom_live_videos')
+                        ->with('sub_page','custom_live_videos_index')
+                        ->with('custom_live_videos' , $custom_live_videos);
+    }
+
+    /**
+     * Function Name : custom_live_videos_create()
+     *
+     * @uses To create a user object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return View page
+     */
+    public function custom_live_videos_create(Request $request) {
+
+        $custom_live_video_details = new CustomLiveVideo;
+
+        return view('new_admin.custom_live_videos.create')
+                    ->with('page' , 'custom_live_videos')
+                    ->with('sub_page','add-custom_live_video')
+                    ->with('custom_live_video_details', $custom_live_video_details);
+    }
+
+    /**
+     * Function Name : users_edit
+     *
+     * @uses To edit a user based on their id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - user_id
+     * 
+     * @return response of new User object
+     *`
+     */
+    public function custom_live_videos_edit(Request $request) {
+        
+        try {
+          
+            $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
+
+            if( count($custom_live_video_details) == 0 ) {
+
+                throw new Exception( tr('admin_custom_live_video_not_found'), 101);
+
+            } else {
+
+                return view('new_admin.custom_live_videos.edit')
+                            ->with('page' , 'custom_live_videos')
+                            ->with('sub_page','custom_live_videos-view')
+                            ->with('custom_live_video_details',$custom_live_video_details);
+            }
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.users.index')->with('flash_error',$error);
+        }    
+    }
+    
+
+    /**
+     * Function : custom_live_videos_save()
+     *
+     * @uses To edit/save a custom_live_video based on their id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *     
+     * @return Save the form data of the live video
+     */
+    public function custom_live_videos_save(Request $request) {
+
+        try {
+            
+            $response = AdminRepo::save_custom_live_video($request)->getData();
+            
+            if($response->success == DEFAULT_FALSE) {
+                
+                throw new Exception($response->message, 101);
+            }
+                
+            return redirect()->route('admin.custom.live.view', ['custom_live_video_id' =>  $response->data->id])->with('flash_success', $response->message);
+
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function: custom_live_videos_view()
+     * 
+     * @uses To display custom_live_videos details based on custom_live_videos id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $custom_live_video_id
+     *
+     * @return view page
+     */
+    public function custom_live_videos_view(Request $request) {
+
+        try {
+
+            $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
+            
+            if( count($custom_live_video_details) == 0 ) {
+
+                throw new Exception(tr('admin_custom_live_video_not_found'), 101);
+            }
+
+            return view('new_admin.custom_live_videos.view')
+                    ->with('page' ,'custom_live_videos')
+                    ->with('sub_page' ,'custom_live_videos-view')
+                    ->with('custom_live_video_details' ,$custom_live_video_details);
+
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.custom_live_videos.index')->with('flash_error',$error);
+        }
+    }
+    /**
+     * Function Name : custom_live_videos_delete
+     *
+     * @uses To delete the custom_live_video based on custom_live_video id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param integer (request) $custom_live_video_id
+     * 
+     * @return response of custom_live_video edit
+     *
+     */
+    public function custom_live_videos_delete(Request $request) {
+
+        try {
+        
+            $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
+
+            if (count($custom_live_video_details) == 0) {
+
+                throw new Exception(tr('admin_custom_live_video_not_found'), 101);
+            }
+
+            DB::beginTransaction();
+            
+             if ($custom_live_video_details->delete()) {  
+
+                DB::commit();
+                
+                return back()->with('flash_success',tr('admin_custom_live_video_delete_success'));
+
+            } else {
+
+                throw new Exception(tr('admin_custom_live_video_delete_success'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }    
+    }
+        /**
+     * Function Name : custom_live_videos_status_change
+     *
+     * @uses To change the custom_live_video status of approve and decline 
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param integer (request) $custom_live_video_id
+     * 
+     * @return success/failure message
+     */
+    public function custom_live_videos_status_change(Request $request) {
+        
+        try {
+
+            DB::beginTransaction();
+
+            $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
+
+            if( count($custom_live_video_details) == 0) {
+
+                throw new Exception(tr('admin_custom_live_video_not_found'), 101);
+            }
+
+            $custom_live_video_details->status = $custom_live_video_details->status == DEFAULT_TRUE ? DEFAULT_FALSE : DEFAULT_TRUE;
+
+            $message = $custom_live_video_details->status == DEFAULT_TRUE ? tr('admin_custom_live_video_approved_success') :  tr('admin_custom_live_video_declined_success') ;
+
+            if( $custom_live_video_details->save() ) {
+
+                DB::commit();
+
+                return back()->with('flash_success', $message);            
+
+            } else {
+
+                throw new Exception(tr('admin_custom_live_video_status_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
+    }
 
 
 

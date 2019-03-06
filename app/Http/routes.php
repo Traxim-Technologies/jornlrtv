@@ -238,15 +238,15 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/videos/compression/complete','AdminController@videos_compression_complete')->name('compress.status');
 
 
-    // Banner Videos
+    // // Banner Videos
 
-    Route::get('/banner/videos/set/{id}', 'AdminController@banner_videos_set')->name('banner.videos.set');
+    // Route::get('/banner/videos/set/{id}', 'AdminController@banner_videos_set')->name('banner.videos.set');
 
-    Route::get('/banner/videos', 'AdminController@banner_videos')->name('banner.videos');
+    // Route::get('/banner/videos', 'AdminController@banner_videos')->name('banner.videos');
 
-    Route::get('/banner/videos/create', 'AdminController@banner_videos_create')->name('banner.videos.create');
+    // Route::get('/banner/videos/create', 'AdminController@banner_videos_create')->name('banner.videos.create');
 
-    Route::get('/banner/videos/remove/{id}', 'AdminController@banner_videos_remove')->name('banner.videos.remove');
+    // Route::get('/banner/videos/remove/{id}', 'AdminController@banner_videos_remove')->name('banner.videos.remove');
 
 
     // Spam Videos
@@ -502,21 +502,21 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Route::get('/tags/videos/{id?}', 'AdminController@tags_videos')->name('tags.videos');
 
-    // Custom Live Videos
+    // // Custom Live Videos
 
-    Route::get('custom/live/videos', 'AdminController@custom_live_videos')->name('custom.live');
+    // Route::get('custom/live/videos', 'AdminController@custom_live_videos')->name('custom.live');
 
-    Route::get('custom/live/create', 'AdminController@custom_live_videos_create')->name('custom.live.create');
+    // Route::get('custom/live/create', 'AdminController@custom_live_videos_create')->name('custom.live.create');
 
-    Route::get('custom/live/edit', 'AdminController@custom_live_videos_edit')->name('custom.live.edit');
+    // Route::get('custom/live/edit', 'AdminController@custom_live_videos_edit')->name('custom.live.edit');
 
-    Route::post('custom/live/save', 'AdminController@custom_live_videos_save')->name('custom.live.save');
+    // Route::post('custom/live/save', 'AdminController@custom_live_videos_save')->name('custom.live.save');
 
-    Route::get('custom/live/delete', 'AdminController@custom_live_videos_delete')->name('custom.live.delete');
+    // Route::get('custom/live/delete', 'AdminController@custom_live_videos_delete')->name('custom.live.delete');
 
-    Route::get('custom/live/view/{id}', 'AdminController@custom_live_videos_view')->name('custom.live.view');
+    // Route::get('custom/live/view/{id}', 'AdminController@custom_live_videos_view')->name('custom.live.view');
 
-    Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change_status');
+    // Route::get('custom/live/change-status', 'AdminController@custom_live_videos_change_status')->name('custom.live.change_status');
 
         // Cancel Subscription
 
@@ -691,7 +691,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // New Admin Pages methods ends
 
-    // New Admin Banner Ads methods ends    
+    // New Admin Banner Ads methods begins   
 
     Route::get('banner-ads/index','NewAdminController@banner_ads_index')->name('banner-ads.index');
 
@@ -710,6 +710,36 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('banner-ads/position','NewAdminController@banner_ads_position')->name('banner-ads.position');
 
     // New Admin Banner Ads methods ends
+
+    // New Admin Banner Videos methods begins
+
+    Route::get('/banner/videos', 'NewAdminController@banner_videos_index')->name('banner.videos.index');
+
+    Route::get('/banner/videos/create', 'NewAdminController@banner_videos_create')->name('banner.videos.create');
+
+    Route::get('/banner/videos/set', 'NewAdminController@banner_videos_set')->name('banner.videos.set');
+
+    Route::get('/banner/videos/remove', 'NewAdminController@banner_videos_remove')->name('banner.videos.remove');
+
+    // New Admin Banner Videos methods ends
+
+    // New Admin Custom Live Videos methods begins
+
+    Route::get('custom/live/videos', 'NewAdminController@custom_live_videos_index')->name('custom.live.index');
+
+    Route::get('custom/live/create', 'NewAdminController@custom_live_videos_create')->name('custom.live.create');
+
+    Route::get('custom/live/edit', 'NewAdminController@custom_live_videos_edit')->name('custom.live.edit');
+
+    Route::post('custom/live/save', 'NewAdminController@custom_live_videos_save')->name('custom.live.save');
+
+    Route::get('custom/live/delete', 'NewAdminController@custom_live_videos_delete')->name('custom.live.delete');
+
+    Route::get('custom/live/view', 'NewAdminController@custom_live_videos_view')->name('custom.live.view');
+
+    Route::get('custom/live/status', 'NewAdminController@custom_live_videos_status_change')->name('custom.live.status');
+
+    // New Admin Custom Live Videos methods ends
 
 
 });
