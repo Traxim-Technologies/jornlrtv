@@ -176,7 +176,7 @@ class NewAdminController extends Controller {
 
         return view('new_admin.users.create')
                     ->with('page' , 'users')
-                    ->with('sub_page','add-user')
+                    ->with('sub_page','users-create')
                     ->with('user_details', $user_details);
     }
 
@@ -375,6 +375,8 @@ class NewAdminController extends Controller {
 
         } catch (Exception $e) {
             
+            DB::rollback();
+
             $error = $e->getMessage();
 
             return back()->withInput()->with('flash_error',$error);
@@ -490,8 +492,8 @@ class NewAdminController extends Controller {
 
                 return view('new_admin.users.view')
                             ->withPage('users')
+                            ->with('sub_page','users-view')
                             ->with('user_details' , $user_details)
-                            ->with('sub_page','users')
                             ->with('channels', $channel_datas)
                             ->with('videos', $videos)
                             ->with('wishlists', $wishlists)
@@ -946,7 +948,7 @@ class NewAdminController extends Controller {
 
         return view('new_admin.channels.index')
                     ->withPage('channels')
-                    ->with('sub_page','view-channels')
+                    ->with('sub_page','channels-view')
                     ->with('channels' , $channels);    
     }
 
@@ -1024,7 +1026,7 @@ class NewAdminController extends Controller {
 
             return view('new_admin.channels.edit')
                         ->with('page' ,'channels')
-                        ->with('sub_page' ,'channels-edit')
+                        ->with('sub_page' ,'channels-view')
                         ->with('channel_details' , $channel_details)
                         ->with('users', $users);
             
@@ -1156,7 +1158,7 @@ class NewAdminController extends Controller {
 
                 DB::commit();
                 
-                return back()->with('flash_success',tr('admin_channel_delete_success'));
+                return redirect()->route('admin.channels.index')->with('flash_success',tr('admin_channel_delete_success'));
 
             } else {
 
@@ -1303,7 +1305,7 @@ class NewAdminController extends Controller {
 
             return view('new_admin.channels.subscribers')
                         ->withPage('channels')
-                        ->with('sub_page','subscribers')
+                        ->with('sub_page','channels-subscribers')
                         ->with('channel_subscriptions' , $channel_subscriptions);
             
         } catch (Exception $e) {
@@ -1359,7 +1361,7 @@ class NewAdminController extends Controller {
 
         return view('new_admin.categories.create')
                     ->with('page' , 'categories')
-                    ->with('sub_page','add-category')
+                    ->with('sub_page','categories')
                     ->with('category_details', $category_details);
     }
 
@@ -1515,7 +1517,7 @@ class NewAdminController extends Controller {
                 'name' => $request->id ? 'required|unique:categories,name,'.$request->category_id.',id|max:128|min:2' : 'required|unique:categories,name,NULL,id|max:128|min:2',
                 'id' => 'exists:categories,id', 
                 'image' => $request->category_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
-                    'description'=>'required',
+                    'description' => 'required',
             ]);
 
             if($validator->fails()) {
@@ -2086,14 +2088,14 @@ class NewAdminController extends Controller {
         try {
         
             $validator = Validator::make($request->all(),[
-                'coupon_id'=>'exists:coupons,id',
-                'title'=>'required',
-                'coupon_code'=>$request->coupon_id ? 'required|max:10|min:1|unique:coupons,coupon_code,'.$request->coupon_id : 'required|unique:coupons,coupon_code|min:1|max:10',
-                'amount'=>'required|numeric|min:1|max:5000',
-                'amount_type'=>'required',
-                'expiry_date'=>'required|date_format:d-m-Y|after:today',
-                'no_of_users_limit'=>'required|numeric|min:1|max:1000',
-                'per_users_limit'=>'required|numeric|min:1|max:100',
+                'coupon_id' => 'exists:coupons,id',
+                'title' => 'required',
+                'coupon_code' => $request->coupon_id ? 'required|max:10|min:1|unique:coupons,coupon_code,'.$request->coupon_id : 'required|unique:coupons,coupon_code|min:1|max:10',
+                'amount' => 'required|numeric|min:1|max:5000',
+                'amount_type' => 'required',
+                'expiry_date' => 'required|date_format:d-m-Y|after:today',
+                'no_of_users_limit' => 'required|numeric|min:1|max:1000',
+                'per_users_limit' => 'required|numeric|min:1|max:100',
             ]);
 
             if($validator->fails()){
@@ -2427,7 +2429,7 @@ class NewAdminController extends Controller {
 
             if($response->success) {
 
-                return redirect()->route('admin.ads-details.view', ['ads_detail_id'=>$response->data->id])->with('flash_success', $response->message);
+                return redirect()->route('admin.ads-details.view', ['ads_detail_id' => $response->data->id])->with('flash_success', $response->message);
 
             } else {
 
@@ -3286,8 +3288,8 @@ class NewAdminController extends Controller {
             $validator = Validator::make($request->all(),[
                     'title' => 'max:255',
                     'description' => '',
-                    'position'=>$request->banner_ad_id ? 'required' :'required|unique:banner_ads',
-                    'link'=>'required|url',
+                    'position' => $request->banner_ad_id ? 'required' :'required|unique:banner_ads',
+                    'link' => 'required|url',
                     'file' => $request->banner_ad_id ? 'mimes:jpeg,png,jpg' : 'required|mimes:jpeg,png,jpg'
             ]);
             
@@ -3988,6 +3990,740 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error',$error);
         }
+    
+    }
+
+    /**
+     * Function Name : subscriptions_index()
+     *
+     * @uses To list out subscriptions object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return View page
+     */
+    public function subscriptions_index() {
+
+        $subscriptions = Subscription::orderBy('created_at','desc')->get();
+
+        return view('new_admin.subscriptions.index')
+                    ->withPage('subscriptions')
+                    ->with('sub_page','subscriptions-view')
+                    ->with('subscriptions' , $subscriptions);
+    }
+
+    /**
+     * Function Name : subscriptions_create()
+     *
+     * @uses To create a subscription object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return View page
+     */
+    public function subscriptions_create(Request $request) {
+
+        $subscription_details = new Subscription;
+
+        return view('new_admin.subscriptions.create')
+                    ->with('page' , 'subscriptions')
+                    ->with('sub_page','subscriptions-create')
+                    ->with('subscription_details', $subscription_details);
+    }
+
+    /**
+     * Function Name : subscriptions_edit
+     *
+     * @uses To update a subscription details based on their id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - subscription_id
+     * 
+     * @return response of new subscription object
+     *`
+     */
+    public function subscriptions_edit(Request $request) {
+        
+        try {
+          
+            $subscription_details = Subscription::find($request->subscription_id);
+
+            if( count($subscription_details) == 0 ) {
+
+                throw new Exception( tr('admin_subscription_not_found'), 101);
+
+            } else {
+
+                return view('new_admin.subscriptions.edit')
+                        ->with('page' , 'subscriptions')
+                        ->with('sub_page','subscriptions-view')
+                        ->with('subscription_details',$subscription_details);
+            }
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.subscriptions.index')->with('flash_error',$error);
+        }    
+    }
+    
+    /**
+     * Function Name : subscriptions_save
+     *
+     * @uses To save/update subscription object based on subscription id or details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - subscription_id, (request) details
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function subscriptions_save(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(),[
+                'title' => 'required|max:255',
+                'plan' => 'required',
+                'amount' => 'required',
+                'picture' => 'mimes:jpeg,png,jpg'
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);               
+
+            } else {
+
+                $subscription_details = $request->subscription_id ? Subscription::find($request->subscription_id) :  new Subscription;
+
+                if($request->hasFile('picture')) {
+                    
+                    if($request->subscription_id != '') {
+
+                        $subscription_details->picture ? Helper::delete_picture('uploads/subscriptions' , $subscription_details->picture) : "";
+                    }
+
+                    $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('picture'));
+                }
+
+                $subscription_details->status = $request->subscription_id ? '' : DEFAULT_TRUE;
+                
+                $subscription_details->unique_id = $request->subscription_id ? '' : $request->title;
+                
+                $subscription_details = Subscription::create($request->all());
+
+                if( $subscription_details->save()) {
+                    
+                    DB::commit();
+                                
+                    $message = $request->subscription_id ? tr('admin_subscription_update_success') : tr('admin_subscription_create_success') ;
+
+                    return redirect()->route('admin.subscriptions.view', ['subscription_id' => $subscription_details->id] )->with('flash_success', $message);
+
+                } else {
+
+                    throw new Exception(tr('admin_subscription_save_error'), 101);
+                }
+            }
+           
+        } catch (Exception $e) {
+            
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+        }    
+    }
+
+    /**
+     * Function: subscriptions_view()
+     * 
+     * @uses To display subscription details based on subscription id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $subscription_id
+     *
+     * @return view page
+     */
+    public function subscriptions_view(Request $request) {
+
+        try {
+
+            $subscription_details = Subscription::find($request->subscription_id);
+            
+            if( count($subscription_details) == 0 ) {
+
+                throw new Exception(tr('admin_subscription_not_found'), 101);
+            }
+
+            return view('new_admin.subscriptions.view')
+                    ->with('page' ,'subscriptions')
+                    ->with('sub_page' ,'subscriptions-view')
+                    ->with('subscription_details' ,$subscription_details);
+
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.subscriptions.index')->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name : subscriptions_delete
+     *
+     * @uses To delete the subscription based on subscription id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param integer (request) $subscription_id
+     * 
+     * @return response of subscription edit
+     *
+     */
+    public function subscriptions_delete(Request $request) {
+
+        try {
+        
+            $subscription_details = subscription::find($request->subscription_id);
+
+            if (count($subscription_details) == 0) {
+
+                throw new Exception(tr('admin_subscription_not_found'), 101);
+            }
+
+            DB::beginTransaction();
+            
+             if ($subscription_details->delete()) {  
+
+                DB::commit();
+                
+                return redirect()->route('admin.subscriptions.index')->with('flash_success',tr('admin_subscription_delete_success'));
+
+            } else {
+
+                throw new Exception(tr('admin_subscription_delete_success'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }    
+    }
+
+    /**
+     * Function Name : subscriptions_status_change
+     *
+     * @uses To update the subscription status to APPROVE/DECLINE based on subscription id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - subscription_id
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function subscriptions_status_change(Request $request) {
+
+        try {
+
+            $subscriptions_details = Subscription::find($request->subscription_id);
+
+            if ( count($subscriptions_details) == 0 ) {
+
+               throw new Exception(tr('admin_subscription_not_found'), 101);                
+            }
+
+            DB::beginTransaction();
+
+            $subscriptions_details->status = $subscriptions_details->status == APPROVED ? DECLINED : APPROVED ;
+
+            if( $subscriptions_details->save() ) {
+                
+                $message = $subscriptions_details->status == APPROVED ? tr('admin_subscription_approved_success') : tr('admin_subscription_declined_success') ;
+                
+                DB::commit();                
+
+                return back()->with('flash_success',$message );
+
+            } else {
+                
+                throw new Exception(tr('admin_subscription_status_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name: subscription_payments()
+     *
+     * @uses To display subscription payments list or subscriptions based on subscription_id     
+     *
+     * @created 
+     *
+     * @updated
+     *
+     * @param
+     *
+     * @return view page
+     */
+    public function subscription_payments(Request $request) {
+
+        $base_query = UserPayment::orderBy('created_at' , 'desc');
+
+        $subscription_details = [];
+
+        if($request->subscription_id) {
+
+            $subscription_details = Subscription::find($request->subscription_id);
+
+            $base_query = $base_query->where('subscription_id' , $request->subscription_id);
+        }
+
+        $payments = $base_query->get();
+
+        return view('new_admin.payments.subscription-payments')
+                ->withPage('payments')
+                ->with('sub_page','payments-subscriptions')
+                ->with('payments' , $payments)
+                ->with('subscription_details' , $subscription_details);     
+    }
+
+    /**
+     * Function Name : auto_renewal_subscribers
+     *
+     * @uses To list out auto-renewal subscribers
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param integer $id - User id (Optional)
+     * 
+     * @return - response of array of automatic subscribers
+     *
+     */
+    public function auto_renewal_subscribers() {
+
+        $user_payment_details = UserPayment::select(DB::raw('max(user_payments.id) as user_payment_id'),'user_payments.*')
+                        ->leftjoin('subscriptions', 'subscriptions.id','=' ,'subscription_id')
+                        ->where('subscriptions.amount', '>', 0)
+                        ->where('user_payments.status', PAID_STATUS)
+                        //->where('user_payments.is_cancelled', AUTORENEWAL_ENABLED)
+                        ->groupBy('user_payments.user_id')
+                        ->orderBy('user_payments.created_at' , 'desc')
+                        ->get();
+
+        $payments = [];
+
+        $amount = 0;
+
+        foreach ($user_payment_details as $key => $value) {
+    
+            $value = UserPayment::find($value->user_payment_id);
+
+            if ($value->is_cancelled == AUTORENEWAL_ENABLED) {
+
+                if ($value->getSubscription) {
+
+                    $amount += $value->getSubscription ? $value->getSubscription->amount : 0;
+                }
+
+                $payments[] = [
+
+                    'id'=> $value->id,
+
+                    'user_id' => $value->user_id,
+
+                    'subscription_id' => $value->subscription_id,
+
+                    'payment_id' => $value->payment_id,
+
+                    'amount' => $value->getSubscription ? $value->getSubscription->amount : '',
+
+                    'payment_mode' => $value->payment_mode,
+
+                    'expiry_date' => date('d-m-Y H:i a', strtotime($value->expiry_date)),
+
+                    'user_name'  =>  $value->user ? $value->user->name : '',
+
+                    'subscription_name' => $value->getSubscription ? $value->getSubscription->title : '',
+
+                    'unique_id' => $value->getSubscription ? $value->getSubscription->unique_id : '',
+
+                ];
+
+            } else {
+
+                Log::info('Subscription not found');
+            }
+        }
+
+        $payments = json_decode(json_encode($payments));
+
+        return view('new_admin.subscriptions.subscribers.auto-renewal')
+                        ->withPage('subscriptions')                        
+                        ->with('sub_page','subscriptions-auto-renewal-subscribers')
+                        ->with('amount', $amount)
+                        ->with('payments', $payments);        
+
+    }
+
+    /**
+     * Function Name : auto_renewal_cancelled_subscribers
+     *
+     * @uses To list out auto-renewal cancelled subscribers
+     *
+     * @created Anjana H
+     *
+     * @updated Anjan H
+     *
+     * @param integer $id - User id (Optional)
+     * 
+     * @return - response of array of cancelled subscribers
+     *
+     */
+    public function auto_renewal_cancelled_subscribers() {
+
+        $user_payment_details = UserPayment::select(DB::raw('max(user_payments.id) as user_payment_id'),'user_payments.*')
+                        ->where('user_payments.status', PAID_STATUS)
+                        ->leftjoin('subscriptions', 'subscriptions.id','=' ,'subscription_id')
+                        ->where('user_payments.is_cancelled', AUTORENEWAL_CANCELLED)
+                        ->groupBy('user_payments.user_id')
+                        ->orderBy('user_payments.created_at' , 'desc')
+                        ->get();
+
+        $payments = [];
+
+        foreach ($user_payment_details as $key => $value) {
+
+            $value = UserPayment::find($value->user_payment_id);
+            
+            $payments[] = [
+
+                'id' => $value->user_payment_id,
+
+                'user_id' => $value->user_id,
+
+                'subscription_id' => $value->subscription_id,
+
+                'payment_id' => $value->payment_id,
+
+                'amount' => $value->getSubscription ? $value->getSubscription->amount : '',
+
+                'payment_mode' => $value->payment_mode,
+
+                'expiry_date' => date('d-m-Y H:i a', strtotime($value->expiry_date)),
+
+                'user_name' => $value->user ? $value->user->name : '',
+
+                'subscription_name' => $value->getSubscription ? $value->getSubscription->title : '',
+
+                'unique_id' => $value->getSubscription ? $value->getSubscription->unique_id : '',
+
+                'cancel_reason' => $value->cancel_reason
+            ];
+        }
+
+        $payments =json_decode(json_encode($payments));
+
+        return view('new_admin.subscriptions.subscribers.cancelled')
+                    ->withPage('subscriptions')
+                    ->with('sub_page','subscriptions-cancelled-subscribers')
+                    ->with('payments', $payments);      
+
+    }
+
+
+    /**
+     * Function Name : user_subscription_auto_renewal_disable
+     *
+     * @uses To disable auto-renewal subscription, user can cancel subscription auto-renewal
+     *
+     * @created Anjana H
+     *
+     * @updated Anjan H
+     *
+     * @param object $request - User details & payment details
+     *
+     * @return success/failure message
+     */
+    public function user_subscription_auto_renewal_disable(Request $request) {
+
+        try {
+        
+            $user_payment_details = UserPayment::find($request->id);
+
+            if (count($user_payment_details) == 0) {
+
+                throw new Exception(tr('admin_subscription_not_found'), 101);
+            }
+
+            $user_payment_details->is_cancelled = AUTORENEWAL_CANCELLED;
+
+            $user_payment_details->cancel_reason = $request->cancel_reason;
+
+            if($user_payment_details->save()) {
+
+                DB::commit();
+                
+                return back()->with('flash_success', tr('admin_subscription_auto_renewal_disable_success'));
+
+            } else {
+                
+                throw new Exception(tr('admin_subscription_auto_renewal_disable_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }       
+
+    }
+   
+    /**
+     * Function Name : user_subscription_enable
+     *
+     * To prevent automatic subscriptioon, user have option to cancel subscription
+     *
+     * @created vithya
+     *
+     * @updated
+     *
+     * @param object $request - USer details & payment details
+     *
+     * @return boolean response with message
+     */
+    public function user_subscription_auto_renewal_enable(Request $request) {
+        
+        try {
+            
+            DB::beginTransaction();
+
+            $user_payment = UserPayment::where('user_id', $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')
+                ->where('is_cancelled', AUTORENEWAL_CANCELLED)
+                ->first();
+
+            if( count($user_payment) == 0) {
+
+                throw new Exception(tr('admin_user_payment_details_not_found'), 101);
+            }
+
+            $user_payment->is_cancelled = AUTORENEWAL_ENABLED;
+
+            if($user_payment->save()) {
+
+                DB::commit();
+            
+                return back()->with('flash_success', tr('autorenewal_enable_success'));
+
+            } else {
+
+                throw new Exception(tr('admin_autorenewal_enable_success'), 101);
+            }
+
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }      
+
+    } 
+
+    /**
+     * Function Name: user_redeem_requests()
+     *
+     * @uses To list out redeem requests from users, admin can payout amount
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param integer $id - Optional ( Redeem request id)
+     *
+     * @return view page 
+     */
+    public function user_redeem_requests(Request $request) {
+
+        try {
+        
+            $base_query = RedeemRequest::orderBy('status' , 'asc');
+
+            $user_details = [];
+
+            if($request->user_id) {
+
+                $base_query = $base_query->where('user_id' , $request->user_id);
+
+                $user_details = User::find($request->user_id);
+            }
+
+            $redeem_requests = $base_query->orderBy('updated_at', 'desc')->get();
+
+            return view('new_admin.users.redeems')
+                    ->withPage('redeems')
+                    ->with('sub_page' , 'redeems')
+                    ->with('redeem_requests' , $redeem_requests)->with('user' , $user_details);
+        
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name: revenues()
+     *
+     * @uses To list out the revenue models details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return view page 
+     */
+    public function revenues() {
+
+        $total  = total_revenue();
+
+        $ppv_total = PayPerView::sum('amount');
+
+        $ppv_admin_amount = PayPerView::sum('admin_ppv_amount');
+
+        $ppv_user_amount = PayPerView::sum('user_ppv_amount');
+
+        $subscription_total = UserPayment::sum('amount');
+
+        $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
+        
+        return view('new_admin.payments.revenues')
+                        ->withPage('payments')
+                        ->with('sub_page' , 'payments-dashboard')
+                        ->with('total' , $total)
+                        ->with('ppv_total' , $ppv_total)
+                        ->with('ppv_admin_amount' , $ppv_admin_amount)
+                        ->with('ppv_user_amount' , $ppv_user_amount)
+                        ->with('subscription_total' , $subscription_total)
+                        ->with('total_subscribers' , $total_subscribers);
+    
+    }
+    /**
+    * Function Name: ppv_payments()
+    *
+    * @uses To list out ppv payment details
+    *     
+    * @created Anjana  H
+    *
+    * @updated Anjana  H
+    *
+    * @param 
+    *
+    * @returnview page
+    */
+    public function ppv_payments() {
+
+        $payments = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
+            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
+            ->leftJoin('users', 'users.id', '=', 'pay_per_views.user_id')
+            ->orderBy('pay_per_views.created_at' , 'desc')->get();
+    
+        return view('new_admin.payments.ppv-payments')
+                    ->withPage('payments')
+                    ->with('sub_page','payments-ppv')
+                    ->with('payments' , $payments);
+    }
+
+    /**
+     * Function Name : user_reviews()
+     *
+     * @uses list out all the reviews which is leaves by user
+     *
+     * @created Anjan H
+     *
+     * @updated Anjan H
+     *
+     * @param -
+     *
+     * @return view page
+     */
+    public function user_reviews(Request $request) {
+            
+        $query = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
+            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
+            ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
+                     'user_ratings.comment', 
+                     'users.name as name', 
+                     'video_tapes.title as title',
+                     'user_ratings.video_tape_id as video_id',
+                     'users.id as user_id', 'user_ratings.created_at')
+            ->orderBy('user_ratings.created_at', 'desc');
+
+        if($request->video_tape_id) {
+
+            $query->where('user_ratings.video_tape_id',$request->video_tape_id);
+        }
+
+        if($request->user_id) {
+
+            $query->where('user_ratings.user_id',$request->user_id);
+        }
+
+        $user_reviews = $query->get();
+
+        return view('new_admin.reviews.reviews')
+                    ->with('page' ,'videos')
+                    ->with('sub_page' ,'reviews')
+                    ->with('reviews', $user_reviews);
     
     }
 

@@ -343,21 +343,21 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     // Route::post('banner-ads/position','AdminController@banner_ads_position')->name('banner-ads.position');
 
 
-    // Subscriptions
+    // // Subscriptions
 
-    Route::get('/subscriptions', 'AdminController@subscriptions')->name('subscriptions.index');
+    // Route::get('/subscriptions', 'AdminController@subscriptions')->name('subscriptions.index');
 
-    Route::get('/subscriptions/create', 'AdminController@subscription_create')->name('subscriptions.create');
+    // Route::get('/subscriptions/create', 'AdminController@subscription_create')->name('subscriptions.create');
 
-    Route::get('/subscriptions/edit/{id}', 'AdminController@subscription_edit')->name('subscriptions.edit');
+    // Route::get('/subscriptions/edit/{id}', 'AdminController@subscription_edit')->name('subscriptions.edit');
 
-    Route::post('/subscriptions/create', 'AdminController@subscription_save')->name('subscriptions.save');
+    // Route::post('/subscriptions/create', 'AdminController@subscription_save')->name('subscriptions.save');
 
-    Route::get('/subscriptions/delete/{id}', 'AdminController@subscription_delete')->name('subscriptions.delete');
+    // Route::get('/subscriptions/delete/{id}', 'AdminController@subscription_delete')->name('subscriptions.delete');
 
-    Route::get('/subscriptions/view/{id}', 'AdminController@subscription_view')->name('subscriptions.view');
+    // Route::get('/subscriptions/view/{id}', 'AdminController@subscription_view')->name('subscriptions.view');
 
-    Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('subscriptions.status');
+    // Route::get('/subscriptions/status/{id}', 'AdminController@subscription_status')->name('subscriptions.status');
 
 
     // Coupons
@@ -385,17 +385,17 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     //Redeems
 
-    Route::get('/redeems/{id?}', 'AdminController@user_redeem_requests')->name('users.redeems');
+    // Route::get('/redeems/{id?}', 'AdminController@user_redeem_requests')->name('users.redeems');
 
     Route::post('/redeems/pay', 'AdminController@user_redeem_pay')->name('users.redeem.pay');
 
-    // Payment details
+    // // Payment details
 
-    Route::get('revenues/dashboard' , 'AdminController@revenues')->name('revenues.dashboard');
+    // Route::get('revenues/dashboard' , 'AdminController@revenues')->name('revenues.dashboard');
     
-    Route::get('revenues/ppv-payments' , 'AdminController@ppv_payments')->name('revenues.ppv_payments');
+    // Route::get('revenues/ppv-payments' , 'AdminController@ppv_payments')->name('revenues.ppv_payments');
 
-    Route::get('/revenues/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('revenues.subscription-payments');
+    // Route::get('/revenues/subscription/payments/{id?}' , 'AdminController@subscription_payments')->name('revenues.subscription-payments');
 
     // Settings
 
@@ -519,15 +519,15 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
         // Cancel Subscription
 
-    Route::post('/user/subscription/pause', 'AdminController@user_subscription_pause')->name('cancel.subscription');
+    // Route::post('/user/subscription/pause', 'AdminController@user_subscription_pause')->name('cancel.subscription');
 
-    Route::get('/user/subscription/enable', 'AdminController@user_subscription_enable')->name('enable.subscription');
+    // Route::get('/user/subscription/enable', 'AdminController@user_subscription_enable')->name('enable.subscription');
 
     // Subscribers
 
-    Route::get('automatic/subscribers', 'AdminController@automatic_subscribers')->name('automatic.subscribers');
+    // Route::get('automatic/subscribers', 'AdminController@automatic_subscribers')->name('automatic.subscribers');
 
-    Route::get('cancelled/subscribers', 'AdminController@cancelled_subscribers')->name('cancelled.subscribers');
+    // Route::get('cancelled/subscribers', 'AdminController@cancelled_subscribers')->name('cancelled.subscribers');
 
 
     // ============= branch v4.0-admin-coderevamp ================
@@ -740,6 +740,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('custom/live/status', 'NewAdminController@custom_live_videos_status_change')->name('custom.live.status');
 
     // New Admin Custom Live Videos methods ends
+
     // YouTube Grapper 
 
     Route::get('youtube/{youtube_channel_id}' , 'AdminController@videos_youtube_grabber_save')->name("youtube.video.save");
@@ -750,6 +751,49 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::post('redeems/payout/direct', 'version4AdminController@redeems_payout_direct')->name('users.payout.direct');
 
     Route::any('/redeems/payout/response', 'version4AdminController@redeems_payout_response')->name('users.payout.response');
+
+    //  New Admin Subscriptions methods begins
+ 
+    Route::get('/subscriptions/index', 'NewAdminController@subscriptions_index')->name('subscriptions.index');
+
+    Route::get('/subscriptions/create', 'NewAdminController@subscriptions_create')->name('subscriptions.create');
+
+    Route::get('/subscriptions/edit', 'NewAdminController@subscriptions_edit')->name('subscriptions.edit');
+
+    Route::post('/subscriptions/create', 'NewAdminController@subscriptions_save')->name('subscriptions.save');
+
+    Route::get('/subscriptions/delete', 'NewAdminController@subscriptions_delete')->name('subscriptions.delete');
+
+    Route::get('/subscriptions/view', 'NewAdminController@subscriptions_view')->name('subscriptions.view');
+
+    Route::get('/subscriptions/status', 'NewAdminController@subscriptions_status_change')->name('subscriptions.status');
+    
+    //  New Admin Subscriptions methods ends
+
+    Route::get('/revenues/subscription/payments/{id?}' , 'NewAdminController@subscription_payments')->name('revenues.subscription-payments');
+
+    Route::get('auto-renewa/subscribers', 'NewAdminController@auto_renewal_subscribers')->name('auto-renewal.subscribers');
+
+    Route::get('auto-renewal/cancelled/subscribers', 'NewAdminController@auto_renewal_cancelled_subscribers')->name('auto-renewal.cancelled.subscribers');
+
+    Route::post('/user/subscription/auto-renewal/disable', 'NewAdminController@user_subscription_auto_renewal_disable')->name('subscription.auto-renewal.disable');
+
+    Route::get('/user/subscription/enable', 'NewAdminController@user_subscription_auto_renewal_enable')->name('subscription.auto-renewal.enable');
+
+    //Redeems
+
+    Route::get('/redeems', 'NewAdminController@user_redeem_requests')->name('users.redeems');
+
+    // Payment details
+
+    Route::get('revenues/dashboard' , 'NewAdminController@revenues')->name('revenues.dashboard');
+    
+    Route::get('revenues/ppv-payments' , 'NewAdminController@ppv_payments')->name('revenues.ppv_payments');
+
+     // Reviews
+
+    Route::get('/reviews', 'NewAdminController@user_reviews')->name('reviews');
+
 });
 
 

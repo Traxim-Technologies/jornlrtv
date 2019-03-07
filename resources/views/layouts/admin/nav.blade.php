@@ -25,8 +25,6 @@
               
             </li>
 
-            <li class="header">LABELS</li>
-
             <li class="treeview" id="users">
                 <a href="#">
                     <i class="fa fa-user"></i> <span>{{tr('users')}}</span> <i class="fa fa-angle-left pull-right"></i>
@@ -37,8 +35,6 @@
                     <li id="users-view"><a href="{{route('admin.users.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_users')}}</a></li>
                 </ul>
             </li>
-
-            <li class="header">LABELS</li>
 
             <li class="treeview" id="channels">
                 <a href="{{route('admin.channels.index')}}">
@@ -51,7 +47,7 @@
                     
                     <li id="channels-view"><a href="{{route('admin.channels.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
                     
-                    <li id="subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
+                    <li id="channels-subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
                 
                 </ul>
             </li>
@@ -60,6 +56,13 @@
                 <a href="{{route('admin.categories.index')}}">
                     <i class="fa fa-list"></i> <span>{{tr('categories')}}</span> 
                 </a>
+                <ul class="treeview-menu">
+                    
+                    <li id="categories-create"><a href="{{route('admin.categories.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_category')}}</a></li>
+                    
+                    <li id="categories-view"><a href="{{route('admin.categories.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_categories')}}</a></li>
+
+                </ul>
             </li>
 
             <li id="tags">
@@ -204,11 +207,16 @@
 
                 <ul class="treeview-menu">
 
-                    <li id="subscriptions-add"><a href="{{route('admin.subscriptions.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_subscription')}}</a></li>
+                    <li id="subscriptions-create"><a href="{{route('admin.subscriptions.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_subscription')}}</a></li>
+
                     <li id="subscriptions-view"><a href="{{route('admin.subscriptions.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_subscriptions')}}</a></li>
-                    <li id="automatic"><a href="{{route('admin.automatic.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('automatic_subscribers')}}</a></li>
-                    <li id="cancelled"><a href="{{route('admin.cancelled.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('cancelled_subscribers')}}</a></li>
+
+                    <li id="subscriptions-auto-renewal-subscribers"><a href="{{route('admin.auto-renewal.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('automatic_subscribers')}}</a></li>
+
+                    <li id="subscriptions-cancelled-subscribers"><a href="{{route('admin.auto-renewal.cancelled.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('cancelled_subscribers')}}</a></li>
+                
                 </ul>
+
             </li>
 
             <!-- Coupon Section-->

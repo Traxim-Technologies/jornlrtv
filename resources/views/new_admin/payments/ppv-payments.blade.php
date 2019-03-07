@@ -27,6 +27,7 @@
 
 @section('content')
 
+
 	<div class="row">
 
         <div class="col-xs-12">
@@ -88,7 +89,7 @@
 
 						<tbody>
 
-							@foreach($payments as $i => $payment)
+							@foreach($payments as $i => $payment_details)
 
 							    <tr>
 
@@ -154,6 +155,7 @@
 											</div>
 
 											<div class="modal-body">
+
 												<ul>
 													<li>
 														{{ tr('video')}} : @if($payment_details->title)

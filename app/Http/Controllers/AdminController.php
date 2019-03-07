@@ -5643,8 +5643,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error', Helper::get_error_message(167));
-
-        }        
+        }       
 
     }  
 
