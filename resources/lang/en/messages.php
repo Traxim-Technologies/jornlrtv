@@ -1608,6 +1608,7 @@ return array(
 	
 	'admin_tag_delete_confirmation'=>"Do you want to delete this (:otherkey) tag?",
 	'admin_tag_delete_success' => 'Tag has been deleted successfully.',
+	'admin_tag_delete_error' => 'Sorry! Tag could not be deleted. Please try again',
 
 	// New Admin Coupons
 
@@ -1756,6 +1757,23 @@ return array(
 
 	'admin_user_payment_details_not_found' => 'User payment details not found',
 	'admin_autorenewal_enable_success' => 'The subscription auto-renewal enabled.',
+	
+	// ====== Settings Messages =========================
 
+	'admin_settings_key_not_found' => ' - Settings Key not found , Please try again.',
+	'admin_settings_key_save_success' => 'Admin Control Settings updated successfully.',
+	'admin_settings_save_error' => 'Admin Control Settings updated successfully.',
 
+	'custom_user_count'=>'Your Email Id is more than of custom user count check it.choose settings->Other Settings->Custom User Count.',
+
+	'admin_control_save_error' => 'Sorry, Admin Control Setting could not be saved, Please try again.',
+	'custom_push' => 'Custom Push',
+
+	'admin_user_review_delete_confirmation' => 'Are you sure? Do you want to delete review?'
+
+	'admin_user_rating_not_found' => 'User Review not found.',
+	
+	'admin_user_rating_delete_success' => 'User rating has been deleted successfully.',
+	'admin_user_rating_delete_error' => 'User rating delete deleted unsuccessfull.',
+	
 );

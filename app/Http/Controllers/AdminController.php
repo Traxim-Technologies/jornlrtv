@@ -2120,7 +2120,6 @@ class AdminController extends Controller {
         if($user = UserRating::find($request->id)) {
 
             $user->delete();
-
         }
 
         return back()->with('flash_success', tr('admin_not_ur_del'));

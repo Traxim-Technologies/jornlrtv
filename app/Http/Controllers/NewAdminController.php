@@ -1855,7 +1855,7 @@ class NewAdminController extends Controller {
 
             } else {
 
-                throw new Exception(tr('admin_tag_delete_success'), 101);
+                throw new Exception(tr('admin_tag_delete_error'), 101);
             }
             
         } catch (Exception $e) {
@@ -1869,7 +1869,7 @@ class NewAdminController extends Controller {
 
     }
 
-        /**
+    /**
      * Function Name : tags_status_change
      *
      * @uses To change the tag status of approve and decline 
@@ -2971,7 +2971,7 @@ class NewAdminController extends Controller {
      *
      * @uses To display and update pages object details based on the pages id
      *
-     * @created  Anjana H
+     * @created Anjana H
      *
      * @updated Anjana H
      *
@@ -3686,7 +3686,7 @@ class NewAdminController extends Controller {
      *
      * @uses To remove a banner video based on id
      *
-     * @created  Anjana  H
+     * @created Anjana  H
      *
      * @updated Anjana  H
      *
@@ -4619,6 +4619,8 @@ class NewAdminController extends Controller {
         }
     }
 
+
+
     /**
      * Function Name: revenues()
      *
@@ -4726,6 +4728,456 @@ class NewAdminController extends Controller {
                     ->with('reviews', $user_reviews);
     
     }
+
+    /**
+     * Function: settings()
+     * 
+     * @uses To display settings details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param - 
+     *
+     * @return success/failure message
+     */   
+    public function settings() {
+
+        $settings = array();
+
+        $result = EnvEditorHelper::getEnvValues();
+
+        return view('new_admin.settings.settings')
+                    ->withPage('settings')
+                    ->with('sub_page','site_settings')
+                    ->with('settings' , $settings)
+                    ->with('result', $result); 
+    }
+
+
+
+    /**
+     * Function Name: ios_control()
+     *
+     * @uses To update the ios payment subscription status
+     *
+     * @param settings key value
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @return success / failure.
+     */
+    public function ios_control(){
+
+        if(Auth::guard('admin')->check()){
+
+            return view('new_admin.settings.ios-control')->with('page','ios-control');
+
+        } else {
+
+            return back();
+        }
+    }
+    
+    /**
+     * Function Name: admin_control()
+     *
+     * @uses To update(enable/disable) admin control details in settings 
+     *
+     * @param settings key value
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @return viwe page.
+     */
+    public function admin_control() {
+
+        if (Auth::guard('admin')->check()) {
+
+            return view('new_admin.settings.control')->with('page', tr('admin_control'));
+
+        } else {
+
+            return back();
+        }
+        
+    }
+
+    /**
+     * Function: settings_save()
+     * 
+     * @uses to update settings details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return success/error message
+     */
+    public function settings_save(Request $request) {
+
+        try {
+
+            foreach( $request->toArray() as $key => $value) {
+              
+                $check_settings = Settings::where('key' ,'=', $key)->count();
+
+                if( $check_settings == 0 ) {
+
+                    throw new Exception( $key.tr('admin_settings_key_not_found'), 101);
+                }
+
+                if( $request->hasFile($key) ) {
+
+                    Helper::delete_picture($key, "/uploads/settings/");
+
+                    $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
+
+                    $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
+               
+                } else {
+
+                    $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
+
+                    if( $result == TRUE ) {
+                     
+                        DB::commit();
+                   
+                    } else {
+
+                        throw new Exception(tr('admin_settings_save_error'), 101);
+                    }   
+                }  
+            }
+
+            return back()->with('flash_success', tr('admin_settings_key_save_success') );
+            
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error', $error);
+        }
+
+    }
+    /**
+     * Function Name: custom_push()
+     *
+     * @uses To display custom message
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return view page 
+     */
+    public function custom_push() {
+
+        return view('new_admin.static_pages.push')
+                ->with('page' , tr('custom_push'))
+                ->with('title' , tr('custom_push'));
+
+    }
+    /**
+     * Function Name: custom_push_process()
+     *
+     * @uses To send custom push message to mobile
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param object $request - message details
+     *
+     * @return success/failure message
+     */
+    public function custom_push_process(Request $request) {
+       
+        try {
+
+            $validator = Validator::make($request->all(),
+                ['message' => 'required'] 
+            );
+
+            if($validator->fails()) {
+
+                $error = $validator->messages()->all();
+
+                throw new Exception($error, 101);
+                
+            } else {
+
+                // Send notifications to the users
+                $push_message = $request->message;
+
+                // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
+
+                dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
+
+                return back()->with('flash_success' , tr('push_send_success'));
+            }
+                
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error', $error);
+        }
+    
+    }
+    /**
+     * Function Name: email_settings_process()
+     * 
+     * @uses Email Setting Process
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param 
+     *
+     * @return Html view page with coupon detail
+     */
+    public function email_settings_process(Request $request) {
+
+        $email_settings = ['MAIL_DRIVER' , 'MAIL_HOST' , 'MAIL_PORT' , 'MAIL_USERNAME' , 'MAIL_PASSWORD' , 'MAIL_ENCRYPTION'];
+
+        $admin_id = \Auth::guard('admin')->user()->id;
+
+        foreach ($email_settings as $key => $data) {
+
+            \Enveditor::set($data,$request->$data);            
+        }
+
+        return redirect()->route('clear-cache')->with('flash_success' , tr('email_settings_success'));
+
+    }
+
+      /**
+     * Function Name : ads_details_ad_status_change()
+     *
+     * To change the status of the ad details (Video Ad enable/disable)
+     *
+     * @created vithya R
+     *
+     * @updated - 
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function ads_details_ad_status_change(Request $request) {
+        
+        try {
+
+            DB::beginTransaction();
+
+            $video_tape_details = VideoTape::find($request->id)
+
+            if(count($video_tape_details) == 0) { 
+
+                throw new Exception(tr('admin_video_tape_not_found'), 101);
+            }
+
+            $video_tape_details->ad_status  = $video_tape_details->ad_status == DEFAULT_TRUE ? DEFAULT_FALSE : DEFAULT_TRUE;
+
+            if($video_tape_details->save()) {
+
+                DB::commit();
+
+                $video_ad = VideoAd::where('video_tape_id', $video_tape_details->id)->first();
+
+                if($video_ad) {
+
+                    $video_ad->status = $video_tape_details->ad_status;
+
+                    if($video_ad->save()) {   
+                        
+                        DB::commit(); 
+                        
+                        $message = $video_tape_details->ad_status == DEFAULT_TRUE ? tr('ad_status_enable_success') : tr('ad_status_disable_success'); 
+                        
+                        return back()->with('flash_success', $message);
+
+                    } else {
+
+                        throw new Exception(tr('ad_status_change_failure'), 101);
+                    }
+                }
+
+            } else {
+
+                throw new Exception(tr('ad_status_change_failure'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error', $error);
+        }
+    }
+
+    /**
+     * Function Name : user_reviews()
+     *
+     * @uses list out all the reviews which is leaves by user
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param 
+     *
+     * @return view page
+     */
+    public function user_reviews(Request $request) {
+            
+        $query = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
+            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
+            ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
+                     'user_ratings.comment', 
+                     'users.name as name', 
+                     'video_tapes.title as title',
+                     'user_ratings.video_tape_id as video_id',
+                     'users.id as user_id', 'user_ratings.created_at')
+            ->orderBy('user_ratings.created_at', 'desc');
+
+        if($request->video_tape_id) {
+
+            $query->where('user_ratings.video_tape_id',$request->video_tape_id);
+        }
+
+        if($request->user_id) {
+
+            $query->where('user_ratings.user_id',$request->user_id);
+        }
+
+        $user_reviews = $query->get();
+
+        return view('new_admin.reviews.reviews')
+                    ->with('page' ,'videos')
+                    ->with('sub_page' ,'reviews')
+                    ->with('reviews', $user_reviews);
+    
+    }
+
+    /**
+     * Function Name : user_reviews_delete
+     *
+     * @uses To delete user_reviews details based on UserRating id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - UserRating_id
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function user_reviews_delete(Request $request) {
+
+        try {
+        
+            $user_rating_details = UserRating::find($request->user_rating_id);
+
+            if (count($user_rating_details) == 0) {
+
+                throw new Exception(tr('admin_user_rating_not_found'), 101);
+            }
+            
+            DB::beginTransaction();
+
+            if ($user_rating_details->delete()) {  
+
+                DB::commit();
+                
+                return back()->with('flash_success',tr('admin_user_rating_delete_success'));
+
+            } else {
+
+                throw new Exception(tr('admin_user_rating_delete_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function Name : videos_status()
+     *
+     * To change the status of approve/decline video
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $request - Video Id, Video details
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_status($id) {
+
+         try {
+
+            DB::beginTransaction();
+
+            $video_details = VideoTape::find($request->$id);
+
+            if ( count($video_details) == 0) {
+
+                throw new Exception(tr('admin_video_not_found'), 101);
+            }
+
+            $video_details->is_approved = $video_details->is_approved == APPROVED ? DECLINED : APPROVED;
+
+            $message = $video_details->is_approved == APPROVED ? tr('admin_video_approved_success') :  tr('admin_video_declined_success') ;
+
+            if ($video_details->save() ) {
+
+                DB::commit();
+           
+                return back()->with('flash_success', $message);            
+
+            } else {
+
+                throw new Exception(tr('admin_video_status_error'), 101);
+            }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }    
+    }
+
+
+
 
 
 

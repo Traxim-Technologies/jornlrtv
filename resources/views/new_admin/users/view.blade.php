@@ -527,14 +527,17 @@
 
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
+
 								      	<td>{{ $user_rating->title }}</td>
+
 								      	<td>{{ $user_rating->comment }}</td>
+
 								      	<td>{{ $user_rating->created_at->diffForHumans() }}</td>
-									    <td>
-	            							
-									        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{ route('admin.reviews.delete' , array('id'=>$user_rating->id)) }}"><i class="fa fa-trash"></i></a>
-									              
+
+									    <td>	            							
+									        <a class="btn btn-sm btn-danger" onclick="return confirm( {{ tr('admin_user_review_delete_confirmation') }});" href="{{ route('admin.reviews.delete' , ['user_rating_id'=>$user_rating->id] ) }}"><i class="fa fa-trash"></i></a>
 									    </td>
+
 								    </tr>					
 
 								@endforeach
