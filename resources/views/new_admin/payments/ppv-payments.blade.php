@@ -110,7 +110,7 @@
 							      	<td>
 							      		@if($payment_details->user_name)
 
-							      		<a href="{{ route('admin.users.view' , $payment_details->user_id)}}"> 
+							      		<a href="{{ route('admin.users.view' , ['user_id' => $payment_details->user_id] )}}"> 
 							      			{{ $payment_details->user_name ? $payment_details->user_name : " "}} 
 							      		</a>
 
@@ -118,7 +118,6 @@
 									</td>
 
 							      	<td>{{ $payment_details->payment_id}}</td>
-
 
 							      	<td>{{ $payment_details->payment_mode}}</td>
 
@@ -137,7 +136,7 @@
 							      		@endif 
 							      	</td>
 
-							      	<td><a href="" data-toggle="modal" data-target="#PPV_DETAILS_{{ $payment_details->id}}" class="btn btn-sm btn-success">{{ tr('view')}}</a></td>
+							      	<td><a href="" data-toggle="modal" data-target="#PPV_DETAILS_{{ $payment_details->id}}" class="btn btn-sm btn-success" href="{{route('admin.revenues.ppv_payments.view', ['id' => $payment_details->id] )}}">{{ tr('view')}}</a></td>
 							    </tr>	
 
 								<div class="modal fade" id="PPV_DETAILS_{{ $payment_details->id}}" role="dialog">

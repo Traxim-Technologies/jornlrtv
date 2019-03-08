@@ -1769,7 +1769,7 @@ return array(
 	'admin_control_save_error' => 'Sorry, Admin Control Setting could not be saved, Please try again.',
 	'custom_push' => 'Custom Push',
 
-	'admin_user_review_delete_confirmation' => 'Are you sure? Do you want to delete review?'
+	'admin_user_review_delete_confirmation' => 'Are you sure? Do you want to delete review?',
 
 	'admin_user_rating_not_found' => 'User Review not found.',
 	

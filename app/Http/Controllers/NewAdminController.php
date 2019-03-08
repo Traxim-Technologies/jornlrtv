@@ -679,6 +679,48 @@ class NewAdminController extends Controller {
         }
     }
 
+    /**
+     * Function Name : users_wishlist
+     *
+     * @uses To list out all the wishlist details based on user id
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param integer $request - user id
+     * 
+     * @return - Response of wishlist based on id
+     *
+     */
+    public function users_wishlist(Request $request) {
+
+        if($user_details = User::find($id)) {
+
+            $user_wishlist = Wishlist::where('wishlists.user_id' , $request->user_id)
+                            ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
+                            ->leftJoin('video_tapes' , 'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                            ->select(
+                                'users.name as username' , 
+                                'users.id as user_id' , 
+                                'wishlists.video_tape_id',
+                                'wishlists.id as wishlist_id',
+                                'video_tapes.title',
+                                'wishlists.created_at as date'
+                                )
+                            ->get();
+
+            return view('new_admin.users.wishlist')
+                        ->withPage('users')
+                        ->with('sub_page','users')
+                        ->with('user_wishlist' , $user_wishlist)
+                        ->with('user_details' , $user_details);
+
+        } else {
+
+            return back()->with('flash_error',tr('admin_not_error'));
+        }    
+    }
 
     /**
      * Function Name : users_wishlist_delete
@@ -4685,6 +4727,36 @@ class NewAdminController extends Controller {
                     ->with('payments' , $payments);
     }
 
+    public function ppv_payments_view(Request $request) {
+        
+        try {
+
+            $payment_details = PayPerView::find($request->id);
+
+            if(count($payment_details) == 0 ){
+
+                throw new Exception(tr('admin_ppv_not_found'), 101);
+            }
+
+            $payment_details = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
+                        ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
+                        ->leftJoin('users', 'users.id', '=', 'pay_per_views.user_id')
+                        ->where('pay_per_views.id', $request->id)
+                        ->orderBy('pay_per_views.created_at' , 'desc')->first();
+
+            return view('new_admin.payments.view')
+                        ->withPage('payments')
+                        ->with('sub_page','payments-ppv')
+                        ->with('payment_details' , $payment_details);
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    }
+
     /**
      * Function Name : user_reviews()
      *
@@ -4983,7 +5055,7 @@ class NewAdminController extends Controller {
 
             DB::beginTransaction();
 
-            $video_tape_details = VideoTape::find($request->id)
+            $video_tape_details = VideoTape::find($request->id);
 
             if(count($video_tape_details) == 0) { 
 
@@ -5029,50 +5101,6 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error', $error);
         }
-    }
-
-    /**
-     * Function Name : user_reviews()
-     *
-     * @uses list out all the reviews which is leaves by user
-     *
-     * @created 
-     *
-     * @updated 
-     *
-     * @param 
-     *
-     * @return view page
-     */
-    public function user_reviews(Request $request) {
-            
-        $query = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
-            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
-            ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
-                     'user_ratings.comment', 
-                     'users.name as name', 
-                     'video_tapes.title as title',
-                     'user_ratings.video_tape_id as video_id',
-                     'users.id as user_id', 'user_ratings.created_at')
-            ->orderBy('user_ratings.created_at', 'desc');
-
-        if($request->video_tape_id) {
-
-            $query->where('user_ratings.video_tape_id',$request->video_tape_id);
-        }
-
-        if($request->user_id) {
-
-            $query->where('user_ratings.user_id',$request->user_id);
-        }
-
-        $user_reviews = $query->get();
-
-        return view('new_admin.reviews.reviews')
-                    ->with('page' ,'videos')
-                    ->with('sub_page' ,'reviews')
-                    ->with('reviews', $user_reviews);
-    
     }
 
     /**

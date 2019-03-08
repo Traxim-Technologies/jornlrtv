@@ -784,6 +784,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     
     Route::get('revenues/ppv-payments' , 'NewAdminController@ppv_payments')->name('revenues.ppv_payments');
 
+    Route::get('revenues/ppv-payments/view' , 'NewAdminController@ppv_payments_view')->name('revenues.ppv_payments.view');
+
      // Reviews
 
     Route::get('/reviews', 'NewAdminController@user_reviews')->name('reviews');
