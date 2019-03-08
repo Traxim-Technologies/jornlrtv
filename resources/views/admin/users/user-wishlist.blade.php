@@ -25,7 +25,7 @@
           <div class="box">
             <div class="box-body">
 
-            	@if(count($dataz) > 0)
+            	@if(count($datazzzzzzzz) > 0)
 
 	              	<table id="example1" class="table table-bordered table-striped">
 
@@ -41,7 +41,7 @@
 
 						<tbody>
 
-							@foreach($dataz as $i => $wishlist)
+							@foreach($datazzzzzzzz as $i => $wishlist)
 
 							    <tr>
 							      	<td>{{$i+1}}</td>

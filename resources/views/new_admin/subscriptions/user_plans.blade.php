@@ -6,9 +6,9 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
-    <li><a href="{{ route('admin.users') }}"><i class="fa fa-users"></i>{{ tr('users') }}</a></li>
+    <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i>{{ tr('users') }}</a></li>
     @if($id)
-    	<li><a href="{{ route('admin.users.view', $id) }}"><i class="fa fa-users"></i>{{ tr('view_user') }}</a></li>
+    	<li><a href="{{ route('admin.users.view',['user_id' => $id] ) }}"><i class="fa fa-users"></i>{{ tr('view_user') }}</a></li>
     @endif
     <li class="active"><i class="fa fa-key"></i> {{ tr('subscriptions') }}</li>
 @endsection
@@ -105,7 +105,7 @@
 
 				                   <div class="modal-content">
 
-				                   		<form method="post" action="{{ route('admin.subscription.auto-renewal.disable', ['id'=>$payment->id]) }}">
+				                   		<form method="post" action="{{ route('admin.subscription.auto-renewal.disable', ['id' => $payment->id]) }}">
 
 				                       <div class="modal-body">
 
@@ -188,8 +188,7 @@
 									<p>
 										<span class="btn btn-danger pull-left" style="cursor: default;">{{  Setting::get('currency') }} {{ $subscription->amount }} / {{ $subscription->plan }} M</span>
 
-										<a href="{{ route('admin.users.subscription.save' , ['s_id' => $subscription->id, 'u_id'=>$id]) }}" class="btn btn-success pull-right" onclick="return confirm('Are You Sure ?')">{{ tr('choose') }}</a>
-
+										<a href="{{ route('admin.users.subscription.save' , ['subscription_id' => $subscription->id, 'user_id' => $id]) }}" class="btn btn-success pull-right" onclick="return confirm('Are You Sure ?')">{{ tr('choose') }}</a>
 									</p>
 
 									<br>

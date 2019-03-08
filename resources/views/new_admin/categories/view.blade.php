@@ -67,7 +67,7 @@
               <div class="pull-left">
                   <div class="user-block">
                     <img class="img-circle" src="{{$category->image}}" alt="{{$category->name}}">
-                    <span class="username"><a target="_blank" href="{{route('admin.users.view', $category->user_id)}}">{{$category->name}}</a></span>
+                    <span class="username"><a target="_blank" href="{{route('admin.users.view',['user_id' => $category->user_id] )}}">{{$category->name}}</a></span>
                     <span class="description">{{tr('shared_publicly')}} - {{$category->created_at->diffForHumans()}}</span>
                   </div>
               </div>

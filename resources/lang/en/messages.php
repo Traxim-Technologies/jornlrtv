@@ -40,6 +40,7 @@ return array(
 	'no_default_card_available' => 'There is no default card available. Kindly check your card details',
 	'default_card_add_message' => 'Click here to ',
 	'admin_not_ur_del' => 'User Rating has been deleted successfully.',
+	'dob' => 'DOB',
 	'enter_dob' => 'Enter DOB',
 	'no_subscription_found' => 'No Subscription details found',
 	'uploaded_new_video' => 'Uploaded New Video',

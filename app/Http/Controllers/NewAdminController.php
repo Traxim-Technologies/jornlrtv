@@ -695,7 +695,7 @@ class NewAdminController extends Controller {
      */
     public function users_wishlist(Request $request) {
 
-        if($user_details = User::find($id)) {
+        if($user_details = User::find($request->user_id)) {
 
             $user_wishlists = Wishlist::where('wishlists.user_id' , $request->user_id)
                             ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
@@ -815,7 +815,60 @@ class NewAdminController extends Controller {
 
             $error = $e->getMessage();
 
-            return redirect()->route('admin.users.index')->with('flash_error',$error);
+            return back()->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name : users_history
+     *
+     * @uses To list down all the videos based on hstory
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param integer $requesr - User id
+     * 
+     * @return - Response of channel creation page
+     *
+     */
+    public function users_history(Request $request) {
+
+        try {
+
+            $user_details = User::find($request->user_id);
+
+            if(count($user_details) == 0) {
+
+                throw new Exception(tr('admin_user_not_found'), 101);
+            }
+
+            $user_histories = UserHistory::where('user_histories.user_id' , $request->user_id)
+                            ->leftJoin('users' , 'user_histories.user_id' , '=' , 'users.id')
+                            ->leftJoin('video_tapes' , 'user_histories.video_tape_id' , '=' , 'video_tapes.id')
+                            ->select(
+                                'users.name as username' , 
+                                'users.id as user_id' , 
+                                'user_histories.video_tape_id',
+                                'user_histories.id as user_history_id',
+                                'video_tapes.title',
+                                'user_histories.created_at as date'
+                                )
+                            ->get();
+
+            return view('new_admin.users.history')
+                        ->withPage('users')
+                        ->with('sub_page','users')
+                        ->with('user_details' , $user_details)
+                        ->with('user_histories' , $user_histories);
+
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
         }
     
     }
@@ -855,7 +908,8 @@ class NewAdminController extends Controller {
                         ->withPage('users')
                         ->with('sub_page','users')
                         ->with('subscriptions' , $subscriptions)
-                        ->with('id', $request->userpayment_id)->with('payments', $payments); 
+                        ->with('id', $request->userpayment_id)
+                        ->with('payments', $payments); 
             
         } catch (Exception $e) {
             
@@ -1136,7 +1190,7 @@ class NewAdminController extends Controller {
                         ->where('channels.id', $request->channel_id)
                         ->first();
 
-            if (count($channel_details) == 0) {
+            if( count($channel_details) == 0 ) {
 
                 throw new Exception(tr('admin_channel_not_found'), 101);
             }
@@ -1153,12 +1207,12 @@ class NewAdminController extends Controller {
                         ->paginate(12);
 
             return view('new_admin.channels.view')
-                    ->with('page' ,'channels')
-                    ->with('sub_page' ,'edit-channel')
-                    ->with('channel_details' , $channel_details)
-                    ->with('channel_earnings', $channel_earnings)
-                    ->with('videos', $videos)
-                    ->with('channel_subscriptions', $channel_subscriptions);          
+                        ->with('page' ,'channels')
+                        ->with('sub_page' ,'edit-channel')
+                        ->with('channel_details' , $channel_details)
+                        ->with('channel_earnings', $channel_earnings)
+                        ->with('videos', $videos)
+                        ->with('channel_subscriptions', $channel_subscriptions);
             
         } catch (Exception $e) {
             

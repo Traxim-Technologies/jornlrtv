@@ -6,13 +6,13 @@
 
 {{ tr('view_wishlist') }} - 
 
-<a href="{{ route('admin.users.view' , $user_details->id) }}">{{ $user_details->name }}</a>
+<a href="{{ route('admin.users.view' , ['user_id' => $user_details->id] ) }}">{{ $user_details->name }}</a>
 
 @endsection
 
 @section('breadcrumb')
     <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
-    <li><a href="{{ route('admin.users') }}"><i class="fa fa-user"></i> {{ tr('users') }}</a></li>
+    <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-user"></i> {{ tr('users') }}</a></li>
     <li class="active"> {{ tr('view_wishlist') }}</li>
 @endsection
 

@@ -711,7 +711,6 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error',tr('admin_not_error'));
-
         }
     
     }

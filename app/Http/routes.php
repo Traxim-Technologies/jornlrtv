@@ -774,7 +774,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/user/subscription/enable', 'NewAdminController@user_subscription_auto_renewal_enable')->name('subscription.auto-renewal.enable');
 
-    //Redeems
+    // Redeems
 
     Route::get('/redeems', 'NewAdminController@user_redeem_requests')->name('users.redeems');
 

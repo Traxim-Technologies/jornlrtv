@@ -59,7 +59,7 @@
 
 								      	<td><a target="_blank" href="{{route('admin.channels.view', ['channel_id' => $channel->id] )}}">{{$channel->name}}</a></td>
 
-								      	<td><a target="_blank" href="{{route('admin.users.view', ['channel_id' => $channel->id] )}}">{{$channel->getUser ? $channel->getUser->name : ''}}</a></td>
+								      	<td><a target="_blank" href="{{route('admin.users.view', ['user_id' => $channel->id] )}}">{{$channel->getUser ? $channel->getUser->name : ''}}</a></td>
 
 								      	<td><a target="_blank" href="{{route('admin.channels.videos', ['channel_id'=> $channel->id] )}}">{{$channel->get_video_tape_count}}</a></td>
 
