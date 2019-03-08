@@ -697,7 +697,7 @@ class NewAdminController extends Controller {
 
         if($user_details = User::find($id)) {
 
-            $user_wishlist = Wishlist::where('wishlists.user_id' , $request->user_id)
+            $user_wishlists = Wishlist::where('wishlists.user_id' , $request->user_id)
                             ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
                             ->leftJoin('video_tapes' , 'wishlists.video_tape_id' , '=' , 'video_tapes.id')
                             ->select(
@@ -713,7 +713,7 @@ class NewAdminController extends Controller {
             return view('new_admin.users.wishlist')
                         ->withPage('users')
                         ->with('sub_page','users')
-                        ->with('user_wishlist' , $user_wishlist)
+                        ->with('user_wishlists' , $user_wishlists)
                         ->with('user_details' , $user_details);
 
         } else {
