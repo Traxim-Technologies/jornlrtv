@@ -28,11 +28,11 @@
 
 @section('content')
 
-	@include('notification.notify')
-
 	<div class="row">
 
         <div class="col-xs-12">
+			
+			@include('notification.notify')
 
           	<div class="box box-primary">
 
@@ -87,7 +87,7 @@
 							      <th>{{ tr('no_of_videos') }}</th>
 							      <th>{{ tr('validity_days') }}</th>
 							      <th>{{ tr('redeems') }}</th>
-							      @if(Setting::get('email_verify_control'))
+							      @if(Setting::get('email_verify_control') == YES)
 							      <th>{{ tr('email_verification') }}</th>
 							      @endif
 							      <th>{{ tr('status') }}</th>
@@ -115,7 +115,6 @@
 								      			<span class="text-red pull-right"><i class="fa fa-times"></i></span>
 
 								      			@endif
-
 								      		</a>
 								      	</td>
 
