@@ -54,7 +54,7 @@
 
             <li id="categories">
                 <a href="{{route('admin.categories.index')}}">
-                    <i class="fa fa-list"></i> <span>{{tr('categories')}}</span> 
+                    <i class="fa fa-list"></i> <span>{{tr('categories')}}</span><i class="fa fa-angle-left pull-right"></i> 
                 </a>
                 <ul class="treeview-menu">
                     
@@ -119,7 +119,7 @@
 
                 <ul class="treeview-menu">
 
-                    <li id="create_live_videos-create">
+                    <li id="custom_live_video-create">
                         <a href="{{route('admin.custom.live.create')}}">
                             <i class="fa fa-circle-o"></i>{{tr('create_custom_live_video')}}
                         </a>
@@ -148,16 +148,18 @@
 
             </li> -->
 
-            <li class="treeview" id="videos_ads">
+            <li class="treeview" id="videos-ads-details">
 
                 <a href="{{route('admin.ads-details.index')}}">
                     <i class="fa fa-bullhorn"></i> <span>{{tr('ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
-                    <li id="create-ad-videos"><a href="{{route('admin.ads-details.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
-                    <li id="view-ads"><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_and_assign_ad')}}</a></li>
-                    <li id="ad-videos"><a href="{{route('admin.video_ads.list')}}"><i class="fa fa-circle-o"></i>{{tr('assigned_ads')}}</a></li>
+                    <li id="videos-ads-details-create"><a href="{{route('admin.ads-details.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_ad')}}</a></li>
+
+                    <li id="videos-ads-details-view"><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_and_assign_ad')}}</a></li>
+                    
+                    <li id="videos-ads-details-index"><a href="{{route('admin.video_ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('assigned_ads')}}</a></li>
                 </ul>
 
             </li>
@@ -165,15 +167,15 @@
             @if(Setting::get('is_banner_ad'))
 
                 <li class="treeview" id="banner-ads">
-                    <a href="{{route('admin.banner-ads.index')}}">
+                    <a href="{{route('admin.banner_ads.index')}}">
                         <i class="fa fa-university"></i> <span>{{tr('banner_ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
 
                     <ul class="treeview-menu">
                        
-                        <li id="bannerads-create"><a href="{{route('admin.banner-ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
+                        <li id="banner-ads-create"><a href="{{route('admin.banner_ads.create')}}"><i class="fa fa-circle-o"></i>{{tr('create_banner_ad')}}</a></li>
                     
-                        <li id="bannerads-index"><a href="{{route('admin.banner-ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
+                        <li id="banner-ads-view"><a href="{{route('admin.banner_ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('banner_ads')}}</a></li>
 
                     </ul>
 
@@ -293,13 +295,15 @@
                 </a>
             </li>
 
-            <li class="treeview" id="viewpages">
+            <li class="treeview" id="pages">
                 <a href="{{route('admin.pages.index')}}">
                     <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li id="add_page"><a href="{{route('admin.pages.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
-                    <li id="view_pages"><a href="{{route('admin.pages.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
+                    
+                    <li id="pages-create"><a href="{{route('admin.pages.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
+                    
+                    <li id="pages-view"><a href="{{route('admin.pages.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
                 </ul>
             </li>
 

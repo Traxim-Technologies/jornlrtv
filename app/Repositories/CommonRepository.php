@@ -186,16 +186,15 @@ class CommonRepository {
      *
      */
 	public static function channel_save($request) {
-    
+
         try {  
 
             $validator = [];
 
             $request->request->add([
-
                 'user_id' => $request->device_type == DEVICE_WEB ? $request->user_id : $request->id
             ]);
-            
+
             if ($request->channel_id != '') {
 
                 if ($request->has('picture')) {

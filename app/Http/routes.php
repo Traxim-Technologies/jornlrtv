@@ -102,7 +102,6 @@ Route::get('/notification/payment', 'ApplicationController@send_notification_use
 
 Route::get('/payment/expiry', 'ApplicationController@user_payment_expiry')->name('user.payment.expiry');
 
-
 // Static Pages
 
 Route::get('/privacy', 'UserApiController@privacy')->name('user.privacy');
@@ -110,7 +109,6 @@ Route::get('/privacy', 'UserApiController@privacy')->name('user.privacy');
 Route::get('/help', 'UserApiController@help')->name('user.help');
 
 Route::get('/terms_condition', 'UserApiController@terms')->name('user.terms');
-
 
 Route::get('/about', 'ApplicationController@about')->name('user.about');
 
@@ -272,21 +270,21 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
 
-    // Video Ads
+    // // Video Ads
 
-    Route::get('/video-ads/list', 'AdminController@video_ads_list')->name('video_ads.list');
+    // Route::get('/video-ads/list', 'AdminController@video_ads_list')->name('video_ads.list');
 
-    Route::get('video-ads/edit/{id}','AdminController@video_ads_edit')->name('video_ads.edit');
+    // Route::get('video-ads/edit/{id}','AdminController@video_ads_edit')->name('video_ads.edit');
 
-    Route::get('video-ads/create','AdminController@video_ads_create')->name('video_ads.create');
+    // Route::get('video-ads/create','AdminController@video_ads_create')->name('video_ads.create');
 
-    Route::get('video-ads/view','AdminController@video_ads_view')->name('video-ads.view');
+    // Route::get('video-ads/view','AdminController@video_ads_view')->name('video-ads.view');
 
-    Route::get('video-ads/delete','AdminController@video_ads_delete')->name('video-ads.delete');
+    // Route::get('video-ads/delete','AdminController@video_ads_delete')->name('video-ads.delete');
 
-    Route::post('video-ads/save','AdminController@video_ads_save')->name('video-ads.save');
+    // Route::post('video-ads/save','AdminController@video_ads_save')->name('video-ads.save');
 
-    Route::post('video-ads/inter-ads', 'AdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
+    // Route::post('video-ads/inter-ads', 'AdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
     
     // Languages
 
@@ -687,21 +685,21 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // New Admin Banner Ads methods begins   
 
-    Route::get('banner-ads/index','NewAdminController@banner_ads_index')->name('banner-ads.index');
+    Route::get('banner-ads/index','NewAdminController@banner_ads_index')->name('banner_ads.index');
 
-    Route::get('banner-ads/create','NewAdminController@banner_ads_create')->name('banner-ads.create');
+    Route::get('banner-ads/create','NewAdminController@banner_ads_create')->name('banner_ads.create');
 
-    Route::get('banner-ads/edit','NewAdminController@banner_ads_edit')->name('banner-ads.edit');
+    Route::get('banner-ads/edit','NewAdminController@banner_ads_edit')->name('banner_ads.edit');
 
-    Route::post('banner-ads/save','NewAdminController@banner_ads_save')->name('banner-ads.save');
+    Route::post('banner-ads/save','NewAdminController@banner_ads_save')->name('banner_ads.save');
 
-    Route::get('banner-ads/view','NewAdminController@banner_ads_view')->name('banner-ads.view');
+    Route::get('banner-ads/view','NewAdminController@banner_ads_view')->name('banner_ads.view');
 
-    Route::get('banner-ads/delete','NewAdminController@banner_ads_delete')->name('banner-ads.delete');
+    Route::get('banner-ads/delete','NewAdminController@banner_ads_delete')->name('banner_ads.delete');
 
-    Route::get('banner-ads/status','NewAdminController@banner_ads_status_change')->name('banner-ads.status');
+    Route::get('banner-ads/status','NewAdminController@banner_ads_status_change')->name('banner_ads.status');
 
-    Route::post('banner-ads/position','NewAdminController@banner_ads_position')->name('banner-ads.position');
+    Route::post('banner-ads/position','NewAdminController@banner_ads_position')->name('banner_ads.position');
 
     // New Admin Banner Ads methods ends
 
@@ -817,6 +815,25 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     // videos
 
     Route::get('/videos/status/{id}', 'NewAdminController@videos_status')->name('videos.status');
+
+    Route::get('ads-details/ad-status/', 'AdminController@ads_details_ad_status_change')->name('ads-details.ad-status-change');
+
+     // Video Ads
+
+    Route::get('/video-ads/index', 'NewAdminController@video_ads_index')->name('video_ads.index');
+
+    Route::get('video-ads/create','NewAdminController@video_ads_create')->name('video_ads.create');
+
+    Route::get('video-ads/edit','NewAdminController@video_ads_edit')->name('video_ads.edit');
+
+    Route::post('video-ads/save','NewAdminController@video_ads_save')->name('video-ads.save');
+
+    Route::get('video-ads/view','NewAdminController@video_ads_view')->name('video-ads.view');
+
+    Route::get('video-ads/delete','NewAdminController@video_ads_delete')->name('video-ads.delete');
+
+    Route::post('video-ads/inter-ads', 'NewAdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
+
 });
 
 

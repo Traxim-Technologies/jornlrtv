@@ -14,9 +14,10 @@
 
 @section('content')
 
-  @include('notification.notify')
 
   <div class="col-md-12">
+    @include('notification.notify')
+
           <!-- Widget: user widget style 1 -->
           <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->

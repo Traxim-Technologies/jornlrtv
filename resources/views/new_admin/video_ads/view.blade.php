@@ -17,185 +17,157 @@ hr {
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.video_ads.list')}}"><i class="fa fa-bullhorn"></i> {{tr('assigned_ads')}}</a></li>
+    <li><a href="{{route('admin.video_ads.index')}}"><i class="fa fa-bullhorn"></i> {{tr('assigned_ads')}}</a></li>
     <li class="active">{{tr('view_assigned_ad')}}</li>
 @endsection 
 
 @section('content')
+    <div class="col-md-12">
 
+        <div class="nav-tabs-custom">
 
-<div class="col-md-12">
-  <div class="nav-tabs-custom">
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#preview_ad" data-toggle="tab" aria-expanded="true">{{tr('preview_ad')}}</a></li>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#preview_ad" data-toggle="tab" aria-expanded="true">{{tr('preview_ad')}}</a></li>
 
-      <li class="pull-right clearfix">
-        <a href="{{route('admin.video_ads.edit' , array('id' => $ads->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
-      </li>
- 
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="preview_ad">
+                <li class="pull-right clearfix">
+                    <a href="{{route('admin.video_ads.edit' , array('id' => $ads->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
+                </li>
+         
+            </ul>
 
-            <div class="col-lg-6">
-                @include('admin.videos.streaming')
-            </div>
+            <div class="tab-content">
 
-            <div class="col-lg-6">
+                <div class="tab-pane active" id="preview_ad">
 
-
-                <h4>{{tr('details')}}</h4>
-
-
-                <ul class="timeline timeline-inverse">
-
-
-
-                @if($ads->pre_ad)
-                  <!-- timeline time label -->
-                  <li class="time-label" title="{{tr('video_time')}}">
-                        <span class="bg-red">
-                          {{$ads->pre_ad->video_time}}
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-bullhorn bg-blue"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> {{$ads->pre_ad->ad_time}} ({{tr('in_sec')}})</span>
-
-                      <h3 class="timeline-header">
-
-                     
-
-                        <a>{{tr('pre_ad')}}</a> 
-
-
-                      {{tr('details')}} (<a href="{{$ads->pre_ad->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
-
-                      <div class="timeline-body">
-                          
-                            <img src="{{$ads->pre_ad->assigned_ad->file}}" style="width: 100%">
-
-                      </div>
-                      <!-- <div class="timeline-footer">
-                        <a class="btn btn-primary btn-xs">Read more</a>
-                        <a class="btn btn-danger btn-xs">Delete</a>
-                      </div> -->
+                    <div class="col-lg-6">
+                        @include('admin.videos.streaming')
                     </div>
-                  </li>
-                 @endif
 
-                 @if($ads->between_ad)
-                 
-                  @foreach($ads->between_ad as $details)
-                    <!-- timeline time label -->
-                    <li class="time-label" title="{{tr('video_time')}}">
-                          <span class="bg-red">
-                            {{$details->video_time}}
-                          </span>
-                    </li>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <li>
-                      <i class="fa fa-bullhorn bg-blue"></i>
+                    <div class="col-lg-6">
 
-                      <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_sec')}})</span>
+                        <h4>{{tr('details')}}</h4>
 
-                        <h3 class="timeline-header">
+                        <ul class="timeline timeline-inverse">
 
-                        @if($details->ad_type == 1)
+                        @if($ads->pre_ad)
 
-                          <a>{{tr('pre_ad')}}</a> 
+                            <li class="time-label" title="{{tr('video_time')}}">
+                                <span class="bg-red">
+                                  {{$ads->pre_ad->video_time}}
+                                </span>
+                            </li>
 
-                        @elseif($details->ad_type == 2) 
+                            <li>
+                                <i class="fa fa-bullhorn bg-blue"></i>
 
-                          <a>{{tr('post_ad')}}</a> 
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> {{$ads->pre_ad->ad_time}} ({{tr('in_sec')}})</span>
+                                    <h3 class="timeline-header">
+                                        <a>{{tr('pre_ad')}}</a> {{tr('details')}} (<a href="{{$ads->pre_ad->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)
+                                    </h3> 
 
-                        @else
+                                    <div class="timeline-body">
+                                      
+                                        <img src="{{$ads->pre_ad->assigned_ad->file}}" style="width: 100%">
 
-                          <a>{{tr('between_ad')}}</a> 
-
+                                    </div>
+                                </div>
+                            </li>
                         @endif
 
+                        @if($ads->between_ad)
+                         
+                          @foreach($ads->between_ad as $details)
+                            <li class="time-label" title="{{tr('video_time')}}">
+                                  <span class="bg-red">
+                                    {{$details->video_time}}
+                                  </span>
+                            </li>
 
-                          
+                            <li>
+                                <i class="fa fa-bullhorn bg-blue"></i>
 
-                        {{tr('details')}} (<a href="{{$details->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
+                                <div class="timeline-item">
 
-                        <div class="timeline-body">
-                            
-                              <img src="{{$details->assigned_ad->file}}" style="width: 100%">
+                                    <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_sec')}})</span>
 
-                        </div>
-                        <!-- <div class="timeline-footer">
-                          <a class="btn btn-primary btn-xs">Read more</a>
-                          <a class="btn btn-danger btn-xs">Delete</a>
-                        </div> -->
-                      </div>
-                    </li>
-                   @endforeach
+                                    <h3 class="timeline-header">
 
-                   @endif
+                                    @if($details->ad_type == 1)
 
-                 @if($ads->post_ad)
-                  <!-- timeline time label -->
-                  <li class="time-label" title="{{tr('video_time')}}">
-                        <span class="bg-red">
-                          {{$ads->post_ad->video_time}}
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-bullhorn bg-blue"></i>
+                                      <a>{{tr('pre_ad')}}</a> 
 
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> {{$ads->post_ad->ad_time}} ({{tr('in_sec')}})</span>
+                                    @elseif($details->ad_type == 2) 
 
-                      <h3 class="timeline-header">
+                                      <a>{{tr('post_ad')}}</a> 
 
-                     
+                                    @else
 
-                        <a>{{tr('post_ad')}}</a> 
+                                      <a>{{tr('between_ad')}}</a> 
 
+                                    @endif
 
-                      {{tr('details')}} (<a href="{{$ads->post_ad->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
+                                    {{tr('details')}} (<a href="{{$details->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
 
-                      <div class="timeline-body">
-                          
-                            <img src="{{$ads->post_ad->assigned_ad->file}}" style="width: 100%">
+                                    <div class="timeline-body">
+                                        
+                                          <img src="{{$details->assigned_ad->file}}" style="width: 100%">
 
-                      </div>
-                      <!-- <div class="timeline-footer">
-                        <a class="btn btn-primary btn-xs">Read more</a>
-                        <a class="btn btn-danger btn-xs">Delete</a>
-                      </div> -->
+                                    </div>
+                              
+                                </div>
+
+                            </li>
+                           @endforeach
+
+                           @endif
+
+                            @if($ads->post_ad)
+                            <li class="time-label" title="{{tr('video_time')}}">
+                                <span class="bg-red">
+                                  {{$ads->post_ad->video_time}}
+                                </span>
+                            </li>
+
+                            <li>
+                                <i class="fa fa-bullhorn bg-blue"></i>
+
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> {{$ads->post_ad->ad_time}} ({{tr('in_sec')}})</span>
+
+                                    <h3 class="timeline-header">
+                                        <a>{{tr('post_ad')}}</a> 
+                                        {{tr('details')}} (<a href="{{$ads->post_ad->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)
+                                    </h3> 
+
+                                    <div class="timeline-body">
+                                      
+                                        <img src="{{$ads->post_ad->assigned_ad->file}}" style="width: 100%">
+                                    </div>
+
+                                </div>
+
+                            </li>
+                         @endif
+                        
+                        </ul>
+
                     </div>
-                  </li>
-                 @endif
-                
-                </ul>
-            </div>
 
-            <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+
+                </div>
+
+            </div>
 
         </div>
 
-      <!-- /.tab-pane -->
-    </div>
-    <!-- /.tab-content -->
-  </div>
-  <!-- /.nav-tabs-custom -->
-</div>
-<div class="clearfix"></div>
-@endsection
+        </div>
+
+    <div class="clearfix"></div>
+    @endsection
 
 @section('scripts')
-    
 
     <script src="{{asset('jwplayer/jwplayer.js')}}"></script>
 
@@ -221,10 +193,7 @@ hr {
                 var isBlink = (isChrome || isOpera) && !!window.CSS;
 
 
-           
-
-           
-           //  jQuery("form[name='watch_main_video']").submit(function(e) {
+            //  jQuery("form[name='watch_main_video']").submit(function(e) {
 
                 //prevent Default functionality
                //  e.preventDefault();
@@ -234,8 +203,6 @@ hr {
                     var playerInstance = jwplayer("main-video-player");  
 
                     @if($ads->get_video_tape->video)
-
-
 
                         if(isOpera || isSafari) {
 
@@ -271,7 +238,6 @@ hr {
                                       }
                                 
                                 });
-
 
                             playerInstance.on('setupError', function() {
 
@@ -402,14 +368,13 @@ hr {
                             @endif
 
 
-                         }, 1000);
+                        }, 1000);
 
                     }
 
                     function stop(){
                        clearInterval(intervalId);
                     }
-
 
                     var adCount = 0;
 
@@ -445,16 +410,14 @@ hr {
 
                             }
 
-                         }, 1000);
+                        }, 1000);
 
                     }
-
 
 
                     jwplayer().on('displayClick', function(e) {
 
                         console.log("state pos "+jwplayer().getState());
-
 
                         if (jwplayer().getState() == 'idle') {
 
@@ -489,11 +452,7 @@ hr {
                             @endif
                         @endif
 
-                    })
-
-
-
-                    
+                    })                    
 
             // });
 

@@ -6,7 +6,6 @@
 
 @section('breadcrumb')
 
-
 	<li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
 
 	<li><a href="{{ route('admin.coupons.index') }}"><i class="fa fa-gift"></i>{{ tr('coupons') }}</a></li>
@@ -20,6 +19,8 @@
 	<div class="row">
 
 		<div class="col-md-12">
+			
+			@include('notification.notify')
 
 			<div class="box ">
 

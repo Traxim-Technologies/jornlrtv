@@ -1485,7 +1485,7 @@ return array(
 	'tag_approve_notes' => 'Are you sure want to approve this tag ?',
 	'tag_decline_notes' => 'Are you sure want to decline this tag ? Once you declined, tag will be remove from all the depends videos',
 	'category_decline_notes' => 'Are you sure want to decline this category? Once you declined, based on this category videos will be decline.',
-	'category_approve_notes' => 'Are you sure want to approve this category? Once you approved, need to approve videos by manually',
+	'category_approve_notes' => 'Are you sure? Do you want to approve this category? Once you approved, need to approve videos by manually',
 	'ffmpeg_installed' => 'In FFmpeg Installed?',
 	'ffmpeg_need_to_configure' => 'Kindly configure ffmpeg and upload manual videos..!',
 	'already_video_compressed' => 'Already video has been compressed',
@@ -1562,6 +1562,8 @@ return array(
 	'admin_user_unverification_success' => 'User Unverified successfully!!',
 	'admin_user_verification_save_error' => 'Sorry!, something went wrong user could not either verify/unverify. Please try again.',
 
+	'admin_user_subscription_confirm'=>"Do you sure want to subscribe for this(:otherkey) plan?",
+
 	// new Admin channels
 
 	'admin_channel_not_found' => 'Channel details not found!',
@@ -1580,11 +1582,20 @@ return array(
 
 	'admin_channel_decline_notes' => 'Do you want to decline this(:otherkey) channel? Once declined, related records will be declined.',
 
+	// new Admin category
+	'admin_category_not_found' => 'Category details not found!',
+
+	'admin_category_update_success' => 'Category has been updated successfully.',
+	'admin_category_create_success' => 'Category has been created successfully.',
+
 	'admin_category_decline_confirmation' => 'Do you want to decline this category (:otherkey)? Once declined, related videos will be decline.',
 
 	'admin_category_approve_confirmation' => 'Do you want to approve this category (:otherkey)? Once approved, need to approve related videos by manually',
 
 	'admin_category_delete_confirmation' => 'Once the category (:otherkey) is deleted, corresponding videos will be deleted! Action can not be undone. Do you want to delete the category? ',
+
+	'admin_category_delete_success' => 'Category has been deleted successfully.',
+	'admin_category_delete_error' => 'Sorry! Category could not be deleted. Please try again',
 
 	'admin_category_approve_success' => 'Category has been approved successfully.',
 
@@ -1599,7 +1610,6 @@ return array(
 	'admin_tag_update_success' => 'Tag has been updated successfully.',
 	'admin_tag_create_success' => 'Tag has been created successfully.',
 	'admin_tag_save_error' => 'Sorry!, something went wrong tag details could not be saved. Please try again.',
-
 
 	'admin_tag_approve_confirmation' => 'Do you want to approve this(:otherkey) tag?',
 	'admin_tag_decline_confirmation' => 'Tag will be removed from all the related videos, once the tag declined. Do you want to decline this(:otherkey) tag? ',
@@ -1627,7 +1637,7 @@ return array(
 	'admin_coupon_delete_confirmation'=>"Do you want to delete this (:otherkey) coupon?",
 	'admin_coupon_delete_success' => 'Coupon has been deleted successfully.',
 
-	'admin_coupon_amount_lessthan_100' => 'Fot Amount type PERCENTAGE, the amount should be lessthan or equal to 100 only',
+	'admin_coupon_amount_lessthan_100' => 'For Amount type PERCENTAGE, the amount should be lessthan or equal to 100 only',
 	'admin_coupon_amount_lessthan_5000' => 'Amount Should be lessthan or equal 5000 only',
 
 	// New Admin AdsDetails
@@ -1777,4 +1787,22 @@ return array(
 	'admin_user_rating_delete_success' => 'User rating has been deleted successfully.',
 	'admin_user_rating_delete_error' => 'User rating delete deleted unsuccessfull.',
 	
+	'admin_profile_save_error' => 'Admin details could not be saved, Please try agian ',
+
+	// New Admin VideoAd
+	'admin_video_ad_not_found' => 'Video Ad not found.',
+
+	'admin_video_ad_update_success' => 'video_ad has been updated successfully.',
+	'admin_video_ad_create_success' => 'video_ad has been created successfully.',
+	'admin_video_ad_save_error' => 'Sorry!, something went wrong video_ad details could not be saved. Please try again.',
+
+	'admin_video_ad_approve_confirmation' => 'Do you want to approve this(:otherkey) video_ad?',
+	'admin_video_ad_decline_confirmation' => 'video_ad will be removed from all the related videos, once the video_ad declined. Do you want to decline this(:otherkey) video_ad? ',
+
+	'admin_video_ad_approved_success' => 'The video_ad approved successfully!!.',
+	'admin_video_ad_declined_success' => 'The video_ad declined successfully!!.',
+	
+	'admin_video_ad_delete_confirmation'=>"Do you want to delete this (:otherkey) video_ad?",
+	'admin_video_ad_delete_success' => 'video_ad has been deleted successfully.',
+	'admin_video_ad_delete_error' => 'Sorry! Tag could not be deleted. Please try again',
 );

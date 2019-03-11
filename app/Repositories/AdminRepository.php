@@ -427,14 +427,14 @@ class AdminRepository {
                 }
 
                 if ($ads_detail_details->save()) {
+                    
+                    DB::commit();
 
                 } else {
 
                     throw new Exception(tr('something_error'));
                 }
             }
-
-            DB::commit();
 
             $response_array = ['success' => true,'message' => ($request->id) ? tr('ad_update_success') : tr('ad_create_success'), 'data'=>$ads_detail_details];
 
@@ -443,7 +443,6 @@ class AdminRepository {
             DB::rollBack();
 
             $response_array = ['success' => false,'message' => $e->getMessage()];
-
         }
 
         return response()->json($response_array, 200);
@@ -629,26 +628,26 @@ class AdminRepository {
      */
     public static function save_custom_live_video($request) {
 
-        if ($request->id) {
+        if ($request->custom_live_video_id) {
 
-            $validator = Validator::make($request->all(),array(
+            $validator = Validator::make($request->all(),[
                     'title' => 'required|max:255',
                     'description' => 'required',
                     'rtmp_video_url'=>'required|max:255',
                     'hls_video_url'=>'required|max:255',
                     'image' => 'mimes:jpeg,jpg,png'
-                )
+                ]
             );
 
          } else {
 
-             $validator = Validator::make($request->all(),array(
-                'title' => 'max:255|required',
-                'description' => 'required',
-                'rtmp_video_url'=>'required|max:255',
-                'hls_video_url'=>'required|max:255',
-                'image' => 'required|mimes:jpeg,jpg,png'
-                )
+             $validator = Validator::make($request->all(),[
+                    'title' => 'max:255|required',
+                    'description' => 'required',
+                    'rtmp_video_url'=>'required|max:255',
+                    'hls_video_url'=>'required|max:255',
+                    'image' => 'required|mimes:jpeg,jpg,png'
+                ]
             );
 
          }
@@ -661,7 +660,7 @@ class AdminRepository {
 
         } else {
             
-            $model = ($request->id) ? CustomLiveVideo::find($request->id) : new CustomLiveVideo;
+            $model = ($request->custom_live_video_id) ? CustomLiveVideo::find($request->custom_live_video_id) : new CustomLiveVideo;
             
             $model->title = $request->has('title') ? $request->title : $model->title;
 
@@ -671,13 +670,11 @@ class AdminRepository {
 
             $model->hls_video_url = $request->has('hls_video_url') ? $request->hls_video_url : $model->hls_video_url;
 
-
             if($request->hasFile('image')) {
 
-                if($request->id) {
+                if($request->custom_live_video_id) {
 
                     Helper::delete_picture($model->image, "/uploads/images/");
-
                 }
 
                 $model->image = Helper::normal_upload_picture($request->image , "/uploads/images/");
@@ -687,7 +684,7 @@ class AdminRepository {
 
             if ($model->save()) {
 
-                $response_array = ['success'=>true, 'message'=> ($request->id) ? tr('live_custom_video_update_success') : tr('live_custom_video_create_success'), 'data' => $model];
+                $response_array = ['success'=>true, 'message'=> ($request->custom_live_video_id) ? tr('live_custom_video_update_success') : tr('live_custom_video_create_success'), 'data' => $model];
 
             } else {
 

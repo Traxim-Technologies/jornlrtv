@@ -33,7 +33,7 @@
 	      				<input type="hidden" name="tag_id" value="{{ $tag_details->id }}">
 		        		
 		        		<div class="col-xs-8 col-sm-8">    
-		        			<label for="name">{{tr('name')}}</label>
+		        			<label for="name">{{tr('name')}} * </label>
 		        			<input type="text" name="name" value="{{ $tag_details->name }}" required class="form-control" placeholder="{{ tr('name') }}"  title="Enter only alphabets" maxlength="15">
 		        		</div>
 

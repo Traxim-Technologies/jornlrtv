@@ -12,14 +12,20 @@
 @endsection
 
 @section('content')
-	@include('notification.notify')
+	
 	<div class="row">
+		
 		<div class="col-xs-12">
+
+			@include('notification.notify')
+
 			<div class="box box-info">
+				
 				<div class="box-header label-primary">
 					<b style="font-size: 18px;">{{ tr('coupons') }}</b>
 					<a href="{{ route('admin.coupons.create') }}" class="btn btn-default pull-right">{{ tr('add_coupon') }}</a>
 				</div>
+
 				<div class="box-body">
 					@if(count($coupons)>0)
 					<table id = "example1" class="table table-bordered table-striped">
@@ -35,6 +41,7 @@
 								<th>{{ tr('action') }}</th>
 							</tr>
 						</thead>
+						
 						<tbody>
 							@foreach($coupons as $i => $coupon_details)
 							<tr>

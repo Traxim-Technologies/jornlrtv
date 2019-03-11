@@ -66,31 +66,22 @@
 				              				<i class="fa fa-eye"></i>
 				              			</a>
 
-				              			<a href="{{ route('admin.categories.edit' ,['category_id' => $category_details->id]) }}" class="btn  btn-sm btn-primary" title="Edit">
+				              			<a href="{{ route('admin.categories.edit' ,['category_id' => $category_details->id]) }}" class="btn  btn-sm btn-primary" title="{{tr('edit')}}">
 				              				<i class="fa fa-edit"></i>
 				              			</a>
 
-						      			<a onclick="return confirm( {{tr('admin_category_approve_confirmation') }} )" href="{{ route('admin.categories.delete' ,['category_id' => $category_details->id]) }}" class="btn  btn-sm btn-danger" title="Delete">
+						      			<a onclick="return confirm( {{tr('admin_category_approve_confirmation') }} )" href="{{ route('admin.categories.delete' ,['category_id' => $category_details->id]) }}" class="btn  btn-sm btn-danger" title="{{tr('delete')}}">
 				              				<i class="fa fa-trash"></i>
 				              			</a>
 
-				              			<?php
+				              			@if($category_details->status == YES)
 
-				              				$category_decline_notes = tr('category_decline_notes');
-
-				              				$category_approve_notes = tr('category_approve_notes');
-
-				              			?>
-
-				              			@if($category_details->status)
-
-				              				<a href="{{ route('admin.categories.status' ,['category_id' => $category_details->id]) }}" class="btn  btn-sm btn-warning" title="Decline this Category" onclick="return confirm(&quot;{{ tr('admin_category_decline_confirmation',$category_details->name ) }}&quot;)">
+				              				<a href="{{ route('admin.categories.status' ,['category_id' => $category_details->id]) }}" class="btn  btn-sm btn-warning" title="{{tr('decline')}}" onclick="return confirm(&quot;{{ tr('admin_category_decline_confirmation',$category_details->name ) }}&quot;)">
 					              				<i class="fa fa-times"></i>
 					              			</a>
 
 				              			@else
-					              			<a href="{{ route('admin.categories.status' ,['category_id' => $category_details->id] ) }}" class="btn  btn-sm btn-success" title="Approve this Category" onclick='return confirm("{{ $category_approve_notes }}")'>
-
+					              			<a href="{{ route('admin.categories.status' ,['category_id' => $category_details->id] ) }}" class="btn  btn-sm btn-success" title="{{tr('approve')}}" onclick="return confirm(&quot;{{ tr('category_approve_notes') }}&quot;)" >
 					              			<i class="fa fa-check"></i>
 
 					              			</a>

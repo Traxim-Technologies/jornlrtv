@@ -7,8 +7,8 @@
 @section('breadcrumb')
     <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
     <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i>{{ tr('users') }}</a></li>
-    @if($id)
-    	<li><a href="{{ route('admin.users.view',['user_id' => $id] ) }}"><i class="fa fa-users"></i>{{ tr('view_user') }}</a></li>
+    @if($user_id)
+    	<li><a href="{{ route('admin.users.view',['user_id' => $user_id] ) }}"><i class="fa fa-users"></i>{{ tr('view_user') }}</a></li>
     @endif
     <li class="active"><i class="fa fa-key"></i> {{ tr('subscriptions') }}</li>
 @endsection
@@ -57,55 +57,57 @@
 
 							<thead>
 							    <tr>
-							      <th>{{ tr('id') }}</th>
-							      <th>{{ tr('subscription') }}</th>
-							      <th>{{ tr('payment_id') }}</th>
-							      <th>{{ tr('amount') }}</th>
-							      <th>{{ tr('expiry_date') }}</th>
-							       <th>{{ tr('reason') }}</th>
+							      	<th>{{ tr('id') }}</th>
+							      	<th>{{ tr('subscription') }}</th>
+							      	<th>{{ tr('payment_id') }}</th>
+							      	<th>{{ tr('amount') }}</th>
+							      	<th>{{ tr('expiry_date') }}</th>
+							      	<th>{{ tr('reason') }}</th>
 					      			<th>{{ tr('action') }}</th>
 							    </tr>
 							</thead>
 
 							<tbody>
 
-								@foreach($payments as $i => $payment)
+								@foreach($payments as $i => $payment_details)
 
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 
-								      	<td>{{ $payment->title }}</td>
-								      	<td>{{ $payment->payment_id }}</td>
-								      	<td>{{ Setting::get('currency') }} {{ $payment->amount }}</td>
-								      	<td>{{ date('d M Y',strtotime($payment->expiry_date)) }}</td>
-								      	<td>{{ $payment->cancel_reason }}</td>
+								      	<td>{{ $payment_details->title }}</td>
+								      	
+								      	<td>{{ $payment_details->payment_id }}</td>
+								      	
+								      	<td>{{ Setting::get('currency') }} {{ $payment_details->amount }}</td>
+								      	
+								      	<td>{{ date('d M Y',strtotime($payment_details->expiry_date)) }}</td>
+								      	
+								      	<td>{{ $payment_details->cancel_reason }}</td>
+								      	
 								      	<td class="text-center">
 
-								      		@if($i == 0 && !$payment->is_cancelled && $payment->status == PAID_STATUS) 
-								      		<a data-toggle="modal" data-target="#{{ $payment->id }}_cancel_subscription" class="pull-right btn btn-sm btn-danger">{{ tr('cancel_subscription') }}</a>
+								      		@if($i == 0 && !$payment_details->is_cancelled && $payment_details->status == PAID_STATUS) 
+								      		<a data-toggle="modal" data-target="#{{ $payment_details->id }}_cancel_subscription" class="pull-right btn btn-sm btn-danger">{{ tr('cancel_subscription') }}</a>
 
-								      		@elseif($i == 0 && $payment->is_cancelled && $payment->status == PAID_STATUS)
+								      		@elseif($i == 0 && $payment_details->is_cancelled && $payment_details->status == PAID_STATUS)
 
 							      				<?php $enable_subscription_notes = tr('enable_subscription_notes') ; ?>
 							      			
-							      				<a onclick="return confirm('{{ $enable_subscription_notes }}')" href="{{ route('admin.subscription.auto-renewal.enable', ['id'=>$payment->user_id]) }}" class="pull-right btn btn-sm btn-success">{{ tr('enable_subscription') }}</a>
-
+							      				<a onclick="return confirm('{{ $enable_subscription_notes }}')" href="{{ route('admin.subscription.auto-renewal.enable', ['user_id'=> $payment_details->user_id]) }}" class="pull-right btn btn-sm btn-success">{{ tr('enable_subscription') }}</a>
 							      			@else
-
-							      				-
-							      				
+							      				-							      				
 								      		@endif
 
-						      	</td>
-								    </tr>
+						      			</td>
+									</tr>
 
-								    <div class="modal fade error-popup" id="{{ $payment->id }}_cancel_subscription" role="dialog">
+								    <div class="modal fade error-popup" id="{{ $payment_details->id }}_cancel_subscription" role="dialog">
 
 				               <div class="modal-dialog">
 
 				                   <div class="modal-content">
 
-				                   		<form method="post" action="{{ route('admin.subscription.auto-renewal.disable', ['id' => $payment->id]) }}">
+				                   		<form method="post" action="{{ route('admin.subscription.auto-renewal.disable', ['id' => $payment_details->id]) }}">
 
 				                       <div class="modal-body">
 
@@ -114,7 +116,6 @@
 				                        		<div class="media-body">
 
 				                                   <h4 class="media-heading">{{ tr('reason') }} *</h4>
-
 
 				                                   <textarea rows="5" name="cancel_reason" id='cancel_reason' required style="width: 100%"></textarea>
 
@@ -167,7 +168,7 @@
 
 				@if(count($subscriptions) > 0)
 
-					@foreach($subscriptions as $s => $subscription)
+					@foreach($subscriptions as $s => $subscription_detail)
 
 						<div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
 
@@ -176,19 +177,19 @@
 								<div class="caption">
 
 									<h3>
-										<a target="_blank" href="{{ route('admin.subscriptions.view' , $subscription->unique_id) }}">{{ $subscription->title }}</a>
+										<a target="_blank" href="{{ route('admin.subscriptions.view' , ['subscription_id' => $subscription_detail->id] ) }}">{{ $subscription_detail->title }}</a>
 									</h3>
 
 									<div class="subscription-desc">
-										<?php echo $subscription->description; ?>
+										<?php echo $subscription_detail->description; ?>
 									</div>
 
 									<br>
 
 									<p>
-										<span class="btn btn-danger pull-left" style="cursor: default;">{{  Setting::get('currency') }} {{ $subscription->amount }} / {{ $subscription->plan }} M</span>
+										<span class="btn btn-danger pull-left" style="cursor: default;">{{  Setting::get('currency') }} {{ $subscription_detail->amount }} / {{ $subscription_detail->plan }} M</span>
 
-										<a href="{{ route('admin.users.subscription.save' , ['subscription_id' => $subscription->id, 'user_id' => $id]) }}" class="btn btn-success pull-right" onclick="return confirm('Are You Sure ?')">{{ tr('choose') }}</a>
+										<a href="{{ route('admin.users.subscription.save' , ['subscription_id' => $subscription_detail->id, 'user_id' => $user_id]) }}" class="btn btn-success pull-right" onclick="return confirm(&quot;{{ tr('admin_user_subscription_confirm', $subscription_detail->title) }}&quot;)">{{ tr('choose') }}</a>
 									</p>
 
 									<br>

@@ -10,7 +10,7 @@
 
             <div class="box-header label-primary">
                 <b style="font-size:18px;">@yield('title')</b>
-                <a href="{{route('admin.video_ads.list')}}" class="btn btn-default pull-right">{{tr('assigned_ads')}}</a>
+                <a href="{{route('admin.video_ads.index')}}" class="btn btn-default pull-right">{{tr('assigned_ads')}}</a>
             </div>
 
             <form  action="{{route('admin.video-ads.save')}}" method="POST" enctype="multipart/form-data" role="form">
@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
-                              <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('title')}}</b> <a class="pull-right" href="{{route('admin.videos.view', $vModel->id)}}" target="_blank">{{$vModel->title}}</a>
+                              <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('title')}}</b> <a class="pull-right" href="{{route('admin.videos.view', ['id' => $vModel->id] )}}" target="_blank">{{$vModel->title}}</a>
                             </li>
                             <li class="list-group-item">
                               <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <div class="pull-right">{{$vModel->duration}}</div>
@@ -80,18 +80,15 @@
                     		<div class="col-md-6">
 
                     			<label>{{tr('ad')}}</label>
-
                     			
                                 <select id="pre_parent_ad_id" name="pre_parent_ad_id" class="form-control">
                                     <option value="">{{tr('select_ad')}}</option>
                                     @foreach($ads as $ad)
                                         <option value="{{$ad->id}}" @if($ad->id == $preAd->ad_id) selected @endif>{{$ad->name}}</option>
                                     @endforeach
-                                </select>
-                               
+                                </select>   
+
                     		</div>
-
-
                     	</div>
                         
                     </div>
@@ -113,15 +110,12 @@
 
                     		</div>
 
-
                     	   <div class="col-md-3">
 
                     			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
                     			<input type="text" name="post_ad_time" id="post_ad_time" class="form-control" value="{{$postAd->ad_time}}" title="Enter Minimum 1 Character to Maximum 3 Character" maxlength="3" minlength="1">
-
                     		</div>
-
 
                     		<div class="col-md-6">
 
@@ -135,7 +129,6 @@
                                 </select>
 
                     		</div>
-
 
                     	</div>
                         

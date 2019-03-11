@@ -28,7 +28,7 @@
 
                 <div class="box-header label-primary">
                     <b>{{ tr('banner_ads') }}</b>
-                    <a href="{{ route('admin.banner-ads.create') }}" style="float:right" class="btn btn-default">{{ tr('create_banner_ad') }}</a>
+                    <a href="{{ route('admin.banner_ads.create') }}" style="float:right" class="btn btn-default">{{ tr('create_banner_ad') }}</a>
                 </div>
 
                 <div class="box-body">
@@ -80,7 +80,7 @@
 
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">                                                
                                                 <li>                                              
-                                                    <a href="{{ route('admin.banner-ads.view', ['banner_ad_id' => $banner_ad_details->id]  ) }}"><b>{{ tr('view') }}</b></a>
+                                                    <a href="{{ route('admin.banner_ads.view', ['banner_ad_id' => $banner_ad_details->id]  ) }}"><b>{{ tr('view') }}</b></a>
                                                 </li>
 
                                                 @if(Setting::get('admin_delete_control') == YES)
@@ -90,10 +90,10 @@
                                                 
                                                 @else
 
-                                                    <li><a href="{{ route('admin.banner-ads.edit', ['banner_ad_id' => $banner_ad_details->id] ) }}"><b>{{ tr('edit') }}</b></a></li>
+                                                    <li><a href="{{ route('admin.banner_ads.edit', ['banner_ad_id' => $banner_ad_details->id] ) }}"><b>{{ tr('edit') }}</b></a></li>
                                                     
                                                     <li>
-                                                        <a href="{{ route('admin.banner-ads.delete',['banner_ad_id' => $banner_ad_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_delete_confirmation', $banner_ad_details->title ) }}&quot;);" ><b>{{ tr('delete') }}</b></a>
+                                                        <a href="{{ route('admin.banner_ads.delete',['banner_ad_id' => $banner_ad_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_delete_confirmation', $banner_ad_details->title ) }}&quot;);" ><b>{{ tr('delete') }}</b></a>
                                                     </li>
                                                     
                                                 @endif
@@ -106,11 +106,11 @@
 
                                                 <li>
                                                     @if($banner_ad_details->status == DEFAULT_TRUE )               
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.banner-ads.status', ['banner_ad_id' => $banner_ad_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_decline_confirmation', $banner_ad_details->title) }}&quot;)"><b>{{ tr('decline') }}</b></a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.banner_ads.status', ['banner_ad_id' => $banner_ad_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_decline_confirmation', $banner_ad_details->title) }}&quot;)"><b>{{ tr('decline') }}</b></a></li>
                                                     
                                                     @else
                                                     
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.banner-ads.status',['banner_ad_id' => $banner_ad_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_approve_confirmation', $banner_ad_details->title) }}&quot;)" ><b>{{ tr('approve') }}</b></a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.banner_ads.status',['banner_ad_id' => $banner_ad_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_approve_confirmation', $banner_ad_details->title) }}&quot;)" ><b>{{ tr('approve') }}</b></a></li>
                                                     @endif
                                                 </li>                          
 
@@ -139,7 +139,7 @@
 
                                             </div>
 
-                                            <form action="{{ route('admin.banner-ads.position', ['banner_ad_id' => $banner_ad_details->id] ) }}" method="post">
+                                            <form action="{{ route('admin.banner_ads.position', ['banner_ad_id' => $banner_ad_details->id] ) }}" method="post">
                                                 <div class="modal-body">
 
                                                     <input type="hidden" name="position" id="position_name_{{ $banner_ad_details->id }}" value="{{ $banner_ad_details->position }}">

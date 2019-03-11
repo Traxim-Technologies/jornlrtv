@@ -61,8 +61,7 @@
 							      	<td>{{ Setting::get('currency' , "$") }} {{ $subscription_details->amount }}</td>
 							      	
 							      	<td class="text-center">
-
-						      			@if($subscription_details->status)
+						      			@if($subscription_details->status == DEFAULT_TRUE)
 							      			<span class="label label-success">{{ tr('approved') }}</span>
 							      		@else
 							      			<span class="label label-warning">{{ tr('pending') }}</span>
@@ -90,20 +89,21 @@
 									              		<a role="menuitem" tabindex="-1" href="{{ route('admin.subscriptions.view' , ['subscription_id' => $subscription_details->id] ) }}"><i class="fa fa-eye"></i>&nbsp;{{ tr('view') }}
 									              		</a>
 									              	</li>									              	
-
 													@if(Setting::get('admin_delete_control') == DEFAULT_TRUE )
+
 														<li  role="presentation"> <a role="menuitem" tabindex="-1" href="javascript:;" class="btn disabled" style="text-align: left"><i class="fa fa-trash" onclick="return confirm(&quot;{{ tr('admin_subscription_delete_confirmation', $subscription_details->title ) }}&quot;);"></i>&nbsp;{{ tr('delete') }}</a></li>
 
 														<li  role="presentation"> <a role="menuitem" tabindex="-1" tabindex="-1" href="javascript:;"><i class="fa fa-edit"></i>&nbsp;{{ tr('edit') }}
 								              			</a></li>
 
 													@else
-														<li  role="presentation"> <a role="menuitem" tabindex="-1" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{ route('admin.subscriptions.delete', array('id' => $subscription_details->id)) }}"><i class="fa fa-trash" onclick="return confirm(&quot;{{ tr('admin_subscription_delete_confirmation', $subscription_details->title ) }}&quot;);" ></i>&nbsp;{{ tr('delete') }}</a></li>
+
+														<li  role="presentation"> <a role="menuitem" tabindex="-1" tabindex="-1"  href="{{ route('admin.subscriptions.delete', ['subscription_id' => $subscription_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_subscription_delete_confirmation', $subscription_details->title ) }}&quot;);"><i class="fa fa-trash"  ></i>&nbsp;{{ tr('delete') }}</a></li>
 
 														<li  role="presentation"> <a role="menuitem" tabindex="-1" tabindex="-1" href="{{ route('admin.subscriptions.edit' , ['subscription_id' => $subscription_details->id] ) }}"><i class="fa fa-edit"></i>&nbsp;{{ tr('edit') }}
 								              			</a></li>
-													@endif	
 
+													@endif	
 									    
 									              	<li role="presentation" class="divider"></li>
 
@@ -121,9 +121,9 @@
 									              			<a role="menuitem" tabindex="-1" href="{{ route('admin.subscriptions.status' , ['subscription_id' => $subscription_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_subscription_approve_confirmation', $subscription_details->title) }}&quot;)">
 									              				<span class="text-green"><b><i class="fa fa-check"></i>&nbsp;{{ tr('approve') }}</b></span>
 									              			</a>
-									              		</li>								              	
+									              		</li>	      	
 
-									              	@endif								       								              									       
+									              	@endif				       
 
 									            </ul>
 											
@@ -139,6 +139,7 @@
 						</tbody>
 					
 					</table>
+
 	            </div>
 
           	</div>

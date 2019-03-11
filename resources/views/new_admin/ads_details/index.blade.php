@@ -89,17 +89,16 @@
 									                  	<?php $confirm_message = tr('are_you_sure_ad_status'); ?>
 
 									                  	@if($ads_detail_detail->status)
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.ads-details.status' , array('id' => $ads_detail_detail->id , 'status' =>0)) }}" onclick="return confirm('{{ $confirm_message }}')">{{ tr('decline') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.ads-details.status' , ['ads_detail_id' => $ads_detail_detail->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_ads_detail_approve_confirmation', $ads_detail_detail->name) }}&quot;)">{{ tr('decline') }}</a></li>
 									                  	@else
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.ads-details.status' , array('id' => $ads_detail_detail->id , 'status' => 1)) }}" onclick="return confirm('{{ $confirm_message }}')">{{ tr('approve') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.ads-details.status' , ['ads_detail_id' => $ads_detail_detail->id ] ) }}" onclick="return confirm(&quot;{{ tr('admin_ads_detail_decline_confirmation', $ads_detail_detail->name) }}&quot;)" >{{ tr('approve') }}</a></li>
 									                  	@endif
 
 									                  	@if($ads_detail_detail->status)
 
 									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="#" data-toggle="modal" data-target="#myModal_{{ $i }}">{{ tr('assign_ad') }}</a></li>
 									                  	@endif
-									              
-															
+									              															
 									                  	<li class="divider" role="presentation"></li>
 
 									                  	<li role="presentation">

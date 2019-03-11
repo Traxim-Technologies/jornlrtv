@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
-    <li><a href="{{ route('admin.banner-ads.index') }}"><i class="fa fa-bullhorn"></i>{{ tr('banner_ads') }}</a></li>
+    <li><a href="{{ route('admin.banner_ads.index') }}"><i class="fa fa-bullhorn"></i>{{ tr('banner_ads') }}</a></li>
     <li class="active"><i class="fa fa-eye"></i>&nbsp;{{ tr('view_banner_ad') }}</li>
 @endsection
 
@@ -55,19 +55,19 @@
                                 
                                 @else
 
-                                    <a class="btn btn-warning" href="{{  route('admin.banner-ads.edit', ['banner_ad_id' => $banner_ad_details->id] )  }}" title="{{  tr('edit')  }}"><b><i class="fa fa-edit"></i></b></a>
+                                    <a class="btn btn-warning" href="{{  route('admin.banner_ads.edit', ['banner_ad_id' => $banner_ad_details->id] )  }}" title="{{  tr('edit')  }}"><b><i class="fa fa-edit"></i></b></a>
                                                                     
-                                    <a class="btn btn-danger" href="{{  route('admin.banner-ads.delete',['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_delete_confirmation', $banner_ad_details->title )  }}&quot;);" title="{{  tr('delete')  }}"><b><i class="fa fa-trash"></i></b></a>
+                                    <a class="btn btn-danger" href="{{  route('admin.banner_ads.delete',['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_delete_confirmation', $banner_ad_details->title )  }}&quot;);" title="{{  tr('delete')  }}"><b><i class="fa fa-trash"></i></b></a>
                                                                     
                                 @endif
 
                                 @if( $banner_ad_details->status == DEFAULT_TRUE )  
 
-                                    <a class="btn btn-danger" href="{{  route('admin.banner-ads.status', ['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_decline_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('decline')  }}"><b><i class="fa fa-close"></i></b></a>
+                                    <a class="btn btn-danger" href="{{  route('admin.banner_ads.status', ['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_decline_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('decline')  }}"><b><i class="fa fa-close"></i></b></a>
                                 
                                 @else
 
-                                    <a class="btn btn-success" href="{{  route('admin.banner-ads.status',['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_approve_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('approve')  }}"><b><i class="fa fa-check"></i></b></a>
+                                    <a class="btn btn-success" href="{{  route('admin.banner_ads.status',['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_approve_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('approve')  }}"><b><i class="fa fa-check"></i></b></a>
 
                                 @endif
                             

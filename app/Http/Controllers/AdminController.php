@@ -1347,7 +1347,7 @@ class AdminController extends Controller {
      *
      */
     public function videos_view(Request $request) {
-
+    
         $validator = Validator::make($request->all() , [
                 'id' => 'required|exists:video_tapes,id'
             ]);

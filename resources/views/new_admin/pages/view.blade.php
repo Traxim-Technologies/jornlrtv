@@ -23,7 +23,7 @@
                 <div class="box-header label-primary">
 
                     <div class="pull-left">
-                        <h2 class="box-title" style="color: white"><b>{{$page_details->heading}}</b></h2>
+                        <h2 class="box-title" style="color: white"><b>{{$page_details->title}}</b></h2>
                     </div>
 
                     <div class="pull-right">
@@ -38,7 +38,7 @@
 
                             <a href="{{route('admin.pages.edit', ['page_id' => $page_details->id] )}}" class="btn btn-sm btn-warning"><b><i class="fa fa-edit"></i>&nbsp;{{tr('edit')}}</b></a>
 
-                            <a onclick="return confirm(&quot;{{tr('page_delete_confirmation' , $page_details->heading)}}&quot;);"  href="{{ route('admin.pages.delete',['page_id' => $page_details->id] ) }}" class="btn btn-sm btn-danger"><b><i class="fa fa-trash"></i>&nbsp;{{tr('delete')}}</b></a>
+                            <a onclick="return confirm(&quot;{{tr('page_delete_confirmation' , $page_details->title)}}&quot;);"  href="{{ route('admin.pages.delete',['page_id' => $page_details->id] ) }}" class="btn btn-sm btn-danger"><b><i class="fa fa-trash"></i>&nbsp;{{tr('delete')}}</b></a>
                             
                         @endif
                     </div>
@@ -48,7 +48,7 @@
                 <div class="box-body">
 
                     <strong><i class="fa fa-book margin-r-5"></i> {{tr('title')}}</strong>
-                    <p class="text-muted">{{$page_details->heading}}</p>
+                    <p class="text-muted">{{$page_details->title}}</p>
                     <hr>
 
                     <strong><i class="fa fa-book margin-r-5"></i> {{tr('description')}}</strong>
