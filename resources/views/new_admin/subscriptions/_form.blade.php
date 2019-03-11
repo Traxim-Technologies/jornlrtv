@@ -3,7 +3,7 @@
 
     <div class="col-md-12">
     
-    @include('notification.notify')
+        @include('notification.notify')
 
         <div class="box box-primary">
 
@@ -27,13 +27,13 @@
                         <div class="col-md-6">
                             <label for="title" class="">{{ tr('title') }}</label>
 
-                            <input type="text" required name="title" class="form-control" id="title" value="{{ $subscription_details->title ? $subscription_details->title : old('title') }}" placeholder="{{ tr('title') }}">
+                            <input type="text" required name="title" class="form-control" id="title" value="{{ old('title') ?: $subscription_details->title }}" placeholder="{{ tr('title') }}">
                         </div>
 
                         <div class="col-md-6">
                             <label for="amount" class="">{{ tr('amount') }}</label>
 
-                            <input type="text" required name="amount" class="form-control" id="amount" placeholder="{{ tr('amount') }}" step="any" value="{{ ($subscription_details->amount) ? $subscription_details->amount : old('amount') }}"  maxlength="5">
+                            <input type="text" required name="amount" class="form-control" id="amount" placeholder="{{ tr('amount') }}" step="any" value="{{ old('amount') ?: $subscription_details->amount }}"  maxlength="5">
                         </div>
 
                     </div>
@@ -44,7 +44,7 @@
                             <b>{{ tr('plan_note') }}</b></span>
                             </label>
 
-                            <input type="number" min="1" max="12" required name="plan" class="form-control" id="plan" value="{{ ($subscription_details->plan) ? $subscription_details->plan : old('plan') }}" title="{{ tr('month_of_plans') }}" placeholder="{{ tr('plans') }}">
+                            <input type="number" min="1" max="12" required name="plan" class="form-control" id="plan" value="{{ old('plan') ?: $subscription_details->plan }}" title="{{ tr('month_of_plans') }}" placeholder="{{ tr('plans') }}">
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                         <div class="form-group">
                             <label for="description" class="">{{ tr('description') }}</label>
 
-                            <textarea id="ckeditor" name="description" required class="form-control" placeholder="{{ tr('description') }}">{{ ($subscription_details->description) ? $subscription_details->description : old('description') }}</textarea>
+                            <textarea id="ckeditor" name="description" required class="form-control" placeholder="{{ tr('description') }}">{{ old('description') ?: $subscription_details->description }}</textarea>
                            
                         </div>
                     </div>

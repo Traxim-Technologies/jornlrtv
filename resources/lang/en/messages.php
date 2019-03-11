@@ -1805,4 +1805,14 @@ return array(
 	'admin_video_ad_delete_confirmation'=>"Do you want to delete this (:otherkey) video_ad?",
 	'admin_video_ad_delete_success' => 'video_ad has been deleted successfully.',
 	'admin_video_ad_delete_error' => 'Sorry! Tag could not be deleted. Please try again',
+
+	// New Admin Profile Messages 
+
+	'admin_profile_update_success'	=>	'Admin Details updated Successfully',
+	'admin_profile_save_error'	=>	'Sorry!, something went wrong Admin Details could not be updated. Please try again!',
+
+	'admin_password_change_success' => 'Password Changed successfully',
+	'admin_password_mismatch' =>  'Pasword is mismatched',
+	'admin_password_save_error' =>  'Pasword is mismatched',
+
 );

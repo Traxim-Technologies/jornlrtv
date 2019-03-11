@@ -3152,7 +3152,7 @@ class NewAdminController extends Controller {
 
                     DB::commit();
                     
-                    return back()->with('flash_success', tr('admin_not_profile'));
+                    return back()->with('flash_success', tr('admin_profile_update_success'));
 
                 } else {
 
@@ -3183,19 +3183,23 @@ class NewAdminController extends Controller {
      * @return redirect with success/ error message
      */
     public function change_password(Request $request) {
-        
+       
         try {
-            
+       
             DB::beginTransaction();
 
-            $validator = Validator::make($request->all(), [ 
-                    'id' => 'required|exists:admins,id',             
-                    'old_password' => 'required',
+            $old_password = $request->old_password;
+            $new_password = $request->password;
+            $confirm_password = $request->confirm_password;
+            
+            $validator = Validator::make($request->all(), [              
                     'password' => 'required|confirmed|min:6',
-                    'confirm_password' => 'required|min:6'
+                    'old_password' => 'required',
+                    'password_confirmation' => 'required|min:6',
+                    'id' => 'required|exists:admins,id'
             ]);
-           
-            if( $validator->fails() ) {
+
+            if($validator->fails()) {
 
                 $error = implode(',',$validator->messages()->all());
 
@@ -3203,21 +3207,13 @@ class NewAdminController extends Controller {
 
             } else {
 
-                $old_password = $request->old_password;
-
-                $new_password = $request->password;
-
-                $confirm_password = $request->confirm_password;
-
                 $admin_details = Admin::find($request->id);
 
-                if( Hash::check($old_password,$admin_details->password) ) {
+                if(\Hash::check($old_password,$admin_details->password)) {
                     
-                    $admin_details->password = Hash::make( $new_password );
-                   
+                    $admin_details->password = \Hash::make($new_password);
+                    
                     if( $admin_details->save() ) {
-                        
-                        DB::commit();
 
                         return back()->with('flash_success', tr('admin_password_change_success'));
                     
@@ -3228,7 +3224,7 @@ class NewAdminController extends Controller {
                     
                 } else {
 
-                    throw new Exception(tr('admin_password_mismatch'), 101);
+                    throw new Exception( tr('admin_password_mismatch'), 101);
                 }
             }
 
@@ -3242,12 +3238,12 @@ class NewAdminController extends Controller {
             
             $error = $e->getMessage();
 
-            return redirect()->route('admin.profile')->with('flash_error',$error);
+            return redirect()->back()->with('flash_error',$error);
         }
     
     }
 
-      /**
+    /**
      * Function: pages_index()
      * 
      * @uses To list the static_pages
