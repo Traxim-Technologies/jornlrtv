@@ -53,7 +53,7 @@
 					                </a>
 					                <ul class="dropdown-menu">
 					                  	<li role="presentation">
-					                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.users.export' , ['format' => 'xls']) }}">
+					                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.users.export' , ['format' => 'xlsx']) }}">
 					                  			<span class="text-red"><b>{{ tr('excel_sheet') }}</b></span>
 					                  		</a>
 					                  	</li>
