@@ -4700,9 +4700,9 @@ class AdminController extends Controller {
         $confirm_password = $request->confirm_password;
         
         $validator = Validator::make($request->all(), [              
-                'password' => 'required|confirmed|min:6',
+                'password' => 'required|min:6',
                 'old_password' => 'required',
-                'password_confirmation' => 'required|min:6',
+                'confirm_password' => 'required|min:6',
                 'id' => 'required|exists:admins,id'
             ]);
 
