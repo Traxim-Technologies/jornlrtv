@@ -1818,10 +1818,15 @@ return array(
 
 	// user API 
 
-	'admin_user_wishlist_save_error'=>'Sorry!, something went wrong Video details could not be saved. Please try again.',
+	'user_wishlist_save_error' => 'Sorry!, Video details could not be saved. Please try again.',
 
-	'admin_user_wishlist_success'=>'Success! Added to wishlist',
+	'user_wishlist_success' => 'Success! Added to wishlist',
 
+	'user_wishlist_video_exists' => 'Video already exists in wishlist',
+	
+	'user_wishlist_delete_error' => 'Sorry!, Wishlist could not be remove. Please try again.',
+	
+	'user_wishlist_delete_success' => 'Success! wishlist deleted',
 
 
 );

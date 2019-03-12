@@ -442,11 +442,11 @@ class UserApiController extends Controller {
      * @return response of Boolean with message
      */
     public function wishlist_create(Request $request) {
-        
-        Log::info('wishlist_create is used wishlist creation ');
-     
+
         try {
             
+            DB::beginTransaction();
+
             $validator = Validator::make(
                 $request->all(),
                 array(
@@ -469,24 +469,10 @@ class UserApiController extends Controller {
             
             if( count($wishlist_details) > 0 ) {
 
-                if ($request->wishlist_id) {
-                    
-                    if ($wishlist_details->id == $request->wishlist_id) {
-
-                        if($wishlist_details->delete()) {
-                            
-                            DB::commit();
-
-                        } else {
-
-                            throw new Exception(tr('admin_user_wishlist_save_error'), 101);
-                        }
-                    }
-                }
+                throw new Exception(Helper::get_error_message(505), 505);                   
 
             } else {
 
-                //Save Wishlist 
                 $wishlist_details = new Wishlist();
 
                 $wishlist_details->user_id = $request->id;
@@ -496,24 +482,23 @@ class UserApiController extends Controller {
                 $wishlist_details->status = DEFAULT_TRUE;
 
                 if($wishlist_details->save()) {
-                    
+                   
                     DB::commit();
 
-                    $message = tr('admin_user_wishlist_success');
+                    $message = tr('user_wishlist_success');
 
-                } else {
-
-                    throw new Exception(tr('admin_user_wishlist_save_error'), 101);
-                }
-            }
-           
-
-            $response_array = array('success' => true ,
+                    $response_array = array('success' => true ,
                                     'wishlist_id' => $wishlist_details->id , 
                                     'wishlist_status' => $wishlist_details->status,
                                     'message' => $message);
-       
-            return response()->json($response_array, 200);
+
+                    return response()->json($response_array, 200);
+
+                } else {
+
+                    throw new Exception(tr('user_wishlist_save_error'), 101);
+                }
+            }       
 
         } catch (Exception $e) {
 
@@ -541,9 +526,7 @@ class UserApiController extends Controller {
      *
      * @return response of success/failure message
      */
-    public function delete_wishlist(Request $request) {
-        
-        Log::info('delete_wishlist is used for delete wishlist');
+    public function wishlist_delete(Request $request) {
 
         try {
             
@@ -563,8 +546,7 @@ class UserApiController extends Controller {
 
                 $error = implode(',', $validator->messages()->all());
 
-                throw new Exception($error, 101);               
-
+                throw new Exception($error, 101);  
             } 
 
             /** Clear All wishlist of the loggedin user */
@@ -575,9 +557,19 @@ class UserApiController extends Controller {
 
             } else {  /** Clear particularv wishlist of the loggedin user */
 
-
                 $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
             }
+            
+            DB::commit();
+
+            if(!$wishlist) {                    
+
+                throw new Exception(Helper::get_error_message(506), 506);                  
+            }
+            
+            $message = tr('user_wishlist_delete_success');
+
+            $response_array = array('success' => true,'message' => $message);
 
             return response()->json($response_array, 200);       
 

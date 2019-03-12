@@ -937,7 +937,7 @@ class UserController extends Controller {
      *
      * @return response of success/falure message
      */
-    public function add_wishlist(Request $request) {
+    public function wishlist_create(Request $request) {
 
         $request->request->add([ 
             'id' => \Auth::user()->id,
@@ -946,7 +946,7 @@ class UserController extends Controller {
             'video_tape_id' => $request->video_tape_id
         ]);
 
-        $response = $this->UserAPI->add_wishlist($request)->getData();
+        $response = $this->UserAPI->wishlist_create($request)->getData();
 
         if($response->success) {
 
@@ -978,7 +978,7 @@ class UserController extends Controller {
      *
      * @return response of success/failure message
      */
-    public function delete_wishlist(Request $request) {
+    public function wishlist_delete(Request $request) {
 
         $request->request->add([ 
             'id' => \Auth::user()->id,
@@ -986,7 +986,7 @@ class UserController extends Controller {
             'device_token' => \Auth::user()->device_token
         ]);
 
-        $response = $this->UserAPI->delete_wishlist($request)->getData();
+        $response = $this->UserAPI->wishlist_delete($request)->getData();
 
         if($response->success) {
 

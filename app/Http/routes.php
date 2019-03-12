@@ -855,9 +855,9 @@ Route::group(['as' => 'user.'], function(){
 
     // Wishlist
 
-    Route::post('addWishlist', 'UserController@add_wishlist')->name('add.wishlist');
+    Route::post('addWishlist', 'UserController@wishlist_create')->name('add.wishlist');
 
-    Route::get('deleteWishlist', 'UserController@delete_wishlist')->name('delete.wishlist');
+    Route::get('deleteWishlist', 'UserController@wishlist_delete')->name('delete.wishlist');
 
 
     // Comments
@@ -1133,7 +1133,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/getWishlist', 'UserApiController@get_wishlist');
 
-    Route::post('/deleteWishlist', 'UserApiController@delete_wishlist');
+    Route::post('/deleteWishlist', 'UserApiController@wishlist_delete');
 
     // History
 
