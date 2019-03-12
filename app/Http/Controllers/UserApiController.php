@@ -534,6 +534,9 @@ class UserApiController extends Controller {
                 $request->all(),
                 array(
                     'video_tape_id' => 'required|integer|exists:video_tapes,id',
+                ),
+                array(
+                    'exists' => 'The :attribute doesn\'t exists please provide correct video id'
                 )
             );
 

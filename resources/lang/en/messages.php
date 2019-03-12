@@ -1213,7 +1213,7 @@ return array(
 	'service_completed' => 'Service completed',
 	'user_rating_done' => 'User rating done',
 	'request_cancelled_successfully.' => 'Request cancelled successfully.',
-	'wishlist_added' => 'Wishlist added.',
+
 	'payment_confirmed_successfully.' => 'Payment confirmed successfully.',
 	'history_added' => 'History added.',
 	'history_deleted_successfully.' => 'History deleted successfully.',

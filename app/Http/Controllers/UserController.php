@@ -948,21 +948,9 @@ class UserController extends Controller {
 
         $response = $this->UserAPI->wishlist_create($request)->getData();
 
-        if($response->success) {
-
-            $response->message = Helper::get_message(118);
-
-        } else {
-
-            $response->success = false;
-
-            $response->message = tr('something_error');
-        }
-
         $response->status = $request->status;
 
         return response()->json($response);
-    
     }
 
     /**
@@ -990,11 +978,11 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return back()->with('flash_success',tr('wishlist_removed'));
+            return back()->with('flash_success', $response->message);
 
         } else {
 
-            return back()->with('flash_error', tr('something_error'));
+            return back()->with('flash_error',  $response->message);
         }
     } 
 
