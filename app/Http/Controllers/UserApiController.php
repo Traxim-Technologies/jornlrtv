@@ -431,15 +431,17 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : add_wishlist()
+     * Function Name : wishlist_create()     
      *
-     * @usage_place : MOBILE & WEB
+     * @uses To add a video to wishlist based on details
      *
-     * To add a wishlist based on user id
+     * cretaed Anjana H 
+     *   
+     * updated Anjana H  
      *
-     * @param Integer $request - Video Id
+     * @param Integer $request - Video Id, Id (user_id)
      *
-     * @return response of Boolean with message
+     * @return success/failure message
      */
     public function wishlist_create(Request $request) {
 
@@ -453,8 +455,7 @@ class UserApiController extends Controller {
                     'video_tape_id' => 'required|integer|exists:video_tapes,id',
                 ),
                 array(
-                    'exists' => 'The :attribute doesn\'t exists please provide correct video id',
-                    'unique' => 'The :attribute already added in wishlist.'
+                    'exists' => 'The :attribute doesn\'t exists please provide correct video id'
                 )
             );
 
@@ -469,36 +470,31 @@ class UserApiController extends Controller {
             
             if( count($wishlist_details) > 0 ) {
 
-                throw new Exception(Helper::get_error_message(505), 505);                   
+                throw new Exception(Helper::get_error_message(505), 505);    
+            } 
+
+            $wishlist_details = new Wishlist();
+
+            $wishlist_details->user_id = $request->id;
+
+            $wishlist_details->video_tape_id = $request->video_tape_id;
+
+            $wishlist_details->status = DEFAULT_TRUE;
+
+            if($wishlist_details->save()) {
+               
+                DB::commit();
+
+                $message = tr('user_wishlist_success');
+
+                $response_array = array('success' => true , 'wishlist_id' => $wishlist_details->id , 'wishlist_status' => $wishlist_details->status, 'message' => $message);
+
+                return response()->json($response_array, 200);
 
             } else {
 
-                $wishlist_details = new Wishlist();
-
-                $wishlist_details->user_id = $request->id;
-
-                $wishlist_details->video_tape_id = $request->video_tape_id;
-
-                $wishlist_details->status = DEFAULT_TRUE;
-
-                if($wishlist_details->save()) {
-                   
-                    DB::commit();
-
-                    $message = tr('user_wishlist_success');
-
-                    $response_array = array('success' => true ,
-                                    'wishlist_id' => $wishlist_details->id , 
-                                    'wishlist_status' => $wishlist_details->status,
-                                    'message' => $message);
-
-                    return response()->json($response_array, 200);
-
-                } else {
-
-                    throw new Exception(tr('user_wishlist_save_error'), 101);
-                }
-            }       
+                throw new Exception(tr('user_wishlist_save_error'), 101);
+            }                   
 
         } catch (Exception $e) {
 
@@ -516,15 +512,17 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : delete_wishlist()
+     * Function Name : wishlist_delete()     
      *
-     * @usage_place : MOBILE & WEB
+     * @uses To delete wishlist(s) based on details
      *
-     * To delete wishlist based on user id
-     * 
-     * @param intger $request - Video tape id
+     * cretaed Anjana H 
+     *   
+     * updated Anjana H  
      *
-     * @return response of success/failure message
+     * @param Integer (request) - video tape id, id (user_id)
+     *
+     * @return success/failure message
      */
     public function wishlist_delete(Request $request) {
 
@@ -536,9 +534,6 @@ class UserApiController extends Controller {
                 $request->all(),
                 array(
                     'video_tape_id' => 'required|integer|exists:video_tapes,id',
-                ),
-                array(
-                    'exists' => 'The :attribute doesn\'t exists please add to wishlists',
                 )
             );
 
@@ -550,26 +545,26 @@ class UserApiController extends Controller {
             } 
 
             /** Clear All wishlist of the loggedin user */
+            
+            if($request->status == WISHLIST_DELETE_ALL) {
 
-            if($request->status == DEFAULT_TRUE) {
-
-                $wishlist = Wishlist::where('user_id',$request->id)->delete();
+                $wishlist_details = Wishlist::where('user_id',$request->id)->delete();
 
             } else {  /** Clear particularv wishlist of the loggedin user */
 
-                $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+                $wishlist_details = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
             }
             
             DB::commit();
 
-            if(!$wishlist) {                    
+            if(!$wishlist_details) {                    
 
                 throw new Exception(Helper::get_error_message(506), 506);                  
             }
             
             $message = tr('user_wishlist_delete_success');
 
-            $response_array = array('success' => true,'message' => $message);
+            $response_array = array('success' => true, 'message' => $message);
 
             return response()->json($response_array, 200);       
 

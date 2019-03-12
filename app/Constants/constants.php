@@ -363,3 +363,7 @@ if (!defined('DECLINED')) define('DECLINED',0);
 
 // ========================new branch v4.0 admmin-coderevamp =================
 
+if (!defined('WISHLIST_DELETE_ALL')) define('WISHLIST_DELETE_ALL', 1);
+
+
+
