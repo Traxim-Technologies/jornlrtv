@@ -1129,7 +1129,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     // Wish List
 
-    Route::post('/addWishlist', 'UserApiController@add_wishlist');
+    Route::post('/addWishlist', 'UserApiController@wishlist_create');
 
     Route::post('/getWishlist', 'UserApiController@get_wishlist');
 

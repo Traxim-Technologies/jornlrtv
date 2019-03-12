@@ -441,58 +441,93 @@ class UserApiController extends Controller {
      *
      * @return response of Boolean with message
      */
-    public function add_wishlist(Request $request) {
+    public function wishlist_create(Request $request) {
+        
+        dd($request->all());
+        
+        try {
+            
+            $validator = Validator::make(
+                $request->all(),
+                array(
+                    'video_tape_id' => 'required|integer|exists:video_tapes,id',
+                ),
+                array(
+                    'exists' => 'The :attribute doesn\'t exists please provide correct video id',
+                    'unique' => 'The :attribute already added in wishlist.'
+                )
+            );
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'video_tape_id' => 'required|integer|exists:video_tapes,id',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists please provide correct video id',
-                'unique' => 'The :attribute already added in wishlist.'
-            )
-        );
+            if ($validator->fails()) {
 
-        if ($validator->fails()) {
+                $error = implode(',', $validator->messages()->all());
 
-            $error = implode(',', $validator->messages()->all());
+                throw new Exception($error, 101);
+            } 
 
-            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
-
-        } else {
-
-            $wishlist = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
-
-            if(count($wishlist) > 0) {
+            $wishlist_details = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
+            
+            if( count($wishlist_details) > 0 ) {
 
                 if ($request->wishlist_id) {
+                    
+                    if ($wishlist_details->id == $request->wishlist_id) {
 
-                    if ($wishlist->id == $request->wishlist_id) {
+                        if($wishlist_details->delete()) {
+                            
+                            DB::commit();
 
-                        $wishlist->delete();
+                        } else {
 
+                            throw new Exception(tr('admin_user_wishlist_save_error'), 101);
+                        }
                     }
-
                 }
 
             } else {
 
-                //Save Wishlist
-                $wishlist = new Wishlist();
-                $wishlist->user_id = $request->id;
-                $wishlist->video_tape_id = $request->video_tape_id;
-                $wishlist->status = DEFAULT_TRUE;
-                $wishlist->save();
+                //Save Wishlist 
+                $wishlist_details = new Wishlist();
+
+                $wishlist_details->user_id = $request->id;
+
+                $wishlist_details->video_tape_id = $request->video_tape_id;
+
+                $wishlist_details->status = DEFAULT_TRUE;
+
+                if($wishlist_details->save()) {
+                    
+                    DB::commit();
+
+                    $message = tr('admin_user_wishlist_success');
+
+                } else {
+
+                    throw new Exception(tr('admin_user_wishlist_save_error'), 101);
+                }
             }
            
-            $message = "Added to wishlist";
 
-            $response_array = array('success' => true ,'wishlist_id' => $wishlist->id , 'wishlist_status' => $wishlist->status,'message' => $message);
+            $response_array = array('success' => true ,
+                                    'wishlist_id' => $wishlist_details->id , 
+                                    'wishlist_status' => $wishlist_details->status,
+                                    'message' => $message);
+       
+            return response()->json($response_array, 200);
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $message = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $code];
+
+            return response()->json($response_array);
         }
 
-        return response()->json($response_array, 200);
-    
     }
 
     /**
@@ -507,28 +542,32 @@ class UserApiController extends Controller {
      * @return response of success/failure message
      */
     public function delete_wishlist(Request $request) {
+        
+        try {
+            
+            DB::beginTransaction();
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'video_tape_id' => 'required|integer|exists:video_tapes,id',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists please add to wishlists',
-            )
-        );
+            $validator = Validator::make(
+                $request->all(),
+                array(
+                    'video_tape_id' => 'required|integer|exists:video_tapes,id',
+                ),
+                array(
+                    'exists' => 'The :attribute doesn\'t exists please add to wishlists',
+                )
+            );
 
-        if ($validator->fails()) {
+            if ($validator->fails()) {
 
-            $error = implode(',', $validator->messages()->all());
+                $error = implode(',', $validator->messages()->all());
 
-            $response_array = array('success' => false, 'error_messages' => $error, 'error_code' => 101);
+                throw new Exception($error, 101);               
 
-        } else {
+            } 
 
             /** Clear All wishlist of the loggedin user */
 
-            if($request->status == 1) {
+            if($request->status == DEFAULT_TRUE) {
 
                 $wishlist = Wishlist::where('user_id',$request->id)->delete();
 
@@ -536,15 +575,23 @@ class UserApiController extends Controller {
 
 
                 $wishlist = Wishlist::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
-   
-                
-                
             }
 
-            $response_array = array('success' => true);
+            return response()->json($response_array, 200);       
+
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $message = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $code];
+
+            return response()->json($response_array);
         }
 
-        return response()->json($response_array, 200);
     
     }
 

@@ -1794,13 +1794,13 @@ return array(
 
 	'admin_video_ad_update_success' => 'video_ad has been updated successfully.',
 	'admin_video_ad_create_success' => 'video_ad has been created successfully.',
-	'admin_video_ad_save_error' => 'Sorry!, something went wrong video_ad details could not be saved. Please try again.',
+	'admin_video_ad_save_error' => 'Sorry!, something went wrong Video Ad details could not be saved. Please try again.',
 
 	'admin_video_ad_approve_confirmation' => 'Do you want to approve this(:otherkey) video_ad?',
-	'admin_video_ad_decline_confirmation' => 'video_ad will be removed from all the related videos, once the video_ad declined. Do you want to decline this(:otherkey) video_ad? ',
+	'admin_video_ad_decline_confirmation' => 'video_ad will be removed from all the related videos, once the Video Ad declined. Do you want to decline this(:otherkey) video_ad? ',
 
-	'admin_video_ad_approved_success' => 'The video_ad approved successfully!!.',
-	'admin_video_ad_declined_success' => 'The video_ad declined successfully!!.',
+	'admin_video_ad_approved_success' => 'The Video Ad approved successfully!!.',
+	'admin_video_ad_declined_success' => 'The Video Ad declined successfully!!.',
 	
 	'admin_video_ad_delete_confirmation'=>"Do you want to delete this (:otherkey) video_ad?",
 	'admin_video_ad_delete_success' => 'video_ad has been deleted successfully.',
@@ -1814,5 +1814,14 @@ return array(
 	'admin_password_change_success' => 'Password Changed successfully',
 	'admin_password_mismatch' =>  'Pasword is mismatched',
 	'admin_password_save_error' =>  'Pasword is mismatched',
+
+
+	// user API 
+
+	'admin_user_wishlist_save_error'=>'Sorry!, something went wrong Video details could not be saved. Please try again.',
+
+	'admin_user_wishlist_success'=>'Success! Added to wishlist',
+
+
 
 );
