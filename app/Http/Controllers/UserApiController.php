@@ -443,7 +443,7 @@ class UserApiController extends Controller {
      */
     public function wishlist_create(Request $request) {
         
-        Log::info('wishlist_create is used wishlist creation and deleteing');
+        Log::info('wishlist_create is used wishlist creation ');
      
         try {
             
