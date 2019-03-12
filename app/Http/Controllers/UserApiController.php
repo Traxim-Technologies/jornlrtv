@@ -473,7 +473,6 @@ class UserApiController extends Controller {
                         $wishlist->delete();
 
                     }
-
                 }
 
             } else {
