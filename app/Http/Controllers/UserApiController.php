@@ -443,8 +443,8 @@ class UserApiController extends Controller {
      */
     public function wishlist_create(Request $request) {
         
-        dd($request->all());
-        
+        Log::info('wishlist_create is used wishlist creation');
+     
         try {
             
             $validator = Validator::make(
