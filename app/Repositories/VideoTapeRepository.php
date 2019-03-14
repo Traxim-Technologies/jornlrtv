@@ -843,6 +843,10 @@ class VideoTapeRepository {
 
                 $video_tape_details->pay_per_view_status = $pay_per_view_status;
 
+                $video_tape_details->ppv_amount = $value->ppv_amount;
+
+                $video_tape_details->currency = Setting::get('currency');
+
                 array_push($video_tapes, $video_tape_details);
             
             }
