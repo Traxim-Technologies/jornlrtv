@@ -123,7 +123,7 @@
 								      	
 								      	<td class="text-center"><a target="_blank" href="{{ route('admin.users.channels' , ['user_id' => $user_details->id] ) }}">{{ $user_details->get_channel_count }}</a></td>
 
-								      	<td class="text-center"><a target="_blank" href="{{ route('admin.videos.list' , $user_details->id) }}">{{ $user_details->get_channel_videos_count }}</a></td>
+								      	<td class="text-center"><a target="_blank" href="{{ route('admin.video_tapes.index' , $user_details->id) }}">{{ $user_details->get_channel_videos_count }}</a></td>
 
 										<td>
 											@if($user_details->user_type)

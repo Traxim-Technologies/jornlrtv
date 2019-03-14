@@ -54,7 +54,7 @@
 
 							      		@if(isset($data->get_video_tape->title)) 
 
-							      			<a href="{{route('admin.videos.view', $data->get_video_tape->id)}}" target="_blank">{{substr($data->get_video_tape->title , 0,25)}}</a>
+							      			<a href="{{route('admin.video_tapes.view', $data->get_video_tape->id)}}" target="_blank">{{substr($data->get_video_tape->title , 0,25)}}</a>
 							      		@endif
 							      	</td>
 							      	

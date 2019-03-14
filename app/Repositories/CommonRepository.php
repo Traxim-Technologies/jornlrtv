@@ -932,7 +932,6 @@ class CommonRepository {
 
     public static function set_default_image($request) {
 
-       // dd($request->all());
 
         $video_tape = ($request->video_tape_id) ? VideoTape::find($request->video_tape_id) : '';
 

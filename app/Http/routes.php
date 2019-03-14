@@ -207,37 +207,37 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // Videos CRUD Operations
 
-    Route::get('/videos/create', 'AdminController@videos_create')->name('videos.create');
+    Route::get('/old-videos/create', 'AdminController@videos_create')->name('videos.create');
 
-    Route::get('/videos/edit/{id}', 'AdminController@videos_edit')->name('videos.edit');
+    Route::get('/old-videos/edit/{id}', 'AdminController@videos_edit')->name('videos.edit');
 
-    Route::post('/videos/save', 'AdminController@videos_save')->name('videos.save');
+    Route::post('/old-videos/save', 'AdminController@videos_save')->name('videos.save');
 
-    Route::get('/videos/images/{id}', 'AdminController@videos_images')->name('videos.images');
+    Route::get('/old-videos/images/{id}', 'AdminController@videos_images')->name('videos.images');
 
-    Route::post('/videos/upload/image', 'AdminController@videos_upload_image')->name('videos.upload_image');
+    Route::post('/old-videos/upload/image', 'AdminController@videos_upload_image')->name('videos.upload_image');
 
     Route::post('videos/save/default_img', 'AdminController@videos_save_default_img')->name('videos.save.default_img');
 
-    Route::get('/videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
+    Route::get('/old-videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
 
-    Route::get('/videos/view', 'AdminController@videos_view')->name('videos.view');
+    Route::get('/old-videos/view', 'AdminController@videos_view')->name('videos.view');
 
-    Route::post('/videos/set-ppv/{id}', 'AdminController@videos_set_ppv')->name('videos.set-ppv');
+    Route::post('/old-videos/set-ppv/{id}', 'AdminController@videos_set_ppv')->name('videos.set-ppv');
 
-    Route::get('/videos/delete/{id}', 'AdminController@videos_delete')->name('videos.delete');
+    Route::get('/old-videos/delete/{id}', 'AdminController@videos_delete')->name('videos.delete');
 
-    Route::get('/videos/status/{id}', 'AdminController@videos_status')->name('videos.status');
+    Route::get('/old-videos/status/{id}', 'AdminController@videos_status')->name('videos.status');
 
-    Route::get('/videos/publish/{id}', 'AdminController@videos_publish')->name('videos.publish');
+    Route::get('/old-videos/publish/{id}', 'AdminController@videos_publish')->name('videos.publish');
 
-    Route::get('/videos/remove-ppv/{id}', 'AdminController@videos_remove_ppv')->name('videos.remove-ppv');
+    Route::get('/old-videos/remove-ppv/{id}', 'AdminController@videos_remove_ppv')->name('videos.remove-ppv');
 
-    Route::get('/videos/wishlist/{id}', 'AdminController@videos_wishlist')->name('videos.wishlist');
+    Route::get('/old-videos/wishlist/{id}', 'AdminController@videos_wishlist')->name('videos.wishlist');
 
     // Video compression status
 
-    Route::get('/videos/compression/complete','AdminController@videos_compression_complete')->name('compress.status');
+    Route::get('/old-videos/compression/complete','AdminController@videos_compression_complete')->name('compress.status');
 
 
     // Banner Videos
@@ -692,6 +692,39 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('/pages/delete/', 'NewAdminController@pages_delete')->name('pages.delete');
 
     // New Admin Pages methods ends
+
+
+    // New Video CRUD start
+
+    Route::get('/videos/create', 'NewAdminController@video_tapes_create')->name('video_tapes.create');
+
+    Route::get('/videos/edit/{id}', 'NewAdminController@video_tapes_edit')->name('video_tapes.edit');
+
+    Route::post('/videos/save', 'NewAdminController@video_tapes_save')->name('video_tapes.save');
+
+    Route::get('/videos/images/{id}', 'NewAdminController@video_tapes_images')->name('video_tapes.images');
+
+    Route::post('/videos/upload/image', 'NewAdminController@video_tapes_upload_image')->name('video_tapes.upload_image');
+
+    Route::post('videos/save/default_img', 'NewAdminController@video_tapes_default_image_save')->name('video_tapes.save.default_img');
+
+    Route::get('/videos/list/{id?}', 'NewAdminController@video_tapes_list')->name('video_tapes.index');
+
+    Route::get('/videos/view', 'NewAdminController@video_tapes_view')->name('video_tapes.view');
+
+    Route::post('/videos/set-ppv/{id}', 'NewAdminController@video_tapes_set_ppv')->name('video_tapes.set-ppv');
+
+    Route::get('/videos/delete/{id}', 'NewAdminController@video_tapes_delete')->name('video_tapes.delete');
+
+    Route::get('/videos/status/{id}', 'NewAdminController@video_tapes_status')->name('video_tapes.status');
+
+    Route::get('/videos/publish/{id}', 'NewAdminController@video_tapes_publish')->name('video_tapes.publish');
+
+    Route::get('/videos/remove-ppv/{id}', 'NewAdminController@video_tapes_remove_ppv')->name('video_tapes.remove-ppv');
+
+    Route::get('/videos/wishlist/{id}', 'NewAdminController@video_tapes_wishlist')->name('video_tapes.wishlist');
+
+    // New Video CRUD end
 
     // YouTube Grapper 
 

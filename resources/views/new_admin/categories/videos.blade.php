@@ -26,7 +26,7 @@
 
 	          	<div class="box-header label-primary">
 	                <b style="font-size:18px;"> {{ $category_details->name }} - {{ tr('category') }} {{ tr('videos') }}</b>
-	                <a href="{{ route('admin.videos.create') }}" class="btn btn-default pull-right">{{ tr('add_video') }}</a>
+	                <a href="{{ route('admin.video_tapes.create') }}" class="btn btn-default pull-right">{{ tr('add_video') }}</a>
 	            </div>
 
 	            <div class="box-body">
@@ -60,11 +60,11 @@
 
 								    <tr>
 								      	
-								      	<td><a href="{{ route('admin.videos.view' , ['id' => $video_details->video_tape_id] ) }}">{{ $i+1 }}</a></td>
+								      	<td><a href="{{ route('admin.video_tapes.view' , ['id' => $video_details->video_tape_id] ) }}">{{ $i+1 }}</a></td>
 								      	
 								      	<td><a href="{{ route('admin.channels.view', ['channel_id' => $video_details->channel_id] ) }}">{{ $video_details->channel_name }}</a></td>
 								      	
-								      	<td><a href="{{ route('admin.videos.view' , ['id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a></td>
+								      	<td><a href="{{ route('admin.video_tapes.view' , ['id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a></td>
 								      	
 
 								      	<td><b>{{ Setting::get('currency') }} {{ $video_details->admin_ppv_amount }}</b></td>
@@ -123,17 +123,17 @@
 	                                                            <a role="menuitem" tabindex="-1"  href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('delete') }}</a>
 
 	                                                        @else
-	                                                            <a role="menuitem" tabindex="-1" href="{{ route('admin.videos.edit' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('edit') }}</a>
+	                                                            <a role="menuitem" tabindex="-1" href="{{ route('admin.video_tapes.edit' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('edit') }}</a>
 	                                                        	
 	                                                        	<a role="menuitem" tabindex="-1"
 										                  			onclick="return confirm(&quot;{{  tr('admin_live_custom_video_delete_confirmation', substr($video_details->title , 0,25) ) }}&quot;)"
-										                  			 href="{{ route('admin.videos.delete' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
+										                  			 href="{{ route('admin.video_tapes.delete' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
 	                                                        @endif
 	                                                    </li>
 
 	                                                    @endif
 
-									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.videos.view' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('view') }}</a></li>
+									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.video_tapes.view' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('view') }}</a></li>
 
 									               		@if(Setting::get('is_payper_view'))
 
@@ -146,17 +146,17 @@
 									                  	<li class="divider" role="presentation"></li>
 
 									                  	@if($video_details->is_approved == YES )
-									                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.videos.status',$video_details->video_tape_id) }}" onclick="return confirm(&quot;{{ tr('admin_live_custom_video_decline_confirmation',substr($video_details->title , 0,25) ) }}&quot;)" >{{ tr('decline') }}</a></li>
+									                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_tapes.status',$video_details->video_tape_id) }}" onclick="return confirm(&quot;{{ tr('admin_live_custom_video_decline_confirmation',substr($video_details->title , 0,25) ) }}&quot;)" >{{ tr('decline') }}</a></li>
 									                	@else
 									                		@if ($video_details->compress_status == NO)
 									                			<li role="presentation"><a role="menuitem" tabindex="-1">{{ tr('compress') }}</a></li>
 									                		@else 
-									                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.videos.status',$video_details->video_tape_id) }}">{{ tr('approve') }}</a></li>
+									                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_tapes.status',$video_details->video_tape_id) }}">{{ tr('approve') }}</a></li>
 									                  		@endif
 									                  	@endif
 
 									                  	@if($video_details->publish_status == DEFAULT_FALSE && $video_details->compress_status == DEFAULT_TRUE)
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.videos.publish',$video_details->video_tape_id) }}">{{ tr('publish') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_tapes.publish',$video_details->video_tape_id) }}">{{ tr('publish') }}</a></li>
 									                  	@endif
 									                  	<li class="divider" role="presentation"></li>
 
@@ -184,7 +184,7 @@
 
 								    <div id="{{ $video_details->video_tape_id }}" class="modal fade" role="dialog">
 									  <div class="modal-dialog">
-									  <form action="{{ route('admin.videos.set-ppv', $video_details->video_tape_id) }}" method="POST">
+									  <form action="{{ route('admin.video_tapes.set-ppv', $video_details->video_tape_id) }}" method="POST">
 										    <!-- Modal content-->
 										   	<div class="modal-content">
 										      <div class="modal-header">
@@ -234,7 +234,7 @@
 										      <div class="modal-footer">
 										      	<div class="pull-left">
 										      		@if($video_details->ppv_amount > 0)
-										       			<a class="btn btn-danger" href="{{ route('admin.videos.remove-ppv', $video_details->video_tape_id) }}">{{ tr('remove_pay_per_view') }}</a>
+										       			<a class="btn btn-danger" href="{{ route('admin.video_tapes.remove-ppv', $video_details->video_tape_id) }}">{{ tr('remove_pay_per_view') }}</a>
 										       		@endif
 										       	</div>
 										        <div class="pull-right">

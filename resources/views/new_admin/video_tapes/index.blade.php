@@ -4,13 +4,12 @@
 
 @section('content-header')
 
-"{{$category->name}}" {{tr('category')}} {{tr('videos')}}
+@if(isset($channel)) <span class="text-green"> {{$channel->name}} </span>- @endif {{tr('videos')}}
 
 @endsection
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li><a href="{{route('admin.categories.list')}}"><i class="fa fa-list"></i> {{tr('category')}} </a></li>
     <li class="active"><i class="fa fa-video-camera"></i> {{tr('videos')}}</li>
 @endsection
 
@@ -22,8 +21,39 @@
           <div class="box box-primary">
 
           	<div class="box-header label-primary">
-                <b style="font-size:18px;">"{{$category->name}}" {{tr('category')}} {{tr('videos')}}</b>
+                <b style="font-size:18px;">{{tr('videos')}}</b>
+
                 <a href="{{route('admin.video_tapes.create')}}" class="btn btn-default pull-right">{{tr('add_video')}}</a>
+                
+                <!-- EXPORT OPTION START -->
+
+					@if(count($videos) > 0 )
+	                
+		                <ul class="admin-action btn btn-default pull-right" style="margin-right: 20px">
+		                 	
+							<li class="dropdown">
+				                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				                  {{tr('export')}} <span class="caret"></span>
+				                </a>
+				                <ul class="dropdown-menu">
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.export' , ['format' => 'xls'])}}">
+				                  			<span class="text-red"><b>{{tr('excel_sheet')}}</b></span>
+				                  		</a>
+				                  	</li>
+
+				                  	<li role="presentation">
+				                  		<a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.export' , ['format' => 'csv'])}}">
+				                  			<span class="text-blue"><b>{{tr('csv')}}</b></span>
+				                  		</a>
+				                  	</li>
+				                </ul>
+							</li>
+						</ul>
+
+					@endif
+
+	            <!-- EXPORT OPTION END -->
             </div>
 
             <div class="box-body">
@@ -37,6 +67,8 @@
 						    <tr>
 								<th>{{tr('id')}}</th>
 								<th>{{tr('channel')}}</th>
+								<th>{{tr('category')}}</th>
+								<th>{{tr('video_type')}}</th>
 								<th>{{tr('title')}}</th>
 
 								<?php /*@if(Setting::get('is_banner_video'))
@@ -61,13 +93,31 @@
 						<tbody>
 
 							@foreach($videos as $i => $video)
-
+							
 							    <tr>
 							      	
-							      	<td><a href="{{route('admin.video_tapes.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.video_tapes.view' , ['id' => $video->video_tape_id] )}}">{{$i+1}}</a></td>
 							      	
-							      	<td><a href="{{route('admin.channels.view', $video->channel_id)}}">{{$video->channel_name}}</a></td>
-							      	
+							      	<td><a href="{{route('admin.channels.view', ['channel_id' => $video->channel_id] )}}">{{$video->channel_name}}</a></td>
+							      		
+							      	<td><a href="{{route('admin.categories.view', ['category_id' => $video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
+
+							      	<td>
+							      		
+							      		@if($video->video_type == VIDEO_TYPE_UPLOAD) 
+                                            
+                                            {{tr('manual_upload')}}
+
+                                        @elseif($video->video_type == VIDEO_TYPE_YOUTUBE)
+
+                                            {{tr('youtube_links')}}
+
+                                        @else
+
+                                            {{tr('other_links')}}
+
+                                        @endif
+							      	</td>
 							      	<td><a href="{{route('admin.video_tapes.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 							      	<?php /*@if(Setting::get('theme') == 'default')
@@ -119,11 +169,11 @@
 							      	</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
-            								<li class="dropup">
+            								<li class="{{ $i <= 2 ? 'dropdown' : 'dropup' }} ">
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
-								                <ul class="dropdown-menu">
+								                <ul class="dropdown-menu dropdown-menu-right">
 								                	@if ($video->compress_status == 1)
 								                  	<li role="presentation">
                                                         @if(Setting::get('admin_delete_control'))
@@ -132,6 +182,11 @@
                                                             <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
+
+                                                    @else
+
+                                                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.compress.status' , array('id' => $video->video_tape_id))}}">{{tr('do_compression_in_background')}}</a></li>
+
                                                     @endif
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video_tapes.view' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 
@@ -146,12 +201,12 @@
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@if($video->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}" onclick="return confirm('{{tr("decline_video")}}')">{{tr('decline')}}</a></li>
 								                	@else
 								                		@if ($video->compress_status == 0)
 								                			<li role="presentation"><a role="menuitem" tabindex="-1">{{tr('compress')}}</a></li>
 								                		@else 
-								                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  			<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('{{tr("approve_video")}}')" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
 								                  		@endif
 								                  	@endif
 

@@ -112,7 +112,7 @@
 		              <b>{{tr('channels')}}</b> <a target="_blank" class="pull-right" href="{{route('admin.users.channels' , $user_details->id)}}">{{$user_details->get_channel_count}}</a>
 		            </li>
 		            <li class="list-group-item">
-		              <b>{{tr('videos')}}</b> <a class="pull-right" target="_blank" href="{{route('admin.videos.list' , $user_details->id)}}">{{$user_details->get_channel_videos_count}}</a>
+		              <b>{{tr('videos')}}</b> <a class="pull-right" target="_blank" href="{{route('admin.video_tapes.list' , $user_details->id)}}">{{$user_details->get_channel_videos_count}}</a>
 		            </li>
 		            <li class="list-group-item">
 		              <b>{{tr('wishlists')}}</b> <a href="{{route('admin.users.wishlist', $user_details->id)}}" class="pull-right" target="_blank">{{$user_details->user_wishlist_count}}</a>

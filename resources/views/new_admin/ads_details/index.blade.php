@@ -121,7 +121,7 @@
 								      <div id="myModal_{{ $i }}" class="modal fade" role="dialog">
 								        <div class="modal-dialog">
 
-								        <form method="get" action="{{ route('admin.videos.assign_ad') }}">
+								        <form method="get" action="{{ route('admin.video_tapes.assign_ad') }}">
 								        	
 								        	<div class="modal-content">
 									            

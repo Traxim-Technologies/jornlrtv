@@ -112,7 +112,7 @@
 
 			              				<!-- <a href="{{ route('admin.tags.videos' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-success" title="Tagged Videos"><i class="fa fa-video-camera"></i></a> -->
 
-			              				<a href="{{ route('admin.videos.list' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-success" title="Tagged Videos"><i class="fa fa-video-camera"></i></a>
+			              				<a href="{{ route('admin.video_tapes.index' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-success" title="Tagged Videos"><i class="fa fa-video-camera"></i></a>
 						      		
 						      		</td>
 							      	

@@ -74,7 +74,7 @@
                 </ul>
             </div>
 
-            <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.videos.save')}}">
+            <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.video_tapes.save')}}">
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
@@ -337,9 +337,9 @@
              return "Data will be lost if you leave the page, are you sure?";
         };
 
-        var save_img_url = "{{route('admin.videos.save.default_img')}}";
+        var save_img_url = "{{route('admin.video_tapes.save.default_img')}}";
 
-        var upload_video_image_url ="{{route('admin.videos.upload_image')}}";
+        var upload_video_image_url ="{{route('admin.video_tapes.upload_image')}}";
     </script>
  
 @endsection

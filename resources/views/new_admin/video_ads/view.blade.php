@@ -38,7 +38,7 @@ hr {
         <div class="tab-pane active" id="preview_ad">
 
             <div class="col-lg-6">
-                @include('admin.videos.streaming')
+                @include('admin.video_tapes.streaming')
             </div>
 
             <div class="col-lg-6">

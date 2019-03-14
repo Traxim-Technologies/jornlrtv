@@ -3176,7 +3176,645 @@ class NewAdminController extends Controller {
     }
 
 
+    /**
+     * Function Name : video_tapes_index
+     *
+     * @uses List of videos displayed and also based on user it will list out
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param 
+     * 
+     * @return response of videos details
+     *
+     */
+    public function video_tapes_index(Request $request) {
 
+        try {
+
+            $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc');
+
+            if($request->has('tag_id')) {
+
+                $tag_details = Tag::find($request->tag_id);
+
+                if (count($tag_details) == 0) {
+
+                    throw new Exception(tr('admin_tag_not_found'), 101);
+                }
+
+                $base_query->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
+                        ->where('video_tape_tags.tag_id', $request->tag_id)
+                        ->orderBy('video_tapes.created_at' , 'desc')
+                        ->groupBy('video_tape_tags.video_tape_id');
+           
+            }
+
+            if ($request->user_id) {
+
+                $base_query->where('video_tapes.user_id', $request->user_id);
+            }
+
+            $video_tapes = $base_query->get();
+
+            return view('admin.video_tapes.index')
+                        ->with('video_tapes' , $video_tapes)
+                        ->with('video_tapes', 'video_tapes-index')
+                        ->with('sub_page','video_tapes-view');
+   
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.video_tapes.index')->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name : video_tapes_create
+     *
+     * @uses To create new video 
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param 
+     * 
+     * @return view page
+     *
+     */
+    public function video_tapes_create(Request $request) {
+
+        try {
+
+            $channels = getChannels();
+
+            $categories = Category::select('id as category_id', 'name as category_name')
+                                ->where('status', CATEGORY_APPROVE_STATUS)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+
+            $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                        ->where('status', TAG_APPROVE_STATUS)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
+            return view('admin.video_tapes.create')
+                    ->with('page' ,'video_tapes')
+                    ->with('sub_page' ,'video_tapes-create')
+                    ->with('channels' , $channels)
+                    ->with('categories', $categories)
+                    ->with('tags', $tags);
+
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.video_tapes.index')->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function Name : videos_edit
+     *
+     * @uses To Edit a video based on video id
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param Integer $request video_tape_id
+     * 
+     * @return view page
+     *
+     */
+    public function videos_edit(Request $request) {
+
+        try {
+
+            $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc')
+                        ->first();
+
+            if (!$video_tape_details) {
+
+                throw new Exception(tr('video_not_found'), 101);
+            }
+
+            $page = 'video_tapes'; $sub_page = 'video_tapes-create';
+
+            if($video->is_banner == 1) {
+
+                $page = 'banner-videos'; $sub_page = 'banner-videos';
+            }
+
+            $channels = getChannels();
+
+                $categories = Category::select('id as category_id', 'name as category_name')
+                                ->where('status', CATEGORY_APPROVE_STATUS)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+
+                $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                                ->where('status', TAG_APPROVE_STATUS)
+                                ->orderBy('created_at', 'desc')->get();
+
+                $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
+
+                return view('admin.video_tapes.edit')
+                        ->with('page' ,$page)
+                        ->with('sub_page' ,$sub_page)
+                        ->with('channels' , $channels)
+                        ->with('video_tape_details' ,$video_tape_details)
+                        ->with('tags', $tags)
+                        ->with('categories', $categories);
+
+            } else {
+
+
+            }
+
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.video_tapes.index')->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name : videos_save()
+     *
+     * To Save video based on new /edit video details
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Object $request - Video Object Details
+     * 
+     * @return response of success/failure 
+     *
+     */
+    public function videos_save(Request $request) {
+
+        $response = CommonRepo::video_save($request)->getData();
+
+        if ($response->success) {
+
+            $view = '';
+
+            if ($response->data->video_type == VIDEO_TYPE_UPLOAD) {
+
+                $tape_images = VideoTapeImage::where('video_tape_id', $response->data->id)->get();
+
+                $view = \View::make('admin.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
+
+            }
+
+            return response()->json(['success'=>true, 'path'=>$view, 'data'=>$response->data], 200);
+
+        } else {
+
+            return response()->json($response);
+
+        }
+
+    }
+
+
+    /**
+     * Function Name : video_tapes_images()
+     *
+     * @uses To get images which is uploaded based on the video_tape_id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $request video_tape_id
+     * 
+     * @return response of success/failure 
+     *
+     */
+    public function video_tapes_images($id) {
+
+        try {
+
+            $response = CommonRepo::get_video_tape_images($id)->getData();
+
+            $tape_images = VideoTapeImage::where('video_tape_id', $id)->get();
+
+            $view = \View::make('admin.videos.select_image')->with('model', $response)->with('tape_images', $tape_images)->render();
+
+            return response()->json(['path' => $view, 'data'=>$response->data]);
+
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            $response_array = ['success' => false, 'error' => $error];
+
+            return response()->json($response_array, 200);
+
+        }
+
+    } 
+
+    /**
+     * Function Name : video_tapes_default_image_save()
+     *
+     * @uses To set the default image based on object details
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param Integer $request video_tape_id
+     * 
+     * @return JSON Response
+     *
+     */
+    public function video_tapes_default_image_save(Request $request) {
+
+        try {
+
+            $response_array = CommonRepo::set_default_image($request)->getData();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            $response_array = ['success' => false, 'error' => $e->getMessage()];
+
+            return response()->json($response_array, 200);
+        }
+
+    }
+
+    /**
+     * Function Name : videos_upload_image()
+     *
+     * To save the image based on object details
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $request - Video Id, Video details
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_upload_image(Request $request) {
+
+        $response = CommonRepo::upload_video_image($request)->getData();
+
+        return response()->json($response);
+
+    }
+
+    /**
+     * Function Name : videos_status()
+     *
+     * To change the status of approve/decline video
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $request - Video Id, Video details
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_status($id) {
+
+        $video = VideoTape::find($id);
+
+        $video->is_approved = $video->is_approved ? DEFAULT_FALSE : DEFAULT_TRUE;
+
+        $video->save();
+
+        if($video->is_approved == DEFAULT_TRUE) {
+
+            $message = tr('admin_not_video_approve');
+
+        } else {
+
+            $message = tr('admin_not_video_decline');
+
+        }
+
+        return back()->with('flash_success', $message);
+    
+    }
+
+    /**
+     * Function Name : videos_publish()
+     *
+     * To publish the video based on changing the status of the video
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_publish($id) {
+
+        // Load video based on Auto increment id
+        $video = VideoTape::find($id);
+
+        // Check the video present or not
+        if ($video) {
+
+            $video->status = DEFAULT_TRUE;
+
+            $video->publish_time = date('Y-m-d H:i:s');
+
+            // Save the values in DB
+            if ($video->save()) {
+
+                return back()->with('flash_success', tr('admin_published_video_success'));
+
+            }
+
+        }
+
+        return back()->with('flash_error', tr('admin_published_video_failure'));
+    }
+
+
+    /**
+     * Function Name : videos_delete()
+     *
+     * To delete a video based on video id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function videos_delete($id) {
+
+        if($video = VideoTape::where('id' , $id)->first())  {
+
+            $video->delete();
+
+            return back()->with('flash_success', tr('video_delete_success'));
+        }
+
+        return back()->with('flash_error', tr('video_not_found'));
+    
+    }
+
+    /**
+     * Function Name : videos_view
+     *
+     * @uses get video details
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param 
+     * 
+     * @return view page 
+     *
+     */
+    public function videos_view(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all() , [
+                    'id' => 'required|exists:video_tapes,id'
+                ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+                
+            }
+
+            $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
+                        ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc')
+                        ->first();
+
+            $videoPath = $video_pixels = $videoStreamUrl = '';
+
+            if ($video->video_type == VIDEO_TYPE_UPLOAD) {
+
+                if (\Setting::get('streaming_url')) {
+                    $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
+                    if ($video->is_approved == 1) {
+                        if ($video->video_resolutions) {
+                            $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+                        }
+                    }
+                } else {
+
+                    $videoPath = $video->video_resize_path ? $videos->video.','.$video->video_resize_path : $video->video;
+                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                    
+
+                }
+           
+            } else {
+                $videoStreamUrl = $video->video;
+            }
+        
+            $admin_video_images = $video->getScopeVideoTapeImages;
+
+            // Spam Videos Reports
+
+            $spam_reports = Flag::select('users.name as user_name', 'flags.*')
+                    ->leftjoin('users', 'users.id', '=', 'flags.user_id')
+                    ->where('video_tape_id', $request->id)->paginate(12);
+
+            // User Reviews 
+
+            $reviews = UserRating::select('users.name as user_name', 'user_ratings.*')
+                    ->leftjoin('users', 'users.id', '=', 'user_ratings.user_id')
+                    ->where('video_tape_id', $request->id)->paginate(12);
+
+            // Wishlists
+
+            $wishlists = Wishlist::select( 'wishlists.*','users.name as user_name')
+                    ->leftjoin('users', 'users.id', '=', 'wishlists.user_id')
+                    ->where('video_tape_id', $request->id)->get(12);
+
+
+            $page = 'video_tapes'; $sub_page = 'video_tapes-create';
+
+            if($video->is_banner == 1) {
+
+                $page = 'banner-videos'; $sub_page = 'banner-videos';
+            }
+
+            return view('admin.videos.view-video')->with('video' , $video)
+                            ->with('video_images' , $admin_video_images)
+                            ->with('page', $page)
+                            ->with('sub_page', $sub_page)
+                            ->with('videoPath', $videoPath)
+                            ->with('video_pixels', $video_pixels)
+                            ->with('videoStreamUrl', $videoStreamUrl)
+                            ->with('spam_reports', $spam_reports)
+                            ->with('reviews', $reviews)
+                            ->with('wishlists', $wishlists);
+
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.video_tapes.index')->with('flash_error',$error);
+        }
+    
+    }
+
+
+    /**
+     * Function Name : videos_wishlist
+     *
+     * @uses To list out all the wishlist details based on user
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param integer $request - Video id
+     * 
+     * @return - Response of wishlist based on id
+     *
+     */
+    public function videos_wishlist(Request $request) {
+
+        $wishlists = Wishlist::where('wishlists.video_tape_id' , $request->id)
+                        ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
+                        ->leftJoin('video_tapes' , 'wishlists.video_tape_id' , '=' , 'video_tapes.id')
+                        ->select(
+                            'users.name as username' , 
+                            'users.id as user_id' , 
+                            'wishlists.video_tape_id',
+                            'wishlists.id as wishlist_id',
+                            'video_tapes.title',
+                            'wishlists.created_at'
+                            )
+                        ->get();
+
+        return view('admin.videos.wishlists')
+                    ->with('data' , $wishlists)
+                    ->withPage('videos')
+                    ->with('sub_page','view-videos');
+     
+    }
+
+
+      
+
+
+    /**
+     * Function Name : videos_set_ppv
+     *
+     * Brief : To save the payment details
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param integer $id Video Id
+     *
+     * @param object  $request Object (Post Attributes)
+     *
+     * @return flash message
+     */
+    public function videos_set_ppv($id, Request $request) {
+        
+        if($request->ppv_amount > 0){
+
+            // Load Video Model
+            $model = VideoTape::find($id);
+
+            // Get post attribute values and save the values
+            if ($model) {
+
+                 $request->request->add([ 
+                    'ppv_created_by'=> 0 ,
+                    'is_pay_per_view'=>PPV_ENABLED
+                ]); 
+
+                if ($data = $request->all()) {
+
+                    // Update the post
+                    if (VideoTape::where('id', $id)->update($data)) {
+                        // Redirect into particular value
+                        return back()->with('flash_success', tr('payment_added'));       
+                    } 
+                }
+            }
+
+            return back()->with('flash_error', tr('admin_published_video_failure'));
+
+        } else {
+
+            return back()->with('flash_error',tr('add_ppv_amount'));
+        }
+    
+    }
+
+
+    /**
+     * Function Name : videos_remove_ppv
+     *
+     * Brief : To remove PPV Details
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param integer $id Video Id
+     *     
+     * @return flash message
+     */
+    public function videos_remove_ppv($id) {
+        
+        // Load video model using auto increment id of the table
+        $model = VideoTape::find($id);
+        if ($model) {
+            $model->ppv_amount = 0;
+            $model->is_pay_per_view = PPV_DISABLED;
+            $model->type_of_subscription = 0;
+            $model->type_of_user = 0;
+            $model->save();
+            if ($model) {
+                return back()->with('flash_success' , tr('removed_pay_per_view'));
+            }
+        }
+        return back()->with('flash_error' , tr('admin_published_video_failure'));
+    
+    }
 
 
 

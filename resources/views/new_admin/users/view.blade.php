@@ -103,7 +103,7 @@
 		            </li>
 
 		            <li class="list-group-item">
-		              	<b>{{ tr('videos') }}</b> <a class="pull-right" target="_blank" href="{{ route('admin.videos.list' ,['user_id' => $user_details->id]) }}">{{ $user_details->get_channel_videos_count }}</a>
+		              	<b>{{ tr('videos') }}</b> <a class="pull-right" target="_blank" href="{{ route('admin.video_tapes.index' ,['user_id' => $user_details->id]) }}">{{ $user_details->get_channel_videos_count }}</a>
 		            </li>
 
 		            <li class="list-group-item">
@@ -400,7 +400,7 @@
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 
-								      	<td><a href="{{route('admin.videos.view' , ['id' => $wishlist_details->video_tape_id] )}}"> {{ $wishlist_details->title }}</a></td>
+								      	<td><a href="{{route('admin.video_tapes.view' , ['id' => $wishlist_details->video_tape_id] )}}"> {{ $wishlist_details->title }}</a></td>
 
 								      	<td>{{ $wishlist_details->created_at->diffForHumans() }}</td>
 
@@ -442,7 +442,7 @@
 								      	<td>{{ $i+1 }}</td>
 
 								      	<td>
-								      		<a href="{{route('admin.videos.view' , ['id' => $history_details->video_tape_id] )}}"> {{ $history_details->title }} </a> 
+								      		<a href="{{route('admin.video_tapes.view' , ['id' => $history_details->video_tape_id] )}}"> {{ $history_details->title }} </a> 
 								      	</td>
 
 								      	<td>{{ $history_details->created_at->diffForHumans() }}</td>

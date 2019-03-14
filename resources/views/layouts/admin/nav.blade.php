@@ -68,22 +68,22 @@
                 </a>
             </li>
 
-            <li class="treeview" id="videos">
+            <li class="treeview" id="video_tapes">
                 
-                <a href="{{route('admin.videos.list')}}">
+                <a href="{{route('admin.video_tapes.index')}}">
                     <i class="fa fa-video-camera"></i> <span>{{tr('videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
 
-                    <li id="add-video">
-                        <a href="{{route('admin.videos.create')}}">
+                    <li id="video_tapes-index">
+                        <a href="{{route('admin.video_tapes.create')}}">
                             <i class="fa fa-circle-o"></i>{{tr('add_video')}}
                         </a>
                     </li>
 
-                    <li id="view-videos">
-                        <a href="{{route('admin.videos.list')}}">
+                    <li id="video_tapes-create">
+                        <a href="{{route('admin.video_tapes.index')}}">
                             <i class="fa fa-circle-o"></i>{{tr('view_videos')}}
                         </a>
                     </li>

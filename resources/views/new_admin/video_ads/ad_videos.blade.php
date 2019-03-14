@@ -56,7 +56,7 @@
 
 							      		@if($data->title)
 
-							      			<a href="{{route('admin.videos.view', array('id'=>$data->video_tape_id))}}" target="_blank">{{substr($data->title , 0,25)}}</a>
+							      			<a href="{{route('admin.video_tapes.view', array('id'=>$data->video_tape_id))}}" target="_blank">{{substr($data->title , 0,25)}}</a>
 							      		@endif
 
 							      	</td>

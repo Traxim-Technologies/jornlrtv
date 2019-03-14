@@ -73,7 +73,7 @@ use  Carbon\Carbon;
               		<i class="fa fa-video-camera"></i>
             	</div>
 
-            	<a href="{{route('admin.videos.list')}}" class="small-box-footer">
+            	<a href="{{route('admin.video_tapes.index')}}" class="small-box-footer">
               		{{tr('more_info')}}
               		<i class="fa fa-arrow-circle-right"></i>
             	</a>
@@ -281,7 +281,7 @@ use  Carbon\Carbon;
                                             <img src="{{$video_detauils->default_image}}" alt="Product Image">
                                         </div>
                                         <div class="product-info">
-                                            <a href="{{route('admin.videos.view' , ['id' => $video_detauils->video_tape_id] )}}" class="product-title">{{substr($video_detauils->title, 0,50)}}
+                                            <a href="{{route('admin.video_tapes.view' , ['id' => $video_detauils->video_tape_id] )}}" class="product-title">{{substr($video_detauils->title, 0,50)}}
                                                 <span class="label label-warning pull-right">{{$video_detauils->duration}}</span>
                                             </a>
                                             <span class="product-description">
@@ -300,7 +300,7 @@ use  Carbon\Carbon;
 
                     <!-- /.box-body -->
                     <div class="box-footer text-center">
-                        <a href="{{route('admin.videos.list')}}" class="uppercase">{{tr('view_all')}}</a>
+                        <a href="{{route('admin.video_tapes.index')}}" class="uppercase">{{tr('view_all')}}</a>
                     </div>
                     <!-- /.box-footer -->
                 </div>
