@@ -7243,7 +7243,9 @@ class UserApiController extends Controller {
             foreach ($playlists as $key => $playlist_details) {
 
                 $first_video_from_playlist = PlaylistVideo::where('playlist_videos.playlist_id', $playlist_details->playlist_id)
-                                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'playlist_videos.video_tape_id')->select('video_tapes.id as video_tape_id', 'video_tapes.default_image as picture')->first();
+                                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'playlist_videos.video_tape_id')
+                                            ->select('video_tapes.id as video_tape_id', 'video_tapes.default_image as picture')
+                                            ->first();
 
                 $playlist_details->picture = $first_video_from_playlist ? $first_video_from_playlist->picture : asset('images/playlist.png');
 
@@ -7515,6 +7517,8 @@ class UserApiController extends Controller {
             $video_tape_ids = PlaylistVideo::where('playlist_id', $request->playlist_id)->pluck('playlist_videos.video_tape_id')->toArray();
 
             $video_tapes = VideoRepo::video_tape_list($video_tape_ids, $request->id);
+
+            $playlist_details->picture = $video_tapes ? $video_tapes[0]->default_image : asset('images/playlist.png');
 
             $playlist_details->total_videos = count($video_tapes);
 
