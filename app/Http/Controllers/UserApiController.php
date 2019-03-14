@@ -2883,12 +2883,8 @@ class UserApiController extends Controller {
 
         $validator = Validator::make($request->all(), 
             array(
-                'number' => 'required|numeric',
-                'card_token'=>'required',
-               // 'month'=>'required',
-               // 'year'=>'required',
-               // 'cvv'=>'required',
-                'card_name'=>'required',
+                'card_token'=> 'required',
+                'card_holder_name'=>'',
             )
             );
 
@@ -2942,7 +2938,7 @@ class UserApiController extends Controller {
 
                     $cards->cvv = $request->cvv;
 
-                    $cards->card_name = $request->card_name;
+                    $cards->card_name = $request->card_holder_name;
 
                     $cards->month = $request->month;
 

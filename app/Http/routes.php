@@ -707,7 +707,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/card', 'UserController@card_details')->name('card.card_details');
 
-    Route::post('/add-card', 'UserController@payment_card_add')->name('card.add_card');
+    Route::post('/add-card', 'UserController@cards_add')->name('card.add_card');
 
 
     Route::post('/pay_tour','UserController@pay_tour')->name('card.card');
