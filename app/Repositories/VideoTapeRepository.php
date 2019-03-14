@@ -839,7 +839,9 @@ class VideoTapeRepository {
 
                 $video_tape_details->channel_name = $channel_details ? $channel_details->name : "";
 
-                $pay_per_view_status = self::pay_per_views_status_check($user_details ? $user_details->id : '', $user_details ? $user_details->user_type : '', $value)->getData()->success;
+                $value->video_tape_id = $value->id; // Don't remove, this is used in below ppv_status check 
+
+                $pay_per_view_status = self::pay_per_views_status_check($logged_in_user_id, $user_details ? $user_details->user_type : '', $value)->getData()->success;
 
                 $video_tape_details->pay_per_view_status = $pay_per_view_status;
 
