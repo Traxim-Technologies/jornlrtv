@@ -839,15 +839,23 @@ class VideoTapeRepository {
 
                 $video_tape_details->channel_name = $channel_details ? $channel_details->name : "";
 
+                // PPV data start 
+
                 $value->video_tape_id = $value->id; // Don't remove, this is used in below ppv_status check 
 
                 $pay_per_view_status = self::pay_per_views_status_check($logged_in_user_id, $user_details ? $user_details->user_type : '', $value)->getData()->success;
 
                 $video_tape_details->pay_per_view_status = $pay_per_view_status;
 
+                $is_ppv_subscribe_page = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? YES : NO ) : NO; 
+
+                $video_tape_details->is_ppv_subscribe_page = $is_ppv_subscribe_page;
+
                 $video_tape_details->ppv_amount = $value->ppv_amount;
 
                 $video_tape_details->currency = Setting::get('currency');
+
+                // PPV data end 
 
                 array_push($video_tapes, $video_tape_details);
             
