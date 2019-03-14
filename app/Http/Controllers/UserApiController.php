@@ -7242,6 +7242,11 @@ class UserApiController extends Controller {
 
             foreach ($playlists as $key => $playlist_details) {
 
+                $first_video_from_playlist = PlaylistVideo::where('playlist_videos.playlist_id', $playlist_details->playlist_id)
+                                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'playlist_videos.video_tape_id')->select('video_tapes.id as video_tape_id', 'video_tapes.default_image as picture')->first();
+
+                $playlist_details->picture = $first_video_from_playlist ? $first_video_from_playlist->picture : asset('images/playlist.png');
+
                 $check_video = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->where('video_tape_id', $request->video_tape_id)->count();
 
 
