@@ -6111,6 +6111,8 @@ class UserApiController extends Controller {
 
                     $card_details->last_four = $customer->sources->data[0]->last4 ? $customer->sources->data[0]->last4 : "";
 
+                    $card_details->cvv = "001";
+
                     // Check is any default is available
 
                      // check the user having any cards 
