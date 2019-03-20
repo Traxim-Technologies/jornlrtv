@@ -90,7 +90,34 @@ use App\RedeemRequest;
 
 use App\PayPerView;
 
+use App\Playlist;
+
+use App\PlaylistVideo;
+
 class NewAdminController extends Controller {
+
+    public function check_role(Request $request) {
+        
+        if(Auth::guard('admin')->check()) {
+            
+            $admin_details = Auth::guard('admin')->user();
+
+            if($admin_details->role == ADMIN) {
+
+                return redirect()->route('admin.dashboard');
+            }
+
+            if($admin_details->role == SUBADMIN) {
+
+                return redirect()->route('subadmin.dashboard');
+            }
+
+        } else {
+
+            return redirect()->route('admin.login');
+        }
+
+    }
    
     public function dashboard() {
 
@@ -1359,7 +1386,7 @@ class NewAdminController extends Controller {
                         ->orderBy('video_tapes.created_at' , 'desc')
                         ->get();
 
-            return view('admin.videos.videos')
+            return view('new_admin.videos.videos')
                         ->withPage('videos')
                         ->with('sub_page','view-videos')
                         ->with('videos' , $videos)
@@ -4006,7 +4033,7 @@ class NewAdminController extends Controller {
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->get();
 
-        return view('admin.banner_videos.index')
+        return view('new_admin.banner_videos.index')
                     ->withPage('banner-videos')
                     ->with('sub_page','view-banner-videos')
                     ->with('videos' , $video_ads);   
@@ -5514,11 +5541,527 @@ class NewAdminController extends Controller {
         }    
     }
 
+    
+
+    /**
+     * Function Name : sub_admins_index()
+     *
+     * @uses To list out subadmins (only admin can access this option)
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param object $request
+     *
+     * @return view page
+     */
+    public function sub_admins_index() {
+
+        $sub_admins = Admin::orderBy('created_at', 'desc')->where('role', SUBADMIN)->get();
+
+        return view('new_admin.sub_admins.index')
+                ->with('page', 'sub-admins')
+                ->with('sub_page', 'sub-admins-view')
+                ->with('sub_admins', $sub_admins);        
+    }
+
+    /**
+     * Function Name : sub_admins_create()
+     *
+     * To create a sub admin only admin can access this option
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param object $request - -
+     *
+     * @return response of html page with details
+     */
+    public function sub_admins_create() {
+
+        $sub_admin_details = new Admin();
+
+        return view('new_admin.sub_admins.create')
+                ->with('page', 'sub-admins')
+                ->with('sub_page', 'sub-admins-create')
+                ->with('sub_admin_details', $sub_admin_details);
+    }
+
+    /**
+     * Function Name : sub_admins_edit()
+     *
+     * @uses To edit a sub admin based on subadmin id only  admin can access this option
+     * 
+     * @created
+     *
+     * @updated 
+     *
+     * @param object $request - sub Admin Id
+     *
+     * @return response of html page with details
+     */
+    public function sub_admins_edit(Request $request) {
+
+       try {
+          
+            $sub_admin_details = Admin::find($request->sub_admin_id);
+
+            if( count($sub_admin_details) == 0 ) {
+
+                throw new Exception( tr('admin_sub_admin_not_found'), 101);
+
+            }
+
+            return view('new_admin.sub_admins.edit')
+                        ->with('page', 'sub-admins')
+                        ->with('sub_page', 'sub-admins-view')
+                        ->with('sub_admin_details', $sub_admin_details);
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.sub_admins.index')->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name : sub_admins_view()
+     *
+     * @uses To view a sub admin based on sub admin id only admin can access this option
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param object $request - Sub Admin Id
+     *
+     * @return response of html page with details
+     */
+    public function sub_admins_view(Request $request) {
+
+        try {
+          
+            $sub_admin_details = Admin::find($request->sub_admin_id);
+
+            if( count($sub_admin_details) == 0 ) {
+
+                throw new Exception( tr('admin_sub_admin_not_found'), 101);
+            } 
+
+            return view('new_admin.sub_admins.view')
+                    ->with('page', 'sub-admins')
+                    ->with('sub_page', 'sub-admins-view')
+                    ->with('sub_admin_details', $sub_admin_details);
+       
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.sub_admins.index')->with('flash_error',$error);
+        }
+    }
 
 
+    /**
+     * Function Name : sub_admins_delete()
+     *
+     * @uses To delete a sub admin based on sub admin id. only admin can access this option
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param object $request - Sub Admin Id
+     *
+     * @return response of html page with details
+     */
+    public function sub_admins_delete(Request $request) {
+
+         try {
+
+            DB::beginTransaction();
+            
+            $sub_admin_details = Admin::where('id' , $request->sub_admin_id)->first();
+
+            if(count($sub_admin_details) == 0 ) {  
+
+                throw new Exception(tr('admin_sub_admin_not_found'), 101);
+            }
+            
+            if( $sub_admin_details->delete() ) {
+
+                DB::commit();
+
+                return redirect()->route('admin.sub_admins.index')->with('flash_success',tr('admin_sub_admin_delete_success'));
+            }
+
+            throw new Exception(tr('admin_sub_admin_delete_error'), 101);
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name : sub_admins_save()
+     *
+     * @uses To save the sub admin details
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param object $request - Sub Admin Id
+     *
+     * @return response of html page with details
+     */
+    public function sub_admins_save(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $validator = Validator::make( $request->all(),array(
+                    'name' => 'required|max:100',
+                    'email' => $request->sub_admin_id ? 'email|max:255|unique:admins,email,'.$request->sub_admin_id : 'required|email|max:255|unique:admins,email,NULL',
+                    'mobile' => 'digits_between:4,16',
+                    'address' => 'max:300',
+                    'sub_admin_id' => 'exists:admins,id',
+                    'picture' => 'mimes:jpeg,jpg,png',
+                    'description'=>'required|max:255',
+                    'password' => $request->sub_admin_id ? '' : 'required|min:6|confirmed',
+                )
+            );
+            
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            } 
+
+            $sub_admin_details = $request->sub_admin_id ? Admin::find($request->sub_admin_id) : new Admin;
+
+            if (!$sub_admin_details) {
+
+                throw new Exception(tr('sub_admin_not_found'), 101);
+            }
+
+            $sub_admin_details->name = $request->name ?: $sub_admin_details->name;
+
+            $sub_admin_details->email = $request->email ? $request->email : $sub_admin_details->email;
+
+            $sub_admin_details->mobile = $request->has('mobile') ? $request->mobile : $sub_admin_details->mobile;
+
+            $sub_admin_details->description = $request->description ? $request->description : '';
+
+            $sub_admin_details->role = SUBADMIN;
+
+            $sub_admin_details->picture = asset('placeholder.png');
+
+            if($request->hasFile('picture')) {
+
+                if($request->sub_admin_id) {
+
+                    Helper::delete_picture($sub_admin_details->picture, "/uploads/sub_admins/");
+                }
+
+                $sub_admin_details->picture = Helper::normal_upload_picture($request->picture, "/uploads/sub_admins/");
+            }
+                
+            if (!$sub_admin_details->id) {
+
+                $new_password = $request->password;
+                
+                $sub_admin_details->password = \Hash::make($new_password);
+            }
+
+            $sub_admin_details->timezone = $request->timezone;
+
+            $sub_admin_details->token = Helper::generate_token();
+
+            $sub_admin_details->token_expiry = Helper::generate_token_expiry();
+
+            $sub_admin_details->status = DEFAULT_TRUE;
+
+            if($sub_admin_details->save()) {
+
+                DB::commit();
+
+                $message = $request->sub_admin_id ? tr('admin_sub_admin_update_success') : tr('admin_sub_admin_create_success');
+                
+                return redirect()->route('admin.sub_admins.view', ['sub_admin_id' =>$sub_admin_details->id ])->with('flash_success', $message);
+            } 
+
+            throw new Exception(tr('admin_sub_admin_save_error'), 101);
+           
+        } catch (Exception $e) {
+            
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name : sub_admins_status()
+     *
+     * @uses To change the status of the sub admin, based on sub admin id. only admin can access this option
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param object $request - SubAdmin Id
+     *
+     * @return response of html page with details
+     */
+    public function sub_admins_status(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+       
+            $sub_admin_details = Admin::find($request->sub_admin_id);
+
+            if( count( $sub_admin_details) == 0) {
+                
+                throw new Exception(tr('admin_sub_admin_not_found'), 101);
+            } 
+            
+            $sub_admin_details->status = $sub_admin_details->status == APPROVED ? DECLINED : APPROVED;
+
+            $message = $sub_admin_details->status == APPROVED ? tr('admin_sub_admin_approve_success') : tr('admin_sub_admin_decline_success');
+
+            if( $sub_admin_details->save() ) {
+
+                DB::commit();
+
+                return back()->with('flash_success', $message);
+            } 
+
+            throw new Exception(tr('admin_sub_admin_status_error'), 101);
+            
+        } catch( Exception $e) {
+
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.sub_admins.index')->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name : users_playlist_index()
+     *
+     * @uses To list out user playlist
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param Integer (request) - $user_id
+     *
+     * @return view page
+     */
+    public function users_playlist_index(Request $request) {
+
+       try {
+            
+            $user_details = User::find($request->user_id);
+
+            if( count($user_details) == 0 ) {
+
+                throw new Exception( tr('admin_user_not_found'), 101);
+            } 
+            
+            $base_query = Playlist::where('playlists.user_id', $request->user_id)
+                                ->where('playlists.status', APPROVED)
+                                ->orderBy('playlists.updated_at', 'desc');
+
+            if($request->channel_id) {
+
+                $base_query = $base_query->where('playlists.channel_id', $request->channel_id);
+            }
+
+            $playlists = $base_query->CommonResponse()->get();
+
+            foreach ($playlists as $key => $playlist_details) {
+
+                $check_video = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->where('video_tape_id', $request->video_tape_id)->count();
 
 
+                $playlist_details->is_selected = $check_video ? YES : NO;
 
+                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
+            }
+
+            return view('new_admin.users.playlist_index')
+                    ->with('page', 'users')
+                    ->with('sub_page', 'users-view')
+                    ->with('playlists', $playlists);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+
+        }
+    }
+
+    /**
+     * Function Name : users_playlist_delete()
+     *
+     * @uses To delete user playlist 
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param Integer (request) - $playlist_id
+     *
+     * @return view page
+     */
+    public function users_playlist_delete(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $playlist_details = Playlist::find( $request->playlist_id );
+
+            if( count($playlist_details) == 0 ) {
+
+                throw new Exception( tr('admin_user_playlist_not_found'), 101);
+            } 
+
+            if( $playlist_details->delete()){
+               
+                DB::commit();
+                
+                return redirect()->back()->with('flash_success', tr('admin_user_playlist_delete_success'));
+            }
+
+            throw new Exception(tr('admin_user_playlist_delete_error'), 101);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+
+        }
+    }
+
+    /**
+     * Function Name : users_playlist_video_index()
+     *
+     * @uses To list users playlist videos
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param Integer (request) - $playlist_id
+     *
+     * @return view page
+     */
+    public function users_playlist_video_index(Request $request){
+
+        try {
+
+            DB::beginTransaction();
+
+            $playlist_details = Playlist::find($request->playlist_id );
+
+            if( count($playlist_details) == 0 ) {
+
+                throw new Exception( tr('admin_user_playlist_not_found'), 101);
+            } 
+
+            $playlists_videos = PlaylistVideo::where('playlist_id', $request->playlist_id)
+                        ->leftjoin('video_tapes','video_tapes.id','=','playlist_videos.video_tape_id')
+                        ->leftjoin('channels','channels.id','=','video_tapes.channel_id')
+                        ->addSelect('playlist_videos.id as playlist_video_id')
+                        ->addSelect('channels.name as channel_name')
+                        ->addSelect('video_tapes.title as video_tape_title', 'video_tapes.id as video_tape_id')
+                        ->get();
+
+            return view('new_admin.users.playlist_videos')
+                    ->with('page', 'users')
+                    ->with('sub_page', 'users-view')
+                    ->with('playlists_videos', $playlists_videos)
+                    ->with('playlist_details', $playlist_details);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+
+        }
+    }
+
+    /**
+     * Function Name : users_playlist_video_delete()
+     *
+     * @uses To delete video from user playlist 
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param Integer (request) - $playlist_video_id
+     *
+     * @return view page
+     */
+    public function users_playlist_video_delete(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $playlist_video_details = PlaylistVideo::find( $request->playlist_video_id );
+
+            if( count($playlist_video_details) == 0 ) {
+
+                throw new Exception( tr('admin_user_playlist_video_not_found'), 101);
+            } 
+
+            if( $playlist_video_details->delete()){
+               
+                DB::commit();
+                
+                return redirect()->back()->with('flash_success', tr('admin_user_playlist_video_delete_success'));
+            }
+
+            throw new Exception(tr('admin_user_playlist_video_delete_error'), 101);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+
+        }
+    }
 
 
 

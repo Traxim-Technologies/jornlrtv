@@ -67,7 +67,7 @@
 
                                 <div class="col-lg-6">
                                     <label for="exampleInputEmail1">{{ tr('password') }}*</label>
-                                    <input type="password" required name="{{ tr('password') }}" class="form-control" id="password" placeholder="{{ tr('password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
+                                    <input type="password" required name="password" class="form-control" id="password" placeholder="{{ tr('password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}" >
                                 </div>
 
                                 <div class="col-lg-6">

@@ -29,7 +29,7 @@ class AdminAuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'admin';
+    protected $redirectTo = 'admin/check_role';
 
     protected $redirectAfterLogout = '/admin/login';
 

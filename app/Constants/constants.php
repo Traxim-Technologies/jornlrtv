@@ -47,6 +47,7 @@ if(!defined('NONE')) define('NONE', 0);
 
 if(!defined('ADMIN')) define('ADMIN', 'admin');
 
+if(!defined('SUBADMIN')) define('SUBADMIN', 'sub_admin');
 
 
 // ON OFF STATUS

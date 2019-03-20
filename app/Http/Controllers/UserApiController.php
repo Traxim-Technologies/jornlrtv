@@ -7270,10 +7270,7 @@ class UserApiController extends Controller {
             if($request->channel_id) {
 
                 $base_query = $base_query->where('playlists.channel_id', $request->channel_id);
-
             }
-
-            // handle video_tape_id - flag and exists
 
             $skip = $request->skip ?: 0;
 

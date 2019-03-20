@@ -118,8 +118,9 @@ Route::get('/terms', 'ApplicationController@terms')->name('user.terms-condition'
 
 Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
 
+Route::get('/admin/check_role', 'NewAdminController@check_role');
 
-Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
+Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('login', 'Auth\AdminAuthController@showLoginForm')->name('login');
 
@@ -554,7 +555,16 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/users/wishlist/', 'NewAdminController@users_wishlist')->name('users.wishlist');
 
-    Route::get('/users/wishlist/delete/', 'NewAdminController@users_wishlist_delete')->name('users.wishlist.delete');
+    Route::get('/users/wishlist/delete/', 'NewAdminController@users_wishlist_delete')->name('users.wishlist.delete');    
+
+    Route::get('/users/playlist/index', 'NewAdminController@users_playlist_index')->name('users.playlist.index');
+    
+    Route::get('/users/playlist/delete', 'NewAdminController@users_playlist_delete')->name('users.playlist.delete');
+
+    Route::get('/users/playlist/view', 'NewAdminController@users_playlist_video_index')->name('users.playlist.view'); 
+
+    Route::get('/users/playlist/video/delete', 'NewAdminController@users_playlist_video_delete')->name('users.playlist.video.delete');
+
 
     //User Subscriptions
 
@@ -793,7 +803,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('settings' , 'NewAdminController@settings')->name('settings');
 
     Route::post('settings' , 'NewAdminController@settings_save')->name('save.settings');
-    
+     Route::post('settings/email' , 'NewAdminController@email_settings_process')->name('email.settings.save');
+     
     // Get ios control page
     Route::get('/ios-control','NewAdminController@ios_control')->name('ios_control');
     
@@ -834,8 +845,32 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('video-ads/inter-ads', 'NewAdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
 
+
+    // Sub Admins CRUD Operations
+
+    Route::get('sub_admins/index', 'NewAdminController@sub_admins_index')->name('sub_admins.index');
+
+    Route::get('sub_admins/create', 'NewAdminController@sub_admins_create')->name('sub_admins.create');
+
+    Route::get('sub_admins/edit', 'NewAdminController@sub_admins_edit')->name('sub_admins.edit');
+
+    Route::get('sub_admins/view', 'NewAdminController@sub_admins_view')->name('sub_admins.view');
+
+    Route::get('sub_admins/status', 'NewAdminController@sub_admins_status')->name('sub_admins.status');
+
+    Route::get('sub_admins/delete', 'NewAdminController@sub_admins_delete')->name('sub_admins.delete');
+
+    Route::post('sub_admins/save', 'NewAdminController@sub_admins_save')->name('sub_admins.save');
+
 });
 
+Route::group(['middleware' => ['SubAdminMiddleware', 'admin'], 'prefix' => 'subadmin', 'as' => 'subadmin.'], function () {
+
+    Route::get('/', 'SubAdminController@dashboard')->name('dashboard');
+
+    Route::get('subadmin/profile', 'SubAdminController@profile')->name('profile');
+
+});
 
 Route::group(['as' => 'user.'], function(){
 
