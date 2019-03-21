@@ -1362,6 +1362,11 @@ class AdminController extends Controller {
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
 
+            $video_tags = VideoTapeTag::where('video_tape_tags.video_tape_id' , $request->id)
+                    ->leftjoin('tags','tags.id' , '=' , 'video_tape_tags.tag_id')
+                    ->get();
+            // dd($video_tags);
+
             $videoPath = $video_pixels = $videoStreamUrl = '';
             if ($video->video_type == VIDEO_TYPE_UPLOAD) {
 
@@ -1421,7 +1426,8 @@ class AdminController extends Controller {
                     ->with('videoStreamUrl', $videoStreamUrl)
                     ->with('spam_reports', $spam_reports)
                     ->with('reviews', $reviews)
-                    ->with('wishlists', $wishlists);
+                    ->with('wishlists', $wishlists)
+                    ->with('video_tags', $video_tags);
         }
     
     }

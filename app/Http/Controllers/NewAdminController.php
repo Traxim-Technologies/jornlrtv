@@ -1545,7 +1545,6 @@ class NewAdminController extends Controller {
     public function categories_save(Request $request) {
         
         try {
-
             
             DB::beginTransaction();
 

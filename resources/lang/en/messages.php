@@ -906,7 +906,7 @@ return array(
 	'edit_language' => 'Edit Language',
 	'language_delete_success' => 'successfully, deleted the language',
 	'language_active_success' => 'Language Activated successfully.',
-	'language_inactive_success' => 'Language InActivated successfully.',
+	'language_inactive_success' => 'Language Inactivated successfully.',
 	'language_create_success' => 'Language added successfully.',
 	'language_update_success' => 'Language updated successfully.',
 	'active' => 'Active',
@@ -916,7 +916,7 @@ return array(
 	'failed_to_upload' => 'Failed To Upload, Your File length is different from original File Length',
 
 	'set_default_language' => 'Set As Default Lang',
-	'set_default_language_success' => 'successfully changed the language as Default Language',
+	'set_default_language_success' => 'Successfully changed the language as default language',
 	'session_success' => 'successfully changed the language',
 
 	'default' => 'Default',
