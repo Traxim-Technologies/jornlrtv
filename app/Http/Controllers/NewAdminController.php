@@ -5921,7 +5921,7 @@ class NewAdminController extends Controller {
             $playlists_videos = PlaylistVideo::where('playlist_id', $request->playlist_id)
                         ->leftjoin('video_tapes','video_tapes.id','=','playlist_videos.video_tape_id')
                         ->leftjoin('channels','channels.id','=','video_tapes.channel_id')
-                        ->addSelect('playlist_videos.id as playlist_video_id')
+                        ->addSelect('playlist_videos.id as playlist_video_id','playlist_videos.created_at as created_at')
                         ->addSelect('channels.name as channel_name')
                         ->addSelect('video_tapes.title as video_tape_title', 'video_tapes.id as video_tape_id')
                         ->get();

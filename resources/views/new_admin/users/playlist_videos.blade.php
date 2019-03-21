@@ -40,6 +40,8 @@
 							      	<th>{{ tr('channel') }}</th>
 
 							      	<th>{{ tr('title') }}</th>
+							      	
+							      	<th>{{ tr('added_on') }}</th>
 							      
 							      	<th>{{ tr('action') }}</th>
 							    </tr>
@@ -63,6 +65,9 @@
 								      		<a href="{{ route('admin.videos.view' ,  ['admin_video_id' => $playlists_video_details->id] ) }}">
 								      		{{ $playlists_video_details->video_tape_title }}
 								      		</a>
+									    </td>
+									    <td>
+									    	{{$playlists_video_details->created_at}}
 									    </td>
 
 									    <td>
