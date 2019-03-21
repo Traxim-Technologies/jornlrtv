@@ -23,7 +23,9 @@ use App\Admin;
 use App\User;
 
 use App\Channel;
+
 use App\VideoTape;
+
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
 class SubAdminController extends Controller
@@ -43,13 +45,15 @@ class SubAdminController extends Controller
      */
     public function dashboard() {
 
-         $admin = Admin::first();
+        $admin_id = Auth::guard('admin')->user()->id;
 
-        $admin->token = Helper::generate_token();
+        $admin_detals = Admin::find($admin_id);
+        
+        $admin_detals->token = Helper::generate_token();
 
-        $admin->token_expiry = Helper::generate_token_expiry();
+        $admin_detals->token_expiry = Helper::generate_token_expiry();
 
-        $admin->save();
+        $admin_detals->save();
         
         $user_count = User::count();
 

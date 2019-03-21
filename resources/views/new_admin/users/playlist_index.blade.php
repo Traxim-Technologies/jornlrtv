@@ -4,7 +4,7 @@
 
 @section('content-header') 
 
-{{ tr('playlist') }} 
+<a href="{{ route('admin.users.view',['user_id' => $user_details])}}" >{{ $user_details->name }}'s </a>- {{ tr('playlist') }} 
 
 @endsection
 
@@ -39,12 +39,14 @@
 
 							      	<th>{{ tr('id') }}</th>
 
-							      	<th>{{ tr('channel') }}</th>
+							      	<th style="display: none">{{ tr('channel') }}</th>
 
 							      	<th>{{ tr('playlist') }}</th>
 
 							      	<th>{{ tr('total_videos') }}</th>
 							      
+							      	<th>{{ tr('added_on') }}</th>
+
 							      	<th>{{ tr('action') }}</th>
 
 							    </tr>
@@ -58,7 +60,7 @@
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 
-								      	<td>
+								      	<td style="display: none">
 								      		@if($playlist_details->channel_name)
 								      			<a href="{{ route('admin.channels.view' ,  ['channel_id' => $playlist_details->channel_id] ) }}">{{ $playlist_details->channel_name}}</a>
 								      		@else
@@ -68,22 +70,25 @@
 
 								      	<td>{{ $playlist_details->title }}</td>
 
-								 		<td>
-								 			<a href="{{ route('admin.users.playlist.view' ,  ['playlist_id' => $playlist_details->playlist_id] ) }}"> {{ $playlist_details->total_videos }}</a>
-								 			</td>								      	
+								 		<td><a href="{{ route('admin.users.playlist.view' ,  ['playlist_id' => $playlist_details->playlist_id] ) }}"> {{ $playlist_details->total_videos }}</a>
+								 		</td>								      	
+								      	
+
+								      	<td> {{ $playlist_details->created_at  }} </td>
+								      	
 								      	<td>
 
-										@if(Setting::get('admin_delete_control') == YES )
+											@if(Setting::get('admin_delete_control') == YES )
 
-          									<a href="javascript:;" onclick="return confirm(&quot;{{ tr('admin_user_playlist_delete_confirmation',$playlist_details->title) }}&quot;)" class="btn btn-danger" title="{{tr('decline')}}" ><b><i class="fa fa-trash"></i></b> 
-          									</a>	
+	          									<a href="javascript:;" onclick="return confirm(&quot;{{ tr('admin_user_playlist_delete_confirmation',$playlist_details->title) }}&quot;)" class="btn btn-danger" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b> 
+	          									</a>	
 
-          								@else
+	          								@else
 
-											<a href="{{ route('admin.users.playlist.delete', ['playlist_id' => $playlist_details->playlist_id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_playlist_delete_confirmation',$playlist_details->title) }}&quot;)" class="btn btn-danger" title="{{tr('decline')}}" ><b><i class="fa fa-trash"></i></b> 
-          									</a>
+												<a href="{{ route('admin.users.playlist.delete', ['playlist_id' => $playlist_details->playlist_id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_playlist_delete_confirmation',$playlist_details->title) }}&quot;)" class="btn btn-danger" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b> 
+	          									</a>
 
-          								@endif
+	          								@endif
 								      	</td>
 
 								    </tr>

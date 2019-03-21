@@ -557,13 +557,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/users/wishlist/delete/', 'NewAdminController@users_wishlist_delete')->name('users.wishlist.delete');    
 
-    Route::get('/users/playlist/index', 'NewAdminController@users_playlist_index')->name('users.playlist.index');
+    Route::get('/users/playlist/index', 'NewAdminController@playlists_index')->name('users.playlist.index');
     
-    Route::get('/users/playlist/delete', 'NewAdminController@users_playlist_delete')->name('users.playlist.delete');
+    Route::get('/users/playlist/delete', 'NewAdminController@playlists_delete')->name('users.playlist.delete');
 
-    Route::get('/users/playlist/view', 'NewAdminController@users_playlist_video_index')->name('users.playlist.view'); 
+    Route::get('/users/playlist/view', 'NewAdminController@playlist_video')->name('users.playlist.view'); 
 
-    Route::get('/users/playlist/video/delete', 'NewAdminController@users_playlist_video_delete')->name('users.playlist.video.delete');
+    Route::get('/users/playlist/video/remove', 'NewAdminController@playlists_video_remove')->name('users.playlist.video.delete');
 
 
     //User Subscriptions

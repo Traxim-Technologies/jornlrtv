@@ -1879,6 +1879,6 @@ return array(
 	
 	'admin_user_playlist_video_delete_error'=>"Video could not be removed. Please try again!",
 
-
+	'added_on' =>'Added on',
 
 );
