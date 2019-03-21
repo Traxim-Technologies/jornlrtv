@@ -286,119 +286,114 @@ class NewAdminController extends Controller {
                 $error = implode(',', $validator->messages()->all());
 
                 throw new Exception($error, 101);
+            }
+
+            $user_details = $request->user_id ? User::find($request->user_id) : new User;
+
+            $new_user = NEW_USER;
+
+            if ($user_details->id) {
+
+                $new_user = EXISTING_USER;
+
+                $message = tr('admin_user_update_success');
 
             } else {
 
-                $user_details = $request->user_id ? User::find($request->user_id) : new User;
+                $user_details->password = ($request->password) ? \Hash::make($request->password) : null;
 
-                $new_user = NEW_USER;
+                $message = tr('admin_user_create_success');
 
-                if ($user_details->id) {
+                $user_details->login_by = 'manual';
 
-                    $new_user = EXISTING_USER;
+                $user_details->device_type = 'web';
 
-                    $message = tr('admin_user_update_success');
+                $user_details->picture = asset('placeholder.png');
 
-                } else {
-
-                    $user_details->password = ($request->password) ? \Hash::make($request->password) : null;
-
-                    $message = tr('admin_user_create_success');
-
-                    $user_details->login_by = 'manual';
-
-                    $user_details->device_type = 'web';
-
-                    $user_details->picture = asset('placeholder.png');
-
-                    $user_details->timezone = $request->has('timezone') ? $request->timezone : '';
-                }
-                
-                $user_details->name = $request->has('name') ? $request->name : '';
-
-                $user_details->email = $request->has('email') ? $request->email: '';
-
-                $user_details->mobile = $request->has('mobile') ? $request->mobile : '';
-
-                $user_details->description = $request->has('description') ? $request->description : '';
-                
-                $user_details->token = Helper::generate_token();
-
-                $user_details->token_expiry = Helper::generate_token_expiry();
-
-                $user_details->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user_details->dob;
-
-                if ($user_details->dob) {
-
-                    $from = new \DateTime($user_details->dob);
-
-                    $to   = new \DateTime('today');
-
-                    $user_details->age_limit = $from->diff($to)->y;
-                }
-
-                if ($user_details->age_limit < 10) {
-
-                    throw new Exception(tr('admin_user_min_age_error'), 101);
-                }
-
-                if ($new_user) {
-
-                    $email_data['name'] = $user_details->name;
-
-                    $email_data['password'] = $request->password;
-
-                    $email_data['email'] = $user_details->email;
-
-                    $subject = tr('user_welcome_title' , Setting::get('site_name'));
-
-                    $page = "emails.admin_user_welcome";
-
-                    $email = $user_details->email;
-
-                    $user_details->is_verified = USER_EMAIL_VERIFIED;
-
-                    Helper::send_email($page,$subject,$email,$email_data);
-
-                    register_mobile('web');
-                }
-
-                // Upload picture
-                if ($request->hasFile('picture') != "") {
-
-                    if ($request->user_id) {
-
-                        Helper::delete_picture($user_details->picture, "/uploads/images/users"); // Delete the old pic
-                    }
-
-                    $user_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/users");
-                }
-
-                if ($user_details->save()) {
-
-                    // Check the default subscription and save the user type
-
-                    if ($request->user_id == '') {
-                        
-                        user_type_check($user_details->id);
-                    }
-                    
-                    if ($user_details) {
-                        
-                        DB::commit();
-
-                        return redirect()->route('admin.users.view', ['user_id' => $user_details->id] )->with('flash_success', $message);
-
-                    } else {
-
-                        throw new Exception( tr('admin_user_save_error'), 101);
-                    }
-
-                } else {
-
-                    throw new Exception(tr('admin_user_save_error'), 101); 
-                }
+                $user_details->timezone = $request->has('timezone') ? $request->timezone : '';
             }
+            
+            $user_details->name = $request->has('name') ? $request->name : '';
+
+            $user_details->email = $request->has('email') ? $request->email: '';
+
+            $user_details->mobile = $request->has('mobile') ? $request->mobile : '';
+
+            $user_details->description = $request->has('description') ? $request->description : '';
+            
+            $user_details->token = Helper::generate_token();
+
+            $user_details->token_expiry = Helper::generate_token_expiry();
+
+            $user_details->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user_details->dob;
+
+            if ($user_details->dob) {
+
+                $from = new \DateTime($user_details->dob);
+
+                $to   = new \DateTime('today');
+
+                $user_details->age_limit = $from->diff($to)->y;
+            }
+
+            if ($user_details->age_limit < 10) {
+
+                throw new Exception(tr('admin_user_min_age_error'), 101);
+            }
+
+            if ($new_user) {
+
+                $email_data['name'] = $user_details->name;
+
+                $email_data['password'] = $request->password;
+
+                $email_data['email'] = $user_details->email;
+
+                $subject = tr('user_welcome_title' , Setting::get('site_name'));
+
+                $page = "emails.admin_user_welcome";
+
+                $email = $user_details->email;
+
+                $user_details->is_verified = USER_EMAIL_VERIFIED;
+
+                Helper::send_email($page,$subject,$email,$email_data);
+
+                register_mobile('web');
+            }
+
+            // Upload picture
+            if ($request->hasFile('picture') != "") {
+
+                if ($request->user_id) {
+
+                    Helper::delete_picture($user_details->picture, "/uploads/images/users"); // Delete the old pic
+                }
+
+                $user_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/users");
+            }
+
+            if ($user_details->save()) {
+
+                // Check the default subscription and save the user type
+
+                if ($request->user_id == '') {
+                    
+                    user_type_check($user_details->id);
+                }
+                
+                if ($user_details) {
+                    
+                    DB::commit();
+
+                    return redirect()->route('admin.users.view', ['user_id' => $user_details->id] )->with('flash_success', $message);
+
+                } 
+
+                throw new Exception( tr('admin_user_save_error'), 101);
+            } 
+
+            throw new Exception(tr('admin_user_save_error'), 101);             
 
         } catch (Exception $e) {
             
@@ -527,11 +522,10 @@ class NewAdminController extends Controller {
                             ->with('histories', $history)
                             ->with('spam_reports', $spam_reports)
                             ->with('user_ratings', $user_ratings);
-            } else {
+            } 
 
-                throw new Exception(tr('user_not_found'), 101);                
-            }
-
+            throw new Exception(tr('user_not_found'), 101);                
+           
         } catch( Exception $e) {
             
             $error = $e->getMessage();
@@ -641,11 +635,9 @@ class NewAdminController extends Controller {
                 DB::commit();
 
                 return back()->with('flash_success',$message );
-
             }
             
             throw new Exception(tr('admin_user_status_error'), 101);
-           
             
         } catch (Exception $e) {
 
