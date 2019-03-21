@@ -118,8 +118,9 @@ Route::get('/terms', 'ApplicationController@terms')->name('user.terms-condition'
 
 Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
 
+Route::get('/admin/check_role', 'NewAdminController@check_role');
 
-Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
+Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('login', 'Auth\AdminAuthController@showLoginForm')->name('login');
 
@@ -554,7 +555,16 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::get('/users/wishlist/', 'NewAdminController@users_wishlist')->name('users.wishlist');
 
-    Route::get('/users/wishlist/delete/', 'NewAdminController@users_wishlist_delete')->name('users.wishlist.delete');
+    Route::get('/users/wishlist/delete/', 'NewAdminController@users_wishlist_delete')->name('users.wishlist.delete');    
+
+    Route::get('/users/playlist/index', 'NewAdminController@playlists_index')->name('users.playlist.index');
+    
+    Route::get('/users/playlist/delete', 'NewAdminController@playlists_delete')->name('users.playlist.delete');
+
+    Route::get('/users/playlist/view', 'NewAdminController@playlist_video')->name('users.playlist.view'); 
+
+    Route::get('/users/playlist/video/remove', 'NewAdminController@playlists_video_remove')->name('users.playlist.video.delete');
+
 
     //User Subscriptions
 
@@ -793,7 +803,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
     Route::get('settings' , 'NewAdminController@settings')->name('settings');
 
     Route::post('settings' , 'NewAdminController@settings_save')->name('save.settings');
-    
+     Route::post('settings/email' , 'NewAdminController@email_settings_process')->name('email.settings.save');
+     
     // Get ios control page
     Route::get('/ios-control','NewAdminController@ios_control')->name('ios_control');
     
@@ -834,8 +845,32 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     Route::post('video-ads/inter-ads', 'NewAdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
 
+
+    // Sub Admins CRUD Operations
+
+    Route::get('sub_admins/index', 'NewAdminController@sub_admins_index')->name('sub_admins.index');
+
+    Route::get('sub_admins/create', 'NewAdminController@sub_admins_create')->name('sub_admins.create');
+
+    Route::get('sub_admins/edit', 'NewAdminController@sub_admins_edit')->name('sub_admins.edit');
+
+    Route::get('sub_admins/view', 'NewAdminController@sub_admins_view')->name('sub_admins.view');
+
+    Route::get('sub_admins/status', 'NewAdminController@sub_admins_status')->name('sub_admins.status');
+
+    Route::get('sub_admins/delete', 'NewAdminController@sub_admins_delete')->name('sub_admins.delete');
+
+    Route::post('sub_admins/save', 'NewAdminController@sub_admins_save')->name('sub_admins.save');
+
 });
 
+Route::group(['middleware' => ['SubAdminMiddleware', 'admin'], 'prefix' => 'subadmin', 'as' => 'subadmin.'], function () {
+
+    Route::get('/', 'SubAdminController@dashboard')->name('dashboard');
+
+    Route::get('subadmin/profile', 'SubAdminController@profile')->name('profile');
+
+});
 
 Route::group(['as' => 'user.'], function(){
 
@@ -855,9 +890,9 @@ Route::group(['as' => 'user.'], function(){
 
     // Wishlist
 
-    Route::post('addWishlist', 'UserController@add_wishlist')->name('add.wishlist');
+    Route::post('addWishlist', 'UserController@wishlist_create')->name('add.wishlist');
 
-    Route::get('deleteWishlist', 'UserController@delete_wishlist')->name('delete.wishlist');
+    Route::get('deleteWishlist', 'UserController@wishlist_delete')->name('delete.wishlist');
 
 
     // Comments
@@ -1129,11 +1164,11 @@ Route::group(['prefix' => 'userApi'], function(){
 
     // Wish List
 
-    Route::post('/addWishlist', 'UserApiController@add_wishlist');
+    Route::post('/addWishlist', 'UserApiController@wishlist_create');
 
     Route::post('/getWishlist', 'UserApiController@get_wishlist');
 
-    Route::post('/deleteWishlist', 'UserApiController@delete_wishlist');
+    Route::post('/deleteWishlist', 'UserApiController@wishlist_delete');
 
     // History
 

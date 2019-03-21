@@ -459,7 +459,7 @@ return array(
 	'paypal_email' => 'Paypal Email',
 	'default' => 'Default',
 	'default_lang' => 'Default Language',
-	'delete_confirmation' => 'Are you sure want to Delete?',
+	'delete_confirmation' => 'Are you sure? Do you want to Delete?',
 
 
 	//Admin Notifications
@@ -1213,7 +1213,7 @@ return array(
 	'service_completed' => 'Service completed',
 	'user_rating_done' => 'User rating done',
 	'request_cancelled_successfully.' => 'Request cancelled successfully.',
-	'wishlist_added' => 'Wishlist added.',
+
 	'payment_confirmed_successfully.' => 'Payment confirmed successfully.',
 	'history_added' => 'History added.',
 	'history_deleted_successfully.' => 'History deleted successfully.',
@@ -1349,7 +1349,7 @@ return array(
 	'view_and_assign_ad' => 'View & Assign Ad',
 	'ad_not_found' => 'You are searching Ad not found..!',
 	'duration_in_seconds' => 'Duration In Seconds',
-	'are_you_sure_ad_status' => 'Are you sure want to change the status of the Ad?',
+	'are_you_sure_ad_status' => 'Do you want to change the status of the Ad?',
 	'video_is_declined' => 'Video is declined by Admin/Channel Owner',
 	'video_not_yet_publish' => 'Video not yet published..!',
 	'channel_declined' => 'Channel is declined by Admin/Channel Owner',
@@ -1476,15 +1476,15 @@ return array(
 	'automatic_subscribers' => 'Auto-Renewal Users',
 	'cancelled_subscribers' => 'Auto-Renewal Cancelled Users',
 	'no_pending_payments' => 'No Pending Payments',
-	'approve_notes' => 'Are you sure want to approve ?',
-	'decline_notes' => 'Are you sure want to decline ?',
-	'channel_approve_notes' => 'Are you sure want to approve the channel? Once you approved, need to approve videos manually.',
-	'channel_decline_notes' => 'Are you sure want to decline the channel? Once you declined, based on channels records will decline.',
+	'approve_notes' => 'Are you sure? Do you want to approve ?',
+	'decline_notes' => 'Are you sure? Do you want to decline ?',
+	'channel_approve_notes' => 'Are you sure? Do you want to approve the channel? Once you approved, need to approve videos manually.',
+	'channel_decline_notes' => 'Are you sure? Do you want to decline the channel? Once you declined, based on channels records will decline.',
 	'admin_video_status' => 'Admin Status',
 	'user_video_status' => 'User Status',
-	'tag_approve_notes' => 'Are you sure want to approve this tag ?',
-	'tag_decline_notes' => 'Are you sure want to decline this tag ? Once you declined, tag will be remove from all the depends videos',
-	'category_decline_notes' => 'Are you sure want to decline this category? Once you declined, based on this category videos will be decline.',
+	'tag_approve_notes' => 'Are you sure? Do you want to approve this tag ?',
+	'tag_decline_notes' => 'Are you sure? Do you want to decline this tag ? Once you declined, tag will be remove from all the depends videos',
+	'category_decline_notes' => 'Are you sure? Do you want to decline this category? Once you declined, based on this category videos will be decline.',
 	'category_approve_notes' => 'Are you sure? Do you want to approve this category? Once you approved, need to approve videos by manually',
 	'ffmpeg_installed' => 'In FFmpeg Installed?',
 	'ffmpeg_need_to_configure' => 'Kindly configure ffmpeg and upload manual videos..!',
@@ -1543,17 +1543,17 @@ return array(
 	
 	'admin_user_delete_with_expiry_days_confirmation' => 'The user account is valid for :otherkey days, do you want to delete the user? This action cannot be undone.',
 
-	'admin_premium_user_delete_confirmation'=>":otherkey - Do you sure want to delete this premium user?",
+	'admin_premium_user_delete_confirmation'=>":otherkey - Do you want to delete this premium user?",
 
 	'admin_user_delete_confirmation' => ' Do you  want delete this(:otherkey) user?',
 	'admin_user_decline_confirmation' => ' Do you want decline this(:otherkey) user?',
 	'admin_user_approve_confirmation' => ' Do you want approve this(:otherkey) user?',
 
-	'admin_user_history_delete_confirm'=>"Do you sure want to delete this(:otherkey) video from user history?",
+	'admin_user_history_delete_confirm'=>"Do you want to delete this(:otherkey) video from user history?",
 	'admin_user_history_delete_success' => 'User history deleted successfully!',
 	'admin_user_history_not_found' => 'Sorry!! history details not found',
 	'admin_user_history_delete_error' => 'Sorry!, something went wrong user history could not be deleted. Please try again.',
-	'admin_user_wishlist_delete_confirm'=>"Do you sure want to delete this(:otherkey) video from user wishlist?",
+	'admin_user_wishlist_delete_confirm'=>"Do you want to delete this(:otherkey) video from user wishlist?",
 	'admin_user_wishlist_not_found' => 'Sorry!! wishlist details not found',
 	'admin_user_wishlist_delete_success' => 'User wishlist deleted successfully!',
 	'admin_user_wishlist_delete_error' => 'Sorry!, something went wrong user wishlist could not be deleted. Please try again.',
@@ -1562,7 +1562,7 @@ return array(
 	'admin_user_unverification_success' => 'User Unverified successfully!!',
 	'admin_user_verification_save_error' => 'Sorry!, something went wrong user could not either verify/unverify. Please try again.',
 
-	'admin_user_subscription_confirm'=>"Do you sure want to subscribe for this(:otherkey) plan?",
+	'admin_user_subscription_confirm'=>"Do you want to subscribe for this(:otherkey) plan?",
 
 	// new Admin channels
 
@@ -1794,13 +1794,13 @@ return array(
 
 	'admin_video_ad_update_success' => 'video_ad has been updated successfully.',
 	'admin_video_ad_create_success' => 'video_ad has been created successfully.',
-	'admin_video_ad_save_error' => 'Sorry!, something went wrong video_ad details could not be saved. Please try again.',
+	'admin_video_ad_save_error' => 'Sorry!, something went wrong Video Ad details could not be saved. Please try again.',
 
 	'admin_video_ad_approve_confirmation' => 'Do you want to approve this(:otherkey) video_ad?',
-	'admin_video_ad_decline_confirmation' => 'video_ad will be removed from all the related videos, once the video_ad declined. Do you want to decline this(:otherkey) video_ad? ',
+	'admin_video_ad_decline_confirmation' => 'video_ad will be removed from all the related videos, once the Video Ad declined. Do you want to decline this(:otherkey) video_ad? ',
 
-	'admin_video_ad_approved_success' => 'The video_ad approved successfully!!.',
-	'admin_video_ad_declined_success' => 'The video_ad declined successfully!!.',
+	'admin_video_ad_approved_success' => 'The Video Ad approved successfully!!.',
+	'admin_video_ad_declined_success' => 'The Video Ad declined successfully!!.',
 	
 	'admin_video_ad_delete_confirmation'=>"Do you want to delete this (:otherkey) video_ad?",
 	'admin_video_ad_delete_success' => 'video_ad has been deleted successfully.',
@@ -1814,5 +1814,71 @@ return array(
 	'admin_password_change_success' => 'Password Changed successfully',
 	'admin_password_mismatch' =>  'Pasword is mismatched',
 	'admin_password_save_error' =>  'Pasword is mismatched',
+
+
+	// user API 
+
+	'user_wishlist_save_error' => 'Sorry!, Video details could not be saved. Please try again.',
+
+	'user_wishlist_success' => 'Success! Added to wishlist',
+
+	'user_wishlist_video_exists' => 'Video already exists in wishlist',
+	
+	'user_wishlist_delete_error' => 'Sorry!, Wishlist could not be remove. Please try again.',
+	
+	'user_wishlist_delete_success' => 'Success! wishlist deleted',
+
+	// Sub admin
+
+	'sub_admin_create'=>'Add Sub Admin',
+	'sub_admin_view'=>'View Sub Admins',
+	'sub_admins'=>'Sub Admins',
+	'sub_admin'=>'Sub Admin',
+	'sub_admin_edit'=>'Edit Sub Admin',
+	
+	'admin_sub_admin_not_found'=>'Sub admin not found',
+	'admin_sub_admin_decline_confirmation' => 'Do you want decline this Sub Admin',
+	'admin_sub_admin_approve_confirmation' => 'Do you want approve this sub Admin',
+
+	'admin_sub_admin_approve_success'=>'Sub Admin has been approved successfully',
+	'admin_sub_admin_decline_success'=>'Sub Admin has been declined successfully',
+
+	'admin_sub_admin_create_success'=>'Sub Admin created successfully',
+	'admin_sub_admin_update_success'=>'Sub Admin update successfully',
+	'admin_sub_admin_save_error'=>'Sorry! Sub Admin could not be created, Please try again',
+	'admin_sub_admin_delete_confirmation'=>'Do you  want delete this sub admin.',
+	'admin_sub_admin_delete_success'	=>	'Sub Admin deleted successfully',
+	'admin_sub_admin_status_error' => 'Sorry!, something went wrong Sub Admin  status could not be changed either Approve/decline. Please try again.',
+
+	// SEO Settings Part
+	'seo_settings'=>'SEO Settings',
+	'meta_title'=>'Meta Title',
+	'meta_keywords'=>'Meta Keywords',
+	'meta_author'=>'Meta Author',
+	'meta_description'=>'Meta Description',
+
+	// Playlist
+
+	'playlist' => 'Playlist',
+
+	'no_playlist_found' => 'No playlist found',
+
+	'admin_user_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
+
+	'admin_user_playlist_video_delete_confirmation'=>"Do you want to delete this(:otherkey) video from playlist?",
+
+	'admin_user_playlist_not_found'=>"Playlist not found!",
+
+	'admin_user_playlist_video_not_found'=>"Playlist video not found!",
+
+	'admin_user_playlist_delete_success'=>"Playlist deleted Successfully!",
+
+	'admin_user_playlist_video_delete_success'=>"Video removed from playlist Successfully!",
+
+	'admin_user_playlist_delete_error'=>"Playlist could not be deleted. Please try again!",
+	
+	'admin_user_playlist_video_delete_error'=>"Video could not be removed. Please try again!",
+
+	'added_on' =>'Added on',
 
 );

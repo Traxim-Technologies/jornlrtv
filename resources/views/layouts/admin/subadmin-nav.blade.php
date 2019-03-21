@@ -91,7 +91,7 @@
                         </a>
                     </li>
 
-                    @if(Setting::get('is_spam'))
+                    @if(Setting::get('is_spam')== YES)
 
                         <li id="spam_videos">
                             <a href="{{route('admin.spam-videos')}}">
@@ -131,22 +131,7 @@
                         </a>
                     </li>
                 </ul>
-
             </li>  
- 
-            <!--   <li class="treeview" id="videos_ads">
-
-                <a href="{{route('admin.ads-details.index')}}">
-                    <i class="fa fa-bullhorn"></i> <span>{{tr('ads')}}</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-
-                <ul class="treeview-menu">
-                    <li id="create-ad-videos"><a href="{{--route('admin.ads-details.create')--}}"><i class="fa fa-circle-o"></i>{{--tr('create_ad')--}}</a></li>
-                    <li id="view-ads"><a href="{{--route('admin.ads-details.index')--}}"><i class="fa fa-circle-o"></i>{{--tr('view_and_assign_ad')--}}</a></li>
-                    <li id="ad-videos"><a href="{{--route('admin.video_ads.list')--}}"><i class="fa fa-circle-o"></i>{{--tr('assigned_ads')--}}</a></li>
-                </ul>
-
-            </li> -->
 
             <li class="treeview" id="videos-ads-details">
 
@@ -164,7 +149,7 @@
 
             </li>
 
-            @if(Setting::get('is_banner_ad'))
+            @if(Setting::get('is_banner_ad')== YES)
 
                 <li class="treeview" id="banner-ads">
                     <a href="{{route('admin.banner_ads.index')}}">
@@ -183,7 +168,7 @@
 
             @endif
 
-            @if(Setting::get('is_banner_video'))
+            @if(Setting::get('is_banner_video') == YES)
 
             <li class="treeview" id="banner-videos">
                 <a href="{{route('admin.banner.videos.index')}}">
@@ -232,105 +217,10 @@
                     <li id = "coupons-view"><a href="{{route('admin.coupons.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_coupon')}}</a></li>
                 </ul>
             </li>
-            
-            @if(Setting::get('redeem_control'))
-
-            <li id="redeems">
-                <a href="{{route('admin.users.redeems')}}">
-                    <i class="fa fa-trophy"></i> <span>{{tr('redeems')}}</span> 
-                </a>
-            </li>
-
-            @endif
-
-            <li class="treeview" id="payments">
-
-                <a href="#">
-                    <i class="fa fa-key"></i> <span>{{tr('payments')}}</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-
-                <ul class="treeview-menu">
-
-                    <li id="payments-dashboard">
-                        <a href="{{route('admin.revenues.dashboard')}}">
-                            <i class="fa fa-circle-o"></i>
-                            {{tr('revenues')}}
-                        </a>
-                    </li>
-
-                    <li id="payments-subscriptions">
-                        <a href="{{route('admin.revenues.subscription-payments')}}">
-                            <i class="fa fa-circle-o"></i>
-                            {{tr('subscription_payments')}}
-                        </a>
-                    </li>
-
-                    <li id="payments-ppv">
-                        <a href="{{route('admin.revenues.ppv_payments')}}">
-                            <i class="fa fa-circle-o"></i>
-                            {{tr('ppv_payments')}}
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-
-            <li id="settings">
-                <a href="{{route('admin.settings')}}">
-                    <i class="fa fa-gears"></i> <span>{{tr('settings')}}</span>
-                </a>
-            </li>
-
-            <li class="treeview" id="sub-admins">
-                <a href="#">
-                    <i class="fa fa-user"></i> <span>{{tr('sub_admins')}}</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-
-                <ul class="treeview-menu">
-                   
-                    <li id="sub-admins-create"><a href="{{route('admin.sub_admins.create')}}"><i class="fa fa-circle-o"></i>{{tr('sub_admin_create')}}</a></li>
-                   
-                    <li id="sub-admins-view"><a href="{{route('admin.sub_admins.index')}}"><i class="fa fa-circle-o"></i>{{tr('sub_admin_view')}}</a></li>
-
-                </ul>    
-            </li>
-
-            @if(Setting::get('admin_language_control') == YES )
-            <li id="languages">
-                <a href="{{route('admin.languages.index')}}">
-                    <i class="fa fa-globe"></i> <span>{{tr('languages')}}</span>
-                </a>
-            </li>
-            @endif
 
             <li id="custom-push">
                 <a href="{{route('admin.push')}}">
                     <i class="fa fa-send"></i> <span>{{tr('custom_push')}}</span>
-                </a>
-            </li>
-
-            <li class="treeview" id="pages">
-                <a href="{{route('admin.pages.index')}}">
-                    <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    
-                    <li id="pages-create"><a href="{{route('admin.pages.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
-                    
-                    <li id="pages-view"><a href="{{route('admin.pages.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
-                </ul>
-            </li>
-
-            <li id="profile">
-                <a href="{{route('admin.profile')}}">
-                    <i class="fa fa-diamond"></i> <span>{{tr('account')}}</span>
-                </a>
-            </li>
-
-
-            <li id="help">
-                <a href="{{route('admin.help')}}">
-                    <i class="fa fa-question-circle"></i> <span>{{tr('help_1')}}</span>
                 </a>
             </li>
 

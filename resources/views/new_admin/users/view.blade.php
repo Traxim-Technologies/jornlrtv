@@ -137,7 +137,7 @@
 		              <b>{{ tr('is_verified') }}</b> <a class="pull-right">
 		              	@if(!$user_details->is_verified == USER_EMAIL_VERIFIED) 
 
-			      			<a href="{{ route('admin.users.verify' ,['user_id' => $user_details->id]) }}" class="btn btn-xs btn-warning">{{ tr('verify') }}</a>
+			      			<a href="{{ route('admin.users.verify' ,['user_id' => $user_details->id]) }}" class="btn btn-xs btn-warning pull-right">{{ tr('verify') }}</a>
 
 			       		@else 
 			       			<span class="label label-success">{{ tr('verified') }}</span>
@@ -191,9 +191,6 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body">
-	         	
-	          	<p class="text-muted">{{ $user_details->description }}</p>
-	          	<hr>
 
 	          	<strong><i class="fa fa-map-marker margin-r-5"></i> {{ tr('location') }}</strong>
 	         	<p class="text-muted">{{ $user_details->timezone }}</p>
@@ -270,7 +267,7 @@
 
 			            	<tr>
 			            		<th>{{ tr('description')}}</th>
-			            		<td>{{ $user_details->description  }}</td>
+			            		<td><?php echo $user_details->description ?></td>
 			            	</tr>
 			            	
 		            	</table>

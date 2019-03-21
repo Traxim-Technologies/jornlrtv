@@ -809,7 +809,7 @@ class AdminController extends Controller {
 
             $user_wishlist->delete();
 
-            return back()->with('flash_success',tr('admin_not_wishlist_del'));
+            return back()->with('flash_success',tr('user_wishlist_delete_success'));
 
         } else {
 
