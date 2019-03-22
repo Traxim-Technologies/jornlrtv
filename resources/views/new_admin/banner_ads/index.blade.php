@@ -78,7 +78,7 @@
                                                 <span class="caret"></span>
                                             </button>
 
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">                                                
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">                                               
                                                 <li>                                              
                                                     <a href="{{ route('admin.banner_ads.view', ['banner_ad_id' => $banner_ad_details->id]  ) }}"><b>{{ tr('view') }}</b></a>
                                                 </li>

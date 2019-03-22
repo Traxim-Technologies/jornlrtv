@@ -33,6 +33,7 @@
 	            	</div>
 
                     <div class="col-md-6">
+                        
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item" >
                                 <b><i class="fa fa-suitcase margin-r-5"></i>{{ tr('title') }}</b> 
@@ -49,6 +50,7 @@
                                 <div class="pull-right">{{ $duration_in_seconds = convertDurationIntoSeconds($vModel->duration) }}</div>
                             </li>
                         </ul>
+
                     </div>
 
 	            	<div class="clearfix"></div>

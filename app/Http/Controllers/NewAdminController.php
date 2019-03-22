@@ -1483,7 +1483,7 @@ class NewAdminController extends Controller {
 
         return view('new_admin.categories.create')
                     ->with('page' , 'categories')
-                    ->with('sub_page','categories')
+                    ->with('sub_page','categories-create')
                     ->with('category_details', $category_details);
     }
 
@@ -1744,7 +1744,7 @@ class NewAdminController extends Controller {
                 
                 DB::commit();
 
-                return back()->with('flash_success',tr('admin_category_delete_success'));
+                return redirect()->route('admin.categoriesd')->with('flash_success',tr('admin_category_delete_success'));
             } 
 
             throw new Exception(tr('admin_category_delete_error'), 101);
@@ -2583,7 +2583,7 @@ class NewAdminController extends Controller {
             
             $error = $e->getMessage();
 
-            return back()->with('flash_error',$error);
+            return redirect()->back()->with('flash_error',$error);
         }
     
     }
@@ -2717,12 +2717,11 @@ class NewAdminController extends Controller {
 
                 DB::commit();
                 
-                return back()->with('flash_success',tr('admin_ads_detail_delete_success'));
+                return redirect()->route('admin.ads-details.index')->with('flash_success',tr('admin_ads_detail_delete_success'));
             } 
 
             throw new Exception(tr('admin_ads_detail_delete_error'), 101);
-            
-            
+                        
         } catch (Exception $e) {
             
             DB::rollback();
@@ -3028,7 +3027,7 @@ class NewAdminController extends Controller {
 
                 DB::commit();
                 
-                return back()->with('flash_success',tr('admin_video_ad_delete_success'));
+                return redirect()->route('admin.video_ads.index')->with('flash_success',tr('admin_video_ad_delete_success'));
             } 
 
             throw new Exception(tr('admin_tag_delete_error'), 101);
@@ -3670,7 +3669,7 @@ class NewAdminController extends Controller {
 
                 $message = $request->banner_ad_id ? tr('admin_banner_ad_update_success') : tr('admin_banner_ad_create_success');
 
-                return redirect()->route('admin.banner-ads.view', ['banner_ad_id' => $banner_ad_details->id])->with('flash_success', $message);
+                return redirect()->route('admin.banner_ads.view', ['banner_ad_id' => $banner_ad_details->id])->with('flash_success', $message);
             } 
 
             throw new Exception(tr('admin_banner_ad_save_error'), 101);
@@ -3740,8 +3739,8 @@ class NewAdminController extends Controller {
 
                 DB::commit();
                 
-                return redirect()->route('admin.banner-ads.index')->with('flash_success', tr('admin_banner_ad_delete_success'));
-
+                return redirect()->route('admin.banner_ads.index')->with('flash_success', tr('admin_banner_ad_delete_success'));
+                
             }
             
             throw new Exception(tr('admin_banner_ad_delete_error'), 101);

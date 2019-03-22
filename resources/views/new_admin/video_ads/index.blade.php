@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+video-ads@extends('layouts.admin')
 
 @section('title', tr('view_ads'))
 
@@ -15,7 +15,7 @@
         
         <div class="col-xs-12">
 
-        	@include('notification.notify')
+        	@include('notification.notify')video-ads
 
         	<div class="box box-primary">
 
@@ -112,7 +112,7 @@
 	                                                            </li>
 
 	                                                            <li role="presentation">
-	                                                            	<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video-ads.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
+	                                                            	<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video_ads.delete' , ['id' => $data->id] )}}">{{tr('delete')}}</a>
 	                                                            </li>
 
 	                                                        @endif

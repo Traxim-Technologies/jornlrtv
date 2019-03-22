@@ -6,7 +6,8 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
-    <li><i class="fa fa-bullhorn"></i>{{tr('video_ads')}}</li>
+
+    <li><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-bullhorn"></i>{{tr('video_ads')}}</a></li>
 
     <li class="active"><i class="fa fa-bullhorn"></i> {{ tr('view_and_assign_ad') }}</li>
 @endsection
