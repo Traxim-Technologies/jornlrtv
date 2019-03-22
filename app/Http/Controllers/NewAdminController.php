@@ -2194,6 +2194,7 @@ class NewAdminController extends Controller {
     public function coupons_create(Request $request) {
 
         $coupon_details = new Coupon;
+        $coupon_details->expiry_date = new Coupon;
 
         return view('new_admin.coupons.create')
                     ->with('page' , 'coupons')
@@ -2926,25 +2927,23 @@ class NewAdminController extends Controller {
 
             $index = 0;
 
-            $vModel = $video_ad_details->getVideoTape;
+            $video_details = $video_ad_details->getVideoTape;
 
-            $videoPath = '';
-
-            $video_pixels = '';
+            $videoPath = $video_pixels = '';
 
             $ads = AdsDetail::where('status', ADS_ENABLED)->get(); 
 
-            if ($vModel) {
+            if ($video_details) {
 
-                $videoPath = $vModel->video_resize_path ? $vModel->video.','.$vModel->video_resize_path : $vModel->video;
-                $video_pixels = $vModel->video_resolutions ? 'original,'.$vModel->video_resolutions : 'original';
+                $videoPath = $video_details->video_resize_path ? $video_details->video.','.$video_details->video_resize_path : $video_details->video;
 
+                $video_pixels = $video_details->video_resolutions ? 'original,'.$video_details->video_resolutions : 'original';
             }
 
             return view('new_admin.video_ads.edit')
                         ->with('page', 'videos-ads-details')
-                        ->with('sub_page', 'videos-ads-details')
-                        ->with('vModel', $vModel)
+                        ->with('sub_page', 'assigned-videos-ads-details')
+                        ->with('video_details', $video_details)
                         ->with('videoPath', $videoPath)
                         ->with('video_pixels', $video_pixels)
                         ->with('model', $video_ad_details)
@@ -3054,6 +3053,8 @@ class NewAdminController extends Controller {
      * @param 
      *
      * @return response of Ad Between Form
+     *
+     * @todo Function Name change 
      */
     public function video_ads_inter_ads(Request $request) {
 
@@ -4594,7 +4595,7 @@ class NewAdminController extends Controller {
 
             if ( count($subscriptions_details) == 0 ) {
 
-               throw new Exception(tr('admin_subscription_not_found'), 101);                
+               throw new Exception(tr('admin_subscription_not_found'), 101);
             }
 
             $subscriptions_details->status = $subscriptions_details->status == APPROVED ? DECLINED : APPROVED ;
@@ -4609,8 +4610,7 @@ class NewAdminController extends Controller {
             } 
                 
             throw new Exception(tr('admin_subscription_status_error'), 101);
-            
-            
+                        
         } catch (Exception $e) {
 
             DB::rollback();
