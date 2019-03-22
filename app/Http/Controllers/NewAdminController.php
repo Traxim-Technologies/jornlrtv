@@ -2927,23 +2927,23 @@ class NewAdminController extends Controller {
 
             $index = 0;
 
-            $video_details = $video_ad_details->getVideoTape;
+            $video_tape_details = $video_ad_details->getVideoTape;
 
             $videoPath = $video_pixels = '';
 
             $ads = AdsDetail::where('status', ADS_ENABLED)->get(); 
 
-            if ($video_details) {
+            if ($video_tape_details) {
 
-                $videoPath = $video_details->video_resize_path ? $video_details->video.','.$video_details->video_resize_path : $video_details->video;
+                $videoPath = $video_tape_details->video_resize_path ? $video_tape_details->video.','.$video_tape_details->video_resize_path : $video_tape_details->video;
 
-                $video_pixels = $video_details->video_resolutions ? 'original,'.$video_details->video_resolutions : 'original';
+                $video_pixels = $video_tape_details->video_resolutions ? 'original,'.$video_tape_details->video_resolutions : 'original';
             }
 
             return view('new_admin.video_ads.edit')
                         ->with('page', 'videos-ads-details')
                         ->with('sub_page', 'assigned-videos-ads-details')
-                        ->with('video_details', $video_details)
+                        ->with('video_tape_details', $video_tape_details)
                         ->with('videoPath', $videoPath)
                         ->with('video_pixels', $video_pixels)
                         ->with('model', $video_ad_details)
