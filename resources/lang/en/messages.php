@@ -758,7 +758,7 @@ return array(
 	'subscription_note' => 'Choose one plan and enjoy everything.',
 	'subscription_image_note' => 'Upload Square images 4:4 Ratio Ex: 400 * 400',
 
-	'plan_note' => 'Please enter no of months. Allowed numbers from 1 to 12',
+	'plan_note' => 'Please enter no. of months. Allowed numbers from 1 to 12',
 
 	'subscribers' => 'Subscribers',
 
@@ -770,7 +770,7 @@ return array(
 	'view_subscription' => 'View Subscription',
 	'edit_subscription' => 'Edit Subscription',
 	'add_subscription' => 'Add Subscription',
-	'plan' => 'No Of Months',
+	'plan' => 'No. Of Months',
 	'choose_subscription' => 'Choose Subscription',
 	'select_continue' => 'Select & Continue',
 	'current' => 'Current',

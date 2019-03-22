@@ -25,13 +25,13 @@
                     <div class="form-group">
 
                         <div class="col-md-6">
-                            <label for="title" class="">{{ tr('title') }}</label>
+                            <label for="title" class="">{{ tr('title') }} *</label>
 
                             <input type="text" required name="title" class="form-control" id="title" value="{{ old('title') ?: $subscription_details->title }}" placeholder="{{ tr('title') }}">
                         </div>
 
                         <div class="col-md-6">
-                            <label for="amount" class="">{{ tr('amount') }}</label>
+                            <label for="amount" class="">{{ tr('amount') }} *</label>
 
                             <input type="text" required name="amount" class="form-control" id="amount" placeholder="{{ tr('amount') }}" step="any" value="{{ old('amount') ?: $subscription_details->amount }}"  maxlength="5">
                         </div>
@@ -40,7 +40,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">                       
-                            <label for="plan" class="">{{ tr('plan') }} <br><span class="text-red">
+                            <label for="plan" class="">{{ tr('plan') }} * <br><span class="text-red">
                             <b>{{ tr('plan_note') }}</b></span>
                             </label>
 
