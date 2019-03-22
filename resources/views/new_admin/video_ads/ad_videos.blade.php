@@ -92,7 +92,7 @@
 									                <ul class="dropdown-menu">
 									                	
 	                                                    
-									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.video-ads.view' , ['id' => $video_ad_details->id] ) }}">{{ tr('view') }}</a></li>
+									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.video_ads.view' , ['id' => $video_ad_details->id] ) }}">{{ tr('view') }}</a></li>
 
                                                         @if(Setting::get('admin_delete_control'))
                                                             <li role="presentation"><a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('edit') }}</a></li>
@@ -101,8 +101,10 @@
                                                         @else
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_ads.edit' , ['id' => $video_ad_details->id] ) }}">{{ tr('edit') }}</a></li>
 
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{ route('admin.video-ads.delete' ,  ['id' => $video_ad_details->id] ) }}">{{ tr('delete') }}</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_video_ad_delete_confirmation', $video_ad_details->name) }}&quot;)" href="{{ route('admin.video_ads.delete' ,  ['id' => $video_ad_details->id] ) }}">{{ tr('delete') }}</a></li>
+
                                                         @endif
+
 									                </ul>
 
 	              								</li>

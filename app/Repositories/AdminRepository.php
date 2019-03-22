@@ -48,7 +48,6 @@ class AdminRepository {
 
             $ad_types = [];
 
-
             if ($model->save()) {
 
                 if(!$request->has('pre_ad_type') && !empty($request->pre_ad_type_id)) {

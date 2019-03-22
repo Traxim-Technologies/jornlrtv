@@ -10,14 +10,14 @@
 
             <div class="box-header label-primary">
                 <b style="font-size:18px;">@yield('title')</b>
-                <a href="{{route('admin.video_ads.index')}}" class="btn btn-default pull-right">{{tr('assigned_ads')}}</a>
+                <a href="{{ route('admin.video_ads.index') }}" class="btn btn-default pull-right">{{ tr('assigned_ads') }}</a>
             </div>
 
-            <form  action="{{route('admin.video-ads.save')}}" method="POST" enctype="multipart/form-data" role="form">
+            <form  action="{{ route('admin.video_ads.save') }}" method="POST" enctype="multipart/form-data" role="form">
 
-                <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{$vModel->id}}">
+                <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{ $vModel->id }}">
 
-                <input type="hidden" name="video_ad_id" id="id" value="{{$model->id}}">
+                <input type="hidden" name="video_ad_id" id="id" value="{{ $model->id }}">
 
                 <div class="box-body">
 
@@ -27,21 +27,26 @@
 	                        <div id="main-video-player"></div>
 	                    @else
 	                        <div class="image">
-	                            <img src="{{asset('error.jpg')}}" alt="{{Setting::get('site_name')}}">
+	                            <img src="{{ asset('error.jpg') }}" alt="{{ Setting::get('site_name') }}">
 	                        </div>
 	                    @endif
 	            	</div>
 
                     <div class="col-md-6">
                         <ul class="list-group list-group-unbordered">
-                            <li class="list-group-item">
-                              <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('title')}}</b> <a class="pull-right" href="{{route('admin.videos.view', ['id' => $vModel->id] )}}" target="_blank">{{$vModel->title}}</a>
+                            <li class="list-group-item" >
+                                <b><i class="fa fa-suitcase margin-r-5"></i>{{ tr('title') }}</b> 
+                                <p> <a class="pull-right" href="{{ route('admin.videos.view', ['id' => $vModel->id] ) }}" target="_blank">{{ $vModel->title }}</a></p>
+                                <br>
                             </li>
+
                             <li class="list-group-item">
-                              <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <div class="pull-right">{{$vModel->duration}}</div>
+                                <b><i class="fa fa-clock-o margin-r-5"></i>{{ tr('duration') }}</b> <div class="pull-right">{{ $vModel->duration }}</div>
                             </li>
+
                             <li class="list-group-item">
-                              <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration_in_seconds')}}</b> <div class="pull-right">{{$duration_in_seconds = convertDurationIntoSeconds($vModel->duration)}}</div>
+                                <b><i class="fa fa-clock-o margin-r-5"></i>{{ tr('duration_in_seconds') }}</b> 
+                                <div class="pull-right">{{ $duration_in_seconds = convertDurationIntoSeconds($vModel->duration) }}</div>
                             </li>
                         </ul>
                     </div>
@@ -56,35 +61,35 @@
 
                     		<div class="col-md-2">
 
-                    			<label>{{tr('ad_type')}}</label>
+                    			<label>{{ tr('ad_type') }}</label>
 
-                                <input type="hidden" name="pre_ad_type_id" id="pre_ad_id" value="{{$preAd->id}}">
+                                <input type="hidden" name="pre_ad_type_id" id="pre_ad_id" value="{{ $preAd->id }}">
 
                                 <br>
 
-                    			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{PRE_AD}}"
-                                @if($preAd->ad_type == PRE_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value, '')"> {{tr('pre_ad')}}
+                    			<input type="checkbox" name="pre_ad_type" id="pre_ad_type" value="{{ PRE_AD }}"
+                                @if($preAd->ad_type == PRE_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value, '')"> {{ tr('pre_ad') }}
 
                     		</div>
 
 
                     		<div class="col-md-3">
 
-                    			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
+                    			<label>{{ tr('ad_time') }} ({{ tr('in_sec') }})</label>
 
-                    			<input type="text" name="pre_ad_time" id="pre_ad_time" class="form-control" value="{{$preAd->ad_time}}" maxlength="3" minlength="1" title="Enter Minimum 1 Character to Maximum 3 Character">
+                    			<input type="text" name="pre_ad_time" id="pre_ad_time" class="form-control" value="{{ $preAd->ad_time }}" maxlength="3" minlength="1" title="Enter Minimum 1 Character to Maximum 3 Character">
 
                     		</div>
 
 
                     		<div class="col-md-6">
 
-                    			<label>{{tr('ad')}}</label>
+                    			<label>{{ tr('ad') }}</label>
                     			
                                 <select id="pre_parent_ad_id" name="pre_parent_ad_id" class="form-control">
-                                    <option value="">{{tr('select_ad')}}</option>
+                                    <option value="">{{ tr('select_ad') }}</option>
                                     @foreach($ads as $ad)
-                                        <option value="{{$ad->id}}" @if($ad->id == $preAd->ad_id) selected @endif>{{$ad->name}}</option>
+                                        <option value="{{ $ad->id }}" @if($ad->id == $preAd->ad_id) selected @endif>{{ $ad->name }}</option>
                                     @endforeach
                                 </select>   
 
@@ -100,31 +105,31 @@
 
                     		<div class="col-md-2">
 
-                    			<label>{{tr('ad_type')}}</label>
+                    			<label>{{ tr('ad_type') }}</label>
 
-                                <input type="hidden" name="post_ad_type_id" id="post_ad_id" value="{{$postAd->id}}">
+                                <input type="hidden" name="post_ad_type_id" id="post_ad_id" value="{{ $postAd->id }}">
 
                                 <br>
 
-                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{POST_AD}}" @if($postAd->ad_type == POST_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value, '')"> {{tr('post_ad')}}
+                    			<input type="checkbox" name="post_ad_type" id="post_ad_type" value="{{ POST_AD }}" @if($postAd->ad_type == POST_AD) checked @endif onchange="getCheckBoxValue(this.id, this.value, '')"> {{ tr('post_ad') }}
 
                     		</div>
 
                     	   <div class="col-md-3">
 
-                    			<label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
+                    			<label>{{ tr('ad_time') }} ({{ tr('in_sec') }})</label>
 
-                    			<input type="text" name="post_ad_time" id="post_ad_time" class="form-control" value="{{$postAd->ad_time}}" title="Enter Minimum 1 Character to Maximum 3 Character" maxlength="3" minlength="1">
+                    			<input type="text" name="post_ad_time" id="post_ad_time" class="form-control" value="{{ $postAd->ad_time }}" title="Enter Minimum 1 Character to Maximum 3 Character" maxlength="3" minlength="1">
                     		</div>
 
                     		<div class="col-md-6">
 
-                    			<label>{{tr('ad')}}</label>
+                    			<label>{{ tr('ad') }}</label>
 
                     			<select id="post_parent_ad_id" name="post_parent_ad_id" class="form-control">
-                                    <option value="">{{tr('select_ad')}}</option>
+                                    <option value="">{{ tr('select_ad') }}</option>
                                     @foreach($ads as $ad)
-                                        <option value="{{$ad->id}}" @if($ad->id == $postAd->ad_id) selected @endif>{{$ad->name}}</option>
+                                        <option value="{{ $ad->id }}" @if($ad->id == $postAd->ad_id) selected @endif>{{ $ad->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -164,8 +169,8 @@
 
                 </div>
               <div class="box-footer">
-                    <button type="reset" class="btn btn-danger">{{tr('cancel')}}</button>
-                    <button type="submit" class="btn btn-success pull-right" onclick="return checkAd()">{{tr('submit')}}</button>
+                    <button type="reset" class="btn btn-danger">{{ tr('cancel') }}</button>
+                    <button type="submit" class="btn btn-success pull-right" onclick="return checkAd()">{{ tr('submit') }}</button>
               </div>
 
             </form>
@@ -178,9 +183,9 @@
    
 @section('scripts')
 
-<script src="{{asset('jwplayer/jwplayer.js')}}"></script>
+<script src="{{ asset('jwplayer/jwplayer.js') }}"></script>
 
-<script>jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";</script>
+<script>jwplayer.key="{{ Setting::get('JWPLAYER_KEY') }}";</script>
 
 <script type="text/javascript">
     
@@ -197,8 +202,8 @@
 
 
                 
-                    var videoPath = "{{$videoPath}}";
-                    var videoPixels = "{{$video_pixels}}";
+                    var videoPath = "{{ $videoPath }}";
+                    var videoPixels = "{{ $video_pixels }}";
 
                     var path = [];
 
@@ -212,7 +217,7 @@
                     }
                     playerInstance.setup({
                         sources: path,
-                        image: "{{$vModel->default_image}}",
+                        image: "{{ $vModel->default_image }}",
                         width: "100%",
                         height: "200px !important",
                         aspectratio: "16:9",
@@ -248,7 +253,7 @@ function addQuestion(index) {
 
     $.ajax({
         type : "post",
-        url : "{{route('admin.video-ads.inter-ads')}}",
+        url : "{{ route('admin.video_ads.inter-ads') }}",
         data : {index:index},
         success : function(data) {
 
@@ -331,7 +336,7 @@ function getCheckBoxValue(id, ad_type,idx) {
 }
 
 
-var duration_in_seconds = "{{$duration_in_seconds}}";
+var duration_in_seconds = "{{ $duration_in_seconds }}";
 
 var minutes = 5 * 60;
 
@@ -373,7 +378,6 @@ function checkAd() {
             alert("Pre Ad Time should not be Text");
 
             return false;
-
         }
 
         $("#pre_parent_ad_id").attr('required', true);

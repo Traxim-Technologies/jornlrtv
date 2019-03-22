@@ -2851,8 +2851,8 @@ class NewAdminController extends Controller {
                     ->get();
 
         return view('new_admin.video_ads.ad_videos')
-                    ->withPage('videos-ads-details')
-                    ->with('sub_page','videos-ads-details-list')
+                    ->with('page', 'videos-ads-details')
+                    ->with('sub_page', 'assigned-videos-ads-details')
                     ->with('video_ads' , $video_ads);
     }
 
@@ -2881,9 +2881,9 @@ class NewAdminController extends Controller {
             }
 
             return view('new_admin.video_ads.view')
-                        ->with('ads', $video_ad_details)
-                        ->with('page', 'videos_ads')
-                        ->with('sub_page', 'ad-videos');
+                        ->with('page', 'videos-ads-details')
+                        ->with('sub_page', 'assigned-videos-ads-details')
+                        ->with('ads', $video_ad_details);
             
         } catch (Exception $e) {
             
@@ -2977,16 +2977,23 @@ class NewAdminController extends Controller {
      * @return  succes/failure message
      */
     public function video_ads_save(Request $request) {
+      
+        try {
+            
+            $response = AdminRepo::video_ads_save($request)->getData();
 
-        $response = AdminRepo::video_ads_save($request)->getData();
+            if($response->success) {
 
-        if($response->success) {
+                return redirect()->route('admin.video_ads.view', ['id'=>$response->data->id])->with('flash_success', $response->message);
+            } 
 
-            return redirect(route('admin.video-ads.view', ['id'=>$response->data->id]))->with('flash_success', $response->message);
+            throw new Exception($response->message, 101);
 
-        } else {
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
 
-            return back()->with('flash_error', $response->message);
+            return back()->with('flash_error',$error);
         }
         
     }    
@@ -3036,6 +3043,34 @@ class NewAdminController extends Controller {
         }
     }
 
+    /**
+     * Function Name : video_ads_inter_ads()
+     *
+     * To add between ads details based on video details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return response of Ad Between Form
+     */
+    public function video_ads_inter_ads(Request $request) {
+
+        $index = $request->index + 1;
+
+        $b_ad = new AdsDetail;
+
+        $ads = AdsDetail::where('status', ADS_ENABLED)->get(); 
+        
+        return view('new_admin.video_ads._sub_form')
+                ->with('page', 'videos-ads-details')
+                ->with('sub_page', 'assigned-videos-ads-details')
+                ->with('index' , $index)
+                ->with('b_ad', $b_ad)
+                ->with('ads', $ads);
+    }
 
     /**
     * Function Name: help()

@@ -133,7 +133,7 @@
 
                                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.channels.edit' , ['channel_id' => $channel_details->id] ) }}">{{ tr('edit') }}</a></li> 
 
-                                                    <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_channel_delete_confirmation', $channel_details->name) }}&quot;)"  href="{{ route('admin.channels.delete' , ['channel_id' => $channel_details->id] ) }}">{{ tr('delete') }}</a></li>
+                                                    <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_channel_delete_confirmation', $channel_details->name) }}&quot;)" href="{{ route('admin.channels.delete' , ['channel_id' => $channel_details->id] ) }}">{{ tr('delete') }}</a></li>
 
                                                 @endif
                                           

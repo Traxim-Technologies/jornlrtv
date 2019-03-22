@@ -837,13 +837,13 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('video-ads/edit','NewAdminController@video_ads_edit')->name('video_ads.edit');
 
-    Route::post('video-ads/save','NewAdminController@video_ads_save')->name('video-ads.save');
+    Route::post('video-ads/save','NewAdminController@video_ads_save')->name('video_ads.save');
 
-    Route::get('video-ads/view','NewAdminController@video_ads_view')->name('video-ads.view');
+    Route::get('video-ads/view','NewAdminController@video_ads_view')->name('video_ads.view');
 
-    Route::get('video-ads/delete','NewAdminController@video_ads_delete')->name('video-ads.delete');
+    Route::get('video-ads/delete','NewAdminController@video_ads_delete')->name('video_ads.delete');
 
-    Route::post('video-ads/inter-ads', 'NewAdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
+    Route::post('video-ads/inter-ads', 'NewAdminController@video_ads_inter_ads')->name('video_ads.inter-ads');
 
 
     // Sub Admins CRUD Operations

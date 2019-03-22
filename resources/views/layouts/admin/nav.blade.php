@@ -159,7 +159,7 @@
 
                     <li id="videos-ads-details-view"><a href="{{route('admin.ads-details.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_and_assign_ad')}}</a></li>
                     
-                    <li id="videos-ads-details-index"><a href="{{route('admin.video_ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('assigned_ads')}}</a></li>
+                    <li id="assigned-videos-ads-details"><a href="{{route('admin.video_ads.index')}}"><i class="fa fa-circle-o"></i>{{tr('assigned_ads')}}</a></li>
                 </ul>
 
             </li>

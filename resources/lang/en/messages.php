@@ -1793,19 +1793,19 @@ return array(
 	// New Admin VideoAd
 	'admin_video_ad_not_found' => 'Video Ad not found.',
 
-	'admin_video_ad_update_success' => 'video_ad has been updated successfully.',
-	'admin_video_ad_create_success' => 'video_ad has been created successfully.',
+	'admin_video_ad_update_success' => 'Video Ad has been updated successfully.',
+	'admin_video_ad_create_success' => 'Video Ad has been created successfully.',
 	'admin_video_ad_save_error' => 'Sorry!, something went wrong Video Ad details could not be saved. Please try again.',
 
-	'admin_video_ad_approve_confirmation' => 'Do you want to approve this(:otherkey) video_ad?',
-	'admin_video_ad_decline_confirmation' => 'video_ad will be removed from all the related videos, once the Video Ad declined. Do you want to decline this(:otherkey) video_ad? ',
+	'admin_video_ad_approve_confirmation' => 'Do you want to approve this(:otherkey) Video Ad?',
+	'admin_video_ad_decline_confirmation' => 'Video Ad will be removed from all the related videos, once the Video Ad declined. Do you want to decline this(:otherkey) Video Ad? ',
 
 	'admin_video_ad_approved_success' => 'The Video Ad approved successfully!!.',
 	'admin_video_ad_declined_success' => 'The Video Ad declined successfully!!.',
 	
-	'admin_video_ad_delete_confirmation'=>"Do you want to delete this (:otherkey) video_ad?",
-	'admin_video_ad_delete_success' => 'video_ad has been deleted successfully.',
-	'admin_video_ad_delete_error' => 'Sorry! Tag could not be deleted. Please try again',
+	'admin_video_ad_delete_confirmation'=>"Do you want to delete this (:otherkey) Video Ad?",
+	'admin_video_ad_delete_success' => 'Video Ad has been deleted successfully.',
+	'admin_video_ad_delete_error' => 'Sorry! Video Ad could not be deleted. Please try again',
 
 	// New Admin Profile Messages 
 

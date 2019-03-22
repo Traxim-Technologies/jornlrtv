@@ -177,7 +177,7 @@
 
 									                  		@if ($video_details->getScopeVideoAds)
 
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{  route('admin.video-ads.view' , ['id' => $video_details->getScopeVideoAds->id] ) }}">{{ tr('view_ad') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{  route('admin.video_ads.view' , ['id' => $video_details->getScopeVideoAds->id] ) }}">{{ tr('view_ad') }}</a></li>
 
 									                  		@endif
 

@@ -204,7 +204,7 @@
 
 									                  		@if ($video->getScopeVideoAds)
 
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video-ads.view' , array('id' => $video->getScopeVideoAds->id)) }}">{{ tr('view_ad') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_ads.view' , [id' => $video->getScopeVideoAds->id] ) }}">{{ tr('view_ad') }}</a></li>
 
 									                  		@endif
 

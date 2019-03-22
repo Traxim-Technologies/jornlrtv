@@ -62,7 +62,6 @@
 								      	
 								      	<td>
 
-
 								      		@if($data->ads_types)
 
 									      		@foreach($data->ads_types as $type)
@@ -82,34 +81,44 @@
 								       		@endif
 								      	</td>
 									    <td>
+	            							
 	            							<ul class="admin-action btn btn-default">
+	            								
 	            								<li class="dropup">
+									                
 									                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 									                  {{tr('action')}} <span class="caret"></span>
 									                </a>
+									                
 									                <ul class="dropdown-menu">
 									                		                                                    
-									                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
+									                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.view' , ['id' => $data->id] )}}">{{tr('view')}}</a></li>
 									               
-									                  	<li role="presentation">
+									                  	
 	                                                        @if(Setting::get('admin_delete_control'))
-	                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
+	                                                           
+	                                                            <li role="presentation">
+	                                                            	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
+	                                                            </li>
+
+	                                                            <li role="presentation">
+	                                                            	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
+	                                                            </li>
+
 	                                                        @else
-	                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
+
+	                                                            <li role="presentation">
+	                                                            	<a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
+	                                                            </li>
+
+	                                                            <li role="presentation">
+	                                                            	<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video-ads.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
+	                                                            </li>
+
 	                                                        @endif
 	                                                    </li>
 															
-									                  	<li class="divider" role="presentation"></li>
 
-									                  	<li role="presentation">
-									                  		@if(Setting::get('admin_delete_control'))
-
-										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
-
-										                  	@else
-									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video-ads.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
-									                  		@endif
-									                  	</li>
 									                </ul>
 	              								</li>
 	            							</ul>

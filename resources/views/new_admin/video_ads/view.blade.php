@@ -22,17 +22,30 @@ hr {
 @endsection 
 
 @section('content')
+    
     <div class="col-md-12">
-
+        
         <div class="nav-tabs-custom">
 
             <ul class="nav nav-tabs">
+                
                 <li class="active"><a href="#preview_ad" data-toggle="tab" aria-expanded="true">{{tr('preview_ad')}}</a></li>
 
-                <li class="pull-right clearfix">
-                    <a href="{{route('admin.video_ads.edit' , array('id' => $ads->id))}}"><i class="fa fa-pencil"></i> {{tr('edit')}}</a>
-                </li>
-         
+                @if(Setting::get('admin_delete_control') == YES )
+                    <a href="javascript:;" class="btn disabled" style="text-align: left" class="pull-right btn btn-warning" title="{{tr('edit')}}" style="margin: 4px"><b><i class="fa fa-pencil"></i></b>
+                    </a>
+
+                    <a href="javascript:;" class="pull-right btn disabled" style="text-align: left" class="pull-right btn btn-danger" title="{{tr('delete')}}" style="margin: 4px"><b><i class="fa fa-trash"></i></b>
+                    </a>
+                @else
+                    <a href="{{route('admin.video_ads.edit' , ['id' => $ads->id] )}}" class="pull-right btn btn-warning" title="{{tr('edit')}}" style="margin: 4px">
+                        <b><i class="fa fa-pencil"></i></b>
+                    </a>
+
+                     <a href="{{route('admin.video_ads.delete' , ['id' => $ads->id] )}}" onclick="return confirm(&quot;{{ tr('admin_video_ad_delete_confirmation') }}&quot;)" class="pull-right btn btn-danger" title="{{tr('delete')}}" style="margin: 4px">
+                        <b><i class="fa fa-trash"></i></b>
+                    </a>
+                @endif
             </ul>
 
             <div class="tab-content">
@@ -77,52 +90,55 @@ hr {
 
                         @if($ads->between_ad)
                          
-                          @foreach($ads->between_ad as $details)
-                            <li class="time-label" title="{{tr('video_time')}}">
-                                  <span class="bg-red">
-                                    {{$details->video_time}}
-                                  </span>
-                            </li>
+                            @foreach($ads->between_ad as $details)
+                                
+                                <li class="time-label" title="{{tr('video_time')}}">
+                                      <span class="bg-red">
+                                        {{$details->video_time}}
+                                      </span>
+                                </li>
 
-                            <li>
-                                <i class="fa fa-bullhorn bg-blue"></i>
+                                <li>
+                                    <i class="fa fa-bullhorn bg-blue"></i>
 
-                                <div class="timeline-item">
+                                    <div class="timeline-item">
 
-                                    <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_sec')}})</span>
+                                        <span class="time"><i class="fa fa-clock-o"></i> {{$details->ad_time}} ({{tr('in_sec')}})</span>
 
-                                    <h3 class="timeline-header">
+                                        <h3 class="timeline-header">
 
-                                    @if($details->ad_type == 1)
+                                        @if($details->ad_type == 1)
 
-                                      <a>{{tr('pre_ad')}}</a> 
+                                          <a>{{tr('pre_ad')}}</a> 
 
-                                    @elseif($details->ad_type == 2) 
+                                        @elseif($details->ad_type == 2) 
 
-                                      <a>{{tr('post_ad')}}</a> 
+                                          <a>{{tr('post_ad')}}</a> 
 
-                                    @else
+                                        @else
 
-                                      <a>{{tr('between_ad')}}</a> 
+                                          <a>{{tr('between_ad')}}</a> 
 
-                                    @endif
+                                        @endif
 
-                                    {{tr('details')}} (<a href="{{$details->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
+                                        {{tr('details')}} (<a href="{{$details->assigned_ad->ad_url}}" target="_blank">{{tr('click_here_url')}}</a>)</h3> 
 
-                                    <div class="timeline-body">
-                                        
-                                          <img src="{{$details->assigned_ad->file}}" style="width: 100%">
+                                        <div class="timeline-body">
+                                            
+                                              <img src="{{$details->assigned_ad->file}}" style="width: 100%">
 
+                                        </div>
+                                  
                                     </div>
-                              
-                                </div>
 
-                            </li>
-                           @endforeach
+                                </li>
 
-                           @endif
+                            @endforeach
 
-                            @if($ads->post_ad)
+                        @endif
+
+                        @if($ads->post_ad)
+                        
                             <li class="time-label" title="{{tr('video_time')}}">
                                 <span class="bg-red">
                                   {{$ads->post_ad->video_time}}
@@ -148,7 +164,8 @@ hr {
                                 </div>
 
                             </li>
-                         @endif
+
+                        @endif
                         
                         </ul>
 
