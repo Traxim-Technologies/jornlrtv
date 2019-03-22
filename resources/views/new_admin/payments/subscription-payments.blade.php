@@ -39,7 +39,7 @@
 				                </a>
 				                <ul class="dropdown-menu">
 				                  	<li role="presentation">
-				                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.subscription.export' , ['format' => 'xls']) }}">
+				                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.subscription.export' , ['format' => 'xlsx']) }}">
 				                  			<span class="text-red"><b>{{ tr('excel_sheet') }}</b></span>
 				                  		</a>
 				                  	</li>

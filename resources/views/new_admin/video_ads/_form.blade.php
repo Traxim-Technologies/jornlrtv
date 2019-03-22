@@ -15,15 +15,15 @@
 
             <form  action="{{ route('admin.video_ads.save') }}" method="POST" enctype="multipart/form-data" role="form">
 
-                <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{ $video_details->id }}">
+                <input type="hidden" name="video_tape_id" id="video_tape_id" value="{{ $video_tape_details->id }}">
 
                 <input type="hidden" name="video_ad_id" id="id" value="{{ $model->id }}">
 
                 <div class="box-body">
 
                 	<div class="col-md-6">
-	                    @if($video_details->video)
-	                        <?php $url = $video_details->video; ?>
+	                    @if($video_tape_details->video)
+	                        <?php $url = $video_tape_details->video; ?>
 	                        <div id="main-video-player"></div>
 	                    @else
 	                        <div class="image">
@@ -37,17 +37,17 @@
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item" >
                                 <b><i class="fa fa-suitcase margin-r-5"></i>{{ tr('title') }}</b> 
-                                <p> <a class="pull-right" href="{{ route('admin.videos.view', ['id' => $video_details->id] ) }}" target="_blank">{{ $video_details->title }}</a></p>
+                                <p> <a class="pull-right" href="{{ route('admin.videos.view', ['id' => $video_tape_details->id] ) }}" target="_blank">{{ $video_tape_details->title }}</a></p>
                                 <br>
                             </li>
 
                             <li class="list-group-item">
-                                <b><i class="fa fa-clock-o margin-r-5"></i>{{ tr('duration') }}</b> <div class="pull-right">{{ $video_details->duration }}</div>
+                                <b><i class="fa fa-clock-o margin-r-5"></i>{{ tr('duration') }}</b> <div class="pull-right">{{ $video_tape_details->duration }}</div>
                             </li>
 
                             <li class="list-group-item">
                                 <b><i class="fa fa-clock-o margin-r-5"></i>{{ tr('duration_in_seconds') }}</b> 
-                                <div class="pull-right">{{ $duration_in_seconds = convertDurationIntoSeconds($video_details->duration) }}</div>
+                                <div class="pull-right">{{ $duration_in_seconds = convertDurationIntoSeconds($video_tape_details->duration) }}</div>
                             </li>
                         </ul>
 
@@ -219,7 +219,7 @@
                     }
                     playerInstance.setup({
                         sources: path,
-                        image: "{{ $video_details->default_image }}",
+                        image: "{{ $video_tape_details->default_image }}",
                         width: "100%",
                         height: "200px !important",
                         aspectratio: "16:9",

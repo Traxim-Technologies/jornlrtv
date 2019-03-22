@@ -102,7 +102,6 @@
 
 				                                   <h4 class="media-heading">{{ tr('reason') }} *</h4>
 
-
 				                                   <textarea rows="5" name="cancel_reason" id='cancel_reason' required style="width: 100%"></textarea>
 
 				                               </div>

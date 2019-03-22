@@ -27,7 +27,6 @@
 
 @section('content')
 
-
 	<div class="row">
 
         <div class="col-xs-12">
@@ -99,7 +98,7 @@
 							      		@if($payment_details->title)
 
 							      			<a href="{{ route('admin.videos.view' , array('id' => $payment_details->video_id))}}">
-							      				{{ $payment_details->title}}
+							      				{{ substr($payment_details->title,0,25) }}...
 							      			</a>
 
 							      		@else
@@ -136,7 +135,10 @@
 							      		@endif 
 							      	</td>
 
-							      	<td><a href="" data-toggle="modal" data-target="#PPV_DETAILS_{{ $payment_details->id}}" class="btn btn-sm btn-success" href="{{route('admin.revenues.ppv_payments.view', ['id' => $payment_details->id] )}}">{{ tr('view')}}</a></td>
+							      	<td>
+							      		<a href="" data-toggle="modal" data-target="#PPV_DETAILS_{{ $payment_details->id }}" class="btn btn-sm btn-info" href="{{route('admin.revenues.ppv_payments.view', ['id' => $payment_details->id] )}}" title="{{ tr('view')}}">
+							      		<b><i class="fa fa-eye"></i></b></a>
+							      	</td>
 							    </tr>	
 
 								<div class="modal fade" id="PPV_DETAILS_{{ $payment_details->id}}" role="dialog">
