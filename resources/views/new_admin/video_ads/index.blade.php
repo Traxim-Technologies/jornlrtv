@@ -88,7 +88,9 @@
 									                  {{tr('action')}} <span class="caret"></span>
 									                </a>
 									                <ul class="dropdown-menu">
-									                	
+									                		                                                    
+									                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li>
+									               
 									                  	<li role="presentation">
 	                                                        @if(Setting::get('admin_delete_control'))
 	                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
@@ -96,9 +98,6 @@
 	                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
 	                                                        @endif
 	                                                    </li>
-	                                                    
-									                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
-									               
 															
 									                  	<li class="divider" role="presentation"></li>
 
