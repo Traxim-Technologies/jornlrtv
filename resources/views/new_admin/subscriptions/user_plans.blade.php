@@ -109,29 +109,29 @@
 
 				                   		<form method="post" action="{{ route('admin.subscription.auto-renewal.disable', ['id' => $payment_details->id]) }}">
 
-				                       <div class="modal-body">
+					                        <div class="modal-body">
 
-				                           <div class="media">
+					                           <div class="media">
 
-				                        		<div class="media-body">
+					                        		<div class="media-body">
 
-				                                   <h4 class="media-heading">{{ tr('reason') }} *</h4>
+					                                   <h4 class="media-heading">{{ tr('reason') }} *</h4>
 
-				                                   <textarea rows="5" name="cancel_reason" id='cancel_reason' required style="width: 100%"></textarea>
+					                                   <textarea rows="5" name="cancel_reason" id='cancel_reason' required style="width: 100%"></textarea>
 
-				                               </div>
+					                               </div>
 
-				                           </div>
+					                           </div>
 
-				                           <div class="text-right">
+					                           <div class="text-right">
 
-				                           		<br>
+					                           		<br>
 
-				                               <button type="submit" class="btn btn-primary top">{{ tr('submit') }}</button>
+					                               <button type="submit" class="btn btn-primary top">{{ tr('submit') }}</button>
 
-				                           </div>
+					                           </div>
 
-				                       </div>
+					                       </div>
 
 				                       </form>
 
