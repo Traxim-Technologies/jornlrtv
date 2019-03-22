@@ -1365,7 +1365,6 @@ class AdminController extends Controller {
             $video_tags = VideoTapeTag::where('video_tape_tags.video_tape_id' , $request->id)
                     ->leftjoin('tags','tags.id' , '=' , 'video_tape_tags.tag_id')
                     ->get();
-            // dd($video_tags);
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
             if ($video->video_type == VIDEO_TYPE_UPLOAD) {

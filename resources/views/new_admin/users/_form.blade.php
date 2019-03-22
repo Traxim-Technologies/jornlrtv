@@ -49,12 +49,12 @@
 
                                 <div class="col-lg-6">
                                     <label for="{{ tr('dob') }}">{{ tr('enter_dob') }} *</label>
-                                    <input type="text" name="dob" class="form-control" placeholder="{{ tr('enter_dob') }} *" id="dob" required autocomplete="off" value="{{ old('dob') ?: $user_details->dob }}" readonly>
+                                    <input type="text" name="dob" class="form-control" placeholder="{{ tr('enter_dob') }} *" id="dob" required autocomplete="off" value="{{ old('dob') ?: $user_details->dob }}" readonly required>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label for="{{ tr('mobile') }}">{{ tr('mobile') }}</label>
-                                    <input type="text" name="mobile" class="form-control" id="mobile" placeholder="{{ tr('mobile') }}" minlength="6" maxlength="13" value="{{ old('mobile') ?: $user_details->mobile }}" required>
+                                    <input type="text" name="mobile" class="form-control" id="mobile" placeholder="{{ tr('mobile') }}" minlength="6" maxlength="13" value="{{ old('mobile') ?: $user_details->mobile }}">
 
                                     <small style="color:brown">{{ tr('mobile_note') }}</small>
                                 </div>
@@ -71,7 +71,7 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <label for="exampleInputEmail1">{{ tr('confirm_password') }} *</label>
+                                    <label for="exampleInputEmail1">{{ tr('confirm_password') }} </label>
                                     <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="{{ tr('confirm_password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
                                 </div>
 

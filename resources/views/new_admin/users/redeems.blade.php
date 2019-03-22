@@ -2,7 +2,15 @@
 
 @section('title', tr('redeems'))
 
-@section('content-header', tr('redeems'))
+@section('content-header')
+
+{{ tr('redeems') }} 
+
+	@if($user_details) -
+		<a href="{{ route('admin.users.view' , ['user_id' => $user_details->id] ) }}">{{ $user_details->name }}</a>
+	@endif
+
+@endsection
 
 @section('breadcrumb')
     <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>

@@ -6,7 +6,7 @@
 
 {{tr('view_history')}} - 
 
-<a href="{{route('admin.users.view' , $user_details->id)}}">{{$user_details->name}}</a>
+<a href="{{route('admin.users.view' ,['user_id' => $user_details->id] )}}">{{$user_details->name}}</a>
 
 @endsection
 
@@ -49,38 +49,35 @@
 								    <tr>
 								      	<td>{{$i+1}}</td>
 
-								      	<td>{{$user_history_details->username}}</td>
+								      	<td>
+								      		<a href="{{route('admin.users.view', ['user_id' => $user_history_details->user_id])}}" >{{$user_history_details->username}}</a>
+								      	</td>
 								      	
-								      	<td>{{$user_history_details->title}}</td>
+								      	<td>
+								      		<a href="{{route('admin.videos.view', ['id' => $user_history_details->video_tape_id]) }}" >{{$user_history_details->title}}</a>
+								      	</td>
 								      	
 								      	<td>{{$user_history_details->date}}</td>
 									    
 									    <td>
-	            							<ul class="admin-action btn btn-default">
-	            								<li class="dropup">
-
-									                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									                  {{tr('action')}} 
-									                  <span class="caret"></span>
-									                </a>
-
-									                <ul class="dropdown-menu">
-									                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.delete.history' , $user_history_details->user_history_id)}}">{{tr('delete_history')}}</a></li>
-									                </ul>
-
-	              								</li>
-	            							</ul>
+	            						
+								            <a href="{{route('admin.users.history.delete' , ['history_id' => $user_history_details->user_history_id] )}}" onclick="return confirm(&quot;{{ tr('admin_user_history_delete_confirm', $user_history_details->title) }}&quot;)" class="btn btn-danger" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b> 
+          									</a>
 									    </td>
 									    
 								    </tr>					
 
 								@endforeach
 							</tbody>
+
 						</table>
+
 					@else
 						<h3 class="no-result">{{tr('no_history_found')}}</h3>
 					@endif
+
 	            </div>
+
 
           	</div>
 

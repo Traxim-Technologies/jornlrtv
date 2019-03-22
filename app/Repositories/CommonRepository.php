@@ -210,7 +210,7 @@ class CommonRepository {
 
                 throw new Exception($error, 101);                    
 
-            } else {
+            }
 
                 if ($request->channel_id != '') {
 
@@ -267,13 +267,11 @@ class CommonRepository {
                 if ($channel_details) {
 
                     $response_array = ['success' => true, 'message' => $message, 'data' => $channel_details];
-
                 } else {
 
-                    $response_array = ['success' => false, 'error_messages' => tr('something_error')];
+                    $response_array = ['success' => false, 'error_messages' => tr('something_error')]; 
                 }
-            }
-                
+
         } catch (Exception $e) {
             
             DB::rollBack();

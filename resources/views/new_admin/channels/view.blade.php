@@ -187,9 +187,11 @@
                                                 <div class="media">
                                                     
                                                     <div class="media-left">
+                                                        
                                                         <a href="{{ route('admin.users.view', ['user_id' => $channel_subscription_details->user_id ] ) }}" target="_blank">
+                                                        
                                                         <img src="{{ $channel_subscription_details->user_picture ?: asset('placeholder.png') }}" alt="{{ $channel_subscription_details->user_name }}" class="media-object" style="width: 150px;height: auto;border-radius: 4px;box-shadow: 0 1px 3px rgba(0,0,0,.15);">
-                                                    </a>
+                                                        </a>
                                                     </div>
 
                                                     <div class="media-body">

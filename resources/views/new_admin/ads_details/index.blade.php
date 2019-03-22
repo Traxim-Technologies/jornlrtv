@@ -46,9 +46,14 @@
 								@foreach($ads_details as $i => $ads_detail_detail)
 								   
 								    <tr>
-								      	<td><a href="{{ route('admin.ads-details.view' , ['ads_detail_id' => $ads_detail_detail->id] ) }}">{{ $i+1 }}</a></td>
+								      	<td>
+								      		<a href="{{ route('admin.ads-details.view' , ['ads_detail_id' => $ads_detail_detail->id] ) }}">{{ $i+1 }}
+								      		</a>
+								      	</td>
 
-								      	<td><a href="{{ route('admin.ads-details.view' , ['ads_detail_id' => $ads_detail_detail->id] ) }}">{{ $ads_detail_detail->name }}</a></td>
+								      	<td>
+								      		<a href="{{ route('admin.ads-details.view' , ['ads_detail_id' => $ads_detail_detail->id] ) }}">{{ $ads_detail_detail->name }}</a>
+								      	</td>
 								      	
 								      	<td>{{ $ads_detail_detail->ad_url }}</td>
 								      	
@@ -58,9 +63,8 @@
 								      		<img src="{{ $ads_detail_detail->file }}" style="width: 30px;height: 30px;" />
 								      	</td>
 								      	
-								      	<td>
-								      		
-								      		@if($ads_detail_detail->status)
+								      	<td>								      		
+								      		@if($ads_detail_detail->status == DEFAULT_TRUE)
 								      			<span class="label label-success">{{ tr('approved') }}</span>
 								       		@else
 								       			<span class="label label-danger">{{ tr('pending') }}</span>
@@ -110,6 +114,7 @@
 									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{ route('admin.ads-details.delete' , ['ads_detail_id' => $ads_detail_detail->id] ) }}">{{ tr('delete') }}</a>
 									                  		@endif
 									                  	</li>
+									                  	
 									                </ul>
 	              								</li>
 	            							</ul>

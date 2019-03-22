@@ -1314,31 +1314,32 @@ return array(
 	'earnings' => 'Earnings',
 	'location' => 'Location',
 	'favourites' => 'Favourites',
-	'favourites_notes' => 'Recent Activities of favourites you can find here. To Find out more about Favourites of this users.',
-	'to_view_more' => 'To View More',
+	'favourites_notes' => 'User Recent favourites.',
+	'to_view_more' => 'View More',
 	'wishlists' => 'Wishlists',
-	'history_notes' => 'Recent Activities of Histories you can find here. To Find out more about Histories of this users.',
+	'history_notes' => 'User Recent Histories.',
 
 	'histories' => 'Histories',
-	'channels_short_notes' => 'Recent Activities of Channels you can find here. To Find out more about Channels of this users.',
+	
+	'channels_short_notes' => 'User Recent activities on Channels.',
 	'personal_info' => 'Personal Info',
 	'no_channels_found' => 'No channels found',
 	'view_channel' => 'View Channel',
 	'shared_publicly' => 'Shared Publicly',
 	'about_channel' => 'About Channel',
-	'videos_short_notes' => 'Recent Activities of Videos you can find here. To Find out more about Videos from this Channel.',
-	'subscribers_short_notes' => 'Recent Activities of subscribers in this channel. To Find out more about Subscribers from this Channel.',
+	'videos_short_notes' => 'Recent activities on Videos.',
+	'subscribers_short_notes' => 'Recent activities of subscribers in this channel. To Find out more about Subscribers from this Channel.',
 	'channel_subscribers' => 'Channel Subscribers',
 	'spam_count' => 'Flags',
 	'video_status' => 'Video Status',
 	'ppv_details' => 'PPV Details',
 	'video_info' => 'Video Information',
-	'spam_videos_notes' => 'Recent Activities of Spam Video Reports you can find here. To Find out more about User Reports from this Video.',
+	'spam_videos_notes' => 'Recent activities of Spam Video Reports you can find here. To Find out more about User Reports from this Video.',
 	'spam_reports' => 'Spam Reports',
-	'reviews_notes' => 'Recent Activities of Video Reviews you can find here. To Find out more about User Reviews from this Video.',
-	'wishlist_notes' => 'Recent Activities of Wishlist you can find here. To Find out more about Wishlist from this Video.',
-	'spam_reports_notes' => 'Recent Activities of Spam Reports you can find here. To Find out more about Spam Reports of this User.',
-	'reviews_notes_list' => 'Recent Activities of Review Reports you can find here. To Find out more about Review Reports of this User.',
+	'reviews_notes' => 'Recent activities of Video Reviews you can find here. To Find out more about User Reviews from this Video.',
+	'wishlist_notes' => 'Recent activities of Wishlist you can find here. To Find out more about Wishlist from this Video.',
+	'spam_reports_notes' => 'User Recent Spam Reports.',
+	'reviews_notes_list' => 'User Recent Review Reports.',
 	'ad_status_enable_success' => 'Ads status has been enabled successfully.',
 	'ad_status_disable_success' => 'Ads status has been disabled successfully.',
 	'ad_status_change_failure' => 'Ads status has not been changed..!',
@@ -1441,7 +1442,7 @@ return array(
 	'coupon_inactive_reason' => 'The coupon was deactivated by admin.',
 	'coupon_delete_reason' => 'The coupon was deleted by admin',
 	'already_paid_amount_to_video' => 'You already paid to this video',	
-	'category_short_notes' => 'Recent Activities of Category Based channels Reports you can find here. To Find out more about channels of this Category.',
+	'category_short_notes' => 'Recent activities of category based channels',
 	'about_category' => 'About Category',
 	'no_of_subscribers' => 'No of Subscribers',
 	'view_category' => 'View Category',
@@ -1620,7 +1621,7 @@ return array(
 	'admin_tag_delete_confirmation'=>"Do you want to delete this (:otherkey) tag?",
 	'admin_tag_delete_success' => 'Tag has been deleted successfully.',
 	'admin_tag_delete_error' => 'Sorry! Tag could not be deleted. Please try again',
-
+	'admin_taged_videos' => 'Tagged Videos',
 	// New Admin Coupons
 
 	'admin_coupon_not_found' => 'Coupon details not found.',
@@ -1862,6 +1863,8 @@ return array(
 	'playlist' => 'Playlist',
 
 	'no_playlist_found' => 'No playlist found',
+
+	// Users
 
 	'admin_user_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
 

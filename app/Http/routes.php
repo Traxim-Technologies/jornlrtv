@@ -648,6 +648,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     // New Admin Coupons methods ends
 
     // New Admin AdsDetail methods begins
+
+    Route::get('ads-details/index','NewAdminController@ads_details_index')->name('ads-details.index');
     
     Route::get('ads-details/create','NewAdminController@ads_details_create')->name('ads-details.create');
 
@@ -655,13 +657,11 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('ads-details/save','NewAdminController@ads_details_save')->name('ads-details.save');
 
-    Route::get('ads-details/index','NewAdminController@ads_details_index')->name('ads-details.index');
-
     Route::get('ads-details/view','NewAdminController@ads_details_view')->name('ads-details.view');
 
-    Route::get('ads-details/status','NewAdminController@ads_details_status')->name('ads-details.status');
-
     Route::get('ads-details/delete','NewAdminController@ads_details_delete')->name('ads-details.delete');
+
+    Route::get('ads-details/status','NewAdminController@ads_details_status')->name('ads-details.status');
 
     // New Admin coupons methods ends
     

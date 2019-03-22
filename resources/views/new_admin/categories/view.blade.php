@@ -21,15 +21,16 @@
         <div class="box box-widget widget-user">
 
             <div class="widget-user-header bg-black" style="background: #000">
-              <h3 class="widget-user-username text-capitalize">{{$category->name}}</h3>
-              <h5 class="widget-user-desc">{{tr('category')}}</h5>
+                <h3 class="widget-user-username text-capitalize">{{$category->name}}</h3>
+                <h5 class="widget-user-desc">{{tr('category')}}</h5>
             </div>
 
             <div class="widget-user-image">
-              <img class="img-circle" src="{{$category->image}}" alt="User Avatar" style="height: 90px">
+                <img class="img-circle" src="{{$category->image}}" alt="User Avatar" style="height: 90px">
             </div>
 
             <div class="box-footer">
+                
                 <div class="row">
                     <div class="col-sm-4 border-right">
                       <div class="description-block">
@@ -56,7 +57,7 @@
                     </div>
                     <!-- /.col -->
                 </div>
-              <!-- /.row -->
+
             </div>
 
         </div>
@@ -113,32 +114,34 @@
 
                                 <blockquote>
                                     <p>{{tr('videos_short_notes')}}</p>
-                                    <small>{{tr('to_view_more')}} <cite><a target="_blank" href="{{route('admin.categories.videos', ['category_id'=> $category->id] )}}">{{tr('click_here')}}</a></cite></small>
+                                    <cite><a target="_blank" href="{{route('admin.categories.videos', ['category_id'=> $category->id] )}}">{{ tr('to_view_more') }}</a></cite>
+
                                 </blockquote>
 
                                 @if($category->get_videos_count > 0)
 
                                   @foreach($category_videos as $video)
-                                  <div class="box-comments">
-                                    <!-- /.box-comment -->
-                                    <div class="box-comment">
-                                      <!-- User image -->
-                                      <img class="img-circle img-sm" src="{{$video->default_image}}" alt="{{$category->user_name}}">
+                                    <div class="box-comments">
+                                        <!-- /.box-comment -->
+                                        <div class="box-comment">
+                                            <!-- User image -->
+                                            <img class="img-circle img-sm" src="{{$video->default_image}}" alt="{{$category->user_name}}">
 
-                                      <div class="comment-text">
-                                            <span class="username">
-                                              <a href="{{route('admin.videos.view', ['id' => $video->id] )}}" target="_blank">{{$video->title}}</a>
-                                              <span class="text-muted pull-right">{{$video->created_at->diffForHumans()}}</span>
-                                            </span><!-- /.username -->
-                                          <div class="description"><?= $video->description?></div>
-                                      </div>
-                                      <!-- /.comment-text -->
+                                            <div class="comment-text">
+                                                <span class="username">
+                                                  <a href="{{route('admin.videos.view', ['id' => $video->id] )}}" target="_blank">{{$video->title}}</a>
+                                                  <span class="text-muted pull-right">{{$video->created_at->diffForHumans()}}</span>
+                                                </span><!-- /.username -->
+                                                <div class="description"><?= $video->description?></div>
+                                            </div>
+                                            <!-- /.comment-text -->
+
+                                        </div>
+
                                     </div>
-                                  </div>
                                   @endforeach
 
                                 @else
-
 
                                     {{tr('no_videos_found')}}
 
@@ -146,49 +149,61 @@
                             </div>
 
                             <div class="tab-pane" id="tab_3">
+                               
                                 <blockquote>
                                     <p>{{tr('category_short_notes')}}</p>
-                                    <small>{{tr('to_view_more')}} <cite><a  target="_blank" href="{{route('admin.categories.channels', ['category_id'=> $category->id] )}}">{{tr('click_here')}}</a></cite></small>
+                                     <cite><a  target="_blank" href="{{route('admin.categories.channels', ['category_id'=> $category->id] )}}">{{ tr('to_view_more') }}</a></cite>
                                 </blockquote>
 
                                 @if($no_of_channels > 0)
 
                                     @foreach($channel_lists as $i => $channel_list)
 
-                                      <div class="col-sm-6 col-md-6">
-                                        <div class="box box-solid">
-                                            <div class="box-body">
-                                                <h4 style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px; margin-top: 0;">
-                                                    {{$channel_list->title}}
-                                                </h4>
-                                                <div class="media">
-                                                    <div class="media-left">
-                                                         <a href="{{route('admin.channels.view', ['channels_id' => $channel_list->channel_id] )}}" target="_blank">
-                                                            <img src="{{$channel_list->picture}}" alt="{{$channel_list->title}}" class="media-object" style="width: 150px;height: auto;border-radius: 4px;box-shadow: 0 1px 3px rgba(0,0,0,.15);">
-                                                        </a>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="clearfix">
-                                                            <p class="pull-right">
-                                                                 <a class="btn btn-success btn-sm" href="{{route('admin.channels.view', ['channels_id' => $channel_list->channel_id] )}}" target="_blank">
-                                                                    {{tr('view')}}
-                                                                </a>
-                                                            </p>
-
-                                                            <h4 style="margin-top: 0;text-align:nowrap;overflow: hidden;text-overflow: ellipsis;">{{tr('no_of_videos')}} - {{$channel_list->no_of_videos}}</h4>
-
-                                                            <h4 style="margin-top: 0;text-align:nowrap;overflow: hidden;text-overflow: ellipsis;">{{tr('no_of_subscribers')}} - {{$channel_list->no_of_subscribers}}</h4>
-
-                                                            <div style="max-height: 80px;overflow-y: hidden;"><?= $channel_list->description ?></div>
-                                                            <!-- <p style="margin-bottom: 0">
-                                                                <i class="fa fa-shopping-cart margin-r5"></i> 12+ purchases
-                                                            </p> -->
+                                        <div class="col-sm-6 col-md-6">
+                                        
+                                            <div class="box box-solid">
+                                                
+                                                <div class="box-body">
+                                                    
+                                                    <h4 style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px; margin-top: 0;">
+                                                        {{$channel_list->title}}
+                                                    </h4>
+                                                    
+                                                    <div class="media">
+                                                        <div class="media-left">
+                                                            
+                                                            <a href="{{route('admin.channels.view', ['channel_id' => $channel_list->channel_id] )}}" target="_blank">
+                                                                
+                                                                <img src="{{$channel_list->picture}}" alt="{{$channel_list->title}}" class="media-object" style="width: 150px;height: auto;border-radius: 4px;box-shadow: 0 1px 3px rgba(0,0,0,.15);">
+                                                            </a>
                                                         </div>
+                                                        
+                                                        <div class="media-body">
+                                                            <div class="clearfix">
+                                                                <p class="pull-right">
+                                                                     <a class="btn btn-success btn-sm" href="{{route('admin.channels.view', ['channel_id' => $channel_list->channel_id] )}}" target="_blank">
+                                                                        {{tr('view')}}
+                                                                    </a>
+                                                                </p>
+
+                                                                <h4 style="margin-top: 0;text-align:nowrap;overflow: hidden;text-overflow: ellipsis;">{{tr('no_of_videos')}} - {{$channel_list->no_of_videos}}</h4>
+
+                                                                <h4 style="margin-top: 0;text-align:nowrap;overflow: hidden;text-overflow: ellipsis;">{{tr('no_of_subscribers')}} - {{$channel_list->no_of_subscribers}}</h4>
+
+                                                                <div style="max-height: 80px;overflow-y: hidden;"><?= $channel_list->description ?></div>
+                                                                <!-- <p style="margin-bottom: 0">
+                                                                    <i class="fa fa-shopping-cart margin-r5"></i> 12+ purchases
+                                                                </p> -->
+                                                            </div>
+                                                        </div>
+
                                                     </div>
+
                                                 </div>
+
                                             </div>
+
                                         </div>
-                                      </div>
 
                                       @if ($i % 2 == 0)  @else 
 
@@ -204,7 +219,8 @@
 
                                 @endif
 
-                              <div class="clearfix"></div>
+                                <div class="clearfix"></div>
+
                             </div>
 
                         </div>

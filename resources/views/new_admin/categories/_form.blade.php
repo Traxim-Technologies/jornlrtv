@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="description">{{ tr('description') }}*</label>
 
-                            <textarea name="description" class="form-control" required id="description">{{ old('description') ?: $category_details->description }}</textarea>
+                            <textarea name="description" class="form-control" required id="description" required>{{ old('description') ?: $category_details->description }}</textarea>
                         </div>
 
                     </div>

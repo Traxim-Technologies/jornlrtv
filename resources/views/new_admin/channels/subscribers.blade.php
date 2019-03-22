@@ -63,7 +63,7 @@
 		                                	@endif
 		                            	</td>	                           
 
-		                            	<td>{{ $channel_subscription_details->getUser ? $channel_subscription_details->getUser->name : '' }}</a></td>
+		                            	<td><a target="_blank" href="{{ route('admin.users.view', ['user_id' => $channel_subscription_details->user_id] ) }}">{{ $channel_subscription_details->getUser ? $channel_subscription_details->getUser->name : '' }}</a></td>
 		                            	
 								     	<td>	
 								     		@if($channel_subscription_details->getUser)

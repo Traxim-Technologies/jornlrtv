@@ -227,19 +227,18 @@ class NewAdminController extends Controller {
           
             $user_details = User::find($request->user_id);
 
-            if( count($user_details) == 0 ) {
+            if( !$user_details ) {
 
                 throw new Exception( tr('admin_user_not_found'), 101);
-
-            } else {
-
-                $user_details->dob = ($user_details->dob) ? date('d-m-Y', strtotime($user_details->dob)) : '';
-
-                return view('new_admin.users.edit')
-                        ->with('page' , 'users')
-                        ->with('sub_page','users-view')
-                        ->with('user_details',$user_details);
             }
+
+            $user_details->dob = ($user_details->dob) ? date('d-m-Y', strtotime($user_details->dob)) : '';
+
+            return view('new_admin.users.edit')
+                    ->with('page' , 'users')
+                    ->with('sub_page','users-view')
+                    ->with('user_details',$user_details);
+        
 
         } catch( Exception $e) {
             
@@ -494,7 +493,7 @@ class NewAdminController extends Controller {
                         ->orderBy('wishlists.created_at', 'desc')
                         ->paginate(12);
 
-                $history = UserHistory::select('user_histories.*', 'video_tapes.title as title')
+                $histories = UserHistory::select('user_histories.*', 'video_tapes.title as title')
                         ->where('user_histories.user_id', $request->user_id)
                         ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_histories.video_tape_id')
                         ->orderBy('user_histories.created_at', 'desc')
@@ -512,6 +511,7 @@ class NewAdminController extends Controller {
                         ->orderBy('user_ratings.created_at', 'desc')
                         ->paginate(12);
 
+
                 return view('new_admin.users.view')
                             ->withPage('users')
                             ->with('sub_page','users-view')
@@ -519,7 +519,7 @@ class NewAdminController extends Controller {
                             ->with('channels', $channel_datas)
                             ->with('videos', $videos)
                             ->with('wishlists', $wishlists)
-                            ->with('histories', $history)
+                            ->with('histories', $histories)
                             ->with('spam_reports', $spam_reports)
                             ->with('user_ratings', $user_ratings);
             } 
@@ -783,7 +783,7 @@ class NewAdminController extends Controller {
 
                 DB::commit();
                 
-                return back()->with('flash_success',tr('admin_user_wishlist_success'));
+                return back()->with('flash_success',tr('admin_user_wishlist_delete_success'));
             } 
                 
             throw new Exception(tr('admin_user_wishlist_delete_error'), 101);
@@ -831,7 +831,6 @@ class NewAdminController extends Controller {
                 DB::commit();
                 
                 return back()->with('flash_success',tr('admin_user_history_delete_success'));
-
             }
             
             throw new Exception(tr('admin_user_history_delete_error'), 101);
@@ -1030,6 +1029,8 @@ class NewAdminController extends Controller {
             $channels = Channel::orderBy('channels.created_at', 'desc')
                                 ->where('user_id' , $request->user_id)
                                 ->distinct('channels.id')
+                                ->withCount('getChannelSubscribers')
+                                ->withCount('getVideoTape')
                                 ->get();
 
             return view('new_admin.channels.index')
@@ -1231,6 +1232,7 @@ class NewAdminController extends Controller {
             $channel_subscriptions = ChannelSubscription::select('users.name as user_name', 'users.id as user_id', 'users.picture as user_picture', 'users.description', 'users.created_at', 'users.email')->where('channel_id', $channel_details->id)
                         ->leftjoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
                         ->paginate(12);
+            // dd($channel_subscriptions->toArray());
 
             return view('new_admin.channels.view')
                         ->with('page' ,'channels')
@@ -1383,7 +1385,7 @@ class NewAdminController extends Controller {
                         ->orderBy('video_tapes.created_at' , 'desc')
                         ->get();
 
-            return view('new_admin.videos.videos')
+            return view('admin.videos.videos')
                         ->withPage('videos')
                         ->with('sub_page','view-videos')
                         ->with('videos' , $videos)
@@ -1421,7 +1423,7 @@ class NewAdminController extends Controller {
             if ($request->channel_id) {
 
                 $channel_subscriptions = ChannelSubscription::where('channel_id', $request->channel_id)->orderBy('created_at', 'desc')->get();
-            }            
+            }   
 
             return view('new_admin.channels.subscribers')
                         ->withPage('channels')
@@ -1545,6 +1547,7 @@ class NewAdminController extends Controller {
     public function categories_save(Request $request) {
         
         try {
+
             
             DB::beginTransaction();
 
@@ -1967,7 +1970,7 @@ class NewAdminController extends Controller {
                 throw new Exception($error, 101);                
             }
 
-            $tag_details = $request->id ? Tag::find($request->id) : new Tag;
+            $tag_details = $request->tag_id ? Tag::find($request->tag_id) : new Tag;
 
             $tag_details->name = $request->name;
 
@@ -4899,7 +4902,8 @@ class NewAdminController extends Controller {
             return view('new_admin.users.redeems')
                     ->withPage('redeems')
                     ->with('sub_page' , 'redeems')
-                    ->with('redeem_requests' , $redeem_requests)->with('user' , $user_details);
+                    ->with('redeem_requests' , $redeem_requests)
+                    ->with('user_details' , $user_details);
         
         } catch (Exception $e) {
             
@@ -5032,7 +5036,7 @@ class NewAdminController extends Controller {
      * @return view page
      */
     public function user_reviews(Request $request) {
-            
+
         $query = UserRating::leftJoin('users', 'user_ratings.user_id', '=', 'users.id')
             ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')  
             ->select('user_ratings.id as rating_id', 'user_ratings.rating', 
