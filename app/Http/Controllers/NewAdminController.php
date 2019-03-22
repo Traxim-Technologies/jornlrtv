@@ -1680,7 +1680,7 @@ class NewAdminController extends Controller {
                         ->with('sub_page', 'categories')
                         ->with('category_videos', $category_videos)
                         ->with('channel_lists', $channel_lists)
-                        ->with('category', $category_details)
+                        ->with('category_details', $category_details)
                         ->with('category_earnings', $category_earnings)
                         ->with('no_of_channels', count($no_of_channels));           
             

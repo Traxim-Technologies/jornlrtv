@@ -194,6 +194,7 @@
 									                  	 	@endif
 
 									                  	@endif
+									                  	<li class="divider" role="presentation"></li>
 
 									                  	@if($user_details->status == USER_APPROVED )
 									                  		

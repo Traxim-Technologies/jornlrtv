@@ -26,11 +26,15 @@
             <h3 class="widget-user-username text-capitalize">{{ $channel_details->name }}</h3>
             <h5 class="widget-user-desc">{{ tr('channel') }}</h5>
         </div>
+
         <div class="widget-user-image">
             <img class="img-circle" src="{{ $channel_details->picture ?: asset('placeholder.png') }}" alt="User Avatar" style="height: 90px">
         </div>
+
         <div class="box-footer">
+           
             <div class="row">
+                
                 <div class="col-sm-4 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.videos', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_video_tape_count }}</a></h5>
@@ -39,6 +43,7 @@
                     <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
+                
                 <div class="col-sm-4 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a  target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_channel_subscribers_count }}</a></h5>
@@ -47,6 +52,7 @@
                     <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
+                
                 <div class="col-sm-4">
                     <div class="description-block">
                         <h5 class="description-header">{{ Setting::get('currency') }} {{ number_format_short($channel_earnings) }}</h5>
@@ -55,9 +61,11 @@
                     <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
+
             </div>
             <!-- /.row -->
         </div>
+
     </div>
     <!-- /.widget-user -->
 
@@ -113,6 +121,7 @@
                         <li><a href="#tab_3" data-toggle="tab">{{ tr('subscribers') }}</a></li>
                     </ul>
                     <div class="tab-content">
+                        
                         <div class="tab-pane active" id="tab_1">
                             <table class="table">
                                 <tr>
@@ -128,6 +137,7 @@
                             </table>
 
                         </div>
+                        
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="tab_2">
 
@@ -167,8 +177,10 @@
 
                             @endif
                         </div>
+                        
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="tab_3">
+                            
                             <blockquote>
                                 <p>{{ tr('subscribers_short_notes') }}</p>
                                 <small>{{ tr('to_view_more') }} <cite><a  target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ tr('click_here') }}</a></cite></small>
@@ -179,11 +191,15 @@
                                 @foreach($channel_subscriptions as $i => $channel_subscription_details)
 
                                     <div class="col-sm-6 col-md-6">
+                                        
                                         <div class="box box-solid">
+                                            
                                             <div class="box-body">
+                                                
                                                 <h4 style="background-color:#f7f7f7; font-size: 18px; text-align: center; padding: 7px 10px; margin-top: 0;">
                                                 {{ $channel_subscription_details->user_name }}
                                                 </h4>
+                                                
                                                 <div class="media">
                                                     
                                                     <div class="media-left">
@@ -206,10 +222,15 @@
 
                                                             <p style="max-height: 80px;overflow-y: hidden;">{{ $channel_subscription_details->description }}</p>
                                                         </div>
+                                                        
                                                     </div>
+
                                                 </div>
+
                                             </div>
+
                                         </div>
+
                                     </div>
 
                                     @if ($i % 2 == 0) @else
