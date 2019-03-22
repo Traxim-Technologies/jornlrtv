@@ -4,7 +4,7 @@
 
 @section('content-header')
 
-{{  tr('settings') }}
+{{ tr('settings') }}
 
 <a href="#" id="help-popover" class="btn btn-danger" style="font-size: 14px;font-weight: 600" title="{{ tr('any_help') }}">{{ tr('help') }}</a>
 
@@ -169,7 +169,7 @@ hr {
             
             <div class="streamview-tab-content active">
 
-                <form action="{{ (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{ (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
@@ -199,7 +199,7 @@ hr {
 
                                     <br>
 
-                                    @if(Setting::get('site_logo'))
+                                    @if(Setting::get('site_logo') == DEFAULT_TRUE)
                                         <img style="height: 50px; width:75px;margin-bottom: 15px; border-radius:2em;" src="{{ Setting::get('site_logo') }}">
                                     @endif
 
@@ -213,7 +213,7 @@ hr {
 
                                 <div class="form-group">
 
-                                    @if(Setting::get('site_icon'))
+                                    @if(Setting::get('site_icon') == DEFAULT_TRUE)
                                             <img style="height: 50px; width:75px; margin-bottom: 15px; border-radius:2em;" src="{{ Setting::get('site_icon') }}">
                                     @endif
                                         <label for="site_icon">{{ tr('site_icon') }}</label>
@@ -233,7 +233,7 @@ hr {
 
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
                 
@@ -244,7 +244,7 @@ hr {
             <!-- Video section -->
             <div class="streamview-tab-content">
                 
-                <form action="{{  (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{ (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
@@ -311,7 +311,7 @@ hr {
 
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
                 
@@ -323,7 +323,7 @@ hr {
 
             <div class="streamview-tab-content">
 
-                <form action="{{  (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
                     
                     <div class="box-body">
 
@@ -387,7 +387,7 @@ hr {
 
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
 
@@ -400,7 +400,7 @@ hr {
 
             <div class="streamview-tab-content">
                 
-                <form action="{{  (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
                     <div class="box-body">
 
                         <div class="row">
@@ -496,7 +496,7 @@ hr {
 
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES ) disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
 
@@ -507,7 +507,7 @@ hr {
 
             <div class="streamview-tab-content">
                 
-                <form action="{{  (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
                    
                     <div class="box-body">
 
@@ -575,7 +575,7 @@ hr {
 
                        <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
 
@@ -586,6 +586,7 @@ hr {
             <!-- Email settings -->
 
             <div class="streamview-tab-content">
+                
                 <form action="{{ route('admin.email.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
                             
                     <div class="box-body">
@@ -646,7 +647,7 @@ hr {
 
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
 
@@ -657,7 +658,7 @@ hr {
 
             <div class="streamview-tab-content">
                
-                <form action="{{  (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
                     
                     <div class="box-body">
                         <div class="row">
@@ -699,7 +700,7 @@ hr {
 
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
 
@@ -711,7 +712,7 @@ hr {
 
             <div class="streamview-tab-content">
                
-                <form action="{{  (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
                     
                     <div class="box-body">
                         <div class="row">
@@ -775,7 +776,7 @@ hr {
                         
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
                     </div>
 
                 </form>
@@ -785,7 +786,7 @@ hr {
             <!-- SEO Settings begins-->
             <div class="streamview-tab-content">
 
-                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" role="form">
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
 
                     <div class="box-body">
 
@@ -798,7 +799,7 @@ hr {
 
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label>{{  tr('meta_title')  }}</label>
+                                    <label>{{ tr('meta_title') }}</label>
                                      <input type="text" name="meta_title" value="{{  Setting::get('meta_title', '')   }}" required class="form-control" placeholder="{{ tr('meta_title') }}">
                                 </div>                               
                             </div>
@@ -847,7 +848,7 @@ hr {
             <!-- Other Settings -->
 
             <div class="streamview-tab-content">
-                <form action="{{ (Setting::get('admin_delete_control') == DEFAULT_TRUE) ? '#' : route('admin.save.settings') }}" method="POST" enctype="multipart/form-data" r  ole="form">
+                <form action="{{ (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" r  ole="form">
                             
                     <div class="box-body"> 
                         <div class="row"> 
@@ -920,7 +921,7 @@ hr {
 
                         <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
 
-                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == DEFAULT_TRUE)  disabled @endif >{{ tr('submit') }}</button>
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
                     </div>
 

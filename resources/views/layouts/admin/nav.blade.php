@@ -327,7 +327,6 @@
                 </a>
             </li>
 
-
             <li id="help">
                 <a href="{{route('admin.help')}}">
                     <i class="fa fa-question-circle"></i> <span>{{tr('help_1')}}</span>

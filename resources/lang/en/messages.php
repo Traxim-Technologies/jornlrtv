@@ -1847,7 +1847,7 @@ return array(
 	'admin_sub_admin_create_success'=>'Sub Admin created successfully',
 	'admin_sub_admin_update_success'=>'Sub Admin update successfully',
 	'admin_sub_admin_save_error'=>'Sorry! Sub Admin could not be created, Please try again',
-	'admin_sub_admin_delete_confirmation'=>'Do you  want delete this sub admin.',
+	'admin_sub_admin_delete_confirmation'=>'Do you  want delete this(:otherkey) sub admin.',
 	'admin_sub_admin_delete_success'	=>	'Sub Admin deleted successfully',
 	'admin_sub_admin_status_error' => 'Sorry!, something went wrong Sub Admin  status could not be changed either Approve/decline. Please try again.',
 
@@ -1883,5 +1883,7 @@ return array(
 	'admin_user_playlist_video_delete_error'=>"Video could not be removed. Please try again!",
 
 	'added_on' =>'Added on',
+	'updated_at' => 'Updated at',
+
 
 );

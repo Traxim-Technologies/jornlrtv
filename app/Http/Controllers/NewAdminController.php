@@ -5255,8 +5255,9 @@ class NewAdminController extends Controller {
      */
     public function custom_push() {
 
-        return view('new_admin.static_pages.push')
-                ->with('page' , tr('custom_push'))
+        return view('new_admin.static_pages.push') 
+                ->with('page' , 'custom-push')
+                ->with('sub_page','custom-push')
                 ->with('title' , tr('custom_push'));
 
     }
@@ -6014,6 +6015,97 @@ class NewAdminController extends Controller {
             return back()->withInput()->with('flash_error',$error);
 
         }
+    }
+
+    /**
+     * Function Name : videos_create
+     *
+     * @uses To create new video 
+     *
+     * @created vithya R
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     * 
+     * @return view Page
+     *
+     */
+    public function videos_create(Request $request) {
+
+        $channels = getChannels();
+
+        $categories_list = Category::select('id as category_id', 'name as category_name')->where('status', CATEGORY_APPROVE_STATUS)->orderBy('created_at', 'desc')
+                ->get();
+
+        $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                    ->where('status', TAG_APPROVE_STATUS)
+                    ->orderBy('created_at', 'desc')->get();
+
+        return view('admin.videos.video_upload')
+                ->with('page' ,'videos')
+                ->with('sub_page' ,'video-create')
+                ->with('channels' , $channels)
+                ->with('categories', $categories_list)
+                ->with('tags', $tags);
+
+    }
+
+    /**
+     * Function Name : videos_edit
+     *
+     * @uses To Edit a video based on video id
+     *
+     * @created vithya R
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - Video Id
+     * 
+     * @return view Page
+     *
+     */
+    public function videos_edit(Request $request) {
+
+        $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
+                    ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->videoResponse()
+                    ->orderBy('video_tapes.created_at' , 'desc')
+                    ->first();
+
+        if (!$video_tape_details) {
+
+            throw new Exception(tr('video_not_found'), 101);
+        }
+
+        $page = 'videos';
+
+        $sub_page = 'video-create';
+
+        if($video_tape_details->is_banner == DEFAULT_TRUE) {
+            $page = 'banner-videos';
+            $sub_page = 'banner-videos';
+        }
+
+        $channels = getChannels();
+
+        $categories = Category::select('id as category_id', 'name as category_name')->where('status', CATEGORY_APPROVE_STATUS)->orderBy('created_at', 'desc')
+            ->get();
+
+        $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                ->where('status', TAG_APPROVE_STATUS)
+                ->orderBy('created_at', 'desc')->get();
+
+        $video_tape_details->tag_id = VideoTapeTag::where('video_tape_id', $request->video_tape_id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
+
+        return view('admin.videos.edit-video')
+                    ->with('page' ,$page)
+                    ->with('sub_page' ,$sub_page)
+                    ->with('channels' , $channels)
+                    ->with('video' ,$video_tape_details)
+                    ->with('tags', $tags)
+                    ->with('categories', $categories);
+    
     }
 
 

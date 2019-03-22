@@ -25,7 +25,7 @@
 
                 </div>
 
-                <form action="{{route('admin.save.settings')}}" method="POST" role="form">
+                <form action="{{route('admin.settings.save')}}" method="POST" role="form">
 
                 <div class="box-body">
 

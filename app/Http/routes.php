@@ -258,7 +258,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('videos/assign-ad', 'AdminController@video_assign_ad')->name('videos.assign_ad');
 
-
     // Exports tables
 
     Route::get('/users/export/', 'AdminExportController@users_export')->name('users.export');
@@ -271,22 +270,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
 
-    // // Video Ads
-
-    // Route::get('/video-ads/list', 'AdminController@video_ads_list')->name('video_ads.list');
-
-    // Route::get('video-ads/edit/{id}','AdminController@video_ads_edit')->name('video_ads.edit');
-
-    // Route::get('video-ads/create','AdminController@video_ads_create')->name('video_ads.create');
-
-    // Route::get('video-ads/view','AdminController@video_ads_view')->name('video-ads.view');
-
-    // Route::get('video-ads/delete','AdminController@video_ads_delete')->name('video-ads.delete');
-
-    // Route::post('video-ads/save','AdminController@video_ads_save')->name('video-ads.save');
-
-    // Route::post('video-ads/inter-ads', 'AdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
-    
     // Languages
 
     Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 
@@ -305,6 +288,24 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/languages/set_default_language/{name}', 'LanguageController@set_default_language')->name('languages.set_default_language');
 
+
+    // // Video Ads
+
+    // Route::get('/video-ads/list', 'AdminController@video_ads_list')->name('video_ads.list');
+
+    // Route::get('video-ads/edit/{id}','AdminController@video_ads_edit')->name('video_ads.edit');
+
+    // Route::get('video-ads/create','AdminController@video_ads_create')->name('video_ads.create');
+
+    // Route::get('video-ads/view','AdminController@video_ads_view')->name('video-ads.view');
+
+    // Route::get('video-ads/delete','AdminController@video_ads_delete')->name('video-ads.delete');
+
+    // Route::post('video-ads/save','AdminController@video_ads_save')->name('video-ads.save');
+
+    // Route::post('video-ads/inter-ads', 'AdminController@video_ads_inter_ads')->name('video-ads.inter-ads');
+    
+    
     // // Banner Videos
 
     // Route::get('/banner/videos/set/{id}', 'AdminController@banner_videos_set')->name('banner.videos.set');
@@ -802,7 +803,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('settings' , 'NewAdminController@settings')->name('settings');
 
-    Route::post('settings' , 'NewAdminController@settings_save')->name('save.settings');
+    Route::post('settings' , 'NewAdminController@settings_save')->name('settings.save');
      Route::post('settings/email' , 'NewAdminController@email_settings_process')->name('email.settings.save');
      
     // Get ios control page

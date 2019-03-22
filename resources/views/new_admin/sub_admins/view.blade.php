@@ -51,22 +51,22 @@
       				
 						@if(Setting::get('admin_delete_control') == YES)
 
-		                  	<a class="btn btn-sm btn-warning" href="javascript:;" title="{{tr('edit')}}"><b><i class="fa fa-edit"></i> {{ tr('edit') }}</b></a>
+		                  	<a class="btn btn-sm btn-warning" href="javascript:;" title="{{tr('edit')}}"><b><i class="fa fa-edit"></i></b></a>
 
-		                  	<a class="btn btn-sm btn-danger" href="javascript:;" title="{{tr('delete')}}"><b><i class="fa fa-trash"></i> {{ tr('delete') }}</b></a>
+		                  	<a class="btn btn-sm btn-danger" href="javascript:;" title="{{tr('delete')}}"><b><i class="fa fa-trash"></i></b></a>
 
 	                  	@else
 	                  	
-		                  	<a class="btn btn-sm btn-warning" href="{{ route('admin.sub_admins.edit' , ['sub_admin_id'=>$sub_admin_details->id] ) }}" title="{{tr('edit')}}"><b><i class="fa fa-edit"></i> {{ tr('edit') }}</b></a>
+		                  	<a class="btn btn-sm btn-warning" href="{{ route('admin.sub_admins.edit' , ['sub_admin_id'=>$sub_admin_details->id] ) }}" title="{{tr('edit')}}"><b><i class="fa fa-edit"></i></b></a>
 
-		                  	<a class="btn btn-sm btn-danger" href="{{ route('admin.sub_admins.delete' , ['sub_admin_id' => $sub_admin_details->id]) }}" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_delete_confirmation' , $sub_admin_details->name) }}&quot;);" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i> {{ tr('delete') }}</b></a>
+		                  	<a class="btn btn-sm btn-danger" href="{{ route('admin.sub_admins.delete' , ['sub_admin_id' => $sub_admin_details->id]) }}" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_delete_confirmation' , $sub_admin_details->name) }}&quot;);" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b></a>
 	                  	
 	                  	@endif
 
 	                  	@if($sub_admin_details->status == YES )
-	                  		<a class="btn btn-sm btn-warning" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_decline_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.sub_admins.status' , ['sub_admin_id' => $sub_admin_details->id]) }}" title="{{tr('decline')}}"> <b><i class="fa fa-close"></i> {{ tr('decline') }}</b></a>
+	                  		<a class="btn btn-sm btn-warning" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_decline_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.sub_admins.status' , ['sub_admin_id' => $sub_admin_details->id]) }}" title="{{tr('decline')}}"> <b><i class="fa fa-close"></i></b></a>
 	                  	 @else 
-	                  	 	<a class="btn btn-sm btn-success" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_approve_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.sub_admins.status' , ['sub_admin_id'=>$sub_admin_details->id]) }}" title="{{tr('approve')}}"> <b><i class="fa fa-check"></i> {{ tr('approve') }} </b></a>
+	                  	 	<a class="btn btn-sm btn-success" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_approve_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.sub_admins.status' , ['sub_admin_id'=>$sub_admin_details->id]) }}" title="{{tr('approve')}}"> <b><i class="fa fa-check"></i></b></a>
 	                  	@endif
       				</div>
       				<div class="clearfix"></div>
@@ -78,14 +78,14 @@
 
 	              		<ul class="nav nav-stacked">
 
-			                <li><a href="#">{{tr('username')}} <span class="pull-right">{{$sub_admin_details->name}}</span></a></li>
+			                <li><a>{{tr('username')}} <span class="pull-right">{{$sub_admin_details->name}}</span></a></li>
 			               
-			                <li><a href="#">{{tr('email')}} <span class="pull-right">{{$sub_admin_details->email}}</span></a></li>
+			                <li><a>{{tr('email')}} <span class="pull-right">{{$sub_admin_details->email}}</span></a></li>
 			                
-			                <li><a href="#">{{tr('mobile')}} <span class="pull-right">{{$sub_admin_details->mobile}}</span></a></li>
+			                <li><a>{{tr('mobile')}} <span class="pull-right">{{$sub_admin_details->mobile}}</span></a></li>
 			                		             
 			                <li>
-			                	<a href="#">{{tr('status')}} 
+			                	<a>{{tr('status')}} 
 			                		<span class="pull-right">
 			                			@if($sub_admin_details->status) 
 							      			<span class="label label-success">{{tr('approved')}}</span>
@@ -97,7 +97,7 @@
 			                </li>
 
 			                <li>
-			                	<a href="#">
+			                	<a>
 			                		{{tr('description')}}
 			                		<br>
 			                		<br>
@@ -113,11 +113,11 @@
 
 	            		<ul class="nav nav-stacked">
 
-			                <li><a href="#">{{tr('timezone')}} <span class="pull-right">{{$sub_admin_details->timezone ? $sub_admin_details->timezone : "-"}}</span></a></li>
+			                <li><a>{{tr('timezone')}} <span class="pull-right">{{$sub_admin_details->timezone ? $sub_admin_details->timezone : "-"}}</span></a></li>
 
-			                <li><a href="#">{{tr('created_at')}} <span class="pull-right">{{convertTimeToUSERzone($sub_admin_details->created_at, Auth::guard('admin')->user()->timezone, 'd-m-Y H:i a')}}</span></a></li>
+			                <li><a>{{tr('created_at')}} <span class="pull-right">{{convertTimeToUSERzone($sub_admin_details->created_at, Auth::guard('admin')->user()->timezone, 'd-m-Y H:i a')}}</span></a></li>
 
-			                <li><a href="#">{{tr('updated_at')}} <span class="pull-right">{{convertTimeToUSERzone($sub_admin_details->updated_at, Auth::guard('admin')->user()->timezone, 'd-m-Y H:i a')}}</span></a></li>
+			                <li><a>{{tr('updated_at')}} <span class="pull-right">{{convertTimeToUSERzone($sub_admin_details->updated_at, Auth::guard('admin')->user()->timezone, 'd-m-Y H:i a')}}</span></a></li>
 	              		</ul>
 	              		
 	            	</div>

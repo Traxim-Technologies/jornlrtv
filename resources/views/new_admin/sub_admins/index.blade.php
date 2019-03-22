@@ -64,8 +64,7 @@
 										      	</td>
 
 										      	<td>{{ $sub_admin_details->email }}</td>
-										      	
-										      
+										      											      
 										      	<td>
 										      		{{ $sub_admin_details->mobile }}
 										      	</td>
@@ -84,7 +83,9 @@
 										     	</td>
 										 
 										      	<td>
+			            							
 			            							<ul class="admin-action btn btn-default">
+			            								
 			            								<li class="@if($i < 2) dropdown @else dropup @endif">
 											                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 											                  {{ tr('action') }} <span class="caret"></span>
