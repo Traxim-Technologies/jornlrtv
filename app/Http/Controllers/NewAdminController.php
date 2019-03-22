@@ -3740,7 +3740,7 @@ class NewAdminController extends Controller {
                 DB::commit();
                 
                 return redirect()->route('admin.banner_ads.index')->with('flash_success', tr('admin_banner_ad_delete_success'));
-                
+
             }
             
             throw new Exception(tr('admin_banner_ad_delete_error'), 101);

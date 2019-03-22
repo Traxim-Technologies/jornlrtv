@@ -42,6 +42,7 @@
                             </span>
 
                             <span class="description" style="margin-left: 50px">{{ $banner_ad_details->created_at->diffForHumans() }}</span>
+                        
                         </div>
 
                         <div class="col-sm-8">
@@ -63,11 +64,11 @@
 
                                 @if( $banner_ad_details->status == DEFAULT_TRUE )  
 
-                                    <a class="btn btn-danger" href="{{  route('admin.banner_ads.status', ['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_decline_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('decline')  }}"><b><i class="fa fa-close"></i></b></a>
+                                    <a class="btn btn-danger" href="{{  route('admin.banner_ads.status', ['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_decline_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('decline') }}"><b><i class="fa fa-close"></i></b></a>
                                 
                                 @else
 
-                                    <a class="btn btn-success" href="{{  route('admin.banner_ads.status',['banner_ad_id' => $banner_ad_details->id] )  }}" onclick="return confirm(&quot;{{  tr('admin_banner_ad_approve_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('approve')  }}"><b><i class="fa fa-check"></i></b></a>
+                                    <a class="btn btn-success" href="{{ route('admin.banner_ads.status',['banner_ad_id' => $banner_ad_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_banner_ad_approve_confirmation', $banner_ad_details->title)  }}&quot;)" title="{{  tr('approve')  }}"><b><i class="fa fa-check"></i></b></a>
 
                                 @endif
                             
@@ -76,6 +77,7 @@
                         </div>
 
                     </div>
+                    
                 </div>
 
                 <div class="box box-body">

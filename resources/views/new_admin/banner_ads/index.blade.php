@@ -55,20 +55,21 @@
                                 <tr>
                                     <td>{{ $i+1 }}</td>
                                     
-                                    <td><a href="{{ $banner_ad_details->link }}" target="_blank">{{ $banner_ad_details->title }}</a></td>
+                                    <td>
+                                        <a href="{{ $banner_ad_details->link }}" target="_blank">{{ $banner_ad_details->title }}</a>
+                                    </td>
                                    
-                                    <td><img src="{{ $banner_ad_details->file }}" style="height: 60px" /></td>
+                                    <td><img src="{{ $banner_ad_details->file }}" style="height: 60px" />
+                                    </td>
                                     
                                     <td>{{ $banner_ad_details->position }}</td>
                                    
-                                    <td>
-                                        
+                                    <td>                                        
                                         @if($banner_ad_details->status == DEFAULT_TRUE)
                                             <span class="label label-success">{{ tr('approved') }}</span>
                                         @else
                                             <span class="label label-warning">{{ tr('pending') }}</span>
                                         @endif
-
                                     </td>
                                     
                                     <td>
@@ -78,8 +79,8 @@
                                                 <span class="caret"></span>
                                             </button>
 
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">                                               
-                                                <li>                                              
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">                    
+                                                <li>          
                                                     <a href="{{ route('admin.banner_ads.view', ['banner_ad_id' => $banner_ad_details->id]  ) }}"><b>{{ tr('view') }}</b></a>
                                                 </li>
 
@@ -171,6 +172,7 @@
                             @endforeach
 
                         </tbody>
+
                     </table>
 
                 </div>

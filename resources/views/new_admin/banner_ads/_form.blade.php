@@ -47,17 +47,12 @@
 
                 </div>
 
-              <div class="box-footer">
-                    <button type="reset" class="btn btn-danger">{{ tr('cancel') }}</button> 
+                <div class="box-footer">
+        
+                    <a href="" class="btn btn-danger">{{ tr('reset') }}</a>
                     
-                    @if(Setting::get('admin_delete_control'))
-                        <button type="button" class="btn btn-success pull-right" disabled>{{ tr('submit') }}</button>
-                    @else
-
-                        <button type="submit" class="btn btn-success pull-right">{{ tr('submit') }}</button>
-
-                    @endif
-              </div>
+                    <button type="submit" class="btn btn-success pull-right" @if(Setting::get('admin_delete_control') == YES) disabled @endif>{{ tr('submit') }}</button>                 
+                </div>
 
             </form>
         
