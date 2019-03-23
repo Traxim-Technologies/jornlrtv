@@ -215,7 +215,7 @@
 						           			</div> -->
 						           			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
 						           				<div class="text-right">
-						           					<img src="{{asset('images/success.png')}}" class="default-card-img" title="Default Card">
+						           					<img src="{{asset('images/success.png')}}" class="default-card-img" title="{{tr('default_card')}}">
 						           				</div>
 						           			</div>
 						           		</div>

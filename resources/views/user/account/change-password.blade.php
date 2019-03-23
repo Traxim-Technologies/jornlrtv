@@ -50,7 +50,7 @@
                             <div class="change-pwd">
 
                                 @if(Setting::get('admin_delete_control') == 1)
-                                    <button type="button" disabled class="btn btn-primary" style="cursor: disabled" title="Admin disabled the option">{{tr('submit')}}</button>
+                                    <button type="button" disabled class="btn btn-primary" style="cursor: disabled" title="{{tr('admin_disabled')}}">{{tr('submit')}}</button>
                                     <button type="reset" class="btn btn-primary signup-submit">{{tr('reset')}}</button>
                                 @else
 

@@ -1902,4 +1902,7 @@ return array(
 	'user_unsubscribe_confirm' => 'Do you want to Unsubscribe this user?',
 	
 	'user_account_delete_confirm' => 'Are you sure? Once you deleted account, you will lose your history and wishlist details.',
+
+	'default_card' => 'Default Card',
+	'admin_disabled' => 'Admin disabled the option',
 );
