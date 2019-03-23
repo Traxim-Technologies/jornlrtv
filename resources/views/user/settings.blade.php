@@ -187,7 +187,7 @@
                 		</a>
                 	</div>
                 	<div class="col-sm-6 col-md-4 col-lg-4">
-                		<a href="{{route('user.logout')}}">
+                		<a href="{{route('user.logout')}}" onclick="return confirm('{{tr("logout_confirmation")}}')">
 	                		<div class="settings-card">
 	                			<div class="display-inline">
 	                				<div class="settings-left">

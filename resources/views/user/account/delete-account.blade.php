@@ -61,15 +61,7 @@
 
                             <div class="change-pwd">
                             
-                                @if(Setting::get('admin_delete_control') == 1)
-
-                                    <button type="button" disabled class="btn btn-primary signup-submit">{{tr('delete')}}</button>
-
-                                @else
-
-                                    <button type="submit" class="btn btn-primary signup-submit">{{tr('delete')}}</button>
-
-                                @endif
+                                <button type="submit" class="btn btn-primary signup-submit" onclick="return confirm('{{tr("user_account_delete_confirmation")}}')" @if(Setting::get('admin_delete_control') == 1) disabled @endif  >{{tr('delete')}}</button>                              
 
                             </div>  
                 

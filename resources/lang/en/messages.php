@@ -1885,5 +1885,9 @@ return array(
 	'added_on' =>'Added on',
 	'updated_at' => 'Updated at',
 
+	// ==========================branch user-issue-fixes ======================
+
+	'user_account_delete_confirmation' => 'Are you sure? Do you want to delete the account?',
+
 
 );
