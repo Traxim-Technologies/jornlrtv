@@ -533,7 +533,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function(){
 
     // YouTube Grapper 
 
-    Route::get('youtube/{youtube_channel_id}' , 'AdminController@videos_youtube_grabber_save')->name("youtube.video.save");
+    Route::get('youtube/{youtube_channel_id}' , 'version4AdminController@video_tapes_youtube_grapper_save')->name("youtube.video.save");
 
     // Redeems  payouts (Direct | PayPal)
     Route::any('/redeems/payout/invoice', 'version4AdminController@redeems_payout_invoice')->name('users.payout.invoice');

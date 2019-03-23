@@ -14,7 +14,7 @@ use Exception, Validator, DB, Setting;
 class version4AdminController extends Controller
 {
     /**
-     * Function Name : videos_youtube_grapper_save()
+     * Function Name : video_tapes_youtube_grapper_save()
      * 
      * Get the videos based on the channel ID from youtube API 
      *
@@ -28,7 +28,7 @@ class version4AdminController extends Controller
      *
      */
 
-    public function videos_youtube_grapper_save($youtube_channel_id , Request $request) {
+    public function video_tapes_youtube_grapper_save($youtube_channel_id , Request $request) {
 
         try {
 
