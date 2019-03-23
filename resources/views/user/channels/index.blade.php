@@ -129,11 +129,13 @@
                                     @if(Auth::check()) @if($channel->user_id == Auth::user()->id) @if(Auth::user()->user_type)
                                     <a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-plus-circle"></i> {{tr('upload_video')}}</a> @endif
                                     <a class="st_video_upload_btn" href="{{route('user.channel_edit', $channel->id)}}"><i class="fa fa-pencil"></i> {{tr('edit_channel')}}</a>
-                                    <a class="st_video_upload_btn" onclick="return confirm('Are you sure?');" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a> @endif @if($channel->user_id != Auth::user()->id) @if (!$subscribe_status)
+                                    <a class="st_video_upload_btn" 
+                                    onclick="return confirm(&quot;{{ $channel->name }} -  {{tr('user_channel_delete_confirm') }}&quot;)" href="{{route('user.delete.channel', ['id'=>$channel->id])}}"><i class="fa fa-trash"></i> {{tr('delete_channel')}}</a> @endif @if($channel->user_id != Auth::user()->id) @if (!$subscribe_status)
 
                                     <a class="st_video_upload_btn subscribe_btn" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->id))}}" style="color: #fff !important">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}} </a> @else
 
-                                    <a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the channel?')">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a> @endif @else @if($subscriberscnt > 0)
+                                    <a class="st_video_upload_btn" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" 
+                                     onclick="return confirm(&quot;{{ $channel->name }} -  {{tr('user_channel_unsubscribe_confirm') }}&quot;)">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a> @endif @else @if($subscriberscnt > 0)
 
                                     <a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$subscriberscnt}}</a> @endif @endif @endif
                                 </div>
@@ -271,7 +273,7 @@
 
                                                             @endforeach @else
 
-                                                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif
+                                                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive aonuto-margin"> @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -382,7 +384,7 @@
                                                                         @endif
 
                                                                         <li><a title="edit" href="{{route('user.edit.video', $video->video_tape_id)}}">{{tr('edit_video')}}</a></li>
-                                                                        <li><a title="delete" onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"> {{tr('delete_video')}}</a></li>
+                                                                        <li><a title="delete"  onclick="return confirm(&quot;{{ substr($video->title, 0 , 15)}}.. {{tr('user_video_delete_confirm') }}&quot;)" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}" > {{tr('delete_video')}}</a></li>
                                                                         <li>
                                                                             <a onclick="change_adstatus({{$video->ad_status}}, {{$video->video_tape_id}})" style="cursor: pointer;" id="ad_status_{{$video->video_tape_id}}">@if($video->ad_status) {{tr('disable_ad')}} @else {{tr('enable_ad')}} @endif</a>
 
@@ -652,7 +654,8 @@
 
                                                         </div>
                                                         <div class="cross-mark">
-                                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                            <a onclick="return confirm(&quot;{{ substr($video->title, 0 , 15)}}.. {{tr('user_video_delete_confirm') }}&quot;)"
+                                                            href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                         </div>
                                                         <!--end of cross-mark-->
                                                     </div>

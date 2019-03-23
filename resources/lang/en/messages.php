@@ -889,7 +889,7 @@ return array(
 
 	'not_found' => 'No Records found',
 
-	'channel_unsubscribed' => 'successfully Unsubscribed the channel',
+	'channel_unsubscribed' => 'Successfully unsubscribed the channel',
 
 	'subscriber_name' => 'Subscriber Name',
 	'comment' => 'Comment',
@@ -1216,7 +1216,7 @@ return array(
 
 	'payment_confirmed_successfully.' => 'Payment confirmed successfully.',
 	'history_added' => 'History added.',
-	'history_deleted_successfully.' => 'History deleted successfully.',
+	'history_deleted_successfully' => 'History deleted successfully.',
 	'payment_successful_done' => 'Payment successfully done',
 	'no_provider_available' => 'No Provider Available',
 	'no_provider_available_take_service' => 'No provider available to take the Service.',
@@ -1887,7 +1887,19 @@ return array(
 
 	// ==========================branch user-issue-fixes ======================
 
-	'user_account_delete_confirmation' => 'Are you sure? Do you want to delete the account?',
+	'user_wishlist_delete_confirm' => 'Do you want to remove this video from wishlist?',
+	
+	'user_spamvideo_delete_confirm' => 'Do you want to remove this video from sapmlist?',
+	
+	'user_channel_delete_confirm' => 'Do you want to delete this channel?',
+	
+	'user_history_delete_confirm' => 'Do you want to clear the history?',
 
+	'user_video_delete_confirm' => 'Do you want to delete this video?',
 
+	'user_channel_unsubscribe_confirm' => 'Do you want to Unsubscribe this channel?',
+	
+	'user_unsubscribe_confirm' => 'Do you want to Unsubscribe this user?',
+	
+	'user_account_delete_confirm' => 'Are you sure? Once you deleted account, you will lose your history and wishlist details.',
 );
