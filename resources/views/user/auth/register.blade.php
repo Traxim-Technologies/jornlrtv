@@ -114,7 +114,7 @@
 
                     <div class="form-group">
                         <label for="name">{{tr('name')}}</label>
-                        <input type="text" required name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}" pattern="[a-zA-Z0-9\s]+" title="{{tr('username_notes')}}" value="{{old('name')}}">
+                        <input type="text" required name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}" title="{{tr('username_notes')}}" value="{{old('name')}}">
                     </div>
                     <div class="form-group">
                         <label for="email">{{tr('email')}}</label>
