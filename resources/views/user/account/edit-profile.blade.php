@@ -59,12 +59,12 @@
 
                                         <div class="form-group">
                                             <label for="username">{{tr('username')}} *</label>
-                                            <input required value="{{old('name') ?: Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}">
+                                            <input required value="{{old('name') ?: Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}" value="{{ old('password') }}">
                                         </div>
 
                                         @if(Auth::user()->login_by == 'manual')
 
-                                            <div class="form-group">
+                                            <div class="form-group">value="{{ old('password') }}"
                                                 <label for="email">{{tr('email')}} *</label>
                                                 <input type="email" value="{{old('email') ?: Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
                                             
