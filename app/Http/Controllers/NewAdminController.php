@@ -5448,58 +5448,6 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_status()
-     *
-     * @uses To change the status of approve/decline video
-     *
-     * @created Anjana H
-     *
-     * @updated 
-     *
-     * @param Integer $request - Video Id, Video details
-     * 
-     * @return response of success/failure message
-     *
-     */
-    public function videos_status($id) {
-
-         try {
-
-            DB::beginTransaction();
-
-            $video_details = VideoTape::find($request->$id);
-
-            if ( count($video_details) == 0) {
-
-                throw new Exception(tr('admin_video_not_found'), 101);
-            }
-
-            $video_details->is_approved = $video_details->is_approved == APPROVED ? DECLINED : APPROVED;
-
-            $message = $video_details->is_approved == APPROVED ? tr('admin_video_approved_success') :  tr('admin_video_declined_success') ;
-
-            if ($video_details->save() ) {
-
-                DB::commit();
-           
-                return back()->with('flash_success', $message);            
-            } 
-
-            throw new Exception(tr('admin_video_status_error'), 101);            
-            
-        } catch (Exception $e) {
-            
-            DB::rollback();
-
-            $error = $e->getMessage();
-
-            return back()->with('flash_error',$error);
-        }    
-    }
-
-    
-
-    /**
      * Function Name : sub_admins_index()
      *
      * @uses To list out subadmins (only admin can access this option)
@@ -6160,29 +6108,24 @@ class NewAdminController extends Controller {
 
             $channels = getChannels();
 
-                $categories = Category::select('id as category_id', 'name as category_name')
-                                ->where('status', CATEGORY_APPROVE_STATUS)
-                                ->orderBy('created_at', 'desc')
-                                ->get();
+            $categories = Category::select('id as category_id', 'name as category_name')
+                            ->where('status', CATEGORY_APPROVE_STATUS)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
 
-                $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
-                                ->where('status', TAG_APPROVE_STATUS)
-                                ->orderBy('created_at', 'desc')->get();
+            $tags = Tag::select('tags.id as tag_id', 'name as tag_name', 'search_count as count')
+                            ->where('status', TAG_APPROVE_STATUS)
+                            ->orderBy('created_at', 'desc')->get();
 
-                $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
+            $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
 
-                return view('admin.video_tapes.edit')
-                        ->with('page' ,$page)
-                        ->with('sub_page' ,$sub_page)
-                        ->with('channels' , $channels)
-                        ->with('video_tape_details' ,$video_tape_details)
-                        ->with('tags', $tags)
-                        ->with('categories', $categories);
-
-            } else {
-
-
-            }
+            return view('admin.video_tapes.edit')
+                    ->with('page' ,$page)
+                    ->with('sub_page' ,$sub_page)
+                    ->with('channels' , $channels)
+                    ->with('video_tape_details' ,$video_tape_details)
+                    ->with('tags', $tags)
+                    ->with('categories', $categories);
 
         } catch (Exception $e) {
             
