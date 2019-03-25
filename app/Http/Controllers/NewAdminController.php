@@ -96,6 +96,15 @@ use App\PlaylistVideo;
 
 class NewAdminController extends Controller {
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('admin');  
+    }
     public function check_role(Request $request) {
         
         if(Auth::guard('admin')->check()) {
