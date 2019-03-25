@@ -1732,6 +1732,7 @@ return array(
 	'playlist_updated' => 'Playlist updated',
 
 	'bell_notification_updated' => 'The notifications marked read',
+	'notifications' => 'Notifications',
 
 	'BELL_NOTIFICATION_NEW_VIDEO' => 'New video upload - Notification',
 

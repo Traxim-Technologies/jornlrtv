@@ -7737,7 +7737,7 @@ class UserApiController extends Controller {
         try {
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
-                                        ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id')
+                                        ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
                                         ->get();
 
             foreach ($bell_notifications as $key => $bell_notification_details) {
