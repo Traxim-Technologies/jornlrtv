@@ -91,10 +91,16 @@
               ]
         
         });
-
+    
         $.post('{{ route("user.bell_notifications.index")}}', {'is_json': 1})
 
         .done(function(response) {
+
+            if(response.success == false) {
+                return false;
+            }
+
+            $('#global-notifications-count').html(response.data.length);
 
             $.each(response.data, function(key,notificationDetails) { 
 
@@ -147,6 +153,7 @@
                 // $(chatBox).animate({scrollTop: chatBox.scrollHeight}, 500);
 
             });
+
         })
         .fail(function(response) {
             console.log(response);
@@ -154,8 +161,52 @@
         .always(function(response) {
             console.log(response);
         });
-        
+
+        function loadNotificationsCount() {
+
+            $.post('{{ route("user.bell_notifications.count")}}', {'is_json': 1})
+
+            .done(function(response) {
+
+                $('#global-notifications-count').html(response.count);
+                
+            })
+            .fail(function(response) {
+                console.log(response);
+            })
+            .always(function(response) {
+                console.log(response);
+            });
+  
+        }
+
+        setInterval(loadNotificationsCount, 10000);
+
     });
+
+
+    $(document).on("click", ".notification-link a", function(){ 
+
+            alert("notificationsStatusUpdate");
+
+            $.post('{{ route("user.bell_notifications.update")}}', {'is_json': 1})
+
+            .done(function(response) {
+
+                //$('#global-notifications-count').html(response.count);
+                return true;
+                
+            })
+            .fail(function(response) {
+                console.log(response);
+            })
+            .always(function(response) {
+                console.log(response);
+            });
+
+
+    });
+
 
     jQuery(document).ready( function () {
         //autocomplete

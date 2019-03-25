@@ -3091,7 +3091,7 @@ class UserController extends Controller {
 
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
-            if($request->ajax()) {
+            if($request->is_json()) {
 
                 return response()->json($response_array);
             }
@@ -3137,15 +3137,29 @@ class UserController extends Controller {
 
         try {
 
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->bell_notifications_count($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+            return response()->json($response, 200);
+
         } catch(Exception $e) {
 
-            $error_messages = $e->getMessage();
-
-            $error_code = $e->getCode();
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
 
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
             return response()->json($response_array);
+
+            // return redirect()->to('/')->with('flash_error' , $error_messages);
 
         }
 

@@ -105,7 +105,7 @@
                 <ul class="nav navbar-nav pull-right">
 
                     <li  class="dropdown">
-                        <a class="nav-link text-light notification-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link text-light notification-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="return notificationsStatusUpdate();">
                             <i class="fa fa-bell"></i>
                         </a>
 

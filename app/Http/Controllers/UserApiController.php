@@ -7736,8 +7736,14 @@ class UserApiController extends Controller {
 
         try {
 
+            $skip = $request->skip ?: 0;
+
+            $take = Setting::get('admin_take_count') ?: 12;
+
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
                                         ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
+                                        ->skip($skip)
+                                        ->take($take)
                                         ->get();
 
             foreach ($bell_notifications as $key => $bell_notification_details) {
@@ -7847,7 +7853,7 @@ class UserApiController extends Controller {
             
         $bell_notifications_count = BellNotification::where('status', BELL_NOTIFICATION_STATUS_UNREAD)->where('to_user_id', $request->id)->count();
 
-        $response_array = ['success' => true, 'count'=>$bell_notifications_count];
+        $response_array = ['success' => true, 'count' => $bell_notifications_count];
 
         return response()->json($response_array);
 
