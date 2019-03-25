@@ -94,7 +94,6 @@
         <div class="page-inner col-sm-9 col-md-10">
 
             <div class="slide-area1">
-                @include('notification.notify')
 
                 <div class="branded-page-v2-top-row">
 
@@ -112,13 +111,15 @@
                             </div>
 
                         </div>
+                            
+                            @include('notification.notify')
 
                         <div class="channel-content-spacing display-inline">
                             <div>
                                 <div class="pull-left">
                                     <a class="channel-header-profile-image spf-link" href="">
-<div style="background-image:url({{$channel->picture}});" class="channel-header-profile-image1"></div>
-</a>
+                                        <div style="background-image:url({{$channel->picture}});" class="channel-header-profile-image1"></div>
+                                    </a>
                                 </div>
                                 <div class="pull-left width-40">
                                     <h1 class="st_channel_heading text-uppercase">{{$channel->name}}</h1>
@@ -180,107 +181,120 @@
                 <ul class="tab-content">
 
                     <li role="tabpanel" class="tab-pane active" id="home1">
+
                         <div class="feed-item-dismissable">
+
                             <div class="feed-item-main feed-item-no-author">
+
                                 <div class="feed-item-main-content">
+
                                     <div class="shelf-wrapper clearfix">
+
                                         <div class="big-section-main new-history1">
 
                                             <!-- <h4 class="content-head con-head">
-	{{tr('watch_to_next')}}
-</h4> -->
+                                            {{tr('watch_to_next')}}
+                                            </h4> -->
 
                                             <div class="content-head">
                                                 <h4 style="color: #000;">{{tr('watch_to_next')}}</h4>
                                             </div>
                                             <?php /*@if(count($trending_videos) == 0)
 
-<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+                                            <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
 
-@endif */?>
-                                                <div class="lohp-shelf-content row">
-                                                    <!-- <div class="lohp-large-shelf-container col-md-6">
+                                            @endif */?>
+                                            <div class="lohp-shelf-content row">
+                                                <!-- <div class="lohp-large-shelf-container col-md-6">
 
-@if(count($trending_videos) > 0)
-<div class="slide-box recom-box big-box-slide">
-	<div class="slide-image recom-image hbb">
-		<a href="{{$trending_videos[0]->url}}">
-			<img src="{{$trending_videos[0]->video_image}}">
-		</a>
-		@if($trending_videos[0]->ppv_amount > 0)
-	        @if(!$trending_videos[0]->ppv_status)
-	            <div class="video_amount">
+                                                    @if(count($trending_videos) > 0)
+                                                    <div class="slide-box recom-box big-box-slide">
+                                                    	<div class="slide-image recom-image hbb">
+                                                    		<a href="{{$trending_videos[0]->url}}">
+                                                    			<img src="{{$trending_videos[0]->video_image}}">
+                                                    		</a>
+                                                    		@if($trending_videos[0]->ppv_amount > 0)
+                                                    	        @if(!$trending_videos[0]->ppv_status)
+                                                    	            <div class="video_amount">
 
-	            {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_videos[0]->ppv_amount}}
+                                                    	            {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_videos[0]->ppv_amount}}
 
-	            </div>
-	        @endif
-	    @endif
-		<div class="video_duration">
-	        {{$trending_videos[0]->duration}}
-	    </div>
-	</div>
-	<div class="video-details recom-details">
-		<div class="video-head">
-			<a href="{{$trending_videos[0]->url}}"> {{$trending_videos[0]->title}}</a>
-		</div>
+                                                    	            </div>
+                                                    	        @endif
+                                                    	    @endif
+                                                    		<div class="video_duration">
+                                                    	        {{$trending_videos[0]->duration}}
+                                                    	    </div>
+                                                    	</div>
+                                                    	<div class="video-details recom-details">
+                                                    		<div class="video-head">
+                                                    			<a href="{{$trending_videos[0]->url}}"> {{$trending_videos[0]->title}}</a>
+                                                    		</div>
 
-	     <span class="video_views">
-	        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
-	        {{$trending_videos[0]->created_at}}
-	    </span>
-	</div>
-</div>
-@endif
-</div> -->
-                                                    <div class="lohp-medium-shelves-container col-md-12">
-                                                        <div class="row">
-                                                            @if(count($trending_videos) > 0) @foreach($trending_videos as $index => $trending_video)
+                                                    	     <span class="video_views">
+                                                    	        <i class="fa fa-eye"></i> {{$trending_videos[0]->watch_count}} {{tr('views')}} <b>.</b> 
+                                                    	        {{$trending_videos[0]->created_at}}
+                                                    	    </span>
+                                                    	</div>
+                                                    </div>
+                                                    @endif
+                                                    </div> -->
+                                                <div class="lohp-medium-shelves-container col-md-12">
+                                                    <div class="row">
+                                                        @if(count($trending_videos) > 0) @foreach($trending_videos as $index => $trending_video)
 
-                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 channel-view">
+                                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 channel-view">
 
-                                                                <div class="slide-box recom-box big-box-slide mt-0 mb-15">
-                                                                    <div class="slide-image">
-                                                                        <a href="{{$trending_video->url}}">
-                                                                            <!-- <img src="{{$trending_video->video_image}}"> -->
-                                                                            <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$trending_video->video_image}}" class="slide-img1 placeholder" />
-                                                                        </a> 
-                                                                        @if($trending_video->ppv_amount > 0) @if(!$trending_video->ppv_status)
-                                                                        <div class="video_amount">
+                                                            <div class="slide-box recom-box big-box-slide mt-0 mb-15">
+                                                                <div class="slide-image">
+                                                                    <a href="{{$trending_video->url}}">
+                                                                        <!-- <img src="{{$trending_video->video_image}}"> -->
+                                                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$trending_video->video_image}}" class="slide-img1 placeholder" />
+                                                                    </a> 
+                                                                    @if($trending_video->ppv_amount > 0) @if(!$trending_video->ppv_status)
+                                                                    <div class="video_amount">
 
-                                                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_video->ppv_amount}}
+                                                                        {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_video->ppv_amount}}
 
-                                                                        </div>
-                                                                        @endif @endif
-                                                                        <div class="video_duration">
-                                                                            {{$trending_video->duration}}
-                                                                        </div>
                                                                     </div>
-
-                                                                    <div class="video-details">
-                                                                        <div class="video-head">
-                                                                            <a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
-                                                                        </div>
-
-                                                                        <span class="video_views">
-            <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
-            {{$trending_video->created_at}}
-        </span>
+                                                                    @endif @endif
+                                                                    <div class="video_duration">
+                                                                        {{$trending_video->duration}}
                                                                     </div>
-
                                                                 </div>
+
+                                                                <div class="video-details">
+                                                                    <div class="video-head">
+                                                                        <a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
+                                                                    </div>
+
+                                                                    <span class="video_views">
+                                                                        <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
+                                                                         {{$trending_video->created_at}}
+                                                                    </span>
+                                                                </div>
+
                                                             </div>
-
-                                                            @endforeach @else
-
-                                                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive aonuto-margin"> @endif
                                                         </div>
+
+                                                        @endforeach 
+
+                                                        @else
+
+                                                        <center><img src="{{asset('images/no-record.jpeg')}}" class="img-responsive aonuto-margin"> </center>
+                                                        @endif
                                                     </div>
                                                 </div>
+                                            </div>
+
                                         </div>
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
                     </li>
 
@@ -291,17 +305,20 @@
 
                                 <div class="new-history1">
                                     <div class="content-head">
+                                        
                                         <div>
                                             <h4 style="color: #000;">{{tr('videos')}}&nbsp;&nbsp;
-@if(Auth::check())
+                                            @if(Auth::check())
 
-<!-- @if(Auth::user()->id == $channel->user_id)
-<small style="font-size: 12px">({{tr('note')}}:{{tr('ad_note')}} )</small>
+                                            <!-- @if(Auth::user()->id == $channel->user_id)
+                                            <small style="font-size: 12px">({{tr('note')}}:{{tr('ad_note')}} )</small>
 
-@endif -->
+                                            @endif -->
 
-@endif
-</h4></div>
+                                            @endif
+                                            </h4>
+                                        </div>
+
                                     </div>
                                     <!--end of content-head-->
 
@@ -335,25 +352,25 @@
                                                     <div class="history-head row">
                                                         <div class="cross-title2">
                                                             <h5 class="payment_class unset-height">
-            	@if(Auth::check())
-	            	@if($channel->user_id == Auth::user()->id)
-		            	@if($video->is_approved == YES)
-		            		<span class="text-green" title="Admin Approved"><i class="fa fa-check-circle"></i></span>
-		            	@else
+                                                            	@if(Auth::check())
+                                                	            	@if($channel->user_id == Auth::user()->id)
+                                                		            	@if($video->is_approved == YES)
+                                                		            		<span class="text-green" title="Admin Approved"><i class="fa fa-check-circle"></i></span>
+                                                		            	@else
 
-		            		<span class="text-red" title="Admin Declined"><i class="fa fa-times"></i></span>
+                                                		            		<span class="text-red" title="Admin Declined"><i class="fa fa-times"></i></span>
 
-		            	@endif
-		            @endif
-	            @endif
+                                                		            	@endif
+                                                		            @endif
+                                                	            @endif
 
-            	<a href="{{$video->url}}">{{$video->title}}</a>
-            </h5>
+                                                            	<a href="{{$video->url}}">{{$video->title}}</a>
+                                                            </h5>
 
                                                             <span class="video_views">
-                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-                {{$video->created_at}}
-            </span>
+                                                                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                                                 {{$video->created_at}}
+                                                            </span>
                                                         </div>
                                                         @if(Auth::check()) @if($channel->user_id == Auth::user()->id) @if($video->status)
                                                         <div class="cross-mark2">
@@ -367,7 +384,7 @@
                                                                 <button type="button" class="video-menu dropdown-toggle" data-toggle="dropdown">
 
                                                                     <!-- <span class="hidden-xs">{{tr('action')}}</span>
-		            <span class="caret"></span> -->
+		                                                              <span class="caret"></span> -->
                                                                     <i class="fa fa-ellipsis-v"></i>
                                                                 </button>
 
@@ -515,12 +532,12 @@
                                                         <!--end of description-->
 
                                                         <span class="stars">
-        <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-    </span>
+                                                            <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            <a><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        </span>
                                                 </div>
                                                 <!--end of history-title-->
 
@@ -549,7 +566,7 @@
                                     @else
 
                                     <!-- <p style="color: #000">{{tr('no_video_found')}}</p> -->
-                                    <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif
+                                    <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin"> @endif
 
                                 </div>
 
@@ -705,7 +722,7 @@
 
                                     @else
 
-                                    <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif
+                                    <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin"> @endif
 
                                     <?php /* @if(count($payment_videos) > 0)
 

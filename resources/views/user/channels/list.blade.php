@@ -20,9 +20,11 @@
 			@include('notification.notify')
 
 				<div class="slide-area1 recom-area abt-sec">
+					
 					<div class="abt-sec-head">
 						
-						 <div class="new-history">
+						<div class="new-history">
+				                
 				                <div class="content-head">
 				                    <div class="pull-left"><h4 class="bold" style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
 				  
@@ -156,7 +158,7 @@
 					                @endif
 					            @endif
 				                   <!-- <p style="color: #000">{{tr('no_channel_found')}}</p> -->
-				                   <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+				                   <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
 
 				                @endif
 
@@ -171,9 +173,10 @@
 				                    @endif
 				                @endif
 				                
-				            </div>
+				        </div>
 
 					</div>
+
 				</div>
 
 			<div class="sidebar-back"></div> 

@@ -173,7 +173,7 @@
 									                  	@if(Setting::get('admin_delete_control') == YES )
 
 									               			@if(get_expiry_days($user_details->id) > 0)
-									                  	 		<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{tr('admin_user_delete_with_expiry_days_confirmation', get_expiry_days($user_details->id) ) }} &quot;);" href="javascript:;" > {{ tr('delete') }} </a></li>	
+									                  	 		<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{tr('admin_user_delete_with_expiry_days_confirmation') }}&quot;);" href="javascript:;" > {{ tr('delete') }} </a></li>	
 									                  		@else 
 									                  			<li role="presentation">
 									                  	 			<a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_premium_user_delete_confirmation', $user_details->name ) }}&quot;);" href="javascript:;">{{ tr('delete') }}
@@ -182,8 +182,7 @@
 
 									               		@else
 
-									               			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.edit' , ['user_id' => $user_details->id] ) }}">{{ tr('edit') }}</a></li>	
-									                  		
+									               			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.edit' , ['user_id' => $user_details->id] ) }}">{{ tr('edit') }}</a></li>		           		
 									                  	 	@if(get_expiry_days($user_details->id) > 0)
 									                  	 		
 									                  	 		<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_user_delete_with_expiry_days_confirmation' ) }}&quot;);" href="{{ route('admin.users.delete', ['user_id' => $user_details->id] ) }}"> {{ tr('delete') }} </a></li>	
