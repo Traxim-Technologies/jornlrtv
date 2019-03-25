@@ -36,6 +36,36 @@ class V4Seeder extends Seeder
 			
 			]);
     	}
+
+    	if(Schema::hasTable('settings')) {
+
+	        DB::table('settings')->insert([
+	    		[
+			        'key' => 'meta_title',
+			        'value' => "STREAMTUBE",
+			        'created_at' => date('Y-m-d H:i:s'),
+			        'updated_at' => date('Y-m-d H:i:s')
+			    ],
+			    [
+			        'key' => 'meta_description',
+			        'value' => "STREAMTUBE",
+			        'created_at' => date('Y-m-d H:i:s'),
+			        'updated_at' => date('Y-m-d H:i:s')
+			    ],
+			    [
+			        'key' => 'meta_author',
+			        'value' => "STREAMTUBE",
+			        'created_at' => date('Y-m-d H:i:s'),
+			        'updated_at' => date('Y-m-d H:i:s')
+			    ],
+			    [
+			        'key' => 'meta_keywords',
+			        'value' => "STREAMTUBE",
+			        'created_at' => date('Y-m-d H:i:s'),
+			        'updated_at' => date('Y-m-d H:i:s')
+			    ],
+			]);
+    	}
         
     }
 }

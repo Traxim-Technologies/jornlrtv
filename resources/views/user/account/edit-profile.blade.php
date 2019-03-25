@@ -17,12 +17,12 @@
 @section('content')
 
 <div class="y-content">
+    
     <div class="row y-content-row">
 
         @include('layouts.user.nav')
 
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
-
 
             <div class="profile-content slide-area1">
                
@@ -31,8 +31,11 @@
                     @include('notification.notify')
 
                     <div class="col-sm-12 col-md-7 col-lg-6 profile-view">
+                        
                         <h4 class="mylist-head">{{tr('edit_profile')}}</h4>
+                       
                         <div class="edit-profile profile-view">
+                            
                             <div class="edit-form profile-bg">
                                 
                                 <div class="image-profile edit-image">
@@ -46,6 +49,7 @@
                                 </div><!--end of image-profile-->
 
                                 <div class="editform-content"> 
+                                    
                                     <form  action="{{ route('user.profile.save') }}" method="POST" enctype="multipart/form-data">
 
                                         <div class="form-group">
@@ -55,14 +59,14 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="username">{{tr('username')}}</label>
-                                            <input required value="{{old('name') ?: Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}">
+                                            <label for="username">{{tr('username')}} *</label>
+                                            <input required value="{{old('name') ?: Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}" >
                                         </div>
 
                                         @if(Auth::user()->login_by == 'manual')
 
                                             <div class="form-group">
-                                                <label for="email">{{tr('email')}}</label>
+                                                <label for="email">{{tr('email')}} *</label>
                                                 <input type="email" value="{{old('email') ?: Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
                                             
                                             </div>
@@ -86,15 +90,12 @@
                                             $dob = "00-00-0000";
                                         }
 
-
                                         ?>
-
 
                                         <div class="form-group">
                                             <label for="dob">{{tr('dob')}}</label>
                                             <input type="text" value="{{old('dob') ?: $dob }}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob" readonly>
                                         </div>
-
                                               
                                         <div class="form-group">
                                             <label for="about">{{tr('about_me')}}</label>
@@ -106,13 +107,14 @@
                                         </div>                                              
 
                                     </form>
+
                                 </div><!--end of editform-content-->
                                     
                             </div><!--end of edit-form-->                           
+                        
                         </div><!--end of edit-profile-->
+                    
                     </div><!--profile-view end-->  
-
-
                     
                     @if(count($wishlist->items) > 0)
                         
@@ -125,11 +127,15 @@
                                 @foreach($wishlist->items as $i => $video)
 
                                     <li class="sub-list row no-margin">
+                                        
                                         <div class="main-history">
+                                            
                                             <div class="history-image">
+                                                
                                                 <a href="{{$video->url}}">
                                                     <img src=" {{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video->video_image}}" class="placeholder">
                                                 </a>      
+                                                
                                                 @if($video->ppv_amount > 0)
                                                     @if(!$video->ppv_status)
                                                         <div class="video_amount">
@@ -139,9 +145,11 @@
                                                         </div>
                                                     @endif
                                                 @endif
+                                                
                                                 <div class="video_duration">
                                                     {{$video->duration}}
                                                 </div>                   
+                                            
                                             </div><!--history-image-->
 
                                             <div class="history-title">
@@ -156,7 +164,7 @@
                                                         </span>
                                                     </div> 
                                                     <div class="cross-mark1">
-                                                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                        <a onclick="return confirm( &nbsp;{{tr('user_wishlist_delete_confirm',$video->title)}} &nbsp; );" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                     </div><!--end of cross-mark-->                       
                                                 </div> <!--end of history-head--> 
 

@@ -256,20 +256,30 @@ class AdminController extends Controller {
      */
     public function users_edit(Request $request) {
 
-        $user = User::find($request->id);
+        try {
+          
+            $user_details = User::find($request->user_id);
 
-        if($user) {
+            if( count($user_details) == 0 ) {
 
-            $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
+                throw new Exception( tr('admin_user_not_found'), 101);
 
-            return view('admin.users.edit')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
+            } else {
 
-        } else {
+                $user_details->dob = ($user_details->dob) ? date('d-m-Y', strtotime($user_details->dob)) : '';
 
-            return back()->with('flash_error', tr('user_not_found'));
+                return view('new_admin.users.edit')
+                        ->with('page' , 'users')
+                        ->with('sub_page','users-view')
+                        ->with('user_details',$user_details);
+            }
 
-        }
-    
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.users.index')->with('flash_error',$error);
+        }    
     }
 
     /**
@@ -406,7 +416,6 @@ class AdminController extends Controller {
             if ($request->id == '') {
                 
                 user_type_check($user->id);
-
             }
 
             if($user) {
@@ -465,10 +474,8 @@ class AdminController extends Controller {
 
                     foreach ($value->getVideoTape as $key => $video) {
 
-                        $earnings += $video->user_ppv_amount;
-
+                        $earnings += $video->user_ppv_amountl;
                     }
-
                 }
                 
                 $channel_datas[] = [
@@ -704,7 +711,6 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error',tr('admin_not_error'));
-
         }
     
     }
@@ -780,9 +786,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error',tr('admin_not_error'));
-
-        }
-    
+        }    
     }
 
     /**
@@ -805,7 +809,7 @@ class AdminController extends Controller {
 
             $user_wishlist->delete();
 
-            return back()->with('flash_success',tr('admin_not_wishlist_del'));
+            return back()->with('flash_success',tr('user_wishlist_delete_success'));
 
         } else {
 
@@ -1286,23 +1290,46 @@ class AdminController extends Controller {
      */
     public function videos_list(Request $request) {
 
-        $query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                    ->videoResponse()
-                    ->orderBy('video_tapes.created_at' , 'desc');
+        try {
 
-        if ($request->id) {
+            $query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc');
 
-            $query->where('video_tapes.user_id', $request->id);
+            if($request->has('tag_id')) {
 
-        }
+                $tag_details = Tag::find($request->tag_id);
 
-        $videos = $query->get();
+                if (count($tag_details) == 0) {
 
-        return view('admin.videos.videos')
-                    ->with('videos' , $videos)
-                    ->withPage('videos')
-                    ->with('sub_page','view-videos');
+                    throw new Exception(tr('admin_tag_not_found'), 101);
+                }
+
+                $query->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
+                        ->where('video_tape_tags.tag_id', $request->tag_id)
+                        ->orderBy('video_tapes.created_at' , 'desc')
+                        ->groupBy('video_tape_tags.video_tape_id');
+            }
+
+            if ($request->id) {
+
+                $query->where('video_tapes.user_id', $request->id);
+            }
+
+            $videos = $query->get();
+
+            return view('admin.videos.videos')
+                        ->with('videos' , $videos)
+                        ->withPage('videos')
+                        ->with('sub_page','view-videos');
    
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.videos.list')->with('flash_error',$error);
+        }
     }
 
     /**
@@ -1320,7 +1347,7 @@ class AdminController extends Controller {
      *
      */
     public function videos_view(Request $request) {
-
+    
         $validator = Validator::make($request->all() , [
                 'id' => 'required|exists:video_tapes,id'
             ]);
@@ -1334,6 +1361,10 @@ class AdminController extends Controller {
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
+
+            $video_tags = VideoTapeTag::where('video_tape_tags.video_tape_id' , $request->id)
+                    ->leftjoin('tags','tags.id' , '=' , 'video_tape_tags.tag_id')
+                    ->get();
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
             if ($video->video_type == VIDEO_TYPE_UPLOAD) {
@@ -1394,7 +1425,8 @@ class AdminController extends Controller {
                     ->with('videoStreamUrl', $videoStreamUrl)
                     ->with('spam_reports', $spam_reports)
                     ->with('reviews', $reviews)
-                    ->with('wishlists', $wishlists);
+                    ->with('wishlists', $wishlists)
+                    ->with('video_tags', $video_tags);
         }
     
     }
@@ -2090,7 +2122,6 @@ class AdminController extends Controller {
         if($user = UserRating::find($request->id)) {
 
             $user->delete();
-
         }
 
         return back()->with('flash_success', tr('admin_not_ur_del'));
@@ -4768,7 +4799,8 @@ class AdminController extends Controller {
 
         if ($model) {
 
-            return view('admin.categories.edit')->with('page', 'categories')
+            return view('admin.categories.edit')
+                    ->with('page', 'categories')
                     ->with('sub_page', 'create_category')
                     ->with('model', $model);
 
@@ -5612,8 +5644,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error', Helper::get_error_message(167));
-
-        }        
+        }       
 
     }  
 

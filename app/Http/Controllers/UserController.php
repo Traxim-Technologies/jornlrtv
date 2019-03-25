@@ -937,7 +937,7 @@ class UserController extends Controller {
      *
      * @return response of success/falure message
      */
-    public function add_wishlist(Request $request) {
+    public function wishlist_create(Request $request) {
 
         $request->request->add([ 
             'id' => \Auth::user()->id,
@@ -946,23 +946,11 @@ class UserController extends Controller {
             'video_tape_id' => $request->video_tape_id
         ]);
 
-        $response = $this->UserAPI->add_wishlist($request)->getData();
-
-        if($response->success) {
-
-            $response->message = Helper::get_message(118);
-
-        } else {
-
-            $response->success = false;
-
-            $response->message = tr('something_error');
-        }
+        $response = $this->UserAPI->wishlist_create($request)->getData();
 
         $response->status = $request->status;
 
         return response()->json($response);
-    
     }
 
     /**
@@ -978,7 +966,7 @@ class UserController extends Controller {
      *
      * @return response of success/failure message
      */
-    public function delete_wishlist(Request $request) {
+    public function wishlist_delete(Request $request) {
 
         $request->request->add([ 
             'id' => \Auth::user()->id,
@@ -986,15 +974,15 @@ class UserController extends Controller {
             'device_token' => \Auth::user()->device_token
         ]);
 
-        $response = $this->UserAPI->delete_wishlist($request)->getData();
+        $response = $this->UserAPI->wishlist_delete($request)->getData();
 
         if($response->success) {
 
-            return back()->with('flash_success',tr('wishlist_removed'));
+            return back()->with('flash_success', $response->message);
 
         } else {
 
-            return back()->with('flash_error', tr('something_error'));
+            return back()->with('flash_error',  $response->message);
         }
     } 
 
@@ -2537,7 +2525,6 @@ class UserController extends Controller {
         ]);
 
         $response = $this->UserAPI->user_channel_list($request)->getData();
-
 
         return view('user.channels.list')->with('page', 'my_channel')
                 ->with('subPage', 'channel_list')

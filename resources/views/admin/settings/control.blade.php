@@ -23,36 +23,42 @@
 
                 </div>
 
-                    <form action="{{route('admin.save.control')}}" method="POST" role="form">
-
+                <form action="{{route('admin.save.control')}}" method="POST" role="form">
+                
                     <div class="box-body">
 
                         <div class="form-group">
-                            <label>{{ tr('admin_delete_control') }}</label>
-                            <br>
-                            <label>
-                                <input required type="radio" name="admin_delete_control" value="1" class="flat-red" @if(Setting::get('admin_delete_control') == 1) checked @endif>
-                                {{tr('yes')}}
-                            </label>
 
-                            <label>
-                                <input required type="radio" name="admin_delete_control" class="flat-red"  value="0" @if(Setting::get('admin_delete_control') == 0) checked @endif>
-                                {{tr('no')}}
-                            </label>
+                            <div class="col-md-6">            
+                                <label>{{ tr('admin_delete_control') }}</label>
+                                <br>
+                                <label>
+                                    <input required type="radio" name="admin_delete_control" value="1" class="flat-red" @if(Setting::get('admin_delete_control') == 1) checked @endif>
+                                    {{tr('yes')}}
+                                </label>
+
+                                <label>
+                                    <input required type="radio" name="admin_delete_control" class="flat-red"  value="0" @if(Setting::get('admin_delete_control') == 0) checked @endif>
+                                    {{tr('no')}}
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>{{ tr('is_admin_needs_to_approve_channel_video') }}</label>
+                                <br>
+                                <label>
+                                    <input required type="radio" name="is_admin_needs_to_approve_channel_video" value="1" class="flat-red" @if(Setting::get('is_admin_needs_to_approve_channel_video') == 1) checked @endif>
+                                    {{tr('yes')}}
+                                </label>
+
+                                <label>
+                                    <input required type="radio" name="is_admin_needs_to_approve_channel_video" class="flat-red"  value="0" @if(Setting::get('is_admin_needs_to_approve_channel_video') == 0) checked @endif>
+                                    {{tr('no')}}
+                                </label>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label>{{ tr('is_admin_needs_to_approve_channel_video') }}</label>
-                            <br>
-                            <label>
-                                <input required type="radio" name="is_admin_needs_to_approve_channel_video" value="1" class="flat-red" @if(Setting::get('is_admin_needs_to_approve_channel_video') == 1) checked @endif>
-                                {{tr('yes')}}
-                            </label>
-
-                            <label>
-                                <input required type="radio" name="is_admin_needs_to_approve_channel_video" class="flat-red"  value="0" @if(Setting::get('is_admin_needs_to_approve_channel_video') == 0) checked @endif>
-                                {{tr('no')}}
-                            </label>
+                            
                         </div>
                         
                         <div class="form-group">
@@ -197,15 +203,16 @@
                         </div>
                         
                     
-                  </div>
-                  <!-- /.box-body -->
+                    </div>
 
-                  <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
-                  </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">{{tr('submit')}}</button>
+                    </div>
+
                 </form>
 
             </div>
+
         </div>
 
     </div>

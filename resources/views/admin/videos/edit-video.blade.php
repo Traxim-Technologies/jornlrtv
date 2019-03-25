@@ -24,7 +24,6 @@
 
 @include('notification.notify')
 
-
 @if(envfile('QUEUE_DRIVER') != 'redis') 
 
  <div class="alert alert-warning">
@@ -43,6 +42,7 @@
 @endif
 
 <div class="row">
+
     <div class="col-lg-12">
         <section>
         <div class="wizard">
@@ -524,7 +524,6 @@
 
     <script src="{{asset('streamtube/js/jquery-form.js')}}"></script>
 
-    
     <script type="text/javascript">
 
         function checkPublishType(val){
@@ -581,8 +580,7 @@
 
         @endif
 
-
-         $.ajax({
+        $.ajax({
               method : 'get',
               url : "{{route('admin.videos.images', $video->video_tape_id)}}",
               success : function(data) {

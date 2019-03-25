@@ -47,6 +47,7 @@ if(!defined('NONE')) define('NONE', 0);
 
 if(!defined('ADMIN')) define('ADMIN', 'admin');
 
+if(!defined('SUBADMIN')) define('SUBADMIN', 'sub_admin');
 
 
 // ON OFF STATUS
@@ -352,5 +353,18 @@ if(!defined('BELL_NOTIFICATION_NEW_SUBSCRIBER')) define('BELL_NOTIFICATION_NEW_S
 if(!defined('BELL_NOTIFICATION_STATUS_UNREAD')) define('BELL_NOTIFICATION_STATUS_UNREAD', 1);
 
 if(!defined('BELL_NOTIFICATION_STATUS_READ')) define('BELL_NOTIFICATION_STATUS_READ', 2);
+
+
+if(!defined('NO')) define('NO', 0);
+
+if (!defined('APPROVED')) define('APPROVED',1);
+
+if (!defined('DECLINED')) define('DECLINED',0);
+
+
+// ========================new branch v4.0 admmin-coderevamp =================
+
+if (!defined('WISHLIST_DELETE_ALL')) define('WISHLIST_DELETE_ALL', 1);
+
 
 

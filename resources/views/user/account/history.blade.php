@@ -20,7 +20,7 @@
                             <div class="clear-button">
                                 <form method="get" action="{{route('user.delete.history')}}">
                                     <input type="hidden" name="status" value="1">
-                                    <button class="btn btn-danger" onclick="return confirm('Are you sure?');" type="submit">{{tr('clear_all')}}</button>
+                                    <button class="btn btn-danger" onclick="return confirm(&quot; {{tr('user_history_delete_confirm') }}&quot;)" type="submit">{{tr('clear_all')}}</button>
                                 </form>
 
                             </div>  
@@ -71,7 +71,7 @@
                                                     </span>
                                                 </div> 
                                                 <div class="cross-mark1">
-                                                    <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.history' , array('video_tape_id' => $history->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    <a onclick="return confirm(&quot; {{tr('user_history_delete_confirm') }}&quot;)"  href="{{route('user.delete.history' , array('video_tape_id' => $history->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                 </div><!--end of cross-mark-->                       
                                             </div> <!--end of history-head--> 
 
@@ -98,7 +98,7 @@
                     @else 
 
                         <!-- <p>{{tr('no_history_found')}}</p> -->
-                        <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+                        <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
 
                     @endif
 

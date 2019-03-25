@@ -54,7 +54,7 @@
                                             </span>
                                         </div> 
                                         <div class="cross-mark1">
-                                            <a onclick="return confirm('Are you sure?');" href="{{route('user.remove.report_video',$spamvideo->video_tape_id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            <a onclick="return confirm(&quot;{{ substr($spamvideo->channel_name, 0 , 15)}}.. {{tr('user_spamvideo_delete_confirm') }}&quot;)"  href="{{route('user.remove.report_video',$spamvideo->video_tape_id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                         </div><!--end of cross-mark-->                       
                                     </div> <!--end of history-head--> 
 
@@ -80,7 +80,7 @@
 
                 @else
                    <!--  <p>{{tr('no_spam_found')}}</p> -->
-                   <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+                   <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
                 @endif
 
                 @if(count($model->items) > 0)
