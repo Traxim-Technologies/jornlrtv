@@ -34,12 +34,12 @@
                             <div class="form-group">
 
                                 <div class="col-lg-6">
-                                    <label for="{{ tr('dob') }}">{{ tr('name') }} *</label>
+                                    <label for="{{ tr('name') }}">{{ tr('name') }} *</label>
                                     <input type="text" name="name" value="{{  old('name') ?: $user_details->name }}" class="form-control" id="username" placeholder="{{ tr('name') }} *" title="{{ tr('username_notes') }}" required >
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <label for="{{ tr('dob') }}">{{ tr('email') }} *</label>
+                                    <label for="{{ tr('email') }}">{{ tr('email') }} *</label>
                                     <input type="email" required class="form-control" value="{{ old('email') ?: $user_details->email }}" id="email" name="email" placeholder="{{ tr('email') }} *" maxlength="255" required >
                                 </div>
 
