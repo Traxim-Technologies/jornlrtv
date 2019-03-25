@@ -5,127 +5,129 @@
 @section('content-header', tr('assigned_ads'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-    <li class="active"><i class="fa fa-bullhorn"></i> {{tr('assigned_ads')}}</li>
+    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+    <li class="active"><i class="fa fa-bullhorn"></i> {{ tr('assigned_ads') }}</li>
 @endsection
 
 @section('content')
 
-    @include('notification.notify')
 	<div class="row">
+
         <div class="col-xs-12">
-          <div class="box box-primary">
+    		
+    		@include('notification.notify')
 
-          	<div class="box-header label-primary">
-                <b style="font-size:18px;">{{tr('assigned_ads')}}</b>
-            </div>
+          	<div class="box box-primary">
 
-            <div class="box-body">
+	          	<div class="box-header label-primary">
+	                <b style="font-size:18px;">{{ tr('assigned_ads') }}</b>
+	            </div>
 
-            	@if(count($model) > 0)
+	            <div class="box-body">
 
-	              	<table id="example1" class="table table-bordered table-striped">
+	            	@if(count($video_ads) > 0)
 
-						<thead>
-						    <tr>
-						      <th>{{tr('id')}}</th>
-						      <th>{{tr('channel')}}</th>
-						      <th>{{tr('title')}}</th>
-						      <th>{{tr('type_of_ads')}}</th>
-						      <th>{{tr('status')}}</th>
-						      <th>{{tr('action')}}</th>
-						    </tr>
-						</thead>
-						<tbody>
-							@foreach($model as $i => $data)
+		              	<table id="example1" class="table table-bordered table-striped">
 
+							<thead>
 							    <tr>
-							      	<td>{{$i+1}}</td>
-							      	
-							      		
-							      	<td>
-
-							      		@if($data->name) 
-							      		
-							      			<a href="{{route('admin.channels.view', $data->channel_id)}}" target="_blank">{{$data->name}}</a>
-
-							      		@endif
-
-							      	</td>
-							      	<td>
-
-							      		@if($data->title)
-
-							      			<a href="{{route('admin.video_tapes.view', array('id'=>$data->video_tape_id))}}" target="_blank">{{substr($data->title , 0,25)}}</a>
-							      		@endif
-
-							      	</td>
-
-							      	<td>
-
-							      		<?php $types = getTypeOfAds($data->types_of_ad);?>
-
-							      		@foreach($types as $type)
-								      		
-								      		<span class="label label-success">{{$type}}</span>
-
-								       	@endforeach
-							      	</td>
-							      	<td>
-							      		
-							      		@if($data->status)
-							      			<span class="label label-success">{{tr('approved')}}</span>
-							       		@else
-							       			<span class="label label-danger">{{tr('pending')}}</span>
-							       		@endif
-							      	</td>
-								    <td>
-            							<ul class="admin-action btn btn-default">
-            								<li class="dropup">
-								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-								                  {{tr('action')}} <span class="caret"></span>
-								                </a>
-								                <ul class="dropdown-menu">
-								                	
-								                  	<li role="presentation">
-                                                        @if(Setting::get('admin_delete_control'))
-                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
-                                                        @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.edit' , array('id' => $data->id))}}">{{tr('edit')}}</a>
-                                                        @endif
-                                                    </li>
-                                                    
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video-ads.view' , array('id' => $data->id))}}">{{tr('view')}}</a></li
-								               
-														
-								                  	<li class="divider" role="presentation"></li>
-
-								                  	<li role="presentation">
-								                  		@if(Setting::get('admin_delete_control'))
-
-									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
-
-									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video-ads.delete' , array('id' => $data->id))}}">{{tr('delete')}}</a>
-								                  		@endif
-								                  	</li>
-								                </ul>
-              								</li>
-            							</ul>
-								    </td>
+							      <th>{{ tr('id') }}</th>
+							      <th>{{ tr('channel') }}</th>
+							      <th>{{ tr('title') }}</th>
+							      <th>{{ tr('type_of_ads') }}</th>
+							      <th>{{ tr('status') }}</th>
+							      <th>{{ tr('action') }}</th>
 							    </tr>
+							</thead>
 
-								<!-- Modal -->
+							<tbody>
+
+								@foreach($video_ads as $i => $video_ad_details)
+
+								    <tr>
+								      	<td>{{ $i+1 }}</td>
+								      							      		
+								      	<td>
+								      		@if($video_ad_details->name)
+								      		
+								      			<a href="{{ route('admin.channels.view', ['channel_id' => $video_ad_details->channel_id] ) }}" target="_blank">{{ $video_ad_details->name }}</a>
+
+								      		@endif
+								      	</td>
+
+								      	<td>
+								      		@if($video_ad_details->title)
+
+								      			<a href="{{ route('admin.videos.view', ['id'=>$video_ad_details->video_tape_id] ) }}" target="_blank">{{ substr($video_ad_details->title , 0,25) }}</a>
+								      		@endif
+								      	</td>
+
+								      	<td>
+								      		<?php $types = getTypeOfAds($video_ad_details->types_of_ad);?>
+
+								      		@foreach($types as $type)
+									      		
+									      		<span class="label label-success">{{ $type }}</span>
+
+									       	@endforeach
+								      	</td>
+
+								      	<td>							      		
+								      		@if($video_ad_details->status)
+								      			<span class="label label-success">{{ tr('approved') }}</span>
+								       		@else
+								       			<span class="label label-danger">{{ tr('pending') }}</span>
+								       		@endif
+								      	</td>
+
+									    <td>
+	            							<ul class="admin-action btn btn-default">
+	            								
+	            								<li class="dropup">
+									                
+									                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									                  {{ tr('action') }} <span class="caret"></span>
+									                </a>
+									                
+									                <ul class="dropdown-menu">
+									                	
+	                                                    
+									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.video_ads.view' , ['id' => $video_ad_details->id] ) }}">{{ tr('view') }}</a></li>
+
+                                                        @if(Setting::get('admin_delete_control'))
+                                                            <li role="presentation"><a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('edit') }}</a></li>
+
+                                                            <li role="presentation"><a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('delete') }}</a></li>
+                                                        @else
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_ads.edit' , ['id' => $video_ad_details->id] ) }}">{{ tr('edit') }}</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_video_ad_delete_confirmation', $video_ad_details->name) }}&quot;)" href="{{ route('admin.video_ads.delete' ,  ['id' => $video_ad_details->id] ) }}">{{ tr('delete') }}</a></li>
+
+                                                        @endif
+
+									                </ul>
+
+	              								</li>
+	            							
+	            							</ul>
+									    </td>
+
+								    </tr>
 								
-							@endforeach
-						</tbody>
-					</table>
-				@else
-					<h3 class="no-result">{{tr('no_assigned_ads_found')}}</h3>
-				@endif
-            </div>
-          </div>
+								@endforeach
+
+							</tbody>
+
+						</table>
+
+					@else
+						<h3 class="no-result">{{ tr('no_assigned_ads_found') }}</h3>
+					@endif
+	            </div>
+
+          	</div>
+
         </div>
+
     </div>
 
 @endsection

@@ -711,7 +711,6 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error',tr('admin_not_error'));
-
         }
     
     }
@@ -787,9 +786,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error',tr('admin_not_error'));
-
-        }
-    
+        }    
     }
 
     /**
@@ -812,7 +809,7 @@ class AdminController extends Controller {
 
             $user_wishlist->delete();
 
-            return back()->with('flash_success',tr('admin_not_wishlist_del'));
+            return back()->with('flash_success',tr('user_wishlist_delete_success'));
 
         } else {
 
@@ -1350,7 +1347,7 @@ class AdminController extends Controller {
      *
      */
     public function videos_view(Request $request) {
-
+    
         $validator = Validator::make($request->all() , [
                 'id' => 'required|exists:video_tapes,id'
             ]);
@@ -1364,6 +1361,10 @@ class AdminController extends Controller {
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
+
+            $video_tags = VideoTapeTag::where('video_tape_tags.video_tape_id' , $request->id)
+                    ->leftjoin('tags','tags.id' , '=' , 'video_tape_tags.tag_id')
+                    ->get();
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
             if ($video->video_type == VIDEO_TYPE_UPLOAD) {
@@ -1424,7 +1425,8 @@ class AdminController extends Controller {
                     ->with('videoStreamUrl', $videoStreamUrl)
                     ->with('spam_reports', $spam_reports)
                     ->with('reviews', $reviews)
-                    ->with('wishlists', $wishlists);
+                    ->with('wishlists', $wishlists)
+                    ->with('video_tags', $video_tags);
         }
     
     }
@@ -2120,7 +2122,6 @@ class AdminController extends Controller {
         if($user = UserRating::find($request->id)) {
 
             $user->delete();
-
         }
 
         return back()->with('flash_success', tr('admin_not_ur_del'));
@@ -5643,8 +5644,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error', Helper::get_error_message(167));
-
-        }        
+        }       
 
     }  
 

@@ -5,15 +5,18 @@
 
             <input type="hidden" name="channel_id" value="{{ $channel_details->id }}">
 
-            <input type="hidden" name="user_id" value="{{ $channel_details->user_id }}" >
+            <input type="hidden" name="user_id" value="{{ $channel_details->user_id }}">
 
-            <input type="hidden" name="device_type" value="{{ DEVICE_WEB }}" >
+            <input type="hidden" name="device_type" value="{{ DEVICE_WEB }}">
 
             <div class="col-sm-6">
+
                 <div class="form-group"> 
+
                     <label for="name" class="control-label ">{{ tr('user_name') }} *</label>
 
                     @if(!$channel_details->id)
+                    
                         <select id="user_id" name="user_id" class="form-control select2" required data-placeholder="{{ tr('select_user') }}*">
                             <option value="">{{ tr('select_user_name') }}</option>
                             @foreach($users as $user)
@@ -32,8 +35,10 @@
 
                         @endforeach
 
-                    @endif                           
+                    @endif     
+
                 </div>
+
             </div>
 
             <div class="col-sm-6">

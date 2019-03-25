@@ -16,7 +16,6 @@
 
 @section('content')
 
-
 	<div class="row">
 
 		<div class="col-md-12">
@@ -36,7 +35,9 @@
 				@include('new_admin.coupons._form')
 
 			</div>
+
 		</div>
+		
 	</div>
 	
 @endsection

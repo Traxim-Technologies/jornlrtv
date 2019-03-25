@@ -28,11 +28,11 @@
 
 @section('content')
 
-	@include('notification.notify')
-
 	<div class="row">
 
         <div class="col-xs-12">
+			
+			@include('notification.notify')
 
           	<div class="box box-primary">
 
@@ -53,7 +53,7 @@
 					                </a>
 					                <ul class="dropdown-menu">
 					                  	<li role="presentation">
-					                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.users.export' , ['format' => 'xls']) }}">
+					                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.users.export' , ['format' => 'xlsx']) }}">
 					                  			<span class="text-red"><b>{{ tr('excel_sheet') }}</b></span>
 					                  		</a>
 					                  	</li>
@@ -87,7 +87,7 @@
 							      <th>{{ tr('no_of_videos') }}</th>
 							      <th>{{ tr('validity_days') }}</th>
 							      <th>{{ tr('redeems') }}</th>
-							      @if(Setting::get('email_verify_control'))
+							      @if(Setting::get('email_verify_control') == YES)
 							      <th>{{ tr('email_verification') }}</th>
 							      @endif
 							      <th>{{ tr('status') }}</th>
@@ -115,7 +115,6 @@
 								      			<span class="text-red pull-right"><i class="fa fa-times"></i></span>
 
 								      			@endif
-
 								      		</a>
 								      	</td>
 
@@ -195,6 +194,7 @@
 									                  	 	@endif
 
 									                  	@endif
+									                  	<li class="divider" role="presentation"></li>
 
 									                  	@if($user_details->status == USER_APPROVED )
 									                  		
@@ -204,6 +204,8 @@
 									                  	
 									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation', $user_details->name) }}&quot;)" >{{ tr('approve') }}</a></li>
 									                  	@endif
+
+									                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.playlist.index' , ['user_id' => $user_details->id] ) }}">{{ tr('playlist') }}</a></li>	
 									                  	
 									                </ul>
 

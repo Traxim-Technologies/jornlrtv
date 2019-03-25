@@ -33,7 +33,7 @@
 	      				<input type="hidden" name="tag_id" value="{{ $tag_details->id }}">
 		        		
 		        		<div class="col-xs-8 col-sm-8">    
-		        			<label for="name">{{tr('name')}}</label>
+		        			<label for="name">{{tr('name')}} * </label>
 		        			<input type="text" name="name" value="{{ $tag_details->name }}" required class="form-control" placeholder="{{ tr('name') }}"  title="Enter only alphabets" maxlength="15">
 		        		</div>
 
@@ -97,22 +97,20 @@
 
 						      		<td class="text-center">
 						      		
-					      				<a href="{{ route('admin.tags' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-primary" title="Edit">
-				              				<i class="fa fa-edit"></i>
+					      				<a href="{{ route('admin.tags', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-primary" title="{{tr('edit')}}">	<i class="fa fa-edit"></i>
 				              			</a>
 
-						      			<a href="{{ route('admin.tags.delete' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-danger" title="Delete" onclick="return confirm(&quot;{{ tr('admin_tag_delete_confirmation', $tag_details->name) }}&quot;)" ><i class="fa fa-trash"></i></a>	
+						      			<a href="{{ route('admin.tags.delete', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-danger" title="{{tr('delete')}}" onclick="return confirm(&quot;{{ tr('admin_tag_delete_confirmation', $tag_details->name) }}&quot;)" ><i class="fa fa-trash"></i></a>	
+				              			
 				              			@if($tag_details->status == APPROVED)
 
-				              				<a href="{{ route('admin.tags.status' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-warning" title="Decline this Category" onclick="return confirm(&quot;{{ tr('admin_tag_decline_confirmation', $tag_details->name) }}&quot;)" ><i class="fa fa-times"></i></a>
+				              				<a href="{{ route('admin.tags.status', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-warning" title="{{tr('decline')}}" onclick="return confirm(&quot;{{ tr('admin_tag_decline_confirmation', $tag_details->name) }}&quot;)" ><i class="fa fa-times"></i></a>
 				              			@else
 
-					              			<a href="{{ route('admin.tags.status' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-success" title="Approve this Category" onclick="return confirm(&quot;{{ tr('admin_tag_approve_confirmation',$tag_details->name) }}&quot;)"><i class="fa fa-check"></i></a>
+					              			<a href="{{ route('admin.tags.status', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-success" title="{{tr('approve')}}" onclick="return confirm(&quot;{{ tr('admin_tag_approve_confirmation',$tag_details->name) }}&quot;)"><i class="fa fa-check"></i></a>
 				              			@endif
 
-			              				<!-- <a href="{{ route('admin.tags.videos' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-success" title="Tagged Videos"><i class="fa fa-video-camera"></i></a> -->
-
-			              				<a href="{{ route('admin.video_tapes.index' ,['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-success" title="Tagged Videos"><i class="fa fa-video-camera"></i></a>
+			              				<a href="{{ route('admin.tags.videos', ['tag_id' => $tag_details->id]) }}" class="btn btn-xs btn-success" title="{{tr('admin_taged_videos')}}"><i class="fa fa-video-camera"></i></a>
 						      		
 						      		</td>
 							      	

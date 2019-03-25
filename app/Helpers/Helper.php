@@ -455,6 +455,14 @@
                     $string = tr('login_account_record_not_found');
                     break;
 
+                case 505:
+                    $string = tr('user_wishlist_video_exists');
+                    break;
+
+                case 506:
+                    $string = tr('user_wishlist_delete_error');
+                    break;
+
                 default:
                     $string = tr('unknown_error_occured');
             }

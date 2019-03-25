@@ -113,12 +113,12 @@
                             </div>
 
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                
                                 <div class="form-group">
 
                                     <label for="publish_type" class="">{{tr('publish_type')}}</label>
                                     <div class="clearfix"></div>
-
-                                   
+                                
                                     <label>
                                         <input type="radio" name="video_publish_type" value="{{PUBLISH_NOW}}" class="flat-red" checked id="video_publish_type" onchange="checkPublishType(this.value)">
                                         {{tr('publish_now')}}

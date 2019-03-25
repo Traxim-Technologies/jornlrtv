@@ -32,7 +32,7 @@
                         <thead>
                             <tr>
                               <th>{{tr('id')}}</th>
-                              <th>{{tr('heading')}}</th>
+                              <th>{{tr('title')}}</th>
                               <th>{{tr('page_type')}}</th>
                               <th>{{tr('action')}}</th>
                             </tr>
@@ -44,7 +44,7 @@
                     
                                 <tr>
                                     <td>{{$i+1}}</td>
-                                    <td><a href="{{route('admin.pages.view', ['page_id' => $page_details->id] )}}">{{$page_details->heading}}</a></td>
+                                    <td><a href="{{route('admin.pages.view', ['page_id' => $page_details->id] )}}">{{$page_details->title}}</a></td>
                                    
                                     <td>{{$page_details->type}}</td>
                                     
@@ -73,7 +73,7 @@
 
                                                     <li><a href="{{route('admin.pages.edit', ['page_id' => $page_details->id] )}}"><b>{{tr('edit')}}</b></a></li>
 
-                                                    <li><a onclick="return confirm(&quot;{{tr('page_delete_confirmation' , $page_details->heading)}}&quot;);" href="{{ route('admin.pages.delete',['page_id' => $page_details->id] ) }}"><b>{{tr('delete')}}</b></a></li>
+                                                    <li><a onclick="return confirm(&quot;{{tr('page_delete_confirmation' , $page_details->title)}}&quot;);" href="{{ route('admin.pages.delete',['page_id' => $page_details->id] ) }}"><b>{{tr('delete')}}</b></a></li>
                                                 @endif
 
                                             </ul>

@@ -115,7 +115,7 @@
 		            </li>
 		            
 		             <li class="list-group-item">
-		              	<b>{{ tr('reviews') }}</b> <a href="{{ route('admin.users.history',['user_id' => $user_details->id]) }}" class="pull-right" target="_blank">{{ $user_details->user_rating_count }}</a>
+		              	<b>{{ tr('reviews') }}</b> <a href="{{ route('admin.reviews',['user_id' => $user_details->id]) }}" class="pull-right" target="_blank">{{ $user_details->user_rating_count }}</a>
 		            </li>
 		            
 		            <li class="list-group-item">
@@ -137,7 +137,7 @@
 		              <b>{{ tr('is_verified') }}</b> <a class="pull-right">
 		              	@if(!$user_details->is_verified == USER_EMAIL_VERIFIED) 
 
-			      			<a href="{{ route('admin.users.verify' ,['user_id' => $user_details->id]) }}" class="btn btn-xs btn-warning">{{ tr('verify') }}</a>
+			      			<a href="{{ route('admin.users.verify' ,['user_id' => $user_details->id]) }}" class="btn btn-xs btn-warning pull-right">{{ tr('verify') }}</a>
 
 			       		@else 
 			       			<span class="label label-success">{{ tr('verified') }}</span>
@@ -175,8 +175,11 @@
 		          	@if($user_details->status == USER_APPROVED)		
 	              		<a href="{{ route('admin.users.status', ['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_decline_confirmation',$user_details->name) }}&quot;)" class="btn btn-warning" title="{{tr('decline')}}" ><i class="fa fa-close"></i></a>	              	
 	              	@else	              	
-	              		<a href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation') }}&quot;)" class="btn btn-success" title="{{tr('approve')}}"><i class="fa fa-check"></i></a>
+	              		<a href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation,$user_details->name') }}&quot;)" class="btn btn-success" title="{{tr('approve')}}"><i class="fa fa-check"></i></a>
 	              	@endif
+
+	              	<a  href="{{ route('admin.users.playlist.index' , ['user_id' => $user_details->id] ) }}" class="btn btn-info" title="{{tr('playlist')}}"><i class="fa fa-video-camera"></i></a>
+
 	              	</center>
 		        </div>
 		        <!-- /.box-body -->
@@ -191,9 +194,6 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body">
-	         	
-	          	<p class="text-muted">{{ $user_details->description }}</p>
-	          	<hr>
 
 	          	<strong><i class="fa fa-map-marker margin-r-5"></i> {{ tr('location') }}</strong>
 	         	<p class="text-muted">{{ $user_details->timezone }}</p>
@@ -270,7 +270,7 @@
 
 			            	<tr>
 			            		<th>{{ tr('description')}}</th>
-			            		<td>{{ $user_details->description  }}</td>
+			            		<td><?php echo $user_details->description ?></td>
 			            	</tr>
 			            	
 		            	</table>
@@ -306,63 +306,65 @@
 
 			          	<blockquote>
 			                <p>{{ tr('channels_short_notes') }}</p>
-			                <small>{{ tr('to_view_more') }} <cite><a href="{{ route('admin.users.channels',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('click_here') }}</a></cite></small>
+			                <cite>
+			                <a href="{{ route('admin.users.channels',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('to_view_more') }}</a></cite></small>
 			            </blockquote>
 
 		          		<div class="row">
 
 		          		@if(count($channels) > 0)
 
-		          		@foreach($channels as $channel_details)
+			          		@foreach($channels as $channel_details)
 
-			            <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-				          <!-- Widget: user widget style 1 -->
-				          	<div class="box box-widget widget-user">
-					            <!-- Add the bg color to the header using any of the bg-* classes -->
+				            <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+					          <!-- Widget: user widget style 1 -->
+					          	<div class="box box-widget widget-user">
+						            <!-- Add the bg color to the header using any of the bg-* classes -->
 
-					            <div class="widget-user-header bg-black" style="background: url('{{ $channel_details->cover }}') center center;">
-					            	<h3 class="widget-user-username">{{ $channel_details->channel_name }}</h3>
-					              	<h5 class="widget-user-desc">{{ tr('channel') }}</h5>
-					            </div>
+						            <div class="widget-user-header bg-black" style="background: url('{{ $channel_details->cover }}') center center;">
+						            	<h3 class="widget-user-username">{{ $channel_details->channel_name }}</h3>
+						              	<h5 class="widget-user-desc">{{ tr('channel') }}</h5>
+						            </div>
 
-					            <div class="widget-user-image">
-					              	<img class="img-circle" src="{{ $channel_details->picture }}" alt="{{ $channel_details->channel_name }}" style="height: 90px">
-					            </div>
+						            <div class="widget-user-image">
+						              	<img class="img-circle" src="{{ $channel_details->picture }}" alt="{{ $channel_details->channel_name }}" style="height: 90px">
+						            </div>
 
-					            <div class="box-footer">
-					              	<div class="row">
-						                <div class="col-sm-4 border-right">
-						                  <div class="description-block">
-						                    <h5 class="description-header"><a href="{{ route('admin.channels.videos', $channel_details->channel_id) }}">{{ $channel_details->videos }}</a></h5>
-						                    <span class="description-text">{{ tr('videos') }}</span>
-						                  </div>
-						                  <!-- /.description-block -->
-						                </div>
-						                <!-- /.col -->
-						                <div class="col-sm-4 border-right">
-						                    <div class="description-block">
-							                    <h5 class="description-header"><a href="{{ route('admin.channels.subscribers', array('id'=> $channel_details->channel_id)) }}"> {{ $channel_details->subscribers }}</a></h5>
-							                    <span class="description-text">{{ tr('subscribers') }}</span>
-						                    </div>
-						                  <!-- /.description-block -->
-						                </div>
-						                <!-- /.col -->
-						                <div class="col-sm-4">
-							                <div class="description-block">
-							                    <h5 class="description-header">{{ $channel_details->currency }}{{ number_format_short($channel_details->earnings) }}</h5>
-							                    <span class="description-text">{{ tr('earnings') }}</span>
+						            <div class="box-footer">
+						              	<div class="row">
+							                <div class="col-sm-4 border-right">
+							                  <div class="description-block">
+							                    <h5 class="description-header"><a href="{{ route('admin.channels.videos', ['channel_id' => $channel_details->channel_id] ) }}">{{ $channel_details->videos }}</a></h5>
+							                    <span class="description-text">{{ tr('videos') }}</span>
+							                  </div>
+							                  <!-- /.description-block -->
 							                </div>
-						                  <!-- /.description-block -->
-						                </div>
-					                <!-- /.col -->
-					              	</div>
-					              <!-- /.row -->
-					            </div>
+							                <!-- /.col -->
+							                <div class="col-sm-4 border-right">
+							                    <div class="description-block">
+								                    <h5 class="description-header"><a href="{{ route('admin.channels.subscribers', ['channel_id'=> $channel_details->channel_id] ) }}"> {{ $channel_details->subscribers }}</a></h5>
+								                    <span class="description-text">{{ tr('subscribers') }}</span>
+							                    </div>
+							                  <!-- /.description-block -->
+							                </div>
+							                <!-- /.col -->
+							                <div class="col-sm-4">
+								                <div class="description-block">
+								                    <h5 class="description-header">{{ $channel_details->currency }}{{ number_format_short($channel_details->earnings) }}</h5>
+								                    <span class="description-text">{{ tr('earnings') }}</span>
+								                </div>
+							                  <!-- /.description-block -->
+							                </div>
+						                <!-- /.col -->
+						              	</div>
+						              <!-- /.row -->
+						            </div>
 
-				          	</div>
-				          <!-- /.widget-user -->
-				        </div>
-				        @endforeach
+					          	</div>
+					          <!-- /.widget-user -->
+					        </div>
+
+					        @endforeach
 
 				        @else
 
@@ -372,14 +374,15 @@
 
 				        @endif
 				     </div>
-		          </div> 
-		          <!-- /.tab-pane -->
+		          	</div> 
+		          	<!-- /.tab-pane -->
 
 		         	<div class="tab-pane" id="wishlist_list">
 
 		          		<blockquote>
 			                <p>{{ tr('favourites_notes') }}</p>
-			                <small>{{ tr('to_view_more') }} <cite><a href="{{ route('admin.users.wishlist',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('click_here') }}</a></cite></small>
+			                <cite><a href="{{ route('admin.users.wishlist',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('to_view_more') }}</a>
+			                </cite></small>
 			            </blockquote>
 
 		           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
@@ -421,7 +424,9 @@
 
 		          		<blockquote>
 			                <p>{{ tr('history_notes') }}</p>
-			                <small>{{ tr('to_view_more') }} <cite><a target="_blank" href="{{ route('admin.reviews',['user_id' => $user_details->id]) }}">{{ tr('click_here') }}</a></cite></small>
+			                <cite>
+			                <a target="_blank" href="{{ route('admin.users.history',['user_id' => $user_details->id]) }}">{{ tr('to_view_more') }}</a>
+			                </cite></small>
 			            </blockquote>
 
 		           		<table id="datatable-withoutpagination1" class="table table-bordered table-striped">
@@ -465,7 +470,8 @@
 
 		          		<blockquote>
 			                <p>{{ tr('spam_reports_notes') }}</p>
-			                <small>{{ tr('to_view_more') }} <cite><a href="{{ route('admin.spam-videos.per-user-reports',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('click_here') }}</a></cite></small>
+			                <cite><a href="{{ route('admin.spam-videos.per-user-reports',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('to_view_more') }}</a>
+			                </cite></small>
 			            </blockquote>
 
 		           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
@@ -482,16 +488,23 @@
 
 							<tbody>
 
-								@foreach($spam_reports as $i => $spam_report)
+								@foreach($spam_reports as $i => $spam_report_details)
 
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
-								      	<td>{{ $spam_report->title }}</td>
-								      	<td>{{ $spam_report->reason }}</td>
-								      	<td>{{ $spam_report->created_at->diffForHumans() }}</td>
+								      	
+								      	<td>
+							      			<a href="{{route('admin.videos.view' , ['id' => $spam_report_details->video_tape_id] )}}"> {{substr($spam_report_details->title , 0,25)}}...</a>
+							      		</td>
+
+								      	<td>{{ $spam_report_details->reason }}</td>
+								      	
+								      	<td>{{ $spam_report_details->created_at->diffForHumans() }}</td>
+									   
 									    <td>	            							
-									        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{ route('admin.spam-videos.unspam-video' , $spam_report->id) }}"><i class="fa fa-trash"></i></a>		
+									        <a class="btn btn-sm btn-danger" onclick="return confirm(&quot; {{ tr('admin_user_review_delete_confirmation') }}&quot;);"  href="{{ route('admin.spam-videos.unspam-video' , $spam_report_details->id) }}"><i class="fa fa-trash"></i></a>		
 									    </td>
+
 								    </tr>					
 
 								@endforeach
@@ -506,7 +519,8 @@
 
 		          		<blockquote>
 			                <p>{{ tr('reviews_notes_list') }}</p>
-			                <small>{{ tr('to_view_more') }} <cite><a href="{{ route('admin.reviews', array('user_id'=>$user_details->id)) }}" target="_blank">{{ tr('click_here') }}</a></cite></small>
+			                <cite><a href="{{ route('admin.reviews', array('user_id'=>$user_details->id)) }}" target="_blank">{{ tr('to_view_more') }}</a>
+			                </cite></small>
 			            </blockquote>
 
 		           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
@@ -523,18 +537,24 @@
 
 							<tbody>
 
-								@foreach($user_ratings as $i => $user_rating)
+								@foreach($user_ratings as $i => $user_rating_details)
 
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
-								      	<td>{{ $user_rating->title }}</td>
-								      	<td>{{ $user_rating->comment }}</td>
-								      	<td>{{ $user_rating->created_at->diffForHumans() }}</td>
-									    <td>
-	            							
-									        <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');" href="{{ route('admin.reviews.delete' , array('id'=>$user_rating->id)) }}"><i class="fa fa-trash"></i></a>
-									              
+
+								      	<td>
+								      		<a href="{{route('admin.videos.view' , ['id' => $user_rating_details->video_tape_id] )}}">{{ $user_rating_details->title }}
+								      		</a>
+								      	</td>
+
+								      	<td>{{ $user_rating_details->comment }}</td>
+
+								      	<td>{{ $user_rating_details->created_at->diffForHumans() }}</td>
+
+									    <td>	            							
+									        <a class="btn btn-sm btn-danger" onclick="return confirm(&quot; {{ tr('admin_user_review_delete_confirmation') }}&quot;);" href="{{ route('admin.reviews.delete' , ['user_rating_id'=>$user_rating_details->id] ) }}"><i class="fa fa-trash"></i></a>
 									    </td>
+
 								    </tr>					
 
 								@endforeach

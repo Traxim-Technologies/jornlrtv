@@ -13,7 +13,6 @@
 
 @include('notification.notify')
 
-
     <div class="row">
 
         <div class="col-md-4">
@@ -176,7 +175,7 @@
                                 <label for="confirm_password" class="col-sm-3 control-label">{{tr('confirm_password')}}</label>
 
                                 <div class="col-sm-8">
-                                  <input required type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="{{tr('confirm_password')}}">
+                                  <input required type="password" class="form-control" name="password_confirmation" id="confirm_password" placeholder="{{tr('confirm_password')}}">
                                 </div>
                             </div>
 

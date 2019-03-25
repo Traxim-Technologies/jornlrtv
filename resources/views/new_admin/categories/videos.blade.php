@@ -17,10 +17,11 @@
 
 @section('content')
 
-    @include('notification.notify')
 	<div class="row">
 
         <div class="col-xs-12">
+    		
+    		@include('notification.notify')
 
           	<div class="box box-primary">
 
@@ -60,16 +61,23 @@
 
 								    <tr>
 								      	
-								      	<td><a href="{{ route('admin.video_tapes.view' , ['id' => $video_details->video_tape_id] ) }}">{{ $i+1 }}</a></td>
+								      	<td>
+								      		<a href="{{ route('admin.videos.view' , ['id' => $video_details->video_tape_id] ) }}">{{ $i+1 }}</a>
+								      	</td>
 								      	
-								      	<td><a href="{{ route('admin.channels.view', ['channel_id' => $video_details->channel_id] ) }}">{{ $video_details->channel_name }}</a></td>
+								      	<td>
+								      		<a href="{{ route('admin.channels.view', ['channel_id' => $video_details->channel_id] ) }}">{{ $video_details->channel_name }}</a>
+								      	</td>
 								      	
-								      	<td><a href="{{ route('admin.video_tapes.view' , ['id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a></td>
-								      	
+								      	<td>
+								      		<a href="{{ route('admin.videos.view' , ['id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a>
+								      	</td>								      	
 
-								      	<td><b>{{ Setting::get('currency') }} {{ $video_details->admin_ppv_amount }}</b></td>
+								      	<td>
+								      		<b>{{ Setting::get('currency') }} {{ $video_details->admin_ppv_amount }}</b>
+								      	</td>
 
-								      	@if(Setting::get('is_payper_view'))
+								      	@if(Setting::get('is_payper_view') == DEFAULT_TRUE)
 								      	<td class="text-center">
 								      		@if($video_details->ppv_amount > 0)
 								      			<span class="label label-success">{{ tr('yes') }}</span>
@@ -81,7 +89,7 @@
 
 								      	<td class="text-center">
 								      		
-								      		@if($video_details->ad_status == YES )
+								      		@if($video_details->ad_status == DEFAULT_TRUE )
 								      			<span class="label label-success">{{ tr('yes') }}</span>
 								      		@else
 								      			<span class="label label-danger">{{ tr('no') }}</span>
@@ -126,8 +134,8 @@
 	                                                            <a role="menuitem" tabindex="-1" href="{{ route('admin.video_tapes.edit' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('edit') }}</a>
 	                                                        	
 	                                                        	<a role="menuitem" tabindex="-1"
-										                  			onclick="return confirm(&quot;{{  tr('admin_live_custom_video_delete_confirmation', substr($video_details->title , 0,25) ) }}&quot;)"
-										                  			 href="{{ route('admin.video_tapes.delete' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
+										                  			onclick="return confirm(&quot;{{ tr('admin_live_custom_video_delete_confirmation', substr($video_details->title , 0,25) ) }}&quot;)"
+										                  			 href="{{ route('admin.videos.delete' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
 	                                                        @endif
 	                                                    </li>
 
@@ -135,7 +143,7 @@
 
 									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.video_tapes.view' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('view') }}</a></li>
 
-									               		@if(Setting::get('is_payper_view'))
+									               		@if(Setting::get('is_payper_view') == DEFAULT_TRUE)
 
 									                  		<li role="presentation">
 									                  			<a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#{{ $video_details->video_tape_id }}">{{ tr('pay_per_view') }}</a>
@@ -168,7 +176,7 @@
 
 									                  		@if ($video_details->getScopeVideoAds)
 
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{  route('admin.video-ads.view' , ['id' => $video_details->getScopeVideoAds->id] ) }}">{{ tr('view_ad') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{  route('admin.video_ads.view' , ['id' => $video_details->getScopeVideoAds->id] ) }}">{{ tr('view_ad') }}</a></li>
 
 									                  		@endif
 

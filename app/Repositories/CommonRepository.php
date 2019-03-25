@@ -186,126 +186,92 @@ class CommonRepository {
      *
      */
 	public static function channel_save($request) {
-    
+
         try {  
 
-            $validator = [];
-
             $request->request->add([
-
                 'user_id' => $request->device_type == DEVICE_WEB ? $request->user_id : $request->id
             ]);
-            
-            if ($request->channel_id != '') {
 
-                if ($request->has('picture')) {
+            DB::beginTransaction();
 
-                    $validator = Validator::make( $request->all(), [
-                            'picture'     => 'required|mimes:jpeg,jpg,bmp,png',
-                            ] );
-                }
+            $validator = Validator::make( $request->all(), [
+                    'name' => 'required|min:6|max:255',
+                    'description' => 'required|max:1000',
+                    'picture' => $request->channel_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+                    'cover' => $request->channel_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+                    'channel_id' => $request->channel_id ? 'required|exists:channels,id' : ''
+                ]
+            );
 
-                if ($request->has('cover')) {
+            if ($validator->fails()) {
 
-                    $validator = Validator::make( $request->all(), [
-                            'cover'  => 'required|mimes:jpeg,jpg,bmp,png',
-                            ]  );
-                }
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);                    
+
             }
 
-            if ($validator) {
+                if ($request->channel_id != '') {
 
-                if ($validator->fails()) {
+                    $channel_details = Channel::find($request->channel_id);
 
-                    $error_messages = implode(',', $validator->messages()->all());
-
-                    $response_array = ['success'=> false, 'error_messages'=>$error_messages];
-                }
-
-            } else {
-
-                DB::beginTransaction();
-
-                $validator = Validator::make( $request->all(), [
-                        'name' => 'required|min:6|max:255',
-                        'description' => 'required|max:1000',
-                        'picture' => $request->channel_id ? '' : 'required|mimes:jpeg,jpg,bmp,png',
-                        'cover' => 'required|mimes:jpeg,jpg,bmp,png',
-                        'channel_id' => $request->channel_id ? 'required|exists:channels,id' : ''
-                    ]
-                );
-
-                if ($validator->fails()) {
-
-                    $error = implode(',', $validator->messages()->all());
-
-                    throw new Exception($error, 101);                    
+                    $message = tr('admin_channel_update_success');
 
                 } else {
 
-                    if ($request->channel_id != '') {
+                    $message = tr('admin_channel_create_success');
+                    //Add New User
+                    $channel_details = new Channel;
 
-                        $channel_details = Channel::find($request->channel_id);
+                    $channel_details->is_approved = DEFAULT_TRUE;
 
-                        $message = tr('admin_channel_update_success');
-
-                    } else {
-
-                        $message = tr('admin_channel_create_success');
-                        //Add New User
-                        $channel_details = new Channel;
-
-                        $channel_details->is_approved = DEFAULT_TRUE;
-
-                        $channel_details->status = DEFAULT_TRUE;
-                    }
-
-                    $channel_details->name = $request->has('name') ? $request->name : '';
-
-                    $channel_details->description = $request->has('description') ? $request->description : '';
-
-                    $channel_details->user_id = $request->has('user_id') ? $request->user_id : '';
-
-                    $channel_details->unique_id = $channel_details->name;
-                    
-                    if($request->hasFile('picture') && $request->file('picture')->isValid()) {
-                        
-                        if($channel_details->id) {
-                            Helper::delete_picture($channel_details->picture, "/uploads/channels/picture/");
-                        }
-
-                        $channel_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/channels/picture/");
-                    }
-
-                    if($request->hasFile('cover') && $request->file('cover')->isValid()) {
-                        
-                        if($channel_details->id)  {
-                            Helper::delete_picture($channel_details->cover, "/uploads/channels/cover/");
-                        }
-
-                        $channel_details->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channels/cover/");
-                    }
-
-                    if ($channel_details->save()) {
-
-                        DB::commit();
-
-                    } else {
-
-                        throw new Exception(tr('admin_channel_save_error'), 101);
-                    }
-
-                    if ($channel_details) {
-
-                        $response_array = ['success' => true, 'message' => $message, 'data' => $channel_details];
-
-                    } else {
-
-                        $response_array = ['success' => false, 'error_messages' => tr('something_error')];
-                    }
+                    $channel_details->status = DEFAULT_TRUE;
                 }
-            }
+
+                $channel_details->name = $request->has('name') ? $request->name : '';
+
+                $channel_details->description = $request->has('description') ? $request->description : '';
+
+                $channel_details->user_id = $request->has('user_id') ? $request->user_id : '';
+
+                $channel_details->unique_id = $channel_details->name;
                 
+                if($request->hasFile('picture') && $request->file('picture')->isValid()) {
+                    
+                    if($channel_details->id) {
+                        Helper::delete_picture($channel_details->picture, "/uploads/channels/picture/");
+                    }
+
+                    $channel_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/channels/picture/");
+                }
+
+                if($request->hasFile('cover') && $request->file('cover')->isValid()) {
+                    
+                    if($channel_details->id)  {
+                        Helper::delete_picture($channel_details->cover, "/uploads/channels/cover/");
+                    }
+
+                    $channel_details->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channels/cover/");
+                }
+
+                if ($channel_details->save()) {
+
+                    DB::commit();
+
+                } else {
+
+                    throw new Exception(tr('admin_channel_save_error'), 101);
+                }
+
+                if ($channel_details) {
+
+                    $response_array = ['success' => true, 'message' => $message, 'data' => $channel_details];
+                } else {
+
+                    $response_array = ['success' => false, 'error_messages' => tr('something_error')]; 
+                }
+
         } catch (Exception $e) {
             
             DB::rollBack();

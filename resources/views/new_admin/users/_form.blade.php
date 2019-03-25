@@ -1,8 +1,9 @@
-@include('notification.notify')
 
 <div class="row">
 
-    <div class="col-md-10">
+    <div class="col-md-12">
+        
+        @include('notification.notify')
 
         <div class="box box-primary">
 
@@ -14,7 +15,7 @@
             <form class="form-horizontal" action="{{ Setting::get('admin_delete_control') == YES ? '#' : route('admin.users.save') }}" method="POST" enctype="multipart/form-data" role="form">
 
                 <div class="box-body">
-
+                
                     <input type="hidden" name="user_id" value="{{ $user_details->id }}">
                     
                     <input type="hidden" name="timezone" value="" id="userTimezone">
@@ -25,7 +26,7 @@
                             
                             <input type="file" name="picture" id="picture" onchange="loadFile(this, 'picture_preview')" style="width: 200px;display: none" accept="image/jpeg, image/png" />
 
-                            <img id="picture_preview" style="width: 150px;height: 150px;cursor: pointer;" src="{{ asset('placeholder.png') ?: $user_details->picture  }}" onclick="return $('#picture').click()" />
+                            <img id="picture_preview" style="width: 150px;height: 150px;cursor: pointer;" src="{{ asset('placeholder.png') ?: $user_details->picture }}" onclick="return $('#picture').click()" />
                         </div>
 
                         <div class="col-lg-9">
@@ -33,15 +34,13 @@
                             <div class="form-group">
 
                                 <div class="col-lg-6">
-
-                                    <input type="text" required name="name" value="{{  old('name') ?: $user_details->name }}" class="form-control" id="username" placeholder="{{ tr('name') }} *" title="{{ tr('username_notes') }}">
-
+                                    <label for="{{ tr('dob') }}">{{ tr('name') }} *</label>
+                                    <input type="text" name="name" value="{{  old('name') ?: $user_details->name }}" class="form-control" id="username" placeholder="{{ tr('name') }} *" title="{{ tr('username_notes') }}" required >
                                 </div>
 
-                                 <div class="col-lg-6">
-
-                                    <input type="email" required class="form-control" value="{{ old('email') ?: $user_details->email }}" id="email" name="email" placeholder="{{ tr('email') }} *" maxlength="255">
-
+                                <div class="col-lg-6">
+                                    <label for="{{ tr('dob') }}">{{ tr('email') }} *</label>
+                                    <input type="email" required class="form-control" value="{{ old('email') ?: $user_details->email }}" id="email" name="email" placeholder="{{ tr('email') }} *" maxlength="255" required >
                                 </div>
 
                             </div>
@@ -49,17 +48,15 @@
                             <div class="form-group">
 
                                 <div class="col-lg-6">
-
-                                    <input type="text" name="dob" class="form-control" placeholder="{{ tr('enter_dob') }} *" id="dob" required autocomplete="off" value="{{ old('dob') ?: $user_details->dob }}" readonly>
-
+                                    <label for="{{ tr('dob') }}">{{ tr('enter_dob') }} *</label>
+                                    <input type="text" name="dob" class="form-control" placeholder="{{ tr('enter_dob') }} *" id="dob" required autocomplete="off" value="{{ old('dob') ?: $user_details->dob }}" readonly required>
                                 </div>
 
-                                 <div class="col-lg-6">
-
-                                    <input type="text" name="mobile" class="form-control" id="mobile" placeholder="{{ tr('mobile') }}" minlength="6" maxlength="13" value="{{ old('mobile') ?: $user_details->mobile }}" required>
+                                <div class="col-lg-6">
+                                    <label for="{{ tr('mobile') }}">{{ tr('mobile') }}</label>
+                                    <input type="text" name="mobile" class="form-control" id="mobile" placeholder="{{ tr('mobile') }}" minlength="6" maxlength="13" value="{{ old('mobile') ?: $user_details->mobile }}">
 
                                     <small style="color:brown">{{ tr('mobile_note') }}</small>
-
                                 </div>
 
                             </div>
@@ -69,15 +66,13 @@
                             <div class="form-group">
 
                                 <div class="col-lg-6">
-
-                                    <input type="password" required name="password" class="form-control" id="password" placeholder="{{ tr('password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
-
+                                    <label for="exampleInputEmail1">{{ tr('password') }}*</label>
+                                    <input type="password" required name="password" class="form-control" id="password" placeholder="{{ tr('password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}" >
                                 </div>
 
-                                 <div class="col-lg-6">
-
-                                   <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="{{ tr('confirm_password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
-
+                                <div class="col-lg-6">
+                                    <label for="exampleInputEmail1">{{ tr('confirm_password') }} </label>
+                                    <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="{{ tr('confirm_password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
                                 </div>
 
                             </div>
@@ -95,9 +90,9 @@
                     <div class="form-group">
 
                         <div class="col-lg-12">
-
+                            <label for="{{ tr('dob') }}">{{ tr('description') }} </label>
+                         
                             <textarea type="text" name="description" class="form-control" id="description" placeholder="{{ tr('description') }}" maxlength="255">{{old('description') ?: $user_details->description }}</textarea>
-
                         </div>
 
                     </div>
@@ -105,7 +100,9 @@
                 </div>
 
                 <div class="box-footer">
+                    
                     <a href="" class="btn btn-danger">{{ tr('reset') }}</a>
+                    
                     <button type="submit" class="btn btn-success pull-right" @if(Setting::get('admin_delete_control') == YES) disabled @endif>{{ tr('submit') }}</button>
                 </div>
 

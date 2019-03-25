@@ -33,6 +33,11 @@ class AddVersion4Migration extends Migration
             $table->integer('status');
             $table->timestamps();
         });
+
+        Schema::table('admins', function (Blueprint $table) {
+            $table->string('role')->default(SUBADMIN)->after('status');
+        });
+
     }
 
     /**
