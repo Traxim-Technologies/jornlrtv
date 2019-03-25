@@ -32,13 +32,13 @@ Route::post('project/configurations' , 'ApplicationController@configuration_site
 
 // UI
 
+Route::get('/bell_notifications' , 'SampleController@bell_notifications');
+
 Route::get('/video_notification' , 'SampleController@video_notification');
 
 Route::get('/upload_videoUI' , 'SampleController@upload_video');
 
 // Unused Sample Routes
-
-Route::post('angelo/in-app-purchase' , 'SampleController@angelo_in_app_purchase');
 
 Route::get('/addIndex', 'ApplicationController@addIndex')->name('addIndex');
 
