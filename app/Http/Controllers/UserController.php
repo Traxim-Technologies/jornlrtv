@@ -3575,51 +3575,41 @@ class UserController extends Controller {
 
         try {
 
-            DB::beginTransaction();
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token,
+                'playlist_id' => $request->playlist_id,
+                'video_tape_id' => $request->video_tape_id
+            ]);
 
-            $validator = Validator::make($request->all(),[
-                    'playlist_id' =>'required|exists:playlists,id',
-                ],
-                [
-                    'exists' => 'The :attribute doesn\'t exists please add to playlist',
-                ]
-            );
+            $response = $this->UserAPI->playlists_delete($request)->getData();
 
-            if ($validator->fails()) {
+            if($response->success == false) {
 
-                $error_messages = implode(',', $validator->messages()->all());
-
-                throw new Exception($error_messages, 101);
-                
+                throw new Exception($response->error_messages, $response->error_code);
             }
 
-            $playlist_details = Playlist::where('id',$request->playlist_id)->where('user_id', $request->id)->first();
 
-            if(!$playlist_details) {
+            if($request->is_json) {
 
-                throw new Exception(Helper::get_error_message(180), 180);
+                return response()->json($response, 200);
 
             }
 
-            $playlist_details->delete();
-
-            DB::commit();
-
-            $response_array = ['success' => true, 'message' => Helper::get_message(131), 'code' => 131];
-
-            return response()->json($response_array, 200);
+           return back()->with('flash_success', $response->message);
 
         } catch(Exception $e) {
 
-            DB::rollback();
-
-            $error_messages = $e->getMessage();
-
-            $error_code = $e->getCode();
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
 
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
-            return response()->json($response_array);
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
 
         }
 

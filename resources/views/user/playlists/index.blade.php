@@ -41,7 +41,7 @@
 
                                         <div class="video_amount">
 
-                                            <a href=""><i class="fa fa-trash"></i></a>
+                                            <a href="{{route('user.playlists.delete', ['playlist_id' => $playlist_details->playlist_id])}}" onclick="return confirm(&quot;{{ substr($playlist_details->title, 0 , 15)}}.. {{tr('user_playlist_delete_confirm') }}&quot;)" class="playlist-delete"><i class="fa fa-trash"></i></a>
 
                                         </div>
 

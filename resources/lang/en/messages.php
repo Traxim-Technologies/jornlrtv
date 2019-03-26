@@ -1914,6 +1914,8 @@ return array(
 
 	'save_to' => 'Save To...',
 
-	'user_playlist_delete_confirm' => 'Do you want to remove this video from playlist?',
+	'user_playlist_delete_confirm' => 'Do you want to delete this playlist?',
+
+	'user_playlist_video_remove_confirm' => 'Do you want to remove this video from playlist?',
 
 );

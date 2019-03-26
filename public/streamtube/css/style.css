@@ -1,3 +1,6 @@
+:root {
+	--theme-color: #d64943;
+}
 
 /*@font-face {
     font-family: Roboto;
@@ -4397,4 +4400,14 @@ input:checked + .slider{
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.playlist-delete {
+	color: #ffffff;
+	padding: 5px;
+	font-size: 16px;
+}
+
+.playlist-delete:hover, .playlist-delete:focus, .playlist-delete:active {
+	color: var(--theme-color);
 }

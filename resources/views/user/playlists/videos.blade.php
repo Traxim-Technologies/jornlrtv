@@ -211,7 +211,7 @@
 
                     messageTemplate += '<div class="cross-mark1">';
 
-                    var user_playlist_delete_confirm = "{{tr('user_playlist_delete_confirm') }}";
+                    var user_playlist_delete_confirm = "{{tr('user_playlist_video_remove_confirm') }}";
 
                     var playlist_remove_url = "/playlists/video_remove?video_tape_id="+videoTapeDetails.video_tape_id+"&playlist_id="+{{$playlist_details->playlist_id}}+'"';
 
