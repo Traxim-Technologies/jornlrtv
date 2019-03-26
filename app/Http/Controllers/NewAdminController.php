@@ -6653,7 +6653,7 @@ class NewAdminController extends Controller {
      *
      * @created vithya R
      *
-     * @updated - -
+     * @updated Anjana H
      *
      * @param integer $request - Video id
      * 
@@ -6675,7 +6675,7 @@ class NewAdminController extends Controller {
                             )
                         ->get();
 
-        return view('new_admin.videos.wishlists')
+        return view('new_admin.video_tapes.wishlists')
                     ->with('data' , $wishlists)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
