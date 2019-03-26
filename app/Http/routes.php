@@ -1369,6 +1369,6 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('bell_notifications/count', 'UserApiController@bell_notifications_count');
 
 
-    Route::post('youtube/downloader' , 'UserApiController@video_tapes_youtube_grapper_save');
+    Route::any('youtube/downloader' , 'UserApiController@video_tapes_youtube_grapper_save');
 
 });
