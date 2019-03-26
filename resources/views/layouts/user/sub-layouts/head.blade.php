@@ -1,3 +1,10 @@
+
+<meta name="description" content="{{Setting::get('meta_description')}}">
+
+<meta name="author" content="{{Setting::get('meta_author')}}">
+
+<meta name="keywords" content="{{Setting::get('meta_keywords')}}">
+
 <link rel="stylesheet" href="{{asset('streamtube/css/bootstrap.min.css')}}">
 
 <link rel="stylesheet" href="{{asset('assets/bootstrap/css/jquery-ui.css')}}">

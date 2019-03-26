@@ -1720,7 +1720,7 @@ return array(
 	
 	// Playlist
 
-	'playlists' => 'Playlist',
+	'playlists' => 'Playlists',
 
 	'playlist_not_found' => 'Playlist not found',
 	'playlist_not_associated_to_user' => "Unauthorized playlist",
