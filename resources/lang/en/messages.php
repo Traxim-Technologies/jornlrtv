@@ -1914,6 +1914,8 @@ return array(
 
 	'youtube_channel_id' => 'YouTube Channel ID',
 
+	'download_from_youtube' => 'From YouTube',
+
 	'save_to' => 'Save To...',
 
 	'user_playlist_delete_confirm' => 'Do you want to delete this playlist?',

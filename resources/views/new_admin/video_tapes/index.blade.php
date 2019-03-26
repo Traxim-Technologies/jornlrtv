@@ -272,17 +272,9 @@
 									        <div class="row">
 
 									        	<input type="hidden" name="ppv_created_by" id="ppv_created_by" value="{{Auth::guard('admin')->user()->id}}">
-									        	<div class="col-lg-3">
-									        		<label>{{tr('type_of_user')}}</label>
-									        	</div>
-								                <div class="col-lg-9">
-								                  <div class="input-group">
-								                        <input type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video_tape_details->type_of_user == 0 || $video_tape_details->type_of_user == '') ? 'checked' : (($video_tape_details->type_of_user == NORMAL_USER) ? 'checked' : '')}}>&nbsp;<label>{{tr('normal_user')}}</label>&nbsp;
-								                        <input type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video_tape_details->type_of_user == PAID_USER) ? 'checked' : ''}}>&nbsp;<label>{{tr('paid_user')}}</label>&nbsp;
-								                        <input type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video_tape_details->type_of_user == BOTH_USERS) ? 'checked' : ''}}>&nbsp;<label>{{tr('both_user')}}</label>
-								                  </div>
-								                  <!-- /input-group -->
-								                </div>
+
+								                <input type="hidden" name="type_of_user" value="{{BOTH_USERS}}">
+								                
 								            </div>
 								            <br>
 								            <div class="row">
