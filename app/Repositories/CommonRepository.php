@@ -13,6 +13,7 @@ use DB;
 use App\Channel;
 use App\VideoTape;
 use App\Jobs\CompressVideo;
+use App\Jobs\BellNotificationJob;
 use App\VideoTapeImage;
 use App\UserPayment;
 use Auth;
