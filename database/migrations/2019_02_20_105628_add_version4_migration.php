@@ -52,7 +52,11 @@ class AddVersion4Migration extends Migration
 
         Schema::table('video_tapes', function (Blueprint $table) {
 
-            $table->tinyInteger('is_youtube_downloaded')->default(NO)->after('status');
+            $table->string('youtube_video_id')->after('status');
+
+            $table->string('youtube_channel_id')->after('youtube_video_id');
+
+            $table->tinyInteger('is_youtube_downloaded')->default(NO)->after('youtube_channel_id');
 
         });
 

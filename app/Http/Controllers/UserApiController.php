@@ -48,6 +48,8 @@ use App\Jobs\NormalPushNotification;
 
 use App\VideoTape;
 
+use App\VideoTapeImage;
+
 use App\Redeem;
 
 use App\RedeemRequest;
@@ -109,6 +111,7 @@ class UserApiController extends Controller {
                 'video_detail',
                 'categories_videos',
                 'tags_videos',
+                'video_tapes_youtube_grapper_save',
                 'categories_channels_list']));
 
     }
@@ -7879,29 +7882,61 @@ class UserApiController extends Controller {
      *
      */
 
-    public function video_tapes_youtube_grapper_save($youtube_channel_id , Request $request) {
+    public function video_tapes_youtube_grapper_save(Request $request) {
 
         try {
 
             DB::beginTransaction();
 
-            if(!$request->youtube_channel_id) {
+            $validator = Validator::make($request->all(), [
 
-                throw new Exception(tr('youtube_grabber_channel_id_not_found'), 101);
+                'youtube_channel_id' => 'required',
+                'channel_id' => 'required|integer|exists:channels,id,user_id,'.$request->id,
+            ],[
+                'youtube_channel_id' => tr('youtube_grabber_channel_id_not_found')
+            ]);
+
+            if($validator->fails()) {
+            
+                $error_messages = implode(',',$validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
 
             }
 
             // Check the channel is exists in YouTube
 
-            $channel = \Youtube::getChannelById($request->youtube_channel_id);
+            $youtube_channel = \Youtube::getChannelById($request->youtube_channel_id);
 
-            if($channel == false) {
+            if($youtube_channel == false) {
 
                 throw new Exception(tr('youtube_grabber_channel_id_not_found'), 101);
                 
             }
 
-            $youtube_videos = \Youtube::listChannelVideos($request->youtube_channel_id, 40);
+            $channel_details = Channel::where('id', $request->channel_id)->where('is_approved' , APPROVED)->first();
+
+            if(!$channel_details) {
+
+                throw new Exception(tr('channel_not_found'), 101);
+                
+            }
+
+            $channel_details->youtube_channel_id = $request->youtube_channel_id;
+
+            $channel_details->youtube_channel_updated_at = date('Y-m-d H:i:s');
+
+            $channel_details->save();
+
+            $user_details = User::where('id', $request->id)->first();
+
+            if(!$user_details) {
+
+                throw new Exception(tr('user_not_found'), 101);
+                
+            }
+
+            $youtube_videos = \Youtube::listChannelVideos($request->youtube_channel_id, 40); 
 
             foreach ($youtube_videos as $key => $youtube_video_details) {
 
@@ -7911,7 +7946,7 @@ class UserApiController extends Controller {
 
                     // check the youtube video already exists
 
-                    $check_video_tape_details = $video_tape_details = VideoTape::where('youtube_video_id' , $youtube_video_details->id->videoId)->first();
+                    $check_video_tape_details = $video_tape_details = VideoTape::where('youtube_video_id' , $youtube_video_details->id)->first();
 
                     if(count($check_video_tape_details) == 0) {
 
@@ -7921,12 +7956,6 @@ class UserApiController extends Controller {
 
                         $video_tape_details->duration = "00:00:10";
 
-                        $master_user_details = User::where('is_master_user' , 1)->first();
-
-                        $video_tape_details->user_id = $master_user_details ? $master_user_details->id : 1;
-
-                        $video_tape_details->publish_status = $video_tape_details->is_approved = 1;
-
                         $video_tape_details->reviews = "YOUTUBE";
 
                         $video_tape_details->video = "https://youtu.be/".$youtube_video_details->id;
@@ -7935,11 +7964,20 @@ class UserApiController extends Controller {
 
                         $video_tape_details->video_publish_type = PUBLISH_NOW;
 
-                        $video_tape_details->channel_id = 1;
+                        $video_tape_details->publish_status = VIDEO_PUBLISHED;
+
+                        $video_tape_details->is_approved = ADMIN_VIDEO_APPROVED_STATUS;
                         
                         $video_tape_details->status = USER_VIDEO_APPROVED_STATUS;
-                    
+
+                        $video_tape_details->user_id = $request->id;
+
+                        $video_tape_details->channel_id = $request->channel_id;
+
+
                     }
+
+                    $video_tape_details->category_id = $request->category_id ?: $video_tape_details->category_id;
 
                     $video_tape_details->title = $youtube_video_details->snippet->title;
 
@@ -7951,9 +7989,10 @@ class UserApiController extends Controller {
 
                     $default_image = isset($youtube_video_details->snippet->thumbnails->maxres) ? $youtube_video_details->snippet->thumbnails->maxres->url : $youtube_video_details->snippet->thumbnails->default->url;
 
+
                     $video_tape_details->default_image = $default_image;
 
-                    $video_tape_details->compress_status = 1;
+                    $video_tape_details->compress_status = DEFAULT_TRUE;
 
                     $video_tape_details->watch_count = $youtube_video_details->statistics->viewCount;
 
@@ -8000,7 +8039,12 @@ class UserApiController extends Controller {
                 
             }
 
-            return back()->with('flash_success' , "videos grpped from youtube");
+            DB::commit();
+
+            $response_array = ['success' => true, 'count' => count($youtube_videos)];
+
+            return response()->json($response_array, 200);
+
 
         } catch(Exception $e) {
 
@@ -8010,7 +8054,10 @@ class UserApiController extends Controller {
 
             $error_code = $e->getCode();
 
-            return back()->with('flash_error', $error_messages);
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array, 200);
+
         }
     
     }
