@@ -1182,6 +1182,21 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('bell_notifications/count', 'UserController@bell_notifications_count')->name('bell_notifications.count');
 
+    // User Playlists
+
+    Route::any('/playlists/', 'UserController@playlists')->name('playlists.index');
+
+    Route::post('/playlists/save', 'UserController@playlists_save')->name('playlists.save');
+
+    Route::post('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
+
+    Route::post('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
+
+    Route::post('/playlists/video_status', 'UserController@playlists_video_status')->name('playlists.video_status');
+
+    Route::post('/playlists/video_remove', 'UserController@playlists_video_remove')->name('playlists.video_remove');
+
+
 });
 
 Route::group(['prefix' => 'userApi'], function(){

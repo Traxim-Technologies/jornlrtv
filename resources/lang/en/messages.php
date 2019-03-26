@@ -1720,6 +1720,8 @@ return array(
 	
 	// Playlist
 
+	'playlists' => 'Playlist',
+
 	'playlist_not_found' => 'Playlist not found',
 	'playlist_not_associated_to_user' => "Unauthorized playlist",
 	'playlist_deleted' => "The playlist deleted",

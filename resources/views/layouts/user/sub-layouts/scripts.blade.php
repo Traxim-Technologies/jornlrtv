@@ -13,8 +13,8 @@
 
 <script type="text/javascript" src="{{asset('streamtube/js/script.js')}}"></script>
 
-
 <script src="{{asset('admin-css/plugins/select2/select2.full.min.js')}}"></script>
+
 <!-- input Mask -->
 
 <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.js')}}"></script>
@@ -23,7 +23,7 @@
 
 <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>    
 
-<script>
+<script type="text/javascript">
 
     $(window).load(function() {
         
@@ -172,10 +172,10 @@
                 
             })
             .fail(function(response) {
-                console.log(response);
+                // console.log(response);
             })
             .always(function(response) {
-                console.log(response);
+                // console.log(response);
             });
   
         }
