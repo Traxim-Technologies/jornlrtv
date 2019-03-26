@@ -900,25 +900,25 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
       // Videos CRUD Operations
 
-    Route::get('/old-videos/create', 'NewAdminController@videos_create')->name('videos.create');
+    Route::get('/old-videos/create', 'AdminController@videos_create')->name('videos.create');
 
-    Route::get('/old-videos/edit/{id}', 'NewAdminController@videos_edit')->name('videos.edit');
+    Route::get('/old-videos/edit/{id}', 'AdminController@videos_edit')->name('videos.edit');
 
-    Route::post('/old-videos/save', 'NewAdminController@videos_save')->name('videos.save');
+    Route::post('/old-videos/save', 'AdminController@videos_save')->name('videos.save');
 
-    Route::get('/old-videos/images/{id}', 'NewAdminController@videos_images')->name('videos.images');
+    Route::get('/old-videos/images/{id}', 'AdminController@videos_images')->name('videos.images');
 
-    Route::post('/old-videos/upload/image', 'NewAdminController@videos_upload_image')->name('videos.upload_image');
+    Route::post('/old-videos/upload/image', 'AdminController@videos_upload_image')->name('videos.upload_image');
 
-    Route::post('videos/save/default_img', 'NewAdminController@videos_save_default_img')->name('videos.save.default_img');
+    Route::post('videos/save/default_img', 'AdminController@videos_save_default_img')->name('videos.save.default_img');
 
-    Route::get('/old-videos/list/{id?}', 'NewAdminController@videos_list')->name('videos.list');
+    Route::get('/old-videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
 
-    Route::get('/old-videos/view', 'NewAdminController@videos_view')->name('videos.view');
+    Route::get('/old-videos/view', 'AdminController@videos_view')->name('videos.view');
 
-    Route::post('/old-videos/set-ppv/{id}', 'NewAdminController@videos_set_ppv')->name('videos.set-ppv');
+    Route::post('/old-videos/set-ppv/{id}', 'AdminController@videos_set_ppv')->name('videos.set-ppv');
 
-    Route::get('/old-videos/delete/{id}', 'NewAdminController@videos_delete')->name('videos.delete');
+    Route::get('/old-videos/delete/{id}', 'AdminController@videos_delete')->name('videos.delete');
 
 
 });
@@ -1026,6 +1026,7 @@ Route::group(['as' => 'user.'], function(){
     Route::get('channel_edit/{id}', 'UserController@channel_edit')->name('channel_edit');
 
     Route::get('delete_channel', 'UserController@channel_delete')->name('delete.channel');
+
 
 
     // Report Spam Video
@@ -1174,13 +1175,6 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/settings' , 'UserController@settings');
 
-    // Notifications
-
-    Route::any('notifications/', 'UserController@bell_notifications')->name('bell_notifications.index');
-
-    Route::any('bell_notifications/update', 'UserController@bell_notifications_update')->name('bell_notifications.update');
-
-    Route::any('bell_notifications/count', 'UserController@bell_notifications_count')->name('bell_notifications.count');
 
 });
 
