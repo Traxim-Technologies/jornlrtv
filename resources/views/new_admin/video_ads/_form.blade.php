@@ -37,7 +37,7 @@
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item" >
                                 <b><i class="fa fa-suitcase margin-r-5"></i>{{ tr('title') }}</b> 
-                                <p> <a class="pull-right" href="{{ route('admin.videos.view', ['id' => $video_tape_details->id] ) }}" target="_blank">{{ $video_tape_details->title }}</a></p>
+                                <p> <a class="pull-right" href="{{ route('admin.video_tapes.view', ['video_tape_id' => $video_tape_details->id] ) }}" target="_blank">{{ $video_tape_details->title }}</a></p>
                                 <br>
                             </li>
 

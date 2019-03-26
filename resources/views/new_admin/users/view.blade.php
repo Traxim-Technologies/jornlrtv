@@ -494,7 +494,7 @@
 								      	<td>{{ $i+1 }}</td>
 								      	
 								      	<td>
-							      			<a href="{{route('admin.videos.view' , ['id' => $spam_report_details->video_tape_id] )}}"> {{substr($spam_report_details->title , 0,25)}}...</a>
+							      			<a href="{{route('admin.video_tapes.view', ['video_tape_id' => $spam_report_details->video_tape_id] )}}"> {{substr($spam_report_details->title , 0,25)}}...</a>
 							      		</td>
 
 								      	<td>{{ $spam_report_details->reason }}</td>
@@ -543,7 +543,7 @@
 								      	<td>{{ $i+1 }}</td>
 
 								      	<td>
-								      		<a href="{{route('admin.videos.view' , ['id' => $user_rating_details->video_tape_id] )}}">{{ $user_rating_details->title }}
+								      		<a href="{{route('admin.video_tapes.view', ['video_tape_id' => $user_rating_details->video_tape_id] )}}">{{ $user_rating_details->title }}
 								      		</a>
 								      	</td>
 

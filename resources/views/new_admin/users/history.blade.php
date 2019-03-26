@@ -54,7 +54,7 @@
 								      	</td>
 								      	
 								      	<td>
-								      		<a href="{{route('admin.videos.view', ['id' => $user_history_details->video_tape_id]) }}" >{{$user_history_details->title}}</a>
+								      		<a href="{{route('admin.video_tapes.view', ['video_tape_id' => $user_history_details->video_tape_id]) }}" >{{$user_history_details->title}}</a>
 								      	</td>
 								      	
 								      	<td>{{$user_history_details->date}}</td>

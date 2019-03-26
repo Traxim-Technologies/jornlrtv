@@ -62,7 +62,7 @@
 								    <tr>
 								      	
 								      	<td>
-								      		<a href="{{ route('admin.videos.view' , ['id' => $video_details->video_tape_id] ) }}">{{ $i+1 }}</a>
+								      		<a href="{{ route('admin.video_tapes.view' , ['video_tapes_id' => $video_details->video_tape_id] ) }}">{{ $i+1 }}</a>
 								      	</td>
 								      	
 								      	<td>
@@ -70,7 +70,7 @@
 								      	</td>
 								      	
 								      	<td>
-								      		<a href="{{ route('admin.videos.view' , ['id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a>
+								      		<a href="{{ route('admin.video_tapes.view' , ['video_tapes_id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a>
 								      	</td>								      	
 
 								      	<td>

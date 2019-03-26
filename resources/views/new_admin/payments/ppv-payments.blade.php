@@ -97,7 +97,7 @@
 							      	<td>
 							      		@if($payment_details->title)
 
-							      			<a href="{{ route('admin.videos.view' , array('id' => $payment_details->video_id))}}">
+							      			<a href="{{ route('admin.video_tapes.view' , array('video_tape_id' => $payment_details->video_id))}}">
 							      				{{ substr($payment_details->title,0,25) }}...
 							      			</a>
 
@@ -161,7 +161,7 @@
 													<li>
 														{{ tr('video')}} : @if($payment_details->title)
 
-										      			<a href="{{ route('admin.videos.view' , array('id' => $payment_details->video_id))}}">
+										      			<a href="{{ route('admin.video_tapes.view' , array('video_tape_id' => $payment_details->video_id))}}">
 										      				{{ $payment_details->title}}
 										      			</a>
 
