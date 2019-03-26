@@ -98,11 +98,10 @@
                                           <!--  <p class="hidden-xs">share</p> -->
                                        </a>
 
-                                       <!-- wishlist added by @ranjitha -->
-                                       <!-- <a class="heart" style="background-image:url( '{{asset('images/web_heart_animation.png')}}');"></a> -->
-                                        <!-- wishlist added by @ranjitha -->
-
-                                       <!-- <div class="wishlist_form"> 'color' : '#b31217' -->
+                                       <a  class="share-new" data-toggle="modal" data-target="#global_playlist_id_{{$video->video_tape_id}}">
+                                          <i class="material-icons">playlist_add</i>&nbsp;Save
+                                       </a>
+         
                                        <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
                                           @if(Auth::check())
                                           
@@ -153,8 +152,8 @@
                                           
                                           @endif
                                           
-                                          </form>
-                                       <!-- </div>    -->
+                                       </form>
+
                                     </div>
                                     <!--  <h3>Channel Name</h3> -->
                                     <div class="clearfix"></div>
@@ -542,6 +541,58 @@
       </div>
    </div>
 </div>
+
+<!-- PLAYLIST POPUPSTART -->
+
+<div class="modal modal-top1"  role="dialog" id="global_playlist_id_{{$video->video_tape_id}}">
+  
+   <div class="modal-dialog modal-sm">
+
+      <div class="modal-content">
+         <form action="" method="POST">
+               <div class="modal-header">
+
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                  <h4 class="modal-title share-title">{{tr('save_to')}}</h4>
+
+               </div>
+
+               <div class="modal-body">
+                  
+                  <div>
+
+                     <label class="playlist-container">One
+                        <input type="checkbox" checked="checked">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+                     <label class="playlist-container">Two
+                        <input type="checkbox">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+                     <label class="playlist-container">Three
+                        <input type="checkbox">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+                     <label class="playlist-container">Four
+                        <input type="checkbox">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+
+                  </div>
+
+               </div>
+
+         </form>
+      </div>
+   
+   </div>
+
+</div>
+
+<!-- PLAYLIST POPUPEND -->
+
+
 <div class="modal fade modal-top" id="copy-embed" role="dialog">
    <div class="modal-dialog modal-lg">
       <div class="modal-content content-modal">
