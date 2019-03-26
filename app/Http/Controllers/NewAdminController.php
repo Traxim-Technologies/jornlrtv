@@ -1388,16 +1388,16 @@ class NewAdminController extends Controller {
                 throw new Exception(tr('admin_channel_not_found'), 101);
             }
 
-            $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+            $video_tapes = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->where('channel_id' , $request->channel_id)
                         ->videoResponse()
                         ->orderBy('video_tapes.created_at' , 'desc')
                         ->get();
 
-            return view('new_admin.videos.videos')
-                        ->withPage('videos')
-                        ->with('sub_page','view-videos')
-                        ->with('videos' , $videos)
+            return view('new_admin.video_tapes.index')
+                        ->withPage('video_tapes')
+                        ->with('sub_page','video_tapes-view')
+                        ->with('video_tapes' , $video_tapes)
                         ->with('channel' , $channel_details);
 
         } catch (Exception $e) {

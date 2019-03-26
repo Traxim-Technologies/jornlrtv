@@ -100,7 +100,7 @@
 									                
 									                <ul class="dropdown-menu">
 
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.videos.view' , array('id' => $video_tape_details->video_tape_id))}}">{{tr('view')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.videos.view' , ['video_tape_id' => $video_tape_details->video_tape_id] )}}">{{tr('view')}}</a></li>
 								                  	
 	                                                    @if(Setting::get('admin_delete_control') ==YES )
 	                                                        <li role="presentation">
