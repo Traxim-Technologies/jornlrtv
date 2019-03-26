@@ -784,7 +784,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     // YouTube Grapper 
 
-    Route::get('youtube/{youtube_channel_id}' , 'version4AdminController@video_tapes_youtube_grapper_save')->name("youtube.video.save");
+    Route::get('youtube/{youtube_channel_id}' , 'version4AdminController@video_tapes_youtube_grapper_save')->name("youtube_downloader.videos_update");
 
     // Redeems  payouts (Direct | PayPal)
     Route::any('/redeems/payout/invoice', 'version4AdminController@redeems_payout_invoice')->name('users.payout.invoice');
@@ -1367,5 +1367,8 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('bell_notifications/update', 'UserApiController@bell_notifications_update');
 
     Route::post('bell_notifications/count', 'UserApiController@bell_notifications_count');
+
+
+    Route::get('youtube/{youtube_channel_id}' , 'UserApiController@video_tapes_youtube_grapper_save');
 
 });
