@@ -48,7 +48,9 @@
                         @foreach($videos as $i => $data)
                             <tr>
                                 <td>{{$i+1}}</td>
-                                <td><a href="{{route('admin.video_tapes.view', array('id' => $data->id))}}" target="_blank">{{$data->title}}</a></td>
+                                
+                                <td><a href="{{route('admin.video_tapes.view', ['video_tape_id' => $data->id] )}}" target="_blank">{{$data->title}}</a></td>
+                                
                                 <td>
 
                                     <?php $types = getVideoAdsTpe($data->id); ?>
@@ -76,26 +78,22 @@
                                           <div class="modal-dialog">
                                             <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
                                                   <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">{{tr('assign_ad')}}</h4>
-                                                      </div>
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">{{tr('assign_ad')}}</h4>
+                                                        </div>
                                                       
-                                                      <div class="modal-body">
+                                                        <div class="modal-body">
 
-                                
-                                                          <p>{{tr('ad_note_for_video_time')}}</p>
-
-                                            
+                                                            <p>{{tr('ad_note_for_video_time')}}</p>
                                               
-                                                          <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
+                                                            <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
 
-                                                          <input type="hidden" name="type" id="type" value="{{$type}}">
+                                                            <input type="hidden" name="type" id="type" value="{{$type}}">
 
-                                                          <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
+                                                            <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
 
-                                                          <div class="row">
-
+                                                            <div class="row">
 
                                                             <div class="col-md-12">
 

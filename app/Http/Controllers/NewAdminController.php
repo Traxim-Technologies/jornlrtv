@@ -5103,7 +5103,7 @@ class NewAdminController extends Controller {
         $user_reviews = $query->get();
 
         return view('new_admin.reviews.reviews')
-                    ->with('page' ,'videos')
+                    ->with('page' ,'video_tapes')
                     ->with('sub_page' ,'reviews')
                     ->with('reviews', $user_reviews);
     
@@ -5357,17 +5357,17 @@ class NewAdminController extends Controller {
      * @return response of Ad Details Object
      */
     public function ads_details_ad_status_change(Request $request) {
-        
+
         try {
 
             DB::beginTransaction();
 
-            $video_tape_details = VideoTape::find($request->id);
+            $video_tape_details = VideoTape::find($request->video_tape_id);
 
             if(count($video_tape_details) == 0) { 
 
                 throw new Exception(tr('admin_video_tape_not_found'), 101);
-            }
+            }   
 
             $video_tape_details->ad_status  = $video_tape_details->ad_status == DEFAULT_TRUE ? DEFAULT_FALSE : DEFAULT_TRUE;
 
@@ -5375,26 +5375,18 @@ class NewAdminController extends Controller {
 
                 DB::commit();
 
-                $video_ad = VideoAd::where('video_tape_id', $video_tape_details->id)->first();
+                $video_ad_details = VideoAd::where('video_tape_id', $video_tape_details->id)->first();
 
-                if($video_ad) {
+                if ($video_ad_details) {
 
-                    $video_ad->status = $video_tape_details->ad_status;
+                    $video_ad_details->status = $data->ad_status;
 
-                    if($video_ad->save()) {   
-                        
-                        DB::commit(); 
-                        
-                        $message = $video_tape_details->ad_status == DEFAULT_TRUE ? tr('ad_status_enable_success') : tr('ad_status_disable_success'); 
-                        
-                        return back()->with('flash_success', $message);
-
-                    } 
-
-                    throw new Exception(tr('ad_status_change_failure'), 101);
-                   
+                    $video_ad_details->save();
                 }
 
+                $message = $video_tape_details->ad_status == DEFAULT_TRUE ? tr('ad_status_enable_success') : tr('ad_status_disable_success'); 
+
+                return back()->with('flash_success', $message);
             } 
 
             throw new Exception(tr('ad_status_change_failure'), 101);
@@ -6378,6 +6370,8 @@ class NewAdminController extends Controller {
     
     }
 
+
+
     /**
      * Function Name : videos_publish()
      *
@@ -6552,10 +6546,95 @@ class NewAdminController extends Controller {
             $error = $e->getMessage();
 
             return redirect()->route('admin.video_tapes.index')->with('flash_error',$error);
+        }    
+    }
+
+
+    /**
+     * Function Name : videos_delete()
+     *
+     * To delete a video based on video id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function video_tapes_delete(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $video_tape_details = VideoTape::where('id' , $request->video_tape_id)->first();
+            
+            if(!$video_tape_details)  {
+
+                throw new Exception(tr('video_not_found'), 101);
+            }                
+
+            $video_tape_details->delete();
+            
+            DB::commit();
+
+            return redirect()->route('admin.video_tapes.index')->with('flash_success', tr('video_delete_success'));
+                
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
         }
     
     }
+    
+    /**
+     * Function Name : spam_videos()
+     *
+     * @uses Load all the videos from flag table
+     *
+     * @created vithya R
+     *
+     * @updated Anjana H
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos(Request $request) {
+        // Load all the videos from flag table
+        $flags = Flag::groupBy('video_tape_id')->get();
+        
+        // Return array of values
+        return view('new_admin.spam_video_tapes.index')
+                        ->with('page' , 'video_tapes')
+                        ->with('sub_page' , 'spam_videos')
+                        ->with('flags' , $flags);
+    }
 
+    /**
+     * Function Name : spam_videos_user_reports()
+     *
+     * Load all the flags based on the video id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param integer $id Video id
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos_user_reports($id) {
+        // Load all the users
+        $model = Flag::where('video_tape_id', $id)->get();
+        // Return array of values
+        return view('admin.spam_videos.user_report')->with('model' , $model)
+                        ->with('page' , 'videos')
+                        ->with('sub_page' , 'spam_videos');   
+    }
 
     /**
      * Function Name : videos_wishlist
@@ -6609,35 +6688,42 @@ class NewAdminController extends Controller {
      * @return flash message
      */
     public function video_tapes_set_ppv($id, Request $request) {
-        
-        if($request->ppv_amount > 0){
 
-            // Load Video Model
-            $model = VideoTape::find($id);
+        try {
 
-            // Get post attribute values and save the values
-            if ($model) {
+            if($request->ppv_amount > 0) {
 
-                 $request->request->add([ 
-                    'ppv_created_by'=> 0 ,
-                    'is_pay_per_view'=>PPV_ENABLED
+                // Load Video Model
+                $video_tape_details = VideoTape::find($request->id);
+
+                // Get post attribute values and save the values
+                if (!$video_tape_details)  {
+
+                    throw new Exception(tr('admin_published_video_failure'), 101);
+                }
+                
+                $request->request->add([ 
+                    'ppv_created_by' => 0 ,
+                    'is_pay_per_view' => PPV_ENABLED
                 ]); 
 
                 if ($data = $request->all()) {
 
                     // Update the post
-                    if (VideoTape::where('id', $id)->update($data)) {
+                    if (VideoTape::where('id', $request->id)->update($data)) {
                         // Redirect into particular value
-                        return back()->with('flash_success', tr('payment_added'));       
+                        return back()->with('flash_success', tr('payment_added'));
                     } 
                 }
-            }
+            } 
 
-            return back()->with('flash_error', tr('admin_published_video_failure'));
+            throw new Exception(tr('add_ppv_amount'), 101);                
+                        
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
 
-        } else {
-
-            return back()->with('flash_error',tr('add_ppv_amount'));
+            return back()->with('flash_error',$error);
         }
     
     }

@@ -169,10 +169,13 @@
 							      	</td>
 								    <td>
             							<ul class="admin-action btn btn-default">
+            								
             								<li class="{{ $i <= 2 ? 'dropdown' : 'dropup' }} ">
+								                
 								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
+								                
 								                <ul class="dropdown-menu dropdown-menu-right">
 
 								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video->video_tape_id] )}}">{{tr('view')}}</a></li>
@@ -183,7 +186,7 @@
                                                         @if(Setting::get('admin_delete_control') == YES )
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , array('video_tape_id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , ['video_tape_id' => $video->video_tape_id] )}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
 
@@ -219,12 +222,12 @@
 
 								                  	@if ($video->compress_status == 1)
 									                  	<li role="presentation">
-									                  		@if(Setting::get('admin_delete_control'))
+									                  		@if(Setting::get('admin_delete_control') == YES)
 
 										                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 										                  	@else
-									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video_tapes.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
+									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video_tapes.delete' , ['video_tape_id' => $video->video_tape_id] )}}">{{tr('delete')}}</a>
 									                  		@endif
 									                  	</li>
 								                  	@endif
@@ -239,17 +242,20 @@
 
 								                  		@if ($video->getScopeVideoAds)
 
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video-ads.view' , array('id' => $video->getScopeVideoAds->id))}}">{{tr('view_ad')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_ads.view' , ['id' => $video->getScopeVideoAds->id] ) }}">{{tr('view_ad')}}</a></li>
 
 								                  		@endif
 
 								                  	@endif
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.ad-status-change',$video->video_tape_id)}}">{{ ($video->ad_status) ? tr('disable_ad') : tr('enable_ad')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.ads-details.ad-status-change', ['video_tape_id' => $video->video_tape_id] )}}">{{ ($video->ad_status) ? tr('disable_ad') : tr('enable_ad')}}</a></li>
 
 								                </ul>
+
               								</li>
+
             							</ul>
+
 								    </td>
 							    </tr>
 
