@@ -96,11 +96,11 @@
 							
 							    <tr>
 							      	
-							      	<td><a href="{{route('admin.video_tapes.view' , ['id' => $video->video_tape_id] )}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video->video_tape_id] ) }}">{{$i+1}}</a></td>
 							      	
-							      	<td><a href="{{route('admin.channels.view', ['channel_id' => $video->channel_id] )}}">{{$video->channel_name}}</a></td>
+							      	<td><a href="{{route('admin.channels.view', ['channel_id' => $video->channel_id] ) }}">{{$video->channel_name}}</a></td>
 							      		
-							      	<td><a href="{{route('admin.categories.view', ['category_id' => $video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
+							      	<td><a href="{{route('admin.categories.view', ['category_id' => $video->category_id] ) }}" target="_blank">{{$video->category_name}}</a></td>
 
 							      	<td>
 							      		
@@ -118,7 +118,7 @@
 
                                         @endif
 							      	</td>
-							      	<td><a href="{{route('admin.video_tapes.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
+							      	<td><a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video->video_tape_id] )}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 							      	<?php /*@if(Setting::get('theme') == 'default')
 							      	
@@ -174,12 +174,16 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu dropdown-menu-right">
-								                	@if ($video->compress_status == 1)
+
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video->video_tape_id] )}}">{{tr('view')}}</a></li>
+
+								                	@if ($video->compress_status == DEFAULT_TRUE)
+								                  	
 								                  	<li role="presentation">
-                                                        @if(Setting::get('admin_delete_control'))
+                                                        @if(Setting::get('admin_delete_control') == YES )
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , array('video_tape_id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
 
@@ -188,7 +192,6 @@
                                                     	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.compress.status' , array('id' => $video->video_tape_id))}}">{{tr('do_compression_in_background')}}</a></li>
 
                                                     @endif
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video_tapes.view' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 
 								               		@if(Setting::get('is_payper_view'))
 
@@ -201,12 +204,12 @@
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@if($video->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}" onclick="return confirm('{{tr("decline_video")}}')">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status', ['video_tape_id' => $video->video_tape_id] )}}" onclick="return confirm('{{tr("decline_video")}}')">{{tr('decline')}}</a></li>
 								                	@else
 								                		@if ($video->compress_status == 0)
 								                			<li role="presentation"><a role="menuitem" tabindex="-1">{{tr('compress')}}</a></li>
 								                		@else 
-								                  			<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('{{tr("approve_video")}}')" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  			<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('{{tr("approve_video")}}')" href="{{route('admin.video_tapes.status',['video_tape_id' => $video->video_tape_id] )}}">{{tr('approve')}}</a></li>
 								                  		@endif
 								                  	@endif
 
