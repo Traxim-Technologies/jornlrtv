@@ -202,27 +202,27 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     // Route::get('/channels/subscribers', 'AdminController@channels_subscribers')->name('channels.subscribers');
 
 
-    // // Videos CRUD Operations
+    // Videos CRUD Operations
 
-    // Route::get('/old-videos/create', 'AdminController@videos_create')->name('videos.create');
+    Route::get('/old-videos/create', 'AdminController@videos_create')->name('videos.create');
 
-    // Route::get('/old-videos/edit/{id}', 'AdminController@videos_edit')->name('videos.edit');
+    Route::get('/old-videos/edit/{id}', 'AdminController@videos_edit')->name('videos.edit');
 
-    // Route::post('/old-videos/save', 'AdminController@videos_save')->name('videos.save');
+    Route::post('/old-videos/save', 'AdminController@videos_save')->name('videos.save');
 
-    // Route::get('/old-videos/images/{id}', 'AdminController@videos_images')->name('videos.images');
+    Route::get('/old-videos/images/{id}', 'AdminController@videos_images')->name('videos.images');
 
-    // Route::post('/old-videos/upload/image', 'AdminController@videos_upload_image')->name('videos.upload_image');
+    Route::post('/old-videos/upload/image', 'AdminController@videos_upload_image')->name('videos.upload_image');
 
-    // Route::post('videos/save/default_img', 'AdminController@videos_save_default_img')->name('videos.save.default_img');
+    Route::post('videos/save/default_img', 'AdminController@videos_save_default_img')->name('videos.save.default_img');
 
-    // Route::get('/old-videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
+    Route::get('/old-videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
 
-    // Route::get('/old-videos/view', 'AdminController@videos_view')->name('videos.view');
+    Route::get('/old-videos/view', 'AdminController@videos_view')->name('videos.view');
 
-    // Route::post('/old-videos/set-ppv/{id}', 'AdminController@videos_set_ppv')->name('videos.set-ppv');
+    Route::post('/old-videos/set-ppv/{id}', 'AdminController@videos_set_ppv')->name('videos.set-ppv');
 
-    // Route::get('/old-videos/delete/{id}', 'AdminController@videos_delete')->name('videos.delete');
+    Route::get('/old-videos/delete/{id}', 'AdminController@videos_delete')->name('videos.delete');
 
 
     // Route::get('/videos/status/{id}', 'AdminController@videos_status')->name('videos.status');
@@ -860,7 +860,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     // videos
 
-    Route::get('/videos/status/', 'NewAdminController@videos_status')->name('videos.status');
+    Route::get('/videos/status/{id}', 'NewAdminController@videos_status')->name('videos.status');
 
     Route::get('ads-details/ad-status/', 'AdminController@ads_details_ad_status_change')->name('ads-details.ad-status-change');
 
@@ -896,30 +896,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('sub_admins/delete', 'NewAdminController@sub_admins_delete')->name('sub_admins.delete');
 
     Route::post('sub_admins/save', 'NewAdminController@sub_admins_save')->name('sub_admins.save');
-
-
-      // Videos CRUD Operations
-
-    Route::get('/old-videos/create', 'AdminController@videos_create')->name('videos.create');
-
-    Route::get('/old-videos/edit/{id}', 'AdminController@videos_edit')->name('videos.edit');
-
-    Route::post('/old-videos/save', 'AdminController@videos_save')->name('videos.save');
-
-    Route::get('/old-videos/images/{id}', 'AdminController@videos_images')->name('videos.images');
-
-    Route::post('/old-videos/upload/image', 'AdminController@videos_upload_image')->name('videos.upload_image');
-
-    Route::post('videos/save/default_img', 'AdminController@videos_save_default_img')->name('videos.save.default_img');
-
-    Route::get('/old-videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
-
-    Route::get('/old-videos/view', 'AdminController@videos_view')->name('videos.view');
-
-    Route::post('/old-videos/set-ppv/{id}', 'AdminController@videos_set_ppv')->name('videos.set-ppv');
-
-    Route::get('/old-videos/delete/{id}', 'AdminController@videos_delete')->name('videos.delete');
-
 
 });
 
