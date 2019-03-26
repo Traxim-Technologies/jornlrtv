@@ -6344,7 +6344,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_upload_image()
+     * Function Name : video_tapes_upload_image()
      *
      * To save the image based on object details
      *
@@ -6357,7 +6357,7 @@ class NewAdminController extends Controller {
      * @return response of success/failure message
      *
      */
-    public function videos_upload_image(Request $request) {
+    public function video_tapes_upload_image(Request $request) {
 
         $response = CommonRepo::upload_video_image($request)->getData();
 
@@ -6410,7 +6410,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : videos_publish()
+     * Function Name : video_tapes_publish()
      *
      * To publish the video based on changing the status of the video
      *
@@ -6423,7 +6423,7 @@ class NewAdminController extends Controller {
      * @return response of success/failure message
      *
      */
-    public function videos_publish($id) {
+    public function video_tapes_publish($id) {
 
         // Load video based on Auto increment id
         $video = VideoTape::find($id);
@@ -6449,34 +6449,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : videos_delete()
-     *
-     * To delete a video based on video id
-     *
-     * @created vithya R
-     *
-     * @updated - -
-     *
-     * @param Integer $id - Video Id
-     * 
-     * @return response of success/failure message
-     *
-     */
-    public function videos_delete($id) {
-
-        if($video = VideoTape::where('id' , $id)->first())  {
-
-            $video->delete();
-
-            return back()->with('flash_success', tr('video_delete_success'));
-        }
-
-        return back()->with('flash_error', tr('video_not_found'));
-    
-    }
-
-    /**
-     * Function Name : videos_view
+     * Function Name : video_tapes_view
      *
      * @uses get video details
      *
@@ -6674,7 +6647,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_wishlist
+     * Function Name : video_tapes_wishlist
      *
      * @uses To list out all the wishlist details based on user
      *
@@ -6687,7 +6660,7 @@ class NewAdminController extends Controller {
      * @return - Response of wishlist based on id
      *
      */
-    public function videos_wishlist(Request $request) {
+    public function video_tapes_wishlist(Request $request) {
 
         $wishlists = Wishlist::where('wishlists.video_tape_id' , $request->id)
                         ->leftJoin('users' , 'wishlists.user_id' , '=' , 'users.id')
@@ -6766,7 +6739,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_remove_ppv
+     * Function Name : video_tapes_remove_ppv
      *
      * Brief : To remove PPV Details
      *
@@ -6778,7 +6751,7 @@ class NewAdminController extends Controller {
      *     
      * @return flash message
      */
-    public function videos_remove_ppv($id) {
+    public function video_tapes_remove_ppv($id) {
         
         // Load video model using auto increment id of the table
         $model = VideoTape::find($id);

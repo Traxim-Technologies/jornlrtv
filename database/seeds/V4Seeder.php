@@ -19,7 +19,7 @@ class V4Seeder extends Seeder
 			        'unique_id' => uniqid(),
 			        'type' => BELL_NOTIFICATION_NEW_VIDEO,
 			        'title' => tr('BELL_NOTIFICATION_NEW_VIDEO'),
-			        'message' => '$channel_name uploaded: $video_title',
+			        'message' => '{channel_name} uploaded: {video_title}',
 			        'status' => APPROVED,
 			        'created_at' => date('Y-m-d H:i:s'),
 			        'updated_at' => date('Y-m-d H:i:s')
@@ -28,7 +28,7 @@ class V4Seeder extends Seeder
 			        'unique_id' => uniqid(),
 			        'type' => BELL_NOTIFICATION_NEW_SUBSCRIBER,
 			        'title' => tr('BELL_NOTIFICATION_NEW_SUBSCRIBER'),
-			        'message' => 'The $username subscribed your channel: $channel_name',
+			        'message' => 'The {username} subscribed your channel: {channel_name}',
 			        'status' => APPROVED,
 			        'created_at' => date('Y-m-d H:i:s'),
 			        'updated_at' => date('Y-m-d H:i:s')

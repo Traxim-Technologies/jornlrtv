@@ -1724,6 +1724,8 @@ class UserController extends Controller {
 
                 $channel_details = Channel::find($request->channel_id);
 
+                $notification_data = 
+
                 $notification_data['from_user_id'] = $request->user_id; 
 
                 $notification_data['to_user_id'] = $channel_details->user_id;
