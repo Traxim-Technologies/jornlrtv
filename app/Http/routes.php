@@ -860,7 +860,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     // videos
 
-    Route::get('/videos/status/{id}', 'NewAdminController@videos_status')->name('videos.status');
+    // Route::get('/videos/status/{id}', 'NewAdminController@videos_status')->name('videos.status');
 
     Route::get('ads-details/ad-status/', 'AdminController@ads_details_ad_status_change')->name('ads-details.ad-status-change');
 
