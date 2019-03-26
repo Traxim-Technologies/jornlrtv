@@ -129,7 +129,7 @@
                         @else
 
                             <!-- <p class="no-result">{{tr('no_search_result')}}</p> -->
-                            <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
+                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
                         @endif
                        

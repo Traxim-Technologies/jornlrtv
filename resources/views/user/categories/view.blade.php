@@ -428,7 +428,7 @@
 		@else
 
 		<!-- <p style="color: #000">{{tr('no_video_found')}}</p> -->
-		<img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
+		<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
 		@endif
 
@@ -517,7 +517,7 @@
 		@else
 
 		<!-- <p style="color: #000">{{tr('no_video_found')}}</p> -->
-		<img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
+		<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
 		@endif
 

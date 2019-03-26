@@ -20,52 +20,60 @@
 				<h3 class="no-margin text-left">{{tr('notifications')}} ({{count($notifications)}})</h3>
 			</div>
 
-			<div class="row col-md-12">
+            @if(count($notifications) > 0)
 
-				@foreach($notifications as $notification_details)
+				<div class="row col-md-12">
 
-					<div class="notification-list-content">
+					@foreach($notifications as $notification_details)
 
-			            <a href="{{$notification_details->notification_redirect_url}}" target="_blank">
-			                <div class="row">
-			                    <div class="col-lg-1 col-sm-3 col-1 text-center">
-			                        <img src="{{$notification_details->picture}}" class="w-50 rounded-circle">
-			                    </div>
+						<div class="notification-list-content">
 
-			                    <div class="col-lg-10 col-sm-8 col-10">
-			                        <!-- <strong class="text-info">David John</strong> -->
-			                        <div>
-			                            {{$notification_details->message}}
-			                        </div>
-			                        <small class="text-warning">{{$notification_details->created_at}}</small>
-			                    </div>
-			                </div>
+				            <a href="{{$notification_details->notification_redirect_url}}" target="_blank">
+				                <div class="row">
+				                    <div class="col-lg-1 col-sm-3 col-1 text-center">
+				                        <img src="{{$notification_details->picture}}" class="w-50 rounded-circle">
+				                    </div>
 
-			            </a>
+				                    <div class="col-lg-10 col-sm-8 col-10">
+				                        <!-- <strong class="text-info">David John</strong> -->
+				                        <div>
+				                            {{$notification_details->message}}
+				                        </div>
+				                        <small class="text-warning">{{$notification_details->created_at}}</small>
+				                    </div>
+				                </div>
 
-			        </div>
-		        
-		        @endforeach
+				            </a>
 
-		        <span id="bell_notifications_list"></span>
+				        </div>
+			        
+			        @endforeach
 
-		        <div class="row" style="margin-top: 20px">
+			        <span id="bell_notifications_list"></span>
 
-		            <div id="notification_content_loader" style="display: none;">
+			        <div class="row" style="margin-top: 20px">
 
-		                <h1 class="text-center"><i class="fa fa-spinner fa-spin" style="color:#ff0000"></i></h1>
+			            <div id="notification_content_loader" style="display: none;">
+
+			                <h1 class="text-center"><i class="fa fa-spinner fa-spin" style="color:#ff0000"></i></h1>
+
+			            </div>
+
+			            <div class="clearfix"></div>
+
+			            <button class="pull-right btn btn-info mb-15" onclick="getNotificationList()" style="color: #fff">{{tr('view_more')}}</button>
+
+			            <div class="clearfix"></div>
 
 		            </div>
 
-		            <div class="clearfix"></div>
+		        </div>
 
-		            <button class="pull-right btn btn-info mb-15" onclick="getNotificationList()" style="color: #fff">{{tr('view_more')}}</button>
+		    @else
 
-		            <div class="clearfix"></div>
+		    	<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
-	            </div>
-
-	        </div>
+		    @endif
 
 		</div>
 

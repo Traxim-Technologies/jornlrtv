@@ -16,10 +16,6 @@
 
 			@include('notification.notify')
 
-			<!-- <div class="sub-history">
-				<h3 class="no-margin text-left">{{tr('playlists')}} ({{count($playlists)}})</h3>
-			</div>
- -->
 			<div class="row col-md-12">
 
 				<div class="slide-area1 recom-area">
@@ -95,11 +91,9 @@
 
                     @else
 
-                        <div class="recommend-list row">
-                            <div class="slide-box recom-box"> {{tr('no_trending_videos')}}</div>
-                        </div>
+				    	<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
-                    @endif
+				    @endif
 
                 </div>
 
@@ -153,7 +147,7 @@
 
 	                // console.log(JSON.stringify(playlistDetails));
 
-	                var playlist_view_url = "/playlists/?video_tape_id="+playlistDetails.playlist_id;
+	                var playlist_view_url = "/playlists/view?playlist_id="+playlistDetails.playlist_id;
 
 	                var messageTemplate = '';
 

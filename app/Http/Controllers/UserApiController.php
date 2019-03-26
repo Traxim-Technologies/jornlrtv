@@ -7550,7 +7550,11 @@ class UserApiController extends Controller {
                 
             }
 
-            $video_tape_ids = PlaylistVideo::where('playlist_id', $request->playlist_id)->pluck('playlist_videos.video_tape_id')->toArray();
+            $skip = $request->skip ?: 0;
+
+            $take = Setting::get('admin_take_count') ?: 12;
+
+            $video_tape_ids = PlaylistVideo::where('playlist_id', $request->playlist_id)->where('playlist_videos.user_id', $request->id)->skip($skip)->take($take)->pluck('playlist_videos.video_tape_id')->toArray();
 
             $video_tapes = VideoRepo::video_tape_list($video_tape_ids, $request->id);
 
@@ -7583,7 +7587,7 @@ class UserApiController extends Controller {
     }
 
 
-        /**
+    /**
      *
      * Function name: playlists_video_remove()
      *
@@ -7600,13 +7604,14 @@ class UserApiController extends Controller {
 
     public function playlists_video_remove(Request $request) {
 
+
         try {
 
             DB::beginTransaction();
 
             $validator = Validator::make($request->all(),[
                     'playlist_id' =>'required|exists:playlists,id',
-                    'video_tape_id' => 'required|exists:playlist_videos,video_tape_id',
+                    'video_tape_id' => 'required|exists:video_tapes,id',
                 ],
                 [
                     'exists' => 'The :attribute doesn\'t exists please add to playlist',

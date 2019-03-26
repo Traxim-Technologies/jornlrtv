@@ -201,7 +201,7 @@
                                             </div>
                                             <?php /*@if(count($trending_videos) == 0)
 
-                                            <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
+                                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
                                             @endif */?>
                                             <div class="lohp-shelf-content row">
@@ -281,7 +281,7 @@
 
                                                         @else
 
-                                                        <center><img src="{{asset('images/no-record.jpeg')}}" class="img-responsive aonuto-margin"> </center>
+                                                        <center><img src="{{asset('images/no-result.jpg')}}" class="img-responsive aonuto-margin"> </center>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -566,7 +566,7 @@
                                     @else
 
                                     <!-- <p style="color: #000">{{tr('no_video_found')}}</p> -->
-                                    <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin"> @endif
+                                    <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif
 
                                 </div>
 
@@ -722,7 +722,7 @@
 
                                     @else
 
-                                    <img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin"> @endif
+                                    <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif
 
                                     <?php /* @if(count($payment_videos) > 0)
 
