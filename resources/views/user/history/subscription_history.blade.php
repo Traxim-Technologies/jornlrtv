@@ -155,7 +155,7 @@
 	                        </div>
 	                    </div>
 	                    @else
-						<img src="{{asset('images/no-record.jpeg')}}" class="img-responsive auto-margin">
+						<img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 					@endif	
 				</div>
 

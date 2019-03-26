@@ -855,6 +855,8 @@ class VideoTapeRepository {
 
                 $video_tape_details->currency = Setting::get('currency');
 
+                $video_tape_details->created_at = $value->created_at;
+
                 // PPV data end 
 
                 array_push($video_tapes, $video_tape_details);

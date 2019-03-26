@@ -62,6 +62,10 @@ use App\VideoTapeTag;
 
 use App\Tag;
 
+use App\Playlist;
+
+use App\PlaylistVideo;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -3091,7 +3095,7 @@ class UserController extends Controller {
 
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
-            if($request->is_json()) {
+            if($request->is_json) {
 
                 return response()->json($response_array);
             }
@@ -3213,7 +3217,7 @@ class UserController extends Controller {
 
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
-            if($request->is_json()) {
+            if($request->is_json) {
 
                 return response()->json($response_array);
             }
@@ -3223,5 +3227,403 @@ class UserController extends Controller {
         }
 
     } 
+
+    /**
+     *
+     * Function name: playlists_save()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_save(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(),[
+                'title' => 'required|max:255',
+                'playlist_id' => 'exists:playlists,id,user_id,'.$request->id,
+            ],
+            [
+                'exists' => Helper::get_error_message(175)
+            ]);
+
+            if($validator->fails()) {
+
+                $error_messages = implode(',',$validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            $playlist_details = Playlist::where('id', $request->playlist_id)->first();
+
+            $message = Helper::get_message(129);
+
+            if(!$playlist_details) {
+
+                $message = Helper::get_message(128);
+
+                $playlist_details = new Playlist;
+    
+                $playlist_details->status = APPROVED;
+
+                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PRIVATE;
+
+                $playlist_details->playlist_type = PLAYLIST_TYPE_USER;
+
+            }
+
+            $playlist_details->user_id = $request->id;
+
+            $playlist_details->title = $playlist_details->description = $request->title ?: "";
+
+            if($playlist_details->save()) {
+
+                DB::commit();
+
+                $playlist_details = $playlist_details->where('id', $playlist_details->id)->CommonResponse()->first();
+
+                $response_array = ['success' => true, 'message' => $message, 'data' => $playlist_details];
+
+                return response()->json($response_array, 200);
+
+            } else {
+
+                throw new Exception(Helper::get_error_message(179), 179);
+
+            }
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+
+    /**
+     *
+     * Function name: playlists_view()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_view(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->playlists_view($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+            $playlist_details = $response->data;
+
+            $video_tapes = $response->data->video_tapes;
+
+            return view('user.playlists.videos')->with('playlist_details', $playlist_details)->with('video_tapes', $video_tapes);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+    
+    }
+    /**
+     *
+     * Function name: playlists_add_video()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_video_status(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
+                                        ->where('user_id', $request->id)
+                                        ->first();
+            // if($playlist_video_details) {
+
+            //     $message = Helper::get_message(127); $code = 127;
+
+            //     $playlist_video_details->delete();
+
+            // } else {
+
+                $validator = Validator::make($request->all(),[
+                    'playlist_id' => 'required',
+                    'video_tape_id' => 'required|exists:video_tapes,id,status,'.APPROVED,
+                ]);
+
+                if($validator->fails()) {
+
+                    $error_messages = implode(',',$validator->messages()->all());
+
+                    throw new Exception($error_messages, 101);
+                    
+                }
+
+                $playlist_ids = explode(',', $request->playlist_id);
+
+                PlaylistVideo::whereNotIn('playlist_id', $playlist_ids)->where('video_tape_id', $request->video_tape_id)
+                                ->where('user_id', $request->id)
+                                ->delete();
+
+                $total_playlists_update = 0;
+
+                foreach ($playlist_ids as $key => $playlist_id) {
+
+                    // Check the playlist id belongs to the logged user
+
+                    $playlist_details = Playlist::where('id', $playlist_id)->where('user_id', $request->id)->count();
+
+                    if($playlist_details) {
+
+                        $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
+                                            ->where('user_id', $request->id)
+                                            ->where('playlist_id', $playlist_id)
+                                            ->first();
+                        if(!$playlist_video_details) {
+
+                            $playlist_video_details = new PlaylistVideo;
+     
+                        }
+
+                        $playlist_video_details->user_id = $request->id;
+
+                        $playlist_video_details->playlist_id = $playlist_id;
+
+                        $playlist_video_details->video_tape_id = $request->video_tape_id;
+
+                        $playlist_video_details->status = APPROVED;
+
+                        $playlist_video_details->save();
+
+                        $total_playlists_update++;
+
+                    }
+                
+                }
+
+            // }
+
+            DB::commit();
+
+            $code = $total_playlists_update > 0 ? 126 : 132;
+
+            $message = Helper::get_message($code);
+
+            $response_array = ['success' => true, 'message' => $message, 'code' => $code];
+
+            return response()->json($response_array);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+
+
+    /**
+     *
+     * Function name: playlists_video_remove()
+     *
+     * @uses Remove the video from playlist
+     *
+     * @created Aravinth R
+     *
+     * @updated vithya R
+     *
+     * @param integer video_tape_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_video_remove(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token,
+                'playlist_id' => $request->playlist_id,
+                'video_tape_id' => $request->video_tape_id
+            ]);
+
+            $response = $this->UserAPI->playlists_video_remove($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+           return back()->with('flash_success', $response->message);
+
+            return view('user.playlists.videos')->with('playlist_details', $playlist_details)->with('video_tapes', $video_tapes);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+    
+    }
+
+    /**
+     * Function Name : playlists_delete()
+     *
+     * @uses used to delete the user selected playlist
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $playlist_id
+     *
+     * @return JSON Response
+     */
+    public function playlists_delete(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(),[
+                    'playlist_id' =>'required|exists:playlists,id',
+                ],
+                [
+                    'exists' => 'The :attribute doesn\'t exists please add to playlist',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            $playlist_details = Playlist::where('id',$request->playlist_id)->where('user_id', $request->id)->first();
+
+            if(!$playlist_details) {
+
+                throw new Exception(Helper::get_error_message(180), 180);
+
+            }
+
+            $playlist_details->delete();
+
+            DB::commit();
+
+            $response_array = ['success' => true, 'message' => Helper::get_message(131), 'code' => 131];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+
+    }
+
     
 }

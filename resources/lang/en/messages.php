@@ -1913,4 +1913,7 @@ return array(
 	'admin_disabled' => 'Admin disabled the option',
 
 	'save_to' => 'Save To...',
+
+	'user_playlist_delete_confirm' => 'Do you want to remove this video from playlist?',
+
 );

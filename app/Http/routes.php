@@ -1163,15 +1163,15 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('/playlists/', 'UserController@playlists')->name('playlists.index');
 
-    Route::post('/playlists/save', 'UserController@playlists_save')->name('playlists.save');
+    Route::any('/playlists/save', 'UserController@playlists_save')->name('playlists.save');
 
-    Route::post('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
+    Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
 
-    Route::post('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
+    Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
 
-    Route::post('/playlists/video_status', 'UserController@playlists_video_status')->name('playlists.video_status');
+    Route::any('/playlists/video_status', 'UserController@playlists_video_status')->name('playlists.video_status');
 
-    Route::post('/playlists/video_remove', 'UserController@playlists_video_remove')->name('playlists.video_remove');
+    Route::any('/playlists/video_remove', 'UserController@playlists_video_remove')->name('playlists.video_remove');
 
 
 });
