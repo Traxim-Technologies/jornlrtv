@@ -3164,5 +3164,64 @@ class UserController extends Controller {
         }
 
     }  
+
+    /**
+     *
+     * Function name: playlists()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->playlists($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+            $playlists = $response->data;
+
+            return view('user.playlists.index')->with('playlists', $playlists);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json()) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    } 
     
 }

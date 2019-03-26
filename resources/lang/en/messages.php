@@ -1720,6 +1720,8 @@ return array(
 	
 	// Playlist
 
+	'playlists' => 'Playlist',
+
 	'playlist_not_found' => 'Playlist not found',
 	'playlist_not_associated_to_user' => "Unauthorized playlist",
 	'playlist_deleted' => "The playlist deleted",
@@ -1885,9 +1887,10 @@ return array(
 	'admin_user_playlist_video_delete_error'=>"Video could not be removed. Please try again!",
 
 	'added_on' =>'Added on',
+
 	'updated_at' => 'Updated at',
 
-	// ==========================branch user-issue-fixes ======================
+	// ========================== branch user-issue-fixes ======================
 
 	'user_wishlist_delete_confirm' => 'Do you want to remove this video from wishlist?',
 	
@@ -1906,5 +1909,8 @@ return array(
 	'user_account_delete_confirm' => 'Are you sure? Once you deleted account, you will lose your history and wishlist details.',
 
 	'default_card' => 'Default Card',
+
 	'admin_disabled' => 'Admin disabled the option',
+
+	'save_to' => 'Save To...',
 );
