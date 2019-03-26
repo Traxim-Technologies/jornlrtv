@@ -28,7 +28,7 @@
 
             <div class="box-body">
 
-                @if(count($videos) > 0)
+                @if(count($video_tapes) > 0)
 
                 <table id="example1" class="table table-bordered table-striped">
 
@@ -45,15 +45,15 @@
                     
                     <tbody>
                   
-                        @foreach($videos as $i => $data)
+                        @foreach($video_tapes as $i => $video_tape_details)
                             <tr>
                                 <td>{{$i+1}}</td>
                                 
-                                <td><a href="{{route('admin.video_tapes.view', ['video_tape_id' => $data->id] )}}" target="_blank">{{$data->title}}</a></td>
+                                <td><a href="{{route('admin.video_tapes.view', ['video_tape_id' => $video_tape_details->id] )}}" target="_blank">{{$video_tape_details->title}}</a></td>
                                 
                                 <td>
 
-                                    <?php $types = getVideoAdsTpe($data->id); ?>
+                                    <?php $types = getVideoAdsTpe($video_tape_details->id); ?>
 
                                     @if($types)
 
@@ -87,11 +87,11 @@
 
                                                             <p>{{tr('ad_note_for_video_time')}}</p>
                                               
-                                                            <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
+                                                            <input type="hidden" name="ad_id" id="ad_id" value="{{$ad_details->id}}">
 
                                                             <input type="hidden" name="type" id="type" value="{{$type}}">
 
-                                                            <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
+                                                            <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$video_tape_details->id}}">
 
                                                             <div class="row">
 
@@ -115,7 +115,7 @@
 
                                                               <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
-                                                              <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}">
+                                                              <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$ad_details->ad_time}}">
 
                                                             </div>
 
@@ -151,7 +151,7 @@
                                         </div>
 
                                     @else
-                                    <input type="checkbox" class="case" name="select_item" id="select_item" value="{{$data->id}}">
+                                    <input type="checkbox" class="case" name="select_item" id="select_item" value="{{$video_tape_details->id}}">
                                     @endif
                                 </td>
 
@@ -178,11 +178,11 @@
                               
                                 <div class="modal-body">
                                   
-                                    <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
+                                    <input type="hidden" name="ad_id" id="ad_id" value="{{$ad_details->id}}">
 
                                     <input type="hidden" name="type" id="type" value="{{$type}}">
 
-                                    <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
+                                    <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$video_tape_details->id}}">
 
                                     <div class="row">
 
@@ -200,7 +200,7 @@
 
                                           <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
-                                          <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}">
+                                          <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$ad_details->ad_time}}">
 
                                         </div>
                                     
@@ -280,7 +280,7 @@ $("#assign_ad").click(function(event){
 
       $("#video_tape_id").val(searchIDs.join(','));
 
-      @if($model->ad_type == POST_AD || $model->ad_type == PRE_AD)
+      @if($ad_details->ad_type == POST_AD || $ad_details->ad_type == PRE_AD)
 
         $("#submit-btn").click();
 
@@ -314,7 +314,7 @@ $("#assign_ad").click(function(event){
 
       @include('notification.notify')
 
-      @if(count($videos) > 0)
+      @if(count($video_tapes) > 0)
 
         <div class="col-lg-12" style="margin-bottom: 10px;">
 
@@ -322,7 +322,7 @@ $("#assign_ad").click(function(event){
 
               <input type="checkbox" name="select_all" id="selectall" style="vertical-align: middle;" /> {{tr('check_all')}} &nbsp;&nbsp;
 
-              @if($model->ad_type == PRE_AD || $model->ad_type == POST_AD)
+              @if($ad_details->ad_type == PRE_AD || $ad_details->ad_type == POST_AD)
 
                   <button id="assign_ad" type="button" class="btn btn-sm btn-success">{{tr('assign_ad')}}</button>
 
@@ -339,7 +339,7 @@ $("#assign_ad").click(function(event){
         </div>
 
         <div id="assign_ad_div">
-          @foreach($videos as $video)
+          @foreach($video_tapes as $video)
           <div class="col-sm-3">
             <div class="box box-primary">
               <div class="box-header with-border">
@@ -359,13 +359,13 @@ $("#assign_ad").click(function(event){
 
         <div class="col-lg-12">
 
-            <div align="center" id="paglink">{{$videos->links()}}</div>
+            <div align="center" id="paglink">{{$video_tapes->links()}}</div>
 
         </div>
 
       @endif
 
-      @if(count($videos) == 0) 
+      @if(count($video_tapes) == 0) 
 
       <div class="col-lg-12">{{tr('no_videos_found')}}</div>
 
@@ -388,13 +388,13 @@ $("#assign_ad").click(function(event){
 
               
                 
-                <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
+                <input type="hidden" name="ad_id" id="ad_id" value="{{$ad_details->id}}">
 
                 <input type="hidden" name="video_tape_ids" id="video_tape_id" required>
 
-                <input type="hidden" name="ad_type" id="ad_type" value="{{$model->ad_type}}"> 
+                <input type="hidden" name="ad_type" id="ad_type" value="{{$ad_details->ad_type}}"> 
 
-                @if($model->ad_type == PRE_AD || $model->ad_type == POST_AD)
+                @if($ad_details->ad_type == PRE_AD || $ad_details->ad_type == POST_AD)
 
                   <input type="hidden" name="video_time" id="video_time">
 
@@ -467,7 +467,7 @@ $("#assign_ad").click(function(event){
 
       $("#video_tape_id").val(searchIDs.join(','));
 
-      @if($model->ad_type == POST_AD || $model->ad_type == PRE_AD)
+      @if($ad_details->ad_type == POST_AD || $ad_details->ad_type == PRE_AD)
 
         $("#submit-btn").click();
 

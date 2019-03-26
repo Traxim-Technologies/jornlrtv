@@ -84,23 +84,28 @@
 													@if($flag_details->videoTape)
 
 								                  	@if($flag_details->videoTape->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$flag_details->video_tape_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',['video_tape_id' => $flag_details->video_tape_id] )}}">{{tr('decline')}}</a></li>
 								                	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$flag_details->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status', ['video_tape_id' => $flag_details->video_tape_id] )}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
 								                  	<li class="divider" role="presentation"></li>
 
 								                  	@endif
 
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.spam-videos.user-reports' , $flag_details->video_tape_id)}}">{{tr('user_reports')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.spam-videos.user-reports' , ['video_tape_id' =>  $flag_details->video_tape_id] ) }}">{{tr('user_reports')}}</a></li>
 								                </ul>
+
               								</li>
+
             							</ul>
+
 							      </td>
+
 							    </tr>
 							@endforeach
 						</tbody>
+						
 					</table>
 				@else
 					<h3 class="no-result">{{tr('no_result_found')}}</h3>

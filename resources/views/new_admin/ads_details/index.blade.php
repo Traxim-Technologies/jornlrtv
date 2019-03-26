@@ -163,9 +163,9 @@
 
 											            		<input type="hidden" name="id" value="{{ $ads_detail_details->id }}">
 
-											            		<input type="radio" name="type" value="1" id="video_type"> {{ tr('single') }}
+											            		<input type="radio" name="type" value="1" id="video_type" required> {{ tr('single') }}
 
-											            		<input type="radio" name="type" value="2" id="video_type"> {{ tr('multiple') }}
+											            		<input type="radio" name="type" value="2" id="video_type" required> {{ tr('multiple') }}
 
 											            	</div>
 
