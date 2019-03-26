@@ -175,7 +175,7 @@
 		          	@if($user_details->status == USER_APPROVED)		
 	              		<a href="{{ route('admin.users.status', ['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_decline_confirmation',$user_details->name) }}&quot;)" class="btn btn-warning" title="{{tr('decline')}}" ><i class="fa fa-close"></i></a>	              	
 	              	@else	              	
-	              		<a href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation,$user_details->name') }}&quot;)" class="btn btn-success" title="{{tr('approve')}}"><i class="fa fa-check"></i></a>
+	              		<a href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation', $user_details->name) }}&quot;)" class="btn btn-success" title="{{tr('approve')}}"><i class="fa fa-check"></i></a>
 	              	@endif
 
 	              	<a  href="{{ route('admin.users.playlist.index' , ['user_id' => $user_details->id] ) }}" class="btn btn-info" title="{{tr('playlist')}}"><i class="fa fa-video-camera"></i></a>

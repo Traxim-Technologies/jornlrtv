@@ -50,7 +50,6 @@ hr {
                 <a role="button" style="margin: 4px !important" class="btn btn-danger pull-right" onclick="return confirm(&quot;{{ tr('admin_ads_detail_delete_confirmation', $ads_detail_details->name) }}&quot;)" href="{{ route('admin.ads-details.delete' , ['ads_detail_id' => $ads_detail_details->id] ) }}" title="{{ tr('delete') }}"><b><i class="fa fa-trash"></i></b></a>
 
             @endif
-
             
             @if($ads_detail_details->status == DEFAULT_TRUE)
                 
@@ -101,7 +100,6 @@ hr {
 
             </div>
 
-          <!-- /.tab-pane -->
         </div>
 
     </div>

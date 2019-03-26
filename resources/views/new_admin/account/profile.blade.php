@@ -51,6 +51,7 @@
         </div>
 
          <div class="col-md-8">
+            
             <div class="nav-tabs-custom">
 
                 <ul class="nav nav-tabs">
@@ -63,7 +64,7 @@
                    
                     <div class="active tab-pane" id="adminprofile">
 
-                        <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.profile.save')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == YES) ? '#' : route('admin.profile.save')}}" method="POST" enctype="multipart/form-data" role="form">
 
                             <input type="hidden" name="id" value="{{Auth::guard('admin')->user()->id}}">
 
@@ -71,7 +72,7 @@
                                 <label for="name" required class="col-sm-2 control-label">{{tr('username')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="name"  name="name" value="{{Auth::guard('admin')->user()->name}}" pattern="[a-zA-Z]+" placeholder="{{tr('username')}}" required title="{{tr('only_for_alpha_values')}}">
+                                  <input type="text" class="form-control" id="name" name="name" value="{{Auth::guard('admin')->user()->name}}" placeholder="{{tr('username')}}" required title="{{tr('only_for_alpha_values')}}">
                                 </div>
                             </div>
 
@@ -82,7 +83,6 @@
                                   <input type="email" required value="{{Auth::guard('admin')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}">
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <label for="mobile" class="col-sm-2 control-label">{{tr('mobile')}}</label>
@@ -102,13 +102,13 @@
                             </div>
 
                             <div class="form-group">
+                               
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    @if(Setting::get('admin_delete_control') == 1)
-                                        <button type="submit" class="btn btn-danger" disabled>{{tr('submit')}}</button>
-                                    @else
-                                        <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
-                                    @endif
+                                    
+                                    <button type="submit" @if(Setting::get('admin_dele te_control') == 1) disabled @endif class="btn btn-danger">{{tr('submit')}}</button>
+                                    
                                 </div>
+                            
                             </div>
 
                         </form>
@@ -116,7 +116,7 @@
 
                     <div class="tab-pane" id="image">
 
-                        <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.profile.save')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == YES) ? '#' : route('admin.profile.save')}}" method="POST" enctype="multipart/form-data" role="form">
 
                             <input type="hidden" name="id" value="{{Auth::guard('admin')->user()->id}}">
 
@@ -137,13 +137,13 @@
                             </div>
 
                             <div class="form-group">
+                                
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    @if(Setting::get('admin_delete_control') == 1) 
-                                        <button type="submit" class="btn btn-danger" disabled>{{tr('submit')}}</button>
-                                    @else 
-                                        <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
-                                    @endif
+                                   
+                                    <button type="submit" @if(Setting::get('admin_dele te_control') == 1) disabled @endif class="btn btn-danger">{{tr('submit')}}</button>
+
                                 </div>
+                            
                             </div>
 
                         </form>
@@ -151,7 +151,7 @@
 
                     <div class="tab-pane" id="password_div">
 
-                        <form class="form-horizontal" action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.change.password')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form class="form-horizontal" action="{{ (Setting::get('admin_delete_control') == YES) ? '#' : route('admin.change.password')}}" method="POST" enctype="multipart/form-data" role="form">
 
                             <input type="hidden" name="id" value="{{Auth::guard('admin')->user()->id}}">
 
@@ -180,13 +180,13 @@
                             </div>
 
                             <div class="form-group">
+                                
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    @if(Setting::get('admin_delete_control') == 1)
-                                        <button type="submit" class="btn btn-danger" disabled>{{tr('submit')}}</button>
-                                    @else
-                                        <button type="submit" class="btn btn-danger">{{tr('submit')}}</button>
-                                    @endif
+                                   
+                                    <button type="submit" @if(Setting::get('admin_dele te_control') == 1) disabled @endif class="btn btn-danger">{{tr('submit')}}</button>
+
                                 </div>
+
                             </div>
 
                         </form>
@@ -196,6 +196,7 @@
                 </div>
 
             </div>
+
         </div>
 
     </div>

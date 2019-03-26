@@ -14,228 +14,230 @@
 
 @include('notification.notify')
 
-
-  <div class="row">
+<div class="row">
+    
     <div class="col-xs-12">
-      <div class="box box-primary">
+    
+        <div class="box box-primary">
 
-        <div class="box-header label-primary">
-            <b style="font-size:18px;">{{tr('assign_ad')}}</b>
+            <div class="box-header label-primary">
+                <b style="font-size:18px;">{{tr('assign_ad')}}</b>
 
-            <button id="assign_ad" class="btn btn-default pull-right" data-toggle="modal" data-target="#multiple_ad">{{tr('assign_ad')}}</button>
-        </div>
+                <button id="assign_ad" class="btn btn-default pull-right" data-toggle="modal" data-target="#multiple_ad">{{tr('assign_ad')}}</button>
+            </div>
 
-        <div class="box-body">
+            <div class="box-body">
 
-          @if(count($videos) > 0)
+                @if(count($videos) > 0)
 
-          <table id="example1" class="table table-bordered table-striped">
+                <table id="example1" class="table table-bordered table-striped">
 
-          <thead>
-              <tr>
-                <th>{{tr('id')}}</th>
-                <th>{{tr('title')}}</th>
-                <th>{{tr('ads')}}</th>
-                <th> 
-                    {{tr('action')}}
-                </th>
-              </tr>
-          </thead>
-          <tbody>
+                    <thead>
+                        <tr>
+                          <th>{{tr('id')}}</th>
+                          <th>{{tr('title')}}</th>
+                          <th>{{tr('ads')}}</th>
+                          <th> 
+                              {{tr('action')}}
+                          </th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                  
+                        @foreach($videos as $i => $data)
+                            <tr>
+                                <td>{{$i+1}}</td>
+                                <td><a href="{{route('admin.video_tapes.view', array('id' => $data->id))}}" target="_blank">{{$data->title}}</a></td>
+                                <td>
 
-        
-          @foreach($videos as $i => $data)
-              <tr>
-                  <td>{{$i+1}}</td>
-                  <td><a href="{{route('admin.video_tapes.view', array('id' => $data->id))}}" target="_blank">{{$data->title}}</a></td>
-                  <td>
+                                    <?php $types = getVideoAdsTpe($data->id); ?>
 
-                      <?php $types = getVideoAdsTpe($data->id); ?>
+                                    @if($types)
 
-                      @if($types)
+                                      @foreach($types as $val)
+                                        
+                                        <span class="label label-success">{{$val}}</span>
 
-                        @foreach($types as $val)
-                          
-                          <span class="label label-success">{{$val}}</span>
+                                      @endforeach
+
+                                    @else
+
+                                      -
+
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($type == 1) 
+
+                                      <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal_{{$i}}">{{tr('assign_ad')}}</button>
+
+                                        <div id="myModal_{{$i}}" class="modal fade" role="dialog">
+                                          <div class="modal-dialog">
+                                            <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
+                                                  <div class="modal-content">
+                                                      <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">{{tr('assign_ad')}}</h4>
+                                                      </div>
+                                                      
+                                                      <div class="modal-body">
+
+                                
+                                                          <p>{{tr('ad_note_for_video_time')}}</p>
+
+                                            
+                                              
+                                                          <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
+
+                                                          <input type="hidden" name="type" id="type" value="{{$type}}">
+
+                                                          <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
+
+                                                          <div class="row">
+
+
+                                                            <div class="col-md-12">
+
+                                                              <label>{{tr('ad_type')}}</label>
+
+                                                              <br>
+
+                                                              <input type="checkbox" name="ad_type[]" id="ad_type" value="{{PRE_AD}}"> {{tr('pre_ad')}}
+                                                                    <input type="checkbox" name="ad_type[]" id="ad_type" value="{{POST_AD}}"> {{tr('post_ad')}}
+                                                                    <input type="checkbox" name="ad_type[]" id="ad_type_id_{{$i}}" value="{{BETWEEN_AD}}" onchange="getCheckBoxValue(this.id, {{$i}})"> {{tr('between_ad')}}
+
+                                                            </div>
+
+                                                          </div>
+
+                                                          <div class="row" style="margin-top: 10px">
+
+                                                            <div class="col-md-6">
+
+                                                              <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
+
+                                                              <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}">
+
+                                                            </div>
+
+
+                                                            <div class="col-lg-6" id="video_time_div_{{$i}}" style="display: none;">
+
+                                                                <label>{{tr('video_time')}}</label>
+
+                                                                <br>
+
+                                                                <input type="text" name="video_time" id="video_time_{{$i}}" class="form-control" placeholder="hh:mm:ss">
+                                                              </div>
+
+                                                            </div>
+                                                            <div class="clearfix"></div>
+
+                                                          </div>
+
+
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
+                                                          <button type="submit" class="btn btn-success">{{tr('assign')}}</button>
+                                                        </div>
+
+                                                      </div>
+
+                                                      
+                                                  </div>
+
+                                            </form>
+                                            
+                                          </div>
+                                        </div>
+
+                                    @else
+                                    <input type="checkbox" class="case" name="select_item" id="select_item" value="{{$data->id}}">
+                                    @endif
+                                </td>
+
+                            </tr>
 
                         @endforeach
 
-                      @else
+                    </tbody>
 
-                        -
+                </table>
 
-                      @endif
-                  </td>
-                  <td>
-                      @if($type == 1) 
-
-                        <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal_{{$i}}">{{tr('assign_ad')}}</button>
-
-                          <div id="myModal_{{$i}}" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                              <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          <h4 class="modal-title">{{tr('assign_ad')}}</h4>
-                                        </div>
-                                        
-                                        <div class="modal-body">
-
-                  
-                                            <p>{{tr('ad_note_for_video_time')}}</p>
-
-                              
-                                
-                                            <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
-
-                                            <input type="hidden" name="type" id="type" value="{{$type}}">
-
-                                            <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
-
-                                            <div class="row">
-
-
-                                              <div class="col-md-12">
-
-                                                <label>{{tr('ad_type')}}</label>
-
-                                                <br>
-
-                                                <input type="checkbox" name="ad_type[]" id="ad_type" value="{{PRE_AD}}"> {{tr('pre_ad')}}
-                                                      <input type="checkbox" name="ad_type[]" id="ad_type" value="{{POST_AD}}"> {{tr('post_ad')}}
-                                                      <input type="checkbox" name="ad_type[]" id="ad_type_id_{{$i}}" value="{{BETWEEN_AD}}" onchange="getCheckBoxValue(this.id, {{$i}})"> {{tr('between_ad')}}
-
-                                              </div>
-
-                                            </div>
-
-                                            <div class="row" style="margin-top: 10px">
-
-                                              <div class="col-md-6">
-
-                                                <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
-
-                                                <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}">
-
-                                              </div>
-
-
-                                              <div class="col-lg-6" id="video_time_div_{{$i}}" style="display: none;">
- 
-                                                  <label>{{tr('video_time')}}</label>
-
-                                                  <br>
-
-                                                  <input type="text" name="video_time" id="video_time_{{$i}}" class="form-control" placeholder="hh:mm:ss">
-                                                </div>
-
-                                              </div>
-                                              <div class="clearfix"></div>
-
-                                            </div>
-
-
-                                          <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
-                                            <button type="submit" class="btn btn-success">{{tr('assign')}}</button>
-                                          </div>
-
-                                        </div>
-
-                                        
-                                    </div>
-
-                              </form>
-                              
-                            </div>
-                          </div>
-
-                      @else
-                      <input type="checkbox" class="case" name="select_item" id="select_item" value="{{$data->id}}">
-                      @endif
-                  </td>
-
-
-              </tr>
-
-              <!-- Modal -->
-            <!-- Modal -->
-            
-          @endforeach
-        </tbody>
-      </table>
-
-
-      <div id="multiple_ad" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-          <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
-                <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">{{tr('assign_ad')}}</h4>
-                    </div>
+                <div id="multiple_ad" class="modal fade" role="dialog">
                     
-                    <div class="modal-body">
-          
-            
-                        <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
+                    <div class="modal-dialog">
+                    
+                        <form method="post" action="{{route('admin.video-ads.assign.ads')}}" id="assing_ad_form">
+                                
+                            <div class="modal-content">
+                               
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">{{tr('assign_ad')}}</h4>
+                                </div>
+                              
+                                <div class="modal-body">
+                                  
+                                    <input type="hidden" name="ad_id" id="ad_id" value="{{$model->id}}">
 
-                        <input type="hidden" name="type" id="type" value="{{$type}}">
+                                    <input type="hidden" name="type" id="type" value="{{$type}}">
 
-                        <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
+                                    <input type="hidden" name="video_tape_id" id="video_tape_id" required value="{{$data->id}}">
 
-                        <div class="row">
+                                    <div class="row">
 
+                                        <div class="col-md-6">
 
-                          <div class="col-md-6">
+                                          <label>{{tr('ad_type')}}</label>
 
-                            <label>{{tr('ad_type')}}</label>
+                                          <br>
 
-                            <br>
+                                          <input type="checkbox" name="ad_type[]" id="ad_type" value="{{PRE_AD}}"> {{tr('pre_ad')}}
+                                                <input type="checkbox" name="ad_type[]" id="ad_type" value="{{POST_AD}}"> {{tr('post_ad')}}
+                                        </div>
 
-                            <input type="checkbox" name="ad_type[]" id="ad_type" value="{{PRE_AD}}"> {{tr('pre_ad')}}
-                                  <input type="checkbox" name="ad_type[]" id="ad_type" value="{{POST_AD}}"> {{tr('post_ad')}}
-                          </div>
+                                        <div class="col-md-6">
 
+                                          <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
-                          <div class="col-md-6">
+                                          <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}">
 
-                            <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
+                                        </div>
+                                    
+                                    </div>                       
 
-                            <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}">
+                                </div>
 
-                          </div>
-                          
-                        </div>
+                                <div class="modal-footer">
+                                    
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
+                                    
+                                    <button type="submit" class="btn btn-success" id="submit-btn">{{tr('assign')}}</button>
+                                </div>
 
+                            </div>
 
-                      
-
+                        </form>
+                    
                     </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{tr('close')}}</button>
-                        <button type="submit" class="btn btn-success" id="submit-btn">{{tr('assign')}}</button>
-                      </div>
+                </div>
 
-          </form>
-          
-        </div>
-      </div>
+                @else
+                    <h3 class="no-result">{{tr('no_ads_found')}}</h3>
+                @endif
+                
+            </div>
 
-    @else
-      <h3 class="no-result">{{tr('no_ads_found')}}</h3>
-    @endif
         </div>
-      </div>
+
     </div>
+
 </div>
 
-     
-     
 @endsection
-
 
 @section('scripts')
 
