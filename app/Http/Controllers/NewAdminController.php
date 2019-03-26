@@ -1753,7 +1753,7 @@ class NewAdminController extends Controller {
                 
                 DB::commit();
 
-                return redirect()->route('admin.categoriesd')->with('flash_success',tr('admin_category_delete_success'));
+                return redirect()->route('admin.categories.index')->with('flash_success',tr('admin_category_delete_success'));
             } 
 
             throw new Exception(tr('admin_category_delete_error'), 101);
