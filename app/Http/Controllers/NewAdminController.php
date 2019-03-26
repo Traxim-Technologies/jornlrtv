@@ -6038,7 +6038,7 @@ class NewAdminController extends Controller {
      *
      * @created Vithya R
      *
-     * @updated Vithya R
+     * @updated Anjana H
      *
      * @param 
      * 
@@ -6084,7 +6084,7 @@ class NewAdminController extends Controller {
      *
      * @created Vithya R
      *
-     * @updated Vithya R
+     * @updated Anjana H
      *
      * @param Integer $request video_tape_id
      * 
@@ -6092,6 +6092,7 @@ class NewAdminController extends Controller {
      *
      */
     public function video_tapes_edit(Request $request) {
+        
         try {
 
             $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
@@ -6216,12 +6217,73 @@ class NewAdminController extends Controller {
             $response_array = ['success' => false, 'error' => $error];
 
             return response()->json($response_array, 200);
-
         }
-
     } 
 
+
+
     /**
+     * Function Name : video_ads_create()
+     *
+     * @uses  To create a video ads based on video id
+     *
+     * @created vithya R
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request : Video ad id with video ad details
+     *
+     * @return response of succes/failure response of details
+     */
+    public function video_ads_create(Request $request) {
+
+        $video_tape_details = VideoTape::find($request->video_tape_id);
+
+        if ($video_tape_details) {
+
+            $videoPath = '';
+
+            $video_pixels = '';
+
+            $preAd = new AdsDetail;
+
+            $postAd = new AdsDetail;
+
+            $betweenAd = new AdsDetail;
+
+            $model = new VideoAd;
+
+            if ($video_tape_details) {
+
+                $videoPath = $video_tape_details->video_resize_path ? $video_tape_details->video.','.$video_tape_details->video_resize_path : $video_tape_details->video;
+                $video_pixels = $video_tape_details->video_resolutions ? 'original,'.$video_tape_details->video_resolutions : 'original';
+
+            }
+
+            $index = 0;
+
+            $ads = AdsDetail::where('status', ADS_ENABLED)->get(); 
+
+            return view('new_admin.video_ads.create')
+                    ->with('video_tape_details', $video_tape_details)
+                    ->with('videoPath', $videoPath)
+                    ->with('video_pixels', $video_pixels)
+                    ->with('page', 'videos')
+                    ->with('sub_page', 'videos')
+                    ->with('index', $index)
+                    ->with('model', $model)
+                    ->with('preAd', $preAd)
+                    ->with('postAd', $postAd)
+                    ->with('betweenAd', $betweenAd)
+                    ->with('ads', $ads);
+
+        } else {
+
+            return back()->with('flash_error', tr('video_not_found'));
+            
+        }
+    }
+        /**
      * Function Name : video_tapes_default_image_save()
      *
      * @uses To set the default image based on object details
@@ -6288,25 +6350,31 @@ class NewAdminController extends Controller {
      * @return response of success/failure message
      *
      */
-    public function videos_status($id) {
+    public function video_tapes_status(Request $request) {
 
-        $video = VideoTape::find($id);
+        try {
 
-        $video->is_approved = $video->is_approved ? DEFAULT_FALSE : DEFAULT_TRUE;
+            $video_tape_details = VideoTape::find($request->video_tape_id);
+            
+            if (!$video_tape_details) {
 
-        $video->save();
+                throw new Exception(tr('video_not_found'), 101);
+            }
 
-        if($video->is_approved == DEFAULT_TRUE) {
+            $video_tape_details->is_approved = $video_tape_details->is_approved ? DEFAULT_FALSE : DEFAULT_TRUE;
 
-            $message = tr('admin_not_video_approve');
+            $video_tape_details->save();
+            
+            $message = $video_tape_details->is_approved == DEFAULT_TRUE ? tr('admin_not_video_approve') : tr('admin_not_video_decline');
 
-        } else {
+            return back()->with('flash_success', $message);
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
 
-            $message = tr('admin_not_video_decline');
-
+            return redirect()->back()->with('flash_error',$error);
         }
-
-        return back()->with('flash_success', $message);
     
     }
 

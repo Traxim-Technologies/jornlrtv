@@ -718,7 +718,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/videos/delete/{id}', 'NewAdminController@video_tapes_delete')->name('video_tapes.delete');
 
-    Route::get('/videos/status/{id}', 'NewAdminController@video_tapes_status')->name('video_tapes.status');
+    Route::get('/videos/status', 'NewAdminController@video_tapes_status')->name('video_tapes.status');
 
     Route::get('/videos/publish/{id}', 'NewAdminController@video_tapes_publish')->name('video_tapes.publish');
 
