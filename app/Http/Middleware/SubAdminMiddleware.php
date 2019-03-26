@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+use Response;
+
 class SubAdminMiddleware
 {
     /**

@@ -842,7 +842,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('settings' , 'NewAdminController@settings')->name('settings');
 
     Route::post('settings' , 'NewAdminController@settings_save')->name('settings.save');
-     Route::post('settings/email' , 'NewAdminController@email_settings_process')->name('email.settings.save');
+
+    Route::post('settings/email' , 'NewAdminController@email_settings_process')->name('email.settings.save');
      
     // Get ios control page
     Route::get('/ios-control','NewAdminController@ios_control')->name('ios_control');
