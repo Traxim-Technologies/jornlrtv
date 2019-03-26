@@ -35,7 +35,25 @@ class AddVersion4Migration extends Migration
         });
 
         Schema::table('admins', function (Blueprint $table) {
+
             $table->string('role')->default(ADMIN)->after('status');
+
+        });
+
+        Schema::table('channels', function (Blueprint $table) {
+
+            $table->string('youtube_channel_id')->default("")->after('status');
+
+            $table->dateTime('youtube_channel_created_at')->nullable()->after('youtube_channel_id');
+
+            $table->dateTime('youtube_channel_updated_at')->nullable()->after('youtube_channel_id');
+
+        });
+
+        Schema::table('video_tapes', function (Blueprint $table) {
+
+            $table->tinyInteger('is_youtube_downloaded')->default(NO)->after('status');
+
         });
 
     }
@@ -50,6 +68,20 @@ class AddVersion4Migration extends Migration
         Schema::drop('bell_notifications');
 
         Schema::drop('bell_notification_templates');
+
+        Schema::table('admins', function (Blueprint $table) {
+            $table->dropColumn('role');
+        });
+
+        Schema::table('admins', function (Blueprint $table) {
+            $table->dropColumn('youtube_channel_id');
+            $table->dropColumn('youtube_channel_created_at');
+            $table->dropColumn('youtube_channel_updated_at');
+        });
+
+        Schema::table('admins', function (Blueprint $table) {
+            $table->dropColumn('is_youtube_downloaded');
+        });
 
     }
 }

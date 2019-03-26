@@ -7893,7 +7893,7 @@ class UserApiController extends Controller {
 
             // Check the channel is exists in YouTube
 
-            $channel = Youtube::getChannelById($request->youtube_channel_id);
+            $channel = \Youtube::getChannelById($request->youtube_channel_id);
 
             if($channel == false) {
 
@@ -7901,11 +7901,11 @@ class UserApiController extends Controller {
                 
             }
 
-            $youtube_videos = Youtube::listChannelVideos($request->youtube_channel_id, 40);
+            $youtube_videos = \Youtube::listChannelVideos($request->youtube_channel_id, 40);
 
             foreach ($youtube_videos as $key => $youtube_video_details) {
 
-                $youtube_video_details = Youtube::getVideoInfo($youtube_video_details->id->videoId);
+                $youtube_video_details = \Youtube::getVideoInfo($youtube_video_details->id->videoId);
 
                 if($youtube_video_details) {
 

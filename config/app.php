@@ -159,7 +159,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Aws\Laravel\AwsServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-        vidhyar2612\Enveditor\EnveditorServiceProvider::class
+        vidhyar2612\Enveditor\EnveditorServiceProvider::class,
+        Alaouy\Youtube\YoutubeServiceProvider::class
 
     ],
 
@@ -211,6 +212,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Enveditor' => 'vidhyar2612\Enveditor\Facade',
+        'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
     ],
 
 ];
