@@ -7884,7 +7884,7 @@ class UserApiController extends Controller {
 
     public function video_tapes_youtube_grapper_save(Request $request) {
 
-        Log::info("Request".print_r($request->all(), true));
+        // Log::info("Request".print_r($request->all(), true));
 
         try {
 
@@ -7894,7 +7894,8 @@ class UserApiController extends Controller {
 
                 'youtube_channel_id' => 'required',
                 'channel_id' => 'required|integer|exists:channels,id,user_id,'.$request->id,
-            ],[
+            ],
+            [
                 'youtube_channel_id' => tr('youtube_grabber_channel_id_not_found')
             ]);
 
@@ -7976,10 +7977,13 @@ class UserApiController extends Controller {
 
                         $video_tape_details->channel_id = $request->channel_id;
 
+                        $category_details = Category::where('status', APPROVED)->first();
+
+                        $category_id = $request->category_id ?: ($category_details ? $category_details->id : 0);
+
+                        $video_tape_details->category_id = $category_id;
 
                     }
-
-                    $video_tape_details->category_id = $request->category_id ?: $video_tape_details->category_id;
 
                     $video_tape_details->title = $youtube_video_details->snippet->title;
 

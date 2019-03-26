@@ -236,6 +236,19 @@ class CommonRepository {
 
                 $channel_details->user_id = $request->has('user_id') ? $request->user_id : '';
 
+                if($channel_details->youtube_channel_id == "" && $request->youtube_channel_id) {
+
+                    $channel_details->youtube_channel_created_at = date('Y-m-d H:i:s');
+                }
+
+                $channel_details->youtube_channel_id = $request->youtube_channel_id ?: "";
+
+                if($request->youtube_channel_id) {
+
+                    $channel_details->youtube_channel_updated_at = date('Y-m-d H:i:s');
+
+                }
+
                 $channel_details->unique_id = $channel_details->name;
                 
                 if($request->hasFile('picture') && $request->file('picture')->isValid()) {

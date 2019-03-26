@@ -1912,6 +1912,8 @@ return array(
 
 	'admin_disabled' => 'Admin disabled the option',
 
+	'youtube_channel_id' => 'YouTube Channel ID',
+
 	'save_to' => 'Save To...',
 
 	'user_playlist_delete_confirm' => 'Do you want to delete this playlist?',

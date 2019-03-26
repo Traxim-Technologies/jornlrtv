@@ -68,6 +68,10 @@
 
 						<input type="text" name="name" id="title" class="form-control" value="{{old('name') ?: $model->name}}" required minlength="6" maxlength="64" title="Enter minimum 6 character and maximum 64 character..!" />
 
+						<h5>{{tr('youtube_channel_id')}}</h5>
+
+						<input type="text" name="youtube_channel_id" id="youtube_channel_id" class="form-control" value="{{old('youtube_channel_id') ?: $model->youtube_channel_id}}"/>
+
 						<h5>{{tr('description')}}</h5>
 
 						<textarea class="form-control description" id="ckeditor" name="description" required>{{old('description') ?: $model->description}}</textarea>
