@@ -3029,5 +3029,140 @@ class UserController extends Controller {
                // ->with('wishlist', $wishlist)
                 // ->with('plans_valid_upto', $plans_valid_upto);
     }
+
+    /**
+     * Function Name : bell_notifications()
+     *
+     * @uses list of notifications for user
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $id
+     *
+     * @return JSON Response / View Page
+     */
+
+    public function bell_notifications(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->bell_notifications($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+            $notifications = $response->data;
+
+            foreach ($notifications as $key => $notification_details) {
+
+                $notification_redirect_url = route('user.single', $notification_details->video_tape_id);
+
+                if($notification_details->notification_type == BELL_NOTIFICATION_NEW_SUBSCRIBER) {
+                    
+                    $notification_redirect_url = route('user.channel', $notification_details->channel_id);
+
+                }
+
+                $notification_details->notification_redirect_url = $notification_redirect_url;
+
+            }
+
+            return view('user.notifications.index')->with('notifications', $notifications);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json()) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    } 
+
+    /**
+     * Function Name : bell_notifications_update()
+     *
+     * @uses list of notifications for user
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $id
+     *
+     * @return JSON Response
+     */
+
+    public function bell_notifications_update(Request $request) {
+
+    }  
+
+    /**
+     * Function Name : bell_notifications_count()
+     * 
+     * @uses Get the notification count
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param object $request - As of no attribute
+     * 
+     * @return response of boolean
+     */
+    public function bell_notifications_count(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->bell_notifications_count($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+            return response()->json($response, 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+            // return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    }  
     
 }
