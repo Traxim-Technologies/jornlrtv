@@ -58,7 +58,7 @@
 								      	<td>
 								      		@if($video_ad_details->title)
 
-								      			<a href="{{ route('admin.videos.view', ['id'=>$video_ad_details->video_tape_id] ) }}" target="_blank">{{ substr($video_ad_details->title , 0,25) }}</a>
+								      			<a href="{{ route('admin.video_tapes.view', ['video_tape_id' => $video_ad_details->video_tape_id] ) }}" target="_blank">{{ substr($video_ad_details->title , 0,25) }}</a>
 								      		@endif
 								      	</td>
 
