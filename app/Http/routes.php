@@ -257,7 +257,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('video-ads/assign/ads', 'AdminController@video_ads_assign_ad')->name('video-ads.assign.ads');
 
-    Route::get('videos/assign-ad', 'AdminController@video_assign_ad')->name('videos.assign_ad');
+    // Route::get('videos/assign-ad', 'AdminController@video_assign_ad')->name('videos.assign_ad');
 
     // Exports tables
 
@@ -879,6 +879,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('video-ads/delete','NewAdminController@video_ads_delete')->name('video_ads.delete');
 
     Route::post('video-ads/inter-ads', 'NewAdminController@video_ads_inter_ads')->name('video_ads.inter-ads');
+   
+    Route::get('videos/assign-ad', 'NewAdminController@video_assign_ad')->name('videos.assign_ad');
 
 
     // Sub Admins CRUD Operations

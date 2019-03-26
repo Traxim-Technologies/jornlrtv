@@ -56,7 +56,7 @@
 								      	<td>{{ $review_details->name }}</td>
 
 								      	<td>
-								      		<a href="{{ route('admin.videos.view' , ['id' => $review_details->video_id] ) }}" target="_blank">{{ $review_details->title }}</a>
+								      		<a href="{{ route('admin.video_tapes.view' , ['video_tape_id' => $review_details->video_id] ) }}" target="_blank">{{ $review_details->title }}</a>
 								      	</td>
 
 								      	<td>

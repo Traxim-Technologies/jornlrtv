@@ -3050,6 +3050,43 @@ class NewAdminController extends Controller {
         }
     }
 
+        /**
+     * Function Name : video_assign_ad()
+     *
+     * To assign singl/multiple based on ads with video details
+     *
+     * @created vithya R
+     *
+     * @updated - 
+     *
+     * @param Integer $request->id : Ads Details Id
+     *
+     * @return response of Ad Details Object
+     */
+    public function video_assign_ad(Request $request) {
+
+        $ad_details = AdsDetail::find($request->id);
+
+        if (!$ad_details) {
+
+            return back()->with('flash_error', tr('something_error'));
+
+        }
+
+        $video_tapes = VideoTape::where('status', DEFAULT_TRUE)
+            ->where('publish_status', DEFAULT_TRUE)
+            ->where('is_approved', DEFAULT_TRUE)
+            ->where('ad_status',DEFAULT_TRUE)
+            ->get();
+       
+        return view('new_admin.ads_details.assign_ad')
+                ->with('page', 'videos_ads')
+                ->with('sub_page', 'view-ads')
+                ->with('ad_details', $ad_details)
+                ->with('video_tapes', $video_tapes)
+                ->with('type', $request->type);
+    }
+
     /**
      * Function Name : video_ads_inter_ads()
      *
