@@ -99,7 +99,7 @@
                                           <!--  <p class="hidden-xs">share</p> -->
                                        </a>
 
-                                       <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
+                                       <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#" style="display: none;">
                                           <i class="material-icons">playlist_add</i>&nbsp;Save
                                        </a>
          
