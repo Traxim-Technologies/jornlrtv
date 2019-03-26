@@ -54,7 +54,7 @@
 								      	</td>
 								      	
 								      	<td>
-								      		<a href="{{route('admin.videos.view', ['id' => $user_wishlist_details->user_id])}}" > {{ $user_wishlist_details->title }}
+								      		<a href="{{route('admin.video_tapes.view', ['video_tape_id' => $user_wishlist_details->user_id])}}" > {{ $user_wishlist_details->title }}
 								      		</a>
 								      	</td>
 								      	

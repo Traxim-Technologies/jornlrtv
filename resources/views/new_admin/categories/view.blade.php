@@ -167,7 +167,7 @@
 
                                                 <div class="comment-text">
                                                     <span class="username">
-                                                        <a href="{{route('admin.videos.view', ['id' => $category_video_details->video_tape_id] )}}" target="_blank">{{$category_video_details->title}}</a>
+                                                        <a href="{{route('admin.video_tapes.view', ['video_tape_id' => $category_video_details->video_tape_id] )}}" target="_blank">{{$category_video_details->title}}</a>
                                                         <span class="text-muted pull-right">{{$category_video_details->created_at->diffForHumans()}}</span>
                                                         </span><!-- /.username -->
                                                     <div class="description"><?= $category_video_details->description?></div>
