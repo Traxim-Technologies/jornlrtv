@@ -274,18 +274,18 @@ use  Carbon\Carbon;
                     <div class="box-body">
 
                         <ul class="products-list product-list-in-box">
-                            @foreach($recent_videos as $v => $video_detauils)
+                            @foreach($recent_videos as $v => $video_details)
                                 @if($v < 5)
                                     <li class="item">
                                         <div class="product-img">
-                                            <img src="{{$video_detauils->default_image}}" alt="Product Image">
+                                            <img src="{{$video_details->default_image}}" alt="Product Image">
                                         </div>
                                         <div class="product-info">
-                                            <a href="{{route('admin.video_tapes.view' , ['id' => $video_detauils->video_tape_id] )}}" class="product-title">{{substr($video_detauils->title, 0,50)}}
-                                                <span class="label label-warning pull-right">{{$video_detauils->duration}}</span>
+                                            <a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video_details->video_tape_id] )}}" class="product-title">{{substr($video_details->title, 0,50)}}
+                                                <span class="label label-warning pull-right">{{$video_details->duration}}</span>
                                             </a>
                                             <span class="product-description">
-                                              <?= substr($video_detauils->description , 0 , 70) ?>
+                                              <?= substr($video_details->description , 0 , 70) ?>
                                             </span>
                                       </div>
                                     </li>
