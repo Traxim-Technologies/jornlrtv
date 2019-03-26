@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
+use App\Jobs\BellNotificationJob;
+
 use App\Http\Requests;
 
 use App\Helpers\Helper;
@@ -1719,6 +1721,18 @@ class UserController extends Controller {
                 $model->status = DEFAULT_TRUE;
 
                 $model->save();
+
+                $channel_details = Channel::find($request->channel_id);
+
+                $notification_data['from_user_id'] = $request->id; 
+
+                $notification_data['to_user_id'] = $channel_details->user_id;
+
+                $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_SUBSCRIBER;
+
+                $notification_data['channel_id'] = $channel_details->id;
+
+                dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
 
                 return back()->with('flash_success', tr('channel_subscribed'));
 
