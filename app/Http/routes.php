@@ -216,7 +216,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('videos/save/default_img', 'AdminController@videos_save_default_img')->name('videos.save.default_img');
 
-    Route::get('/old-videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
+    // Route::get('/old-videos/list/{id?}', 'AdminController@videos_list')->name('videos.list');
 
     Route::get('/old-videos/view', 'AdminController@videos_view')->name('videos.view');
 
@@ -700,7 +700,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/videos/create', 'NewAdminController@video_tapes_create')->name('video_tapes.create');
 
-    Route::get('/videos/edit/{id}', 'NewAdminController@video_tapes_edit')->name('video_tapes.edit');
+    Route::get('/videos/edit', 'NewAdminController@video_tapes_edit')->name('video_tapes.edit');
 
     Route::post('/videos/save', 'NewAdminController@video_tapes_save')->name('video_tapes.save');
 

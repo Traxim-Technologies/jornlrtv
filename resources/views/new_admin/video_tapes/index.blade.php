@@ -96,11 +96,11 @@
 							
 							    <tr>
 							      	
-							      	<td><a href="{{route('admin.video_tapes.view' , ['id' => $video->video_tape_id] )}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video->video_tape_id] ) }}">{{$i+1}}</a></td>
 							      	
-							      	<td><a href="{{route('admin.channels.view', ['channel_id' => $video->channel_id] )}}">{{$video->channel_name}}</a></td>
+							      	<td><a href="{{route('admin.channels.view', ['channel_id' => $video->channel_id] ) }}">{{$video->channel_name}}</a></td>
 							      		
-							      	<td><a href="{{route('admin.categories.view', ['category_id' => $video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
+							      	<td><a href="{{route('admin.categories.view', ['category_id' => $video->category_id] ) }}" target="_blank">{{$video->category_name}}</a></td>
 
 							      	<td>
 							      		
@@ -118,7 +118,7 @@
 
                                         @endif
 							      	</td>
-							      	<td><a href="{{route('admin.video_tapes.view' , array('id' => $video->video_tape_id))}}"> {{substr($video->title , 0,25)}}...</a></td>
+							      	<td><a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video->video_tape_id] )}}"> {{substr($video->title , 0,25)}}...</a></td>
 							      	
 							      	<?php /*@if(Setting::get('theme') == 'default')
 							      	
@@ -179,7 +179,7 @@
                                                         @if(Setting::get('admin_delete_control'))
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , array('id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
+                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , array('video_tape_id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
                                                         @endif
                                                     </li>
 

@@ -6091,8 +6091,7 @@ class NewAdminController extends Controller {
      * @return view page
      *
      */
-    public function videos_edit(Request $request) {
-
+    public function video_tapes_edit(Request $request) {
         try {
 
             $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
@@ -6108,7 +6107,7 @@ class NewAdminController extends Controller {
 
             $page = 'video_tapes'; $sub_page = 'video_tapes-create';
 
-            if($video->is_banner == 1) {
+            if($video_tape_details->is_banner == DEFAULT_TRUE ) {
 
                 $page = 'banner-videos'; $sub_page = 'banner-videos';
             }
@@ -6124,7 +6123,7 @@ class NewAdminController extends Controller {
                             ->where('status', TAG_APPROVE_STATUS)
                             ->orderBy('created_at', 'desc')->get();
 
-            $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
+            $video_tape_details->tag_id = VideoTapeTag::where('video_tape_id', $request->video_tape_id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
 
             return view('new_admin.video_tapes.edit')
                     ->with('page' ,$page)
