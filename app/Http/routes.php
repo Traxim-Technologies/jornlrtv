@@ -1151,6 +1151,13 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/settings' , 'UserController@settings');
 
+    // Notifications
+
+    Route::any('bell_notifications/', 'UserController@bell_notifications')->name('bell_notifications.index');
+
+    Route::any('bell_notifications/update', 'UserController@bell_notifications_update')->name('bell_notifications.update');
+
+    Route::any('bell_notifications/count', 'UserController@bell_notifications_count')->name('bell_notifications.count');
 
     // User Playlists
 
