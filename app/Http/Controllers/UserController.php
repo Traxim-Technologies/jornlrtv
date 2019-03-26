@@ -1851,7 +1851,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function payment_card_add(Request $request) {
+    public function cards_add(Request $request) {
 
         $last_four = substr($request->number, -4);
 
