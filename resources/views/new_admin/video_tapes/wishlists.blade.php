@@ -23,7 +23,7 @@
           <div class="box">
             <div class="box-body">
 
-            	@if(count($data) > 0)
+            	@if(count($wishlists) > 0)
 
 	              	<table id="example1" class="table table-bordered table-striped">
 
@@ -39,13 +39,19 @@
 
 						<tbody>
 
-							@foreach($data as $i => $wishlist)
+							@foreach($wishlists as $i => $wishlist_details)
 
 							    <tr>
 							      	<td>{{$i+1}}</td>
-							      	<td>{{$wishlist->username}}</td>
-							      	<td>{{$wishlist->title}}</td>
-							      	<td>{{$wishlist->created_at}}</td>
+							      	
+							      	<td>
+							      		<a href="{{ route('admin.users.view' ,  ['user_id' => $wishlist_details->id] ) }}">{{$wishlist_details->username}}</a>
+							      	</td>
+							      	
+							      	<td>{{$wishlist_details->title}}</td>
+							      	
+							      	<td>{{$wishlist_details->created_at}}</td>
+								   
 								    <td>
             							<ul class="admin-action btn btn-default">
             								<li class="dropup">
@@ -56,7 +62,7 @@
 								                </a>
 
 								                <ul class="dropdown-menu">
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.users.wishlist.delete' , $wishlist->wishlist_id)}}">{{tr('delete_wishlist')}}</a></li>
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?');" href="{{route('admin.users.wishlist.delete' , ['wishlist_id' => $wishlist_details->wishlist_id] )}}">{{tr('delete_wishlist')}}</a></li>
 								                </ul>
 
               								</li>

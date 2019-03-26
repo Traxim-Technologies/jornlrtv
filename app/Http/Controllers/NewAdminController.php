@@ -2148,7 +2148,6 @@ class NewAdminController extends Controller {
                         ->groupBy('video_tape_tags.video_tape_id')
                         ->get();
 
-
             return view('new_admin.tags.videos')
                         ->withPage('tags')
                         ->with('sub_page','tags')
@@ -6207,7 +6206,6 @@ class NewAdminController extends Controller {
         } else {
 
             return response()->json($response);
-
         }
 
     }
@@ -6676,7 +6674,7 @@ class NewAdminController extends Controller {
                         ->get();
 
         return view('new_admin.video_tapes.wishlists')
-                    ->with('data' , $wishlists)
+                    ->with('wishlists' , $wishlists)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
      

@@ -845,7 +845,7 @@ class CommonRepository {
 
             DB::commit();
 
-            $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
+            $response_array =  ['success'=>true , 'data'=> $model, 'video_path' => $video_path];
 
         } catch (Exception $e) {
 
