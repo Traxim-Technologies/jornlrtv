@@ -131,17 +131,17 @@
 	                                                            <a role="menuitem" tabindex="-1"  href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('delete') }}</a>
 
 	                                                        @else
-	                                                            <a role="menuitem" tabindex="-1" href="{{ route('admin.video_tapes.edit' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('edit') }}</a>
+	                                                            <a role="menuitem" tabindex="-1" href="{{ route('admin.video_tapes.edit' , ['video_tape_id' => $video_details->video_tape_id] ) }}">{{ tr('edit') }}</a>
 	                                                        	
 	                                                        	<a role="menuitem" tabindex="-1"
 										                  			onclick="return confirm(&quot;{{ tr('admin_live_custom_video_delete_confirmation', substr($video_details->title , 0,25) ) }}&quot;)"
-										                  			 href="{{ route('admin.videos.delete' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
+										                  			 href="{{ route('admin.videos.delete' , ['video_tape_id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
 	                                                        @endif
 	                                                    </li>
 
 	                                                    @endif
 
-									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.video_tapes.view' , ['id' => $video_details->video_tape_id] ) }}">{{ tr('view') }}</a></li>
+									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.video_tapes.view' , ['video_tape_id' => $video_details->video_tape_id] ) }}">{{ tr('view') }}</a></li>
 
 									               		@if(Setting::get('is_payper_view') == DEFAULT_TRUE)
 
