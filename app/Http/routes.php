@@ -710,7 +710,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('videos/save/default_img', 'NewAdminController@video_tapes_default_image_save')->name('video_tapes.save.default_img');
 
-    Route::get('/videos/list/{id?}', 'NewAdminController@video_tapes_index')->name('video_tapes.index');
+    Route::get('/videos/list', 'NewAdminController@video_tapes_index')->name('video_tapes.index');
 
     Route::get('/videos/view', 'NewAdminController@video_tapes_view')->name('video_tapes.view');
 

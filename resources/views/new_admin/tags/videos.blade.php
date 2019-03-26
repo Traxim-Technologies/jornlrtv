@@ -146,9 +146,9 @@
 									                  {{ tr('action') }} <span class="caret"></span>
 									                </a>
 									                <ul class="dropdown-menu">
-									                	@if ($video->compress_status == 1)
+									                	@if ($video->compress_status == DEFAULT_TRUE)
 									                  	<li role="presentation">
-	                                                        @if(Setting::get('admin_delete_control'))
+	                                                        @if(Setting::get('admin_delete_control') == YES)
 	                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('edit') }}</a>
 	                                                        @else
 	                                                            <a role="menuitem" tabindex="-1" href="{{ route('admin.videos.edit' , array('id' => $video->video_tape_id)) }}">{{ tr('edit') }}</a>
@@ -157,7 +157,7 @@
 	                                                    @endif
 									                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ route('admin.videos.view' , array('id' => $video->video_tape_id)) }}">{{ tr('view') }}</a></li>
 
-									               		@if(Setting::get('is_payper_view'))
+									               		@if(Setting::get('is_payper_view') == YES )
 
 									                  		<li role="presentation">
 									                  			<a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#{{ $video->video_tape_id }}">{{ tr('pay_per_view') }}</a>
@@ -167,25 +167,28 @@
 
 									                  	<li class="divider" role="presentation"></li>
 
-									                  	@if($video->is_approved)
+									                  	@if($video->is_approved == YES)
 
 									                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.videos.status',$video->video_tape_id) }}">{{ tr('decline') }}</a></li>
+
 									                	@else
-									                		@if ($video->compress_status == 0)
+
+									                		@if ($video->compress_status == NO)
 									                			<li role="presentation"><a role="menuitem" tabindex="-1">{{ tr('compress') }}</a></li>
 									                		@else 
 									                  			<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.videos.status',$video->video_tape_id) }}">{{ tr('approve') }}</a></li>
 									                  		@endif
+
 									                  	@endif
 
-									                  	@if($video->publish_status == 0 && $video->compress_status == 1)
+									                  	@if($video->publish_status == 0 && $video->compress_status == DEFAULT_TRUE)
 
 									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.videos.publish',$video->video_tape_id) }}">{{ tr('publish') }}</a></li>
 									                  	@endif
 
-									                  	@if ($video->compress_status == 1)
+									                  	@if ($video->compress_status == DEFAULT_TRUE)
 										                  	<li role="presentation">
-										                  		@if(Setting::get('admin_delete_control'))
+										                  		@if(Setting::get('admin_delete_control') == YES )
 
 											                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('delete') }}</a>
 
@@ -205,7 +208,7 @@
 
 									                  		@if ($video->getScopeVideoAds)
 
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_ads.view' , [id' => $video->getScopeVideoAds->id] ) }}">{{ tr('view_ad') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_ads.view', ['id' => $video->getScopeVideoAds->id] ) }}">{{ tr('view_ad') }}</a></li>
 
 									                  		@endif
 
