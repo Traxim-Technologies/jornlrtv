@@ -239,9 +239,9 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     // Spam Videos
 
-    Route::get('/spam-videos', 'AdminController@spam_videos')->name('spam-videos');
+    // Route::get('/spam-videos', 'AdminController@spam_videos')->name('spam-videos');
 
-    Route::get('/spam-videos/user-reports/{id}', 'AdminController@spam_videos_user_reports')->name('spam-videos.user-reports');
+    // Route::get('/spam-videos/user-reports/{id}', 'AdminController@spam_videos_user_reports')->name('spam-videos.user-reports');
 
     Route::get('/spam/per-user-reports/{id}', 'AdminController@spam_videos_each_user_reports')->name('spam-videos.per-user-reports');
 
@@ -716,7 +716,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('/videos/set-ppv/{id}', 'NewAdminController@video_tapes_set_ppv')->name('video_tapes.set-ppv');
 
-    Route::get('/videos/delete/{id}', 'NewAdminController@video_tapes_delete')->name('video_tapes.delete');
+    Route::get('/videos/delete', 'NewAdminController@video_tapes_delete')->name('video_tapes.delete');
 
     Route::get('/videos/status', 'NewAdminController@video_tapes_status')->name('video_tapes.status');
 
@@ -725,6 +725,10 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('/videos/remove-ppv/{id}', 'NewAdminController@video_tapes_remove_ppv')->name('video_tapes.remove-ppv');
 
     Route::get('/videos/wishlist/{id}', 'NewAdminController@video_tapes_wishlist')->name('video_tapes.wishlist');
+
+    Route::get('/spam-videos', 'NewAdminController@spam_videos')->name('spam-videos');
+
+    Route::get('/spam-videos/user-reports/{id}', 'NewAdminController@spam_videos_user_reports')->name('spam-videos.user-reports');
 
     // New Video CRUD end
 
@@ -858,11 +862,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/reviews/delete', 'NewAdminController@user_reviews_delete')->name('reviews.delete');
 
-    // videos
-
-    // Route::get('/videos/status/{id}', 'NewAdminController@videos_status')->name('videos.status');
-
-    Route::get('ads-details/ad-status/', 'AdminController@ads_details_ad_status_change')->name('ads-details.ad-status-change');
+    Route::get('ads-details/ad-status/', 'NewAdminController@ads_details_ad_status_change')->name('ads-details.ad-status-change');
 
      // Video Ads
 

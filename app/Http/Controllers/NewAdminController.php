@@ -5103,7 +5103,7 @@ class NewAdminController extends Controller {
         $user_reviews = $query->get();
 
         return view('new_admin.reviews.reviews')
-                    ->with('page' ,'videos')
+                    ->with('page' ,'video_tapes')
                     ->with('sub_page' ,'reviews')
                     ->with('reviews', $user_reviews);
     
@@ -5362,7 +5362,7 @@ class NewAdminController extends Controller {
 
             DB::beginTransaction();
 
-            $video_tape_details = VideoTape::find($request->id);
+            $video_tape_details = VideoTape::find($request->video_tape_id);
 
             if(count($video_tape_details) == 0) { 
 
@@ -5375,24 +5375,22 @@ class NewAdminController extends Controller {
 
                 DB::commit();
 
-                $video_ad = VideoAd::where('video_tape_id', $video_tape_details->id)->first();
+                $video_ad_details = VideoAd::where('video_tape_id', $video_tape_details->id)->first();
 
-                if($video_ad) {
+                if($video_ad_details) {
 
-                    $video_ad->status = $video_tape_details->ad_status;
+                    $video_ad_details->status = $video_tape_details->ad_status;
 
-                    if($video_ad->save()) {   
+                    if($video_ad_details->save()) {   
                         
                         DB::commit(); 
                         
                         $message = $video_tape_details->ad_status == DEFAULT_TRUE ? tr('ad_status_enable_success') : tr('ad_status_disable_success'); 
                         
                         return back()->with('flash_success', $message);
-
                     } 
 
                     throw new Exception(tr('ad_status_change_failure'), 101);
-                   
                 }
 
             } 
@@ -6378,6 +6376,8 @@ class NewAdminController extends Controller {
     
     }
 
+
+
     /**
      * Function Name : videos_publish()
      *
@@ -6552,10 +6552,95 @@ class NewAdminController extends Controller {
             $error = $e->getMessage();
 
             return redirect()->route('admin.video_tapes.index')->with('flash_error',$error);
+        }    
+    }
+
+
+    /**
+     * Function Name : videos_delete()
+     *
+     * To delete a video based on video id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param Integer $id - Video Id
+     * 
+     * @return response of success/failure message
+     *
+     */
+    public function video_tapes_delete(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $video_tape_details = VideoTape::where('id' , $request->video_tape_id)->first();
+            
+            if(!$video_tape_details)  {
+
+                throw new Exception(tr('video_not_found'), 101);
+            }                
+
+            $video_tape_details->delete();
+            
+            DB::commit();
+
+            return redirect()->route('admin.video_tapes.index')->with('flash_success', tr('video_delete_success'));
+                
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
         }
     
     }
+    
+    /**
+     * Function Name : spam_videos()
+     *
+     * @uses Load all the videos from flag table
+     *
+     * @created vithya R
+     *
+     * @updated Anjana H
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos(Request $request) {
+        // Load all the videos from flag table
+        $flags = Flag::groupBy('video_tape_id')->get();
+        
+        // Return array of values
+        return view('new_admin.spam_video_tapes.index')
+                        ->with('page' , 'video_tapes')
+                        ->with('sub_page' , 'spam_videos')
+                        ->with('flags' , $flags);
+    }
 
+    /**
+     * Function Name : spam_videos_user_reports()
+     *
+     * Load all the flags based on the video id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param integer $id Video id
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos_user_reports($id) {
+        // Load all the users
+        $model = Flag::where('video_tape_id', $id)->get();
+        // Return array of values
+        return view('admin.spam_videos.user_report')->with('model' , $model)
+                        ->with('page' , 'videos')
+                        ->with('sub_page' , 'spam_videos');   
+    }
 
     /**
      * Function Name : videos_wishlist
