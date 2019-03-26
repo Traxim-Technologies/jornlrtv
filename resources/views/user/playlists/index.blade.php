@@ -39,6 +39,12 @@
                                             <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$playlist_details->picture}}" class="slide-img1 placeholder" />
                                         </a>
 
+                                        <div class="video_amount">
+
+                                            <a href=""><i class="fa fa-trash"></i></a>
+
+                                        </div>
+
                                         <div class="video_duration">
                                             {{$playlist_details->total_videos}} {{tr('videos')}}
                                         </div>

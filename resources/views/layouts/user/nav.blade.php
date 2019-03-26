@@ -67,8 +67,8 @@
 
             <li id="playlists">
                 <a href="{{route('user.playlists.index')}}">
-                    <img src="{{asset('images/channel-grey.png')}}" class="grey-img">
-                    <img src="{{asset('images/channel-red.png')}}" class="red-img">
+                    <img src="{{asset('images/playlist-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/playlist-red.png')}}" class="red-img">
                     <span>{{tr('playlists')}}</span>
                 </a>
             </li>
