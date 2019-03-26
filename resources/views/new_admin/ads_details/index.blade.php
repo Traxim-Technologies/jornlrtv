@@ -186,9 +186,7 @@
 							        	</div>
 
 							      	</div>
-
-									<!-- Modal -->
-									
+								
 								@endforeach
 
 							</tbody>

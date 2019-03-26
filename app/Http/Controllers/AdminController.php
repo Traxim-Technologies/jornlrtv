@@ -307,7 +307,6 @@ class AdminController extends Controller {
                 'dob'=>'required',
                 'description'=>'max:255',
                 'picture'=>'mimes:jpg,png,jpeg',
-
             )
         );
         
@@ -1687,9 +1686,9 @@ class AdminController extends Controller {
      * @return response of success/failure message
      *
      */
-    public function videos_status($id) {
+    public function videos_status(Request $request) {
 
-        $video = VideoTape::find($id);
+        $video = VideoTape::find($request->video_tape_id);
 
         $video->is_approved = $video->is_approved ? DEFAULT_FALSE : DEFAULT_TRUE;
 

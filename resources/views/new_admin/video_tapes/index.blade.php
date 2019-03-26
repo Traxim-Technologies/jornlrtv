@@ -27,7 +27,7 @@
                 
                 <!-- EXPORT OPTION START -->
 
-					@if(count($videos) > 0 )
+					@if(count($video_tapes) > 0 )
 	                
 		                <ul class="admin-action btn btn-default pull-right" style="margin-right: 20px">
 		                 	
@@ -58,7 +58,7 @@
 
             <div class="box-body">
 
-            	@if(count($videos) > 0)
+            	@if(count($video_tapes) > 0)
 
 	              	<table id="example1" class="table table-bordered table-striped">
 
@@ -92,7 +92,7 @@
 
 						<tbody>
 
-							@foreach($videos as $i => $video)
+							@foreach($video_tapes as $i => $video)
 							
 							    <tr>
 							      	

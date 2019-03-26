@@ -1548,6 +1548,7 @@ return array(
 
 	'admin_user_delete_confirmation' => ' Do you  want delete this(:otherkey) user?',
 	'admin_user_decline_confirmation' => ' Do you want decline this(:otherkey) user?',
+	
 	'admin_user_approve_confirmation' => ' Do you want approve this(:otherkey) user?',
 
 	'admin_user_history_delete_confirm'=>"Do you want to delete this(:otherkey) video from user history?",

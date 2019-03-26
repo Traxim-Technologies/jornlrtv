@@ -79,13 +79,13 @@
 
                 <ul class="treeview-menu">
 
-                    <li id="video_tapes-index">
+                    <li id="video_tapes-create">
                         <a href="{{route('admin.video_tapes.create')}}">
                             <i class="fa fa-circle-o"></i>{{tr('add_video')}}
                         </a>
                     </li>
 
-                    <li id="video_tapes-create">
+                    <li id="video_tapes-view">
                         <a href="{{route('admin.video_tapes.index')}}">
                             <i class="fa fa-circle-o"></i>{{tr('view_videos')}}
                         </a>

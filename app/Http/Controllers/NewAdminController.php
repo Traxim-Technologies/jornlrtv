@@ -375,10 +375,10 @@ class NewAdminController extends Controller {
 
                 if ($request->user_id) {
 
-                    Helper::delete_picture($user_details->picture, "/uploads/images/users"); // Delete the old pic
+                    Helper::delete_picture($user_details->picture, "/uploads/images/users/"); // Delete the old pic
                 }
 
-                $user_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/users");
+                $user_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/users/");
             }
 
             if ($user_details->save()) {
@@ -1394,7 +1394,7 @@ class NewAdminController extends Controller {
                         ->orderBy('video_tapes.created_at' , 'desc')
                         ->get();
 
-            return view('admin.videos.videos')
+            return view('new_admin.videos.videos')
                         ->withPage('videos')
                         ->with('sub_page','view-videos')
                         ->with('videos' , $videos)
@@ -4015,7 +4015,7 @@ class NewAdminController extends Controller {
      */
     public function banner_videos_index(Request $request) {
 
-        $video_ads = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+        $video_tapes = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->where('video_tapes.is_banner' , DEFAULT_TRUE )
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
@@ -4024,7 +4024,7 @@ class NewAdminController extends Controller {
         return view('new_admin.banner_videos.index')
                     ->withPage('banner-videos')
                     ->with('sub_page','view-banner-videos')
-                    ->with('videos' , $video_ads);   
+                    ->with('video_tapes' , $video_tapes);   
     }
 
 
@@ -6008,7 +6008,6 @@ class NewAdminController extends Controller {
                         ->where('video_tape_tags.tag_id', $request->tag_id)
                         ->orderBy('video_tapes.created_at' , 'desc')
                         ->groupBy('video_tape_tags.video_tape_id');
-           
             }
 
             if ($request->user_id) {
@@ -6018,12 +6017,11 @@ class NewAdminController extends Controller {
 
             $video_tapes = $base_query->get();
 
-            return view('admin.video_tapes.index')
-                        ->with('video_tapes' , $video_tapes)
-                        ->with('video_tapes', 'video_tapes-index')
-                        ->with('sub_page','video_tapes-view');
-   
-            
+            return view('new_admin.video_tapes.index')
+                        ->with('page', 'video_tapes')
+                        ->with('sub_page', 'video_tapes-view')
+                        ->with('video_tapes' , $video_tapes); 
+
         } catch (Exception $e) {
             
             $error = $e->getMessage();
@@ -6063,7 +6061,7 @@ class NewAdminController extends Controller {
                         ->orderBy('created_at', 'desc')
                         ->get();
 
-            return view('admin.video_tapes.create')
+            return view('new_admin.video_tapes.create')
                     ->with('page' ,'video_tapes')
                     ->with('sub_page' ,'video_tapes-create')
                     ->with('channels' , $channels)
@@ -6128,7 +6126,7 @@ class NewAdminController extends Controller {
 
             $video->tag_id = VideoTapeTag::where('video_tape_id', $request->id)->where('status', TAG_APPROVE_STATUS)->get()->pluck('tag_id')->toArray();
 
-            return view('admin.video_tapes.edit')
+            return view('new_admin.video_tapes.edit')
                     ->with('page' ,$page)
                     ->with('sub_page' ,$sub_page)
                     ->with('channels' , $channels)
@@ -6466,7 +6464,7 @@ class NewAdminController extends Controller {
                 $page = 'banner-videos'; $sub_page = 'banner-videos';
             }
 
-            return view('admin.videos.view-video')->with('video' , $video)
+            return view('new_admin.videos.view-video')->with('video' , $video)
                             ->with('video_images' , $admin_video_images)
                             ->with('page', $page)
                             ->with('sub_page', $sub_page)
@@ -6516,7 +6514,7 @@ class NewAdminController extends Controller {
                             )
                         ->get();
 
-        return view('admin.videos.wishlists')
+        return view('new_admin.videos.wishlists')
                     ->with('data' , $wishlists)
                     ->withPage('videos')
                     ->with('sub_page','view-videos');
