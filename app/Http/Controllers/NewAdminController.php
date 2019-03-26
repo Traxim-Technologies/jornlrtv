@@ -6136,7 +6136,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_save()
+     * Function Name : video_tapes_save()
      *
      * To Save video based on new /edit video details
      *
@@ -6149,7 +6149,7 @@ class NewAdminController extends Controller {
      * @return response of success/failure 
      *
      */
-    public function videos_save(Request $request) {
+    public function video_tapes_save(Request $request) {
 
         $response = CommonRepo::video_save($request)->getData();
 
