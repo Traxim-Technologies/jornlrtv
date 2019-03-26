@@ -160,7 +160,7 @@ hr {
 
               @if ($video->compress_status) 
 
-                <a href="{{route('admin.video_tapes.edit' , array('id' => $video->video_tape_id))}}" class="btn btn-primary btn-block"><b>{{tr('edit')}}</b></a>
+                <a href="{{route('admin.video_tapes.edit' , array('video_tape_id' => $video->video_tape_id))}}" class="btn btn-primary btn-block"><b>{{tr('edit')}}</b></a>
 
               @endif
               <!-- /.row -->
