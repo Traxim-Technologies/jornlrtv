@@ -6390,20 +6390,19 @@ class NewAdminController extends Controller {
      * @return view page 
      *
      */
-    public function videos_view(Request $request) {
+    public function video_tapes_view(Request $request) {
 
         try {
 
             $validator = Validator::make($request->all() , [
-                    'id' => 'required|exists:video_tapes,id'
+                    'video_tape_id' => 'required|exists:video_tapes,id'
                 ]);
 
             if($validator->fails()) {
 
                 $error = implode(',', $validator->messages()->all());
 
-                throw new Exception($error, 101);
-                
+                throw new Exception($error, 101);                
             }
 
             $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
@@ -6412,30 +6411,34 @@ class NewAdminController extends Controller {
                         ->orderBy('video_tapes.created_at' , 'desc')
                         ->first();
 
+            $video_tape_tags = VideoTapeTag::where('video_tape_tags.video_tape_id' , $request->id)
+                    ->leftjoin('tags','tags.id' , '=' , 'video_tape_tags.tag_id')
+                    ->get();
+
             $videoPath = $video_pixels = $videoStreamUrl = '';
 
-            if ($video->video_type == VIDEO_TYPE_UPLOAD) {
+            if ($video_tape_details->video_type == VIDEO_TYPE_UPLOAD) {
 
                 if (\Setting::get('streaming_url')) {
-                    $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video->video);
-                    if ($video->is_approved == 1) {
-                        if ($video->video_resolutions) {
-                            $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video->video).'.smil';
+                    $videoStreamUrl = \Setting::get('streaming_url').get_video_end($video_tape_details->video);
+                    if ($video_tape_details->is_approved == 1) {
+                        if ($video_tape_details->video_resolutions) {
+                            $videoStreamUrl = Helper::web_url().'/uploads/smil/'.get_video_end_smil($video_tape_details->video).'.smil';
                         }
                     }
                 } else {
 
-                    $videoPath = $video->video_resize_path ? $videos->video.','.$video->video_resize_path : $video->video;
-                    $video_pixels = $video->video_resolutions ? 'original,'.$video->video_resolutions : 'original';
+                    $videoPath = $video_tape_details->video_resize_path ? $videos->video.','.$video_tape_details->video_resize_path : $video_tape_details->video;
+                    $video_pixels = $video_tape_details->video_resolutions ? 'original,'.$video_tape_details->video_resolutions : 'original';
                     
-
                 }
            
             } else {
-                $videoStreamUrl = $video->video;
+
+                $videoStreamUrl = $video_tape_details->video;
             }
         
-            $admin_video_images = $video->getScopeVideoTapeImages;
+            $admin_video_images = $video_tape_details->getScopeVideoTapeImages;
 
             // Spam Videos Reports
 
@@ -6458,21 +6461,23 @@ class NewAdminController extends Controller {
 
             $page = 'video_tapes'; $sub_page = 'video_tapes-create';
 
-            if($video->is_banner == 1) {
+            if($video_tape_details->is_banner == 1) {
 
                 $page = 'banner-videos'; $sub_page = 'banner-videos';
             }
 
-            return view('new_admin.videos.view-video')->with('video' , $video)
-                            ->with('video_images' , $admin_video_images)
-                            ->with('page', $page)
-                            ->with('sub_page', $sub_page)
-                            ->with('videoPath', $videoPath)
-                            ->with('video_pixels', $video_pixels)
-                            ->with('videoStreamUrl', $videoStreamUrl)
-                            ->with('spam_reports', $spam_reports)
-                            ->with('reviews', $reviews)
-                            ->with('wishlists', $wishlists);
+            return view('new_admin.video_tapes.view')
+                        ->with('video' , $video_tape_details)
+                        ->with('video_images' , $admin_video_images)
+                        ->with('page', $page)
+                        ->with('sub_page', $sub_page)
+                        ->with('videoPath', $videoPath)
+                        ->with('video_pixels', $video_pixels)
+                        ->with('videoStreamUrl', $videoStreamUrl)
+                        ->with('spam_reports', $spam_reports)
+                        ->with('reviews', $reviews)
+                        ->with('wishlists', $wishlists)
+                        ->with('video_tags', $video_tape_tags);
 
         } catch (Exception $e) {
             
@@ -6535,7 +6540,7 @@ class NewAdminController extends Controller {
      *
      * @return flash message
      */
-    public function videos_set_ppv($id, Request $request) {
+    public function video_tapes_set_ppv($id, Request $request) {
         
         if($request->ppv_amount > 0){
 

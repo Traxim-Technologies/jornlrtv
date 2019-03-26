@@ -174,9 +174,13 @@
 								                  {{tr('action')}} <span class="caret"></span>
 								                </a>
 								                <ul class="dropdown-menu dropdown-menu-right">
-								                	@if ($video->compress_status == 1)
+
+								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video->video_tape_id] )}}">{{tr('view')}}</a></li>
+
+								                	@if ($video->compress_status == DEFAULT_TRUE)
+								                  	
 								                  	<li role="presentation">
-                                                        @if(Setting::get('admin_delete_control'))
+                                                        @if(Setting::get('admin_delete_control') == YES )
                                                             <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
                                                         @else
                                                             <a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.edit' , array('video_tape_id' => $video->video_tape_id))}}">{{tr('edit')}}</a>
@@ -188,7 +192,6 @@
                                                     	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.compress.status' , array('id' => $video->video_tape_id))}}">{{tr('do_compression_in_background')}}</a></li>
 
                                                     @endif
-								                  	<li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{route('admin.video_tapes.view' , array('id' => $video->video_tape_id))}}">{{tr('view')}}</a></li>
 
 								               		@if(Setting::get('is_payper_view'))
 
