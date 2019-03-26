@@ -7884,6 +7884,8 @@ class UserApiController extends Controller {
 
     public function video_tapes_youtube_grapper_save(Request $request) {
 
+        Log::info("Request".print_r($request->all(), true));
+
         try {
 
             DB::beginTransaction();
