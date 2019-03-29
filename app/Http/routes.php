@@ -158,6 +158,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/live-videos/view/{id}', 'AdminController@live_videos_view')->name('live-videos.view');
 
+    Route::get('/live-videos/payments', 'AdminController@live_video_payments')->name('live-videos.payments');
+
 
     // Exports tables
 
