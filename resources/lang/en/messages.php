@@ -2188,4 +2188,6 @@ return array(
 
 	'user_playlist_video_remove_confirm' => 'Do you want to remove this video from playlist?',
 
+	'user_custom_live_videos' => 'Live TV',
+
 );

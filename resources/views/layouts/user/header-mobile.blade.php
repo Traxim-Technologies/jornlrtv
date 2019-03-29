@@ -14,7 +14,7 @@
         </a></li>
         <li><a href="{{route('user.channel.list')}}" class="mobile-menu">
             <i class="material-icons">movie</i>
-            <span class="hidden-xxxs">{{tr('custom_live_videos')}}</span>
+            <span class="hidden-xxxs">{{tr('user_custom_live_videos')}}</span>
         </a></li>
         <li><a href="{{route('user.live_videos')}}" class="mobile-menu">
             <i class="material-icons">videocam</i>
