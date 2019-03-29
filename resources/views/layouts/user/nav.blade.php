@@ -19,7 +19,7 @@
             <a href="{{route('user.custom_live_videos.index')}}">
                 <img src="{{asset('images/video-camera1.png')}}" class="grey-img">
                 <img src="{{asset('images/video-camera-red.png')}}" class="red-img">
-                <span>{{tr('custom_live_videos')}}</span>
+                <span>{{tr('user_custom_live_videos')}}</span>
             </a>
         </li>
         <li id="live_videos">
