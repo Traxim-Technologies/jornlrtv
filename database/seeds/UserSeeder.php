@@ -36,14 +36,16 @@ class UserSeeder extends Seeder
 		
             [
                 'name' => 'Test',
-                'email' => 'test@streamtube.com',
+                'email' => 'test@tubenow.com',
                 'password' => \Hash::make('123456'),
-                'picture' =>"http://streamtube.streamhash.com/placeholder.png",
-                'token' => Helper::generate_token(),
-                'token_expiry' => Helper::generate_token_expiry(),
-                'dob' => '1990-01-01',
-                'is_verified' => 1,
-                'status' => 1,
+                'picture' =>"https://tubenow.streamhash.com/placeholder.png",
+                'chat_picture' =>"https://tubenow.streamhash.com/placeholder.png",
+                'token'=>Helper::generate_token(),
+                'token_expiry'=>Helper::generate_token_expiry(),
+                'dob'=>'1992-01-01',
+                'age_limit'=>25,
+                'is_verified'=>1,
+                'status'=>1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]
