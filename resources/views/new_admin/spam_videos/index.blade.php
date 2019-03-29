@@ -5,9 +5,6 @@
 @section('content-header', tr('spam_videos'))
 
 @section('breadcrumb')
-
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-
     <li class="active"><i class="fa fa-flag"></i> {{tr('spam_videos')}}</li>
 @endsection
 
