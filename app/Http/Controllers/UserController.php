@@ -1669,7 +1669,7 @@ class UserController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
@@ -1723,8 +1723,6 @@ class UserController extends Controller {
                 $model->save();
 
                 $channel_details = Channel::find($request->channel_id);
-
-                $notification_data = 
 
                 $notification_data['from_user_id'] = $request->user_id; 
 

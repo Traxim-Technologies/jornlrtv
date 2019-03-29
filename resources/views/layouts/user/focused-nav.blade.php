@@ -8,11 +8,8 @@
                     <img src="{{asset('logo.png')}}">
                 @endif
             </a>
-        </div><!--test end-->
 
-        <div class="y-button">
-
-            <ul class="nav navbar-nav pull-right" style="margin: 3.5px 0px">
+            <ul class="nav navbar-nav pull-right">
 
                 @if(Setting::get('admin_language_control'))
 
@@ -20,7 +17,7 @@
 
                     <li  class="dropdown">
                 
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="padding: 5px 15px; margin-right: 5px;color: #cc181e"><i class="fa fa-globe"></i> <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="margin-right: 5px;color: #cc181e"><i class="fa fa-globe"></i> <b class="caret"></b></a>
 
                         <ul class="dropdown-menu" style="min-width: 70px;overflow: hidden;position: absolute;background: #fff;">
 
@@ -38,16 +35,21 @@
 
             </ul>
 
-            @if(Auth::check())
-                <a href="{{route('user.profile')}}" class="y-signin">{{tr('back_profile')}}</a>
-            @else
-               <!--  <div class="hidden-xs hidden-sm visible-md visible-lg">
-                <a href="{{route('user.register.form')}}" class="y-signin">{{tr('signup')}}</a>
-                <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
-                </div> -->
-            @endif
+            <div class="pull-right">
+
+                @if(Auth::check())
+                    <a href="{{route('user.profile')}}" class="y-signin">{{tr('back_profile')}}</a>
+                @else
+                    <!-- <div class="hidden-xs hidden-sm visible-md visible-lg">
+                    <a href="{{route('user.register.form')}}" class="y-signin">{{tr('signup')}}</a>
+                    <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
+                    </div> -->
+                @endif
+
+            </div>
+        </div><!--test end-->
+
         
-        </div><!--y-button end-->
 
     </div><!--end of row-->
 </div><!--end of streamtube-nav-->
