@@ -132,88 +132,90 @@ class UserController extends Controller {
 
             DB::beginTransaction();
 
-            if (Auth::guard('admin')->check()) {
-
-                // Get current login admin details
-
-                $master_user_id = Auth::guard('admin')->user()->user_id;
-
-                // Check the admin has logged in
-
-                if(!$master_user_id) {
-
-                    // Check already record exists
-
-                    $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
-
-                    if($check_admin_user_details) {
-
-                        $check_admin_user_details->is_master_user = 1;
-
-                        if ($check_admin_user_details->save()) {
-
-
-                        } else {
-
-                            throw new Exception(tr('user_details_not_saved'));
-                            
-                        }
-
-                    } else {
-
-                        $check_admin_user_details = new User;
-
-                        $check_admin_user_details->name = "Master User";
-
-                        $check_admin_user_details->email = Auth::guard('admin')->user()->email;
-
-                        $check_admin_user_details->password = \Hash::make("123456");
-
-                        $check_admin_user_details->user_type = $check_admin_user_details->is_master_user = $check_admin_user_details->is_verified = $check_admin_user_details->status = 1;
-
-                        $check_admin_user_details->device_type = WEB;
-
-                        if ($check_admin_user_details->save()) {
-
-                                $admin = Admin::where('email',  Auth::guard('admin')->user()->email)->first();
-
-                                if ($admin) {
-
-                                    $admin->user_id = $check_admin_user_details->id;
-
-                                    $admin->save();
-                                }   
-
-                        } else {
-
-                            throw new Exception(tr('user_details_not_saved'));
-                        }
-
-                    }
-
-                    $master_user_id = $check_admin_user_details->id;
-
-                }
-
-                $master_user_details = User::find($master_user_id);
-
-                // If master user details is not empty -> Login the admin as user
-
-                if($master_user_details) {
-
-                    Auth::loginUsingId($master_user_id, true);
-
-                } else {
-
-                    throw new Exception(tr('user_not_found'));
-
-                }
-
-            } else {
-
+            if (!Auth::guard('admin')->check()) {
+                
                 throw new Exception(tr('admin_not_logged_in'));
 
             }
+
+            // Get current login admin details
+
+            $master_user_id = Auth::guard('admin')->user()->user_id;
+
+            // Check the admin has logged in
+
+            if(!$master_user_id) {
+
+                // Check already record exists
+
+                $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
+
+                if($check_admin_user_details) {
+
+                    $check_admin_user_details->is_master_user = 1;
+
+                    if ($check_admin_user_details->save()) {
+
+
+                    } else {
+
+                        throw new Exception(tr('user_details_not_saved'));
+                        
+                    }
+
+                } else {
+
+                    $check_admin_user_details = new User;
+
+                    $check_admin_user_details->name = "Master User";
+
+                    $check_admin_user_details->email = Auth::guard('admin')->user()->email;
+
+                    $check_admin_user_details->password = \Hash::make("123456");
+
+                    $check_admin_user_details->user_type = $check_admin_user_details->is_master_user = $check_admin_user_details->is_verified = $check_admin_user_details->status = 1;
+
+                    $check_admin_user_details->device_type = WEB;
+
+                    if ($check_admin_user_details->save()) {
+
+                            $admin = Admin::where('email',  Auth::guard('admin')->user()->email)->first();
+
+                            if ($admin) {
+
+                                $admin->user_id = $check_admin_user_details->id;
+
+                                $admin->save();
+                            }   
+
+                    } else {
+
+                        throw new Exception(tr('user_details_not_saved'));
+                    }
+
+                }
+
+                $master_user_id = $check_admin_user_details->id;
+
+            }
+
+            $master_user_details = User::find($master_user_id);
+
+            // If master user details is not empty -> Login the admin as user
+
+            if(!$master_user_details) {
+                
+                throw new Exception(tr('user_not_found'));
+
+            }
+
+            $master_user_details->token = Helper::generate_token();
+
+            $master_user_details->token_expiry = Helper::generate_token_expiry();
+
+            $master_user_details->save();
+            
+            Auth::loginUsingId($master_user_id, true);
 
             DB::commit();
 
