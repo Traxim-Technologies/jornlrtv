@@ -30,6 +30,7 @@
 				</div>
 
 				<div class="box box-body">
+				
 					<strong>{{tr('title')}}</strong>
 					<h5 class="pull-right">{{$view_coupon->title}}</h5><hr>
 

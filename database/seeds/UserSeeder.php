@@ -33,6 +33,21 @@ class UserSeeder extends Seeder
 		        'created_at' => date('Y-m-d H:i:s'),
 		        'updated_at' => date('Y-m-d H:i:s')
 		    ],
-		]);
+		
+            [
+                'name' => 'Test',
+                'email' => 'test@streamtube.com',
+                'password' => \Hash::make('123456'),
+                'picture' =>"http://streamtube.streamhash.com/placeholder.png",
+                'token' => Helper::generate_token(),
+                'token_expiry' => Helper::generate_token_expiry(),
+                'dob' => '1990-01-01',
+                'is_verified' => 1,
+                'status' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]
+            
+        ]);
     }
 }

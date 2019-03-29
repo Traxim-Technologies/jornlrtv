@@ -100,12 +100,11 @@
 							
 							    <tr>
 							      	
-							      	<td><a href="{{route('admin.videos.view' , array('id' => $video->video_tape_id))}}">{{$i+1}}</a></td>
+							      	<td><a href="{{route('admin.videos.view' , ['id' => $video->video_tape_id] )}}">{{$i+1}}</a></td>
 							      	
-
-							      	<td><a href="{{route('admin.channels.view', $video->channel_id)}}">{{$video->channel_name}}</a></td>
+							      	<td><a href="{{route('admin.channels.view', ['channel_id' => $video->channel_id] )}}">{{$video->channel_name}}</a></td>
 							      		
-							      	<td><a href="{{route('admin.categories.view', ['category_id'=>$video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
+							      	<td><a href="{{route('admin.categories.view', ['category_id' => $video->category_id])}}" target="_blank">{{$video->category_name}}</a></td>
 
 							      	<td>
 							      		

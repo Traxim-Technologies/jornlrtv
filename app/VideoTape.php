@@ -274,6 +274,8 @@ class VideoTape extends Model
 
             }
 
+            $model->attributes['unique_id'] = routefreestring($model->attributes['title']).'-'.$model->attributes['id'];
+
         });
 
         //delete your related models here, for example
@@ -396,6 +398,12 @@ class VideoTape extends Model
 
 
         }); 
+
+        static::updating(function($model) {
+
+            $model->attributes['unique_id'] = routefreestring($model->attributes['title']).'-'.$model->attributes['id'];
+
+        });
 
     }
 

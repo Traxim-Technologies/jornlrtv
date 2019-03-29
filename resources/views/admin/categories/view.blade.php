@@ -14,9 +14,10 @@
 
 @section('content')
 
-  @include('notification.notify')
 
   <div class="col-md-12">
+    @include('notification.notify')
+
           <!-- Widget: user widget style 1 -->
           <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -125,7 +126,9 @@
                          
                           <div class="comment-text">
                                 <span class="username">
-                                  <a href="{{route('admin.videos.view', array('id' => $video->video_tape_id))}}" target="_blank">{{$video->title}}</a>
+
+                                  <a href="{{route('admin.video_tapes.view', array('id' => $video->id))}}" target="_blank">{{$video->title}}</a>
+                                  
                                   <span class="text-muted pull-right">{{$video->created_at->diffForHumans()}}</span>
                                 </span><!-- /.username -->
                               <div class="description"><?= $video->description?></div>

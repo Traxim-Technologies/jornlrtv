@@ -74,7 +74,7 @@
                 </ul>
             </div>
 
-            <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.videos.save')}}">
+            <form id="video-upload" method="POST" enctype="multipart/form-data" role="form" action="{{route('admin.video_tapes.save')}}">
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="step1">
                         <!-- <h3>Video Details</h3> -->
@@ -113,12 +113,12 @@
                             </div>
 
                             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                
                                 <div class="form-group">
 
                                     <label for="publish_type" class="">{{tr('publish_type')}}</label>
                                     <div class="clearfix"></div>
-
-                                   
+                                
                                     <label>
                                         <input type="radio" name="video_publish_type" value="{{PUBLISH_NOW}}" class="flat-red" checked id="video_publish_type" onchange="checkPublishType(this.value)">
                                         {{tr('publish_now')}}
@@ -340,9 +340,9 @@
              return "Data will be lost if you leave the page, are you sure?";
         };
 
-        var save_img_url = "{{route('admin.videos.save.default_img')}}";
+        var save_img_url = "{{route('admin.video_tapes.save.default_img')}}";
 
-        var upload_video_image_url ="{{route('admin.videos.upload_image')}}";
+        var upload_video_image_url ="{{route('admin.video_tapes.upload_image')}}";
     </script>
  
 @endsection

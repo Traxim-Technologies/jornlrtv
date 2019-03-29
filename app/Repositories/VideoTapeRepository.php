@@ -736,9 +736,9 @@ class VideoTapeRepository {
      *
      * To check the status of the pay per view in each video
      *
-     * @created_by - Shobana Chandrasekar
+     * @created Vithya
      * 
-     * @updated_by - - 
+     * @updated
      *
      * @param object $request - Video related details, user related details
      *
@@ -871,5 +871,76 @@ class VideoTapeRepository {
 
         return response()->json($response_array);
     
+    }
+
+    /**
+     *
+     * Function Name: video_tape_list()
+     *
+     * @uses common video response
+     *
+     */
+
+    public static function video_tape_list($video_ids, $logged_in_user_id) {
+
+        $list = VideoTape::whereIn('video_tapes.id', $video_ids)->orderBy('updated_at', 'desc')->get();
+
+        $video_tapes = [];
+
+        foreach ($list as $key => $value) {
+            
+            $check_flag_video = Flag::where('video_tape_id' , $value->video_tape_id)->where('user_id' ,$logged_in_user_id)->count();
+
+            if($check_flag_video == 0) {
+
+                $user_details = User::find($logged_in_user_id);
+
+                $video_tape_details = new \stdClass();
+
+                $video_tape_details->title = $value->title;
+
+                $video_tape_details->default_image = $value->default_image;
+
+                $video_tape_details->video_tape_id = $value->id;
+
+                $video_tape_details->duration = $value->duration;
+
+                $video_tape_details->watch_count = $value->watch_count;
+
+                $video_tape_details->wishlist_status = Helper::check_wishlist_status($logged_in_user_id,$value->id) ? 1 : 0;
+
+                $channel_details = $value->getChannel;
+
+                $video_tape_details->channel_id = $channel_details->id;
+
+                $video_tape_details->channel_name = $channel_details ? $channel_details->name : "";
+
+                // PPV data start 
+
+                $value->video_tape_id = $value->id; // Don't remove, this is used in below ppv_status check 
+
+                $pay_per_view_status = self::pay_per_views_status_check($logged_in_user_id, $user_details ? $user_details->user_type : '', $value)->getData()->success;
+
+                $video_tape_details->pay_per_view_status = $pay_per_view_status;
+
+                $is_ppv_subscribe_page = ($value->type_of_user == NORMAL_USER || $value->type_of_user == BOTH_USERS) ? ( ( $user_details->user_type == 0 ) ? YES : NO ) : NO; 
+
+                $video_tape_details->is_ppv_subscribe_page = $is_ppv_subscribe_page;
+
+                $video_tape_details->ppv_amount = $value->ppv_amount;
+
+                $video_tape_details->currency = Setting::get('currency');
+
+                $video_tape_details->created_at = $value->created_at;
+
+                // PPV data end 
+
+                array_push($video_tapes, $video_tape_details);
+            
+            }
+
+        }
+
+        return $video_tapes;
     }
 }

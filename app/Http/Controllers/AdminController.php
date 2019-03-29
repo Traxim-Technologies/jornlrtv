@@ -163,9 +163,9 @@ class AdminController extends Controller {
      *
      * To Load all the users 
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -192,7 +192,7 @@ class AdminController extends Controller {
      *
      * @created By - Maheswari
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param - device type
      * 
@@ -226,9 +226,9 @@ class AdminController extends Controller {
      *
      * To create a new user
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -251,9 +251,9 @@ class AdminController extends Controller {
      *
      * To edit a user based on their id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $request - User id
      * 
@@ -262,20 +262,30 @@ class AdminController extends Controller {
      */
     public function users_edit(Request $request) {
 
-        $user = User::find($request->id);
+        try {
+          
+            $user_details = User::find($request->user_id);
 
-        if($user) {
+            if( count($user_details) == 0 ) {
 
-            $user->dob = ($user->dob) ? date('d-m-Y', strtotime($user->dob)) : '';
+                throw new Exception( tr('admin_user_not_found'), 101);
 
-            return view('admin.users.edit')->withUser($user)->with('sub_page','view-user')->with('page' , 'users');
+            } else {
 
-        } else {
+                $user_details->dob = ($user_details->dob) ? date('d-m-Y', strtotime($user_details->dob)) : '';
 
-            return back()->with('flash_error', tr('user_not_found'));
+                return view('new_admin.users.edit')
+                        ->with('page' , 'users')
+                        ->with('sub_page','users-view')
+                        ->with('user_details',$user_details);
+            }
 
-        }
-    
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.users.index')->with('flash_error',$error);
+        }    
     }
 
     /**
@@ -283,9 +293,9 @@ class AdminController extends Controller {
      *
      * To save the details based on user or to create a new user
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param object $request - User object details
      * 
@@ -303,7 +313,6 @@ class AdminController extends Controller {
                 'dob'=>'required',
                 'description'=>'max:255',
                 'picture'=>'mimes:jpg,png,jpeg',
-
             )
         );
         
@@ -417,7 +426,6 @@ class AdminController extends Controller {
             if ($request->id == '') {
                 
                 user_type_check($user->id);
-
             }
 
             if($user) {
@@ -443,9 +451,9 @@ class AdminController extends Controller {
      *
      * To view the usre details based on user id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id - User Id
      * 
@@ -480,10 +488,8 @@ class AdminController extends Controller {
 
                     foreach ($value->getVideoTape as $key => $video) {
 
-                        $earnings += $video->user_ppv_amount;
-
+                        $earnings += $video->user_ppv_amountl;
                     }
-
                 }
                 
                 $channel_datas[] = [
@@ -564,9 +570,9 @@ class AdminController extends Controller {
      *
      * To delete the user details based on user id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request - User id
      * 
@@ -605,11 +611,11 @@ class AdminController extends Controller {
    /**
     * Function Name : user_status_change()
     * 
-    * Description: Change the user status in approve and decline 
+    * @uses Change the user status in approve and decline 
     *
     * @created Maheswari
     *
-    * @edited Shobana
+    * @updated vithya
     *
     * @param Request in user id
     *
@@ -652,9 +658,9 @@ class AdminController extends Controller {
      *
      * To verify the user based on the details of id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request - User id
      * 
@@ -684,9 +690,9 @@ class AdminController extends Controller {
      *
      * To list down all the videos based on hstory
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $requesr - User id
      * 
@@ -719,7 +725,6 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error',tr('admin_not_error'));
-
         }
     
     }
@@ -729,9 +734,9 @@ class AdminController extends Controller {
      *
      * To delete the history based on history id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request - Integer id
      * 
@@ -760,9 +765,9 @@ class AdminController extends Controller {
      *
      * To list out all the wishlist details based on user
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request - User id
      * 
@@ -795,9 +800,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error',tr('admin_not_error'));
-
-        }
-    
+        }    
     }
 
     /**
@@ -805,9 +808,9 @@ class AdminController extends Controller {
      *
      * To delete the wishlist based on wishlist id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request - User id
      * 
@@ -820,7 +823,7 @@ class AdminController extends Controller {
 
             $user_wishlist->delete();
 
-            return back()->with('flash_success',tr('admin_not_wishlist_del'));
+            return back()->with('flash_success',tr('user_wishlist_delete_success'));
 
         } else {
 
@@ -836,9 +839,9 @@ class AdminController extends Controller {
      *
      * To subscribe a new plans based on users
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id - User id (Optional)
      * 
@@ -872,9 +875,9 @@ class AdminController extends Controller {
      *
      * To save subscription details based on user id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $s_id - Subscription id, $u_id - User id
      * 
@@ -903,9 +906,9 @@ class AdminController extends Controller {
      *
      * To create a new channel
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -950,9 +953,9 @@ class AdminController extends Controller {
      *
      * To edit the channel based on the channel id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id - Channel id
      * 
@@ -990,9 +993,9 @@ class AdminController extends Controller {
      *
      * To view the channel based on the channel id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id - Channel id
      * 
@@ -1041,9 +1044,9 @@ class AdminController extends Controller {
      *
      * To save the channel video object details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id - Channel id
      * 
@@ -1070,9 +1073,9 @@ class AdminController extends Controller {
      *
      * To delete the channel based on channel id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request->id - Channel id
      * 
@@ -1102,9 +1105,9 @@ class AdminController extends Controller {
      *
      * To change the channel status of approve and decline 
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request->id - Channel id
      * 
@@ -1152,9 +1155,9 @@ class AdminController extends Controller {
      *
      * To list out all the channels based on users id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $user_id - User id
      * 
@@ -1190,9 +1193,9 @@ class AdminController extends Controller {
      *
      * To list out all the channels
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -1219,9 +1222,9 @@ class AdminController extends Controller {
      *
      * To list out particular channel videos based on channel id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $channel_id - Channel Id
      * 
@@ -1258,9 +1261,9 @@ class AdminController extends Controller {
      *
      * To list out particular channel subscribers based on channel id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request->id - Channel Id (optional)
      * 
@@ -1291,9 +1294,9 @@ class AdminController extends Controller {
      *
      * List of videos displayed and also based on user it will list out
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -1302,23 +1305,46 @@ class AdminController extends Controller {
      */
     public function videos_list(Request $request) {
 
-        $query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                    ->videoResponse()
-                    ->orderBy('video_tapes.created_at' , 'desc');
+        try {
 
-        if ($request->id) {
+            $query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                        ->videoResponse()
+                        ->orderBy('video_tapes.created_at' , 'desc');
 
-            $query->where('video_tapes.user_id', $request->id);
+            if($request->has('tag_id')) {
 
-        }
+                $tag_details = Tag::find($request->tag_id);
 
-        $videos = $query->get();
+                if (count($tag_details) == 0) {
 
-        return view('admin.videos.videos')
-                    ->with('videos' , $videos)
-                    ->withPage('videos')
-                    ->with('sub_page','view-videos');
+                    throw new Exception(tr('admin_tag_not_found'), 101);
+                }
+
+                $query->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
+                        ->where('video_tape_tags.tag_id', $request->tag_id)
+                        ->orderBy('video_tapes.created_at' , 'desc')
+                        ->groupBy('video_tape_tags.video_tape_id');
+            }
+
+            if ($request->id) {
+
+                $query->where('video_tapes.user_id', $request->id);
+            }
+
+            $videos = $query->get();
+
+            return view('admin.videos.videos')
+                        ->with('videos' , $videos)
+                        ->withPage('videos')
+                        ->with('sub_page','view-videos');
    
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.videos.list')->with('flash_error',$error);
+        }
     }
 
     /**
@@ -1326,9 +1352,9 @@ class AdminController extends Controller {
      *
      * Load video based on id 
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -1336,7 +1362,7 @@ class AdminController extends Controller {
      *
      */
     public function videos_view(Request $request) {
-
+    
         $validator = Validator::make($request->all() , [
                 'id' => 'required|exists:video_tapes,id'
             ]);
@@ -1350,6 +1376,10 @@ class AdminController extends Controller {
                     ->videoResponse()
                     ->orderBy('video_tapes.created_at' , 'desc')
                     ->first();
+
+            $video_tags = VideoTapeTag::where('video_tape_tags.video_tape_id' , $request->id)
+                    ->leftjoin('tags','tags.id' , '=' , 'video_tape_tags.tag_id')
+                    ->get();
 
             $videoPath = $video_pixels = $videoStreamUrl = '';
             if ($video->video_type == VIDEO_TYPE_UPLOAD) {
@@ -1410,7 +1440,8 @@ class AdminController extends Controller {
                     ->with('videoStreamUrl', $videoStreamUrl)
                     ->with('spam_reports', $spam_reports)
                     ->with('reviews', $reviews)
-                    ->with('wishlists', $wishlists);
+                    ->with('wishlists', $wishlists)
+                    ->with('video_tags', $video_tags);
         }
     
     }
@@ -1421,9 +1452,9 @@ class AdminController extends Controller {
      *
      * To list out all the wishlist details based on user
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request - Video id
      * 
@@ -1458,9 +1489,9 @@ class AdminController extends Controller {
      *
      * To create new video 
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -1492,9 +1523,9 @@ class AdminController extends Controller {
      *
      * To Edit a video based on video id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $request - Video Id
      * 
@@ -1553,9 +1584,9 @@ class AdminController extends Controller {
      *
      * To Save video based on new /edit video details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Object $request - Video Object Details
      * 
@@ -1593,9 +1624,9 @@ class AdminController extends Controller {
      *
      * To get images which is uploaded in Video Based on id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $request - Video Id
      * 
@@ -1619,9 +1650,9 @@ class AdminController extends Controller {
      *
      * To set the default image based on object details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $request - Video Id
      * 
@@ -1641,9 +1672,9 @@ class AdminController extends Controller {
      *
      * To save the image based on object details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $request - Video Id, Video details
      * 
@@ -1663,18 +1694,18 @@ class AdminController extends Controller {
      *
      * To change the status of approve/decline video
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $request - Video Id, Video details
      * 
      * @return response of success/failure message
      *
      */
-    public function videos_status($id) {
+    public function videos_status(Request $request) {
 
-        $video = VideoTape::find($id);
+        $video = VideoTape::find($request->video_tape_id);
 
         $video->is_approved = $video->is_approved ? DEFAULT_FALSE : DEFAULT_TRUE;
 
@@ -1699,9 +1730,9 @@ class AdminController extends Controller {
      *
      * To publish the video based on changing the status of the video
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $id - Video Id
      * 
@@ -1738,9 +1769,9 @@ class AdminController extends Controller {
      *
      * To delete a video based on video id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $id - Video Id
      * 
@@ -1765,9 +1796,9 @@ class AdminController extends Controller {
      *
      * Brief : To save the payment details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id Video Id
      *
@@ -1815,9 +1846,9 @@ class AdminController extends Controller {
      *
      * Brief : To remove PPV Details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id Video Id
      *     
@@ -1847,9 +1878,9 @@ class AdminController extends Controller {
      *
      * To set a video as banner based on video id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $id - Video Id
      * 
@@ -1871,9 +1902,9 @@ class AdminController extends Controller {
      *
      * To list out all the banner videos 
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param - 
      * 
@@ -1899,9 +1930,9 @@ class AdminController extends Controller {
      *
      * To create a banner video based on id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $id - Video Id
      * 
@@ -1924,9 +1955,9 @@ class AdminController extends Controller {
      *
      * To remove a banner video based on id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param Integer $id - Video Id
      * 
@@ -1952,9 +1983,9 @@ class AdminController extends Controller {
      *
      * Load all the videos from flag table
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @return all the spam videos
      */
@@ -1972,9 +2003,9 @@ class AdminController extends Controller {
      *
      * Load all the flags based on the video id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id Video id
      *
@@ -1995,9 +2026,9 @@ class AdminController extends Controller {
      *
      * Load all the flags based on the user id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id Video id
      *
@@ -2018,9 +2049,9 @@ class AdminController extends Controller {
      *
      * Unsapm video based on flag id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id Flag id
      *
@@ -2052,9 +2083,9 @@ class AdminController extends Controller {
      *
      * list out all the reviews which is leaves by user
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param -
      *
@@ -2096,9 +2127,9 @@ class AdminController extends Controller {
      *
      * Delete a user review based on review id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $request - User review id
      *
@@ -2109,7 +2140,6 @@ class AdminController extends Controller {
         if($user = UserRating::find($request->id)) {
 
             $user->delete();
-
         }
 
         return back()->with('flash_success', tr('admin_not_ur_del'));
@@ -2121,9 +2151,9 @@ class AdminController extends Controller {
      *
      * To create ad 
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param - 
      *
@@ -2145,9 +2175,9 @@ class AdminController extends Controller {
      *
      * To Edit ad 
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - Ad Details
+     * @updated - Ad Details
      *
      * @param - 
      *
@@ -2174,9 +2204,9 @@ class AdminController extends Controller {
      *
      * To save the ad for new & old object details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - Ad Details
+     * @updated - Ad Details
      *
      * @param - 
      *
@@ -2203,9 +2233,9 @@ class AdminController extends Controller {
      *
      * To List out all the ads which is created by admin
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param -
      *
@@ -2224,9 +2254,9 @@ class AdminController extends Controller {
      *
      * To Find the object of Ad details based on ad details id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - Ad Details
+     * @updated - Ad Details
      *
      * @param - 
      *
@@ -2253,9 +2283,9 @@ class AdminController extends Controller {
      *
      * To change the status of approve/decline status
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - Ad Details
+     * @updated - Ad Details
      *
      * @param Integer $request->id : Ads Details Id
      *
@@ -2334,9 +2364,9 @@ class AdminController extends Controller {
      *
      * To delete the ads based on Ad id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - Ad Details
+     * @updated - Ad Details
      *
      * @param Integer $request->id : Ads Details Id
      *
@@ -2382,9 +2412,9 @@ class AdminController extends Controller {
      *
      * To change the status of the ad details (Video Ad enable/disable)
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request->id : Ads Details Id
      *
@@ -2434,9 +2464,9 @@ class AdminController extends Controller {
      *
      * To assign singl/multiple based on ads with video details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request->id : Ads Details Id
      *
@@ -2472,9 +2502,9 @@ class AdminController extends Controller {
      *
      * To List out all the videos ads list with videos
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request->id : Ads Details Id
      *
@@ -2500,9 +2530,9 @@ class AdminController extends Controller {
      *
      * To get ads with video (Single video based on id)
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request->id : Video id
      *
@@ -2528,9 +2558,9 @@ class AdminController extends Controller {
      *
      * To delete assigned video ads based on video ad
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request->id : Video ad id
      *
@@ -2567,9 +2597,9 @@ class AdminController extends Controller {
      *
      * To assign a add based on input details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request : Video ad id with video ad details
      *
@@ -2774,9 +2804,9 @@ class AdminController extends Controller {
      *
      * To create a video ads based on video id
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request : Video ad id with video ad details
      *
@@ -2837,9 +2867,9 @@ class AdminController extends Controller {
      *
      * To edit a assigned ad videos edit details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request : Video ad id with video ad details
      *
@@ -2880,9 +2910,9 @@ class AdminController extends Controller {
      *
      * To save the video ads when edit by the admin
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param Integer $request : Video ad id with video ad details
      *
@@ -2912,9 +2942,9 @@ class AdminController extends Controller {
      *
      * To add between ads details based on video details
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - 
+     * @updated - 
      *
      * @param -
      *
@@ -2935,11 +2965,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads_create()
     *
-    * Description: To create a banner Ad
+    * @uses To create a banner Ad
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -2961,11 +2991,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads_edit()
     *
-    * Description: To edit a banner Ad based on Given Banner Id
+    * @uses To edit a banner Ad based on Given Banner Id
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $request->id - Banner Id
     *
@@ -2989,11 +3019,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads_save()
     *
-    * Description: To save a banner ad based on new / Old object details
+    * @uses To save a banner ad based on new / Old object details
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $request->id - Banner Id
     *
@@ -3059,11 +3089,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads_view()
     *
-    * Description: To view the banner id based on the Banner Id
+    * @uses To view the banner id based on the Banner Id
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param Integer request->id - Banner Id
     *
@@ -3088,11 +3118,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads()
     *
-    * Description: Display all the banner ads list 
+    * @uses Display all the banner ads list 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -3112,11 +3142,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads_delete()
     *
-    * Description: Delete banner Ad based on banner Id
+    * @uses Delete banner Ad based on banner Id
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param Object $request - Banner Id 
     *
@@ -3165,11 +3195,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads_status()
     *
-    * Description: To change the Banner Ad status of Approve/Decline status
+    * @uses To change the Banner Ad status of Approve/Decline status
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param Object $request - Banner Id 
     *
@@ -3198,11 +3228,11 @@ class AdminController extends Controller {
    /**
     * Function Name: banner_ads_position()
     *
-    * Description: To change the Banner Ad position 
+    * @uses To change the Banner Ad position 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param Object $request - Banner Id 
     *
@@ -3268,11 +3298,11 @@ class AdminController extends Controller {
    /**
     * Function Name: subscriptions()
     *
-    * Description: To list out subscription details
+    * @uses To list out subscription details
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -3291,11 +3321,11 @@ class AdminController extends Controller {
    /**
     * Function Name: subscription_create()
     *
-    * Description: To create subscription details 
+    * @uses To create subscription details 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -3313,11 +3343,11 @@ class AdminController extends Controller {
    /**
     * Function Name: subscription_edit()
     *
-    * Description: To create subscription details 
+    * @uses To create subscription details 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -3337,11 +3367,11 @@ class AdminController extends Controller {
    /**
     * Function Name: subscription_save()
     *
-    * Description: To save the subscription details of new /old object based on details
+    * @uses To save the subscription details of new /old object based on details
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - Subscription details
     *
@@ -3413,11 +3443,11 @@ class AdminController extends Controller {
    /**
     * Function Name: subscription_view()
     *
-    * Description: to view the subscription details based on subscription id
+    * @uses to view the subscription details based on subscription id
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $request - Unique id of subscription
     *
@@ -3441,11 +3471,11 @@ class AdminController extends Controller {
    /**
     * Function Name: subscription_delete()
     *
-    * Description: To delete a particualr subscrption details based on id
+    * @uses To delete a particualr subscrption details based on id
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $request - Subscription Id
     *
@@ -3466,11 +3496,11 @@ class AdminController extends Controller {
    /**
     * Function Name: subscription_status()
     *
-    * Description: To change the status of subscription (Approve/decline)
+    * @uses To change the status of subscription (Approve/decline)
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $request - Subscription Unique id
     *
@@ -3496,11 +3526,11 @@ class AdminController extends Controller {
    /**
     * Function Name: coupon_create()
     *
-    * Description: Get the coupon add form fields
+    * @uses Get the coupon add form fields
     *
     * @created Maheswari
     *
-    * @edited Maheswari
+    * @updated Maheswari
     *
     * @param Get the route of add coupon form
     *
@@ -3517,11 +3547,11 @@ class AdminController extends Controller {
    /**
     * Function Name: coupon_save()
     *
-    * Description: Save/Update the coupon details in database 
+    * @uses Save/Update the coupon details in database 
     *
     * @created Maheswari
     *
-    * @edited Maheswari
+    * @updated Maheswari
     *
     * @param Request to all the coupon details
     *
@@ -3628,11 +3658,11 @@ class AdminController extends Controller {
    /**
     * Function Name: coupon_index()
     *
-    * Description: Get the coupon details for all 
+    * @uses Get the coupon details for all 
     *
     * @created Maheswari
     *
-    * @edited Maheswari
+    * @updated Maheswari
     *
     * @param Get the coupon list in table
     *
@@ -3658,11 +3688,11 @@ class AdminController extends Controller {
    /**
     * Function Name: coupon_edit() 
     *
-    * Description: Edit the coupon details and get the coupon edit form for 
+    * @uses Edit the coupon details and get the coupon edit form for 
     *
     * @created Maheswari
     *
-    * @edited Maheswari
+    * @updated Maheswari
     *
     * @param Coupon id
     *
@@ -3689,11 +3719,11 @@ class AdminController extends Controller {
    /**
     * Function Name: coupon_delete()
     *
-    * Description: Delete the particular coupon detail
+    * @uses Delete the particular coupon detail
     *
     * @created Maheswari
     *
-    * @edited Maheswari
+    * @updated Maheswari
     *
     * @param Coupon id
     *
@@ -3719,11 +3749,11 @@ class AdminController extends Controller {
    /**
     * Function Name: coupon_status_change()
     * 
-    * Description: Coupon status for active and inactive update the status function
+    * @uses Coupon status for active and inactive update the status function
     *
     * @created Maheswari
     *
-    * @edited Maheswari
+    * @updated Maheswari
     *
     * @param Request the coupon id
     *
@@ -3770,11 +3800,11 @@ class AdminController extends Controller {
    /**
     * Function Name: coupon_view()
     *
-    * Description: Get the particular coupon details for view page content
+    * @uses Get the particular coupon details for view page content
     *
     * @created Maheswari
     *
-    * @edited Maheswaari
+    * @updated Maheswaari
     *
     * @param Coupon id
     *
@@ -3804,11 +3834,11 @@ class AdminController extends Controller {
    /**
     * Function Name: user_redeem_requests()
     *
-    * Description: To list out the all the redeem requests from the users, admin can payout amount
+    * @uses To list out the all the redeem requests from the users, admin can payout amount
     *
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $id - Optional ( Redeem request id)
     *
@@ -3839,13 +3869,13 @@ class AdminController extends Controller {
 
 
    /**
-    * Function Name: user_redeem_pay()
+    * Function Name: user_redeem_pay() NOT USED 
     *
-    * Description: Pay the amount to the users.
+    * @uses Pay the amount to the users.
     *
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param amount $request - Amount, Request Id
     *
@@ -3932,11 +3962,11 @@ class AdminController extends Controller {
    /**
     * Function Name: revenues()
     *
-    * Description: To list out the details of the revenue models
+    * @uses To list out the details of the revenue models
     *
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -
     *
@@ -3983,13 +4013,13 @@ class AdminController extends Controller {
    /**
     * Function Name: subscription_payments()
     *
-    * Description: Used to display the subscription payments details List or 
+    * @uses Used to display the subscription payments details List or 
     * 
     * Based on the particuler subscriptions details
     *
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -
     *
@@ -4022,11 +4052,11 @@ class AdminController extends Controller {
    /**
     * Function Name: ppv_payments()
     *
-    * Description: To list out ppv payment details
+    * @uses To list out ppv payment details
     *     
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -
     *
@@ -4045,11 +4075,11 @@ class AdminController extends Controller {
    /**
     * Function Name: settings()
     *
-    * Description: To display the settings value from settings table
+    * @uses To display the settings value from settings table
     *
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -
     *
@@ -4068,11 +4098,11 @@ class AdminController extends Controller {
    /**
     * Function Name: settings_process()
     *
-    * Description: To save the settings table values
+    * @uses To save the settings table values
     *
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - Settings object values
     *
@@ -4199,9 +4229,9 @@ class AdminController extends Controller {
      *
      * Save the values in env file
      *
-     * @created Shobana Chandrasekar
+     * @created vithya
      *
-     * @edited -
+     * @updated -
      *
      * @param object $request Post Attribute values
      * 
@@ -4308,11 +4338,11 @@ class AdminController extends Controller {
     /**
     * Function Name: email_settings_process()
     *
-    * Description: Email Setting Process
+    * @uses Email Setting Process
     *
-    * @created Shobana Chandrasekar
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @return Html view page with coupon detail
     */
@@ -4336,11 +4366,11 @@ class AdminController extends Controller {
    /**
     * Function Name: custom_push()
     *
-    * Description: To display custom message
+    * @uses To display custom message
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -4355,11 +4385,11 @@ class AdminController extends Controller {
    /**
     * Function Name: custom_push_process()
     *
-    * Description: To send custom push message to mobile
+    * @uses To send custom push message to mobile
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - message details
     *
@@ -4394,11 +4424,11 @@ class AdminController extends Controller {
    /**
     * Function Name: pages()
     *
-    * Description: To load all the statc pages which is created by admin
+    * @uses To load all the statc pages which is created by admin
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -4418,11 +4448,11 @@ class AdminController extends Controller {
    /**
     * Function Name: pages_create()
     *
-    * Description: To create a new page of staitc page using type
+    * @uses To create a new page of staitc page using type
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param - 
     *
@@ -4441,11 +4471,11 @@ class AdminController extends Controller {
    /**
     * Function Name: pages_edit()
     *
-    * Description: To edit a existing page of static page using type
+    * @uses To edit a existing page of static page using type
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $id = Page id
     *
@@ -4470,11 +4500,11 @@ class AdminController extends Controller {
    /**
     * Function Name: pages_view()
     *
-    * Description: To view a existing page of static page 
+    * @uses To view a existing page of static page 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $id = Page id
     *
@@ -4499,11 +4529,11 @@ class AdminController extends Controller {
    /**
     * Function Name: pages_save()
     *
-    * Description: To save new page / existing  page post details
+    * @uses To save new page / existing  page post details
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $request - Postdetails of static page
     *
@@ -4575,11 +4605,11 @@ class AdminController extends Controller {
    /**
     * Function Name: pages_delete()
     *
-    * Description: To delete page based on static page id
+    * @uses To delete page based on static page id
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param integer $id - page id
     *
@@ -4606,9 +4636,9 @@ class AdminController extends Controller {
     *
     * Admin profile page 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -- 
     *
@@ -4628,9 +4658,9 @@ class AdminController extends Controller {
     *
     * Admin profile page 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -- 
     *
@@ -4689,9 +4719,9 @@ class AdminController extends Controller {
     *
     * Admin  - Change password page, he can change his password
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -- 
     *
@@ -4747,9 +4777,9 @@ class AdminController extends Controller {
     *
     * Help page for admin 
     *
-    * @created Shobana
+    * @created vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param -- 
     *
@@ -4798,7 +4828,8 @@ class AdminController extends Controller {
 
         if ($model) {
 
-            return view('admin.categories.edit')->with('page', 'categories')
+            return view('admin.categories.edit')
+                    ->with('page', 'categories')
                     ->with('sub_page', 'create_category')
                     ->with('model', $model);
 
@@ -5021,9 +5052,9 @@ class AdminController extends Controller {
      *
      * List of videos displayed and also based on tags
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -5186,9 +5217,9 @@ class AdminController extends Controller {
     /**
      * Function Name : categories_videos()
      *
-     * @created_by shobana
+     * @created vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * To display based on category
      *
@@ -5235,9 +5266,9 @@ class AdminController extends Controller {
      *
      * To list out channels based on category
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param --
      * 
@@ -5291,9 +5322,9 @@ class AdminController extends Controller {
      *
      * category details based on id
      *
-     * @created_by shobana
+     * @created vithya
      *
-     * @updated_by -
+     * @updated -
      *
      * @param - 
      * 
@@ -5378,16 +5409,21 @@ class AdminController extends Controller {
 
     }
 
-
     /**
-     *  Function : custom_live_videos()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos()
      *
-     * @updated_by -
+     * @uses custom live videos
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
      *
      * @return Live videos details with view page
      */
+
     public function custom_live_videos() {
 
         $model = CustomLiveVideo::orderBy('created_at','desc')->get();
@@ -5399,11 +5435,16 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : create_live_video()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_create()
      *
-     * @updated_by -
+     * @uses custom live videos
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
      *
      * @return create live video page
      */
@@ -5416,11 +5457,16 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_edit()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_edit()
      *
-     * @updated_by -
+     * @uses edit live video page with selected record
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
      *
      * @return edit live video page with selected record
      */
@@ -5436,14 +5482,20 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_save()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_save()
      *
-     * @updated_by -
+     * @uses save the form data of the live video
      *
-     * @return Save the form data of the live video
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return success/error message 
      */
+
     public function custom_live_videos_save(Request $request) {
 
         $response = AdminRepo::save_custom_live_video($request)->getData();
@@ -5461,13 +5513,18 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_change_status()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_change_status()
      *
-     * @updated_by -
+     * @uses update the status of the live video.
      *
-     * @return Update the status of the live video.
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return success/error message 
      */
     public function custom_live_videos_change_status(Request $request) {
 
@@ -5497,14 +5554,20 @@ class AdminController extends Controller {
     }
 
     /**
-     * Function : custom_live_videos_delete()
      *
-     * @created_by shobana
+     * Function name: custom_live_videos_delete()
      *
-     * @updated_by -
+     * @uses delete the selected record
      *
-     * @return delete the selected record
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return success/error message 
      */
+
     public function custom_live_videos_delete(Request $request) {
         
         if($model = CustomLiveVideo::where('id',$request->id)->first()) {
@@ -5514,18 +5577,23 @@ class AdminController extends Controller {
             }
         }
         return back()->with('flash_error',tr('something_error'));
+    
     }
 
     /**
-     * Function : custom_live_videos_view()
-     *     
-     * @created_by shobana
      *
-     * @updated_by -
+     * Function name: custom_live_videos_view()
      *
-     * @return view the selected record
+     * @uses view the selected record
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param
+     *
+     * @return view page 
      */
-
     public function custom_live_videos_view($id) {
 
         if($model = CustomLiveVideo::find($id)) {
@@ -5579,9 +5647,9 @@ class AdminController extends Controller {
      *
      * To prevent automatic subscriptioon, user have option to cancel subscription
      *
-     * @created shobana Chandrasekar
+     * @created vithya
      *
-     * @edited
+     * @updated
      *
      * @param object $request - USer details & payment details
      *
@@ -5604,8 +5672,7 @@ class AdminController extends Controller {
         } else {
 
             return back()->with('flash_error', Helper::get_error_message(167));
-
-        }        
+        }       
 
     }  
 
@@ -5614,9 +5681,9 @@ class AdminController extends Controller {
      *
      * To list out automatic subscribers
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id - User id (Optional)
      * 
@@ -5696,9 +5763,9 @@ class AdminController extends Controller {
      *
      * To list out cancelled subscribers
      *
-     * @created By - shobana
+     * @created vithya R
      *
-     * @updated by - -
+     * @updated - -
      *
      * @param integer $id - User id (Optional)
      * 
@@ -5764,7 +5831,7 @@ class AdminController extends Controller {
      *
      * @param integer video id - Video id
      *
-     * @created: shobana chandrasekar
+     * @created vithya
      *
      * @updated: -
      *
@@ -6061,4 +6128,5 @@ class AdminController extends Controller {
             return back();
         }
     }
+
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
+use App\Jobs\BellNotificationJob;
+
 use App\Http\Requests;
 
 use App\Helpers\Helper;
@@ -69,6 +71,10 @@ use App\LiveVideo;
 use App\Viewer;
 
 use App\LiveVideoPayment;
+
+use App\Playlist;
+
+use App\PlaylistVideo;
 
 class UserController extends Controller {
 
@@ -754,8 +760,8 @@ class UserController extends Controller {
                     }
 
                     $response_array = ['success'=>true];
-
                 }
+
 
             } else {
 
@@ -914,11 +920,11 @@ class UserController extends Controller {
     /**
      * Function Name : master_login()
      *
-     * To Activate Super user by admin
+     * @uses To Activate Super user by admin
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -1050,11 +1056,11 @@ class UserController extends Controller {
     /**
      * Function Name : index()
      *
-     * Show the user dashboard.
+     * @uses Show the user dashboard.
      * 
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      * 
      * @param Object $request - User Details
      *
@@ -1143,15 +1149,14 @@ class UserController extends Controller {
         
     }
 
-
     /**
      * Function Name : trending()
      *
-     * To list out videos based on the watching count
+     * @uses To list out videos based on the watching count
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param object $request - User Details
      *
@@ -1180,7 +1185,11 @@ class UserController extends Controller {
     /**
      * Function Name : channels()
      *
-     * To list out channels which is created by all the users
+     * @uses To list out channels which is created by all the users
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param object $request - User Details
      *
@@ -1212,7 +1221,11 @@ class UserController extends Controller {
     /**
      * Function Name : history()
      *
-     * To list out history of user based
+     * @uses To list out history of user based
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param object $request - User Details
      *
@@ -1240,7 +1253,11 @@ class UserController extends Controller {
     /**
      * Function Name : wishlist()
      *
-     * To list out wishlist of user based
+     * @uses To list out wishlist of user based
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param object $request - User Details
      *
@@ -1267,7 +1284,11 @@ class UserController extends Controller {
     /**
      * Function Name : channel_videos()
      *
-     * Based on the channel id , channel related videos will display
+     * @uses Based on the channel id , channel related videos will display
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $id : Channel Id
      *
@@ -1349,7 +1370,11 @@ class UserController extends Controller {
     /**
      * Function Name : single_video()
      * 
-     * To view single video based on video id
+     * @uses To view single video based on video id
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $request - Video id
      *
@@ -1432,34 +1457,25 @@ class UserController extends Controller {
     /**
      * Function Name : profile()
      *
-     * Show the profile list.
+     * @uses Show the profile list.
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
      */
-    public function profile(Request $request)
-    {
 
-        if ($request->id) {
+    public function profile(Request $request) {
 
-            $id = $request->id;
-           
-
-        } else {
-
-            $id = Auth::user()->id;
-            
-        }
-
-         $user = User::find($id);
-
-         $request->request->add([ 
-                'id' => $user->id,
-                'token' => $user->token,
-                'device_token' => $user->device_token,
-                'age'=>$user->age_limit,
-            ]);
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+            'age'=>\Auth::user()->age_limit,
+        ]);
 
         $wishlist = $this->UserAPI->wishlist_list($request)->getData();
 
@@ -1472,8 +1488,12 @@ class UserController extends Controller {
     /**
      * Function Name : update_profile() 
      *
-     * Edit profile user details
+     * @uses Edit profile user details
      * 
+     * @created Vithya R
+     *
+     * @updated 
+     *
      * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
@@ -1498,8 +1518,12 @@ class UserController extends Controller {
     /**
      * Function Name : update_profile() 
      *
-     * Save any changes to the users profile.
+     * @uses Save any changes to the users profile.
      * 
+     * @created Vithya R
+     *
+     * @updated 
+     *
      * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
@@ -1530,8 +1554,12 @@ class UserController extends Controller {
     /**
      * Function Name : profile_save_password() 
      * 
-     * Save changed password.
+     * @uses Save changed password.
      * 
+     * @created Vithya R
+     *
+     * @updated 
+     *
      * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
@@ -1558,12 +1586,15 @@ class UserController extends Controller {
     
     }
 
-
     /**
      * Function Name : profile_change_password() 
      * 
-     * Display only password change form
+     * @uses Display only password change form
      * 
+     * @created Vithya R
+     *
+     * @updated 
+     *
      * @param object $request - User Details
      *
      * @return \Illuminate\Http\Response
@@ -1578,7 +1609,11 @@ class UserController extends Controller {
     /**
      * Function Name : add_history()
      *
-     * To Add in history based on user, once he complete the video , the video will save
+     * @uses To Add in history based on user, once he complete the video , the video will save
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param Integer $request - Video Id
      *
@@ -1618,7 +1653,11 @@ class UserController extends Controller {
     /**
      * Function Name : watch_count()
      *
-     * To save watch count when ever user see the video
+     * @uses To save watch count when ever user see the video
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param Integer $request - Video Tape Id
      *
@@ -1706,7 +1745,11 @@ class UserController extends Controller {
     /**
      * Function Name : delete_history()
      *
-     * To delete a history based on logged in user id
+     * @uses To delete a history based on logged in user id
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $request - Video Tape Id
      *
@@ -1734,17 +1777,20 @@ class UserController extends Controller {
     
     }
 
-
     /**
      * Function Name : add_wishlist()
      *
-     * Add a wishlist based on logged in user id
+     * @uses Add a wishlist based on logged in user id
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $request - Video Tape Id
      *
      * @return response of success/falure message
      */
-    public function add_wishlist(Request $request) {
+    public function wishlist_create(Request $request) {
 
         $request->request->add([ 
             'id' => \Auth::user()->id,
@@ -1753,18 +1799,7 @@ class UserController extends Controller {
             'video_tape_id' => $request->video_tape_id
         ]);
 
-        $response = $this->UserAPI->add_wishlist($request)->getData();
-
-        if($response->success) {
-
-            $response->message = Helper::get_message(118);
-
-        } else {
-
-            $response->success = false;
-
-            $response->message = tr('something_error');
-        }
+        $response = $this->UserAPI->wishlist_create($request)->getData();
 
         $response->status = $request->status;
 
@@ -1774,13 +1809,17 @@ class UserController extends Controller {
     /**
      * Function Name : delete_wishlist()
      *
-     * To delete wishlist based on user id
+     * @uses To delete wishlist based on user id
      * 
+     * @created Vithya R
+     *
+     * @updated 
+     *
      * @param intger $request - Video tape id
      *
      * @return response of success/failure message
      */
-    public function delete_wishlist(Request $request) {
+    public function wishlist_delete(Request $request) {
 
         $request->request->add([ 
             'id' => \Auth::user()->id,
@@ -1788,22 +1827,26 @@ class UserController extends Controller {
             'device_token' => \Auth::user()->device_token
         ]);
 
-        $response = $this->UserAPI->delete_wishlist($request)->getData();
+        $response = $this->UserAPI->wishlist_delete($request)->getData();
 
         if($response->success) {
 
-            return back()->with('flash_success',tr('wishlist_removed'));
+            return back()->with('flash_success', $response->message);
 
         } else {
 
-            return back()->with('flash_error', tr('something_error'));
+            return back()->with('flash_error',  $response->message);
         }
     } 
 
     /**
      * Function Name : add_comment()
      * 
-     * To Add comment based on single video
+     * @uses To Add comment based on single video
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $video_tape_id - Video Tape ID
      *
@@ -1848,7 +1891,11 @@ class UserController extends Controller {
     /**
      * Function Name : channel_create()
      *
-     * To create a channel based on logged in user id  (Form Rendering)
+     * @uses To create a channel based on logged in user id  (Form Rendering)
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @return respnse with flash message
      */
@@ -1881,7 +1928,11 @@ class UserController extends Controller {
     /**
      * Function Name : save_channel()
      *
-     * To create a channel based on logged in user id
+     * @uses To create a channel based on logged in user id
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param Object $request - Channel Details
      *
@@ -1909,11 +1960,14 @@ class UserController extends Controller {
 
     }
 
-
     /**
      * Function Name : channel_edit()
      *
-     * To edit a channel based on logged in user id (Form Rendering)
+     * @uses To edit a channel based on logged in user id (Form Rendering)
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $id - Channel Id
      *
@@ -1945,7 +1999,11 @@ class UserController extends Controller {
     /**
      * Function Name : channel_delete()
      *
-     * To delete a channel based on logged in user id & channel id (Form Rendering)
+     * @uses To delete a channel based on logged in user id & channel id (Form Rendering)
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $request - Channel Id
      *
@@ -1982,7 +2040,11 @@ class UserController extends Controller {
     /**
      * Function Name : delete_account()
      *
-     * To delete account , based on the user (Form Rendering)
+     * @uses To delete account , based on the user (Form Rendering)
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param object $request - User Details
      *
@@ -2006,7 +2068,11 @@ class UserController extends Controller {
     /**
      * Function Name : delete_account()
      *
-     * To delete account , based on the user
+     * @uses To delete account , based on the user
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param object $request - User Details
      *
@@ -2036,10 +2102,14 @@ class UserController extends Controller {
 
     }
 
-
     /**
      * Function Name : save_report_videos
-     * Save report videos based on user based
+     *
+     * @uses Save report videos based on user based
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param object $request - Post Attributes
      *
@@ -2073,11 +2143,17 @@ class UserController extends Controller {
         /*} catch (Exception $e) {
             return back()->with('flash_error', $e);
         }*/
+    
     }
 
     /**
      * Function Name : remove_report_video()
-     * Remove the video from spam folder and make it as unspam
+     *
+     * @uses Remove the video from spam folder and make it as unspam
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $id Flag id
      *
@@ -2098,11 +2174,17 @@ class UserController extends Controller {
             // throw new Exception("error", tr('admin_published_video_failure'));
             return back()->with('flash_error', tr('admin_published_video_failure'));
         }
+    
     }
 
     /**
      * Function Name : spam_videos()
-     * Based on logged in user load spam videos
+     *
+     * @uses Based on logged in user load spam videos
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @return spam videos
      */
@@ -2122,6 +2204,7 @@ class UserController extends Controller {
         return view('user.account.spam_videos')->with('model' , $model)
                         ->with('page' , 'Profile')
                         ->with('subPage' , 'Spam Videos');
+    
     }   
 
 
@@ -2142,6 +2225,7 @@ class UserController extends Controller {
         $model = $query->get();
 
         return view('user.account.subscriptions')->with('subscriptions', $model)->with('page', 'Profile')->with('subPage', 'Subscriptions');
+    
     }
 
     public function ad_request(Request $request) {
@@ -2167,6 +2251,7 @@ class UserController extends Controller {
             return response()->json(['success'=>false], 200);
             
         }
+    
     }
 
     public function video_upload(Request $request) {
@@ -2202,8 +2287,8 @@ class UserController extends Controller {
             ->with('subPage', 'upload_video')->with('id', $id)
             ->with('categories', $categories_list)
             ->with('tags', $tags);
+    
     }
-
 
     public function video_edit(Request $request) {
 
@@ -2239,8 +2324,8 @@ class UserController extends Controller {
             return back()->with('flash_error', tr('video_not_found'));
 
         }
+   
     }
-
 
     public function video_save(Request $request) {
 
@@ -2332,7 +2417,9 @@ class UserController extends Controller {
         }
 
         return back()->with('flash_success', tr('video_delete_success'));
-    }  
+
+    
+    }
 
     public function save_default_img(Request $request) {
 
@@ -2493,6 +2580,20 @@ class UserController extends Controller {
 
                 $model->save();
 
+                $channel_details = Channel::find($request->channel_id);
+
+                $notification_data = 
+
+                $notification_data['from_user_id'] = $request->user_id; 
+
+                $notification_data['to_user_id'] = $channel_details->user_id;
+
+                $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_SUBSCRIBER;
+
+                $notification_data['channel_id'] = $channel_details->id;
+
+                dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
+
                 return back()->with('flash_success', tr('channel_subscribed'));
 
             } else {
@@ -2624,7 +2725,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function payment_card_add(Request $request) {
+    public function cards_add(Request $request) {
 
         $last_four = substr($request->number, -4);
 
@@ -2804,9 +2905,9 @@ class UserController extends Controller {
      *
      * To pay the payment of subscription through stripe 
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param object $request - user and subscription details
      *
@@ -2843,11 +2944,11 @@ class UserController extends Controller {
     /**
      * Function Name : subscribed_channels()
      *
-     * To list otu  subscribed channels based on logged in users
+     * @uses To list otu  subscribed channels based on logged in users
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param object $request - user details
      *
@@ -2882,11 +2983,11 @@ class UserController extends Controller {
     /**
      * Function Name : partialVideos()
      *
-     * To get video details of channels videos using skip & take
+     * @uses To get video details of channels videos using skip & take
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param object $request - user and channel details
      *
@@ -2910,17 +3011,17 @@ class UserController extends Controller {
                     ->render();
 
         return response()->json(['view'=>$view, 'length'=>count($videos)]);
+    
     }
-
 
     /**
      * Function Name : payment_mgmt_videos()
      *
-     * To get payment video details of logged in user using skip & Take
+     * @uses To get payment video details of logged in user using skip & Take
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param object $request - user and channel details
      *
@@ -2947,11 +3048,11 @@ class UserController extends Controller {
     /**
      * Function Name : invoice()
      *
-     * To Display subscription invoice page based on subscription id
+     * @uses To Display subscription invoice page based on subscription id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param integer $id - subscription id
      *
@@ -2980,17 +3081,17 @@ class UserController extends Controller {
 
         return view('user.invoice')->with('page', 'invoice')->with('subPage', 'invoice')->with('model', $model)->with('subscription',$subscription)
             ->with('model',$model);
+    
     }
-
 
     /**
      * Function Name : ppv_invoice()
      *
-     * To Display ppv invoice page based on video id
+     * @uses To Display ppv invoice page based on video id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param integer $id - video id
      *
@@ -3024,16 +3125,17 @@ class UserController extends Controller {
 
             return back()->with('flash_error', tr('video_not_found'));
         }
+    
     }
 
     /**
      * Function Name : pay_per_view()
      *
-     * To Display ppv video page
+     * @uses To Display ppv video page
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - video with user Details
      *
@@ -3054,7 +3156,6 @@ class UserController extends Controller {
                 ->with('subPage', 'pay_per_view')->with('video', $video);
 
     }
-
 
     /**
      * Function Name: payper_videos()
@@ -3082,11 +3183,11 @@ class UserController extends Controller {
     /**
      * Function Name : payment_type()
      *
-     * To Check whether the user is going to pay through paypal / stripe payment (For PPV)
+     * @uses To Check whether the user is going to pay through paypal / stripe payment (For PPV)
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3102,16 +3203,17 @@ class UserController extends Controller {
 
             return redirect(route('user.card.ppv-stripe-payment', ['video_tape_id'=>$id, 'coupon_code'=>$request->coupon_code]));
         }
+   
     }
 
     /**
      * Function Name : subscription_payment()
      *
-     * To Check whether the user is going to pay through paypal / stripe payment (For subscription)
+     * @uses To Check whether the user is going to pay through paypal / stripe payment (For subscription)
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3127,16 +3229,17 @@ class UserController extends Controller {
 
             return redirect(route('user.card.stripe_payment' , ['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
         }
+    
     }
 
     /**
      * Function Name : ppv_stripe_payment()
      *
-     * To Pay PPV amount through stripe payment gateway
+     * @uses To Pay PPV amount through stripe payment gateway
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3166,16 +3269,17 @@ class UserController extends Controller {
 
             return back()->with('flash_error', $payment->error_messages);
         }
+    
     }
 
     /**
      * Function Name : payment_success()
      *
-     * To displaye subscription success message
+     * @uses To displaye subscription success message
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3189,11 +3293,11 @@ class UserController extends Controller {
     /**
      * Function Name : video_success()
      *
-     * To displaye video success messae
+     * @uses To displaye video success messae
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3206,13 +3310,20 @@ class UserController extends Controller {
         }
 
         return view('user.video_subscription')->with('id', $id);
+    
     }
 
     /**
      * Function Name : save_video_payment
-     * Brief : To save the payment details
+     *
+     * @uses To save the payment details
+     *
+     * @created Vithya R
+     *
+     * @updated 
      *
      * @param integer $id Video Id
+     *
      * @param object  $request Object (Post Attributes)
      *
      * @return flash message
@@ -3240,13 +3351,17 @@ class UserController extends Controller {
             }
         }
         return back()->with('flash_error', tr('admin_published_video_failure'));
-   
     }
 
     /**
      * Function Name : remove_payper_view()
-     * To remove pay per view
+     *
+     * @uses To remove pay per view
      * 
+     * @created Vithya R
+     *
+     * @updated 
+     *
      * @return falsh success
      */
     public function remove_payper_view($id) {
@@ -3270,11 +3385,11 @@ class UserController extends Controller {
     /**
      * Function Name : my_channels()
      *
-     * To list out channels based on logged in users
+     * @uses To list out channels based on logged in users
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3288,7 +3403,6 @@ class UserController extends Controller {
 
         $response = $this->UserAPI->user_channel_list($request)->getData();
 
-
         return view('user.channels.list')->with('page', 'my_channel')
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
@@ -3298,11 +3412,11 @@ class UserController extends Controller {
     /**
      * Function Name : forgot_password()
      *
-     * To send password to the requested users
+     * @uses To send password to the requested users
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3326,11 +3440,11 @@ class UserController extends Controller {
     /**
      * Function Name : subscription_history()
      *
-     * To list out subscribed history based on id
+     * @uses To list out subscribed history based on id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3363,11 +3477,11 @@ class UserController extends Controller {
     /**
      * Function Name : ppv_history()
      *
-     * To list out ppv history based on id
+     * @uses To list out ppv history based on id
      *
-     * @created_by Shobana
+     * @created Vithya R
      *
-     * @updated_by - 
+     * @updated 
      *
      * @param Object $request - User Details
      *
@@ -3401,11 +3515,11 @@ class UserController extends Controller {
     /**
      * Function Name : tags_videos()
      *
-     * To list out tags videos based on tag id
+     * @uses To list out tags videos based on tag id
      * 
-     * @created_by - Shobana Chandrasekar
+     * @created Vithya 
      *
-     * @updated_by - -
+     * @updated
      *
      * @param integer $request->id - Category Id
      *
@@ -3459,11 +3573,11 @@ class UserController extends Controller {
    /**
     * Function Name : subscriptions_autorenewal_enable
     *
-    * To enable automatic subscription
+    * @uses To enable automatic subscription
     *
-    * @created Shobana C
+    * @created Vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - USer details & payment details
     *
@@ -3494,11 +3608,11 @@ class UserController extends Controller {
    /**
     * Function Name : subscriptions_autorenewal_pause
     *
-    * To cancel automatic subscription
+    * @uses To cancel automatic subscription
     *
-    * @created Shobana C
+    * @created Vithya
     *
-    * @edited -
+    * @updated -
     *
     * @param object $request - USer details & payment details
     *
@@ -3531,11 +3645,11 @@ class UserController extends Controller {
    /**
     * Function Name : categories_view()
     *
-    * category details based on id
+    * @uses category details based on id
     *
-    * @created_by shobana
+    * @created Vithya R
     *
-    * @updated_by -
+    * @updated
     *
     * @param - 
     * 
@@ -3589,16 +3703,17 @@ class UserController extends Controller {
             return back()->with('flash_error', $response->error_messages);
 
         }
+    
     }
 
     /**
      * Function Name : categories_videos()
      *
-     * @created_by shobana
+     * @uses To display based on category
      *
-     * @updated_by -
+     * @created Vithya R
      *
-     * To display based on category
+     * @updated
      *
      * @param object $request - User Details
      *
@@ -3631,15 +3746,14 @@ class UserController extends Controller {
 
     } 
 
-
     /**
      * Function Name : categories_channels
      *
-     * To list out all the channels which is in active status
+     * @uses To list out all the channels which is in active status
      *
-     * @created_by Shobana 
+     * @created Vithya R 
      *
-     * @updated_by Shobana
+     * @updated Vithya R
      *
      * @param Object $request - USer Details
      *
@@ -3672,13 +3786,15 @@ class UserController extends Controller {
 
     }   
 
-        /**
+    /**
      *
      * Function : custom_live_videos()
      *
-     * @description return list of live videos created by admin
+     * @uses return list of live videos created by admin
      *
-     * @author Shobana , Edited By - shobana
+     * @created Vithya
+     *
+     * @updated 
      *
      * @return list page for live videos
      */
@@ -3701,21 +3817,23 @@ class UserController extends Controller {
 
     /**
      *
-     * Function : single_live_rtmp_videos()
+     * Function : custom_live_videos_view()
      *
-     * @description return view details of live video
+     * @uses return view details of live video
      *
-     * @author Shobana , Edited By - shobana
+     * @created Vithya
+     *
+     * @updated 
      *
      * @return view page for selected live video
      */
-    public function single_custom_live_video($id = "" , Request $request) {
+    public function custom_live_videos_view($id = "" , Request $request) {
 
         $request->request->add([
             'custom_live_video_id'=> $id,
         ]);
 
-        $response = $this->UserAPI->single_custom_live_video($request)->getData();
+        $response = $this->UserAPI->custom_live_videos_view($request)->getData();
 
         if(!$response->success) {
             return redirect()->to('/')->with('flash_error' , "Details not found");
@@ -3733,9 +3851,11 @@ class UserController extends Controller {
      *
      * Function : settings()
      *
-     * @description Display all the portion of the logged in user
+     * @uses Display all the portion of the logged in user
      *
-     * @author Shobana , Edited By - shobana
+     * @created Vithya
+     *
+     * @updated 
      *
      * @return list of options
      */
@@ -3791,4 +3911,584 @@ class UserController extends Controller {
         }
 
     }
+
+    /**
+     * Function Name : bell_notifications()
+     *
+     * @uses list of notifications for user
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $id
+     *
+     * @return JSON Response / View Page
+     */
+
+    public function bell_notifications(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->bell_notifications($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+            $notifications = $response->data;
+
+            foreach ($notifications as $key => $notification_details) {
+
+                $notification_redirect_url = route('user.single', $notification_details->video_tape_id);
+
+                if($notification_details->notification_type == BELL_NOTIFICATION_NEW_SUBSCRIBER) {
+                    
+                    $notification_redirect_url = route('user.channel', $notification_details->channel_id);
+
+                }
+
+                $notification_details->notification_redirect_url = $notification_redirect_url;
+
+            }
+
+            return view('user.notifications.index')->with('notifications', $notifications);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    } 
+
+    /**
+     * Function Name : bell_notifications_update()
+     *
+     * @uses list of notifications for user
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $id
+     *
+     * @return JSON Response
+     */
+
+    public function bell_notifications_update(Request $request) {
+
+    }  
+
+    /**
+     * Function Name : bell_notifications_count()
+     * 
+     * @uses Get the notification count
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param object $request - As of no attribute
+     * 
+     * @return response of boolean
+     */
+    public function bell_notifications_count(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->bell_notifications_count($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+            return response()->json($response, 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+            // return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    }  
+
+    /**
+     *
+     * Function name: playlists()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->playlists($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+            $playlists = $response->data;
+
+            return view('user.playlists.index')->with('playlists', $playlists);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    } 
+
+    /**
+     *
+     * Function name: playlists_save()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_save(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(),[
+                'title' => 'required|max:255',
+                'playlist_id' => 'exists:playlists,id,user_id,'.$request->id,
+            ],
+            [
+                'exists' => Helper::get_error_message(175)
+            ]);
+
+            if($validator->fails()) {
+
+                $error_messages = implode(',',$validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            $playlist_details = Playlist::where('id', $request->playlist_id)->first();
+
+            $message = Helper::get_message(129);
+
+            if(!$playlist_details) {
+
+                $message = Helper::get_message(128);
+
+                $playlist_details = new Playlist;
+    
+                $playlist_details->status = APPROVED;
+
+                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PRIVATE;
+
+                $playlist_details->playlist_type = PLAYLIST_TYPE_USER;
+
+            }
+
+            $playlist_details->user_id = $request->id;
+
+            $playlist_details->title = $playlist_details->description = $request->title ?: "";
+
+            if($playlist_details->save()) {
+
+                DB::commit();
+
+                $playlist_details = $playlist_details->where('id', $playlist_details->id)->CommonResponse()->first();
+
+                $response_array = ['success' => true, 'message' => $message, 'data' => $playlist_details];
+
+                return response()->json($response_array, 200);
+
+            } else {
+
+                throw new Exception(Helper::get_error_message(179), 179);
+
+            }
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+
+    /**
+     *
+     * Function name: playlists_view()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_view(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->playlists_view($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+            $playlist_details = $response->data;
+
+            $video_tapes = $response->data->video_tapes;
+
+            return view('user.playlists.videos')->with('playlist_details', $playlist_details)->with('video_tapes', $video_tapes);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+    
+    }
+    /**
+     *
+     * Function name: playlists_add_video()
+     *
+     * @uses get the playlists
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_video_status(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
+                                        ->where('user_id', $request->id)
+                                        ->first();
+            // if($playlist_video_details) {
+
+            //     $message = Helper::get_message(127); $code = 127;
+
+            //     $playlist_video_details->delete();
+
+            // } else {
+
+                $validator = Validator::make($request->all(),[
+                    'playlist_id' => 'required',
+                    'video_tape_id' => 'required|exists:video_tapes,id,status,'.APPROVED,
+                ]);
+
+                if($validator->fails()) {
+
+                    $error_messages = implode(',',$validator->messages()->all());
+
+                    throw new Exception($error_messages, 101);
+                    
+                }
+
+                $playlist_ids = explode(',', $request->playlist_id);
+
+                PlaylistVideo::whereNotIn('playlist_id', $playlist_ids)->where('video_tape_id', $request->video_tape_id)
+                                ->where('user_id', $request->id)
+                                ->delete();
+
+                $total_playlists_update = 0;
+
+                foreach ($playlist_ids as $key => $playlist_id) {
+
+                    // Check the playlist id belongs to the logged user
+
+                    $playlist_details = Playlist::where('id', $playlist_id)->where('user_id', $request->id)->count();
+
+                    if($playlist_details) {
+
+                        $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
+                                            ->where('user_id', $request->id)
+                                            ->where('playlist_id', $playlist_id)
+                                            ->first();
+                        if(!$playlist_video_details) {
+
+                            $playlist_video_details = new PlaylistVideo;
+     
+                        }
+
+                        $playlist_video_details->user_id = $request->id;
+
+                        $playlist_video_details->playlist_id = $playlist_id;
+
+                        $playlist_video_details->video_tape_id = $request->video_tape_id;
+
+                        $playlist_video_details->status = APPROVED;
+
+                        $playlist_video_details->save();
+
+                        $total_playlists_update++;
+
+                    }
+                
+                }
+
+            // }
+
+            DB::commit();
+
+            $code = $total_playlists_update > 0 ? 126 : 132;
+
+            $message = Helper::get_message($code);
+
+            $response_array = ['success' => true, 'message' => $message, 'code' => $code];
+
+            return response()->json($response_array);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+    /**
+     *
+     * Function name: playlists_video_remove()
+     *
+     * @uses Remove the video from playlist
+     *
+     * @created Aravinth R
+     *
+     * @updated vithya R
+     *
+     * @param integer video_tape_id (Optional)
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_video_remove(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token,
+                'playlist_id' => $request->playlist_id,
+                'video_tape_id' => $request->video_tape_id
+            ]);
+
+            $response = $this->UserAPI->playlists_video_remove($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+           return back()->with('flash_success', $response->message);
+
+            return view('user.playlists.videos')->with('playlist_details', $playlist_details)->with('video_tapes', $video_tapes);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+    
+    }
+
+    /**
+     * Function Name : playlists_delete()
+     *
+     * @uses used to delete the user selected playlist
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $playlist_id
+     *
+     * @return JSON Response
+     */
+    public function playlists_delete(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token,
+                'playlist_id' => $request->playlist_id,
+                'video_tape_id' => $request->video_tape_id
+            ]);
+
+            $response = $this->UserAPI->playlists_delete($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+
+            }
+
+           return back()->with('flash_success', $response->message);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    }
+
 }

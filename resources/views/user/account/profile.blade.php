@@ -196,7 +196,8 @@
                                                     </span>
                                                 </div> 
                                                 <div class="cross-mark1">
-                                                    <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    <a  onclick="return confirm(&quot;{{ substr($video->title, 0 , 15)}}.. {{tr('user_wishlist_delete_confirm') }}&quot;)"
+                                                    href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                 </div><!--end of cross-mark-->                       
                                             </div> <!--end of history-head--> 
 

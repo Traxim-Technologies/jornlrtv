@@ -13,6 +13,7 @@ use DB;
 use App\Channel;
 use App\VideoTape;
 use App\Jobs\CompressVideo;
+use App\Jobs\BellNotificationJob;
 use App\VideoTapeImage;
 use App\UserPayment;
 use Auth;
@@ -171,154 +172,132 @@ class CommonRepository {
 	}
 
 
-
+    /**
+     * Function Name : channel_save
+     *
+     * @uses To save/update channel based on details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $channel_id
+     * 
+     * @return success/failure message
+     *
+     */
 	public static function channel_save($request) {
-        
-        $validator = [];
 
-        if($request->device_type == DEVICE_WEB) {
+        try {  
 
             $request->request->add([
-
-                'user_id'=>$request->user_id
+                'user_id' => $request->device_type == DEVICE_WEB ? $request->user_id : $request->id
             ]);
 
-         } else{
 
-             $request->request->add([
+            DB::beginTransaction();
 
-                'user_id'=>$request->id
-            ]);
-         }
-
-        if($request->channel_id != '') {
-
-            if ($request->has('picture')) {
-
-                $validator = Validator::make( $request->all(), array(
-                        'picture'     => 'required|mimes:jpeg,jpg,bmp,png',
-                        ));
-
-            }
-
-            if ($request->has('cover')) {
-
-                $validator = Validator::make( $request->all(), array(
-                        'cover'  => 'required|mimes:jpeg,jpg,bmp,png',
-                        )
-                    );
-            }
-
-        }
-
-        if ($validator) {
+            $validator = Validator::make( $request->all(), [
+                    'name' => 'required|min:6|max:255',
+                    'description' => 'required|max:1000',
+                    'picture' => $request->channel_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+                    'cover' => $request->channel_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+                    'channel_id' => $request->channel_id ? 'required|exists:channels,id' : ''
+                ]
+            );
 
             if ($validator->fails()) {
 
-                $error_messages = implode(',', $validator->messages()->all());
+                $error = implode(',', $validator->messages()->all());
 
-                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
+                throw new Exception($error, 101);                    
+
             }
 
-        } else {
+                if ($request->channel_id != '') {
 
-    		if($request->channel_id != '') {
-                
-                $validator = Validator::make( $request->all(), array(
-                            'name' => 'required|min:6|max:255',
-                            'description'=>'required|max:1000',
-                            'channel_id' => 'required|exists:channels,id'
-                        ));
-            } else {
-                $validator = Validator::make( $request->all(), array(
-                        'name' => 'required|min:6|max:255',
-                        'description'=>'required|max:1000',
-                        'picture' => 'required|mimes:jpeg,jpg,bmp,png',
-                        'cover' => 'required|mimes:jpeg,jpg,bmp,png',
-                    )
-                );
-            
-            }
-           
-            if($validator->fails()) {
+                    $channel_details = Channel::find($request->channel_id);
 
-                $error_messages = implode(',', $validator->messages()->all());
-
-                $response_array = ['success'=> false, 'error_messages'=>$error_messages];
-
-                // return back()->with('flash_errors', $error_messages);
-
-            } else {
-
-                if($request->channel_id != '') {
-
-                    $channel = Channel::find($request->channel_id);
-
-                    $message = tr('channel_update_success');
-
-                    if($request->hasFile('picture')) {
-                        Helper::delete_picture($channel->picture, "/uploads/channels/picture/");
-                    }
-
-                    if($request->hasFile('cover')) {
-                        Helper::delete_picture($channel->cover, "/uploads/channels/cover/");
-                    }
+                    $message = tr('admin_channel_update_success');
 
                 } else {
-                    $message = tr('channel_create_success');
-                    //Add New User
-                    $channel = new Channel;
 
-                    $channel->is_approved = DEFAULT_TRUE;
+                    $message = tr('admin_channel_create_success');
+                    //Add New User
+                    $channel_details = new Channel;
+
+                    $channel_details->is_approved = DEFAULT_TRUE;
+
+                    $channel_details->status = DEFAULT_TRUE;
+                }
+
+                $channel_details->name = $request->has('name') ? $request->name : '';
+
+                $channel_details->description = $request->has('description') ? $request->description : '';
+
+                $channel_details->user_id = $request->has('id') ? $request->id : '';
+
+                if($channel_details->youtube_channel_id == "" && $request->youtube_channel_id) {
+
+                    $channel_details->youtube_channel_created_at = date('Y-m-d H:i:s');
+                }
+
+                $channel_details->youtube_channel_id = $request->youtube_channel_id ?: "";
+
+                if($request->youtube_channel_id) {
+
+                    $channel_details->youtube_channel_updated_at = date('Y-m-d H:i:s');
 
                 }
 
-                $channel->name = $request->has('name') ? $request->name : '';
-
-                $channel->description = $request->has('description') ? $request->description : '';
-
-                if($request->device_type == DEVICE_WEB) {
-
-                    $channel->user_id = $request->has('user_id') ? $request->user_id : '';
-
-                 } else{
-
-                    $channel->user_id = $request->has('id') ? $request->id : '';
-
-                 }
-                $channel->status = DEFAULT_TRUE;
-
-                $channel->unique_id =  $channel->name;
+                $channel_details->unique_id = $channel_details->name;
                 
                 if($request->hasFile('picture') && $request->file('picture')->isValid()) {
-                    if($channel->id)  {
-                        Helper::delete_picture($channel->picture, "/uploads/channels/picture/");
+                    
+                    if($channel_details->id) {
+                        Helper::delete_picture($channel_details->picture, "/uploads/channels/picture/");
                     }
-                    $channel->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/channels/picture/");
+
+                    $channel_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/channels/picture/");
                 }
 
                 if($request->hasFile('cover') && $request->file('cover')->isValid()) {
-                    if($channel->id)  {
-                        Helper::delete_picture($channel->cover, "/uploads/channels/cover/");
+                    
+                    if($channel_details->id)  {
+                        Helper::delete_picture($channel_details->cover, "/uploads/channels/cover/");
                     }
-                    $channel->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channels/cover/");
-                }
-                
-                $channel->save();
 
-                if($channel) {
-                    // return back()->with('flash_success', $message);
-                    $response_array = ['success'=>true, 'message'=>$message, 'data'=>$channel];
+                    $channel_details->cover = Helper::normal_upload_picture($request->file('cover'), "/uploads/channels/cover/");
+                }
+
+
+                if ($channel_details->save()) {
+
+                    DB::commit();
+
                 } else {
-                    // return back()->with('flash_error', tr('admin_not_error'));
-                    $response_array = ['success'=>false, 'error_messages'=>tr('something_error')];
+
+                    throw new Exception(tr('admin_channel_save_error'), 101);
                 }
 
-            }
-        }
+                if ($channel_details) {
 
-        return response()->json($response_array, 200);
-    
+                    $response_array = ['success' => true, 'message' => $message, 'data' => $channel_details];
+                } else {
+
+                    $response_array = ['success' => false, 'error_messages' => tr('something_error')]; 
+                }
+
+        } catch (Exception $e) {
+            
+            DB::rollBack();
+
+            $message = $e->getMessage();
+
+            $response_array = ['success' => false, 'error_messages' => $message];
+        }    
+
+        return response()->json($response_array, 200);    
 	}
 
 
@@ -341,13 +320,11 @@ class CommonRepository {
                         // 'age_limit'=>'required|numeric'
                         ));
 
-            if($validator->fails()) {
+            if( $validator->fails() ) {
 
                 Log::info("Fails Validator 1");
 
                 $error_messages = implode(',', $validator->messages()->all());
-
-                // $response_array = ['success'=>false, 'message'=>$error_messages];
 
                 throw new Exception($error_messages);
 
@@ -362,7 +339,6 @@ class CommonRepository {
                 if ($model->video_type != $request->video_type) {
 
                     $required = 1;
-
                 }
 
                 if (in_array($request->video_type , [ VIDEO_TYPE_YOUTUBE , VIDEO_TYPE_OTHERS] )) {
@@ -859,6 +835,18 @@ class CommonRepository {
 
                         dispatch(new SubscriptionMail($model->channel_id, $model->id));
 
+                        $notification_data['from_user_id'] = $model->user_id; 
+
+                        $notification_data['to_user_id'] = 0;
+
+                        $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_VIDEO;
+
+                        $notification_data['channel_id'] = $model->channel_id;
+
+                        $notification_data['video_tape_id'] = $model->id;
+
+                        dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
+
                         $push_message = $model->title;
 
                         dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
@@ -876,7 +864,7 @@ class CommonRepository {
 
             DB::commit();
 
-            $response_array =  ['success'=>true , 'data'=> $model, 'video_path'=>$video_path];
+            $response_array =  ['success'=>true , 'data'=> $model, 'video_path' => $video_path];
 
         } catch (Exception $e) {
 
@@ -896,9 +884,7 @@ class CommonRepository {
         $model = VideoTapeImage::where('video_tape_id', $id)->delete();
 
         return $model;
-
     }
-
 
     public static function get_video_tape_images($video_id) {
 
@@ -932,7 +918,6 @@ class CommonRepository {
 
     public static function set_default_image($request) {
 
-       // dd($request->all());
 
         $video_tape = ($request->video_tape_id) ? VideoTape::find($request->video_tape_id) : '';
 
@@ -1271,9 +1256,9 @@ class CommonRepository {
      *
      * To save subscription details based on user id
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - -
+     * @updated
      *
      * @param integer $s_id - Subscription id, $u_id - User id
      * 
@@ -1340,9 +1325,9 @@ class CommonRepository {
      *
      * @param integer video id - Video id
      *
-     * @created: shobana chandrasekar
+     * @created Vithya R
      *
-     * @updated: -
+     * @updated
      *
      * @return response of success/failure message
      */

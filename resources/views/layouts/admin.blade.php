@@ -80,11 +80,21 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
-    <div class="wrapper">
+    <div class="wrapper">      
 
-        @include('layouts.admin.header')
+        @if(Auth::guard('admin')->user()->role == ADMIN)
 
-        @include('layouts.admin.nav')
+            @include('layouts.admin.header')
+
+            @include('layouts.admin.nav')
+
+        @else 
+
+            @include('layouts.admin.subadmin-header')
+
+            @include('layouts.admin.subadmin-nav')
+
+        @endif
 
         <div class="content-wrapper">
             
