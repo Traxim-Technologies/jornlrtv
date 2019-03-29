@@ -1479,7 +1479,7 @@ class UserController extends Controller {
 
         $wishlist = $this->UserAPI->wishlist_list($request)->getData();
 
-        $user = User::find($id);
+        $user = User::find(\Auth::user()->id);
 
         return view('user.account.profile')
                     ->with('page' , 'profile')
