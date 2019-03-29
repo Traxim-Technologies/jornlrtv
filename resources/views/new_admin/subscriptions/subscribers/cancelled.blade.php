@@ -5,7 +5,7 @@
 @section('content-header', tr('cancelled_subscribers'))
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li class="active"><i class="fa fa-key"></i> {{ tr('cancelled_subscribers') }}</li>
 @endsection
 

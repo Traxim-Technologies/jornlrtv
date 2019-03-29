@@ -5,7 +5,6 @@
 @section('content-header', tr('custom_push'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li class="active"><i class="fa fa-send"></i> {{tr('custom_push')}}</li>
 @endsection
 

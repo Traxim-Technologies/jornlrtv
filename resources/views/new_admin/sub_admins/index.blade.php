@@ -10,7 +10,7 @@
 @endsection
 
 @section('breadcrumb')
-   	<li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+   	 
     <li class="active"><i class="fa fa-user"></i> {{ tr('sub_admins') }}</li>
 @endsection
 

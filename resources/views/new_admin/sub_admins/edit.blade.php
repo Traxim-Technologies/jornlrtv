@@ -5,7 +5,6 @@
 @section('content-header', tr('sub_admin_edit'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.sub_admins.index')}}"><i class="fa fa-user"></i> {{tr('sub_admins')}}</a></li>
     <li class="active"><i class="fa fa-user-plus"></i> {{tr('sub_admin_edit')}}</li>
 @endsection

@@ -5,7 +5,7 @@
 @section('content-header', tr('view_subscription'))
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li><a href="{{ route('admin.subscriptions.index') }}"><i class="fa fa-key"></i> {{ tr('subscriptions') }}</a></li>
     <li class="active"><i class="fa fa-eye"></i>&nbsp;{{ tr('view_subscriptions') }}</li>
 @endsection

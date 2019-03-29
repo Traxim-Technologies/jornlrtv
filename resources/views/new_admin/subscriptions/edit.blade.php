@@ -5,7 +5,6 @@
 @section('content-header', tr('edit_subscription'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.subscriptions.index')}}"><i class="fa fa-key"></i> {{tr('subscriptions')}}</a></li>
     <li class="active">{{tr('edit_subscription')}}</li>
 @endsection

@@ -5,7 +5,6 @@
 @section('content-header', tr('profile'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li class="active"><i class="fa fa-diamond"></i> {{tr('account')}}</li>
 @endsection
 
@@ -42,6 +41,13 @@
                         <li class="list-group-item">
                             <b>{{tr('address')}}</b> <a class="pull-right">{{Auth::guard('admin')->user()->address}}</a>
                         </li>
+
+                        <li class="list-group-item">
+
+                            <a href="{{route('master.login')}}" class="btn btn-success">{{tr('login_as_user')}}</a>
+
+                        </li>
+                        
                     </ul>
                 
                 </div>

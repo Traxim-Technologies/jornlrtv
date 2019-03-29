@@ -5,7 +5,7 @@
 @section('content-header', tr('custom_live_videos'))
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li class="active"><i class="fa fa-video-camera"></i> {{ tr('custom_live_videos') }}</li>
 @endsection
 

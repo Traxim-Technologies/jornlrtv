@@ -936,42 +936,33 @@ class UserController extends Controller {
 
             DB::beginTransaction();
 
-            if (Auth::guard('admin')->check()) {
+            if (!Auth::guard('admin')->check()) {
+                
+                throw new Exception(tr('admin_not_logged_in'));
 
-                // Get current login admin details
+            }
 
-                $master_user_id = Auth::guard('admin')->user()->user_id;
+            // Get current login admin details
+            $master_user_id = Auth::guard('admin')->user()->user_id;
 
-                // Check the admin has logged in
+            // Check the admin has logged in
 
-                if($master_user_id != null || $master_user_id != "") {
+            if(!$master_user_id) {
 
-                    // Check already record exists
+                // Check already record exists
+                $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
 
-                    $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
+                if($check_admin_user_details) {
 
-                    if($check_admin_user_details) {
+                    $check_admin_user_details->is_master_user = 1;
 
-                        //$check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
+                    if ($check_admin_user_details->save()) {
 
-                        $check_admin_user_details->token = Helper::generate_token();
-
-                        $check_admin_user_details->is_master_user = 1;
-
-                        $check_admin_user_details->role = "model";
-
-                        if ($check_admin_user_details->save()) {
-
-
-                        } else {
-
-                            throw new Exception(tr('user_details_not_saved'));
-                            
-                        }
 
                     } else {
 
                         throw new Exception(tr('user_details_not_saved'));
+                        
                     }
 
                 } else {
@@ -988,24 +979,16 @@ class UserController extends Controller {
 
                     $check_admin_user_details->device_type = WEB;
 
-                    $check_admin_user_details->role = "model";
-
                     if ($check_admin_user_details->save()) {
 
-                        $admin = Admin::where('email',  Auth::guard('admin')->user()->email)->first();
+                            $admin = Admin::where('email',  Auth::guard('admin')->user()->email)->first();
 
-                        if ($admin) {
+                            if ($admin) {
 
-                            $admin->user_id = $check_admin_user_details->id;
-                           
-                            $admin->save();
-                        }   
+                                $admin->user_id = $check_admin_user_details->id;
 
-                        //$check_admin_user_details->token = AppJwt::create(['id' => $check_admin_user_details->id, 'email' => $check_admin_user_details->email, 'role' => "model"]);
-
-                        $check_admin_user_details->token = Helper::generate_token();
-                        
-                        $check_admin_user_details->save();
+                                $admin->save();
+                            }   
 
                     } else {
 
@@ -1014,28 +997,27 @@ class UserController extends Controller {
 
                 }
 
-                
                 $master_user_id = $check_admin_user_details->id;
 
-                $master_user_details = User::find($master_user_id);
+            }
 
-                // If master user details is not empty -> Login the admin as user
+            $master_user_details = User::find($master_user_id);
 
-                if($master_user_details) {
+            // If master user details is not empty -> Login the admin as user
 
-                    Auth::loginUsingId($master_user_id, true);
-
-                } else {
-
-                    throw new Exception(tr('user_not_found'));
-
-                }
-
-            } else {
-
-                throw new Exception(tr('admin_not_logged_in'));
+            if(!$master_user_details) {
+                
+                throw new Exception(tr('user_not_found'));
 
             }
+
+            $master_user_details->token = Helper::generate_token();
+
+            $master_user_details->token_expiry = Helper::generate_token_expiry();
+
+            $master_user_details->save();
+            
+            Auth::loginUsingId($master_user_id, true);
 
             DB::commit();
 
@@ -2529,7 +2511,7 @@ class UserController extends Controller {
 
         } else {
 
-            return back()->with('flash_error', $response->error);
+            return back()->with('flash_error', $response->error_messages);
         }
 
         return back()->with('flash_error', Helper::get_error_message(146));
@@ -2583,8 +2565,6 @@ class UserController extends Controller {
                 $model->save();
 
                 $channel_details = Channel::find($request->channel_id);
-
-                $notification_data = 
 
                 $notification_data['from_user_id'] = $request->user_id; 
 

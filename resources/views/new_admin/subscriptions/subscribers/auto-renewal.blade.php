@@ -5,7 +5,7 @@
 @section('content-header', tr('automatic_subscribers').' - '.Setting::get('currency').$amount)
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li class="active"><i class="fa fa-key"></i> {{ tr('automatic_subscribers') }}</li>
 @endsection
 

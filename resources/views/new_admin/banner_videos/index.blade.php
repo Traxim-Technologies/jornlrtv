@@ -5,7 +5,6 @@
 @section('content-header', tr('banner_videos'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     
     <li class="active"><i class="fa fa-university"></i> {{tr('banner_videos')}}</li>
 @endsection

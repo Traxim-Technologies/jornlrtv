@@ -2202,7 +2202,8 @@ class NewAdminController extends Controller {
     public function coupons_create(Request $request) {
 
         $coupon_details = new Coupon;
-        $coupon_details->expiry_date = new Coupon;
+
+        $coupon_details->expiry_date = date('Y-m-d');
 
         return view('new_admin.coupons.create')
                     ->with('page' , 'coupons')
@@ -4990,10 +4991,9 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error',$error);
         }
+    
     }
-
-
-
+    
     /**
      * Function Name: revenues()
      *
