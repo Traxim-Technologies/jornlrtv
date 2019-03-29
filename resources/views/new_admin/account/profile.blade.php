@@ -41,6 +41,13 @@
                         <li class="list-group-item">
                             <b>{{tr('address')}}</b> <a class="pull-right">{{Auth::guard('admin')->user()->address}}</a>
                         </li>
+
+                        <li class="list-group-item">
+
+                            <a href="{{route('master.login')}}" class="btn btn-success">{{tr('login_as_user')}}</a>
+
+                        </li>
+                        
                     </ul>
                 
                 </div>
