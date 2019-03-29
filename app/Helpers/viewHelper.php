@@ -46,6 +46,10 @@ use App\Category;
 
 use App\VideoTapeTag;
 
+use App\Playlist;
+
+use App\PlaylistVideo;
+
 function tr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
@@ -55,9 +59,7 @@ function tr($key , $otherkey = "") {
     // return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
 
     return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
-
 }
-
 
 function envfile($key) {
 
@@ -88,14 +90,11 @@ function get_video_end_smil($video_url) {
     return $result;
 }
 
-
-
 function register_mobile($device_type) {
     if($reg = MobileRegister::where('type' , $device_type)->first()) {
         $reg->count = $reg->count + 1;
         $reg->save();
-    }
-    
+    }   
 }
 
 /**
@@ -497,9 +496,9 @@ function user_type_check($user) {
 
     if($user) {
 
-        if(Setting::get('is_default_paid_user') == 1) {
+        if(Setting::get('is_default_paid_user') == DEFAULT_TRUE) {
 
-            $user->user_type = 1;
+            $user->user_type = DEFAULT_TRUE;
 
         } else {
 
@@ -507,25 +506,22 @@ function user_type_check($user) {
 
             if(Setting::get('is_subscription')) {
 
-                $user->user_type = 1;
+                $user->user_type = DEFAULT_TRUE;
 
             } else {
                 // Enable the user as paid user
-                $user->user_type = 0;
+                $user->user_type = DEFAULT_FALSE;
             }
-
         }
 
         $user->save();
-
     }
-
 }
 
 
 function get_expiry_days($id) {
     
-    $data = UserPayment::where('user_id' , $id)->where('status', 1)->orderBy('created_at', 'desc')->first();
+    $data = UserPayment::where('user_id' , $id)->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
 
     // User Amount
 
@@ -781,7 +777,7 @@ function add_to_redeem($id , $amount , $admin_amount = 0) {
 }
 
 function get_banner_count() {
-    return VideoTape::where('is_banner' , 1)->count();
+    return VideoTape::where('is_banner' , DEFAULT_TRUE)->count();
 }
 
 function getTypeOfAds($ad_type) {
@@ -838,9 +834,9 @@ function get_history_count($id) {
 
     $base_query = UserHistory::where('user_histories.user_id' , $id)
                 ->leftJoin('video_tapes' ,'user_histories.video_tape_id' , '=' , 'video_tapes.id')
-                ->where('video_tapes.is_approved' , 1)
-                ->where('video_tapes.status' , 1)
-                ->where('video_tapes.publish_status' , 1);
+                ->where('video_tapes.is_approved' , DEFAULT_TRUE)
+                ->where('video_tapes.status' , DEFAULT_TRUE)
+                ->where('video_tapes.publish_status' , DEFAULT_TRUE);
         
     if (Auth::check()) {
 
@@ -864,9 +860,9 @@ function get_wishlist_count($id) {
     
     $data = Wishlist::where('wishlists.user_id' , $id)
                 ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
-                ->where('video_tapes.is_approved' , 1)
-                ->where('video_tapes.status' , 1)
-                ->where('wishlists.status' , 1)
+                ->where('video_tapes.is_approved' , DEFAULT_TRUE)
+                ->where('video_tapes.status' , DEFAULT_TRUE)
+                ->where('wishlists.status' , DEFAULT_TRUE)
                 ->count();
 
     return $data;
@@ -877,8 +873,8 @@ function get_video_comment_count($video_id) {
 
     $count = UserRating::where('video_tape_id' , $video_id)
                 ->leftJoin('video_tapes' ,'user_ratings.video_tape_id' , '=' , 'video_tapes.id')
-                ->where('video_tapes.is_approved' , 1)
-                ->where('video_tapes.status' , 1)
+                ->where('video_tapes.is_approved' , DEFAULT_TRUE)
+                ->where('video_tapes.status' , DEFAULT_TRUE)
                 ->count();
 
     return $count;
@@ -916,7 +912,6 @@ function checkSize() {
     if(($php_ini_upload_size < $setting_upload_size) || ($php_ini_post_size < $setting_post_size)) {
 
         return true;
-
     }
 
     return false;
@@ -941,11 +936,11 @@ function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
 
     if ($channel_type == OTHERS_CHANNEL) {
 
-        $videos_query->where('video_tapes.is_approved' , 1)
-                        ->where('video_tapes.status' , 1)
-                        ->where('video_tapes.publish_status' , 1)
-                        ->where('channels.status', 1)
-                        ->where('channels.is_approved', 1)
+        $videos_query->where('video_tapes.is_approved' , DEFAULT_TRUE)
+                        ->where('video_tapes.status' , DEFAULT_TRUE)
+                        ->where('video_tapes.publish_status' , DEFAULT_TRUE)
+                        ->where('channels.status', DEFAULT_TRUE)
+                        ->where('channels.is_approved', DEFAULT_TRUE)
                         ->where('categories.status', CATEGORY_APPROVE_STATUS);
     }
 
@@ -955,9 +950,9 @@ function videos_count($channel_id, $channel_type = OTHERS_CHANNEL) {
 }
 
 
-function check_channel_status($user_id, $id) {
+function check_channel_status($user_id, $channel_id) {
 
-    $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $id)->first();
+    $model = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $channel_id)->first();
 
     return $model ? $model->id : 0;
 
@@ -1084,7 +1079,7 @@ function number_format_short( $n, $precision = 1 ) {
 function watchFullVideo($user_id, $user_type, $video) {
 
 
-    if ($user_type == 1) {
+    if ($user_type == DEFAULT_TRUE) {
 
         if ($video->ppv_amount == 0) {
             return true;
@@ -1113,7 +1108,7 @@ function watchFullVideo($user_id, $user_type, $video) {
 
         if ($video->ppv_amount == 0) {
             return true;
-        }else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
+        } else if($video->ppv_amount > 0 && ($video->type_of_user == NORMAL_USER || $video->type_of_user == BOTH_USERS)) {
             $paymentView = PayPerView::where('user_id', $user_id)->where('video_id', $video->video_tape_id)
             ->where('amount', '>', 0)
             ->orderBy('created_at', 'desc')->first();
@@ -1162,7 +1157,6 @@ function displayVideoDetails($data,$userId) {
                     $url = route('user.single', $data->video_tape_id);
 
                 } else {
-
                 
                     if ($userId) {
 
@@ -1178,10 +1172,7 @@ function displayVideoDetails($data,$userId) {
                     } else {
 
                         $url = route('user.subscription.pay_per_view', $data->video_tape_id);
-
-                    }
-
-              
+                    }              
                 }
 
             } else {
@@ -1189,9 +1180,7 @@ function displayVideoDetails($data,$userId) {
                 $ppv_status = true;
 
                 $url = route('user.single', $data->video_tape_id);
-
             }
-
         }
 
     } else {
@@ -1206,7 +1195,7 @@ function displayVideoDetails($data,$userId) {
 
     if ($user) {
 
-        $is_ppv_status = ($data->type_of_user == NORMAL_USER || $data->type_of_user == BOTH_USERS) ? ( ( $user->user_type == 0 ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
+        $is_ppv_status = ($data->type_of_user == NORMAL_USER || $data->type_of_user == BOTH_USERS) ? ( ( $user->user_type == DEFAULT_FALSE ) ? DEFAULT_TRUE : DEFAULT_FALSE ) : DEFAULT_FALSE; 
 
     } 
 
@@ -1236,6 +1225,15 @@ function displayVideoDetails($data,$userId) {
     $category = Category::find($data->category_id);
 
     $category_unique_id = $category ? $category->unique_id : '';
+
+    $playlists = Playlist::where('playlists.status', APPROVED)->where('user_id', $userId)->select('playlists.id as playlist_id', 'title', 'user_id')->get();
+
+    foreach ($playlists as $key => $playlist_details) {
+
+        $check_video = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->where('video_tape_id', $data->video_tape_id)->count();
+
+        $playlist_details->is_selected = $check_video ? YES : NO;
+    }
 
     $model = [
         'video_tape_id'=>$data->video_tape_id,
@@ -1275,7 +1273,8 @@ function displayVideoDetails($data,$userId) {
         'category_id'=>$data->category_id,
         'category_unique_id'=>$category_unique_id,
         'category_name'=>$data->category_name,
-        'tags'=>$tags
+        'tags'=>$tags,
+        // 'playlists' => $playlists
     ];
 
 
@@ -1400,9 +1399,9 @@ function getVideoAdsTpe($video_id) {
  *
  * To change the amount based on percentafe (Percentage/absolute)
  *
- * @created_by - Shobana Chandrasekar
+ * @created Vithya R
  *
- * @updated_by - - 
+ * @updated
  *
  * @param - Percentage and amount
  *
@@ -1421,9 +1420,9 @@ function amount_convertion($percentage, $amt) {
  *
  * To change the string/ sentance into seo url
  *
- * @created_by - Shobana Chandrasekar
+ * @created Vithya R
  *
- * @updated_by - - 
+ * @updated
  *
  * @param - String
  *

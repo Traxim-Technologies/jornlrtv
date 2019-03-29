@@ -108,7 +108,7 @@
                                     <div class="col-lg-3 col-md-3 col-sm-12">
                                         <label for="name" class="control-label">{{tr('title')}}</label>
                                         <div>
-                                            <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}" value="{{$model->title}}">
+                                            <input type="text" required class="form-control" id="title" name="title" placeholder="{{tr('video_title')}}" value="{{old('title') ?: $model->title}}">
                                         </div>
                                     </div>
 
@@ -150,7 +150,7 @@
                                     <div class="col-sm-3">
                                       <div class="form-group" style="display: none;" id="publish_time_div">
                                           <label for="datepicker" class="">{{tr('publish_time')}} * </label>
-                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" value="{{$model->publish_time}}" readonly>
+                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" value="{{old('publish_time') ?: $model->publish_time}}" readonly>
                                       </div>
                                     </div>
                                     <div class="form-data">
@@ -201,7 +201,7 @@
                                               <div class="input-group-addon">
                                                   <i class="fa fa-calendar"></i>
                                               </div>
-                                              <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration" value="{{$model->duration}}">
+                                              <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration" value="{{old('duration') ?: $model->duration}}">
                                           </div>
                                       </div>
                                     </div>
@@ -210,7 +210,7 @@
                                     <div class="col-sm-12">
                                        <!--  <label for="name" class="control-label">{{tr('description')}}</label> -->
                                         <div>
-                                            <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description" >{{$model->description}}</textarea>
+                                            <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description" >{{old('description') ?: $model->description}}</textarea>
                                         </div>
                                     </div>
                                      <div class="clearfix"></div>

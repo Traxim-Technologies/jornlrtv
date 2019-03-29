@@ -69,7 +69,7 @@
 									                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
 									                  	@else
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.videos.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
+								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video_tapes.delete' , array('id' => $video->video_tape_id))}}">{{tr('delete')}}</a>
 								                  		@endif
 								                  	</li>
 
@@ -78,9 +78,9 @@
 													@if($video->videoTape)
 
 								                  	@if($video->videoTape->is_approved)
-								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
+								                		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}">{{tr('decline')}}</a></li>
 								                	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.videos.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
+								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.video_tapes.status',$video->video_tape_id)}}">{{tr('approve')}}</a></li>
 								                  	@endif
 
 								                  	<li class="divider" role="presentation"></li>

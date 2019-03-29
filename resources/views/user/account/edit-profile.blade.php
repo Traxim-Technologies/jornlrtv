@@ -17,12 +17,12 @@
 @section('content')
 
 <div class="y-content">
+    
     <div class="row y-content-row">
 
         @include('layouts.user.nav')
 
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
-
 
             <div class="profile-content slide-area1">
                
@@ -31,28 +31,25 @@
                     @include('notification.notify')
 
                     <div class="col-sm-12 col-md-7 col-lg-6 profile-view">
+                        
                         <h4 class="mylist-head">{{tr('edit_profile')}}</h4>
+                       
                         <div class="edit-profile profile-view">
+                            
                             <div class="edit-form profile-bg">
-
-                                <!-- <h4 class="edit-head">{{tr('edit_profile')}}</h4> -->
                                 
                                 <div class="image-profile edit-image">
                                     @if(Auth::user()->picture)
-                                    <img src="{{Auth::user()->picture}}" id="img_profile">
+                                        <img src="{{Auth::user()->picture}}" id="img_profile">
                                     @else
                                         <img src="{{asset('placeholder.png')}}" id="img_profile">
                                     @endif    
-                                    <!--  <div class="edit-image-change">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-square fa-stack-2x"></i>
-                                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </div>  -->
+                                   
                                    <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
                                 </div><!--end of image-profile-->
 
                                 <div class="editform-content"> 
+                                    
                                     <form  action="{{ route('user.profile.save') }}" method="POST" enctype="multipart/form-data">
 
                                         <div class="form-group">
@@ -62,15 +59,15 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="username">{{tr('username')}}</label>
-                                            <input required value="{{Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}">
+                                            <label for="username">{{tr('username')}} *</label>
+                                            <input required value="{{old('name') ?: Auth::user()->name}}" name="name" type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="{{tr('enter_username')}}" >
                                         </div>
 
                                         @if(Auth::user()->login_by == 'manual')
 
                                             <div class="form-group">
-                                                <label for="email">{{tr('email')}}</label>
-                                                <input type="email" value="{{Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
+                                                <label for="email">{{tr('email')}} *</label>
+                                                <input type="email" value="{{old('email') ?: Auth::user()->email}}" name="email" disabled class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
                                             
                                             </div>
 
@@ -78,7 +75,7 @@
 
                                         <div class="form-group">
                                             <label for="mobile">{{tr('mobile')}}</label>
-                                            <input type="mobile" value="{{Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="{{tr('enter_mobile')}}" maxlength="13">
+                                            <input type="mobile" value="{{old('mobile') ?: Auth::user()->mobile}}" name="mobile" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="{{tr('enter_mobile')}}" maxlength="13">
                                             <p class="mobile-note"><small style="color:brown">{{tr('mobile_note')}}</small></p>
                                         </div>
 
@@ -93,38 +90,31 @@
                                             $dob = "00-00-0000";
                                         }
 
-
                                         ?>
-
 
                                         <div class="form-group">
                                             <label for="dob">{{tr('dob')}}</label>
-                                            <input type="text" value="{{$dob}}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob" readonly>
+                                            <input type="text" value="{{old('dob') ?: $dob }}" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" maxlength="13" id="dob" readonly>
                                         </div>
-
                                               
                                         <div class="form-group">
                                             <label for="about">{{tr('about_me')}}</label>
-                                            <textarea name="description" class="form-control" id="about" rows="3">{{Auth::user()->description}}</textarea>
+                                            <textarea name="description" class="form-control" id="about" rows="3">{{old('description') ?: Auth::user()->description}}</textarea>
                                         </div>
                                               
                                         <div class="change-pwd save-pro-btn">
                                             <button type="submit" class="btn btn-info">{{tr('submit')}}</button>
-
-                                            <!-- @if (Auth::user()->login_by == 'manual')
-                                            <a href="{{route('user.change.password')}}" class="btn btn-danger">{{tr('change_password')}}</a>
-                                            @endif -->
-
                                         </div>                                              
 
                                     </form>
+
                                 </div><!--end of editform-content-->
                                     
                             </div><!--end of edit-form-->                           
+                        
                         </div><!--end of edit-profile-->
+                    
                     </div><!--profile-view end-->  
-
-
                     
                     @if(count($wishlist->items) > 0)
                         
@@ -137,11 +127,15 @@
                                 @foreach($wishlist->items as $i => $video)
 
                                     <li class="sub-list row no-margin">
+                                        
                                         <div class="main-history">
+                                            
                                             <div class="history-image">
+                                                
                                                 <a href="{{$video->url}}">
                                                     <img src=" {{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video->video_image}}" class="placeholder">
                                                 </a>      
+                                                
                                                 @if($video->ppv_amount > 0)
                                                     @if(!$video->ppv_status)
                                                         <div class="video_amount">
@@ -151,9 +145,11 @@
                                                         </div>
                                                     @endif
                                                 @endif
+                                                
                                                 <div class="video_duration">
                                                     {{$video->duration}}
                                                 </div>                   
+                                            
                                             </div><!--history-image-->
 
                                             <div class="history-title">
@@ -168,7 +164,7 @@
                                                         </span>
                                                     </div> 
                                                     <div class="cross-mark1">
-                                                        <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                        <a onclick="return confirm( &nbsp;{{tr('user_wishlist_delete_confirm',$video->title)}} &nbsp; );" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                     </div><!--end of cross-mark-->                       
                                                 </div> <!--end of history-head--> 
 

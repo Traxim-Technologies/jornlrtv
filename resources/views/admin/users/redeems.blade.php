@@ -72,7 +72,9 @@
 
 							      		@if(in_array($value->status ,[REDEEM_REQUEST_SENT , REDEEM_REQUEST_PROCESSING]))
 
-								      		<form action="{{route('admin.users.redeem.pay')}}" method="POST">
+								      		<form action="{{route('admin.users.payout.invoice')}}" method="POST">
+
+								      			<input type="hidden" name="user_id" value="{{$value->user_id}}">
 
 								      			<input type="hidden" name="redeem_request_id" value="{{$value->id}}">
 

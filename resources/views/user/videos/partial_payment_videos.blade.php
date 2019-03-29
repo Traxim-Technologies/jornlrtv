@@ -23,8 +23,7 @@
             <div class="history-head row">
                 <div class="cross-title">
                     <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
-                    
-
+                
                     <span class="video_views">
                         <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
                         {{$video->created_at}}
@@ -32,7 +31,7 @@
 
                 </div> 
                 <div class="cross-mark">
-                    <a onclick="return confirm('Are you sure?');" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                    <a onclick="return confirm(&quot;{{tr('user_video_delete_confirm') }}&quot;)" href="{{route('user.delete.video' , array('id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                 </div><!--end of cross-mark-->                       
             </div> <!--end of history-head--> 
 

@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
-                              <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('title')}}</b> <a class="pull-right" href="{{route('admin.videos.view', $vModel->id)}}" target="_blank">{{$vModel->title}}</a>
+                              <b><i class="fa fa-suitcase margin-r-5"></i>{{tr('title')}}</b> <a class="pull-right" href="{{route('admin.video_tapes.view', $vModel->id)}}" target="_blank">{{$vModel->title}}</a>
                             </li>
                             <li class="list-group-item">
                               <b><i class="fa fa-clock-o margin-r-5"></i>{{tr('duration')}}</b> <div class="pull-right">{{$vModel->duration}}</div>

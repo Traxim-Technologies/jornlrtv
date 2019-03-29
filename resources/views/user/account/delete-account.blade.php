@@ -49,7 +49,7 @@
 
                             <div class="form-group">
                                 <label for="password">{{tr('password')}}</label>
-                                <input type="password" required name="password" class="form-control" id="password" placeholder="{{tr('password')}}">
+                                <input type="password" required name="password" class="form-control" id="password" placeholder="{{tr('password')}}" value="{{old('password')}}">
 
                                 <span class="form-error">
                                     @if ($errors->has('password'))
@@ -61,15 +61,7 @@
 
                             <div class="change-pwd">
                             
-                                @if(Setting::get('admin_delete_control') == 1)
-
-                                    <button type="button" disabled class="btn btn-primary signup-submit">{{tr('delete')}}</button>
-
-                                @else
-
-                                    <button type="submit" class="btn btn-primary signup-submit">{{tr('delete')}}</button>
-
-                                @endif
+                                <button type="submit" class="btn btn-primary signup-submit" onclick="return confirm('{{tr("user_account_delete_confirm")}}')" @if(Setting::get('admin_delete_control') == YES) disabled @endif  >{{tr('delete')}}</button>                              
 
                             </div>  
                 

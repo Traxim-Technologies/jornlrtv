@@ -278,7 +278,7 @@ $('form').ajaxForm({
 
               } else {
 
-                 window.location.href = '/admin/videos/view?id='+xhr.data.id;
+                 window.location.href = '/admin/videos/view?video_tape_id='+xhr.data.id;
 
               }
 
@@ -318,7 +318,7 @@ function redirect() {
           success : function(data) {
              if (data.success)  {
                   console.log(data);
-                  window.location.href = '/admin/videos/view?id='+data.default_image_id;
+                  window.location.href = '/admin/videos/view?video_tape_id='+data.default_image_id;
               } else {
                   alert(data.error_messages);
               }

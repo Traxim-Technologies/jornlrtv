@@ -51,7 +51,7 @@
                     @endif
                     <div class="form-group">
                         <label for="exampleInputEmail1">{{tr('email')}}</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your email">
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Your email" value="{{old('email')}}">
                     </div>
 
                     <div class="change-pwd">    

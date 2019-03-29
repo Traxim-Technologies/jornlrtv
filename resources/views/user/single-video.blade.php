@@ -93,16 +93,16 @@
                                        <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons">thumb_up</i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
                                        <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
                                        @endif
+
                                        <a  class="share-new" data-toggle="modal" data-target="#popup1">
                                           <i class="material-icons">share</i>&nbsp;Share
                                           <!--  <p class="hidden-xs">share</p> -->
                                        </a>
 
-                                       <!-- wishlist added by @ranjitha -->
-                                       <!-- <a class="heart" style="background-image:url( '{{asset('images/web_heart_animation.png')}}');"></a> -->
-                                        <!-- wishlist added by @ranjitha -->
-
-                                       <!-- <div class="wishlist_form"> 'color' : '#b31217' -->
+                                       <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#" style="display: none;">
+                                          <i class="material-icons">playlist_add</i>&nbsp;Save
+                                       </a>
+         
                                        <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
                                           @if(Auth::check())
                                           
@@ -153,8 +153,8 @@
                                           
                                           @endif
                                           
-                                          </form>
-                                       <!-- </div>    -->
+                                       </form>
+
                                     </div>
                                     <!--  <h3>Channel Name</h3> -->
                                     <div class="clearfix"></div>
@@ -293,14 +293,6 @@
                                              @if (!$flaggedVideo)
                                              <div class="more-content" id="report_video_form">
                                                 <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
-                                                   <!--  <b>Report this Video ?</b>
-                                                      <br> -->
-                                                  <!--  @foreach($report_video as $report) 
-                                                   <div class="report_list">
-                                                      <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
-                                                   </div>
-                                                   @endforeach
- -->
                                                    @foreach($report_video as $report)  
                                                    <div class="report_list">
                                                       <label class="radio1">
@@ -542,6 +534,115 @@
       </div>
    </div>
 </div>
+
+<!-- PLAYLIST POPUPSTART -->
+
+<div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$video->video_tape_id}}" role="dialog">
+   
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+         
+         <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            <h4 class="modal-title">{{tr('save_to')}}</h4>
+
+         </div>
+
+         <div class="modal-body">
+
+            <div class="more-content" id="user-playlists-form">
+
+               <form name="user-playlists" method="post" id="user-playlists" action="{{route('user.add.spam_video')}}">
+                  
+                  <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
+
+                  <?php /** @foreach($playlists as $report)  
+
+                     <div class="report_list">
+
+                        <label class="playlist-container">One
+                           
+                           <input type="checkbox">
+                           
+                           <span class="playlist-checkmark"></span>
+
+                        </label>
+
+                     </div>
+
+                     <div class="clearfix"></div>
+                  @endforeach */ ?>
+
+                  <div class="pull-right">
+                     <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
+                  </div>
+
+                  <div class="clearfix"></div>
+
+               </form>
+            
+            </div>
+            
+         </div>
+      </div>
+      <!-- modal content ends -->
+   </div>
+
+</div>
+
+<!-- <div class="modal modal-top1"  role="dialog" id="global_playlist_id_{{$video->video_tape_id}}">
+  
+   <div class="modal-dialog modal-sm">
+
+      <div class="modal-content">
+         <form action="" method="POST">
+               <div class="modal-header">
+
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                  <h4 class="modal-title share-title">{{tr('save_to')}}</h4>
+
+               </div>
+
+               <div class="modal-body">
+                  
+                  <div>
+
+                     <label class="playlist-container">One
+                        <input type="checkbox" checked="checked">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+                     <label class="playlist-container">Two
+                        <input type="checkbox">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+                     <label class="playlist-container">Three
+                        <input type="checkbox">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+                     <label class="playlist-container">Four
+                        <input type="checkbox">
+                        <span class="playlist-checkmark"></span>
+                     </label>
+
+                  </div>
+
+               </div>
+
+         </form>
+      </div>
+   
+   </div>
+
+</div>
+ -->
+<!-- PLAYLIST POPUPEND -->
+
+
 <div class="modal fade modal-top" id="copy-embed" role="dialog">
    <div class="modal-dialog modal-lg">
       <div class="modal-content content-modal">
@@ -572,8 +673,11 @@
          </div>
       </div>
    </div>
+
 </div>
+
 @endsection
+
 @section('scripts')
 <script type="text/javascript" src="{{asset('assets/js/star-rating.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/js/toast.script.js')}}"></script>
@@ -592,11 +696,15 @@
 </script>
 <!-- wishlist animation -->
 <script type="text/javascript">
+
    jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";
    
    $(document).ready(function(){
-       $('.video-y-menu').addClass('hidden');
+      
+      $('.video-y-menu').addClass('hidden');
    }); 
+
+   
    
    function showReportForm() {
    
@@ -619,14 +727,26 @@
    $('.comment_rating').rating({showClear: false});
    
    $(document).on('ready', function() {
+
        $("#copy-embed1").on( "click", function() {
            $('#popup1').modal('hide'); 
        });
+
+      $('.global_playlist_id').on('click', function(event){
+
+         event.preventDefault();
+
+         var video_tape_id = $(this).attr('id');
+
+         $('#global_playlist_id_'+video_tape_id).modal('show'); 
+
+      });
    });
    
    
    jQuery(document).ready(function(){ 
-   
+
+      
        // Opera 8.0+
        var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
        // Firefox 1.0+
@@ -698,11 +818,11 @@
    
                        }
    
-                   } else {
+                  } else {
    
                        // console.log('Wrong...!');
    
-                   }
+                  }
                }
            });
    
@@ -1206,20 +1326,6 @@
    
        }
    
-      /* jwplayer().on('displayClick', function(e) {
-   
-           @if($ads)
-               @if (((count($ads->between_ad) > 0) || !empty($ads->post_ad)) && empty($ads->pre_ad)) 
-   
-                   console.log("displayClick Function executing");
-   
-                   timer();
-   
-               @endif
-           @endif
-   
-       })*/
-   
    });
    
    
@@ -1304,6 +1410,25 @@
            has_progress:true,
            rtl:false,
        });
+   }
+
+   function user_subscribe_channel(user_id, channel_id) {
+         alert(user_id);
+         $.ajax({
+         type : "post",
+         url : "{{ route('user.subscribe.channel')}}",
+         data : {user_id:user_id, channel_id:channel_id},
+         success : function(data) {
+
+           alert(data);
+
+         },
+            error : function(data) {
+
+         }
+
+    });
+
    }
 </script>
 @endsection

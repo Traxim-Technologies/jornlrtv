@@ -37,8 +37,6 @@ class LanguageController extends Controller
         return response()->download($file, $name.'.php', $headers);
     }
 
-
-
     public function languages_create(Request $request) {
 
         return view('admin.languages.create')->withPage('languages')->with('sub_page','create_language');
@@ -165,7 +163,7 @@ class LanguageController extends Controller
 
                 \Log::info("Key : ".config('app.locale'));
 
-                return back()->with('flash_success' , tr('set_default_language_success'))->with('flash_language', true);
+                return back()->with('flash_success' ,$name .' - '. tr('set_default_language_success'))->with('flash_language', true);
             }
         }  
 

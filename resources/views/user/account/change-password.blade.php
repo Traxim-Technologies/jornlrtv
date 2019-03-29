@@ -10,6 +10,7 @@
         <div class="page-inner col-sm-9 col-md-10 profile-edit">
 
             <div class="form-background p-50">
+               
                 <div class="common-form login-common">
 
                     @include('notification.notify')
@@ -33,12 +34,12 @@
 
                             <div class="form-group">
                                 <label for="old_password">{{tr('old_password')}}</label>
-                                <input type="password" required name="old_password" class="form-control" id="old_password" placeholder="{{tr('old_password')}}">
+                                <input type="password" required name="old_password" class="form-control" id="old_password" placeholder="{{tr('old_password')}}" value="{{ old('old_password') }}">
                             </div>
 
                             <div class="form-group">
                                 <label for="new_password">{{tr('new_password')}}</label>
-                                <input type="password" required name="password" class="form-control" id="new_password" placeholder="{{tr('new_password')}}">
+                                <input type="password" required name="password" class="form-control" id="new_password" placeholder="{{tr('new_password')}}" value="{{ old('password') }}">
                             </div>
 
                             <div class="form-group">
@@ -49,7 +50,7 @@
                             <div class="change-pwd">
 
                                 @if(Setting::get('admin_delete_control') == 1)
-                                    <button type="button" disabled class="btn btn-primary" style="cursor: disabled" title="Admin disabled the option">{{tr('submit')}}</button>
+                                    <button type="button" disabled class="btn btn-primary" style="cursor: disabled" title="{{tr('admin_disabled')}}">{{tr('submit')}}</button>
                                     <button type="reset" class="btn btn-primary signup-submit">{{tr('reset')}}</button>
                                 @else
 
