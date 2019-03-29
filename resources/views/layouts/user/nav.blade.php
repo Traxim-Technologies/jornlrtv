@@ -16,7 +16,7 @@
         </li>
 
        <?php /*  <li id="custom_live_videos">
-            <a href="{{route('user.custom.live.index')}}">
+            <a href="{{route('user.custom_live_videos.index')}}">
                 <img src="{{asset('images/video-camera1.png')}}" class="grey-img">
                 <img src="{{asset('images/video-camera-red.png')}}" class="red-img">
                 <span>{{tr('custom_live_videos')}}</span>
@@ -64,6 +64,14 @@
                 </li>
 
             @endif
+
+            <li id="playlists">
+                <a href="{{route('user.playlists.index')}}">
+                    <img src="{{asset('images/playlist-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/playlist-red.png')}}" class="red-img">
+                    <span>{{tr('playlists')}}</span>
+                </a>
+            </li>
         @endif
     </ul>
                 

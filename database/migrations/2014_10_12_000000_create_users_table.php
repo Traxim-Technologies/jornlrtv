@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->string('address');
             $table->string('payment_mode');
             $table->integer('card_id'); 
-            $table->integer('status')->comment="1 - Approve , 0 - decline";
+            $table->integer('status')->comment="1 - Approve , 0 - Decline";
             $table->integer('push_status')->comment="Mobile Purpose";
             $table->string('verification_code');
             $table->string('verification_code_expiry');

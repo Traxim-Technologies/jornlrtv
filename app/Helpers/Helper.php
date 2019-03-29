@@ -425,6 +425,18 @@
                  case 174:
                     $string = tr('coupon_not_found');
                     break;
+                case 175:
+                    $string = tr('playlist_not_found');
+                    break;
+                case 176:
+                    $string = tr('playlist_video_not_found');
+                    break;
+                case 179:
+                    $string = tr('playlist_save_error');
+                    break;
+                case 180:
+                    $string = tr('playlist_not_associated_to_user');
+                    break;
 
                 case 1000:
                     $string = tr('video_is_in_flag_list');
@@ -441,6 +453,14 @@
                     break;
                 case 504:
                     $string = tr('login_account_record_not_found');
+                    break;
+
+                case 505:
+                    $string = tr('user_wishlist_video_exists');
+                    break;
+
+                case 506:
+                    $string = tr('user_wishlist_delete_error');
                     break;
 
                 default:
@@ -527,6 +547,27 @@
                     break;
                 case 125:
                     $string = tr('pay_and_watch_video');
+                    break;
+                case 126:
+                    $string = tr('playlist_added_video');
+                    break;
+                case 127:
+                    $string = tr('playlist_removed_video');
+                    break;
+                case 128:
+                    $string = tr('playlist_added');
+                    break;
+                case 129:
+                    $string = tr('playlist_updated');
+                    break;
+                case 130:
+                    $string = tr('bell_notification_updated');
+                    break;
+                case 131:
+                    $string = tr('playlist_deleted');
+                    break;
+                case 132:
+                    $string = tr('playlist_video_add_empty');
                     break;
                 default:
                     $string = "";

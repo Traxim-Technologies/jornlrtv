@@ -39,9 +39,7 @@ thead>tr>th {
                     </div>
 
                         @if(count($subscribers) > 0)
-
                         
-
                         <div class="row">
                             @foreach($subscribers as $i => $subscriber)
 
@@ -51,7 +49,7 @@ thead>tr>th {
                                         <img src="{{$subscriber->user_image}}" alt="user-image">
                                         <h4>{{$subscriber->user_name}}</h4>
                                         <p>{{$subscriber->created_at->diffForHumans()}}</p>
-                                        <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
+                                        <a class="btn btn-sm btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscriber->subscriber_id))}}"  onclick="return confirm(&quot;{{ $subscriber->user_name }} -  {{tr('user_unsubscribe_confirm') }}&quot;)"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}}</a>
                                     </div>
                                 </div>
                             </div>
