@@ -24,8 +24,8 @@
         </li>
         <li id="live_videos">
             <a href="{{route('user.live_videos')}}">
-                <img src="{{asset('images/video-grey.png')}}" class="grey-img">
-                <img src="{{asset('images/video-red.png')}}" class="red-img">
+                <img src="{{asset('images/sidebar/live-video.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/live-video-active.png')}}" class="red-img">
                 <span>{{tr('live_videos')}}</span>
             </a>
         </li>
