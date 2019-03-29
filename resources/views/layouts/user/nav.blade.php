@@ -195,46 +195,6 @@
     
     @if(Auth::check())
 
-        <!-- Check the create channel options are enabled by admin -->
-
-        <?php /*@if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
-
-            <?php $channels = getChannels(Auth::user()->id);?>
-
-            @if(count($channels) > 0 || Auth::user()->user_type)
-
-                <ul class="y-home" style="margin-top: 10px;">
-                   
-
-                    <h3>{{tr('my_channels')}}</h3>
-
-
-                    @foreach($channels as $channel)
-                        <li>
-                            <a href="{{route('user.channel',$channel->id)}}"><img src="{{$channel->picture}}">{{$channel->name}}</a>
-                        </li>
-                    @endforeach  
-
-
-                    @if(Auth::user()->user_type || Auth::user()->is_master_user == 1)  
-
-                        @if(count($channels) == 0 || Setting::get('multi_channel_status') || Auth::user()->is_master_user == 1)  
-
-                        <li>
-                            <a href="{{route('user.create_channel')}}"><i class="fa fa-tv fa-2x" style="vertical-align: middle;"></i> {{tr('create_channel')}}</a>
-                        </li>    
-
-                        @endif
-
-                    @endif     
-                
-                </ul>
-
-            @endif
-            
-        @endif */?>
-
-
         @if(!Auth::user()->user_type)
 
             <div class="menu4 top nav-space">
