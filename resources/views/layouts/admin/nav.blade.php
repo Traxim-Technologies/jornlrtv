@@ -36,6 +36,22 @@
                 </ul>
             </li>
 
+            <li class="treeview" id="sub-admins">
+                <a href="#">
+                    <i class="fa fa-user"></i> <span>{{tr('sub_admins')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+                <ul class="treeview-menu">
+                   
+                    <li id="sub-admins-create"><a href="{{route('admin.sub_admins.create')}}"><i class="fa fa-circle-o"></i>{{tr('sub_admin_create')}}</a></li>
+                   
+                    <li id="sub-admins-view"><a href="{{route('admin.sub_admins.index')}}"><i class="fa fa-circle-o"></i>{{tr('sub_admin_view')}}</a></li>
+
+                </ul>    
+            </li>
+
+            <li class="header text-uppercase sidebar-header">{{tr('videos_management')}}</li>
+
             <li class="treeview" id="channels">
                 <a href="{{route('admin.channels.index')}}">
                     <i class="fa fa-tv"></i> <span>{{tr('channels')}}</span> <i class="fa fa-angle-left pull-right"></i>
@@ -112,7 +128,7 @@
             </li>
 
 
-            <li class="treeview" id="custom_live_videos">
+            <li class="treeview" id="custom_live_videos" style="display: none;">
                 <a href="{{route('admin.custom.live.index')}}">
                     <i class="fa fa-wifi"></i> <span>{{tr('custom_live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -134,6 +150,8 @@
 
             </li>  
  
+            <li class="header text-uppercase sidebar-header">{{tr('revenue_management')}}</li>
+
             <!--   <li class="treeview" id="videos_ads">
 
                 <a href="{{route('admin.ads-details.index')}}">
@@ -274,6 +292,8 @@
                 </ul>
             </li>
 
+            <li class="header text-uppercase sidebar-header">{{tr('settings_management')}}</li>
+
 
             <li id="settings">
                 <a href="{{route('admin.settings')}}">
@@ -281,19 +301,18 @@
                 </a>
             </li>
 
-            <li class="treeview" id="sub-admins">
-                <a href="#">
-                    <i class="fa fa-user"></i> <span>{{tr('sub_admins')}}</span> <i class="fa fa-angle-left pull-right"></i>
+            <li class="treeview" id="pages">
+                <a href="{{route('admin.pages.index')}}">
+                    <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-
                 <ul class="treeview-menu">
-                   
-                    <li id="sub-admins-create"><a href="{{route('admin.sub_admins.create')}}"><i class="fa fa-circle-o"></i>{{tr('sub_admin_create')}}</a></li>
-                   
-                    <li id="sub-admins-view"><a href="{{route('admin.sub_admins.index')}}"><i class="fa fa-circle-o"></i>{{tr('sub_admin_view')}}</a></li>
-
-                </ul>    
+                    
+                    <li id="pages-create"><a href="{{route('admin.pages.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
+                    
+                    <li id="pages-view"><a href="{{route('admin.pages.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
+                </ul>
             </li>
+
 
             @if(Setting::get('admin_language_control') == YES )
             <li id="languages">
@@ -309,17 +328,9 @@
                 </a>
             </li>
 
-            <li class="treeview" id="pages">
-                <a href="{{route('admin.pages.index')}}">
-                    <i class="fa fa-book"></i> <span>{{tr('pages')}}</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    
-                    <li id="pages-create"><a href="{{route('admin.pages.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_page')}}</a></li>
-                    
-                    <li id="pages-view"><a href="{{route('admin.pages.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_pages')}}</a></li>
-                </ul>
-            </li>
+            <li class="header text-uppercase sidebar-header">{{tr('account_management')}}</li>
+
+            
 
             <li id="profile">
                 <a href="{{route('admin.profile')}}">

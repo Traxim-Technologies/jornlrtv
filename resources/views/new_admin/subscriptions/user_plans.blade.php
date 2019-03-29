@@ -5,7 +5,7 @@
 @section('content-header', tr('subscriptions'))
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i>{{ tr('users') }}</a></li>
     @if($user_id)
     	<li><a href="{{ route('admin.users.view',['user_id' => $user_id] ) }}"><i class="fa fa-users"></i>{{ tr('view_user') }}</a></li>

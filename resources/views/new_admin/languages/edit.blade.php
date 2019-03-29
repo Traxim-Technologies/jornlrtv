@@ -5,7 +5,6 @@
 @section('content-header', tr('edit_language'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.languages.index')}}"><i class="fa fa-globe"></i>{{tr('languages')}}</a></li>
     <li class="active"><i class="fa fa-globe"></i>&nbsp; {{tr('edit_language')}}</li>
 @endsection

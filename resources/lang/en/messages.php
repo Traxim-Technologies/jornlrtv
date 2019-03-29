@@ -870,7 +870,7 @@ return array(
 	'subtitle_validate' => 'The video subtitle must be a file of type: srt.',
 	'sub_title' => 'Sub Title',
 
-	'action_success' => 'successfully Done!!',
+	'action_success' => 'Successfully done!!',
 
 	'redeem_pay_confirm' => 'Are You Sure ?',
 	'subscribe_note' => 'Subscribe to create your own channel and videos!',
@@ -1921,5 +1921,14 @@ return array(
 	'user_playlist_delete_confirm' => 'Do you want to delete this playlist?',
 
 	'user_playlist_video_remove_confirm' => 'Do you want to remove this video from playlist?',
+
+	'videos_management' => 'Videos Management',
+	'revenue_management' => 'Revenue Management',
+	'settings_management' => 'Settings Management',
+	'account_management' => 'Account Management',
+
+	'redeem_request_greater_than_your_redeem_amount' => "You requested more than the user redeem amount.",
+	'invoice' => 'Invoice',
+	'order_id' => 'Order ID',
 
 );

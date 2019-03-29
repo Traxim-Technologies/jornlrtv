@@ -5,7 +5,6 @@
 @section('content-header', tr('user_reports'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
 
     <li><a href="{{route('admin.spam-videos')}}"><i class="fa fa-flag"></i>{{tr('spam_videos')}}</a></li>
     

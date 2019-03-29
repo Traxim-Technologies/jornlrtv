@@ -6,9 +6,7 @@
 
 @section('breadcrumb')
 
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
-
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-users"></i> {{tr('redeems')}}</a></li>
+    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-trophy"></i> {{tr('redeems')}}</a></li>
 
     <li class="active">{{tr('redeem_payout')}}</li>
 
@@ -26,7 +24,7 @@
                 <div class="col-xs-12">
                     <h2 class="page-header">
                         <i class="fa fa-globe"></i> {{Setting::get('site_name')}}
-                        <small class="pull-right">Date: {{date('d/m/Y')}}</small>
+                        <small class="pull-right">{{tr('date')}}: {{date('d/m/Y')}}</small>
                     </h2>
                 </div>
                 <!-- /.col -->
@@ -34,7 +32,7 @@
             <!-- info row -->
             <div class="row invoice-info">
                 <div class="col-sm-4 invoice-col">
-                    From
+                    {{tr('from')}}
                     <address>
                         <strong>{{Auth::guard('admin')->user()->name}}</strong><br>
                         {{Auth::guard('admin')->user()->address}}<br>
@@ -43,7 +41,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
-                    To
+                    {{tr('to')}}
                     <address>
                         <strong>{{$data->user_details ? $data->user_details->name : ""}}</strong><br>
                         {{$data->user_details ? $data->user_details->address : ""}}<br>
@@ -52,10 +50,10 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
-                    <b>Invoice #{{rand()}}</b>
+                    <b>{{tr('invoice')}} #{{rand()}}</b>
                     <br>
                     <br>
-                    <b>Order ID:</b> {{rand()}}
+                    <b class="text-uppercase">{{tr('order_id')}}:</b> {{rand()}}
                     <br>
                 </div>
                 <!-- /.col -->

@@ -5,7 +5,6 @@
 @section('content-header', tr('edit_page'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.pages.index')}}"><i class="fa fa-book"></i> {{tr('pages')}}</a></li>
     <li class="active"> {{tr('edit_page')}}</li>
 @endsection

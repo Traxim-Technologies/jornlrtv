@@ -42,7 +42,6 @@ hr {
 @endsection
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.video_tapes.index')}}"><i class="fa fa-video-camera"></i> {{tr('videos')}}</a></li>
     <li class="active">{{tr('video')}}</li>
 @endsection 

@@ -5,7 +5,7 @@
 @section('content-header', tr('categories'))
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li class="active"><i class="fa fa-key"></i> {{ tr('categories') }}</li>
 @endsection
 

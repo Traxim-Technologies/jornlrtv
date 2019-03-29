@@ -135,3 +135,10 @@
     max-height:50px;
 
 }
+
+.sidebar-header {
+  font-size: 14px !important;
+  color: #8eadbb !important;
+  border-top: 2px solid #d6355854 !important;
+  border-bottom: 2px solid #d6355854 !important;
+}

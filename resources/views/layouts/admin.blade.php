@@ -70,7 +70,7 @@
     <?php echo Setting::get('header_scripts') ?>
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini">
 
     <div class="wrapper">      
 
@@ -89,10 +89,23 @@
         @endif
 
         <div class="content-wrapper">
-            
+
             <section class="content-header">
+
                 <h1>@yield('content-header')<small>@yield('content-sub-header')</small></h1>
-                <ol class="breadcrumb">@yield('breadcrumb')</ol>
+
+                <ol class="breadcrumb">
+
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}">
+                            <i class="fa fa-dashboard"></i>{{ tr('home') }}
+                        </a>
+                    </li>
+
+                    @yield('breadcrumb')
+
+                </ol>
+                
             </section>
 
             <!-- Main content -->

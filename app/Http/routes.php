@@ -688,7 +688,9 @@ Route::group(['as' => 'user.'], function(){
 
     // Video Upload
 
-    Route::get('upload_video', 'UserController@video_upload')->name('video_upload');
+    Route::get('video-upload', 'UserController@video_upload')->name('video_upload');
+
+    Route::get('upload_video', 'UserController@video_upload')->name('video_upload_old');
 
     Route::post('video_save', 'UserController@video_save')->name('video_save');
 
