@@ -1922,4 +1922,9 @@ return array(
 
 	'user_playlist_video_remove_confirm' => 'Do you want to remove this video from playlist?',
 
+	'videos_management' => 'Videos Management',
+	'revenue_management' => 'Revenue Management',
+	'settings_management' => 'Settings Management',
+	'account_management' => 'Account Management',
+
 );
