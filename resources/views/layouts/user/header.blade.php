@@ -125,24 +125,6 @@
 
                             <span id="global-notifications-box"></span>
 
-                            <!-- <li class="notification-box">
-                                <a href="">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-sm-3 col-3 text-center">
-                                            <img src="https://picsum.photos/200" class="w-50 rounded-circle">
-                                        </div>
-                                        <div class="col-lg-8 col-sm-8 col-8">
-                                            <strong class="text-info">David John</strong>
-                                            <div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                            </div>
-                                            <small class="text-warning">27.11.2015, 15:00</small>
-                                        </div>
-                                    </div>
-
-                                </a>
-                            </li> -->
-
                             <li class="notification-footer bg-dark text-center">
                                 <a href="{{route('user.bell_notifications.index')}}" class="text-light">
                                     {{tr('view_all')}}
@@ -153,20 +135,6 @@
 
                     </li>
                  
-                    <!-- <li  class="dropdown">
-                
-                        <a href="#" class="dropdown-toggle language-icon" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-
-                        <ul class="dropdown-menu languages">
-
-
-                                <li><a href="#">HHHEHE</a></li>
-                                <li><a href="#">HHHEHE</a></li>
-                            
-                        </ul>
-                     
-                    </li> -->
-
                 </ul>
                 @if(Setting::get('is_direct_upload_button') == YES)
 

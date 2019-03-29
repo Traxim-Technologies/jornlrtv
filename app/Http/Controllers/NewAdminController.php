@@ -2258,7 +2258,7 @@ class NewAdminController extends Controller {
      *
      * @created 
      *
-     * @edited 
+     * @updated 
      *
      * @param Integer (request) coupon_id, (request) details
      *
@@ -3124,7 +3124,7 @@ class NewAdminController extends Controller {
     *
     * @created
     *
-    * @edited
+    * @updated
     *
     * @param 
     *
@@ -3145,7 +3145,7 @@ class NewAdminController extends Controller {
     *
     * @created
     *
-    * @edited
+    * @updated
     *
     * @param
     *
@@ -3169,7 +3169,7 @@ class NewAdminController extends Controller {
      *
      * @created
      *
-     * @edited
+     * @updated
      *
      * @param 
      *
@@ -3898,7 +3898,7 @@ class NewAdminController extends Controller {
      *
      * @created anjana H
      *
-     * @edited Anjana H
+     * @updated Anjana H
      *
      * @param Object $request - banner_ad Id 
      *
@@ -6609,23 +6609,27 @@ class NewAdminController extends Controller {
      *
      * @updated Anjana H
      *
+     * @param integer $id Video id
+     *
      * @return all the spam videos
      */
     public function spam_videos(Request $request) {
+
         // Load all the videos from flag table
-        $flags = Flag::groupBy('video_tape_id')->get();
+
+        $spam_videos = Flag::groupBy('video_tape_id')->get();
         
         // Return array of values
-        return view('new_admin.spam_video_tapes.index')
+        return view('new_admin.spam_videos.index')
                         ->with('page' , 'video_tapes')
                         ->with('sub_page' , 'spam_videos')
-                        ->with('flags' , $flags);
+                        ->with('spam_videos' , $spam_videos);
     }
 
     /**
      * Function Name : spam_videos_user_reports()
      *
-     * Load all the flags based on the video id
+     * @uses Load all the flags based on the video id
      *
      * @created vithya R
      *
@@ -6635,13 +6639,73 @@ class NewAdminController extends Controller {
      *
      * @return all the spam videos
      */
-    public function spam_videos_user_reports($id) {
+    public function spam_videos_user_reports($video_tape_id) {
+
         // Load all the users
-        $model = Flag::where('video_tape_id', $id)->get();
+        $spam_videos = Flag::where('video_tape_id', $video_tape_id)->get();
+
+        // Return array of values
+
+        return view('new_admin.spam_videos.user_reports')
+                        ->with('page' , 'videos')
+                        ->with('sub_page' , 'spam_videos')
+                        ->with('spam_videos' , $spam_videos);   
+    }
+
+    /**
+     * Function Name : spam_videos_each_user_reports()
+     *
+     * Load all the flags based on the user id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param integer $id Video id
+     *
+     * @return all the spam videos
+     */
+    public function spam_videos_each_user_reports($id) {
+        // Load all the users
+        $model = Flag::where('user_id', $id)->get();
         // Return array of values
         return view('admin.spam_videos.user_report')->with('model' , $model)
                         ->with('page' , 'videos')
                         ->with('sub_page' , 'spam_videos');   
+    }
+
+    /**
+     * Function Name : spam_videos_unspam()
+     *
+     * Unsapm video based on flag id
+     *
+     * @created vithya R
+     *
+     * @updated - -
+     *
+     * @param integer $id Flag id
+     *
+     * @return response of success/failure message
+     */
+    public function spam_videos_unspam($id) {
+
+        $model = Flag::find($id);
+
+        if ($model) {
+
+            if ($model->delete()) {
+
+                return back()->with('flash_success', tr('unmark_report_video_success_msg'));
+
+            } else {
+
+                return back()->with('flash_error', tr('something_error'));
+            }
+
+        } else {
+
+            return back()->with('flash_error', tr('something_error'));
+        }
     }
 
     /**
