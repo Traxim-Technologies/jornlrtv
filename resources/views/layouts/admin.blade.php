@@ -90,18 +90,17 @@
 
         <div class="content-wrapper">
 
-           <!--  <div style="padding: 20px 30px; background: #e11a31; z-index: 999999; font-size: 16px; font-weight: 600;">
-
-                <a href="http://streamhash.com/" target="_blank" style="font-size:20px;color: rgba(255, 255, 255, 0.901961); display: inline-block; margin-right: 10px; text-decoration: none;"><b>$500 Worth Video Streaming Script is FREE! Start today.</b></a>
-
-                <a class="btn btn-default btn-sm" target="_blank" href="http://streamhash.com/" style="font-size:14px;margin-top: -5px; border: 0px; box-shadow: none; color: #e11a31; font-weight: 600; background: rgb(255, 255, 255);">
-                    <i class="fa fa-download"></i><b> Free Download</b>
-                </a>
-            </div> -->
-
             <section class="content-header">
                 <h1>@yield('content-header')<small>@yield('content-sub-header')</small></h1>
-                <ol class="breadcrumb">@yield('breadcrumb')</ol>
+                <ol class="breadcrumb">
+
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}">
+                            <i class="fa fa-dashboard"></i>{{ tr('home') }}
+                        </a>
+                    </li>
+                    @yield('breadcrumb')
+                </ol>
             </section>
 
             <!-- Main content -->

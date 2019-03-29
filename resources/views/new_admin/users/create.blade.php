@@ -5,7 +5,6 @@
 @section('content-header', tr('add_user'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li><a href="{{route('admin.users.index')}}"><i class="fa fa-user"></i> {{tr('users')}}</a></li>
     <li class="active"><i class="fa fa-user-plus"></i> {{tr('add_user')}}</li>
 @endsection

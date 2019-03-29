@@ -5,7 +5,6 @@ video-ads@extends('layouts.admin')
 @section('content-header', tr('view_ads'))
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
     <li class="active"><i class="fa fa-bullhorn"></i> {{tr('view_ads')}}</li>
 @endsection
 

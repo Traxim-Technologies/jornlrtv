@@ -50,7 +50,7 @@
                 </ul>    
             </li>
 
-            <li class="header text-uppercase" style="font-size: 14px;color: #8eadbb;">{{tr('videos_management')}}</li>
+            <li class="header text-uppercase sidebar-header">{{tr('videos_management')}}</li>
 
             <li class="treeview" id="channels">
                 <a href="{{route('admin.channels.index')}}">
@@ -150,7 +150,7 @@
 
             </li>  
  
-            <li class="header text-uppercase" style="font-size: 14px;color: #8eadbb;">{{tr('revenue_management')}}</li>
+            <li class="header text-uppercase sidebar-header">{{tr('revenue_management')}}</li>
 
             <!--   <li class="treeview" id="videos_ads">
 
@@ -292,7 +292,7 @@
                 </ul>
             </li>
 
-            <li class="header text-uppercase" style="font-size: 14px;color: #8eadbb;">{{tr('settings_management')}}</li>
+            <li class="header text-uppercase sidebar-header">{{tr('settings_management')}}</li>
 
 
             <li id="settings">
@@ -328,7 +328,7 @@
                 </a>
             </li>
 
-            <li class="header text-uppercase" style="font-size: 14px;color: #8eadbb;">{{tr('account_management')}}</li>
+            <li class="header text-uppercase sidebar-header">{{tr('account_management')}}</li>
 
             
 

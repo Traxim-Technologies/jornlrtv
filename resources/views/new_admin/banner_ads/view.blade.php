@@ -5,7 +5,7 @@
 @section('content-header', tr('view_banner_ad'))
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li><a href="{{ route('admin.banner_ads.index') }}"><i class="fa fa-bullhorn"></i>{{ tr('banner_ads') }}</a></li>
     <li class="active"><i class="fa fa-eye"></i>&nbsp;{{ tr('view_banner_ad') }}</li>
 @endsection

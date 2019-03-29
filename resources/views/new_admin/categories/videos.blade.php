@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb')
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>    
+         
     <li><a href="{{ route('admin.categories.index') }}"><i class="fa fa-list"></i> {{ tr('category') }} </a></li> 
     <li><a href="{{ route('admin.categories.view',['category_id' => $category_details->id ]) }}"><i class="fa fa-list"></i> {{ tr('view_category') }} </a></li>
     <li class="active"><i class="fa fa-video-camera"></i> {{ tr('videos') }}</li>

@@ -6,7 +6,7 @@
 
 @section('breadcrumb')
 
-    <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i>{{ tr('home') }}</a></li>
+     
     <li><a href="{{ route('admin.channels.index') }}"><i class="fa fa-suitcase"></i> {{ tr('channels') }}</a></li>
     <li class="active">{{ tr('view_channel') }}</li>
 
