@@ -4990,10 +4990,9 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error',$error);
         }
+    
     }
-
-
-
+    
     /**
      * Function Name: revenues()
      *

@@ -91,7 +91,9 @@
         <div class="content-wrapper">
 
             <section class="content-header">
+
                 <h1>@yield('content-header')<small>@yield('content-sub-header')</small></h1>
+
                 <ol class="breadcrumb">
 
                     <li>
@@ -99,8 +101,11 @@
                             <i class="fa fa-dashboard"></i>{{ tr('home') }}
                         </a>
                     </li>
+
                     @yield('breadcrumb')
+
                 </ol>
+                
             </section>
 
             <!-- Main content -->

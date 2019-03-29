@@ -312,6 +312,8 @@ class version4AdminController extends Controller
 
                 $redeem_amount = $redeem_request_details->request_amount;
 
+                $message = tr('action_success').' - '.tr('redeem_request_greater_than_your_redeem_amount');
+
             } else {
 
                 $message = tr('redeems_request_admin_less_amount');
