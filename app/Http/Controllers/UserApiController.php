@@ -6708,7 +6708,10 @@ class UserApiController extends Controller {
                 $request->all(),
                 array(
                     'cancel_reason' => 'required',
-                )
+                ),
+                [
+                    'cancel_reason' => tr('cancel_reason_required')
+                ]
         );
 
         if($basicValidator->fails()) {
