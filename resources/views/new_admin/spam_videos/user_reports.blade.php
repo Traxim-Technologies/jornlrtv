@@ -6,7 +6,9 @@
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>{{tr('home')}}</a></li>
+
     <li><a href="{{route('admin.spam-videos')}}"><i class="fa fa-flag"></i>{{tr('spam_videos')}}</a></li>
+    
     <li class="active"><i class="fa fa-suitcase"></i> {{tr('user_reports')}}</li>
 @endsection
 
@@ -19,7 +21,7 @@
           <div class="box">
             <div class="box-body">
 
-            	@if(count($model) > 0)
+            	@if(count($spam_videos) > 0)
 
 	              	<table id="example1" class="table table-bordered table-striped">
 
@@ -33,7 +35,7 @@
 						</thead>
 
 						<tbody>
-							@foreach($model as $i => $reason)
+							@foreach($spam_videos as $i => $reason)
 							    <tr>
 							      	<td>{{$i+1}}</td>
 							      	<td>{{$reason->userVideos->name}}</td>
