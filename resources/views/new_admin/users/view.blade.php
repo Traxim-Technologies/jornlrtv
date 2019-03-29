@@ -153,7 +153,7 @@
 		          		<a href="{{ route('admin.users.edit', ['user_id' => $user_details->id] ) }}" class="btn btn-warning" title="{{tr('edit')}}"><b><i class="fa fa-edit"></i></b></a>
 
                			@if(get_expiry_days($user_details->id) > 0)
-                  	 		<a onclick="return confirm(&quot;{{tr('admin_user_delete_with_expiry_days_confirmation', get_expiry_days($user_details->id) ) }} &quot;);" href="javascript:;" class="btn btn-danger" title="{{tr('delete')}}"><b><i class="fa fa-trash"></i></b></a>	
+                  	 		<a onclick="return confirm(&quot;{{tr('admin_user_delete_with_expiry_days_confirmation', $user_details->name) }} &quot;);" href="javascript:;" class="btn btn-danger" title="{{tr('delete')}}"><b><i class="fa fa-trash"></i></b></a>	
                   		@else 
                   			<a onclick="return confirm(&quot;{{ tr('admin_premium_user_delete_confirmation', $user_details->name ) }}&quot;);" href="javascript:;" class="btn btn-danger" title="{{tr('delete')}}"><b><i class="fa fa-trash"></i></b>
                   			</a>
