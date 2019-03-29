@@ -2,31 +2,31 @@
     <ul class="y-home menu1">
         <li id="home">
             <a href="{{route('user.dashboard')}}">
-                <img src="{{asset('images/home-grey.png')}}" class="grey-img">
-                <img src="{{asset('images/home-red.png')}}" class="red-img">
+                <img src="{{asset('images/sidebar/home-grey.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/home-red.png')}}" class="red-img">
                 <span>{{tr('home')}}</span>
             </a>
         </li>
         <li id="trending">
             <a href="{{route('user.trending')}}">
-                <img src="{{asset('images/trending-grey.png')}}" class="grey-img">
-                <img src="{{asset('images/trending-red.png')}}" class="red-img">
+                <img src="{{asset('images/sidebar/trending-grey.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/trending-red.png')}}" class="red-img">
                 <span>{{tr('trending')}}</span>
             </a>
         </li>
 
        <?php /*  <li id="custom_live_videos">
             <a href="{{route('user.custom_live_videos.index')}}">
-                <img src="{{asset('images/video-camera1.png')}}" class="grey-img">
-                <img src="{{asset('images/video-camera-red.png')}}" class="red-img">
+                <img src="{{asset('images/sidebar/video-camera-grey.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/video-camera-red.png')}}" class="red-img">
                 <span>{{tr('custom_live_videos')}}</span>
             </a>
         </li> */?>
 
         <li id="channels">
             <a href="{{route('user.channel.list')}}">
-                <img src="{{asset('images/search-grey.png')}}" class="grey-img">
-                <img src="{{asset('images/search-red.png')}}" class="red-img">
+                <img src="{{asset('images/sidebar/search-grey.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/search-red.png')}}" class="red-img">
                 <span>{{tr('browse_channels')}}</span>
             </a>
         </li>
@@ -35,30 +35,30 @@
 
             <li id="history">
                 <a href="{{route('user.history')}}">
-                    <img src="{{asset('images/history-grey.png')}}" class="grey-img">
-                    <img src="{{asset('images/history-red.png')}}" class="red-img">
+                    <img src="{{asset('images/sidebar/history-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/history-red.png')}}" class="red-img">
                     <span>{{tr('history')}}</span>
                 </a>
             </li>
             <li id="settings">
                 <a href="/settings">
-                    <img src="{{asset('images/settings-grey.png')}}" class="grey-img">
-                    <img src="{{asset('images/settings-red.png')}}" class="red-img">
+                    <img src="{{asset('images/sidebar/settings-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/settings-red.png')}}" class="red-img">
                     <span>{{tr('settings')}}</span>
                 </a>
             </li>
             <li id="wishlist">
                 <a href="{{route('user.wishlist')}}">
-                    <img src="{{asset('images/heart-grey.png')}}" class="grey-img">
-                    <img src="{{asset('images/heart-red.png')}}" class="red-img">
+                    <img src="{{asset('images/sidebar/heart-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/heart-red.png')}}" class="red-img">
                     <span>{{tr('wishlist')}}</span>
                 </a>
             </li>
             @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
                 <li id="my_channel">
                     <a href="{{route('user.channel.mychannel')}}">
-                        <img src="{{asset('images/channel-grey.png')}}" class="grey-img">
-                        <img src="{{asset('images/channel-red.png')}}" class="red-img">
+                        <img src="{{asset('images/sidebar/channel-grey.png')}}" class="grey-img">
+                        <img src="{{asset('images/sidebar/channel-red.png')}}" class="red-img">
                         <span>{{tr('my_channels')}}</span>
                     </a>
                 </li>
@@ -67,8 +67,8 @@
 
             <li id="playlists">
                 <a href="{{route('user.playlists.index')}}">
-                    <img src="{{asset('images/playlist-grey.png')}}" class="grey-img">
-                    <img src="{{asset('images/playlist-red.png')}}" class="red-img">
+                    <img src="{{asset('images/sidebar/playlist-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/playlist-red.png')}}" class="red-img">
                     <span>{{tr('playlists')}}</span>
                 </a>
             </li>
