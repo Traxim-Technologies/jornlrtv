@@ -2198,4 +2198,6 @@ return array(
 	'invoice' => 'Invoice',
 	'order_id' => 'Order ID',
 
+	'cancel_reason_required' => "The reason for cancellation is required.",
+
 );

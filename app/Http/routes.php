@@ -397,6 +397,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/videos/wishlist/{id}', 'NewAdminController@video_tapes_wishlist')->name('video_tapes.wishlist');
 
+    Route::get('/videos/compression/complete','NewAdminController@video_tapes_compression_complete')->name('compress.status');
+
     // Spam Videos
 
     Route::get('/spam-videos', 'NewAdminController@spam_videos')->name('spam-videos');

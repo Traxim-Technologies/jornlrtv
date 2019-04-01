@@ -6830,4 +6830,33 @@ class NewAdminController extends Controller {
         return back()->with('flash_error' , tr('admin_published_video_failure'));
     
     }
+
+    /**
+     * Function Name : video_tapes_compression_complete()
+     *
+     * @uses To complete the compressing videos
+     *
+     * @param integer video id - Video id
+     *
+     * @created vithya
+     *
+     * @updated: -
+     *
+     * @return response of success/failure message
+     */
+    public function video_tapes_compression_complete(Request $request) {
+
+        $response = CommonRepo::videos_compression_complete($request)->getData();
+
+        if ($response->success) {
+
+            return back()->with('flash_success', $response->message);
+
+        } else {
+
+            return back()->with('flash_error', $response->error_messages);
+
+        }
+
+    }
 }
