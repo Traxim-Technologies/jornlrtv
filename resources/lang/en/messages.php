@@ -1949,6 +1949,9 @@ return array(
 	'admin_language_status_error' => 'Sorry!, something went wrong language status could not be changed either Approve/decline. Please try again.',
 	'admin_settings_error' => 'Sorry!, something went wrong language status could not be changed either Approve/decline. Please try again.',
 
+
 	'admin_language_delete_confirmation'=>':otherkey - Do you want delete this language?',
 	'no_language_found' => 'No language found',
+	'cancel_reason_required' => "The reason for cancellation is required.",
+
 );
