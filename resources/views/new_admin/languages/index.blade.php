@@ -28,6 +28,8 @@
                 </div>
 
                 <div class="box-body">
+                    
+                    @if(count($languages) != 0)
 
               	    <table id="example1" class="table table-bordered table-striped">
 
@@ -177,6 +179,9 @@
 
 					</table>
                 
+                    @else
+                        <h3 class="no-result">{{ tr('no_language_found') }}</h3>
+                    @endif
                 </div>
 
             </div>
