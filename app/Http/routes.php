@@ -150,15 +150,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
 
-    // Languages
-    // Route::get('/languages/edit/{id}', 'LanguageController@languages_edit')->name('languages.edit');
-
-    // Route::get('/languages/status/{id}', 'LanguageController@languages_status')->name('languages.status'); 
-
-    // Route::get('/languages/delete/{id}', 'LanguageController@languages_delete')->name('languages.delete');
-
-    // Route::get('/languages/set_default_language/{name}', 'LanguageController@set_default_language')->name('languages.set_default_language');
-  
    // Languages
 
     Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 
@@ -176,7 +167,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('/languages/delete', 'LanguageController@languages_delete')->name('languages.delete');
 
     Route::get('/languages/set_default', 'LanguageController@languages_set_default')->name('languages.set_default');
-    
+
     // ============= branch v4.0-admin-coderevamp ================
 
     Route::get('/', 'NewAdminController@dashboard')->name('dashboard');

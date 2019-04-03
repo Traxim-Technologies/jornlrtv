@@ -289,7 +289,7 @@ class LanguageController extends Controller
      */
     public function languages_download(Request $request) {
 
-        $folder_name = $request->folder_name;
+        $folder_name = $request->folder_name ?: 'en';;
 
         $file_name = $request->file_name;
 

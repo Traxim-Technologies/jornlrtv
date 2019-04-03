@@ -456,7 +456,7 @@ class AdminRepository {
             DB::beginTransaction();
 
             $validator = Validator::make($request->all(),[
-                    'folder_name' => $request->language_id ? 'required|max:4|unique:languages,folder_name,'.$request->language_id : 'required|max:4|unique:languages,folder_name',
+                    'folder_name' => $request->language_id ? 'required|min:2|max:4|unique:languages,folder_name,'.$request->language_id : 'required|max:4|unique:languages,folder_name',
                     'language'=> $request->language_id ? 'required|max:4|unique:languages,language,'.$request->language_id : 'required|max:4|unique:languages,language',
                     'auth_file'=> !($request->language_id) ? 'required' : '',
                     'messages_file'=>!($request->language_id) ? 'required' : '',
@@ -551,9 +551,7 @@ class AdminRepository {
                 }
 
                 Helper::upload_language_file($language_details->folder_name, $request->pagination_file, 'pagination.php');
-
             }
-
 
             if ($request->hasFile('passwords_file')) {
 
@@ -577,7 +575,6 @@ class AdminRepository {
                 }
 
                 Helper::upload_language_file($language_details->folder_name, $request->passwords_file, 'passwords.php');
-
             }
 
             if($request->hasFile('validation_file')) {
@@ -591,9 +588,8 @@ class AdminRepository {
                 if ($originallength != $length) {
                     
                     throw new Exception(Helper::get_error_message(162), 162);
-
                 }
-
+                
                 if ($language_details->id != '') {
                     $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
 
@@ -601,15 +597,19 @@ class AdminRepository {
                 }
 
                 Helper::upload_language_file($language_details->folder_name, $request->validation_file, 'validation.php');
-
             } 
 
             if ($request->language_id) {
+
                 if($lang != $request->folder_name)  {
-                    $current_path=base_path('resources/lang/'.$lang);
-                    $new_path=base_path('resources/lang/'.$request->folder_name);
+                   
+                    $current_path = base_path('resources/lang/'.$lang);
+                   
+                    $new_path = base_path('resources/lang/'.$request->folder_name);
+                   
                     rename($current_path,$new_path);
                 }
+
             }
 
             $language_details->save();

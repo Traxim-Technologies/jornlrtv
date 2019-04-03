@@ -12,7 +12,7 @@
 	    <div class="form-group">
 	        <label for="language">{{ tr('language') }}</label>
 	        <div>
-	            <input type="text" class="form-control" name="language" id="language" placeholder="{{ tr('example_language2') }}" required maxlength="64" value="{{ old('language') ?: $language_details->language }}">
+	            <input type="text" class="form-control" name="language" id="language" placeholder="{{ tr('example_language2') }}" required maxlength="4" value="{{ old('language') ?: $language_details->language }}">
 	        </div>
 	    </div>
 
@@ -24,7 +24,7 @@
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                
 	                <div class="tools tools-bottom">
-	                    <a href="{{ route('admin.languages.download', ['folder_name'=>$language_details->folder_name, 'file_name'=>'auth']) }}">
+	                    <a href="{{ route('admin.languages.download', ['folder_name' => $language_details->folder_name, 'file_name'=>'auth']) }}">
 	                        <i class="fa fa-download"></i> {{tr('download_file')}}
 	                    </a>
 	                </div>
@@ -40,7 +40,7 @@
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                
 	                <div class="tools tools-bottom">
-	                    <a href="{{ route('admin.languages.download', ['folder_name'=>$language_details->folder_name, 'file_name'=>'messages']) }}">
+	                    <a href="{{ route('admin.languages.download', ['folder_name' => $language_details->folder_name, 'file_name'=>'messages']) }}">
 	                        <i class="fa fa-download"></i> {{tr('download_file')}}
 	                    </a>
 	                </div>
@@ -56,7 +56,7 @@
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                
 	                <div class="tools tools-bottom">
-	                    <a href="{{ route('admin.languages.download', ['folder_name'=>$language_details->folder_name, 'file_name'=>'pagination']) }}">
+	                    <a href="{{ route('admin.languages.download', ['folder_name' => $language_details->folder_name, 'file_name'=>'pagination']) }}">
 	                        <i class="fa fa-download"></i> {{tr('download_file')}}
 	                    </a>
 	                </div>
@@ -73,7 +73,7 @@
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>
 	                <div class="tools tools-bottom">
-	                    <a href="{{ route('admin.languages.download', ['folder_name'=>$language_details->folder_name, 'file_name' => 'passwords']) }}">
+	                    <a href="{{ route('admin.languages.download', ['folder_name' => $language_details->folder_name, 'file_name' => 'passwords']) }}">
 	                        <i class="fa fa-download"></i> {{tr('download_file')}}
 	                    </a>
 	                </div>
