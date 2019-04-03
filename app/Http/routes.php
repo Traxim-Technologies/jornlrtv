@@ -151,23 +151,32 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('/payperview/payment/export/', 'AdminExportController@payperview_export')->name('payperview.export');
 
     // Languages
+    // Route::get('/languages/edit/{id}', 'LanguageController@languages_edit')->name('languages.edit');
+
+    // Route::get('/languages/status/{id}', 'LanguageController@languages_status')->name('languages.status'); 
+
+    // Route::get('/languages/delete/{id}', 'LanguageController@languages_delete')->name('languages.delete');
+
+    // Route::get('/languages/set_default_language/{name}', 'LanguageController@set_default_language')->name('languages.set_default_language');
+  
+   // Languages
 
     Route::get('/languages/index', 'LanguageController@languages_index')->name('languages.index'); 
 
-    Route::get('/languages/download', 'LanguageController@languages_download')->name('languages.download'); 
+    Route::get('/languages/download/', 'LanguageController@languages_download')->name('languages.download'); 
 
     Route::get('/languages/create', 'LanguageController@languages_create')->name('languages.create');
     
-    Route::get('/languages/edit/{id}', 'LanguageController@languages_edit')->name('languages.edit');
+    Route::get('/languages/edit', 'LanguageController@languages_edit')->name('languages.edit');
 
-    Route::get('/languages/status/{id}', 'LanguageController@languages_status')->name('languages.status');   
+    Route::get('/languages/status', 'LanguageController@languages_status_change')->name('languages.status');   
 
     Route::post('/languages/save', 'LanguageController@languages_save')->name('languages.save');
 
-    Route::get('/languages/delete/{id}', 'LanguageController@languages_delete')->name('languages.delete');
+    Route::get('/languages/delete', 'LanguageController@languages_delete')->name('languages.delete');
 
-    Route::get('/languages/set_default_language/{name}', 'LanguageController@set_default_language')->name('languages.set_default_language');
-
+    Route::get('/languages/set_default', 'LanguageController@languages_set_default')->name('languages.set_default');
+    
     // ============= branch v4.0-admin-coderevamp ================
 
     Route::get('/', 'NewAdminController@dashboard')->name('dashboard');

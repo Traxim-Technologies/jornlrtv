@@ -8,165 +8,354 @@ use App\Http\Requests;
 
 use App\Repositories\AdminRepository as AdminRepo;
 
+use App\Helpers\Helper;
+
 use App\Language;
 
 use App\Settings;
 
+use Exception;
+
+use DB;
 class LanguageController extends Controller
-{
+{    
+    /**
+     * Function Name : languages_index()
+     *
+     * @uses To list out language object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return View page
+     */
+
     public function languages_index() {
         // Load Lanugages
-        $model = Language::get();
+        $languages = Language::get();
 
-        return view('admin.languages.index')->withPage('languages')->with('data', $model)->with('sub_page','');
+        return view('new_admin.languages.index')
+                    ->withPage('languages')
+                    ->with('sub_page','languages-view')
+                    ->with('languages', $languages);
+    }   
+    
+    /**
+     * Function Name : languages_create()
+     *
+     * @uses To create a language object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return View page
+     */
+    public function languages_create(Request $request) {
+
+        $language_details = new Language;
+
+        return view('new_admin.languages.create')
+                ->withPage('languages')
+                ->with('sub_page','languages-create')
+                ->with('language_details', $language_details);
+    }
+    
+    /**
+     * Function Name : languages_edit()
+     *
+     * @uses To display and update language object details based on language id
+     *
+     * @created  Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $language_id
+     *
+     * @return View page
+     */
+    public function languages_edit(Request $request) {
+
+        try {
+
+            $language_details = Language::where('id', $request->language_id)->first();
+
+            if(!$language_details) {
+
+                throw new Exception( tr('admin_language_not_found'), 101);
+            } 
+
+            return view('new_admin.languages.edit')
+                    ->withPage('languages')
+                    ->with('sub_page','languages-view')
+                    ->with('language_details', $language_details);      
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.languages.index')->with('flash_error',$error);
+        }
+    }
+    
+    /**
+     * Function Name : languages_save()
+     *
+     * @uses To save the language object details of new/existing based on details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param (request) language details
+     *
+     * @return success/error message
+     */
+    public function languages_save(Request $request) {
+        
+        try {
+            
+            $language_details = AdminRepo::languages_save($request);
+            
+            if ($language_details['success'] == true) {
+                
+                return redirect()->route('admin.languages.index')->with('flash_success', $language_details['message']);            
+            } 
+                
+            throw new Exception($language_details['error'], $language_details['code']);  
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->back()->withInput()->with('flash_error',$error);
+        }
+    
+    }
+    
+    /**
+     * Function: languages_delete()
+     * 
+     * @uses To delete the languages object based on language id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return success/failure message
+     */
+    public function languages_delete(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $language_details = Language::where('id', $request->language_id)->first();
+
+            if(!$language_details) {
+
+                throw new Exception(tr('admin_language_not_found'), 101);
+            }
+            
+            $folder_name = $language_details->folder_name;
+
+            if ($language_details->delete()) {
+
+                $setting_details = Settings::where('key', 'default_lang')->first();
+
+                if($setting_details) {
+
+                    $setting_details->value = 'en';
+
+                    if($setting_details->save()) {
+                        
+                        DB::commit();
+                        
+                        $dir = base_path('resources/lang/'.$folder_name);
+
+                        if (file_exists($dir.'/auth.php')) {
+
+                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'auth.php');                            
+                        }
+
+                        if (file_exists($dir.'/messages.php')) {
+
+                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'messages.php');
+                        }
+
+                        if (file_exists($dir.'/passwords.php')) {
+
+                            Helper::delete_language_files($folder_name, DEFAULT_FALSE , 'passwords.php');
+                        }
+
+                        if (file_exists($dir.'/validation.php')) {
+
+                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'validation.php');
+                        }
+
+                        if (file_exists($dir.'/pagination.php')) {
+
+                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'pagination.php');
+                        }
+
+                        rmdir($dir); 
+
+                        return back()->with('flash_success', tr('admin_language_delete_success'));                   
+                    } 
+                        
+                    throw new Exception(tr('admin_language_delete_error'), 101);
+                }  
+            }
+            
+            throw new Exception(tr('admin_language_delete_error'), 101);
+                   
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.languages.index')->with('flash_error',$error);
+        }
     }
 
+    /**
+     * Function Name : languages_status()
+     *
+     * @uses To update languages status to approve/decline based on language id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) $language_id
+     *
+     * @return success/error message
+     */
+    public function languages_status_change(Request $request) {
+        try {
+
+            DB::beginTransaction();
+       
+            $language_details = Language::find($request->language_id);
+
+            if(!$language_details) {
+                
+                throw new Exception(tr('admin_language_not_found'), 101);
+            }
+
+            $language_details->status = $language_details->status == APPROVED ? DECLINED : APPROVED ;
+                        
+            $message = $language_details->status == APPROVED ? tr('admin_language_activate_success') : tr('admin_language_deactivate_success');
+            
+            if( $language_details->save() ) {
+
+                DB::commit();
+
+                return back()->with('flash_success',$message);
+            } 
+
+            throw new Exception(tr('admin_language_status_error'), 101);
+           
+        } catch( Exception $e) {
+
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.languages.index')->with('flash_error',$error);
+        }
+    }
+    
+    /**
+     * Function Name : languages_download()
+     *
+     * @uses To download language file 
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param (request) folder_name, file_name, 
+     *
+     * @return View page
+     */
     public function languages_download(Request $request) {
 
-        $folder = $request->f_n;
+        $folder_name = $request->folder_name;
 
-        $name = $request->file_name;
+        $file_name = $request->file_name;
 
         //PDF file is stored under project/public/download/info.pdf
-        $file= base_path(). "/resources/lang/".$folder.'/'.$name.'.php';
+      
+        $file_path = base_path(). "/resources/lang/".$folder_name.'/'.$file_name.'.php';
 
         $headers = array(
                   'Content-Type: application/x-php',
                 );
 
-        return response()->download($file, $name.'.php', $headers);
+        return response()->download($file_path , $file_name.'.php', $headers);
     }
 
-    public function languages_create(Request $request) {
+        /**
+     * Function Name : set_default_language()
+     *
+     * @uses To set default language
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param (request) folder_name, file_name, 
+     *
+     * @return View page
+     */
+    public function languages_set_default(Request $request) {
+       
+       try {
 
-        return view('admin.languages.create')->withPage('languages')->with('sub_page','create_language');
-    }
+            DB::beginTransaction();
 
-    public function languages_edit($id) {
+            $setting_detais = Settings::where('key','default_lang')->first();
 
-        // Load Coupon Model
-        $model = Language::where('id',$id)->first();
+            if (!$setting_detais) { 
 
-        return view('admin.languages.edit')->withPage('languages')->with('model', $model)->with('sub_page','edit_language');
-    }
-
-
-    public function languages_save(Request $request) {
-        $model = AdminRepo::languages_save($request);
-        if ($model['success'] == true) {
-            return redirect(route('admin.languages.index'))->with('flash_success', $model['message']);
-        } else {
-             return back()->with('flash_error', $model['error']);
-        }
-    
-    }
-
-    public function languages_delete($id) {
-
-        $model = Language::where('id', $id)->first();
-
-        if($model) {
-
-            $dir = base_path('resources/lang/'.$model->folder_name);
-
-            if (file_exists($dir.'/auth.php')) {
-
-                unlink($dir.'/auth.php');
-
+                throw new Exception(tr('something_error'), 101);           
             }
 
-            if (file_exists($dir.'/messages.php')) {
+            $setting_detais->value = $request->language_file;
 
-                unlink($dir.'/messages.php');
+            if( $setting_detais->save()) {
 
-            }
+                DB::commit();
 
-            if (file_exists($dir.'/pagination.php')) {
-
-                unlink($dir.'/pagination.php');
-
-            }
-
-            if (file_exists($dir.'/passwords.php')) {
-
-                unlink($dir.'/passwords.php');
-
-            }
-
-            if (file_exists($dir.'/validation.php')) {
-
-                unlink($dir.'/validation.php');
-
-            }
-
-            if (is_dir($dir)) {
-
-                rmdir($dir);
-                
-            }
-
-            if ($model->delete()) {
-
-                $settings = Settings::where('key', 'default_lang')->first();
-
-                if($settings) {
-
-                    $settings->value = 'en';
-
-                    if($settings->save()) {
-
-                        return back()->with('flash_success',tr('language_delete_success'));
-
-                    }
-
-                }  
-
-            }
-        }
-        
-        return back()->with('flash_error',tr('admin_not_error'));
-   
-    }
-
-
-    public function languages_status($id) {
-
-        if($data = Language::where('id' , $id)->first()) {
-
-            $data->status  = $data->status ? 0 : 1;
-
-            $data->save();
-
-            return back()->with('flash_success' , $data->status ? tr('language_active_success') : tr('language_inactive_success'));
-
-        } else {
-
-            return back()->with('flash_error',tr('admin_not_error'));
-            
-        }
-    }
-
-    public function set_default_language($name) {
-        // Load Setting Table
-        $model = Settings::where('key','default_lang')->first();
-
-        if ($model) {
-
-            $model->value = $name;
-
-            $model->save();
-
-            if($model) {
                 $fp = fopen(base_path() .'/config/new_config.php' , 'w');
-                fwrite($fp, "<?php return array( 'locale' => '".$name."', 'fallback_locale' => '".$name."');?>");
+
+                fwrite($fp, "<?php return array( 'locale' => '".$request->language_file."', 'fallback_locale' => '".$request->language_file."');?>");
+                
                 fclose($fp);
 
                 \Log::info("Key : ".config('app.locale'));
 
-                return back()->with('flash_success' ,$name .' - '. tr('set_default_language_success'))->with('flash_language', true);
-            }
-        }  
+                return back()->with('flash_success' , tr('set_default_language_success'))->with('flash_language', true);
+            } 
 
-        return back()->with('flash_error',tr('admin_not_error'));
+            throw new Exception(tr('something_error'), 101);   
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.languages.index')->with('flash_error',$error);
+        } 
     }
 }

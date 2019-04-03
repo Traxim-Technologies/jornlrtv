@@ -998,11 +998,11 @@ return array(
 	'app_url_settings' => 'App Url Settings',
 	'playstore' => 'Playstore',
 	'appstore' => 'Appstore',
-	'default_subscription' => 'Do you want to Enable the user as paid user ?',
+	'default_subscription' => 'Do you want to Enable the user as paid user?',
 	'spam_video_enable' => 'Do you want to Enable the spam video ?',
 	'email_verify_control' => 'Do you want to enable email verification for User Registration ?',
 	'configure_smtp' => 'If you want to enable email verification, configure SMTP and then enable the key',
-	'admin_language_control' => 'Do you want to enable MultiLanguage Support ?',
+	'admin_language_control' => 'Do you want to enable MultiLanguage Support?',
 	'card_name' => 'Card Name',
 	'no_subscribers_found' => 'No subscribers found',
 	'video_compressing' => 'Video Compressing',
@@ -1930,5 +1930,25 @@ return array(
 	'redeem_request_greater_than_your_redeem_amount' => "You requested more than the user redeem amount.",
 	'invoice' => 'Invoice',
 	'order_id' => 'Order ID',
+	
+	// languages
+	'view_languages'	=>	'View languages',
+	'download_file' => 'Download File',
 
+	'add_language'	=>	'Add language',
+	'admin_language_not_found' => 'Language details not found',
+	'admin_language_save_error' => 'Sorry!, something went wrong language details could not be saved. Please try again.',
+	'admin_language_update_success'=>'Language has been updated successfully',
+	'admin_language_create_success'=>'Language has been created successfully',
+	
+	'admin_language_delete_error' => 'Sorry!, something went wrong language details could not be deleted. Please try again.',
+	'admin_language_delete_success'=>'Success! Language deleted successfully',
+	'admin_language_activate_success' => 'Success! Language activated successfully',
+	'admin_language_deactivate_success' => 'Success! Language deactivate successfully',
+
+	'admin_language_status_error' => 'Sorry!, something went wrong language status could not be changed either Approve/decline. Please try again.',
+	'admin_settings_error' => 'Sorry!, something went wrong language status could not be changed either Approve/decline. Please try again.',
+
+	'admin_language_delete_confirmation'=>':otherkey - Do you want delete this language?',
+	'no_language_found' => 'No language found',
 );
