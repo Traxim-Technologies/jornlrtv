@@ -16,6 +16,8 @@ use App\Referral;
 
 use App\UserReferrer;
 
+use Setting;
+
 class UserRepository {
 
     public static function request_validation($data = [] , &$errors = [] , $user) {
