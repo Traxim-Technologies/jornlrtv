@@ -115,7 +115,9 @@ class UserApiController extends Controller {
                 'categories_videos',
                 'tags_videos',
                 'video_tapes_youtube_grapper_save',
-                'categories_channels_list']));
+                'categories_channels_list',
+                'referrals_check'
+            ]));
 
     }
 
