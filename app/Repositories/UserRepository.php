@@ -325,6 +325,8 @@ class UserRepository {
 
             $user_referral_details->total_referrals = $user_referral_details->total_referrals + 1;
 
+            $user_referral_details->total_referrals_earnings += (Setting::get('referral_commission') ?: 0);
+
             $user_referral_details->save();
 
         }
