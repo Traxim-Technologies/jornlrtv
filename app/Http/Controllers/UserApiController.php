@@ -8180,7 +8180,7 @@ class UserApiController extends Controller {
                     'referral_code' =>'required|exists:user_referrers,referral_code',
                 ],
                 [
-                    'exists' => Helper::error_message(50101),
+                    'exists' => Helper::get_error_message(50101),
                 ]
             );
 
@@ -8196,7 +8196,7 @@ class UserApiController extends Controller {
 
             if(!$check_referral_code) {
 
-                throw new Exception(Helper::error_message(50101), 50101);
+                throw new Exception(Helper::get_error_message(50101), 50101);
                 
             }
 
