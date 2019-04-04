@@ -12,6 +12,8 @@ use App\Helpers\Helper;
 
 use App\Repositories\PaymentRepository as PaymentRepo;
 
+use App\Repositories\UserRepository as UserRepo;
+
 use App\Jobs\sendPushNotification;
 
 use App\Jobs\BellNotificationJob;
@@ -8192,7 +8194,7 @@ class UserApiController extends Controller {
                 
             }
 
-            $check_referral_code =  UserReferrer::where('referral_code', $referral_code)->where('status', APPROVED)->first();
+            $check_referral_code =  UserReferrer::where('referral_code', $request->referral_code)->where('status', APPROVED)->first();
 
             if(!$check_referral_code) {
 
