@@ -1022,4 +1022,9 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::any('youtube-downloader' , 'UserApiController@video_tapes_youtube_grapper_save');
 
+    // Referrals 
+
+    Route::post('/referrals', 'UserApiController@referrals')->name('referrals');
+
+
 });

@@ -86,6 +86,9 @@ use App\PlaylistVideo;
 
 use App\BellNotification;
 
+use App\UserReferrer;
+
+use App\Referral;
 
 class UserApiController extends Controller {
 
@@ -7341,6 +7344,7 @@ class UserApiController extends Controller {
             $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
                 'playlist_id' => 'exists:playlists,id,user_id,'.$request->id,
+                'channel_id' => 'exists:channels,id'
             ],
             [
                 'exists' => Helper::get_error_message(175)
@@ -7373,6 +7377,8 @@ class UserApiController extends Controller {
             }
 
             $playlist_details->user_id = $request->id;
+
+            $playlist_details->channel_id = $request->channel_id ?: "";
 
             $playlist_details->title = $playlist_details->description = $request->title ?: "";
 
@@ -7870,7 +7876,7 @@ class UserApiController extends Controller {
 
     }
 
-        /**
+    /**
      * Function Name : video_tapes_youtube_grapper_save()
      * 
      * Get the videos based on the channel ID from youtube API 
@@ -8068,6 +8074,81 @@ class UserApiController extends Controller {
 
         }
     
+    }
+
+    /**
+     * Function Name : referrals()
+     *
+     * @uses signup user through referrals
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param string referral_code 
+     *
+     * @return redirect signup page
+     */
+    public function referrals(Request $request){
+
+        try {
+
+            $user_details =  User::find($request->id);
+
+            $user_referrer_details = UserReferrer::where('user_id', $user_details->id)->first();
+
+            if(!$user_referrer_details) {
+
+                $user_referrer_details = new UserReferrer;
+
+                $user_referrer_details->user_id = $user_details->id;
+
+                $user_referrer_details->referral_code = uniqid();
+
+                $user_referrer_details->total_referrals = $user_referrer_details->total_referrals_earnings = 0 ;
+
+                $user_referrer_details->save();
+
+            }
+
+            unset($user_referrer_details->id);
+
+            $referrals = Referral::where('parent_user_id', $user_details->id)->CommonResponse()->orderBy('created_at', 'desc')->get();
+
+            foreach ($referrals as $key => $referral_details) {
+
+                $user_details = User::find($referral_details->user_id);
+
+                $referral_details->username = $referral_details->picture = "";
+
+                if($user_details) {
+
+                    $referral_details->username = $user_details->name ?: "";
+
+                    $referral_details->picture = $user_details->picture ?: "";
+
+                }
+
+            }
+
+            $user_referrer_details->referrals = $referrals;
+
+            $response_array = ['success' => true, 'data' => $user_referrer_details];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+
     }
 
 }
