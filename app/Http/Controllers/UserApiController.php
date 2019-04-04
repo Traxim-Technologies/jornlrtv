@@ -721,7 +721,9 @@ class UserApiController extends Controller {
     public function register(Request $request) {
 
         $response_array = array();
+
         $operation = false;
+
         $new_user = DEFAULT_TRUE;
 
         // validate basic field
@@ -909,16 +911,20 @@ class UserApiController extends Controller {
                     $user->is_verified = 1;
                 }
 
-
                 // $user->is_activated = 1;
 
                 $user->save();
 
-                
-
                 // Send welcome email to the new user:
+
                 if($new_user) {
+
                     // Check the default subscription and save the user type 
+
+                    if($request->referral_code) {
+
+                        UserRepo::referral_register($request->referral_code, $user);
+                    }
 
                     user_type_check($user->id);
 
@@ -8151,4 +8157,61 @@ class UserApiController extends Controller {
 
     }
 
+    /**
+     * Function Name : referrals_check()
+     *
+     * @uses check valid referral
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param string referral_code 
+     *
+     * @return redirect signup page
+     */
+    public function referrals_check($referral_code){
+
+        try {
+
+            $validator = Validator::make($request->all(),[
+                    'referral_code' =>'required|exists:user_referrers,referral_code',
+                ],
+                [
+                    'exists' => Helper::error_message(50101),
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            $check_referral_code =  UserReferrer::where('referral_code', $referral_code)->where('status', APPROVED)->first();
+
+            if(!$check_referral_code) {
+
+                throw new Exception(Helper::error_message(50101), 50101);
+                
+            }
+
+            $response_array = ['success' => true, 'message' => Helper::get_message(50001), 'code' => 50001];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array, 200);
+
+        }
+    }
 }

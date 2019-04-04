@@ -438,6 +438,10 @@
                     $string = tr('playlist_not_associated_to_user');
                     break;
 
+                case 50101:
+                    $string = tr('referral_code_invalid');
+                    break;
+
                 case 1000:
                     $string = tr('video_is_in_flag_list');
                     break;
@@ -568,6 +572,10 @@
                     break;
                 case 132:
                     $string = tr('playlist_video_add_empty');
+                    break;
+
+                case 50001:
+                    $string = tr('referral_code_valid');
                     break;
                 default:
                     $string = "";

@@ -1026,5 +1026,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/referrals', 'UserApiController@referrals')->name('referrals');
 
+    Route::post('/referrals/check', 'UserApiController@referrals_check');
+
 
 });
