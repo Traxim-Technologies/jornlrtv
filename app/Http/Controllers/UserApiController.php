@@ -8172,7 +8172,7 @@ class UserApiController extends Controller {
      *
      * @return redirect signup page
      */
-    public function referrals_check($referral_code){
+    public function referrals_check(Request $request){
 
         try {
 
