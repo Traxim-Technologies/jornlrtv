@@ -25,9 +25,9 @@ class Referral extends Model
             'referrals.parent_user_id as parent_user_id' ,
             'referrals.user_referrer_id as user_referrer_id' ,
             'referrals.referral_code as referral_code' ,
-            'referrals.status',          
-            \DB::raw('DATE_FORMAT(referrals.created_at , "%e %b %y") as created_at'),
-            \DB::raw('DATE_FORMAT(referrals.updated_at , "%e %b %y") as updated_at')
+            'referrals.status',   
+            'created_at',
+			'updated_at'
         );
     
     }
