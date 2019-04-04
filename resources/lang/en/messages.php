@@ -1954,4 +1954,7 @@ return array(
 	'no_language_found' => 'No language found',
 	'cancel_reason_required' => "The reason for cancellation is required.",
 
+	'referral_code_invalid' => 'Referral code is invalid',
+	'referral_code_valid' => 'Referral code is valid',
+
 );
