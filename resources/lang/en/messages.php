@@ -1953,5 +1953,6 @@ return array(
 	'admin_language_delete_confirmation'=>':otherkey - Do you want delete this language?',
 	'no_language_found' => 'No language found',
 	'cancel_reason_required' => "The reason for cancellation is required.",
+	'ffmpeg_warning_notes'=>'FFMPEG not yet installed, kindly configure for  compression else compression will not happen',
 
 );
