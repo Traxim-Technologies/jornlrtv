@@ -10099,8 +10099,7 @@ class UserApiController extends Controller {
 
             if(!$channel_details) {
 
-                throw new Exception(tr('channel_not_found'), 101);
-                
+                throw new Exception(tr('channel_not_found'), 101);                
             }
 
             $channel_details->youtube_channel_id = $request->youtube_channel_id;

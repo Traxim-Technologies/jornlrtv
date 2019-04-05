@@ -11,11 +11,11 @@
 
 @section('content')
 
-    @include('notification.notify')
-
   	<div class="row">
 
 	    <div class="col-md-10">
+   			
+   			@include('notification.notify')
 
 	        <div class="box box-primary">
 

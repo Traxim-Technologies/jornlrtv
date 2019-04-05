@@ -327,12 +327,19 @@
                 </ul>
             </li>
 
-
-            @if(Setting::get('admin_language_control') == YES )
+            @if(Setting::get('admin_language_control') == FALSE)
             <li id="languages">
                 <a href="{{route('admin.languages.index')}}">
                     <i class="fa fa-globe"></i> <span>{{tr('languages')}}</span>
                 </a>
+
+                <ul class="treeview-menu">
+
+                    <li id="languages-create"><a href="{{route('admin.languages.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_language')}}</a></li>
+
+                    <li id="languages-view"><a href="{{route('admin.languages.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_languages')}}</a></li>
+                    
+                </ul>
             </li>
             @endif
 
