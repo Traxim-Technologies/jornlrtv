@@ -5273,7 +5273,7 @@ class NewAdminController extends Controller {
                 }  
             }
 
-            return back()->with('flash_success', tr('admin_settings_key_save_success') );
+            return back()->with('flash_success', tr('admin_settings_key_save_success'));
             
         } catch (Exception $e) {
 
@@ -5707,7 +5707,7 @@ class NewAdminController extends Controller {
             $sub_admin_details->role = SUBADMIN;
 
             $sub_admin_details->picture = asset('placeholder.png');
-
+            
             if($request->hasFile('picture')) {
 
                 if($request->sub_admin_id) {
@@ -6856,6 +6856,59 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error', $response->error_messages);
 
+        }
+
+    }
+
+    /**
+     * Function: common_settings_save()
+     * 
+     * @uses to update .env values
+     *
+     * @created Anjana H
+     *
+     * @updated Maheswari
+     *
+     * @param
+     *
+     * @return success/error message
+     */
+    public function common_settings_save(Request $request) {
+
+        try {
+
+            $settings = array();
+
+            $admin_id = \Auth::guard('admin')->user()->id;
+           
+            foreach( $request->toArray() as $key => $data ) {
+
+                $check_settings = Settings::where('key' ,'=', $key)->count();
+
+                if($check_settings == TRUE) {
+
+                    $result = Settings::where('key' ,'=', $key)->update(['value' => $data]);
+
+                } else{
+
+                    if( \Enveditor::set($key, $data)) { 
+                    
+                    } else {
+
+                        throw new Exception(tr('admin_settings_save_error'), 101);
+                    }
+
+ 
+                }
+            }
+
+            return redirect()->route('clear-cache')->with('flash_success', tr('admin_settings_key_save_success') );
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error', $error);
         }
 
     }

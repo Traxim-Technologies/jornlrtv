@@ -39,6 +39,15 @@
         {{tr('max_upload_size')}} <b>{{ini_get('upload_max_filesize')}}</b>&nbsp;&amp;&nbsp;{{tr('post_max_size')}} <b>{{ini_get('post_max_size')}}</b>
 </div>
 
+
+@if(Setting::get('ffmpeg_installed') == FFMPEG_NOT_INSTALLED) 
+
+ <div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+        {{tr('ffmpeg_warning_notes')}}
+</div>
+@endif
+
 @endif
 
 <div class="row">

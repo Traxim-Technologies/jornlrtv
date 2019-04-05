@@ -75,7 +75,7 @@
                     <div class="form-group">
                             <label for="picture" class="col-sm-2 control-label">* {{ tr('picture') }}</label>
                             <div class="col-sm-10">
-                                <input type="file" name="file" id="file" accept="image/jpeg,image/png" @if(!$sub_admin_details->id) required @endif>
+                                <input type="file" name="picture" id="picture" accept="image/jpeg,image/png" @if(!$sub_admin_details->id) required @endif>
                             </div>
                         </div>
 
