@@ -1957,4 +1957,17 @@ return array(
 	'referral_code_invalid' => 'Referral code is invalid',
 	'referral_code_valid' => 'Referral code is valid',
 
+	'user_action_not_enough_data' => 'The action is denied.',
+
+	'user_video_tapes_ppv_added' => 'The PPV update successfully',
+	'user_video_tapes_ppv_removed' => 'The PPV removed',
+	'user_video_tapes_ppv_status_failed' => 'The PPV status update failed',
+
+	'user_video_tapes_approved' => 'The video is approved',
+	'user_video_tapes_declined' => 'The video is declined',
+	'user_video_tapes_status_update_failed' => 'The video status update failed',
+
+	'user_video_tapes_delete_success' => 'The video deleted',
+	'user_video_tapes_delete_error' => 'The video failed',
+
 );

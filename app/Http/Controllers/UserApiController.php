@@ -121,6 +121,8 @@ class UserApiController extends Controller {
                 'referrals_check'
             ]));
 
+        $this->middleware('UserVideoChannel' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status', 'videos']]);
+
     }
 
     /**
@@ -7310,6 +7312,8 @@ class UserApiController extends Controller {
                 $playlist_details->is_selected = $check_video ? YES : NO;
 
                 $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
+
+                $playlist_details->share_link = url('/');
             }
 
             $response_array = ['success' => true, 'data' => $playlists];
@@ -7581,6 +7585,8 @@ class UserApiController extends Controller {
             $video_tapes = VideoRepo::video_tape_list($video_tape_ids, $request->id);
 
             $playlist_details->picture = $video_tapes ? $video_tapes[0]->default_image : asset('images/playlist.png');
+
+            $playlist_details->share_link = url('/');
 
             $playlist_details->total_videos = count($video_tapes);
 
@@ -8217,5 +8223,259 @@ class UserApiController extends Controller {
             return response()->json($response_array, 200);
 
         }
+    }
+
+    /**
+     *
+     * Function name: video_tapes_revenues()
+     *
+     * @uses Video revenue details
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id 
+     *
+     * @return JSON Response
+     */
+
+    public function video_tapes_revenues(Request $request) {
+
+        try {
+
+            $video_tape_details = VideoTape::where('id', $request->video_tape_id)->first();
+
+            if(!$video_tape_details) {
+
+                throw new Exception(Helper::get_error_message(50104), 50104);
+                
+            }
+
+            $data = new \stdClass;
+
+            $data->currency = Setting::get('currency');
+            
+            $data->is_pay_per_view = $video_tape_details->is_pay_per_view;
+
+            $data->ppv_revenue = $video_tape_details->user_ppv_amount ?: 0.00;
+
+            $data->ads_revenue = $video_tape_details->amount ?: 0.00;
+
+            $data->total_revenue = $video_tape_details->ads_revenue + $video_tape_details->user_ppv_amount;
+
+            $data->watch_count = $video_tape_details->watch_count;
+
+            
+            $response_array = ['success' => true, 'data' => $data];
+
+            return response()->json($response_array, 200);
+
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+    /**
+     *
+     * Function name: video_tapes_status()
+     *
+     * @uses upate the ppv status
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id 
+     *
+     * @return JSON Response
+     */
+
+    public function video_tapes_status(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $video_tape_details = VideoTape::where('id', $request->video_tape_id)->first();
+
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details || !$video_tape_details) {
+
+                throw new Exception(Helper::get_error_message(50104), 50104);
+                
+            }
+
+            $video_tape_details->is_approved = $video_tape_details->is_approved ? USER_VIDEO_DECLINED_STATUS : USER_VIDEO_APPROVED_STATUS;
+
+            if($video_tape_details->save()) {
+
+                DB::commit();
+
+                $code = $video_tape_details->is_approved == USER_VIDEO_APPROVED_STATUS ? 50002 : 50003;
+
+                $message = Helper::get_message($code);
+
+                $response_array = ['success' => true, 'message' => $message, 'code' => $code];
+
+                return response()->json($response_array, 200);
+   
+            }
+
+            throw new Exception(Helper::get_error_message(50105), 50105);
+            
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+
+    /**
+     *
+     * Function name: video_tapes_ppv_status()
+     *
+     * @uses upate the ppv status
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id 
+     *
+     * @return JSON Response
+     */
+
+    public function video_tapes_ppv_status(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $video_tape_details = VideoTape::where('id', $request->video_tape_id)->first();
+
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details || !$video_tape_details) {
+
+                throw new Exception(Helper::get_error_message(50104), 50104);
+                
+            }
+
+            $video_tape_details->ppv_created_by = $request->id;
+
+            $video_tape_details->ppv_amount = $request->ppv_amount ?: 0.00;
+
+            $video_tape_details->type_of_subscription = $request->type_of_subscription;
+
+            $video_tape_details->is_pay_per_view = $request->status ? PPV_ENABLED : PPV_DISABLED;
+
+            if($video_tape_details->save()) {
+
+                DB::commit();
+
+                $code = $video_tape_details->is_pay_per_view == PPV_ENABLED ? 50004 : 50005;
+
+                $message = Helper::get_message($code);
+
+                $response_array = ['success' => true, 'message' => $message, 'code' => $code];
+
+                return response()->json($response_array, 200);
+   
+            }
+
+            throw new Exception(Helper::get_error_message(50106), 50106);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+    /**
+     *
+     * Function name: video_tapes_delete()
+     *
+     * @uses delete video
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer video_tape_id 
+     *
+     * @return json response
+     */
+
+    public function video_tapes_delete(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $video_tape_details = VideoTape::where('id', $request->video_tape_id)->first();
+
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details || !$video_tape_details) {
+
+                throw new Exception(Helper::get_error_message(50104), 50104);
+                
+            }
+
+            if($video_tape_details->save()) {
+
+                DB::commit();
+
+                $code = 50006;
+
+                $message = Helper::get_message($code);
+
+                $response_array = ['success' => true, 'message' => $message, 'code' => $code];
+
+                return response()->json($response_array, 200);
+   
+            }
+
+            throw new Exception(Helper::get_error_message(50107), 50107);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
     }
 }
