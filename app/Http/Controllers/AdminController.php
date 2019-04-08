@@ -90,6 +90,10 @@ use App\VideoTapeTag;
 
 use App\CustomLiveVideo;
 
+use App\Playlist;
+
+use App\PlaylistVideo;
+
 class AdminController extends Controller {
 
     /**

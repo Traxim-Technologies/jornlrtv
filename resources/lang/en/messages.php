@@ -1955,4 +1955,14 @@ return array(
 	'cancel_reason_required' => "The reason for cancellation is required.",
 	'ffmpeg_warning_notes'=>'FFMPEG not yet installed, kindly configure for  compression else compression will not happen',
 
+
+	// playlist
+
+	'add_playlist' => 'Add Playlist',
+	'edit_playlist' => 'Edit Playlist',
+	'delete_playlist' => 'Delete Playlist',
+	'playlists'  => 'Playlists',
+	'playlist'  => 'Playlist',
+	'view_playlists'  => 'View Playlists',
+
 );

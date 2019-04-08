@@ -1536,8 +1536,6 @@ class NewAdminController extends Controller {
         }
     
     }
-
-
     
     /**
      * Function Name : categories_save
@@ -6909,6 +6907,320 @@ class NewAdminController extends Controller {
             $error = $e->getMessage();
 
             return back()->with('flash_error', $error);
+        }
+    }
+
+    /**
+     * Function Name : admin_playlists_index()
+     *
+     * @uses To list out categories object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param
+     *
+     * @return View page
+     */
+    public function admin_playlists_index() {
+
+       try {
+              
+            $base_query = Playlist::where('playlists.status', APPROVED)
+                                ->orderBy('playlists.updated_at', 'desc');
+
+            $playlists = $base_query->CommonResponse()->get();
+
+            foreach ($playlists as $key => $playlist_details) {
+
+                $check_video = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->where('video_tape_id', $request->video_tape_id)->count();
+
+                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
+            }
+
+            return view('new_admin.playlists.index')
+                    ->with('page', 'playlists')
+                    ->with('sub_page', 'playlists-view')
+                    ->with('playlists', $playlists);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+
+        }
+    }
+
+    /**
+     * Function Name : admin_playlists_create()
+     *
+     * @uses To create a category object details
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param 
+     *
+     * @return View page
+     */
+    public function admin_playlists_create(Request $request) {
+
+        $playlist_details = new Playlist;
+
+        return view('new_admin.playlists.create')
+                    ->with('page' , 'playlists')
+                    ->with('sub_page','playlists-create')
+                    ->with('playlist_details', $playlist_details);
+    }
+
+    /**
+     * Function Name : playlists_edit
+     *
+     * @uses To edit a category based on their id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - category_id
+     * 
+     * @return response of new category object
+     *
+     */
+    public function admin_playlists_edit(Request $request) {
+        
+        try {
+          
+            $category_details = Category::find($request->category_id);
+
+            if( count($category_details) == 0 ) {
+
+                throw new Exception( tr('admin_category_not_found'), 101);
+            } 
+
+            $category_details->dob = ($category_details->dob) ? date('d-m-Y', strtotime($category_details->dob)) : '';
+
+            return view('new_admin.categories.edit')
+                    ->with('page' , 'categories')
+                    ->with('sub_page','categories-view')
+                    ->with('category_details',$category_details);
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.categories.index')->with('flash_error',$error);
+        }
+    }
+    
+    /**
+     * Function Name : playlists_save
+     *
+     * @uses To save/update category object based on category id or details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - category_id, (request) details
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function admin_playlists_save(Request $request) {
+        
+        try {
+            
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all() , [
+                'title' => $request->playlist_id ? 'required|unique:playlists,title,'.$request->playlist_id.',id|max:128|min:2' : 'required|unique:playlists,title,NULL,id|max:128|min:2',
+
+                'image' => $request->playlist_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+                    'description' => 'required',
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all()); 
+
+                throw new Exception($error, 101);
+            }
+
+            $playlist_details = $request->playlist_id ? Playlist::find($request->playlist_id) : new Category;
+
+            $playlist_details->title = $request->title;
+
+            $playlist_details->description = $request->description;
+
+            $playlist_details->status = DEFAULT_TRUE;
+
+            $playlist_details->playlist_type = ADMIN;
+
+            if ($request->hasFile('image')) {
+
+                if ($request->playlist_id) {
+
+                    Helper::delete_avatar('uploads/playlists' , $playlist_details->image);
+                }
+
+                $playlist_details->image = Helper::upload_avatar('uploads/playlists', $request->file('image'), 0); 
+            }
+
+            if ($playlist_details->save()) {
+
+                DB::commit();
+
+                $message = $request->playlist_id ? tr('admin_playlist_update_success') : tr('admin_playlist_update_success');
+
+                return redirect()->route('admin.playlists.view', ['playlist_id' => $playlist_details->id])->with('flash_success',$message);          
+            }
+
+            throw new Exception(tr('admin_playlist_save_error'), 101);
+        
+        } catch (Exception $e) {
+
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name ; admin_playlists_view()
+     *
+     * category details based on id
+     *
+     * @created
+     *
+     * @updated 
+     *
+     * @param
+     * 
+     * @return 
+     */
+    public function admin_playlists_view(Requestadmin_ $request) {
+
+        try {
+
+            $playlist_details = Playlist::where('id', $request->playlist_id)
+                                            ->withCount('getVideos')
+                                            ->first();
+            
+            if(!$playlist_details) {
+
+                throw new Exception(tr('admin_playlist_not_found'), 101);
+            } 
+
+            return view('new_admin.playlists.view')
+                        ->with('page', 'playlists')
+                        ->with('sub_page', 'playlists')
+                        ->with('playlist_details', $playlist_details);           
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.playlists.index')->with('flash_error',$error);
+        }
+        
+    }
+
+    /**
+     * Function Name : admin_playlists_delete()
+     *
+     * @uses To delete the category based on category id
+     *
+     * @param integer $request - category id 
+     *
+     * @return response of success/failure message
+     *
+     * @created
+     *
+     * @updated
+     *
+     * @param object $request - category id
+     *
+     * @return success/failure message
+     */
+    public function admin_playlists_delete(Request $request) {
+
+         try {
+            
+            DB::beginTransaction();
+
+            $playlist_details = Playlist::find( $request->playlist_id );
+
+            if(!$playlist_details) {
+
+                throw new Exception( tr('admin_user_playlist_not_found'), 101);
+            } 
+
+            if( $playlist_details->delete()){
+               
+                DB::commit();
+                
+                return redirect()->back()->with('flash_success', tr('admin_user_playlist_delete_success'));
+            }
+
+            throw new Exception(tr('admin_user_playlist_delete_error'), 101);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+
+        }
+    }
+
+    /**
+     * Function Name : admin_playlists_videos()
+     *
+     * @uses To display videos  based on category
+     *
+     * @created
+     *
+     * @updated
+     *
+     * @param object $request - User Details
+     *
+     * @return view page
+     */
+    public function admin_playlists_videos(Request $request) {
+
+        try {
+
+            $playlist_details = Category::find($request->playlist_id);
+
+            if (count($playlist_details) == 0) {
+
+                throw new Exception(tr('admin_playlist_not_found'), 101);
+            }
+
+            $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+                    ->videoResponse()
+                    // ->where('category_id', $request->category_id)
+                    ->get();
+
+            return view('new_admin.playlists.videos')
+                        ->with('page', 'playlists')
+                        ->with('sub_page', 'playlists-view')
+                        ->with('videos', $videos)
+                        ->with('playlist_details', $playlist_details);
+            
+        } catch (Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
         }
 
     }

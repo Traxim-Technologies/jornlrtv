@@ -552,6 +552,27 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('sub_admins/save', 'NewAdminController@sub_admins_save')->name('sub_admins.save');
 
+
+    // New Admin Playlist methods ends
+    
+    Route::get('/playlists/index', 'NewAdminController@admin_playlists_index')->name('playlists.index');
+
+    Route::get('/playlists/create', 'NewAdminController@admin_playlists_create')->name('playlists.create');
+
+    Route::get('/playlists/edit', 'NewAdminController@admin_playlists_edit')->name('playlists.edit');
+
+    Route::post('/playlists/save', 'NewAdminController@admin_playlists_save')->name('playlists.save');
+
+    Route::get('/playlists/view', 'NewAdminController@admin_playlists_view')->name('playlists.view');
+
+    // Route::get('/playlists/delete', 'NewAdminController@playlists_delete')->name('playlists.delete');
+
+    Route::get('/playlists/status', 'NewAdminController@admin_playlists_status')->name('playlists.status');
+
+    // Route::get('playlist/videos', 'NewAdminController@playlist_videos')->name('playlist.videos');
+
+    // Route::get('playlist/channels', 'NewAdminController@playlist_channels')->name('playlist.channels');
+
 });
 
 Route::group(['middleware' => ['SubAdminMiddleware', 'admin'], 'prefix' => 'subadmin', 'as' => 'subadmin.'], function () {
