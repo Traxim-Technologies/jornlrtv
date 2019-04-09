@@ -4,7 +4,7 @@
 
 @section('content-header') 
 
-<a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a>- {{ tr('playlist') }} 
+{{ tr('playlist') }} - <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a>
 
 @endsection
 
@@ -25,7 +25,12 @@
           	<div class="box box-primary">
 
 	          	<div class="box-header label-primary">
+	                
 	                <b style="font-size:18px;">{{ tr('playlist') }}</b>
+
+	                <a href="{{route('admin.channels.playlists.create', ['channel_id' => $channel_details] )}}" class="btn btn-default pull-right" title="{{tr('add')}}" ><b><i class="fa fa-plus"> {{tr('add_playlist')}}</i></b> 
+	          		</a>
+
 	            </div>
 
 	            <div class="box-body table-responsive">
@@ -74,9 +79,6 @@
 	          									<a href="javascript:;" onclick="return confirm(&quot;{{ tr('admin_channel_playlist_delete_confirmation',$playlist_details->title) }}&quot;)" class="btn btn-danger" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b> 
 	          									</a>
 
-	          									<a href="javascript:;" class="btn btn-success" title="{{tr('add')}}" ><b><i class="fa fa-plus"></i></b> 
-	          									</a>
-
 	          									<a href="javascript:;" class="btn btn-warning" title="{{tr('edit')}}" ><b><i class="fa fa-edit"></i></b> 
 	          									</a>	
 
@@ -85,10 +87,7 @@
 												<a href="{{ route('admin.channels.playlists.delete', ['playlist_id' => $playlist_details->playlist_id] ) }}" onclick="return confirm(&quot;{{ tr('admin_channel_playlist_delete_confirmation',$playlist_details->title) }}&quot;)" class="btn btn-danger" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b> 
 	          									</a>
 
-	          									<a href="javascript:;" class="btn btn-success" title="{{tr('add')}}" ><b><i class="fa fa-plus"></i></b> 
-	          									</a>
-
-	          									<a href="javascript:;" class="btn btn-warning" title="{{tr('edit')}}" ><b><i class="fa fa-edit"></i></b> 
+	          									<a href="{{ route('admin.channels.playlists.edit', [ 'channel_id' => $channel_details , 'playlist_id' => $playlist_details->playlist_id] ) }}" class="btn btn-warning" title="{{tr('edit')}}" ><b><i class="fa fa-edit"></i></b> 
 	          									</a>	
 
 	          								@endif

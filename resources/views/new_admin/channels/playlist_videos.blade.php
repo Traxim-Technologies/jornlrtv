@@ -4,13 +4,14 @@
 
 @section('content-header') 
 
-<a href="#">{{ $playlist_details->title }}</a> - {{ tr('playlist') }} 
+{{ tr('playlist') }} - <a href="#">{{ $playlist_details->title }}</a> 
 
 @endsection
 
 @section('breadcrumb')
      
     <li class="active"><i class="fa fa-user"></i> {{ tr('playlist') }}</li>
+    
 @endsection
 
 @section('content')

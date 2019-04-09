@@ -6942,7 +6942,6 @@ class NewAdminController extends Controller {
                 
                 $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
             }
-            // dd($playlists);
 
             return view('new_admin.channels.playlist_index')
                     ->with('page', 'channels')
@@ -7080,7 +7079,7 @@ class NewAdminController extends Controller {
                 throw new Exception( tr('admin_channel_playlist_video_not_found'), 101);
             } 
 
-            if( $playlist_video_details->delete()){
+            if( $playlist_video_details->delete()) {
                
                 DB::commit();
                 
@@ -7098,6 +7097,240 @@ class NewAdminController extends Controller {
             return back()->withInput()->with('flash_error',$error);
         }
     }
+
+    /**
+     * Function Name : channels_playlists_create()
+     *
+     * @uses To create a playlist object details based on channel id
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) channel_id
+     *
+     * @return View page
+     */
+    public function channels_playlists_create(Request $request) {
+
+        try {
+
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details) {
+
+                throw new Exception(tr('admin_channel_not_found'), 101);                
+            }
+            
+            $video_tapes = VideoTape::where('video_tapes.channel_id' , '=' , $request->channel_id)
+                ->select('video_tapes.id as video_tapes_id', 
+                    'video_tapes.channel_id as channel_id',
+                    'video_tapes.title as video_tape_title')
+                ->orderBy('video_tapes.created_at' , 'desc')->get();
+         
+            if(!$video_tapes) {
+
+                throw new Exception(tr('admin_video_tape_not_found'), 101);
+            }
+
+            $playlist_details = new Playlist;
+
+            return view('new_admin.channels.playlist_create')
+                        ->with('page' , 'channels')
+                        ->with('sub_page','channels-view')
+                        ->with('channel_details', $channel_details)
+                        ->with('video_tapes', $video_tapes)
+                        ->with('playlist_details', $playlist_details);
+            
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name : channels_playlists_save
+     *
+     * @uses To save/update channel object based on channel id or details
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - channel_id, (request) details
+     * 
+     * @return success/failure message.
+     *
+     */
+    public function channels_playlists_save(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all() , [
+               
+                'title' => $request->playlist_id ? 'required|unique:playlists,title,'.$request->playlist_id.',id|max:128|min:2' : 'required|unique:playlists,title,NULL,id|max:128|min:2',
+                
+                'picture' => $request->playlist_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
+                
+                'description' => 'max:225|',
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all()); 
+
+                throw new Exception($error, 101);
+            }
+
+            $video_tapes = VideoTape::find($request->video_tapes_id);
+          
+            if(!$video_tapes){
+                
+                throw new Exception(tr('admin_video_tape_not_found'), 101);
+            }
+
+            $playlist_details = $request->playlist_id ? Playlist::find($request->playlist_id) : new Playlist;
+
+            $playlist_details->channel_id = $request->channel_id;
+
+            $playlist_details->title = $request->title;
+
+            $playlist_details->description = $request->description;
+
+            $playlist_details->status = APPROVED;
+
+            $playlist_details->playlist_type = ADMIN;
+
+            if ($request->hasFile('picture')) {
+
+                if ($request->playlist_id) {
+
+                    Helper::delete_avatar('uploads/playlists' , $playlist_details->picture);
+                }
+
+                $playlist_details->picture = Helper::upload_avatar('uploads/playlists', $request->file('picture'), 0); 
+            }
+
+            $video_tapes_id = $request->video_tapes_id;
+            
+            if ($playlist_details->save()) {
+
+                $playlist_video_delete = PlaylistVideo::where('playlist_id', $playlist_details->id)
+                                ->whereNotIn('video_tape_id', $request->video_tapes_id)->delete();
+                
+                $playlist_video = PlaylistVideo::where('playlist_id', $playlist_details->id)
+                                ->whereIn('video_tape_id', $request->video_tapes_id)
+                                ->select('video_tape_id')
+                                ->get();
+
+                $playlist_video_ids = array_column($playlist_video->toArray(), 'video_tape_id');
+                
+                $result = array_diff($request->video_tapes_id,$playlist_video_ids);
+                               
+                foreach ($result as $key => $video_tape_id) {
+
+                    $playlist_video_details = new PlaylistVideo;
+
+                    $playlist_video_details->playlist_id = $playlist_details->id;
+
+                    $playlist_video_details->video_tape_id = $video_tape_id;
+
+                    $playlist_video_details->status = DEFAULT_TRUE;
+                    
+                    $playlist_video_details->save();                    
+                }
+
+                DB::commit();
+                
+                $message = $request->playlist_id ? tr('admin_channel_playlist_update_success') : tr('admin_channel_playlist_create_success');
+
+                return redirect()->route('admin.channels.playlists.view', ['playlist_id' => $playlist_details])->with('flash_success',$message);          
+            }
+
+            throw new Exception(tr('admin_playlist_save_error'), 101);
+        
+        } catch (Exception $e) {
+
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+        }
+
+    }
+
+    /**
+     * Function Name : channels_playlists_edit
+     *
+     * @uses To edit a playlist based on playlist_id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - playlist_id
+     * 
+     * @return response of new playlist object
+     *
+     */
+    public function channels_playlists_edit(Request $request) {
+        
+        try {
+
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details) {
+
+                throw new Exception(tr('admin_channel_not_found'), 101);
+            }
+            
+            $video_tapes = VideoTape::where('video_tapes.channel_id' , '=' , $request->channel_id)
+                ->select('video_tapes.id as video_tapes_id', 
+                    'video_tapes.channel_id as channel_id',
+                    'video_tapes.title as video_tape_title')
+                ->orderBy('video_tapes.created_at' , 'desc')->get();
+         
+            if(!$video_tapes) {
+
+                throw new Exception(tr('admin_video_tape_not_found'), 101);
+            }
+
+            foreach ($video_tapes as $key => $video_tape_details) {
+
+                // check already video_tape added 
+
+                $check_playlist_video_exists = PlaylistVideo::where('video_tape_id' , $video_tape_details->video_tapes_id)->where('status' , APPROVED)->count();
+
+                $video_tape_details->is_selected = NO;
+
+                if($check_playlist_video_exists) {
+                    $video_tape_details->is_selected = YES;
+                }
+
+            }
+
+            $playlist_details = $request->playlist_id ? Playlist::find( $request->playlist_id) : new Playlist;
+
+            return view('new_admin.channels.playlist_create')
+                        ->with('page' , 'channels')
+                        ->with('sub_page','channels-view')
+                        ->with('channel_details', $channel_details)
+                        ->with('video_tapes', $video_tapes)
+                        ->with('playlist_details', $playlist_details);
+
+        } catch( Exception $e) {
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.categories.index')->with('flash_error',$error);
+        }
+    }
+
 
 
 }
