@@ -1965,4 +1965,20 @@ return array(
 	'playlist'  => 'Playlist',
 	'view_playlists'  => 'View Playlists',
 
+	'admin_channel_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
+
+	'admin_channel_playlist_not_found'=>"Playlist not found!",
+
+	'admin_channel_playlist_video_not_found'=>"Playlist video not found!",
+
+	'admin_channel_playlist_delete_success'=>"Playlist deleted Successfully!",
+
+	'admin_channel_playlist_video_delete_success'=>"Video removed from playlist Successfully!",
+
+	'admin_channel_playlist_delete_error'=>"Playlist could not be deleted. Please try again!",
+	
+	'admin_channel_playlist_video_delete_error'=>"Video could not be removed. Please try again!",
+
+	'add' => 'Add',
+
 );
