@@ -6975,8 +6975,6 @@ class NewAdminController extends Controller {
 
         try {
 
-            DB::beginTransaction();
-
             $playlist_details = Playlist::find($request->playlist_id );
 
             if(!$playlist_details) {
@@ -7214,8 +7212,6 @@ class NewAdminController extends Controller {
 
                 $playlist_details->picture = Helper::upload_avatar('uploads/playlists', $request->file('picture'), 0); 
             }
-
-            $video_tapes_id = $request->video_tapes_id;
             
             if ($playlist_details->save()) {
 
