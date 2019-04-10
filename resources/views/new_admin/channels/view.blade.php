@@ -53,7 +53,7 @@
 
                 <div class="col-sm-3 border-right">
                     <div class="description-block">
-                        <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_playlist_count }}</a></h5>
+                        <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.playlists.index', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_playlist_count }}</a></h5>
                         <span class="description-text">{{ tr('playlist') }}</span>
                     </div>
                     <!-- /.description-block -->

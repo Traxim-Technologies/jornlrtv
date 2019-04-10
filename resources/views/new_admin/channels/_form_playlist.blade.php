@@ -38,9 +38,9 @@
                 <div class="form-group">                        
                     <label for="picture" class="control-label">{{ tr('picture') }} *</label>
                     <input type="file" accept="image/png, image/jpeg" id="picture" name="picture" placeholder="{{ tr('picture') }}" @if(!$playlist_details->id) required @endif>
-                   
+                    <br>
                     @if($playlist_details->picture)
-                        <img style="height: 90px;margin-bottom: 15px; border-radius:2em;" src="{{ $channel_details->picture }}">
+                        <img style="height: 90px;margin-bottom: 15px; border-radius:2em;" src="{{ $playlist_details->picture }}">
                     @endif
                 </div>
             </div>

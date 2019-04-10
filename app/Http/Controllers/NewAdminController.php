@@ -1265,7 +1265,7 @@ class NewAdminController extends Controller {
 
             return redirect()->back()->with('flash_error',$error);
         }
-            
+
     }
 
     /**
@@ -7226,10 +7226,10 @@ class NewAdminController extends Controller {
 
                 if ($request->playlist_id) {
 
-                    Helper::delete_avatar('uploads/playlists' , $playlist_details->picture);
+                    Helper::delete_avatar('uploads/channels/playlists' , $playlist_details->picture);
                 }
 
-                $playlist_details->picture = Helper::upload_avatar('uploads/playlists', $request->file('picture'), 0); 
+                $playlist_details->picture = Helper::upload_avatar('uploads/channels/playlists', $request->file('picture'), 0); 
             }
             
             if ($playlist_details->save()) {
@@ -7331,7 +7331,7 @@ class NewAdminController extends Controller {
 
             $playlist_details = $request->playlist_id ? Playlist::find( $request->playlist_id) : new Playlist;
 
-            return view('new_admin.channels.playlist_create')
+            return view('new_admin.channels.playlist_edit')
                         ->with('page' , 'channels')
                         ->with('sub_page','channels-view')
                         ->with('channel_details', $channel_details)

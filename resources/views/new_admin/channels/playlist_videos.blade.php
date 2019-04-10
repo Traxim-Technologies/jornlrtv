@@ -3,15 +3,9 @@
 @section('title', tr('playlist'))
 
 @section('content-header') 
-<h4>
-	{{ tr('playlist') }} - <a href="{{route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $channel_details->id]) }}">{{ $playlist_details->title }}</a>
-	<br>
-	<br>
-	{{ tr('channel') }} - <a href="#">{{ $channel_details->name }}</a> 
-	<br>
-	<br>
-	{{ tr('total_videos') }} - <a href="#">{{ $playlist_details->total_videos }}</a> 
-</h4> 
+
+	{{ tr('playlist') }}
+
 @endsection
 
 @section('breadcrumb')
@@ -19,14 +13,14 @@
 	
 	<li ><i class="fa fa-suitcase"></i> <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a></li>
     
-    <li><i class="fa fa-list"></i> <a href="{{ route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $channel_details->id]) }}">{{ tr('playlist') }}</a> </li>
+    <li><i class="fa fa-list"></i> <a href="{{ route('admin.channels.playlists.index', ['channel_id' =>  $channel_details->id]) }}">{{ tr('playlist') }}</a> </li>
     
     <li class="active"><i class="fa fa-video-camera"></i> {{ tr('playlist_videos') }}</li>
     
 @endsection
 
 @section('content')
-
+	
 	<div class="row">
 
         <div class="col-xs-12">
@@ -38,6 +32,22 @@
 	          	<div class="box-header label-primary">
 	                <b style="font-size:18px;">{{ tr('playlist') }}</b>
 	            </div>
+			<div class="col-xs-12 col-sm-12">
+	            <div class="col-xs-4 col-sm-4 col-md-4 box-body">
+	             	<b style="font-size:18px;">{{ tr('playlist') }} - <a href="{{route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $channel_details->id]) }}">{{ $playlist_details->title }}</a></b>
+	            </div>  
+
+	            <div class="col-xs-4 col-sm-4 col-md-4 box-body">
+	             	<b style="font-size:18px;">{{ tr('channel') }} - <a href="#">{{ $channel_details->name }}</a></b>
+	            </div>  
+
+	            <div class="box-body col-xs-4 col-sm-4 col-md-4">
+	             	<b style="font-size:18px;">{{ tr('total_videos') }} - <a href="#">{{ $playlist_details->total_videos }}</a></b>
+	            </div>
+	        </div>
+	        <br>
+	        <br>
+	            <hr>
 
 	            <div class="box-body table-responsive">
 
