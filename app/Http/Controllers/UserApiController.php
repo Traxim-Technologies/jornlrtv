@@ -121,7 +121,7 @@ class UserApiController extends Controller {
                 'referrals_check'
             ]));
 
-        $this->middleware('UserVideoChannel' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status', 'videos']]);
+        $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status', 'videos']]);
 
     }
 
