@@ -7170,7 +7170,7 @@ class NewAdminController extends Controller {
 
             $validator = Validator::make($request->all() , [
                
-                'title' => $request->playlist_id ? 'required|unique:playlists,title,'.$request->playlist_id.',id|max:128|min:2' : 'required|unique:playlists,title,NULL,id|max:128|min:2',
+                'title' => 'required||max:128|min:2',
                 
                 'picture' => $request->playlist_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
                 
@@ -7201,7 +7201,9 @@ class NewAdminController extends Controller {
 
             $playlist_details->status = APPROVED;
 
-            $playlist_details->playlist_type = ADMIN;
+            $playlist_details->playlist_type = PLAYLIST_TYPE_CHANNEL;
+
+            $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PUBLIC;
 
             if ($request->hasFile('picture')) {
 
