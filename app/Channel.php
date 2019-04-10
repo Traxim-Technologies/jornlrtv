@@ -52,7 +52,9 @@ class Channel extends Model
      */
 
     public function getPlaylist() {
+    
         return $this->hasMany('App\Playlist');
+    
     }
 
     public static function boot()

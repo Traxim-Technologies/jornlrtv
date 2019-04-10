@@ -33,7 +33,7 @@
            
             <div class="row">
                 
-                <div class="col-sm-4 border-right">
+                <div class="col-sm-3 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.videos', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_video_tape_count }}</a></h5>
                         <span class="description-text">{{ tr('videos') }}</span>
@@ -42,16 +42,25 @@
                 </div>
                 <!-- /.col -->
                 
-                <div class="col-sm-4 border-right">
+                <div class="col-sm-3 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a  target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_channel_subscribers_count }}</a></h5>
                         <span class="description-text">{{ tr('subscribers') }}</span>
                     </div>
                     <!-- /.description-block -->
                 </div>
+                <!-- /.col --> 
+
+                <div class="col-sm-3 border-right">
+                    <div class="description-block">
+                        <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_playlist_count }}</a></h5>
+                        <span class="description-text">{{ tr('playlist') }}</span>
+                    </div>
+                    <!-- /.description-block -->
+                </div>
                 <!-- /.col -->
                 
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="description-block">
                         <h5 class="description-header">{{ Setting::get('currency') }} {{ number_format_short($channel_earnings) }}</h5>
                         <span class="description-text">{{ tr('earnings') }}</span>
