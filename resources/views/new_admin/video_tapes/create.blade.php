@@ -287,7 +287,6 @@
                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                  
                                   <label for="video" class="control-label">{{tr('tags')}}</label>
-                                  <div class="clearfix"></div>
                                   <div>
                                       
                                     <select id="tag_id" name="tag_id[]" class="form-control select2" data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
@@ -296,14 +295,9 @@
                                         @endforeach
                                     </select>
 
-
                                   </div>
                                
                               </div>
-
-                              <div class="clearfix"></div>
-
-                              <br>
                             </div>
 
 

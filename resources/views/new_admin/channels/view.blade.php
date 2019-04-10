@@ -6,14 +6,12 @@
 
 @section('breadcrumb')
 
-     
     <li><a href="{{ route('admin.channels.index') }}"><i class="fa fa-suitcase"></i> {{ tr('channels') }}</a></li>
     <li class="active">{{ tr('view_channel') }}</li>
 
 @endsection 
 
 @section('content') 
-
 
 <div class="col-md-12">
 
@@ -35,7 +33,7 @@
            
             <div class="row">
                 
-                <div class="col-sm-4 border-right">
+                <div class="col-sm-3 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.videos', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_video_tape_count }}</a></h5>
                         <span class="description-text">{{ tr('videos') }}</span>
@@ -44,16 +42,25 @@
                 </div>
                 <!-- /.col -->
                 
-                <div class="col-sm-4 border-right">
+                <div class="col-sm-3 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a  target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_channel_subscribers_count }}</a></h5>
                         <span class="description-text">{{ tr('subscribers') }}</span>
                     </div>
                     <!-- /.description-block -->
                 </div>
+                <!-- /.col --> 
+
+                <div class="col-sm-3 border-right">
+                    <div class="description-block">
+                        <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.playlists.index', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_playlist_count }}</a></h5>
+                        <span class="description-text">{{ tr('playlist') }}</span>
+                    </div>
+                    <!-- /.description-block -->
+                </div>
                 <!-- /.col -->
                 
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="description-block">
                         <h5 class="description-header">{{ Setting::get('currency') }} {{ number_format_short($channel_earnings) }}</h5>
                         <span class="description-text">{{ tr('earnings') }}</span>
@@ -118,7 +125,8 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab_1" data-toggle="tab">{{ tr('about_channel') }}</a></li>
                         <li><a href="#tab_2" data-toggle="tab">{{ tr('videos') }}</a></li>
-                        <li><a href="#tab_3" data-toggle="tab">{{ tr('subscribers') }}</a></li>
+                        <li><a href="#tab_3" data-toggle="tab">{{ tr('subscribers') }}</a></li> 
+                        <li><a href="#tab_4" data-toggle="tab">{{ tr('playlist') }}</a></li>
                     </ul>
                     <div class="tab-content">
                         
@@ -246,6 +254,52 @@
                                 {{ tr('no_subscribers_found') }} 
 
                             @endif
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                         <!-- /.tab-pane -->
+                        <div class="tab-pane" id="tab_4">
+                            
+                           <blockquote>
+                                <p>{{ tr('playlist_short_notes') }}</p>
+                                <small>{{ tr('to_view_more') }} <cite><a target="_blank" href="{{ route('admin.channels.playlists.index', ['channel_id' => $channel_details->id] ) }}">{{ tr('click_here') }}</a></cite></small>
+                            </blockquote>
+                                
+                                @if($channel_playlists) 
+    
+                                <div class="box-comments">
+                                   
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th><center>{{ tr('playlist') }}</center></th>
+                                                <th><center>{{ tr('total_videos') }}</center></th>
+                                            </tr>
+                                        </thead>
+                                        @foreach($channel_playlists as $channel_playlist_details)
+                                        <tr>                                        
+                                            <td><center>
+                                                <a href="{{ route('admin.channels.playlists.view', ['playlist_id' =>$channel_playlist_details->id , 'channel_id' => $channel_details->id ] ) }}">{{ $channel_playlist_details->title }}</a></center>
+                                            </td>
+                                        
+                                            <td>
+                                                <center>{{ $channel_playlist_details->total_videos}}</center>
+                                            </td>
+                                        </tr>
+
+                                        @endforeach
+
+                                    </table> 
+
+                                </div>
+                                
+                                @else 
+
+                                    {{ tr('no_videos_found') }} 
+
+                                @endif
 
                             <div class="clearfix"></div>
                         </div>

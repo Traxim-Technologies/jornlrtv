@@ -552,6 +552,29 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('sub_admins/save', 'NewAdminController@sub_admins_save')->name('sub_admins.save');
 
+
+    // New Admin Playlist methods begins
+    
+    Route::get('/channel/playlists/index', 'NewAdminController@channels_playlists_index')->name('channels.playlists.index');
+
+    Route::get('/channel/playlists/create', 'NewAdminController@channels_playlists_create')->name('channels.playlists.create');
+
+    Route::get('/channel/playlists/edit', 'NewAdminController@channels_playlists_edit')->name('channels.playlists.edit');
+
+    Route::post('/channel/playlists/save', 'NewAdminController@channels_playlists_save')->name('channels.playlists.save');
+
+    Route::get('/channel/playlists/view', 'NewAdminController@channels_playlists_view')->name('channels.playlists.view');
+
+    Route::get('/channel/playlists/delete', 'NewAdminController@channels_playlists_delete')->name('channels.playlists.delete');
+
+    Route::get('/channel/playlists/status', 'NewAdminController@channels_playlists_status')->name('channels.playlists.status.change');
+
+    Route::get('/channel/playlist/video/remove', 'NewAdminController@channels_playlists_video_remove')->name('channels.playlist.video.delete');
+
+    // Route::get('playlist/videos', 'NewAdminController@playlist_videos')->name('playlists.videos');
+
+    // Route::get('playlist/channels', 'NewAdminController@playlist_channels')->name('playlisst.channels');
+
 });
 
 Route::group(['middleware' => ['SubAdminMiddleware', 'admin'], 'prefix' => 'subadmin', 'as' => 'subadmin.'], function () {
@@ -1023,5 +1046,22 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('bell_notifications/count', 'UserApiController@bell_notifications_count');
 
     Route::any('youtube-downloader' , 'UserApiController@video_tapes_youtube_grapper_save');
+
+    // Referrals 
+
+    Route::post('/referrals', 'UserApiController@referrals')->name('referrals');
+
+    Route::post('/referrals_check', 'UserApiController@referrals_check');
+
+    // Videos management
+
+    Route::post('/video_tapes_revenues', 'UserApiController@video_tapes_revenues');
+
+    Route::post('/video_tapes_status', 'UserApiController@video_tapes_status');
+
+    Route::post('/video_tapes_ppv_status', 'UserApiController@video_tapes_ppv_status');
+
+    Route::post('/video_tapes_delete', 'UserApiController@video_tapes_delete');
+
 
 });
