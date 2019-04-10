@@ -12,6 +12,12 @@ use Log;
 
 use Validator;
 
+use App\Referral;
+
+use App\UserReferrer;
+
+use Setting;
+
 class UserRepository {
 
     public static function request_validation($data = [] , &$errors = [] , $user) {
@@ -293,6 +299,42 @@ class UserRepository {
 	public static function paginate($take , $skip) {
 
 	}
+
+    public static function referral_register($referral_code, $user_details) {
+
+        $user_referral_details = UserReferrer::where('referral_code', $referral_code)->first();
+
+        if($user_referral_details) {
+
+            $referral_details =  Referral::where('user_id', $user_details->id)->where('referral_code', $referral_code)->first();
+
+            if(!$referral_details) {
+
+                $referral_details =  new Referral;
+            }
+
+            $referral_details->user_id = $user_details->id;
+
+            $referral_details->parent_user_id = $user_referral_details->user_id;
+
+            $referral_details->user_referrer_id = $user_referral_details->id;
+
+            $referral_details->referral_code = $referral_code;
+
+            $referral_details->source = $user_details->device_type." REGISTER";
+
+            $referral_details->save();
+
+            $user_referral_details->total_referrals = $user_referral_details->total_referrals + 1;
+
+            $user_referral_details->total_referrals_earnings += (Setting::get('referral_commission') ?: 0);
+
+            $user_referral_details->save();
+
+        }
+
+    }
+
 
 	
 }

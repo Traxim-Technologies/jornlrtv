@@ -1048,4 +1048,21 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::any('youtube-downloader' , 'UserApiController@video_tapes_youtube_grapper_save');
 
+    // Referrals 
+
+    Route::post('/referrals', 'UserApiController@referrals')->name('referrals');
+
+    Route::post('/referrals_check', 'UserApiController@referrals_check');
+
+    // Videos management
+
+    Route::post('/video_tapes_revenues', 'UserApiController@video_tapes_revenues');
+
+    Route::post('/video_tapes_status', 'UserApiController@video_tapes_status');
+
+    Route::post('/video_tapes_ppv_status', 'UserApiController@video_tapes_ppv_status');
+
+    Route::post('/video_tapes_delete', 'UserApiController@video_tapes_delete');
+
+
 });
