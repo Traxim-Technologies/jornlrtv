@@ -3279,11 +3279,13 @@ class NewAdminController extends Controller {
             $admin_details = Admin::find($request->id);
 
             if(\Hash::check($old_password,$admin_details->password)) {
-                
+
                 $admin_details->password = \Hash::make($new_password);
-                
+
                 if( $admin_details->save() ) {
 
+                    DB::commit();
+                    
                     return back()->with('flash_success', tr('admin_password_change_success'));
                 
                 } else {
@@ -3295,10 +3297,6 @@ class NewAdminController extends Controller {
 
                 throw new Exception( tr('admin_password_mismatch'), 101);
             }
-
-            $response = response()->json($response_array,$response_code);
-
-            return $response;
             
         } catch (Exception $e) {  
             
