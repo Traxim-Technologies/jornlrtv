@@ -7290,7 +7290,7 @@ class NewAdminController extends Controller {
      *
      * @param Integer $request - playlist_id
      * 
-     * @return response of new playlist object
+     * @return viuew page
      *
      */
     public function channels_playlists_edit(Request $request) {
