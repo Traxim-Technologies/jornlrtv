@@ -1241,7 +1241,13 @@ class NewAdminController extends Controller {
             $channel_subscriptions = ChannelSubscription::select('users.name as user_name', 'users.id as user_id', 'users.picture as user_picture', 'users.description', 'users.created_at', 'users.email')->where('channel_id', $channel_details->id)
                         ->leftjoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
                         ->paginate(12);
-            // dd($channel_subscriptions->toArray());
+            
+            $channel_playlists = Playlist::where('playlists.channel_id', $request->channel_id)->CommonResponse()->orderBy('playlists.updated_at', 'desc')->get();
+
+            foreach ($channel_playlists as $key => $playlist_details) {
+                
+                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
+            }
 
             return view('new_admin.channels.view')
                         ->with('page' ,'channels')
@@ -1249,7 +1255,8 @@ class NewAdminController extends Controller {
                         ->with('channel_details' , $channel_details)
                         ->with('channel_earnings', $channel_earnings)
                         ->with('videos', $videos)
-                        ->with('channel_subscriptions', $channel_subscriptions);
+                        ->with('channel_subscriptions', $channel_subscriptions)
+                        ->with('channel_playlists', $channel_playlists);
             
         } catch (Exception $e) {
             
@@ -6933,7 +6940,6 @@ class NewAdminController extends Controller {
             } 
             
             $base_query = Playlist::where('playlists.channel_id', $request->channel_id)
-                                ->where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
 
             $playlists = $base_query->CommonResponse()->get();
@@ -6982,17 +6988,27 @@ class NewAdminController extends Controller {
                 throw new Exception( tr('admin_user_playlist_not_found'), 101);
             } 
 
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details) {
+
+                throw new Exception( tr('admin_channel_not_found'), 101);
+            }
+
             $playlists_videos = PlaylistVideo::where('playlist_id', $request->playlist_id)
                         ->leftjoin('video_tapes','video_tapes.id','=','playlist_videos.video_tape_id')
                         ->leftjoin('channels','channels.id','=','video_tapes.channel_id')
                         ->addSelect('playlist_videos.id as playlist_video_id','playlist_videos.created_at as created_at')
                         ->addSelect('channels.name as channel_name')
                         ->addSelect('video_tapes.title as video_tape_title', 'video_tapes.id as video_tape_id')
-                        ->get();
+                        ->get();            
+
+            $playlist_details->total_videos = $playlists_videos->count();
 
             return view('new_admin.channels.playlist_videos')
                     ->with('page', 'channels')
                     ->with('sub_page', 'channels-view')
+                    ->with('channel_details', $channel_details)
                     ->with('playlists_videos', $playlists_videos)
                     ->with('playlist_details', $playlist_details);
 
@@ -7246,7 +7262,7 @@ class NewAdminController extends Controller {
                 
                 $message = $request->playlist_id ? tr('admin_channel_playlist_update_success') : tr('admin_channel_playlist_create_success');
 
-                return redirect()->route('admin.channels.playlists.view', ['playlist_id' => $playlist_details])->with('flash_success',$message);          
+                return redirect()->route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $request->channel_id])->with('flash_success',$message);          
             }
 
             throw new Exception(tr('admin_playlist_save_error'), 101);
@@ -7327,6 +7343,62 @@ class NewAdminController extends Controller {
 
             return redirect()->route('admin.categories.index')->with('flash_error',$error);
         }
+    }
+
+
+    /**
+     * Function Name : channels_playlists_status
+     *
+     * @uses To change the channel playlist status to approve or decline 
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param integer (request) $channel_id
+     * 
+     * @return success/failure message
+     */
+    public function channels_playlists_status(Request $request) {
+        
+        try {
+
+            DB::beginTransaction();
+
+            $playlist_details = Playlist::find($request->playlist_id);
+
+            if(!$playlist_details) {
+
+                throw new Exception(tr('admin_channel_playlist_not_found'), 101);
+            }
+
+            // dd($playlist_details->status);
+
+            $playlist_details->status = $playlist_details->status == APPROVED ? DECLINED : APPROVED;
+
+            $message = $playlist_details->status == APPROVED ? tr('admin_channel_playlist_approved_success') :  tr('admin_channel_playlist_declined_success') ;
+
+            if ($playlist_details->save() ) {
+
+                PlaylistVideo::where('playlist_id', $playlist_details->id)
+                                ->update(['status' => $playlist_details->status ]);   
+                
+                DB::commit();
+
+                return back()->with('flash_success', $message); 
+            }  
+
+            throw new Exception(tr('admin_channel_playlist_status_error'), 101);
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error',$error);
+        }
+    
     }
 
 

@@ -4,13 +4,15 @@
 
 @section('content-header') 
 
-{{ tr('playlist') }} - <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a>
+{{ tr('channel') }} - <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a>
 
 @endsection
 
 @section('breadcrumb')
      
-    <li class="active"><i class="fa fa-user"></i> {{ tr('playlist') }}</li>
+	<li ><i class="fa fa-suitcase"></i> <a href="{{ route('admin.channels.index')}}" > {{ tr('channels') }} </a></li>
+	<li ><i class="fa fa-suitcase"></i> <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a></li>
+    <li class="active"><i class="fa fa-list"></i> {{ tr('playlist') }}</li>
 
 @endsection
 
@@ -66,7 +68,7 @@
 								      	
 								      	<td>{{ $playlist_details->title }}</td>
 
-								 		<td><a href="{{ route('admin.channels.playlists.view' ,  ['playlist_id' => $playlist_details->playlist_id] ) }}"> {{ $playlist_details->total_videos }}</a>
+								 		<td><a href="{{ route('admin.channels.playlists.view' ,  ['playlist_id' => $playlist_details->playlist_id, 'channel_id' => $channel_details] ) }}"> {{ $playlist_details->total_videos }}</a>
 								 		</td>								      	
 								      	
 
@@ -91,6 +93,19 @@
 	          									</a>	
 
 	          								@endif
+											
+											@if($playlist_details->status == APPROVED)
+	      	
+	          									<a href="{{ route('admin.channels.playlists.status.change', ['playlist_id' => $playlist_details->playlist_id] ) }}" class="btn btn-danger" title="{{tr('decline')}}" onclick="return confirm(&quot;{{ tr('admin_channel_playlist_decline_notes', $playlist_details->title) }}&quot;)" ><b><i class="fa fa-close"></i></b> 
+	          									</a>
+
+	          								@else 
+												
+												<a href="{{ route('admin.channels.playlists.status.change', ['playlist_id' => $playlist_details->playlist_id] ) }}" class="btn btn-success" title="{{tr('approve')}}" ><b><i class="fa fa-check"></i></b> 
+	          									</a>
+	          								
+	          								@endif
+
 								      	</td>
 
 								    </tr>
@@ -102,7 +117,9 @@
 						</table>
 
 					@else
+					
 						<h3 class="no-result">{{ tr('no_playlist_found') }}</h3>
+					
 					@endif
 
 	            </div>

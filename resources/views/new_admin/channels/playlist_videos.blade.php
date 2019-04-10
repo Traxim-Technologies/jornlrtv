@@ -3,14 +3,25 @@
 @section('title', tr('playlist'))
 
 @section('content-header') 
-
-{{ tr('playlist') }} - <a href="#">{{ $playlist_details->title }}</a> 
-
+<h4>
+	{{ tr('playlist') }} - <a href="{{route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $channel_details->id]) }}">{{ $playlist_details->title }}</a>
+	<br>
+	<br>
+	{{ tr('channel') }} - <a href="#">{{ $channel_details->name }}</a> 
+	<br>
+	<br>
+	{{ tr('total_videos') }} - <a href="#">{{ $playlist_details->total_videos }}</a> 
+</h4> 
 @endsection
 
 @section('breadcrumb')
-     
-    <li class="active"><i class="fa fa-user"></i> {{ tr('playlist') }}</li>
+    <li ><i class="fa fa-suitcase"></i> <a href="{{ route('admin.channels.index')}}" > {{ tr('channels') }} </a></li>
+	
+	<li ><i class="fa fa-suitcase"></i> <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a></li>
+    
+    <li><i class="fa fa-list"></i> <a href="{{ route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $channel_details->id]) }}">{{ tr('playlist') }}</a> </li>
+    
+    <li class="active"><i class="fa fa-video-camera"></i> {{ tr('playlist_videos') }}</li>
     
 @endsection
 
@@ -38,9 +49,7 @@
 							    <tr>
 							      	<th>{{ tr('id') }}</th>
 
-							      	<th>{{ tr('channel') }}</th>
-
-							      	<th>{{ tr('title') }}</th>
+							      	<th>{{ tr('videos') }}</th>
 							      	
 							      	<th>{{ tr('added_on') }}</th>
 							      
@@ -53,15 +62,7 @@
 
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
-
-								      	<td>
-								      		@if($playlists_video_details->channel_name)
-								      			<a href="{{ route('admin.channels.view' ,  ['channel_id' => $playlists_video_details->channel_id] ) }}">{{ $playlists_video_details->channel_name}}</a>
-								      		@else
-								      			-
-								      		@endif
-								      	</td>
-
+							      	
 								      	<td>
 								      		<a href="{{ route('admin.video_tapes.view' ,  ['video_tape_id' => $playlists_video_details->id] ) }}">
 								      		{{ $playlists_video_details->video_tape_title }}

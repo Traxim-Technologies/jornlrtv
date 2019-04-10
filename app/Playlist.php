@@ -32,7 +32,8 @@ class Playlist extends Model
         return $query->select(
         	'playlists.id as playlist_id',
             'playlists.title as title',
-        	'playlists.title as description',
+            'playlists.title as description',
+        	'playlists.status as status',
         	'playlists.created_at',
         	'playlists.updated_at'
         );

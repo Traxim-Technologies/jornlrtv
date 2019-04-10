@@ -1964,6 +1964,7 @@ return array(
 	'playlists'  => 'Playlists',
 	'playlist'  => 'Playlist',
 	'view_playlists'  => 'View Playlists',
+	'playlist_videos'  => 'Playlist Videos',
 
 	'admin_channel_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
 
@@ -1983,12 +1984,19 @@ return array(
 	
 	'admin_channel_playlist_video_delete_error'=>"Video could not be removed. Please try again!",
 
+	'admin_channel_playlist_decline_notes' => 'Do you want to decline this(:otherkey) playlist? Once declined, related records will be declined.',
+	
+	'admin_channel_playlist_declined_success' => 'Playlist has been declined successfully.',
+	
+	'admin_channel_playlist_approved_success' => 'Playlist has been approved successfully.',
+
 	'add' => 'Add',
 
 	'add_playlist' => 'Add Playlist',
 	'edit_playlist' => 'Edit Playlist',
 	'delete_playlist' => 'Delete Playlist',
 	'select_video_tapes' => 'Select videos',
+
 
 	'referral_code_invalid' => 'Referral code is invalid',
 	'referral_code_valid' => 'Referral code is valid',
@@ -2005,5 +2013,8 @@ return array(
 
 	'user_video_tapes_delete_success' => 'The video deleted',
 	'user_video_tapes_delete_error' => 'The video failed',
+	
+	'playlist_short_notes' => 'Recent activities on Playlist.',
+
 
 );

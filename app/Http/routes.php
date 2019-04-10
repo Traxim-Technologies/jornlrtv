@@ -567,8 +567,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/channel/playlists/delete', 'NewAdminController@channels_playlists_delete')->name('channels.playlists.delete');
 
-    Route::get('/channel/playlists/status', 'NewAdminController@channels_playlists_status')->name('channels.playlists.status');
-
+    Route::get('/channel/playlists/status', 'NewAdminController@channels_playlists_status')->name('channels.playlists.status.change');
 
     Route::get('/channel/playlist/video/remove', 'NewAdminController@channels_playlists_video_remove')->name('channels.playlist.video.delete');
 
