@@ -6,7 +6,9 @@ use Closure;
 
 use App\Channel;
 
-use App\
+use App\VideoTape;
+
+use App\Helpers\Helper;
 
 class ChannelOwner
 {
