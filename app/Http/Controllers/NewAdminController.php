@@ -1217,7 +1217,7 @@ class NewAdminController extends Controller {
      */
     public function channels_view(Request $request) {
 
-        // try {
+        try {
 
             $channel_details = Channel::select('channels.*', 'users.name as user_name', 'users.picture as user_picture')
                         ->leftjoin('users', 'users.id', '=', 'channels.user_id')
@@ -1234,11 +1234,7 @@ class NewAdminController extends Controller {
 
             // Load videos and subscribrs based on the channel
             $channel_earnings = getAmountBasedChannel($channel_details->id);
-      
-            // $channel_playlists = Channel::getPlaylist()->where('playlist.channel_id','=',$channel_details->id)->count();
-      
-            // dd($channel_playlists);
-       
+             
             $videos = VideoTape::select('video_tapes.title', 'video_tapes.default_image', 'video_tapes.id', 'video_tapes.description', 'video_tapes.created_at')
                         ->where('channel_id', $channel_details->id)
                         ->paginate(12);
@@ -1263,13 +1259,13 @@ class NewAdminController extends Controller {
                         ->with('channel_subscriptions', $channel_subscriptions)
                         ->with('channel_playlists', $channel_playlists);
             
-        // } catch (Exception $e) {
+        } catch (Exception $e) {
             
-        //     $error = $e->getMessage();
+            $error = $e->getMessage();
 
-        //     return redirect()->back()->with('flash_error',$error);
-        // }
-    
+            return redirect()->back()->with('flash_error',$error);
+        }
+            
     }
 
     /**
