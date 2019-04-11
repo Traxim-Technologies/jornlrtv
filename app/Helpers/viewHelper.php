@@ -173,8 +173,8 @@ function total_revenue() {
 
     $user_referral_payments = UserReferrer::sum('total_referrals_earnings');
 
-    return $video_payments + $user_referral_payments;
-    
+    return $video_payments + $user_payments +$user_referral_payments;
+
 }
 
 function check_s3_configure() {
