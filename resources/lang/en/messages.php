@@ -1997,7 +1997,6 @@ return array(
 	'delete_playlist' => 'Delete Playlist',
 	'select_video_tapes' => 'Select videos',
 
-
 	'referral_code_invalid' => 'Referral code is invalid',
 	'referral_code_valid' => 'Referral code is valid',
 

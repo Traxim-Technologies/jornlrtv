@@ -381,7 +381,7 @@ hr {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="referral_commission">{{ tr('referral_commission') }}</label>
-                                    <input type="text" class="form-control" name="referral_commission" value="{{ Setting::get('referral_commission') }}" id="referral_commission" placeholder="{{ tr('referral_commission') }}" type="number" min="0">
+                                    <input type="number" class="form-control" name="referral_commission" value="{{ Setting::get('referral_commission') }}" id="referral_commission" placeholder="{{ tr('referral_commission') }}"  min="0">
                                 </div>
                             </div>
                             <div class="clearfix"></div>
