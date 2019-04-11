@@ -275,6 +275,27 @@
 			            	
 		            	</table>
 
+		            	<h4 class="h4-header"><b>{{ tr('referral_details') }}</b></h4>
+						
+						<table class="table table-striped">
+			            	<tr>
+			            		<th>{{ tr('referral_code') }}</th>
+			            		<td> {{ $users_referral_details->referral_code }}</td>
+			            	</tr>	
+
+			            	<tr>
+			            		<th>{{ tr('referral_earnings') }}</th>
+			            		<td>{{ Setting::get('currency') }} {{ $users_referral_details->total_referrals_earnings }}</td>
+			            	</tr>
+			            	<tr>
+			            		<th>{{ tr('referral_count') }}</th>
+			            		<td>
+			            			<a href="{{ route('admin.users.referral.index',['user_id' => $users_referral_details->user_id, 'user_referrer_id' => $users_referral_details->id ])}}">{{ $users_referral_details->total_referrals }} </a>
+			            		</td>
+			            	</tr>
+
+			            </table>
+		            	
 		            	<h4 class="h4-header"><b>{{ tr('redeems') }}</b></h4>
 	                	
 	                	<table class="table table-striped">

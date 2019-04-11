@@ -94,6 +94,10 @@ use App\Playlist;
 
 use App\PlaylistVideo;
 
+use App\Referral;
+
+use App\UserReferrer;
+
 class NewAdminController extends Controller {
 
     /**
@@ -180,17 +184,44 @@ class NewAdminController extends Controller {
      *
      * @return View page
      */
-    public function users_index() {
+    public function users_index(Request $request) {
 
-        $users = User::orderBy('created_at','desc')
-                    ->withCount('getChannel')
-                    ->withCount('getChannelVideos')
-                    ->get();
+        try {
 
-        return view('new_admin.users.index')
-                    ->withPage('users')
-                    ->with('sub_page','users-view')
-                    ->with('users' , $users);
+            $base_query = User::orderBy('created_at','desc')
+                        ->withCount('getChannel')
+                        ->withCount('getChannelVideos');
+                    
+            if ($request->user_id && $request->user_referrer_id) {
+               
+                $refered_users = Referral::where('parent_user_id', '=' , $request->user_id)->where('user_referrer_id', '=' , $request->user_referrer_id)->select('user_id')->get();
+                
+                if(!$refered_users) { 
+                    
+                    throw new Exception(tr('admin_user_refered_accounts_not_found'), 101);                    
+                }
+
+                $refered_users_ids = array_column($refered_users->toArray(), 'user_id');
+
+                $base_query->whereIn('id', $refered_users_ids);
+                
+            }
+
+            $users = $base_query->get();
+
+            return view('new_admin.users.index')
+                        ->withPage('users')
+                        ->with('sub_page','users-view')
+                        ->with('users' , $users);
+
+
+            
+        } catch (Exception $e) {
+
+            $error = $e->getMessage();
+
+            return redirect()->back()->with('flash_error',$error);            
+        }
     }
 
     /**
@@ -519,7 +550,10 @@ class NewAdminController extends Controller {
                         ->leftJoin('video_tapes', 'video_tapes.id', '=', 'user_ratings.video_tape_id')
                         ->orderBy('user_ratings.created_at', 'desc')
                         ->paginate(12);
-
+                
+                $users_referral_details = UserReferrer::where('user_id', $request->user_id)                            
+                ->withCount('getReferral')
+                ->first();
 
                 return view('new_admin.users.view')
                             ->withPage('users')
@@ -530,6 +564,7 @@ class NewAdminController extends Controller {
                             ->with('wishlists', $wishlists)
                             ->with('histories', $histories)
                             ->with('spam_reports', $spam_reports)
+                            ->with('users_referral_details', $users_referral_details)
                             ->with('user_ratings', $user_ratings);
             } 
 
