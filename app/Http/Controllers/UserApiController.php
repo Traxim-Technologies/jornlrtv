@@ -8587,14 +8587,13 @@ class UserApiController extends Controller {
             $video_tape_details = VideoTape::where('id', $request->video_tape_id)
                                     ->where('user_id', $request->id)
                                     ->where('status', APPROVED)
-                                    ->select('id as video_tape_id', 'title', 'description', 'default_image', 'age_limit', 'duration', 'video_publish_type', 'publish_status', 'publish_time', 'is_approved as is_admin_approved', 'status as video_status', 'watch_count', 'is_pay_per_view', 'type_of_subscription', 'ppv_amount', 'category_name','video_type', 'channel_id', 'user_ppv_amount as ppv_revenue', 'amount as ads_revenue', )
+                                    ->select('id as video_tape_id', 'title', 'description', 'default_image', 'age_limit', 'duration', 'video_publish_type', 'publish_status', 'publish_time', 'is_approved as is_admin_approved', 'status as video_status', 'watch_count', 'is_pay_per_view', 'type_of_subscription', 'ppv_amount', 'category_name','video_type', 'channel_id', 'user_ppv_amount as ppv_revenue', 'amount as ads_revenue', 'category_id')
                                     ->first();
 
             if(!$video_tape_details) {
 
                 throw new Exception(Helper::get_error_message(906), 906);
             }
-
 
             $video_tape_details->total_revenue = $video_tape_details->ads_revenue + $video_tape_details->ppv_revenue;
 
