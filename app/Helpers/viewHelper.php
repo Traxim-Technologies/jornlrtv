@@ -861,9 +861,9 @@ function get_history_count($id) {
 
 }
 
-function get_wishlist_count($id) {
+function get_wishlist_count($video_tape_id) {
     
-    $data = Wishlist::where('wishlists.user_id' , $id)
+    $data = Wishlist::where('wishlists.user_id' , $video_tape_id)
                 ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
                 ->where('video_tapes.is_approved' , DEFAULT_TRUE)
                 ->where('video_tapes.status' , DEFAULT_TRUE)

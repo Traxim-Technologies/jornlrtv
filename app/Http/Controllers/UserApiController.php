@@ -8587,7 +8587,7 @@ class UserApiController extends Controller {
             $video_tape_details = VideoTape::where('id', $request->video_tape_id)
                                     ->where('user_id', $request->id)
                                     ->where('status', APPROVED)
-                                    ->select('id as video_tape_id', 'title', 'description', 'default_image', 'age_limit', 'duration', 'video_publish_type', 'publish_status', 'publish_time', 'is_approved as is_admin_approved', 'status as video_status', 'watch_count', 'is_pay_per_view', 'type_of_subscription', 'ppv_amount', 'category_name','video_type', 'channel_id')
+                                    ->select('id as video_tape_id', 'title', 'description', 'default_image', 'age_limit', 'duration', 'video_publish_type', 'publish_status', 'publish_time', 'is_approved as is_admin_approved', 'status as video_status', 'watch_count', 'is_pay_per_view', 'type_of_subscription', 'ppv_amount', 'category_name','video_type', 'channel_id', 'user_ppv_amount as ppv_revenue', 'amount as ads_revenue', )
                                     ->first();
 
             if(!$video_tape_details) {
@@ -8595,9 +8595,12 @@ class UserApiController extends Controller {
                 throw new Exception(Helper::get_error_message(906), 906);
             }
 
+
+            $video_tape_details->total_revenue = $video_tape_details->ads_revenue + $video_tape_details->ppv_revenue;
+
             $channel_details = Channel::find($video_tape_details->channel_id);
 
-            $video_tape_details->channel_name = $channel_details->name;
+            $video_tape_details->channel_name = $channel_details ? $channel_details->name: "";
 
             $video_tape_details->tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
                                             ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
@@ -8605,9 +8608,10 @@ class UserApiController extends Controller {
                                             ->where('video_tape_id', $request->video_tape_id)
                                             ->get()->toArray();
 
+            $video_tape_details->wishlist_count = get_wishlist_count($request->video_tape_id);
+
             $response_array = ['success' => true, 'data' => $video_tape_details];
     
-
             return response()->json($response_array, 200);
 
         } catch (Exception $e) {
