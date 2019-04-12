@@ -50,6 +50,8 @@ use App\Playlist;
 
 use App\PlaylistVideo;
 
+use App\UserReferrer;
+
 function tr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
@@ -169,7 +171,10 @@ function total_revenue() {
 
     $video_payments = VideoTape::sum('admin_ppv_amount');
 
-    return $video_payments + $user_payments;
+    $user_referral_payments = UserReferrer::sum('total_referrals_earnings');
+
+    return $video_payments + $user_payments + $user_referral_payments;
+
 }
 
 function check_s3_configure() {

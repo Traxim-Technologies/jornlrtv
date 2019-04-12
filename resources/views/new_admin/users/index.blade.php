@@ -202,6 +202,14 @@
 									                  	
 									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation', $user_details->name) }}&quot;)" >{{ tr('approve') }}</a></li>
 									                  	@endif
+									                  	
+									                  	<li class="divider" role="presentation"></li>
+
+														<li role="presentation">
+															<a role="menuitem" tabindex="-1" href="{{ route('admin.users.subscriptions.plans' ,['user_id' => $user_details->id]) }}" }}">{{ tr('subscribe') }}</a>
+														</li>	
+
+									                  	<li class="divider" role="presentation"></li>
 
 									                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.playlist.index' , ['user_id' => $user_details->id] ) }}">{{ tr('playlist') }}</a></li>	
 									                  	

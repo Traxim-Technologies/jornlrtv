@@ -63,6 +63,14 @@ class User extends Authenticatable
     public function userFlag()
     {
         return $this->hasMany('App\Flag', 'user_id', 'id');
+    }  
+
+    /**
+     * Get the referral record associated with the user.
+     */
+    public function userReferral()
+    {
+        return $this->has('App\Referral', 'user_id', 'id');
     }
 
     /**

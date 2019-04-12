@@ -209,7 +209,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('/users/playlist/view', 'NewAdminController@playlist_video')->name('users.playlist.view'); 
 
     Route::get('/users/playlist/video/remove', 'NewAdminController@playlists_video_remove')->name('users.playlist.video.delete');
-
+    
+    Route::get('/users/referral/index', 'NewAdminController@users_index')->name('users.referral.index');
 
     //User Subscriptions
 

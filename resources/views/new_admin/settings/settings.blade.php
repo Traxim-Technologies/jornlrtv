@@ -376,6 +376,13 @@ hr {
                                     <label for="user_ppv_commission">{{ tr('user_ppv_commission') }}</label>
                                     <input type="text" class="form-control" name="" disabled value="{{ Setting::get('user_ppv_commission')   }}" id="user_ppv_commission" placeholder="{{ tr('user_ppv_commission') }}">
                                 </div>
+                            </div> 
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="referral_commission">{{ tr('referral_commission') }}</label>
+                                    <input type="number" class="form-control" name="referral_commission" value="{{ Setting::get('referral_commission') }}" id="referral_commission" placeholder="{{ tr('referral_commission') }}"  min="0">
+                                </div>
                             </div>
                             <div class="clearfix"></div>
 

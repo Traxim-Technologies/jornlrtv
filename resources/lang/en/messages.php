@@ -1969,7 +1969,7 @@ return array(
 	'admin_channel_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
 
 	'admin_channel_playlist_create_success' => "Playlist created successfully!",
-	
+
 	'admin_channel_playlist_update_success' => "Playlist created successfully!",
 	
 	'admin_channel_playlist_not_found'=>"Playlist not found!",
@@ -1997,7 +1997,6 @@ return array(
 	'delete_playlist' => 'Delete Playlist',
 	'select_video_tapes' => 'Select videos',
 
-
 	'referral_code_invalid' => 'Referral code is invalid',
 	'referral_code_valid' => 'Referral code is valid',
 
@@ -2016,5 +2015,12 @@ return array(
 	
 	'playlist_short_notes' => 'Recent activities on Playlist.',
 
+	'referral_details' => 'Referral Details',
+	'referral_code' => 'Referral Code',
+	'referral_earnings' => 'Total Referral Revenue',
+	'referral_count' => 'Refered Count',
+	'referral_commission' => 'Admin Referral Commission',
+
+	'admin_user_refered_accounts_not_found' => 'Sorry! User\'s Refered user details not found',
 
 );
