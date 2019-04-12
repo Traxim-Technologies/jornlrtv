@@ -368,7 +368,6 @@
                 case 903:
                     $string = tr('payment_not_completed_pay_again');
                     break;
-
                  case 906:
                     $string = tr('video_data_not_found');
                     break;
@@ -377,16 +376,11 @@
                     $string = tr('failed_to_upload');
                     break;
                 case 163 :
-
                     $string = tr('channel_create_error');
-
                     break;
                 case 164 :
-
                     $string = tr('subscription_error');
-
                     break;
-
                 case 165:
                     $string = tr('subscription_autorenewal_already_cancelled');
                     break;

@@ -8478,4 +8478,147 @@ class UserApiController extends Controller {
         }
     
     }
+
+    /**
+     * Function Name : channels_view()
+     *
+     * @uses used to get the channel details
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer channel_id
+     * 
+     * @return json response
+     */
+    public function channels_view(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                [
+                    'channel_id' => 'required|integer|exists:channels,id',
+                ],
+                [
+                    'exists' => 'The :attribute doesn\'t exists',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            $data = array();
+
+            $channel_details = Channel::where('id', $request->channel_id)
+                                    ->where('user_id', $request->id)
+                                    ->where('status', APPROVED)
+                                    ->select('id as channel_id', 'name as channel_name','cover as channel_cover', 'description as channel_description', 'picture as channel_image')
+                                    ->first();
+
+            if(!$channel_details) {
+
+                throw new Exception(Helper::get_error_message(50102), 50102);
+            }
+
+            $video_tapes = VideoRepo::channelVideos($request, $channel_details->id, '', $request->skip);
+
+            $channel_details->subscribers_count = subscriberscnt($channel_details->id);
+
+            $channel_details->videos = $video_tapes; 
+
+            $response_array = ['success' => true, 'data' => $channel_details];
+    
+
+            return response()->json($response_array, 200);
+
+        } catch (Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array, 200);
+        }
+
+    }
+
+    /**
+     * Function Name : video_tapes_view()
+     *
+     * @uses used to get the channel details
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer video_tape_id
+     * 
+     * @return json response
+     */
+    public function video_tapes_view(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                [
+                    'video_tape_id' => 'required|integer|exists:video_tapes,id',
+                ],
+                [
+                    'exists' => 'The :attribute doesn\'t exists',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 906);
+                
+            }
+
+            $data = array();
+
+            $video_tape_details = VideoTape::where('id', $request->video_tape_id)
+                                    ->where('user_id', $request->id)
+                                    ->where('status', APPROVED)
+                                    ->select('id as video_tape_id', 'title', 'description', 'default_image', 'age_limit', 'duration', 'video_publish_type', 'publish_status', 'publish_time', 'is_approved as is_admin_approved', 'status as video_status', 'watch_count', 'is_pay_per_view', 'type_of_subscription', 'ppv_amount', 'category_name','video_type', 'channel_id')
+                                    ->first();
+
+            if(!$video_tape_details) {
+
+                throw new Exception(Helper::get_error_message(906), 906);
+            }
+
+            $channel_details = Channel::find($video_tape_details->channel_id);
+
+            $video_tape_details->channel_name = $channel_details->name;
+
+            $video_tape_details->tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                                            ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                                            ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
+                                            ->where('video_tape_id', $request->video_tape_id)
+                                            ->get()->toArray();
+
+            $response_array = ['success' => true, 'data' => $video_tape_details];
+    
+
+            return response()->json($response_array, 200);
+
+        } catch (Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array, 200);
+        }
+
+    }
+
 }

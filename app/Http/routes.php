@@ -1063,5 +1063,9 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/video_tapes_delete', 'UserApiController@video_tapes_delete');
 
+    Route::post('/video_tapes_view', 'UserApiController@video_tapes_view');
 
 });
+
+
+Route::get('/v5/', 'V5UserController@index')->name('v5.index');
