@@ -438,6 +438,30 @@
                     $string = tr('playlist_not_associated_to_user');
                     break;
 
+                // version 5.0
+
+                case 50101:
+                    $string = tr('referral_code_invalid');
+                    break;
+                case 50102:
+                    $string = tr('channel_not_found');
+                    break;
+                case 50103:
+                    $string = tr('not_your_channel');
+                    break;
+                case 50104:
+                    $string = tr('user_action_not_enough_data');
+                    break;
+                case 50105:
+                    $string = tr('user_video_tapes_status_update_failed');
+                    break;
+                case 50106:
+                    $string = tr('user_video_tapes_ppv_status_failed');
+                    break;
+                case 50107:
+                    $string = tr('user_video_tapes_delete_error');
+                    break;
+
                 case 1000:
                     $string = tr('video_is_in_flag_list');
                     break;
@@ -568,6 +592,25 @@
                     break;
                 case 132:
                     $string = tr('playlist_video_add_empty');
+                    break;
+
+                case 50001:
+                    $string = tr('referral_code_valid');
+                    break;
+                case 50002:
+                    $string = tr('user_video_tapes_approved');
+                    break;
+                case 50003:
+                    $string = tr('user_video_tapes_declined');
+                    break;
+                case 50004:
+                    $string = tr('user_video_tapes_ppv_added');
+                    break;
+                case 50005:
+                    $string = tr('user_video_tapes_ppv_removed');
+                    break;
+                case 50006:
+                    $string = tr('user_video_tapes_delete_success');
                     break;
                 default:
                     $string = "";
