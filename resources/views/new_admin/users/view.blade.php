@@ -275,7 +275,7 @@
 			            	
 		            	</table>
 						
-						@if($users_referral_details)
+						@if(count($users_referral_details) > 0 )
 
 		            	<h4 class="h4-header"><b>{{ tr('referral_details') }}</b></h4>
 						
