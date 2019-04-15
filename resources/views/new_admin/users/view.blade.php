@@ -274,6 +274,8 @@
 			            	</tr>
 			            	
 		            	</table>
+						
+						@if($users_referral_details)
 
 		            	<h4 class="h4-header"><b>{{ tr('referral_details') }}</b></h4>
 						
@@ -295,7 +297,9 @@
 			            	</tr>
 
 			            </table>
-		            	
+			            
+		            	@endif
+
 		            	<h4 class="h4-header"><b>{{ tr('redeems') }}</b></h4>
 	                	
 	                	<table class="table table-striped">

@@ -6038,6 +6038,7 @@ class NewAdminController extends Controller {
 
         }
     }
+    
     /**
      * Function Name : video_tapes_index
      *
@@ -7296,7 +7297,8 @@ class NewAdminController extends Controller {
                 
                 $message = $request->playlist_id ? tr('admin_channel_playlist_update_success') : tr('admin_channel_playlist_create_success');
 
-                return redirect()->route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $request->channel_id])->with('flash_success',$message);          
+                return redirect()->route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $request->channel_id])->with('flash_success',$message);
+                         
             }
 
             throw new Exception(tr('admin_playlist_save_error'), 101);
