@@ -3,16 +3,15 @@
 	<div class="box-body">
 
 		<input type="hidden" name="language_id" value="{{ $language_details->id }}">
-
-	    <div class="form-group">
+	    <div class="col-sm-6 form-group">
 	        <label for="folder_name">{{ tr('short_name') }}</label>
 	        <input type="text" class="form-control" name="folder_name" id="folder_name" placeholder="{{ tr('example_language') }}" required maxlength="4" value="{{ old('folder_name') ?: $language_details->folder_name }}">
 	    </div>
 
-	    <div class="form-group">
+	    <div class="col-sm-6  form-group">
 	        <label for="language">{{ tr('language') }}</label>
 	        <div>
-	            <input type="text" class="form-control" name="language" id="language" placeholder="{{ tr('example_language2') }}" required maxlength="4" value="{{ old('language') ?: $language_details->language }}">
+	            <input type="text" class="form-control" name="language" id="language" placeholder="{{ tr('example_language2') }}" required value="{{ old('language') ?: $language_details->language }}">
 	        </div>
 	    </div>
 

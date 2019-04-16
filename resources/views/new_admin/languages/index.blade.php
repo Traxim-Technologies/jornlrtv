@@ -51,7 +51,7 @@
                         <tbody>
                            
                             @foreach($languages as $i => $language_details)
-                                <tr>
+                                <tr @if($language_details->folder_name == Setting::get('default_lang')) style="background-color: #0ef90e33;"  @endif >
                                     <td>{{$i+1}}</td>
                                    
                                     <td>{{$language_details->language}}</td>

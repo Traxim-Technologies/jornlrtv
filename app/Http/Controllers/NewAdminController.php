@@ -976,7 +976,7 @@ class NewAdminController extends Controller {
 
             return view('new_admin.subscriptions.user_plans')
                         ->withPage('users')
-                        ->with('sub_page','users')
+                        ->with('sub_page','users-view')
                         ->with('subscriptions' , $subscriptions)
                         ->with('user_id', $request->user_id)
                         ->with('payments', $payments); 
@@ -4520,7 +4520,7 @@ class NewAdminController extends Controller {
 
             $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
-                'plan' => 'required',
+                'plan' => 'required|integer|between:1,12',
                 'amount' => 'required',
                 'picture' => 'mimes:jpeg,png,jpg'
             ]);
@@ -4531,9 +4531,17 @@ class NewAdminController extends Controller {
 
                 throw new Exception($error, 101);  
             } 
+            
+            $subscription_details = $request->subscription_id ? Subscription::find($request->subscription_id) : new Subscription; 
+            
+            $subscription_details->status = $request->subscription_id != '' ? $subscription_details->status :  APPROVED; 
+          
+            $subscription_details->title = $request->title; 
+            
+            $subscription_details->plan = $request->plan;  
 
-            $subscription_details = $request->subscription_id ? Subscription::find($request->subscription_id) :  new Subscription;
-
+            $subscription_details->amount = $request->amount;
+            
             if($request->hasFile('picture')) {
                 
                 if($request->subscription_id != '') {
@@ -4543,13 +4551,7 @@ class NewAdminController extends Controller {
 
                 $picture = Helper::upload_avatar('uploads/subscriptions' , $request->file('picture'));
             }
-
-            $subscription_details->status = $request->subscription_id ? '' : DEFAULT_TRUE;
             
-            $subscription_details->unique_id = $request->subscription_id ? '' : $request->title;
-            
-            $subscription_details = Subscription::create($request->all());
-
             if( $subscription_details->save()) {
                 
                 DB::commit();
@@ -4950,12 +4952,12 @@ class NewAdminController extends Controller {
      * @return boolean response with message
      */
     public function user_subscription_auto_renewal_enable(Request $request) {
-        
+
         try {
             
             DB::beginTransaction();
 
-            $user_payment = UserPayment::where('user_id', $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')
+            $user_payment = UserPayment::where('user_id', $request->user_id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')
                 ->where('is_cancelled', AUTORENEWAL_CANCELLED)
                 ->first();
 

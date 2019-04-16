@@ -79,7 +79,6 @@
 											      		<span class="label label-warning">{{ tr('pending') }}</span>
 
 											      	@endif
-
 										     	</td>
 										 
 										      	<td>
@@ -107,6 +106,8 @@
 												                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.sub_admins.delete' , ['sub_admin_id' => $sub_admin_details->id]) }}" onclick="return confirm(&quot;{{ tr('admin_sub_admin_delete_confirmation' , $sub_admin_details->name) }}&quot;);" >{{ tr('delete') }}</a></li>
 											                  	
 											                  	@endif
+											                  
+											                  	<li role="presentation" class="divider"></li>
 
 											                  	@if($sub_admin_details->status == YES )
 											                  		<li role="presentation"><a role="menuitem" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_decline_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.sub_admins.status' , ['sub_admin_id' => $sub_admin_details->id]) }}"> {{ tr('decline') }}</a></li>
@@ -114,10 +115,6 @@
 											                  	 	<li role="presentation"><a role="menuitem" onclick="return confirm(&quot;{{ $sub_admin_details->name }} - {{ tr('admin_sub_admin_approve_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.sub_admins.status' , ['sub_admin_id'=>$sub_admin_details->id]) }}"> 
 											                  		{{ tr('approve') }} </a></li>
 											                  	@endif
-
-											                  
-											                  	<li role="presentation" class="divider"></li>
-
 
 											                </ul>
 

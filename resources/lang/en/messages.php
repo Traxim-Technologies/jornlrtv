@@ -551,7 +551,10 @@ return array(
 
 	'delete_wishlist' => 'Delete Wishlist',
 	'wishlist_removed' => 'successfully removed from wishlist',
-	
+	'no_wishlist_found' => 'No Wishlist Found',
+	'no_spam_reports_found' => 'No Spam Reports Found',
+	'no_user_ratings_found' => 'No User Ratings Found',
+
 
 	//Admin moderators
 

@@ -78,7 +78,7 @@
 
                     @if(Setting::get('admin_delete_control') == YES )  
 
-                        <a href="javascript:;" class="btn btn-sm btn-primary" title="{{tr('edit')}}" >
+                        <a href="javascript:;" class="btn btn-sm btn-warning" title="{{tr('edit')}}" >
                             <i class="fa fa-edit"></i>
                         </a>
 
@@ -88,7 +88,7 @@
 
                     @else 
 
-                        <a href="{{ route('admin.categories.edit' ,['category_id' => $category_details->id]) }}" class="btn btn-sm btn-primary" title="{{tr('edit')}}">
+                        <a href="{{ route('admin.categories.edit' ,['category_id' => $category_details->id]) }}" class="btn btn-sm btn-warning" title="{{tr('edit')}}">
                             <i class="fa fa-edit"></i>
                         </a>
 
