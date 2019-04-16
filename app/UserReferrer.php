@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserReferrer extends Model
 {
-     public function userDetails() {
+    public function userDetails() {
 
         return $this->belongsTo('App\User', 'user_id');
     }

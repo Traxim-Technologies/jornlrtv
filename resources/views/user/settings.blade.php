@@ -26,8 +26,37 @@
                 				<a href="{{route('user.profile')}}" class="settings-link">{{tr('view_profile')}}</a>
                 			</div>
                 		</div>
+
+                		<a href="{{route('user.history')}}">
+	                		<div class="settings-card">
+	                			<div class="display-inline">
+	                				<div class="settings-left">
+	                					<img src="{{asset('images/history1.png')}}" class="settings-icon">
+	                				</div>
+	                				<div class="settings-right">
+	                					<h4 class="settings-head">{{tr('history')}}</h4>
+	                					<!-- <p class="settings-subhead">15 videos</p> -->
+	                				</div>
+	                			</div>
+	                		</div>
+                		</a>
                 	</div>
                 	<div class="col-sm-6 col-md-4 col-lg-4">
+
+                		<a href="{{route('user.referrals')}}">
+	                		<div class="settings-card">
+	                			<div class="display-inline">
+	                				<div class="settings-left">
+	                					<img src="{{asset('images/referrals.png')}}" class="settings-icon">
+	                				</div>
+	                				<div class="settings-right">
+	                					<h4 class="settings-head">Referrals</h4>
+	                					<?php /*<p class="settings-subhead">{{$subscriptions}} {{tr('plans')}}</p> */?>
+	                				</div>
+	                			</div>
+	                		</div>
+                		</a>
+                		
                 		<a href="{{route('user.subscriptions')}}">
 	                		<div class="settings-card">
 	                			<div class="display-inline">
@@ -98,21 +127,7 @@
 	                		</div>
                 		</a>
                 	</div>
-                	<div class="col-sm-6 col-md-4 col-lg-4">
-                		<a href="{{route('user.history')}}">
-	                		<div class="settings-card">
-	                			<div class="display-inline">
-	                				<div class="settings-left">
-	                					<img src="{{asset('images/history1.png')}}" class="settings-icon">
-	                				</div>
-	                				<div class="settings-right">
-	                					<h4 class="settings-head">{{tr('history')}}</h4>
-	                					<!-- <p class="settings-subhead">15 videos</p> -->
-	                				</div>
-	                			</div>
-	                		</div>
-                		</a>
-                	</div>
+                
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.ppv.history')}}">
 	                		<div class="settings-card">

@@ -82,6 +82,10 @@ Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthContro
 
 Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
+// Referral link generate
+
+Route::get('/rc/{referral_code}', 'UserController@referrals_signup')->name('referrals_signup');
+
 // Embed Links
 
 Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
@@ -854,6 +858,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('/playlists/video_remove', 'UserController@playlists_video_remove')->name('playlists.video_remove');
 
+    Route::get('/referrals', 'UserController@referrals')->name('referrals');
+
+    Route::get('/referrals/view', 'UserController@referrals_view')->name('referrals.view');
 
 });
 
