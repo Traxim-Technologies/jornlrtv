@@ -1278,13 +1278,13 @@ class NewAdminController extends Controller {
                         ->leftjoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
                         ->paginate(12);
             
-            $channel_playlists = Playlist::where('playlists.channel_id', $request->channel_id)->CommonResponse()->orderBy('playlists.updated_at', 'desc')->get();
+            $channel_playlists= Playlist::where('playlists.channel_id', $request->channel_id)->CommonResponse()->orderBy('playlists.updated_at', 'desc')->get();
 
             foreach ($channel_playlists as $key => $playlist_details) {
                 
                 $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
             }
-
+            
             return view('new_admin.channels.view')
                         ->with('page' ,'channels')
                         ->with('sub_page' ,'channels-view')

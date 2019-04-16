@@ -74,7 +74,7 @@
 								      	<td>{{ $i+1 }}</td>
 							      	
 								      	<td>
-								      		<a href="{{ route('admin.video_tapes.view' ,  ['video_tape_id' => $playlists_video_details->id] ) }}">
+								      		<a href="{{ route('admin.video_tapes.view' ,  ['video_tape_id' => $playlists_video_details->video_tape_id] ) }}">
 								      		{{ $playlists_video_details->video_tape_title }}
 								      		</a>
 									    </td>
