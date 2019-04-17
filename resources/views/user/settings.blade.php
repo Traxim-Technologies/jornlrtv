@@ -17,6 +17,7 @@
                 <div><h4 class="settings">{{tr('settings')}}</h4></div>
 
                 <div class="row">
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<div class="settings-card carg-lg">
                 			<div class="text-center">
@@ -39,8 +40,9 @@
 	                				</div>
 	                			</div>
 	                		</div>
-                		</a>
+                		</a>                	
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
 
                 		<a href="{{route('user.referrals')}}">
@@ -84,6 +86,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.wishlist')}}">
 	                		<div class="settings-card">
@@ -112,6 +115,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.channels.subscribed')}}">
 	                		<div class="settings-card">
@@ -143,6 +147,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.card.card_details')}}">
 	                		<div class="settings-card">
@@ -158,6 +163,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.redeems')}}">
 	                		<div class="settings-card">
@@ -173,6 +179,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.change.password')}}">
 	                		<div class="settings-card">
@@ -202,6 +209,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.logout')}}" onclick="return confirm('{{tr("logout_confirmation")}}')">
 	                		<div class="settings-card">
@@ -216,6 +224,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 </div>
 
             </div>

@@ -1076,4 +1076,4 @@ Route::group(['prefix' => 'userApi'], function(){
 });
 
 
-Route::get('/v5/', 'V5UserController@index')->name('v5.index');
+// Route::get('/v5/', 'V5UserController@index')->name('v5.index');

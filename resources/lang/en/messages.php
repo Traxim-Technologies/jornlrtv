@@ -2032,4 +2032,5 @@ return array(
 	'more' => 'More',
 
 	'back' => 'Back',
+	'referral_code_invalid' => 'referral code invalid',
 );

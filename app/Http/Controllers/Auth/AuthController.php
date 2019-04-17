@@ -15,6 +15,8 @@ use Setting;
 
 use Auth;
 
+use App\Repositories\UserRepository as UserRepo;
+
 class AuthController extends Controller
 {
     /*
@@ -79,7 +81,8 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
             'dob'=>'required',
-            'age_limit'=>'required'
+            'age_limit'=>'required',
+            'referral' => 'exists:user_referrers,referral_code,status,'.DEFAULT_TRUE
         ]);
     }
 
@@ -158,13 +161,16 @@ class AuthController extends Controller
 
         if ($age_limit < 10) {
 
-
            return back()->with('flash_error', tr('min_age_error'));
-
         }
 
         $user = $this->create($request->all());
+      
+        if($request->referral) {
 
+            UserRepo::referral_register($request->referral, $user);
+        }
+        
         if(Setting::get('email_verify_control')) {
 
             return redirect($this->redirectPath())->with('flash_error', tr('email_verify_alert'));
@@ -176,7 +182,6 @@ class AuthController extends Controller
             return redirect($this->redirectPath())->with('flash_success', tr('registration_success'));
         }
     }
-
 
     protected function authenticated(Request $request, User $user) {
 

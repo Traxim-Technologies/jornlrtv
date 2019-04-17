@@ -107,7 +107,8 @@ class UserController extends Controller {
                 'categories_channels',
                 'custom_live_videos',
                 'single_custom_live_video',
-                'tags_videos'
+                'tags_videos',
+                'referrals_signup'
         ]]);
 
         $this->middleware(['verifyUser'], ['except' => [
@@ -276,7 +277,6 @@ class UserController extends Controller {
 
                 $watch_lists = $this->UserAPI->watch_list($request)->getData();  
             }
-
 
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
 
@@ -3635,7 +3635,54 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * Function Name : referral_code_signup()
+     *
+     * @uses signup user through referrals
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param string referral_code 
+     *
+     * @return redirect signup page
+     */
+    public function referrals_signup($referral_code){
 
+        try {
+
+            if(!$referral_code) {
+
+                throw new Exception(tr('referral_code_invalid'), 101);
+            }
+
+            $check_referral_code =  UserReferrer::where('referral_code', $referral_code)->where('status', DEFAULT_TRUE)->first();
+
+            if(!$check_referral_code) {
+
+                throw new Exception(tr('referral_code_invalid'), 101);
+            }
+
+            $user_details = User::where('status', USER_APPROVED)->where('id', $check_referral_code->user_id)->first();
+
+            if(!$user_details) {
+
+                throw new Exception(tr('referral_code_invalid'), 101);
+            }
+
+            return redirect()->route('user.register.form', ['referral' => $referral_code]);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            return redirect(route('user.register.form'))->with('flash_error', $error);
+        }
+
+    }
 
     /**
      * Function Name : referrals()
@@ -3744,7 +3791,7 @@ class UserController extends Controller {
                     ->with('subscription_payments', $subscription_payments)
                     ->with('ppv_payments', $ppv_payments);
 
-    }
+    } 
 
     
 }
