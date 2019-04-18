@@ -394,6 +394,38 @@ class UserController extends Controller {
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
 
+    }    
+
+    /**
+     * Function Name : playlists_index()
+     *
+     * @uses To list out playlists which is created by the users
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param object $request - User Details
+     *
+     * @return channel details details
+     */
+    public function playlists_index(Request $request){
+
+        if(Auth::check()) {
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+                'age'=>\Auth::user()->age_limit,
+            ]);
+        }
+
+        $response = $this->UserAPI->playlists_index($request)->getData();
+
+        return view('user.playlist.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+
     }
 
     /**
@@ -3718,17 +3750,18 @@ class UserController extends Controller {
             }
 
             $referrals = Referral::where('parent_user_id', $user_details->id)->orderBy('created_at', 'desc')->get();
-
+            
             foreach ($referrals as $key => $referral_details) {
-
+                
+                $referral_user_details = $referral_details->userDetails;
+                
                 if($referral_user_details = $referral_details->userDetails) {
 
                     $referral_details->username = $referral_user_details->name ? : "";
 
                     $referral_details->picture = $referral_user_details->picture ? : "";
 
-                }
-            
+                }            
             }
 
             return view('user.referrals.index')
@@ -3761,7 +3794,7 @@ class UserController extends Controller {
      */
 
     public function referrals_view(Request $request) {
-
+        
         $user_details = User::find($request->user_id);
 
         if(!$user_details) {

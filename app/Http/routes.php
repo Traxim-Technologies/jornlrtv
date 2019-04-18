@@ -597,6 +597,9 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/trending', 'UserController@trending')->name('trending');
 
     Route::get('channels', 'UserController@channels')->name('channel.list');
+    
+    // Route::get('playlists', 'UserController@playlists_index')->name('playlists.index');
+
 
     Route::get('history', 'UserController@history')->name('history');
 

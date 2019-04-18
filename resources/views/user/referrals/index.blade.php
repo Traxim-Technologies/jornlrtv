@@ -34,8 +34,6 @@
 
 				<li class="referrals-text">PPV commission</li>
 
-
-
 				<h4 class="shareUrl-headerText">Click to Copy Invite Link</h4>
 	        	
 	        	<p class="text-gray"></p>
