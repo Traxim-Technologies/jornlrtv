@@ -210,8 +210,9 @@ a:hover{
 .box-head h3{
 	margin: 15px 0 10px 4px;
     padding: 0;
-    font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
+    display: block;
+    overflow: hidden;
 }
 .video-head a{
 	font-size: 1em;
@@ -4405,4 +4406,9 @@ input:checked + .slider{
 
 .playlist-delete:hover, .playlist-delete:focus, .playlist-delete:active {
 	color: var(--theme-color);
+}
+
+.section-video-border {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+	margin: 2% 4%;
 }
