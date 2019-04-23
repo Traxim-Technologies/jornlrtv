@@ -95,16 +95,7 @@
 			                	</a>
 			                </li>
 
-			                <li>
-			                	<a>
-			                		{{tr('description')}}
-			                		<br>
-			                		<br>
-			                		<p class="">{{$sub_admin_details->description}}</span></p>
-			                	</a>
-			                </li>
-			             
-	              		</ul>
+			        	</ul>
 
             		</div>
 
@@ -120,6 +111,23 @@
 	              		</ul>
 	              		
 	            	</div>
+
+
+            		<div class="col-md-12">            		<hr>
+
+	              		<ul class="nav nav-stacked">
+			                <li>
+			                	<a>
+			                		<b>{{tr('description')}}</b>
+			                		<br>
+			                		<br>
+			                		<p class="">{{$sub_admin_details->description}}</span></p>
+			                	</a>
+			                </li>
+			             
+	              		</ul>
+
+            		</div>
 
           		</div>
 

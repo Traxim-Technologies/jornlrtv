@@ -66,12 +66,28 @@ class User extends Authenticatable
     }  
 
     /**
-     * Get the referral record associated with the user.
+     * Get the referrar user record associated with the user.
+     */
+    public function userReferrar()
+    {
+        return $this->has('App\userReferrar', 'user_id', 'id');
+    }
+
+    /**
+     * Get the referral user record associated with the user.
      */
     public function userReferral()
     {
-        return $this->has('App\Referral', 'user_id', 'id');
-    }
+        return $this->hasMany('App\Referral', 'user_id', 'id');
+    } 
+
+    /**
+     * Get the referral parent user record associated with the user.
+     */
+    public function userReferralParent()
+    {
+        return $this->hasMany('App\Referral', 'parent_user_id', 'id');
+    } 
 
     /**
      * Get the flag record associated with the user.

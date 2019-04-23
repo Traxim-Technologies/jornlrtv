@@ -17,6 +17,7 @@ use App\Settings;
 use Exception;
 
 use DB;
+
 class LanguageController extends Controller
 {    
     /**
@@ -182,7 +183,7 @@ class LanguageController extends Controller
 
                         if (file_exists($dir.'/auth.php')) {
 
-                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'auth.php');                            
+                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'auth.php');
                         }
 
                         if (file_exists($dir.'/messages.php')) {

@@ -8147,6 +8147,8 @@ class UserApiController extends Controller {
 
             }
 
+            $user_referrer_details->currency = Setting::get('currency', '$');
+
             $user_referrer_details->referrals = $referrals;
 
             $response_array = ['success' => true, 'data' => $user_referrer_details];
@@ -8449,7 +8451,7 @@ class UserApiController extends Controller {
                 
             }
 
-            if($video_tape_details->save()) {
+            if($video_tape_details->delete()) {
 
                 DB::commit();
 

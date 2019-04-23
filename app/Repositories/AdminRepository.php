@@ -456,8 +456,11 @@ class AdminRepository {
             DB::beginTransaction();
 
             $validator = Validator::make($request->all(),[
-                    'folder_name' => $request->language_id ? 'required|min:2|max:4|unique:languages,folder_name,'.$request->language_id : 'required|max:4|unique:languages,folder_name',
-                    'language'=> $request->language_id ? 'required|max:4|unique:languages,language,'.$request->language_id : 'required|max:4|unique:languages,language',
+                    // 'folder_name' => $request->language_id ? 'required|min:2|max:4|unique:languages,folder_name,'.$request->language_id : 'required|max:4|unique:languages,folder_name',
+                    // 'language'=> $request->language_id ? 'required|max:64|unique:languages,language,'.$request->language_id : 'required|max:64|unique:languages,language',  
+
+                    'folder_name' => 'required|max:64',
+                    'language'=> 'required|max:64',
                     'auth_file'=> !($request->language_id) ? 'required' : '',
                     'messages_file'=>!($request->language_id) ? 'required' : '',
                     'pagination_file'=>!($request->language_id) ? 'required' : '',

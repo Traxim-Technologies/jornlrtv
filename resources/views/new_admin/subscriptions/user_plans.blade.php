@@ -74,7 +74,8 @@
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 
-								      	<td>{{ $payment_details->title }}</td>
+								      	<td><a href="{{ route('admin.subscriptions.view' , ['subscription_id' => $payment_details->subscription_id] ) }}" > {{ $payment_details->title }}</a> 
+								      	</td>
 								      	
 								      	<td>{{ $payment_details->payment_id }}</td>
 								      	

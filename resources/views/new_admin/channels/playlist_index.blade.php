@@ -66,7 +66,8 @@
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 								      	
-								      	<td><a href="{{ route('admin.channels.playlists.view' ,  ['playlist_id' => $playlist_details->playlist_id, 'channel_id' => $channel_details] ) }}">{{ $playlist_details->title }}</a></td>
+								      	<td>
+								      	<a href="{{ route('admin.channels.playlists.view' ,  ['playlist_id' => $playlist_details->playlist_id, 'channel_id' => $channel_details] ) }}">{{ $playlist_details->title }}</a></td>
 
 								 		<td><a href="{{ route('admin.channels.playlists.view' ,  ['playlist_id' => $playlist_details->playlist_id, 'channel_id' => $channel_details] ) }}"> {{ $playlist_details->total_videos }}</a>
 								 		</td>								      	

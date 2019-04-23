@@ -33,7 +33,7 @@
                         <div class="col-md-6">
                             <label for="amount" class="">{{ tr('amount') }} *</label>
 
-                            <input type="text" required name="amount" class="form-control" id="amount" placeholder="{{ tr('amount') }}" step="any" value="{{ old('amount') ?: $subscription_details->amount }}"  maxlength="5">
+                            <input type="number" required name="amount" class="form-control" id="amount" placeholder="{{ tr('amount') }}" step="any" value="{{ old('amount') ?: $subscription_details->amount }}"  maxlength="5">
                         </div>
 
                     </div>

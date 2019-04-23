@@ -551,7 +551,10 @@ return array(
 
 	'delete_wishlist' => 'Delete Wishlist',
 	'wishlist_removed' => 'successfully removed from wishlist',
-	
+	'no_wishlist_found' => 'No Wishlist Found',
+	'no_spam_reports_found' => 'No Spam Reports Found',
+	'no_user_ratings_found' => 'No User Ratings Found',
+
 
 	//Admin moderators
 
@@ -1820,7 +1823,6 @@ return array(
 	'admin_password_mismatch' =>  'Pasword is mismatched',
 	'admin_password_save_error' =>  'Pasword is mismatched',
 
-
 	// user API 
 
 	'user_wishlist_save_error' => 'Sorry!, Video details could not be saved. Please try again.',
@@ -2019,8 +2021,16 @@ return array(
 	'referral_code' => 'Referral Code',
 	'referral_earnings' => 'Total Referral Revenue',
 	'referral_count' => 'Refered Count',
-	'referral_commission' => 'Admin Referral Commission',
+	'referral_commission' => 'Referral Commission',
 
 	'admin_user_refered_accounts_not_found' => 'Sorry! User\'s Refered user details not found',
 
+	'referrals' => 'REFERRALS',
+	'total_referrals' => 'Total Referrals',
+	'total_referrals_earnings' => 'Total Earnings',
+
+	'more' => 'More',
+
+	'back' => 'Back',
+	'referral_code_invalid' => 'referral code invalid',
 );

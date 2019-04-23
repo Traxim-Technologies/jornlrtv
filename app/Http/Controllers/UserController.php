@@ -68,6 +68,10 @@ use App\Playlist;
 
 use App\PlaylistVideo;
 
+use App\Referral;
+
+use App\UserReferrer;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -103,7 +107,8 @@ class UserController extends Controller {
                 'categories_channels',
                 'custom_live_videos',
                 'single_custom_live_video',
-                'tags_videos'
+                'tags_videos',
+                'referrals_signup'
         ]]);
 
         $this->middleware(['verifyUser'], ['except' => [
@@ -273,7 +278,6 @@ class UserController extends Controller {
                 $watch_lists = $this->UserAPI->watch_list($request)->getData();  
             }
 
-
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
 
             $trendings = $this->UserAPI->trending_list($request)->getData();
@@ -387,6 +391,38 @@ class UserController extends Controller {
 
 
         return view('user.channels.list')->with('page', 'channels')
+                ->with('subPage', 'channel_list')
+                ->with('response', $response);
+
+    }    
+
+    /**
+     * Function Name : playlists_index()
+     *
+     * @uses To list out playlists which is created by the users
+     *
+     * @created 
+     *
+     * @updated 
+     *
+     * @param object $request - User Details
+     *
+     * @return channel details details
+     */
+    public function playlists_index(Request $request){
+
+        if(Auth::check()) {
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+                'age'=>\Auth::user()->age_limit,
+            ]);
+        }
+
+        $response = $this->UserAPI->playlists_index($request)->getData();
+
+        return view('user.playlist.list')->with('page', 'channels')
                 ->with('subPage', 'channel_list')
                 ->with('response', $response);
 
@@ -3630,6 +3666,165 @@ class UserController extends Controller {
         }
 
     }
+
+    /**
+     * Function Name : referral_code_signup()
+     *
+     * @uses signup user through referrals
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param string referral_code 
+     *
+     * @return redirect signup page
+     */
+    public function referrals_signup($referral_code){
+
+        try {
+
+            if(!$referral_code) {
+
+                throw new Exception(tr('referral_code_invalid'), 101);
+            }
+
+            $check_referral_code =  UserReferrer::where('referral_code', $referral_code)->where('status', DEFAULT_TRUE)->first();
+
+            if(!$check_referral_code) {
+
+                throw new Exception(tr('referral_code_invalid'), 101);
+            }
+
+            $user_details = User::where('status', USER_APPROVED)->where('id', $check_referral_code->user_id)->first();
+
+            if(!$user_details) {
+
+                throw new Exception(tr('referral_code_invalid'), 101);
+            }
+
+            return redirect()->route('user.register.form', ['referral' => $referral_code]);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            return redirect(route('user.register.form'))->with('flash_error', $error);
+        }
+
+    }
+
+    /**
+     * Function Name : referrals()
+     *
+     * @uses signup user through referrals
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param string referral_code 
+     *
+     * @return redirect signup page
+     */
+    public function referrals(Request $request) {
+
+        try {
+
+            $user_details =  Auth::user();
+
+            $user_referrer_details = UserReferrer::where('user_id', $user_details->id)->first();
+
+            if(!$user_referrer_details) {
+
+                $user_referrer_details = new UserReferrer;
+
+                $user_referrer_details->user_id = $user_details->id;
+
+                $user_referrer_details->referral_code = uniqid();
+
+                $user_referrer_details->save();
+
+            }
+
+            $referrals = Referral::where('parent_user_id', $user_details->id)->orderBy('created_at', 'desc')->get();
+            
+            foreach ($referrals as $key => $referral_details) {
+                
+                $referral_user_details = $referral_details->userDetails;
+                
+                if($referral_user_details = $referral_details->userDetails) {
+
+                    $referral_details->username = $referral_user_details->name ? : "";
+
+                    $referral_details->picture = $referral_user_details->picture ? : "";
+
+                }            
+            }
+
+            return view('user.referrals.index')
+                    ->with('referrals', $referrals)
+                    ->with('user_referrer_details', $user_referrer_details);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            return redirect()->back()->with('flash_error', $error);
+        }
+
+    }
+
+    /**
+     * Function Name: referrals_view()
+     *
+     * @uses get the subscription & PPV details for selected referral user
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param integer $user_id
+     *
+     * @return response of success / failure message.
+     */
+
+    public function referrals_view(Request $request) {
+        
+        $user_details = User::find($request->user_id);
+
+        if(!$user_details) {
+            
+            return back()->with('flash_error', tr('user_not_found'));
+        }
+
+        $user_referrer_details = UserReferrer::where('user_id', $request->parent_user_id)->first();
+
+        $subscription_payments = UserPayment::select('user_payments.*', 'subscriptions.title')
+                            ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                            ->orderBy('user_payments.created_at' , 'desc')
+                            ->where('user_payments.user_id' , $user_details->id)
+                            ->get();
+
+        $ppv_payments = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
+                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
+                            ->leftJoin('users', 'users.id', '=', 'pay_per_views.user_id')
+                            ->where('pay_per_views.user_id' , $user_details->id)
+                            ->orderBy('pay_per_views.created_at' , 'desc')->get();
+
+        return view('user.referrals.view')
+                    ->with('page', 'users')
+                    ->with('sub_page', 'view-user')
+                    ->with('user_details', $user_details)
+                    ->with('user_referrer_details', $user_referrer_details)
+                    ->with('subscription_payments', $subscription_payments)
+                    ->with('ppv_payments', $ppv_payments);
+
+    } 
 
     
 }

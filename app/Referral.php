@@ -11,7 +11,7 @@ class Referral extends Model
         return $this->belongsTo('App\User', 'user_id');
     }
 
-        /**
+    /**
      * Scope a query to only include active users.
      *
      * @return \Illuminate\Database\Eloquent\Builder

@@ -83,7 +83,9 @@
     }
 </style>
 
-@endsection @section('content')
+@endsection 
+
+@section('content')
 
 <div class="y-content">
 
@@ -98,34 +100,41 @@
                 <div class="branded-page-v2-top-row">
 
                     <div class="branded-page-v2-header channel-header yt-card">
+                        
                         <div id="gh-banner">
 
-                            <div id="c4-header-bg-container" class="c4-visible-on-hover-container  has-custom-banner">
+                            <div id="c4-header-bg-container" class="c4-visible-on-hover-container has-custom-banner">
+                               
                                 <div class="hd-banner">
                                     <div class="hd-banner-image"></div>
                                 </div>
 
                                 <!-- <a class="channel-header-profile-image spf-link" href="">
-<img class="channel-header-profile-image" src="{{$channel->picture}}" title="{{$channel->name}}" alt="{{$channel->name}}">
-</a> -->
+                                <img class="channel-header-profile-image" src="{{$channel->picture}}" title="{{$channel->name}}" alt="{{$channel->name}}">
+                                </a> -->
+                            
                             </div>
 
                         </div>
                             
-                            @include('notification.notify')
+                        @include('notification.notify')
 
                         <div class="channel-content-spacing display-inline">
+                            
                             <div>
+                                
                                 <div class="pull-left">
                                     <a class="channel-header-profile-image spf-link" href="">
                                         <div style="background-image:url({{$channel->picture}});" class="channel-header-profile-image1"></div>
                                     </a>
                                 </div>
+                                
                                 <div class="pull-left width-40">
                                     <h1 class="st_channel_heading text-uppercase">{{$channel->name}}</h1>
                                     <p class="subscriber-count">{{$subscriberscnt}} Subscribers</p>
                                     <?php /*<p class="subscriber-count">{{$subscriberscnt}} Subscribers</p> */?>
                                 </div>
+                                
                                 <div class="pull-right upload_a btn-space width-60 text-right">
                                     @if(Auth::check()) @if($channel->user_id == Auth::user()->id) @if(Auth::user()->user_type)
                                     <a class="st_video_upload_btn" href="{{route('user.video_upload', ['id'=>$channel->id])}}"><i class="fa fa-upload"></i> {{tr('upload')}}</a> @endif
@@ -144,12 +153,15 @@
 
                                     <a class="st_video_upload_btn subscribe_btn" href="{{route('user.channel.subscribers', array('channel_id'=>$channel->id))}}" style="color: #fff !important"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$subscriberscnt}}</a> @endif @endif @endif
                                 </div>
+
                                 <div class="clearfix"></div>
 
                             </div>
 
                             <div id="channel-subheader" class="clearfix branded-page-gutter-padding appbar-content-trigger">
+                             
                                 <ul id="channel-navigation-menu" class="clearfix nav nav-tabs" role="tablist">
+                             
                                     <li role="presentation" class="active">
                                         <a href="#home1" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="home" role="tab" data-toggle="tab">
                                             <span class="yt-uix-button-content hidden-xs">{{tr('home')}}</span>
@@ -163,11 +175,19 @@
                                         </a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="#about" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab">
+                                        <a href="#about" class="yt-uix-button spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="about" role="tab" data-toggle="tab">
                                             <span class="yt-uix-button-content hidden-xs">{{tr('about_video')}}</span>
                                             <span class="visible-xs"><i class="fa fa-info channel-tab-icon"></i></span>
                                         </a>
                                     </li>
+
+                                    <li role="presentation">
+                                        <a href="#playlist" class="yt-uix-button spf-link yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="playlist" role="tab" data-toggle="tab">
+                                            <span class="yt-uix-button-content hidden-xs">{{tr('playlist')}}</span>
+                                            <span class="visible-xs"><i class="fa fa-list channel-tab-icon"></i></span>
+                                        </a>
+                                    </li>
+                                    
                                     @if(Auth::check()) @if($channel->user_id == Auth::user()->id)
                                     <li role="presentation" id="payment_managment_sec">
                                         <a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
@@ -178,8 +198,11 @@
                                     @endif @endif
                                 </ul>
                             </div>
+
                         </div>
+                    
                     </div>
+
                 </div>
 
                 <ul class="tab-content">
@@ -305,9 +328,11 @@
                     <li role="tabpanel" class="tab-pane" id="videos">
 
                         <div class="recom-area abt-sec">
+                           
                             <div class="abt-sec-head">
 
                                 <div class="new-history1">
+                                    
                                     <div class="content-head">
                                         
                                         <div>
@@ -333,8 +358,11 @@
                                         @foreach($videos as $i => $video)
 
                                         <li class="sub-list row border-0">
+                                            
                                             <div class="main-history">
+                                            
                                                 <div class="history-image">
+                                            
                                                     <a href="{{$video->url}}">
                                                         <!-- <img src="{{$video->video_image}}"> -->
                                                         <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video->video_image}}" class="slide-img1 placeholder" />
@@ -380,9 +408,9 @@
                                                         <div class="cross-mark2">
 
                                                             <!-- <label style="float:none; margin-top: 6px;" class="switch hidden-xs" title="{{$video->ad_status ? tr('disable_ad') : tr('enable_ad')}}">
-                <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
-                <div class="slider round"></div>
-            </label> -->
+                                                            <input id="change_adstatus_id" type="checkbox" @if($video->ad_status) checked @endif onchange="change_adstatus(this.value, {{$video->video_tape_id}})">
+                                                            <div class="slider round"></div>
+                                                            </label> -->
 
                                                             <div class="btn-group show-on-hover">
                                                                 <button type="button" class="video-menu dropdown-toggle" data-toggle="dropdown">
@@ -578,6 +606,7 @@
                         </div>
 
                     </li>
+
                     <li role="tabpanel" class="tab-pane" id="about">
 
                         <div class="recom-area abt-sec">
@@ -591,9 +620,11 @@
                     <li role="tabpanel" class="tab-pane" id="payment_managment">
 
                         <div class="recom-area abt-sec">
+                           
                             <div class="abt-sec-head">
 
                                 <div class="new-history1">
+                                  
                                     <div class="content-head">
                                         <div>
                                             <h4 style="color: #000;">{{tr('payment_videos')}}</h4>
@@ -604,27 +635,27 @@
                                     <!-- dashboard -->
                                     <div class="row">
                                         <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			<div class="ppv-dashboard">
-				<div class="ppv-dashboard-left">
-					<img src="{{asset('images/video-camera.png')}}">
-				</div>
-				<div class="ppv-dashboard-right">
-					<p>Total videos</p>
-					<h2 class="">150</h2>
-				</div>
-			</div>
-		</div> -->
-                                        <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			<div class="ppv-dashboard">
-				<div class="ppv-dashboard-left">
-					<img src="{{asset('images/video-cash.png')}}">
-				</div>
-				<div class="ppv-dashboard-right">
-					<p>paid videos</p>
-					<h2 class="">100</h2>
-				</div>
-			</div>
-		</div> -->
+                                			<div class="ppv-dashboard">
+                                				<div class="ppv-dashboard-left">
+                                					<img src="{{asset('images/video-camera.png')}}">
+                                				</div>
+                                				<div class="ppv-dashboard-right">
+                                					<p>Total videos</p>
+                                					<h2 class="">150</h2>
+                                				</div>
+                                			</div>
+                                		</div> -->
+                                                                        <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                			<div class="ppv-dashboard">
+                                				<div class="ppv-dashboard-left">
+                                					<img src="{{asset('images/video-cash.png')}}">
+                                				</div>
+                                				<div class="ppv-dashboard-right">
+                                					<p>paid videos</p>
+                                					<h2 class="">100</h2>
+                                				</div>
+                                			</div>
+                                		</div> -->
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                             <div class="ppv-dashboard">
                                                 <div class="ppv-dashboard-left">
@@ -669,9 +700,9 @@
                                                             <h5 class="payment_class unset-height"><a href="{{$video->url}}">{{$video->title}}</a></h5>
 
                                                             <span class="video_views">
-                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-                {{$video->created_at}}
-            </span>
+                                                                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
+                                                                {{$video->created_at}}
+                                                            </span>
 
                                                         </div>
                                                         <div class="cross-mark">
@@ -693,12 +724,12 @@
                                                         <span class="label label-info">{{tr('ppv_revenue')}} - ${{$video->user_ppv_amount}}</span> @endif
                                                     </div>
                                                     <span class="stars">
-        <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-        <a><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-    </span>
+                                                        <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                        <a><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                    </span>
                                                 </div>
                                                 <!--end of history-title-->
 
@@ -730,25 +761,27 @@
 
                                     <?php /* @if(count($payment_videos) > 0)
 
-@if($payment_videos)
-<div class="row">
-<div class="col-md-12">
-<div align="center" id="paglink"><?php echo $payment_videos->links(); ?></div>
+                                    @if($payment_videos)
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                    <div align="center" id="paglink"><?php echo $payment_videos->links(); ?></div>
+                                    </div>
+                                </div>
+                                @endif @endif */?>
+
+                                </div>
+
                             </div>
-                        </div>
-                        @endif @endif */?>
+                         </div>
 
-            </div>
+                    </li>
+                
+                </ul>
 
+                <div class="sidebar-back"></div>
         </div>
+        
     </div>
-
-    </li>
-    </ul>
-
-    <div class="sidebar-back"></div>
-</div>
-</div>
 
 </div>
 
@@ -976,5 +1009,7 @@
         });
 
     }
+
 </script>
+
 @endsection

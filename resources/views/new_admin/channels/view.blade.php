@@ -280,8 +280,11 @@
                                         </thead>
                                         @foreach($channel_playlists as $channel_playlist_details)
                                         <tr>                                        
-                                            <td><center>
-                                                <a href="{{ route('admin.channels.playlists.view', ['playlist_id' =>$channel_playlist_details->id , 'channel_id' => $channel_details->id ] ) }}">{{ $channel_playlist_details->title }}</a></center>
+                                            <td>
+                                                <center>
+                                                <a href="{{ route('admin.channels.playlists.view' , [ 'channel_id' => $channel_details->id, 'playlist_id' => $channel_playlist_details->playlist_id] ) }}">
+                                                {{ $channel_playlist_details->title }}</a>
+                                                </center>
                                             </td>
                                         
                                             <td>

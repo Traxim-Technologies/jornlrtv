@@ -82,6 +82,10 @@ Route::post('/social', array('as' => 'SocialLogin' , 'uses' => 'SocialAuthContro
 
 Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
+// Referral link generate
+
+Route::get('/rc/{referral_code}', 'UserController@referrals_signup')->name('referrals_signup');
+
 // Embed Links
 
 Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
@@ -593,6 +597,9 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/trending', 'UserController@trending')->name('trending');
 
     Route::get('channels', 'UserController@channels')->name('channel.list');
+    
+    // Route::get('playlists', 'UserController@playlists_index')->name('playlists.index');
+
 
     Route::get('history', 'UserController@history')->name('history');
 
@@ -854,6 +861,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('/playlists/video_remove', 'UserController@playlists_video_remove')->name('playlists.video_remove');
 
+    Route::get('/referrals', 'UserController@referrals')->name('referrals');
+
+    Route::get('/referrals/view', 'UserController@referrals_view')->name('referrals.view');
 
 });
 
@@ -1069,4 +1079,4 @@ Route::group(['prefix' => 'userApi'], function(){
 });
 
 
-Route::get('/v5/', 'V5UserController@index')->name('v5.index');
+// Route::get('/v5/', 'V5UserController@index')->name('v5.index');
