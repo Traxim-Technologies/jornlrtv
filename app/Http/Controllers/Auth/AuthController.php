@@ -94,7 +94,7 @@ class AuthController extends Controller
     protected function create(array $data)
     {        
 
-        $User = User::create([
+        $user_details = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => \Hash::make($data['password']),
@@ -109,25 +109,25 @@ class AuthController extends Controller
 
         // Check the default subscription and save the user type 
 
-        user_type_check($User->id);
+        user_type_check($user_details->id);
 
         register_mobile('web');
 
         if(!Setting::get('email_verify_control')) {
 
-            $User->is_verified = 1;
+            $user_details->is_verified = 1;
 
-            $User->save();
+            $user_details->save();
         }
         
         // Send welcome email to the new user:
         $subject = tr('user_welcome_title' , Setting::get('site_name'));
-        $email_data = $User;
+        $email_data = $user_details;
         $page = "emails.welcome";
         $email = $data['email'];
         $result = Helper::send_email($page,$subject,$email,$email_data);
 
-        return $User;
+        return $user_details;
     }
 
     public function register(Request $request)

@@ -21,6 +21,16 @@ class AdminSeeder extends Seeder
 		        'created_at' => date('Y-m-d H:i:s'),
 		        'updated_at' => date('Y-m-d H:i:s')
 		    ],
-		]);
+
+            [
+                'name' => 'Test',
+                'email' => 'test@streamtube.com',
+                'password' => \Hash::make('123456'),
+                'picture' => "",
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]
+
+        ]);
     }
 }

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ScriptSettingSeeder::class);
         $this->call(MultiChannelSeeder::class);
         $this->call(AdminDemoLoginSeeder::class);
+        $this->call(PageCountSeeder::class);
         $this->call(VideoSettingsSeeder::class);
         $this->call(AddedMaxsizekeysInSettings::class);
         $this->call(AddedLanguageControlInSettings::class);
@@ -50,5 +51,6 @@ class DatabaseSeeder extends Seeder
         $this->call(V3Seeder::class);
         $this->call(V31Seeder::class);
         $this->call(LiveurlSeeder::class);
+        $this->call(V4Seeder::class);
     }
 }

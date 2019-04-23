@@ -1,9 +1,10 @@
 
-@include('notification.notify')
 
-	<div class="row">
+<div class="row">
 
     <div class="col-md-12">
+        
+        @include('notification.notify')
 
         <div class="box box-primary">
 
@@ -113,32 +114,16 @@
 
 @section('scripts')
 
+    <script type="text/javascript">
 
-<script type="text/javascript">
-
-function loadFile(event, id){
-    var reader = new FileReader();
-    reader.onload = function(){
-      var output = document.getElementById(id);
-      output.src = reader.result;
-       //$("#imagePreview").css("background-image", "url("+this.result+")");
-    };
-    reader.readAsDataURL(event.files[0]);
-}
-
-/*function getCheckBoxValue(ad_type) {
-
-    $('#video_time').val('');
-
-    $("#video_time_div").hide();
- 
-    if(ad_type == "{{BETWEEN_AD}}") {
-
-        $("#video_time_div").show();
-
+    function loadFile(event, id){
+        var reader = new FileReader();
+        reader.onload = function(){
+          var output = document.getElementById(id);
+          output.src = reader.result;
+        };
+        reader.readAsDataURL(event.files[0]);
     }
-
-}*/
-</script>
+    </script>
 @endsection
    

@@ -93,7 +93,7 @@
 					<i class="fa fa-money"></i>
 				</div>
 
-				<a href="{{route('admin.live.videos.payments')}}" class="small-box-footer">
+				<a href="{{route('admin.live-videos.payments')}}" class="small-box-footer">
 					{{tr('more_info')}}
 					<i class="fa fa-arrow-circle-right"></i>
 				</a>

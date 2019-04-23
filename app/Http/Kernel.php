@@ -56,5 +56,8 @@ class Kernel extends HttpKernel
         'UserApiVal' => \App\Http\Middleware\UserApiValidation::class,
         'PaypalCheck' => \App\Http\Middleware\PaypalCheckMiddleware::class,
         'verifyUser' => \App\Http\Middleware\CheckUserVerification::class,
+        'AdminMiddleware' => \App\Http\Middleware\AdminMiddleware::class,
+        'SubAdminMiddleware' => \App\Http\Middleware\SubAdminMiddleware::class,
+        
     ];
 }

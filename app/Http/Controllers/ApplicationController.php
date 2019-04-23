@@ -54,7 +54,7 @@ class ApplicationController extends Controller {
     /**
      * Function Name : payment_failture()
      * 
-     * Created By: vidhya R
+     * @created vidhya R
      * 
      * Usage : used to show thw view page, whenever the payment failed.
      *
@@ -666,9 +666,9 @@ class ApplicationController extends Controller {
      *
      * @usage - Used to change the paid user to normal user based on the expiry date
      *
-     * @created SHOBANA C 
+     * @created vithya 
      *
-     * @edited 
+     * @updated 
      *
      * @param -
      *
@@ -1036,7 +1036,7 @@ class ApplicationController extends Controller {
      *
      * @created Vidhya R 
      *
-     * @edited Vidhya R
+     * @updated Vidhya R
      *
      * @param - 
      *

@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">{{Setting::get('site_name')}}</span>
+        <span class="logo-mini"><b>{{Setting::get('site_name')}}</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">{{Setting::get('site_name')}}</span>
+        <span class="logo-lg"><b>{{Setting::get('site_name')}}</b></span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -26,10 +26,9 @@
 
                 <li class="dropdown notifications-menu">
 
-                    <a href="{{url('/')}}" class="btn btn-default" target="_blank" style="color:black"> 
+                    <a href="{{url('/')}}" class="btn btn-default text-uppercase" target="_blank" style="color:black;border: 2px dotted gray"> 
                         <i class="fa fa-external-link"></i>
-
-                        <b>{{tr('visit_site')}}</b>
+                        &nbsp; {{tr('visit_site')}}
                         <span class="label label-warning"></span>
                     </a>
 

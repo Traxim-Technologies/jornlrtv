@@ -17,6 +17,7 @@ use App\AssignVideoAd;
 use App\Language;
 use App\CustomLiveVideo;
 
+
 class AdminRepository {
 
     /**
@@ -24,9 +25,9 @@ class AdminRepository {
      *
      * To save the video ads when edit by the admin
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - 
+     * @updated
      *
      * @param Integer $request : Video ad id with video ad details
      *
@@ -47,7 +48,6 @@ class AdminRepository {
             $model->status = DEFAULT_TRUE;
 
             $ad_types = [];
-
 
             if ($model->save()) {
 
@@ -330,9 +330,9 @@ class AdminRepository {
      *
      * To List out all the ads which is created by admin
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - 
+     * @updated
      *
      * @param -
      *
@@ -352,9 +352,9 @@ class AdminRepository {
      *
      * To get ads with video (Single video based on id)
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - 
+     * @updated
      *
      * @param Integer $request->id : Video id
      *
@@ -375,9 +375,9 @@ class AdminRepository {
      *
      * To save the ad for new & old object details
      *
-     * @created By - shobana
+     * @created Vithya R
      *
-     * @updated by - Ad Details
+     * @updatedAd Details
      *
      * @param - 
      *
@@ -390,6 +390,7 @@ class AdminRepository {
             DB::beginTransaction();
 
              $validator = Validator::make( $request->all(),array(
+                    'ads_detail_id' => 'exists:ads_details,id' ,
                     'name' => 'required',
                     'ad_time' => 'required|integer',
                     'file' => 'mimes:jpeg,jpg,png',
@@ -399,53 +400,49 @@ class AdminRepository {
             
             if($validator->fails()) {
 
-                $error_messages = implode(',', $validator->messages()->all());
+                $error = implode(',', $validator->messages()->all());
                 
-                throw new Exception($error_messages);
+                throw new Exception($error);
 
             } else {
+                
+                $ads_detail_details = ($request->has('ads_detail_id')) ? AdsDetail::find($request->ads_detail_id) : new AdsDetail();
 
-                $model = ($request->has('id')) ? AdsDetail::find($request->id) : new AdsDetail();
+                $ads_detail_details->status = DEFAULT_TRUE;
 
-                $model->status = DEFAULT_TRUE;
+                $ads_detail_details->name = $request->has('name') ? $request->name : $ads_detail_details->name;
 
-                $model->name = $request->has('name') ? $request->name : $model->name;
+                $ads_detail_details->ad_time = $request->has('ad_time') ? $request->ad_time : $ads_detail_details->ad_time;
 
-                $model->ad_time = $request->has('ad_time') ? $request->ad_time : $model->ad_time;
-
-                $model->ad_url = $request->has('ad_url') ? $request->ad_url : $model->ad_url;
+                $ads_detail_details->ad_url = $request->has('ad_url') ? $request->ad_url : $ads_detail_details->ad_url;
 
                 if ($request->file) {
 
                     if($request->has('id')) {
 
-                        Helper::delete_picture($model->file, "/uploads/ad/");
-
+                        Helper::delete_picture($ads_detail_details->file, "/uploads/ad/");
                     }
 
-                    $model->file = Helper::normal_upload_picture($request->file, "/uploads/ad/");
+                    $ads_detail_details->file = Helper::normal_upload_picture($request->file, "/uploads/ad/");
                 }
 
-                if ($model->save()) {
-
+                if ($ads_detail_details->save()) {
+                    
+                    DB::commit();
 
                 } else {
 
                     throw new Exception(tr('something_error'));
-
                 }
             }
 
-            DB::commit();
-
-            $response_array = ['success' => true,'message' => ($request->id) ? tr('ad_update_success') : tr('ad_create_success'), 'data'=>$model];
+            $response_array = ['success' => true,'message' => ($request->id) ? tr('ad_update_success') : tr('ad_create_success'), 'data'=>$ads_detail_details];
 
         } catch(Exception $e) {
 
             DB::rollBack();
 
             $response_array = ['success' => false,'message' => $e->getMessage()];
-
         }
 
         return response()->json($response_array, 200);
@@ -454,35 +451,36 @@ class AdminRepository {
 
     public static function languages_save($request) {
 
-        $validator = Validator::make($request->all(),[
-                'folder_name' => 'required|max:4',
-                'language'=>'required|max:64',
-                'auth_file'=> !($request->id) ? 'required' : '',
-                'messages_file'=>!($request->id) ? 'required' : '',
-                'pagination_file'=>!($request->id) ? 'required' : '',
-                'passwords_file'=>!($request->id) ? 'required' : '',
-                'validation_file'=>!($request->id) ? 'required' : '',
-        ]);
-        
-        if($validator->fails()) {
+        try {
+            
+            DB::beginTransaction();
 
-            $error_messages = implode(',', $validator->messages()->all());
+            $validator = Validator::make($request->all(),[
+                    'folder_name' => $request->language_id ? 'required|min:2|max:4|unique:languages,folder_name,'.$request->language_id : 'required|max:4|unique:languages,folder_name',
+                    'language'=> $request->language_id ? 'required|max:4|unique:languages,language,'.$request->language_id : 'required|max:4|unique:languages,language',
+                    'auth_file'=> !($request->language_id) ? 'required' : '',
+                    'messages_file'=>!($request->language_id) ? 'required' : '',
+                    'pagination_file'=>!($request->language_id) ? 'required' : '',
+                    'passwords_file'=>!($request->language_id) ? 'required' : '',
+                    'validation_file'=>!($request->language_id) ? 'required' : '',
+            ]);
+            
+            if($validator->fails()) {
 
-            return  ['success' => false , 'error' => $error_messages];
+                $error = implode(',', $validator->messages()->all());
 
-        } else {
+                throw new Exception($error, 101);
+            } 
 
+            $language_details = ($request->language_id != '') ? Language::find($request->language_id) : new Language;
 
-            $model = ($request->id != '') ? Language::find($request->id) : new Language;
+            $lang = ($request->language_id != '') ? $language_details->folder_name : '';
 
-            $lang = ($request->id != '') ? $model->folder_name : '';
+            $language_details->folder_name = $request->folder_name;
 
-            $model->folder_name = $request->folder_name;
+            $language_details->language = $request->language;
 
-            $model->language = $request->language;
-
-            $model->status = DEFAULT_TRUE;
-
+            $language_details->status = APPROVED;
 
             if ($request->hasFile('auth_file')) {
 
@@ -493,20 +491,20 @@ class AdminRepository {
                 $length = readFileLength($_FILES['auth_file']['tmp_name']);
 
                 if ($originallength != $length) {
-                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+
+                    throw new Exception(Helper::get_error_message(162), 162);
                 }
 
-                if ($model->id != '') {
+                if ($language_details->id != '') {
 
                     $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
 
                     Helper::delete_language_files($lang, $boolean, 'auth.php');
                 }
 
-                Helper::upload_language_file($model->folder_name, $request->auth_file, 'auth.php');
+                Helper::upload_language_file($language_details->folder_name, $request->auth_file, 'auth.php');
 
             }
-
 
             if ($request->hasFile('messages_file')) {
 
@@ -517,20 +515,20 @@ class AdminRepository {
                 $length = readFileLength($_FILES['messages_file']['tmp_name']);
 
                 if ($originallength != $length) {
-                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+
+                    throw new Exception(Helper::get_error_message(162), 162);
                 }
 
-                if ($model->id != '') {
+                if ($language_details->id != '') {
 
                     $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
 
                     Helper::delete_language_files($lang, $boolean, 'messages.php');
                 }
 
-                Helper::upload_language_file($model->folder_name, $request->messages_file, 'messages.php');
+                Helper::upload_language_file($language_details->folder_name, $request->messages_file, 'messages.php');
 
             }
-
 
             if ($request->hasFile('pagination_file')) {
 
@@ -541,20 +539,19 @@ class AdminRepository {
                 $length = readFileLength($_FILES['pagination_file']['tmp_name']);
 
                 if ($originallength != $length) {
-                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+
+                    throw new Exception(Helper::get_error_message(162), 162);
                 }
 
-                if ($model->id != '') {
+                if ($language_details->id != '') {
 
                     $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
 
                     Helper::delete_language_files($lang, $boolean, 'pagination.php');
                 }
 
-                Helper::upload_language_file($model->folder_name, $request->pagination_file, 'pagination.php');
-
+                Helper::upload_language_file($language_details->folder_name, $request->pagination_file, 'pagination.php');
             }
-
 
             if ($request->hasFile('passwords_file')) {
 
@@ -565,18 +562,19 @@ class AdminRepository {
                 $length = readFileLength($_FILES['passwords_file']['tmp_name']);
 
                 if ($originallength != $length) {
-                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                    
+                    throw new Exception(Helper::get_error_message(162), 162);
+
                 }
 
-                if ($model->id != '') {
+                if ($language_details->id != '') {
 
                     $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
 
                     Helper::delete_language_files($lang, $boolean , 'passwords.php');
                 }
 
-                Helper::upload_language_file($model->folder_name, $request->passwords_file, 'passwords.php');
-
+                Helper::upload_language_file($language_details->folder_name, $request->passwords_file, 'passwords.php');
             }
 
             if($request->hasFile('validation_file')) {
@@ -588,69 +586,91 @@ class AdminRepository {
                 $length = readFileLength($_FILES['validation_file']['tmp_name']);
 
                 if ($originallength != $length) {
-                    return ['success' => false, 'error'=> Helper::get_error_message(162), 'error_code'=>162];
+                    
+                    throw new Exception(Helper::get_error_message(162), 162);
                 }
-
-                if ($model->id != '') {
+                
+                if ($language_details->id != '') {
                     $boolean = ($lang != $request->folder_name) ? DEFAULT_TRUE : DEFAULT_FALSE;
 
                     Helper::delete_language_files($lang, $boolean, 'validation.php');
                 }
 
-                Helper::upload_language_file($model->folder_name, $request->validation_file, 'validation.php');
-
+                Helper::upload_language_file($language_details->folder_name, $request->validation_file, 'validation.php');
             } 
 
-            if ($request->id) {
+            if ($request->language_id) {
+
                 if($lang != $request->folder_name)  {
-                    $current_path=base_path('resources/lang/'.$lang);
-                    $new_path=base_path('resources/lang/'.$request->folder_name);
+                   
+                    $current_path = base_path('resources/lang/'.$lang);
+                   
+                    $new_path = base_path('resources/lang/'.$request->folder_name);
+                   
                     rename($current_path,$new_path);
                 }
+
             }
 
-            $model->save();
+            $language_details->save();
 
-            if($model) {
-                $response_array = ['success' => true, 'message'=> $request->id != '' ? tr('language_update_success') : tr('language_create_success')];
+            if($language_details) {
+                
+                DB::commit();
+
+                $response_array = ['success' => true, 'message'=> $request->language_id != '' ? tr('language_update_success') : tr('language_create_success')];
+           
             } else {
-                $response_array = ['success' => false , 'error' => tr('something_error')];
+                
+                throw new Exception(tr('something_error'), 101);
             }
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            $error = $e->getMessage();
+            
+            $code = $e->getCode();
+            
+            $response_array = ['success' => false , 'error' => $error, 'code' => $code];
+
         }
+
         return $response_array;
     }
 
     /**
      * Function : custom_live_videos_save()
      *
-     * @created_by shobana
+     * @created Vithya R
      *
-     * @updated_by -
+     * @updated -
      *
      * @return Save the form data of the live video
      */
     public static function save_custom_live_video($request) {
 
-        if ($request->id) {
+        if ($request->custom_live_video_id) {
 
-            $validator = Validator::make($request->all(),array(
+            $validator = Validator::make($request->all(),[
                     'title' => 'required|max:255',
                     'description' => 'required',
                     'rtmp_video_url'=>'required|max:255',
                     'hls_video_url'=>'required|max:255',
                     'image' => 'mimes:jpeg,jpg,png'
-                )
+                ]
             );
 
          } else {
 
-             $validator = Validator::make($request->all(),array(
-                'title' => 'max:255|required',
-                'description' => 'required',
-                'rtmp_video_url'=>'required|max:255',
-                'hls_video_url'=>'required|max:255',
-                'image' => 'required|mimes:jpeg,jpg,png'
-                )
+             $validator = Validator::make($request->all(),[
+                    'title' => 'max:255|required',
+                    'description' => 'required',
+                    'rtmp_video_url'=>'required|max:255',
+                    'hls_video_url'=>'required|max:255',
+                    'image' => 'required|mimes:jpeg,jpg,png'
+                ]
             );
 
          }
@@ -663,7 +683,7 @@ class AdminRepository {
 
         } else {
             
-            $model = ($request->id) ? CustomLiveVideo::find($request->id) : new CustomLiveVideo;
+            $model = ($request->custom_live_video_id) ? CustomLiveVideo::find($request->custom_live_video_id) : new CustomLiveVideo;
             
             $model->title = $request->has('title') ? $request->title : $model->title;
 
@@ -673,13 +693,11 @@ class AdminRepository {
 
             $model->hls_video_url = $request->has('hls_video_url') ? $request->hls_video_url : $model->hls_video_url;
 
-
             if($request->hasFile('image')) {
 
-                if($request->id) {
+                if($request->custom_live_video_id) {
 
                     Helper::delete_picture($model->image, "/uploads/images/");
-
                 }
 
                 $model->image = Helper::normal_upload_picture($request->image , "/uploads/images/");
@@ -689,7 +707,7 @@ class AdminRepository {
 
             if ($model->save()) {
 
-                $response_array = ['success'=>true, 'message'=> ($request->id) ? tr('live_custom_video_update_success') : tr('live_custom_video_create_success'), 'data' => $model];
+                $response_array = ['success'=>true, 'message'=> ($request->custom_live_video_id) ? tr('live_custom_video_update_success') : tr('live_custom_video_create_success'), 'data' => $model];
 
             } else {
 
@@ -700,7 +718,6 @@ class AdminRepository {
         }
 
         return response()->json($response_array);
-
     }
 
 }

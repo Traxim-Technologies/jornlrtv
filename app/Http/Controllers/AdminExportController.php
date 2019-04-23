@@ -227,7 +227,7 @@ class AdminExportController extends Controller
 
 	    	if(count($result) == 0) {
             	
-            	return redirect()->route('admin.videos.list')->with('flash_error' , tr('video_not_found_error'));
+            	return redirect()->route('admin.videos.index')->with('flash_error' , tr('video_not_found_error'));
 
 	    	}
 
@@ -263,13 +263,13 @@ class AdminExportController extends Controller
 		    
 		    })->export($format);
 
-            return redirect()->route('admin.videos.list')->with('flash_success' ,tr('export_success'));
+            return redirect()->route('admin.videos.index')->with('flash_success' ,tr('export_success'));
 
 		} catch(\Exception $e) {
 
             $error = $e->getMessage();
 
-            return redirect()->route('admin.videos.list')->with('flash_error' , $error);
+            return redirect()->route('admin.videos.index')->with('flash_error' , $error);
 
         }
 

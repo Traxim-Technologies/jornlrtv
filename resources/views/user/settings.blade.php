@@ -172,8 +172,9 @@
 	                		</div>
                 		</a>
                 	</div>
+                	
                 	<div class="col-sm-6 col-md-4 col-lg-4">
-                		<a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm('Are you sure? . Once you deleted account, you will lose your history and wishlist details.')" @endif>
+                		<a href="{{route('user.delete.account')}}" @if(Auth::user()->login_by != 'manual') onclick="return confirm(&quot;{{tr('user_account_delete_confirm') }}&quot;)" @endif>
 	                		<div class="settings-card">
 	                			<div class="display-inline">
 	                				<div class="settings-left">
@@ -187,7 +188,7 @@
                 		</a>
                 	</div>
                 	<div class="col-sm-6 col-md-4 col-lg-4">
-                		<a href="{{route('user.logout')}}">
+                		<a href="{{route('user.logout')}}" onclick="return confirm('{{tr("logout_confirmation")}}')">
 	                		<div class="settings-card">
 	                			<div class="display-inline">
 	                				<div class="settings-left">

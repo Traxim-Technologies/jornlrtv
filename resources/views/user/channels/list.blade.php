@@ -20,9 +20,11 @@
 			@include('notification.notify')
 
 				<div class="slide-area1 recom-area abt-sec">
+					
 					<div class="abt-sec-head">
 						
-						 <div class="new-history">
+						<div class="new-history">
+				                
 				                <div class="content-head">
 				                    <div class="pull-left"><h4 class="bold" style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
 				  
@@ -108,7 +110,7 @@
 
 																@else 
 
-																	<a class="st_video_upload_btn " href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe the user?')"><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
+																	<a class="st_video_upload_btn " href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm(&quot;{{ $channel->title }} -  {{tr('user_channel_unsubscribe_confirm') }}&quot;)" ><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
 
 
 
@@ -171,9 +173,10 @@
 				                    @endif
 				                @endif
 				                
-				            </div>
+				        </div>
 
 					</div>
+
 				</div>
 
 			<div class="sidebar-back"></div> 
