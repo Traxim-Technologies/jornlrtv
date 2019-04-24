@@ -34,7 +34,7 @@
 		</div> <div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="messages_file">{{ tr('messages_file') }}</label>
-	        <input type="file" id="messages_file" name="messages_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="messages_file" name="messages_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                
@@ -50,7 +50,7 @@
  		<div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="pagination_file">{{ tr('pagination_file') }}</label>
-	        <input type="file" id="pagination_file" name="pagination_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="pagination_file" name="pagination_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                
@@ -67,7 +67,7 @@
  		<div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="passwords_file">{{ tr('passwords_file') }}</label>
-	        <input type="file" id="passwords_file" name="passwords_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="passwords_file" name="passwords_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>
@@ -84,7 +84,7 @@
 	    <div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="validation_file">{{ tr('validation_file') }}</label>
-	        <input type="file" id="validation_file" name="validation_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="validation_file" name="validation_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                

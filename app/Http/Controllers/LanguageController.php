@@ -342,7 +342,7 @@ class LanguageController extends Controller
                 fwrite($fp, "<?php return array( 'locale' => '".$request->language_file."', 'fallback_locale' => '".$request->language_file."');?>");
                 
                 fclose($fp);
-
+                                
                 \Log::info("Key : ".config('app.locale'));
 
                 return back()->with('flash_success' , tr('set_default_language_success'))->with('flash_language', true);
